@@ -887,7 +887,7 @@ class Application
             );
         }
 
-        return $this->abort(404);
+        return false;
     }
 
     /**
@@ -898,20 +898,26 @@ class Application
      * @param array  $headers The headers to set
      * @param string $view    The view template name to use
      *
-     * @return \Valkyrja\Http\Response
+     * @return void
      */
     public function abort($code = 404, $message = '', array $headers = [], $view = null)
     {
+        // Set the view to use
         $view = $view
             ?: 'errors/' . $code;
 
+        // If the message is a string the view expects an array
         if (is_string($message)) {
             $message = ['message' => $message];
         }
 
-        return $this->response()
+        // Return a new sent response
+        $this->response()
                     ->view($view, $message, $code, $headers)
                     ->send();
+
+        // Kill the application
+        die(1);
     }
 
     /**
@@ -928,10 +934,12 @@ class Application
         /** @var \Valkyrja\Contracts\Http\ResponseBuilder $factory */
         $factory = container(ResponseBuilderContract::class);
 
+        // If no args were passed return the ResponseBuilder
         if (func_num_args() === 0) {
             return $factory;
         }
 
+        // Otherwise return a new Response using the ResponseBuilder->make() method
         return $factory->make($content, $status, $headers);
     }
 
@@ -961,16 +969,25 @@ class Application
      */
     public function run()
     {
-        $response = $this->dispatch();
+        // Dispatch the request and get a response
+        $dispatch = $this->dispatch();
 
-        if ($response instanceof ResponseContract) {
-            $response->send();
+        // If the dispatch failed, 404
+        if (!$dispatch) {
+            $this->abort(404);
         }
-        else if ($response instanceof ViewContract) {
-            echo (string) $response->render();
+
+        // If the dispatch is a Response, send it
+        if ($dispatch instanceof ResponseContract) {
+            $dispatch->send();
         }
+        // If the dispatch is a View, render it
+        else if ($dispatch instanceof ViewContract) {
+            echo (string) $dispatch->render();
+        }
+        // Otherwise echo it out as a string
         else {
-            echo (string) $response;
+            echo (string) $dispatch;
         }
     }
 
@@ -983,6 +1000,7 @@ class Application
      */
     public function setServiceContainer(array $serviceContainer)
     {
+        // The application has already bootstrapped the container so merge to avoid clearing
         $this->serviceContainer = array_merge($this->serviceContainer, $serviceContainer);
     }
 
@@ -1009,13 +1027,17 @@ class Application
      */
     public function container($abstract, array $arguments = [])
     {
+        // If the abstract is set in the service container
         if (isset($this->serviceContainer[$abstract])) {
+            // Set the container item for ease of use here
             $containerItem = $this->serviceContainer[$abstract];
 
             // The container item is a singleton and hasn't been requested yet
             if (is_callable($containerItem)) {
+                // Run the callable function
                 $containerItem = $containerItem();
 
+                // Set the result in the service container for the next request
                 $this->serviceContainer[$abstract] = $containerItem;
 
                 // Return the container item
@@ -1031,13 +1053,14 @@ class Application
             return $containerItem;
         }
 
+        // A class was passed just in case it was in the container, so return it
         return $abstract;
     }
 
     /**
      * Register a service provider.
      *
-     * @param string $serviceProvider The service provider class name
+     * @param string $serviceProvider The service provider
      *
      * @return void
      */
