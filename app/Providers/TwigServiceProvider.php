@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Valkyrja\Providers;
+namespace App\Providers;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -29,26 +29,6 @@ class TwigServiceProvider extends ServiceProvider
      */
     public function publish()
     {
-        // Set the twig auto loader
-        // - Using our own auto loading for better optimization
-        app()->autoloader('Twig_', vendorPath('twig/twig/lib/Twig'), '_');
-
-        // Set the env variable for views directory if its not set
-        $twigDir = env('views.twig.dir', false);
-        app()->setEnv(
-            'views.dir',
-            $twigDir
-                ?: resourcesPath('views/twig')
-        );
-
-        // Set the env variable for views compiled directory if its not set
-        $twigCompiledDir = env('views.twig.dir.compiled', false);
-        app()->setEnv(
-            'views.dir.compiled',
-            $twigCompiledDir
-                ?: storagePath('views/twig')
-        );
-
         // Set the Twig_Environment class in the service container
         app()->instance(
             Twig_Environment::class,

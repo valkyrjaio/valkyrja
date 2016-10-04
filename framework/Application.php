@@ -182,6 +182,70 @@ class Application
     }
 
     /**
+     * Bootstrap twig to handle views if enabled in env.
+     *
+     * @return void
+     */
+    public function bootstrapTwig()
+    {
+        // Check if twig is enabled in env
+        if ($this->isTwigEnabled()) {
+            // Set the twig auto loader
+            // - Using our own auto loading for better optimization
+            $this->autoloader('Twig_', $this->vendorPath('twig/twig/lib/Twig'), '_');
+
+            // Set the env variable for views directory if its not set
+            $twigDir = $this->env('views.twig.dir', false);
+            $this->setEnv(
+                'views.dir',
+                $twigDir
+                    ?: $this->resourcesPath('views/twig')
+            );
+
+            // Set the env variable for views compiled directory if its not set
+            $twigCompiledDir = $this->env('views.twig.dir.compiled', false);
+            $this->setEnv(
+                'views.dir.compiled',
+                $twigCompiledDir
+                    ?: storagePath('views/twig')
+            );
+
+            // Set the Twig_Environment class in the service container
+            $this->instance(
+                \Twig_Environment::class,
+                function () {
+                    $loader = new \Twig_Loader_Filesystem($this->env('views.dir'));
+
+                    $twig = new \Twig_Environment(
+                        $loader, [
+                                   'cache' => $this->env('views.dir.compiled'),
+                               ]
+                    );
+
+                    // Twig Extensions Here
+                    // $twig->addExtension(new \App\Views\Extensions\TwigStaticExtension());
+
+                    return $twig;
+                }
+            );
+
+            // Set the View class in the service container as Twig view
+            $this->instance(
+                ViewContract::class,
+                [
+                    function ($template = '', array $variables = []) {
+                        $view = new \Valkyrja\View\TwigView($template, $variables);
+
+                        $view->setTwig(container(\Twig_Environment::class));
+
+                        return $view;
+                    },
+                ]
+            );
+        }
+    }
+
+    /**
      * Bootstrap error, exception, and shutdown handler.
      *
      * @return void
@@ -320,6 +384,16 @@ class Application
     }
 
     /**
+     * Is twig enabled?
+     *
+     * @return bool
+     */
+    public function isTwigEnabled()
+    {
+        return $this->env('views.twig.enabled', false);
+    }
+
+    /**
      * Set the timezone for the application process.
      *
      * @return void
@@ -347,6 +421,50 @@ class Application
     public function setCompiled()
     {
         $this->isCompiled = true;
+    }
+
+    /**
+     * Get an environment variable via key.
+     *
+     * @param string|bool $key     The variable to get
+     * @param mixed       $default Default value to return if not found
+     *
+     * @return mixed
+     */
+    public function env($key = false, $default = false)
+    {
+        if (!$key) {
+            return $this->env;
+        }
+
+        return isset($this->env[$key])
+            ? $this->env[$key]
+            : $default;
+    }
+
+    /**
+     * Set a single environment variable.
+     *
+     * @param string $key   The key to set
+     * @param mixed  $value The value to set
+     *
+     * @return void
+     */
+    public function setEnv($key, $value)
+    {
+        $this->env[$key] = $value;
+    }
+
+    /**
+     * Set all environment variables.
+     *
+     * @param array $env The environment variables to set
+     *
+     * @return void
+     */
+    public function setEnvs(array $env)
+    {
+        $this->env = $env;
     }
 
     /**
@@ -505,50 +623,6 @@ class Application
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
-    }
-
-    /**
-     * Get an environment variable via key.
-     *
-     * @param string|bool $key     The variable to get
-     * @param mixed       $default Default value to return if not found
-     *
-     * @return mixed
-     */
-    public function env($key = false, $default = false)
-    {
-        if (!$key) {
-            return $this->env;
-        }
-
-        return isset($this->env[$key])
-            ? $this->env[$key]
-            : $default;
-    }
-
-    /**
-     * Set a single environment variable.
-     *
-     * @param string $key   The key to set
-     * @param mixed  $value The value to set
-     *
-     * @return void
-     */
-    public function setEnv($key, $value)
-    {
-        $this->env[$key] = $value;
-    }
-
-    /**
-     * Set all environment variables.
-     *
-     * @param array $env The environment variables to set
-     *
-     * @return void
-     */
-    public function setEnvs(array $env)
-    {
-        $this->env = $env;
     }
 
     /**

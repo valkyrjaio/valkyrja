@@ -112,6 +112,8 @@ else {
 
 // Set the timezone for the application process
 $app->setTimezone();
+// Check if twig is enabled and bootstrap it
+$app->bootstrapTwig();
 
 /*
 |--------------------------------------------------------------------------
@@ -121,11 +123,8 @@ $app->setTimezone();
 | TODO: Fill with explanation
 |
 */
-// If twig is enabled in the app environment vars
-// then register the service provider
-if ($app->env('views.twig.enabled') === true) {
-    $app->register(Valkyrja\Providers\TwigServiceProvider::class);
-}
+// $app->register(App\Providers\AppServiceProvider::class);
+// $app->register(App\Providers\TwigServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
