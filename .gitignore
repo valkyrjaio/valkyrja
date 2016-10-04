@@ -1,5 +1,5 @@
-/.idea/vcs.xml
-/.idea/workspace.xml
+/.idea/*
+!/.idea/codeStyleSettings.xml
 /bower_components
 /node_modules
 /public/assets/*
