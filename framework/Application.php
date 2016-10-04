@@ -9,11 +9,13 @@
  */
 namespace Valkyrja;
 
+use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Exceptions\HttpException;
 use Valkyrja\Http\Controller;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -133,6 +135,21 @@ class Application
     {
         $this->instance('app', $this);
         $this->instance(Application::class, $this);
+
+        $this->instance(
+            HttpExceptionContract::class,
+            [
+                function (
+                    $statusCode,
+                    $message = null,
+                    \Exception $previous = null,
+                    array $headers = [],
+                    $code = 0
+                ) {
+                    return new HttpException($statusCode, $message, $previous, $headers, $code);
+                },
+            ]
+        );
 
         $this->instance(
             RequestContract::class,
@@ -323,8 +340,21 @@ class Application
             'line'    => $e->getLine(),
             'trace'   => $e->getTrace(),
         ];
+        $view = 'errors/500';
+        $headers = [];
+        $code = 500;
 
-        return $this->abort(500, $data, [], 'errors/exception');
+        if ($e instanceof HttpExceptionContract) {
+            $code = $e->getStatusCode();
+            $headers = $e->getHeaders();
+            $view = $e->getView()
+                ?: 'errors/' . $code;
+        }
+
+        // Return a new sent response
+        return $this->response()
+                    ->view($view, $data, $code, $headers)
+                    ->send();
     }
 
     /**
@@ -347,6 +377,39 @@ class Application
         ) {
             $this->handleException($this->fatalExceptionFromError($error));
         }
+    }
+
+    /**
+     * Throw an http exception.
+     *
+     * @param int        $statusCode The status code to use
+     * @param string     $message    [optional] The Exception message to throw
+     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
+     * @param array      $headers    [optional] The headers to send
+     * @param string     $view       [optional] The view template name to use
+     * @param int        $code       [optional] The Exception code
+     *
+     * @throws HttpExceptionContract
+     */
+    public function httpException(
+        $statusCode,
+        $message = null,
+        \Exception $previous = null,
+        array $headers = [],
+        $view = null,
+        $code = 0
+    ) {
+        throw $this->container(
+            HttpExceptionContract::class,
+            [
+                $statusCode,
+                $message,
+                $previous,
+                $headers,
+                $view,
+                $code
+            ]
+        );
     }
 
     /**
@@ -898,26 +961,11 @@ class Application
      * @param array  $headers The headers to set
      * @param string $view    The view template name to use
      *
-     * @return void
+     * @throws HttpExceptionContract
      */
     public function abort($code = 404, $message = '', array $headers = [], $view = null)
     {
-        // Set the view to use
-        $view = $view
-            ?: 'errors/' . $code;
-
-        // If the message is a string the view expects an array
-        if (is_string($message)) {
-            $message = ['message' => $message];
-        }
-
-        // Return a new sent response
-        $this->response()
-                    ->view($view, $message, $code, $headers)
-                    ->send();
-
-        // Kill the application
-        die(1);
+        $this->httpException($code, $message, null, $headers, $view);
     }
 
     /**

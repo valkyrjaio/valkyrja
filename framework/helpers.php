@@ -31,11 +31,11 @@ if (!function_exists('abort')) {
      * @param array  $headers The headers to set
      * @param string $view    The view template name to use
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
     function abort($code, $message = '', array $headers = [], $view = null)
     {
-        return app()->abort($code, $message, $headers, $view);
+        app()->abort($code, $message, $headers, $view);
     }
 }
 
@@ -337,6 +337,31 @@ if (!function_exists('view')) {
     function view($template = '', array $variables = [])
     {
         return app()->view($template, $variables);
+    }
+}
+
+if (!function_exists('httpException')) {
+    /**
+     * Throw an http exception.
+     *
+     * @param int        $statusCode The status code to use
+     * @param string     $message    [optional] The Exception message to throw
+     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
+     * @param array      $headers    [optional] The headers to send
+     * @param string     $view       [optional] The view template name to use
+     * @param int        $code       [optional] The Exception code
+     *
+     * @throws \HttpException
+     */
+    function httpException(
+        $statusCode,
+        $message = null,
+        \Exception $previous = null,
+        array $headers = [],
+        $view = null,
+        $code = 0
+    ) {
+        app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }
 
