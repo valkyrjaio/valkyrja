@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace Valkyrja\Support;
+use Valkyrja\Application;
 
 /**
  * Class ServiceProvider
@@ -19,10 +20,20 @@ namespace Valkyrja\Support;
 abstract class ServiceProvider
 {
     /**
-     * ServiceProvider constructor.
+     * The application.
+     *
+     * @var Application
      */
-    public function __construct()
+    protected $app;
+
+    /**
+     * ServiceProvider constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
     {
+        $this->app = $app;
         $this->publish();
     }
 

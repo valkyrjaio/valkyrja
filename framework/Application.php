@@ -1044,7 +1044,7 @@ class Application
     public function register($serviceProvider)
     {
         // Create a new instance of the service provider
-        new $serviceProvider();
+        new $serviceProvider($this);
     }
 
     /**

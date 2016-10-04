@@ -20,7 +20,7 @@ use Valkyrja\View\TwigView;
  *
  * @package Valkyrja\Providers
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class TwigServiceProvider extends ServiceProvider
 {
@@ -30,18 +30,18 @@ class TwigServiceProvider extends ServiceProvider
     public function publish()
     {
         // Set the Twig_Environment class in the service container
-        app()->instance(
+        $this->app->instance(
             Twig_Environment::class,
             function () {
-                $loader = new Twig_Loader_Filesystem(env('views.dir'));
+                $loader = new Twig_Loader_Filesystem($this->app->env('views.dir'));
 
                 $twig = new Twig_Environment(
                     $loader, [
-                    'cache' => env('views.dir.compiled'),
-                ]
+                               'cache' => $this->app->env('views.dir.compiled'),
+                           ]
                 );
 
-                // Twig Extensions Here
+                // Add Twig Extensions Here
                 // $twig->addExtension(new \App\Views\Extensions\TwigStaticExtension());
 
                 return $twig;
@@ -49,13 +49,13 @@ class TwigServiceProvider extends ServiceProvider
         );
 
         // Set the View class in the service container as Twig view
-        app()->instance(
+        $this->app->instance(
             ViewContract::class,
             [
                 function ($template = '', array $variables = []) {
                     $view = new TwigView($template, $variables);
 
-                    $view->setTwig(container(Twig_Environment::class));
+                    $view->setTwig($this->app->container(Twig_Environment::class));
 
                     return $view;
                 },
