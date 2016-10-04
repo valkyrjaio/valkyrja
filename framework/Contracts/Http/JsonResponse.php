@@ -21,16 +21,16 @@ interface JsonResponse extends Response
     /**
      * Response constructor.
      *
-     * @param mixed $data    The response content, see setContent()
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $data    [optional] The response content, see setContent()
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      */
     public function __construct($data = null, $status = 200, $headers = []);
 
     /**
      * Sets the JSONP callback.
      *
-     * @param string|null $callback The JSONP callback or null to use none
+     * @param string|null $callback [optional] The JSONP callback or null to use none
      *
      * @return JsonResponse
      *
@@ -52,7 +52,7 @@ interface JsonResponse extends Response
     /**
      * Sets the data to be sent as JSON.
      *
-     * @param mixed $data The data to set
+     * @param mixed $data [optional] The data to set
      *
      * @return JsonResponse
      *

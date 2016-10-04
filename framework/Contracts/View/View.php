@@ -21,16 +21,16 @@ interface View
     /**
      * View constructor.
      *
-     * @param string $template  The template to set
-     * @param array  $variables The variables to set
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
      */
     public function __construct($template = '', array $variables = []);
 
     /**
      * Make a new View.
      *
-     * @param string $template  The template to set
-     * @param array  $variables The variables to set
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
      *
      * @return View
      */
@@ -57,7 +57,7 @@ interface View
     /**
      * Set the variables
      *
-     * @param array $variables The variables to set
+     * @param array $variables [optional] The variables to set
      *
      * @return void
      */
@@ -76,7 +76,7 @@ interface View
     /**
      * Get the template directory.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -122,7 +122,7 @@ interface View
     /**
      * Render the templates and view.
      *
-     * @param array $variables The variables to set
+     * @param array $variables [optional] The variables to set
      *
      * @return string
      */

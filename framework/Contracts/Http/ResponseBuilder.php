@@ -31,9 +31,9 @@ interface ResponseBuilder
     /**
      * Make a new instance of Response.
      *
-     * @param mixed $content The response content
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $content [optional] The response content
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -43,9 +43,9 @@ interface ResponseBuilder
      * View response builder.
      *
      * @param string $view    The view template to use
-     * @param array  $data    The view data
-     * @param int    $status  The response status code
-     * @param array  $headers An array of response headers
+     * @param array  $data    [optional] The view data
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -54,9 +54,9 @@ interface ResponseBuilder
     /**
      * Json response builder.
      *
-     * @param mixed $data    The data to set
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $data    [optional] The data to set
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -66,9 +66,9 @@ interface ResponseBuilder
      * JsonP response builder.
      *
      * @param string $callback The jsonp callback
-     * @param mixed  $data     The data to set
-     * @param int    $status   The response status code
-     * @param array  $headers  An array of response headers
+     * @param mixed  $data     [optional] The data to set
+     * @param int    $status   [optional] The response status code
+     * @param array  $headers  [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -78,9 +78,9 @@ interface ResponseBuilder
      * Redirect to response builder.
      *
      * @param string $path       The path to redirect to
-     * @param array  $parameters Any parameters to set for dynamic paths
-     * @param int    $status     The response status code
-     * @param array  $headers    An array of response headers
+     * @param array  $parameters [optional] Any parameters to set for dynamic paths
+     * @param int    $status     [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -90,9 +90,9 @@ interface ResponseBuilder
      * Redirect to a named route response builder.
      *
      * @param string $route      The route to match
-     * @param array  $parameters Any parameters to set for dynamic routes
-     * @param int    $status     The response status code
-     * @param array  $headers    An array of response headers
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int    $status     [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */

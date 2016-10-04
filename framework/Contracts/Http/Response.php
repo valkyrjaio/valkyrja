@@ -184,18 +184,18 @@ interface Response
     /**
      * Response constructor.
      *
-     * @param mixed $content The response content, see setContent()
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $content [optional] The response content, see setContent()
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      */
     public function __construct($content = '', $status = 200, $headers = []);
 
     /**
      * Create a new response.
      *
-     * @param mixed $content The response content, see setContent()
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
+     * @param mixed $content [optional] The response content, see setContent()
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      *
      * @return Response
      */
@@ -220,7 +220,7 @@ interface Response
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).
      *
-     * @param string $version The protocol version to set
+     * @param string $version [optional] The protocol version to set
      *
      * @return Response
      */
@@ -237,7 +237,7 @@ interface Response
      * Sets the response status code.
      *
      * @param int   $code HTTP status code
-     * @param mixed $text HTTP status text
+     * @param mixed $text [optional] HTTP status text
      *
      * If the status text is null it will be automatically populated for the known
      * status codes and left empty otherwise.
@@ -274,7 +274,7 @@ interface Response
     /**
      * Set response headers.
      *
-     * @param array $headers The headers to set
+     * @param array $headers [optional] The headers to set
      *
      * @return $this
      */
@@ -345,7 +345,7 @@ interface Response
     /**
      * Returns an array with all cookies.
      *
-     * @param bool $asString Get the cookies as a string?
+     * @param bool $asString [optional] Get the cookies as a string?
      *
      * @return array
      */
@@ -382,8 +382,8 @@ interface Response
      * Removes a cookie from the array, but does not unset it in the browser.
      *
      * @param string $name   Cookie name
-     * @param string $path   Cookie path
-     * @param string $domain Cookie domain
+     * @param string $path   [optional] Cookie path
+     * @param string $domain [optional] Cookie domain
      */
     public function removeCookie($name, $path = '/', $domain = null);
 
@@ -391,7 +391,7 @@ interface Response
      * Set a response cache control.
      *
      * @param string $name  Cache control name
-     * @param string $value Cache control value
+     * @param string $value [optional] Cache control value
      *
      * @return $this
      */
@@ -500,7 +500,7 @@ interface Response
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime|null $date A \DateTime instance or null to remove the header
+     * @param \DateTime|null $date [optional] A \DateTime instance or null to remove the header
      *
      * @return Response
      */
@@ -587,7 +587,7 @@ interface Response
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime|null $date A \DateTime instance or null to remove the header
+     * @param \DateTime|null $date [optional] A \DateTime instance or null to remove the header
      *
      * @return Response
      */
@@ -603,8 +603,8 @@ interface Response
     /**
      * Sets the ETag value.
      *
-     * @param string|null $etag The ETag unique identifier or null to remove the header
-     * @param bool        $weak Whether you want a weak ETag or not
+     * @param string|null $etag [optional] The ETag unique identifier or null to remove the header
+     * @param bool        $weak [optional] Whether you want a weak ETag or not
      *
      * @return Response
      */
@@ -701,7 +701,7 @@ interface Response
     /**
      * Is the response a redirect of some form?
      *
-     * @param string $location Redirect location
+     * @param string $location [optional] Redirect location
      *
      * @return bool
      */

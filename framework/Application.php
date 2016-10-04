@@ -302,9 +302,9 @@ class Application
      *
      * @param int    $level   The error level
      * @param string $message The error message
-     * @param string $file    The file within which the error occurred
-     * @param int    $line    The line which threw the error
-     * @param array  $context
+     * @param string $file    [optional] The file within which the error occurred
+     * @param int    $line    [optional] The line which threw the error
+     * @param array  $context [optional] The context for the exception
      *
      * @return void
      *
@@ -487,10 +487,10 @@ class Application
     }
 
     /**
-     * Get an environment variable via key.
+     * Get a single environment variable via key or get all.
      *
-     * @param string|bool $key     The variable to get
-     * @param mixed       $default Default value to return if not found
+     * @param string|bool $key     [optional] The variable to get
+     * @param mixed       $default [optional] Default value to return if not found
      *
      * @return mixed
      */
@@ -533,7 +533,7 @@ class Application
     /**
      * Get the base directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -547,7 +547,7 @@ class Application
     /**
      * Get the app directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -563,7 +563,7 @@ class Application
     /**
      * Get the cache directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -579,7 +579,7 @@ class Application
     /**
      * Get the config directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -595,7 +595,7 @@ class Application
     /**
      * Get the framework directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -611,7 +611,7 @@ class Application
     /**
      * Get the public directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -627,7 +627,7 @@ class Application
     /**
      * Get the resources directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -643,7 +643,7 @@ class Application
     /**
      * Get the storage directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -659,7 +659,7 @@ class Application
     /**
      * Get the tests directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -675,7 +675,7 @@ class Application
     /**
      * Get the vendor directory for the application.
      *
-     * @param string $path The path to append
+     * @param string $path [optional] The path to append
      *
      * @return string
      */
@@ -694,7 +694,7 @@ class Application
      * @param string         $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -768,7 +768,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -784,7 +784,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -800,7 +800,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -816,7 +816,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -832,7 +832,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -848,7 +848,7 @@ class Application
      *
      * @param string         $path      The path to set
      * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic Does the route have dynamic parameters?
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
@@ -956,10 +956,10 @@ class Application
     /**
      * Abort the application due to error.
      *
-     * @param int    $code    The status code to use
-     * @param string $message The message or data content to use
-     * @param array  $headers The headers to set
-     * @param string $view    The view template name to use
+     * @param int    $code    [optional] The status code to use
+     * @param string $message [optional] The message or data content to use
+     * @param array  $headers [optional] The headers to set
+     * @param string $view    [optional] The view template name to use
      *
      * @throws HttpExceptionContract
      */
@@ -971,9 +971,9 @@ class Application
     /**
      * Return a new response from the application.
      *
-     * @param string $content The content to set
-     * @param int    $status  The status code to set
-     * @param array  $headers The headers to set
+     * @param string $content [optional] The content to set
+     * @param int    $status  [optional] The status code to set
+     * @param array  $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
@@ -994,8 +994,8 @@ class Application
     /**
      * Return a new view.
      *
-     * @param string $template  The template to use
-     * @param array  $variables The variables to use
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
      *
      * @return \Valkyrja\Contracts\View\View
      */
@@ -1069,7 +1069,7 @@ class Application
      * Get an abstract from the container.
      *
      * @param string $abstract  The abstract to get
-     * @param array  $arguments Arguments to pass
+     * @param array  $arguments [optional] Arguments to pass
      *
      * @return mixed
      */
@@ -1121,9 +1121,9 @@ class Application
     /**
      * Application autoloader.
      *
-     * @param string $prefix      The prefix to register
-     * @param string $baseDir     The base directory to look under
-     * @param string $deliminator The deliminator to replace to a directory separator
+     * @param string $prefix      [optional] The prefix to register
+     * @param string $baseDir     [optional] The base directory to look under
+     * @param string $deliminator [optional] The deliminator to replace to a directory separator
      *
      * @return void
      */
