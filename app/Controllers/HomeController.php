@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Controllers;
+
+use Valkyrja\Application;
+use App\Models\User;
+
+class HomeController extends Controller
+{
+    /**
+     * @var User
+     */
+    protected $user;
+
+    /**
+     * HomeController constructor.
+     *
+     * @param User $user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Homepage action.
+     */
+    public function index()
+    {
+        $this->user->id = 1;
+
+        dd('Home Here', $this->user);
+    }
+
+    /**
+     * Paged homepage results.
+     *
+     * @param int         $page
+     * @param Application $application
+     */
+    public function paged(Application $application, $page)
+    {
+        $this->user->id = $page;
+
+        dd('Home Paged Here', $this->user, $application);
+    }
+}
