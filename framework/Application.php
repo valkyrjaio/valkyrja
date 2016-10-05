@@ -37,7 +37,7 @@ class Application
      *
      * @constant string
      */
-    const VERSION = '1.0.0 (ALPHA)';
+    const VERSION = 'Valkyrja (1.0.0 Alpha)';
 
     /**
      * Route constants.
@@ -407,7 +407,7 @@ class Application
                 $previous,
                 $headers,
                 $view,
-                $code
+                $code,
             ]
         );
     }
@@ -726,7 +726,7 @@ class Application
         if (is_callable($handler)) {
             $action = $handler;
             $controller = false;
-            $injectable = false;
+            $injectable = [];
         }
         else {
             $controller = ($isArray && isset($handler['controller']))
