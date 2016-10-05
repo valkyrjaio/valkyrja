@@ -124,7 +124,6 @@ $app->bootstrapTwig();
 |
 */
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\TwigServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

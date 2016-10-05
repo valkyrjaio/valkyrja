@@ -14,11 +14,11 @@ return [
     | TODO: Fill with explanation
     |
     */
-    'app.env'            => 'local',
-    'app.debug'          => false,
-    'app.url'            => 'app.dev',
-    'app.timezone'       => 'UTC',
-    'app.version'        => '1 (ALPHA)',
+    'app.env'               => 'local',
+    'app.debug'             => false,
+    'app.url'               => 'app.dev',
+    'app.timezone'          => 'UTC',
+    'app.version'           => '1 (ALPHA)',
 
     /*
     |--------------------------------------------------------------------------
@@ -28,9 +28,10 @@ return [
     | TODO: Fill with explanation
     |
     */
-    'views.dir'          => $app->resourcesPath('views/php'),
-    'views.dir.compiled' => $app->storagePath('views/php'),
-    'views.twig.enabled' => true,
+    'views.dir'             => $app->resourcesPath('views/php'),
+    'views.dir.compiled'    => $app->storagePath('views/php'),
+    'views.twig.enabled'    => true,
+    'views.twig.extensions' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -40,8 +41,8 @@ return [
     | TODO: Fill with explanation
     |
     */
-    'uploads.dir'        => $app->storagePath('app'),
-    'logs.dir'           => $app->storagePath('logs'),
+    'uploads.dir'           => $app->storagePath('app'),
+    'logs.dir'              => $app->storagePath('logs'),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,6 +52,6 @@ return [
     | TODO: Fill with explanation
     |
     */
-    'models.article'     => \App\Models\Article::class,
-    'models.user'        => \App\Models\User::class,
+    'models.article'        => \App\Models\Article::class,
+    'models.user'           => \App\Models\User::class,
 ];

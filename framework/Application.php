@@ -238,9 +238,15 @@ class Application
                                    'cache' => $this->env('views.dir.compiled'),
                                ]
                     );
+                    
+                    $extensions = $this->env('views.twig.extensions');
 
-                    // Twig Extensions Here
-                    // $twig->addExtension(new \App\Views\Extensions\TwigStaticExtension());
+                    // Twig Extensions registration
+                    if (is_array($extensions)) {
+                        foreach ($extensions as $extension) {
+                            $twig->addExtension(new $extension());
+                        }
+                    }
 
                     return $twig;
                 }
