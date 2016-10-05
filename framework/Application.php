@@ -14,6 +14,7 @@ use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
+use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Exceptions\HttpException;
 use Valkyrja\Http\Controller;
@@ -21,6 +22,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Sessions\Session;
 use Valkyrja\View\View;
 
 /**
@@ -185,6 +187,13 @@ class Application
                 $view = container(ViewContract::class);
 
                 return new ResponseBuilder($response, $view);
+            }
+        );
+
+        $this->instance(
+            SessionContract::class,
+            function () {
+                return new Session();
             }
         );
 
