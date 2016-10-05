@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $this->user->id = 1;
 
-        dd('Home Here', $this->user);
+        return response('Home Here');
     }
 
     /**

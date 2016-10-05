@@ -5,6 +5,18 @@
  * It is used to set the application routes.
  */
 
+/**
+ * Framework Version Route
+ *
+ * @path /version
+ */
+$app->get(
+    '/version',
+    function () use ($app) {
+        return $app::VERSION;
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Homepage Routes
@@ -18,7 +30,7 @@
  *
  * @path /
  */
-get(
+$app->get(
     '/',
     [
         'controller' => \App\Controllers\HomeController::class,
@@ -33,7 +45,7 @@ get(
  *
  * @path /:page
  */
-get(
+$app->get(
     '\/(\d+)',
     [
         'controller' => \App\Controllers\HomeController::class,
@@ -62,7 +74,7 @@ get(
  * @path /article/:slug
  *       Slug is alphanumeric with dashes and underscores allowed
  */
-get(
+$app->get(
     '\/article\/([a-zA-Z0-9-_]+)',
     [
         'controller' => \App\Controllers\ArticleController::class,
