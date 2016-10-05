@@ -63,6 +63,16 @@ if (file_exists(__DIR__ . '/../cache/compiled.php')) {
 // Otherwise setup environment variables
 else {
     /*
+    |----------------------------------------------------------------------
+    | Help An Application Out, Will Ya?
+    |----------------------------------------------------------------------
+    |
+    | TODO: Fill with explanation
+    |
+    */
+    require_once __DIR__ . '/../framework/helpers.php';
+
+    /*
     |--------------------------------------------------------------------------
     | Setup The Application Environment Variables
     |--------------------------------------------------------------------------
@@ -74,16 +84,6 @@ else {
     $env = require_once __DIR__ . '/../config/env.php';
     // Set the environment variables
     $app->setEnvs($env);
-
-    /*
-    |----------------------------------------------------------------------
-    | Help An Application Out, Will Ya?
-    |----------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
-    require_once __DIR__ . '/../framework/helpers.php';
 
     /*
     |----------------------------------------------------------------------
