@@ -9,6 +9,9 @@ RUN apt-get update && apt-get -y install redis-server && service redis-server st
 # PHP INI
 COPY docker/php.ini /usr/local/etc/php/php.ini
 
+# Install git
+RUN apt-get -y install git
+
 # Install composer for PHP dependencies
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
