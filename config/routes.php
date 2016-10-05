@@ -13,7 +13,7 @@
 $app->get(
     '/version',
     function () use ($app) {
-        return $app::VERSION;
+        return $app->version();
     }
 );
 

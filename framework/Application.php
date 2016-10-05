@@ -263,6 +263,16 @@ class Application
     }
 
     /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version()
+    {
+        return static::VERSION;
+    }
+
+    /**
      * Bootstrap error, exception, and shutdown handler.
      *
      * @return void
