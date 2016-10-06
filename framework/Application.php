@@ -135,9 +135,14 @@ class Application
      */
     protected function bootstrapContainer()
     {
-        $this->instance('app', $this);
+        /**
+         * Set App instance within container.
+         */
         $this->instance(Application::class, $this);
 
+        /**
+         * Set HttpException instance within container.
+         */
         $this->instance(
             HttpExceptionContract::class,
             [
@@ -153,6 +158,9 @@ class Application
             ]
         );
 
+        /**
+         * Set Request instance within container.
+         */
         $this->instance(
             RequestContract::class,
             [
@@ -162,6 +170,9 @@ class Application
             ]
         );
 
+        /**
+         * Set Response instance within container.
+         */
         $this->instance(
             ResponseContract::class,
             [
@@ -171,6 +182,9 @@ class Application
             ]
         );
 
+        /**
+         * Set JsonResponse instance within container.
+         */
         $this->instance(
             JsonResponseContract::class,
             [
@@ -180,6 +194,9 @@ class Application
             ]
         );
 
+        /**
+         * Set ResponseBuilder instance within container.
+         */
         $this->instance(
             ResponseBuilderContract::class,
             function () {
@@ -190,6 +207,9 @@ class Application
             }
         );
 
+        /**
+         * Set Session instance within container.
+         */
         $this->instance(
             SessionContract::class,
             function () {
@@ -197,6 +217,9 @@ class Application
             }
         );
 
+        /**
+         * Set View instance within container.
+         */
         $this->instance(
             ViewContract::class,
             [
@@ -236,7 +259,9 @@ class Application
                     ?: storagePath('views/twig')
             );
 
-            // Set the Twig_Environment class in the service container
+            /**
+             * Set Twig_Environment instance within container.
+             */
             $this->instance(
                 \Twig_Environment::class,
                 function () {
@@ -261,7 +286,9 @@ class Application
                 }
             );
 
-            // Set the View class in the service container as Twig view
+            /**
+             * Reset View instance within container for TwigView.
+             */
             $this->instance(
                 ViewContract::class,
                 [
