@@ -269,10 +269,12 @@ class Application
 
                     $twig = new \Twig_Environment(
                         $loader, [
-                                   'cache' => $this->env('views.dir.compiled'),
+                                   'cache'   => $this->env('views.dir.compiled'),
+                                   'debug'   => $this->debug(),
+                                   'charset' => 'utf-8',
                                ]
                     );
-                    
+
                     $extensions = $this->env('views.twig.extensions');
 
                     // Twig Extensions registration

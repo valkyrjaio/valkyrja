@@ -23,17 +23,17 @@ class __TwigTemplate_ababf7d2d521c95adff4f9be3ee0613f7925e07efb73520595c2f7d6ea1
         <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 
-        <title>Laravel</title>
+        <title>Valkyrja</title>
 
         <!-- Fonts -->
-        <link href=\"https://fonts.googleapis.com/css?family=Raleway:100,600\" rel=\"stylesheet\" type=\"text/css\">
+        <link href=\"https://fonts.googleapis.com/css?family=Lato:100,600\" rel=\"stylesheet\" type=\"text/css\">
 
         <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Raleway', sans-serif;
+                font-family: 'Lato', sans-serif;
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
@@ -119,17 +119,17 @@ class __TwigTemplate_ababf7d2d521c95adff4f9be3ee0613f7925e07efb73520595c2f7d6ea1
         <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">
         <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
 
-        <title>Laravel</title>
+        <title>Valkyrja</title>
 
         <!-- Fonts -->
-        <link href=\"https://fonts.googleapis.com/css?family=Raleway:100,600\" rel=\"stylesheet\" type=\"text/css\">
+        <link href=\"https://fonts.googleapis.com/css?family=Lato:100,600\" rel=\"stylesheet\" type=\"text/css\">
 
         <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Raleway', sans-serif;
+                font-family: 'Lato', sans-serif;
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;

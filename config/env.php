@@ -15,7 +15,7 @@ return [
     |
     */
     'app.env'               => 'local',
-    'app.debug'             => false,
+    'app.debug'             => true,
     'app.url'               => 'app.dev',
     'app.timezone'          => 'UTC',
     'app.version'           => '1 (ALPHA)',
