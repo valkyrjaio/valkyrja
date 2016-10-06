@@ -164,6 +164,10 @@ class View implements ViewContract
         include $this->getTemplatePath();
         $view = ob_get_clean();
 
+        if (!$this->masterTemplate || $this->masterTemplate === '') {
+            return $view;
+        }
+
         extract(['body' => $view]);
 
         ob_start();

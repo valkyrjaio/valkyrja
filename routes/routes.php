@@ -32,12 +32,13 @@ $app->get(
  */
 $app->get(
     '/',
-    [
-        'controller' => \App\Controllers\HomeController::class,
-        'action'     => 'index',
-        'as'         => 'home',
-        'injectable' => [],
-    ]
+    function () {
+        $view = view('index');
+
+        $view->setMasterTemplate('');
+
+        return $view;
+    }
 );
 
 /**
