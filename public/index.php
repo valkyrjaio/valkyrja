@@ -9,13 +9,13 @@
  */
 
 /*
-|--------------------------------------------------------------------------
-| Start Up The Application
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+ *-------------------------------------------------------------------------
+ * Start Up The Application
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 require_once '../framework/Application.php';
 
 // Set a new global variable for the application!
@@ -24,25 +24,26 @@ $app = new \Valkyrja\Application(
 );
 
 /*
-|--------------------------------------------------------------------------
-| Application Auto Loader Assemble!
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+ *-------------------------------------------------------------------------
+ * Application Auto Loader Assemble!
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 // Setup the auto loader for the Application namespace
 // - Using our own auto loading for better optimization
 $app->autoloader('App\\', $app->appPath());
 
 /*
-|--------------------------------------------------------------------------
-| Setup The Application With Compiled : A Need For Speed
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+/*
+ *-------------------------------------------------------------------------
+ * Setup The Application With Compiled : A Need For Speed
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 // If there is a compiled version of the application use it!
 if (file_exists(__DIR__ . '/../cache/compiled.php')) {
     // Require the compiled file
@@ -53,59 +54,59 @@ if (file_exists(__DIR__ . '/../cache/compiled.php')) {
 }
 
 /*
-|--------------------------------------------------------------------------
-| Setup the Application Without Compiled : SlowBro
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+ *-------------------------------------------------------------------------
+ * Setup the Application Without Compiled : SlowBro
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 // Otherwise setup environment variables
 else {
     /*
-    |----------------------------------------------------------------------
-    | Help An Application Out, Will Ya?
-    |----------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
+     *---------------------------------------------------------------------
+     * Help An Application Out, Will Ya?
+     *---------------------------------------------------------------------
+     *
+     * TODO: Fill with explanation
+     *
+     */
     require_once __DIR__ . '/../framework/helpers.php';
 
     /*
-    |--------------------------------------------------------------------------
-    | Setup The Application Environment Variables
-    |--------------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
+     *---------------------------------------------------------------------
+     * Setup The Application Environment Variables
+     *---------------------------------------------------------------------
+     *
+     * TODO: Fill with explanation
+     *
+     */
     // Require the environment variables
     $env = require_once __DIR__ . '/../config/env.php';
     // Set the environment variables
     $app->setEnvs($env);
 
     /*
-    |----------------------------------------------------------------------
-    | Setup The Application Service Container : Dependency Injection
-    |----------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
+     *---------------------------------------------------------------------
+     * Setup The Application Service Container : Dependency Injection
+     *---------------------------------------------------------------------
+     *
+     * TODO: Fill with explanation
+     *
+     */
     // Require any dependency injectable definitions
     $container = require_once __DIR__ . '/../config/container.php';
     // Set the container variables
     $app->setServiceContainer($container);
 
     /*
-    |----------------------------------------------------------------------
-    | Setup The Application Routes
-    |----------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
+     *---------------------------------------------------------------------
+     * Setup The Application Routes
+     *---------------------------------------------------------------------
+     *
+     * TODO: Fill with explanation
+     *
+     */
     // Require the routes
     $routes = require_once __DIR__ . '/../routes/routes.php';
 }
@@ -116,21 +117,21 @@ $app->setTimezone();
 $app->bootstrapTwig();
 
 /*
-|--------------------------------------------------------------------------
-| Service Providers
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+ *-------------------------------------------------------------------------
+ * Service Providers : Providers Of The Services
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 // $app->register(App\Providers\AppServiceProvider::class);
 
 /*
-|--------------------------------------------------------------------------
-| Run The Application
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
+ *-------------------------------------------------------------------------
+ * Run The Application
+ *-------------------------------------------------------------------------
+ *
+ * TODO: Fill with explanation
+ *
+ */
 $app->run();
