@@ -107,7 +107,7 @@ else {
     |
     */
     // Require the routes
-    $routes = require_once __DIR__ . '/../config/routes.php';
+    $routes = require_once __DIR__ . '/../routes/routes.php';
 }
 
 // Set the timezone for the application process
