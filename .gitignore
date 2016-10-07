@@ -3,13 +3,3 @@
 /node_modules
 /public/assets/*
 /storage/app/*
-!/storage/app/uploads
-/storage/app/uploads/*
-/storage/framework/*
-!/storage/framework/cache
-!/storage/framework/sessions
-/storage/framework/cache/*
-/storage/framework/sessions/*
-/storage/logs/*
-/storage/vendor/*
-/storage/views/*
