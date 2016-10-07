@@ -1,5 +1,20 @@
 {
-    "require" : {
+    "name"        : "valkyrja/valkyrja",
+    "description" : "The Valkyrja Framework.",
+    "keywords"    : [
+        "framework",
+        "valkyrja"
+    ],
+    "license"     : "MIT",
+    "type"        : "project",
+    "require"     : {
+        "php"       : ">=7.0",
         "twig/twig" : "^1.25"
-    }
+    },
+    "autoload"    : {
+        "psr-4" : {
+            "Valkyrja\\" : "framework/",
+            "App\\" : "app/"
+        }
+    },
 }
