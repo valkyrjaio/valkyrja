@@ -16,7 +16,7 @@ use Valkyrja\Support\ServiceProvider;
  *
  * @package Valkyrja\Providers
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class AppServiceProvider extends ServiceProvider
 {

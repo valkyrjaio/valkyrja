@@ -18,7 +18,7 @@ use \Valkyrja\Contracts\Http\Response as ResponseContract;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Response implements ResponseContract
 {

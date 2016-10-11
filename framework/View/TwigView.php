@@ -17,7 +17,7 @@ use Valkyrja\Contracts\View\TwigView as TwigViewContract;
  *
  * @package Valkyrja\View
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class TwigView extends View implements TwigViewContract
 {

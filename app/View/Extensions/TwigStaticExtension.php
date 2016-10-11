@@ -14,7 +14,7 @@ use Twig_SimpleFunction;
  *
  * @package App\View\Extensions
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class TwigStaticExtension extends Twig_Extension
 {

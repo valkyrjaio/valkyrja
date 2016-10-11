@@ -13,7 +13,7 @@ use Valkyrja\Http\Controller as BaseController;
  *
  * @package App\Controllers
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 abstract class Controller extends BaseController
 {

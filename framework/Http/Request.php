@@ -18,7 +18,7 @@ use Valkyrja\Contracts\Http\Request as RequestContract;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Request implements RequestContract
 {

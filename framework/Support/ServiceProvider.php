@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace Valkyrja\Support;
+
 use Valkyrja\Application;
 
 /**
@@ -15,7 +16,7 @@ use Valkyrja\Application;
  *
  * @package Valkyrja\Support
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 abstract class ServiceProvider
 {

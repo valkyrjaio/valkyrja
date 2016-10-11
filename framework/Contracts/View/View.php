@@ -14,7 +14,7 @@ namespace Valkyrja\Contracts\View;
  *
  * @package Valkyrja\Contracts\View
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 interface View
 {

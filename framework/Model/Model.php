@@ -14,7 +14,7 @@ namespace Valkyrja\Models;
  *
  * @package Valkyrja\Models
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 abstract class Model
 {

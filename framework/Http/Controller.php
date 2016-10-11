@@ -14,7 +14,7 @@ namespace Valkyrja\Http;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 abstract class Controller
 {
