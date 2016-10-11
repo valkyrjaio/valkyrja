@@ -4,19 +4,19 @@ FROM php:7.0-apache
 #RUN apt-get -y install php7.0-fpm php7.0-cli php7.0-common php7.0-json php7.0-opcache php7.0-mysql php7.0-phpdbg php7.0-mbstring php7.0-gd php7.0-imap php7.0-ldap php7.0-pgsql php7.0-pspell php7.0-recode php7.0-snmp php7.0-tidy php7.0-dev php7.0-intl php7.0-gd php7.0-curl php7.0-zip php7.0-xml
 
 # Install redis
-RUN apt-get update && apt-get -y install redis-server && service redis-server stop
+RUN apt-get update && apt-get -y --force-yes install redis-server && service redis-server stop
 
 # PHP INI
 COPY docker/php.ini /usr/local/etc/php/php.ini
 
 # Install git
-RUN apt-get -y install git
+RUN apt-get -y --force-yes install git
 
 # Install composer for PHP dependencies
 RUN curl -s https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Node.js
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y build-essential nodejs
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y --force-yes build-essential nodejs
 RUN npm install -g bower gulp-cli
 
 # Xdebug
