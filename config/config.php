@@ -33,6 +33,7 @@ return [
     'views.twig.enabled'      => $app->env('views.twig.enabled', false),
     'views.twig.dir'          => $app->env('views.twig.dir', $app->resourcesPath('views/twig')),
     'views.twig.dir.compiled' => $app->env('views.twig.dir.compiled', $app->storagePath('views/twig')),
+    'views.twig.extensions'   => $app->env('views.twig.extensions', []),
 
     /*
     |--------------------------------------------------------------------------

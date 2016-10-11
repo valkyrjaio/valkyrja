@@ -84,7 +84,7 @@ else {
      *
      */
     // Require the environment variables to overwrite default config
-    $env = require_once __DIR__ . '/../config/env.php';
+    $env = require_once __DIR__ . '/../env.php';
     // Set the environment variables to overwrite default config
     $app->setEnvs($env);
 
