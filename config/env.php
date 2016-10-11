@@ -28,30 +28,6 @@ return [
     | TODO: Fill with explanation
     |
     */
-    'views.dir'             => $app->resourcesPath('views/php'),
-    'views.dir.compiled'    => $app->storagePath('views/php'),
     'views.twig.enabled'    => true,
     'views.twig.extensions' => [],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Storage Specific Environment Variables
-    |--------------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
-    'uploads.dir'           => $app->storagePath('app'),
-    'logs.dir'              => $app->storagePath('logs'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Models
-    |--------------------------------------------------------------------------
-    |
-    | TODO: Fill with explanation
-    |
-    */
-    'models.article'        => \App\Models\Article::class,
-    'models.user'           => \App\Models\User::class,
 ];

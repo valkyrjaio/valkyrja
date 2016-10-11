@@ -60,7 +60,7 @@ class View implements ViewContract
     {
         $this->setVariables($variables);
         $this->setTemplate($template);
-        $this->setTemplateDir(env('views.dir', resourcesPath('views')));
+        $this->setTemplateDir(config('views.dir', resourcesPath('views')));
     }
 
     /**

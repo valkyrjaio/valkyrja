@@ -68,6 +68,13 @@ class Application
     protected $env = [];
 
     /**
+     * Application config variables.
+     *
+     * @var array
+     */
+    protected $config = [];
+
+    /**
      * Application service container for dependency injection.
      *
      * @var array
@@ -244,19 +251,15 @@ class Application
             $this->autoloader('Twig_', $this->vendorPath('twig/twig/lib/Twig'), '_');
 
             // Set the env variable for views directory if its not set
-            $twigDir = $this->env('views.twig.dir', false);
-            $this->setEnv(
+            $this->setConfig(
                 'views.dir',
-                $twigDir
-                    ?: $this->resourcesPath('views/twig')
+                $this->config('views.twig.dir', $this->resourcesPath('views/twig'))
             );
 
             // Set the env variable for views compiled directory if its not set
-            $twigCompiledDir = $this->env('views.twig.dir.compiled', false);
-            $this->setEnv(
+            $this->setConfig(
                 'views.dir.compiled',
-                $twigCompiledDir
-                    ?: storagePath('views/twig')
+                $this->config('views.twig.dir.compiled', $this->storagePath('views/twig'))
             );
 
             /**
@@ -265,17 +268,17 @@ class Application
             $this->instance(
                 \Twig_Environment::class,
                 function () {
-                    $loader = new \Twig_Loader_Filesystem($this->env('views.dir'));
+                    $loader = new \Twig_Loader_Filesystem($this->config('views.dir'));
 
                     $twig = new \Twig_Environment(
                         $loader, [
-                                   'cache'   => $this->env('views.dir.compiled'),
+                                   'cache'   => $this->config('views.dir.compiled'),
                                    'debug'   => $this->debug(),
                                    'charset' => 'utf-8',
                                ]
                     );
 
-                    $extensions = $this->env('views.twig.extensions');
+                    $extensions = $this->config('views.twig.extensions');
 
                     // Twig Extensions registration
                     if (is_array($extensions)) {
@@ -487,7 +490,7 @@ class Application
      */
     public function environment()
     {
-        return $this->env('app.env', 'production');
+        return $this->config('app.env', 'production');
     }
 
     /**
@@ -497,7 +500,7 @@ class Application
      */
     public function debug()
     {
-        return $this->env('app.debug', false);
+        return $this->config('app.debug', false);
     }
 
     /**
@@ -507,7 +510,7 @@ class Application
      */
     public function isTwigEnabled()
     {
-        return $this->env('views.twig.enabled', false);
+        return $this->config('views.twig.enabled', false);
     }
 
     /**
@@ -517,7 +520,7 @@ class Application
      */
     public function setTimezone()
     {
-        date_default_timezone_set($this->env('app.timezone', 'UTC'));
+        date_default_timezone_set($this->config('app.timezone', 'UTC'));
     }
 
     /**
@@ -565,11 +568,13 @@ class Application
      * @param string $key   The key to set
      * @param mixed  $value The value to set
      *
-     * @return void
+     * @return $this
      */
     public function setEnv($key, $value)
     {
         $this->env[$key] = $value;
+
+        return $this;
     }
 
     /**
@@ -582,6 +587,52 @@ class Application
     public function setEnvs(array $env)
     {
         $this->env = $env;
+    }
+
+    /**
+     * Get a single config variable via key or get all.
+     *
+     * @param string|bool $key     [optional] The variable to get
+     * @param mixed       $default [optional] Default value to return if not found
+     *
+     * @return mixed
+     */
+    public function config($key = false, $default = false)
+    {
+        if (!$key) {
+            return $this->config;
+        }
+
+        return isset($this->config[$key])
+            ? $this->config[$key]
+            : $default;
+    }
+
+    /**
+     * Set a single config variable.
+     *
+     * @param string $key   The key to set
+     * @param mixed  $value The value to set
+     *
+     * @return $this
+     */
+    public function setConfig($key, $value)
+    {
+        $this->config[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Set all config variables.
+     *
+     * @param array $config The environment variables to set
+     *
+     * @return void
+     */
+    public function setConfigVars(array $config)
+    {
+        $this->config = $config;
     }
 
     /**

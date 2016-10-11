@@ -69,6 +69,21 @@ if (!function_exists('env')) {
     }
 }
 
+if (!function_exists('config')) {
+    /**
+     * Get a config variable via key.
+     *
+     * @param string|bool $key     [optional] The variable to get
+     * @param mixed       $default [optional] Default value to return if not found
+     *
+     * @return mixed
+     */
+    function config($key = false, $default = false)
+    {
+        return app()->config($key, $default);
+    }
+}
+
 if (!function_exists('get')) {
     /**
      * Helper function to set a GET addRoute.

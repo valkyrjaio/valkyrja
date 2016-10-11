@@ -83,10 +83,23 @@ else {
      * TODO: Fill with explanation
      *
      */
-    // Require the environment variables
+    // Require the environment variables to overwrite default config
     $env = require_once __DIR__ . '/../config/env.php';
-    // Set the environment variables
+    // Set the environment variables to overwrite default config
     $app->setEnvs($env);
+
+    /*
+     *---------------------------------------------------------------------
+     * Setup The Application Default Configuration
+     *---------------------------------------------------------------------
+     *
+     * TODO: Fill with explanation
+     *
+     */
+    // Require the default config variables
+    $config = require_once __DIR__ . '/../config/config.php';
+    // Set the default config variables
+    $app->setConfigVars($config);
 
     /*
      *---------------------------------------------------------------------
