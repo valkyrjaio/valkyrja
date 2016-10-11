@@ -1,8 +1,8 @@
 # TODO List
 Items remaining or todo items
 
-## Env to Config
-Change env to config
+## Config
+Multi level array with dot delimination
 
 ## Test composer autoloader for speed
 Compare composer autoloader with current autoloading proceedure to determine which is fastest.
