@@ -33,11 +33,11 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->instance(
             Twig_Environment::class,
             function () {
-                $loader = new Twig_Loader_Filesystem($this->app->env('views.dir'));
+                $loader = new Twig_Loader_Filesystem($this->app->config('views.dir'));
 
                 $twig = new Twig_Environment(
                     $loader, [
-                               'cache' => $this->app->env('views.dir.compiled'),
+                               'cache' => $this->app->config('views.dir.compiled'),
                            ]
                 );
 
