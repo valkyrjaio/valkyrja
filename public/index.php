@@ -36,6 +36,14 @@ $app = new \Valkyrja\Application(
 // Setup the auto loader for the Application namespace
 // - Using our own auto loading for better optimization
 $app->autoloader('App\\', $app->appPath());
+$app->autoloader('GuzzleHttp\\', $app->vendorPath('guzzlehttp/guzzle/src'));
+$app->autoloader('GuzzleHttp\\Promise\\', $app->vendorPath('guzzlehttp/promises/src'));
+$app->autoloader('GuzzleHttp\\Psr7\\', $app->vendorPath('guzzlehttp/psr7/src'));
+$app->autoloader('League\\Flysystem\\', $app->vendorPath('league/flysystem/src'));
+$app->autoloader('Monolog\\', $app->vendorPath('monolog/monolog/src/Monolog'));
+$app->autoloader('Predis\\', $app->vendorPath('predis/predis/src'));
+$app->autoloader('Psr\\Log\\', $app->vendorPath('psr/log/Psr/Log'));
+$app->autoloader('Psr\\Http\\Message\\', $app->vendorPath('psr/http-message/src'));
 
 /*
 /*

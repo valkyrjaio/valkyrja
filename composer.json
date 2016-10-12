@@ -8,13 +8,17 @@
     "license"     : "MIT",
     "type"        : "project",
     "require"     : {
-        "php"       : ">=7.0",
-        "twig/twig" : "^1.25"
+        "php"               : ">=7.0",
+        "twig/twig"         : "^1.25",
+        "predis/predis"     : "^1.1",
+        "guzzlehttp/guzzle" : "^6.2",
+        "league/flysystem"  : "^1.0",
+        "monolog/monolog"   : "^1.21"
     },
     "autoload"    : {
         "psr-4" : {
-            "Valkyrja\\" : "framework/",
-            "App\\"      : "app/"
+            "App\\"      : "app/",
+            "Valkyrja\\" : "framework/"
         }
-    },
+    }
 }
