@@ -13,6 +13,10 @@ Need to implement and finish
 ### Form Request Validation
 Implement this...
 
+## Sessions
+
+### Auth
+
 ## Implement gulpfile.js
 
 ## Update README
