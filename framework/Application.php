@@ -128,9 +128,6 @@ class Application
     {
         $this->basePath = $basePath;
 
-        // Setup the auto loader for the Valkyrja namespace
-        // - Using our own auto loading for better optimization
-        $this->autoloader();
         $this->bootstrapContainer();
         $this->bootstrapHandler();
     }
@@ -248,7 +245,7 @@ class Application
         if ($this->isTwigEnabled()) {
             // Set the twig auto loader
             // - Using our own auto loading for better optimization
-            $this->autoloader('Twig_', $this->vendorPath('twig/twig/lib/Twig'), '_');
+            autoloader('Twig_', $this->vendorPath('twig/twig/lib/Twig'), '_');
 
             // Set the env variable for views directory if its not set
             $this->setConfig(
@@ -1221,50 +1218,5 @@ class Application
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
-    }
-
-    /**
-     * Application autoloader.
-     *
-     * @param string $prefix      [optional] The prefix to register
-     * @param string $baseDir     [optional] The base directory to look under
-     * @param string $deliminator [optional] The deliminator to replace to a directory separator
-     *
-     * @return void
-     */
-    public function autoloader($prefix = 'Valkyrja\\', $baseDir = null, $deliminator = '\\')
-    {
-        $baseDir = $baseDir
-            ?: $this->frameworkPath();
-
-        // Register a new autoload closure
-        spl_autoload_register(
-            function ($class) use ($prefix, $baseDir, $deliminator) {
-                // does the class use the namespace prefix?
-                $len = strlen($prefix);
-
-                if (strncmp($prefix, $class, $len) !== 0) {
-                    // no, move to the next registered autoloader
-                    return;
-                }
-
-                // get the relative class name
-                $relative_class = substr($class, $len);
-
-                // replace the namespace prefix with the base directory, replace namespace
-                // separators with directory separators in the relative class name, append
-                // with .php
-                $file = $baseDir . static::DIRECTORY_SEPARATOR . str_replace(
-                        $deliminator,
-                        static::DIRECTORY_SEPARATOR,
-                        $relative_class
-                    ) . '.php';
-
-                // if the file exists, require it
-                if (file_exists($file)) {
-                    require $file;
-                }
-            }
-        );
     }
 }
