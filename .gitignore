@@ -3,4 +3,4 @@
 /node_modules
 /public/assets/*
 /vendor
-env.php
+.env.php
