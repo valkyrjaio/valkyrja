@@ -9,20 +9,26 @@
  */
 namespace Valkyrja;
 
+use Valkyrja\Container\Container;
+use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
+use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
+use Valkyrja\Contracts\Http\Routing as RoutingContract;
 use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Exceptions\HttpException;
 use Valkyrja\Http\Controller;
+use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\Routing;
 use Valkyrja\Sessions\Session;
+use Valkyrja\Support\PathHelpers;
 use Valkyrja\View\View;
 
 /**
@@ -32,33 +38,11 @@ use Valkyrja\View\View;
  *
  * @author  Melech Mizrachi
  */
-class Application
+class Application extends Container implements ApplicationContract, RoutingContract
 {
-    /**
-     * The Application framework version.
-     *
-     * @constant string
-     */
-    const VERSION = 'Valkyrja (1.0.0 Alpha)';
-
-    /**
-     * Route constants.
-     *
-     * @constant
-     */
-    const GET    = 'GET';
-    const POST   = 'POST';
-    const PUT    = 'PUT';
-    const PATCH  = 'PATCH';
-    const DELETE = 'DELETE';
-    const HEAD   = 'HEAD';
-
-    /**
-     * Directory separator.
-     *
-     * @constant string
-     */
-    const DIRECTORY_SEPARATOR = '/';
+    use ExceptionHandler;
+    use Routing;
+    use PathHelpers;
 
     /**
      * Application environment variables.
@@ -73,13 +57,6 @@ class Application
      * @var array
      */
     protected $config = [];
-
-    /**
-     * Application service container for dependency injection.
-     *
-     * @var array
-     */
-    protected $serviceContainer = [];
 
     /**
      * Application routes.
@@ -133,176 +110,6 @@ class Application
     }
 
     /**
-     * Bootstrap the application container.
-     *
-     * @return void
-     */
-    protected function bootstrapContainer()
-    {
-        /**
-         * Set App instance within container.
-         */
-        $this->instance(Application::class, $this);
-
-        /**
-         * Set HttpException instance within container.
-         */
-        $this->instance(
-            HttpExceptionContract::class,
-            [
-                function (
-                    $statusCode,
-                    $message = null,
-                    \Exception $previous = null,
-                    array $headers = [],
-                    $code = 0
-                ) {
-                    return new HttpException($statusCode, $message, $previous, $headers, $code);
-                },
-            ]
-        );
-
-        /**
-         * Set Request instance within container.
-         */
-        $this->instance(
-            RequestContract::class,
-            [
-                function () {
-                    return new Request();
-                },
-            ]
-        );
-
-        /**
-         * Set Response instance within container.
-         */
-        $this->instance(
-            ResponseContract::class,
-            [
-                function ($content = '', $status = 200, $headers = []) {
-                    return new Response($content, $status, $headers);
-                },
-            ]
-        );
-
-        /**
-         * Set JsonResponse instance within container.
-         */
-        $this->instance(
-            JsonResponseContract::class,
-            [
-                function ($content = '', $status = 200, $headers = []) {
-                    return new JsonResponse($content, $status, $headers);
-                },
-            ]
-        );
-
-        /**
-         * Set ResponseBuilder instance within container.
-         */
-        $this->instance(
-            ResponseBuilderContract::class,
-            function () {
-                $response = container(ResponseContract::class);
-                $view = container(ViewContract::class);
-
-                return new ResponseBuilder($response, $view);
-            }
-        );
-
-        /**
-         * Set Session instance within container.
-         */
-        $this->instance(
-            SessionContract::class,
-            function () {
-                return new Session();
-            }
-        );
-
-        /**
-         * Set View instance within container.
-         */
-        $this->instance(
-            ViewContract::class,
-            [
-                function ($template = '', array $variables = []) {
-                    return new View($template, $variables);
-                },
-            ]
-        );
-    }
-
-    /**
-     * Bootstrap twig to handle views if enabled in env.
-     *
-     * @return void
-     */
-    public function bootstrapTwig()
-    {
-        // Check if twig is enabled in env
-        if ($this->isTwigEnabled()) {
-            // Set the env variable for views directory if its not set
-            $this->setConfig(
-                'views.dir',
-                $this->config('views.twig.dir', $this->resourcesPath('views/twig'))
-            );
-
-            // Set the env variable for views compiled directory if its not set
-            $this->setConfig(
-                'views.dir.compiled',
-                $this->config('views.twig.dir.compiled', $this->storagePath('views/twig'))
-            );
-
-            /**
-             * Set Twig_Environment instance within container.
-             */
-            $this->instance(
-                \Twig_Environment::class,
-                function () {
-                    $loader = new \Twig_Loader_Filesystem($this->config('views.dir'));
-
-                    $twig = new \Twig_Environment(
-                        $loader, [
-                                   'cache'   => $this->config('views.dir.compiled'),
-                                   'debug'   => $this->debug(),
-                                   'charset' => 'utf-8',
-                               ]
-                    );
-
-                    $extensions = $this->config('views.twig.extensions');
-
-                    // Twig Extensions registration
-                    if (is_array($extensions)) {
-                        foreach ($extensions as $extension) {
-                            $twig->addExtension(new $extension());
-                        }
-                    }
-
-                    return $twig;
-                }
-            );
-
-            /**
-             * Reset View instance within container for TwigView.
-             */
-            $this->instance(
-                ViewContract::class,
-                [
-                    function ($template = '', array $variables = []) {
-                        $view = new \Valkyrja\View\TwigView($template, $variables);
-
-                        $view->setTwig(container(\Twig_Environment::class));
-
-                        return $view;
-                    },
-                ]
-            );
-        }
-    }
-
-    /**
      * Get the application version.
      *
      * @return string
@@ -310,170 +117,6 @@ class Application
     public function version()
     {
         return static::VERSION;
-    }
-
-    /**
-     * Bootstrap error, exception, and shutdown handler.
-     *
-     * @return void
-     */
-    protected function bootstrapHandler()
-    {
-        error_reporting(-1);
-
-        set_error_handler(
-            [
-                $this,
-                'handleError',
-            ]
-        );
-
-        set_exception_handler(
-            [
-                $this,
-                'handleException',
-            ]
-        );
-
-        register_shutdown_function(
-            [
-                $this,
-                'handleShutdown',
-            ]
-        );
-
-        if (!$this->debug()) {
-            ini_set('display_errors', 'Off');
-        }
-    }
-
-    /**
-     * Convert a PHP error to an ErrorException.
-     *
-     * @param int    $level   The error level
-     * @param string $message The error message
-     * @param string $file    [optional] The file within which the error occurred
-     * @param int    $line    [optional] The line which threw the error
-     * @param array  $context [optional] The context for the exception
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function handleError($level, $message, $file = '', $line = 0, $context = [])
-    {
-        if (error_reporting() & $level) {
-            throw new \ErrorException($message, 0, $level, $file, $line);
-        }
-    }
-
-    /**
-     * Handle an uncaught exception from the application.
-     *
-     * Note: Most exceptions can be handled via the try / catch block in
-     * the HTTP and Console kernels. But, fatal error exceptions must
-     * be handled differently since they are not normal exceptions.
-     *
-     * @param \Throwable $e The exception that was captured
-     *
-     * @return ResponseContract
-     */
-    public function handleException($e)
-    {
-        if (!$e instanceof \Exception) {
-            $e = new \Exception($e);
-        }
-
-        $data = [
-            'message' => $e->getMessage(),
-            'file'    => $e->getFile(),
-            'line'    => $e->getLine(),
-            'trace'   => $e->getTrace(),
-        ];
-        $view = 'errors/500';
-        $headers = [];
-        $code = 500;
-
-        if ($e instanceof HttpExceptionContract) {
-            $code = $e->getStatusCode();
-            $headers = $e->getHeaders();
-            $view = $e->getView()
-                ?: 'errors/' . $code;
-        }
-
-        // Return a new sent response
-        return $this->response()
-                    ->view($view, $data, $code, $headers)
-                    ->send();
-    }
-
-    /**
-     * Handle the PHP shutdown event.
-     *
-     * @return void
-     */
-    public function handleShutdown()
-    {
-        if (!is_null($error = error_get_last())
-            && in_array(
-                $error['type'],
-                [
-                    E_ERROR,
-                    E_CORE_ERROR,
-                    E_COMPILE_ERROR,
-                    E_PARSE,
-                ]
-            )
-        ) {
-            $this->handleException($this->fatalExceptionFromError($error));
-        }
-    }
-
-    /**
-     * Throw an http exception.
-     *
-     * @param int        $statusCode The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
-     * @param int        $code       [optional] The Exception code
-     *
-     * @throws HttpExceptionContract
-     */
-    public function httpException(
-        $statusCode,
-        $message = null,
-        \Exception $previous = null,
-        array $headers = [],
-        $view = null,
-        $code = 0
-    ) {
-        throw $this->container(
-            HttpExceptionContract::class,
-            [
-                $statusCode,
-                $message,
-                $previous,
-                $headers,
-                $view,
-                $code,
-            ]
-        );
-    }
-
-    /**
-     * Create a new fatal exception instance from an error array.
-     *
-     * @param array $error The error array to use
-     *
-     * @return \Exception
-     */
-    protected function fatalExceptionFromError(array $error)
-    {
-        return new \ErrorException(
-            $error['message'], 0, $error['type'], $error['file'], $error['line']
-        );
     }
 
     /**
@@ -529,7 +172,7 @@ class Application
     /**
      * Set the application as using compiled.
      *
-     * @return bool
+     * @return void
      */
     public function setCompiled()
     {
@@ -626,347 +269,6 @@ class Application
     public function setConfigVars(array $config)
     {
         $this->config = $config;
-    }
-
-    /**
-     * Get the base directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function basePath($path = null)
-    {
-        return $this->basePath . ($path
-            ? static::DIRECTORY_SEPARATOR . $path
-            : $path);
-    }
-
-    /**
-     * Get the app directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function appPath($path = null)
-    {
-        return $this->basePath(
-            'app' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the cache directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function cachePath($path = null)
-    {
-        return $this->basePath(
-            'cache' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the config directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function configPath($path = null)
-    {
-        return $this->basePath(
-            'config' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the framework directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function frameworkPath($path = null)
-    {
-        return $this->basePath(
-            'framework' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the public directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function publicPath($path = null)
-    {
-        return $this->basePath(
-            'public' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the resources directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function resourcesPath($path = null)
-    {
-        return $this->basePath(
-            'resources' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the storage directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function storagePath($path = null)
-    {
-        return $this->basePath(
-            'storage' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the tests directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function testsPath($path = null)
-    {
-        return $this->basePath(
-            'tests' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the vendor directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function vendorPath($path = null)
-    {
-        return $this->basePath(
-            'vendor' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Set a single route.
-     *
-     * @param string         $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function addRoute($method, $path, $handler, $isDynamic = false)
-    {
-        if (!in_array(
-            $method,
-            [
-                self::GET,
-                self::POST,
-                self::PUT,
-                self::PATCH,
-                self::DELETE,
-                self::HEAD,
-            ]
-        )
-        ) {
-            throw new \Exception('Invalid method type for route: ' . $path);
-        }
-
-        $isArray = is_array($handler);
-
-        $name = ($isArray && isset($handler['as']))
-            ? $handler['as']
-            : $path;
-
-        if (is_callable($handler)) {
-            $action = $handler;
-            $controller = false;
-            $injectable = [];
-        }
-        else {
-            $controller = ($isArray && isset($handler['controller']))
-                ? $handler['controller']
-                : false;
-
-            $action = ($isArray && isset($handler['action']))
-                ? $handler['action']
-                : false;
-
-            $injectable = ($isArray && isset($handler['injectable']))
-                ? $handler['injectable']
-                : [];
-
-            if (!$action) {
-                throw new \Exception('No action or handler set for route: ' . $path);
-            }
-        }
-
-        $route = [
-            'path'       => $path,
-            'as'         => $name,
-            'controller' => $controller,
-            'action'     => $action,
-            'injectable' => $injectable,
-        ];
-
-        // Set the route
-        if ($isDynamic) {
-            $this->routes['dynamic'][$method][$path] = $route;
-        }
-        else {
-            $this->routes['simple'][$method][$path] = $route;
-        }
-    }
-
-    /**
-     * Helper function to set a GET addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    function get($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::GET, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Helper function to set a POST addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    function post($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::POST, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Helper function to set a PUT addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    function put($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::PUT, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Helper function to set a PATCH addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    function patch($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::PATCH, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Helper function to set a DELETE addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    function delete($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::DELETE, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Helper function to set a HEAD addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function head($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::HEAD, $path, $handler, $isDynamic);
-    }
-
-    /**
-     * Set routes from a given array of routes.
-     *
-     * @param array $routes The routes to set
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes)
-    {
-        $this->routes = $routes;
     }
 
     /**
@@ -1078,7 +380,7 @@ class Application
     public function response($content = '', $status = 200, array $headers = [])
     {
         /** @var \Valkyrja\Contracts\Http\ResponseBuilder $factory */
-        $factory = container(ResponseBuilderContract::class);
+        $factory = $this->container(ResponseBuilderContract::class);
 
         // If no args were passed return the ResponseBuilder
         if (func_num_args() === 0) {
@@ -1099,7 +401,7 @@ class Application
      */
     public function view($template = '', array $variables = [])
     {
-        return container(
+        return $this->container(
             ViewContract::class,
             [
                 $template,
@@ -1138,72 +440,6 @@ class Application
     }
 
     /**
-     * Set the service container for dependency injection.
-     *
-     * @param array $serviceContainer The service container array to set
-     *
-     * @return void
-     */
-    public function setServiceContainer(array $serviceContainer)
-    {
-        // The application has already bootstrapped the container so merge to avoid clearing
-        $this->serviceContainer = array_merge($this->serviceContainer, $serviceContainer);
-    }
-
-    /**
-     * Set the service container for dependency injection.
-     *
-     * @param string               $abstract The abstract to use as the key
-     * @param \Closure|array|mixed $instance The instance to set
-     *
-     * @return void
-     */
-    public function instance($abstract, $instance)
-    {
-        $this->serviceContainer[$abstract] = $instance;
-    }
-
-    /**
-     * Get an abstract from the container.
-     *
-     * @param string $abstract  The abstract to get
-     * @param array  $arguments [optional] Arguments to pass
-     *
-     * @return mixed
-     */
-    public function container($abstract, array $arguments = [])
-    {
-        // If the abstract is set in the service container
-        if (isset($this->serviceContainer[$abstract])) {
-            // Set the container item for ease of use here
-            $containerItem = $this->serviceContainer[$abstract];
-
-            // The container item is a singleton and hasn't been requested yet
-            if (is_callable($containerItem)) {
-                // Run the callable function
-                $containerItem = $containerItem();
-
-                // Set the result in the service container for the next request
-                $this->serviceContainer[$abstract] = $containerItem;
-
-                // Return the container item
-                return $containerItem;
-            }
-            // Otherwise we're looking to get a new instance every time
-            elseif (is_array($containerItem) && is_callable($containerItem[0])) {
-                // Return the first item in the array
-                return call_user_func_array($containerItem[0], $arguments);
-            }
-
-            // Return the container item
-            return $containerItem;
-        }
-
-        // A class was passed just in case it was in the container, so return it
-        return $abstract;
-    }
-
-    /**
      * Register a service provider.
      *
      * @param string $serviceProvider The service provider
@@ -1214,5 +450,177 @@ class Application
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
+    }
+
+    /**
+     * Bootstrap the application container.
+     *
+     * @return void
+     */
+    protected function bootstrapContainer()
+    {
+        /**
+         * Set App instance within container.
+         */
+        $this->instance(Application::class, $this);
+
+        /**
+         * Set HttpException instance within container.
+         */
+        $this->instance(
+            HttpExceptionContract::class,
+            [
+                function (
+                    $statusCode,
+                    $message = null,
+                    \Exception $previous = null,
+                    array $headers = [],
+                    $code = 0
+                ) {
+                    return new HttpException($statusCode, $message, $previous, $headers, $code);
+                },
+            ]
+        );
+
+        /**
+         * Set Request instance within container.
+         */
+        $this->instance(
+            RequestContract::class,
+            [
+                function () {
+                    return new Request();
+                },
+            ]
+        );
+
+        /**
+         * Set Response instance within container.
+         */
+        $this->instance(
+            ResponseContract::class,
+            [
+                function ($content = '', $status = 200, $headers = []) {
+                    return new Response($content, $status, $headers);
+                },
+            ]
+        );
+
+        /**
+         * Set JsonResponse instance within container.
+         */
+        $this->instance(
+            JsonResponseContract::class,
+            [
+                function ($content = '', $status = 200, $headers = []) {
+                    return new JsonResponse($content, $status, $headers);
+                },
+            ]
+        );
+
+        /**
+         * Set ResponseBuilder instance within container.
+         */
+        $this->instance(
+            ResponseBuilderContract::class,
+            function () {
+                $response = $this->container(ResponseContract::class);
+                $view = $this->container(ViewContract::class);
+
+                return new ResponseBuilder($response, $view);
+            }
+        );
+
+        /**
+         * Set Session instance within container.
+         */
+        $this->instance(
+            SessionContract::class,
+            function () {
+                return new Session();
+            }
+        );
+
+        /**
+         * Set View instance within container.
+         */
+        $this->instance(
+            ViewContract::class,
+            [
+                function ($template = '', array $variables = []) {
+                    return new View($template, $variables);
+                },
+            ]
+        );
+    }
+
+    /**
+     * Bootstrap twig to handle views if enabled in env.
+     *
+     * TODO: Perhaps move this to service provider
+     *
+     * @return void
+     */
+    public function bootstrapTwig()
+    {
+        // Check if twig is enabled in env
+        if ($this->isTwigEnabled()) {
+            // Set the env variable for views directory if its not set
+            $this->setConfig(
+                'views.dir',
+                $this->config('views.twig.dir', $this->resourcesPath('views/twig'))
+            );
+
+            // Set the env variable for views compiled directory if its not set
+            $this->setConfig(
+                'views.dir.compiled',
+                $this->config('views.twig.dir.compiled', $this->storagePath('views/twig'))
+            );
+
+            /**
+             * Set Twig_Environment instance within container.
+             */
+            $this->instance(
+                \Twig_Environment::class,
+                function () {
+                    $loader = new \Twig_Loader_Filesystem($this->config('views.dir'));
+
+                    $twig = new \Twig_Environment(
+                        $loader, [
+                                   'cache'   => $this->config('views.dir.compiled'),
+                                   'debug'   => $this->debug(),
+                                   'charset' => 'utf-8',
+                               ]
+                    );
+
+                    $extensions = $this->config('views.twig.extensions');
+
+                    // Twig Extensions registration
+                    if (is_array($extensions)) {
+                        foreach ($extensions as $extension) {
+                            $twig->addExtension(new $extension());
+                        }
+                    }
+
+                    return $twig;
+                }
+            );
+
+            /**
+             * Reset View instance within container for TwigView.
+             */
+            $this->instance(
+                ViewContract::class,
+                [
+                    function ($template = '', array $variables = []) {
+                        $view = new \Valkyrja\View\TwigView($template, $variables);
+
+                        $view->setTwig($this->container(\Twig_Environment::class));
+
+                        return $view;
+                    },
+                ]
+            );
+        }
     }
 }
