@@ -58,3 +58,4 @@ autoloader('Monolog\\', $vendorDir . 'monolog/monolog/src/Monolog');
 autoloader('Predis\\', $vendorDir . 'predis/predis/src');
 autoloader('Psr\\Log\\', $vendorDir . 'psr/log/Psr/Log');
 autoloader('Psr\\Http\\Message\\', $vendorDir . 'psr/http-message/src');
+autoloader('Twig_', $vendorDir . 'twig/twig/lib/Twig', '_');

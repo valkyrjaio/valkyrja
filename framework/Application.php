@@ -243,10 +243,6 @@ class Application
     {
         // Check if twig is enabled in env
         if ($this->isTwigEnabled()) {
-            // Set the twig auto loader
-            // - Using our own auto loading for better optimization
-            autoloader('Twig_', $this->vendorPath('twig/twig/lib/Twig'), '_');
-
             // Set the env variable for views directory if its not set
             $this->setConfig(
                 'views.dir',
