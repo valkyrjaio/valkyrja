@@ -11,25 +11,10 @@ namespace Valkyrja;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
-use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
-use Valkyrja\Contracts\Http\Request as RequestContract;
-use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\Http\Routing as RoutingContract;
-use Valkyrja\Contracts\Sessions\Session as SessionContract;
-use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Exceptions\ExceptionHandler;
-use Valkyrja\Exceptions\HttpException;
-use Valkyrja\Http\Controller;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\Routing;
-use Valkyrja\Sessions\Session;
 use Valkyrja\Support\PathHelpers;
-use Valkyrja\View\View;
 
 /**
  * Class Application
@@ -319,7 +304,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
 
             $controller = $this->container($route['controller']);
 
-            if (!$controller instanceof Controller) {
+            if (!$controller instanceof \Valkyrja\Http\Controller) {
                 throw new \Exception(
                     'Invalid controller for route : ' . $route['path'] . ' Controller -> ' . $route['controller']
                 );
@@ -361,7 +346,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
      * @param array  $headers [optional] The headers to set
      * @param string $view    [optional] The view template name to use
      *
-     * @throws HttpExceptionContract
+     * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
     public function abort($code = 404, $message = '', array $headers = [], $view = null)
     {
@@ -380,7 +365,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
     public function response($content = '', $status = 200, array $headers = [])
     {
         /** @var \Valkyrja\Contracts\Http\ResponseBuilder $factory */
-        $factory = $this->container(ResponseBuilderContract::class);
+        $factory = $this->container(\Valkyrja\Contracts\Http\ResponseBuilder::class);
 
         // If no args were passed return the ResponseBuilder
         if (func_num_args() === 0) {
@@ -402,7 +387,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
     public function view($template = '', array $variables = [])
     {
         return $this->container(
-            ViewContract::class,
+            \Valkyrja\Contracts\View\View::class,
             [
                 $template,
                 $variables,
@@ -426,11 +411,11 @@ class Application extends Container implements ApplicationContract, RoutingContr
         }
 
         // If the dispatch is a Response, send it
-        if ($dispatch instanceof ResponseContract) {
+        if ($dispatch instanceof \Valkyrja\Contracts\Http\Response) {
             $dispatch->send();
         }
         // If the dispatch is a View, render it
-        else if ($dispatch instanceof ViewContract) {
+        else if ($dispatch instanceof \Valkyrja\Contracts\View\View) {
             echo (string) $dispatch->render();
         }
         // Otherwise echo it out as a string
@@ -468,7 +453,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set HttpException instance within container.
          */
         $this->instance(
-            HttpExceptionContract::class,
+            \Valkyrja\Contracts\Exceptions\HttpException::class,
             [
                 function (
                     $statusCode,
@@ -477,7 +462,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
                     array $headers = [],
                     $code = 0
                 ) {
-                    return new HttpException($statusCode, $message, $previous, $headers, $code);
+                    return new \Valkyrja\Exceptions\HttpException($statusCode, $message, $previous, $headers, $code);
                 },
             ]
         );
@@ -486,10 +471,10 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set Request instance within container.
          */
         $this->instance(
-            RequestContract::class,
+            \Valkyrja\Contracts\Http\Request::class,
             [
                 function () {
-                    return new Request();
+                    return new \Valkyrja\Http\Request();
                 },
             ]
         );
@@ -498,10 +483,10 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set Response instance within container.
          */
         $this->instance(
-            ResponseContract::class,
+            \Valkyrja\Contracts\Http\Response::class,
             [
                 function ($content = '', $status = 200, $headers = []) {
-                    return new Response($content, $status, $headers);
+                    return new \Valkyrja\Http\Response($content, $status, $headers);
                 },
             ]
         );
@@ -510,10 +495,10 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set JsonResponse instance within container.
          */
         $this->instance(
-            JsonResponseContract::class,
+            \Valkyrja\Contracts\Http\JsonResponse::class,
             [
                 function ($content = '', $status = 200, $headers = []) {
-                    return new JsonResponse($content, $status, $headers);
+                    return new \Valkyrja\Http\JsonResponse($content, $status, $headers);
                 },
             ]
         );
@@ -522,12 +507,12 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set ResponseBuilder instance within container.
          */
         $this->instance(
-            ResponseBuilderContract::class,
+            \Valkyrja\Contracts\Http\ResponseBuilder::class,
             function () {
-                $response = $this->container(ResponseContract::class);
-                $view = $this->container(ViewContract::class);
+                $response = $this->container(\Valkyrja\Contracts\Http\Response::class);
+                $view = $this->container(\Valkyrja\Contracts\View\View::class);
 
-                return new ResponseBuilder($response, $view);
+                return new \Valkyrja\Http\ResponseBuilder($response, $view);
             }
         );
 
@@ -535,9 +520,9 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set Session instance within container.
          */
         $this->instance(
-            SessionContract::class,
+            \Valkyrja\Contracts\Sessions\Session::class,
             function () {
-                return new Session();
+                return new \Valkyrja\Sessions\Session();
             }
         );
 
@@ -545,10 +530,10 @@ class Application extends Container implements ApplicationContract, RoutingContr
          * Set View instance within container.
          */
         $this->instance(
-            ViewContract::class,
+            \Valkyrja\Contracts\View\View::class,
             [
                 function ($template = '', array $variables = []) {
-                    return new View($template, $variables);
+                    return new \Valkyrja\View\View($template, $variables);
                 },
             ]
         );
@@ -610,7 +595,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
              * Reset View instance within container for TwigView.
              */
             $this->instance(
-                ViewContract::class,
+                \Valkyrja\Contracts\View\View::class,
                 [
                     function ($template = '', array $variables = []) {
                         $view = new \Valkyrja\View\TwigView($template, $variables);
