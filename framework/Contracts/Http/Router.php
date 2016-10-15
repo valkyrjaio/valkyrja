@@ -7,17 +7,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Valkyrja\Http;
+namespace Valkyrja\Contracts\Http;
 
 /**
- * Class Routing
+ * Interface Router
  *
- * @package Valkyrja\Http
+ * @package Valkyrja\Contracts\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
-trait Routing
+interface Router
 {
+    /**
+     * Route constants.
+     *
+     * @constant
+     */
+    const GET    = 'GET';
+    const POST   = 'POST';
+    const PUT    = 'PUT';
+    const PATCH  = 'PATCH';
+    const DELETE = 'DELETE';
+    const HEAD   = 'HEAD';
+
+    /**
+     * Directory separator.
+     *
+     * @constant string
+     */
+    const DIRECTORY_SEPARATOR = '/';
+
     /**
      * Set a single route.
      *
@@ -30,68 +49,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    public function addRoute($method, $path, $handler, $isDynamic = false)
-    {
-        if (!in_array(
-            $method,
-            [
-                self::GET,
-                self::POST,
-                self::PUT,
-                self::PATCH,
-                self::DELETE,
-                self::HEAD,
-            ]
-        )
-        ) {
-            throw new \Exception('Invalid method type for route: ' . $path);
-        }
-
-        $isArray = is_array($handler);
-
-        $name = ($isArray && isset($handler['as']))
-            ? $handler['as']
-            : $path;
-
-        if (is_callable($handler)) {
-            $action = $handler;
-            $controller = false;
-            $injectable = [];
-        }
-        else {
-            $controller = ($isArray && isset($handler['controller']))
-                ? $handler['controller']
-                : false;
-
-            $action = ($isArray && isset($handler['action']))
-                ? $handler['action']
-                : false;
-
-            $injectable = ($isArray && isset($handler['injectable']))
-                ? $handler['injectable']
-                : [];
-
-            if (!$action) {
-                throw new \Exception('No action or handler set for route: ' . $path);
-            }
-        }
-
-        $route = [
-            'path'       => $path,
-            'as'         => $name,
-            'controller' => $controller,
-            'action'     => $action,
-            'injectable' => $injectable,
-        ];
-
-        // Set the route
-        if ($isDynamic) {
-            $this->routes['dynamic'][$method][$path] = $route;
-        }
-        else {
-            $this->routes['simple'][$method][$path] = $route;
-        }
-    }
+    public function addRoute($method, $path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a GET addRoute.
@@ -104,10 +62,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    function get($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::GET, $path, $handler, $isDynamic);
-    }
+    function get($path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a POST addRoute.
@@ -120,10 +75,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    function post($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::POST, $path, $handler, $isDynamic);
-    }
+    function post($path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a PUT addRoute.
@@ -136,10 +88,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    function put($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::PUT, $path, $handler, $isDynamic);
-    }
+    function put($path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -152,10 +101,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    function patch($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::PATCH, $path, $handler, $isDynamic);
-    }
+    function patch($path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -168,10 +114,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    function delete($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::DELETE, $path, $handler, $isDynamic);
-    }
+    function delete($path, $handler, $isDynamic = false);
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -184,10 +127,7 @@ trait Routing
      *
      * @throws \Exception
      */
-    public function head($path, $handler, $isDynamic = false)
-    {
-        $this->addRoute(static::HEAD, $path, $handler, $isDynamic);
-    }
+    public function head($path, $handler, $isDynamic = false);
 
     /**
      * Set routes from a given array of routes.
@@ -196,8 +136,14 @@ trait Routing
      *
      * @return void
      */
-    public function setRoutes(array $routes)
-    {
-        $this->routes = $routes;
-    }
+    public function setRoutes(array $routes);
+
+    /**
+     * Dispatch the route and find a match.
+     *
+     * @return \Valkyrja\Contracts\View\View|\Valkyrja\Http\Response|string
+     *
+     * @throws \Exception
+     */
+    public function dispatch();
 }

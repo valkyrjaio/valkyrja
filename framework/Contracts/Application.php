@@ -232,15 +232,6 @@ interface Application extends Container
     public function vendorPath($path = null);
 
     /**
-     * Dispatch the route and find a match.
-     *
-     * @return \Valkyrja\Contracts\View\View|\Valkyrja\Http\Response|string
-     *
-     * @throws \Exception
-     */
-    public function dispatch();
-
-    /**
      * Abort the application due to error.
      *
      * @param int    $code    [optional] The status code to use
@@ -262,6 +253,13 @@ interface Application extends Container
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
     public function response($content = '', $status = 200, array $headers = []);
+
+    /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Router
+     */
+    public function router();
 
     /**
      * Return a new view.

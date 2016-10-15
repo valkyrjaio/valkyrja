@@ -10,7 +10,7 @@
  *
  * @path /version
  */
-$app->get(
+$app->router()->get(
     '/version',
     function () use ($app) {
         return $app->version();
@@ -30,7 +30,7 @@ $app->get(
  *
  * @path /
  */
-$app->get(
+$app->router()->get(
     '/',
     function () {
         $view = view('index');
@@ -46,7 +46,7 @@ $app->get(
  *
  * @path /:page
  */
-$app->get(
+$app->router()->get(
     '\/(\d+)',
     [
         'controller' => \App\Controllers\HomeController::class,
@@ -75,7 +75,7 @@ $app->get(
  * @path /article/:slug
  *       Slug is alphanumeric with dashes and underscores allowed
  */
-$app->get(
+$app->router()->get(
     '\/article\/([a-zA-Z0-9-_]+)',
     [
         'controller' => \App\Controllers\ArticleController::class,

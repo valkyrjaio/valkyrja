@@ -11,9 +11,7 @@ namespace Valkyrja;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Http\Routing as RoutingContract;
 use Valkyrja\Exceptions\ExceptionHandler;
-use Valkyrja\Http\Routing;
 use Valkyrja\Support\PathHelpers;
 
 /**
@@ -23,11 +21,17 @@ use Valkyrja\Support\PathHelpers;
  *
  * @author  Melech Mizrachi
  */
-class Application extends Container implements ApplicationContract, RoutingContract
+class Application extends Container implements ApplicationContract
 {
     use ExceptionHandler;
-    use Routing;
     use PathHelpers;
+
+    /**
+     * Directory separator.
+     *
+     * @constant string
+     */
+    const DIRECTORY_SEPARATOR = '/';
 
     /**
      * Application environment variables.
@@ -42,30 +46,6 @@ class Application extends Container implements ApplicationContract, RoutingContr
      * @var array
      */
     protected $config = [];
-
-    /**
-     * Application routes.
-     *
-     * @var array
-     */
-    protected $routes = [
-        'simple'  => [
-            self::GET    => [],
-            self::POST   => [],
-            self::PUT    => [],
-            self::PATCH  => [],
-            self::DELETE => [],
-            self::HEAD   => [],
-        ],
-        'dynamic' => [
-            self::GET    => [],
-            self::POST   => [],
-            self::PUT    => [],
-            self::PATCH  => [],
-            self::DELETE => [],
-            self::HEAD   => [],
-        ],
-    ];
 
     /**
      * The base directory for the application.
@@ -257,88 +237,6 @@ class Application extends Container implements ApplicationContract, RoutingContr
     }
 
     /**
-     * Dispatch the route and find a match.
-     *
-     * @return \Valkyrja\Contracts\View\View|\Valkyrja\Http\Response|string
-     *
-     * @throws \Exception
-     */
-    public function dispatch()
-    {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestUri = $_SERVER['REQUEST_URI'];
-        $arguments = [];
-        $route = false;
-        $matches = false;
-
-        if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
-            $route = $this->routes['simple'][$requestMethod][$requestUri];
-        }
-
-        foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
-            if (preg_match('/^' . $path . '$/', $requestUri, $matches)) {
-                $route = $dynamicRoute;
-            }
-        }
-
-        if ($route) {
-            $action = $route['action'];
-
-            foreach ($route['injectable'] as $injectable) {
-                $arguments[] = $this->container($injectable);
-            }
-
-            if ($matches && is_array($matches)) {
-                foreach ($matches as $index => $match) {
-                    if ($index === 0) {
-                        continue;
-                    }
-
-                    $arguments[] = $match;
-                }
-            }
-
-            if (is_callable($action)) {
-                return call_user_func_array($action, $arguments);
-            }
-
-            $controller = $this->container($route['controller']);
-
-            if (!$controller instanceof \Valkyrja\Http\Controller) {
-                throw new \Exception(
-                    'Invalid controller for route : ' . $route['path'] . ' Controller -> ' . $route['controller']
-                );
-            }
-
-            if (!is_callable(
-                [
-                    $controller,
-                    $action,
-                ]
-            )
-            ) {
-                throw new \Exception(
-                    'Action does not exist in controller for route : '
-                    . $route['path']
-                    . $route['controller']
-                    . '@'
-                    . $route['action']
-                );
-            }
-
-            return call_user_func_array(
-                [
-                    $controller,
-                    $action,
-                ],
-                $arguments
-            );
-        }
-
-        return false;
-    }
-
-    /**
      * Abort the application due to error.
      *
      * @param int    $code    [optional] The status code to use
@@ -377,6 +275,16 @@ class Application extends Container implements ApplicationContract, RoutingContr
     }
 
     /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Router
+     */
+    public function router()
+    {
+        return $this->container(\Valkyrja\Contracts\Http\Router::class);
+    }
+
+    /**
      * Return a new view.
      *
      * @param string $template  [optional] The template to use
@@ -403,7 +311,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
     public function run()
     {
         // Dispatch the request and get a response
-        $dispatch = $this->dispatch();
+        $dispatch = $this->router()->dispatch();
 
         // If the dispatch failed, 404
         if (!$dispatch) {

@@ -82,6 +82,15 @@ $app->instance(
 );
 
 $app->instance(
+    Valkyrja\Contracts\Http\Router::class,
+    function () use ($app) {
+        $application = $app->container(Valkyrja\Application::class);
+
+        return new Valkyrja\Http\Router($application);
+    }
+);
+
+$app->instance(
     Valkyrja\Contracts\Sessions\Session::class,
     function () {
         return new Valkyrja\Sessions\Session();

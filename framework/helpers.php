@@ -96,7 +96,7 @@ if (!function_exists('get')) {
      */
     function get($path, $handler, $isDynamic = false)
     {
-        app()->get($path, $handler, $isDynamic);
+        app()->router()->get($path, $handler, $isDynamic);
     }
 }
 
@@ -112,7 +112,7 @@ if (!function_exists('post')) {
      */
     function post($path, $handler, $isDynamic = false)
     {
-        app()->post($path, $handler, $isDynamic);
+        app()->router()->post($path, $handler, $isDynamic);
     }
 }
 
@@ -128,7 +128,7 @@ if (!function_exists('put')) {
      */
     function put($path, $handler, $isDynamic = false)
     {
-        app()->put($path, $handler, $isDynamic);
+        app()->router()->put($path, $handler, $isDynamic);
     }
 }
 
@@ -144,7 +144,7 @@ if (!function_exists('patch')) {
      */
     function patch($path, $handler, $isDynamic = false)
     {
-        app()->patch($path, $handler, $isDynamic);
+        app()->router()->patch($path, $handler, $isDynamic);
     }
 }
 
@@ -160,7 +160,7 @@ if (!function_exists('delete')) {
      */
     function delete($path, $handler, $isDynamic = false)
     {
-        app()->delete($path, $handler, $isDynamic);
+        app()->router()->delete($path, $handler, $isDynamic);
     }
 }
 
@@ -176,7 +176,7 @@ if (!function_exists('head')) {
      */
     function head($path, $handler, $isDynamic = false)
     {
-        app()->head($path, $handler, $isDynamic);
+        app()->router()->head($path, $handler, $isDynamic);
     }
 }
 
