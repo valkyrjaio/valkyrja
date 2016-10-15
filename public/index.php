@@ -14,21 +14,25 @@
  * Application Auto Loader Assemble!
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Autoload all the application namespaces, dependencies, and files using
+ * composer to both manage all dependencies as well as register everything
+ * for us to use within the application.
  *
  */
 
 $baseDir = realpath(__DIR__ . '/../');
 
 require_once '../vendor/autoload.php';
-// require_once '../bootstrap/autoload.php';
 
 /*
  *-------------------------------------------------------------------------
  * Setup The Application
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Let's setup the application by bootstrapping it. This will instanciate
+ * the main application as well as add any required classes to the
+ * service container, add environment variables, add config
+ * variables, and add all the application routes.
  *
  */
 
@@ -39,7 +43,8 @@ $app = require_once '../bootstrap/app.php';
  * Run The Application
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Now that the application has been bootstrapped and setup correctly
+ * with all our requirements lets run it!
  *
  */
 

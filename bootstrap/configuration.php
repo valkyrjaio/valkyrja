@@ -11,10 +11,14 @@
 
 /*
  *-------------------------------------------------------------------------
- * Setup The Application With Compiled : A Need For Speed
+ * Configure The Application With Compiled : A Need For Speed
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * If the application is in production its advised to optimize it with
+ * the CLI optimize command. This will flatten all the configuration
+ * files, framework classes, and application classes into a single
+ * file for faster filesystem readability. In addition it will
+ * Set routes to an array for faster loading.
  *
  */
 
@@ -31,10 +35,13 @@ if (file_exists(__DIR__ . '/../cache/compiled.php')) {
 
 /*
  *---------------------------------------------------------------------
- * Setup The Application Environment Variables
+ * Application Environment Variables
  *---------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Environment variables are a convenient way to have different
+ * configurations for each environment you develop on, or run
+ * your application on. Basic examples are local (dev), qa,
+ * staging, and production.
  *
  */
 
@@ -47,10 +54,11 @@ $app->setTimezone();
 
 /*
  *---------------------------------------------------------------------
- * Setup The Application Default Configuration
+ * Application Configuration Variables
  *---------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Configuration variables are a great way to modify the application
+ * and how it runs to your specific needs.
  *
  */
 
@@ -61,10 +69,12 @@ $app->setConfigVars($config);
 
 /*
  *---------------------------------------------------------------------
- * Setup The Application Service Container : Dependency Injection
+ * Application Service Container : Dependency Injection
  *---------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Adding more instances to the service container is a great way to
+ * ensure your application is setup for ease of change in the
+ * future.
  *
  */
 
@@ -75,10 +85,13 @@ $app->setServiceContainer($container);
 
 /*
  *---------------------------------------------------------------------
- * Setup The Application Routes
+ * Application Routes
  *---------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Match those silly strings in the url that your application's
+ * consumers will tie in to some functionality within
+ * the application to present your consumers with
+ * something other than a blank screen.
  *
  */
 

@@ -14,7 +14,9 @@
  * Start Up The Application
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Let's start up the application by creating a new instance of the
+ * application class. This is going to bind all the various
+ * components together into a singular hub.
  *
  */
 
@@ -25,7 +27,9 @@ $app = new Valkyrja\Application($baseDir);
  * Bind Base Container Instances
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Important classes and service container instances that will help the
+ * entire application function are defined here for better ease of
+ * change by the developer.
  *
  */
 
@@ -108,21 +112,25 @@ $app->instance(
 
 /*
  *-------------------------------------------------------------------------
- * Setup The Application
+ * Configure The Application
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Configure the application with environment variables, config variables,
+ * routes, and custom service container instances.
  *
  */
 
-require_once 'setup.php';
+require_once 'configuration.php';
 
 /*
  *-------------------------------------------------------------------------
  * Service Providers : Providers Of The Services
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Service providers are a convenience way to add more functionality to
+ * the application by registering new service container instances,
+ * configuration options, or other functional needs your
+ * application may need.
  *
  */
 
@@ -134,7 +142,8 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  * Return The Application
  *-------------------------------------------------------------------------
  *
- * TODO: Fill with explanation
+ * Well, we kind of have to use the application after bootstrapping, so
+ * let's return it back to the index file.
  *
  */
 
