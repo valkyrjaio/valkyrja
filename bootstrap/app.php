@@ -29,8 +29,6 @@ $app = new Valkyrja\Application($baseDir);
  *
  */
 
-$app->instance(Valkyrja\Application::class, $app);
-
 $app->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
     [

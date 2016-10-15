@@ -90,6 +90,7 @@ class Application extends Container implements ApplicationContract, RoutingContr
     {
         $this->basePath = $basePath;
 
+        $this->bootstrapContainer();
         $this->bootstrapHandler();
     }
 
@@ -434,5 +435,18 @@ class Application extends Container implements ApplicationContract, RoutingContr
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
+    }
+
+    /**
+     * Bootstrap the application container.
+     *
+     * @return void
+     */
+    protected function bootstrapContainer()
+    {
+        /**
+         * Set App instance within container.
+         */
+        $this->instance(Application::class, $this);
     }
 }

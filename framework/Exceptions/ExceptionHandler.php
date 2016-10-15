@@ -88,7 +88,7 @@ trait ExceptionHandler
         $headers = [];
         $code = 500;
 
-        if ($e instanceof HttpExceptionContract) {
+        if ($e instanceof HttpException) {
             $code = $e->getStatusCode();
             $headers = $e->getHeaders();
             $view = $e->getView()
