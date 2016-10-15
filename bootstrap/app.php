@@ -1,6 +1,15 @@
 <?php
 
 /*
+ * This file is part of the Valkyrja framework.
+ *
+ * (c) Melech Mizrachi
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/*
  *-------------------------------------------------------------------------
  * Start Up The Application
  *-------------------------------------------------------------------------
@@ -9,108 +18,97 @@
  *
  */
 
-$app = new \Valkyrja\Application($baseDir);
+$app = new Valkyrja\Application($baseDir);
 
 /*
  *-------------------------------------------------------------------------
- * Setup The Application With Compiled : A Need For Speed
+ * Bind Base Container Instances
  *-------------------------------------------------------------------------
  *
  * TODO: Fill with explanation
  *
  */
 
-// If there is a compiled version of the application use it!
-if (file_exists(__DIR__ . '/../cache/compiled.php')) {
-    // Require the compiled file
-    require_once __DIR__ . '/../cache/compiled.php';
+$app->instance(Valkyrja\Application::class, $app);
 
-    // Set the application as using compiled
-    $app->setCompiled();
-}
+$app->instance(
+    Valkyrja\Contracts\Exceptions\HttpException::class,
+    [
+        function (
+            $statusCode,
+            $message = null,
+            \Exception $previous = null,
+            array $headers = [],
+            $code = 0
+        ) {
+            return new Valkyrja\Exceptions\HttpException($statusCode, $message, $previous, $headers, $code);
+        },
+    ]
+);
+
+$app->instance(
+    Valkyrja\Contracts\Http\Request::class,
+    [
+        function () {
+            return new Valkyrja\Http\Request();
+        },
+    ]
+);
+
+$app->instance(
+    Valkyrja\Contracts\Http\Response::class,
+    [
+        function ($content = '', $status = 200, $headers = []) {
+            return new Valkyrja\Http\Response($content, $status, $headers);
+        },
+    ]
+);
+
+$app->instance(
+    Valkyrja\Contracts\Http\JsonResponse::class,
+    [
+        function ($content = '', $status = 200, $headers = []) {
+            return new Valkyrja\Http\JsonResponse($content, $status, $headers);
+        },
+    ]
+);
+
+$app->instance(
+    Valkyrja\Contracts\Http\ResponseBuilder::class,
+    function () use ($app) {
+        $response = $app->container(Valkyrja\Contracts\Http\Response::class);
+        $view = $app->container(Valkyrja\Contracts\View\View::class);
+
+        return new Valkyrja\Http\ResponseBuilder($response, $view);
+    }
+);
+
+$app->instance(
+    Valkyrja\Contracts\Sessions\Session::class,
+    function () {
+        return new Valkyrja\Sessions\Session();
+    }
+);
+
+$app->instance(
+    Valkyrja\Contracts\View\View::class,
+    [
+        function ($template = '', array $variables = []) {
+            return new Valkyrja\View\View($template, $variables);
+        },
+    ]
+);
 
 /*
  *-------------------------------------------------------------------------
- * Setup the Application Without Compiled : SlowBro
+ * Setup The Application
  *-------------------------------------------------------------------------
  *
  * TODO: Fill with explanation
  *
  */
 
-// Otherwise setup environment variables
-else {
-    /*
-     *---------------------------------------------------------------------
-     * Help An Application Out, Will Ya?
-     *---------------------------------------------------------------------
-     *
-     * TODO: Fill with explanation
-     *
-     */
-
-    require_once __DIR__ . '/../framework/helpers.php';
-
-    /*
-     *---------------------------------------------------------------------
-     * Setup The Application Environment Variables
-     *---------------------------------------------------------------------
-     *
-     * TODO: Fill with explanation
-     *
-     */
-
-    // Require the environment variables to overwrite default config
-    $env = require_once __DIR__ . '/../.env.php';
-    // Set the environment variables to overwrite default config
-    $app->setEnvs($env);
-
-    /*
-     *---------------------------------------------------------------------
-     * Setup The Application Default Configuration
-     *---------------------------------------------------------------------
-     *
-     * TODO: Fill with explanation
-     *
-     */
-
-    // Require the default config variables
-    $config = require_once __DIR__ . '/../config/config.php';
-    // Set the default config variables
-    $app->setConfigVars($config);
-
-    /*
-     *---------------------------------------------------------------------
-     * Setup The Application Service Container : Dependency Injection
-     *---------------------------------------------------------------------
-     *
-     * TODO: Fill with explanation
-     *
-     */
-
-    // Require any dependency injectable definitions
-    $container = require_once __DIR__ . '/../config/container.php';
-    // Set the container variables
-    $app->setServiceContainer($container);
-
-    /*
-     *---------------------------------------------------------------------
-     * Setup The Application Routes
-     *---------------------------------------------------------------------
-     *
-     * TODO: Fill with explanation
-     *
-     */
-
-    // Require the routes
-    $routes = require_once __DIR__ . '/../routes/routes.php';
-}
-
-// Set the timezone for the application process
-$app->setTimezone();
-
-// Check if twig is enabled and bootstrap it
-$app->bootstrapTwig();
+require_once 'setup.php';
 
 /*
  *-------------------------------------------------------------------------
@@ -121,6 +119,7 @@ $app->bootstrapTwig();
  *
  */
 
+$app->register(Valkyrja\Providers\TwigServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 
 /*

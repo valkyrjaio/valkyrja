@@ -20,8 +20,8 @@
 
 $baseDir = realpath(__DIR__ . '/../');
 
-// require_once '../vendor/autoload.php';
-require_once '../bootstrap/autoload.php';
+require_once '../vendor/autoload.php';
+// require_once '../bootstrap/autoload.php';
 
 /*
  *-------------------------------------------------------------------------

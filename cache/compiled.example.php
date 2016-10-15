@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -14,6 +15,7 @@ $routes = [];
 $container = [];
 
 $app->setEnvs($env);
+$app->setTimezone();
 $app->setRoutes($routes);
 $app->setServiceContainer($container);
 
