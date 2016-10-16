@@ -34,8 +34,6 @@ $app = new Valkyrja\Application($baseDir);
 
 require_once 'configuration.php';
 
-dd($app->setConfig('views.twig.dir.cor', 'ppop'));
-
 /*
  *-------------------------------------------------------------------------
  * Bind Base Container Instances
