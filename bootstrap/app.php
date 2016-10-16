@@ -24,6 +24,20 @@ $app = new Valkyrja\Application($baseDir);
 
 /*
  *-------------------------------------------------------------------------
+ * Configure The Application
+ *-------------------------------------------------------------------------
+ *
+ * Configure the application with environment variables, config variables,
+ * routes, and custom service container instances.
+ *
+ */
+
+require_once 'configuration.php';
+
+dd($app->setConfig('views.twig.dir.cor', 'ppop'));
+
+/*
+ *-------------------------------------------------------------------------
  * Bind Base Container Instances
  *-------------------------------------------------------------------------
  *
@@ -112,18 +126,6 @@ $app->instance(
 
 /*
  *-------------------------------------------------------------------------
- * Configure The Application
- *-------------------------------------------------------------------------
- *
- * Configure the application with environment variables, config variables,
- * routes, and custom service container instances.
- *
- */
-
-require_once 'configuration.php';
-
-/*
- *-------------------------------------------------------------------------
  * Service Providers : Providers Of The Services
  *-------------------------------------------------------------------------
  *
@@ -136,6 +138,21 @@ require_once 'configuration.php';
 
 $app->register(Valkyrja\Providers\TwigServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
+
+/*
+ *---------------------------------------------------------------------
+ * Application Routes
+ *---------------------------------------------------------------------
+ *
+ * Match those silly strings in the url that your application's
+ * consumers will tie in to some functionality within
+ * the application to present your consumers with
+ * something other than a blank screen.
+ *
+ */
+
+// Require the routes
+$routes = require_once __DIR__ . '/../routes/routes.php';
 
 /*
  *-------------------------------------------------------------------------

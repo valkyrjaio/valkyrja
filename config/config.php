@@ -14,6 +14,7 @@ return [
     | TODO: Fill with explanation
     |
     */
+
     'app.env'                 => $app->env('app.env', 'production'),
     'app.debug'               => $app->env('app.debug', false),
     'app.url'                 => $app->env('app.url', 'app.com'),
@@ -28,6 +29,7 @@ return [
     | TODO: Fill with explanation
     |
     */
+
     'views.dir'               => $app->env('views.dir', $app->resourcesPath('views/php')),
     'views.dir.compiled'      => $app->env('views.dir.compiled', $app->storagePath('views/php')),
     'views.twig.enabled'      => $app->env('views.twig.enabled', false),
@@ -43,6 +45,7 @@ return [
     | TODO: Fill with explanation
     |
     */
+
     'uploads.dir'             => $app->env('uploads.dir', $app->storagePath('app')),
     'logs.dir'                => $app->env('logs.dir', $app->storagePath('logs')),
 
@@ -54,6 +57,7 @@ return [
     | TODO: Fill with explanation
     |
     */
+
     'models.article'          => \App\Models\Article::class,
     'models.user'             => \App\Models\User::class,
 ];

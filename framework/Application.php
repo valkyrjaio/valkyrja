@@ -204,9 +204,23 @@ class Application extends Container implements ApplicationContract
             return $this->config;
         }
 
-        return isset($this->config[$key])
-            ? $this->config[$key]
-            : $default;
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+
+        $indexes = explode('.', $key);
+        $configItem = $this->config;
+
+        foreach($indexes as $index){
+            if (isset($configItem[$index])) {
+                $configItem = $configItem[$index];
+            }
+            else {
+                return $default;
+            }
+        }
+
+        return $configItem;
     }
 
     /**
@@ -219,7 +233,23 @@ class Application extends Container implements ApplicationContract
      */
     public function setConfig($key, $value)
     {
-        $this->config[$key] = $value;
+        if (isset($this->config[$key])) {
+            $this->config[$key] = $value;
+
+            return $this;
+        }
+
+        $indexes = explode('.', $key);
+        $configItem = &$this->config;
+        $totalIndexes = sizeof($indexes);
+
+        foreach($indexes as $indexKey => $index){
+            if (!isset($configItem[$index])) {
+                $configItem[$index] = $indexKey + 1 === $totalIndexes ? $value : [];
+            }
+
+            $configItem = &$configItem[$index];
+        }
 
         return $this;
     }
