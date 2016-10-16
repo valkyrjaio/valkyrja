@@ -1,9 +1,6 @@
 # TODO List
 Items remaining or todo items
 
-## Config
-Multi level array with dot delimination
-
 ## Request Class
 Need to implement and finish
 
