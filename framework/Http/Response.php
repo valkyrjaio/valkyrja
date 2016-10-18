@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -9,6 +10,7 @@
  *
  * Based off work by Fabien Potencier for symfony/http-foundation/Response.php
  */
+
 namespace Valkyrja\Http;
 
 use \Valkyrja\Contracts\Http\Response as ResponseContract;

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -15,11 +16,11 @@ return [
     |
     */
 
-    'app.env'                 => $app->env('app.env', 'production'),
-    'app.debug'               => $app->env('app.debug', false),
-    'app.url'                 => $app->env('app.url', 'app.com'),
-    'app.timezone'            => $app->env('app.timezone', 'UTC'),
-    'app.version'             => $app->env('app.version', '1.0'),
+    'app.env'      => $app->env('app.env', 'production'),
+    'app.debug'    => $app->env('app.debug', false),
+    'app.url'      => $app->env('app.url', 'app.com'),
+    'app.timezone' => $app->env('app.timezone', 'UTC'),
+    'app.version'  => $app->env('app.version', '1.0'),
 
     /*
     |--------------------------------------------------------------------------
@@ -46,8 +47,8 @@ return [
     |
     */
 
-    'uploads.dir'             => $app->env('uploads.dir', $app->storagePath('app')),
-    'logs.dir'                => $app->env('logs.dir', $app->storagePath('logs')),
+    'uploads.dir' => $app->env('uploads.dir', $app->storagePath('app')),
+    'logs.dir'    => $app->env('logs.dir', $app->storagePath('logs')),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,6 +59,6 @@ return [
     |
     */
 
-    'models.article'          => \App\Models\Article::class,
-    'models.user'             => \App\Models\User::class,
+    'models.article' => \App\Models\Article::class,
+    'models.user'    => \App\Models\User::class,
 ];

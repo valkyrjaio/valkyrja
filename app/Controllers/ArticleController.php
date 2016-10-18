@@ -5,6 +5,11 @@ namespace App\Controllers;
 use App\Models\Article;
 use Valkyrja\Contracts\View\View;
 
+/**
+ * Class ArticleController
+ *
+ * @package App\Controllers
+ */
 class ArticleController extends Controller
 {
     /**

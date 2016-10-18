@@ -2,6 +2,11 @@
 
 namespace App\Models;
 
+/**
+ * Class Article
+ *
+ * @package App\Models
+ */
 class Article
 {
     /**

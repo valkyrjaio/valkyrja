@@ -16,7 +16,8 @@ $container = [];
 
 $app->setEnvs($env);
 $app->setTimezone();
-$app->router()->setRoutes($routes);
+$app->router()
+    ->setRoutes($routes);
 $app->setServiceContainer($container);
 
 // Inline classes for application here (from config/compile.php).

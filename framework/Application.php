@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -7,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Valkyrja;
 
 use Valkyrja\Container\Container;
@@ -211,7 +213,7 @@ class Application extends Container implements ApplicationContract
         $indexes = explode('.', $key);
         $configItem = $this->config;
 
-        foreach($indexes as $index){
+        foreach ($indexes as $index) {
             if (isset($configItem[$index])) {
                 $configItem = $configItem[$index];
             }
@@ -243,9 +245,11 @@ class Application extends Container implements ApplicationContract
         $configItem = &$this->config;
         $totalIndexes = sizeof($indexes);
 
-        foreach($indexes as $indexKey => $index){
+        foreach ($indexes as $indexKey => $index) {
             if (!isset($configItem[$index])) {
-                $configItem[$index] = $indexKey + 1 === $totalIndexes ? $value : [];
+                $configItem[$index] = $indexKey + 1 === $totalIndexes
+                    ? $value
+                    : [];
             }
 
             $configItem = &$configItem[$index];
@@ -341,7 +345,8 @@ class Application extends Container implements ApplicationContract
     public function run()
     {
         // Dispatch the request and get a response
-        $dispatch = $this->router()->dispatch();
+        $dispatch = $this->router()
+                         ->dispatch();
 
         // If the dispatch failed, 404
         if (!$dispatch) {

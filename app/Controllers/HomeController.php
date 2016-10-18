@@ -5,6 +5,11 @@ namespace App\Controllers;
 use Valkyrja\Application;
 use App\Models\User;
 
+/**
+ * Class HomeController
+ *
+ * @package App\Controllers
+ */
 class HomeController extends Controller
 {
     /**
