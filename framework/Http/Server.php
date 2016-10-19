@@ -21,7 +21,7 @@ use Valkyrja\Support\Collection;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Server extends Collection implements ServerContract
 {
@@ -37,10 +37,28 @@ class Server extends Collection implements ServerContract
 
         foreach ($this->collection as $key => $value) {
             if (substr($key, 0, 5) === 'HTTP_' || isset($specialHeaders[$key])) {
-                $headers[$key] = $value;
+                $headers[$this->getHeaderName($key)] = $value;
             }
         }
 
         return $headers;
+    }
+
+    /**
+     * Get the correct HTTP header name.
+     *
+     * @param string $header
+     *
+     * @return string
+     */
+    protected function getHeaderName($header)
+    {
+        if (substr($header, 0, 5) === 'HTTP_') {
+            $header = substr($header, 5);
+        }
+
+        $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower($header))));
+
+        return $header;
     }
 }
