@@ -8,12 +8,13 @@
     "license"     : "MIT",
     "type"        : "project",
     "require"     : {
-        "php"               : ">=7.0",
-        "twig/twig"         : "^1.25",
-        "predis/predis"     : "^1.1",
-        "guzzlehttp/guzzle" : "^6.2",
-        "league/flysystem"  : "^1.0",
-        "monolog/monolog"   : "^1.21"
+        "php"                     : ">=7.0",
+        "symfony/http-foundation" : "^3.1",
+        "twig/twig"               : "^1.25",
+        "predis/predis"           : "^1.1",
+        "guzzlehttp/guzzle"       : "^6.2",
+        "league/flysystem"        : "^1.0",
+        "monolog/monolog"         : "^1.21"
     },
     "autoload"    : {
         "psr-4" : {
@@ -28,5 +29,13 @@
         "post-root-package-install" : [
             "php -r \"file_exists('.env.php') || copy('.env.example.php', '.env.php');\""
         ]
+    },
+    "suggest"     : {
+        "symfony/http-foundation" : "(^3.1).",
+        "twig/twig"               : "(^1.25).",
+        "predis/predis"           : "(^1.1).",
+        "guzzlehttp/guzzle"       : "(^6.2).",
+        "league/flysystem"        : "(^1.0).",
+        "monolog/monolog"         : "(^1.21)."
     }
 }
