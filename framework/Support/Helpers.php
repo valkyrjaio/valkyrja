@@ -9,19 +9,30 @@
  * file that was distributed with this source code.
  */
 
-if (!function_exists('app')) {
+namespace Valkyrja\Support;
+
+use Valkyrja\Application;
+use Valkyrja\Contracts\Support\Helpers as HelpersContract;
+
+/**
+ * Class Helpers
+ *
+ * @package Valkyrja\Support
+ *
+ * @author  Melech Mizrachi
+ */
+class Helpers implements HelpersContract
+{
     /**
      * Return the global $app variable.
      *
      * @return \Valkyrja\Application
      */
-    function app()
+    public static function app()
     {
-        return \Valkyrja\Application::app();
+        return Application::app();
     }
-}
 
-if (!function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
      *
@@ -32,13 +43,11 @@ if (!function_exists('abort')) {
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    function abort($code, $message = '', array $headers = [], $view = null)
+    public static function abort($code, $message = '', array $headers = [], $view = null)
     {
-        app()->abort($code, $message, $headers, $view);
+        static::app()->abort($code, $message, $headers, $view);
     }
-}
 
-if (!function_exists('container')) {
     /**
      * Get an item from the container.
      *
@@ -47,13 +56,11 @@ if (!function_exists('container')) {
      *
      * @return mixed
      */
-    function container($abstract, array $arguments = [])
+    public static function container($abstract, array $arguments = [])
     {
-        return app()->container($abstract, $arguments);
+        return static::app()->container($abstract, $arguments);
     }
-}
 
-if (!function_exists('env')) {
     /**
      * Get an environment variable via key.
      *
@@ -62,13 +69,11 @@ if (!function_exists('env')) {
      *
      * @return mixed
      */
-    function env($key = false, $default = false)
+    public static function env($key = false, $default = false)
     {
-        return app()->env($key, $default);
+        return static::app()->env($key, $default);
     }
-}
 
-if (!function_exists('config')) {
     /**
      * Get a config variable via key.
      *
@@ -77,13 +82,11 @@ if (!function_exists('config')) {
      *
      * @return mixed
      */
-    function config($key = false, $default = false)
+    public static function config($key = false, $default = false)
     {
-        return app()->config($key, $default);
+        return static::app()->config($key, $default);
     }
-}
 
-if (!function_exists('get')) {
     /**
      * Helper function to set a GET addRoute.
      *
@@ -93,15 +96,13 @@ if (!function_exists('get')) {
      *
      * @return void
      */
-    function get($path, $handler, $isDynamic = false)
+    public static function get($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->get($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('post')) {
     /**
      * Helper function to set a POST addRoute.
      *
@@ -111,15 +112,13 @@ if (!function_exists('post')) {
      *
      * @return void
      */
-    function post($path, $handler, $isDynamic = false)
+    public static function post($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->post($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('put')) {
     /**
      * Helper function to set a PUT addRoute.
      *
@@ -129,15 +128,13 @@ if (!function_exists('put')) {
      *
      * @return void
      */
-    function put($path, $handler, $isDynamic = false)
+    public static function put($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->put($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('patch')) {
     /**
      * Helper function to set a PATCH addRoute.
      *
@@ -147,15 +144,13 @@ if (!function_exists('patch')) {
      *
      * @return void
      */
-    function patch($path, $handler, $isDynamic = false)
+    public static function patch($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->patch($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('delete')) {
     /**
      * Helper function to set a DELETE addRoute.
      *
@@ -165,15 +160,13 @@ if (!function_exists('delete')) {
      *
      * @return void
      */
-    function delete($path, $handler, $isDynamic = false)
+    public static function delete($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->delete($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('head')) {
     /**
      * Helper function to set a HEAD addRoute.
      *
@@ -183,15 +176,13 @@ if (!function_exists('head')) {
      *
      * @return void
      */
-    function head($path, $handler, $isDynamic = false)
+    public static function head($path, $handler, $isDynamic = false)
     {
-        app()
+        static::app()
             ->router()
             ->head($path, $handler, $isDynamic);
     }
-}
 
-if (!function_exists('basePath')) {
     /**
      * Helper function to get base path.
      *
@@ -199,13 +190,11 @@ if (!function_exists('basePath')) {
      *
      * @return string
      */
-    function basePath($path = null)
+    public static function basePath($path = null)
     {
-        return app()->basePath($path);
+        return static::app()->basePath($path);
     }
-}
 
-if (!function_exists('appPath')) {
     /**
      * Helper function to get app path.
      *
@@ -213,13 +202,11 @@ if (!function_exists('appPath')) {
      *
      * @return string
      */
-    function appPath($path = null)
+    public static function appPath($path = null)
     {
-        return app()->appPath($path);
+        return static::app()->appPath($path);
     }
-}
 
-if (!function_exists('cachePath')) {
     /**
      * Helper function to get cache path.
      *
@@ -227,13 +214,11 @@ if (!function_exists('cachePath')) {
      *
      * @return string
      */
-    function cachePath($path = null)
+    public static function cachePath($path = null)
     {
-        return app()->cachePath($path);
+        return static::app()->cachePath($path);
     }
-}
 
-if (!function_exists('configPath')) {
     /**
      * Helper function to get config path.
      *
@@ -241,13 +226,11 @@ if (!function_exists('configPath')) {
      *
      * @return string
      */
-    function configPath($path = null)
+    public static function configPath($path = null)
     {
-        return app()->configPath($path);
+        return static::app()->configPath($path);
     }
-}
 
-if (!function_exists('frameworkPath')) {
     /**
      * Helper function to get framework path.
      *
@@ -255,13 +238,11 @@ if (!function_exists('frameworkPath')) {
      *
      * @return string
      */
-    function frameworkPath($path = null)
+    public static function frameworkPath($path = null)
     {
-        return app()->frameworkPath($path);
+        return static::app()->frameworkPath($path);
     }
-}
 
-if (!function_exists('publicPath')) {
     /**
      * Helper function to get public path.
      *
@@ -269,13 +250,11 @@ if (!function_exists('publicPath')) {
      *
      * @return string
      */
-    function publicPath($path = null)
+    public static function publicPath($path = null)
     {
-        return app()->publicPath($path);
+        return static::app()->publicPath($path);
     }
-}
 
-if (!function_exists('resourcesPath')) {
     /**
      * Helper function to get resources path.
      *
@@ -283,13 +262,11 @@ if (!function_exists('resourcesPath')) {
      *
      * @return string
      */
-    function resourcesPath($path = null)
+    public static function resourcesPath($path = null)
     {
-        return app()->resourcesPath($path);
+        return static::app()->resourcesPath($path);
     }
-}
 
-if (!function_exists('storagePath')) {
     /**
      * Helper function to get storage path.
      *
@@ -297,13 +274,11 @@ if (!function_exists('storagePath')) {
      *
      * @return string
      */
-    function storagePath($path = null)
+    public static function storagePath($path = null)
     {
-        return app()->storagePath($path);
+        return static::app()->storagePath($path);
     }
-}
 
-if (!function_exists('testsPath')) {
     /**
      * Helper function to get tests path.
      *
@@ -311,13 +286,11 @@ if (!function_exists('testsPath')) {
      *
      * @return string
      */
-    function testsPath($path = null)
+    public static function testsPath($path = null)
     {
-        return app()->testsPath($path);
+        return static::app()->testsPath($path);
     }
-}
 
-if (!function_exists('vendorPath')) {
     /**
      * Helper function to get vendor path.
      *
@@ -325,13 +298,11 @@ if (!function_exists('vendorPath')) {
      *
      * @return string
      */
-    function vendorPath($path = null)
+    public static function vendorPath($path = null)
     {
-        return app()->vendorPath($path);
+        return static::app()->vendorPath($path);
     }
-}
 
-if (!function_exists('response')) {
     /**
      * Return a new response from the application.
      *
@@ -341,17 +312,15 @@ if (!function_exists('response')) {
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function response($content = '', $status = 200, array $headers = [])
+    public static function response($content = '', $status = 200, array $headers = [])
     {
         if (func_num_args() === 0) {
             return app()->response();
         }
 
-        return app()->response($content, $status, $headers);
+        return static::app()->response($content, $status, $headers);
     }
-}
 
-if (!function_exists('view')) {
     /**
      * Helper function to get a new view.
      *
@@ -360,13 +329,11 @@ if (!function_exists('view')) {
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    function view($template = '', array $variables = [])
+    public static function view($template = '', array $variables = [])
     {
-        return app()->view($template, $variables);
+        return static::app()->view($template, $variables);
     }
-}
 
-if (!function_exists('httpException')) {
     /**
      * Throw an http exception.
      *
@@ -379,7 +346,7 @@ if (!function_exists('httpException')) {
      *
      * @throws \HttpException
      */
-    function httpException(
+    public static function httpException(
         $statusCode,
         $message = null,
         \Exception $previous = null,
@@ -387,23 +354,6 @@ if (!function_exists('httpException')) {
         $view = null,
         $code = 0
     ) {
-        app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
-    }
-}
-
-if (!function_exists('dd')) {
-    /**
-     * Dump the passed variables and end the script.
-     *
-     * @param mixed
-     *  The arguments to dump
-     *
-     * @return void
-     */
-    function dd()
-    {
-        var_dump(func_get_args());
-
-        die(1);
+        static::app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }

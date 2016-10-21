@@ -77,6 +77,18 @@ class Application extends Container implements ApplicationContract
     }
 
     /**
+     * Return the global $app variable.
+     *
+     * @return \Valkyrja\Application
+     */
+    public static function app()
+    {
+        global $app;
+
+        return $app;
+    }
+
+    /**
      * Get the application version.
      *
      * @return string
