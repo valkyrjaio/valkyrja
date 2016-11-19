@@ -13,7 +13,7 @@ if (!function_exists('app')) {
     /**
      * Return the global $app variable.
      *
-     * @return \Valkyrja\Application
+     * @return \Valkyrja\Contracts\Application
      */
     function app()
     {
@@ -49,7 +49,9 @@ if (!function_exists('container')) {
      */
     function container($abstract, array $arguments = [])
     {
-        return app()->container($abstract, $arguments);
+        return app()
+            ->container()
+            ->get($abstract, $arguments);
     }
 }
 

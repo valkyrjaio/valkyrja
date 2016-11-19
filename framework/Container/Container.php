@@ -30,6 +30,18 @@ class Container implements ContainerContract
     protected $serviceContainer = [];
 
     /**
+     * Return the global $container variable.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public static function container() : ContainerContract
+    {
+        global $container;
+
+        return $container;
+    }
+
+    /**
      * Set the service container for dependency injection.
      *
      * @param array $serviceContainer The service container array to set
@@ -50,7 +62,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function instance($abstract, $instance) : void
+    public function instance(string $abstract, $instance) : void
     {
         $this->serviceContainer[$abstract] = $instance;
     }
@@ -63,7 +75,7 @@ class Container implements ContainerContract
      *
      * @return mixed
      */
-    public function container($abstract, array $arguments = []) : mixed
+    public function get(string $abstract, array $arguments = []) : mixed
     {
         // If the abstract is set in the service container
         if (isset($this->serviceContainer[$abstract])) {

@@ -21,6 +21,13 @@ namespace Valkyrja\Contracts\Container;
 interface Container
 {
     /**
+     * Return the global $container variable.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public static function container() : Container;
+
+    /**
      * Set the service container for dependency injection.
      *
      * @param array $serviceContainer The service container array to set
@@ -37,7 +44,7 @@ interface Container
      *
      * @return void
      */
-    public function instance($abstract, $instance) : void;
+    public function instance(string $abstract, $instance) : void;
 
     /**
      * Get an abstract from the container.
@@ -47,5 +54,5 @@ interface Container
      *
      * @return mixed
      */
-    public function container($abstract, array $arguments = []) : mixed;
+    public function get(string $abstract, array $arguments = []) : mixed;
 }

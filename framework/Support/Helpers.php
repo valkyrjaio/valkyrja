@@ -66,7 +66,8 @@ class Helpers implements HelpersContract
     public static function container($abstract, array $arguments = []) : mixed
     {
         return static::app()
-                     ->container($abstract, $arguments);
+                     ->container()
+                     ->get($abstract, $arguments);
     }
 
     /**
@@ -383,7 +384,8 @@ class Helpers implements HelpersContract
         array $headers = [],
         $view = null,
         $code = 0
-    ) : void {
+    ) : void
+    {
         static::app()
               ->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }

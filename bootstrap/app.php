@@ -45,15 +45,17 @@ require_once 'configuration.php';
  *
  */
 
-// TODO: Set container here.
+$container = new Valkyrja\Container\Container();
 
-$app->instance(
+$container->instance(Valkyrja\Application::class, $app);
+
+$container->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
     [
         function (
             $statusCode,
             $message = null,
-            \Exception $previous = null,
+            Exception $previous = null,
             array $headers = [],
             $code = 0
         ) {
@@ -62,7 +64,7 @@ $app->instance(
     ]
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Http\Request::class,
     [
         function () {
@@ -71,7 +73,7 @@ $app->instance(
     ]
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Http\Response::class,
     [
         function ($content = '', $status = 200, $headers = []) {
@@ -80,7 +82,7 @@ $app->instance(
     ]
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Http\JsonResponse::class,
     [
         function ($content = '', $status = 200, $headers = []) {
@@ -89,33 +91,33 @@ $app->instance(
     ]
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Http\ResponseBuilder::class,
-    function () use ($app) {
-        $response = $app->container(Valkyrja\Contracts\Http\Response::class);
-        $view = $app->container(Valkyrja\Contracts\View\View::class);
+    function () use ($container) {
+        $response = $container->get(Valkyrja\Contracts\Http\Response::class);
+        $view = $container->get(Valkyrja\Contracts\View\View::class);
 
         return new Valkyrja\Http\ResponseBuilder($response, $view);
     }
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Http\Router::class,
-    function () use ($app) {
-        $application = $app->container(Valkyrja\Application::class);
+    function () use ($container) {
+        $application = $container->get(Valkyrja\Application::class);
 
         return new Valkyrja\Http\Router($application);
     }
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\Sessions\Session::class,
     function () {
         return new Valkyrja\Sessions\Session();
     }
 );
 
-$app->instance(
+$container->instance(
     Valkyrja\Contracts\View\View::class,
     [
         function ($template = '', array $variables = []) {
