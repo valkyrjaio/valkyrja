@@ -13,6 +13,7 @@ namespace Valkyrja;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
@@ -27,7 +28,7 @@ use Valkyrja\Support\PathHelpers;
  *
  * @author  Melech Mizrachi
  */
-class Application extends Container implements ApplicationContract
+class Application implements ApplicationContract
 {
     use ExceptionHandler;
     use PathHelpers;
@@ -66,6 +67,13 @@ class Application extends Container implements ApplicationContract
      * @var bool
      */
     protected $isCompiled = false;
+
+    /**
+     * The container to use.
+     *
+     * @var \Valkyrja\Contracts\Container\Container
+     */
+    protected $container;
 
     /**
      * Application constructor.
@@ -392,9 +400,38 @@ class Application extends Container implements ApplicationContract
      */
     protected function bootstrapContainer() : void
     {
+        if (is_null($this->container)) {
+            $this->container = new Container;
+        }
+
         /**
          * Set App instance within container.
          */
         $this->instance(Application::class, $this);
+    }
+
+    /**
+     * Set the container to use.
+     *
+     * @param \Valkyrja\Contracts\Container\Container $container
+     *
+     * @return void
+     */
+    public function setContainer(ContainerContract $container) : void
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Set the service container for dependency injection.
+     *
+     * @param string               $abstract The abstract to use as the key
+     * @param \Closure|array|mixed $instance The instance to set
+     *
+     * @return void
+     */
+    public function instance($abstract, $instance) : void
+    {
+        $this->container->instance($abstract, $instance);
     }
 }

@@ -24,7 +24,7 @@ use Valkyrja\Contracts\View\View;
  *
  * @author  Melech Mizrachi
  */
-interface Application extends Container
+interface Application
 {
     /**
      * The Application framework version.
@@ -34,18 +34,18 @@ interface Application extends Container
     const VERSION = 'Valkyrja (1.0.0 Alpha)';
 
     /**
-     * Return the global $app variable.
-     *
-     * @return Application
-     */
-    public static function app() : Application;
-
-    /**
      * Application constructor.
      *
      * @param string $basePath The base path for the application
      */
     public function __construct($basePath);
+
+    /**
+     * Return the global $app variable.
+     *
+     * @return Application
+     */
+    public static function app() : Application;
 
     /**
      * Get the application version.
@@ -308,4 +308,23 @@ interface Application extends Container
      * @return void
      */
     public function register($serviceProvider) : void;
+
+    /**
+     * Set the container to use.
+     *
+     * @param \Valkyrja\Contracts\Container\Container $container
+     *
+     * @return void
+     */
+    public function setContainer(Container $container) : void;
+
+    /**
+     * Set the service container for dependency injection.
+     *
+     * @param string               $abstract The abstract to use as the key
+     * @param \Closure|array|mixed $instance The instance to set
+     *
+     * @return void
+     */
+    public function instance($abstract, $instance) : void;
 }

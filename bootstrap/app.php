@@ -45,6 +45,8 @@ require_once 'configuration.php';
  *
  */
 
+// TODO: Set container here.
+
 $app->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
     [
