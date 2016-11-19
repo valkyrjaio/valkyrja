@@ -13,6 +13,10 @@ namespace Valkyrja;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\View\View;
 use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Support\PathHelpers;
 
@@ -79,9 +83,9 @@ class Application extends Container implements ApplicationContract
     /**
      * Return the global $app variable.
      *
-     * @return \Valkyrja\Application
+     * @return ApplicationContract
      */
-    public static function app()
+    public static function app() : ApplicationContract
     {
         global $app;
 
@@ -93,7 +97,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function version()
+    public function version() : string
     {
         return static::VERSION;
     }
@@ -103,7 +107,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function environment()
+    public function environment() : string
     {
         return $this->config('app.env', 'production');
     }
@@ -113,7 +117,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return string
      */
-    public function debug()
+    public function debug() : string
     {
         return $this->config('app.debug', false);
     }
@@ -123,7 +127,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return bool
      */
-    public function isTwigEnabled()
+    public function isTwigEnabled() : bool
     {
         return $this->config('views.twig.enabled', false);
     }
@@ -133,7 +137,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function setTimezone()
+    public function setTimezone() : void
     {
         date_default_timezone_set($this->config('app.timezone', 'UTC'));
     }
@@ -143,7 +147,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return bool
      */
-    public function isCompiled()
+    public function isCompiled() : bool
     {
         return $this->isCompiled;
     }
@@ -153,7 +157,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function setCompiled()
+    public function setCompiled() : void
     {
         $this->isCompiled = true;
     }
@@ -166,7 +170,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return mixed
      */
-    public function env($key = false, $default = false)
+    public function env($key = false, $default = false) : mixed
     {
         if (!$key) {
             return $this->env;
@@ -183,9 +187,9 @@ class Application extends Container implements ApplicationContract
      * @param string $key   The key to set
      * @param mixed  $value The value to set
      *
-     * @return $this
+     * @return ApplicationContract
      */
-    public function setEnv($key, $value)
+    public function setEnv($key, $value) : ApplicationContract
     {
         $this->env[$key] = $value;
 
@@ -199,7 +203,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function setEnvs(array $env)
+    public function setEnvs(array $env) : void
     {
         $this->env = $env;
     }
@@ -212,7 +216,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return mixed
      */
-    public function config($key = false, $default = false)
+    public function config($key = false, $default = false) : mixed
     {
         if (!$key) {
             return $this->config;
@@ -243,9 +247,9 @@ class Application extends Container implements ApplicationContract
      * @param string $key   The key to set
      * @param mixed  $value The value to set
      *
-     * @return $this
+     * @return ApplicationContract
      */
-    public function setConfig($key, $value)
+    public function setConfig($key, $value) : ApplicationContract
     {
         if (isset($this->config[$key])) {
             $this->config[$key] = $value;
@@ -277,7 +281,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function setConfigVars(array $config)
+    public function setConfigVars(array $config) : void
     {
         $this->config = $config;
     }
@@ -290,9 +294,11 @@ class Application extends Container implements ApplicationContract
      * @param array  $headers [optional] The headers to set
      * @param string $view    [optional] The view template name to use
      *
+     * @return void
+     *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort($code = 404, $message = '', array $headers = [], $view = null)
+    public function abort($code = 404, $message = '', array $headers = [], $view = null) : void
     {
         $this->httpException($code, $message, null, $headers, $view);
     }
@@ -304,20 +310,25 @@ class Application extends Container implements ApplicationContract
      * @param int    $status  [optional] The status code to set
      * @param array  $headers [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
+     * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response($content = '', $status = 200, array $headers = [])
+    public function response($content = '', $status = 200, array $headers = []) : Response
     {
-        /** @var \Valkyrja\Contracts\Http\ResponseBuilder $factory */
-        $factory = $this->container(\Valkyrja\Contracts\Http\ResponseBuilder::class);
-
-        // If no args were passed return the ResponseBuilder
-        if (func_num_args() === 0) {
-            return $factory;
-        }
+        $factory = $this->responseBuilder();
 
         // Otherwise return a new Response using the ResponseBuilder->make() method
         return $factory->make($content, $status, $headers);
+    }
+
+    /**
+     * Return a new response builder from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public function responseBuilder() : ResponseBuilder
+    {
+        // Otherwise return a new Response using the ResponseBuilder->make() method
+        return $this->container(ResponseBuilder::class);
     }
 
     /**
@@ -325,9 +336,9 @@ class Application extends Container implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\Router
      */
-    public function router()
+    public function router() : Router
     {
-        return $this->container(\Valkyrja\Contracts\Http\Router::class);
+        return $this->container(Router::class);
     }
 
     /**
@@ -338,10 +349,10 @@ class Application extends Container implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view($template = '', array $variables = [])
+    public function view($template = '', array $variables = []) : View
     {
         return $this->container(
-            \Valkyrja\Contracts\View\View::class,
+            View::class,
             [
                 $template,
                 $variables,
@@ -354,29 +365,11 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function run()
+    public function run() : void
     {
         // Dispatch the request and get a response
-        $dispatch = $this->router()
-                         ->dispatch();
-
-        // If the dispatch failed, 404
-        if (!$dispatch) {
-            $this->abort(404);
-        }
-
-        // If the dispatch is a Response, send it
-        if ($dispatch instanceof \Valkyrja\Contracts\Http\Response) {
-            $dispatch->send();
-        }
-        // If the dispatch is a View, render it
-        else if ($dispatch instanceof \Valkyrja\Contracts\View\View) {
-            echo (string) $dispatch->render();
-        }
-        // Otherwise echo it out as a string
-        else {
-            echo (string) $dispatch;
-        }
+        $this->router()
+             ->dispatch();
     }
 
     /**
@@ -386,7 +379,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    public function register($serviceProvider)
+    public function register($serviceProvider) : void
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
@@ -397,7 +390,7 @@ class Application extends Container implements ApplicationContract
      *
      * @return void
      */
-    protected function bootstrapContainer()
+    protected function bootstrapContainer() : void
     {
         /**
          * Set App instance within container.

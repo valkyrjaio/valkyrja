@@ -22,3 +22,5 @@ Implement this...
 ## Add CLI capability
 
 ## PHP Unit Testing
+
+## change config/env to classes

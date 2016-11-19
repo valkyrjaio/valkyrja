@@ -11,7 +11,10 @@
 
 namespace Valkyrja\Exceptions;
 
+use ErrorException;
+use Exception;
 use Valkyrja\Contracts\Exceptions\HttpException;
+use Valkyrja\Contracts\Http\Response;
 
 /**
  * Class ExceptionHandler
@@ -27,7 +30,7 @@ trait ExceptionHandler
      *
      * @return void
      */
-    protected function bootstrapHandler()
+    protected function bootstrapHandler() : void
     {
         error_reporting(-1);
 
@@ -70,7 +73,7 @@ trait ExceptionHandler
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = [])
+    public function handleError($level, $message, $file = '', $line = 0, $context = []) : void
     {
         if (error_reporting() & $level) {
             throw new \ErrorException($message, 0, $level, $file, $line);
@@ -88,7 +91,7 @@ trait ExceptionHandler
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function handleException($e)
+    public function handleException($e) : Response
     {
         if (!$e instanceof \Exception) {
             $e = new \Exception($e);
@@ -122,7 +125,7 @@ trait ExceptionHandler
      *
      * @return void
      */
-    public function handleShutdown()
+    public function handleShutdown() : void
     {
         if (!is_null($error = error_get_last())
             && in_array(
@@ -149,16 +152,18 @@ trait ExceptionHandler
      * @param string     $view       [optional] The view template name to use
      * @param int        $code       [optional] The Exception code
      *
+     * @return void
+     *
      * @throws HttpException
      */
     public function httpException(
         $statusCode,
         $message = null,
-        \Exception $previous = null,
+        Exception $previous = null,
         array $headers = [],
         $view = null,
         $code = 0
-    ) {
+    ) : void {
         throw $this->container(
             HttpException::class,
             [
@@ -179,9 +184,9 @@ trait ExceptionHandler
      *
      * @return \Exception
      */
-    protected function fatalExceptionFromError(array $error)
+    protected function fatalExceptionFromError(array $error) : Exception
     {
-        return new \ErrorException(
+        return new ErrorException(
             $error['message'], 0, $error['type'], $error['file'], $error['line']
         );
     }

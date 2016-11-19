@@ -24,19 +24,28 @@ use Valkyrja\Contracts\View\TwigView as TwigViewContract;
 class TwigView extends View implements TwigViewContract
 {
     /**
+     * The twig file extension.
+     *
      * @var string
      */
     protected $fileExtension = '.twig';
 
     /**
+     * The twig environment.
+     *
      * @var Twig_Environment
      */
     protected $twig;
 
     /**
-     * @inheritdoc
+     * Make a new View.
+     *
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
+     *
+     * @return View
      */
-    public function make($template = '', array $variables = [])
+    public function make($template = '', array $variables = []) : View
     {
         $view = new static($template, $variables);
 
@@ -46,26 +55,38 @@ class TwigView extends View implements TwigViewContract
     }
 
     /**
-     * @inheritdoc
+     * Get the template directory.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
      */
-    public function getTemplateDir($path = null)
+    public function getTemplateDir($path = null) : string
     {
         return $path
             ?: '/';
     }
 
     /**
-     * @inheritdoc
+     * Set the twig environment.
+     *
+     * @param Twig_Environment $twig The twig environment
+     *
+     * @return void
      */
-    public function setTwig(Twig_Environment $twig)
+    public function setTwig(Twig_Environment $twig) : void
     {
         $this->twig = $twig;
     }
 
     /**
-     * @inheritdoc
+     * Render the templates and view.
+     *
+     * @param array $variables [optional] The variables to set
+     *
+     * @return string
      */
-    public function render(array $variables = [])
+    public function render(array $variables = []) : string
     {
         return $this->twig->render($this->getTemplatePath(), $this->variables);
     }

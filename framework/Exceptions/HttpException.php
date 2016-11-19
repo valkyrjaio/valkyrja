@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Exceptions;
 
+use Exception;
+use RuntimeException;
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
 
 /**
@@ -20,7 +22,7 @@ use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
  *
  * @author  Melech Mizrachi
  */
-class HttpException extends \RuntimeException implements HttpExceptionContract
+class HttpException extends RuntimeException implements HttpExceptionContract
 {
     /**
      * The status code for this exception.
@@ -44,12 +46,21 @@ class HttpException extends \RuntimeException implements HttpExceptionContract
     protected $view;
 
     /**
-     * @inheritdoc
+     * HttpException constructor.
+     *
+     * @link http://php.net/manual/en/exception.construct.php
+     *
+     * @param int        $statusCode The status code to use
+     * @param string     $message    [optional] The Exception message to throw
+     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
+     * @param array      $headers    [optional] The headers to send
+     * @param string     $view       [optional] The view template name to use
+     * @param int        $code       [optional] The Exception code
      */
     public function __construct(
         $statusCode,
         $message = null,
-        \Exception $previous = null,
+        Exception $previous = null,
         array $headers = [],
         $view = null,
         $code = 0
@@ -62,25 +73,31 @@ class HttpException extends \RuntimeException implements HttpExceptionContract
     }
 
     /**
-     * @inheritdoc
+     * Get the status code for this exception.
+     *
+     * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode() : int
     {
         return $this->statusCode;
     }
 
     /**
-     * @inheritdoc
+     * Get the headers set for this exception.
+     *
+     * @return array
      */
-    public function getHeaders()
+    public function getHeaders() : array
     {
         return $this->headers;
     }
 
     /**
-     * @inheritdoc
+     * Get the headers set for this exception.
+     *
+     * @return array
      */
-    public function getView()
+    public function getView() : array
     {
         return $this->view;
     }

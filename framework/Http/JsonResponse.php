@@ -54,7 +54,11 @@ class JsonResponse extends Response implements JsonResponseContract
     protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
-     * @inheritdoc
+     * Response constructor.
+     *
+     * @param mixed $data    [optional] The response content, see setContent()
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
      */
     public function __construct($data = null, $status = 200, $headers = [])
     {
@@ -70,9 +74,15 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * @inheritdoc
+     * Sets the JSONP callback.
+     *
+     * @param string|null $callback [optional] The JSONP callback or null to use none
+     *
+     * @return JsonResponseContract
+     *
+     * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null)
+    public function setCallback($callback = null) : JsonResponseContract
     {
         if (null !== $callback) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
@@ -92,9 +102,15 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * @inheritdoc
+     * Sets a raw string containing a JSON document to be sent.
+     *
+     * @param string $json The json to set
+     *
+     * @return JsonResponseContract
+     *
+     * @throws \InvalidArgumentException
      */
-    public function setJson($json)
+    public function setJson($json) : JsonResponseContract
     {
         $this->data = $json;
 
@@ -102,11 +118,16 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * @inheritdoc
+     * Sets the data to be sent as JSON.
+     *
+     * @param mixed $data [optional] The data to set
+     *
+     * @return JsonResponseContract
+     *
+     * @throws \InvalidArgumentException
      */
-    public function setData($data = [])
+    public function setData($data = []) : JsonResponseContract
     {
-
         $data = json_encode($data, $this->encodingOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
@@ -117,17 +138,22 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * @inheritdoc
+     * Returns options used while encoding data to JSON.
+     *
+     * @return int
      */
-    public function getEncodingOptions()
+    public function getEncodingOptions() : int
     {
         return $this->encodingOptions;
     }
-
     /**
-     * @inheritdoc
+     * Sets options used while encoding data to JSON.
+     *
+     * @param int $encodingOptions The encoding options to set
+     *
+     * @return JsonResponseContract
      */
-    public function setEncodingOptions($encodingOptions)
+    public function setEncodingOptions($encodingOptions) : JsonResponseContract
     {
         $this->encodingOptions = (int) $encodingOptions;
 
@@ -139,7 +165,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @return JsonResponse
      */
-    protected function update()
+    protected function update() : JsonResponse
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.

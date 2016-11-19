@@ -29,5 +29,5 @@ interface TwigView extends View
      *
      * @return void
      */
-    public function setTwig(Twig_Environment $twig);
+    public function setTwig(Twig_Environment $twig) : void;
 }

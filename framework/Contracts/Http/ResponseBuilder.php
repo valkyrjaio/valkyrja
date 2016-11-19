@@ -25,8 +25,8 @@ interface ResponseBuilder
     /**
      * ResponseBuilder constructor.
      *
-     * @param View     $view     The View class to use
-     * @param Response $response The Response class to use
+     * @param View                              $view     The View class to use
+     * @param \Valkyrja\Contracts\Http\Response $response The Response class to use
      */
     public function __construct(Response $response, View $view);
 

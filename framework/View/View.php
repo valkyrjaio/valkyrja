@@ -56,7 +56,10 @@ class View implements ViewContract
     protected $variables = [];
 
     /**
-     * @inheritdoc
+     * View constructor.
+     *
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
      */
     public function __construct($template = '', array $variables = [])
     {
@@ -66,49 +69,75 @@ class View implements ViewContract
     }
 
     /**
-     * @inheritdoc
+     * Make a new View.
+     *
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
+     *
+     * @return View
      */
-    public function make($template = '', array $variables = [])
+    public function make($template = '', array $variables = []) : View
     {
         return new static($template, $variables);
     }
 
     /**
-     * @inheritdoc
+     * Set the master template.
+     *
+     * @param string $template The master template to set
+     *
+     * @return void
      */
-    public function setMasterTemplate($template)
+    public function setMasterTemplate($template) : void
     {
         $this->masterTemplate = $template;
     }
 
     /**
-     * @inheritdoc
+     * Set the template.
+     *
+     * @param string $template The template to set
+     *
+     * @return void
      */
-    public function setTemplate($template)
+    public function setTemplate($template) : void
     {
         $this->template = $template;
     }
 
     /**
-     * @inheritdoc
+     * Set the variables
+     *
+     * @param array $variables [optional] The variables to set
+     *
+     * @return void
      */
-    public function setVariables(array $variables = [])
+    public function setVariables(array $variables = []) : void
     {
         $this->variables = array_merge($this->variables, $variables);
     }
 
     /**
-     * @inheritdoc
+     * Set a single variable.
+     *
+     * @param string $key   The variable key to set
+     * @param mixed  $value The value to set
+     *
+     * @return void
      */
-    public function variable($key, $value)
+    public function variable($key, $value) : void
     {
         $this->variables[$key] = $value;
     }
 
     /**
-     * @inheritdoc
+     * Get the template directory.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
      */
-    public function getTemplateDir($path = null)
+    public function getTemplateDir($path = null) : string
     {
         return $this->templateDir . ($path
             ? app()::DIRECTORY_SEPARATOR . $path
@@ -116,49 +145,67 @@ class View implements ViewContract
     }
 
     /**
-     * @inheritdoc
+     * Set the template directory.
+     *
+     * @param string $templateDir The path to set
+     *
+     * @return void
      */
-    public function setTemplateDir($templateDir)
+    public function setTemplateDir($templateDir) : void
     {
         $this->templateDir = $templateDir;
     }
 
     /**
-     * @inheritdoc
+     * Get the file extension.
+     *
+     * @return string
      */
-    public function getFileExtension()
+    public function getFileExtension() : string
     {
         return $this->fileExtension;
     }
 
     /**
-     * @inheritdoc
+     * Set the file extension.
+     *
+     * @param string $extension The extension to set
+     *
+     * @return void
      */
-    public function setFileExtension($extension)
+    public function setFileExtension($extension) : void
     {
         $this->fileExtension = $extension;
     }
 
     /**
-     * @inheritdoc
+     * Get the template path.
+     *
+     * @return string
      */
-    public function getTemplatePath()
+    public function getTemplatePath() : string
     {
         return $this->getTemplateDir($this->template . $this->getFileExtension());
     }
 
     /**
-     * @inheritdoc
+     * Get the master template path.
+     *
+     * @return string
      */
-    public function getMasterTemplatePath()
+    public function getMasterTemplatePath() : string
     {
         return $this->getTemplateDir($this->masterTemplate . $this->getFileExtension());
     }
 
     /**
-     * @inheritdoc
+     * Render the templates and view.
+     *
+     * @param array $variables [optional] The variables to set
+     *
+     * @return string
      */
-    public function render(array $variables = [])
+    public function render(array $variables = []) : string
     {
         extract(array_merge($this->variables, $variables));
 

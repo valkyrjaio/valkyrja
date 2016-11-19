@@ -11,6 +11,11 @@
 
 namespace Valkyrja\Contracts\Support;
 
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\View\View;
+
 /**
  * Interface Helpers
  *
@@ -23,9 +28,9 @@ interface Helpers
     /**
      * Return the global $app variable.
      *
-     * @return \Valkyrja\Application
+     * @return \Valkyrja\Contracts\Application
      */
-    public static function app();
+    public static function app() : Application;
 
     /**
      * Throw an HttpException with the given data.
@@ -35,9 +40,11 @@ interface Helpers
      * @param array  $headers [optional] The headers to set
      * @param string $view    [optional] The view template name to use
      *
+     * @return void
+     *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort($code, $message = '', array $headers = [], $view = null);
+    public static function abort($code, $message = '', array $headers = [], $view = null) : void;
 
     /**
      * Get an item from the container.
@@ -47,7 +54,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function container($abstract, array $arguments = []);
+    public static function container($abstract, array $arguments = []) : mixed;
 
     /**
      * Get an environment variable via key.
@@ -57,7 +64,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function env($key = false, $default = false);
+    public static function env($key = false, $default = false) : mixed;
 
     /**
      * Get a config variable via key.
@@ -67,7 +74,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function config($key = false, $default = false);
+    public static function config($key = false, $default = false) : mixed;
 
     /**
      * Helper function to set a GET addRoute.
@@ -78,7 +85,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function get($path, $handler, $isDynamic = false);
+    public static function get($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -89,7 +96,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function post($path, $handler, $isDynamic = false);
+    public static function post($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -100,7 +107,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function put($path, $handler, $isDynamic = false);
+    public static function put($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -111,7 +118,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function patch($path, $handler, $isDynamic = false);
+    public static function patch($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -122,7 +129,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function delete($path, $handler, $isDynamic = false);
+    public static function delete($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -133,7 +140,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function head($path, $handler, $isDynamic = false);
+    public static function head($path, $handler, $isDynamic = false) : void;
 
     /**
      * Helper function to get base path.
@@ -142,7 +149,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function basePath($path = null);
+    public static function basePath($path = null) : string;
 
     /**
      * Helper function to get app path.
@@ -151,7 +158,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function appPath($path = null);
+    public static function appPath($path = null) : string;
 
     /**
      * Helper function to get cache path.
@@ -160,7 +167,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function cachePath($path = null);
+    public static function cachePath($path = null) : string;
 
     /**
      * Helper function to get config path.
@@ -169,7 +176,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function configPath($path = null);
+    public static function configPath($path = null) : string;
 
     /**
      * Helper function to get framework path.
@@ -178,7 +185,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function frameworkPath($path = null);
+    public static function frameworkPath($path = null) : string;
 
     /**
      * Helper function to get public path.
@@ -187,7 +194,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function publicPath($path = null);
+    public static function publicPath($path = null) : string;
 
     /**
      * Helper function to get resources path.
@@ -196,7 +203,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function resourcesPath($path = null);
+    public static function resourcesPath($path = null) : string;
 
     /**
      * Helper function to get storage path.
@@ -205,7 +212,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function storagePath($path = null);
+    public static function storagePath($path = null) : string;
 
     /**
      * Helper function to get tests path.
@@ -214,7 +221,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function testsPath($path = null);
+    public static function testsPath($path = null) : string;
 
     /**
      * Helper function to get vendor path.
@@ -223,7 +230,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function vendorPath($path = null);
+    public static function vendorPath($path = null) : string;
 
     /**
      * Return a new response from the application.
@@ -232,9 +239,16 @@ interface Helpers
      * @param int    $status  [optional] The status code to set
      * @param array  $headers [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
+     * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function response($content = '', $status = 200, array $headers = []);
+    public static function response($content = '', $status = 200, array $headers = []) : Response;
+
+    /**
+     * Return a new response from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public static function responseBuilder() : ResponseBuilder;
 
     /**
      * Helper function to get a new view.
@@ -244,7 +258,7 @@ interface Helpers
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public static function view($template = '', array $variables = []);
+    public static function view($template = '', array $variables = []) : View;
 
     /**
      * Throw an http exception.
@@ -255,6 +269,8 @@ interface Helpers
      * @param array      $headers    [optional] The headers to send
      * @param string     $view       [optional] The view template name to use
      * @param int        $code       [optional] The Exception code
+     *
+     * @return void
      *
      * @throws \HttpException
      */

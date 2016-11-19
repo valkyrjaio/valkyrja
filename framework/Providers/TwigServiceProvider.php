@@ -11,7 +11,11 @@
 
 namespace Valkyrja\Providers;
 
+use Twig_Environment;
+use Twig_Loader_Filesystem;
+use Valkyrja\Contracts\View\View;
 use Valkyrja\Support\ServiceProvider;
+use Valkyrja\View\TwigView;
 
 /**
  * Class TwigServiceProvider
@@ -23,9 +27,11 @@ use Valkyrja\Support\ServiceProvider;
 class TwigServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritdoc
+     * Publish the service provider.
+     *
+     * @return void
      */
-    public function publish()
+    public function publish() : void
     {
         // Check if twig is enabled in env
         if ($this->app->isTwigEnabled()) {
@@ -45,11 +51,11 @@ class TwigServiceProvider extends ServiceProvider
              * Set Twig_Environment instance within container.
              */
             $this->app->instance(
-                \Twig_Environment::class,
+                Twig_Environment::class,
                 function () {
-                    $loader = new \Twig_Loader_Filesystem($this->app->config('views.dir'));
+                    $loader = new Twig_Loader_Filesystem($this->app->config('views.dir'));
 
-                    $twig = new \Twig_Environment(
+                    $twig = new Twig_Environment(
                         $loader, [
                                    'cache'   => $this->app->config('views.dir.compiled'),
                                    'debug'   => $this->app->debug(),
@@ -74,12 +80,12 @@ class TwigServiceProvider extends ServiceProvider
              * Reset View instance within container for TwigView.
              */
             $this->app->instance(
-                \Valkyrja\Contracts\View\View::class,
+                View::class,
                 [
                     function ($template = '', array $variables = []) {
-                        $view = new \Valkyrja\View\TwigView($template, $variables);
+                        $view = new TwigView($template, $variables);
 
-                        $view->setTwig($this->app->container(\Twig_Environment::class));
+                        $view->setTwig($this->app->container(Twig_Environment::class));
 
                         return $view;
                     },

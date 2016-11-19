@@ -38,7 +38,7 @@ interface JsonResponse extends Response
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null);
+    public function setCallback($callback = null) : JsonResponse;
 
     /**
      * Sets a raw string containing a JSON document to be sent.
@@ -49,7 +49,7 @@ interface JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      */
-    public function setJson($json);
+    public function setJson($json) : JsonResponse;
 
     /**
      * Sets the data to be sent as JSON.
@@ -60,14 +60,14 @@ interface JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      */
-    public function setData($data = []);
+    public function setData($data = []) : JsonResponse;
 
     /**
      * Returns options used while encoding data to JSON.
      *
      * @return int
      */
-    public function getEncodingOptions();
+    public function getEncodingOptions() : int;
 
     /**
      * Sets options used while encoding data to JSON.
@@ -76,5 +76,5 @@ interface JsonResponse extends Response
      *
      * @return JsonResponse
      */
-    public function setEncodingOptions($encodingOptions);
+    public function setEncodingOptions($encodingOptions) : JsonResponse;
 }

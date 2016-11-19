@@ -34,7 +34,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function basePath($path = null)
+    public function basePath($path = null) : string
     {
         return $this->basePath . ($path
             ? static::DIRECTORY_SEPARATOR . $path
@@ -48,7 +48,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function appPath($path = null)
+    public function appPath($path = null) : string
     {
         return $this->basePath(
             'app' . ($path
@@ -64,7 +64,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function cachePath($path = null)
+    public function cachePath($path = null) : string
     {
         return $this->basePath(
             'cache' . ($path
@@ -80,7 +80,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function configPath($path = null)
+    public function configPath($path = null) : string
     {
         return $this->basePath(
             'config' . ($path
@@ -96,7 +96,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function frameworkPath($path = null)
+    public function frameworkPath($path = null) : string
     {
         return $this->basePath(
             'framework' . ($path
@@ -112,7 +112,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function publicPath($path = null)
+    public function publicPath($path = null) : string
     {
         return $this->basePath(
             'public' . ($path
@@ -128,7 +128,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function resourcesPath($path = null)
+    public function resourcesPath($path = null) : string
     {
         return $this->basePath(
             'resources' . ($path
@@ -144,7 +144,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function storagePath($path = null)
+    public function storagePath($path = null) : string
     {
         return $this->basePath(
             'storage' . ($path
@@ -160,7 +160,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function testsPath($path = null)
+    public function testsPath($path = null) : string
     {
         return $this->basePath(
             'tests' . ($path
@@ -176,7 +176,7 @@ trait PathHelpers
      *
      * @return string
      */
-    public function vendorPath($path = null)
+    public function vendorPath($path = null) : string
     {
         return $this->basePath(
             'vendor' . ($path

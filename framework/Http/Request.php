@@ -13,6 +13,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Contracts\Http\Cookies as CookiesContract;
+use Valkyrja\Contracts\Support\Collection as CollectionContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Support\Collection;
 
@@ -227,7 +229,7 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ) {
+    ) : void {
         $this->setQuery($query)
              ->setRequest($request)
              ->setAttributes($attributes)
@@ -252,9 +254,9 @@ class Request implements RequestContract
     /**
      * Creates a new request with values from PHP's super globals.
      *
-     * @return Request A new request
+     * @return RequestContract A new request
      */
-    public static function createFromGlobals()
+    public static function createFromGlobals() : RequestContract
     {
         // With the php's bug #66606, the php's built-in web server
         // stores the Content-Type and Content-Length header values in
@@ -294,7 +296,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Contracts\Support\Collection
      */
-    public function query()
+    public function query() : CollectionContract
     {
         if (!$this->query) {
             $this->setQuery();
@@ -308,9 +310,9 @@ class Request implements RequestContract
      *
      * @param array $query
      *
-     * @return $this
+     * @return Request
      */
-    public function setQuery(array $query = [])
+    public function setQuery(array $query = []) : Request
     {
         $this->query = new Collection($query);
 
@@ -322,7 +324,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Contracts\Support\Collection
      */
-    public function request()
+    public function request() : CollectionContract
     {
         if (!$this->request) {
             $this->setRequest();
@@ -336,9 +338,9 @@ class Request implements RequestContract
      *
      * @param array $request
      *
-     * @return $this
+     * @return Request
      */
-    public function setRequest(array $request = [])
+    public function setRequest(array $request = []) : Request
     {
         $this->request = new Collection($request);
 
@@ -350,7 +352,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Contracts\Support\Collection
      */
-    public function attributes()
+    public function attributes() : CollectionContract
     {
         if (!$this->attributes) {
             $this->setAttributes();
@@ -364,9 +366,9 @@ class Request implements RequestContract
      *
      * @param array $attributes
      *
-     * @return $this
+     * @return Request
      */
-    public function setAttributes(array $attributes = [])
+    public function setAttributes(array $attributes = []) : Request
     {
         $this->attributes = new Collection($attributes);
 
@@ -378,7 +380,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Contracts\Http\Cookies
      */
-    public function cookies()
+    public function cookies() : CookiesContract
     {
         if (!$this->cookies) {
             $this->setCookies();
@@ -392,9 +394,9 @@ class Request implements RequestContract
      *
      * @param array $cookies
      *
-     * @return $this
+     * @return Request
      */
-    public function setCookies(array $cookies = [])
+    public function setCookies(array $cookies = []) : Request
     {
         $this->cookies = new Cookies($cookies);
 
@@ -420,7 +422,7 @@ class Request implements RequestContract
      *
      * @param array $files
      *
-     * @return $this
+     * @return Request
      */
     public function setFiles(array $files = [])
     {
@@ -448,7 +450,7 @@ class Request implements RequestContract
      *
      * @param array $server
      *
-     * @return $this
+     * @return Request
      */
     public function setServer(array $server = [])
     {
@@ -476,7 +478,7 @@ class Request implements RequestContract
      *
      * @param array $headers
      *
-     * @return $this
+     * @return Request
      */
     public function setHeaders(array $headers = [])
     {
@@ -505,9 +507,9 @@ class Request implements RequestContract
      *
      * @param string $content
      *
-     * @return $this
+     * @return Request
      */
-    public function setContent($content = null)
+    public function setContent(string $content = null) : Request
     {
         $this->content = $content;
 
@@ -529,9 +531,9 @@ class Request implements RequestContract
      *
      * @param array $languages
      *
-     * @return $this
+     * @return Request
      */
-    public function setLanguages(array $languages = [])
+    public function setLanguages(array $languages = []) : Request
     {
         $this->languages = $languages;
 
@@ -553,9 +555,9 @@ class Request implements RequestContract
      *
      * @param array $charsets
      *
-     * @return $this
+     * @return Request
      */
-    public function setCharsets(array $charsets = [])
+    public function setCharsets(array $charsets = []) : Request
     {
         $this->charsets = $charsets;
 
@@ -577,9 +579,9 @@ class Request implements RequestContract
      *
      * @param array $encodings
      *
-     * @return $this
+     * @return Request
      */
-    public function setEncodings(array $encodings = [])
+    public function setEncodings(array $encodings = []) : Request
     {
         $this->encodings = $encodings;
 
@@ -601,9 +603,9 @@ class Request implements RequestContract
      *
      * @param array $acceptableContentTypes
      *
-     * @return $this
+     * @return Request
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = [])
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []) : Request
     {
         $this->acceptableContentTypes = $acceptableContentTypes;
 
@@ -642,6 +644,52 @@ class Request implements RequestContract
     }
 
     /**
+     * Gets the Session.
+     *
+     * @return SessionInterface The session
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * Whether the request contains a Session which was started in one of the
+     * previous requests.
+     *
+     * @return bool
+     */
+    public function hasPreviousSession()
+    {
+        // the check for $this->session avoids malicious users trying to fake a session cookie with proper name
+        return $this->hasSession() && $this->cookies->has($this->session->getName());
+    }
+
+    /**
+     * Whether the request contains a Session object.
+     *
+     * This method does not give any information about the state of the session object,
+     * like whether the session is started or not. It is just a way to check if this Request
+     * is associated with a Session instance.
+     *
+     * @return bool true when the Request contains a Session object, false otherwise
+     */
+    public function hasSession()
+    {
+        return null !== $this->session;
+    }
+
+    /**
+     * Sets the Session.
+     *
+     * @param SessionInterface $session The Session
+     */
+    public function setSession(SessionInterface $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
      * Clones the current request.
      *
      * Note that the session is not cloned as duplicated requests
@@ -656,5 +704,24 @@ class Request implements RequestContract
         $this->files = clone $this->files;
         $this->server = clone $this->server;
         $this->headers = clone $this->headers;
+    }
+
+    /**
+     * Returns the request as a string.
+     *
+     * @return string The request
+     */
+    public function __toString() : string
+    {
+        try {
+            $content = $this->getContent();
+        } catch (\LogicException $e) {
+            return trigger_error($e, E_USER_ERROR);
+        }
+
+        return
+            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL'))."\r\n".
+            $this->headers."\r\n".
+            $content;
     }
 }

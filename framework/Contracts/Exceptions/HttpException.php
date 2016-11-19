@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Exceptions;
 
+use Exception;
+
 /**
  * Interface HttpException
  *
@@ -35,7 +37,7 @@ interface HttpException
     public function __construct(
         $statusCode,
         $message = null,
-        \Exception $previous = null,
+        Exception $previous = null,
         array $headers = [],
         $view = null,
         $code = 0
@@ -46,19 +48,19 @@ interface HttpException
      *
      * @return int
      */
-    public function getStatusCode();
+    public function getStatusCode() : int;
 
     /**
      * Get the headers set for this exception.
      *
      * @return array
      */
-    public function getHeaders();
+    public function getHeaders() : array;
 
     /**
      * Get the headers set for this exception.
      *
      * @return array
      */
-    public function getView();
+    public function getView() : array;
 }

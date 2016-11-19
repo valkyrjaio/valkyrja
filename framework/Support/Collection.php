@@ -47,9 +47,9 @@ class Collection implements CollectionContract
      * @param string $key
      * @param mixed  $default
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function get($key, $default = false)
+    public function get($key, $default = false) : mixed
     {
         return $this->has($key)
             ? $this->collection[$key]
@@ -63,7 +63,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function has($key)
+    public function has($key) : bool
     {
         return isset($this->collection[$key]);
     }
@@ -75,7 +75,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function exists($key)
+    public function exists($key) : bool
     {
         return array_key_exists($key, $this->collection);
     }
@@ -86,9 +86,9 @@ class Collection implements CollectionContract
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return CollectionContract
      */
-    public function set($key, $value)
+    public function set($key, $value) : CollectionContract
     {
         $this->collection[$key] = $value;
 
@@ -100,9 +100,9 @@ class Collection implements CollectionContract
      *
      * @param string $key
      *
-     * @return $this
+     * @return CollectionContract
      */
-    public function remove($key)
+    public function remove($key) : CollectionContract
     {
         if (!$this->has($key)) {
             return $this;
@@ -118,7 +118,7 @@ class Collection implements CollectionContract
      *
      * @return array
      */
-    public function all()
+    public function all() : array
     {
         return $this->collection;
     }
@@ -128,9 +128,9 @@ class Collection implements CollectionContract
      *
      * @param array $collection
      *
-     * @return $this
+     * @return CollectionContract
      */
-    public function setAll(array $collection)
+    public function setAll(array $collection) : CollectionContract
     {
         $this->collection = $collection;
 
@@ -142,7 +142,7 @@ class Collection implements CollectionContract
      *
      * @return array
      */
-    public function keys()
+    public function keys() : array
     {
         return array_keys($this->collection);
     }
@@ -152,7 +152,7 @@ class Collection implements CollectionContract
      *
      * @return int
      */
-    public function count()
+    public function count() : int
     {
         return count($this->collection);
     }
@@ -162,9 +162,9 @@ class Collection implements CollectionContract
      *
      * @param string $key
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function __get($key)
+    public function __get($key) : mixed
     {
         return $this->get($key);
     }
@@ -176,7 +176,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function __isset($key)
+    public function __isset($key) : bool
     {
         return $this->has($key);
     }
@@ -187,9 +187,9 @@ class Collection implements CollectionContract
      * @param string $key
      * @param mixed  $value
      *
-     * @return \Valkyrja\Support\Collection
+     * @return CollectionContract
      */
-    public function __set($key, $value)
+    public function __set($key, $value) : CollectionContract
     {
         return $this->set($key, $value);
     }
@@ -199,9 +199,9 @@ class Collection implements CollectionContract
      *
      * @param string $key
      *
-     * @return \Valkyrja\Support\Collection
+     * @return CollectionContract
      */
-    public function __unset($key)
+    public function __unset($key) : CollectionContract
     {
         return $this->remove($key);
     }
@@ -211,7 +211,7 @@ class Collection implements CollectionContract
      *
      * @return string
      */
-    public function __toString()
+    public function __toString() : string
     {
         return json_encode($this->collection);
     }

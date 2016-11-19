@@ -27,7 +27,7 @@ interface Container
      *
      * @return void
      */
-    public function setServiceContainer(array $serviceContainer);
+    public function setServiceContainer(array $serviceContainer) : void;
 
     /**
      * Set the service container for dependency injection.
@@ -37,7 +37,7 @@ interface Container
      *
      * @return void
      */
-    public function instance($abstract, $instance);
+    public function instance($abstract, $instance) : void;
 
     /**
      * Get an abstract from the container.
@@ -47,5 +47,5 @@ interface Container
      *
      * @return mixed
      */
-    public function container($abstract, array $arguments = []);
+    public function container($abstract, array $arguments = []) : mixed;
 }

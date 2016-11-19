@@ -35,9 +35,9 @@ interface Collection
      * @param string $key
      * @param mixed  $default
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function get($key, $default = false);
+    public function get($key, $default = false) : mixed;
 
     /**
      * Determine if an item is in the collection.
@@ -46,7 +46,7 @@ interface Collection
      *
      * @return bool
      */
-    public function has($key);
+    public function has($key) : bool;
 
     /**
      * Determine if an item exists in the collection.
@@ -55,7 +55,7 @@ interface Collection
      *
      * @return bool
      */
-    public function exists($key);
+    public function exists($key) : bool;
 
     /**
      * Set a new item into the collection.
@@ -63,57 +63,57 @@ interface Collection
      * @param string $key
      * @param mixed  $value
      *
-     * @return $this
+     * @return Collection
      */
-    public function set($key, $value);
+    public function set($key, $value) : Collection;
 
     /**
      * Remove an item from the collection.
      *
      * @param string $key
      *
-     * @return $this
+     * @return Collection
      */
-    public function remove($key);
+    public function remove($key) : Collection;
 
     /**
      * Get all the items in the collection.
      *
      * @return array
      */
-    public function all();
+    public function all() : array;
 
     /**
      * Set the collection.
      *
      * @param array $collection
      *
-     * @return $this
+     * @return Collection
      */
-    public function setAll(array $collection);
+    public function setAll(array $collection) : Collection;
 
     /**
      * Get all the keys in the collection.
      *
      * @return array
      */
-    public function keys();
+    public function keys() : array;
 
     /**
      * Get the total count of items in the collection.
      *
      * @return int
      */
-    public function count();
+    public function count() : int;
 
     /**
      * Get a single item from the collection.
      *
      * @param string $key
      *
-     * @return bool|mixed
+     * @return mixed
      */
-    public function __get($key);
+    public function __get($key) : mixed;
 
     /**
      * Determine if an item is in the collection.
@@ -122,7 +122,7 @@ interface Collection
      *
      * @return bool
      */
-    public function __isset($key);
+    public function __isset($key) : bool;
 
     /**
      * Set a new item into the collection.
@@ -130,23 +130,23 @@ interface Collection
      * @param string $key
      * @param mixed  $value
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
-    public function __set($key, $value);
+    public function __set($key, $value) : Collection;
 
     /**
      * Remove an item from the collection.
      *
      * @param string $key
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
-    public function __unset($key);
+    public function __unset($key) : Collection;
 
     /**
      * Convert the collection to a string.
      *
      * @return string
      */
-    public function __toString();
+    public function __toString() : string;
 }

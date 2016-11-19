@@ -23,9 +23,11 @@ use Valkyrja\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * @inheritdoc
+     * Publish the service provider.
+     *
+     * @return void
      */
-    public function publish()
+    public function publish() : void
     {
         //
     }

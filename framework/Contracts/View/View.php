@@ -104,6 +104,8 @@ interface View
      * Set the file extension.
      *
      * @param string $extension The extension to set
+     *
+     * @return void
      */
     public function setFileExtension($extension);
 

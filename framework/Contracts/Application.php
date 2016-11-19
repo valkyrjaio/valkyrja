@@ -12,6 +12,10 @@
 namespace Valkyrja\Contracts;
 
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\View\View;
 
 /**
  * Interface Application
@@ -30,6 +34,13 @@ interface Application extends Container
     const VERSION = 'Valkyrja (1.0.0 Alpha)';
 
     /**
+     * Return the global $app variable.
+     *
+     * @return Application
+     */
+    public static function app() : Application;
+
+    /**
      * Application constructor.
      *
      * @param string $basePath The base path for the application
@@ -41,49 +52,49 @@ interface Application extends Container
      *
      * @return string
      */
-    public function version();
+    public function version() : string;
 
     /**
      * Get the environment with which the application is running in.
      *
      * @return string
      */
-    public function environment();
+    public function environment() : string;
 
     /**
      * Whether the application is running in debug mode or not.
      *
      * @return string
      */
-    public function debug();
+    public function debug() : string;
 
     /**
      * Is twig enabled?
      *
      * @return bool
      */
-    public function isTwigEnabled();
+    public function isTwigEnabled() : bool;
 
     /**
      * Set the timezone for the application process.
      *
      * @return void
      */
-    public function setTimezone();
+    public function setTimezone() : void;
 
     /**
      * Get whether the application is using a compiled version.
      *
      * @return bool
      */
-    public function isCompiled();
+    public function isCompiled() : bool;
 
     /**
      * Set the application as using compiled.
      *
      * @return void
      */
-    public function setCompiled();
+    public function setCompiled() : void;
 
     /**
      * Get a single environment variable via key or get all.
@@ -93,7 +104,7 @@ interface Application extends Container
      *
      * @return mixed
      */
-    public function env($key = false, $default = false);
+    public function env($key = false, $default = false) : mixed;
 
     /**
      * Set a single environment variable.
@@ -101,9 +112,9 @@ interface Application extends Container
      * @param string $key   The key to set
      * @param mixed  $value The value to set
      *
-     * @return $this
+     * @return Application
      */
-    public function setEnv($key, $value);
+    public function setEnv($key, $value) : Application;
 
     /**
      * Set all environment variables.
@@ -112,7 +123,7 @@ interface Application extends Container
      *
      * @return void
      */
-    public function setEnvs(array $env);
+    public function setEnvs(array $env) : void;
 
     /**
      * Get a single config variable via key or get all.
@@ -122,7 +133,7 @@ interface Application extends Container
      *
      * @return mixed
      */
-    public function config($key = false, $default = false);
+    public function config($key = false, $default = false) : mixed;
 
     /**
      * Set a single config variable.
@@ -130,9 +141,9 @@ interface Application extends Container
      * @param string $key   The key to set
      * @param mixed  $value The value to set
      *
-     * @return $this
+     * @return Application
      */
-    public function setConfig($key, $value);
+    public function setConfig($key, $value) : Application;
 
     /**
      * Set all config variables.
@@ -141,7 +152,7 @@ interface Application extends Container
      *
      * @return void
      */
-    public function setConfigVars(array $config);
+    public function setConfigVars(array $config) : void;
 
     /**
      * Get the base directory for the application.
@@ -150,7 +161,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function basePath($path = null);
+    public function basePath($path = null) : string;
 
     /**
      * Get the app directory for the application.
@@ -159,7 +170,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function appPath($path = null);
+    public function appPath($path = null) : string;
 
     /**
      * Get the cache directory for the application.
@@ -168,7 +179,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function cachePath($path = null);
+    public function cachePath($path = null) : string;
 
     /**
      * Get the config directory for the application.
@@ -177,7 +188,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function configPath($path = null);
+    public function configPath($path = null) : string;
 
     /**
      * Get the framework directory for the application.
@@ -186,7 +197,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function frameworkPath($path = null);
+    public function frameworkPath($path = null) : string;
 
     /**
      * Get the public directory for the application.
@@ -195,7 +206,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function publicPath($path = null);
+    public function publicPath($path = null) : string;
 
     /**
      * Get the resources directory for the application.
@@ -204,7 +215,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function resourcesPath($path = null);
+    public function resourcesPath($path = null) : string;
 
     /**
      * Get the storage directory for the application.
@@ -213,7 +224,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function storagePath($path = null);
+    public function storagePath($path = null) : string;
 
     /**
      * Get the tests directory for the application.
@@ -222,7 +233,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function testsPath($path = null);
+    public function testsPath($path = null) : string;
 
     /**
      * Get the vendor directory for the application.
@@ -231,7 +242,7 @@ interface Application extends Container
      *
      * @return string
      */
-    public function vendorPath($path = null);
+    public function vendorPath($path = null) : string;
 
     /**
      * Abort the application due to error.
@@ -240,10 +251,12 @@ interface Application extends Container
      * @param string $message [optional] The message or data content to use
      * @param array  $headers [optional] The headers to set
      * @param string $view    [optional] The view template name to use
+     *                        
+     * @return void
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort($code = 404, $message = '', array $headers = [], $view = null);
+    public function abort($code = 404, $message = '', array $headers = [], $view = null) : void;
 
     /**
      * Return a new response from the application.
@@ -252,16 +265,23 @@ interface Application extends Container
      * @param int    $status  [optional] The status code to set
      * @param array  $headers [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
+     * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response($content = '', $status = 200, array $headers = []);
+    public function response($content = '', $status = 200, array $headers = []) : Response;
+
+    /**
+     * Return a new response builder from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public function responseBuilder() : ResponseBuilder;
 
     /**
      * Return the router instance from the container.
      *
      * @return \Valkyrja\Contracts\Http\Router
      */
-    public function router();
+    public function router() : Router;
 
     /**
      * Return a new view.
@@ -271,14 +291,14 @@ interface Application extends Container
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view($template = '', array $variables = []);
+    public function view($template = '', array $variables = []) : View;
 
     /**
      * Run the application.
      *
      * @return void
      */
-    public function run();
+    public function run() : void;
 
     /**
      * Register a service provider.
@@ -287,5 +307,5 @@ interface Application extends Container
      *
      * @return void
      */
-    public function register($serviceProvider);
+    public function register($serviceProvider) : void;
 }

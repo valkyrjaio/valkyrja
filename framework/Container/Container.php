@@ -36,7 +36,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function setServiceContainer(array $serviceContainer)
+    public function setServiceContainer(array $serviceContainer) : void
     {
         // The application has already bootstrapped the container so merge to avoid clearing
         $this->serviceContainer = array_merge($this->serviceContainer, $serviceContainer);
@@ -50,7 +50,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function instance($abstract, $instance)
+    public function instance($abstract, $instance) : void
     {
         $this->serviceContainer[$abstract] = $instance;
     }
@@ -63,7 +63,7 @@ class Container implements ContainerContract
      *
      * @return mixed
      */
-    public function container($abstract, array $arguments = [])
+    public function container($abstract, array $arguments = []) : mixed
     {
         // If the abstract is set in the service container
         if (isset($this->serviceContainer[$abstract])) {
