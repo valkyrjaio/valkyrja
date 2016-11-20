@@ -88,7 +88,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setMasterTemplate($template) : void
+    public function setMasterTemplate($template) // : void
     {
         $this->masterTemplate = $template;
     }
@@ -100,7 +100,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setTemplate($template) : void
+    public function setTemplate($template) // : void
     {
         $this->template = $template;
     }
@@ -112,7 +112,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setVariables(array $variables = []) : void
+    public function setVariables(array $variables = []) // : void
     {
         $this->variables = array_merge($this->variables, $variables);
     }
@@ -125,7 +125,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function variable($key, $value) : void
+    public function variable($key, $value) // : void
     {
         $this->variables[$key] = $value;
     }
@@ -151,7 +151,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setTemplateDir($templateDir) : void
+    public function setTemplateDir($templateDir) // : void
     {
         $this->templateDir = $templateDir;
     }
@@ -173,7 +173,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setFileExtension($extension) : void
+    public function setFileExtension($extension) // : void
     {
         $this->fileExtension = $extension;
     }

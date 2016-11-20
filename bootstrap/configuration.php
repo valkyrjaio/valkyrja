@@ -49,8 +49,6 @@ if (file_exists(__DIR__ . '/../cache/compiled.php')) {
 $env = require_once __DIR__ . '/../.env.php';
 // Set the environment variables to overwrite default config
 $app->setEnvs($env);
-// Set the timezone for the application process
-$app->setTimezone();
 
 /*
  *---------------------------------------------------------------------
@@ -66,6 +64,10 @@ $app->setTimezone();
 $config = require_once __DIR__ . '/../config/config.php';
 // Set the default config variables
 $app->setConfigVars($config);
+// Set the timezone for the application process
+$app->setTimezone();
+
+$configs = new config\Configs($app);
 
 /*
  *---------------------------------------------------------------------
@@ -79,6 +81,6 @@ $app->setConfigVars($config);
  */
 
 // Require any dependency injectable definitions
-$container = require_once __DIR__ . '/../config/container.php';
+$serviceContainer = require_once __DIR__ . '/../config/container.php';
 // Set the container variables
-$app->setServiceContainer($container);
+$container->setServiceContainer($serviceContainer);

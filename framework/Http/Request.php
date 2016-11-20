@@ -229,7 +229,7 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ) : void {
+    ) // : void {
         $this->setQuery($query)
              ->setRequest($request)
              ->setAttributes($attributes)

@@ -21,6 +21,7 @@
  */
 
 $app = new Valkyrja\Application($baseDir);
+$container = new Valkyrja\Container\Container();
 
 /*
  *-------------------------------------------------------------------------
@@ -44,8 +45,6 @@ require_once 'configuration.php';
  * change by the developer.
  *
  */
-
-$container = new Valkyrja\Container\Container();
 
 $container->instance(Valkyrja\Application::class, $app);
 
@@ -125,6 +124,8 @@ $container->instance(
         },
     ]
 );
+
+$app->bootstrapHandler();
 
 /*
  *-------------------------------------------------------------------------

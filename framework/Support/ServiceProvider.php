@@ -45,5 +45,5 @@ abstract class ServiceProvider
      *
      * @return void
      */
-    abstract public function publish() : void;
+    abstract public function publish(); // : void;
 }

@@ -49,7 +49,7 @@ class Helpers implements HelpersContract
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort($code, $message = '', array $headers = [], $view = null) : void
+    public static function abort($code, $message = '', array $headers = [], $view = null) // : void
     {
         static::app()
               ->abort($code, $message, $headers, $view);
@@ -63,7 +63,7 @@ class Helpers implements HelpersContract
      *
      * @return mixed
      */
-    public static function container($abstract, array $arguments = []) : mixed
+    public static function container($abstract, array $arguments = []) // : mixed
     {
         return static::app()
                      ->container()
@@ -78,7 +78,7 @@ class Helpers implements HelpersContract
      *
      * @return mixed
      */
-    public static function env($key = false, $default = false) : mixed
+    public static function env($key = false, $default = false) // : mixed
     {
         return static::app()
                      ->env($key, $default);
@@ -92,7 +92,7 @@ class Helpers implements HelpersContract
      *
      * @return mixed
      */
-    public static function config($key = false, $default = false) : mixed
+    public static function config($key = false, $default = false) // : mixed
     {
         return static::app()
                      ->config($key, $default);
@@ -107,7 +107,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function get($path, $handler, $isDynamic = false) : void
+    public static function get($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -123,7 +123,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function post($path, $handler, $isDynamic = false) : void
+    public static function post($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -139,7 +139,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function put($path, $handler, $isDynamic = false) : void
+    public static function put($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -155,7 +155,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function patch($path, $handler, $isDynamic = false) : void
+    public static function patch($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -171,7 +171,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function delete($path, $handler, $isDynamic = false) : void
+    public static function delete($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -187,7 +187,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function head($path, $handler, $isDynamic = false) : void
+    public static function head($path, $handler, $isDynamic = false) // : void
     {
         static::app()
               ->router()
@@ -384,7 +384,7 @@ class Helpers implements HelpersContract
         array $headers = [],
         $view = null,
         $code = 0
-    ) : void
+    ) // : void
     {
         static::app()
               ->httpException($statusCode, $message, $previous, $headers, $view, $code);

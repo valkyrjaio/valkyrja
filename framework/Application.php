@@ -78,8 +78,6 @@ class Application implements ApplicationContract
     public function __construct($basePath)
     {
         $this->basePath = $basePath;
-
-        $this->bootstrapHandler();
     }
 
     /**
@@ -139,7 +137,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setTimezone() : void
+    public function setTimezone() // : void
     {
         date_default_timezone_set($this->config('app.timezone', 'UTC'));
     }
@@ -159,7 +157,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setCompiled() : void
+    public function setCompiled() // : void
     {
         $this->isCompiled = true;
     }
@@ -172,7 +170,7 @@ class Application implements ApplicationContract
      *
      * @return mixed
      */
-    public function env(string $key = null, $default = null) : mixed
+    public function env(string $key = null, $default = null) // : mixed
     {
         if (!$key) {
             return $this->env;
@@ -205,7 +203,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setEnvs(array $env) : void
+    public function setEnvs(array $env) // : void
     {
         $this->env = $env;
     }
@@ -218,7 +216,7 @@ class Application implements ApplicationContract
      *
      * @return mixed
      */
-    public function config(string $key = null, $default = null) : mixed
+    public function config(string $key = null, $default = null) // : mixed
     {
         if (!$key) {
             return $this->config;
@@ -283,7 +281,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setConfigVars(array $config) : void
+    public function setConfigVars(array $config) // : void
     {
         $this->config = $config;
     }
@@ -292,7 +290,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    protected function bootstrapHandler() : void
+    public function bootstrapHandler() // : void
     {
         error_reporting(-1);
 
@@ -335,7 +333,7 @@ class Application implements ApplicationContract
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) : void
+    public function handleError($level, $message, $file = '', $line = 0, $context = []) // : void
     {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
@@ -387,7 +385,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function handleShutdown() : void
+    public function handleShutdown() // : void
     {
         if (!is_null($error = error_get_last())
             && in_array(
@@ -425,7 +423,8 @@ class Application implements ApplicationContract
         array $headers = [],
         $view = null,
         $code = 0
-    ) : void {
+    ) // : void
+    {
         throw $this->container()->get(
             HttpException::class,
             [
@@ -465,7 +464,7 @@ class Application implements ApplicationContract
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
+    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) // : void
     {
         $this->httpException($code, $message, null, $headers, $view);
     }
@@ -483,7 +482,6 @@ class Application implements ApplicationContract
     {
         $factory = $this->responseBuilder();
 
-        // Otherwise return a new Response using the ResponseBuilder->make() method
         return $factory->make($content, $status, $headers);
     }
 
@@ -494,7 +492,6 @@ class Application implements ApplicationContract
      */
     public function responseBuilder() : ResponseBuilder
     {
-        // Otherwise return a new Response using the ResponseBuilder->make() method
         return $this->container()->get(ResponseBuilder::class);
     }
 
@@ -532,7 +529,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function run() : void
+    public function run() // : void
     {
         // Dispatch the request and get a response
         $this->router()
@@ -546,7 +543,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function register(string $serviceProvider) : void
+    public function register(string $serviceProvider) // : void
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
@@ -570,7 +567,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function instance(string $abstract, $instance) : void
+    public function instance(string $abstract, $instance) // : void
     {
         $this->container()->instance($abstract, $instance);
     }

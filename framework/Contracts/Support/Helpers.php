@@ -44,7 +44,7 @@ interface Helpers
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort($code, $message = '', array $headers = [], $view = null) : void;
+    public static function abort($code, $message = '', array $headers = [], $view = null); // : void;
 
     /**
      * Get an item from the container.
@@ -54,7 +54,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function container($abstract, array $arguments = []) : mixed;
+    public static function container($abstract, array $arguments = []); // : mixed;
 
     /**
      * Get an environment variable via key.
@@ -64,7 +64,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function env($key = false, $default = false) : mixed;
+    public static function env($key = false, $default = false); // : mixed;
 
     /**
      * Get a config variable via key.
@@ -74,7 +74,7 @@ interface Helpers
      *
      * @return mixed
      */
-    public static function config($key = false, $default = false) : mixed;
+    public static function config($key = false, $default = false); // : mixed;
 
     /**
      * Helper function to set a GET addRoute.
@@ -85,7 +85,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function get($path, $handler, $isDynamic = false) : void;
+    public static function get($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -96,7 +96,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function post($path, $handler, $isDynamic = false) : void;
+    public static function post($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -107,7 +107,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function put($path, $handler, $isDynamic = false) : void;
+    public static function put($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -118,7 +118,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function patch($path, $handler, $isDynamic = false) : void;
+    public static function patch($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -129,7 +129,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function delete($path, $handler, $isDynamic = false) : void;
+    public static function delete($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -140,7 +140,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function head($path, $handler, $isDynamic = false) : void;
+    public static function head($path, $handler, $isDynamic = false); // : void;
 
     /**
      * Helper function to get base path.

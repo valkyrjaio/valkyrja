@@ -49,7 +49,7 @@ class Collection implements CollectionContract
      *
      * @return mixed
      */
-    public function get($key, $default = false) : mixed
+    public function get($key, $default = false) // : mixed
     {
         return $this->has($key)
             ? $this->collection[$key]
@@ -164,7 +164,7 @@ class Collection implements CollectionContract
      *
      * @return mixed
      */
-    public function __get($key) : mixed
+    public function __get($key) // : mixed
     {
         return $this->get($key);
     }

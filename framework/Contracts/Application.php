@@ -82,7 +82,7 @@ interface Application
      *
      * @return void
      */
-    public function setTimezone() : void;
+    public function setTimezone(); // : void;
 
     /**
      * Get whether the application is using a compiled version.
@@ -96,7 +96,7 @@ interface Application
      *
      * @return void
      */
-    public function setCompiled() : void;
+    public function setCompiled(); // : void;
 
     /**
      * Get a single environment variable via key or get all.
@@ -106,7 +106,7 @@ interface Application
      *
      * @return mixed
      */
-    public function env(string $key = null, $default = null) : mixed;
+    public function env(string $key = null, $default = null); // : mixed;
 
     /**
      * Set a single environment variable.
@@ -125,7 +125,7 @@ interface Application
      *
      * @return void
      */
-    public function setEnvs(array $env) : void;
+    public function setEnvs(array $env); // : void;
 
     /**
      * Get a single config variable via key or get all.
@@ -135,7 +135,7 @@ interface Application
      *
      * @return mixed
      */
-    public function config(string $key = null, $default = null) : mixed;
+    public function config(string $key = null, $default = null); // : mixed;
 
     /**
      * Set a single config variable.
@@ -154,7 +154,7 @@ interface Application
      *
      * @return void
      */
-    public function setConfigVars(array $config) : void;
+    public function setConfigVars(array $config); // : void;
 
     /**
      * Get the base directory for the application.
@@ -259,7 +259,7 @@ interface Application
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) : void;
+    public function handleError($level, $message, $file = '', $line = 0, $context = []); // : void;
 
     /**
      * Handle an uncaught exception from the application.
@@ -279,7 +279,7 @@ interface Application
      *
      * @return void
      */
-    public function handleShutdown() : void;
+    public function handleShutdown(); // : void;
 
     /**
      * Throw an http exception.
@@ -302,7 +302,7 @@ interface Application
         array $headers = [],
         $view = null,
         $code = 0
-    ) : void;
+    ); // : void;
 
     /**
      * Abort the application due to error.
@@ -316,7 +316,7 @@ interface Application
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void;
+    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null); // : void;
 
     /**
      * Return a new response from the application.
@@ -358,7 +358,7 @@ interface Application
      *
      * @return void
      */
-    public function run() : void;
+    public function run(); // : void;
 
     /**
      * Register a service provider.
@@ -367,7 +367,7 @@ interface Application
      *
      * @return void
      */
-    public function register(string $serviceProvider) : void;
+    public function register(string $serviceProvider); // : void;
 
     /**
      * Set the service container for dependency injection.
@@ -384,5 +384,5 @@ interface Application
      *
      * @return void
      */
-    public function instance(string $abstract, $instance) : void;
+    public function instance(string $abstract, $instance); // : void;
 }

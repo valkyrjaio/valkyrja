@@ -37,7 +37,7 @@ interface Collection
      *
      * @return mixed
      */
-    public function get($key, $default = false) : mixed;
+    public function get($key, $default = false); // : mixed;
 
     /**
      * Determine if an item is in the collection.
@@ -113,7 +113,7 @@ interface Collection
      *
      * @return mixed
      */
-    public function __get($key) : mixed;
+    public function __get($key); // : mixed;
 
     /**
      * Determine if an item is in the collection.

@@ -1,8 +1,6 @@
 # TODO List
 Items remaining or todo items
 
-## Split Container from Application
-
 ## Request Class
 Need to implement and finish
 
@@ -24,3 +22,5 @@ Implement this...
 ## PHP Unit Testing
 
 ## change config/env to classes
+
+## Go through header date methods in Response to change to string.
