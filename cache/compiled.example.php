@@ -12,12 +12,12 @@
 
 $env = [];
 $routes = [];
-$container = [];
+$serviceContainer = [];
 
 $app->setEnvs($env);
 $app->setTimezone();
 $app->router()
     ->setRoutes($routes);
-$app->setServiceContainer($container);
+$container->setServiceContainer($serviceContainer);
 
 // Inline classes for application here (from config/compile.php).
