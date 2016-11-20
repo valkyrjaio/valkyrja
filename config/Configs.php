@@ -61,8 +61,10 @@ class Configs
      */
     public static function env(string $key) // : mixed
     {
-        if (defined('Env::' . $key)) {
-            return constant('Env::' . $key);
+        $key = Env::class . '::' . $key;
+
+        if (defined($key)) {
+            return constant($key);
         }
 
         return null;
