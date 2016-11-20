@@ -60,7 +60,7 @@ interface HttpException
     /**
      * Get the headers set for this exception.
      *
-     * @return array
+     * @return string
      */
-    public function getView() : array;
+    public function getView() : string;
 }

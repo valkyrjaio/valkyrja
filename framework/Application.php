@@ -363,7 +363,7 @@ class Application implements ApplicationContract
             'line'    => $e->getLine(),
             'trace'   => $e->getTrace(),
         ];
-        $view = 'errors/500';
+        $view = 'errors/exception';
         $headers = [];
         $code = 500;
 
@@ -371,7 +371,7 @@ class Application implements ApplicationContract
             $code = $e->getStatusCode();
             $headers = $e->getHeaders();
             $view = $e->getView()
-                ?: 'errors/' . $code;
+                ?: $view;
         }
 
         // Return a new sent response

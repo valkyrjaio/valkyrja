@@ -13,6 +13,7 @@ namespace Valkyrja\Exceptions;
 
 use Exception;
 use RuntimeException;
+
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
 
 /**
@@ -95,9 +96,9 @@ class HttpException extends RuntimeException implements HttpExceptionContract
     /**
      * Get the headers set for this exception.
      *
-     * @return array
+     * @return string
      */
-    public function getView() : array
+    public function getView() : string
     {
         return $this->view;
     }
