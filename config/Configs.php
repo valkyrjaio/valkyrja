@@ -65,6 +65,6 @@ class Configs
             return constant('Env::' . $key);
         }
 
-        return false;
+        return null;
     }
 }
