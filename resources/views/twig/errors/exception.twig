@@ -1,5 +1,9 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    Exception: {{ message }}
+    Exception: {{ message }} in {{ file }} on line {{ line }}<br /><br />
+
+    {%  for traceItem in trace %}
+        {{ traceItem.file }} on line {{ traceItem.line }} : {{ traceItem.class }} {{ traceItem.function }}<br><br>
+    {% endfor %}
 {% endblock %}
