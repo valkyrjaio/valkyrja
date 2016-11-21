@@ -288,7 +288,7 @@ class Router implements RouterContract
             // Check for any injectables that have been set on the route
             foreach ($route['injectable'] as $injectable) {
                 // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container($injectable);
+                $arguments[] = $this->app->container()->get($injectable);
             }
 
             // If there were matches from the dynamic route
@@ -313,7 +313,7 @@ class Router implements RouterContract
             // Otherwise the action should be a method in a controller
             else {
                 // Set the controller through the container
-                $controller = $this->app->container($route['controller']);
+                $controller = $this->app->container()->get($route['controller']);
 
                 // Let's make sure the controller is a controller
                 if (!$controller instanceof Controller) {
