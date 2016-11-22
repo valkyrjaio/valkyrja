@@ -14,8 +14,10 @@ namespace Valkyrja;
 use ErrorException;
 use Exception;
 
+use Valkyrja\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
@@ -103,13 +105,23 @@ class Application implements ApplicationContract
     }
 
     /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public function config() : ConfigContract
+    {
+        return Config::config();
+    }
+
+    /**
      * Get the environment with which the application is running in.
      *
      * @return string
      */
     public function environment() : string
     {
-        return $this->config('app.env', 'production');
+        return $this->config()->app->env ?? 'production';
     }
 
     /**
@@ -119,7 +131,7 @@ class Application implements ApplicationContract
      */
     public function debug() : string
     {
-        return $this->config('app.debug', false);
+        return $this->config()->app->debug ?? false;
     }
 
     /**
@@ -129,7 +141,7 @@ class Application implements ApplicationContract
      */
     public function isTwigEnabled() : bool
     {
-        return $this->config('views.twig.enabled', false);
+        return $this->config()->views->twig->enabled ?? false;
     }
 
     /**
@@ -139,7 +151,7 @@ class Application implements ApplicationContract
      */
     public function setTimezone() // : void
     {
-        date_default_timezone_set($this->config('app.timezone', 'UTC'));
+        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
     }
 
     /**
@@ -162,129 +174,6 @@ class Application implements ApplicationContract
         $this->isCompiled = true;
     }
 
-    /**
-     * Get a single environment variable via key or get all.
-     *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public function env(string $key = null, $default = null) // : mixed
-    {
-        if (!$key) {
-            return $this->env;
-        }
-
-        return isset($this->env[$key])
-            ? $this->env[$key]
-            : $default;
-    }
-
-    /**
-     * Set a single environment variable.
-     *
-     * @param string $key   The key to set
-     * @param mixed  $value The value to set
-     *
-     * @return ApplicationContract
-     */
-    public function setEnv(string $key, $value) : ApplicationContract
-    {
-        $this->env[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Set all environment variables.
-     *
-     * @param array $env The environment variables to set
-     *
-     * @return void
-     */
-    public function setEnvs(array $env) // : void
-    {
-        $this->env = $env;
-    }
-
-    /**
-     * Get a single config variable via key or get all.
-     *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public function config(string $key = null, $default = null) // : mixed
-    {
-        if (!$key) {
-            return $this->config;
-        }
-
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
-        }
-
-        $indexes = explode('.', $key);
-        $configItem = $this->config;
-
-        foreach ($indexes as $index) {
-            if (isset($configItem[$index])) {
-                $configItem = $configItem[$index];
-            }
-            else {
-                return $default;
-            }
-        }
-
-        return $configItem;
-    }
-
-    /**
-     * Set a single config variable.
-     *
-     * @param string $key   The key to set
-     * @param mixed  $value The value to set
-     *
-     * @return ApplicationContract
-     */
-    public function setConfig(string $key, $value) : ApplicationContract
-    {
-        if (isset($this->config[$key])) {
-            $this->config[$key] = $value;
-
-            return $this;
-        }
-
-        $indexes = explode('.', $key);
-        $configItem = &$this->config;
-        $totalIndexes = sizeof($indexes);
-
-        foreach ($indexes as $indexKey => $index) {
-            if (!isset($configItem[$index])) {
-                $configItem[$index] = $indexKey + 1 === $totalIndexes
-                    ? $value
-                    : [];
-            }
-
-            $configItem = &$configItem[$index];
-        }
-
-        return $this;
-    }
-
-    /**
-     * Set all config variables.
-     *
-     * @param array $config The environment variables to set
-     *
-     * @return void
-     */
-    public function setConfigVars(array $config) // : void
-    {
-        $this->config = $config;
-    }
     /**
      * Bootstrap error, exception, and shutdown handler.
      *

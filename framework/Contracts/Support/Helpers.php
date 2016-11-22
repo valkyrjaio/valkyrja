@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Support;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\View\View;
@@ -57,24 +58,11 @@ interface Helpers
     public static function container($abstract, array $arguments = []); // : mixed;
 
     /**
-     * Get an environment variable via key.
+     * Get the config class instance.
      *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
      */
-    public static function env($key = false, $default = false); // : mixed;
-
-    /**
-     * Get a config variable via key.
-     *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public static function config($key = false, $default = false); // : mixed;
+    public static function config() : Config;
 
     /**
      * Helper function to set a GET addRoute.

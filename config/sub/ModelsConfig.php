@@ -1,13 +1,13 @@
 <?php
 
-namespace config\config;
+namespace config\sub;
 
 use App\Models\Article;
 use App\Models\User;
 
-use config\Configs;
+use config\Config;
 
-use Valkyrja\Application;
+use Valkyrja\Contracts\Application;
 
 class ModelsConfig
 {
@@ -28,11 +28,11 @@ class ModelsConfig
     /**
      * AppConfig constructor.
      *
-     * @param \Valkyrja\Application $app
+     * @param \Valkyrja\Contracts\Application $app
      */
     public function __construct(Application $app)
     {
-        $this->article = Configs::env('MODELS_ARTICLE') ?? Article::class;
-        $this->user = Configs::env('MODELS_USER') ?? User::class;
+        $this->article = Config::env('MODELS_ARTICLE') ?? Article::class;
+        $this->user = Config::env('MODELS_USER') ?? User::class;
     }
 }

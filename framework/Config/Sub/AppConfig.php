@@ -1,10 +1,10 @@
 <?php
 
-namespace config\config;
+namespace Valkyrja\Config\Sub;
 
-use config\Configs;
+use Valkyrja\Config\Config;
 
-use Valkyrja\Application;
+use Valkyrja\Contracts\Application;
 
 class AppConfig
 {
@@ -44,16 +44,25 @@ class AppConfig
     public $version = '1.0';
 
     /**
+     * Set defaults?
+     *
+     * @var bool
+     */
+    protected $setDefaults = true;
+
+    /**
      * AppConfig constructor.
      *
-     * @param \Valkyrja\Application $app
+     * @param \Valkyrja\Contracts\Application $app
      */
     public function __construct(Application $app)
     {
-        $this->env = Configs::env('APP_ENV') ?? 'production';
-        $this->debug = Configs::env('APP_DEBUG') ?? false;
-        $this->url = Configs::env('APP_URL') ?? 'localhost';
-        $this->timezone = Configs::env('APP_TIMEZONE') ?? 'UTC';
-        $this->version = Configs::env('APP_VERSION') ?? '1.0';
+        if ($this->setDefaults) {
+            $this->env = Config::env('APP_ENV') ?? 'production';
+            $this->debug = Config::env('APP_DEBUG') ?? false;
+            $this->url = Config::env('APP_URL') ?? 'localhost';
+            $this->timezone = Config::env('APP_TIMEZONE') ?? 'UTC';
+            $this->version = Config::env('APP_VERSION') ?? '1.0';
+        }
     }
 }

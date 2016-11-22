@@ -12,7 +12,9 @@
 namespace Valkyrja\View;
 
 use Twig_Environment;
+
 use Valkyrja\Contracts\View\TwigView as TwigViewContract;
+use Valkyrja\Support\Helpers;
 
 /**
  * Class TwigView
@@ -64,7 +66,7 @@ class TwigView extends View implements TwigViewContract
     public function getTemplateDir($path = null) : string
     {
         return $path
-            ?: '/';
+            ?: (Helpers::app())::DIRECTORY_SEPARATOR;
     }
 
     /**

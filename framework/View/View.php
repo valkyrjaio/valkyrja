@@ -12,6 +12,7 @@
 namespace Valkyrja\View;
 
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Support\Helpers;
 
 /**
  * Class View
@@ -65,7 +66,7 @@ class View implements ViewContract
     {
         $this->setVariables($variables);
         $this->setTemplate($template);
-        $this->setTemplateDir(config('views.dir', resourcesPath('views')));
+        $this->setTemplateDir(Helpers::config()->views->dir ?? resourcesPath('views'));
     }
 
     /**

@@ -2,14 +2,15 @@
 
 namespace config;
 
-use config\config\AppConfig;
-use config\config\ModelsConfig;
-use config\config\StorageConfig;
-use config\config\ViewsConfig;
+use config\sub\AppConfig;
+use config\sub\ModelsConfig;
+use config\sub\StorageConfig;
+use config\sub\ViewsConfig;
 
-use Valkyrja\Application;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Config\Config as ValkyrjaConfig;
 
-class Configs
+class Config extends ValkyrjaConfig
 {
     /**
      * Application config.
@@ -40,33 +41,17 @@ class Configs
     public $views;
 
     /**
-     * Configs constructor.
+     * Config constructor.
      *
-     * @param \Valkyrja\Application $app
+     * @param \Valkyrja\Contracts\Application $app
      */
     public function __construct(Application $app)
     {
+        parent::__construct($app);
+
         $this->app = new AppConfig($app);
         $this->models = new ModelsConfig($app);
         $this->storage = new StorageConfig($app);
         $this->views = new ViewsConfig($app);
-    }
-
-    /**
-     * Get an environment variable.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public static function env(string $key) // : mixed
-    {
-        $key = Env::class . '::' . $key;
-
-        if (defined($key)) {
-            return constant($key);
-        }
-
-        return null;
     }
 }

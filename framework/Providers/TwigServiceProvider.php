@@ -13,6 +13,7 @@ namespace Valkyrja\Providers;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Support\ServiceProvider;
 use Valkyrja\View\TwigView;
@@ -36,16 +37,8 @@ class TwigServiceProvider extends ServiceProvider
         // Check if twig is enabled in env
         if ($this->app->isTwigEnabled()) {
             // Set the env variable for views directory if its not set
-            $this->app->setConfig(
-                'views.dir',
-                $this->app->config('views.twig.dir', $this->app->resourcesPath('views/twig'))
-            );
-
-            // Set the env variable for views compiled directory if its not set
-            $this->app->setConfig(
-                'views.dir.compiled',
-                $this->app->config('views.twig.dir.compiled', $this->app->storagePath('views/twig'))
-            );
+            $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir
+                ?? $this->app->resourcesPath('views/twig');
 
             /**
              * Set Twig_Environment instance within container.
@@ -53,17 +46,17 @@ class TwigServiceProvider extends ServiceProvider
             $this->app->instance(
                 Twig_Environment::class,
                 function () {
-                    $loader = new Twig_Loader_Filesystem($this->app->config('views.dir'));
+                    $loader = new Twig_Loader_Filesystem($this->app->config()->views->twig->dir);
 
                     $twig = new Twig_Environment(
                         $loader, [
-                                   'cache'   => $this->app->config('views.dir.compiled'),
+                                   'cache'   => $this->app->config()->views->twig->compiledDir,
                                    'debug'   => $this->app->debug(),
                                    'charset' => 'utf-8',
                                ]
                     );
 
-                    $extensions = $this->app->config('views.twig.extensions');
+                    $extensions = $this->app->config()->views->twig->extensions ?? [];
 
                     // Twig Extensions registration
                     if (is_array($extensions)) {

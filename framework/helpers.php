@@ -72,16 +72,13 @@ if (!function_exists('env')) {
 
 if (!function_exists('config')) {
     /**
-     * Get a config variable via key.
+     * Get config.
      *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
+     * @return \config\Config|\Valkyrja\Config\Config|\Valkyrja\Contracts\Config\Config
      */
-    function config($key = false, $default = false)
+    function config()
     {
-        return app()->config($key, $default);
+        return app()->config();
     }
 }
 

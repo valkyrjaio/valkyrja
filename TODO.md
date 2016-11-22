@@ -24,3 +24,7 @@ Implement this...
 ## change config/env to classes
 
 ## Go through header date methods in Response to change to string.
+
+## Make Helpers hub for static helper methods
+
+## Container for all container related, no more global vars

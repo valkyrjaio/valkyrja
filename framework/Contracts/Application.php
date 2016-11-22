@@ -13,6 +13,7 @@ namespace Valkyrja\Contracts;
 
 use Exception;
 
+use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -57,6 +58,13 @@ interface Application
     public function version() : string;
 
     /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public function config() : Config;
+
+    /**
      * Get the environment with which the application is running in.
      *
      * @return string
@@ -97,64 +105,6 @@ interface Application
      * @return void
      */
     public function setCompiled(); // : void;
-
-    /**
-     * Get a single environment variable via key or get all.
-     *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public function env(string $key = null, $default = null); // : mixed;
-
-    /**
-     * Set a single environment variable.
-     *
-     * @param string $key   The key to set
-     * @param mixed  $value The value to set
-     *
-     * @return Application
-     */
-    public function setEnv(string $key, $value) : Application;
-
-    /**
-     * Set all environment variables.
-     *
-     * @param array $env The environment variables to set
-     *
-     * @return void
-     */
-    public function setEnvs(array $env); // : void;
-
-    /**
-     * Get a single config variable via key or get all.
-     *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public function config(string $key = null, $default = null); // : mixed;
-
-    /**
-     * Set a single config variable.
-     *
-     * @param string $key   The key to set
-     * @param mixed  $value The value to set
-     *
-     * @return Application
-     */
-    public function setConfig(string $key, $value) : Application;
-
-    /**
-     * Set all config variables.
-     *
-     * @param array $config The environment variables to set
-     *
-     * @return void
-     */
-    public function setConfigVars(array $config); // : void;
 
     /**
      * Get the base directory for the application.

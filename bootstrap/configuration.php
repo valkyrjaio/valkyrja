@@ -35,23 +35,6 @@ if (file_exists(__DIR__ . '/../cache/compiled.php')) {
 
 /*
  *---------------------------------------------------------------------
- * Application Environment Variables
- *---------------------------------------------------------------------
- *
- * Environment variables are a convenient way to have different
- * configurations for each environment you develop on, or run
- * your application on. Basic examples are local (dev), qa,
- * staging, and production.
- *
- */
-
-// Require the environment variables to overwrite default config
-$env = require_once __DIR__ . '/../.env.php';
-// Set the environment variables to overwrite default config
-$app->setEnvs($env);
-
-/*
- *---------------------------------------------------------------------
  * Application Configuration Variables
  *---------------------------------------------------------------------
  *
@@ -60,14 +43,16 @@ $app->setEnvs($env);
  *
  */
 
-// Require the default config variables
-$config = require_once __DIR__ . '/../config/config.php';
-// Set the default config variables
-$app->setConfigVars($config);
+if (class_exists(config\Config::class)) {
+    $config = new config\Config($app);
+}
+else {
+    $config = new Valkyrja\Config\Config($app);
+}
+
+
 // Set the timezone for the application process
 $app->setTimezone();
-
-$configs = new config\Configs($app);
 
 /*
  *---------------------------------------------------------------------

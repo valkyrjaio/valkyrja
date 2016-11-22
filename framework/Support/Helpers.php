@@ -13,6 +13,7 @@ namespace Valkyrja\Support;
 
 use Valkyrja\Application;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Support\Helpers as HelpersContract;
@@ -71,31 +72,14 @@ class Helpers implements HelpersContract
     }
 
     /**
-     * Get an environment variable via key.
+     * Get the config class instance.
      *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
      */
-    public static function env($key = false, $default = false) // : mixed
+    public static function config() : Config
     {
         return static::app()
-                     ->env($key, $default);
-    }
-
-    /**
-     * Get a config variable via key.
-     *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    public static function config($key = false, $default = false) // : mixed
-    {
-        return static::app()
-                     ->config($key, $default);
+                     ->config();
     }
 
     /**
