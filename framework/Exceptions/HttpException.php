@@ -12,6 +12,7 @@
 namespace Valkyrja\Exceptions;
 
 use Exception;
+
 use RuntimeException;
 
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;

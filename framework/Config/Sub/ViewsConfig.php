@@ -3,7 +3,6 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Config\Config;
-
 use Valkyrja\Contracts\Application;
 
 class ViewsConfig

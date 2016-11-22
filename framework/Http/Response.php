@@ -14,6 +14,7 @@
 namespace Valkyrja\Http;
 
 use DateTime;
+
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 
 /**

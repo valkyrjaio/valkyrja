@@ -71,9 +71,6 @@ $container->instance(Valkyrja\Contracts\Application::class, $app);
 
 $container->instance(Valkyrja\Contracts\Config\Config::class, $config);
 
-// Set the timezone for the application process
-$app->setTimezone();
-
 $container->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
     [
@@ -192,5 +189,7 @@ $routes = require_once __DIR__ . '/../routes/routes.php';
  * let's return it back to the index file.
  *
  */
+
+$app->setTimezone();
 
 return $app;

@@ -13,7 +13,7 @@
 
 namespace Valkyrja\Http;
 
-use \Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
+use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 
 /**
  * Class JsonResponse
