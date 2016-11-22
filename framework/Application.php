@@ -14,16 +14,10 @@ namespace Valkyrja;
 use ErrorException;
 use Exception;
 
-use Valkyrja\Config\Config;
-use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Config\Config as ConfigContract;
-use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Contracts\Http\ResponseBuilder;
-use Valkyrja\Contracts\Http\Router;
-use Valkyrja\Contracts\View\View;
+use Valkyrja\Support\Helpers;
 use Valkyrja\Support\PathHelpers;
 
 /**
@@ -105,23 +99,13 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Get the config class instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
-     */
-    public function config() : ConfigContract
-    {
-        return Config::config();
-    }
-
-    /**
      * Get the environment with which the application is running in.
      *
      * @return string
      */
     public function environment() : string
     {
-        return $this->config()->app->env ?? 'production';
+        return Helpers::config()->app->env ?? 'production';
     }
 
     /**
@@ -131,7 +115,7 @@ class Application implements ApplicationContract
      */
     public function debug() : string
     {
-        return $this->config()->app->debug ?? false;
+        return Helpers::config()->app->debug ?? false;
     }
 
     /**
@@ -141,7 +125,7 @@ class Application implements ApplicationContract
      */
     public function isTwigEnabled() : bool
     {
-        return $this->config()->views->twig->enabled ?? false;
+        return Helpers::config()->views->twig->enabled ?? false;
     }
 
     /**
@@ -151,7 +135,7 @@ class Application implements ApplicationContract
      */
     public function setTimezone() // : void
     {
-        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
+        date_default_timezone_set(Helpers::config()->app->timezone ?? 'UTC');
     }
 
     /**
@@ -264,7 +248,7 @@ class Application implements ApplicationContract
         }
 
         // Return a new sent response
-        return $this->responseBuilder()
+        return Helpers::responseBuilder()
                     ->view($view, $data, $code, $headers)
                     ->send();
     }
@@ -314,7 +298,7 @@ class Application implements ApplicationContract
         $code = 0
     ) // : void
     {
-        throw $this->container()->get(
+        throw Helpers::container()->get(
             HttpException::class,
             [
                 $statusCode,
@@ -359,61 +343,6 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Return a new response from the application.
-     *
-     * @param string $content [optional] The content to set
-     * @param int    $status  [optional] The status code to set
-     * @param array  $headers [optional] The headers to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function response(string $content = '', int $status = 200, array $headers = []) : Response
-    {
-        $factory = $this->responseBuilder();
-
-        return $factory->make($content, $status, $headers);
-    }
-
-    /**
-     * Return a new response builder from the application.
-     *
-     * @return \Valkyrja\Contracts\Http\ResponseBuilder
-     */
-    public function responseBuilder() : ResponseBuilder
-    {
-        return $this->container()->get(ResponseBuilder::class);
-    }
-
-    /**
-     * Return the router instance from the container.
-     *
-     * @return \Valkyrja\Contracts\Http\Router
-     */
-    public function router() : Router
-    {
-        return $this->container()->get(Router::class);
-    }
-
-    /**
-     * Return a new view.
-     *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
-     *
-     * @return \Valkyrja\Contracts\View\View
-     */
-    public function view(string $template = '', array $variables = []) : View
-    {
-        return $this->container()->get(
-            View::class,
-            [
-                $template,
-                $variables,
-            ]
-        );
-    }
-
-    /**
      * Run the application.
      *
      * @return void
@@ -421,8 +350,7 @@ class Application implements ApplicationContract
     public function run() // : void
     {
         // Dispatch the request and get a response
-        $this->router()
-             ->dispatch();
+        Helpers::router()->dispatch();
     }
 
     /**
@@ -436,28 +364,5 @@ class Application implements ApplicationContract
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);
-    }
-
-    /**
-     * Set the service container for dependency injection.
-     *
-     * @return \Valkyrja\Contracts\Container\Container
-     */
-    public function container() : ContainerContract
-    {
-        return Container::container();
-    }
-
-    /**
-     * Set the service container for dependency injection.
-     *
-     * @param string               $abstract The abstract to use as the key
-     * @param \Closure|array|mixed $instance The instance to set
-     *
-     * @return void
-     */
-    public function instance(string $abstract, $instance) // : void
-    {
-        $this->container()->instance($abstract, $instance);
     }
 }

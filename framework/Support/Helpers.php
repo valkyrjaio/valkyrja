@@ -11,11 +11,12 @@
 
 namespace Valkyrja\Support;
 
-use Valkyrja\Application;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\Support\Helpers as HelpersContract;
 use Valkyrja\Contracts\View\View;
 
@@ -35,7 +36,39 @@ class Helpers implements HelpersContract
      */
     public static function app() : ApplicationContract
     {
-        return Application::app();
+        return static::container()->get(ApplicationContract::class);
+    }
+
+    /**
+     * Return the global $app variable.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public static function container() : Container
+    {
+        global $container;
+
+        return $container;
+    }
+
+    /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public static function config() : Config
+    {
+        return static::container()->get(Config::class);
+    }
+
+    /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Router
+     */
+    public static function router() : Router
+    {
+        return static::container()->get(Router::class);
     }
 
     /**
@@ -52,34 +85,7 @@ class Helpers implements HelpersContract
      */
     public static function abort($code, $message = '', array $headers = [], $view = null) // : void
     {
-        static::app()
-              ->abort($code, $message, $headers, $view);
-    }
-
-    /**
-     * Get an item from the container.
-     *
-     * @param string $abstract  The abstract to get
-     * @param array  $arguments [optional] Arguments to pass
-     *
-     * @return mixed
-     */
-    public static function container($abstract, array $arguments = []) // : mixed
-    {
-        return static::app()
-                     ->container()
-                     ->get($abstract, $arguments);
-    }
-
-    /**
-     * Get the config class instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
-     */
-    public static function config() : Config
-    {
-        return static::app()
-                     ->config();
+        static::app()->abort($code, $message, $headers, $view);
     }
 
     /**
@@ -93,9 +99,7 @@ class Helpers implements HelpersContract
      */
     public static function get($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->get($path, $handler, $isDynamic);
+        static::router()->get($path, $handler, $isDynamic);
     }
 
     /**
@@ -109,9 +113,7 @@ class Helpers implements HelpersContract
      */
     public static function post($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->post($path, $handler, $isDynamic);
+        static::router()->post($path, $handler, $isDynamic);
     }
 
     /**
@@ -125,9 +127,7 @@ class Helpers implements HelpersContract
      */
     public static function put($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->put($path, $handler, $isDynamic);
+        static::router()->put($path, $handler, $isDynamic);
     }
 
     /**
@@ -141,9 +141,7 @@ class Helpers implements HelpersContract
      */
     public static function patch($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->patch($path, $handler, $isDynamic);
+        static::router()->patch($path, $handler, $isDynamic);
     }
 
     /**
@@ -157,9 +155,7 @@ class Helpers implements HelpersContract
      */
     public static function delete($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->delete($path, $handler, $isDynamic);
+        static::router()->delete($path, $handler, $isDynamic);
     }
 
     /**
@@ -173,9 +169,7 @@ class Helpers implements HelpersContract
      */
     public static function head($path, $handler, $isDynamic = false) // : void
     {
-        static::app()
-              ->router()
-              ->head($path, $handler, $isDynamic);
+        static::router()->head($path, $handler, $isDynamic);
     }
 
     /**
@@ -187,8 +181,7 @@ class Helpers implements HelpersContract
      */
     public static function basePath($path = null) : string
     {
-        return static::app()
-                     ->basePath($path);
+        return static::app()->basePath($path);
     }
 
     /**
@@ -200,8 +193,7 @@ class Helpers implements HelpersContract
      */
     public static function appPath($path = null) : string
     {
-        return static::app()
-                     ->appPath($path);
+        return static::app()->appPath($path);
     }
 
     /**
@@ -213,8 +205,7 @@ class Helpers implements HelpersContract
      */
     public static function cachePath($path = null) : string
     {
-        return static::app()
-                     ->cachePath($path);
+        return static::app()->cachePath($path);
     }
 
     /**
@@ -226,8 +217,7 @@ class Helpers implements HelpersContract
      */
     public static function configPath($path = null) : string
     {
-        return static::app()
-                     ->configPath($path);
+        return static::app()->configPath($path);
     }
 
     /**
@@ -239,8 +229,7 @@ class Helpers implements HelpersContract
      */
     public static function frameworkPath($path = null) : string
     {
-        return static::app()
-                     ->frameworkPath($path);
+        return static::app()->frameworkPath($path);
     }
 
     /**
@@ -252,8 +241,7 @@ class Helpers implements HelpersContract
      */
     public static function publicPath($path = null) : string
     {
-        return static::app()
-                     ->publicPath($path);
+        return static::app()->publicPath($path);
     }
 
     /**
@@ -265,8 +253,7 @@ class Helpers implements HelpersContract
      */
     public static function resourcesPath($path = null) : string
     {
-        return static::app()
-                     ->resourcesPath($path);
+        return static::app()->resourcesPath($path);
     }
 
     /**
@@ -278,8 +265,7 @@ class Helpers implements HelpersContract
      */
     public static function storagePath($path = null) : string
     {
-        return static::app()
-                     ->storagePath($path);
+        return static::app()->storagePath($path);
     }
 
     /**
@@ -291,8 +277,7 @@ class Helpers implements HelpersContract
      */
     public static function testsPath($path = null) : string
     {
-        return static::app()
-                     ->testsPath($path);
+        return static::app()->testsPath($path);
     }
 
     /**
@@ -304,8 +289,7 @@ class Helpers implements HelpersContract
      */
     public static function vendorPath($path = null) : string
     {
-        return static::app()
-                     ->vendorPath($path);
+        return static::app()->vendorPath($path);
     }
 
     /**
@@ -319,8 +303,9 @@ class Helpers implements HelpersContract
      */
     public static function response($content = '', $status = 200, array $headers = []) : Response
     {
-        return static::app()
-                     ->response($content, $status, $headers);
+        $factory = static::responseBuilder();
+
+        return $factory->make($content, $status, $headers);
     }
 
     /**
@@ -330,7 +315,7 @@ class Helpers implements HelpersContract
      */
     public static function responseBuilder() : ResponseBuilder
     {
-        return app()->responseBuilder();
+        return static::container()->get(ResponseBuilder::class);
     }
 
     /**
@@ -343,8 +328,13 @@ class Helpers implements HelpersContract
      */
     public static function view($template = '', array $variables = []) : View
     {
-        return static::app()
-                     ->view($template, $variables);
+        return static::container()->get(
+            View::class,
+            [
+                $template,
+                $variables,
+            ]
+        );
     }
 
     /**
@@ -370,7 +360,6 @@ class Helpers implements HelpersContract
         $code = 0
     ) // : void
     {
-        static::app()
-              ->httpException($statusCode, $message, $previous, $headers, $view, $code);
+        static::app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }

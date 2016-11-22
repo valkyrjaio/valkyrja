@@ -75,9 +75,9 @@ class View implements ViewContract
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      *
-     * @return View
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function make($template = '', array $variables = []) : View
+    public function make($template = '', array $variables = []) : ViewContract
     {
         return new static($template, $variables);
     }

@@ -36,7 +36,7 @@ interface View
      *
      * @return View
      */
-    public function make($template = '', array $variables = []);
+    public function make($template = '', array $variables = []) : View;
 
     /**
      * Set the master template.
@@ -45,7 +45,7 @@ interface View
      *
      * @return void
      */
-    public function setMasterTemplate($template);
+    public function setMasterTemplate($template); // : void;
 
     /**
      * Set the template.
@@ -54,7 +54,7 @@ interface View
      *
      * @return void
      */
-    public function setTemplate($template);
+    public function setTemplate($template); // : void;
 
     /**
      * Set the variables
@@ -63,7 +63,7 @@ interface View
      *
      * @return void
      */
-    public function setVariables(array $variables = []);
+    public function setVariables(array $variables = []); // : void;
 
     /**
      * Set a single variable.
@@ -73,7 +73,7 @@ interface View
      *
      * @return void
      */
-    public function variable($key, $value);
+    public function variable($key, $value); // : void;
 
     /**
      * Get the template directory.
@@ -82,7 +82,7 @@ interface View
      *
      * @return string
      */
-    public function getTemplateDir($path = null);
+    public function getTemplateDir($path = null) : string;
 
     /**
      * Set the template directory.
@@ -91,14 +91,14 @@ interface View
      *
      * @return void
      */
-    public function setTemplateDir($templateDir);
+    public function setTemplateDir($templateDir); // : void;
 
     /**
      * Get the file extension.
      *
      * @return string
      */
-    public function getFileExtension();
+    public function getFileExtension() : string;
 
     /**
      * Set the file extension.
@@ -107,21 +107,21 @@ interface View
      *
      * @return void
      */
-    public function setFileExtension($extension);
+    public function setFileExtension($extension); // : void;
 
     /**
      * Get the template path.
      *
      * @return string
      */
-    public function getTemplatePath();
+    public function getTemplatePath() : string;
 
     /**
      * Get the master template path.
      *
      * @return string
      */
-    public function getMasterTemplatePath();
+    public function getMasterTemplatePath() : string;
 
     /**
      * Render the templates and view.
@@ -130,5 +130,5 @@ interface View
      *
      * @return string
      */
-    public function render(array $variables = []);
+    public function render(array $variables = []) : string;
 }

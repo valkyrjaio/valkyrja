@@ -30,18 +30,6 @@ class Container implements ContainerContract
     protected $serviceContainer = [];
 
     /**
-     * Return the global $container variable.
-     *
-     * @return \Valkyrja\Contracts\Container\Container
-     */
-    public static function container() : ContainerContract
-    {
-        global $container;
-
-        return $container;
-    }
-
-    /**
      * Set the service container for dependency injection.
      *
      * @param array $serviceContainer The service container array to set

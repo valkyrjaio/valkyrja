@@ -21,13 +21,6 @@ namespace Valkyrja\Contracts\Container;
 interface Container
 {
     /**
-     * Return the global $container variable.
-     *
-     * @return \Valkyrja\Contracts\Container\Container
-     */
-    public static function container() : Container;
-
-    /**
      * Set the service container for dependency injection.
      *
      * @param array $serviceContainer The service container array to set

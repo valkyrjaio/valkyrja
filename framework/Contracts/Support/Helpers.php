@@ -13,6 +13,7 @@ namespace Valkyrja\Contracts\Support;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\View\View;
@@ -27,11 +28,25 @@ use Valkyrja\Contracts\View\View;
 interface Helpers
 {
     /**
-     * Return the global $app variable.
+     * Return the application.
      *
      * @return \Valkyrja\Contracts\Application
      */
     public static function app() : Application;
+
+    /**
+     * Return the container.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public static function container() : Container;
+
+    /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public static function config() : Config;
 
     /**
      * Throw an HttpException with the given data.
@@ -46,23 +61,6 @@ interface Helpers
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
     public static function abort($code, $message = '', array $headers = [], $view = null); // : void;
-
-    /**
-     * Get an item from the container.
-     *
-     * @param string $abstract  The abstract to get
-     * @param array  $arguments [optional] Arguments to pass
-     *
-     * @return mixed
-     */
-    public static function container($abstract, array $arguments = []); // : mixed;
-
-    /**
-     * Get the config class instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
-     */
-    public static function config() : Config;
 
     /**
      * Helper function to set a GET addRoute.

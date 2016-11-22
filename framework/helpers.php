@@ -17,7 +17,7 @@ if (!function_exists('app')) {
      */
     function app()
     {
-        return \Valkyrja\Application::app();
+        return \Valkyrja\Support\Helpers::app();
     }
 }
 
@@ -34,7 +34,19 @@ if (!function_exists('abort')) {
      */
     function abort($code, $message = '', array $headers = [], $view = null)
     {
-        app()->abort($code, $message, $headers, $view);
+        \Valkyrja\Support\Helpers::abort($code, $message, $headers, $view);
+    }
+}
+
+if (!function_exists('container')) {
+    /**
+     * Return the global $app variable.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    function container()
+    {
+        return \Valkyrja\Support\Helpers::container();
     }
 }
 
@@ -47,26 +59,9 @@ if (!function_exists('container')) {
      *
      * @return mixed
      */
-    function container($abstract, array $arguments = [])
+    function instance($abstract, array $arguments = [])
     {
-        return app()
-            ->container()
-            ->get($abstract, $arguments);
-    }
-}
-
-if (!function_exists('env')) {
-    /**
-     * Get an environment variable via key.
-     *
-     * @param string|bool $key     [optional] The variable to get
-     * @param mixed       $default [optional] Default value to return if not found
-     *
-     * @return mixed
-     */
-    function env($key = false, $default = false)
-    {
-        return app()->env($key, $default);
+        return container()->get($abstract, $arguments);
     }
 }
 
@@ -78,7 +73,7 @@ if (!function_exists('config')) {
      */
     function config()
     {
-        return app()->config();
+        return \Valkyrja\Support\Helpers::config();
     }
 }
 
@@ -94,9 +89,7 @@ if (!function_exists('get')) {
      */
     function get($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->get($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::get($path, $handler, $isDynamic);
     }
 }
 
@@ -112,9 +105,7 @@ if (!function_exists('post')) {
      */
     function post($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->post($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::post($path, $handler, $isDynamic);
     }
 }
 
@@ -130,9 +121,7 @@ if (!function_exists('put')) {
      */
     function put($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->put($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::put($path, $handler, $isDynamic);
     }
 }
 
@@ -148,9 +137,7 @@ if (!function_exists('patch')) {
      */
     function patch($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->patch($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::patch($path, $handler, $isDynamic);
     }
 }
 
@@ -166,9 +153,7 @@ if (!function_exists('delete')) {
      */
     function delete($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->delete($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::delete($path, $handler, $isDynamic);
     }
 }
 
@@ -184,9 +169,7 @@ if (!function_exists('head')) {
      */
     function head($path, $handler, $isDynamic = false)
     {
-        app()
-            ->router()
-            ->head($path, $handler, $isDynamic);
+        \Valkyrja\Support\Helpers::head($path, $handler, $isDynamic);
     }
 }
 
@@ -200,7 +183,7 @@ if (!function_exists('basePath')) {
      */
     function basePath($path = null)
     {
-        return app()->basePath($path);
+        return \Valkyrja\Support\Helpers::basePath($path);
     }
 }
 
@@ -214,7 +197,7 @@ if (!function_exists('appPath')) {
      */
     function appPath($path = null)
     {
-        return app()->appPath($path);
+        return \Valkyrja\Support\Helpers::appPath($path);
     }
 }
 
@@ -228,7 +211,7 @@ if (!function_exists('cachePath')) {
      */
     function cachePath($path = null)
     {
-        return app()->cachePath($path);
+        return \Valkyrja\Support\Helpers::cachePath($path);
     }
 }
 
@@ -242,7 +225,7 @@ if (!function_exists('configPath')) {
      */
     function configPath($path = null)
     {
-        return app()->configPath($path);
+        return \Valkyrja\Support\Helpers::configPath($path);
     }
 }
 
@@ -256,7 +239,7 @@ if (!function_exists('frameworkPath')) {
      */
     function frameworkPath($path = null)
     {
-        return app()->frameworkPath($path);
+        return \Valkyrja\Support\Helpers::frameworkPath($path);
     }
 }
 
@@ -270,7 +253,7 @@ if (!function_exists('publicPath')) {
      */
     function publicPath($path = null)
     {
-        return app()->publicPath($path);
+        return \Valkyrja\Support\Helpers::publicPath($path);
     }
 }
 
@@ -284,7 +267,7 @@ if (!function_exists('resourcesPath')) {
      */
     function resourcesPath($path = null)
     {
-        return app()->resourcesPath($path);
+        return \Valkyrja\Support\Helpers::resourcesPath($path);
     }
 }
 
@@ -298,7 +281,7 @@ if (!function_exists('storagePath')) {
      */
     function storagePath($path = null)
     {
-        return app()->storagePath($path);
+        return \Valkyrja\Support\Helpers::storagePath($path);
     }
 }
 
@@ -312,7 +295,7 @@ if (!function_exists('testsPath')) {
      */
     function testsPath($path = null)
     {
-        return app()->testsPath($path);
+        return \Valkyrja\Support\Helpers::testsPath($path);
     }
 }
 
@@ -326,7 +309,7 @@ if (!function_exists('vendorPath')) {
      */
     function vendorPath($path = null)
     {
-        return app()->vendorPath($path);
+        return \Valkyrja\Support\Helpers::vendorPath($path);
     }
 }
 
@@ -343,10 +326,10 @@ if (!function_exists('response')) {
     function response($content = '', $status = 200, array $headers = [])
     {
         if (func_num_args() === 0) {
-            return app()->response();
+            return \Valkyrja\Support\Helpers::responseBuilder();
         }
 
-        return app()->response($content, $status, $headers);
+        return \Valkyrja\Support\Helpers::response($content, $status, $headers);
     }
 }
 
@@ -361,7 +344,7 @@ if (!function_exists('view')) {
      */
     function view($template = '', array $variables = [])
     {
-        return app()->view($template, $variables);
+        return \Valkyrja\Support\Helpers::view($template, $variables);
     }
 }
 
@@ -386,7 +369,7 @@ if (!function_exists('httpException')) {
         $view = null,
         $code = 0
     ) {
-        app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
+        \Valkyrja\Support\Helpers::httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }
 

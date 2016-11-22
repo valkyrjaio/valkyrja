@@ -55,18 +55,6 @@ class Config implements ConfigContract
     }
 
     /**
-     * Get the config global instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
-     */
-    public static function config() : ConfigContract
-    {
-        global $config;
-
-        return $config;
-    }
-
-    /**
      * Get an environment variable.
      *
      * @param string $key

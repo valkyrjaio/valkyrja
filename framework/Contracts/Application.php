@@ -13,12 +13,7 @@ namespace Valkyrja\Contracts;
 
 use Exception;
 
-use Valkyrja\Contracts\Config\Config;
-use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Contracts\Http\ResponseBuilder;
-use Valkyrja\Contracts\Http\Router;
-use Valkyrja\Contracts\View\View;
 
 /**
  * Interface Application
@@ -44,25 +39,11 @@ interface Application
     public function __construct($basePath);
 
     /**
-     * Return the global $app variable.
-     *
-     * @return Application
-     */
-    public static function app() : Application;
-
-    /**
      * Get the application version.
      *
      * @return string
      */
     public function version() : string;
-
-    /**
-     * Get the config class instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
-     */
-    public function config() : Config;
 
     /**
      * Get the environment with which the application is running in.
@@ -269,41 +250,6 @@ interface Application
     public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null); // : void;
 
     /**
-     * Return a new response from the application.
-     *
-     * @param string $content [optional] The content to set
-     * @param int    $status  [optional] The status code to set
-     * @param array  $headers [optional] The headers to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function response(string $content = '', int $status = 200, array $headers = []) : Response;
-
-    /**
-     * Return a new response builder from the application.
-     *
-     * @return \Valkyrja\Contracts\Http\ResponseBuilder
-     */
-    public function responseBuilder() : ResponseBuilder;
-
-    /**
-     * Return the router instance from the container.
-     *
-     * @return \Valkyrja\Contracts\Http\Router
-     */
-    public function router() : Router;
-
-    /**
-     * Return a new view.
-     *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
-     *
-     * @return \Valkyrja\Contracts\View\View
-     */
-    public function view(string $template = '', array $variables = []) : View;
-
-    /**
      * Run the application.
      *
      * @return void
@@ -318,21 +264,4 @@ interface Application
      * @return void
      */
     public function register(string $serviceProvider); // : void;
-
-    /**
-     * Set the service container for dependency injection.
-     *
-     * @return \Valkyrja\Contracts\Container\Container
-     */
-    public function container() : Container;
-
-    /**
-     * Set the service container for dependency injection.
-     *
-     * @param string               $abstract The abstract to use as the key
-     * @param \Closure|array|mixed $instance The instance to set
-     *
-     * @return void
-     */
-    public function instance(string $abstract, $instance); // : void;
 }

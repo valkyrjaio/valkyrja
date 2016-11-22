@@ -14,6 +14,7 @@ namespace Valkyrja\View;
 use Twig_Environment;
 
 use Valkyrja\Contracts\View\TwigView as TwigViewContract;
+use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Support\Helpers;
 
 /**
@@ -45,9 +46,9 @@ class TwigView extends View implements TwigViewContract
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      *
-     * @return View
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function make($template = '', array $variables = []) : View
+    public function make($template = '', array $variables = []) : ViewContract
     {
         $view = new static($template, $variables);
 

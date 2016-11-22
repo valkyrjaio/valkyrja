@@ -24,16 +24,37 @@ $app = new Valkyrja\Application($baseDir);
 $container = new Valkyrja\Container\Container();
 
 /*
- *-------------------------------------------------------------------------
- * Configure The Application
- *-------------------------------------------------------------------------
+ *---------------------------------------------------------------------
+ * Application Configuration Variables
+ *---------------------------------------------------------------------
  *
- * Configure the application with environment variables, config variables,
- * routes, and custom service container instances.
+ * Configuration variables are a great way to modify the application
+ * and how it runs to your specific needs.
  *
  */
 
-require_once 'configuration.php';
+if (class_exists(config\Config::class)) {
+    $config = new config\Config($app);
+}
+else {
+    $config = new Valkyrja\Config\Config($app);
+}
+
+/*
+ *---------------------------------------------------------------------
+ * Application Service Container : Dependency Injection
+ *---------------------------------------------------------------------
+ *
+ * Adding more instances to the service container is a great way to
+ * ensure your application is setup for ease of change in the
+ * future.
+ *
+ */
+
+// Require any dependency injectable definitions
+$serviceContainer = require_once __DIR__ . '/../config/container.php';
+// Set the container variables
+$container->setServiceContainer($serviceContainer);
 
 /*
  *-------------------------------------------------------------------------
@@ -46,7 +67,12 @@ require_once 'configuration.php';
  *
  */
 
-$container->instance(Valkyrja\Application::class, $app);
+$container->instance(Valkyrja\Contracts\Application::class, $app);
+
+$container->instance(Valkyrja\Contracts\Config\Config::class, $config);
+
+// Set the timezone for the application process
+$app->setTimezone();
 
 $container->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,

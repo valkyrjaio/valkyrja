@@ -14,13 +14,6 @@ interface Config
     public function __construct(Application $app);
 
     /**
-     * Get the config global instance.
-     *
-     * @return \Valkyrja\Contracts\Config\Config
-     */
-    public static function config() : Config;
-
-    /**
      * Get an environment variable.
      *
      * @param string $key
