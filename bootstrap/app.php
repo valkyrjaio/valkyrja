@@ -20,7 +20,10 @@
  *
  */
 
-$app = new Valkyrja\Application($baseDir);
+$app = new Valkyrja\Application(
+    realpath(__DIR__ . '/../')
+);
+
 $container = new Valkyrja\Container\Container();
 
 /*
@@ -67,9 +70,15 @@ $container->setServiceContainer($serviceContainer);
  *
  */
 
-$container->instance(Valkyrja\Contracts\Application::class, $app);
+$container->instance(
+    Valkyrja\Contracts\Application::class,
+    $app
+);
 
-$container->instance(Valkyrja\Contracts\Config\Config::class, $config);
+$container->instance(
+    Valkyrja\Contracts\Config\Config::class,
+    $config
+);
 
 $container->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
