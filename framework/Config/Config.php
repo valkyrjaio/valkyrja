@@ -61,9 +61,9 @@ class Config implements ConfigContract
      */
     public static function config() : ConfigContract
     {
-        global $Config;
+        global $config;
 
-        return $Config;
+        return $config;
     }
 
     /**
