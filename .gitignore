@@ -4,3 +4,5 @@
 /public/assets/*
 /vendor
 .env.php
+composer.lock
+npm-debug.log
