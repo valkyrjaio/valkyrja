@@ -28,6 +28,18 @@ else {
 
 /*
  *-------------------------------------------------------------------------
+ * Set Exception Handling
+ *-------------------------------------------------------------------------
+ *
+ * Let's setup the exception handling before anything else so that in
+ * case any errors popup we're ready to catch and display them.
+ *
+ */
+
+$exceptionHandler = new \Valkyrja\Exceptions\ExceptionHandler();
+
+/*
+ *-------------------------------------------------------------------------
  * Start Up The Application
  *-------------------------------------------------------------------------
  *
@@ -36,8 +48,6 @@ else {
  * components together into a singular hub.
  *
  */
-
-$exceptionHandler = new \Valkyrja\Exceptions\ExceptionHandler();
 
 $app = new Valkyrja\Application(
     realpath(__DIR__ . '/../')
