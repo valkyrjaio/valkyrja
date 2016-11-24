@@ -13,8 +13,6 @@ Implement this...
 
 ## Update README
 
-## Update base routes, Controllers, etc
-
 ## Add CLI capability
 
 ## PHP Unit Testing
