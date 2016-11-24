@@ -19,12 +19,9 @@
  *
  */
 
-if (class_exists(config\Env::class)) {
-    $envClassName = config\Env::class;
-}
-else {
-    $envClassName = Valkyrja\Config\Env::class;
-}
+$envClassName = class_exists(config\Env::class)
+    ? config\Env::class
+    : Valkyrja\Config\Env::class;
 
 /*
  *-------------------------------------------------------------------------
@@ -65,12 +62,9 @@ $container = new Valkyrja\Container\Container();
  *
  */
 
-if (class_exists(config\Config::class)) {
-    $config = new config\Config($app);
-}
-else {
-    $config = new Valkyrja\Config\Config($app);
-}
+$config = class_exists(config\Config::class)
+    ? new config\Config($app)
+    : new Valkyrja\Config\Config($app);
 
 /*
  *---------------------------------------------------------------------
