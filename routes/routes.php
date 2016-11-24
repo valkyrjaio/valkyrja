@@ -1,27 +1,7 @@
 <?php
 
 /**
- * Framework Version Route
- *
- * @path /version
- */
-get(
-    '/version',
-    function () use ($app) {
-        return $app->version();
-    }
-);
-
-/*
-|--------------------------------------------------------------------------
-| Homepage Routes
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
-/**
- * Home Route
+ * Welcome Route.
  *
  * @path /
  */
@@ -37,46 +17,48 @@ get(
 );
 
 /**
- * Home Paged Route
+ * Framework Version Route.
  *
- * @path /:page
+ * @path /version
  */
 get(
-    '\/(\d+)',
+    '/version',
+    function () use ($app) {
+        return $app->version();
+    }
+);
+
+/**
+ * Home Route.
+ *
+ * @path /home
+ */
+get(
+    '/home',
     [
-        'controller' => \App\Controllers\HomeController::class,
-        'action'     => 'paged',
-        'as'         => 'homePaged',
+        'controller' => App\Controllers\HomeController::class,
+        'action'     => 'index',
+        'as'         => 'home'
+    ]
+);
+
+/**
+ * Home Paged Route.
+ * - An example route with dependency injection and a parameter.
+ *
+ * @path /home/:page
+ */
+get(
+    '\/home\/(\d+)',
+    [
+        'controller' => App\Controllers\HomeController::class,
+        'action'     => 'indexWithParam',
+        'as'         => 'homeWithParam',
         'injectable' => [
             // Any classes defined within the injectable array are
             //   automatically be run through the service container for you.
-            \Valkyrja\Application::class,
+            Valkyrja\Application::class,
         ],
-    ],
-    true
-);
-
-/*
-|--------------------------------------------------------------------------
-| Article Routes
-|--------------------------------------------------------------------------
-|
-| TODO: Fill with explanation
-|
-*/
-/**
- * Article Route
- *
- * @path /article/:slug
- *       Slug is alphanumeric with dashes and underscores allowed
- */
-get(
-    '\/article\/([a-zA-Z0-9-_]+)',
-    [
-        'controller' => \App\Controllers\ArticleController::class,
-        'action'     => 'index',
-        'as'         => 'article',
-        'injectable' => [],
     ],
     true
 );

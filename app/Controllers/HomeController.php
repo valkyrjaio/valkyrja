@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use Valkyrja\Application;
-use App\Models\User;
+use Valkyrja\Contracts\Application;
 
 /**
  * Class HomeController
@@ -13,40 +12,44 @@ use App\Models\User;
 class HomeController extends Controller
 {
     /**
-     * @var User
+     * @var \Valkyrja\Contracts\Application
      */
-    protected $user;
+    protected $app;
 
     /**
      * HomeController constructor.
      *
-     * @param User $user
+     * @param \Valkyrja\Contracts\Application $app
      */
-    public function __construct(User $user)
+    public function __construct(Application $app)
     {
-        $this->user = $user;
+        $this->app = $app;
     }
 
     /**
      * Homepage action.
+     *
+     * @return \Valkyrja\Contracts\View\View
      */
     public function index()
     {
-        $this->user->id = 1;
-
-        return response('Home Here');
+        return view('home/home');
     }
 
     /**
      * Paged homepage results.
      *
-     * @param int         $page
      * @param Application $application
+     * @param int         $page
+     *
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function paged(Application $application, $page)
+    public function indexWithParam(Application $application, $page)
     {
-        $this->user->id = $page;
-
-        dd('Home Paged Here', $this->user, $application);
+        return view('home/home',
+            [
+                'app'  => $application,
+                'page' => $page,
+            ]);
     }
 }
