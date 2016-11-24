@@ -41,6 +41,13 @@ class Config extends ValkyrjaConfig
     public $views;
 
     /**
+     * Which env file to use.
+     *
+     * @var string
+     */
+    const ENV_CLASS_NAME = Env::class;
+
+    /**
      * Config constructor.
      *
      * @param \Valkyrja\Contracts\Application $app

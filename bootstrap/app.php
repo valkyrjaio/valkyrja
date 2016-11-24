@@ -10,6 +10,23 @@
  */
 
 /*
+ *---------------------------------------------------------------------
+ * Application Environment Variables
+ *---------------------------------------------------------------------
+ *
+ * Configuration variables are a great way to modify the application
+ * and how it runs to your specific needs.
+ *
+ */
+
+if (class_exists(config\Env::class)) {
+    $envClassName = config\Env::class;
+}
+else {
+    $envClassName = Valkyrja\Config\Env::class;
+}
+
+/*
  *-------------------------------------------------------------------------
  * Start Up The Application
  *-------------------------------------------------------------------------
@@ -19,6 +36,8 @@
  * components together into a singular hub.
  *
  */
+
+$exceptionHandler = new \Valkyrja\Exceptions\ExceptionHandler();
 
 $app = new Valkyrja\Application(
     realpath(__DIR__ . '/../')
@@ -156,8 +175,6 @@ $container->instance(
         },
     ]
 );
-
-$app->bootstrapHandler();
 
 /*
  *-------------------------------------------------------------------------

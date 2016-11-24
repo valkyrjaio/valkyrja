@@ -11,12 +11,10 @@
 
 namespace Valkyrja;
 
-use ErrorException;
 use Exception;
 
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Exceptions\HttpException;
-use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Support\Helpers;
 use Valkyrja\Support\PathHelpers;
 
@@ -74,18 +72,6 @@ class Application implements ApplicationContract
     public function __construct($basePath)
     {
         $this->basePath = $basePath;
-    }
-
-    /**
-     * Return the global $app variable.
-     *
-     * @return ApplicationContract
-     */
-    public static function app() : ApplicationContract
-    {
-        global $app;
-
-        return $app;
     }
 
     /**
@@ -159,123 +145,6 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Bootstrap error, exception, and shutdown handler.
-     *
-     * @return void
-     */
-    public function bootstrapHandler() // : void
-    {
-        error_reporting(-1);
-
-        set_error_handler(
-            [
-                $this,
-                'handleError',
-            ]
-        );
-
-        set_exception_handler(
-            [
-                $this,
-                'handleException',
-            ]
-        );
-
-        register_shutdown_function(
-            [
-                $this,
-                'handleShutdown',
-            ]
-        );
-
-        if (!$this->debug()) {
-            ini_set('display_errors', 'Off');
-        }
-    }
-
-    /**
-     * Convert a PHP error to an ErrorException.
-     *
-     * @param int    $level   The error level
-     * @param string $message The error message
-     * @param string $file    [optional] The file within which the error occurred
-     * @param int    $line    [optional] The line which threw the error
-     * @param array  $context [optional] The context for the exception
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) // : void
-    {
-        if (error_reporting() & $level) {
-            throw new ErrorException($message, 0, $level, $file, $line);
-        }
-    }
-
-    /**
-     * Handle an uncaught exception from the application.
-     *
-     * Note: Most exceptions can be handled via the try / catch block in
-     * the HTTP and Console kernels. But, fatal error exceptions must
-     * be handled differently since they are not normal exceptions.
-     *
-     * @param \Throwable $e The exception that was captured
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function handleException($e) : Response
-    {
-        if (!$e instanceof Exception) {
-            $e = new Exception($e);
-        }
-
-        $data = [
-            'message' => $e->getMessage(),
-            'file'    => $e->getFile(),
-            'line'    => $e->getLine(),
-            'trace'   => $e->getTrace(),
-        ];
-        $view = 'errors/exception';
-        $headers = [];
-        $code = 500;
-
-        if ($e instanceof HttpException) {
-            $code = $e->getStatusCode();
-            $headers = $e->getHeaders();
-            $view = $e->getView()
-                ?: $view;
-        }
-
-        // Return a new sent response
-        return Helpers::responseBuilder()
-                    ->view($view, $data, $code, $headers)
-                    ->send();
-    }
-
-    /**
-     * Handle the PHP shutdown event.
-     *
-     * @return void
-     */
-    public function handleShutdown() // : void
-    {
-        if (!is_null($error = error_get_last())
-            && in_array(
-                $error['type'],
-                [
-                    E_ERROR,
-                    E_CORE_ERROR,
-                    E_COMPILE_ERROR,
-                    E_PARSE,
-                ]
-            )
-        ) {
-            $this->handleException($this->fatalExceptionFromError($error));
-        }
-    }
-
-    /**
      * Throw an http exception.
      *
      * @param int        $statusCode The status code to use
@@ -308,20 +177,6 @@ class Application implements ApplicationContract
                 $view,
                 $code,
             ]
-        );
-    }
-
-    /**
-     * Create a new fatal exception instance from an error array.
-     *
-     * @param array $error The error array to use
-     *
-     * @return \Exception
-     */
-    protected function fatalExceptionFromError(array $error) : Exception
-    {
-        return new ErrorException(
-            $error['message'], 0, $error['type'], $error['file'], $error['line']
         );
     }
 

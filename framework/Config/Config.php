@@ -2,8 +2,6 @@
 
 namespace Valkyrja\Config;
 
-use config\Env;
-
 use Valkyrja\Config\Sub\AppConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
@@ -63,7 +61,7 @@ class Config implements ConfigContract
      */
     public static function env(string $key) // : mixed
     {
-        $key = Env::class . '::' . $key;
+        $key = static::ENV_CLASS_NAME . '::' . $key;
 
         if (defined($key)) {
             return constant($key);

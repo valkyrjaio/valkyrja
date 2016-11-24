@@ -2,10 +2,18 @@
 
 namespace Valkyrja\Contracts\Config;
 
+use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Application;
 
 interface Config
 {
+    /**
+     * Which env file to use.
+     *
+     * @var string
+     */
+    const ENV_CLASS_NAME = Env::class;
+
     /**
      * Config constructor.
      *

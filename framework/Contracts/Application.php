@@ -13,8 +13,6 @@ namespace Valkyrja\Contracts;
 
 use Exception;
 
-use Valkyrja\Contracts\Http\Response;
-
 /**
  * Interface Application
  *
@@ -176,41 +174,6 @@ interface Application
      * @return string
      */
     public function vendorPath(string $path = null) : string;
-
-    /**
-     * Convert a PHP error to an ErrorException.
-     *
-     * @param int    $level   The error level
-     * @param string $message The error message
-     * @param string $file    [optional] The file within which the error occurred
-     * @param int    $line    [optional] The line which threw the error
-     * @param array  $context [optional] The context for the exception
-     *
-     * @return void
-     *
-     * @throws \Exception
-     */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []); // : void;
-
-    /**
-     * Handle an uncaught exception from the application.
-     *
-     * Note: Most exceptions can be handled via the try / catch block in
-     * the HTTP and Console kernels. But, fatal error exceptions must
-     * be handled differently since they are not normal exceptions.
-     *
-     * @param \Throwable $e The exception that was captured
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function handleException($e) : Response;
-
-    /**
-     * Handle the PHP shutdown event.
-     *
-     * @return void
-     */
-    public function handleShutdown(); // : void;
 
     /**
      * Throw an http exception.
