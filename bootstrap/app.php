@@ -36,7 +36,7 @@ else {
  *
  */
 
-$exceptionHandler = new \Valkyrja\Exceptions\ExceptionHandler();
+$exceptionHandler = new Valkyrja\Exceptions\ExceptionHandler();
 
 /*
  *-------------------------------------------------------------------------
