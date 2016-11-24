@@ -19,6 +19,4 @@ Implement this...
 
 ## PHP Unit Testing
 
-## Go through header date methods in Response to change to string.
-
-## Move error handling out of app, no more reliance on Response or View
+## Go through header date methods in Response to change to string
