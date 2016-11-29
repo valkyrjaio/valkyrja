@@ -80,9 +80,7 @@ $container->instance(
 $container->instance(
     Valkyrja\Contracts\Http\Router::class,
     function () use ($container) {
-        $application = $container->get(Valkyrja\Application::class);
-
-        return new Valkyrja\Http\Router($application);
+        return new Valkyrja\Http\Router();
     }
 );
 
