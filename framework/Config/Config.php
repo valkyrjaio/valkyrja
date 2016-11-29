@@ -39,13 +39,6 @@ class Config implements ConfigContract
     protected $setDefaults = true;
 
     /**
-     * Which env file to use.
-     *
-     * @var string
-     */
-    const ENV_CLASS_NAME = Env::class;
-
-    /**
      * Config constructor.
      *
      * @param \Valkyrja\Contracts\Application $app
