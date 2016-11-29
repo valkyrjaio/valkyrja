@@ -61,7 +61,7 @@ class Helpers implements HelpersContract
      */
     public static function config() : ConfigContract
     {
-        return static::container()->get(Config::class);
+        return static::container()->get(ConfigContract::class);
     }
 
     /**
