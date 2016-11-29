@@ -2,8 +2,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Helpers;
 
 class ViewsConfig
 {
@@ -36,7 +36,7 @@ class ViewsConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->dir = Config::env('VIEWS_DIR') ?? $app->resourcesPath('views/php');
+            $this->dir = Helpers::env('VIEWS_DIR') ?? $app->resourcesPath('views/php');
 
             $this->twig = new TwigViewsConfig($app);
         }

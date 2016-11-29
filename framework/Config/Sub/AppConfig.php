@@ -2,8 +2,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Helpers;
 
 class AppConfig
 {
@@ -57,11 +57,11 @@ class AppConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->env = Config::env('APP_ENV') ?? 'production';
-            $this->debug = Config::env('APP_DEBUG') ?? false;
-            $this->url = Config::env('APP_URL') ?? 'localhost';
-            $this->timezone = Config::env('APP_TIMEZONE') ?? 'UTC';
-            $this->version = Config::env('APP_VERSION') ?? '1.0';
+            $this->env = Helpers::env('APP_ENV') ?? 'production';
+            $this->debug = Helpers::env('APP_DEBUG') ?? false;
+            $this->url = Helpers::env('APP_URL') ?? 'localhost';
+            $this->timezone = Helpers::env('APP_TIMEZONE') ?? 'UTC';
+            $this->version = Helpers::env('APP_VERSION') ?? '1.0';
         }
     }
 }

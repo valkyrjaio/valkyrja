@@ -2,8 +2,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Helpers;
 
 class TwigViewsConfig
 {
@@ -50,10 +50,10 @@ class TwigViewsConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->enabled = Config::env('VIEWS_TWIG_ENABLED') ?? false;
-            $this->dir = Config::env('VIEWS_TWIG_DIR') ?? $app->resourcesPath('views/twig');
-            $this->compiledDir = Config::env('VIEWS_TWIG_COMPILED_DIR') ?? $app->storagePath('views/twig');
-            $this->extensions = Config::env('VIEWS_TWIG_EXTENSIONS') ?? [];
+            $this->enabled = Helpers::env('VIEWS_TWIG_ENABLED') ?? false;
+            $this->dir = Helpers::env('VIEWS_TWIG_DIR') ?? $app->resourcesPath('views/twig');
+            $this->compiledDir = Helpers::env('VIEWS_TWIG_COMPILED_DIR') ?? $app->storagePath('views/twig');
+            $this->extensions = Helpers::env('VIEWS_TWIG_EXTENSIONS') ?? [];
         }
     }
 }
