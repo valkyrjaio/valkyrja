@@ -8,7 +8,7 @@ var rename           = require('gulp-rename');
 var notify           = require('gulp-notify');
 var include          = require('gulp-include');
 var less             = require('gulp-less');
-var minify           = require('gulp-minify-css');
+var minify           = require('gulp-clean-css');
 var uglify           = require('gulp-uglify');
 var rev              = require('gulp-rev');
 var sequence         = require('run-sequence');
@@ -35,16 +35,16 @@ function md5(str)
     return crypto.createHash('md5').update(str).digest('hex').substring(-22, 22);
 }
 /*
- |--------------------------------------------------------------------------
- | Module Tasks and Watchers
- |--------------------------------------------------------------------------
- |
- | Creating individual tasks and watchers for each module. Each module has
- | two tasks, two watch tasks for js/css and one watch task for the
- | module. Each module's tasks are added to a global array of
- | tasks to be run on default, and before global watch.
- |
- */
+|--------------------------------------------------------------------------
+| Module Tasks and Watchers
+|--------------------------------------------------------------------------
+|
+| Creating individual tasks and watchers for each module. Each module has
+| two tasks, two watch tasks for js/css and one watch task for the
+| module. Each module's tasks are added to a global array of
+| tasks to be run on default, and before global watch.
+|
+*/
 dirs.forEach(function (moduleName/*, index, dirs*/)
 {
     var jsTask     = moduleName + '-js';
@@ -53,15 +53,15 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
     var lessDir    = resourcesDir + moduleName + '/less/';
 
     /*
-     |--------------------------------------------------------------------------
-     | Global Module JS Task
-     |--------------------------------------------------------------------------
-     |
-     | A task that can be run individually or as part of default/watch from cli.
-     | This task merges all js includes into one file to the js directory in
-     | the public directory of the app.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Global Module JS Task
+    |--------------------------------------------------------------------------
+    |
+    | A task that can be run individually or as part of default/watch from cli.
+    | This task merges all js includes into one file to the js directory in
+    | the public directory of the app.
+    |
+    */
     gulp.task(jsTask, function ()
     {
         return gulp.src(scriptsDir + moduleName + '.js')
@@ -72,15 +72,15 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
     });
 
     /*
-     |--------------------------------------------------------------------------
-     | Global Module CSS Task
-     |--------------------------------------------------------------------------
-     |
-     | A task that can be run individually or as part of default/watch from cli.
-     | This task merges all css imports into one file to the css directory in
-     | the public directory of the app.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Global Module CSS Task
+    |--------------------------------------------------------------------------
+    |
+    | A task that can be run individually or as part of default/watch from cli.
+    | This task merges all css imports into one file to the css directory in
+    | the public directory of the app.
+    |
+    */
     gulp.task(cssTask, function ()
     {
         return gulp.src(lessDir + moduleName + '.less')
@@ -95,15 +95,15 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
     moduleTasks.push(cssTask);
 
     /*
-     |--------------------------------------------------------------------------
-     | Global Module JS Watch Task
-     |--------------------------------------------------------------------------
-     |
-     | A watcher set for the module's scripts directory. It monitors changes in
-     | the scripts directory of the module for changes then runs the js task
-     | when changes are detected.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Global Module JS Watch Task
+    |--------------------------------------------------------------------------
+    |
+    | A watcher set for the module's scripts directory. It monitors changes in
+    | the scripts directory of the module for changes then runs the js task
+    | when changes are detected.
+    |
+    */
     gulp.task(jsTask + '-watch', function ()
     {
         // Set a watcher on the module's scripts directory
@@ -115,15 +115,15 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
     });
 
     /*
-     |--------------------------------------------------------------------------
-     | Global Module CSS Watch Task
-     |--------------------------------------------------------------------------
-     |
-     | A watcher set for the module's less directory. It monitors changes in
-     | the less directory of the module for changes then runs the css task
-     | when changes are detected.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Global Module CSS Watch Task
+    |--------------------------------------------------------------------------
+    |
+    | A watcher set for the module's less directory. It monitors changes in
+    | the less directory of the module for changes then runs the css task
+    | when changes are detected.
+    |
+    */
     gulp.task(cssTask + '-watch', function ()
     {
         // Set a watcher on the module's less directory
@@ -135,15 +135,15 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
     });
 
     /*
-     |--------------------------------------------------------------------------
-     | Global Module Watch Task
-     |--------------------------------------------------------------------------
-     |
-     | A watcher set for the module as a whole. It monitors changes in the less
-     | and scripts directories of the module for changes then runs the
-     | appropriate task when changes are detected.
-     |
-     */
+    |--------------------------------------------------------------------------
+    | Global Module Watch Task
+    |--------------------------------------------------------------------------
+    |
+    | A watcher set for the module as a whole. It monitors changes in the less
+    | and scripts directories of the module for changes then runs the
+    | appropriate task when changes are detected.
+    |
+    */
     gulp.task(moduleName + '-watch', [jsTask + '-watch', cssTask + '-watch']);
 
     // Add the module watch task to the global watch tasks
@@ -151,16 +151,16 @@ dirs.forEach(function (moduleName/*, index, dirs*/)
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global JS Minifier Task
- |--------------------------------------------------------------------------
- |
- | This task can be run individually or as part of the version task. It is
- | advised to use this task as part of the version task. This task will
- | minify all files in the public/js directory of the app using the
- | uglify plugin.
- |
- */
+|--------------------------------------------------------------------------
+| Global JS Minifier Task
+|--------------------------------------------------------------------------
+|
+| This task can be run individually or as part of the version task. It is
+| advised to use this task as part of the version task. This task will
+| minify all files in the public/js directory of the app using the
+| uglify plugin.
+|
+*/
 gulp.task('uglify-js', function ()
 {
     // If the js min directory already exists
@@ -176,16 +176,16 @@ gulp.task('uglify-js', function ()
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global CSS Minifier Task
- |--------------------------------------------------------------------------
- |
- | This task can be run individually or as part of the version task. It is
- | advised to use this task as part of the version task. This task will
- | minify all files in the public/css directory of the app using the
- | css minify plugin.
- |
- */
+|--------------------------------------------------------------------------
+| Global CSS Minifier Task
+|--------------------------------------------------------------------------
+|
+| This task can be run individually or as part of the version task. It is
+| advised to use this task as part of the version task. This task will
+| minify all files in the public/css directory of the app using the
+| css minify plugin.
+|
+*/
 gulp.task('minify-css', function ()
 {
     // If the css min directory already exists
@@ -201,18 +201,18 @@ gulp.task('minify-css', function ()
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Make Build Task
- |--------------------------------------------------------------------------
- |
- | This task can be run individually or as part of the version task. It is
- | advised to use this task as part of the version task. This task will
- | version all files in the public/[js,css]/min directories and create
- | a build directory. It will also create a manifest file for the
- | app to use to determine the correct versioned js/css file to
- | serve.
- |
- */
+|--------------------------------------------------------------------------
+| Global Make Build Task
+|--------------------------------------------------------------------------
+|
+| This task can be run individually or as part of the version task. It is
+| advised to use this task as part of the version task. This task will
+| version all files in the public/[js,css]/min directories and create
+| a build directory. It will also create a manifest file for the
+| app to use to determine the correct versioned js/css file to
+| serve.
+|
+*/
 gulp.task('make-build', function ()
 {
     if (fs.existsSync(buildPath)) {
@@ -232,31 +232,31 @@ gulp.task('make-build', function ()
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Version Task
- |--------------------------------------------------------------------------
- |
- | This task is meant to be run individually and NOT part of any other task.
- | This task will run the minify css/js tasks concurrently, then when they
- | both complete it will run the make build task.
- |
- */
+|--------------------------------------------------------------------------
+| Global Version Task
+|--------------------------------------------------------------------------
+|
+| This task is meant to be run individually and NOT part of any other task.
+| This task will run the minify css/js tasks concurrently, then when they
+| both complete it will run the make build task.
+|
+*/
 gulp.task('version', function ()
 {
     sequence(['minify-css', 'uglify-js'], 'make-build');
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Optimize Icons Task
- |--------------------------------------------------------------------------
- |
- | This task is meant to be run individually and NOT part of any other task.
- | This task is used to optimize the icons found in the assets/global/icons
- | directory prior to using the icons in a font. It is meant to be run
- | once per file. Exceeding this number may break svg icons.
- |
- */
+|--------------------------------------------------------------------------
+| Global Optimize Icons Task
+|--------------------------------------------------------------------------
+|
+| This task is meant to be run individually and NOT part of any other task.
+| This task is used to optimize the icons found in the assets/global/icons
+| directory prior to using the icons in a font. It is meant to be run
+| once per file. Exceeding this number may break svg icons.
+|
+*/
 gulp.task('optimize-icons', function ()
 {
     var path = resourcesDir + 'global/';
@@ -283,17 +283,17 @@ gulp.task('optimize-icons', function ()
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Icons Font Task
- |--------------------------------------------------------------------------
- |
- | This task is meant to be run individually and NOT part of any other task.
- | This task is used to create the four web fonts necessary for a font icon
- | set. This is the task used to create the fonts and css file for the
- | icons used across the site. When new icons are added this task
- | should be run.
- |
- */
+|--------------------------------------------------------------------------
+| Global Icons Font Task
+|--------------------------------------------------------------------------
+|
+| This task is meant to be run individually and NOT part of any other task.
+| This task is used to create the four web fonts necessary for a font icon
+| set. This is the task used to create the fonts and css file for the
+| icons used across the site. When new icons are added this task
+| should be run.
+|
+*/
 gulp.task('icon-font', function ()
 {
     // The global module directory
@@ -359,32 +359,32 @@ gulp.task('icon-font', function ()
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Watch Task
- |--------------------------------------------------------------------------
- |
- | This task is meant to be run individually and NOT part of any other task.
- | This task is used to create watchers for every module so as to not have
- | to specify a module to watch. This task is slower than watching on a
- | specific module, but gives the peace of mind to the developers to
- | not have to change watch tasks as they move from module to
- | module.
- |
- */
+|--------------------------------------------------------------------------
+| Global Watch Task
+|--------------------------------------------------------------------------
+|
+| This task is meant to be run individually and NOT part of any other task.
+| This task is used to create watchers for every module so as to not have
+| to specify a module to watch. This task is slower than watching on a
+| specific module, but gives the peace of mind to the developers to
+| not have to change watch tasks as they move from module to
+| module.
+|
+*/
 gulp.task('watch', function ()
 {
     sequence(moduleTasks, moduleWatchTasks);
 });
 
 /*
- |--------------------------------------------------------------------------
- | Global Default Task
- |--------------------------------------------------------------------------
- |
- | This task is meant to be run individually and NOT part of any other task.
- | This task is used to run all the modules together and create all
- | necessary static assets in the public/static directory of the
- | app.
- |
- */
+|--------------------------------------------------------------------------
+| Global Default Task
+|--------------------------------------------------------------------------
+|
+| This task is meant to be run individually and NOT part of any other task.
+| This task is used to run all the modules together and create all
+| necessary static assets in the public/static directory of the
+| app.
+|
+*/
 gulp.task('default', moduleTasks);
