@@ -26,7 +26,7 @@ interface View
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      */
-    public function __construct($template = '', array $variables = []);
+    public function __construct(string $template = '', array $variables = []);
 
     /**
      * Make a new View.
@@ -36,7 +36,7 @@ interface View
      *
      * @return View
      */
-    public function make($template = '', array $variables = []) : View;
+    public function make(string $template = '', array $variables = []) : View;
 
     /**
      * Set the master template.
@@ -45,7 +45,7 @@ interface View
      *
      * @return void
      */
-    public function setMasterTemplate($template); // : void;
+    public function setMasterTemplate(string $template); // : void;
 
     /**
      * Set the template.
@@ -54,7 +54,7 @@ interface View
      *
      * @return void
      */
-    public function setTemplate($template); // : void;
+    public function setTemplate(string $template); // : void;
 
     /**
      * Set the variables
@@ -73,7 +73,7 @@ interface View
      *
      * @return void
      */
-    public function variable($key, $value); // : void;
+    public function variable(string $key, $value); // : void;
 
     /**
      * Get the template directory.
@@ -82,7 +82,7 @@ interface View
      *
      * @return string
      */
-    public function getTemplateDir($path = null) : string;
+    public function getTemplateDir(string $path = null) : string;
 
     /**
      * Set the template directory.
@@ -91,7 +91,7 @@ interface View
      *
      * @return void
      */
-    public function setTemplateDir($templateDir); // : void;
+    public function setTemplateDir(string $templateDir); // : void;
 
     /**
      * Get the file extension.
@@ -107,7 +107,7 @@ interface View
      *
      * @return void
      */
-    public function setFileExtension($extension); // : void;
+    public function setFileExtension(string $extension); // : void;
 
     /**
      * Get the template path.
@@ -131,4 +131,11 @@ interface View
      * @return string
      */
     public function render(array $variables = []) : string;
+
+    /**
+     * Get the view as a string.
+     *
+     * @return string
+     */
+    public function __toString() : string;
 }

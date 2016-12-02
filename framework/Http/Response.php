@@ -14,8 +14,13 @@
 namespace Valkyrja\Http;
 
 use DateTime;
+use DateTimeZone;
+use UnexpectedValueException;
 
+use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
+use Valkyrja\Contracts\View\View;
+use Valkyrja\Support\Helpers;
 
 /**
  * Class Response
@@ -29,9 +34,9 @@ class Response implements ResponseContract
     /**
      * Response headers.
      *
-     * @var array
+     * @var HeadersContract
      */
-    protected $headers = [];
+    protected $headers;
 
     /**
      * Cache control.
@@ -83,13 +88,20 @@ class Response implements ResponseContract
     protected $charset;
 
     /**
+     * The view to use.
+     *
+     * @var \Valkyrja\Contracts\View\View
+     */
+    protected $view;
+
+    /**
      * Response constructor.
      *
-     * @param mixed $content [optional] The response content, see setContent()
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
+     * @param string $content [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      */
-    public function __construct($content = '', $status = 200, $headers = [])
+    public function __construct(string $content = '', int $status = 200, array $headers = [])
     {
         $this->setHeaders($headers);
         $this->setContent($content);
@@ -100,13 +112,13 @@ class Response implements ResponseContract
     /**
      * Create a new response.
      *
-     * @param mixed $content [optional] The response content, see setContent()
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
+     * @param string $content [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function create($content = '', $status = 200, $headers = []) : ResponseContract
+    public static function create(string $content = '', int $status = 200, array $headers = []) : ResponseContract
     {
         return new static($content, $status, $headers);
     }
@@ -118,17 +130,17 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setContent($content) : ResponseContract
+    public function setContent(string $content) : ResponseContract
     {
-        if (null !== $content && !is_string($content) && !is_numeric($content)
-            && !is_callable(
+        if (null !== $content && ! is_string($content) && ! is_numeric($content)
+            && ! is_callable(
                 [
                     $content,
                     '__toString',
                 ]
             )
         ) {
-            throw new \UnexpectedValueException(
+            throw new UnexpectedValueException(
                 sprintf(
                     'The Response content must be a string or object implementing __toString(), "%s" given.',
                     gettype($content)
@@ -152,13 +164,44 @@ class Response implements ResponseContract
     }
 
     /**
+     * Set the view for the response.
+     *
+     * @param \Valkyrja\Contracts\View\View $view The view to set
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function setView(View $view) : ResponseContract
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    /**
+     * Get the view for the response.
+     *
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function view(string $template = '', array $variables = []) : View
+    {
+        if (! isset($this->view)) {
+            $this->view = Helpers::view($template, $variables);
+        }
+
+        return $this->view;
+    }
+
+    /**
      * Sets the HTTP protocol version (1.0 or 1.1).
      *
      * @param string $version [optional] The protocol version to set
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setProtocolVersion($version = '1.0') : ResponseContract
+    public function setProtocolVersion(string $version = '1.0') : ResponseContract
     {
         $this->version = $version;
 
@@ -178,8 +221,8 @@ class Response implements ResponseContract
     /**
      * Sets the response status code.
      *
-     * @param int   $code HTTP status code
-     * @param mixed $text [optional] HTTP status text
+     * @param int    $code HTTP status code
+     * @param string $text [optional] HTTP status text
      *
      * If the status text is null it will be automatically populated for the known
      * status codes and left empty otherwise.
@@ -188,7 +231,7 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function setStatusCode($code, $text = null) : ResponseContract
+    public function setStatusCode(int $code, string $text = null) : ResponseContract
     {
         $this->statusCode = $code = (int) $code;
 
@@ -234,7 +277,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCharset($charset) : ResponseContract
+    public function setCharset(string $charset) : ResponseContract
     {
         $this->charset = $charset;
 
@@ -260,10 +303,14 @@ class Response implements ResponseContract
      */
     public function setHeaders(array $headers = [])  : ResponseContract
     {
-        $this->headers = $headers;
+        if (! isset($this->headers)) {
+            $this->headers = new Headers();
+        }
 
-        if (!$this->hasHeader('Cache-Control')) {
-            $this->setHeader('Cache-Control', '');
+        $this->headers->setAll($headers);
+
+        if (! $this->headers->has('Cache-Control')) {
+            $this->headers->set('Cache-Control', '');
         }
 
         return $this;
@@ -272,99 +319,40 @@ class Response implements ResponseContract
     /**
      * Get all response headers.
      *
-     * @return array
+     * @return HeadersContract
      */
-    public function getHeaders() : array
+    public function headers() : HeadersContract
     {
         return $this->headers;
     }
 
     /**
-     * Set a response header.
-     *
-     * @param string $header The header to set
-     * @param string $value  The value to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setHeader($header, $value) : ResponseContract
-    {
-        $this->headers[$header] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get a response header.
-     *
-     * @param string $header The header to get
-     *
-     * @return string
-     */
-    public function getHeader($header) : string
-    {
-        return $this->hasHeader($header)
-            ? $this->headers[$header]
-            : null;
-    }
-
-    /**
-     * Check if a response header exists.
-     *
-     * @param string $header The header to check exists
-     *
-     * @return bool
-     */
-    public function hasHeader($header) : bool
-    {
-        return isset($this->headers[$header]);
-    }
-
-    /**
-     * Remove a response header.
-     *
-     * @param string $header The header to remove
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function removeHeader($header) : ResponseContract
-    {
-        if (!$this->hasHeader($header)) {
-            return $this;
-        }
-
-        unset($this->headers[$header]);
-
-        return $this;
-    }
-
-    /**
      * Returns the Date header as a DateTime instance.
      *
-     * @return \DateTime A \DateTime instance
+     * @return DateTime A DateTime instance
      *
      * @throws \RuntimeException When the header is not parseable
      */
     public function getDateHeader() : DateTime
     {
-        if (!$this->hasHeader('Date')) {
+        if (! $this->headers->has('Date')) {
             $this->setDateHeader(DateTime::createFromFormat('U', time()));
         }
 
-        return $this->getHeader('Date');
+        return $this->headers->get('Date');
     }
 
     /**
      * Sets the Date header.
      *
-     * @param \DateTime $date A \DateTime instance
+     * @param DateTime $date A DateTime instance
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function setDateHeader(DateTime $date) : ResponseContract
     {
-        $date->setTimezone(new \DateTimeZone('UTC'));
-        $this->setHeader('Date', $date->format('D, d M Y H:i:s') . ' GMT');
+        $date->setTimezone(new DateTimeZone('UTC'));
+        $this->headers->set('Date', $date->format('D, d M Y H:i:s') . ' GMT');
 
         return $this;
     }
@@ -376,9 +364,9 @@ class Response implements ResponseContract
      *
      * @return array
      */
-    public function getCookies($asString = true) : array
+    public function getCookies(bool $asString = true) : array
     {
-        if (!$asString) {
+        if (! $asString) {
             return $this->cookies;
         }
 
@@ -399,27 +387,27 @@ class Response implements ResponseContract
      * Set a response cookie.
      *
      * @param string $name     Cookie name
-     * @param null   $value    Cookie value
+     * @param string $value    Cookie value
      * @param int    $expire   Cookie expires time
      * @param string $path     Cookie path
-     * @param null   $domain   Cookie domain
+     * @param string $domain   Cookie domain
      * @param bool   $secure   Cookie http(s)
      * @param bool   $httpOnly Cookie http only?
      * @param bool   $raw      Cookie raw
-     * @param null   $sameSite Cookie same site?
+     * @param string $sameSite Cookie same site?
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function setCookie(
-        $name,
-        $value = null,
-        $expire = 0,
-        $path = '/',
-        $domain = null,
-        $secure = false,
-        $httpOnly = true,
-        $raw = false,
-        $sameSite = null
+        string $name,
+        string $value = null,
+        int $expire = 0,
+        string $path = '/',
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = true,
+        bool $raw = false,
+        string $sameSite = null
     ) : ResponseContract
     {
         $this->cookies[$domain][$path][$name] = [
@@ -457,7 +445,7 @@ class Response implements ResponseContract
      *
      * @return void
      */
-    public function removeCookie($name, $path = '/', $domain = null) // : void
+    public function removeCookie(string $name, string $path = '/', string $domain = null) // : void
     {
         if (null === $path) {
             $path = '/';
@@ -482,7 +470,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function addCacheControl($name, $value = null) : ResponseContract
+    public function addCacheControl(string $name, string $value = null) : ResponseContract
     {
         $this->cacheControl[$name] = $value;
 
@@ -496,7 +484,7 @@ class Response implements ResponseContract
      *
      * @return string
      */
-    public function getCacheControl($name) : string
+    public function getCacheControl(string $name) : string
     {
         return $this->hasCacheControl($name)
             ? $this->cacheControl[$name]
@@ -510,7 +498,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function hasCacheControl($name) : bool
+    public function hasCacheControl(string $name) : bool
     {
         return isset($this->cacheControl[$name]);
     }
@@ -522,9 +510,9 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function removeCacheControl($name) : ResponseContract
+    public function removeCacheControl(string $name) : ResponseContract
     {
-        if (!$this->hasCacheControl($name)) {
+        if (! $this->hasCacheControl($name)) {
             return $this;
         }
 
@@ -546,7 +534,7 @@ class Response implements ResponseContract
      */
     public function isCacheable() : bool
     {
-        if (!in_array(
+        if (! in_array(
             $this->statusCode,
             [
                 200,
@@ -591,7 +579,7 @@ class Response implements ResponseContract
      */
     public function isValidateable() : bool
     {
-        return $this->hasHeader('Last-Modified') || $this->hasHeader('ETag');
+        return $this->headers->has('Last-Modified') || $this->headers->has('ETag');
     }
 
     /**
@@ -631,7 +619,7 @@ class Response implements ResponseContract
      */
     public function getAge() : int
     {
-        if (null !== $age = $this->getHeader('Age')) {
+        if (null !== $age = $this->headers->get('Age')) {
             return (int) $age;
         }
 
@@ -649,7 +637,7 @@ class Response implements ResponseContract
     public function expire() : ResponseContract
     {
         if ($this->isFresh()) {
-            $this->setHeader('Age', $this->getMaxAge());
+            $this->headers->set('Age', $this->getMaxAge());
         }
 
         return $this;
@@ -660,12 +648,12 @@ class Response implements ResponseContract
      *
      * Returns the value of the Expires header as a DateTime instance.
      *
-     * @return \DateTime A DateTime instance or null if the header does not exist
+     * @return DateTime A DateTime instance or null if the header does not exist
      */
     public function getExpires() : DateTime
     {
         try {
-            return $this->getHeader('Expires');
+            return $this->headers->get('Expires');
         }
         catch (\RuntimeException $e) {
             // according to RFC 2616 invalid date formats (e.g. "0" and "-1") must be treated as in the past
@@ -678,19 +666,19 @@ class Response implements ResponseContract
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime|null $date [optional] A \DateTime instance or null to remove the header
+     * @param DateTime|null $date [optional] A DateTime instance or null to remove the header
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function setExpires(DateTime $date = null) : ResponseContract
     {
         if (null === $date) {
-            $this->removeHeader('Expires');
+            $this->headers->remove('Expires');
         }
         else {
             $date = clone $date;
-            $date->setTimezone(new \DateTimeZone('UTC'));
-            $this->setHeader('Expires', $date->format('D, d M Y H:i:s') . ' GMT');
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $this->headers->set('Expires', $date->format('D, d M Y H:i:s') . ' GMT');
         }
 
         return $this;
@@ -731,7 +719,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setMaxAge($value) : ResponseContract
+    public function setMaxAge(int $value) : ResponseContract
     {
         $this->addCacheControl('max-age', $value);
 
@@ -747,7 +735,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setSharedMaxAge($value) : ResponseContract
+    public function setSharedMaxAge(int $value) : ResponseContract
     {
         $this->setPublic();
         $this->addCacheControl('s-maxage', $value);
@@ -783,7 +771,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setTtl($seconds) : ResponseContract
+    public function setTtl(int $seconds) : ResponseContract
     {
         $this->setSharedMaxAge($this->getAge() + $seconds);
 
@@ -799,7 +787,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setClientTtl($seconds) : ResponseContract
+    public function setClientTtl(int $seconds) : ResponseContract
     {
         $this->setMaxAge($this->getAge() + $seconds);
 
@@ -815,7 +803,7 @@ class Response implements ResponseContract
      */
     public function getLastModified() : string
     {
-        return $this->getHeader('Last-Modified');
+        return $this->headers->get('Last-Modified');
     }
 
     /**
@@ -823,19 +811,19 @@ class Response implements ResponseContract
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime $date [optional] A \DateTime instance or null to remove the header
+     * @param DateTime $date [optional] A DateTime instance or null to remove the header
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function setLastModified(DateTime $date = null) : ResponseContract
     {
         if (null === $date) {
-            $this->removeHeader('Last-Modified');
+            $this->headers->remove('Last-Modified');
         }
         else {
             $date = clone $date;
-            $date->setTimezone(new \DateTimeZone('UTC'));
-            $this->setHeader('Last-Modified', $date->format('D, d M Y H:i:s') . ' GMT');
+            $date->setTimezone(new DateTimeZone('UTC'));
+            $this->headers->set('Last-Modified', $date->format('D, d M Y H:i:s') . ' GMT');
         }
 
         return $this;
@@ -848,7 +836,7 @@ class Response implements ResponseContract
      */
     public function getEtag() : string
     {
-        return $this->getHeader('ETag');
+        return $this->headers->get('ETag');
     }
 
     /**
@@ -859,16 +847,16 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setEtag($etag = null, $weak = false) : ResponseContract
+    public function setEtag(string $etag = null, bool $weak = false) : ResponseContract
     {
         if (null === $etag) {
-            $this->removeHeader('Etag');
+            $this->headers->remove('Etag');
         }
         else {
             if (0 !== strpos($etag, '"')) {
                 $etag = '"' . $etag . '"';
             }
-            $this->setHeader(
+            $this->headers->set(
                 'ETag',
                 (true === $weak
                     ? 'W/'
@@ -941,13 +929,14 @@ class Response implements ResponseContract
     {
         $this->setStatusCode(304);
         $this->setContent(null);
-        $this->removeHeader('Allow')
-             ->removeHeader('Content-Encoding')
-             ->removeHeader('Content-Language')
-             ->removeHeader('Content-Length')
-             ->removeHeader('Content-MD5')
-             ->removeHeader('Content-Type')
-             ->removeHeader('Last-Modified');
+        $this->headers
+            ->remove('Allow')
+            ->remove('Content-Encoding')
+            ->remove('Content-Language')
+            ->remove('Content-Length')
+            ->remove('Content-MD5')
+            ->remove('Content-Type')
+            ->remove('Last-Modified');
 
         return $this;
     }
@@ -1051,21 +1040,21 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isRedirect($location = null) : bool
+    public function isRedirect(string $location = null) : bool
     {
         return in_array(
-                   $this->statusCode,
-                   [
-                       201,
-                       301,
-                       302,
-                       303,
-                       307,
-                       308,
-                   ]
-               )
-               && (null === $location
-            ?: $location == $this->getHeader('Location'));
+            $this->statusCode,
+            [
+                201,
+                301,
+                302,
+                303,
+                307,
+                308,
+            ]
+        )
+        && (null === $location
+            ?: $location == $this->headers->get('Location'));
     }
 
     /**
@@ -1096,11 +1085,11 @@ class Response implements ResponseContract
             return $this;
         }
 
-        if (!$this->hasHeader('Date')) {
-            $this->setDateHeader(\DateTime::createFromFormat('U', time()));
+        if (! $this->headers->has('Date')) {
+            $this->setDateHeader(DateTime::createFromFormat('U', time()));
         }
 
-        foreach ($this->getHeaders() as $name => $value) {
+        foreach ($this->headers->all() as $name => $value) {
             header($name . ': ' . $value, false, $this->statusCode);
         }
 
@@ -1143,6 +1132,10 @@ class Response implements ResponseContract
      */
     public function sendContent() : ResponseContract
     {
+        if (isset($this->view) && empty($this->content)) {
+            $this->content = $this->view->render();
+        }
+
         echo $this->content;
 
         return $this;
@@ -1178,7 +1171,7 @@ class Response implements ResponseContract
      *
      * @return void
      */
-    public static function closeOutputBuffers($targetLevel, $flush) // : void
+    public static function closeOutputBuffers(int $targetLevel, bool $flush) // : void
     {
         $status = ob_get_status(true);
         $level = count($status);
@@ -1190,8 +1183,8 @@ class Response implements ResponseContract
             : -1;
 
         while ($level-- > $targetLevel && ($s = $status[$level])
-               && (!isset($s['del'])
-                ? !isset($s['flags']) || $flags === ($s['flags'] & $flags)
+            && (! isset($s['del'])
+                ? ! isset($s['flags']) || $flags === ($s['flags'] & $flags)
                 : $s['del'])) {
             if ($flush) {
                 ob_end_flush();
@@ -1216,9 +1209,9 @@ class Response implements ResponseContract
     public function __toString() : string
     {
         return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)
-               . "\r\n"
-               . $this->headers
-               . "\r\n"
-               . $this->getContent();
+        . "\r\n"
+        . $this->headers
+        . "\r\n"
+        . $this->getContent();
     }
 }

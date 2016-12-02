@@ -334,6 +334,17 @@ class Router implements RouterContract
                     ],
                     $arguments
                 );
+
+                // Call after method
+                call_user_func_array(
+                    [
+                        $controller,
+                        'after',
+                    ],
+                    [
+                        $dispatch
+                    ]
+                );
             }
         }
 

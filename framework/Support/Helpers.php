@@ -13,6 +13,8 @@ namespace Valkyrja\Support;
 
 use config\Config as Config;
 
+use Exception;
+
 use Valkyrja\Config\Config as ValkyrjaConfig;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
@@ -100,7 +102,7 @@ class Helpers implements HelpersContract
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort($code, $message = '', array $headers = [], $view = null) // : void
+    public static function abort(int $code, string $message = '', array $headers = [], string $view = null) // : void
     {
         static::app()->abort($code, $message, $headers, $view);
     }
@@ -114,7 +116,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function get($path, $handler, $isDynamic = false) // : void
+    public static function get(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->get($path, $handler, $isDynamic);
     }
@@ -128,7 +130,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function post($path, $handler, $isDynamic = false) // : void
+    public static function post(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->post($path, $handler, $isDynamic);
     }
@@ -142,7 +144,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function put($path, $handler, $isDynamic = false) // : void
+    public static function put(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->put($path, $handler, $isDynamic);
     }
@@ -156,7 +158,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function patch($path, $handler, $isDynamic = false) // : void
+    public static function patch(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->patch($path, $handler, $isDynamic);
     }
@@ -170,7 +172,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function delete($path, $handler, $isDynamic = false) // : void
+    public static function delete(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->delete($path, $handler, $isDynamic);
     }
@@ -184,7 +186,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function head($path, $handler, $isDynamic = false) // : void
+    public static function head(string $path, $handler, bool $isDynamic = false) // : void
     {
         static::router()->head($path, $handler, $isDynamic);
     }
@@ -196,7 +198,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function basePath($path = null) : string
+    public static function basePath(string $path = null) : string
     {
         return static::app()->basePath($path);
     }
@@ -208,7 +210,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function appPath($path = null) : string
+    public static function appPath(string $path = null) : string
     {
         return static::app()->appPath($path);
     }
@@ -220,7 +222,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function cachePath($path = null) : string
+    public static function cachePath(string $path = null) : string
     {
         return static::app()->cachePath($path);
     }
@@ -232,7 +234,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function configPath($path = null) : string
+    public static function configPath(string $path = null) : string
     {
         return static::app()->configPath($path);
     }
@@ -244,7 +246,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function frameworkPath($path = null) : string
+    public static function frameworkPath(string $path = null) : string
     {
         return static::app()->frameworkPath($path);
     }
@@ -256,7 +258,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function publicPath($path = null) : string
+    public static function publicPath(string $path = null) : string
     {
         return static::app()->publicPath($path);
     }
@@ -268,7 +270,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function resourcesPath($path = null) : string
+    public static function resourcesPath(string $path = null) : string
     {
         return static::app()->resourcesPath($path);
     }
@@ -280,7 +282,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function storagePath($path = null) : string
+    public static function storagePath(string $path = null) : string
     {
         return static::app()->storagePath($path);
     }
@@ -292,7 +294,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function testsPath($path = null) : string
+    public static function testsPath(string $path = null) : string
     {
         return static::app()->testsPath($path);
     }
@@ -304,7 +306,7 @@ class Helpers implements HelpersContract
      *
      * @return string
      */
-    public static function vendorPath($path = null) : string
+    public static function vendorPath(string $path = null) : string
     {
         return static::app()->vendorPath($path);
     }
@@ -318,7 +320,7 @@ class Helpers implements HelpersContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function response($content = '', $status = 200, array $headers = []) : Response
+    public static function response(string $content = '', int $status = 200, array $headers = []) : Response
     {
         $factory = static::responseBuilder();
 
@@ -343,7 +345,7 @@ class Helpers implements HelpersContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public static function view($template = '', array $variables = []) : View
+    public static function view(string $template = '', array $variables = []) : View
     {
         return static::container()->get(
             View::class,
@@ -369,12 +371,12 @@ class Helpers implements HelpersContract
      * @throws \HttpException
      */
     public static function httpException(
-        $statusCode,
-        $message = null,
-        \Exception $previous = null,
+        int $statusCode,
+        string $message = null,
+        Exception $previous = null,
         array $headers = [],
-        $view = null,
-        $code = 0
+        string $view = null,
+        int $code = 0
     ) // : void
     {
         static::app()->httpException($statusCode, $message, $previous, $headers, $view, $code);

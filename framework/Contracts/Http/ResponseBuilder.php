@@ -39,42 +39,42 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make($content = '', $status = 200, array $headers = []);
+    public function make(string $content = '', int $status = 200, array $headers = []);
 
     /**
      * View response builder.
      *
-     * @param string $view    The view template to use
-     * @param array  $data    [optional] The view data
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function view($view, array $data = [], $status = 200, array $headers = []);
-
-    /**
-     * Json response builder.
-     *
-     * @param mixed $data    [optional] The data to set
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function json($data = [], $status = 200, array $headers = []);
-
-    /**
-     * JsonP response builder.
-     *
-     * @param string $callback The jsonp callback
-     * @param mixed  $data     [optional] The data to set
+     * @param string $template The view template to use
+     * @param array  $data     [optional] The view data
      * @param int    $status   [optional] The response status code
      * @param array  $headers  [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function jsonp($callback, $data = [], $status = 200, array $headers = []);
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []);
+
+    /**
+     * Json response builder.
+     *
+     * @param array $data    [optional] The data to set
+     * @param int   $status  [optional] The response status code
+     * @param array $headers [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function json(array $data = [], int $status = 200, array $headers = []);
+
+    /**
+     * JsonP response builder.
+     *
+     * @param string $callback The jsonp callback
+     * @param array  $data     [optional] The data to set
+     * @param int    $status   [optional] The response status code
+     * @param array  $headers  [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []);
 
     /**
      * Redirect to response builder.
@@ -86,7 +86,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectTo($path, array $parameters = [], $status = 302, array $headers = []);
+    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []);
 
     /**
      * Redirect to a named route response builder.
@@ -98,5 +98,5 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectToRoute($route, array $parameters = [], $status = 302, array $headers = []);
+    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []);
 }

@@ -49,7 +49,7 @@ class Collection implements CollectionContract
      *
      * @return mixed
      */
-    public function get($key, $default = false) // : mixed
+    public function get(string $key, $default = false) // : mixed
     {
         return $this->has($key)
             ? $this->collection[$key]
@@ -63,7 +63,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function has($key) : bool
+    public function has(string $key) : bool
     {
         return isset($this->collection[$key]);
     }
@@ -75,7 +75,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function exists($key) : bool
+    public function exists(string $key) : bool
     {
         return array_key_exists($key, $this->collection);
     }
@@ -88,7 +88,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function set($key, $value) : CollectionContract
+    public function set(string $key, $value) : CollectionContract
     {
         $this->collection[$key] = $value;
 
@@ -102,7 +102,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function remove($key) : CollectionContract
+    public function remove(string $key) : CollectionContract
     {
         if (!$this->has($key)) {
             return $this;
@@ -158,13 +158,23 @@ class Collection implements CollectionContract
     }
 
     /**
+     * Determine if the collection is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty() : bool
+    {
+        return empty($this->collection);
+    }
+
+    /**
      * Get a single item from the collection.
      *
      * @param string $key
      *
      * @return mixed
      */
-    public function __get($key) // : mixed
+    public function __get(string $key) // : mixed
     {
         return $this->get($key);
     }
@@ -176,7 +186,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function __isset($key) : bool
+    public function __isset(string $key) : bool
     {
         return $this->has($key);
     }
@@ -189,7 +199,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function __set($key, $value) : CollectionContract
+    public function __set(string $key, $value) : CollectionContract
     {
         return $this->set($key, $value);
     }
@@ -201,7 +211,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function __unset($key) : CollectionContract
+    public function __unset(string $key) : CollectionContract
     {
         return $this->remove($key);
     }

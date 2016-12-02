@@ -12,7 +12,7 @@ get(
 
         $view->setMasterTemplate('');
 
-        return $view;
+        return response($view);
     }
 );
 
@@ -24,7 +24,7 @@ get(
 get(
     '/version',
     function () use ($app) {
-        return $app->version();
+        return response($app->version());
     }
 );
 

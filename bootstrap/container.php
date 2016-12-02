@@ -29,11 +29,11 @@ $container->instance(
     Valkyrja\Contracts\Exceptions\HttpException::class,
     [
         function (
-            $statusCode,
-            $message = null,
+            int $statusCode,
+            string $message = null,
             Exception $previous = null,
             array $headers = [],
-            $code = 0
+            int $code = 0
         ) {
             return new Valkyrja\Exceptions\HttpException($statusCode, $message, $previous, $headers, $code);
         },
@@ -52,7 +52,7 @@ $container->instance(
 $container->instance(
     Valkyrja\Contracts\Http\Response::class,
     [
-        function ($content = '', $status = 200, $headers = []) {
+        function (string $content = '', int $status = 200, array $headers = []) {
             return new Valkyrja\Http\Response($content, $status, $headers);
         },
     ]
@@ -61,7 +61,7 @@ $container->instance(
 $container->instance(
     Valkyrja\Contracts\Http\JsonResponse::class,
     [
-        function ($content = '', $status = 200, $headers = []) {
+        function (string $content = '', int $status = 200, array $headers = []) {
             return new Valkyrja\Http\JsonResponse($content, $status, $headers);
         },
     ]
@@ -94,7 +94,7 @@ $container->instance(
 $container->instance(
     Valkyrja\Contracts\View\View::class,
     [
-        function ($template = '', array $variables = []) {
+        function (string $template = '', array $variables = []) {
             return new Valkyrja\View\View($template, $variables);
         },
     ]

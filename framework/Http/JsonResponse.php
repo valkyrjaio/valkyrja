@@ -56,11 +56,11 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * Response constructor.
      *
-     * @param mixed $data    [optional] The response content, see setContent()
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
+     * @param string $data    [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      */
-    public function __construct($data = null, $status = 200, $headers = [])
+    public function __construct(string $data = null, int $status = 200, array $headers = [])
     {
         parent::__construct('', $status, $headers);
 
@@ -76,13 +76,13 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * Sets the JSONP callback.
      *
-     * @param string|null $callback [optional] The JSONP callback or null to use none
+     * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @return JsonResponseContract
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null) : JsonResponseContract
+    public function setCallback(string $callback = null) : JsonResponseContract
     {
         if (null !== $callback) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
@@ -90,7 +90,7 @@ class JsonResponse extends Response implements JsonResponseContract
             $parts = explode('.', $callback);
 
             foreach ($parts as $part) {
-                if (!preg_match($pattern, $part)) {
+                if (! preg_match($pattern, $part)) {
                     throw new \InvalidArgumentException('The callback name is not valid.');
                 }
             }
@@ -106,11 +106,11 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @param string $json The json to set
      *
-     * @return JsonResponseContract
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setJson($json) : JsonResponseContract
+    public function setJson(string $json) : JsonResponseContract
     {
         $this->data = $json;
 
@@ -120,13 +120,13 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * Sets the data to be sent as JSON.
      *
-     * @param mixed $data [optional] The data to set
+     * @param array $data [optional] The data to set
      *
-     * @return JsonResponseContract
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setData($data = []) : JsonResponseContract
+    public function setData(array $data = []) : JsonResponseContract
     {
         $data = json_encode($data, $this->encodingOptions);
 
@@ -146,16 +146,17 @@ class JsonResponse extends Response implements JsonResponseContract
     {
         return $this->encodingOptions;
     }
+
     /**
      * Sets options used while encoding data to JSON.
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @return JsonResponseContract
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setEncodingOptions($encodingOptions) : JsonResponseContract
+    public function setEncodingOptions(int $encodingOptions) : JsonResponseContract
     {
-        $this->encodingOptions = (int) $encodingOptions;
+        $this->encodingOptions = $encodingOptions;
 
         return $this->setData(json_decode($this->data));
     }
@@ -163,23 +164,27 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * Updates the content and headers according to the JSON data and callback.
      *
-     * @return JsonResponse
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    protected function update() : JsonResponse
+    protected function update() : JsonResponseContract
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->setHeader('Content-Type', 'text/javascript');
 
-            return $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->data));
+            $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->data));
+
+            return $this;
         }
 
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
-        if (!$this->hasHeader('Content-Type') || 'text/javascript' === $this->getHeader('Content-Type')) {
+        if (! $this->hasHeader('Content-Type') || 'text/javascript' === $this->getHeader('Content-Type')) {
             $this->setHeader('Content-Type', 'application/json');
         }
 
-        return $this->setContent($this->data);
+        $this->setContent($this->data);
+
+        return $this;
     }
 }

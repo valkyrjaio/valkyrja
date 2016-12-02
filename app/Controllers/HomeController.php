@@ -33,7 +33,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home/home');
+        return response(view('home/home'));
     }
 
     /**
@@ -46,10 +46,10 @@ class HomeController extends Controller
      */
     public function indexWithParam(Application $application, $page)
     {
-        return view('home/home',
+        return response(view('home/home',
             [
                 'app'  => $application,
                 'page' => $page,
-            ]);
+            ]));
     }
 }

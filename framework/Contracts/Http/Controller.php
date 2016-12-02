@@ -21,12 +21,9 @@ namespace Valkyrja\Contracts\Http;
 interface Controller
 {
     /**
-     * Before any action is called.
-     */
-    public function before();
-
-    /**
      * After any action is called.
+     *
+     * @param \Valkyrja\Contracts\Http\Response $response
      */
-    public function after();
+    public function after(Response &$response);
 }

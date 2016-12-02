@@ -62,7 +62,7 @@ class View implements ViewContract
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      */
-    public function __construct($template = '', array $variables = [])
+    public function __construct(string $template = '', array $variables = [])
     {
         $this->setVariables($variables);
         $this->setTemplate($template);
@@ -77,7 +77,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function make($template = '', array $variables = []) : ViewContract
+    public function make(string $template = '', array $variables = []) : ViewContract
     {
         return new static($template, $variables);
     }
@@ -89,7 +89,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setMasterTemplate($template) // : void
+    public function setMasterTemplate(string $template) // : void
     {
         $this->masterTemplate = $template;
     }
@@ -101,7 +101,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setTemplate($template) // : void
+    public function setTemplate(string $template) // : void
     {
         $this->template = $template;
     }
@@ -126,7 +126,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function variable($key, $value) // : void
+    public function variable(string $key, $value) // : void
     {
         $this->variables[$key] = $value;
     }
@@ -138,7 +138,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getTemplateDir($path = null) : string
+    public function getTemplateDir(string $path = null) : string
     {
         return $this->templateDir . ($path
             ? app()::DIRECTORY_SEPARATOR . $path
@@ -152,7 +152,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setTemplateDir($templateDir) // : void
+    public function setTemplateDir(string $templateDir) // : void
     {
         $this->templateDir = $templateDir;
     }
@@ -174,7 +174,7 @@ class View implements ViewContract
      *
      * @return void
      */
-    public function setFileExtension($extension) // : void
+    public function setFileExtension(string $extension) // : void
     {
         $this->fileExtension = $extension;
     }
@@ -214,7 +214,7 @@ class View implements ViewContract
         include $this->getTemplatePath();
         $view = ob_get_clean();
 
-        if (!$this->masterTemplate || $this->masterTemplate === '') {
+        if (! $this->masterTemplate || $this->masterTemplate === '') {
             return $view;
         }
 
@@ -225,5 +225,15 @@ class View implements ViewContract
         $masterView = ob_get_clean();
 
         return $masterView;
+    }
+
+    /**
+     * Get the view as a string.
+     *
+     * @return string
+     */
+    public function __toString() : string
+    {
+        return $this->render();
     }
 }

@@ -23,44 +23,44 @@ interface JsonResponse extends Response
     /**
      * Response constructor.
      *
-     * @param mixed $data    [optional] The response content, see setContent()
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
+     * @param string $data    [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      */
-    public function __construct($data = null, $status = 200, $headers = []);
+    public function __construct(string $data = null, int $status = 200, array $headers = []);
 
     /**
      * Sets the JSONP callback.
      *
-     * @param string|null $callback [optional] The JSONP callback or null to use none
+     * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @return JsonResponse
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null) : JsonResponse;
+    public function setCallback(string $callback = null) : JsonResponse;
 
     /**
      * Sets a raw string containing a JSON document to be sent.
      *
      * @param string $json The json to set
      *
-     * @return JsonResponse
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setJson($json) : JsonResponse;
+    public function setJson(string $json) : JsonResponse;
 
     /**
      * Sets the data to be sent as JSON.
      *
      * @param mixed $data [optional] The data to set
      *
-     * @return JsonResponse
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function setData($data = []) : JsonResponse;
+    public function setData(array $data = []) : JsonResponse;
 
     /**
      * Returns options used while encoding data to JSON.
@@ -74,7 +74,7 @@ interface JsonResponse extends Response
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @return JsonResponse
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setEncodingOptions($encodingOptions) : JsonResponse;
+    public function setEncodingOptions(int $encodingOptions) : JsonResponse;
 }

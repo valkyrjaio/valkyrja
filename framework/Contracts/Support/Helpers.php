@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Support;
 
+use Exception;
+
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Container\Container;
@@ -77,7 +79,7 @@ interface Helpers
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort($code, $message = '', array $headers = [], $view = null); // : void;
+    public static function abort(int $code, string $message = '', array $headers = [], string $view = null); // : void;
 
     /**
      * Helper function to set a GET addRoute.
@@ -88,7 +90,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function get($path, $handler, $isDynamic = false); // : void;
+    public static function get(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -99,7 +101,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function post($path, $handler, $isDynamic = false); // : void;
+    public static function post(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -110,7 +112,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function put($path, $handler, $isDynamic = false); // : void;
+    public static function put(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -121,7 +123,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function patch($path, $handler, $isDynamic = false); // : void;
+    public static function patch(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -132,7 +134,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function delete($path, $handler, $isDynamic = false); // : void;
+    public static function delete(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -143,7 +145,7 @@ interface Helpers
      *
      * @return void
      */
-    public static function head($path, $handler, $isDynamic = false); // : void;
+    public static function head(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to get base path.
@@ -152,7 +154,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function basePath($path = null) : string;
+    public static function basePath(string $path = null) : string;
 
     /**
      * Helper function to get app path.
@@ -161,7 +163,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function appPath($path = null) : string;
+    public static function appPath(string $path = null) : string;
 
     /**
      * Helper function to get cache path.
@@ -170,7 +172,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function cachePath($path = null) : string;
+    public static function cachePath(string $path = null) : string;
 
     /**
      * Helper function to get config path.
@@ -179,7 +181,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function configPath($path = null) : string;
+    public static function configPath(string $path = null) : string;
 
     /**
      * Helper function to get framework path.
@@ -188,7 +190,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function frameworkPath($path = null) : string;
+    public static function frameworkPath(string $path = null) : string;
 
     /**
      * Helper function to get public path.
@@ -197,7 +199,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function publicPath($path = null) : string;
+    public static function publicPath(string $path = null) : string;
 
     /**
      * Helper function to get resources path.
@@ -206,7 +208,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function resourcesPath($path = null) : string;
+    public static function resourcesPath(string $path = null) : string;
 
     /**
      * Helper function to get storage path.
@@ -215,7 +217,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function storagePath($path = null) : string;
+    public static function storagePath(string $path = null) : string;
 
     /**
      * Helper function to get tests path.
@@ -224,7 +226,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function testsPath($path = null) : string;
+    public static function testsPath(string $path = null) : string;
 
     /**
      * Helper function to get vendor path.
@@ -233,7 +235,7 @@ interface Helpers
      *
      * @return string
      */
-    public static function vendorPath($path = null) : string;
+    public static function vendorPath(string $path = null) : string;
 
     /**
      * Return a new response from the application.
@@ -244,7 +246,7 @@ interface Helpers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function response($content = '', $status = 200, array $headers = []) : Response;
+    public static function response(string $content = '', int $status = 200, array $headers = []) : Response;
 
     /**
      * Return a new response from the application.
@@ -261,7 +263,7 @@ interface Helpers
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public static function view($template = '', array $variables = []) : View;
+    public static function view(string $template = '', array $variables = []) : View;
 
     /**
      * Throw an http exception.
@@ -278,11 +280,11 @@ interface Helpers
      * @throws \HttpException
      */
     public static function httpException(
-        $statusCode,
-        $message = null,
-        \Exception $previous = null,
+        int $statusCode,
+        string $message = null,
+        Exception $previous = null,
         array $headers = [],
-        $view = null,
-        $code = 0
+        string $view = null,
+        int $code = 0
     );
 }

@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Http;
 
 use DateTime;
+use Valkyrja\Contracts\View\View;
 
 /**
  * Interface Response
@@ -34,68 +35,68 @@ interface Response
      *
      * Unless otherwise noted, the status code is defined in RFC2616.
      */
-    const HTTP_CONTINUE                                                  = 100;
-    const HTTP_SWITCHING_PROTOCOLS                                       = 101;
-    const HTTP_PROCESSING                                                = 102; // RFC2518
-    const HTTP_OK                                                        = 200;
-    const HTTP_CREATED                                                   = 201;
-    const HTTP_ACCEPTED                                                  = 202;
-    const HTTP_NON_AUTHORITATIVE_INFORMATION                             = 203;
-    const HTTP_NO_CONTENT                                                = 204;
-    const HTTP_RESET_CONTENT                                             = 205;
-    const HTTP_PARTIAL_CONTENT                                           = 206;
-    const HTTP_MULTI_STATUS                                              = 207; // RFC4918
-    const HTTP_ALREADY_REPORTED                                          = 208; // RFC5842
-    const HTTP_IM_USED                                                   = 226; // RFC3229
-    const HTTP_MULTIPLE_CHOICES                                          = 300;
-    const HTTP_MOVED_PERMANENTLY                                         = 301;
-    const HTTP_FOUND                                                     = 302;
-    const HTTP_SEE_OTHER                                                 = 303;
-    const HTTP_NOT_MODIFIED                                              = 304;
-    const HTTP_USE_PROXY                                                 = 305;
-    const HTTP_RESERVED                                                  = 306;
-    const HTTP_TEMPORARY_REDIRECT                                        = 307;
-    const HTTP_PERMANENTLY_REDIRECT                                      = 308; // RFC7238
-    const HTTP_BAD_REQUEST                                               = 400;
-    const HTTP_UNAUTHORIZED                                              = 401;
-    const HTTP_PAYMENT_REQUIRED                                          = 402;
-    const HTTP_FORBIDDEN                                                 = 403;
-    const HTTP_NOT_FOUND                                                 = 404;
-    const HTTP_METHOD_NOT_ALLOWED                                        = 405;
-    const HTTP_NOT_ACCEPTABLE                                            = 406;
-    const HTTP_PROXY_AUTHENTICATION_REQUIRED                             = 407;
-    const HTTP_REQUEST_TIMEOUT                                           = 408;
-    const HTTP_CONFLICT                                                  = 409;
-    const HTTP_GONE                                                      = 410;
-    const HTTP_LENGTH_REQUIRED                                           = 411;
-    const HTTP_PRECONDITION_FAILED                                       = 412;
-    const HTTP_REQUEST_ENTITY_TOO_LARGE                                  = 413;
-    const HTTP_REQUEST_URI_TOO_LONG                                      = 414;
-    const HTTP_UNSUPPORTED_MEDIA_TYPE                                    = 415;
-    const HTTP_REQUESTED_RANGE_NOT_SATISFIABLE                           = 416;
-    const HTTP_EXPECTATION_FAILED                                        = 417;
-    const HTTP_I_AM_A_TEAPOT                                             = 418; // RFC2324
-    const HTTP_MISDIRECTED_REQUEST                                       = 421; // RFC7540
-    const HTTP_UNPROCESSABLE_ENTITY                                      = 422; // RFC4918
-    const HTTP_LOCKED                                                    = 423; // RFC4918
-    const HTTP_FAILED_DEPENDENCY                                         = 424; // RFC4918
+    const HTTP_CONTINUE = 100;
+    const HTTP_SWITCHING_PROTOCOLS = 101;
+    const HTTP_PROCESSING = 102; // RFC2518
+    const HTTP_OK = 200;
+    const HTTP_CREATED = 201;
+    const HTTP_ACCEPTED = 202;
+    const HTTP_NON_AUTHORITATIVE_INFORMATION = 203;
+    const HTTP_NO_CONTENT = 204;
+    const HTTP_RESET_CONTENT = 205;
+    const HTTP_PARTIAL_CONTENT = 206;
+    const HTTP_MULTI_STATUS = 207; // RFC4918
+    const HTTP_ALREADY_REPORTED = 208; // RFC5842
+    const HTTP_IM_USED = 226; // RFC3229
+    const HTTP_MULTIPLE_CHOICES = 300;
+    const HTTP_MOVED_PERMANENTLY = 301;
+    const HTTP_FOUND = 302;
+    const HTTP_SEE_OTHER = 303;
+    const HTTP_NOT_MODIFIED = 304;
+    const HTTP_USE_PROXY = 305;
+    const HTTP_RESERVED = 306;
+    const HTTP_TEMPORARY_REDIRECT = 307;
+    const HTTP_PERMANENTLY_REDIRECT = 308; // RFC7238
+    const HTTP_BAD_REQUEST = 400;
+    const HTTP_UNAUTHORIZED = 401;
+    const HTTP_PAYMENT_REQUIRED = 402;
+    const HTTP_FORBIDDEN = 403;
+    const HTTP_NOT_FOUND = 404;
+    const HTTP_METHOD_NOT_ALLOWED = 405;
+    const HTTP_NOT_ACCEPTABLE = 406;
+    const HTTP_PROXY_AUTHENTICATION_REQUIRED = 407;
+    const HTTP_REQUEST_TIMEOUT = 408;
+    const HTTP_CONFLICT = 409;
+    const HTTP_GONE = 410;
+    const HTTP_LENGTH_REQUIRED = 411;
+    const HTTP_PRECONDITION_FAILED = 412;
+    const HTTP_REQUEST_ENTITY_TOO_LARGE = 413;
+    const HTTP_REQUEST_URI_TOO_LONG = 414;
+    const HTTP_UNSUPPORTED_MEDIA_TYPE = 415;
+    const HTTP_REQUESTED_RANGE_NOT_SATISFIABLE = 416;
+    const HTTP_EXPECTATION_FAILED = 417;
+    const HTTP_I_AM_A_TEAPOT = 418; // RFC2324
+    const HTTP_MISDIRECTED_REQUEST = 421; // RFC7540
+    const HTTP_UNPROCESSABLE_ENTITY = 422; // RFC4918
+    const HTTP_LOCKED = 423; // RFC4918
+    const HTTP_FAILED_DEPENDENCY = 424; // RFC4918
     const HTTP_RESERVED_FOR_WEBDAV_ADVANCED_COLLECTIONS_EXPIRED_PROPOSAL = 425; // RFC2817
-    const HTTP_UPGRADE_REQUIRED                                          = 426; // RFC2817
-    const HTTP_PRECONDITION_REQUIRED                                     = 428; // RFC6585
-    const HTTP_TOO_MANY_REQUESTS                                         = 429; // RFC6585
-    const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE                           = 431; // RFC6585
-    const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS                             = 451;
-    const HTTP_INTERNAL_SERVER_ERROR                                     = 500;
-    const HTTP_NOT_IMPLEMENTED                                           = 501;
-    const HTTP_BAD_GATEWAY                                               = 502;
-    const HTTP_SERVICE_UNAVAILABLE                                       = 503;
-    const HTTP_GATEWAY_TIMEOUT                                           = 504;
-    const HTTP_VERSION_NOT_SUPPORTED                                     = 505;
-    const HTTP_VARIANT_ALSO_NEGOTIATES_EXPERIMENTAL                      = 506; // RFC2295
-    const HTTP_INSUFFICIENT_STORAGE                                      = 507; // RFC4918
-    const HTTP_LOOP_DETECTED                                             = 508; // RFC5842
-    const HTTP_NOT_EXTENDED                                              = 510; // RFC2774
-    const HTTP_NETWORK_AUTHENTICATION_REQUIRED                           = 511; // RFC6585
+    const HTTP_UPGRADE_REQUIRED = 426; // RFC2817
+    const HTTP_PRECONDITION_REQUIRED = 428; // RFC6585
+    const HTTP_TOO_MANY_REQUESTS = 429; // RFC6585
+    const HTTP_REQUEST_HEADER_FIELDS_TOO_LARGE = 431; // RFC6585
+    const HTTP_UNAVAILABLE_FOR_LEGAL_REASONS = 451;
+    const HTTP_INTERNAL_SERVER_ERROR = 500;
+    const HTTP_NOT_IMPLEMENTED = 501;
+    const HTTP_BAD_GATEWAY = 502;
+    const HTTP_SERVICE_UNAVAILABLE = 503;
+    const HTTP_GATEWAY_TIMEOUT = 504;
+    const HTTP_VERSION_NOT_SUPPORTED = 505;
+    const HTTP_VARIANT_ALSO_NEGOTIATES_EXPERIMENTAL = 506; // RFC2295
+    const HTTP_INSUFFICIENT_STORAGE = 507; // RFC4918
+    const HTTP_LOOP_DETECTED = 508; // RFC5842
+    const HTTP_NOT_EXTENDED = 510; // RFC2774
+    const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511; // RFC6585
 
     /**
      * @constant array
@@ -192,7 +193,7 @@ interface Response
      * @param int   $status  [optional] The response status code
      * @param array $headers [optional] An array of response headers
      */
-    public function __construct($content = '', $status = 200, $headers = []);
+    public function __construct(string $content = '', int $status = 200, array $headers = []);
 
     /**
      * Create a new response.
@@ -203,7 +204,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function create($content = '', $status = 200, $headers = []) : Response;
+    public static function create(string $content = '', int $status = 200, array $headers = []) : Response;
 
     /**
      * Set the content for the response.
@@ -212,7 +213,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setContent($content) : Response;
+    public function setContent(string $content) : Response;
 
     /**
      * Get the content for the response.
@@ -222,13 +223,32 @@ interface Response
     public function getContent() : string;
 
     /**
+     * Set the view for the response.
+     *
+     * @param \Valkyrja\Contracts\View\View $view The view to set
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function setView(View $view) : Response;
+
+    /**
+     * Get the view for the response.
+     *
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function view(string $template = '', array $variables = []) : View;
+
+    /**
      * Sets the HTTP protocol version (1.0 or 1.1).
      *
      * @param string $version [optional] The protocol version to set
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setProtocolVersion($version = '1.0') : Response;
+    public function setProtocolVersion(string $version = '1.0') : Response;
 
     /**
      * Gets the HTTP protocol version.
@@ -240,8 +260,8 @@ interface Response
     /**
      * Sets the response status code.
      *
-     * @param int   $code HTTP status code
-     * @param mixed $text [optional] HTTP status text
+     * @param int    $code HTTP status code
+     * @param string $text [optional] HTTP status text
      *
      * If the status text is null it will be automatically populated for the known
      * status codes and left empty otherwise.
@@ -250,7 +270,7 @@ interface Response
      *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function setStatusCode($code, $text = null) : Response;
+    public function setStatusCode(int $code, string $text = null) : Response;
 
     /**
      * Retrieves the status code for the current web response.
@@ -266,7 +286,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCharset($charset) : Response;
+    public function setCharset(string $charset) : Response;
 
     /**
      * Retrieves the response charset.
@@ -287,46 +307,9 @@ interface Response
     /**
      * Get all response headers.
      *
-     * @return array
+     * @return Headers
      */
-    public function getHeaders() : array;
-
-    /**
-     * Set a response header.
-     *
-     * @param string $header The header to set
-     * @param string $value  The value to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setHeader($header, $value) : Response;
-
-    /**
-     * Get a response header.
-     *
-     * @param string $header The header to get
-     *
-     * @return string
-     */
-    public function getHeader($header) : string;
-
-    /**
-     * Check if a response header exists.
-     *
-     * @param string $header The header to check exists
-     *
-     * @return bool
-     */
-    public function hasHeader($header) : bool;
-
-    /**
-     * Remove a response header.
-     *
-     * @param string $header The header to remove
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function removeHeader($header) : Response;
+    public function headers() : Headers;
 
     /**
      * Returns the Date header as a DateTime instance.
@@ -353,33 +336,33 @@ interface Response
      *
      * @return array
      */
-    public function getCookies($asString = true) : array;
+    public function getCookies(bool $asString = true) : array;
 
     /**
      * Set a response cookie.
      *
      * @param string $name     Cookie name
-     * @param null   $value    Cookie value
+     * @param string $value    Cookie value
      * @param int    $expire   Cookie expires time
      * @param string $path     Cookie path
-     * @param null   $domain   Cookie domain
+     * @param string $domain   Cookie domain
      * @param bool   $secure   Cookie http(s)
      * @param bool   $httpOnly Cookie http only?
      * @param bool   $raw      Cookie raw
-     * @param null   $sameSite Cookie same site?
+     * @param string $sameSite Cookie same site?
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function setCookie(
-        $name,
-        $value = null,
-        $expire = 0,
-        $path = '/',
-        $domain = null,
-        $secure = false,
-        $httpOnly = true,
-        $raw = false,
-        $sameSite = null
+        string $name,
+        string $value = null,
+        int $expire = 0,
+        string $path = '/',
+        string $domain = null,
+        bool $secure = false,
+        bool $httpOnly = true,
+        bool $raw = false,
+        string $sameSite = null
     ) : Response;
 
     /**
@@ -391,7 +374,7 @@ interface Response
      *
      * @return void
      */
-    public function removeCookie($name, $path = '/', $domain = null); // : void;
+    public function removeCookie(string $name, string $path = '/', string $domain = null); // : void;
 
     /**
      * Set a response cache control.
@@ -401,7 +384,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function addCacheControl($name, $value = null) : Response;
+    public function addCacheControl(string $name, string $value = null) : Response;
 
     /**
      * Get a response cache control.
@@ -410,7 +393,7 @@ interface Response
      *
      * @return string
      */
-    public function getCacheControl($name) : string;
+    public function getCacheControl(string $name) : string;
 
     /**
      * Check if a response cache control exists.
@@ -419,7 +402,7 @@ interface Response
      *
      * @return bool
      */
-    public function hasCacheControl($name) : bool;
+    public function hasCacheControl(string $name) : bool;
 
     /**
      * Remove a response cache control.
@@ -428,7 +411,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function removeCacheControl($name) : Response;
+    public function removeCacheControl(string $name) : Response;
 
     /**
      * Returns true if the response is worth caching under any circumstance.
@@ -532,7 +515,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setMaxAge($value) : Response;
+    public function setMaxAge(int $value) : Response;
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
@@ -543,7 +526,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setSharedMaxAge($value) : Response;
+    public function setSharedMaxAge(int $value) : Response;
 
     /**
      * Returns the response's time-to-live in seconds.
@@ -566,7 +549,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setTtl($seconds) : Response;
+    public function setTtl(int $seconds) : Response;
 
     /**
      * Sets the response's time-to-live for private/client caches.
@@ -577,7 +560,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setClientTtl($seconds) : Response;
+    public function setClientTtl(int $seconds) : Response;
 
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
@@ -614,7 +597,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setEtag($etag = null, $weak = false) : Response;
+    public function setEtag(string $etag = null, bool $weak = false) : Response;
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
@@ -711,7 +694,7 @@ interface Response
      *
      * @return bool
      */
-    public function isRedirect($location = null) : bool;
+    public function isRedirect(string $location = null) : bool;
 
     /**
      * Is the response empty?
@@ -751,7 +734,7 @@ interface Response
      *
      * @return void
      */
-    public static function closeOutputBuffers($targetLevel, $flush); // : void;
+    public static function closeOutputBuffers(int $targetLevel, bool $flush); // : void;
 
     /**
      * Returns the Response as an HTTP string.

@@ -48,7 +48,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function make($template = '', array $variables = []) : ViewContract
+    public function make(string $template = '', array $variables = []) : ViewContract
     {
         $view = new static($template, $variables);
 
@@ -64,7 +64,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return string
      */
-    public function getTemplateDir($path = null) : string
+    public function getTemplateDir(string $path = null) : string
     {
         return $path
             ?: (Helpers::app())::DIRECTORY_SEPARATOR;
