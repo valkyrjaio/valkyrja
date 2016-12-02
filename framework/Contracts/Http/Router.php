@@ -51,7 +51,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function addRoute($method, $path, $handler, $isDynamic = false); // : void;
+    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a GET addRoute.
@@ -64,7 +64,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function get($path, $handler, $isDynamic = false); // : void;
+    function get(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -77,7 +77,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function post($path, $handler, $isDynamic = false); // : void;
+    function post(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -90,7 +90,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function put($path, $handler, $isDynamic = false); // : void;
+    function put(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -103,7 +103,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function patch($path, $handler, $isDynamic = false); // : void;
+    function patch(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -116,7 +116,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function delete($path, $handler, $isDynamic = false); // : void;
+    function delete(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -129,7 +129,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function head($path, $handler, $isDynamic = false); // : void;
+    public function head(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Set routes from a given array of routes.

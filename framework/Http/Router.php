@@ -64,7 +64,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function addRoute($method, $path, $handler, $isDynamic = false)
+    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) // : void
     {
         if (!in_array(
             $method,
@@ -138,7 +138,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function get($path, $handler, $isDynamic = false)
+    function get(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::GET, $path, $handler, $isDynamic);
     }
@@ -154,7 +154,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function post($path, $handler, $isDynamic = false)
+    function post(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::POST, $path, $handler, $isDynamic);
     }
@@ -170,7 +170,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function put($path, $handler, $isDynamic = false)
+    function put(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::PUT, $path, $handler, $isDynamic);
     }
@@ -186,7 +186,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function patch($path, $handler, $isDynamic = false)
+    function patch(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::PATCH, $path, $handler, $isDynamic);
     }
@@ -202,7 +202,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function delete($path, $handler, $isDynamic = false)
+    function delete(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::DELETE, $path, $handler, $isDynamic);
     }
@@ -218,7 +218,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function head($path, $handler, $isDynamic = false)
+    public function head(string $path, $handler, bool $isDynamic = false) // : void
     {
         $this->addRoute(static::HEAD, $path, $handler, $isDynamic);
     }
@@ -230,7 +230,7 @@ class Router implements RouterContract
      *
      * @return void
      */
-    public function setRoutes(array $routes)
+    public function setRoutes(array $routes) // : void
     {
         $this->routes = $routes;
     }
@@ -242,7 +242,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function dispatch()
+    public function dispatch() // : void
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestUri = $_SERVER['REQUEST_URI'];
