@@ -3,14 +3,14 @@
 namespace config\sub;
 
 use Valkyrja\Config\Sub\TwigViewsConfig as ValkyrjaTwigViewsConfig;
-use Valkyrja\Application;
+use Valkyrja\Contracts\Application;
 
 class TwigViewsConfig extends ValkyrjaTwigViewsConfig
 {
     /**
      * TwigViewsConfig constructor.
      *
-     * @param \Valkyrja\Application $app
+     * @param \Valkyrja\Contracts\Application $app
      */
     public function __construct(Application $app)
     {

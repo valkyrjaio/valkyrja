@@ -15,5 +15,7 @@ class ViewsConfig extends ValkyrjaViewsConfig
     public function __construct(Application $app)
     {
         parent::__construct($app);
+
+        $this->twig = new TwigViewsConfig($app);
     }
 }
