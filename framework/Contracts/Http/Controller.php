@@ -22,8 +22,6 @@ interface Controller
 {
     /**
      * After any action is called.
-     *
-     * @param \Valkyrja\Contracts\Http\Response $response
      */
-    public function after(Response &$response);
+    public function after();
 }

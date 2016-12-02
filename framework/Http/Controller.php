@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
-use Valkyrja\Contracts\Http\Response;
 
 /**
  * Class Controller
@@ -25,10 +24,8 @@ abstract class Controller implements ControllerContract
 {
     /**
      * After any action is called.
-     *
-     * @param \Valkyrja\Contracts\Http\Response $response
      */
-    public function after(Response &$response)
+    public function after()
     {
     }
 }
