@@ -9,30 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
-
-use Valkyrja\Contracts\Http\Controller as ControllerContract;
+namespace Valkyrja\Contracts\Http;
 
 /**
- * Class Controller
+ * Interface Controller
  *
- * @package Valkyrja\Http
+ * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */
-abstract class Controller implements ControllerContract
+interface Controller
 {
     /**
      * Before any action is called.
      */
-    public function before()
-    {
-    }
+    public function before();
 
     /**
      * After any action is called.
      */
-    public function after()
-    {
-    }
+    public function after();
 }

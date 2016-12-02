@@ -13,6 +13,7 @@ namespace Valkyrja\Http;
 
 use Exception;
 
+use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -302,7 +303,7 @@ class Router implements RouterContract
                 $controller = Helpers::container()->get($route['controller']);
 
                 // Let's make sure the controller is a controller
-                if (!$controller instanceof Controller) {
+                if (!$controller instanceof ControllerContract) {
                     throw new Exception(
                         'Invalid controller for route : ' . $route['path'] . ' Controller -> ' . $route['controller']
                     );
