@@ -58,7 +58,8 @@ class TwigServiceProvider extends ServiceProvider
                         ]
                     );
 
-                    $extensions = Helpers::config()->views->twig->extensions ?? [];
+                    $extensions = Helpers::config()->views->twig->extensions
+                        ?? [];
 
                     // Twig Extensions registration
                     if (is_array($extensions)) {

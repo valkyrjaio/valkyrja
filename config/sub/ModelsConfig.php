@@ -29,6 +29,7 @@ class ModelsConfig
      */
     public function __construct(Application $app)
     {
-        $this->user = Config::env('MODELS_USER') ?? User::class;
+        $this->user = Config::env('MODELS_USER')
+            ?? User::class;
     }
 }

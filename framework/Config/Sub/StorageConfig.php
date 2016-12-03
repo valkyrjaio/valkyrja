@@ -50,8 +50,10 @@ class StorageConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->uploadsDir = Helpers::env('STORAGE_UPLOADS_DIR') ?? $app->storagePath('app');
-            $this->logsDir = Helpers::env('STORAGE_LOGS_DIR') ?? $app->storagePath('logs');
+            $this->uploadsDir = Helpers::env('STORAGE_UPLOADS_DIR')
+                ?? $app->storagePath('app');
+            $this->logsDir = Helpers::env('STORAGE_LOGS_DIR')
+                ?? $app->storagePath('logs');
         }
     }
 }

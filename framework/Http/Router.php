@@ -251,7 +251,8 @@ class Router implements RouterContract
         $matches = false;
         $dispatch = false;
         // Whether to use arguments as an array
-        $useArrayArgs = Helpers::config()->routing->useArrayArgs ?? false;
+        $useArrayArgs = Helpers::config()->routing->useArrayArgs
+            ?? false;
 
         // Let's check if the route is set in the simple routes
         if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
