@@ -75,6 +75,15 @@ require_once 'container.php';
  *
  */
 
+$env = class_exists(config\Env::class)
+    ? new config\Env
+    : new Valkyrja\Config\Env;
+
+$container->instance(
+    Valkyrja\Contracts\Config\Env::class,
+    $env
+);
+
 $config = class_exists(config\Config::class)
     ? new config\Config($app)
     : new Valkyrja\Config\Config($app);

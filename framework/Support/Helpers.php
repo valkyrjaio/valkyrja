@@ -11,13 +11,11 @@
 
 namespace Valkyrja\Support;
 
-use config\Config as Config;
-
 use Exception;
 
-use Valkyrja\Config\Config as ValkyrjaConfig;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
+use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -67,17 +65,13 @@ class Helpers implements HelpersContract
     }
 
     /**
-     * Get environment variable.
+     * Get environment variables.
      *
-     * @param string $key
-     *
-     * @return mixed
+     * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
-    public static function env(string $key) // : mixed
+    public static function env() : Env
     {
-        return class_exists(Config::class)
-            ? Config::env($key)
-            : ValkyrjaConfig::env($key);
+        return static::container()->get(Env::class);
     }
 
     /**

@@ -71,15 +71,17 @@ class AppConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->env = Helpers::env('APP_ENV')
+            $env = Helpers::env();
+
+            $this->env = $env::APP_ENV
                 ?? 'production';
-            $this->debug = Helpers::env('APP_DEBUG')
+            $this->debug = $env::APP_DEBUG
                 ?? false;
-            $this->url = Helpers::env('APP_URL')
+            $this->url = $env::APP_URL
                 ?? 'localhost';
-            $this->timezone = Helpers::env('APP_TIMEZONE')
+            $this->timezone = $env::APP_TIMEZONE
                 ?? 'UTC';
-            $this->version = Helpers::env('APP_VERSION')
+            $this->version = $env::APP_VERSION
                 ?? '1.0';
         }
     }

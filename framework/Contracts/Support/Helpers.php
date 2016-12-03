@@ -15,6 +15,7 @@ use Exception;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -52,13 +53,11 @@ interface Helpers
     public static function config() : Config;
 
     /**
-     * Get environment variable.
+     * Get environment variables.
      *
-     * @param string $key
-     *
-     * @return mixed
+     * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
-    public static function env(string $key); // : mixed
+    public static function env() : Env;
 
     /**
      * Return the router instance from the container.

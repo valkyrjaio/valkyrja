@@ -43,7 +43,9 @@ class RoutingConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->useArrayArgs = Helpers::env('ROUTING_USE_ARRAY_ARGS')
+            $env = Helpers::env();
+
+            $this->useArrayArgs = $env::ROUTING_USE_ARRAY_ARGS
                 ?? false;
         }
     }

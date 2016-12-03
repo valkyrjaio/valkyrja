@@ -74,22 +74,4 @@ class Config implements ConfigContract
             $this->views = new ViewsConfig($app);
         }
     }
-
-    /**
-     * Get an environment variable.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public static function env(string $key) // : mixed
-    {
-        $key = static::ENV_CLASS_NAME . '::' . $key;
-
-        if (defined($key)) {
-            return constant($key);
-        }
-
-        return null;
-    }
 }

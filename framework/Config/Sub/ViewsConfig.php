@@ -50,7 +50,9 @@ class ViewsConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->dir = Helpers::env('VIEWS_DIR')
+            $env = Helpers::env();
+
+            $this->dir = $env::VIEWS_DIR
                 ?? $app->resourcesPath('views/php');
 
             $this->twig = new TwigViewsConfig($app);
