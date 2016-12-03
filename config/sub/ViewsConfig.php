@@ -5,6 +5,11 @@ namespace config\sub;
 use Valkyrja\Config\Sub\ViewsConfig as ValkyrjaViewsConfig;
 use Valkyrja\Contracts\Application;
 
+/**
+ * Class ViewsConfig
+ *
+ * @package config\sub
+ */
 class ViewsConfig extends ValkyrjaViewsConfig
 {
     /**

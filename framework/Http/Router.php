@@ -250,6 +250,8 @@ class Router implements RouterContract
         $route = false;
         $matches = false;
         $dispatch = false;
+        // Whether to use arguments as an array
+        $useArrayArgs = Helpers::config()->routing->useArrayArgs ?? false;
 
         // Let's check if the route is set in the simple routes
         if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
@@ -294,8 +296,15 @@ class Router implements RouterContract
 
             // If the action is a callable closure
             if (is_callable($action)) {
-                // Call it and set it as our dispatch.
-                $dispatch = call_user_func_array($action, $arguments);
+                // Check if we should use arguments as an array
+                if ($useArrayArgs) {
+                    // Call it an set is as our dispatch
+                    $dispatch = $action($arguments);
+                }
+                else {
+                    // Call it and set it as our dispatch
+                    $dispatch = call_user_func_array($action, $arguments);
+                }
             }
             // Otherwise the action should be a method in a controller
             else {
@@ -326,25 +335,23 @@ class Router implements RouterContract
                     );
                 }
 
-                // Set the dispatch as the controller action
-                $dispatch = call_user_func_array(
-                    [
-                        $controller,
-                        $action,
-                    ],
-                    $arguments
-                );
+                // Check if we should use arguments as an array
+                if ($useArrayArgs) {
+                    // Set the dispatch as the controller action
+                    $dispatch = $controller->$action($arguments);
+                }
+                else {
+                    // Set the dispatch as the controller action
+                    $dispatch = call_user_func_array(
+                        [
+                            $controller,
+                            $action,
+                        ],
+                        $arguments
+                    );
+                }
 
-                // Call after method
-                call_user_func_array(
-                    [
-                        $controller,
-                        'after',
-                    ],
-                    [
-                        $dispatch
-                    ]
-                );
+                $controller->after();
             }
         }
 

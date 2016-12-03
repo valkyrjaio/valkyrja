@@ -10,35 +10,19 @@ use config\sub\ViewsConfig;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Config\Config as ValkyrjaConfig;
 
+/**
+ * Class Config
+ *
+ * @package config
+ */
 class Config extends ValkyrjaConfig
 {
     /**
-     * Application config.
-     *
-     * @var AppConfig
-     */
-    public $app;
-
-    /**
-     * Application config.
+     * Models config.
      *
      * @var ModelsConfig
      */
     public $models;
-
-    /**
-     * Application config.
-     *
-     * @var StorageConfig
-     */
-    public $storage;
-
-    /**
-     * Application config.
-     *
-     * @var ViewsConfig
-     */
-    public $views;
 
     /**
      * Which env file to use.

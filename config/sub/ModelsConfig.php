@@ -8,6 +8,11 @@ use config\Config;
 
 use Valkyrja\Contracts\Application;
 
+/**
+ * Class ModelsConfig
+ *
+ * @package config\sub
+ */
 class ModelsConfig
 {
     /**

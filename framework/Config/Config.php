@@ -1,13 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Valkyrja framework.
+ *
+ * (c) Melech Mizrachi
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Valkyrja\Config;
 
 use Valkyrja\Config\Sub\AppConfig;
+use Valkyrja\Config\Sub\RoutingConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
 
+/**
+ * Class Config
+ *
+ * @package Valkyrja\Config
+ */
 class Config implements ConfigContract
 {
     /**
@@ -18,14 +33,21 @@ class Config implements ConfigContract
     public $app;
 
     /**
-     * Application config.
+     * Storage config.
      *
      * @var StorageConfig
      */
     public $storage;
 
     /**
-     * Application config.
+     * Routing config.
+     *
+     * @var RoutingConfig
+     */
+    public $routing;
+
+    /**
+     * Views config.
      *
      * @var ViewsConfig
      */
@@ -48,6 +70,7 @@ class Config implements ConfigContract
         if ($this->setDefaults) {
             $this->app = new AppConfig($app);
             $this->storage = new StorageConfig($app);
+            $this->routing = new RoutingConfig($app);
             $this->views = new ViewsConfig($app);
         }
     }

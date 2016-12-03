@@ -5,6 +5,11 @@ namespace config\sub;
 use Valkyrja\Config\Sub\AppConfig as ValkyrjaAppConfig;
 use Valkyrja\Contracts\Application;
 
+/**
+ * Class AppConfig
+ *
+ * @package config\sub
+ */
 class AppConfig extends ValkyrjaAppConfig
 {
     /**

@@ -2,18 +2,18 @@
 
 namespace config\sub;
 
-use Valkyrja\Config\Sub\TwigViewsConfig as ValkyrjaTwigViewsConfig;
+use Valkyrja\Config\Sub\RoutingConfig as ValkyrjaRoutingConfig;
 use Valkyrja\Contracts\Application;
 
 /**
- * Class TwigViewsConfig
+ * Class RoutingConfig
  *
  * @package config\sub
  */
-class TwigViewsConfig extends ValkyrjaTwigViewsConfig
+class RoutingConfig extends ValkyrjaRoutingConfig
 {
     /**
-     * TwigViewsConfig constructor.
+     * RoutingConfig constructor.
      *
      * @param \Valkyrja\Contracts\Application $app
      */

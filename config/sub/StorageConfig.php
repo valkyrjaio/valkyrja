@@ -5,6 +5,11 @@ namespace config\sub;
 use Valkyrja\Config\Sub\StorageConfig as ValkyrjaStorageConfig;
 use Valkyrja\Contracts\Application;
 
+/**
+ * Class StorageConfig
+ *
+ * @package config\sub
+ */
 class StorageConfig extends ValkyrjaStorageConfig
 {
     /**

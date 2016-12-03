@@ -15,25 +15,18 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Support\Helpers;
 
 /**
- * Class StorageConfig
+ * Class RoutingConfig
  *
  * @package Valkyrja\Config\Sub
  */
-class StorageConfig
+class RoutingConfig
 {
     /**
-     * Upload directory.
+     * Use array arguments.
      *
-     * @var string
+     * @var bool
      */
-    public $uploadsDir;
-
-    /**
-     * Logs directory.
-     *
-     * @var string
-     */
-    public $logsDir;
+    public $useArrayArgs = false;
 
     /**
      * Set defaults?
@@ -43,15 +36,14 @@ class StorageConfig
     protected $setDefaults = true;
 
     /**
-     * StorageConfig constructor.
+     * RoutingConfig constructor.
      *
      * @param \Valkyrja\Contracts\Application $app
      */
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $this->uploadsDir = Helpers::env('STORAGE_UPLOADS_DIR') ?? $app->storagePath('app');
-            $this->logsDir = Helpers::env('STORAGE_LOGS_DIR') ?? $app->storagePath('logs');
+            $this->useArrayArgs = Helpers::env('ROUTING_USE_ARRAY_ARGS') ?? false;
         }
     }
 }
