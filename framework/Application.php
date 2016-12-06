@@ -13,8 +13,16 @@ namespace Valkyrja;
 
 use Exception;
 
+use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\HttpException;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\View\View;
 use Valkyrja\Support\Helpers;
 use Valkyrja\Support\PathHelpers;
 
@@ -37,18 +45,11 @@ class Application implements ApplicationContract
     const DIRECTORY_SEPARATOR = '/';
 
     /**
-     * Application environment variables.
+     * Get the instance of the container.
      *
-     * @var array
+     * @var \Valkyrja\Contracts\Container\Container
      */
-    protected $env = [];
-
-    /**
-     * Application config variables.
-     *
-     * @var array
-     */
-    protected $config = [];
+    public static $container;
 
     /**
      * The base directory for the application.
@@ -67,10 +68,20 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param string $basePath The base path for the application
+     * @param string                                  $basePath  The base path for the application
+     * @param \Valkyrja\Contracts\Container\Container $container The container to use
      */
-    public function __construct($basePath)
+    public function __construct($basePath, ContainerContract $container = null)
     {
+        if (! $container instanceof ContainerContract) {
+            $container = new Container();
+        }
+
+        static::$container = $container;
+
+        $container->instance(ApplicationContract::class, $this);
+        $container->bootstrap();
+
         $this->basePath = $basePath;
     }
 
@@ -82,6 +93,101 @@ class Application implements ApplicationContract
     public function version() : string
     {
         return static::VERSION;
+    }
+
+    /**
+     * Get the container instance.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public static function container() : ContainerContract
+    {
+        return static::$container;
+    }
+
+    /**
+     * Get the application instance.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    public static function app() : ApplicationContract
+    {
+        return static::$container->get(ApplicationContract::class);
+    }
+
+    /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public static function config() : Config
+    {
+        return static::$container->get(Config::class);
+    }
+
+    /**
+     * Get environment variables.
+     *
+     * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
+     */
+    public static function env() : Env
+    {
+        return static::$container->get(Env::class);
+    }
+
+    /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Router
+     */
+    public static function router() : Router
+    {
+        return static::$container->get(Router::class);
+    }
+
+    /**
+     * Return a new response from the application.
+     *
+     * @param string $content [optional] The content to set
+     * @param int    $status  [optional] The status code to set
+     * @param array  $headers [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public static function response(string $content = '', int $status = 200, array $headers = []) : Response
+    {
+        $factory = static::responseBuilder();
+
+        return $factory->make($content, $status, $headers);
+    }
+
+    /**
+     * Return a new response from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public static function responseBuilder() : ResponseBuilder
+    {
+        return static::$container->get(ResponseBuilder::class);
+    }
+
+    /**
+     * Helper function to get a new view.
+     *
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public static function view(string $template = '', array $variables = []) : View
+    {
+        return static::$container->get(
+            View::class,
+            [
+                $template,
+                $variables,
+            ]
+        );
     }
 
     /**

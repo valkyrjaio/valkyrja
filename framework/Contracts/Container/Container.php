@@ -48,4 +48,11 @@ interface Container
      * @return mixed
      */
     public function get(string $abstract, array $arguments = []); // : mixed;
+
+    /**
+     * Bootstrap the container.
+     *
+     * @return void
+     */
+    public function bootstrap(); // : void;
 }

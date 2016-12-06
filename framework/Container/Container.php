@@ -11,7 +11,14 @@
 
 namespace Valkyrja\Container;
 
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\View\View;
 
 /**
  * Class Container
@@ -93,5 +100,15 @@ class Container implements ContainerContract
 
         // A class was passed just in case it was in the container, so return it
         return $abstract;
+    }
+
+    /**
+     * Bootstrap the container.
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        //
     }
 }
