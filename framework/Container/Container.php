@@ -13,8 +13,11 @@ namespace Valkyrja\Container;
 
 use Exception;
 
-use Valkyrja\Contracts\Config\Config;
-use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Config\Config;
+use Valkyrja\Config\Env;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Config as ConfigContract;
+use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
@@ -151,6 +154,27 @@ class Container implements ContainerContract
      */
     public function bootstrap() // : void
     {
+        // Check if the env has already been set in the container
+        if (! $this->isset(ConfigContract::class)) {
+            $this->instance(
+                EnvContract::class,
+                new Env()
+            );
+        }
+
+        // Check if the config has already been set in the container
+        if (! $this->isset(ConfigContract::class)) {
+            $this->instance(
+                ConfigContract::class,
+                function () {
+                    return new Config(
+                        $this->get(Application::class)
+                    );
+                },
+                true
+            );
+        }
+
         // Check if the http exception has already been set in the container
         if (! $this->isset(HttpExceptionContract::class)) {
             $this->instance(

@@ -63,16 +63,17 @@ require_once 'container.php';
 
 $app->container()->instance(
     Valkyrja\Contracts\Config\Env::class,
-    class_exists(config\Env::class)
-        ? new config\Env
-        : new Valkyrja\Config\Env
+    new config\Env
 );
 
 $app->container()->instance(
     Valkyrja\Contracts\Config\Config::class,
-    class_exists(config\Config::class)
-        ? new config\Config($app)
-        : new Valkyrja\Config\Config($app)
+    function () use ($app) {
+        return new \config\Config(
+            $app->container()->get(\Valkyrja\Contracts\Application::class)
+        );
+    },
+    true
 );
 
 $app->setTimezone();
