@@ -70,7 +70,7 @@ $app->container()->instance(
     Valkyrja\Contracts\Config\Config::class,
     function () use ($app) {
         return new \config\Config(
-            $app->container()->get(\Valkyrja\Contracts\Application::class)
+            $app->container()->get(Valkyrja\Contracts\Application::class)
         );
     },
     true
