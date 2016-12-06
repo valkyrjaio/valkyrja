@@ -66,7 +66,8 @@ class Router implements RouterContract
      */
     public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) // : void
     {
-        if (!in_array(
+        // Ensure the method specified is allowed
+        if (! in_array(
             $method,
             [
                 self::GET,
@@ -105,7 +106,7 @@ class Router implements RouterContract
                 ? $handler['injectable']
                 : [];
 
-            if (!$action) {
+            if (! $action) {
                 throw new Exception('No action or handler set for route: ' . $path);
             }
         }
@@ -260,7 +261,7 @@ class Router implements RouterContract
         }
 
         // If the route wasn't already found
-        if (!$route) {
+        if (! $route) {
             // Attempt to find a match using dynamic routes that are set
             foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
                 // If the perg match is successful, we've found our route!
@@ -272,7 +273,7 @@ class Router implements RouterContract
 
         // If a route has been found
         if ($route) {
-            // Se the action from the route
+            // Set the action from the route
             $action = $route['action'];
 
             // Check for any injectables that have been set on the route
@@ -312,15 +313,24 @@ class Router implements RouterContract
                 // Set the controller through the container
                 $controller = Helpers::container()->get($route['controller']);
 
+                // If the controller returns the class string and the class exists
+                if (is_string($controller) && class_exists($controller)) {
+                    // Create a new class instance
+                    $controller = new $controller;
+                }
+
                 // Let's make sure the controller is a controller
-                if (!$controller instanceof ControllerContract) {
+                if (! $controller instanceof ControllerContract) {
                     throw new Exception(
-                        'Invalid controller for route : ' . $route['path'] . ' Controller -> ' . $route['controller']
+                        'Invalid controller for route : '
+                        . $route['path']
+                        . ' Controller -> '
+                        . $route['controller']
                     );
                 }
 
                 // Let's check the action method is callable before proceeding
-                if (!is_callable(
+                if (! is_callable(
                     [
                         $controller,
                         $action,
@@ -357,7 +367,7 @@ class Router implements RouterContract
         }
 
         // If the dispatch failed, 404
-        if (!$dispatch) {
+        if (! $dispatch) {
             Helpers::abort(404);
         }
 
