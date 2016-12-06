@@ -96,7 +96,7 @@ class Application implements ApplicationContract
         $this->container = $container;
 
         // Set the application instance in the container
-        $container->instance(ApplicationContract::class, $this);
+        $container->singleton(ApplicationContract::class, $this);
         // Bootstrap the container
         $container->bootstrap();
 
@@ -289,12 +289,12 @@ class Application implements ApplicationContract
      * @throws HttpException
      */
     public function httpException(
-        $statusCode,
-        $message = null,
+        int $statusCode,
+        string $message = null,
         Exception $previous = null,
         array $headers = [],
-        $view = null,
-        $code = 0
+        string $view = null,
+        int $code = 0
     ) // : void
     {
         throw Helpers::container()->get(

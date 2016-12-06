@@ -260,12 +260,12 @@ interface Application
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
     public function httpException(
-        $statusCode,
-        $message = null,
+        int $statusCode,
+        string $message = null,
         Exception $previous = null,
         array $headers = [],
-        $view = null,
-        $code = 0
+        string $view = null,
+        int $code = 0
     ); // : void;
 
     /**

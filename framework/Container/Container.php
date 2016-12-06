@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
+use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
@@ -28,6 +29,7 @@ use Valkyrja\Contracts\Http\Router as RouterContract;
 use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Exceptions\HttpException;
+use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -156,7 +158,7 @@ class Container implements ContainerContract
     {
         // Check if the env has already been set in the container
         if (! $this->isset(ConfigContract::class)) {
-            $this->instance(
+            $this->singleton(
                 EnvContract::class,
                 new Env()
             );
@@ -164,14 +166,13 @@ class Container implements ContainerContract
 
         // Check if the config has already been set in the container
         if (! $this->isset(ConfigContract::class)) {
-            $this->instance(
+            $this->singleton(
                 ConfigContract::class,
                 function () {
                     return new Config(
                         $this->get(Application::class)
                     );
-                },
-                true
+                }
             );
         }
 
@@ -223,46 +224,53 @@ class Container implements ContainerContract
 
         // Check if the response builder has already been set in the container
         if (! $this->isset(ResponseBuilderContract::class)) {
-            $this->instance(
+            $this->singleton(
                 ResponseBuilderContract::class,
                 function () {
                     $response = $this->get(ResponseContract::class);
                     $view = $this->get(ViewContract::class);
 
                     return new ResponseBuilder($response, $view);
-                },
-                true
+                }
             );
         }
 
         // Check if the router has already been set in the container
         if (! $this->isset(RouterContract::class)) {
-            $this->instance(
+            $this->singleton(
                 RouterContract::class,
                 function () {
                     return new Router();
-                },
-                true
+                }
             );
         }
 
         // Check if the session has already been set in the container
         if (! $this->isset(SessionContract::class)) {
-            $this->instance(
+            $this->singleton(
                 SessionContract::class,
                 function () {
                     return new Session();
-                },
-                true
+                }
             );
         }
 
-        // Check if the View has already been set in the container
+        // Check if the view has already been set in the container
         if (! $this->isset(ViewContract::class)) {
             $this->instance(
                 ViewContract::class,
                 function (string $template = '', array $variables = []) {
                     return new View($template, $variables);
+                }
+            );
+        }
+
+        // Check if the client has already been set in the container
+        if (! $this->isset(ClientContract::class)) {
+            $this->instance(
+                ClientContract::class,
+                function () {
+                    return new Client();
                 }
             );
         }
