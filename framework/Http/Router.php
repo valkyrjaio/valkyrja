@@ -248,6 +248,7 @@ class Router implements RouterContract
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestUri = $_SERVER['REQUEST_URI'];
         $arguments = [];
+        $hasArguments = false;
         $route = false;
         $matches = false;
         $dispatch = false;
@@ -276,14 +277,21 @@ class Router implements RouterContract
             // Set the action from the route
             $action = $route['action'];
 
-            // Check for any injectables that have been set on the route
-            foreach ($route['injectable'] as $injectable) {
-                // Set these as the first set of arguments to pass to the action
-                $arguments[] = Helpers::container()->get($injectable);
+            // If there are injectable items defined for this route
+            if ($route['injectable']) {
+                $hasArguments = true;
+
+                // Check for any injectables that have been set on the route
+                foreach ($route['injectable'] as $injectable) {
+                    // Set these as the first set of arguments to pass to the action
+                    $arguments[] = Helpers::container()->get($injectable);
+                }
             }
 
             // If there were matches from the dynamic route
             if ($matches && is_array($matches)) {
+                $hasArguments = true;
+
                 // Iterate through the matches
                 foreach ($matches as $index => $match) {
                     // Disregard the first match (which is the route itself)
@@ -299,13 +307,19 @@ class Router implements RouterContract
             // If the action is a callable closure
             if (is_callable($action)) {
                 // Check if we should use arguments as an array
-                if ($useArrayArgs) {
+                if ($useArrayArgs && $hasArguments) {
                     // Call it an set is as our dispatch
                     $dispatch = $action($arguments);
                 }
+                // If there were arguments and they should be passed in individually
+                elseif ($hasArguments) {
+                    // Call it and set it as our dispatch
+                    $dispatch = $action(...$arguments);
+                }
+                // Otherwise no arguments just call the action
                 else {
                     // Call it and set it as our dispatch
-                    $dispatch = call_user_func_array($action, $arguments);
+                    $dispatch = $action();
                 }
             }
             // Otherwise the action should be a method in a controller
@@ -341,19 +355,19 @@ class Router implements RouterContract
                 }
 
                 // Check if we should use arguments as an array
-                if ($useArrayArgs) {
+                if ($useArrayArgs && $hasArguments) {
                     // Set the dispatch as the controller action
                     $dispatch = $controller->$action($arguments);
                 }
+                // If there were arguments and they should be passed in individually
+                elseif ($hasArguments) {
+                    // Set the dispatch as the controller action
+                    $dispatch = $controller->$action(...$arguments);
+                }
+                // Otherwise no arguments just call the action
                 else {
                     // Set the dispatch as the controller action
-                    $dispatch = call_user_func_array(
-                        [
-                            $controller,
-                            $action,
-                        ],
-                        $arguments
-                    );
+                    $dispatch = $controller->$action();
                 }
 
                 $controller->after();
