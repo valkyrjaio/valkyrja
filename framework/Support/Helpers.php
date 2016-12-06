@@ -13,6 +13,7 @@ namespace Valkyrja\Support;
 
 use Exception;
 
+use Valkyrja\Application;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env;
@@ -39,7 +40,7 @@ class Helpers implements HelpersContract
      */
     public static function app() : ApplicationContract
     {
-        return static::container()->get(ApplicationContract::class);
+        return Application::app();
     }
 
     /**
@@ -49,9 +50,7 @@ class Helpers implements HelpersContract
      */
     public static function container() : Container
     {
-        global $container;
-
-        return $container;
+        return app()->container();
     }
 
     /**

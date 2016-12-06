@@ -25,18 +25,6 @@ $envClassName = class_exists(config\Env::class)
 
 /*
  *-------------------------------------------------------------------------
- * Set Exception Handling
- *-------------------------------------------------------------------------
- *
- * Let's setup the exception handling before anything else so that in
- * case any errors popup we're ready to catch and display them.
- *
- */
-
-$exceptionHandler = new Valkyrja\Exceptions\ExceptionHandler();
-
-/*
- *-------------------------------------------------------------------------
  * Start Up The Application
  *-------------------------------------------------------------------------
  *
@@ -61,8 +49,6 @@ $app = new Valkyrja\Application(
  *
  */
 
-$container = new Valkyrja\Container\Container();
-
 require_once 'container.php';
 
 /*
@@ -75,22 +61,18 @@ require_once 'container.php';
  *
  */
 
-$env = class_exists(config\Env::class)
-    ? new config\Env
-    : new Valkyrja\Config\Env;
-
-$container->instance(
+$app->container()->instance(
     Valkyrja\Contracts\Config\Env::class,
-    $env
+    class_exists(config\Env::class)
+        ? new config\Env
+        : new Valkyrja\Config\Env
 );
 
-$config = class_exists(config\Config::class)
-    ? new config\Config($app)
-    : new Valkyrja\Config\Config($app);
-
-$container->instance(
+$app->container()->instance(
     Valkyrja\Contracts\Config\Config::class,
-    $config
+    class_exists(config\Config::class)
+        ? new config\Config($app)
+        : new Valkyrja\Config\Config($app)
 );
 
 $app->setTimezone();

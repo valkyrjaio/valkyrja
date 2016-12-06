@@ -1,106 +1,6 @@
 <?php
 
 /*
- * This file is part of the Valkyrja framework.
- *
- * (c) Melech Mizrachi
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-/*
- *-------------------------------------------------------------------------
- * Bind Base Container Instances
- *-------------------------------------------------------------------------
- *
- * Important classes and service container instances that will help the
- * entire application function are defined here for better ease of
- * change by the developer.
- *
- */
-
-$container->instance(
-    Valkyrja\Contracts\Application::class,
-    $app
-);
-
-$container->instance(
-    Valkyrja\Contracts\Exceptions\HttpException::class,
-    [
-        function (
-            int $statusCode,
-            string $message = null,
-            Exception $previous = null,
-            array $headers = [],
-            int $code = 0
-        ) {
-            return new Valkyrja\Exceptions\HttpException($statusCode, $message, $previous, $headers, $code);
-        },
-    ]
-);
-
-$container->instance(
-    Valkyrja\Contracts\Http\Request::class,
-    [
-        function () {
-            return new Valkyrja\Http\Request();
-        },
-    ]
-);
-
-$container->instance(
-    Valkyrja\Contracts\Http\Response::class,
-    [
-        function (string $content = '', int $status = 200, array $headers = []) {
-            return new Valkyrja\Http\Response($content, $status, $headers);
-        },
-    ]
-);
-
-$container->instance(
-    Valkyrja\Contracts\Http\JsonResponse::class,
-    [
-        function (string $content = '', int $status = 200, array $headers = []) {
-            return new Valkyrja\Http\JsonResponse($content, $status, $headers);
-        },
-    ]
-);
-
-$container->instance(
-    Valkyrja\Contracts\Http\ResponseBuilder::class,
-    function () use ($container) {
-        $response = $container->get(Valkyrja\Contracts\Http\Response::class);
-        $view = $container->get(Valkyrja\Contracts\View\View::class);
-
-        return new Valkyrja\Http\ResponseBuilder($response, $view);
-    }
-);
-
-$container->instance(
-    Valkyrja\Contracts\Http\Router::class,
-    function () use ($container) {
-        return new Valkyrja\Http\Router();
-    }
-);
-
-$container->instance(
-    Valkyrja\Contracts\Sessions\Session::class,
-    function () {
-        return new Valkyrja\Sessions\Session();
-    }
-);
-
-$container->instance(
-    Valkyrja\Contracts\View\View::class,
-    [
-        function (string $template = '', array $variables = []) {
-            return new Valkyrja\View\View($template, $variables);
-        },
-    ]
-);
-
-/*
  *-------------------------------------------------------------------------
  * Bind Application Container Instances
  *-------------------------------------------------------------------------
@@ -109,11 +9,9 @@ $container->instance(
  *
  */
 
-$container->instance(
+$app->container()->instance(
     App\Controllers\HomeController::class,
-    [
-        function () use ($app) {
-            return new App\Controllers\HomeController($app);
-        },
-    ]
+    function () use ($app) {
+        return new App\Controllers\HomeController($app);
+    }
 );

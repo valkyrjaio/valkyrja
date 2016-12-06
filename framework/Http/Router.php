@@ -313,12 +313,6 @@ class Router implements RouterContract
                 // Set the controller through the container
                 $controller = Helpers::container()->get($route['controller']);
 
-                // If the controller returns the class string and the class exists
-                if (is_string($controller) && class_exists($controller)) {
-                    // Create a new class instance
-                    $controller = new $controller;
-                }
-
                 // Let's make sure the controller is a controller
                 if (! $controller instanceof ControllerContract) {
                     throw new Exception(

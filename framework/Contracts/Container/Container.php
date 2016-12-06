@@ -30,14 +30,25 @@ interface Container
     public function setServiceContainer(array $serviceContainer); // : void;
 
     /**
-     * Set the service container for dependency injection.
+     * Set an abstract in the service container.
      *
-     * @param string               $abstract The abstract to use as the key
-     * @param \Closure|array|mixed $instance The instance to set
+     * @param string                 $abstract  The abstract to use as the key
+     * @param \Closure|string|object $instance  The instance to set
+     * @param bool                   $singleton Whether this abstract should be treated as a singleton
      *
      * @return void
      */
-    public function instance(string $abstract, $instance); // : void;
+    public function instance(string $abstract, $instance, $singleton = false); // : void;
+
+    /**
+     * Set an abstract as a singleton in the service container.
+     *
+     * @param string                 $abstract  The abstract to use as the key
+     * @param \Closure|string|object $instance  The instance to set
+     *
+     * @return void
+     */
+    public function singleton(string $abstract, $instance); // : void;
 
     /**
      * Get an abstract from the container.
@@ -48,6 +59,15 @@ interface Container
      * @return mixed
      */
     public function get(string $abstract, array $arguments = []); // : mixed;
+
+    /**
+     * Check whether an abstract is set in the container.
+     *
+     * @param string $abstract The abstract to check for
+     *
+     * @return bool
+     */
+    public function isset(string $abstract) : bool;
 
     /**
      * Bootstrap the container.

@@ -69,7 +69,8 @@ class TwigServiceProvider extends ServiceProvider
                     }
 
                     return $twig;
-                }
+                },
+                true
             );
 
             /**
@@ -77,15 +78,13 @@ class TwigServiceProvider extends ServiceProvider
              */
             Helpers::container()->instance(
                 View::class,
-                [
-                    function ($template = '', array $variables = []) {
-                        $view = new TwigView($template, $variables);
+                function ($template = '', array $variables = []) {
+                    $view = new TwigView($template, $variables);
 
-                        $view->setTwig(Helpers::container()->get(Twig_Environment::class));
+                    $view->setTwig(Helpers::container()->get(Twig_Environment::class));
 
-                        return $view;
-                    },
-                ]
+                    return $view;
+                }
             );
         }
     }

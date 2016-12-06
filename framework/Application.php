@@ -18,11 +18,13 @@ use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
+use Valkyrja\Contracts\Exceptions\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\View\View;
+use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Support\Helpers;
 use Valkyrja\Support\PathHelpers;
 
@@ -45,11 +47,18 @@ class Application implements ApplicationContract
     const DIRECTORY_SEPARATOR = '/';
 
     /**
+     * Get the instance of the application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
+    protected static $app;
+
+    /**
      * Get the instance of the container.
      *
      * @var \Valkyrja\Contracts\Container\Container
      */
-    public static $container;
+    protected $container;
 
     /**
      * The base directory for the application.
@@ -68,21 +77,46 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param string                                  $basePath  The base path for the application
-     * @param \Valkyrja\Contracts\Container\Container $container The container to use
+     * @param string                                          $basePath         The base path for the application
+     * @param \Valkyrja\Contracts\Container\Container         $container        The container to use
+     * @param \Valkyrja\Contracts\Exceptions\ExceptionHandler $exceptionHandler The exception handler to use
      */
-    public function __construct($basePath, ContainerContract $container = null)
+    public function __construct($basePath, ContainerContract $container = null, ExceptionHandlerContract $exceptionHandler = null)
     {
+        // If a container has not been passed in
         if (! $container instanceof ContainerContract) {
+            // Use the Valkyrja container
             $container = new Container();
         }
 
-        static::$container = $container;
+        // Set the app static
+        static::$app = $this;
 
+        // Set the container within the application
+        $this->container = $container;
+
+        // Set the application instance in the container
         $container->instance(ApplicationContract::class, $this);
+        // Bootstrap the container
         $container->bootstrap();
 
+        // If an exception handler has not been passed in
+        if (! $exceptionHandler instanceof ExceptionHandlerContract) {
+            // Use the Valkyrja exception handler
+            new ExceptionHandler();
+        }
+
         $this->basePath = $basePath;
+    }
+
+    /**
+     * Get the application instance.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    public static function app() : ApplicationContract
+    {
+        return static::$app;
     }
 
     /**
@@ -100,19 +134,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Container\Container
      */
-    public static function container() : ContainerContract
+    public function container() : ContainerContract
     {
-        return static::$container;
-    }
-
-    /**
-     * Get the application instance.
-     *
-     * @return \Valkyrja\Contracts\Application
-     */
-    public static function app() : ApplicationContract
-    {
-        return static::$container->get(ApplicationContract::class);
+        return $this->container;
     }
 
     /**
@@ -120,9 +144,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
      */
-    public static function config() : Config
+    public function config() : Config
     {
-        return static::$container->get(Config::class);
+        return $this->container->get(Config::class);
     }
 
     /**
@@ -130,9 +154,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
-    public static function env() : Env
+    public function env() : Env
     {
-        return static::$container->get(Env::class);
+        return $this->container->get(Env::class);
     }
 
     /**
@@ -140,9 +164,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\Router
      */
-    public static function router() : Router
+    public function router() : Router
     {
-        return static::$container->get(Router::class);
+        return $this->container->get(Router::class);
     }
 
     /**
@@ -154,7 +178,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function response(string $content = '', int $status = 200, array $headers = []) : Response
+    public function response(string $content = '', int $status = 200, array $headers = []) : Response
     {
         $factory = static::responseBuilder();
 
@@ -166,9 +190,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\ResponseBuilder
      */
-    public static function responseBuilder() : ResponseBuilder
+    public function responseBuilder() : ResponseBuilder
     {
-        return static::$container->get(ResponseBuilder::class);
+        return $this->container->get(ResponseBuilder::class);
     }
 
     /**
@@ -179,9 +203,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public static function view(string $template = '', array $variables = []) : View
+    public function view(string $template = '', array $variables = []) : View
     {
-        return static::$container->get(
+        return $this->container->get(
             View::class,
             [
                 $template,

@@ -12,6 +12,13 @@
 namespace Valkyrja\Contracts;
 
 use Exception;
+use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\View\View;
 
 /**
  * Interface Application
@@ -37,11 +44,74 @@ interface Application
     public function __construct($basePath);
 
     /**
+     * Get the application instance.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    public static function app() : Application;
+
+    /**
      * Get the application version.
      *
      * @return string
      */
     public function version() : string;
+
+    /**
+     * Get the container instance.
+     *
+     * @return \Valkyrja\Contracts\Container\Container
+     */
+    public function container() : Container;
+
+    /**
+     * Get the config class instance.
+     *
+     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     */
+    public function config() : Config;
+
+    /**
+     * Get environment variables.
+     *
+     * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
+     */
+    public function env() : Env;
+
+    /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Router
+     */
+    public function router() : Router;
+
+    /**
+     * Return a new response from the application.
+     *
+     * @param string $content [optional] The content to set
+     * @param int    $status  [optional] The status code to set
+     * @param array  $headers [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function response(string $content = '', int $status = 200, array $headers = []) : Response;
+
+    /**
+     * Return a new response from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public function responseBuilder() : ResponseBuilder;
+
+    /**
+     * Helper function to get a new view.
+     *
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function view(string $template = '', array $variables = []) : View;
 
     /**
      * Get the environment with which the application is running in.

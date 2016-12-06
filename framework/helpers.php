@@ -17,7 +17,7 @@ if (!function_exists('app')) {
      */
     function app()
     {
-        return \Valkyrja\Support\Helpers::app();
+        return \Valkyrja\Application::app();
     }
 }
 
@@ -34,7 +34,7 @@ if (!function_exists('abort')) {
      */
     function abort($code, $message = '', array $headers = [], $view = null)
     {
-        \Valkyrja\Support\Helpers::abort($code, $message, $headers, $view);
+        app()->abort($code, $message, $headers, $view);
     }
 }
 
@@ -46,7 +46,7 @@ if (!function_exists('container')) {
      */
     function container()
     {
-        return \Valkyrja\Support\Helpers::container();
+        return app()->container();
     }
 }
 
@@ -73,7 +73,7 @@ if (!function_exists('config')) {
      */
     function config()
     {
-        return \Valkyrja\Support\Helpers::config();
+        return app()->config();
     }
 }
 
@@ -329,7 +329,7 @@ if (!function_exists('response')) {
             return \Valkyrja\Support\Helpers::responseBuilder();
         }
 
-        return \Valkyrja\Support\Helpers::response($content, $status, $headers);
+        return app()->response($content, $status, $headers);
     }
 }
 
@@ -344,7 +344,7 @@ if (!function_exists('view')) {
      */
     function view($template = '', array $variables = [])
     {
-        return \Valkyrja\Support\Helpers::view($template, $variables);
+        return app()->view($template, $variables);
     }
 }
 
@@ -369,7 +369,7 @@ if (!function_exists('httpException')) {
         $view = null,
         $code = 0
     ) {
-        \Valkyrja\Support\Helpers::httpException($statusCode, $message, $previous, $headers, $view, $code);
+        app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }
 
