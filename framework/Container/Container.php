@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Container;
 
+use Closure;
 use Exception;
 
 use Valkyrja\Config\Config;
@@ -70,31 +71,72 @@ class Container implements ContainerContract
     /**
      * Set an abstract in the service container.
      *
-     * @param string                 $abstract  The abstract to use as the key
-     * @param \Closure|string|object $instance  The instance to set
-     * @param bool                   $singleton Whether this abstract should be treated as a singleton
+     * @param string   $abstract  The abstract to use as the key
+     * @param \Closure $closure   The instance to set
+     * @param bool     $singleton Whether this abstract should be treated as a singleton
      *
      * @return void
      */
-    public function instance(string $abstract, $instance, $singleton = false) // : void
+    public function bind(string $abstract, Closure $closure, bool $singleton = false) // : void
     {
-        $this->serviceContainer[$abstract] = [
-            $instance,
-            $singleton,
-        ];
+        $this->set($abstract, $closure, $singleton);
     }
 
     /**
      * Set an abstract as a singleton in the service container.
      *
-     * @param string                 $abstract The abstract to use as the key
-     * @param \Closure|string|object $instance The instance to set
+     * @param string   $abstract The abstract to use as the key
+     * @param \Closure $closure  The instance to set
      *
      * @return void
      */
-    public function singleton(string $abstract, $instance) // : void
+    public function singleton(string $abstract, Closure $closure) // : void
     {
-        $this->instance($abstract, $instance, true);
+        $this->bind($abstract, $closure, true);
+    }
+
+    /**
+     * Set an object in the service container.
+     *
+     * @param string $abstract The abstract to use as the key
+     * @param object $instance The instance to set
+     *
+     * @return void
+     */
+    public function instance(string $abstract, $instance) // : void
+    {
+        $this->set($abstract, $instance, true);
+    }
+
+    /**
+     * Set an alias in the service container.
+     *
+     * @param string $abstract  The abstract to use as the key
+     * @param string $alias     The instance to set
+     * @param bool   $singleton Whether this abstract should be treated as a singleton
+     *
+     * @return void
+     */
+    public function alias(string $abstract, string $alias, bool $singleton = false) // : void
+    {
+        $this->set($abstract, $alias, $singleton);
+    }
+
+    /**
+     * Set an abstract in the service container.
+     *
+     * @param string                 $abstract  The abstract to use as the key
+     * @param \Closure|string|object $closure   The instance to set
+     * @param bool                   $singleton Whether this abstract should be treated as a singleton
+     *
+     * @return void
+     */
+    protected function set(string $abstract, $closure, bool $singleton = false) // : void
+    {
+        $this->serviceContainer[$abstract] = [
+            $closure,
+            $singleton,
+        ];
     }
 
     /**
@@ -138,6 +180,19 @@ class Container implements ContainerContract
     }
 
     /**
+     * Get an abstract from the container.
+     *
+     * @param string $abstract  The abstract to get
+     * @param array  $arguments [optional] Arguments to pass
+     *
+     * @return object
+     */
+    public function __get(string $abstract, array $arguments = []) // : object
+    {
+        return $this->get($abstract, $arguments);
+    }
+
+    /**
      * Check whether an abstract is set in the container.
      *
      * @param string $abstract The abstract to check for
@@ -150,6 +205,18 @@ class Container implements ContainerContract
     }
 
     /**
+     * Check whether an abstract is set in the container.
+     *
+     * @param string $abstract The abstract to check for
+     *
+     * @return bool
+     */
+    public function __isset(string $abstract) : bool
+    {
+        return $this->isset($abstract);
+    }
+
+    /**
      * Bootstrap the container.
      *
      * @return void
@@ -158,7 +225,7 @@ class Container implements ContainerContract
     {
         // Check if the env has already been set in the container
         if (! $this->isset(ConfigContract::class)) {
-            $this->singleton(
+            $this->instance(
                 EnvContract::class,
                 new Env()
             );
@@ -178,7 +245,7 @@ class Container implements ContainerContract
 
         // Check if the http exception has already been set in the container
         if (! $this->isset(HttpExceptionContract::class)) {
-            $this->instance(
+            $this->bind(
                 HttpExceptionContract::class,
                 function (
                     int $statusCode,
@@ -194,7 +261,7 @@ class Container implements ContainerContract
 
         // Check if the request has already been set in the container
         if (! $this->isset(RequestContract::class)) {
-            $this->instance(
+            $this->bind(
                 RequestContract::class,
                 function () {
                     return new Request();
@@ -204,7 +271,7 @@ class Container implements ContainerContract
 
         // Check if the response has already been set in the container
         if (! $this->isset(ResponseContract::class)) {
-            $this->instance(
+            $this->bind(
                 ResponseContract::class,
                 function (string $content = '', int $status = 200, array $headers = []) {
                     return new Response($content, $status, $headers);
@@ -214,7 +281,7 @@ class Container implements ContainerContract
 
         // Check if the json response has already been set in the container
         if (! $this->isset(JsonResponseContract::class)) {
-            $this->instance(
+            $this->bind(
                 JsonResponseContract::class,
                 function (string $content = '', int $status = 200, array $headers = []) {
                     return new JsonResponse($content, $status, $headers);
@@ -257,7 +324,7 @@ class Container implements ContainerContract
 
         // Check if the view has already been set in the container
         if (! $this->isset(ViewContract::class)) {
-            $this->instance(
+            $this->bind(
                 ViewContract::class,
                 function (string $template = '', array $variables = []) {
                     return new View($template, $variables);
@@ -267,7 +334,7 @@ class Container implements ContainerContract
 
         // Check if the client has already been set in the container
         if (! $this->isset(ClientContract::class)) {
-            $this->instance(
+            $this->bind(
                 ClientContract::class,
                 function () {
                     return new Client();

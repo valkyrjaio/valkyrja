@@ -66,14 +66,13 @@ $app->container()->instance(
     new config\Env
 );
 
-$app->container()->instance(
+$app->container()->singleton(
     Valkyrja\Contracts\Config\Config::class,
     function () use ($app) {
         return new \config\Config(
             $app->container()->get(Valkyrja\Contracts\Application::class)
         );
-    },
-    true
+    }
 );
 
 $app->setTimezone();

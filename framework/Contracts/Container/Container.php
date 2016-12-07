@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Container;
 
+use Closure;
+
 /**
  * Interface Container
  *
@@ -32,23 +34,44 @@ interface Container
     /**
      * Set an abstract in the service container.
      *
-     * @param string                 $abstract  The abstract to use as the key
-     * @param \Closure|string|object $instance  The instance to set
-     * @param bool                   $singleton Whether this abstract should be treated as a singleton
+     * @param string   $abstract  The abstract to use as the key
+     * @param \Closure $closure   The instance to set
+     * @param bool     $singleton Whether this abstract should be treated as a singleton
      *
      * @return void
      */
-    public function instance(string $abstract, $instance, $singleton = false); // : void;
+    public function bind(string $abstract, Closure $closure, bool $singleton = false); // : void;
 
     /**
      * Set an abstract as a singleton in the service container.
      *
-     * @param string                 $abstract  The abstract to use as the key
-     * @param \Closure|string|object $instance  The instance to set
+     * @param string   $abstract The abstract to use as the key
+     * @param \Closure $closure  The instance to set
      *
      * @return void
      */
-    public function singleton(string $abstract, $instance); // : void;
+    public function singleton(string $abstract, Closure $closure); // : void;
+
+    /**
+     * Set an object in the service container.
+     *
+     * @param string $abstract The abstract to use as the key
+     * @param object $instance The instance to set
+     *
+     * @return void
+     */
+    public function instance(string $abstract, $instance); // : void;
+
+    /**
+     * Set an alias in the service container.
+     *
+     * @param string $abstract  The abstract to use as the key
+     * @param string $alias     The instance to set
+     * @param bool   $singleton Whether this abstract should be treated as a singleton
+     *
+     * @return void
+     */
+    public function alias(string $abstract, string $alias, bool $singleton = false); // : void;
 
     /**
      * Get an abstract from the container.
@@ -56,9 +79,19 @@ interface Container
      * @param string $abstract  The abstract to get
      * @param array  $arguments [optional] Arguments to pass
      *
-     * @return mixed
+     * @return object
      */
-    public function get(string $abstract, array $arguments = []); // : mixed;
+    public function get(string $abstract, array $arguments = []); // : object;
+
+    /**
+     * Get an abstract from the container.
+     *
+     * @param string $abstract  The abstract to get
+     * @param array  $arguments [optional] Arguments to pass
+     *
+     * @return object
+     */
+    public function __get(string $abstract, array $arguments = []); // : object;
 
     /**
      * Check whether an abstract is set in the container.
@@ -68,6 +101,15 @@ interface Container
      * @return bool
      */
     public function isset(string $abstract) : bool;
+
+    /**
+     * Check whether an abstract is set in the container.
+     *
+     * @param string $abstract The abstract to check for
+     *
+     * @return bool
+     */
+    public function __isset(string $abstract) : bool;
 
     /**
      * Bootstrap the container.

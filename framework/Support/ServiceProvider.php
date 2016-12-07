@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Support;
 
-use Valkyrja\Application;
+use Valkyrja\Contracts\Application;
 
 /**
  * Class ServiceProvider
@@ -25,7 +25,7 @@ abstract class ServiceProvider
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Contracts\Application
      */
     protected $app;
 
