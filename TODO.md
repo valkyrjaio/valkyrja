@@ -19,6 +19,4 @@ Implement this...
 
 ## Go through header date methods in Response to change to string
 
-## Change container to use third arg for instance instead of array OR closure. Change second arg to closure
-
 ## FIGURE OUT HOW YOU WANT ENV!
