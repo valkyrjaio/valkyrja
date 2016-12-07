@@ -182,14 +182,13 @@ class Container implements ContainerContract
     /**
      * Get an abstract from the container.
      *
-     * @param string $abstract  The abstract to get
-     * @param array  $arguments [optional] Arguments to pass
+     * @param string $abstract The abstract to get
      *
      * @return object
      */
-    public function __get(string $abstract, array $arguments = []) // : object
+    public function __get(string $abstract) // : object
     {
-        return $this->get($abstract, $arguments);
+        return $this->get($abstract);
     }
 
     /**
