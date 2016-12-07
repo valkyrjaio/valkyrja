@@ -27,8 +27,6 @@ interface Env
     const STORAGE_UPLOADS_DIR = null;
     const STORAGE_LOGS_DIR = null;
 
-    const ROUTING_USE_ARRAY_ARGS = false;
-
     const VIEWS_DIR = null;
 
     const VIEWS_TWIG_ENABLED = false;

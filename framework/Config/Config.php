@@ -12,7 +12,6 @@
 namespace Valkyrja\Config;
 
 use Valkyrja\Config\Sub\AppConfig;
-use Valkyrja\Config\Sub\RoutingConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
 use Valkyrja\Contracts\Application;
@@ -40,13 +39,6 @@ class Config implements ConfigContract
     public $storage;
 
     /**
-     * Routing config.
-     *
-     * @var RoutingConfig
-     */
-    public $routing;
-
-    /**
      * Views config.
      *
      * @var ViewsConfig
@@ -70,7 +62,6 @@ class Config implements ConfigContract
         if ($this->setDefaults) {
             $this->app = new AppConfig($app);
             $this->storage = new StorageConfig($app);
-            $this->routing = new RoutingConfig($app);
             $this->views = new ViewsConfig($app);
         }
     }

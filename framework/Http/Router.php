@@ -252,9 +252,6 @@ class Router implements RouterContract
         $route = false;
         $matches = false;
         $dispatch = false;
-        // Whether to use arguments as an array
-        $useArrayArgs = Helpers::config()->routing->useArrayArgs
-            ?? false;
 
         // Let's check if the route is set in the simple routes
         if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
@@ -306,13 +303,8 @@ class Router implements RouterContract
 
             // If the action is a callable closure
             if (is_callable($action)) {
-                // Check if we should use arguments as an array
-                if ($useArrayArgs && $hasArguments) {
-                    // Call it an set is as our dispatch
-                    $dispatch = $action($arguments);
-                }
-                // If there were arguments and they should be passed in individually
-                elseif ($hasArguments) {
+                // If there are arguments and they should be passed in individually
+                if ($hasArguments) {
                     // Call it and set it as our dispatch
                     $dispatch = $action(...$arguments);
                 }
@@ -354,13 +346,8 @@ class Router implements RouterContract
                     );
                 }
 
-                // Check if we should use arguments as an array
-                if ($useArrayArgs && $hasArguments) {
-                    // Set the dispatch as the controller action
-                    $dispatch = $controller->$action($arguments);
-                }
-                // If there were arguments and they should be passed in individually
-                elseif ($hasArguments) {
+                // If there are arguments
+                if ($hasArguments) {
                     // Set the dispatch as the controller action
                     $dispatch = $controller->$action(...$arguments);
                 }
