@@ -157,26 +157,31 @@ class Container implements ContainerContract
             // Check if this container item is a callable function
             if (is_callable($containerItem)) {
                 // Run the callable function
-                $containerItem = call_user_func_array($containerItem, $arguments);
-            }
+                $containerItem = $containerItem(...$arguments);
 
+                // If this is a singleton
+                if ($this->serviceContainer[$abstract][1] === true) {
+                    // Set the result in the service container for the next request
+                    $this->serviceContainer[$abstract][0] = $containerItem;
+                }
+            }
             // If the container item is a string
-            if (is_string($containerItem)) {
+            else if (is_string($containerItem)) {
                 // Set the container item as a new instance
-                $containerItem = new $containerItem;
-            }
+                $containerItem = new $containerItem(...$arguments);
 
-            // If this is a singleton
-            if ($this->serviceContainer[$abstract][1] === true) {
-                // Set the result in the service container for the next request
-                $this->serviceContainer[$abstract][0] = $containerItem;
+                // If this is a singleton
+                if ($this->serviceContainer[$abstract][1] === true) {
+                    // Set the result in the service container for the next request
+                    $this->serviceContainer[$abstract][0] = $containerItem;
+                }
             }
 
             // Return the container item
             return $containerItem;
         }
 
-        return new $abstract;
+        return new $abstract(...$arguments);
     }
 
     /**
@@ -224,9 +229,12 @@ class Container implements ContainerContract
     {
         // Check if the env has already been set in the container
         if (! $this->isset(ConfigContract::class)) {
-            $this->instance(
+            $this->singleton(
                 EnvContract::class,
-                new Env()
+                function ()
+                {
+                    return new Env();
+                }
             );
         }
 
