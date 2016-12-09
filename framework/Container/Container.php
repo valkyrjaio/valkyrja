@@ -203,7 +203,7 @@ class Container implements ContainerContract
      *
      * @return bool
      */
-    public function isset(string $abstract) : bool
+    public function bound(string $abstract) : bool
     {
         return isset($this->serviceContainer[$abstract]);
     }
@@ -217,7 +217,7 @@ class Container implements ContainerContract
      */
     public function __isset(string $abstract) : bool
     {
-        return $this->isset($abstract);
+        return $this->bound($abstract);
     }
 
     /**
@@ -228,7 +228,7 @@ class Container implements ContainerContract
     public function bootstrap() // : void
     {
         // Check if the env has already been set in the container
-        if (! $this->isset(ConfigContract::class)) {
+        if (! $this->bound(ConfigContract::class)) {
             $this->singleton(
                 EnvContract::class,
                 function ()
@@ -239,7 +239,7 @@ class Container implements ContainerContract
         }
 
         // Check if the config has already been set in the container
-        if (! $this->isset(ConfigContract::class)) {
+        if (! $this->bound(ConfigContract::class)) {
             $this->singleton(
                 ConfigContract::class,
                 function () {
@@ -251,7 +251,7 @@ class Container implements ContainerContract
         }
 
         // Check if the http exception has already been set in the container
-        if (! $this->isset(HttpExceptionContract::class)) {
+        if (! $this->bound(HttpExceptionContract::class)) {
             $this->bind(
                 HttpExceptionContract::class,
                 function (
@@ -259,15 +259,15 @@ class Container implements ContainerContract
                     string $message = null,
                     Exception $previous = null,
                     array $headers = [],
-                    int $code = 0
+                    string $view = null
                 ) {
-                    return new HttpException($statusCode, $message, $previous, $headers, $code);
+                    return new HttpException($statusCode, $message, $previous, $headers, $view);
                 }
             );
         }
 
         // Check if the request has already been set in the container
-        if (! $this->isset(RequestContract::class)) {
+        if (! $this->bound(RequestContract::class)) {
             $this->bind(
                 RequestContract::class,
                 function () {
@@ -277,7 +277,7 @@ class Container implements ContainerContract
         }
 
         // Check if the response has already been set in the container
-        if (! $this->isset(ResponseContract::class)) {
+        if (! $this->bound(ResponseContract::class)) {
             $this->bind(
                 ResponseContract::class,
                 function (string $content = '', int $status = 200, array $headers = []) {
@@ -287,7 +287,7 @@ class Container implements ContainerContract
         }
 
         // Check if the json response has already been set in the container
-        if (! $this->isset(JsonResponseContract::class)) {
+        if (! $this->bound(JsonResponseContract::class)) {
             $this->bind(
                 JsonResponseContract::class,
                 function (string $content = '', int $status = 200, array $headers = []) {
@@ -297,7 +297,7 @@ class Container implements ContainerContract
         }
 
         // Check if the response builder has already been set in the container
-        if (! $this->isset(ResponseBuilderContract::class)) {
+        if (! $this->bound(ResponseBuilderContract::class)) {
             $this->singleton(
                 ResponseBuilderContract::class,
                 function () {
@@ -310,7 +310,7 @@ class Container implements ContainerContract
         }
 
         // Check if the router has already been set in the container
-        if (! $this->isset(RouterContract::class)) {
+        if (! $this->bound(RouterContract::class)) {
             $this->singleton(
                 RouterContract::class,
                 function () {
@@ -320,7 +320,7 @@ class Container implements ContainerContract
         }
 
         // Check if the session has already been set in the container
-        if (! $this->isset(SessionContract::class)) {
+        if (! $this->bound(SessionContract::class)) {
             $this->singleton(
                 SessionContract::class,
                 function () {
@@ -330,7 +330,7 @@ class Container implements ContainerContract
         }
 
         // Check if the view has already been set in the container
-        if (! $this->isset(ViewContract::class)) {
+        if (! $this->bound(ViewContract::class)) {
             $this->bind(
                 ViewContract::class,
                 function (string $template = '', array $variables = []) {
@@ -340,7 +340,7 @@ class Container implements ContainerContract
         }
 
         // Check if the client has already been set in the container
-        if (! $this->isset(ClientContract::class)) {
+        if (! $this->bound(ClientContract::class)) {
             $this->bind(
                 ClientContract::class,
                 function () {

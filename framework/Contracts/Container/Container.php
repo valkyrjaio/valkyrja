@@ -99,7 +99,7 @@ interface Container
      *
      * @return bool
      */
-    public function isset(string $abstract) : bool;
+    public function bound(string $abstract) : bool;
 
     /**
      * Check whether an abstract is set in the container.
