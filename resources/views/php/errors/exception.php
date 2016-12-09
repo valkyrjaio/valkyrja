@@ -1,1 +1,0 @@
-Exception: <?php echo $message; ?>
