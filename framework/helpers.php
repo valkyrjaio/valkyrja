@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-if (!function_exists('app')) {
+if (! function_exists('app')) {
     /**
      * Return the global $app variable.
      *
      * @return \Valkyrja\Contracts\Application
      */
-    function app()
+    function app() : Valkyrja\Contracts\Application
     {
         return \Valkyrja\Application::app();
     }
 }
 
-if (!function_exists('abort')) {
+if (! function_exists('abort')) {
     /**
      * Throw an HttpException with the given data.
      *
@@ -30,27 +30,29 @@ if (!function_exists('abort')) {
      * @param array  $headers [optional] The headers to set
      * @param string $view    [optional] The view template name to use
      *
+     * @return void
+     *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    function abort($code, $message = '', array $headers = [], $view = null)
+    function abort(int $code, string $message = '', array $headers = [], string $view = null) : void
     {
         app()->abort($code, $message, $headers, $view);
     }
 }
 
-if (!function_exists('container')) {
+if (! function_exists('container')) {
     /**
      * Return the global $app variable.
      *
      * @return \Valkyrja\Contracts\Container\Container
      */
-    function container()
+    function container() : Valkyrja\Contracts\Container\Container
     {
         return app()->container();
     }
 }
 
-if (!function_exists('container')) {
+if (! function_exists('container')) {
     /**
      * Get an item from the container.
      *
@@ -59,261 +61,49 @@ if (!function_exists('container')) {
      *
      * @return mixed
      */
-    function instance($abstract, array $arguments = [])
+    function instance(string $abstract, array $arguments = []) // : object
     {
         return container()->get($abstract, $arguments);
     }
 }
 
-if (!function_exists('config')) {
+if (! function_exists('config')) {
     /**
      * Get config.
      *
      * @return \config\Config|\Valkyrja\Config\Config|\Valkyrja\Contracts\Config\Config
      */
-    function config()
+    function config() : Valkyrja\Contracts\Config\Config
     {
         return app()->config();
     }
 }
 
-if (!function_exists('get')) {
+if (! function_exists('router')) {
     /**
-     * Helper function to set a GET addRoute.
+     * Get router.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
+     * @return \Valkyrja\Contracts\Http\Router
      */
-    function get($path, $handler, $isDynamic = false)
+    function router() : Valkyrja\Contracts\Http\Router
     {
-        \Valkyrja\Support\Helpers::get($path, $handler, $isDynamic);
+        return app()->router();
     }
 }
 
-if (!function_exists('post')) {
+if (! function_exists('responseBuilder')) {
     /**
-     * Helper function to set a POST addRoute.
+     * Get the response builder.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function post($path, $handler, $isDynamic = false)
+    function responseBuilder() : Valkyrja\Contracts\Http\ResponseBuilder
     {
-        \Valkyrja\Support\Helpers::post($path, $handler, $isDynamic);
+        return app()->responseBuilder();
     }
 }
 
-if (!function_exists('put')) {
-    /**
-     * Helper function to set a PUT addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     */
-    function put($path, $handler, $isDynamic = false)
-    {
-        \Valkyrja\Support\Helpers::put($path, $handler, $isDynamic);
-    }
-}
-
-if (!function_exists('patch')) {
-    /**
-     * Helper function to set a PATCH addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     */
-    function patch($path, $handler, $isDynamic = false)
-    {
-        \Valkyrja\Support\Helpers::patch($path, $handler, $isDynamic);
-    }
-}
-
-if (!function_exists('delete')) {
-    /**
-     * Helper function to set a DELETE addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     */
-    function delete($path, $handler, $isDynamic = false)
-    {
-        \Valkyrja\Support\Helpers::delete($path, $handler, $isDynamic);
-    }
-}
-
-if (!function_exists('head')) {
-    /**
-     * Helper function to set a HEAD addRoute.
-     *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
-     *
-     * @return void
-     */
-    function head($path, $handler, $isDynamic = false)
-    {
-        \Valkyrja\Support\Helpers::head($path, $handler, $isDynamic);
-    }
-}
-
-if (!function_exists('basePath')) {
-    /**
-     * Helper function to get base path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function basePath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::basePath($path);
-    }
-}
-
-if (!function_exists('appPath')) {
-    /**
-     * Helper function to get app path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function appPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::appPath($path);
-    }
-}
-
-if (!function_exists('cachePath')) {
-    /**
-     * Helper function to get cache path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function cachePath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::cachePath($path);
-    }
-}
-
-if (!function_exists('configPath')) {
-    /**
-     * Helper function to get config path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function configPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::configPath($path);
-    }
-}
-
-if (!function_exists('frameworkPath')) {
-    /**
-     * Helper function to get framework path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function frameworkPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::frameworkPath($path);
-    }
-}
-
-if (!function_exists('publicPath')) {
-    /**
-     * Helper function to get public path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function publicPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::publicPath($path);
-    }
-}
-
-if (!function_exists('resourcesPath')) {
-    /**
-     * Helper function to get resources path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function resourcesPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::resourcesPath($path);
-    }
-}
-
-if (!function_exists('storagePath')) {
-    /**
-     * Helper function to get storage path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function storagePath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::storagePath($path);
-    }
-}
-
-if (!function_exists('testsPath')) {
-    /**
-     * Helper function to get tests path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function testsPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::testsPath($path);
-    }
-}
-
-if (!function_exists('vendorPath')) {
-    /**
-     * Helper function to get vendor path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function vendorPath($path = null)
-    {
-        return \Valkyrja\Support\Helpers::vendorPath($path);
-    }
-}
-
-if (!function_exists('response')) {
+if (! function_exists('response')) {
     /**
      * Return a new response from the application.
      *
@@ -323,17 +113,13 @@ if (!function_exists('response')) {
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function response($content = '', $status = 200, array $headers = [])
+    function response(string $content = '', int $status = 200, array $headers = []) : Valkyrja\Contracts\Http\Response
     {
-        if (func_num_args() === 0) {
-            return \Valkyrja\Support\Helpers::responseBuilder();
-        }
-
         return app()->response($content, $status, $headers);
     }
 }
 
-if (!function_exists('view')) {
+if (! function_exists('view')) {
     /**
      * Helper function to get a new view.
      *
@@ -342,13 +128,249 @@ if (!function_exists('view')) {
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    function view($template = '', array $variables = [])
+    function view(string $template = '', array $variables = []) : Valkyrja\Contracts\View\View
     {
         return app()->view($template, $variables);
     }
 }
 
-if (!function_exists('dd')) {
+if (! function_exists('get')) {
+    /**
+     * Helper function to set a GET addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function get(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->get($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('post')) {
+    /**
+     * Helper function to set a POST addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function post(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->post($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('put')) {
+    /**
+     * Helper function to set a PUT addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function put(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->put($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('patch')) {
+    /**
+     * Helper function to set a PATCH addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function patch(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->patch($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('delete')) {
+    /**
+     * Helper function to set a DELETE addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function delete(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->delete($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('head')) {
+    /**
+     * Helper function to set a HEAD addRoute.
+     *
+     * @param string         $path      The path to set
+     * @param \Closure|array $handler   The closure or array of options
+     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     *
+     * @return void
+     */
+    function head(string $path, $handler, bool $isDynamic = false) : void
+    {
+        router()->head($path, $handler, $isDynamic);
+    }
+}
+
+if (! function_exists('basePath')) {
+    /**
+     * Helper function to get base path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function basePath(string $path = null) : string
+    {
+        return app()->basePath($path);
+    }
+}
+
+if (! function_exists('appPath')) {
+    /**
+     * Helper function to get app path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function appPath(string $path = null) : string
+    {
+        return app()->appPath($path);
+    }
+}
+
+if (! function_exists('cachePath')) {
+    /**
+     * Helper function to get cache path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function cachePath(string $path = null) : string
+    {
+        return app()->cachePath($path);
+    }
+}
+
+if (! function_exists('configPath')) {
+    /**
+     * Helper function to get config path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function configPath(string $path = null) : string
+    {
+        return app()->configPath($path);
+    }
+}
+
+if (! function_exists('frameworkPath')) {
+    /**
+     * Helper function to get framework path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function frameworkPath(string $path = null) : string
+    {
+        return app()->frameworkPath($path);
+    }
+}
+
+if (! function_exists('publicPath')) {
+    /**
+     * Helper function to get public path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function publicPath(string $path = null) : string
+    {
+        return app()->publicPath($path);
+    }
+}
+
+if (! function_exists('resourcesPath')) {
+    /**
+     * Helper function to get resources path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function resourcesPath(string $path = null) : string
+    {
+        return app()->resourcesPath($path);
+    }
+}
+
+if (! function_exists('storagePath')) {
+    /**
+     * Helper function to get storage path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function storagePath(string $path = null) : string
+    {
+        return app()->storagePath($path);
+    }
+}
+
+if (! function_exists('testsPath')) {
+    /**
+     * Helper function to get tests path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function testsPath(string $path = null) : string
+    {
+        return app()->testsPath($path);
+    }
+}
+
+if (! function_exists('vendorPath')) {
+    /**
+     * Helper function to get vendor path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function vendorPath(string $path = null) : string
+    {
+        return app()->vendorPath($path);
+    }
+}
+
+if (! function_exists('dd')) {
     /**
      * Dump the passed variables and end the script.
      *
@@ -357,7 +379,7 @@ if (!function_exists('dd')) {
      *
      * @return void
      */
-    function dd()
+    function dd() : void
     {
         var_dump(func_get_args());
 

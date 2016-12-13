@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\View;
 
+use Valkyrja\Contracts\Application;
+
 /**
  * Interface View
  *
@@ -23,10 +25,11 @@ interface View
     /**
      * View constructor.
      *
-     * @param string $template  [optional] The template to set
-     * @param array  $variables [optional] The variables to set
+     * @param \Valkyrja\Contracts\Application $app       The application
+     * @param string                          $template  [optional] The template to set
+     * @param array                           $variables [optional] The variables to set
      */
-    public function __construct(string $template = '', array $variables = []);
+    public function __construct(Application $app, string $template = '', array $variables = []);
 
     /**
      * Make a new View.

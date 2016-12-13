@@ -12,7 +12,6 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class AppConfig
@@ -71,7 +70,7 @@ class AppConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $env = Helpers::env();
+            $env = $app->env();
 
             $this->env = $env::APP_ENV
                 ?? 'production';

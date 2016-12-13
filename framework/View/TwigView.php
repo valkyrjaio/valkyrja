@@ -11,9 +11,10 @@
 
 namespace Valkyrja\View;
 
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\View\TwigView as TwigViewContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Support\Helpers;
+use Valkyrja\Support\Directory;
 
 use Twig_Environment;
 
@@ -36,12 +37,13 @@ class TwigView extends View implements TwigViewContract
     /**
      * View constructor.
      *
-     * @param string $template  [optional] The template to set
-     * @param array  $variables [optional] The variables to set
+     * @param \Valkyrja\Contracts\Application $app       The application
+     * @param string                          $template  [optional] The template to set
+     * @param array                           $variables [optional] The variables to set
      */
-    public function __construct(string $template = '', array $variables = [])
+    public function __construct(Application $app, string $template = '', array $variables = [])
     {
-        parent::__construct($template, $variables);
+        parent::__construct($app, $template, $variables);
 
         $this->fileExtension = '.twig';
     }
@@ -56,7 +58,8 @@ class TwigView extends View implements TwigViewContract
      */
     public function make(string $template = '', array $variables = []) : ViewContract
     {
-        $view = new static($template, $variables);
+        /** @var TwigViewContract $view */
+        $view = parent::make($template, $variables);
 
         $view->setTwig($this->twig);
 
@@ -73,7 +76,7 @@ class TwigView extends View implements TwigViewContract
     public function getTemplateDir(string $path = null) : string
     {
         return $path
-            ?: (Helpers::app())::DIRECTORY_SEPARATOR;
+            ?: Directory::DIRECTORY_SEPARATOR;
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Contracts\View\View;
+use Valkyrja\Contracts\Application;
 
 /**
  * Interface ResponseBuilder
@@ -22,13 +22,13 @@ use Valkyrja\Contracts\View\View;
  */
 interface ResponseBuilder
 {
+
     /**
      * ResponseBuilder constructor.
      *
-     * @param View                              $view     The View class to use
-     * @param \Valkyrja\Contracts\Http\Response $response The Response class to use
+     * @param \Valkyrja\Contracts\Application $app
      */
-    public function __construct(Response $response, View $view);
+    public function __construct(Application $app);
 
     /**
      * Make a new instance of Response.

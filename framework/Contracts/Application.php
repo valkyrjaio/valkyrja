@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Contracts;
 
-use Exception;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;

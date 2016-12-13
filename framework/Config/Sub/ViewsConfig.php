@@ -12,7 +12,6 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class ViewsConfig
@@ -50,7 +49,7 @@ class ViewsConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $env = Helpers::env();
+            $env = $app->env();
 
             $this->dir = $env::VIEWS_DIR
                 ?? $app->resourcesPath('views/php');

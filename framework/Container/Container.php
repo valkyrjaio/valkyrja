@@ -12,7 +12,6 @@
 namespace Valkyrja\Container;
 
 use Closure;
-use Exception;
 
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
@@ -20,7 +19,6 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
-use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
@@ -29,7 +27,6 @@ use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\Http\Router as RouterContract;
 use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Exceptions\HttpException;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
@@ -226,22 +223,6 @@ class Container implements ContainerContract
             );
         }
 
-        // Check if the http exception has already been set in the container
-        if (! $this->bound(HttpExceptionContract::class)) {
-            $this->bind(
-                HttpExceptionContract::class,
-                function (
-                    int $statusCode,
-                    string $message = null,
-                    Exception $previous = null,
-                    array $headers = [],
-                    string $view = null
-                ) {
-                    return new HttpException($statusCode, $message, $previous, $headers, $view);
-                }
-            );
-        }
-
         // Check if the request has already been set in the container
         if (! $this->bound(RequestContract::class)) {
             $this->bind(
@@ -277,10 +258,9 @@ class Container implements ContainerContract
             $this->singleton(
                 ResponseBuilderContract::class,
                 function () {
-                    $response = $this->get(ResponseContract::class);
-                    $view = $this->get(ViewContract::class);
+                    $app = $this->get(Application::class);
 
-                    return new ResponseBuilder($response, $view);
+                    return new ResponseBuilder($app);
                 }
             );
         }
@@ -312,7 +292,9 @@ class Container implements ContainerContract
             $this->bind(
                 ViewContract::class,
                 function (string $template = '', array $variables = []) {
-                    return new View($template, $variables);
+                    $app = $this->get(Application::class);
+
+                    return new View($app, $template, $variables);
                 }
             );
         }

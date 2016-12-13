@@ -13,9 +13,9 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Response as ResponseContract;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
-use Valkyrja\Contracts\View\View;
 
 /**
  * Class ResponseBuilder
@@ -27,29 +27,20 @@ use Valkyrja\Contracts\View\View;
 class ResponseBuilder implements ResponseBuilderContract
 {
     /**
-     * The view factory instance.
+     * The application.
      *
-     * @var View
+     * @var Application
      */
-    protected $view;
-
-    /**
-     * The response factory instance.
-     *
-     * @var \Valkyrja\Contracts\Http\Response
-     */
-    protected $response;
+    protected $app;
 
     /**
      * ResponseBuilder constructor.
      *
-     * @param View                              $view     The View class to use
-     * @param \Valkyrja\Contracts\Http\Response $response The Response class to use
+     * @param \Valkyrja\Contracts\Application $app
      */
-    public function __construct(ResponseContract $response, View $view)
+    public function __construct(Application $app)
     {
-        $this->response = $response;
-        $this->view = $view;
+        $this->app = $app;
     }
 
     /**
@@ -61,9 +52,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []) : ResponseContract
+    public function make(string $content = '', int $status = 200, array $headers = []) : Response
     {
-        return $this->response->create($content, $status, $headers);
+        return $this->app->response()->create($content, $status, $headers);
     }
 
     /**
@@ -76,9 +67,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []) : ResponseContract
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []) : Response
     {
-        $content = $this->view->make($template, $data)->render();
+        $content = $this->app->view()->make($template, $data)->render();
 
         return $this->make($content, $status, $headers);
     }
@@ -92,9 +83,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function json(array $data = [], int $status = 200, array $headers = []) : ResponseContract
+    public function json(array $data = [], int $status = 200, array $headers = []) : Response
     {
-        return $this->response;
+        return $this->app->response();
     }
 
     /**
@@ -107,9 +98,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : ResponseContract
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : Response
     {
-        return $this->response;
+        return $this->app->response();
     }
 
     /**
@@ -122,9 +113,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []) : ResponseContract
+    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []) : Response
     {
-        return $this->response;
+        return $this->app->response();
     }
 
     /**
@@ -137,8 +128,8 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []) : ResponseContract
+    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []) : Response
     {
-        return $this->response;
+        return $this->app->response();
     }
 }

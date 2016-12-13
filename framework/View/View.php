@@ -11,8 +11,9 @@
 
 namespace Valkyrja\View;
 
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Support\Helpers;
+use Valkyrja\Support\Directory;
 
 /**
  * Class View
@@ -23,6 +24,13 @@ use Valkyrja\Support\Helpers;
  */
 class View implements ViewContract
 {
+    /**
+     * The application.
+     *
+     * @var Application
+     */
+    protected $app;
+
     /**
      * The layout template.
      *
@@ -59,14 +67,16 @@ class View implements ViewContract
     /**
      * View constructor.
      *
-     * @param string $template  [optional] The template to set
-     * @param array  $variables [optional] The variables to set
+     * @param \Valkyrja\Contracts\Application $app       The application
+     * @param string                          $template  [optional] The template to set
+     * @param array                           $variables [optional] The variables to set
      */
-    public function __construct(string $template = '', array $variables = [])
+    public function __construct(Application $app, string $template = '', array $variables = [])
     {
+        $this->app = $app;
         $this->setVariables($variables);
         $this->setTemplate($template);
-        $this->setTemplateDir(Helpers::config()->views->dir ?? resourcesPath('views'));
+        $this->setTemplateDir($this->app->config()->views->dir ?? resourcesPath('views'));
     }
 
     /**
@@ -79,7 +89,7 @@ class View implements ViewContract
      */
     public function make(string $template = '', array $variables = []) : ViewContract
     {
-        return new static($template, $variables);
+        return new static($this->app, $template, $variables);
     }
 
     /**
@@ -155,7 +165,7 @@ class View implements ViewContract
     public function getTemplateDir(string $path = null) : string
     {
         return $this->templateDir . ($path
-            ? app()::DIRECTORY_SEPARATOR . $path
+            ? Directory::DIRECTORY_SEPARATOR . $path
             : $path);
     }
 

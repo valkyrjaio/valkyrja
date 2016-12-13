@@ -12,7 +12,6 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class StorageConfig
@@ -50,7 +49,7 @@ class StorageConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $env = Helpers::env();
+            $env = $app->env();
 
             $this->uploadsDir = $env::STORAGE_UPLOADS_DIR
                 ?? $app->storagePath('app');

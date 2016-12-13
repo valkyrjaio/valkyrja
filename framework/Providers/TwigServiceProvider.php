@@ -77,7 +77,7 @@ class TwigServiceProvider extends ServiceProvider
             $this->app->container()->bind(
                 View::class,
                 function ($template = '', array $variables = []) {
-                    $view = new TwigView($template, $variables);
+                    $view = new TwigView($this->app, $template, $variables);
 
                     $view->setTwig($this->app->container()->get(Twig_Environment::class));
 

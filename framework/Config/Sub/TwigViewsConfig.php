@@ -12,7 +12,6 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class TwigViewsConfig
@@ -64,7 +63,7 @@ class TwigViewsConfig
     public function __construct(Application $app)
     {
         if ($this->setDefaults) {
-            $env = Helpers::env();
+            $env = $app->env();
 
             $this->enabled = $env::VIEWS_TWIG_ENABLED
                 ?? false;

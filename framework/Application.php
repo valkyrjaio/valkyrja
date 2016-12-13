@@ -23,7 +23,7 @@ use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Exceptions\HttpException;
-use Valkyrja\Support\Helpers;
+use Valkyrja\Support\Directory;
 use Valkyrja\Support\PathHelpers;
 
 /**
@@ -38,13 +38,6 @@ class Application implements ApplicationContract
     use PathHelpers;
 
     /**
-     * Directory separator.
-     *
-     * @constant string
-     */
-    const DIRECTORY_SEPARATOR = '/';
-
-    /**
      * Get the instance of the application.
      *
      * @var \Valkyrja\Contracts\Application
@@ -57,13 +50,6 @@ class Application implements ApplicationContract
      * @var \Valkyrja\Contracts\Container\Container
      */
     protected $container;
-
-    /**
-     * The base directory for the application.
-     *
-     * @var string
-     */
-    protected $basePath;
 
     /**
      * Is the app using a compiled version?
@@ -104,7 +90,7 @@ class Application implements ApplicationContract
             new ExceptionHandler();
         }
 
-        $this->basePath = $basePath;
+        Directory::$BASE_PATH = $basePath;
     }
 
     /**
@@ -178,9 +164,9 @@ class Application implements ApplicationContract
      */
     public function response(string $content = '', int $status = 200, array $headers = []) : Response
     {
-        $factory = $this->responseBuilder();
+        $response = $this->container->get(Response::class);
 
-        return $factory->make($content, $status, $headers);
+        return $response->create($content, $status, $headers);
     }
 
     /**
@@ -219,7 +205,7 @@ class Application implements ApplicationContract
      */
     public function environment() : string
     {
-        return Helpers::config()->app->env ?? 'production';
+        return $this->config()->app->env ?? 'production';
     }
 
     /**
@@ -229,7 +215,7 @@ class Application implements ApplicationContract
      */
     public function debug() : string
     {
-        return Helpers::config()->app->debug ?? false;
+        return $this->config()->app->debug ?? false;
     }
 
     /**
@@ -239,7 +225,7 @@ class Application implements ApplicationContract
      */
     public function isTwigEnabled() : bool
     {
-        return Helpers::config()->views->twig->enabled ?? false;
+        return $this->config()->views->twig->enabled ?? false;
     }
 
     /**
@@ -249,7 +235,7 @@ class Application implements ApplicationContract
      */
     public function setTimezone() : void
     {
-        date_default_timezone_set(Helpers::config()->app->timezone ?? 'UTC');
+        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
     }
 
     /**

@@ -21,13 +21,6 @@ namespace Valkyrja\Support;
 trait PathHelpers
 {
     /**
-     * The base directory for the application.
-     *
-     * @var string
-     */
-    protected $basePath;
-
-    /**
      * Get the base directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -36,8 +29,8 @@ trait PathHelpers
      */
     public function basePath(string $path = null) : string
     {
-        return $this->basePath . ($path
-            ? static::DIRECTORY_SEPARATOR . $path
+        return Directory::$BASE_PATH . ($path
+            ? Directory::DIRECTORY_SEPARATOR . $path
             : $path);
     }
 
@@ -52,7 +45,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'app' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -68,7 +61,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'cache' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -84,7 +77,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'config' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -100,7 +93,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'framework' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -116,7 +109,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'public' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -132,7 +125,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'resources' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -148,7 +141,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'storage' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -164,7 +157,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'tests' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }
@@ -180,7 +173,7 @@ trait PathHelpers
     {
         return $this->basePath(
             'vendor' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
+                ? Directory::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
     }

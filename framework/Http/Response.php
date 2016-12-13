@@ -15,12 +15,10 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
-use UnexpectedValueException;
 
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\View\View;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class Response
@@ -135,28 +133,10 @@ class Response implements ResponseContract
      * @param string $content The response content to set
      *
      * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \UnexpectedValueException
      */
     public function setContent(string $content) : ResponseContract
     {
-        if (null !== $content && ! is_string($content) && ! is_numeric($content)
-            && ! is_callable(
-                [
-                    $content,
-                    '__toString',
-                ]
-            )
-        ) {
-            throw new UnexpectedValueException(
-                sprintf(
-                    'The Response content must be a string or object implementing __toString(), "%s" given.',
-                    gettype($content)
-                )
-            );
-        }
-
-        $this->content = (string) $content;
+        $this->content = $content;
 
         return $this;
     }
@@ -188,17 +168,10 @@ class Response implements ResponseContract
     /**
      * Get the view for the response.
      *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
-     *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view(string $template = '', array $variables = []) : View
+    public function view() : View
     {
-        if (null !== $this->view) {
-            $this->view = Helpers::view($template, $variables);
-        }
-
         return $this->view;
     }
 

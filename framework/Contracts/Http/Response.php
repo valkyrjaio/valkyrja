@@ -234,12 +234,9 @@ interface Response
     /**
      * Get the view for the response.
      *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
-     *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view(string $template = '', array $variables = []) : View;
+    public function view() : View;
 
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).
