@@ -11,12 +11,15 @@
 
 namespace Valkyrja\Http;
 
-use Exception;
+use Closure;
 
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Http\Exceptions\InvalidControllerException;
+use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
+use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Support\Helpers;
 
 /**
@@ -35,20 +38,20 @@ class Router implements RouterContract
      */
     protected $routes = [
         'simple'  => [
-            self::GET    => [],
-            self::POST   => [],
-            self::PUT    => [],
-            self::PATCH  => [],
-            self::DELETE => [],
-            self::HEAD   => [],
+            RequestMethod::GET    => [],
+            RequestMethod::POST   => [],
+            RequestMethod::PUT    => [],
+            RequestMethod::PATCH  => [],
+            RequestMethod::DELETE => [],
+            RequestMethod::HEAD   => [],
         ],
         'dynamic' => [
-            self::GET    => [],
-            self::POST   => [],
-            self::PUT    => [],
-            self::PATCH  => [],
-            self::DELETE => [],
-            self::HEAD   => [],
+            RequestMethod::GET    => [],
+            RequestMethod::POST   => [],
+            RequestMethod::PUT    => [],
+            RequestMethod::PATCH  => [],
+            RequestMethod::DELETE => [],
+            RequestMethod::HEAD   => [],
         ],
     ];
 
@@ -62,7 +65,8 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Exception
+     * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
+     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) // : void
     {
@@ -70,16 +74,17 @@ class Router implements RouterContract
         if (! in_array(
             $method,
             [
-                self::GET,
-                self::POST,
-                self::PUT,
-                self::PATCH,
-                self::DELETE,
-                self::HEAD,
-            ]
+                RequestMethod::GET,
+                RequestMethod::POST,
+                RequestMethod::PUT,
+                RequestMethod::PATCH,
+                RequestMethod::DELETE,
+                RequestMethod::HEAD,
+            ],
+            true
         )
         ) {
-            throw new Exception('Invalid method type for route: ' . $path);
+            throw new InvalidMethodTypeException('Invalid method type for route: ' . $path);
         }
 
         $isArray = is_array($handler);
@@ -88,7 +93,7 @@ class Router implements RouterContract
             ? $handler['as']
             : $path;
 
-        if (is_callable($handler)) {
+        if ($handler instanceof Closure) {
             $action = $handler;
             $controller = false;
             $injectable = [];
@@ -107,7 +112,7 @@ class Router implements RouterContract
                 : [];
 
             if (! $action) {
-                throw new Exception('No action or handler set for route: ' . $path);
+                throw new NonExistentActionException('No action or handler set for route: ' . $path);
             }
         }
 
@@ -139,9 +144,9 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function get(string $path, $handler, bool $isDynamic = false) // : void
+    public function get(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::GET, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::GET, $path, $handler, $isDynamic);
     }
 
     /**
@@ -155,9 +160,9 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function post(string $path, $handler, bool $isDynamic = false) // : void
+    public function post(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::POST, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::POST, $path, $handler, $isDynamic);
     }
 
     /**
@@ -171,9 +176,9 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function put(string $path, $handler, bool $isDynamic = false) // : void
+    public function put(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::PUT, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::PUT, $path, $handler, $isDynamic);
     }
 
     /**
@@ -187,9 +192,9 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function patch(string $path, $handler, bool $isDynamic = false) // : void
+    public function patch(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::PATCH, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::PATCH, $path, $handler, $isDynamic);
     }
 
     /**
@@ -203,9 +208,9 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    function delete(string $path, $handler, bool $isDynamic = false) // : void
+    public function delete(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::DELETE, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::DELETE, $path, $handler, $isDynamic);
     }
 
     /**
@@ -221,7 +226,7 @@ class Router implements RouterContract
      */
     public function head(string $path, $handler, bool $isDynamic = false) // : void
     {
-        $this->addRoute(static::HEAD, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::HEAD, $path, $handler, $isDynamic);
     }
 
     /**
@@ -241,7 +246,9 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Exception
+     * @throws \Valkyrja\Contracts\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function dispatch() // : void
     {
@@ -249,17 +256,17 @@ class Router implements RouterContract
         $requestUri = $_SERVER['REQUEST_URI'];
         $arguments = [];
         $hasArguments = false;
-        $route = false;
+        $route = [];
         $matches = false;
-        $dispatch = false;
 
         // Let's check if the route is set in the simple routes
         if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
             $route = $this->routes['simple'][$requestMethod][$requestUri];
         }
-
-        // If the route wasn't already found
-        if (! $route) {
+        // elseif (isset($this->routes['simple'][$requestMethod][substr($requestUri, 0, -1)])) {
+        //     $route = $this->routes['simple'][$requestMethod][substr($requestUri, 0, -1)];
+        // }
+        else {
             // Attempt to find a match using dynamic routes that are set
             foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
                 // If the perg match is successful, we've found our route!
@@ -269,96 +276,98 @@ class Router implements RouterContract
             }
         }
 
-        // If a route has been found
-        if ($route) {
-            // Set the action from the route
-            $action = $route['action'];
+        // If no route is found
+        if (! $route) {
+            Helpers::abort(404);
+        }
 
-            // If there are injectable items defined for this route
-            if ($route['injectable']) {
-                $hasArguments = true;
+        // Set the action from the route
+        $action = $route['action'];
 
-                // Check for any injectables that have been set on the route
-                foreach ($route['injectable'] as $injectable) {
-                    // Set these as the first set of arguments to pass to the action
-                    $arguments[] = Helpers::container()->get($injectable);
-                }
+        // If there are injectable items defined for this route
+        if ($route['injectable']) {
+            $hasArguments = true;
+
+            // Check for any injectables that have been set on the route
+            foreach ($route['injectable'] as $injectable) {
+                // Set these as the first set of arguments to pass to the action
+                $arguments[] = Helpers::container()->get($injectable);
             }
+        }
 
-            // If there were matches from the dynamic route
-            if ($matches && is_array($matches)) {
-                $hasArguments = true;
+        // If there were matches from the dynamic route
+        if ($matches && is_array($matches)) {
+            $hasArguments = true;
 
-                // Iterate through the matches
-                foreach ($matches as $index => $match) {
-                    // Disregard the first match (which is the route itself)
-                    if ($index === 0) {
-                        continue;
-                    }
-
-                    // Set the remaining arguments to pass to the action with those matches
-                    $arguments[] = $match;
+            // Iterate through the matches
+            foreach ($matches as $index => $match) {
+                // Disregard the first match (which is the route itself)
+                if ($index === 0) {
+                    continue;
                 }
+
+                // Set the remaining arguments to pass to the action with those matches
+                $arguments[] = $match;
             }
+        }
 
-            // If the action is a callable closure
-            if (is_callable($action)) {
-                // If there are arguments and they should be passed in individually
-                if ($hasArguments) {
-                    // Call it and set it as our dispatch
-                    $dispatch = $action(...$arguments);
-                }
-                // Otherwise no arguments just call the action
-                else {
-                    // Call it and set it as our dispatch
-                    $dispatch = $action();
-                }
+        // If the action is a callable closure
+        if ($action instanceof Closure) {
+            // If there are arguments and they should be passed in individually
+            if ($hasArguments) {
+                // Call it and set it as our dispatch
+                $dispatch = $action(...$arguments);
             }
-            // Otherwise the action should be a method in a controller
+            // Otherwise no arguments just call the action
             else {
-                // Set the controller through the container
-                $controller = Helpers::container()->get($route['controller']);
-
-                // Let's make sure the controller is a controller
-                if (! $controller instanceof ControllerContract) {
-                    throw new Exception(
-                        'Invalid controller for route : '
-                        . $route['path']
-                        . ' Controller -> '
-                        . $route['controller']
-                    );
-                }
-
-                // Let's check the action method is callable before proceeding
-                if (! is_callable(
-                    [
-                        $controller,
-                        $action,
-                    ]
-                )
-                ) {
-                    throw new Exception(
-                        'Action does not exist in controller for route : '
-                        . $route['path']
-                        . $route['controller']
-                        . '@'
-                        . $route['action']
-                    );
-                }
-
-                // If there are arguments
-                if ($hasArguments) {
-                    // Set the dispatch as the controller action
-                    $dispatch = $controller->$action(...$arguments);
-                }
-                // Otherwise no arguments just call the action
-                else {
-                    // Set the dispatch as the controller action
-                    $dispatch = $controller->$action();
-                }
-
-                $controller->after();
+                // Call it and set it as our dispatch
+                $dispatch = $action();
             }
+        }
+        // Otherwise the action should be a method in a controller
+        else {
+            // Set the controller through the container
+            $controller = Helpers::container()->get($route['controller']);
+
+            // Let's make sure the controller is a controller
+            if (! $controller instanceof ControllerContract) {
+                throw new InvalidControllerException(
+                    'Invalid controller for route : '
+                    . $route['path']
+                    . ' Controller -> '
+                    . $route['controller']
+                );
+            }
+
+            // Let's check the action method is callable before proceeding
+            if (! is_callable(
+                [
+                    $controller,
+                    $action,
+                ]
+            )
+            ) {
+                throw new NonExistentActionException(
+                    'Action does not exist in controller for route : '
+                    . $route['path']
+                    . $route['controller']
+                    . '@'
+                    . $route['action']
+                );
+            }
+
+            // If there are arguments
+            if ($hasArguments) {
+                // Set the dispatch as the controller action
+                $dispatch = $controller->$action(...$arguments);
+            }
+            // Otherwise no arguments just call the action
+            else {
+                // Set the dispatch as the controller action
+                $dispatch = $controller->$action();
+            }
+
+            $controller->after();
         }
 
         // If the dispatch failed, 404

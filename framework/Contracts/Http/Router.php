@@ -21,18 +21,6 @@ namespace Valkyrja\Contracts\Http;
 interface Router
 {
     /**
-     * Route constants.
-     *
-     * @constant
-     */
-    const GET    = 'GET';
-    const POST   = 'POST';
-    const PUT    = 'PUT';
-    const PATCH  = 'PATCH';
-    const DELETE = 'DELETE';
-    const HEAD   = 'HEAD';
-
-    /**
      * Directory separator.
      *
      * @constant string
@@ -64,7 +52,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function get(string $path, $handler, bool $isDynamic = false); // : void;
+    public function get(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -77,7 +65,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function post(string $path, $handler, bool $isDynamic = false); // : void;
+    public function post(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -90,7 +78,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function put(string $path, $handler, bool $isDynamic = false); // : void;
+    public function put(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -103,7 +91,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function patch(string $path, $handler, bool $isDynamic = false); // : void;
+    public function patch(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -116,7 +104,7 @@ interface Router
      *
      * @throws \Exception
      */
-    function delete(string $path, $handler, bool $isDynamic = false); // : void;
+    public function delete(string $path, $handler, bool $isDynamic = false); // : void;
 
     /**
      * Helper function to set a HEAD addRoute.
