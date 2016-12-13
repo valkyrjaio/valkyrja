@@ -314,7 +314,9 @@ class Container implements ContainerContract
             $this->singleton(
                 RouterContract::class,
                 function () {
-                    return new Router();
+                    $app = $this->get(Application::class);
+
+                    return new Router($app);
                 }
             );
         }

@@ -13,6 +13,7 @@ namespace Valkyrja\Http;
 
 use Closure;
 
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\Router as RouterContract;
@@ -20,7 +21,6 @@ use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
-use Valkyrja\Support\Helpers;
 
 /**
  * Class Router
@@ -31,6 +31,13 @@ use Valkyrja\Support\Helpers;
  */
 class Router implements RouterContract
 {
+    /**
+     * Application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
+    protected $app;
+
     /**
      * Application routes.
      *
@@ -54,6 +61,16 @@ class Router implements RouterContract
             RequestMethod::HEAD   => [],
         ],
     ];
+
+    /**
+     * Router constructor.
+     *
+     * @param \Valkyrja\Contracts\Application $application
+     */
+    public function __construct(Application $application)
+    {
+        $this->app = $application;
+    }
 
     /**
      * Set a single route.
@@ -278,7 +295,7 @@ class Router implements RouterContract
 
         // If no route is found
         if (! $route) {
-            Helpers::abort(404);
+            $this->app->abort(404);
         }
 
         // Set the action from the route
@@ -291,7 +308,7 @@ class Router implements RouterContract
             // Check for any injectables that have been set on the route
             foreach ($route['injectable'] as $injectable) {
                 // Set these as the first set of arguments to pass to the action
-                $arguments[] = Helpers::container()->get($injectable);
+                $arguments[] = $this->app->container()->get($injectable);
             }
         }
 
@@ -327,7 +344,7 @@ class Router implements RouterContract
         // Otherwise the action should be a method in a controller
         else {
             // Set the controller through the container
-            $controller = Helpers::container()->get($route['controller']);
+            $controller = $this->app->container()->get($route['controller']);
 
             // Let's make sure the controller is a controller
             if (! $controller instanceof ControllerContract) {
@@ -372,7 +389,7 @@ class Router implements RouterContract
 
         // If the dispatch failed, 404
         if (! $dispatch) {
-            Helpers::abort(404);
+            $this->app->abort(404);
         }
 
         // If the dispatch is a Response, send it
