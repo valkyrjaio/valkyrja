@@ -92,7 +92,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function json(array $data = [], int $status = 200, array $headers = [], $options = 0) : ResponseContract
+    public function json(array $data = [], int $status = 200, array $headers = []) : ResponseContract
     {
         return $this->response;
     }
@@ -107,7 +107,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = [], $options = 0) : ResponseContract
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : ResponseContract
     {
         return $this->response;
     }

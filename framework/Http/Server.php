@@ -36,7 +36,7 @@ class Server extends Collection implements ServerContract
         $specialHeaders = self::SPECIAL_HEADERS;
 
         foreach ($this->collection as $key => $value) {
-            if (substr($key, 0, 5) === 'HTTP_' || isset($specialHeaders[$key])) {
+            if (isset($specialHeaders[$key]) || 0 === strpos($key, 'HTTP_')) {
                 $headers[$this->getHeaderName($key)] = $value;
             }
         }
@@ -53,7 +53,7 @@ class Server extends Collection implements ServerContract
      */
     protected function getHeaderName($header) : string
     {
-        if (substr($header, 0, 5) === 'HTTP_') {
+        if (0 === strpos($header, 'HTTP_')) {
             $header = substr($header, 5);
         }
 

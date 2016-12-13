@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Support;
 
-use Exception;
-
 use Valkyrja\Application;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
@@ -347,31 +345,5 @@ class Helpers implements HelpersContract
                 $variables,
             ]
         );
-    }
-
-    /**
-     * Throw an http exception.
-     *
-     * @param int        $statusCode The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
-     * @param int        $code       [optional] The Exception code
-     *
-     * @return void
-     *
-     * @throws \HttpException
-     */
-    public static function httpException(
-        int $statusCode,
-        string $message = null,
-        Exception $previous = null,
-        array $headers = [],
-        string $view = null,
-        int $code = 0
-    ) : void
-    {
-        static::app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }
 }

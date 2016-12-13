@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Contracts\Support;
 
-use Exception;
-
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
@@ -32,6 +30,8 @@ use Valkyrja\Contracts\View\View;
 interface Helpers
 {
     /**
+     * @deprecated
+     *
      * Return the application.
      *
      * @return \Valkyrja\Contracts\Application
@@ -39,6 +39,8 @@ interface Helpers
     public static function app() : Application;
 
     /**
+     * @deprecated
+     *
      * Return the container.
      *
      * @return \Valkyrja\Contracts\Container\Container
@@ -46,6 +48,8 @@ interface Helpers
     public static function container() : Container;
 
     /**
+     * @deprecated
+     *
      * Get the config class instance.
      *
      * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
@@ -53,6 +57,8 @@ interface Helpers
     public static function config() : Config;
 
     /**
+     * @deprecated
+     *
      * Get environment variables.
      *
      * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
@@ -60,6 +66,8 @@ interface Helpers
     public static function env() : Env;
 
     /**
+     * @deprecated
+     *
      * Return the router instance from the container.
      *
      * @return \Valkyrja\Contracts\Http\Router
@@ -237,6 +245,8 @@ interface Helpers
     public static function vendorPath(string $path = null) : string;
 
     /**
+     * @deprecated
+     *
      * Return a new response from the application.
      *
      * @param string $content [optional] The content to set
@@ -248,6 +258,8 @@ interface Helpers
     public static function response(string $content = '', int $status = 200, array $headers = []) : Response;
 
     /**
+     * @deprecated
+     *
      * Return a new response from the application.
      *
      * @return \Valkyrja\Contracts\Http\ResponseBuilder
@@ -255,6 +267,8 @@ interface Helpers
     public static function responseBuilder() : ResponseBuilder;
 
     /**
+     * @deprecated
+     *
      * Helper function to get a new view.
      *
      * @param string $template  [optional] The template to use
@@ -263,27 +277,4 @@ interface Helpers
      * @return \Valkyrja\Contracts\View\View
      */
     public static function view(string $template = '', array $variables = []) : View;
-
-    /**
-     * Throw an http exception.
-     *
-     * @param int        $statusCode The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
-     * @param int        $code       [optional] The Exception code
-     *
-     * @return void
-     *
-     * @throws \HttpException
-     */
-    public static function httpException(
-        int $statusCode,
-        string $message = null,
-        Exception $previous = null,
-        array $headers = [],
-        string $view = null,
-        int $code = 0
-    );
 }

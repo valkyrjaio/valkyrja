@@ -185,18 +185,6 @@ class Container implements ContainerContract
     }
 
     /**
-     * Get an abstract from the container.
-     *
-     * @param string $abstract The abstract to get
-     *
-     * @return object
-     */
-    public function __get(string $abstract) // : object
-    {
-        return $this->get($abstract);
-    }
-
-    /**
      * Check whether an abstract is set in the container.
      *
      * @param string $abstract The abstract to check for
@@ -206,18 +194,6 @@ class Container implements ContainerContract
     public function bound(string $abstract) : bool
     {
         return isset($this->serviceContainer[$abstract]);
-    }
-
-    /**
-     * Check whether an abstract is set in the container.
-     *
-     * @param string $abstract The abstract to check for
-     *
-     * @return bool
-     */
-    public function __isset(string $abstract) : bool
-    {
-        return $this->bound($abstract);
     }
 
     /**

@@ -246,29 +246,6 @@ interface Application
     public function vendorPath(string $path = null) : string;
 
     /**
-     * Throw an http exception.
-     *
-     * @param int        $statusCode The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
-     * @param int        $code       [optional] The Exception code
-     *
-     * @return void
-     *
-     * @throws \Valkyrja\Contracts\Exceptions\HttpException
-     */
-    public function httpException(
-        int $statusCode,
-        string $message = null,
-        Exception $previous = null,
-        array $headers = [],
-        string $view = null,
-        int $code = 0
-    ) : void;
-
-    /**
      * Abort the application due to error.
      *
      * @param int    $code    [optional] The status code to use

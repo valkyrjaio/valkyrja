@@ -100,6 +100,9 @@ class Response implements ResponseContract
      * @param string $content [optional] The response content, see setContent()
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
+     *
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
     public function __construct(string $content = '', int $status = 200, array $headers = [])
     {
@@ -117,6 +120,9 @@ class Response implements ResponseContract
      * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
      */
     public static function create(string $content = '', int $status = 200, array $headers = []) : ResponseContract
     {
@@ -129,6 +135,8 @@ class Response implements ResponseContract
      * @param string $content The response content to set
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \UnexpectedValueException
      */
     public function setContent(string $content) : ResponseContract
     {
@@ -187,7 +195,7 @@ class Response implements ResponseContract
      */
     public function view(string $template = '', array $variables = []) : View
     {
-        if (! isset($this->view)) {
+        if (null !== $this->view) {
             $this->view = Helpers::view($template, $variables);
         }
 
@@ -242,9 +250,7 @@ class Response implements ResponseContract
         if (null === $text) {
             $statusTexts = static::STATUS_TEXTS;
 
-            $this->statusText = isset($statusTexts[$code])
-                ? $statusTexts[$code]
-                : 'unknown status';
+            $this->statusText = $statusTexts[$code] ?? 'unknown status';
 
             return $this;
         }
@@ -303,7 +309,7 @@ class Response implements ResponseContract
      */
     public function setHeaders(array $headers = [])  : ResponseContract
     {
-        if (! isset($this->headers)) {
+        if (null !== $this->headers) {
             $this->headers = new Headers();
         }
 
@@ -414,23 +420,24 @@ class Response implements ResponseContract
             'name'     => (string) $name,
             'value'    => (string) $value,
             'expire'   => (string) $expire,
-            'path'     => (empty($path)
+            'path'     => empty($path)
                 ? '/'
-                : (string) $path),
+                : (string) $path,
             'domain'   => (string) $domain,
             'secure'   => (bool) $secure,
             'httpOnly' => (bool) $httpOnly,
             'raw'      => (bool) $raw,
-            'sameSite' => (in_array(
+            'sameSite' => in_array(
                 $sameSite,
                 [
                     'lax',
                     'strict',
                     null,
-                ]
+                ],
+                true
             )
                 ? $sameSite
-                : null),
+                : null,
         ];
 
         return $this;
@@ -531,6 +538,8 @@ class Response implements ResponseContract
      * validator (Last-Modified, ETag) are considered uncacheable.
      *
      * @return bool true if the response is worth caching, false otherwise
+     *
+     * @throws \RuntimeException
      */
     public function isCacheable() : bool
     {
@@ -544,7 +553,8 @@ class Response implements ResponseContract
                 302,
                 404,
                 410,
-            ]
+            ],
+            true
         )
         ) {
             return false;
@@ -565,6 +575,8 @@ class Response implements ResponseContract
      * indicator or Expires header and the calculated age is less than the freshness lifetime.
      *
      * @return bool true if the response is fresh, false otherwise
+     *
+     * @throws \RuntimeException
      */
     public function isFresh() : bool
     {
@@ -616,6 +628,8 @@ class Response implements ResponseContract
      * Returns the age of the response.
      *
      * @return int The age of the response in seconds
+     *
+     * @throws \RuntimeException
      */
     public function getAge() : int
     {
@@ -633,6 +647,8 @@ class Response implements ResponseContract
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \RuntimeException
      */
     public function expire() : ResponseContract
     {
@@ -666,7 +682,7 @@ class Response implements ResponseContract
      *
      * Passing null as value will remove the header.
      *
-     * @param DateTime|null $date [optional] A DateTime instance or null to remove the header
+     * @param DateTime $date [optional] A DateTime instance or null to remove the header
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
@@ -692,6 +708,8 @@ class Response implements ResponseContract
      * back on an expires header. It returns null when no maximum age can be established.
      *
      * @return int Number of seconds
+     *
+     * @throws \RuntimeException
      */
     public function getMaxAge() : int
     {
@@ -752,6 +770,8 @@ class Response implements ResponseContract
      * revalidating with the origin.
      *
      * @return int The TTL in seconds
+     *
+     * @throws \RuntimeException
      */
     public function getTtl() : int
     {
@@ -770,6 +790,8 @@ class Response implements ResponseContract
      * @param int $seconds Number of seconds
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \RuntimeException
      */
     public function setTtl(int $seconds) : ResponseContract
     {
@@ -786,6 +808,8 @@ class Response implements ResponseContract
      * @param int $seconds Number of seconds
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \RuntimeException
      */
     public function setClientTtl(int $seconds) : ResponseContract
     {
@@ -923,6 +947,9 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
     public function setNotModified() : ResponseContract
@@ -1051,10 +1078,11 @@ class Response implements ResponseContract
                 303,
                 307,
                 308,
-            ]
+            ],
+            true
         )
         && (null === $location
-            ?: $location == $this->headers->get('Location'));
+            ?: $location === $this->headers->get('Location'));
     }
 
     /**
@@ -1069,7 +1097,8 @@ class Response implements ResponseContract
             [
                 204,
                 304,
-            ]
+            ],
+            true
         );
     }
 
@@ -1132,7 +1161,7 @@ class Response implements ResponseContract
      */
     public function sendContent() : ResponseContract
     {
-        if (isset($this->view) && empty($this->content)) {
+        if (null !== $this->view && empty($this->content)) {
             $this->content = $this->view->render();
         }
 
@@ -1182,10 +1211,10 @@ class Response implements ResponseContract
                 : PHP_OUTPUT_HANDLER_CLEANABLE)
             : -1;
 
-        while ($level-- > $targetLevel && ($s = $status[$level])
-            && (! isset($s['del'])
-                ? ! isset($s['flags']) || $flags === ($s['flags'] & $flags)
-                : $s['del'])) {
+        while (
+            $level-- > $targetLevel && ($s = $status[$level]) &&
+            ($s['del'] ?? ! isset($s['flags']) || $flags === ($s['flags'] & $flags))
+        ) {
             if ($flush) {
                 ob_end_flush();
             }

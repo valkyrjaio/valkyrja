@@ -122,15 +122,19 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function handleShutdown() : void
     {
-        if (! is_null($error = error_get_last())
-            && in_array(
+        $error = error_get_last();
+
+        if (
+            null !== $error &&
+            in_array(
                 $error['type'],
                 [
                     E_ERROR,
                     E_CORE_ERROR,
                     E_COMPILE_ERROR,
                     E_PARSE,
-                ]
+                ],
+                true
             )
         ) {
             $this->handleException($this->fatalExceptionFromError($error));
@@ -186,7 +190,7 @@ class ExceptionHandler implements ExceptionHandlerContract
     {
         $title = 'Whoops, looks like something went wrong.';
 
-        if ($exception instanceof HttpException && $exception->getStatusCode() == 404) {
+        if ($exception instanceof HttpException && $exception->getStatusCode() === 404) {
             $title = 'Sorry, the page you are looking for could not be found.';
         }
 
@@ -228,29 +232,17 @@ EOF
                         $total,
                         $class,
                         $this->formatPath(
-                            (isset($e->getTrace()[0]['file'])
-                                ? $e->getTrace()[0]['file']
-                                : 'Unknown file'),
-                            (isset($e->getTrace()[0]['line'])
-                                ? $e->getTrace()[0]['line']
-                                : 'Unknown line')
+                            $e->getTrace()[0]['file'] ?? 'Unknown file',
+                            $e->getTrace()[0]['line'] ?? 'Unknown line'
                         ),
                         $message
                     );
 
                     foreach ($e->getTrace() as $trace) {
-                        $traceClass = isset($trace['class'])
-                            ? $trace['class']
-                            : '';
-                        $traceArgs = isset($trace['args'])
-                            ? $trace['args']
-                            : [];
-                        $traceType = isset($trace['type'])
-                            ? $trace['type']
-                            : '';
-                        $traceFunction = isset($trace['function'])
-                            ? $trace['function']
-                            : '';
+                        $traceClass = $trace['class'] ?? '';
+                        $traceArgs = $trace['args'] ?? [];
+                        $traceType = $trace['type'] ?? '';
+                        $traceFunction = $trace['function'] ?? '';
 
                         $content .= '       <li>';
 
@@ -264,7 +256,7 @@ EOF
                             );
                         }
 
-                        if (isset($trace['file']) && isset($trace['line'])) {
+                        if (isset($trace['file'], $trace['line'])) {
                             $content .= $this->formatPath($trace['file'], $trace['line']);
                         }
 
@@ -275,17 +267,12 @@ EOF
                 }
             }
             catch (Exception $e) {
-                // something nasty happened and we cannot throw an exception anymore
-                if ($this->debug()) {
-                    $title = sprintf(
-                        'Exception thrown when handling an exception (%s: %s)',
-                        get_class($e),
-                        $this->escapeHtml($e->getMessage())
-                    );
-                }
-                else {
-                    $title = 'Whoops, looks like something went wrong.';
-                }
+                // Something nasty happened and we cannot throw an exception anymore
+                $title = sprintf(
+                    'Exception thrown when handling an exception (%s: %s)',
+                    get_class($e),
+                    $this->escapeHtml($e->getMessage())
+                );
             }
         }
 
@@ -493,7 +480,7 @@ EOF;
             elseif (is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
             }
-            elseif (is_null($item)) {
+            elseif (null === $item) {
                 $formattedValue = '<em>null</em>';
             }
             elseif (is_bool($item)) {

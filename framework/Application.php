@@ -11,20 +11,18 @@
 
 namespace Valkyrja;
 
-use Exception;
-
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Exceptions\ExceptionHandler as ExceptionHandlerContract;
-use Valkyrja\Contracts\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Exceptions\ExceptionHandler;
+use Valkyrja\Exceptions\HttpException;
 use Valkyrja\Support\Helpers;
 use Valkyrja\Support\PathHelpers;
 
@@ -180,7 +178,7 @@ class Application implements ApplicationContract
      */
     public function response(string $content = '', int $status = 200, array $headers = []) : Response
     {
-        $factory = static::responseBuilder();
+        $factory = $this->responseBuilder();
 
         return $factory->make($content, $status, $headers);
     }
@@ -275,42 +273,6 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Throw an http exception.
-     *
-     * @param int        $statusCode The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
-     * @param int        $code       [optional] The Exception code
-     *
-     * @return void
-     *
-     * @throws HttpException
-     */
-    public function httpException(
-        int $statusCode,
-        string $message = null,
-        Exception $previous = null,
-        array $headers = [],
-        string $view = null,
-        int $code = 0
-    ) : void
-    {
-        throw Helpers::container()->get(
-            HttpException::class,
-            [
-                $statusCode,
-                $message,
-                $previous,
-                $headers,
-                $view,
-                $code,
-            ]
-        );
-    }
-
-    /**
      * Abort the application due to error.
      *
      * @param int    $code    [optional] The status code to use
@@ -324,18 +286,20 @@ class Application implements ApplicationContract
      */
     public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
     {
-        $this->httpException($code, $message, null, $headers, $view);
+        throw new HttpException($code, $message, $headers, $view);
     }
 
     /**
      * Run the application.
      *
      * @return void
+     *
+     * @throws \Exception
      */
     public function run() : void
     {
         // Dispatch the request and get a response
-        Helpers::router()->dispatch();
+        $this->router()->dispatch();
     }
 
     /**

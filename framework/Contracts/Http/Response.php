@@ -480,7 +480,7 @@ interface Response
     /**
      * Returns the value of the Expires header as a DateTime instance.
      *
-     * @return \DateTime|null A DateTime instance or null if the header does not exist
+     * @return \DateTime A DateTime instance or null if the header does not exist
      */
     public function getExpires() : DateTime;
 

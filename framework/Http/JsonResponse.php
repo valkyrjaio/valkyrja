@@ -62,15 +62,7 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public function __construct(string $data = null, int $status = 200, array $headers = [])
     {
-        parent::__construct('', $status, $headers);
-
-        if (null === $data) {
-            $data = new \ArrayObject();
-        }
-
-        is_array($data)
-            ? $this->setData($data)
-            : $this->setJson($data);
+        parent::__construct($data, $status, $headers);
     }
 
     /**
@@ -128,13 +120,13 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public function setData(array $data = []) : JsonResponseContract
     {
-        $data = json_encode($data, $this->encodingOptions);
+        $content = json_encode($data, $this->encodingOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new \InvalidArgumentException(json_last_error_msg());
         }
 
-        return $this->setJson($data);
+        return $this->setJson($content);
     }
 
     /**
@@ -153,6 +145,8 @@ class JsonResponse extends Response implements JsonResponseContract
      * @param int $encodingOptions The encoding options to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
+     *
+     * @throws \InvalidArgumentException
      */
     public function setEncodingOptions(int $encodingOptions) : JsonResponseContract
     {
@@ -170,7 +164,7 @@ class JsonResponse extends Response implements JsonResponseContract
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.
-            $this->setHeader('Content-Type', 'text/javascript');
+            $this->headers()->get('Content-Type', 'text/javascript');
 
             $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->data));
 
@@ -179,8 +173,8 @@ class JsonResponse extends Response implements JsonResponseContract
 
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
-        if (! $this->hasHeader('Content-Type') || 'text/javascript' === $this->getHeader('Content-Type')) {
-            $this->setHeader('Content-Type', 'application/json');
+        if (! $this->headers()->has('Content-Type') || 'text/javascript' === $this->headers()->get('Content-Type')) {
+            $this->headers()->set('Content-Type', 'application/json');
         }
 
         $this->setContent($this->data);
