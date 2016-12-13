@@ -78,8 +78,7 @@ class ResponseBuilder implements ResponseBuilderContract
      */
     public function view(string $template, array $data = [], int $status = 200, array $headers = []) : ResponseContract
     {
-        $content = $this->view->make($template, $data)
-                              ->render();
+        $content = $this->view->make($template, $data)->render();
 
         return $this->make($content, $status, $headers);
     }
