@@ -8,9 +8,7 @@
 get(
     '/',
     function () {
-        $view = view('index');
-
-        $view->setMasterTemplate('');
+        $view = view('index')->withoutLayout();
 
         return response($view);
     }

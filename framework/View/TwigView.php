@@ -34,6 +34,19 @@ class TwigView extends View implements TwigViewContract
     protected $twig;
 
     /**
+     * View constructor.
+     *
+     * @param string $template  [optional] The template to set
+     * @param array  $variables [optional] The variables to set
+     */
+    public function __construct(string $template = '', array $variables = [])
+    {
+        parent::__construct($template, $variables);
+
+        $this->fileExtension = '.twig';
+    }
+
+    /**
      * Make a new View.
      *
      * @param string $template  [optional] The template to set
@@ -46,7 +59,6 @@ class TwigView extends View implements TwigViewContract
         $view = new static($template, $variables);
 
         $view->setTwig($this->twig);
-        $this->fileExtension = '.twig';
 
         return $view;
     }

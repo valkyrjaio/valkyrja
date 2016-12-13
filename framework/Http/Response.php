@@ -309,7 +309,7 @@ class Response implements ResponseContract
      */
     public function setHeaders(array $headers = [])  : ResponseContract
     {
-        if (null !== $this->headers) {
+        if (null === $this->headers) {
             $this->headers = new Headers();
         }
 
