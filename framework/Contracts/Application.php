@@ -14,6 +14,7 @@ namespace Valkyrja\Contracts;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Exceptions\ExceptionHandler;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
@@ -38,9 +39,11 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param string $basePath The base path for the application
+     * @param string                                          $basePath         The base path for the application
+     * @param \Valkyrja\Contracts\Container\Container         $container        The container to use
+     * @param \Valkyrja\Contracts\Exceptions\ExceptionHandler $exceptionHandler The exception handler to use
      */
-    public function __construct($basePath);
+    public function __construct(string $basePath, ?Container $container = null, ?ExceptionHandler $exceptionHandler = null);
 
     /**
      * Get the application instance.

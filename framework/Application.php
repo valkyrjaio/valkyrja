@@ -65,7 +65,7 @@ class Application implements ApplicationContract
      * @param \Valkyrja\Contracts\Container\Container         $container        The container to use
      * @param \Valkyrja\Contracts\Exceptions\ExceptionHandler $exceptionHandler The exception handler to use
      */
-    public function __construct($basePath, ContainerContract $container = null, ExceptionHandlerContract $exceptionHandler = null)
+    public function __construct(string $basePath, ?ContainerContract $container = null, ?ExceptionHandlerContract $exceptionHandler = null)
     {
         // If a container has not been passed in
         if (! $container instanceof ContainerContract) {
