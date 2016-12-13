@@ -20,3 +20,17 @@ Implement this...
 ## Go through header date methods in Response to change to string
 
 ## FIGURE OUT HOW YOU WANT ENV!
+
+## Add @Route ability (php-annotations)
+
+## Routing config
+
+## New Routing namespace
+
+## Kernel for handling Request
+
+## Lowercase namespacing?
+
+## FIX ERRORS AND WARNINGS!
+
+## ? for optional params (function test(string $test, ?string $optional = ''))
