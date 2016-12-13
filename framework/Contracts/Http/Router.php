@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Http;
 
+use Valkyrja\Contracts\Application;
+
 /**
  * Interface Router
  *
@@ -26,6 +28,13 @@ interface Router
      * @constant string
      */
     const DIRECTORY_SEPARATOR = '/';
+
+    /**
+     * Router constructor.
+     *
+     * @param \Valkyrja\Contracts\Application $application
+     */
+    public function __construct(Application $application);
 
     /**
      * Set a single route.
