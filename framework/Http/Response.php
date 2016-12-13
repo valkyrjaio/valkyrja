@@ -445,7 +445,7 @@ class Response implements ResponseContract
      *
      * @return void
      */
-    public function removeCookie(string $name, string $path = '/', string $domain = null) // : void
+    public function removeCookie(string $name, string $path = '/', string $domain = null) : void
     {
         if (null === $path) {
             $path = '/';
@@ -1171,7 +1171,7 @@ class Response implements ResponseContract
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush) // : void
+    public static function closeOutputBuffers(int $targetLevel, bool $flush) : void
     {
         $status = ob_get_status(true);
         $level = count($status);

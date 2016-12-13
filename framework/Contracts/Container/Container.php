@@ -29,7 +29,7 @@ interface Container
      *
      * @return void
      */
-    public function setServiceContainer(array $serviceContainer); // : void;
+    public function setServiceContainer(array $serviceContainer) : void;
 
     /**
      * Set an abstract in the service container.
@@ -40,7 +40,7 @@ interface Container
      *
      * @return void
      */
-    public function bind(string $abstract, Closure $closure, bool $singleton = false); // : void;
+    public function bind(string $abstract, Closure $closure, bool $singleton = false) : void;
 
     /**
      * Set an abstract as a singleton in the service container.
@@ -50,7 +50,7 @@ interface Container
      *
      * @return void
      */
-    public function singleton(string $abstract, Closure $closure); // : void;
+    public function singleton(string $abstract, Closure $closure) : void;
 
     /**
      * Set an object in the service container.
@@ -60,7 +60,7 @@ interface Container
      *
      * @return void
      */
-    public function instance(string $abstract, $instance); // : void;
+    public function instance(string $abstract, $instance) : void;
 
     /**
      * Set an alias in the service container.
@@ -71,7 +71,7 @@ interface Container
      *
      * @return void
      */
-    public function alias(string $abstract, string $alias, bool $singleton = false); // : void;
+    public function alias(string $abstract, string $alias, bool $singleton = false) : void;
 
     /**
      * Get an abstract from the container.
@@ -115,5 +115,5 @@ interface Container
      *
      * @return void
      */
-    public function bootstrap(); // : void;
+    public function bootstrap() : void;
 }

@@ -48,7 +48,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false); // : void;
+    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a GET addRoute.
@@ -61,7 +61,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function get(string $path, $handler, bool $isDynamic = false); // : void;
+    public function get(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a POST addRoute.
@@ -74,7 +74,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function post(string $path, $handler, bool $isDynamic = false); // : void;
+    public function post(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a PUT addRoute.
@@ -87,7 +87,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function put(string $path, $handler, bool $isDynamic = false); // : void;
+    public function put(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a PATCH addRoute.
@@ -100,7 +100,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function patch(string $path, $handler, bool $isDynamic = false); // : void;
+    public function patch(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a DELETE addRoute.
@@ -113,7 +113,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function delete(string $path, $handler, bool $isDynamic = false); // : void;
+    public function delete(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a HEAD addRoute.
@@ -126,7 +126,7 @@ interface Router
      *
      * @throws \Exception
      */
-    public function head(string $path, $handler, bool $isDynamic = false); // : void;
+    public function head(string $path, $handler, bool $isDynamic = false) : void;
 
     /**
      * Set routes from a given array of routes.
@@ -135,7 +135,7 @@ interface Router
      *
      * @return void
      */
-    public function setRoutes(array $routes); // : void;
+    public function setRoutes(array $routes) : void;
 
     /**
      * Dispatch the route and find a match.
@@ -144,5 +144,5 @@ interface Router
      *
      * @throws \Exception
      */
-    public function dispatch(); // : void;
+    public function dispatch() : void;
 }

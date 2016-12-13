@@ -71,7 +71,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return void
      */
-    public function setTwig(Twig_Environment $twig) // : void
+    public function setTwig(Twig_Environment $twig) : void
     {
         $this->twig = $twig;
     }

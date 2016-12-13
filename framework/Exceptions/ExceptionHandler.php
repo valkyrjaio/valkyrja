@@ -45,7 +45,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function bootstrapHandler() // : void
+    public function bootstrapHandler() : void
     {
         error_reporting(-1);
 
@@ -88,7 +88,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) // : void
+    public function handleError($level, $message, $file = '', $line = 0, $context = []) : void
     {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
@@ -106,7 +106,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function handleException(Throwable $exception) // : void
+    public function handleException(Throwable $exception) : void
     {
         if (! $exception instanceof Throwable) {
             $exception = new Exception($exception);
@@ -120,7 +120,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function handleShutdown() // : void
+    public function handleShutdown() : void
     {
         if (! is_null($error = error_get_last())
             && in_array(
@@ -158,7 +158,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function sendResponse($exception) // : void
+    public function sendResponse($exception) : void
     {
         if (! headers_sent()) {
             if ($exception instanceof HttpException) {

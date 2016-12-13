@@ -374,7 +374,7 @@ interface Response
      *
      * @return void
      */
-    public function removeCookie(string $name, string $path = '/', string $domain = null); // : void;
+    public function removeCookie(string $name, string $path = '/', string $domain = null) : void;
 
     /**
      * Set a response cache control.
@@ -734,7 +734,7 @@ interface Response
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush); // : void;
+    public static function closeOutputBuffers(int $targetLevel, bool $flush) : void;
 
     /**
      * Returns the Response as an HTTP string.

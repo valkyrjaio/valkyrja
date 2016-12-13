@@ -61,7 +61,7 @@ interface View
      *
      * @return void
      */
-    public function setTemplate(string $template); // : void;
+    public function setTemplate(string $template) : void;
 
     /**
      * Set the variables
@@ -70,7 +70,7 @@ interface View
      *
      * @return void
      */
-    public function setVariables(array $variables = []); // : void;
+    public function setVariables(array $variables = []) : void;
 
     /**
      * Set a single variable.
@@ -80,7 +80,7 @@ interface View
      *
      * @return void
      */
-    public function variable(string $key, $value); // : void;
+    public function variable(string $key, $value) : void;
 
     /**
      * Get the template directory.
@@ -98,7 +98,7 @@ interface View
      *
      * @return void
      */
-    public function setTemplateDir(string $templateDir); // : void;
+    public function setTemplateDir(string $templateDir) : void;
 
     /**
      * Get the file extension.
@@ -114,7 +114,7 @@ interface View
      *
      * @return void
      */
-    public function setFileExtension(string $extension); // : void;
+    public function setFileExtension(string $extension) : void;
 
     /**
      * Get the template path.

@@ -249,7 +249,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setTimezone() // : void
+    public function setTimezone() : void
     {
         date_default_timezone_set(Helpers::config()->app->timezone ?? 'UTC');
     }
@@ -269,7 +269,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setCompiled() // : void
+    public function setCompiled() : void
     {
         $this->isCompiled = true;
     }
@@ -295,7 +295,7 @@ class Application implements ApplicationContract
         array $headers = [],
         string $view = null,
         int $code = 0
-    ) // : void
+    ) : void
     {
         throw Helpers::container()->get(
             HttpException::class,
@@ -322,7 +322,7 @@ class Application implements ApplicationContract
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) // : void
+    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
     {
         $this->httpException($code, $message, null, $headers, $view);
     }
@@ -332,7 +332,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function run() // : void
+    public function run() : void
     {
         // Dispatch the request and get a response
         Helpers::router()->dispatch();
@@ -345,7 +345,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function register(string $serviceProvider) // : void
+    public function register(string $serviceProvider) : void
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);

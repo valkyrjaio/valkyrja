@@ -95,7 +95,7 @@ class Helpers implements HelpersContract
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public static function abort(int $code, string $message = '', array $headers = [], string $view = null) // : void
+    public static function abort(int $code, string $message = '', array $headers = [], string $view = null) : void
     {
         static::app()->abort($code, $message, $headers, $view);
     }
@@ -109,7 +109,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function get(string $path, $handler, bool $isDynamic = false) // : void
+    public static function get(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->get($path, $handler, $isDynamic);
     }
@@ -123,7 +123,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function post(string $path, $handler, bool $isDynamic = false) // : void
+    public static function post(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->post($path, $handler, $isDynamic);
     }
@@ -137,7 +137,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function put(string $path, $handler, bool $isDynamic = false) // : void
+    public static function put(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->put($path, $handler, $isDynamic);
     }
@@ -151,7 +151,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function patch(string $path, $handler, bool $isDynamic = false) // : void
+    public static function patch(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->patch($path, $handler, $isDynamic);
     }
@@ -165,7 +165,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function delete(string $path, $handler, bool $isDynamic = false) // : void
+    public static function delete(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->delete($path, $handler, $isDynamic);
     }
@@ -179,7 +179,7 @@ class Helpers implements HelpersContract
      *
      * @return void
      */
-    public static function head(string $path, $handler, bool $isDynamic = false) // : void
+    public static function head(string $path, $handler, bool $isDynamic = false) : void
     {
         static::router()->head($path, $handler, $isDynamic);
     }
@@ -370,7 +370,7 @@ class Helpers implements HelpersContract
         array $headers = [],
         string $view = null,
         int $code = 0
-    ) // : void
+    ) : void
     {
         static::app()->httpException($statusCode, $message, $previous, $headers, $view, $code);
     }

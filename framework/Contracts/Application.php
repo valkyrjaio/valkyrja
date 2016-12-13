@@ -139,7 +139,7 @@ interface Application
      *
      * @return void
      */
-    public function setTimezone(); // : void;
+    public function setTimezone() : void;
 
     /**
      * Get whether the application is using a compiled version.
@@ -153,7 +153,7 @@ interface Application
      *
      * @return void
      */
-    public function setCompiled(); // : void;
+    public function setCompiled() : void;
 
     /**
      * Get the base directory for the application.
@@ -266,7 +266,7 @@ interface Application
         array $headers = [],
         string $view = null,
         int $code = 0
-    ); // : void;
+    ) : void;
 
     /**
      * Abort the application due to error.
@@ -280,14 +280,14 @@ interface Application
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null); // : void;
+    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void;
 
     /**
      * Run the application.
      *
      * @return void
      */
-    public function run(); // : void;
+    public function run() : void;
 
     /**
      * Register a service provider.
@@ -296,5 +296,5 @@ interface Application
      *
      * @return void
      */
-    public function register(string $serviceProvider); // : void;
+    public function register(string $serviceProvider) : void;
 }
