@@ -24,11 +24,11 @@ use Valkyrja\Support\Helpers;
 class View implements ViewContract
 {
     /**
-     * The master template.
+     * The layout template.
      *
      * @var string
      */
-    protected $masterTemplate = 'layout';
+    protected $layout = 'layout';
 
     /**
      * The body content template.
@@ -87,11 +87,25 @@ class View implements ViewContract
      *
      * @param string $template The master template to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setMasterTemplate(string $template) // : void
+    public function setLayout(string $template) : ViewContract
     {
-        $this->masterTemplate = $template;
+        $this->layout = $template;
+
+        return $this;
+    }
+
+    /**
+     * Set to use no layout.
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function withoutLayout() : ViewContract
+    {
+        $this->layout = null;
+
+        return $this;
     }
 
     /**
@@ -190,13 +204,13 @@ class View implements ViewContract
     }
 
     /**
-     * Get the master template path.
+     * Get the layout template path.
      *
      * @return string
      */
-    public function getMasterTemplatePath() : string
+    public function getLayoutPath() : string
     {
-        return $this->getTemplateDir($this->masterTemplate . $this->getFileExtension());
+        return $this->getTemplateDir($this->layout . $this->getFileExtension());
     }
 
     /**
@@ -208,23 +222,22 @@ class View implements ViewContract
      */
     public function render(array $variables = []) : string
     {
-        extract(array_merge($this->variables, $variables));
+        extract(array_merge($this->variables, $variables), EXTR_OVERWRITE);
 
         ob_start();
         include $this->getTemplatePath();
         $view = ob_get_clean();
 
-        if (! $this->masterTemplate || $this->masterTemplate === '') {
+        if (! $this->layout) {
             return $view;
         }
 
-        extract(['body' => $view]);
+        extract(['body' => $view], EXTR_OVERWRITE);
 
         ob_start();
-        include $this->getMasterTemplatePath();
-        $masterView = ob_get_clean();
+        include $this->getLayoutPath();
 
-        return $masterView;
+        return ob_get_clean();
     }
 
     /**

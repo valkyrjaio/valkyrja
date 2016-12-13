@@ -11,11 +11,11 @@
 
 namespace Valkyrja\View;
 
-use Twig_Environment;
-
 use Valkyrja\Contracts\View\TwigView as TwigViewContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Support\Helpers;
+
+use Twig_Environment;
 
 /**
  * Class TwigView
@@ -26,13 +26,6 @@ use Valkyrja\Support\Helpers;
  */
 class TwigView extends View implements TwigViewContract
 {
-    /**
-     * The twig file extension.
-     *
-     * @var string
-     */
-    protected $fileExtension = '.twig';
-
     /**
      * The twig environment.
      *
@@ -53,6 +46,7 @@ class TwigView extends View implements TwigViewContract
         $view = new static($template, $variables);
 
         $view->setTwig($this->twig);
+        $this->fileExtension = '.twig';
 
         return $view;
     }
@@ -88,6 +82,10 @@ class TwigView extends View implements TwigViewContract
      * @param array $variables [optional] The variables to set
      *
      * @return string
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function render(array $variables = []) : string
     {

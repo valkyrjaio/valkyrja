@@ -11,12 +11,12 @@
 
 namespace Valkyrja\Providers;
 
-use Twig_Environment;
-use Twig_Loader_Filesystem;
-
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Support\ServiceProvider;
 use Valkyrja\View\TwigView;
+
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 /**
  * Class TwigServiceProvider

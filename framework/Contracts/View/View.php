@@ -39,13 +39,20 @@ interface View
     public function make(string $template = '', array $variables = []) : View;
 
     /**
-     * Set the master template.
+     * Set the layout template.
      *
      * @param string $template The master template to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setMasterTemplate(string $template); // : void;
+    public function setLayout(string $template) : View;
+
+    /**
+     * Set to use no layout.
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function withoutLayout() : View;
 
     /**
      * Set the template.
@@ -117,11 +124,11 @@ interface View
     public function getTemplatePath() : string;
 
     /**
-     * Get the master template path.
+     * Get the layout template path.
      *
      * @return string
      */
-    public function getMasterTemplatePath() : string;
+    public function getLayoutPath() : string;
 
     /**
      * Render the templates and view.
