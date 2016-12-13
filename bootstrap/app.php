@@ -49,7 +49,7 @@ $app = new Valkyrja\Application(
  *
  */
 
-require_once 'container.php';
+require __DIR__ . '/container.php';
 
 /*
  *---------------------------------------------------------------------
@@ -104,7 +104,7 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  *
  */
 
-require_once __DIR__ . '/../routes/routes.php';
+require __DIR__ . '/../routes/routes.php';
 
 /*
  *-------------------------------------------------------------------------

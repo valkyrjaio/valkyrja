@@ -20,21 +20,21 @@
  *
  */
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /*
  *-------------------------------------------------------------------------
  * Setup The Application
  *-------------------------------------------------------------------------
  *
- * Let's setup the application by bootstrapping it. This will instanciate
+ * Let's setup the application by bootstrapping it. This will instantiate
  * the main application as well as add any required classes to the
  * service container, add environment variables, add config
  * variables, and add all the application routes.
  *
  */
 
-$app = require_once '../bootstrap/app.php';
+$app = require __DIR__ . '/../bootstrap/app.php';
 
 /*
  *-------------------------------------------------------------------------
