@@ -145,7 +145,7 @@ class Application implements ApplicationContract
      */
     public function env() : EnvContract
     {
-        return $this->container->get(EnvContract::class);
+        return $this->config()->env;
     }
 
     /**

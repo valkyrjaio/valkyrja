@@ -200,24 +200,13 @@ class Container implements ContainerContract
      */
     public function bootstrap() : void
     {
-        // Check if the env has already been set in the container
-        if (! $this->bound(ConfigContract::class)) {
-            $this->singleton(
-                EnvContract::class,
-                function ()
-                {
-                    return new Env();
-                }
-            );
-        }
-
         // Check if the config has already been set in the container
         if (! $this->bound(ConfigContract::class)) {
             $this->singleton(
                 ConfigContract::class,
                 function () {
                     return new Config(
-                        $this->get(Application::class)
+                        new Env()
                     );
                 }
             );

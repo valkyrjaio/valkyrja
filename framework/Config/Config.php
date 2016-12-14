@@ -32,6 +32,13 @@ class Config implements ConfigContract
     public $app;
 
     /**
+     * Environment variables.
+     *
+     * @var \Valkyrja\Contracts\Config\Env
+     */
+    public $env;
+
+    /**
      * Storage config.
      *
      * @var StorageConfig
@@ -59,6 +66,8 @@ class Config implements ConfigContract
      */
     public function __construct(Env $env)
     {
+        $this->env = $env;
+
         if ($this->setDefaults) {
             $this->app = new AppConfig($env);
             $this->storage = new StorageConfig($env);
