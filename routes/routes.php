@@ -7,11 +7,13 @@
  */
 get(
     '/',
-    function () {
-        $view = view('index')->withoutLayout();
+    [
+        'handler' => function () {
+            $view = view('index')->withoutLayout();
 
-        return response($view);
-    }
+            return response($view);
+        }
+    ]
 );
 
 /**
@@ -21,9 +23,11 @@ get(
  */
 get(
     '/version',
-    function () use ($app) {
-        return response($app->version());
-    }
+    [
+        'handler' => function () use ($app) {
+            return response($app->version());
+        }
+    ]
 );
 
 /**

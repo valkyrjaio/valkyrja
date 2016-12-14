@@ -45,7 +45,7 @@ class Router implements RouterContract
      * @var array
      */
     protected $routes = [
-        'simple'  => [
+        'static'  => [
             RequestMethod::GET    => [],
             RequestMethod::POST   => [],
             RequestMethod::PUT    => [],
@@ -76,180 +76,140 @@ class Router implements RouterContract
     /**
      * Set a single route.
      *
-     * @param string         $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) : void
+    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false) : void
     {
         // Ensure the method specified is allowed
         if (! in_array(
             $method,
-            [
-                RequestMethod::GET,
-                RequestMethod::POST,
-                RequestMethod::PUT,
-                RequestMethod::PATCH,
-                RequestMethod::DELETE,
-                RequestMethod::HEAD,
-            ],
+            RequestMethod::ACCEPTED_TYPES,
             true
         )
         ) {
             throw new InvalidMethodTypeException('Invalid method type for route: ' . $path);
         }
 
-        $isArray = is_array($handler);
-
-        $name = ($isArray && isset($handler['as']))
-            ? $handler['as']
-            : $path;
-
-        if ($handler instanceof Closure) {
-            $action = $handler;
-            $controller = false;
-            $injectable = [];
-        }
-        else {
-            $controller = ($isArray && isset($handler['controller']))
-                ? $handler['controller']
-                : false;
-
-            $action = ($isArray && isset($handler['action']))
-                ? $handler['action']
-                : false;
-
-            $injectable = ($isArray && isset($handler['injectable']))
-                ? $handler['injectable']
-                : [];
-
-            if (! $action) {
-                throw new NonExistentActionException('No action or handler set for route: ' . $path);
-            }
-
-            $handler = null;
-        }
-
         $route = [
             'path'       => $path,
-            'as'         => $name,
-            'controller' => $controller,
-            'action'     => $action,
-            'handler'    => $handler,
-            'injectable' => $injectable,
+            'name'       => $options['name'] ?? $path,
+            'controller' => $options['controller'] ?? false,
+            'action'     => $options['action'] ?? false,
+            'handler'    => $options['handler'] ?? false,
+            'injectable' => $options['handler'] ?? [],
         ];
-
-        new Route($path, $name, $controller, '', $handler, $injectable);
 
         // Set the route
         if ($isDynamic) {
             $this->routes['dynamic'][$method][$path] = $route;
         }
         else {
-            $this->routes['simple'][$method][$path] = $route;
+            $this->routes['static'][$method][$path] = $route;
         }
     }
 
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function get(string $path, $handler, bool $isDynamic = false) : void
+    public function get(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::GET, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::GET, $path, $options, $isDynamic);
     }
 
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function post(string $path, $handler, bool $isDynamic = false) : void
+    public function post(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::POST, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::POST, $path, $options, $isDynamic);
     }
 
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function put(string $path, $handler, bool $isDynamic = false) : void
+    public function put(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::PUT, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::PUT, $path, $options, $isDynamic);
     }
 
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function patch(string $path, $handler, bool $isDynamic = false) : void
+    public function patch(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::PATCH, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::PATCH, $path, $options, $isDynamic);
     }
 
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function delete(string $path, $handler, bool $isDynamic = false) : void
+    public function delete(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::DELETE, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::DELETE, $path, $options, $isDynamic);
     }
 
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function head(string $path, $handler, bool $isDynamic = false) : void
+    public function head(string $path, array $options, bool $isDynamic = false) : void
     {
-        $this->addRoute(RequestMethod::HEAD, $path, $handler, $isDynamic);
+        $this->addRoute(RequestMethod::HEAD, $path, $options, $isDynamic);
     }
 
     /**
@@ -281,13 +241,14 @@ class Router implements RouterContract
         $hasArguments = false;
         $route = [];
         $matches = false;
+        $dispatch = false;
 
-        // Let's check if the route is set in the simple routes
-        if (isset($this->routes['simple'][$requestMethod][$requestUri])) {
-            $route = $this->routes['simple'][$requestMethod][$requestUri];
+        // Let's check if the route is set in the static routes
+        if (isset($this->routes['static'][$requestMethod][$requestUri])) {
+            $route = $this->routes['static'][$requestMethod][$requestUri];
         }
-        // elseif (isset($this->routes['simple'][$requestMethod][substr($requestUri, 0, -1)])) {
-        //     $route = $this->routes['simple'][$requestMethod][substr($requestUri, 0, -1)];
+        // elseif (isset($this->routes['static'][$requestMethod][substr($requestUri, 0, -1)])) {
+        //     $route = $this->routes['static'][$requestMethod][substr($requestUri, 0, -1)];
         // }
         else {
             // Attempt to find a match using dynamic routes that are set
@@ -305,7 +266,7 @@ class Router implements RouterContract
         }
 
         // Set the action from the route
-        $action = $route['action'];
+        $action = $route['handler'] ?? $route['action'];
 
         // If there are injectable items defined for this route
         if ($route['injectable']) {
@@ -348,7 +309,7 @@ class Router implements RouterContract
             }
         }
         // Otherwise the action should be a method in a controller
-        else {
+        elseif ($action && $route['controller']) {
             // Set the controller through the container
             $controller = $this->app->container()->get($route['controller']);
 

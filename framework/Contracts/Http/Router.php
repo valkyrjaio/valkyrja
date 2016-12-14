@@ -32,94 +32,94 @@ interface Router
     /**
      * Set a single route.
      *
-     * @param string         $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function addRoute(string $method, string $path, $handler, bool $isDynamic = false) : void;
+    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function get(string $path, $handler, bool $isDynamic = false) : void;
+    public function get(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function post(string $path, $handler, bool $isDynamic = false) : void;
+    public function post(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function put(string $path, $handler, bool $isDynamic = false) : void;
+    public function put(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function patch(string $path, $handler, bool $isDynamic = false) : void;
+    public function patch(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function delete(string $path, $handler, bool $isDynamic = false) : void;
+    public function delete(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      *
      * @throws \Exception
      */
-    public function head(string $path, $handler, bool $isDynamic = false) : void;
+    public function head(string $path, array $options, bool $isDynamic = false) : void;
 
     /**
      * Set routes from a given array of routes.

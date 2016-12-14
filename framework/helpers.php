@@ -32,7 +32,7 @@ if (! function_exists('abort')) {
      *
      * @return void
      *
-     * @throws \Valkyrja\Contracts\Exceptions\HttpException
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
     function abort(int $code, string $message = '', array $headers = [], string $view = null) : void
     {
@@ -138,15 +138,15 @@ if (! function_exists('get')) {
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function get(string $path, $handler, bool $isDynamic = false) : void
+    function get(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->get($path, $handler, $isDynamic);
+        router()->get($path, $options, $isDynamic);
     }
 }
 
@@ -154,15 +154,15 @@ if (! function_exists('post')) {
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function post(string $path, $handler, bool $isDynamic = false) : void
+    function post(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->post($path, $handler, $isDynamic);
+        router()->post($path, $options, $isDynamic);
     }
 }
 
@@ -170,15 +170,15 @@ if (! function_exists('put')) {
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function put(string $path, $handler, bool $isDynamic = false) : void
+    function put(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->put($path, $handler, $isDynamic);
+        router()->put($path, $options, $isDynamic);
     }
 }
 
@@ -186,15 +186,15 @@ if (! function_exists('patch')) {
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function patch(string $path, $handler, bool $isDynamic = false) : void
+    function patch(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->patch($path, $handler, $isDynamic);
+        router()->patch($path, $options, $isDynamic);
     }
 }
 
@@ -202,15 +202,15 @@ if (! function_exists('delete')) {
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function delete(string $path, $handler, bool $isDynamic = false) : void
+    function delete(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->delete($path, $handler, $isDynamic);
+        router()->delete($path, $options, $isDynamic);
     }
 }
 
@@ -218,15 +218,15 @@ if (! function_exists('head')) {
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param string         $path      The path to set
-     * @param \Closure|array $handler   The closure or array of options
-     * @param bool           $isDynamic [optional] Does the route have dynamic parameters?
+     * @param string $path      The path to set
+     * @param array  $options   The closure or array of options
+     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
      */
-    function head(string $path, $handler, bool $isDynamic = false) : void
+    function head(string $path, array $options, bool $isDynamic = false) : void
     {
-        router()->head($path, $handler, $isDynamic);
+        router()->head($path, $options, $isDynamic);
     }
 }
 

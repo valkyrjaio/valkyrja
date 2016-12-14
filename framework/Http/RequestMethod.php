@@ -61,4 +61,13 @@ interface RequestMethod
      * @constant string
      */
     public const HEAD = 'HEAD';
+
+    public const ACCEPTED_TYPES = [
+        self::GET,
+        self::POST,
+        self::PUT,
+        self::PATCH,
+        self::DELETE,
+        self::HEAD,
+    ];
 }

@@ -65,6 +65,13 @@ class Route
     public $injectables = [];
 
     /**
+     * Whether the route is dynamic.
+     *
+     * @var bool
+     */
+    public $dynamic = false;
+
+    /**
      * Route constructor.
      *
      * @param string   $path        The route path
@@ -230,6 +237,28 @@ class Route
     public function setInjectables(array $injectables) : Route
     {
         $this->injectables = $injectables;
+
+        return $this;
+    }
+
+    /**
+     * Check whether the route is dynamic.
+     *
+     * @return boolean
+     */
+    public function isDynamic(): bool
+    {
+        return $this->dynamic;
+    }
+
+    /**
+     * Set the route as dynamic.
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    public function setDynamic() : Route
+    {
+        $this->dynamic = true;
 
         return $this;
     }
