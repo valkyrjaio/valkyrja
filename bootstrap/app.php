@@ -77,8 +77,8 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  *---------------------------------------------------------------------
  *
  * Match those silly strings in the url that your application's
- * consumers will tie in to some functionality within
- * the application to present your consumers with
+ * users will visit, and tie it into some functionality
+ * within the application to present your users with
  * something other than a blank screen.
  *
  */
