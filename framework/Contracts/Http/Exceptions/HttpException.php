@@ -9,44 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Exceptions;
+namespace Valkyrja\Contracts\Http\Exceptions;
 
 use Exception;
 
-use RuntimeException;
-
-use Valkyrja\Contracts\Exceptions\HttpException as HttpExceptionContract;
-
 /**
- * Class Exception
+ * Interface HttpException
  *
- * @package Valkyrja\Exceptions
+ * @package Valkyrja\Contracts\Exceptions
  *
  * @author  Melech Mizrachi
  */
-class HttpException extends RuntimeException implements HttpExceptionContract
+interface HttpException
 {
-    /**
-     * The status code for this exception.
-     *
-     * @var int
-     */
-    protected $statusCode;
-
-    /**
-     * The headers for this exception.
-     *
-     * @var array
-     */
-    protected $headers;
-
-    /**
-     * The view for this exception.
-     *
-     * @var string
-     */
-    protected $view;
-
     /**
      * HttpException constructor.
      *
@@ -60,47 +35,32 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
-        $statusCode,
-        $message = null,
-        Exception $previous = null,
+        int $statusCode,
+        ?string $message = null,
+        ?Exception $previous = null,
         array $headers = [],
-        $view = null,
-        $code = 0
-    ) {
-        $this->statusCode = $statusCode;
-        $this->headers = $headers;
-        $this->view = $view;
-
-        parent::__construct($message, $code, $previous);
-    }
+        ?string $view = null,
+        int $code = 0
+    );
 
     /**
      * Get the status code for this exception.
      *
      * @return int
      */
-    public function getStatusCode() : int
-    {
-        return $this->statusCode;
-    }
+    public function getStatusCode() : int;
 
     /**
      * Get the headers set for this exception.
      *
      * @return array
      */
-    public function getHeaders() : array
-    {
-        return $this->headers;
-    }
+    public function getHeaders() : array;
 
     /**
      * Get the headers set for this exception.
      *
      * @return string
      */
-    public function getView() : string
-    {
-        return $this->view;
-    }
+    public function getView() : string;
 }

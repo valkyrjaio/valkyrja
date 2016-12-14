@@ -23,7 +23,7 @@ use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
-use Valkyrja\Exceptions\HttpException;
+use Valkyrja\Http\Exceptions\HttpException;
 
 /**
  * Class Application
@@ -273,7 +273,7 @@ class Application implements ApplicationContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Contracts\Exceptions\HttpException
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
     public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
     {

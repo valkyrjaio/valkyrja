@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Debug;
 
-use Valkyrja\Exceptions\ExceptionHandler;
-
 /**
  * Class Debug
  *

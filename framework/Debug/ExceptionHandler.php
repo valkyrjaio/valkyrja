@@ -1,13 +1,13 @@
 <?php
 
-namespace Valkyrja\Exceptions;
+namespace Valkyrja\Debug;
 
 use ErrorException;
 use Exception;
 use Throwable;
 
-use Valkyrja\Contracts\Exceptions\ExceptionHandler as ExceptionHandlerContract;
-use Valkyrja\Contracts\Exceptions\HttpException;
+use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Valkyrja\Contracts\Http\Exceptions\HttpException;
 
 /**
  * Class ExceptionHandler

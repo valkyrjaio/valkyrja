@@ -263,7 +263,7 @@ class Router implements RouterContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @throws \Valkyrja\Contracts\Exceptions\HttpException
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */

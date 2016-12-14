@@ -1,6 +1,6 @@
 <?php
 
-namespace Valkyrja\Contracts\Exceptions;
+namespace Valkyrja\Contracts\Debug;
 
 use Throwable;
 
