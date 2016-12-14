@@ -100,7 +100,6 @@ class Response implements ResponseContract
      * @param array  $headers [optional] An array of response headers
      *
      * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
      */
     public function __construct(string $content = '', int $status = 200, array $headers = [])
     {
@@ -120,7 +119,6 @@ class Response implements ResponseContract
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
      */
     public static function create(string $content = '', int $status = 200, array $headers = []) : ResponseContract
     {
@@ -921,7 +919,6 @@ class Response implements ResponseContract
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */

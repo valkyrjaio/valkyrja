@@ -23,11 +23,14 @@ interface JsonResponse extends Response
     /**
      * Response constructor.
      *
-     * @param string $data    [optional] The response content, see setContent()
+     * @param string $content [optional] The response content, see setContent()
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
+     * @param array  $data    [optional] An array of data
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct(string $data = null, int $status = 200, array $headers = []);
+    public function __construct(string $content = '', int $status = 200, array $headers = [], array $data = []);
 
     /**
      * Sets the JSONP callback.
