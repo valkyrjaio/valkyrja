@@ -27,10 +27,4 @@ Implement this...
 
 ## New Routing namespace
 
-## Kernel for handling Request
-
 ## Lowercase namespacing?
-
-## FIX ERRORS AND WARNINGS!
-
-## ? for optional params (function test(string $test, ?string $optional = ''))
