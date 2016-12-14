@@ -165,7 +165,7 @@ interface Application
      *
      * @return void
      *
-     * @throws \Valkyrja\Contracts\Exceptions\HttpException
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
     public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void;
 
