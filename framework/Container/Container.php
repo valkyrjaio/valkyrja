@@ -32,7 +32,7 @@ use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Http\Router;
+use Valkyrja\Routing\Router;
 use Valkyrja\Sessions\Session;
 use Valkyrja\View\View;
 

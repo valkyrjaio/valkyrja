@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\Routing;
 
 use Closure;
 
@@ -21,6 +21,7 @@ use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
+use Valkyrja\Http\RequestMethod;
 
 /**
  * Class Router
@@ -131,6 +132,8 @@ class Router implements RouterContract
             if (! $action) {
                 throw new NonExistentActionException('No action or handler set for route: ' . $path);
             }
+
+            $handler = null;
         }
 
         $route = [
@@ -138,8 +141,11 @@ class Router implements RouterContract
             'as'         => $name,
             'controller' => $controller,
             'action'     => $action,
+            'handler'    => $handler,
             'injectable' => $injectable,
         ];
+
+        new Route($path, $name, $controller, '', $handler, $injectable);
 
         // Set the route
         if ($isDynamic) {
