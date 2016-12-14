@@ -104,7 +104,7 @@ class Router implements RouterContract
             'controller' => $options['controller'] ?? false,
             'action'     => $options['action'] ?? false,
             'handler'    => $options['handler'] ?? false,
-            'injectable' => $options['handler'] ?? [],
+            'injectable' => $options['injectable'] ?? [],
         ];
 
         // Set the route
@@ -266,7 +266,7 @@ class Router implements RouterContract
         }
 
         // Set the action from the route
-        $action = $route['handler'] ?? $route['action'];
+        $action = $route['handler'] ?: $route['action'];
 
         // If there are injectable items defined for this route
         if ($route['injectable']) {
