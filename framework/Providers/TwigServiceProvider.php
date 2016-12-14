@@ -12,6 +12,7 @@
 namespace Valkyrja\Providers;
 
 use Valkyrja\Contracts\View\View;
+use Valkyrja\Support\Directory;
 use Valkyrja\Support\ServiceProvider;
 use Valkyrja\View\TwigView;
 
@@ -37,8 +38,7 @@ class TwigServiceProvider extends ServiceProvider
         // Check if twig is enabled in env
         if ($this->app->isTwigEnabled()) {
             // Set the env variable for views directory if its not set
-            $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir
-                ?? $this->app->resourcesPath('views/twig');
+            $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir ?? Directory::resourcesPath('views/twig');
 
             /**
              * Set Twig_Environment instance within container.
@@ -57,8 +57,7 @@ class TwigServiceProvider extends ServiceProvider
                         ]
                     );
 
-                    $extensions = $this->app->config()->views->twig->extensions
-                        ?? [];
+                    $extensions = $this->app->config()->views->twig->extensions ?? [];
 
                     // Twig Extensions registration
                     if (is_array($extensions)) {

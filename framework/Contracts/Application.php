@@ -14,7 +14,6 @@ namespace Valkyrja\Contracts;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
-use Valkyrja\Contracts\Exceptions\ExceptionHandler;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
@@ -39,11 +38,10 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param string                                          $basePath         The base path for the application
-     * @param \Valkyrja\Contracts\Container\Container         $container        The container to use
-     * @param \Valkyrja\Contracts\Exceptions\ExceptionHandler $exceptionHandler The exception handler to use
+     * @param \Valkyrja\Contracts\Container\Container $container [optional] The container to use
+     * @param \Valkyrja\Contracts\Config\Config       $config    [optional] The config to use
      */
-    public function __construct(string $basePath, ?Container $container = null, ?ExceptionHandler $exceptionHandler = null);
+    public function __construct(?Container $container = null, ?Config $config = null);
 
     /**
      * Get the application instance.
@@ -156,96 +154,6 @@ interface Application
      * @return void
      */
     public function setCompiled() : void;
-
-    /**
-     * Get the base directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function basePath(string $path = null) : string;
-
-    /**
-     * Get the app directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function appPath(string $path = null) : string;
-
-    /**
-     * Get the cache directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function cachePath(string $path = null) : string;
-
-    /**
-     * Get the config directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function configPath(string $path = null) : string;
-
-    /**
-     * Get the framework directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function frameworkPath(string $path = null) : string;
-
-    /**
-     * Get the public directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function publicPath(string $path = null) : string;
-
-    /**
-     * Get the resources directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function resourcesPath(string $path = null) : string;
-
-    /**
-     * Get the storage directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function storagePath(string $path = null) : string;
-
-    /**
-     * Get the tests directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function testsPath(string $path = null) : string;
-
-    /**
-     * Get the vendor directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public function vendorPath(string $path = null) : string;
 
     /**
      * Abort the application due to error.

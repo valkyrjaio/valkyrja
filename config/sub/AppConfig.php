@@ -3,7 +3,7 @@
 namespace config\sub;
 
 use Valkyrja\Config\Sub\AppConfig as ValkyrjaAppConfig;
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class AppConfig
@@ -15,10 +15,10 @@ class AppConfig extends ValkyrjaAppConfig
     /**
      * AppConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
-        parent::__construct($app);
+        parent::__construct($env);
     }
 }

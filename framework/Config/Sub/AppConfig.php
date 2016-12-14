@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class AppConfig
@@ -65,23 +65,16 @@ class AppConfig
     /**
      * AppConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
         if ($this->setDefaults) {
-            $env = $app->env();
-
-            $this->env = $env::APP_ENV
-                ?? 'production';
-            $this->debug = $env::APP_DEBUG
-                ?? false;
-            $this->url = $env::APP_URL
-                ?? 'localhost';
-            $this->timezone = $env::APP_TIMEZONE
-                ?? 'UTC';
-            $this->version = $env::APP_VERSION
-                ?? '1.0';
+            $this->env = $env::APP_ENV ?? 'production';
+            $this->debug = $env::APP_DEBUG ?? false;
+            $this->url = $env::APP_URL ?? 'localhost';
+            $this->timezone = $env::APP_TIMEZONE ?? 'UTC';
+            $this->version = $env::APP_VERSION ?? '1.0';
         }
     }
 }

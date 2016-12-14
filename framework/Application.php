@@ -11,20 +11,19 @@
 
 namespace Valkyrja;
 
+use Valkyrja\Config\Config;
+use Valkyrja\Config\Env;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Config\Config;
-use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Config\Config as ConfigContract;
+use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
-use Valkyrja\Contracts\Exceptions\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Http\Router;
 use Valkyrja\Contracts\View\View;
-use Valkyrja\Exceptions\ExceptionHandler;
+use Valkyrja\Debug\Debug;
 use Valkyrja\Exceptions\HttpException;
-use Valkyrja\Support\Directory;
-use Valkyrja\Support\PathHelpers;
 
 /**
  * Class Application
@@ -35,8 +34,6 @@ use Valkyrja\Support\PathHelpers;
  */
 class Application implements ApplicationContract
 {
-    use PathHelpers;
-
     /**
      * Get the instance of the application.
      *
@@ -61,17 +58,30 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param string                                          $basePath         The base path for the application
-     * @param \Valkyrja\Contracts\Container\Container         $container        The container to use
-     * @param \Valkyrja\Contracts\Exceptions\ExceptionHandler $exceptionHandler The exception handler to use
+     * @param \Valkyrja\Contracts\Container\Container $container [optional] The container to use
+     * @param \Valkyrja\Contracts\Config\Config       $config    [optional] The config to use
      */
-    public function __construct(string $basePath, ?ContainerContract $container = null, ?ExceptionHandlerContract $exceptionHandler = null)
+    public function __construct(?ContainerContract $container = null, ?ConfigContract $config = null)
     {
-        // If a container has not been passed in
+        // Check to ensure a correct container was passed
         if (! $container instanceof ContainerContract) {
             // Use the Valkyrja container
             $container = new Container();
         }
+
+        // Check to ensure a correct env was passed
+        if (! $config instanceof ConfigContract) {
+            // Use the Valkyrja config and env
+            $config = new Config(new Env());
+        }
+
+        // Check if debug has been turned on
+        if ($config->app->debug) {
+            // Enable debug mode if so
+            Debug::enable();
+        }
+
+        $cheese =$choose;
 
         // Set the app static
         static::$app = $this;
@@ -81,16 +91,13 @@ class Application implements ApplicationContract
 
         // Set the application instance in the container
         $container->instance(ApplicationContract::class, $this);
+        // Set the config instance in the container
+        $container->instance(ConfigContract::class, $config);
         // Bootstrap the container
         $container->bootstrap();
 
-        // If an exception handler has not been passed in
-        if (! $exceptionHandler instanceof ExceptionHandlerContract) {
-            // Use the Valkyrja exception handler
-            new ExceptionHandler();
-        }
-
-        Directory::$BASE_PATH = $basePath;
+        // Set the timezone for the application to run within
+        $this->setTimezone();
     }
 
     /**
@@ -128,9 +135,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
      */
-    public function config() : Config
+    public function config() : ConfigContract
     {
-        return $this->container->get(Config::class);
+        return $this->container->get(ConfigContract::class);
     }
 
     /**
@@ -138,9 +145,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
-    public function env() : Env
+    public function env() : EnvContract
     {
-        return $this->container->get(Env::class);
+        return $this->container->get(EnvContract::class);
     }
 
     /**

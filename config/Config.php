@@ -2,12 +2,12 @@
 
 namespace config;
 
+use Valkyrja\Config\Config as ValkyrjaConfig;
+
 use config\sub\AppConfig;
 use config\sub\StorageConfig;
 use config\sub\ViewsConfig;
-
-use Valkyrja\Contracts\Application;
-use Valkyrja\Config\Config as ValkyrjaConfig;
+use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class Config
@@ -19,14 +19,14 @@ class Config extends ValkyrjaConfig
     /**
      * Config constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
-        parent::__construct($app);
+        parent::__construct($env);
 
-        $this->app = new AppConfig($app);
-        $this->storage = new StorageConfig($app);
-        $this->views = new ViewsConfig($app);
+        $this->app = new AppConfig($env);
+        $this->storage = new StorageConfig($env);
+        $this->views = new ViewsConfig($env);
     }
 }

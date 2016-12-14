@@ -12,13 +12,6 @@ interface ExceptionHandler
     public function __construct();
 
     /**
-     * Bootstrap error, exception, and shutdown handler.
-     *
-     * @return void
-     */
-    public function bootstrapHandler(); // : void
-
-    /**
      * Convert a PHP error to an ErrorException.
      *
      * @param int    $level   The error level
@@ -31,7 +24,7 @@ interface ExceptionHandler
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []); // : void
+    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []); // : void
 
     /**
      * Handle an uncaught exception from the application.

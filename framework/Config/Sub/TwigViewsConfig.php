@@ -11,7 +11,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Support\Directory;
 
 /**
  * Class TwigViewsConfig
@@ -58,21 +59,15 @@ class TwigViewsConfig
     /**
      * TwigViewsConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
         if ($this->setDefaults) {
-            $env = $app->env();
-
-            $this->enabled = $env::VIEWS_TWIG_ENABLED
-                ?? false;
-            $this->dir = $env::VIEWS_TWIG_DIR
-                ?? $app->resourcesPath('views/twig');
-            $this->compiledDir = $env::VIEWS_TWIG_COMPILED_DIR
-                ?? $app->storagePath('views/twig');
-            $this->extensions = $env::VIEWS_TWIG_EXTENSIONS
-                ?? [];
+            $this->enabled = $env::VIEWS_TWIG_ENABLED ?? false;
+            $this->dir = $env::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views/twig');
+            $this->compiledDir = $env::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views/twig');
+            $this->extensions = $env::VIEWS_TWIG_EXTENSIONS ?? [];
         }
     }
 }

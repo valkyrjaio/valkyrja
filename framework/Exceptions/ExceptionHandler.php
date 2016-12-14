@@ -36,43 +36,6 @@ class ExceptionHandler implements ExceptionHandlerContract
     public function __construct()
     {
         $this->fileLinkFormat = ini_get('xdebug.file_link_format') ?? get_cfg_var('xdebug.file_link_format');
-
-        $this->bootstrapHandler();
-    }
-
-    /**
-     * Bootstrap error, exception, and shutdown handler.
-     *
-     * @return void
-     */
-    public function bootstrapHandler() : void
-    {
-        error_reporting(-1);
-
-        set_error_handler(
-            [
-                $this,
-                'handleError',
-            ]
-        );
-
-        set_exception_handler(
-            [
-                $this,
-                'handleException',
-            ]
-        );
-
-        register_shutdown_function(
-            [
-                $this,
-                'handleShutdown',
-            ]
-        );
-
-        if (! $this->debug()) {
-            ini_set('display_errors', 'Off');
-        }
     }
 
     /**
@@ -88,7 +51,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @throws \Exception
      */
-    public function handleError($level, $message, $file = '', $line = 0, $context = []) : void
+    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []) : void
     {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
@@ -196,29 +159,28 @@ class ExceptionHandler implements ExceptionHandlerContract
 
         $content = '';
 
-        if ($this->debug()) {
-            try {
-                $exceptions = [
-                    $exception,
-                ];
-                $e = $exception;
+        try {
+            $exceptions = [
+                $exception,
+            ];
+            $e = $exception;
 
-                while ($e = $e->getPrevious()) {
-                    $exceptions[] = $e;
-                }
+            while ($e = $e->getPrevious()) {
+                $exceptions[] = $e;
+            }
 
-                $count = count($exceptions);
-                $total = $count;
+            $count = count($exceptions);
+            $total = $count;
 
-                /**
-                 * @var int        $position
-                 * @var \Throwable $e
-                 */
-                foreach ($exceptions as $position => $e) {
-                    $ind = $count - $position;
-                    $class = $this->formatClass(get_class($e));
-                    $message = nl2br($this->escapeHtml($e->getMessage()));
-                    $content .= sprintf(<<<'EOF'
+            /**
+             * @var int        $position
+             * @var \Throwable $e
+             */
+            foreach ($exceptions as $position => $e) {
+                $ind = $count - $position;
+                $class = $this->formatClass(get_class($e));
+                $message = nl2br($this->escapeHtml($e->getMessage()));
+                $content .= sprintf(<<<'EOF'
                         <h2 class="block_exception clear_fix">
                             <span class="exception_counter">%d/%d</span>
                             <span class="exception_title">%s%s:</span>
@@ -228,52 +190,51 @@ class ExceptionHandler implements ExceptionHandlerContract
                             <ol class="traces list_exception">
 
 EOF
-                        , $ind,
-                        $total,
-                        $class,
-                        $this->formatPath(
-                            $e->getTrace()[0]['file'] ?? 'Unknown file',
-                            $e->getTrace()[0]['line'] ?? 'Unknown line'
-                        ),
-                        $message
-                    );
+                    , $ind,
+                    $total,
+                    $class,
+                    $this->formatPath(
+                        $e->getTrace()[0]['file'] ?? 'Unknown file',
+                        $e->getTrace()[0]['line'] ?? 0
+                    ),
+                    $message
+                );
 
-                    foreach ($e->getTrace() as $trace) {
-                        $traceClass = $trace['class'] ?? '';
-                        $traceArgs = $trace['args'] ?? [];
-                        $traceType = $trace['type'] ?? '';
-                        $traceFunction = $trace['function'] ?? '';
+                foreach ($e->getTrace() as $trace) {
+                    $traceClass = $trace['class'] ?? '';
+                    $traceArgs = $trace['args'] ?? [];
+                    $traceType = $trace['type'] ?? '';
+                    $traceFunction = $trace['function'] ?? '';
 
-                        $content .= '       <li>';
+                    $content .= '       <li>';
 
-                        if ($trace['function']) {
-                            $content .= sprintf(
-                                'at %s%s%s(%s)',
-                                $this->formatClass($traceClass),
-                                $traceType,
-                                $traceFunction,
-                                $this->formatArgs($traceArgs)
-                            );
-                        }
-
-                        if (isset($trace['file'], $trace['line'])) {
-                            $content .= $this->formatPath($trace['file'], $trace['line']);
-                        }
-
-                        $content .= "</li>\n";
+                    if ($trace['function']) {
+                        $content .= sprintf(
+                            'at %s%s%s(%s)',
+                            $this->formatClass($traceClass),
+                            $traceType,
+                            $traceFunction,
+                            $this->formatArgs($traceArgs)
+                        );
                     }
 
-                    $content .= "    </ol>\n</div>\n";
+                    if (isset($trace['file'], $trace['line'])) {
+                        $content .= $this->formatPath($trace['file'], $trace['line']);
+                    }
+
+                    $content .= "</li>\n";
                 }
+
+                $content .= "    </ol>\n</div>\n";
             }
-            catch (Exception $e) {
-                // Something nasty happened and we cannot throw an exception anymore
-                $title = sprintf(
-                    'Exception thrown when handling an exception (%s: %s)',
-                    get_class($e),
-                    $this->escapeHtml($e->getMessage())
-                );
-            }
+        }
+        catch (Exception $e) {
+            // Something nasty happened and we cannot throw an exception anymore
+            $title = sprintf(
+                'Exception thrown when handling an exception (%s: %s)',
+                get_class($e),
+                $this->escapeHtml($e->getMessage())
+            );
         }
 
         return <<<EOF
@@ -398,20 +359,6 @@ EOF;
     }
 
     /**
-     * Check if debug is on.
-     *
-     * @return bool
-     */
-    protected function debug() : bool
-    {
-        global $envClassName;
-
-        $debugKey = $envClassName . '::' . 'APP_DEBUG';
-
-        return defined($debugKey) && constant($debugKey);
-    }
-
-    /**
      * Format class.
      *
      * @param string $class
@@ -429,11 +376,11 @@ EOF;
      * Format path.
      *
      * @param string $path
-     * @param string $line
+     * @param int $line
      *
      * @return string
      */
-    protected function formatPath(string $path, string $line)
+    protected function formatPath(string $path, int $line)
     {
         $path = $this->escapeHtml($path);
         $file = preg_match('#[^/\\\\]*$#', $path, $file)
@@ -441,7 +388,7 @@ EOF;
             : $path;
 
         if ($linkFormat = $this->fileLinkFormat) {
-            $link = strtr($this->escapeHtml($linkFormat), ['%f' => $path, '%l' => (int) $line]);
+            $link = strtr($this->escapeHtml($linkFormat), ['%f' => $path, '%l' => $line]);
 
             return sprintf(
                 ' in <a href="%s" title="Go to source">%s line %d</a>',

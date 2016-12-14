@@ -3,7 +3,7 @@
 namespace config\sub;
 
 use Valkyrja\Config\Sub\ViewsConfig as ValkyrjaViewsConfig;
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class ViewsConfig
@@ -15,12 +15,12 @@ class ViewsConfig extends ValkyrjaViewsConfig
     /**
      * ViewsConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
-        parent::__construct($app);
+        parent::__construct($env);
 
-        $this->twig = new TwigViewsConfig($app);
+        $this->twig = new TwigViewsConfig($env);
     }
 }

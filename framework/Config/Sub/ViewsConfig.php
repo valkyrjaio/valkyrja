@@ -11,7 +11,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Support\Directory;
 
 /**
  * Class ViewsConfig
@@ -44,17 +45,14 @@ class ViewsConfig
     /**
      * ViewsConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
         if ($this->setDefaults) {
-            $env = $app->env();
+            $this->dir = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
 
-            $this->dir = $env::VIEWS_DIR
-                ?? $app->resourcesPath('views/php');
-
-            $this->twig = new TwigViewsConfig($app);
+            $this->twig = new TwigViewsConfig($env);
         }
     }
 }

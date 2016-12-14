@@ -17,7 +17,7 @@ if (! function_exists('app')) {
      */
     function app() : Valkyrja\Contracts\Application
     {
-        return \Valkyrja\Application::app();
+        return Valkyrja\Application::app();
     }
 }
 
@@ -240,7 +240,7 @@ if (! function_exists('basePath')) {
      */
     function basePath(string $path = null) : string
     {
-        return app()->basePath($path);
+        return Valkyrja\Support\Directory::basePath($path);
     }
 }
 
@@ -254,7 +254,7 @@ if (! function_exists('appPath')) {
      */
     function appPath(string $path = null) : string
     {
-        return app()->appPath($path);
+        return Valkyrja\Support\Directory::appPath($path);
     }
 }
 
@@ -268,7 +268,7 @@ if (! function_exists('cachePath')) {
      */
     function cachePath(string $path = null) : string
     {
-        return app()->cachePath($path);
+        return Valkyrja\Support\Directory::cachePath($path);
     }
 }
 
@@ -282,7 +282,7 @@ if (! function_exists('configPath')) {
      */
     function configPath(string $path = null) : string
     {
-        return app()->configPath($path);
+        return Valkyrja\Support\Directory::configPath($path);
     }
 }
 
@@ -296,7 +296,7 @@ if (! function_exists('frameworkPath')) {
      */
     function frameworkPath(string $path = null) : string
     {
-        return app()->frameworkPath($path);
+        return Valkyrja\Support\Directory::frameworkPath($path);
     }
 }
 
@@ -310,7 +310,7 @@ if (! function_exists('publicPath')) {
      */
     function publicPath(string $path = null) : string
     {
-        return app()->publicPath($path);
+        return Valkyrja\Support\Directory::publicPath($path);
     }
 }
 
@@ -324,7 +324,7 @@ if (! function_exists('resourcesPath')) {
      */
     function resourcesPath(string $path = null) : string
     {
-        return app()->resourcesPath($path);
+        return Valkyrja\Support\Directory::resourcesPath($path);
     }
 }
 
@@ -338,7 +338,7 @@ if (! function_exists('storagePath')) {
      */
     function storagePath(string $path = null) : string
     {
-        return app()->storagePath($path);
+        return Valkyrja\Support\Directory::storagePath($path);
     }
 }
 
@@ -352,7 +352,7 @@ if (! function_exists('testsPath')) {
      */
     function testsPath(string $path = null) : string
     {
-        return app()->testsPath($path);
+        return Valkyrja\Support\Directory::testsPath($path);
     }
 }
 
@@ -366,7 +366,7 @@ if (! function_exists('vendorPath')) {
      */
     function vendorPath(string $path = null) : string
     {
-        return app()->vendorPath($path);
+        return Valkyrja\Support\Directory::vendorPath($path);
     }
 }
 

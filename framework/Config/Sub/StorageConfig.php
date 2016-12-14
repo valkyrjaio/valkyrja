@@ -11,7 +11,8 @@
 
 namespace Valkyrja\Config\Sub;
 
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Support\Directory;
 
 /**
  * Class StorageConfig
@@ -44,17 +45,13 @@ class StorageConfig
     /**
      * StorageConfig constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
         if ($this->setDefaults) {
-            $env = $app->env();
-
-            $this->uploadsDir = $env::STORAGE_UPLOADS_DIR
-                ?? $app->storagePath('app');
-            $this->logsDir = $env::STORAGE_LOGS_DIR
-                ?? $app->storagePath('logs');
+            $this->uploadsDir = $env::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app');
+            $this->logsDir = $env::STORAGE_LOGS_DIR ?? Directory::storagePath('logs');
         }
     }
 }

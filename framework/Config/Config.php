@@ -14,8 +14,8 @@ namespace Valkyrja\Config;
 use Valkyrja\Config\Sub\AppConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
-use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
+use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class Config
@@ -55,14 +55,14 @@ class Config implements ConfigContract
     /**
      * Config constructor.
      *
-     * @param \Valkyrja\Contracts\Application $app
+     * @param \Valkyrja\Contracts\Config\Env $env
      */
-    public function __construct(Application $app)
+    public function __construct(Env $env)
     {
         if ($this->setDefaults) {
-            $this->app = new AppConfig($app);
-            $this->storage = new StorageConfig($app);
-            $this->views = new ViewsConfig($app);
+            $this->app = new AppConfig($env);
+            $this->storage = new StorageConfig($env);
+            $this->views = new ViewsConfig($env);
         }
     }
 }

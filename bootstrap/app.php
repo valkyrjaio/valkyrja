@@ -10,18 +10,17 @@
  */
 
 /*
- *---------------------------------------------------------------------
- * Application Environment Variables
- *---------------------------------------------------------------------
+ *-------------------------------------------------------------------------
+ * Set The Base Directory
+ *-------------------------------------------------------------------------
  *
- * Configuration variables are a great way to modify the application
- * and how it runs to your specific needs.
+ * Let's set the base directory within the web server for our application
+ * so that when we locate directories and files within the application
+ * we have a standard location from which to do so.
  *
  */
 
-$envClassName = class_exists(config\Env::class)
-    ? config\Env::class
-    : Valkyrja\Config\Env::class;
+Valkyrja\Support\Directory::$BASE_PATH = realpath(__DIR__ . '/../');
 
 /*
  *-------------------------------------------------------------------------
@@ -35,7 +34,13 @@ $envClassName = class_exists(config\Env::class)
  */
 
 $app = new Valkyrja\Application(
-    realpath(__DIR__ . '/../')
+    // Set the container
+    new Valkyrja\Container\Container(),
+    // Set the config
+    new config\Config(
+        // With environment variables
+        new config\Env()
+    )
 );
 
 /*
@@ -50,32 +55,6 @@ $app = new Valkyrja\Application(
  */
 
 require __DIR__ . '/container.php';
-
-/*
- *---------------------------------------------------------------------
- * Application Configuration Variables
- *---------------------------------------------------------------------
- *
- * Configuration variables are a great way to modify the application
- * and how it runs to your specific needs.
- *
- */
-
-$app->container()->instance(
-    Valkyrja\Contracts\Config\Env::class,
-    new config\Env
-);
-
-$app->container()->singleton(
-    Valkyrja\Contracts\Config\Config::class,
-    function () use ($app) {
-        return new config\Config(
-            $app->container()->get(Valkyrja\Contracts\Application::class)
-        );
-    }
-);
-
-$app->setTimezone();
 
 /*
  *-------------------------------------------------------------------------
