@@ -81,8 +81,6 @@ class Application implements ApplicationContract
             Debug::enable();
         }
 
-        $cheese =$choose;
-
         // Set the app static
         static::$app = $this;
 
