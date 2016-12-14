@@ -17,6 +17,8 @@ use Valkyrja\Contracts\Config\Env;
  * Class AppConfig
  *
  * @package Valkyrja\Config\Sub
+ *
+ * @author Melech Mizrachi
  */
 class AppConfig
 {

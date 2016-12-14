@@ -18,6 +18,8 @@ use Valkyrja\Support\Directory;
  * Class ViewsConfig
  *
  * @package Valkyrja\Config\Sub
+ *
+ * @author Melech Mizrachi
  */
 class ViewsConfig
 {

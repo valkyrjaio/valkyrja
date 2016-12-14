@@ -21,6 +21,8 @@ use Valkyrja\Contracts\Config\Env;
  * Class Config
  *
  * @package Valkyrja\Config
+ *
+ * @author Melech Mizrachi
  */
 class Config implements ConfigContract
 {
