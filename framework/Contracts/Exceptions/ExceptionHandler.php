@@ -24,7 +24,7 @@ interface ExceptionHandler
      *
      * @throws \Exception
      */
-    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []); // : void
+    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []) : void;
 
     /**
      * Handle an uncaught exception from the application.
@@ -37,14 +37,14 @@ interface ExceptionHandler
      *
      * @return void
      */
-    public function handleException(Throwable $exception); // : void
+    public function handleException(Throwable $exception) : void;
 
     /**
      * Handle the PHP shutdown event.
      *
      * @return void
      */
-    public function handleShutdown(); // : void
+    public function handleShutdown() : void;
 
     /**
      * Send response.
@@ -53,7 +53,7 @@ interface ExceptionHandler
      *
      * @return void
      */
-    public function sendResponse($exception); // : void
+    public function sendResponse($exception) : void;
 
     /**
      * Gets the HTML content associated with the given exception.
