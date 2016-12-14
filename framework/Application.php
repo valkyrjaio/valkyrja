@@ -289,8 +289,8 @@ class Application implements ApplicationContract
      */
     public function run() : void
     {
-        // Dispatch the request and get a response
-        $this->router()->dispatch();
+        // Dispatch the request and send the response
+        $this->router()->dispatch()->send();
     }
 
     /**

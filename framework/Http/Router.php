@@ -261,13 +261,13 @@ class Router implements RouterContract
     /**
      * Dispatch the route and find a match.
      *
-     * @return void
+     * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \Valkyrja\Contracts\Exceptions\HttpException
      * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function dispatch() : void
+    public function dispatch() : ResponseContract
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestUri = $_SERVER['REQUEST_URI'];
@@ -394,16 +394,16 @@ class Router implements RouterContract
 
         // If the dispatch is a Response, send it
         if ($dispatch instanceof ResponseContract) {
-            $dispatch->send();
+            return $dispatch;
         }
         // If the dispatch is a View, render it
         //  then echo it out as a string
         else if ($dispatch instanceof ViewContract) {
-            echo (string) $dispatch->render();
+            return $this->app->response($dispatch->render());
         }
         // Otherwise echo it out as a string
         else {
-            echo (string) $dispatch;
+            return $this->app->response($dispatch);
         }
     }
 }

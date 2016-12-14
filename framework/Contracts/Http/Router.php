@@ -23,13 +23,6 @@ use Valkyrja\Contracts\Application;
 interface Router
 {
     /**
-     * Directory separator.
-     *
-     * @constant string
-     */
-    const DIRECTORY_SEPARATOR = '/';
-
-    /**
      * Router constructor.
      *
      * @param \Valkyrja\Contracts\Application $application
@@ -140,9 +133,7 @@ interface Router
     /**
      * Dispatch the route and find a match.
      *
-     * @return void
-     *
-     * @throws \Exception
+     * @return \Valkyrja\Contracts\Http\Response
      */
-    public function dispatch() : void;
+    public function dispatch() : Response;
 }
