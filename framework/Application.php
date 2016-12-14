@@ -277,7 +277,7 @@ class Application implements ApplicationContract
      */
     public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
     {
-        throw new HttpException($code, $message, $headers, $view);
+        throw new HttpException($code, $message, null, $headers, $view);
     }
 
     /**
