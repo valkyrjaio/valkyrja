@@ -225,6 +225,16 @@ class Router implements RouterContract
     }
 
     /**
+     * Get all routes set by the application.
+     *
+     * @return array
+     */
+    public function getRoutes() : array
+    {
+        return $this->routes;
+    }
+
+    /**
      * Dispatch the route and find a match.
      *
      * @return \Valkyrja\Contracts\Http\Response

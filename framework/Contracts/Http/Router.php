@@ -131,6 +131,13 @@ interface Router
     public function setRoutes(array $routes) : void;
 
     /**
+     * Get all routes set by the application.
+     *
+     * @return array
+     */
+    public function getRoutes() : array;
+
+    /**
      * Dispatch the route and find a match.
      *
      * @return \Valkyrja\Contracts\Http\Response
