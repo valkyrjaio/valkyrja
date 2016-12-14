@@ -205,9 +205,7 @@ class Container implements ContainerContract
             $this->singleton(
                 ConfigContract::class,
                 function () {
-                    return new Config(
-                        new Env()
-                    );
+                    return new Config(new Env());
                 }
             );
         }
