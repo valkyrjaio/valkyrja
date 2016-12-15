@@ -17,7 +17,7 @@ use mindplay\annotations\Annotations;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Http\Router as RouterContract;
+use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;

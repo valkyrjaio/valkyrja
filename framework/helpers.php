@@ -83,9 +83,9 @@ if (! function_exists('router')) {
     /**
      * Get router.
      *
-     * @return \Valkyrja\Contracts\Http\Router
+     * @return \Valkyrja\Contracts\Routing\Router
      */
-    function router() : Valkyrja\Contracts\Http\Router
+    function router() : Valkyrja\Contracts\Routing\Router
     {
         return app()->router();
     }

@@ -20,7 +20,7 @@ use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
-use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Http\Exceptions\HttpException;
@@ -158,7 +158,7 @@ class Application implements ApplicationContract
     /**
      * Return the router instance from the container.
      *
-     * @return \Valkyrja\Contracts\Http\Router
+     * @return \Valkyrja\Contracts\Routing\Router
      */
     public function router() : Router
     {

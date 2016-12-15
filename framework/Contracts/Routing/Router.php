@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Http;
+namespace Valkyrja\Contracts\Routing;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\Response;
 
 /**
  * Interface Router

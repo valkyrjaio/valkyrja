@@ -24,7 +24,7 @@ use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
-use Valkyrja\Contracts\Http\Router as RouterContract;
+use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Client;

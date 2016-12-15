@@ -16,7 +16,7 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
-use Valkyrja\Contracts\Http\Router;
+use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 
 /**
@@ -81,7 +81,7 @@ interface Application
     /**
      * Return the router instance from the container.
      *
-     * @return \Valkyrja\Contracts\Http\Router
+     * @return \Valkyrja\Contracts\Routing\Router
      */
     public function router() : Router;
 
