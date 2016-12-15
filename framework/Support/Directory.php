@@ -64,22 +64,6 @@ class Directory
     }
 
     /**
-     * Get the cache directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function cachePath(string $path = null) : string
-    {
-        return static::basePath(
-            'cache' . ($path
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
      * Get the config directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -138,6 +122,22 @@ class Directory
     {
         return static::basePath(
             'resources' . ($path
+                ? static::DIRECTORY_SEPARATOR . $path
+                : $path)
+        );
+    }
+
+    /**
+     * Get the routes directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function routesPath(string $path = null) : string
+    {
+        return static::basePath(
+            'routes' . ($path
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
