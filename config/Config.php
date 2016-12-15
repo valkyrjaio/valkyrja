@@ -3,12 +3,12 @@
 namespace config;
 
 use Valkyrja\Config\Config as ValkyrjaConfig;
+use Valkyrja\Contracts\Config\Env;
 
 use config\sub\AppConfig;
 use config\sub\RoutingConfig;
 use config\sub\StorageConfig;
 use config\sub\ViewsConfig;
-use Valkyrja\Contracts\Config\Env;
 
 /**
  * Class Config
