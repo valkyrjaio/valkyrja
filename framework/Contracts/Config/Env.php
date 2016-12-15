@@ -34,6 +34,7 @@ interface Env
     const ROUTING_TRAILING_SLASH = false;
     const ROUTING_ALLOW_WITH_TRAILING_SLASH = false;
     const ROUTING_USE_ANNOTATIONS = false;
+    const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = false;
     const ROUTING_CONTROLLERS = [];
     const ROUTING_ROUTES_FILE = null;
     const ROUTING_ROUTES_CACHE_FILE = null;

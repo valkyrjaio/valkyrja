@@ -45,6 +45,13 @@ class RoutingConfig
     public $useAnnotations = false;
 
     /**
+     * Use only annotations without routes file?
+     *
+     * @var bool
+     */
+    public $useAnnotationsExclusively = false;
+
+    /**
      * Controllers to get annotations from.
      *
      * @var array
@@ -90,6 +97,7 @@ class RoutingConfig
             $this->trailingSlash = $env::ROUTING_TRAILING_SLASH ?? false;
             $this->allowWithTrailingSlash = $env::ROUTING_ALLOW_WITH_TRAILING_SLASH ?? false;
             $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? false;
+            $this->useAnnotationsExclusively = $env::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? false;
             $this->controllers = $env::ROUTING_CONTROLLERS ?? [];
             $this->routesFile = $env::ROUTING_ROUTES_FILE ?? Directory::routesPath('routes.php');
             $this->routesCacheFile = $env::ROUTING_ROUTES_CACHE_FILE ?? Directory::storagePath('framework/cache/routes.php');

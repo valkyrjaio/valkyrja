@@ -372,6 +372,12 @@ class Router implements RouterContract
                     }
                 }
             }
+
+            // If only annotations should be used for routing
+            if ($this->app->config()->routing->useAnnotationsExclusively) {
+                // Return to avoid loading routes file
+                return;
+            }
         }
 
         // Include the routes file
