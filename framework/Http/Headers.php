@@ -19,7 +19,7 @@ use Valkyrja\Support\Collection;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Headers extends Collection implements HeadersContract
 {

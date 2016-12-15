@@ -18,7 +18,7 @@ use Valkyrja\Contracts\Application;
  *
  * @package Valkyrja\Contracts\Config
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 interface Env
 {

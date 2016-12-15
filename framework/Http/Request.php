@@ -204,7 +204,8 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ) {
+    )
+    {
         $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
@@ -229,7 +230,8 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ) : void {
+    ) : void
+    {
         $this->setQuery($query)
              ->setRequest($request)
              ->setAttributes($attributes)
@@ -298,7 +300,7 @@ class Request implements RequestContract
      */
     public function query() : CollectionContract
     {
-        if (!$this->query) {
+        if (! $this->query) {
             $this->setQuery();
         }
 
@@ -326,7 +328,7 @@ class Request implements RequestContract
      */
     public function request() : CollectionContract
     {
-        if (!$this->request) {
+        if (! $this->request) {
             $this->setRequest();
         }
 
@@ -354,7 +356,7 @@ class Request implements RequestContract
      */
     public function attributes() : CollectionContract
     {
-        if (!$this->attributes) {
+        if (! $this->attributes) {
             $this->setAttributes();
         }
 
@@ -382,7 +384,7 @@ class Request implements RequestContract
      */
     public function cookies() : CookiesContract
     {
-        if (!$this->cookies) {
+        if (! $this->cookies) {
             $this->setCookies();
         }
 
@@ -410,7 +412,7 @@ class Request implements RequestContract
      */
     public function files()
     {
-        if (!$this->files) {
+        if (! $this->files) {
             $this->setFiles();
         }
 
@@ -438,7 +440,7 @@ class Request implements RequestContract
      */
     public function server()
     {
-        if (!$this->server) {
+        if (! $this->server) {
             $this->setServer();
         }
 
@@ -466,7 +468,7 @@ class Request implements RequestContract
      */
     public function headers()
     {
-        if (!$this->headers) {
+        if (! $this->headers) {
             $this->setHeaders();
         }
 
@@ -715,13 +717,14 @@ class Request implements RequestContract
     {
         try {
             $content = $this->getContent();
-        } catch (\LogicException $e) {
+        }
+        catch (\LogicException $e) {
             return trigger_error($e, E_USER_ERROR);
         }
 
         return
-            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL'))."\r\n".
-            $this->headers."\r\n".
+            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL')) . "\r\n" .
+            $this->headers . "\r\n" .
             $content;
     }
 }

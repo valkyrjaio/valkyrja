@@ -16,7 +16,7 @@ namespace Valkyrja\Debug;
  *
  * @package Valkyrja\Debug
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Debug
 {
@@ -31,7 +31,7 @@ class Debug
      * Enable debug mode.
      *
      * @param int  $errorReportingLevel [optional]
-     * @param bool $displayErrors [optional]
+     * @param bool $displayErrors       [optional]
      *
      * @return void
      */

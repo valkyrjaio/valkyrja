@@ -16,7 +16,7 @@ namespace Valkyrja\Console;
  *
  * @package Valkyrja\Console
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Routing extends Console
 {

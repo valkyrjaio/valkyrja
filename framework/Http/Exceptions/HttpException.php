@@ -66,7 +66,8 @@ class HttpException extends RuntimeException implements HttpExceptionContract
         array $headers = [],
         ?string $view = null,
         int $code = 0
-    ) {
+    )
+    {
         $this->statusCode = $statusCode;
         $this->headers = $headers;
         $this->view = $view;

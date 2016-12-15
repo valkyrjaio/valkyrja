@@ -18,7 +18,7 @@ use Closure;
  *
  * @package Valkyrja\Routing
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Route
 {
@@ -88,7 +88,8 @@ class Route
         string $action = null,
         ?Closure $handler = null,
         array $injectables = []
-    ) {
+    )
+    {
         $this->path = $path;
         $this->name = $name;
         $this->controller = $controller;

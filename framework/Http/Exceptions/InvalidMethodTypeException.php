@@ -9,7 +9,7 @@ use Exception;
  *
  * @package Valkyrja\Http\Exception
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class InvalidMethodTypeException extends Exception
 {

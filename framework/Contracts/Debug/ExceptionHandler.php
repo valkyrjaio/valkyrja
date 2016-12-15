@@ -18,7 +18,7 @@ use Throwable;
  *
  * @package Valkyrja\Contracts\Debug
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 interface ExceptionHandler
 {

@@ -21,7 +21,7 @@ use App\Controllers\HomeController;
  *
  * @package Valkyrja\Config\Sub
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class RoutingConfig extends ValkyrjaRoutingConfig
 {
@@ -35,7 +35,7 @@ class RoutingConfig extends ValkyrjaRoutingConfig
         parent::__construct($env);
 
         $this->controllers = [
-            HomeController::class
+            HomeController::class,
         ];
     }
 }

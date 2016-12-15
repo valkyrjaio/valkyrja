@@ -104,7 +104,7 @@ class Collection implements CollectionContract
      */
     public function remove(string $key) : CollectionContract
     {
-        if (!$this->has($key)) {
+        if (! $this->has($key)) {
             return $this;
         }
 

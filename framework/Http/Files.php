@@ -21,7 +21,7 @@ use Valkyrja\Support\Collection;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Files extends Collection implements FilesContract
 {

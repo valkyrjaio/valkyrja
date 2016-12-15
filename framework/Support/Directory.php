@@ -16,7 +16,7 @@ namespace Valkyrja\Support;
  *
  * @package Valkyrja
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Directory
 {
@@ -33,6 +33,7 @@ class Directory
      * @constant string
      */
     public static $BASE_PATH;
+
     /**
      * Get the base directory for the application.
      *

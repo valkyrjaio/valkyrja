@@ -20,7 +20,7 @@ use Valkyrja\Contracts\Support\Collection;
  *
  * @package Valkyrja\Contracts\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 interface Server extends Collection
 {

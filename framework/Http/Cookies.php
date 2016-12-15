@@ -21,7 +21,7 @@ use Valkyrja\Support\Collection;
  *
  * @package Valkyrja\Http
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Cookies extends Collection implements CookiesContract
 {

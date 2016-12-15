@@ -23,7 +23,7 @@ use Valkyrja\Contracts\Http\Exceptions\HttpException;
  *
  * @package Valkyrja\Debug
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class ExceptionHandler implements ExceptionHandlerContract
 {
@@ -367,7 +367,7 @@ EOF;
      * Format path.
      *
      * @param string $path
-     * @param int $line
+     * @param int    $line
      *
      * @return string
      */

@@ -101,11 +101,11 @@ class Router implements RouterContract
 
         // Let's check the action method is callable before proceeding
         if (! isset($options['handler']) && ! is_callable(
-            [
-                $options['controller'],
-                $options['action'],
-            ]
-        )
+                [
+                    $options['controller'],
+                    $options['action'],
+                ]
+            )
         ) {
             throw new NonExistentActionException(
                 'Action does not exist in controller for route : '

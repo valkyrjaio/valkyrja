@@ -19,7 +19,7 @@ use Valkyrja\Support\Directory;
  *
  * @package Valkyrja\Config\Sub
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class TwigViewsConfig
 {

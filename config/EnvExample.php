@@ -9,7 +9,7 @@ use Valkyrja\Config\Env as ValkyrjaEnv;
  *
  * @package config
  *
- * @desc Rename this file to Env.php and rename the class to Env
+ * @desc    Rename this file to Env.php and rename the class to Env
  */
 class EnvExample extends ValkyrjaEnv
 {
