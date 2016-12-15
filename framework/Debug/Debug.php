@@ -48,6 +48,8 @@ class Debug
 
         // The exception handler
         $exceptionHandler = new ExceptionHandler();
+        // The error handler
+        $errorHandler = new ErrorHandler();
 
         // Set the error reporting level
         error_reporting($errorReportingLevel);
@@ -55,7 +57,7 @@ class Debug
         // Set the error handler
         set_error_handler(
             [
-                $exceptionHandler,
+                $errorHandler,
                 'handleError',
             ]
         );
