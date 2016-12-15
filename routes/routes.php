@@ -2,36 +2,37 @@
 
 /**
  * Welcome Route.
+ * - Example of a view being returned
  *
  * @path /
  */
 get(
     '/',
     [
-        'handler' => function () {
-            $view = view('index')->withoutLayout();
-
-            return response($view);
+        'handler' => function () : Valkyrja\Contracts\View\View {
+            return view('index')->withoutLayout();
         },
     ]
 );
 
 /**
  * Framework Version Route.
+ * - Example of string being returned
  *
  * @path /version
  */
 get(
     '/version',
     [
-        'handler' => function () {
-            return response(app()->version());
+        'handler' => function () : string {
+            return app()->version();
         },
     ]
 );
 
 /**
  * Home Route.
+ * - Example with multiple routes to the same action
  *
  * @path /home
  */
@@ -41,12 +42,18 @@ get(
         'controller' => App\Controllers\HomeController::class,
         'action'     => 'home',
         'name'       => 'home',
+        'injectable' => [
+            // Any classes defined within the injectable array are
+            //   automatically be run through the service container for you.
+            Valkyrja\Application::class,
+        ],
     ]
 );
 
 /**
  * Home Paged Route.
  * - An example route with dependency injection and a parameter.
+ * - Example with multiple routes to the same action
  *
  * @path /home/:page
  */
@@ -54,8 +61,8 @@ get(
     '\/home\/(\d+)',
     [
         'controller' => App\Controllers\HomeController::class,
-        'action'     => 'homePaged',
-        'name'       => 'homePaged',
+        'action'     => 'home',
+        'name'       => 'homePage',
         'injectable' => [
             // Any classes defined within the injectable array are
             //   automatically be run through the service container for you.
