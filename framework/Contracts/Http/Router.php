@@ -138,6 +138,13 @@ interface Router
     public function getRoutes() : array;
 
     /**
+     * Setup routes.
+     *
+     * @return void
+     */
+    public function setupRoutes() : void;
+
+    /**
      * Dispatch the route and find a match.
      *
      * @return \Valkyrja\Contracts\Http\Response

@@ -59,6 +59,7 @@ require __DIR__ . '/container.php';
  *
  */
 
+$app->register(Valkyrja\Providers\AnnotationsServiceProvider::class);
 $app->register(Valkyrja\Providers\TwigServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 
@@ -74,7 +75,7 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  *
  */
 
-require __DIR__ . '/../routes/routes.php';
+$app->router()->setupRoutes();
 
 /*
  *-------------------------------------------------------------------------

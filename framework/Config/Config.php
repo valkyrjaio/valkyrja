@@ -11,7 +11,9 @@
 
 namespace Valkyrja\Config;
 
+use Valkyrja\Config\Sub\AnnotationsConfig;
 use Valkyrja\Config\Sub\AppConfig;
+use Valkyrja\Config\Sub\RoutingConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
@@ -22,7 +24,7 @@ use Valkyrja\Contracts\Config\Env;
  *
  * @package Valkyrja\Config
  *
- * @author Melech Mizrachi
+ * @author  Melech Mizrachi
  */
 class Config implements ConfigContract
 {
@@ -34,11 +36,25 @@ class Config implements ConfigContract
     public $app;
 
     /**
+     * Annotations config.
+     *
+     * @var AnnotationsConfig
+     */
+    public $annotations;
+
+    /**
      * Environment variables.
      *
      * @var \Valkyrja\Contracts\Config\Env
      */
     public $env;
+
+    /**
+     * Routing config.
+     *
+     * @var RoutingConfig
+     */
+    public $routing;
 
     /**
      * Storage config.
@@ -55,13 +71,6 @@ class Config implements ConfigContract
     public $views;
 
     /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
-
-    /**
      * Config constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env
@@ -70,10 +79,10 @@ class Config implements ConfigContract
     {
         $this->env = $env;
 
-        if ($this->setDefaults) {
-            $this->app = new AppConfig($env);
-            $this->storage = new StorageConfig($env);
-            $this->views = new ViewsConfig($env);
-        }
+        $this->app = new AppConfig($env);
+        $this->annotations = new AnnotationsConfig($env);
+        $this->routing = new RoutingConfig($env);
+        $this->storage = new StorageConfig($env);
+        $this->views = new ViewsConfig($env);
     }
 }

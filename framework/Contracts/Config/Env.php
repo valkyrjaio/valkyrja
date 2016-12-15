@@ -26,6 +26,10 @@ interface Env
     const APP_TIMEZONE = 'UTC';
     const APP_VERSION = '1 (ALPHA)';
 
+    const ANNOTATIONS_ENABLE = false;
+
+    const ROUTING_USE_ANNOTATIONS = false;
+
     const STORAGE_UPLOADS_DIR = null;
     const STORAGE_LOGS_DIR = null;
 

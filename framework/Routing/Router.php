@@ -13,6 +13,7 @@ namespace Valkyrja\Routing;
 
 use Closure;
 
+use mindplay\annotations\Annotations;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
@@ -22,6 +23,7 @@ use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Routing\Annotations\Route;
 
 /**
  * Class Router
@@ -235,6 +237,78 @@ class Router implements RouterContract
     }
 
     /**
+     * Setup routes.
+     *
+     * @return void
+     */
+    public function setupRoutes() : void
+    {
+        if (! $this->app->debug()) {
+            $this->routes = require $this->app->config()->routing->routesCacheFile;
+
+            return;
+        }
+
+        if ($this->app->config()->routing->useAnnotations) {
+            $routes = [];
+
+            foreach ($this->app->config()->routing->controllers as $controller) {
+                $reflection = new \ReflectionClass($controller);
+                $routes[$controller] = [];
+
+                foreach ($reflection->getMethods() as $method) {
+                    $route = Annotations::ofMethod($controller, $method, '@Route');
+
+                    if ($route) {
+                        $routes[$controller][$method->getName()] = $route;
+                        $injectable = [];
+
+                        foreach ($method->getParameters() as $parameter) {
+                            if ($parameter->getClass()) {
+                                $injectable[] = $parameter->getClass()->getName();
+                            }
+                        }
+
+                        $routes[$controller][$method->getName()]['injectable'] = $injectable;
+                    }
+                }
+            }
+
+            /**
+             * @var string $controller
+             * @var array  $controllerRoutes
+             */
+            foreach ($routes as $controller => $controllerRoutes) {
+                /**
+                 * @var string $method
+                 * @var array  $methodRoutes
+                 */
+                foreach ($controllerRoutes as $method => $methodRoutes) {
+                    /**
+                     * @var string $key
+                     * @var Route  $route
+                     */
+                    foreach ($methodRoutes as $key => $route) {
+                        if ($key === 'injectable') {
+                            continue;
+                        }
+
+                        $route->set('controller', $controller);
+                        $route->set('action', $method);
+                        $route->set('injectable', $methodRoutes['injectable']);
+                        $method = $route->get('method', RequestMethod::GET);
+                        $dynamic = $route->get('dynamic');
+
+                        $this->addRoute($method, $route->get('path'), $route->all(), $dynamic);
+                    }
+                }
+            }
+        }
+
+        require $this->app->config()->routing->routesFile;
+    }
+
+    /**
      * Dispatch the route and find a match.
      *
      * @return \Valkyrja\Contracts\Http\Response
@@ -276,7 +350,8 @@ class Router implements RouterContract
         }
 
         // Set the action from the route
-        $action = $route['handler'] ?: $route['action'];
+        $action = $route['handler']
+            ?: $route['action'];
 
         // If there are injectable items defined for this route
         if ($route['injectable']) {
