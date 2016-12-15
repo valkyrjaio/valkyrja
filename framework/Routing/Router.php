@@ -100,7 +100,7 @@ class Router implements RouterContract
         }
 
         // Let's check the action method is callable before proceeding
-        if (! isset($options['handler'])  && ! is_callable(
+        if (! isset($options['handler']) && ! is_callable(
             [
                 $options['controller'],
                 $options['action'],
