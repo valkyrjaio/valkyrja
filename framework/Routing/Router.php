@@ -301,7 +301,7 @@ class Router implements RouterContract
                             // Set the controller
                             $route->set('controller', $controller);
                             // Set the action
-                            $route->set('action', $method);
+                            $route->set('action', $method->getName());
                             // Set the injectable objects
                             $route->set('injectable', $injectable);
                         }
@@ -345,7 +345,7 @@ class Router implements RouterContract
         // Include the routes file
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
-        require $this->app->config()->routing->routesFile;
+        // require $this->app->config()->routing->routesFile;
     }
 
     /**
