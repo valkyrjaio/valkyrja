@@ -14,7 +14,7 @@ namespace Valkyrja\Debug;
 use ErrorException;
 use Exception;
 
-use Valkyrja\Contracts\Debug\ExceptionHandler as ErrorHandlerContract;
+use Valkyrja\Contracts\Debug\ErrorHandler as ErrorHandlerContract;
 
 /**
  * Class ErrorHandler
