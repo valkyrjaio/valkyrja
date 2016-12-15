@@ -28,7 +28,7 @@ class Routing extends Console
     public function run()
     {
         file_put_contents(
-            Directory::basePath('bootstrap/cache/routes.php'),
+            config()->routing->routesCacheFile,
             '<?php return ' . var_export(router()->getRoutes(), true) . ';'
         );
     }
