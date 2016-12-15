@@ -49,6 +49,13 @@ class Application implements ApplicationContract
     protected $container;
 
     /**
+     * Application config
+     *
+     * @var \Valkyrja\Contracts\Config\Config
+     */
+    protected $config;
+
+    /**
      * Is the app using a compiled version?
      *
      * @var bool
@@ -86,11 +93,11 @@ class Application implements ApplicationContract
 
         // Set the container within the application
         $this->container = $container;
+        // Set the config within the application
+        $this->config = $config;
 
         // Set the application instance in the container
         $container->instance(ApplicationContract::class, $this);
-        // Set the config instance in the container
-        $container->instance(ConfigContract::class, $config);
         // Bootstrap the container
         $container->bootstrap();
 
@@ -135,7 +142,7 @@ class Application implements ApplicationContract
      */
     public function config() : ConfigContract
     {
-        return $this->container->get(ConfigContract::class);
+        return $this->config;
     }
 
     /**
