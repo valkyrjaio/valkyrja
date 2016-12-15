@@ -45,7 +45,7 @@ get(
         'injectable' => [
             // Any classes defined within the injectable array are
             //   automatically be run through the service container for you.
-            Valkyrja\Application::class,
+            Valkyrja\Contracts\Application::class,
         ],
     ]
 );
@@ -66,7 +66,7 @@ get(
         'injectable' => [
             // Any classes defined within the injectable array are
             //   automatically be run through the service container for you.
-            Valkyrja\Application::class,
+            Valkyrja\Contracts\Application::class,
         ],
     ],
     true
