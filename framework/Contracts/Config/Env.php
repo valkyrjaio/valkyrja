@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Config;
 
+use Valkyrja\Contracts\Application;
+
 /**
  * Interface Env
  *
@@ -24,11 +26,18 @@ interface Env
     const APP_DEBUG = false;
     const APP_URL = 'localhost';
     const APP_TIMEZONE = 'UTC';
-    const APP_VERSION = '1 (ALPHA)';
+    const APP_VERSION = Application::VERSION;
 
     const ANNOTATIONS_ENABLED = false;
+    const ANNOTATIONS_CACHE_DIR = null;
 
+    const ROUTING_TRAILING_SLASH = false;
+    const ROUTING_ALLOW_WITH_TRAILING_SLASH = false;
     const ROUTING_USE_ANNOTATIONS = false;
+    const ROUTING_CONTROLLERS = [];
+    const ROUTING_ROUTES_FILE = null;
+    const ROUTING_ROUTES_CACHE_FILE = null;
+    const ROUTING_USE_ROUTES_CACHE_FILE = false;
 
     const STORAGE_UPLOADS_DIR = null;
     const STORAGE_LOGS_DIR = null;

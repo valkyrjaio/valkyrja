@@ -24,6 +24,20 @@ use Valkyrja\Support\Directory;
 class RoutingConfig
 {
     /**
+     * Whether all routes should have trailing slashes.
+     *
+     * @var bool
+     */
+    public $trailingSlash = false;
+
+    /**
+     * Whether to allow slash and non slash ending urls.
+     *
+     * @var bool
+     */
+    public $allowWithTrailingSlash = false;
+
+    /**
      * Use annotations on controllers?
      *
      * @var bool
@@ -52,6 +66,13 @@ class RoutingConfig
     public $routesCacheFile;
 
     /**
+     * Whether to use the routes cache file.
+     *
+     * @var bool
+     */
+    public $useRoutesCacheFile = false;
+
+    /**
      * Set defaults?
      *
      * @var bool
@@ -66,9 +87,13 @@ class RoutingConfig
     public function __construct(Env $env)
     {
         if ($this->setDefaults) {
+            $this->trailingSlash = $env::ROUTING_TRAILING_SLASH ?? false;
+            $this->allowWithTrailingSlash = $env::ROUTING_ALLOW_WITH_TRAILING_SLASH ?? false;
             $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? false;
-            $this->routesFile = Directory::routesPath('routes.php');
-            $this->routesCacheFile = Directory::storagePath('framework/routes.php');
+            $this->controllers = $env::ROUTING_CONTROLLERS ?? [];
+            $this->routesFile = $env::ROUTING_ROUTES_FILE ?? Directory::routesPath('routes.php');
+            $this->routesCacheFile = $env::ROUTING_ROUTES_CACHE_FILE ?? Directory::storagePath('framework/routes.php');
+            $this->useRoutesCacheFile = $env::ROUTING_USE_ROUTES_CACHE_FILE ?? false;
         }
     }
 }

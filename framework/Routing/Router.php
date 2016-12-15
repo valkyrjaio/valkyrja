@@ -23,7 +23,6 @@ use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
-use Valkyrja\Routing\Annotations\Route;
 
 /**
  * Class Router
@@ -86,7 +85,6 @@ class Router implements RouterContract
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
-     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function addRoute(string $method, string $path, array $options, bool $isDynamic = false) : void
     {
@@ -100,6 +98,12 @@ class Router implements RouterContract
             throw new InvalidMethodTypeException('Invalid method type for route: ' . $path);
         }
 
+        // If all routes should have a trailing slash
+        if ($this->app->config()->routing->trailingSlash) {
+            // Add a trailing slash
+            $path .= '/';
+        }
+
         $route = [
             'path'       => $path,
             'name'       => $options['name'] ?? $path,
@@ -109,10 +113,12 @@ class Router implements RouterContract
             'injectable' => $options['injectable'] ?? [],
         ];
 
-        // Set the route
+        // If this is a dynamic route
         if ($isDynamic) {
+            // Set it in the dynamic routes array
             $this->routes['dynamic'][$method][$path] = $route;
         }
+        // Otherwise set it in the static routes array
         else {
             $this->routes['static'][$method][$path] = $route;
         }
@@ -240,71 +246,105 @@ class Router implements RouterContract
      * Setup routes.
      *
      * @return void
+     *
+     * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      */
     public function setupRoutes() : void
     {
-        if (! $this->app->debug()) {
+        // If the application should use the routes cache file
+        if ($this->app->config()->routing->useRoutesCacheFile) {
+            // Set the application routes with said file
             $this->routes = require $this->app->config()->routing->routesCacheFile;
 
+            // Then return out of routes setup
             return;
         }
 
-        if ($this->app->config()->routing->useAnnotations) {
+        // If annotations are enabled and routing should use annotations
+        if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
             $routes = [];
 
+            // Iterate through each controller
             foreach ($this->app->config()->routing->controllers as $controller) {
+                // Get a reflection of the controller
                 $reflection = new \ReflectionClass($controller);
+                // Set an empty array for this controller to hold its defined routes
                 $routes[$controller] = [];
 
+                // Iterate through all the methods in the controller
                 foreach ($reflection->getMethods() as $method) {
-                    $route = Annotations::ofMethod($controller, $method->getName(), '@Route');
+                    // Get the @Route annotation for the method
+                    $actionRoutes = Annotations::ofMethod($controller, $method->getName(), '@Route');
 
-                    if ($route) {
-                        $routes[$controller][$method->getName()] = $route;
+                    // Ensure a route was defined
+                    if ($actionRoutes) {
+                        // Set the route for this action
+                        $routes[$controller][$method->getName()] = $actionRoutes;
+                        // Setup to find any injectable objects through the service container
                         $injectable = [];
 
+                        // Iterate through the method's parameters
                         foreach ($method->getParameters() as $parameter) {
+                            // We only care for classes
                             if ($parameter->getClass()) {
+                                // Set the injectable in the array
                                 $injectable[] = $parameter->getClass()->getName();
                             }
                         }
 
-                        $routes[$controller][$method->getName()]['injectable'] = $injectable;
+                        /**
+                         * Iterate through all the action's routes.
+                         *
+                         * @var \Valkyrja\Routing\Annotations\Route $route
+                         */
+                        foreach ($actionRoutes as $route) {
+                            // Set the controller
+                            $route->set('controller', $controller);
+                            // Set the action
+                            $route->set('action', $method);
+                            // Set the injectable objects
+                            $route->set('injectable', $injectable);
+                        }
                     }
                 }
             }
 
             /**
+             * Iterate through the routes for each controller.
+             *
              * @var string $controller
              * @var array  $controllerRoutes
              */
             foreach ($routes as $controller => $controllerRoutes) {
                 /**
+                 * Iterate through the actions.
+                 *
                  * @var string $action
                  * @var array  $methodRoutes
                  */
                 foreach ($controllerRoutes as $action => $methodRoutes) {
                     /**
+                     * Iterate through the routes defined for each action.
+                     *
                      * @var string $key
-                     * @var Route  $route
+                     * @var \Valkyrja\Routing\Annotations\Route  $route
                      */
                     foreach ($methodRoutes as $key => $route) {
-                        if ($key === 'injectable') {
-                            continue;
-                        }
-
-                        $route->set('controller', $controller);
-                        $route->set('action', $action);
-                        $route->set('injectable', $methodRoutes['injectable']);
-                        $requestMethod = $route->get('method', RequestMethod::GET);
-                        $dynamic = $route->get('dynamic');
-
-                        $this->addRoute($requestMethod, $route->get('path'), $route->all(), $dynamic);
+                        // Set the route
+                        $this->addRoute(
+                            $route->get('method', RequestMethod::GET),
+                            $route->get('path'),
+                            $route->all(),
+                            $route->get('dynamic')
+                        );
                     }
                 }
             }
         }
 
+        // Include the routes file
+        // NOTE: Included if annotations are set or not due to possibility of routes being defined
+        // within the controllers as well as within the routes file
         require $this->app->config()->routing->routesFile;
     }
 
@@ -331,9 +371,14 @@ class Router implements RouterContract
         if (isset($this->routes['static'][$requestMethod][$requestUri])) {
             $route = $this->routes['static'][$requestMethod][$requestUri];
         }
-        // elseif (isset($this->routes['static'][$requestMethod][substr($requestUri, 0, -1)])) {
-        //     $route = $this->routes['static'][$requestMethod][substr($requestUri, 0, -1)];
-        // }
+        // If trailing slashes and non trailing are allowed check it too
+        elseif (
+            $this->app->config()->routing->allowWithTrailingSlash &&
+            isset($this->routes['static'][$requestMethod][substr($requestUri, 0, -1)])
+        ) {
+            $route = $this->routes['static'][$requestMethod][substr($requestUri, 0, -1)];
+        }
+        // Otherwise check dynamic routes for a match
         else {
             // Attempt to find a match using dynamic routes that are set
             foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
@@ -346,15 +391,17 @@ class Router implements RouterContract
 
         // If no route is found
         if (! $route) {
+            // Launch the 404 and abort the app
             $this->app->abort(404);
         }
 
-        // Set the action from the route
+        // Set the action from the route to either the handler or controller action
         $action = $route['handler']
             ?: $route['action'];
 
         // If there are injectable items defined for this route
         if ($route['injectable']) {
+            // There are arguments to be had
             $hasArguments = true;
 
             // Check for any injectables that have been set on the route
@@ -366,6 +413,7 @@ class Router implements RouterContract
 
         // If there were matches from the dynamic route
         if ($matches && is_array($matches)) {
+            // There are arguments to be had
             $hasArguments = true;
 
             // Iterate through the matches
@@ -436,6 +484,7 @@ class Router implements RouterContract
                 $dispatch = $controller->$action();
             }
 
+            // Call the controller's after method
             $controller->after();
         }
 
@@ -444,16 +493,15 @@ class Router implements RouterContract
             $this->app->abort(404);
         }
 
-        // If the dispatch is a Response, send it
+        // If the dispatch is a Response then simply return it
         if ($dispatch instanceof ResponseContract) {
             return $dispatch;
         }
-        // If the dispatch is a View, render it
-        //  then echo it out as a string
+        // If the dispatch is a View, render it then wrap it in a new response and return it
         else if ($dispatch instanceof ViewContract) {
             return $this->app->response($dispatch->render());
         }
-        // Otherwise echo it out as a string
+        // Otherwise its a string so wrap it in a new response and return it
         else {
             return $this->app->response($dispatch);
         }

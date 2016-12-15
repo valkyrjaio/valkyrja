@@ -53,7 +53,7 @@ class AnnotationsConfig
     {
         if ($this->setDefaults) {
             $this->enabled = $env::ANNOTATIONS_ENABLED ?? false;
-            $this->cacheDir = Directory::storagePath('vendor/annotations');
+            $this->cacheDir = $env::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations');
         }
     }
 }
