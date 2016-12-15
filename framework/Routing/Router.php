@@ -85,6 +85,7 @@ class Router implements RouterContract
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
+     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function addRoute(string $method, string $path, array $options, bool $isDynamic = false) : void
     {
@@ -96,6 +97,23 @@ class Router implements RouterContract
         )
         ) {
             throw new InvalidMethodTypeException('Invalid method type for route: ' . $path);
+        }
+
+        // Let's check the action method is callable before proceeding
+        if (! isset($options['handler'])  && ! is_callable(
+            [
+                $options['controller'],
+                $options['action'],
+            ]
+        )
+        ) {
+            throw new NonExistentActionException(
+                'Action does not exist in controller for route : '
+                . $options['path']
+                . $options['controller']
+                . '@'
+                . $options['action']
+            );
         }
 
         // If all routes should have a trailing slash
@@ -243,11 +261,25 @@ class Router implements RouterContract
     }
 
     /**
+     * Get routes by method type.
+     *
+     * @param string $method The method type of get
+     * @param string $type   [optional] The type of routes (static/dynamic)
+     *
+     * @return array
+     */
+    protected function getRoutesByMethod(string $method, string $type = 'static') : array
+    {
+        return $this->routes[$type][$method];
+    }
+
+    /**
      * Setup routes.
      *
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
+     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function setupRoutes() : void
     {
@@ -326,8 +358,8 @@ class Router implements RouterContract
                     /**
                      * Iterate through the routes defined for each action.
                      *
-                     * @var string $key
-                     * @var \Valkyrja\Routing\Annotations\Route  $route
+                     * @var string                              $key
+                     * @var \Valkyrja\Routing\Annotations\Route $route
                      */
                     foreach ($methodRoutes as $key => $route) {
                         // Set the route
@@ -345,7 +377,7 @@ class Router implements RouterContract
         // Include the routes file
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
-        // require $this->app->config()->routing->routesFile;
+        require $this->app->config()->routing->routesFile;
     }
 
     /**
@@ -355,7 +387,6 @@ class Router implements RouterContract
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
-     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function dispatch() : ResponseContract
     {
@@ -381,7 +412,7 @@ class Router implements RouterContract
         // Otherwise check dynamic routes for a match
         else {
             // Attempt to find a match using dynamic routes that are set
-            foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
+            foreach ($this->getRoutesByMethod($requestMethod, 'dynamic') as $path => $dynamicRoute) {
                 // If the perg match is successful, we've found our route!
                 if (preg_match($path, $requestUri, $matches)) {
                     $route = $dynamicRoute;
@@ -398,16 +429,19 @@ class Router implements RouterContract
         // Set the action from the route to either the handler or controller action
         $action = $route['handler']
             ?: $route['action'];
+        // The injectable objects
+        $injectable = $route['injectable']
+            ?: [];
 
         // If there are injectable items defined for this route
-        if ($route['injectable']) {
+        if ($injectable) {
             // There are arguments to be had
             $hasArguments = true;
 
-            // Check for any injectables that have been set on the route
-            foreach ($route['injectable'] as $injectable) {
+            // Check for any injectable objects that have been set on the route
+            foreach ($injectable as $injectableObject) {
                 // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container()->get($injectable);
+                $arguments[] = $this->app->container()->get($injectableObject);
             }
         }
 
@@ -453,23 +487,6 @@ class Router implements RouterContract
                     . $route['path']
                     . ' Controller -> '
                     . $route['controller']
-                );
-            }
-
-            // Let's check the action method is callable before proceeding
-            if (! is_callable(
-                [
-                    $controller,
-                    $action,
-                ]
-            )
-            ) {
-                throw new NonExistentActionException(
-                    'Action does not exist in controller for route : '
-                    . $route['path']
-                    . $route['controller']
-                    . '@'
-                    . $route['action']
                 );
             }
 
