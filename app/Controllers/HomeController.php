@@ -30,6 +30,7 @@ class HomeController extends Controller
 
     /**
      * Welcome action.
+     * - Example of a view being returned
      *
      * @return \Valkyrja\Contracts\View\View
      *
@@ -41,7 +42,8 @@ class HomeController extends Controller
     }
 
     /**
-     * Homepage action.
+     * Application version action.
+     * - Example of string being returned
      *
      * @return string
      *
@@ -54,33 +56,23 @@ class HomeController extends Controller
 
     /**
      * Homepage action.
+     * - Example with multiple routes to the same action
+     *
+     * @param Application $application The application (Dependency injection example)
+     * @param int         $page        The current page
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @Route('path' => '/home', 'name' => 'home')
+     * @Route('path' => '/^\/home\/(\d+)$/', 'name' => 'homePaged', 'dynamic' => true)
      */
-    public function home() : Response
-    {
-        return response(view('home/home'));
-    }
-
-    /**
-     * Paged homepage results.
-     *
-     * @param Application $application
-     * @param int         $page
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @Route('path' => '\/home\/(\d+)', 'name' => 'homePaged', 'dynamic' => true)
-     */
-    public function homePaged(Application $application, $page) : Response
+    public function home(Application $application, int $page = 1) : Response
     {
         return response(view('home/home',
-            [
-                'app'  => $application,
-                'page' => $page,
-            ])
+                [
+                    'app'  => $application,
+                    'page' => $page,
+                ])
         );
     }
 }

@@ -58,7 +58,7 @@ get(
  * @path /home/:page
  */
 get(
-    '\/home\/(\d+)',
+    '/^\/home\/(\d+)$/',
     [
         'controller' => App\Controllers\HomeController::class,
         'action'     => 'home',

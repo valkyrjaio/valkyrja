@@ -280,10 +280,10 @@ class Router implements RouterContract
              */
             foreach ($routes as $controller => $controllerRoutes) {
                 /**
-                 * @var string $method
+                 * @var string $action
                  * @var array  $methodRoutes
                  */
-                foreach ($controllerRoutes as $method => $methodRoutes) {
+                foreach ($controllerRoutes as $action => $methodRoutes) {
                     /**
                      * @var string $key
                      * @var Route  $route
@@ -294,12 +294,12 @@ class Router implements RouterContract
                         }
 
                         $route->set('controller', $controller);
-                        $route->set('action', $method);
+                        $route->set('action', $action);
                         $route->set('injectable', $methodRoutes['injectable']);
-                        $method = $route->get('method', RequestMethod::GET);
+                        $requestMethod = $route->get('method', RequestMethod::GET);
                         $dynamic = $route->get('dynamic');
 
-                        $this->addRoute($method, $route->get('path'), $route->all(), $dynamic);
+                        $this->addRoute($requestMethod, $route->get('path'), $route->all(), $dynamic);
                     }
                 }
             }
@@ -338,7 +338,7 @@ class Router implements RouterContract
             // Attempt to find a match using dynamic routes that are set
             foreach ($this->routes['dynamic'][$requestMethod] as $path => $dynamicRoute) {
                 // If the perg match is successful, we've found our route!
-                if (preg_match('/^' . $path . '$/', $requestUri, $matches)) {
+                if (preg_match($path, $requestUri, $matches)) {
                     $route = $dynamicRoute;
                 }
             }

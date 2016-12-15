@@ -68,7 +68,7 @@ class RoutingConfig
         if ($this->setDefaults) {
             $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? false;
             $this->routesFile = Directory::routesPath('routes.php');
-            $this->routesCacheFile = Directory::routesPath('cache/routes.php');
+            $this->routesCacheFile = Directory::storagePath('framework/routes.php');
         }
     }
 }
