@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Support\Directory;
-
 /**
  * Class Routing
  *
