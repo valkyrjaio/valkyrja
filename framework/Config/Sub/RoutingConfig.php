@@ -92,7 +92,7 @@ class RoutingConfig
             $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? false;
             $this->controllers = $env::ROUTING_CONTROLLERS ?? [];
             $this->routesFile = $env::ROUTING_ROUTES_FILE ?? Directory::routesPath('routes.php');
-            $this->routesCacheFile = $env::ROUTING_ROUTES_CACHE_FILE ?? Directory::storagePath('framework/routes.php');
+            $this->routesCacheFile = $env::ROUTING_ROUTES_CACHE_FILE ?? Directory::storagePath('framework/cache/routes.php');
             $this->useRoutesCacheFile = $env::ROUTING_USE_ROUTES_CACHE_FILE ?? false;
         }
     }
