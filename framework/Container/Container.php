@@ -17,7 +17,6 @@ use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
-use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
@@ -102,7 +101,7 @@ class Container implements ContainerContract
      */
     public function instance(string $abstract, $instance) : void
     {
-        $this->set($abstract, $instance, true);
+        $this->set($abstract, $instance, true, true);
     }
 
     /**
@@ -124,15 +123,17 @@ class Container implements ContainerContract
      *
      * @param string                 $abstract  The abstract to use as the key
      * @param \Closure|string|object $closure   The instance to set
-     * @param bool                   $singleton Whether this abstract should be treated as a singleton
+     * @param bool                   $singleton [optional] Whether this abstract should be treated as a singleton
+     * @param bool                   $made      [optional] Whether this abstract is already made into an object or not
      *
      * @return void
      */
-    protected function set(string $abstract, $closure, bool $singleton = false) : void
+    protected function set(string $abstract, $closure, bool $singleton = false, bool $made = false) : void
     {
         $this->serviceContainer[$abstract] = [
             $closure,
             $singleton,
+            $made,
         ];
     }
 
@@ -148,6 +149,12 @@ class Container implements ContainerContract
     {
         // If the abstract is set in the service container
         if (isset($this->serviceContainer[$abstract])) {
+            // If the object is already made
+            if ($this->serviceContainer[$abstract][2]) {
+                // Return it
+                return $this->serviceContainer[$abstract][0];
+            }
+
             // Set the container item for ease of use here
             $containerItem = $this->serviceContainer[$abstract][0];
 
@@ -160,6 +167,8 @@ class Container implements ContainerContract
                 if ($this->serviceContainer[$abstract][1] === true) {
                     // Set the result in the service container for the next request
                     $this->serviceContainer[$abstract][0] = $containerItem;
+                    // Set this singleton to made
+                    $this->serviceContainer[$abstract][2] = true;
                 }
             }
             // If the container item is a string
@@ -171,6 +180,8 @@ class Container implements ContainerContract
                 if ($this->serviceContainer[$abstract][1] === true) {
                     // Set the result in the service container for the next request
                     $this->serviceContainer[$abstract][0] = $containerItem;
+                    // Set this singleton to made
+                    $this->serviceContainer[$abstract][2] = true;
                 }
             }
 
