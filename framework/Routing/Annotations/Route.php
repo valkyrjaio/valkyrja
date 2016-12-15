@@ -20,6 +20,8 @@ use Valkyrja\Support\Collection;
  * @package Valkyrja\Routing\Annotations
  *
  * @author Melech Mizrachi
+ *
+ * @usage('method' => true, 'multiple' => true, 'inherited' => true)
  */
 class Route extends Collection implements IAnnotation
 {

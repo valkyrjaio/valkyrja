@@ -257,7 +257,7 @@ class Router implements RouterContract
                 $routes[$controller] = [];
 
                 foreach ($reflection->getMethods() as $method) {
-                    $route = Annotations::ofMethod($controller, $method, '@Route');
+                    $route = Annotations::ofMethod($controller, $method->getName(), '@Route');
 
                     if ($route) {
                         $routes[$controller][$method->getName()] = $route;

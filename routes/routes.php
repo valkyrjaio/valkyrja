@@ -12,7 +12,7 @@ get(
             $view = view('index')->withoutLayout();
 
             return response($view);
-        }
+        },
     ]
 );
 
@@ -24,9 +24,9 @@ get(
 get(
     '/version',
     [
-        'handler' => function () use ($app) {
-            return response($app->version());
-        }
+        'handler' => function () {
+            return response(app()->version());
+        },
     ]
 );
 
@@ -39,8 +39,8 @@ get(
     '/home',
     [
         'controller' => App\Controllers\HomeController::class,
-        'action'     => 'index',
-        'as'         => 'home'
+        'action'     => 'home',
+        'name'       => 'home',
     ]
 );
 
@@ -54,8 +54,8 @@ get(
     '\/home\/(\d+)',
     [
         'controller' => App\Controllers\HomeController::class,
-        'action'     => 'indexWithParam',
-        'as'         => 'homeWithParam',
+        'action'     => 'homePaged',
+        'name'       => 'homePaged',
         'injectable' => [
             // Any classes defined within the injectable array are
             //   automatically be run through the service container for you.

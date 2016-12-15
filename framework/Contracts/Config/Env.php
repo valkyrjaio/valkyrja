@@ -26,7 +26,7 @@ interface Env
     const APP_TIMEZONE = 'UTC';
     const APP_VERSION = '1 (ALPHA)';
 
-    const ANNOTATIONS_ENABLE = false;
+    const ANNOTATIONS_ENABLED = false;
 
     const ROUTING_USE_ANNOTATIONS = false;
 

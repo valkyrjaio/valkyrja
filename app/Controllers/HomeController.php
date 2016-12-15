@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Contracts\View\View;
 
 /**
  * Class HomeController
@@ -27,11 +29,37 @@ class HomeController extends Controller
     }
 
     /**
-     * Homepage action.
+     * Welcome action.
      *
      * @return \Valkyrja\Contracts\View\View
+     *
+     * @Route('path' => '/', 'name' => 'welcome')
      */
-    public function index()
+    public function welcome() : View
+    {
+        return view('index')->withoutLayout();
+    }
+
+    /**
+     * Homepage action.
+     *
+     * @return string
+     *
+     * @Route('path' => '/version', 'name' => 'version')
+     */
+    public function version() : string
+    {
+        return $this->app->version();
+    }
+
+    /**
+     * Homepage action.
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @Route('path' => '/home', 'name' => 'home')
+     */
+    public function home() : Response
     {
         return response(view('home/home'));
     }
@@ -42,14 +70,17 @@ class HomeController extends Controller
      * @param Application $application
      * @param int         $page
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @Route('path' => '\/home\/(\d+)', 'name' => 'homePaged', 'dynamic' => true)
      */
-    public function indexWithParam(Application $application, $page)
+    public function homePaged(Application $application, $page) : Response
     {
         return response(view('home/home',
             [
                 'app'  => $application,
                 'page' => $page,
-            ]));
+            ])
+        );
     }
 }
