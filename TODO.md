@@ -19,10 +19,6 @@ Implement this...
 
 ## Go through header date methods in Response to change to string
 
-## Add @Route ability (php-annotations)
-
-## Routing config
-
 ## Lowercase namespacing?
 
 ## Move contracts to their respective directories (getting rid of Contracts)
