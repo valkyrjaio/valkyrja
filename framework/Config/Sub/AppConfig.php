@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Env;
 
 /**
@@ -76,7 +77,7 @@ class AppConfig
             $this->debug = $env::APP_DEBUG ?? false;
             $this->url = $env::APP_URL ?? 'localhost';
             $this->timezone = $env::APP_TIMEZONE ?? 'UTC';
-            $this->version = $env::APP_VERSION ?? '1.0';
+            $this->version = $env::APP_VERSION ?? Application::VERSION;
         }
     }
 }

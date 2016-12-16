@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Contracts\Config;
 
-use Valkyrja\Contracts\Application;
-
 /**
  * Interface Env
  *
@@ -22,31 +20,31 @@ use Valkyrja\Contracts\Application;
  */
 interface Env
 {
-    const APP_ENV = 'production';
-    const APP_DEBUG = false;
-    const APP_URL = 'localhost';
-    const APP_TIMEZONE = 'UTC';
-    const APP_VERSION = Application::VERSION;
+    const APP_ENV = null;
+    const APP_DEBUG = null;
+    const APP_URL = null;
+    const APP_TIMEZONE = null;
+    const APP_VERSION = null;
 
-    const ANNOTATIONS_ENABLED = false;
+    const ANNOTATIONS_ENABLED = null;
     const ANNOTATIONS_CACHE_DIR = null;
 
-    const ROUTING_TRAILING_SLASH = false;
-    const ROUTING_ALLOW_WITH_TRAILING_SLASH = false;
-    const ROUTING_USE_ANNOTATIONS = false;
-    const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = false;
-    const ROUTING_CONTROLLERS = [];
+    const ROUTING_TRAILING_SLASH = null;
+    const ROUTING_ALLOW_WITH_TRAILING_SLASH = null;
+    const ROUTING_USE_ANNOTATIONS = null;
+    const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    const ROUTING_CONTROLLERS = null;
     const ROUTING_ROUTES_FILE = null;
     const ROUTING_ROUTES_CACHE_FILE = null;
-    const ROUTING_USE_ROUTES_CACHE_FILE = false;
+    const ROUTING_USE_ROUTES_CACHE_FILE = null;
 
     const STORAGE_UPLOADS_DIR = null;
     const STORAGE_LOGS_DIR = null;
 
     const VIEWS_DIR = null;
 
-    const VIEWS_TWIG_ENABLED = false;
+    const VIEWS_TWIG_ENABLED = null;
     const VIEWS_TWIG_DIR = null;
     const VIEWS_TWIG_COMPILED_DIR = null;
-    const VIEWS_TWIG_EXTENSIONS = [];
+    const VIEWS_TWIG_EXTENSIONS = null;
 }
