@@ -256,6 +256,7 @@ class Container implements ContainerContract
             $this->singleton(
                 ResponseBuilderContract::class,
                 function () {
+                    /** @var \Valkyrja\Contracts\Application $app */
                     $app = $this->get(Application::class);
 
                     return new ResponseBuilder($app);
@@ -268,6 +269,7 @@ class Container implements ContainerContract
             $this->singleton(
                 RouterContract::class,
                 function () {
+                    /** @var \Valkyrja\Contracts\Application $app */
                     $app = $this->get(Application::class);
 
                     return new Router($app);
@@ -290,6 +292,7 @@ class Container implements ContainerContract
             $this->bind(
                 ViewContract::class,
                 function (string $template = '', array $variables = []) {
+                    /** @var \Valkyrja\Contracts\Application $app */
                     $app = $this->get(Application::class);
 
                     return new View($app, $template, $variables);
