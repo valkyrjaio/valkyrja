@@ -27,7 +27,7 @@ interface TwigView extends View
      *
      * @param Twig_Environment $twig The twig environment
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\TwigView
      */
-    public function setTwig(Twig_Environment $twig) : void;
+    public function setTwig(Twig_Environment $twig) : TwigView;
 }

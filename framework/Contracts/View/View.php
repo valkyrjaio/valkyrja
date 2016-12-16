@@ -62,18 +62,18 @@ interface View
      *
      * @param string $template The template to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplate(string $template) : void;
+    public function setTemplate(string $template) : View;
 
     /**
      * Set the variables
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setVariables(array $variables = []) : void;
+    public function setVariables(array $variables = []) : View;
 
     /**
      * Set a single variable.
@@ -81,9 +81,9 @@ interface View
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function variable(string $key, $value) : void;
+    public function variable(string $key, $value) : View;
 
     /**
      * Get the template directory.
@@ -99,9 +99,9 @@ interface View
      *
      * @param string $templateDir The path to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplateDir(string $templateDir) : void;
+    public function setTemplateDir(string $templateDir) : View;
 
     /**
      * Get the file extension.
@@ -115,9 +115,9 @@ interface View
      *
      * @param string $extension The extension to set
      *
-     * @return void
+     * @return \Valkyrja\Contracts\View\View
      */
-    public function setFileExtension(string $extension) : void;
+    public function setFileExtension(string $extension) : View;
 
     /**
      * Get the template path.
