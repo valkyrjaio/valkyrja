@@ -7,13 +7,14 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * Based off work by Fabien Potencier for symfony/http-foundation/Request.php
  */
 
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\Cookies as CookiesContract;
+use Valkyrja\Contracts\Http\Files as FilesContract;
+use Valkyrja\Contracts\Http\Headers as HeadersContract;
+use Valkyrja\Contracts\Http\Server as ServerContract;
 use Valkyrja\Contracts\Support\Collection as CollectionContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Support\Collection;
@@ -27,38 +28,6 @@ use Valkyrja\Support\Collection;
  */
 class Request implements RequestContract
 {
-    /**
-     * @var string[]
-     */
-    protected static $trustedProxies = [];
-
-    /**
-     * @var string[]
-     */
-    protected static $trustedHostPatterns = [];
-
-    /**
-     * @var string[]
-     */
-    protected static $trustedHosts = [];
-
-    /**
-     * Names for headers that can be trusted when
-     * using trusted proxies.
-     *
-     * The FORWARDED header is the standard as of rfc7239.
-     *
-     * The other headers are non-standard, but widely used
-     * by popular reverse proxies (like Apache mod_proxy or Amazon EC2).
-     */
-    protected static $trustedHeaders = [
-        self::HEADER_FORWARDED    => 'FORWARDED',
-        self::HEADER_CLIENT_IP    => 'X_FORWARDED_FOR',
-        self::HEADER_CLIENT_HOST  => 'X_FORWARDED_HOST',
-        self::HEADER_CLIENT_PROTO => 'X_FORWARDED_PROTO',
-        self::HEADER_CLIENT_PORT  => 'X_FORWARDED_PORT',
-    ];
-
     protected static $httpMethodParameterOverride = false;
 
     /**
@@ -78,7 +47,7 @@ class Request implements RequestContract
     /**
      * Query string parameters ($_GET).
      *
-     * @var \Valkyrja\Contracts\Support\Collection
+     * @var \Valkyrja\Contracts\Http\Query
      */
     protected $query;
 
@@ -138,7 +107,7 @@ class Request implements RequestContract
     /**
      * @var string
      */
-    protected $pathInfo;
+    protected $path;
 
     /**
      * @var string
@@ -166,7 +135,7 @@ class Request implements RequestContract
     protected $format;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+     * @var \Valkyrja\Contracts\Sessions\Session
      */
     protected $session;
 
@@ -206,32 +175,6 @@ class Request implements RequestContract
         $content = null
     )
     {
-        $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
-    }
-
-    /**
-     * Sets the parameters for this request.
-     *
-     * This method also re-initializes all properties.
-     *
-     * @param array           $query      The GET parameters
-     * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array           $cookies    The COOKIE parameters
-     * @param array           $files      The FILES parameters
-     * @param array           $server     The SERVER parameters
-     * @param string|resource $content    The raw body data
-     */
-    public function initialize(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        $content = null
-    ) : void
-    {
         $this->setQuery($query)
              ->setRequest($request)
              ->setAttributes($attributes)
@@ -245,7 +188,7 @@ class Request implements RequestContract
              ->setEncodings()
              ->setAcceptableContentTypes();
 
-        $this->pathInfo = null;
+        $this->path = null;
         $this->requestUri = null;
         $this->baseUrl = null;
         $this->basePath = null;
@@ -256,34 +199,24 @@ class Request implements RequestContract
     /**
      * Creates a new request with values from PHP's super globals.
      *
-     * @return RequestContract A new request
+     * @return \Valkyrja\Contracts\Http\Request
      */
-    public static function createFromGlobals() : RequestContract
+    public static function createFromGlobals(): RequestContract
     {
-        // With the php's bug #66606, the php's built-in web server
-        // stores the Content-Type and Content-Length header values in
-        // HTTP_CONTENT_TYPE and HTTP_CONTENT_LENGTH fields.
-        $server = $_SERVER;
+        // Create a new request from the PHP globals
+        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
-        if ('cli-server' === PHP_SAPI) {
-            if (array_key_exists('HTTP_CONTENT_LENGTH', $_SERVER)) {
-                $server['CONTENT_LENGTH'] = $_SERVER['HTTP_CONTENT_LENGTH'];
-            }
-            if (array_key_exists('HTTP_CONTENT_TYPE', $_SERVER)) {
-                $server['CONTENT_TYPE'] = $_SERVER['HTTP_CONTENT_TYPE'];
-            }
-        }
-
-        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $server);
-
-        if (0 === strpos($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
-            && in_array(
+        if (
+            0 === strpos($request->headers->get('Content-Type'), 'application/x-www-form-urlencoded')
+            &&
+            in_array(
                 strtoupper($request->server->get('REQUEST_METHOD', 'GET')),
                 [
                     'PUT',
                     'DELETE',
                     'PATCH',
-                ]
+                ],
+                true
             )
         ) {
             parse_str($request->getContent(), $data);
@@ -291,404 +224,6 @@ class Request implements RequestContract
         }
 
         return $request;
-    }
-
-    /**
-     * Return the GET Collection.
-     *
-     * @return \Valkyrja\Contracts\Support\Collection
-     */
-    public function query() : CollectionContract
-    {
-        if (! $this->query) {
-            $this->setQuery();
-        }
-
-        return $this->query;
-    }
-
-    /**
-     * Set the GET parameters.
-     *
-     * @param array $query
-     *
-     * @return Request
-     */
-    public function setQuery(array $query = []) : Request
-    {
-        $this->query = new Collection($query);
-
-        return $this;
-    }
-
-    /**
-     * Return the POST Collection.
-     *
-     * @return \Valkyrja\Contracts\Support\Collection
-     */
-    public function request() : CollectionContract
-    {
-        if (! $this->request) {
-            $this->setRequest();
-        }
-
-        return $this->request;
-    }
-
-    /**
-     * Set the POST parameters.
-     *
-     * @param array $request
-     *
-     * @return Request
-     */
-    public function setRequest(array $request = []) : Request
-    {
-        $this->request = new Collection($request);
-
-        return $this;
-    }
-
-    /**
-     * Return the attributes Collection.
-     *
-     * @return \Valkyrja\Contracts\Support\Collection
-     */
-    public function attributes() : CollectionContract
-    {
-        if (! $this->attributes) {
-            $this->setAttributes();
-        }
-
-        return $this->attributes;
-    }
-
-    /**
-     * Set the attributes.
-     *
-     * @param array $attributes
-     *
-     * @return Request
-     */
-    public function setAttributes(array $attributes = []) : Request
-    {
-        $this->attributes = new Collection($attributes);
-
-        return $this;
-    }
-
-    /**
-     * Return the COOKIES Collection.
-     *
-     * @return \Valkyrja\Contracts\Http\Cookies
-     */
-    public function cookies() : CookiesContract
-    {
-        if (! $this->cookies) {
-            $this->setCookies();
-        }
-
-        return $this->cookies;
-    }
-
-    /**
-     * Set the COOKIES parameters.
-     *
-     * @param array $cookies
-     *
-     * @return Request
-     */
-    public function setCookies(array $cookies = []) : Request
-    {
-        $this->cookies = new Cookies($cookies);
-
-        return $this;
-    }
-
-    /**
-     * Return the FILES Collection.
-     *
-     * @return \Valkyrja\Contracts\Http\Files
-     */
-    public function files()
-    {
-        if (! $this->files) {
-            $this->setFiles();
-        }
-
-        return $this->files;
-    }
-
-    /**
-     * Set the FILES parameters.
-     *
-     * @param array $files
-     *
-     * @return Request
-     */
-    public function setFiles(array $files = [])
-    {
-        $this->files = new Files($files);
-
-        return $this;
-    }
-
-    /**
-     * Return the SERVER Collection.
-     *
-     * @return \Valkyrja\Contracts\Http\Server
-     */
-    public function server()
-    {
-        if (! $this->server) {
-            $this->setServer();
-        }
-
-        return $this->server;
-    }
-
-    /**
-     * Set the SERVER parameters.
-     *
-     * @param array $server
-     *
-     * @return Request
-     */
-    public function setServer(array $server = [])
-    {
-        $this->server = new Server($server);
-
-        return $this;
-    }
-
-    /**
-     * Return the headers Collection.
-     *
-     * @return \Valkyrja\Contracts\Http\Headers
-     */
-    public function headers()
-    {
-        if (! $this->headers) {
-            $this->setHeaders();
-        }
-
-        return $this->headers;
-    }
-
-    /**
-     * Set the headers parameters.
-     *
-     * @param array $headers
-     *
-     * @return Request
-     */
-    public function setHeaders(array $headers = [])
-    {
-        $headers = $headers
-            ? $headers
-            : $this->server()
-                   ->getHeaders();
-
-        $this->headers = new Headers($headers);
-
-        return $this;
-    }
-
-    /**
-     * Get the content.
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set the content.
-     *
-     * @param string $content
-     *
-     * @return Request
-     */
-    public function setContent(string $content = null) : Request
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the languages.
-     *
-     * @return array
-     */
-    public function getLanguages()
-    {
-        return $this->languages;
-    }
-
-    /**
-     * Set the languages.
-     *
-     * @param array $languages
-     *
-     * @return Request
-     */
-    public function setLanguages(array $languages = []) : Request
-    {
-        $this->languages = $languages;
-
-        return $this;
-    }
-
-    /**
-     * Get the charsets.
-     *
-     * @return array
-     */
-    public function getCharsets()
-    {
-        return $this->charsets;
-    }
-
-    /**
-     * Set the charsets.
-     *
-     * @param array $charsets
-     *
-     * @return Request
-     */
-    public function setCharsets(array $charsets = []) : Request
-    {
-        $this->charsets = $charsets;
-
-        return $this;
-    }
-
-    /**
-     * Get the encodings.
-     *
-     * @return array
-     */
-    public function getEncodings()
-    {
-        return $this->encodings;
-    }
-
-    /**
-     * Set the encodings.
-     *
-     * @param array $encodings
-     *
-     * @return Request
-     */
-    public function setEncodings(array $encodings = []) : Request
-    {
-        $this->encodings = $encodings;
-
-        return $this;
-    }
-
-    /**
-     * Get the acceptable content types.
-     *
-     * @return array
-     */
-    public function getAcceptableContentTypes()
-    {
-        return $this->acceptableContentTypes;
-    }
-
-    /**
-     * Set the acceptable content types.
-     *
-     * @param array $acceptableContentTypes
-     *
-     * @return Request
-     */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []) : Request
-    {
-        $this->acceptableContentTypes = $acceptableContentTypes;
-
-        return $this;
-    }
-
-    /**
-     * Gets a "parameter" value from any bag.
-     *
-     * This method is mainly useful for libraries that want to provide some flexibility. If you don't need the
-     * flexibility in controllers, it is better to explicitly get request parameters from the appropriate
-     * public property instead (attributes, query, request).
-     *
-     * Order of precedence: PATH (routing placeholders or custom attributes), GET, BODY
-     *
-     * @param string $key     the key
-     * @param mixed  $default the default value if the parameter key does not exist
-     *
-     * @return mixed
-     */
-    public function get($key, $default = null)
-    {
-        if ($this !== $result = $this->attributes->get($key, $this)) {
-            return $result;
-        }
-
-        if ($this !== $result = $this->query->get($key, $this)) {
-            return $result;
-        }
-
-        if ($this !== $result = $this->request->get($key, $this)) {
-            return $result;
-        }
-
-        return $default;
-    }
-
-    /**
-     * Gets the Session.
-     *
-     * @return SessionInterface The session
-     */
-    public function getSession()
-    {
-        return $this->session;
-    }
-
-    /**
-     * Whether the request contains a Session which was started in one of the
-     * previous requests.
-     *
-     * @return bool
-     */
-    public function hasPreviousSession()
-    {
-        // the check for $this->session avoids malicious users trying to fake a session cookie with proper name
-        return $this->hasSession() && $this->cookies->has($this->session->getName());
-    }
-
-    /**
-     * Whether the request contains a Session object.
-     *
-     * This method does not give any information about the state of the session object,
-     * like whether the session is started or not. It is just a way to check if this Request
-     * is associated with a Session instance.
-     *
-     * @return bool true when the Request contains a Session object, false otherwise
-     */
-    public function hasSession()
-    {
-        return null !== $this->session;
-    }
-
-    /**
-     * Sets the Session.
-     *
-     * @param SessionInterface $session The Session
-     */
-    public function setSession(SessionInterface $session)
-    {
-        $this->session = $session;
     }
 
     /**
@@ -713,18 +248,721 @@ class Request implements RequestContract
      *
      * @return string The request
      */
-    public function __toString() : string
+    public function __toString(): string
     {
-        try {
-            $content = $this->getContent();
-        }
-        catch (\LogicException $e) {
-            return trigger_error($e, E_USER_ERROR);
+        return
+            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL'))
+            . "\r\n"
+            . $this->headers
+            . "\r\n"
+            . $this->getContent();
+    }
+
+    /**
+     * Return the GET Collection.
+     *
+     * @return \Valkyrja\Contracts\Support\Collection
+     */
+    public function query(): CollectionContract
+    {
+        if (! $this->query) {
+            $this->setQuery();
         }
 
-        return
-            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL')) . "\r\n" .
-            $this->headers . "\r\n" .
-            $content;
+        return $this->query;
+    }
+
+    /**
+     * Set the GET parameters.
+     *
+     * @param array $query
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setQuery(array $query = []): RequestContract
+    {
+        $this->query = new Query($query);
+
+        return $this;
+    }
+
+    /**
+     * Return the POST Collection.
+     *
+     * @return \Valkyrja\Contracts\Support\Collection
+     */
+    public function request(): CollectionContract
+    {
+        if (! $this->request) {
+            $this->setRequest();
+        }
+
+        return $this->request;
+    }
+
+    /**
+     * Set the POST parameters.
+     *
+     * @param array $request
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setRequest(array $request = []): RequestContract
+    {
+        $this->request = new Collection($request);
+
+        return $this;
+    }
+
+    /**
+     * Return the attributes Collection.
+     *
+     * @return \Valkyrja\Contracts\Support\Collection
+     */
+    public function attributes(): CollectionContract
+    {
+        if (! $this->attributes) {
+            $this->setAttributes();
+        }
+
+        return $this->attributes;
+    }
+
+    /**
+     * Set the attributes.
+     *
+     * @param array $attributes
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setAttributes(array $attributes = []): RequestContract
+    {
+        $this->attributes = new Collection($attributes);
+
+        return $this;
+    }
+
+    /**
+     * Return the COOKIES Collection.
+     *
+     * @return \Valkyrja\Contracts\Http\Cookies
+     */
+    public function cookies(): CookiesContract
+    {
+        if (! $this->cookies) {
+            $this->setCookies();
+        }
+
+        return $this->cookies;
+    }
+
+    /**
+     * Set the COOKIES parameters.
+     *
+     * @param array $cookies
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setCookies(array $cookies = []): RequestContract
+    {
+        $this->cookies = new Cookies($cookies);
+
+        return $this;
+    }
+
+    /**
+     * Return the FILES Collection.
+     *
+     * @return \Valkyrja\Contracts\Http\Files
+     */
+    public function files(): FilesContract
+    {
+        if (! $this->files) {
+            $this->setFiles();
+        }
+
+        return $this->files;
+    }
+
+    /**
+     * Set the FILES parameters.
+     *
+     * @param array $files
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setFiles(array $files = []): RequestContract
+    {
+        $this->files = new Files($files);
+
+        return $this;
+    }
+
+    /**
+     * Return the SERVER Collection.
+     *
+     * @return \Valkyrja\Contracts\Http\Server
+     */
+    public function server(): ServerContract
+    {
+        if (! $this->server) {
+            $this->setServer();
+        }
+
+        return $this->server;
+    }
+
+    /**
+     * Set the SERVER parameters.
+     *
+     * @param array $server
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setServer(array $server = []): RequestContract
+    {
+        $server = $server
+            ?: $_SERVER;
+
+        $this->server = new Server($server);
+
+        return $this;
+    }
+
+    /**
+     * Return the headers Collection.
+     *
+     * @return \Valkyrja\Contracts\Http\Headers
+     */
+    public function headers():HeadersContract
+    {
+        if (! $this->headers) {
+            $this->setHeaders();
+        }
+
+        return $this->headers;
+    }
+
+    /**
+     * Set the headers parameters.
+     *
+     * @param array $headers
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setHeaders(array $headers = []): RequestContract
+    {
+        $headers = $headers
+            ?: $this->server()->getHeaders();
+
+        $this->headers = new Headers($headers);
+
+        return $this;
+    }
+
+    /**
+     * Get the content.
+     *
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set the content.
+     *
+     * @param string $content
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setContent(string $content = null): RequestContract
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the languages.
+     *
+     * @return array
+     */
+    public function getLanguages(): array
+    {
+        return $this->languages;
+    }
+
+    /**
+     * Set the languages.
+     *
+     * @param array $languages
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setLanguages(array $languages = []): RequestContract
+    {
+        $this->languages = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Get the charsets.
+     *
+     * @return array
+     */
+    public function getCharsets(): array
+    {
+        return $this->charsets;
+    }
+
+    /**
+     * Set the charsets.
+     *
+     * @param array $charsets
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setCharsets(array $charsets = []): RequestContract
+    {
+        $this->charsets = $charsets;
+
+        return $this;
+    }
+
+    /**
+     * Get the encodings.
+     *
+     * @return array
+     */
+    public function getEncodings(): array
+    {
+        return $this->encodings;
+    }
+
+    /**
+     * Set the encodings.
+     *
+     * @param array $encodings
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setEncodings(array $encodings = []): RequestContract
+    {
+        $this->encodings = $encodings;
+
+        return $this;
+    }
+
+    /**
+     * Get the acceptable content types.
+     *
+     * @return array
+     */
+    public function getAcceptableContentTypes(): array
+    {
+        return $this->acceptableContentTypes;
+    }
+
+    /**
+     * Set the acceptable content types.
+     *
+     * @param array $acceptableContentTypes
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []): RequestContract
+    {
+        $this->acceptableContentTypes = $acceptableContentTypes;
+
+        return $this;
+    }
+
+    /**
+     * Gets a "parameter" value from any bag.
+     *
+     * @param string $key     the key
+     * @param mixed  $default the default value if the parameter key does not exist
+     *
+     * @return mixed
+     */
+    public function get(string $key, $default = null) // : mixed
+    {
+        if ($this !== $result = $this->attributes->get($key, $this)) {
+            return $result;
+        }
+
+        if ($this !== $result = $this->query->get($key, $this)) {
+            return $result;
+        }
+
+        if ($this !== $result = $this->request->get($key, $this)) {
+            return $result;
+        }
+
+        return $default;
+    }
+
+    /**
+     * Returns current script name.
+     *
+     * @return string
+     */
+    public function getScriptName(): string
+    {
+        return $this->server->get('SCRIPT_NAME', $this->server->get('ORIG_SCRIPT_NAME', ''));
+    }
+
+    /**
+     * Returns the path being requested relative to the executed script.
+     *
+     * @return string
+     */
+    public function getPath(): string
+    {
+        if (null === $this->path) {
+            $this->path = $this->server()->get('REQUEST_URI');
+        }
+
+        return $this->path;
+    }
+
+    /**
+     * Gets the request's scheme.
+     *
+     * @return string
+     */
+    public function getScheme(): string
+    {
+        return $this->isSecure()
+            ? 'https'
+            : 'http';
+    }
+
+    /**
+     * Returns the port on which the request is made.
+     *
+     * This method can read the client port from the "X-Forwarded-Port" header
+     * when trusted proxies were set via "setTrustedProxies()".
+     *
+     * The "X-Forwarded-Port" header must contain the client port.
+     *
+     * If your reverse proxy uses a different header name than "X-Forwarded-Port",
+     * configure it via "setTrustedHeaderName()" with the "client-port" key.
+     *
+     * @return string
+     */
+    public function getPort(): string
+    {
+        return $this->server->get('SERVER_PORT');
+    }
+
+    /**
+     * Returns the user.
+     *
+     * @return string
+     */
+    public function getUser(): string
+    {
+        return $this->headers->get('PHP_AUTH_USER');
+    }
+
+    /**
+     * Returns the password.
+     *
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->headers->get('PHP_AUTH_PW');
+    }
+
+    /**
+     * Gets the user info.
+     *
+     * @return string
+     */
+    public function getUserInfo(): string
+    {
+        $userinfo = $this->getUser();
+        $pass = $this->getPassword();
+
+        if ($pass) {
+            $userinfo .= ':' . $pass;
+        }
+
+        return $userinfo;
+    }
+
+    /**
+     * Returns the HTTP host being requested.
+     *
+     * The port name will be appended to the host if it's non-standard.
+     *
+     * @return string
+     */
+    public function getHttpHost(): string
+    {
+        $scheme = $this->getScheme();
+        $port = $this->getPort();
+
+        if (('http' === $scheme && $port === 80) || ('https' === $scheme && $port === 443)) {
+            return $this->getHost();
+        }
+
+        return $this->getHost() . ':' . $port;
+    }
+
+    /**
+     * Returns the requested URI (path and query string).
+     *
+     * @return string
+     */
+    public function getRequestUri(): string
+    {
+        if (null === $this->requestUri) {
+            $this->requestUri = $this->getPath() . $this->query;
+        }
+
+        return $this->requestUri;
+    }
+
+    /**
+     * Gets the scheme and HTTP host.
+     *
+     * @return string
+     */
+    public function getSchemeAndHttpHost(): string
+    {
+        return $this->getScheme() . '://' . $this->getHttpHost();
+    }
+
+    /**
+     * Checks whether the request is secure or not.
+     *
+     * This method can read the client protocol from the "X-Forwarded-Proto" header
+     * when trusted proxies were set via "setTrustedProxies()".
+     *
+     * The "X-Forwarded-Proto" header must contain the protocol: "https" or "http".
+     *
+     * If your reverse proxy uses a different header name than "X-Forwarded-Proto"
+     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()" with
+     * the "client-proto" key.
+     *
+     * @return bool
+     */
+    public function isSecure(): bool
+    {
+        $https = $this->server->get('HTTPS');
+
+        return $https && 'off' !== strtolower($https);
+    }
+
+    /**
+     * Returns the host name.
+     *
+     * @return string
+     */
+    public function getHost()
+    {
+        return $this->headers->get('Client-Host');
+    }
+
+    /**
+     * Sets the request method.
+     *
+     * @param string $method
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setMethod(string $method): RequestContract
+    {
+        $this->method = null;
+        $this->server->set('REQUEST_METHOD', $method);
+
+        return $this;
+    }
+
+    /**
+     * Gets the request "intended" method.
+     *
+     * @return string The request method
+     *
+     * @see getRealMethod()
+     */
+    public function getMethod(): string
+    {
+        if (null === $this->method) {
+            $this->method = strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
+
+            if (RequestMethod::POST === $this->method) {
+                if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
+                    $this->method = strtoupper($method);
+                }
+                elseif (self::$httpMethodParameterOverride) {
+                    $this->method = strtoupper($this->request->get('_method', $this->query->get('_method', RequestMethod::POST)));
+                }
+            }
+        }
+
+        return $this->method;
+    }
+
+    /**
+     * Gets the "real" request method.
+     *
+     * @return string The request method
+     *
+     * @see getMethod()
+     */
+    public function getRealMethod(): string
+    {
+        return strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
+    }
+
+    /**
+     * Gets the mime type associated with the format.
+     *
+     * @param string $format The format
+     *
+     * @return string
+     */
+    public function getMimeType(string $format): string
+    {
+        return isset(static::$formats[$format])
+            ? static::$formats[$format][0]
+            : null;
+    }
+
+    /**
+     * Gets the mime types associated with the format.
+     *
+     * @param string $format The format
+     *
+     * @return array
+     */
+    public static function getMimeTypes(string $format): array
+    {
+        return static::$formats[$format] ?? [];
+    }
+
+    /**
+     * Gets the format associated with the mime type.
+     *
+     * @param string $mimeType The associated mime type
+     *
+     * @return string
+     */
+    public function getFormat(string $mimeType): string
+    {
+        $canonicalMimeType = null;
+
+        if (false !== $pos = strpos($mimeType, ';')) {
+            $canonicalMimeType = substr($mimeType, 0, $pos);
+        }
+
+        foreach (static::FORMATS as $format => $mimeTypes) {
+            if (in_array($mimeType, $mimeTypes, true)) {
+                return $format;
+            }
+
+            if (null !== $canonicalMimeType && in_array($canonicalMimeType, $mimeTypes, true)) {
+                return $format;
+            }
+        }
+
+        return 'html';
+    }
+
+    /**
+     * Gets the request format.
+     *
+     * @param string $default The default format
+     *
+     * @return string
+     */
+    public function getRequestFormat(string $default = 'html'): string
+    {
+        if (null === $this->format) {
+            $this->format = $this->attributes->get('_format', $default);
+        }
+
+        return $this->format;
+    }
+
+    /**
+     * Sets the request format.
+     *
+     * @param string $format The request format
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setRequestFormat(string $format): RequestContract
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * Gets the format associated with the request.
+     *
+     * @return string
+     */
+    public function getContentType(): string
+    {
+        return $this->getFormat($this->headers->get('Content-Type'));
+    }
+
+    /**
+     * Get the locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale ?? $this->defaultLocale;
+    }
+
+    /**
+     * Checks if the request method is of specified type.
+     *
+     * @param string $method Uppercase request method (GET, POST etc)
+     *
+     * @return bool
+     */
+    public function isMethod(string $method): bool
+    {
+        return $this->getMethod() === strtoupper($method);
+    }
+
+    /**
+     * Gets the Etags.
+     *
+     * @return array
+     */
+    public function getETags(): array
+    {
+        return preg_split('/\s*,\s*/', $this->headers->get('If-None-Match'), null, PREG_SPLIT_NO_EMPTY);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNoCache(): bool
+    {
+        return 'no-cache' === $this->headers->get('Pragma');
+    }
+
+    /**
+     * Is this an AJAX request?
+     *
+     * @return bool
+     */
+    public function isXmlHttpRequest(): bool
+    {
+        return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
     }
 }

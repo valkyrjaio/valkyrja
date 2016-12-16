@@ -12,7 +12,6 @@
 namespace Valkyrja\Contracts\Http;
 
 use DateTime;
-use Valkyrja\Contracts\View\View;
 
 /**
  * Interface Response
@@ -221,22 +220,6 @@ interface Response
      * @return string
      */
     public function getContent(): string;
-
-    /**
-     * Set the view for the response.
-     *
-     * @param \Valkyrja\Contracts\View\View $view The view to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setView(View $view): Response;
-
-    /**
-     * Get the view for the response.
-     *
-     * @return \Valkyrja\Contracts\View\View
-     */
-    public function view(): View;
 
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).

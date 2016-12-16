@@ -74,6 +74,8 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  * something other than a blank screen.
  *
  */
+dd('<pre>', $_SERVER);
+$request = \Valkyrja\Http\Request::createFromGlobals();
 
 $app->router()->setupRoutes();
 

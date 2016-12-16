@@ -7,8 +7,6 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * Based off work by Fabien Potencier for symfony/http-foundation/Response.php
  */
 
 namespace Valkyrja\Http;
@@ -19,7 +17,7 @@ use DateTimeZone;
 use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\View\View;
+use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 
 /**
  * Class Response
@@ -108,6 +106,8 @@ class Response implements ResponseContract
         $this->setContent($content);
         $this->setStatusCode($status);
         $this->setProtocolVersion('1.0');
+
+        $this->cookies = new Cookies();
     }
 
     /**
@@ -133,44 +133,52 @@ class Response implements ResponseContract
      */
     public function sendHeaders(): ResponseContract
     {
-        // headers have already been sent by the developer
+        // Headers have already been sent so there's nothing to do here
         if (headers_sent()) {
             return $this;
         }
 
+        // If there is no date header
         if (! $this->headers->has('Date')) {
+            // Set it with the current time
             $this->setDateHeader(DateTime::createFromFormat('U', time()));
         }
 
+        // Iterate through all the headers
         foreach ($this->headers->all() as $name => $value) {
+            // Set the headers
             header($name . ': ' . $value, false, $this->statusCode);
         }
 
-        // status
+        // Set the status of the response
         header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
 
-        // cookies
+        // Set the response cookies
         foreach ($this->cookies->all() as $cookie) {
-            if ($cookie['raw']) {
+            // If this is a raw cookie
+            if ($cookie->isRaw()) {
+                // Set the raw cookie
                 setrawcookie(
-                    $cookie['name'],
-                    $cookie['value'],
-                    $cookie['expire'],
-                    $cookie['path'],
-                    $cookie['domain'],
-                    $cookie['secure'],
-                    $cookie['httpOnly']
+                    $cookie->getName(),
+                    $cookie->getValue(),
+                    $cookie->getExpire(),
+                    $cookie->getPath(),
+                    $cookie->getDomain(),
+                    $cookie->isSecure(),
+                    $cookie->isHttpOnly()
                 );
             }
+            // Otherwise
             else {
+                // Set the cookie normally
                 setcookie(
-                    $cookie['name'],
-                    $cookie['value'],
-                    $cookie['expire'],
-                    $cookie['path'],
-                    $cookie['domain'],
-                    $cookie['secure'],
-                    $cookie['httpOnly']
+                    $cookie->getName(),
+                    $cookie->getValue(),
+                    $cookie->getExpire(),
+                    $cookie->getPath(),
+                    $cookie->getDomain(),
+                    $cookie->isSecure(),
+                    $cookie->isHttpOnly()
                 );
             }
         }
@@ -185,10 +193,6 @@ class Response implements ResponseContract
      */
     public function sendContent(): ResponseContract
     {
-        if (null !== $this->view && empty($this->content)) {
-            $this->content = $this->view->render();
-        }
-
         echo $this->content;
 
         return $this;
@@ -201,13 +205,19 @@ class Response implements ResponseContract
      */
     public function send(): ResponseContract
     {
+        // Send headers
         $this->sendHeaders()
+            // And content
              ->sendContent();
 
+        // If fastcgi is enabled
         if (function_exists('fastcgi_finish_request')) {
+            // Use it to finish the request
             fastcgi_finish_request();
         }
+        // Otherwise if this isn't a cli request
         elseif ('cli' !== PHP_SAPI) {
+            // Use an internal method to finish the request
             static::closeOutputBuffers(0, true);
         }
 
@@ -227,8 +237,19 @@ class Response implements ResponseContract
      */
     public function __toString(): string
     {
+        $cookies = '';
+
+        // Iterate through all the cookies
+        foreach ($this->cookies->all() as $cookie) {
+            // Set the cookie's string
+            $cookies .= 'Set-Cookie: '
+                . $cookie
+                . "\r\n";
+        }
+
         return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)
             . "\r\n"
+            . $cookies
             . $this->headers
             . "\r\n"
             . $this->getContent();
@@ -256,30 +277,6 @@ class Response implements ResponseContract
     public function getContent(): string
     {
         return $this->content;
-    }
-
-    /**
-     * Set the view for the response.
-     *
-     * @param \Valkyrja\Contracts\View\View $view The view to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setView(View $view): ResponseContract
-    {
-        $this->view = $view;
-
-        return $this;
-    }
-
-    /**
-     * Get the view for the response.
-     *
-     * @return \Valkyrja\Contracts\View\View
-     */
-    public function view(): View
-    {
-        return $this->view;
     }
 
     /**
@@ -317,26 +314,21 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @throws \InvalidArgumentException When the HTTP status code is not valid
+     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public function setStatusCode(int $code, string $text = null): ResponseContract
     {
-        $this->statusCode = $code = (int) $code;
+        $this->statusCode = $code;
 
+        // Check if the status code is valid
         if ($this->isInvalid()) {
-            throw new \InvalidArgumentException(sprintf('The HTTP status code "%s" is not valid.', $code));
+            throw new InvalidStatusCodeException(sprintf('The HTTP status code "%s" is not valid.', $code));
         }
 
+        // If no text was supplied
         if (null === $text) {
-            $statusTexts = static::STATUS_TEXTS;
-
-            $this->statusText = $statusTexts[$code] ?? 'unknown status';
-
-            return $this;
-        }
-
-        if (false === $text) {
-            $this->statusText = '';
+            // Set the status text from the status texts array
+            $this->statusText = static::STATUS_TEXTS[$code] ?? 'unknown status';
 
             return $this;
         }
@@ -389,13 +381,18 @@ class Response implements ResponseContract
      */
     public function setHeaders(array $headers = []): ResponseContract
     {
+        // If the headers have no been set yet
         if (null === $this->headers) {
+            // Set them to a new Headers collection
             $this->headers = new Headers();
         }
 
+        // Set all the headers with the array provided
         $this->headers->setAll($headers);
 
+        // If there is no cache control header
         if (! $this->headers->has('Cache-Control')) {
+            // Set it to an empty string
             $this->headers->set('Cache-Control', '');
         }
 
@@ -403,7 +400,7 @@ class Response implements ResponseContract
     }
 
     /**
-     * Get response headers object.
+     * Get response headers collection.
      *
      * @return \Valkyrja\Contracts\Http\Headers
      */
@@ -444,7 +441,7 @@ class Response implements ResponseContract
     }
 
     /**
-     * Get response cookies object.
+     * Get response cookies collection.
      *
      * @return \Valkyrja\Contracts\Http\Cookies
      */
@@ -618,7 +615,7 @@ class Response implements ResponseContract
     public function getAge(): int
     {
         if (null !== $age = $this->headers->get('Age')) {
-            return (int) $age;
+            return $age;
         }
 
         return max(
@@ -698,11 +695,11 @@ class Response implements ResponseContract
     public function getMaxAge(): int
     {
         if ($this->hasCacheControl('s-maxage')) {
-            return (int) $this->getCacheControl('s-maxage');
+            return $this->getCacheControl('s-maxage');
         }
 
         if ($this->hasCacheControl('max-age')) {
-            return (int) $this->getCacheControl('max-age');
+            return $this->getCacheControl('max-age');
         }
 
         if (null !== $this->getExpires()) {

@@ -62,6 +62,39 @@ interface RequestMethod
      */
     public const HEAD = 'HEAD';
 
+    /**
+     * Purge request method constant.
+     *
+     * @constant string
+     */
+    public const PURGE = 'PURGE';
+
+    /**
+     * Options request method constant.
+     *
+     * @constant string
+     */
+    public const OPTIONS = 'OPTIONS';
+
+    /**
+     * Trace request method constant.
+     *
+     * @constant string
+     */
+    public const TRACE = 'TRACE';
+
+    /**
+     * Connect request method constant.
+     *
+     * @constant string
+     */
+    public const CONNECT = 'CONNECT';
+
+    /**
+     * Accepted method types.
+     *
+     * @constant array
+     */
     public const ACCEPTED_TYPES = [
         self::GET,
         self::POST,

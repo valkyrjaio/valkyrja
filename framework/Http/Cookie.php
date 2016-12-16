@@ -14,6 +14,7 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\Cookie as CookieContract;
+use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 
 /**
  * Class Cookie
@@ -81,16 +82,26 @@ class Cookie implements CookieContract
     protected $raw;
 
     /**
+     * Whether the cookie will be available for cross-site requests.
+     *
+     * @var string
+     */
+    protected $sameSite;
+
+    /**
      * Cookie constructor.
      *
-     * @param string $name
-     * @param string $value
-     * @param int    $expire
-     * @param string $path
-     * @param string $domain
-     * @param bool   $secure
-     * @param bool   $httpOnly
-     * @param bool   $raw
+     * @param string $name     The cookie's name
+     * @param string $value    [optional] The cookie's value
+     * @param int    $expire   [optional] The time the cookie should expire
+     * @param string $path     [optional] The path the cookie is available to
+     * @param string $domain   [optional] The domain the cookie is available to
+     * @param bool   $secure   [optional] Whether the cookie should only be transmitted over a secure HTTPS connection
+     * @param bool   $httpOnly [optional] Whether the cookie will be made accessible only through the HTTP protocol
+     * @param bool   $raw      [optional] Whether the cookie value should be sent with no url encoding
+     * @param string $sameSite [optional] Whether the cookie will be available for cross-site requests
+     *
+     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
      */
     public function __construct(
         string $name,
@@ -100,7 +111,8 @@ class Cookie implements CookieContract
         string $domain = null,
         bool $secure = false,
         bool $httpOnly = true,
-        bool $raw = false
+        bool $raw = false,
+        string $sameSite = null
     )
     {
         $this->name = $name;
@@ -110,6 +122,55 @@ class Cookie implements CookieContract
         $this->domain = $domain;
         $this->secure = $secure;
         $this->raw = $raw;
+
+        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+            throw new InvalidSameSiteTypeException('The "sameSite" parameter value is not valid.');
+        }
+
+        $this->sameSite = $sameSite;
+    }
+
+    /**
+     * Returns the cookie as a string.
+     *
+     * @return string The cookie
+     */
+    public function __toString(): string
+    {
+        $str = urlencode($this->name) . '=';
+
+        if ('' === $this->value) {
+            $str .= 'deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001) . '; max-age=-31536001';
+        }
+        else {
+            $str .= urlencode($this->value);
+
+            if ($this->expire !== 0) {
+                $str .= '; expires=' . gmdate('D, d-M-Y H:i:s T', $this->expire) . '; max-age=' . $this->getMaxAge();
+            }
+        }
+
+        if ($this->path) {
+            $str .= '; path=' . $this->path;
+        }
+
+        if ($this->domain) {
+            $str .= '; domain=' . $this->domain;
+        }
+
+        if (true === $this->secure) {
+            $str .= '; secure';
+        }
+
+        if (true === $this->httpOnly) {
+            $str .= '; httponly';
+        }
+
+        if (null !== $this->sameSite) {
+            $str .= '; samesite=' . $this->sameSite;
+        }
+
+        return $str;
     }
 
     /**
@@ -147,7 +208,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set the cookie's value
+     * Set the cookie's value.
      *
      * @param string $value The value
      *
@@ -171,6 +232,18 @@ class Cookie implements CookieContract
     }
 
     /**
+     * Gets the max age of the cookie.
+     *
+     * @return int
+     */
+    public function getMaxAge(): int
+    {
+        return 0 !== $this->expire
+            ? $this->expire - time()
+            : 0;
+    }
+
+    /**
      * Set expire time for the cookie.
      *
      * @param int $expire The expire time
@@ -185,7 +258,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Get cookie's path.
+     * Get the path the cookie is available to.
      *
      * @return string
      */
@@ -195,7 +268,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set cookie's path.
+     * Set the path the cookie is available to.
      *
      * @param string $path The path
      *
@@ -209,7 +282,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Get cookie's domain.
+     * Get the domain the cookie is available to.
      *
      * @return string
      */
@@ -219,7 +292,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set cookie's domain.
+     * Set the domain the cookie is available to.
      *
      * @param string $domain The domain
      *
@@ -233,7 +306,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Is the cookie to be set on a secure server?
+     * Whether the cookie should only be transmitted over a secure HTTPS connection.
      *
      * @return bool
      */
@@ -243,7 +316,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set whether the cookie is set on a secure server.
+     * Set whether the cookie should only be transmitted over a secure HTTPS connection.
      *
      * @param bool $secure
      *
@@ -257,7 +330,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Is the cookie http only?
+     * Whether the cookie will be made accessible only through the HTTP protocol.
      *
      * @return bool
      */
@@ -267,7 +340,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set whether the cookie is http only.
+     * Set whether the cookie will be made accessible only through the HTTP protocol.
      *
      * @param bool $httpOnly
      *
@@ -281,7 +354,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Is this a raw cookie?
+     * Whether the cookie value should be sent with no url encoding.
      *
      * @return bool
      */
@@ -291,7 +364,7 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set whether the cookie is raw.
+     * Set whether the cookie value should be sent with no url encoding.
      *
      * @param bool $raw
      *
@@ -300,6 +373,30 @@ class Cookie implements CookieContract
     public function setRaw(bool $raw): CookieContract
     {
         $this->raw = $raw;
+
+        return $this;
+    }
+
+    /**
+     * Get whether the cookie will be available for cross-site requests.
+     *
+     * @return string
+     */
+    public function getSameSite(): string
+    {
+        return $this->sameSite;
+    }
+
+    /**
+     * Set whether the cookie will be available for cross-site requests.
+     *
+     * @param string $sameSite
+     *
+     * @return \Valkyrja\Contracts\Http\Cookie
+     */
+    public function setSameSite(string $sameSite): CookieContract
+    {
+        $this->sameSite = $sameSite;
 
         return $this;
     }

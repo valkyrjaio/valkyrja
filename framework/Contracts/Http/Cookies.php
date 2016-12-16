@@ -27,7 +27,7 @@ interface Cookies
      *
      * @param bool $asString [optional] Get the cookies as a string?
      *
-     * @return array
+     * @return \Valkyrja\Contracts\Http\Cookie[]
      */
     public function all(bool $asString = true): array;
 

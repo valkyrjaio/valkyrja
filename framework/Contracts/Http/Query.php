@@ -16,25 +16,13 @@ namespace Valkyrja\Contracts\Http;
 use Valkyrja\Contracts\Support\Collection;
 
 /**
- * Interface Headers
+ * Interface Query
  *
  * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */
-interface Headers extends Collection
+interface Query extends Collection
 {
-    /**
-     * Special HTTP headers that do not have the "HTTP_" prefix
-     *
-     * @var array
-     */
-    const SPECIAL_HEADERS = [
-        'CONTENT_TYPE',
-        'CONTENT_LENGTH',
-        'PHP_AUTH_USER',
-        'PHP_AUTH_PW',
-        'PHP_AUTH_DIGEST',
-        'AUTH_TYPE',
-    ];
+    //
 }

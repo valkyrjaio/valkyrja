@@ -5,13 +5,13 @@ namespace Valkyrja\Http\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidMethodTypeException
+ * Class InvalidSameSiteTypeException
  *
  * @package Valkyrja\Http\Exception
  *
  * @author  Melech Mizrachi
  */
-class InvalidMethodTypeException extends InvalidArgumentException
+class InvalidSameSiteTypeException extends InvalidArgumentException
 {
     //
 }

@@ -41,7 +41,7 @@ class Cookies implements CookiesContract
      *
      * @param bool $asString [optional] Get the cookies as a string?
      *
-     * @return array
+     * @return \Valkyrja\Contracts\Http\Cookie[]
      */
     public function all(bool $asString = true): array
     {
@@ -51,8 +51,11 @@ class Cookies implements CookiesContract
 
         $flattenedCookies = [];
 
+        /** @var array $path */
         foreach ($this->cookies as $path) {
+            /** @var array $cookies */
             foreach ($path as $cookies) {
+                /** @var \Valkyrja\Contracts\Http\Cookie $cookie */
                 foreach ($cookies as $cookie) {
                     $flattenedCookies[] = $cookie;
                 }
@@ -71,16 +74,7 @@ class Cookies implements CookiesContract
      */
     public function set(Cookie $cookie): CookiesContract
     {
-        $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = [
-            'name'     => $cookie->getName(),
-            'value'    => $cookie->getValue(),
-            'expire'   => $cookie->getExpire(),
-            'path'     => $cookie->getPath() ?? '/',
-            'domain'   => $cookie->getDomain(),
-            'secure'   => $cookie->isSecure(),
-            'httpOnly' => $cookie->isHttpOnly(),
-            'raw'      => $cookie->isRaw(),
-        ];
+        $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
 
         return $this;
     }
