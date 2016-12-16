@@ -31,7 +31,6 @@ interface HttpException
      * @param string     $message    [optional] The Exception message to throw
      * @param \Exception $previous   [optional] The previous exception used for the exception chaining
      * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
@@ -39,7 +38,6 @@ interface HttpException
         ?string $message = null,
         ?Exception $previous = null,
         array $headers = [],
-        ?string $view = null,
         int $code = 0
     );
 
@@ -56,11 +54,4 @@ interface HttpException
      * @return array
      */
     public function getHeaders() : array;
-
-    /**
-     * Get the headers set for this exception.
-     *
-     * @return string
-     */
-    public function getView() : string;
 }

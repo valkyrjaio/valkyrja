@@ -23,20 +23,20 @@ if (! function_exists('app')) {
 
 if (! function_exists('abort')) {
     /**
-     * Throw an HttpException with the given data.
+     * Abort the application due to error.
      *
-     * @param int    $code    The status code to use
-     * @param string $message [optional] The message or data content to use
-     * @param array  $headers [optional] The headers to set
-     * @param string $view    [optional] The view template name to use
+     * @param int    $statusCode The status code to use
+     * @param string $message    [optional] The Exception message to throw
+     * @param array  $headers    [optional] The headers to send
+     * @param int    $code       [optional] The Exception code
      *
      * @return void
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    function abort(int $code, string $message = '', array $headers = [], string $view = null) : void
+    public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void
     {
-        app()->abort($code, $message, $headers, $view);
+        app()->abort($statusCode, $message, $headers, $code);
     }
 }
 
@@ -255,20 +255,6 @@ if (! function_exists('appPath')) {
     function appPath(string $path = null) : string
     {
         return Valkyrja\Support\Directory::appPath($path);
-    }
-}
-
-if (! function_exists('cachePath')) {
-    /**
-     * Helper function to get cache path.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    function cachePath(string $path = null) : string
-    {
-        return Valkyrja\Support\Directory::cachePath($path);
     }
 }
 

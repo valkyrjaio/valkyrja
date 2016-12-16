@@ -110,7 +110,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Application
      */
-    public static function app() : ApplicationContract
+    public static function app(): ApplicationContract
     {
         return static::$app;
     }
@@ -120,7 +120,7 @@ class Application implements ApplicationContract
      *
      * @return string
      */
-    public function version() : string
+    public function version(): string
     {
         return static::VERSION;
     }
@@ -130,7 +130,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Container\Container
      */
-    public function container() : ContainerContract
+    public function container(): ContainerContract
     {
         return $this->container;
     }
@@ -140,7 +140,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
      */
-    public function config() : ConfigContract
+    public function config(): ConfigContract
     {
         return $this->config;
     }
@@ -150,7 +150,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
-    public function env() : EnvContract
+    public function env(): EnvContract
     {
         return $this->config()->env;
     }
@@ -160,7 +160,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Routing\Router
      */
-    public function router() : Router
+    public function router(): Router
     {
         return $this->container->get(Router::class);
     }
@@ -174,7 +174,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response(string $content = '', int $status = 200, array $headers = []) : Response
+    public function response(string $content = '', int $status = 200, array $headers = []): Response
     {
         $response = $this->container->get(Response::class);
 
@@ -186,7 +186,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\ResponseBuilder
      */
-    public function responseBuilder() : ResponseBuilder
+    public function responseBuilder(): ResponseBuilder
     {
         return $this->container->get(ResponseBuilder::class);
     }
@@ -199,7 +199,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view(string $template = '', array $variables = []) : View
+    public function view(string $template = '', array $variables = []): View
     {
         return $this->container->get(
             View::class,
@@ -215,7 +215,7 @@ class Application implements ApplicationContract
      *
      * @return string
      */
-    public function environment() : string
+    public function environment(): string
     {
         return $this->config()->app->env ?? 'production';
     }
@@ -225,7 +225,7 @@ class Application implements ApplicationContract
      *
      * @return string
      */
-    public function debug() : string
+    public function debug(): string
     {
         return $this->config()->app->debug ?? false;
     }
@@ -235,7 +235,7 @@ class Application implements ApplicationContract
      *
      * @return bool
      */
-    public function isTwigEnabled() : bool
+    public function isTwigEnabled(): bool
     {
         return $this->config()->views->twig->enabled ?? false;
     }
@@ -245,7 +245,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setTimezone() : void
+    public function setTimezone(): void
     {
         date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
     }
@@ -255,7 +255,7 @@ class Application implements ApplicationContract
      *
      * @return bool
      */
-    public function isCompiled() : bool
+    public function isCompiled(): bool
     {
         return $this->isCompiled;
     }
@@ -265,7 +265,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setCompiled() : void
+    public function setCompiled(): void
     {
         $this->isCompiled = true;
     }
@@ -273,18 +273,18 @@ class Application implements ApplicationContract
     /**
      * Abort the application due to error.
      *
-     * @param int    $code    [optional] The status code to use
-     * @param string $message [optional] The message or data content to use
-     * @param array  $headers [optional] The headers to set
-     * @param string $view    [optional] The view template name to use
+     * @param int    $statusCode The status code to use
+     * @param string $message    [optional] The Exception message to throw
+     * @param array  $headers    [optional] The headers to send
+     * @param int    $code       [optional] The Exception code
      *
      * @return void
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void
+    public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void
     {
-        throw new HttpException($code, $message, null, $headers, $view);
+        throw new HttpException($statusCode, $message, null, $headers, $code);
     }
 
     /**
@@ -294,7 +294,7 @@ class Application implements ApplicationContract
      *
      * @throws \Exception
      */
-    public function run() : void
+    public function run(): void
     {
         // Dispatch the request and send the response
         $this->router()->dispatch()->send();
@@ -307,7 +307,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function register(string $serviceProvider) : void
+    public function register(string $serviceProvider): void
     {
         // Create a new instance of the service provider
         new $serviceProvider($this);

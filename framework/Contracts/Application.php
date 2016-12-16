@@ -158,16 +158,16 @@ interface Application
     /**
      * Abort the application due to error.
      *
-     * @param int    $code    [optional] The status code to use
-     * @param string $message [optional] The message or data content to use
-     * @param array  $headers [optional] The headers to set
-     * @param string $view    [optional] The view template name to use
+     * @param int    $statusCode The status code to use
+     * @param string $message    [optional] The Exception message to throw
+     * @param array  $headers    [optional] The headers to send
+     * @param int    $code       [optional] The Exception code
      *
      * @return void
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $code = 404, string $message = '', array $headers = [], string $view = null) : void;
+    public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void;
 
     /**
      * Run the application.

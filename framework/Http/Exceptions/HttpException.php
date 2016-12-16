@@ -56,7 +56,6 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      * @param string     $message    [optional] The Exception message to throw
      * @param \Exception $previous   [optional] The previous exception used for the exception chaining
      * @param array      $headers    [optional] The headers to send
-     * @param string     $view       [optional] The view template name to use
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
@@ -64,13 +63,11 @@ class HttpException extends RuntimeException implements HttpExceptionContract
         ?string $message = null,
         ?Exception $previous = null,
         array $headers = [],
-        ?string $view = null,
         int $code = 0
     )
     {
         $this->statusCode = $statusCode;
         $this->headers = $headers;
-        $this->view = $view;
 
         parent::__construct($message, $code, $previous);
     }
@@ -93,15 +90,5 @@ class HttpException extends RuntimeException implements HttpExceptionContract
     public function getHeaders() : array
     {
         return $this->headers;
-    }
-
-    /**
-     * Get the headers set for this exception.
-     *
-     * @return string
-     */
-    public function getView() : string
-    {
-        return $this->view;
     }
 }
