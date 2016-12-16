@@ -204,7 +204,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function create(string $content = '', int $status = 200, array $headers = []) : Response;
+    public static function create(string $content = '', int $status = 200, array $headers = []): Response;
 
     /**
      * Set the content for the response.
@@ -213,14 +213,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setContent(string $content) : Response;
+    public function setContent(string $content): Response;
 
     /**
      * Get the content for the response.
      *
      * @return string
      */
-    public function getContent() : string;
+    public function getContent(): string;
 
     /**
      * Set the view for the response.
@@ -229,14 +229,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setView(View $view) : Response;
+    public function setView(View $view): Response;
 
     /**
      * Get the view for the response.
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view() : View;
+    public function view(): View;
 
     /**
      * Sets the HTTP protocol version (1.0 or 1.1).
@@ -245,14 +245,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setProtocolVersion(string $version = '1.0') : Response;
+    public function setProtocolVersion(string $version = '1.0'): Response;
 
     /**
      * Gets the HTTP protocol version.
      *
      * @return string
      */
-    public function getProtocolVersion() : string;
+    public function getProtocolVersion(): string;
 
     /**
      * Sets the response status code.
@@ -267,14 +267,14 @@ interface Response
      *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function setStatusCode(int $code, string $text = null) : Response;
+    public function setStatusCode(int $code, string $text = null): Response;
 
     /**
      * Retrieves the status code for the current web response.
      *
      * @return int Status code
      */
-    public function getStatusCode() : int;
+    public function getStatusCode(): int;
 
     /**
      * Sets the response charset.
@@ -283,14 +283,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCharset(string $charset) : Response;
+    public function setCharset(string $charset): Response;
 
     /**
      * Retrieves the response charset.
      *
      * @return string Character set
      */
-    public function getCharset() : string;
+    public function getCharset(): string;
 
     /**
      * Set response headers.
@@ -299,14 +299,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setHeaders(array $headers = []) : Response;
+    public function setHeaders(array $headers = []): Response;
 
     /**
-     * Get all response headers.
+     * Get response headers object.
      *
-     * @return Headers
+     * @return \Valkyrja\Contracts\Http\Headers
      */
-    public function headers() : Headers;
+    public function headers(): Headers;
 
     /**
      * Returns the Date header as a DateTime instance.
@@ -315,7 +315,7 @@ interface Response
      *
      * @throws \RuntimeException When the header is not parseable
      */
-    public function getDateHeader() : DateTime;
+    public function getDateHeader(): DateTime;
 
     /**
      * Sets the Date header.
@@ -324,54 +324,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setDateHeader(DateTime $date) : Response;
+    public function setDateHeader(DateTime $date): Response;
 
     /**
-     * Returns an array with all cookies.
+     * Get response cookies object.
      *
-     * @param bool $asString [optional] Get the cookies as a string?
-     *
-     * @return array
+     * @return \Valkyrja\Contracts\Http\Cookies
      */
-    public function getCookies(bool $asString = true) : array;
-
-    /**
-     * Set a response cookie.
-     *
-     * @param string $name     Cookie name
-     * @param string $value    Cookie value
-     * @param int    $expire   Cookie expires time
-     * @param string $path     Cookie path
-     * @param string $domain   Cookie domain
-     * @param bool   $secure   Cookie http(s)
-     * @param bool   $httpOnly Cookie http only?
-     * @param bool   $raw      Cookie raw
-     * @param string $sameSite Cookie same site?
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setCookie(
-        string $name,
-        string $value = null,
-        int $expire = 0,
-        string $path = '/',
-        string $domain = null,
-        bool $secure = false,
-        bool $httpOnly = true,
-        bool $raw = false,
-        string $sameSite = null
-    ) : Response;
-
-    /**
-     * Removes a cookie from the array, but does not unset it in the browser.
-     *
-     * @param string $name   Cookie name
-     * @param string $path   [optional] Cookie path
-     * @param string $domain [optional] Cookie domain
-     *
-     * @return void
-     */
-    public function removeCookie(string $name, string $path = '/', string $domain = null) : void;
+    public function cookies(): Cookies;
 
     /**
      * Set a response cache control.
@@ -381,7 +341,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function addCacheControl(string $name, string $value = null) : Response;
+    public function addCacheControl(string $name, string $value = null): Response;
 
     /**
      * Get a response cache control.
@@ -390,7 +350,7 @@ interface Response
      *
      * @return string
      */
-    public function getCacheControl(string $name) : string;
+    public function getCacheControl(string $name): string;
 
     /**
      * Check if a response cache control exists.
@@ -399,7 +359,7 @@ interface Response
      *
      * @return bool
      */
-    public function hasCacheControl(string $name) : bool;
+    public function hasCacheControl(string $name): bool;
 
     /**
      * Remove a response cache control.
@@ -408,7 +368,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function removeCacheControl(string $name) : Response;
+    public function removeCacheControl(string $name): Response;
 
     /**
      * Returns true if the response is worth caching under any circumstance.
@@ -421,7 +381,7 @@ interface Response
      *
      * @return bool true if the response is worth caching, false otherwise
      */
-    public function isCacheable() : bool;
+    public function isCacheable(): bool;
 
     /**
      * Returns true if the response is "fresh".
@@ -432,7 +392,7 @@ interface Response
      *
      * @return bool true if the response is fresh, false otherwise
      */
-    public function isFresh() : bool;
+    public function isFresh(): bool;
 
     /**
      * Returns true if the response includes headers that can be used to validate
@@ -440,7 +400,7 @@ interface Response
      *
      * @return bool true if the response is validateable, false otherwise
      */
-    public function isValidateable() : bool;
+    public function isValidateable(): bool;
 
     /**
      * Marks the response as "private".
@@ -449,7 +409,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPrivate() : Response;
+    public function setPrivate(): Response;
 
     /**
      * Marks the response as "public".
@@ -458,28 +418,28 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPublic() : Response;
+    public function setPublic(): Response;
 
     /**
      * Returns the age of the response.
      *
      * @return int The age of the response in seconds
      */
-    public function getAge() : int;
+    public function getAge(): int;
 
     /**
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function expire() : Response;
+    public function expire(): Response;
 
     /**
      * Returns the value of the Expires header as a DateTime instance.
      *
      * @return \DateTime A DateTime instance or null if the header does not exist
      */
-    public function getExpires() : DateTime;
+    public function getExpires(): DateTime;
 
     /**
      * Sets the Expires HTTP header with a DateTime instance.
@@ -490,7 +450,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setExpires(DateTime $date = null) : Response;
+    public function setExpires(DateTime $date = null): Response;
 
     /**
      * Returns the number of seconds after the time specified in the response's Date
@@ -501,7 +461,7 @@ interface Response
      *
      * @return int Number of seconds
      */
-    public function getMaxAge() : int;
+    public function getMaxAge(): int;
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh.
@@ -512,7 +472,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setMaxAge(int $value) : Response;
+    public function setMaxAge(int $value): Response;
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
@@ -523,7 +483,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setSharedMaxAge(int $value) : Response;
+    public function setSharedMaxAge(int $value): Response;
 
     /**
      * Returns the response's time-to-live in seconds.
@@ -535,7 +495,7 @@ interface Response
      *
      * @return int The TTL in seconds
      */
-    public function getTtl() : int;
+    public function getTtl(): int;
 
     /**
      * Sets the response's time-to-live for shared caches.
@@ -546,7 +506,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setTtl(int $seconds) : Response;
+    public function setTtl(int $seconds): Response;
 
     /**
      * Sets the response's time-to-live for private/client caches.
@@ -557,7 +517,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setClientTtl(int $seconds) : Response;
+    public function setClientTtl(int $seconds): Response;
 
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
@@ -566,7 +526,7 @@ interface Response
      *
      * @throws \RuntimeException When the HTTP header is not parseable
      */
-    public function getLastModified() : string;
+    public function getLastModified(): string;
 
     /**
      * Sets the Last-Modified HTTP header with a DateTime instance.
@@ -577,14 +537,14 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setLastModified(DateTime $date = null) : Response;
+    public function setLastModified(DateTime $date = null): Response;
 
     /**
      * Returns the literal value of the ETag HTTP header.
      *
      * @return string The ETag HTTP header or null if it does not exist
      */
-    public function getEtag() : string;
+    public function getEtag(): string;
 
     /**
      * Sets the ETag value.
@@ -594,7 +554,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setEtag(string $etag = null, bool $weak = false) : Response;
+    public function setEtag(string $etag = null, bool $weak = false): Response;
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
@@ -605,7 +565,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCache(array $options) : Response;
+    public function setCache(array $options): Response;
 
     /**
      * Modifies the response so that it conforms to the rules defined for a 304 status code.
@@ -617,7 +577,7 @@ interface Response
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
-    public function setNotModified() : Response;
+    public function setNotModified(): Response;
 
     /**
      * Is response invalid?
@@ -626,63 +586,63 @@ interface Response
      *
      * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      */
-    public function isInvalid() : bool;
+    public function isInvalid(): bool;
 
     /**
      * Is response informative?
      *
      * @return bool
      */
-    public function isInformational() : bool;
+    public function isInformational(): bool;
 
     /**
      * Is response successful?
      *
      * @return bool
      */
-    public function isSuccessful() : bool;
+    public function isSuccessful(): bool;
 
     /**
      * Is the response a redirect?
      *
      * @return bool
      */
-    public function isRedirection() : bool;
+    public function isRedirection(): bool;
 
     /**
      * Is there a client error?
      *
      * @return bool
      */
-    public function isClientError() : bool;
+    public function isClientError(): bool;
 
     /**
      * Was there a server side error?
      *
      * @return bool
      */
-    public function isServerError() : bool;
+    public function isServerError(): bool;
 
     /**
      * Is the response OK?
      *
      * @return bool
      */
-    public function isOk() : bool;
+    public function isOk(): bool;
 
     /**
      * Is the response forbidden?
      *
      * @return bool
      */
-    public function isForbidden() : bool;
+    public function isForbidden(): bool;
 
     /**
      * Is the response a not found error?
      *
      * @return bool
      */
-    public function isNotFound() : bool;
+    public function isNotFound(): bool;
 
     /**
      * Is the response a redirect of some form?
@@ -691,35 +651,35 @@ interface Response
      *
      * @return bool
      */
-    public function isRedirect(string $location = null) : bool;
+    public function isRedirect(string $location = null): bool;
 
     /**
      * Is the response empty?
      *
      * @return bool
      */
-    public function isEmpty() : bool;
+    public function isEmpty(): bool;
 
     /**
      * Sends HTTP headers.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function sendHeaders() : Response;
+    public function sendHeaders(): Response;
 
     /**
      * Sends content for the current web response.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function sendContent() : Response;
+    public function sendContent(): Response;
 
     /**
      * Sends HTTP headers and content.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function send() : Response;
+    public function send(): Response;
 
     /**
      * Cleans or flushes output buffers up to target level.
@@ -731,7 +691,7 @@ interface Response
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush) : void;
+    public static function closeOutputBuffers(int $targetLevel, bool $flush): void;
 
     /**
      * Returns the Response as an HTTP string.
@@ -744,5 +704,5 @@ interface Response
      *
      * @see prepare()
      */
-    public function __toString() : string;
+    public function __toString(): string;
 }

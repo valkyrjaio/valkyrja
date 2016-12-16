@@ -13,8 +13,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Contracts\Http\Cookie;
 use Valkyrja\Contracts\Http\Cookies as CookiesContract;
-use Valkyrja\Support\Collection;
 
 /**
  * Class Cookies
@@ -22,8 +22,94 @@ use Valkyrja\Support\Collection;
  * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
+ *
+ * @property \Valkyrja\Contracts\Http\Cookie[] $collection
+ *
+ * @method get(string $key, $default = false): \Valkyrja\Contracts\Http\Cookie
  */
-class Cookies extends Collection implements CookiesContract
+class Cookies implements CookiesContract
 {
-    //
+    /**
+     * Array of cookies.
+     *
+     * @var array
+     */
+    protected $cookies = [];
+
+    /**
+     * Returns an array with all cookies.
+     *
+     * @param bool $asString [optional] Get the cookies as a string?
+     *
+     * @return array
+     */
+    public function all(bool $asString = true): array
+    {
+        if (! $asString) {
+            return $this->cookies;
+        }
+
+        $flattenedCookies = [];
+
+        foreach ($this->cookies as $path) {
+            foreach ($path as $cookies) {
+                foreach ($cookies as $cookie) {
+                    $flattenedCookies[] = $cookie;
+                }
+            }
+        }
+
+        return $flattenedCookies;
+    }
+
+    /**
+     * Set a response cookie.
+     *
+     * @param \Valkyrja\Contracts\Http\Cookie $cookie The cookie object
+     *
+     * @return \Valkyrja\Contracts\Http\Cookies
+     */
+    public function set(Cookie $cookie): CookiesContract
+    {
+        $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = [
+            'name'     => $cookie->getName(),
+            'value'    => $cookie->getValue(),
+            'expire'   => $cookie->getExpire(),
+            'path'     => $cookie->getPath() ?? '/',
+            'domain'   => $cookie->getDomain(),
+            'secure'   => $cookie->isSecure(),
+            'httpOnly' => $cookie->isHttpOnly(),
+            'raw'      => $cookie->isRaw(),
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Removes a cookie from the array, but does not unset it in the browser.
+     *
+     * @param string $name   Cookie name
+     * @param string $path   [optional] Cookie path
+     * @param string $domain [optional] Cookie domain
+     *
+     * @return \Valkyrja\Contracts\Http\Cookies
+     */
+    public function remove(string $name, string $path = '/', string $domain = null): CookiesContract
+    {
+        if (null === $path) {
+            $path = '/';
+        }
+
+        unset($this->cookies[$domain][$path][$name]);
+
+        if (empty($this->cookies[$domain][$path])) {
+            unset($this->cookies[$domain][$path]);
+
+            if (empty($this->cookies[$domain])) {
+                unset($this->cookies[$domain]);
+            }
+        }
+
+        return $this;
+    }
 }

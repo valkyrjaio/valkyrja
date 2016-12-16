@@ -13,8 +13,6 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Contracts\Support\Collection;
-
 /**
  * Interface Cookies
  *
@@ -22,7 +20,34 @@ use Valkyrja\Contracts\Support\Collection;
  *
  * @author  Melech Mizrachi
  */
-interface Cookies extends Collection
+interface Cookies
 {
-    //
+    /**
+     * Returns an array with all cookies.
+     *
+     * @param bool $asString [optional] Get the cookies as a string?
+     *
+     * @return array
+     */
+    public function all(bool $asString = true): array;
+
+    /**
+     * Set a response cookie.
+     *
+     * @param \Valkyrja\Contracts\Http\Cookie $cookie The cookie object
+     *
+     * @return \Valkyrja\Contracts\Http\Cookies
+     */
+    public function set(Cookie $cookie): Cookies;
+
+    /**
+     * Removes a cookie from the array, but does not unset it in the browser.
+     *
+     * @param string $name   Cookie name
+     * @param string $path   [optional] Cookie path
+     * @param string $domain [optional] Cookie domain
+     *
+     * @return \Valkyrja\Contracts\Http\Cookies
+     */
+    public function remove(string $name, string $path = '/', string $domain = null): Cookies;
 }

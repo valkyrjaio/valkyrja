@@ -16,6 +16,7 @@ namespace Valkyrja\Http;
 use DateTime;
 use DateTimeZone;
 
+use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\View\View;
@@ -32,7 +33,7 @@ class Response implements ResponseContract
     /**
      * Response headers.
      *
-     * @var HeadersContract
+     * @var \Valkyrja\Contracts\Http\Headers
      */
     protected $headers;
 
@@ -46,9 +47,9 @@ class Response implements ResponseContract
     /**
      * Response cookies.
      *
-     * @var array
+     * @var \Valkyrja\Contracts\Http\Cookies
      */
-    protected $cookies = [];
+    protected $cookies;
 
     /**
      * Response content.
@@ -120,9 +121,117 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public static function create(string $content = '', int $status = 200, array $headers = []) : ResponseContract
+    public static function create(string $content = '', int $status = 200, array $headers = []): ResponseContract
     {
         return new static($content, $status, $headers);
+    }
+
+    /**
+     * Sends HTTP headers.
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function sendHeaders(): ResponseContract
+    {
+        // headers have already been sent by the developer
+        if (headers_sent()) {
+            return $this;
+        }
+
+        if (! $this->headers->has('Date')) {
+            $this->setDateHeader(DateTime::createFromFormat('U', time()));
+        }
+
+        foreach ($this->headers->all() as $name => $value) {
+            header($name . ': ' . $value, false, $this->statusCode);
+        }
+
+        // status
+        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
+
+        // cookies
+        foreach ($this->cookies->all() as $cookie) {
+            if ($cookie['raw']) {
+                setrawcookie(
+                    $cookie['name'],
+                    $cookie['value'],
+                    $cookie['expire'],
+                    $cookie['path'],
+                    $cookie['domain'],
+                    $cookie['secure'],
+                    $cookie['httpOnly']
+                );
+            }
+            else {
+                setcookie(
+                    $cookie['name'],
+                    $cookie['value'],
+                    $cookie['expire'],
+                    $cookie['path'],
+                    $cookie['domain'],
+                    $cookie['secure'],
+                    $cookie['httpOnly']
+                );
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Sends content for the current web response.
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function sendContent(): ResponseContract
+    {
+        if (null !== $this->view && empty($this->content)) {
+            $this->content = $this->view->render();
+        }
+
+        echo $this->content;
+
+        return $this;
+    }
+
+    /**
+     * Sends HTTP headers and content.
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function send(): ResponseContract
+    {
+        $this->sendHeaders()
+             ->sendContent();
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        elseif ('cli' !== PHP_SAPI) {
+            static::closeOutputBuffers(0, true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the Response as an HTTP string.
+     *
+     * The string representation of the Response is the same as the
+     * one that will be sent to the client only if the prepare() method
+     * has been called before.
+     *
+     * @return string The Response as an HTTP string
+     *
+     * @see prepare()
+     */
+    public function __toString(): string
+    {
+        return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)
+            . "\r\n"
+            . $this->headers
+            . "\r\n"
+            . $this->getContent();
     }
 
     /**
@@ -132,7 +241,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setContent(string $content) : ResponseContract
+    public function setContent(string $content): ResponseContract
     {
         $this->content = $content;
 
@@ -144,7 +253,7 @@ class Response implements ResponseContract
      *
      * @return string
      */
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -156,7 +265,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setView(View $view) : ResponseContract
+    public function setView(View $view): ResponseContract
     {
         $this->view = $view;
 
@@ -168,7 +277,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function view() : View
+    public function view(): View
     {
         return $this->view;
     }
@@ -180,7 +289,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setProtocolVersion(string $version = '1.0') : ResponseContract
+    public function setProtocolVersion(string $version = '1.0'): ResponseContract
     {
         $this->version = $version;
 
@@ -192,7 +301,7 @@ class Response implements ResponseContract
      *
      * @return string
      */
-    public function getProtocolVersion() : string
+    public function getProtocolVersion(): string
     {
         return $this->version;
     }
@@ -210,7 +319,7 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
-    public function setStatusCode(int $code, string $text = null) : ResponseContract
+    public function setStatusCode(int $code, string $text = null): ResponseContract
     {
         $this->statusCode = $code = (int) $code;
 
@@ -242,7 +351,7 @@ class Response implements ResponseContract
      *
      * @return int Status code
      */
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -254,7 +363,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCharset(string $charset) : ResponseContract
+    public function setCharset(string $charset): ResponseContract
     {
         $this->charset = $charset;
 
@@ -266,7 +375,7 @@ class Response implements ResponseContract
      *
      * @return string Character set
      */
-    public function getCharset() : string
+    public function getCharset(): string
     {
         return $this->charset;
     }
@@ -278,7 +387,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setHeaders(array $headers = [])  : ResponseContract
+    public function setHeaders(array $headers = []): ResponseContract
     {
         if (null === $this->headers) {
             $this->headers = new Headers();
@@ -294,11 +403,11 @@ class Response implements ResponseContract
     }
 
     /**
-     * Get all response headers.
+     * Get response headers object.
      *
-     * @return HeadersContract
+     * @return \Valkyrja\Contracts\Http\Headers
      */
-    public function headers() : HeadersContract
+    public function headers(): HeadersContract
     {
         return $this->headers;
     }
@@ -310,7 +419,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException When the header is not parseable
      */
-    public function getDateHeader() : DateTime
+    public function getDateHeader(): DateTime
     {
         if (! $this->headers->has('Date')) {
             $this->setDateHeader(DateTime::createFromFormat('U', time()));
@@ -326,7 +435,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setDateHeader(DateTime $date) : ResponseContract
+    public function setDateHeader(DateTime $date): ResponseContract
     {
         $date->setTimezone(new DateTimeZone('UTC'));
         $this->headers->set('Date', $date->format('D, d M Y H:i:s') . ' GMT');
@@ -335,109 +444,13 @@ class Response implements ResponseContract
     }
 
     /**
-     * Returns an array with all cookies.
+     * Get response cookies object.
      *
-     * @param bool $asString [optional] Get the cookies as a string?
-     *
-     * @return array
+     * @return \Valkyrja\Contracts\Http\Cookies
      */
-    public function getCookies(bool $asString = true) : array
+    public function cookies(): CookiesContract
     {
-        if (! $asString) {
-            return $this->cookies;
-        }
-
-        $flattenedCookies = [];
-
-        foreach ($this->cookies as $path) {
-            foreach ($path as $cookies) {
-                foreach ($cookies as $cookie) {
-                    $flattenedCookies[] = $cookie;
-                }
-            }
-        }
-
-        return $flattenedCookies;
-    }
-
-    /**
-     * Set a response cookie.
-     *
-     * @param string $name     Cookie name
-     * @param string $value    Cookie value
-     * @param int    $expire   Cookie expires time
-     * @param string $path     Cookie path
-     * @param string $domain   Cookie domain
-     * @param bool   $secure   Cookie http(s)
-     * @param bool   $httpOnly Cookie http only?
-     * @param bool   $raw      Cookie raw
-     * @param string $sameSite Cookie same site?
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function setCookie(
-        string $name,
-        string $value = null,
-        int $expire = 0,
-        string $path = '/',
-        string $domain = null,
-        bool $secure = false,
-        bool $httpOnly = true,
-        bool $raw = false,
-        string $sameSite = null
-    ) : ResponseContract
-    {
-        $this->cookies[$domain][$path][$name] = [
-            'name'     => (string) $name,
-            'value'    => (string) $value,
-            'expire'   => (string) $expire,
-            'path'     => empty($path)
-                ? '/'
-                : (string) $path,
-            'domain'   => (string) $domain,
-            'secure'   => (bool) $secure,
-            'httpOnly' => (bool) $httpOnly,
-            'raw'      => (bool) $raw,
-            'sameSite' => in_array(
-                $sameSite,
-                [
-                    'lax',
-                    'strict',
-                    null,
-                ],
-                true
-            )
-                ? $sameSite
-                : null,
-        ];
-
-        return $this;
-    }
-
-    /**
-     * Removes a cookie from the array, but does not unset it in the browser.
-     *
-     * @param string $name   Cookie name
-     * @param string $path   [optional] Cookie path
-     * @param string $domain [optional] Cookie domain
-     *
-     * @return void
-     */
-    public function removeCookie(string $name, string $path = '/', string $domain = null) : void
-    {
-        if (null === $path) {
-            $path = '/';
-        }
-
-        unset($this->cookies[$domain][$path][$name]);
-
-        if (empty($this->cookies[$domain][$path])) {
-            unset($this->cookies[$domain][$path]);
-
-            if (empty($this->cookies[$domain])) {
-                unset($this->cookies[$domain]);
-            }
-        }
+        return $this->cookies;
     }
 
     /**
@@ -448,7 +461,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function addCacheControl(string $name, string $value = null) : ResponseContract
+    public function addCacheControl(string $name, string $value = null): ResponseContract
     {
         $this->cacheControl[$name] = $value;
 
@@ -462,7 +475,7 @@ class Response implements ResponseContract
      *
      * @return string
      */
-    public function getCacheControl(string $name) : string
+    public function getCacheControl(string $name): string
     {
         return $this->hasCacheControl($name)
             ? $this->cacheControl[$name]
@@ -476,7 +489,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function hasCacheControl(string $name) : bool
+    public function hasCacheControl(string $name): bool
     {
         return isset($this->cacheControl[$name]);
     }
@@ -488,7 +501,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function removeCacheControl(string $name) : ResponseContract
+    public function removeCacheControl(string $name): ResponseContract
     {
         if (! $this->hasCacheControl($name)) {
             return $this;
@@ -512,7 +525,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function isCacheable() : bool
+    public function isCacheable(): bool
     {
         if (! in_array(
             $this->statusCode,
@@ -549,7 +562,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function isFresh() : bool
+    public function isFresh(): bool
     {
         return $this->getTtl() > 0;
     }
@@ -560,7 +573,7 @@ class Response implements ResponseContract
      *
      * @return bool true if the response is validateable, false otherwise
      */
-    public function isValidateable() : bool
+    public function isValidateable(): bool
     {
         return $this->headers->has('Last-Modified') || $this->headers->has('ETag');
     }
@@ -572,7 +585,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPrivate() : ResponseContract
+    public function setPrivate(): ResponseContract
     {
         $this->removeCacheControl('public');
         $this->addCacheControl('private');
@@ -587,7 +600,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPublic() : ResponseContract
+    public function setPublic(): ResponseContract
     {
         $this->addCacheControl('public');
         $this->removeCacheControl('private');
@@ -602,7 +615,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function getAge() : int
+    public function getAge(): int
     {
         if (null !== $age = $this->headers->get('Age')) {
             return (int) $age;
@@ -621,7 +634,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function expire() : ResponseContract
+    public function expire(): ResponseContract
     {
         if ($this->isFresh()) {
             $this->headers->set('Age', $this->getMaxAge());
@@ -637,7 +650,7 @@ class Response implements ResponseContract
      *
      * @return DateTime A DateTime instance or null if the header does not exist
      */
-    public function getExpires() : DateTime
+    public function getExpires(): DateTime
     {
         try {
             return $this->headers->get('Expires');
@@ -657,7 +670,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setExpires(DateTime $date = null) : ResponseContract
+    public function setExpires(DateTime $date = null): ResponseContract
     {
         if (null === $date) {
             $this->headers->remove('Expires');
@@ -682,7 +695,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function getMaxAge() : int
+    public function getMaxAge(): int
     {
         if ($this->hasCacheControl('s-maxage')) {
             return (int) $this->getCacheControl('s-maxage');
@@ -708,7 +721,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setMaxAge(int $value) : ResponseContract
+    public function setMaxAge(int $value): ResponseContract
     {
         $this->addCacheControl('max-age', $value);
 
@@ -724,7 +737,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setSharedMaxAge(int $value) : ResponseContract
+    public function setSharedMaxAge(int $value): ResponseContract
     {
         $this->setPublic();
         $this->addCacheControl('s-maxage', $value);
@@ -744,7 +757,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function getTtl() : int
+    public function getTtl(): int
     {
         if (null !== $maxAge = $this->getMaxAge()) {
             return $maxAge - $this->getAge();
@@ -764,7 +777,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function setTtl(int $seconds) : ResponseContract
+    public function setTtl(int $seconds): ResponseContract
     {
         $this->setSharedMaxAge($this->getAge() + $seconds);
 
@@ -782,7 +795,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException
      */
-    public function setClientTtl(int $seconds) : ResponseContract
+    public function setClientTtl(int $seconds): ResponseContract
     {
         $this->setMaxAge($this->getAge() + $seconds);
 
@@ -796,7 +809,7 @@ class Response implements ResponseContract
      *
      * @throws \RuntimeException When the HTTP header is not parseable
      */
-    public function getLastModified() : string
+    public function getLastModified(): string
     {
         return $this->headers->get('Last-Modified');
     }
@@ -810,7 +823,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setLastModified(DateTime $date = null) : ResponseContract
+    public function setLastModified(DateTime $date = null): ResponseContract
     {
         if (null === $date) {
             $this->headers->remove('Last-Modified');
@@ -829,7 +842,7 @@ class Response implements ResponseContract
      *
      * @return string The ETag HTTP header or null if it does not exist
      */
-    public function getEtag() : string
+    public function getEtag(): string
     {
         return $this->headers->get('ETag');
     }
@@ -842,7 +855,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setEtag(string $etag = null, bool $weak = false) : ResponseContract
+    public function setEtag(string $etag = null, bool $weak = false): ResponseContract
     {
         if (null === $etag) {
             $this->headers->remove('Etag');
@@ -871,7 +884,7 @@ class Response implements ResponseContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCache(array $options) : ResponseContract
+    public function setCache(array $options): ResponseContract
     {
         if (isset($options['etag'])) {
             $this->setEtag($options['etag']);
@@ -922,7 +935,7 @@ class Response implements ResponseContract
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
-    public function setNotModified() : ResponseContract
+    public function setNotModified(): ResponseContract
     {
         $this->setStatusCode(304);
         $this->setContent(null);
@@ -945,7 +958,7 @@ class Response implements ResponseContract
      *
      * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      */
-    public function isInvalid() : bool
+    public function isInvalid(): bool
     {
         return $this->statusCode < 100 || $this->statusCode >= 600;
     }
@@ -955,7 +968,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isInformational() : bool
+    public function isInformational(): bool
     {
         return $this->statusCode >= 100 && $this->statusCode < 200;
     }
@@ -965,7 +978,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isSuccessful() : bool
+    public function isSuccessful(): bool
     {
         return $this->statusCode >= 200 && $this->statusCode < 300;
     }
@@ -975,7 +988,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isRedirection() : bool
+    public function isRedirection(): bool
     {
         return $this->statusCode >= 300 && $this->statusCode < 400;
     }
@@ -985,7 +998,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isClientError() : bool
+    public function isClientError(): bool
     {
         return $this->statusCode >= 400 && $this->statusCode < 500;
     }
@@ -995,7 +1008,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isServerError() : bool
+    public function isServerError(): bool
     {
         return $this->statusCode >= 500 && $this->statusCode < 600;
     }
@@ -1005,7 +1018,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isOk() : bool
+    public function isOk(): bool
     {
         return 200 === $this->statusCode;
     }
@@ -1015,7 +1028,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isForbidden() : bool
+    public function isForbidden(): bool
     {
         return 403 === $this->statusCode;
     }
@@ -1025,7 +1038,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isNotFound() : bool
+    public function isNotFound(): bool
     {
         return 404 === $this->statusCode;
     }
@@ -1037,22 +1050,22 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isRedirect(string $location = null) : bool
+    public function isRedirect(string $location = null): bool
     {
         return in_array(
-            $this->statusCode,
-            [
-                201,
-                301,
-                302,
-                303,
-                307,
-                308,
-            ],
-            true
-        )
-        && (null === $location
-            ?: $location === $this->headers->get('Location'));
+                $this->statusCode,
+                [
+                    201,
+                    301,
+                    302,
+                    303,
+                    307,
+                    308,
+                ],
+                true
+            )
+            && (null === $location
+                ?: $location === $this->headers->get('Location'));
     }
 
     /**
@@ -1060,7 +1073,7 @@ class Response implements ResponseContract
      *
      * @return bool
      */
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return in_array(
             $this->statusCode,
@@ -1073,94 +1086,6 @@ class Response implements ResponseContract
     }
 
     /**
-     * Sends HTTP headers.
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function sendHeaders() : ResponseContract
-    {
-        // headers have already been sent by the developer
-        if (headers_sent()) {
-            return $this;
-        }
-
-        if (! $this->headers->has('Date')) {
-            $this->setDateHeader(DateTime::createFromFormat('U', time()));
-        }
-
-        foreach ($this->headers->all() as $name => $value) {
-            header($name . ': ' . $value, false, $this->statusCode);
-        }
-
-        // status
-        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
-
-        // cookies
-        foreach ($this->getCookies() as $cookie) {
-            if ($cookie['raw']) {
-                setrawcookie(
-                    $cookie['name'],
-                    $cookie['value'],
-                    $cookie['expire'],
-                    $cookie['path'],
-                    $cookie['domain'],
-                    $cookie['secure'],
-                    $cookie['httpOnly']
-                );
-            }
-            else {
-                setcookie(
-                    $cookie['name'],
-                    $cookie['value'],
-                    $cookie['expire'],
-                    $cookie['path'],
-                    $cookie['domain'],
-                    $cookie['secure'],
-                    $cookie['httpOnly']
-                );
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Sends content for the current web response.
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function sendContent() : ResponseContract
-    {
-        if (null !== $this->view && empty($this->content)) {
-            $this->content = $this->view->render();
-        }
-
-        echo $this->content;
-
-        return $this;
-    }
-
-    /**
-     * Sends HTTP headers and content.
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function send() : ResponseContract
-    {
-        $this->sendHeaders()
-             ->sendContent();
-
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
-        elseif ('cli' !== PHP_SAPI) {
-            static::closeOutputBuffers(0, true);
-        }
-
-        return $this;
-    }
-
-    /**
      * Cleans or flushes output buffers up to target level.
      *
      * Resulting level can be greater than target level if a non-removable buffer has been encountered.
@@ -1170,7 +1095,7 @@ class Response implements ResponseContract
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush) : void
+    public static function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
         $status = ob_get_status(true);
         $level = count($status);
@@ -1192,25 +1117,5 @@ class Response implements ResponseContract
                 ob_end_clean();
             }
         }
-    }
-
-    /**
-     * Returns the Response as an HTTP string.
-     *
-     * The string representation of the Response is the same as the
-     * one that will be sent to the client only if the prepare() method
-     * has been called before.
-     *
-     * @return string The Response as an HTTP string
-     *
-     * @see prepare()
-     */
-    public function __toString() : string
-    {
-        return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)
-        . "\r\n"
-        . $this->headers
-        . "\r\n"
-        . $this->getContent();
     }
 }
