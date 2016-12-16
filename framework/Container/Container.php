@@ -226,7 +226,7 @@ class Container implements ContainerContract
             $this->bind(
                 RequestContract::class,
                 function () {
-                    return new Request();
+                    return Request::createFromGlobals();
                 }
             );
         }
