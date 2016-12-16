@@ -109,7 +109,7 @@ class Router implements RouterContract
         ) {
             throw new NonExistentActionException(
                 'Action does not exist in controller for route : '
-                . $options['path']
+                . $path
                 . $options['controller']
                 . '@'
                 . $options['action']
@@ -117,7 +117,8 @@ class Router implements RouterContract
         }
 
         // If all routes should have a trailing slash
-        if ($this->app->config()->routing->trailingSlash) {
+        // and the route doesn't already end with a slash
+        if ($this->app->config()->routing->trailingSlash && false === strpos($path, '/', -1)) {
             // Add a trailing slash
             $path .= '/';
         }
@@ -302,6 +303,20 @@ class Router implements RouterContract
                 $reflection = new \ReflectionClass($controller);
                 // Set an empty array for this controller to hold its defined routes
                 $routes[$controller] = [];
+                /** @var \Valkyrja\Routing\Annotations\Route[] $controllerRoute */
+                $controllerRoute = Annotations::ofClass($controller, '@Route');
+                // The controller base path
+                $basePath = null;
+                // The controller base name
+                $baseName = null;
+
+                // If an @Route annotation is set on the controller
+                if ($controllerRoute) {
+                    // Set the base path for this controller
+                    $basePath = $controllerRoute[0]->get('path', null);
+                    // Set the base name for this controller
+                    $baseName = $controllerRoute[0]->get('name', null);
+                }
 
                 // Iterate through all the methods in the controller
                 foreach ($reflection->getMethods() as $method) {
@@ -336,6 +351,27 @@ class Router implements RouterContract
                             $route->set('action', $method->getName());
                             // Set the injectable objects
                             $route->set('injectable', $injectable);
+
+                            // If there is a base path for this controller
+                            if ($basePath) {
+                                // Get the route's path
+                                $path = $route->get('path');
+
+                                // If this is the index
+                                if ('/' === $path) {
+                                    // Set to blank so the final path will be just the base path
+                                    $path = '';
+                                }
+
+                                // Set the path to the base path and route path
+                                $route->set('path', $basePath . $path);
+                            }
+
+                            // If there is a base name for this controller
+                            if ($baseName) {
+                                // Set the name to the base name and route name
+                                $route->set('name', $baseName . '.' . $route->get('name'));
+                            }
                         }
                     }
                 }

@@ -11,8 +11,9 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use mindplay\annotations\IAnnotation;
 use Valkyrja\Support\Collection;
+
+use mindplay\annotations\IAnnotation;
 
 /**
  * Class Route
@@ -21,7 +22,7 @@ use Valkyrja\Support\Collection;
  *
  * @author  Melech Mizrachi
  *
- * @usage('method' => true, 'multiple' => true, 'inherited' => true)
+ * @usage('class' => true, 'method' => true, 'multiple' => true, 'inherited' => true)
  */
 class Route extends Collection implements IAnnotation
 {
