@@ -13,7 +13,6 @@ namespace Valkyrja\Routing;
 
 use Closure;
 
-use mindplay\annotations\Annotations;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
@@ -23,6 +22,7 @@ use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Routing\Annotations\Parser;
 
 /**
  * Class Router
@@ -296,6 +296,7 @@ class Router implements RouterContract
         // If annotations are enabled and routing should use annotations
         if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
             $routes = [];
+            $parser = new Parser();
 
             // Iterate through each controller
             foreach ($this->app->config()->routing->controllers as $controller) {
@@ -303,25 +304,25 @@ class Router implements RouterContract
                 $reflection = new \ReflectionClass($controller);
                 // Set an empty array for this controller to hold its defined routes
                 $routes[$controller] = [];
-                /** @var \Valkyrja\Routing\Annotations\Route[] $controllerRoute */
-                $controllerRoute = Annotations::ofClass($controller, '@Route');
+                /** @var \Valkyrja\Routing\Annotations\Route[] $controllerRoutes */
+                $controllerRoutes = $parser->getRouteAnnotations($reflection->getDocComment());
                 // The controller base path
                 $basePath = null;
                 // The controller base name
                 $baseName = null;
 
                 // If an @Route annotation is set on the controller
-                if ($controllerRoute) {
+                if ($controllerRoutes) {
                     // Set the base path for this controller
-                    $basePath = $controllerRoute[0]->get('path', null);
+                    $basePath = $controllerRoutes[0]->get('path', null);
                     // Set the base name for this controller
-                    $baseName = $controllerRoute[0]->get('name', null);
+                    $baseName = $controllerRoutes[0]->get('name', null);
                 }
 
                 // Iterate through all the methods in the controller
                 foreach ($reflection->getMethods() as $method) {
                     // Get the @Route annotation for the method
-                    $actionRoutes = Annotations::ofMethod($controller, $method->getName(), '@Route');
+                    $actionRoutes = $parser->getRouteAnnotations($method->getDocComment());
 
                     // Ensure a route was defined
                     if ($actionRoutes) {
@@ -369,8 +370,10 @@ class Router implements RouterContract
 
                             // If there is a base name for this controller
                             if ($baseName) {
+                                $name = $baseName . '.' . $route->get('name');
+
                                 // Set the name to the base name and route name
-                                $route->set('name', $baseName . '.' . $route->get('name'));
+                                $route->set('name', $name);
                             }
                         }
                     }

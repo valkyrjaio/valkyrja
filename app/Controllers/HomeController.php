@@ -35,7 +35,7 @@ class HomeController extends Controller
      *
      * @return \Valkyrja\Contracts\View\View
      *
-     * @Route('path' => '/', 'name' => 'welcome')
+     * @Route(path = '/', name = 'welcome')
      */
     public function welcome() : View
     {
@@ -48,7 +48,7 @@ class HomeController extends Controller
      *
      * @return string
      *
-     * @Route('path' => '/version', 'name' => 'version')
+     * @Route(path = '/version', name = 'version')
      */
     public function version() : string
     {
@@ -64,8 +64,8 @@ class HomeController extends Controller
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @Route('path' => '/home', 'name' => 'home')
-     * @Route('path' => '/^\/home\/(\d+)$/', 'name' => 'homePaged', 'dynamic' => true)
+     * @Route(path = '/home', name = 'home')
+     * @Route(path = '/^\/home\/(\d+)$/', name = 'homePaged', dynamic = true)
      */
     public function home(Application $application, int $page = 1) : Response
     {
