@@ -34,7 +34,7 @@ if (! function_exists('abort')) {
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void
+    function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void
     {
         app()->abort($statusCode, $message, $headers, $code);
     }
