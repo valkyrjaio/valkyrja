@@ -134,6 +134,44 @@ class Router implements RouterContract
 
         // If this is a dynamic route
         if ($isDynamic) {
+            // Get all matches for {paramName} and {paramName:(validator)} in the path
+            preg_match_all(
+                '/\{\s*([a-zA-Z_][a-zA-Z0-9_-]*)\s*(?::\s*([^{}]*(?:\{(?-1)\}[^{}]*)*))?\}/',
+                $path,
+                $params
+            );
+
+            // Run through all matches
+            foreach ($params[0] as $key => $param) {
+                // Check if a regex was set for this match, otherwise use a wildcard all
+                // $replacement = $params[2][$key] ?? '(.*)';
+
+                switch ($params[2][$key]) {
+                    case 'int' :
+                        $replacement = '(\d+)';
+                        break;
+                    case 'alpha' :
+                        $replacement = '([a-zA-Z]+)';
+                        break;
+                    case 'alpha-lowercase' :
+                        $replacement = '([a-z]+)';
+                        break;
+                    case 'alpha-uppercase' :
+                        $replacement = '([A-Z]+)';
+                        break;
+                    default :
+                        $replacement = $params[2][$key] ?? '(.*)';
+                        break;
+                }
+
+                // Replace the matches with a regex
+                $path = str_replace($param, $replacement, $path);
+            }
+
+            $path = str_replace('/', '\/', $path);
+            $path = '/^' . $path . '$/';
+            $route['dynamicPath'] = $path;
+
             // Set it in the dynamic routes array
             $this->routes['dynamic'][$method][$path] = $route;
         }
