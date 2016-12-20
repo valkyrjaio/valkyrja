@@ -144,11 +144,13 @@ class Router implements RouterContract
             // Run through all matches
             foreach ($params[0] as $key => $param) {
                 // Check if a regex was set for this match, otherwise use a wildcard all
-                // $replacement = $params[2][$key] ?? '(.*)';
 
                 switch ($params[2][$key]) {
-                    case 'int' :
+                    case 'num' :
                         $replacement = '(\d+)';
+                        break;
+                    case 'slug' :
+                        $replacement = '([a-zA-Z0-9-]+)';
                         break;
                     case 'alpha' :
                         $replacement = '([a-zA-Z]+)';
@@ -158,6 +160,12 @@ class Router implements RouterContract
                         break;
                     case 'alpha-uppercase' :
                         $replacement = '([A-Z]+)';
+                        break;
+                    case 'alpha-num' :
+                        $replacement = '([a-zA-Z0-9]+)';
+                        break;
+                    case 'alpha-num-underscore' :
+                        $replacement = '(\w+)';
                         break;
                     default :
                         $replacement = $params[2][$key] ?? '(.*)';
