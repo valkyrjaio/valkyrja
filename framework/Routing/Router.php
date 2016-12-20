@@ -87,7 +87,7 @@ class Router implements RouterContract
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false) : void
+    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false): void
     {
         // Ensure the method specified is allowed
         if (! in_array(
@@ -168,7 +168,7 @@ class Router implements RouterContract
                         $replacement = '(\w+)';
                         break;
                     default :
-                        $replacement = $params[2][$key] ?? '(.*)';
+                        $replacement = $params[2][$key] ?: '(.*)';
                         break;
                 }
 
@@ -200,7 +200,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function get(string $path, array $options, bool $isDynamic = false) : void
+    public function get(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::GET, $path, $options, $isDynamic);
     }
@@ -216,7 +216,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function post(string $path, array $options, bool $isDynamic = false) : void
+    public function post(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::POST, $path, $options, $isDynamic);
     }
@@ -232,7 +232,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function put(string $path, array $options, bool $isDynamic = false) : void
+    public function put(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::PUT, $path, $options, $isDynamic);
     }
@@ -248,7 +248,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function patch(string $path, array $options, bool $isDynamic = false) : void
+    public function patch(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::PATCH, $path, $options, $isDynamic);
     }
@@ -264,7 +264,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function delete(string $path, array $options, bool $isDynamic = false) : void
+    public function delete(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::DELETE, $path, $options, $isDynamic);
     }
@@ -280,7 +280,7 @@ class Router implements RouterContract
      *
      * @throws \Exception
      */
-    public function head(string $path, array $options, bool $isDynamic = false) : void
+    public function head(string $path, array $options, bool $isDynamic = false): void
     {
         $this->addRoute(RequestMethod::HEAD, $path, $options, $isDynamic);
     }
@@ -292,7 +292,7 @@ class Router implements RouterContract
      *
      * @return void
      */
-    public function setRoutes(array $routes) : void
+    public function setRoutes(array $routes): void
     {
         $this->routes = $routes;
     }
@@ -302,7 +302,7 @@ class Router implements RouterContract
      *
      * @return array
      */
-    public function getRoutes() : array
+    public function getRoutes(): array
     {
         return $this->routes;
     }
@@ -315,7 +315,7 @@ class Router implements RouterContract
      *
      * @return array
      */
-    protected function getRoutesByMethod(string $method, string $type = 'static') : array
+    protected function getRoutesByMethod(string $method, string $type = 'static'): array
     {
         return $this->routes[$type][$method];
     }
@@ -328,7 +328,7 @@ class Router implements RouterContract
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function setupRoutes() : void
+    public function setupRoutes(): void
     {
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useRoutesCacheFile) {
@@ -479,7 +479,7 @@ class Router implements RouterContract
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
-    public function dispatch() : ResponseContract
+    public function dispatch(): ResponseContract
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         $requestUri = $_SERVER['REQUEST_URI'];
@@ -507,6 +507,7 @@ class Router implements RouterContract
                 // If the perg match is successful, we've found our route!
                 if (preg_match($path, $requestUri, $matches)) {
                     $route = $dynamicRoute;
+                    break;
                 }
             }
         }
