@@ -185,7 +185,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Headers
      */
-    public function headers():Headers;
+    public function headers(): Headers;
 
     /**
      * Set the headers parameters.

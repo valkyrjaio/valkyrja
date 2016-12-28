@@ -47,14 +47,14 @@ interface Client
      *
      * @return string
      */
-    public function getHost() : string;
+    public function getHost(): string;
 
     /**
      * Set the host.
      *
      * @return string
      */
-    public function setHost() : string;
+    public function setHost(): string;
 
     /**
      * Get the uri with the host prepended.
@@ -63,7 +63,7 @@ interface Client
      *
      * @return string
      */
-    public function getUri(string $uri = '') : string;
+    public function getUri(string $uri = ''): string;
 
     /**
      * Make a get request.

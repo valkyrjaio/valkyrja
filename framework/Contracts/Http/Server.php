@@ -43,5 +43,5 @@ interface Server extends Collection
      *
      * @return array
      */
-    public function getHeaders() : array;
+    public function getHeaders(): array;
 }

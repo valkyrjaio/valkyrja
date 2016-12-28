@@ -15,7 +15,7 @@ if (! function_exists('app')) {
      *
      * @return \Valkyrja\Contracts\Application
      */
-    function app() : Valkyrja\Contracts\Application
+    function app(): Valkyrja\Contracts\Application
     {
         return Valkyrja\Application::app();
     }
@@ -46,7 +46,7 @@ if (! function_exists('container')) {
      *
      * @return \Valkyrja\Contracts\Container\Container
      */
-    function container() : Valkyrja\Contracts\Container\Container
+    function container(): Valkyrja\Contracts\Container\Container
     {
         return app()->container();
     }
@@ -73,7 +73,7 @@ if (! function_exists('config')) {
      *
      * @return \config\Config|\Valkyrja\Config\Config|\Valkyrja\Contracts\Config\Config
      */
-    function config() : Valkyrja\Contracts\Config\Config
+    function config(): Valkyrja\Contracts\Config\Config
     {
         return app()->config();
     }
@@ -85,7 +85,7 @@ if (! function_exists('router')) {
      *
      * @return \Valkyrja\Contracts\Routing\Router
      */
-    function router() : Valkyrja\Contracts\Routing\Router
+    function router(): Valkyrja\Contracts\Routing\Router
     {
         return app()->router();
     }
@@ -97,7 +97,7 @@ if (! function_exists('responseBuilder')) {
      *
      * @return \Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function responseBuilder() : Valkyrja\Contracts\Http\ResponseBuilder
+    function responseBuilder(): Valkyrja\Contracts\Http\ResponseBuilder
     {
         return app()->responseBuilder();
     }
@@ -113,7 +113,7 @@ if (! function_exists('response')) {
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function response(string $content = '', int $status = 200, array $headers = []) : Valkyrja\Contracts\Http\Response
+    function response(string $content = '', int $status = 200, array $headers = []): Valkyrja\Contracts\Http\Response
     {
         return app()->response($content, $status, $headers);
     }
@@ -128,7 +128,7 @@ if (! function_exists('view')) {
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    function view(string $template = '', array $variables = []) : Valkyrja\Contracts\View\View
+    function view(string $template = '', array $variables = []): Valkyrja\Contracts\View\View
     {
         return app()->view($template, $variables);
     }
@@ -144,7 +144,7 @@ if (! function_exists('get')) {
      *
      * @return void
      */
-    function get(string $path, array $options, bool $isDynamic = false) : void
+    function get(string $path, array $options, bool $isDynamic = false): void
     {
         router()->get($path, $options, $isDynamic);
     }
@@ -160,7 +160,7 @@ if (! function_exists('post')) {
      *
      * @return void
      */
-    function post(string $path, array $options, bool $isDynamic = false) : void
+    function post(string $path, array $options, bool $isDynamic = false): void
     {
         router()->post($path, $options, $isDynamic);
     }
@@ -176,7 +176,7 @@ if (! function_exists('put')) {
      *
      * @return void
      */
-    function put(string $path, array $options, bool $isDynamic = false) : void
+    function put(string $path, array $options, bool $isDynamic = false): void
     {
         router()->put($path, $options, $isDynamic);
     }
@@ -192,7 +192,7 @@ if (! function_exists('patch')) {
      *
      * @return void
      */
-    function patch(string $path, array $options, bool $isDynamic = false) : void
+    function patch(string $path, array $options, bool $isDynamic = false): void
     {
         router()->patch($path, $options, $isDynamic);
     }
@@ -208,7 +208,7 @@ if (! function_exists('delete')) {
      *
      * @return void
      */
-    function delete(string $path, array $options, bool $isDynamic = false) : void
+    function delete(string $path, array $options, bool $isDynamic = false): void
     {
         router()->delete($path, $options, $isDynamic);
     }
@@ -224,7 +224,7 @@ if (! function_exists('head')) {
      *
      * @return void
      */
-    function head(string $path, array $options, bool $isDynamic = false) : void
+    function head(string $path, array $options, bool $isDynamic = false): void
     {
         router()->head($path, $options, $isDynamic);
     }
@@ -238,7 +238,7 @@ if (! function_exists('basePath')) {
      *
      * @return string
      */
-    function basePath(string $path = null) : string
+    function basePath(string $path = null): string
     {
         return Valkyrja\Support\Directory::basePath($path);
     }
@@ -252,7 +252,7 @@ if (! function_exists('appPath')) {
      *
      * @return string
      */
-    function appPath(string $path = null) : string
+    function appPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::appPath($path);
     }
@@ -266,7 +266,7 @@ if (! function_exists('configPath')) {
      *
      * @return string
      */
-    function configPath(string $path = null) : string
+    function configPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::configPath($path);
     }
@@ -280,7 +280,7 @@ if (! function_exists('frameworkPath')) {
      *
      * @return string
      */
-    function frameworkPath(string $path = null) : string
+    function frameworkPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::frameworkPath($path);
     }
@@ -294,7 +294,7 @@ if (! function_exists('publicPath')) {
      *
      * @return string
      */
-    function publicPath(string $path = null) : string
+    function publicPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::publicPath($path);
     }
@@ -308,7 +308,7 @@ if (! function_exists('resourcesPath')) {
      *
      * @return string
      */
-    function resourcesPath(string $path = null) : string
+    function resourcesPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::resourcesPath($path);
     }
@@ -322,7 +322,7 @@ if (! function_exists('storagePath')) {
      *
      * @return string
      */
-    function storagePath(string $path = null) : string
+    function storagePath(string $path = null): string
     {
         return Valkyrja\Support\Directory::storagePath($path);
     }
@@ -336,7 +336,7 @@ if (! function_exists('testsPath')) {
      *
      * @return string
      */
-    function testsPath(string $path = null) : string
+    function testsPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::testsPath($path);
     }
@@ -350,7 +350,7 @@ if (! function_exists('vendorPath')) {
      *
      * @return string
      */
-    function vendorPath(string $path = null) : string
+    function vendorPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::vendorPath($path);
     }
@@ -365,7 +365,7 @@ if (! function_exists('dd')) {
      *
      * @return void
      */
-    function dd() : void
+    function dd(): void
     {
         var_dump(func_get_args());
 

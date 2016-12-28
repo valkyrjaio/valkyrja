@@ -52,7 +52,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []) : Response
+    public function make(string $content = '', int $status = 200, array $headers = []): Response
     {
         return $this->app->response()->create($content, $status, $headers);
     }
@@ -67,7 +67,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []) : Response
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []): Response
     {
         $content = $this->app->view()->make($template, $data)->render();
 
@@ -83,7 +83,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function json(array $data = [], int $status = 200, array $headers = []) : Response
+    public function json(array $data = [], int $status = 200, array $headers = []): Response
     {
         return $this->app->response();
     }
@@ -98,7 +98,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : Response
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []): Response
     {
         return $this->app->response();
     }
@@ -113,7 +113,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []) : Response
+    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []): Response
     {
         return $this->app->response();
     }
@@ -128,7 +128,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []) : Response
+    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []): Response
     {
         return $this->app->response();
     }

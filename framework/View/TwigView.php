@@ -56,7 +56,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function make(string $template = '', array $variables = []) : ViewContract
+    public function make(string $template = '', array $variables = []): ViewContract
     {
         /** @var TwigViewContract $view */
         $view = parent::make($template, $variables);
@@ -73,7 +73,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null) : string
+    public function getTemplateDir(string $path = null): string
     {
         return $path
             ?: Directory::DIRECTORY_SEPARATOR;
@@ -86,7 +86,7 @@ class TwigView extends View implements TwigViewContract
      *
      * @return \Valkyrja\Contracts\View\TwigView
      */
-    public function setTwig(Twig_Environment $twig) : TwigViewContract
+    public function setTwig(Twig_Environment $twig): TwigViewContract
     {
         $this->twig = $twig;
 
@@ -104,7 +104,7 @@ class TwigView extends View implements TwigViewContract
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function render(array $variables = []) : string
+    public function render(array $variables = []): string
     {
         return $this->twig->render($this->getTemplatePath(), $this->variables);
     }

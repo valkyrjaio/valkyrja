@@ -41,11 +41,11 @@ class Directory
      *
      * @return string
      */
-    public static function basePath(string $path = null) : string
+    public static function basePath(string $path = null): string
     {
         return static::$BASE_PATH . ($path
-            ? static::DIRECTORY_SEPARATOR . $path
-            : $path);
+                ? static::DIRECTORY_SEPARATOR . $path
+                : $path);
     }
 
     /**
@@ -55,7 +55,7 @@ class Directory
      *
      * @return string
      */
-    public static function appPath(string $path = null) : string
+    public static function appPath(string $path = null): string
     {
         return static::basePath(
             'app' . ($path
@@ -71,7 +71,7 @@ class Directory
      *
      * @return string
      */
-    public static function configPath(string $path = null) : string
+    public static function configPath(string $path = null): string
     {
         return static::basePath(
             'config' . ($path
@@ -87,7 +87,7 @@ class Directory
      *
      * @return string
      */
-    public static function frameworkPath(string $path = null) : string
+    public static function frameworkPath(string $path = null): string
     {
         return static::basePath(
             'framework' . ($path
@@ -103,7 +103,7 @@ class Directory
      *
      * @return string
      */
-    public static function publicPath(string $path = null) : string
+    public static function publicPath(string $path = null): string
     {
         return static::basePath(
             'public' . ($path
@@ -119,7 +119,7 @@ class Directory
      *
      * @return string
      */
-    public static function resourcesPath(string $path = null) : string
+    public static function resourcesPath(string $path = null): string
     {
         return static::basePath(
             'resources' . ($path
@@ -135,7 +135,7 @@ class Directory
      *
      * @return string
      */
-    public static function routesPath(string $path = null) : string
+    public static function routesPath(string $path = null): string
     {
         return static::basePath(
             'routes' . ($path
@@ -151,7 +151,7 @@ class Directory
      *
      * @return string
      */
-    public static function storagePath(string $path = null) : string
+    public static function storagePath(string $path = null): string
     {
         return static::basePath(
             'storage' . ($path
@@ -167,7 +167,7 @@ class Directory
      *
      * @return string
      */
-    public static function testsPath(string $path = null) : string
+    public static function testsPath(string $path = null): string
     {
         return static::basePath(
             'tests' . ($path
@@ -183,7 +183,7 @@ class Directory
      *
      * @return string
      */
-    public static function vendorPath(string $path = null) : string
+    public static function vendorPath(string $path = null): string
     {
         return static::basePath(
             'vendor' . ($path

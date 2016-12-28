@@ -33,7 +33,7 @@ class TwigServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function publish() : void
+    public function publish(): void
     {
         if (! $this->app->isTwigEnabled()) {
             return;

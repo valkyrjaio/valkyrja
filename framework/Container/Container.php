@@ -58,7 +58,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function setServiceContainer(array $serviceContainer) : void
+    public function setServiceContainer(array $serviceContainer): void
     {
         // The application has already bootstrapped the container so merge to avoid clearing
         $this->serviceContainer = array_merge($this->serviceContainer, $serviceContainer);
@@ -73,7 +73,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function bind(string $abstract, Closure $closure, bool $singleton = false) : void
+    public function bind(string $abstract, Closure $closure, bool $singleton = false): void
     {
         $this->set($abstract, $closure, $singleton);
     }
@@ -86,7 +86,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function singleton(string $abstract, Closure $closure) : void
+    public function singleton(string $abstract, Closure $closure): void
     {
         $this->bind($abstract, $closure, true);
     }
@@ -99,7 +99,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function instance(string $abstract, $instance) : void
+    public function instance(string $abstract, $instance): void
     {
         $this->set($abstract, $instance, true, true);
     }
@@ -113,7 +113,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function alias(string $abstract, string $alias, bool $singleton = false) : void
+    public function alias(string $abstract, string $alias, bool $singleton = false): void
     {
         $this->set($abstract, $alias, $singleton);
     }
@@ -128,7 +128,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    protected function set(string $abstract, $closure, bool $singleton = false, bool $made = false) : void
+    protected function set(string $abstract, $closure, bool $singleton = false, bool $made = false): void
     {
         $this->serviceContainer[$abstract] = [
             $closure,
@@ -199,7 +199,7 @@ class Container implements ContainerContract
      *
      * @return bool
      */
-    public function bound(string $abstract) : bool
+    public function bound(string $abstract): bool
     {
         return isset($this->serviceContainer[$abstract]);
     }
@@ -209,7 +209,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function bootstrap() : void
+    public function bootstrap(): void
     {
         // Check if the config has already been set in the container
         if (! $this->bound(ConfigContract::class)) {

@@ -77,7 +77,7 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      *
      * @return int
      */
-    public function getStatusCode() : int
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
@@ -87,7 +87,7 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      *
      * @return array
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         return $this->headers;
     }

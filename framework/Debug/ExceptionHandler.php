@@ -60,7 +60,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function handleException(Throwable $exception) : void
+    public function handleException(Throwable $exception): void
     {
         if (! $exception instanceof Throwable) {
             $exception = new Exception($exception);
@@ -74,7 +74,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function handleShutdown() : void
+    public function handleShutdown(): void
     {
         $error = error_get_last();
 
@@ -102,7 +102,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return \Exception
      */
-    protected function fatalExceptionFromError(array $error) : Exception
+    protected function fatalExceptionFromError(array $error): Exception
     {
         return new ErrorException(
             $error['message'], 0, $error['type'], $error['file'], $error['line']
@@ -116,7 +116,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return void
      */
-    public function sendResponse($exception) : void
+    public function sendResponse($exception): void
     {
         if (! headers_sent()) {
             if ($exception instanceof HttpException) {
@@ -140,7 +140,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      *
      * @return string The content as a string
      */
-    public function getContent(Throwable $exception) : string
+    public function getContent(Throwable $exception): string
     {
         $title = 'Whoops, looks like something went wrong.';
 
@@ -241,7 +241,7 @@ EOF;
      *
      * @return string The stylesheet as a string
      */
-    public function getStylesheet() : string
+    public function getStylesheet(): string
     {
         return <<<'EOF'
             .sf-reset { font: 11px Verdana, Arial, sans-serif; color: #333 }
@@ -307,7 +307,7 @@ EOF;
      *
      * @return string
      */
-    public function html(string $content, string $css) : string
+    public function html(string $content, string $css): string
     {
         return <<<EOF
             <!DOCTYPE html>
@@ -446,7 +446,7 @@ EOF;
      *
      * @return string
      */
-    protected function escapeHtml(string $str) : string
+    protected function escapeHtml(string $str): string
     {
         return htmlspecialchars($str, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }

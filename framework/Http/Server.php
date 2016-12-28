@@ -30,7 +30,7 @@ class Server extends Collection implements ServerContract
      *
      * @return array
      */
-    public function getHeaders() : array
+    public function getHeaders(): array
     {
         $headers = [];
         $specialHeaders = self::SPECIAL_HEADERS;
@@ -51,7 +51,7 @@ class Server extends Collection implements ServerContract
      *
      * @return string
      */
-    protected function getHeaderName($header) : string
+    protected function getHeaderName($header): string
     {
         if (0 === strpos($header, 'HTTP_')) {
             $header = substr($header, 5);

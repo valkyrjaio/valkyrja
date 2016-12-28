@@ -38,14 +38,14 @@ interface ExceptionHandler
      *
      * @return void
      */
-    public function handleException(Throwable $exception) : void;
+    public function handleException(Throwable $exception): void;
 
     /**
      * Handle the PHP shutdown event.
      *
      * @return void
      */
-    public function handleShutdown() : void;
+    public function handleShutdown(): void;
 
     /**
      * Send response.
@@ -54,7 +54,7 @@ interface ExceptionHandler
      *
      * @return void
      */
-    public function sendResponse($exception) : void;
+    public function sendResponse($exception): void;
 
     /**
      * Gets the HTML content associated with the given exception.
@@ -63,14 +63,14 @@ interface ExceptionHandler
      *
      * @return string The content as a string
      */
-    public function getContent(Throwable $exception) : string;
+    public function getContent(Throwable $exception): string;
 
     /**
      * Gets the stylesheet associated with the given exception.
      *
      * @return string The stylesheet as a string
      */
-    public function getStylesheet() : string;
+    public function getStylesheet(): string;
 
     /**
      * Decorate the html response.
@@ -80,5 +80,5 @@ interface ExceptionHandler
      *
      * @return string
      */
-    public function html(string $content, string $css) : string;
+    public function html(string $content, string $css): string;
 }

@@ -434,7 +434,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Contracts\Http\Headers
      */
-    public function headers():HeadersContract
+    public function headers(): HeadersContract
     {
         if (! $this->headers) {
             $this->setHeaders();

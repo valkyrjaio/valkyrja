@@ -25,11 +25,11 @@ Valkyrja\Support\Directory::$BASE_PATH = realpath(__DIR__ . '/../');
  */
 
 $app = new Valkyrja\Application(
-    // Set the container
+// Set the container
     new Valkyrja\Container\Container(),
     // Set the config
     new config\Config(
-        // With environment variables
+    // With environment variables
         new config\Env()
     )
 );

@@ -63,7 +63,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function has(string $key) : bool
+    public function has(string $key): bool
     {
         return isset($this->collection[$key]);
     }
@@ -75,7 +75,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function exists(string $key) : bool
+    public function exists(string $key): bool
     {
         return array_key_exists($key, $this->collection);
     }
@@ -88,7 +88,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function set(string $key, $value) : CollectionContract
+    public function set(string $key, $value): CollectionContract
     {
         $this->collection[$key] = $value;
 
@@ -102,7 +102,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function remove(string $key) : CollectionContract
+    public function remove(string $key): CollectionContract
     {
         if (! $this->has($key)) {
             return $this;
@@ -118,7 +118,7 @@ class Collection implements CollectionContract
      *
      * @return array
      */
-    public function all() : array
+    public function all(): array
     {
         return $this->collection;
     }
@@ -130,7 +130,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function setAll(array $collection) : CollectionContract
+    public function setAll(array $collection): CollectionContract
     {
         $this->collection = $collection;
 
@@ -142,7 +142,7 @@ class Collection implements CollectionContract
      *
      * @return array
      */
-    public function keys() : array
+    public function keys(): array
     {
         return array_keys($this->collection);
     }
@@ -152,7 +152,7 @@ class Collection implements CollectionContract
      *
      * @return int
      */
-    public function count() : int
+    public function count(): int
     {
         return count($this->collection);
     }
@@ -162,7 +162,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function isEmpty() : bool
+    public function isEmpty(): bool
     {
         return empty($this->collection);
     }
@@ -186,7 +186,7 @@ class Collection implements CollectionContract
      *
      * @return bool
      */
-    public function __isset(string $key) : bool
+    public function __isset(string $key): bool
     {
         return $this->has($key);
     }
@@ -199,7 +199,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function __set(string $key, $value) : CollectionContract
+    public function __set(string $key, $value): CollectionContract
     {
         return $this->set($key, $value);
     }
@@ -211,7 +211,7 @@ class Collection implements CollectionContract
      *
      * @return CollectionContract
      */
-    public function __unset(string $key) : CollectionContract
+    public function __unset(string $key): CollectionContract
     {
         return $this->remove($key);
     }
@@ -221,7 +221,7 @@ class Collection implements CollectionContract
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return json_encode($this->collection);
     }

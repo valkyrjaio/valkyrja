@@ -37,7 +37,7 @@ class HomeController extends Controller
      *
      * @Route(path = '/', name = 'welcome')
      */
-    public function welcome() : View
+    public function welcome(): View
     {
         return view('index')->withoutLayout();
     }
@@ -50,7 +50,7 @@ class HomeController extends Controller
      *
      * @Route(path = '/version', name = 'version')
      */
-    public function version() : string
+    public function version(): string
     {
         return $this->app->version();
     }
@@ -67,7 +67,7 @@ class HomeController extends Controller
      * @Route(path = '/home', name = 'home')
      * @Route(path = '/home/{id:num}', name = 'homePaged', dynamic = true)
      */
-    public function home(Application $application, int $page = 1) : Response
+    public function home(Application $application, int $page = 1): Response
     {
         return response(view('home/home',
                 [

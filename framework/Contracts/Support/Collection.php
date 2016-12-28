@@ -46,7 +46,7 @@ interface Collection
      *
      * @return bool
      */
-    public function has(string $key) : bool;
+    public function has(string $key): bool;
 
     /**
      * Determine if an item exists in the collection.
@@ -55,7 +55,7 @@ interface Collection
      *
      * @return bool
      */
-    public function exists(string $key) : bool;
+    public function exists(string $key): bool;
 
     /**
      * Set a new item into the collection.
@@ -65,7 +65,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function set(string $key, $value) : Collection;
+    public function set(string $key, $value): Collection;
 
     /**
      * Remove an item from the collection.
@@ -74,14 +74,14 @@ interface Collection
      *
      * @return Collection
      */
-    public function remove(string $key) : Collection;
+    public function remove(string $key): Collection;
 
     /**
      * Get all the items in the collection.
      *
      * @return array
      */
-    public function all() : array;
+    public function all(): array;
 
     /**
      * Set the collection.
@@ -90,28 +90,28 @@ interface Collection
      *
      * @return Collection
      */
-    public function setAll(array $collection) : Collection;
+    public function setAll(array $collection): Collection;
 
     /**
      * Get all the keys in the collection.
      *
      * @return array
      */
-    public function keys() : array;
+    public function keys(): array;
 
     /**
      * Get the total count of items in the collection.
      *
      * @return int
      */
-    public function count() : int;
+    public function count(): int;
 
     /**
      * Determine if the collection is empty.
      *
      * @return bool
      */
-    public function isEmpty() : bool;
+    public function isEmpty(): bool;
 
     /**
      * Get a single item from the collection.
@@ -129,7 +129,7 @@ interface Collection
      *
      * @return bool
      */
-    public function __isset(string $key) : bool;
+    public function __isset(string $key): bool;
 
     /**
      * Set a new item into the collection.
@@ -139,7 +139,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function __set(string $key, $value) : Collection;
+    public function __set(string $key, $value): Collection;
 
     /**
      * Remove an item from the collection.
@@ -148,12 +148,12 @@ interface Collection
      *
      * @return Collection
      */
-    public function __unset(string $key) : Collection;
+    public function __unset(string $key): Collection;
 
     /**
      * Convert the collection to a string.
      *
      * @return string
      */
-    public function __toString() : string;
+    public function __toString(): string;
 }

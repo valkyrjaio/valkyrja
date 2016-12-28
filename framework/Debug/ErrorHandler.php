@@ -38,7 +38,7 @@ class ErrorHandler implements ErrorHandlerContract
      *
      * @throws \Exception
      */
-    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []) : void
+    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []): void
     {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
@@ -52,7 +52,7 @@ class ErrorHandler implements ErrorHandlerContract
      *
      * @return \Exception
      */
-    protected function fatalExceptionFromError(array $error) : Exception
+    protected function fatalExceptionFromError(array $error): Exception
     {
         return new ErrorException(
             $error['message'], 0, $error['type'], $error['file'], $error['line']

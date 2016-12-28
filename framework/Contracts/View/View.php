@@ -39,7 +39,7 @@ interface View
      *
      * @return View
      */
-    public function make(string $template = '', array $variables = []) : View;
+    public function make(string $template = '', array $variables = []): View;
 
     /**
      * Set the layout template.
@@ -48,14 +48,14 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setLayout(string $template) : View;
+    public function setLayout(string $template): View;
 
     /**
      * Set to use no layout.
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function withoutLayout() : View;
+    public function withoutLayout(): View;
 
     /**
      * Set the template.
@@ -64,7 +64,7 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplate(string $template) : View;
+    public function setTemplate(string $template): View;
 
     /**
      * Set the variables
@@ -73,7 +73,7 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setVariables(array $variables = []) : View;
+    public function setVariables(array $variables = []): View;
 
     /**
      * Set a single variable.
@@ -83,7 +83,7 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function variable(string $key, $value) : View;
+    public function variable(string $key, $value): View;
 
     /**
      * Get the template directory.
@@ -92,7 +92,7 @@ interface View
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null) : string;
+    public function getTemplateDir(string $path = null): string;
 
     /**
      * Set the template directory.
@@ -101,14 +101,14 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplateDir(string $templateDir) : View;
+    public function setTemplateDir(string $templateDir): View;
 
     /**
      * Get the file extension.
      *
      * @return string
      */
-    public function getFileExtension() : string;
+    public function getFileExtension(): string;
 
     /**
      * Set the file extension.
@@ -117,21 +117,21 @@ interface View
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setFileExtension(string $extension) : View;
+    public function setFileExtension(string $extension): View;
 
     /**
      * Get the template path.
      *
      * @return string
      */
-    public function getTemplatePath() : string;
+    public function getTemplatePath(): string;
 
     /**
      * Get the layout template path.
      *
      * @return string
      */
-    public function getLayoutPath() : string;
+    public function getLayoutPath(): string;
 
     /**
      * Render the templates and view.
@@ -140,12 +140,12 @@ interface View
      *
      * @return string
      */
-    public function render(array $variables = []) : string;
+    public function render(array $variables = []): string;
 
     /**
      * Get the view as a string.
      *
      * @return string
      */
-    public function __toString() : string;
+    public function __toString(): string;
 }

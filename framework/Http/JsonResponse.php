@@ -79,7 +79,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback(string $callback = null) : JsonResponseContract
+    public function setCallback(string $callback = null): JsonResponseContract
     {
         if (null !== $callback) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
@@ -107,7 +107,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function setJson(string $json) : JsonResponseContract
+    public function setJson(string $json): JsonResponseContract
     {
         $this->data = $json;
 
@@ -123,7 +123,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function setData(array $data = []) : JsonResponseContract
+    public function setData(array $data = []): JsonResponseContract
     {
         $content = json_encode($data, $this->encodingOptions);
 
@@ -139,7 +139,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @return int
      */
-    public function getEncodingOptions() : int
+    public function getEncodingOptions(): int
     {
         return $this->encodingOptions;
     }
@@ -153,7 +153,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function setEncodingOptions(int $encodingOptions) : JsonResponseContract
+    public function setEncodingOptions(int $encodingOptions): JsonResponseContract
     {
         $this->encodingOptions = $encodingOptions;
 
@@ -165,7 +165,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    protected function update() : JsonResponseContract
+    protected function update(): JsonResponseContract
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.

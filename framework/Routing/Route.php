@@ -103,7 +103,7 @@ class Route
      *
      * @return string
      */
-    public function getPath() : string
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -115,7 +115,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setPath(string $path) : Route
+    public function setPath(string $path): Route
     {
         $this->path = $path;
 
@@ -127,7 +127,7 @@ class Route
      *
      * @return string
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -139,7 +139,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setName(string $name) : Route
+    public function setName(string $name): Route
     {
         $this->name = $name;
 
@@ -163,7 +163,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setController(string $controller) : Route
+    public function setController(string $controller): Route
     {
         $this->controller = $controller;
 
@@ -175,7 +175,7 @@ class Route
      *
      * @return string
      */
-    public function getAction() : string
+    public function getAction(): string
     {
         return $this->action;
     }
@@ -187,7 +187,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setAction(string $action) : Route
+    public function setAction(string $action): Route
     {
         $this->action = $action;
 
@@ -199,7 +199,7 @@ class Route
      *
      * @return \Closure
      */
-    public function getHandler() : Closure
+    public function getHandler(): Closure
     {
         return $this->handler;
     }
@@ -211,7 +211,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setHandler(Closure $handler) : Route
+    public function setHandler(Closure $handler): Route
     {
         $this->handler = $handler;
 
@@ -223,7 +223,7 @@ class Route
      *
      * @return array
      */
-    public function getInjectables() : array
+    public function getInjectables(): array
     {
         return $this->injectables;
     }
@@ -235,7 +235,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setInjectables(array $injectables) : Route
+    public function setInjectables(array $injectables): Route
     {
         $this->injectables = $injectables;
 
@@ -257,7 +257,7 @@ class Route
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function setDynamic() : Route
+    public function setDynamic(): Route
     {
         $this->dynamic = true;
 

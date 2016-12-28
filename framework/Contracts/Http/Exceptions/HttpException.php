@@ -46,12 +46,12 @@ interface HttpException
      *
      * @return int
      */
-    public function getStatusCode() : int;
+    public function getStatusCode(): int;
 
     /**
      * Get the headers set for this exception.
      *
      * @return array
      */
-    public function getHeaders() : array;
+    public function getHeaders(): array;
 }

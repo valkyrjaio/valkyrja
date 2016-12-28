@@ -9,7 +9,7 @@
 get(
     '/',
     [
-        'handler' => function () : Valkyrja\Contracts\View\View {
+        'handler' => function (): Valkyrja\Contracts\View\View {
             return view('index')->withoutLayout();
         },
     ]
@@ -24,7 +24,7 @@ get(
 get(
     '/version',
     [
-        'handler' => function () : string {
+        'handler' => function (): string {
             return app()->version();
         },
     ]
@@ -58,7 +58,7 @@ get(
  * @path /home/:page
  */
 get(
-    '/home/{id:(\d+)}',
+    '/home/{id:num}',
     [
         'controller' => App\Controllers\HomeController::class,
         'action'     => 'home',

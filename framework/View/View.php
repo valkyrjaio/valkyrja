@@ -87,7 +87,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function make(string $template = '', array $variables = []) : ViewContract
+    public function make(string $template = '', array $variables = []): ViewContract
     {
         return new static($this->app, $template, $variables);
     }
@@ -99,7 +99,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setLayout(string $template) : ViewContract
+    public function setLayout(string $template): ViewContract
     {
         $this->layout = $template;
 
@@ -111,7 +111,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function withoutLayout() : ViewContract
+    public function withoutLayout(): ViewContract
     {
         $this->layout = null;
 
@@ -125,7 +125,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplate(string $template) : ViewContract
+    public function setTemplate(string $template): ViewContract
     {
         $this->template = $template;
 
@@ -139,7 +139,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setVariables(array $variables = []) : ViewContract
+    public function setVariables(array $variables = []): ViewContract
     {
         $this->variables = array_merge($this->variables, $variables);
 
@@ -154,7 +154,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function variable(string $key, $value) : ViewContract
+    public function variable(string $key, $value): ViewContract
     {
         $this->variables[$key] = $value;
 
@@ -168,11 +168,11 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null) : string
+    public function getTemplateDir(string $path = null): string
     {
         return $this->templateDir . ($path
-            ? Directory::DIRECTORY_SEPARATOR . $path
-            : $path);
+                ? Directory::DIRECTORY_SEPARATOR . $path
+                : $path);
     }
 
     /**
@@ -182,7 +182,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setTemplateDir(string $templateDir) : ViewContract
+    public function setTemplateDir(string $templateDir): ViewContract
     {
         $this->templateDir = $templateDir;
 
@@ -194,7 +194,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getFileExtension() : string
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -206,7 +206,7 @@ class View implements ViewContract
      *
      * @return \Valkyrja\Contracts\View\View
      */
-    public function setFileExtension(string $extension) : ViewContract
+    public function setFileExtension(string $extension): ViewContract
     {
         $this->fileExtension = $extension;
 
@@ -218,7 +218,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getTemplatePath() : string
+    public function getTemplatePath(): string
     {
         return $this->getTemplateDir($this->template . $this->getFileExtension());
     }
@@ -228,7 +228,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getLayoutPath() : string
+    public function getLayoutPath(): string
     {
         return $this->getTemplateDir($this->layout . $this->getFileExtension());
     }
@@ -240,7 +240,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function render(array $variables = []) : string
+    public function render(array $variables = []): string
     {
         extract(array_merge($this->variables, $variables), EXTR_OVERWRITE);
 
@@ -265,7 +265,7 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->render();
     }
