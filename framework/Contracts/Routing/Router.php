@@ -25,6 +25,20 @@ use Valkyrja\Http\RequestMethod;
 interface Router
 {
     /**
+     * The variable regex.
+     *
+     * @constant string
+     */
+    public const VARIABLE_REGEX = <<<'REGEX'
+\{
+    \s* ([a-zA-Z_][a-zA-Z0-9_-]*) \s*
+    (?:
+        : \s* ([^{}]*(?:\{(?-1)\}[^{}]*)*)
+    )?
+\}
+REGEX;
+
+    /**
      * Router constructor.
      *
      * @param \Valkyrja\Contracts\Application $application
