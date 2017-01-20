@@ -41,16 +41,26 @@ class Parser
 
             // Iterate through the matches individually
             foreach ($matches[1] as $match) {
+                $match = trim($match);
                 // Explode the string by comma
                 $match = explode(',', $match);
 
                 // Iterate through the exploded array
                 foreach ($match as $item) {
+                    $item = trim($item);
                     // Explode the values by equal sign
                     $items = explode('=', $item);
 
                     // Iterate through each key value pair
                     foreach ($items as $key => $subItem) {
+                        $subItem = trim($subItem);
+                        $subItemExplode = explode('::', $subItem);
+
+                        // If this is a class with a constant
+                        if (strpos($subItem, '::') && class_exists($subItemExplode[0])) {
+                            $subItem = constant("$subItemExplode[0]::$subItemExplode[1]");
+                        }
+
                         // Trim the values and replace any quotes
                         $items[$key] = str_replace(['\'', '\"'], '', trim($subItem));
                     }
