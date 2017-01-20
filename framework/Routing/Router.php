@@ -130,6 +130,7 @@ class Router implements RouterContract
             'action'     => $options['action'] ?? false,
             'handler'    => $options['handler'] ?? false,
             'injectable' => $options['injectable'] ?? [],
+            'params'     => [],
         ];
 
         // If this is a dynamic route
@@ -143,8 +144,7 @@ class Router implements RouterContract
 
             // Run through all matches
             foreach ($params[0] as $key => $param) {
-                // Check if a regex was set for this match, otherwise use a wildcard all
-
+                // Check if a global regex alias was used
                 switch ($params[2][$key]) {
                     case 'num' :
                         $replacement = '(\d+)';
@@ -168,6 +168,7 @@ class Router implements RouterContract
                         $replacement = '(\w+)';
                         break;
                     default :
+                        // Check if a regex was set for this match, otherwise use a wildcard all
                         $replacement = $params[2][$key] ?: '(.*)';
                         break;
                 }
@@ -175,6 +176,8 @@ class Router implements RouterContract
                 // Replace the matches with a regex
                 $path = str_replace($param, $replacement, $path);
             }
+
+            $route['params'] = $params;
 
             $path = str_replace('/', '\/', $path);
             $path = '/^' . $path . '$/';
@@ -318,6 +321,74 @@ class Router implements RouterContract
     protected function getRoutesByMethod(string $method, string $type = 'static'): array
     {
         return $this->routes[$type][$method];
+    }
+
+    /**
+     * Get a route by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param string $type   [optional] The type of routes (static/dynamic)
+     *
+     * @return array
+     */
+    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = 'static'): array
+    {
+        $match = [];
+
+        // Iterate through the routes of the type and method
+        foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
+            // If the route name matches the name we're trying to find
+            if ($route['name'] === $name) {
+                // Set the match as this route
+                $match = $route;
+
+                // Break as we have found our match
+                break;
+            }
+        }
+
+        return $match;
+    }
+
+    /**
+     * Get a route url by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param array  $data   [optional] The route data if dynamic
+     *
+     * @return string
+     */
+    public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string
+    {
+        // Get the matching route
+        $route = $this->getRouteByName($name, $method, empty($data) ? 'static' : 'dynamic');
+
+        // If no route was found
+        if (! $route) {
+            // Return an empty string
+            return '';
+        }
+
+        // Set the path as the route's path
+        $path = $route['path'];
+
+        // If there is data
+        if ($data) {
+            // Get the route's params
+            $params = $route['params'];
+
+            // Iterate through all the prams
+            foreach ($params[0] as $key => $param) {
+                // Set the path by replacing the params with the data arguments
+                $path = str_replace($param, $data[$params[1][$key]], $path);
+            }
+
+            return $path;
+        }
+
+        return $path;
     }
 
     /**
@@ -504,7 +575,7 @@ class Router implements RouterContract
         else {
             // Attempt to find a match using dynamic routes that are set
             foreach ($this->getRoutesByMethod($requestMethod, 'dynamic') as $path => $dynamicRoute) {
-                // If the perg match is successful, we've found our route!
+                // If the preg match is successful, we've found our route!
                 if (preg_match($path, $requestUri, $matches)) {
                     $route = $dynamicRoute;
                     break;

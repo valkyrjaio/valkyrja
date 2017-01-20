@@ -91,6 +91,38 @@ if (! function_exists('router')) {
     }
 }
 
+if (! function_exists('route')) {
+    /**
+     * Get a route by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param string $type   [optional] The type of route (static/dynamic)
+     *
+     * @return array
+     */
+    function route(string $name, string $method = Valkyrja\Http\RequestMethod::GET, string $type = 'static'): array
+    {
+        return router()->getRouteByName($name, $method, $type);
+    }
+}
+
+if (! function_exists('routeUrl')) {
+    /**
+     * Get a route url by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param array  $data   [optional] The route data if dynamic
+     *
+     * @return string
+     */
+    function routeUrl(string $name, array $data = [], string $method = Valkyrja\Http\RequestMethod::GET): string
+    {
+        return router()->getRouteUrlByName($name, $data, $method);
+    }
+}
+
 if (! function_exists('responseBuilder')) {
     /**
      * Get the response builder.

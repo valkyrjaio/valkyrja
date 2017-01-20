@@ -13,6 +13,7 @@ namespace Valkyrja\Contracts\Routing;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Http\RequestMethod;
 
 /**
  * Interface Router
@@ -137,6 +138,28 @@ interface Router
      * @return array
      */
     public function getRoutes(): array;
+
+    /**
+     * Get a route by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param string $type   [optional] The type of routes (static/dynamic)
+     *
+     * @return array
+     */
+    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = 'static'): array;
+
+    /**
+     * Get a route url by name.
+     *
+     * @param string $name   The name of the route to get
+     * @param string $method [optional] The method type of get
+     * @param array  $data   [optional] The route data if dynamic
+     *
+     * @return string
+     */
+    public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string;
 
     /**
      * Setup routes.
