@@ -29,8 +29,16 @@ class Parser
      */
     public function getRouteAnnotations(string $docString): array
     {
+        $regex = <<<'REGEX'
+    @Route\( 
+        \s* 
+            ([a-zA-Z0-9\_\-\\\/\:\,\=\'\"\s]*)
+        \s* 
+    \)
+REGEX;
+
         // Get all matches of @Route()
-        preg_match_all('/@Route\((.*)\)/', $docString, $matches);
+        preg_match_all('/' . $regex . '/x', $docString, $matches);
 
         // Create a new array to return matches
         $annotations = [];
