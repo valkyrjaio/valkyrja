@@ -137,7 +137,7 @@ class Router implements RouterContract
         if ($isDynamic) {
             // Get all matches for {paramName} and {paramName:(validator)} in the path
             preg_match_all(
-                static::VARIABLE_REGEX,
+                '/' . static::VARIABLE_REGEX . '/x',
                 $path,
                 $params
             );
