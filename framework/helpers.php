@@ -52,7 +52,7 @@ if (! function_exists('container')) {
     }
 }
 
-if (! function_exists('container')) {
+if (! function_exists('instance')) {
     /**
      * Get an item from the container.
      *
