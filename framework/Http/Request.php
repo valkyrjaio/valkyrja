@@ -197,6 +197,32 @@ class Request implements RequestContract
     }
 
     /**
+     * Create a new Request instance.
+     *
+     * @param array           $query      The GET parameters
+     * @param array           $request    The POST parameters
+     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array           $cookies    The COOKIE parameters
+     * @param array           $files      The FILES parameters
+     * @param array           $server     The SERVER parameters
+     * @param string|resource $content    The raw body data
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public static function factory(
+        array $query = [],
+        array $request = [],
+        array $attributes = [],
+        array $cookies = [],
+        array $files = [],
+        array $server = [],
+        $content = null
+    ): RequestContract
+    {
+        return new static($query, $request, $attributes, $cookies, $files, $server, $content);
+    }
+
+    /**
      * Creates a new request with values from PHP's super globals.
      *
      * @return \Valkyrja\Contracts\Http\Request
@@ -224,6 +250,132 @@ class Request implements RequestContract
         }
 
         return $request;
+    }
+
+    /**
+     * Creates a Request based on a given URI and configuration.
+     *
+     * The information contained in the URI always take precedence
+     * over the other information (server and parameters).
+     *
+     * @param string $uri        The URI
+     * @param string $method     The HTTP method
+     * @param array  $parameters The query (GET) or request (POST) parameters
+     * @param array  $cookies    The request cookies ($_COOKIE)
+     * @param array  $files      The request files ($_FILES)
+     * @param array  $server     The server parameters ($_SERVER)
+     * @param string $content    The raw body data
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public static function create(
+        $uri,
+        $method = RequestMethod::GET,
+        $parameters = [],
+        $cookies = [],
+        $files = [],
+        $server = [],
+        $content = null
+    ): RequestContract
+    {
+        $server = array_replace(
+            [
+                'SERVER_NAME'          => 'localhost',
+                'SERVER_PORT'          => 80,
+                'HTTP_HOST'            => 'localhost',
+                'HTTP_USER_AGENT'      => config()->app->version,
+                'HTTP_ACCEPT'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'HTTP_ACCEPT_LANGUAGE' => 'en-us,en;q=0.5',
+                'HTTP_ACCEPT_CHARSET'  => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+                'REMOTE_ADDR'          => '127.0.0.1',
+                'SCRIPT_NAME'          => '',
+                'SCRIPT_FILENAME'      => '',
+                'SERVER_PROTOCOL'      => 'HTTP/1.1',
+                'REQUEST_TIME'         => time(),
+            ],
+            $server
+        );
+
+        $server['PATH_INFO'] = '';
+        $server['REQUEST_METHOD'] = strtoupper($method);
+        $components = parse_url($uri);
+        $request = [];
+        $query = [];
+
+        if (isset($components['host'])) {
+            $server['SERVER_NAME'] = $components['host'];
+            $server['HTTP_HOST'] = $components['host'];
+        }
+
+        if (isset($components['scheme'])) {
+            if ('https' === $components['scheme']) {
+                $server['HTTPS'] = 'on';
+                $server['SERVER_PORT'] = 443;
+            }
+            else {
+                unset($server['HTTPS']);
+                $server['SERVER_PORT'] = 80;
+            }
+        }
+
+        if (isset($components['port'])) {
+            $server['SERVER_PORT'] = $components['port'];
+            $server['HTTP_HOST'] = $server['HTTP_HOST'] . ':' . $components['port'];
+        }
+
+        if (isset($components['user'])) {
+            $server['PHP_AUTH_USER'] = $components['user'];
+        }
+
+        if (isset($components['pass'])) {
+            $server['PHP_AUTH_PW'] = $components['pass'];
+        }
+
+        if (! isset($components['path'])) {
+            $components['path'] = '/';
+        }
+
+        switch (strtoupper($method)) {
+            case RequestMethod::POST :
+            case RequestMethod::PUT :
+            case RequestMethod::DELETE :
+                if (! isset($server['CONTENT_TYPE'])) {
+                    $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+                }
+
+                $query = $parameters;
+
+                break;
+            case RequestMethod::PATCH :
+                $request = $parameters;
+                break;
+            default :
+                $query = $parameters;
+                break;
+        }
+
+        $queryString = '';
+
+        if (isset($components['query'])) {
+            parse_str(html_entity_decode($components['query']), $qs);
+
+            if ($query) {
+                $query = array_replace($qs, $query);
+                $queryString = http_build_query($query, '', '&');
+            }
+            else {
+                $query = $qs;
+                $queryString = $components['query'];
+            }
+        }
+        elseif ($query) {
+            $queryString = http_build_query($query, '', '&');
+        }
+
+        $server['REQUEST_URI'] = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
+        $server['QUERY_STRING'] = $queryString;
+
+        return self::factory($query, $request, [], $cookies, $files, $server, $content);
     }
 
     /**
@@ -802,7 +954,9 @@ class Request implements RequestContract
                     $this->method = strtoupper($method);
                 }
                 elseif (self::$httpMethodParameterOverride) {
-                    $this->method = strtoupper($this->request->get('_method', $this->query->get('_method', RequestMethod::POST)));
+                    $this->method = strtoupper(
+                        $this->request->get('_method', $this->query->get('_method', RequestMethod::POST))
+                    );
                 }
             }
         }

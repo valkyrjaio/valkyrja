@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Http;
 
 use Valkyrja\Contracts\Support\Collection;
+use Valkyrja\Http\RequestMethod;
 
 /**
  * Interface Request
@@ -63,11 +64,60 @@ interface Request
     );
 
     /**
+     * Create a new Request instance.
+     *
+     * @param array           $query      The GET parameters
+     * @param array           $request    The POST parameters
+     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array           $cookies    The COOKIE parameters
+     * @param array           $files      The FILES parameters
+     * @param array           $server     The SERVER parameters
+     * @param string|resource $content    The raw body data
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public static function factory(
+        array $query = [],
+        array $request = [],
+        array $attributes = [],
+        array $cookies = [],
+        array $files = [],
+        array $server = [],
+        $content = null
+    ): Request;
+
+    /**
      * Creates a new request with values from PHP's super globals.
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
     public static function createFromGlobals(): Request;
+
+    /**
+     * Creates a Request based on a given URI and configuration.
+     *
+     * The information contained in the URI always take precedence
+     * over the other information (server and parameters).
+     *
+     * @param string $uri        The URI
+     * @param string $method     The HTTP method
+     * @param array  $parameters The query (GET) or request (POST) parameters
+     * @param array  $cookies    The request cookies ($_COOKIE)
+     * @param array  $files      The request files ($_FILES)
+     * @param array  $server     The server parameters ($_SERVER)
+     * @param string $content    The raw body data
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public static function create(
+        $uri,
+        $method = RequestMethod::GET,
+        $parameters = [],
+        $cookies = [],
+        $files = [],
+        $server = [],
+        $content = null
+    ): Request;
 
     /**
      * Clones the current request.
@@ -185,7 +235,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Headers
      */
-    public function headers(): Headers;
+    public function headers():Headers;
 
     /**
      * Set the headers parameters.
@@ -275,4 +325,231 @@ interface Request
      * @return \Valkyrja\Contracts\Http\Request
      */
     public function setAcceptableContentTypes(array $acceptableContentTypes = []): Request;
+
+    /**
+     * Gets a "parameter" value from any bag.
+     *
+     * @param string $key     the key
+     * @param mixed  $default the default value if the parameter key does not exist
+     *
+     * @return mixed
+     */
+    public function get(string $key, $default = null); // : mixed;
+
+    /**
+     * Returns current script name.
+     *
+     * @return string
+     */
+    public function getScriptName(): string;
+
+    /**
+     * Returns the path being requested relative to the executed script.
+     *
+     * @return string
+     */
+    public function getPath(): string;
+
+    /**
+     * Gets the request's scheme.
+     *
+     * @return string
+     */
+    public function getScheme(): string;
+
+    /**
+     * Returns the port on which the request is made.
+     *
+     * This method can read the client port from the "X-Forwarded-Port" header
+     * when trusted proxies were set via "setTrustedProxies()".
+     *
+     * The "X-Forwarded-Port" header must contain the client port.
+     *
+     * If your reverse proxy uses a different header name than "X-Forwarded-Port",
+     * configure it via "setTrustedHeaderName()" with the "client-port" key.
+     *
+     * @return string
+     */
+    public function getPort(): string;
+
+    /**
+     * Returns the user.
+     *
+     * @return string
+     */
+    public function getUser(): string;
+
+    /**
+     * Returns the password.
+     *
+     * @return string
+     */
+    public function getPassword(): string;
+
+    /**
+     * Gets the user info.
+     *
+     * @return string
+     */
+    public function getUserInfo(): string;
+
+    /**
+     * Returns the HTTP host being requested.
+     *
+     * The port name will be appended to the host if it's non-standard.
+     *
+     * @return string
+     */
+    public function getHttpHost(): string;
+
+    /**
+     * Returns the requested URI (path and query string).
+     *
+     * @return string
+     */
+    public function getRequestUri(): string;
+
+    /**
+     * Gets the scheme and HTTP host.
+     *
+     * @return string
+     */
+    public function getSchemeAndHttpHost(): string;
+
+    /**
+     * Checks whether the request is secure or not.
+     *
+     * This method can read the client protocol from the "X-Forwarded-Proto" header
+     * when trusted proxies were set via "setTrustedProxies()".
+     *
+     * The "X-Forwarded-Proto" header must contain the protocol: "https" or "http".
+     *
+     * If your reverse proxy uses a different header name than "X-Forwarded-Proto"
+     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()" with
+     * the "client-proto" key.
+     *
+     * @return bool
+     */
+    public function isSecure(): bool;
+
+    /**
+     * Returns the host name.
+     *
+     * @return string
+     */
+    public function getHost();
+
+    /**
+     * Sets the request method.
+     *
+     * @param string $method
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setMethod(string $method): Request;
+
+    /**
+     * Gets the request "intended" method.
+     *
+     * @return string The request method
+     *
+     * @see getRealMethod()
+     */
+    public function getMethod(): string;
+
+    /**
+     * Gets the "real" request method.
+     *
+     * @return string The request method
+     *
+     * @see getMethod()
+     */
+    public function getRealMethod(): string;
+
+    /**
+     * Gets the mime type associated with the format.
+     *
+     * @param string $format The format
+     *
+     * @return string
+     */
+    public function getMimeType(string $format): string;
+
+    /**
+     * Gets the mime types associated with the format.
+     *
+     * @param string $format The format
+     *
+     * @return array
+     */
+    public static function getMimeTypes(string $format): array;
+
+    /**
+     * Gets the format associated with the mime type.
+     *
+     * @param string $mimeType The associated mime type
+     *
+     * @return string
+     */
+    public function getFormat(string $mimeType): string;
+
+    /**
+     * Gets the request format.
+     *
+     * @param string $default The default format
+     *
+     * @return string
+     */
+    public function getRequestFormat(string $default = 'html'): string;
+
+    /**
+     * Sets the request format.
+     *
+     * @param string $format The request format
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function setRequestFormat(string $format): Request;
+
+    /**
+     * Gets the format associated with the request.
+     *
+     * @return string
+     */
+    public function getContentType(): string;
+
+    /**
+     * Get the locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string;
+
+    /**
+     * Checks if the request method is of specified type.
+     *
+     * @param string $method Uppercase request method (GET, POST etc)
+     *
+     * @return bool
+     */
+    public function isMethod(string $method): bool;
+
+    /**
+     * Gets the Etags.
+     *
+     * @return array
+     */
+    public function getETags(): array;
+
+    /**
+     * @return bool
+     */
+    public function isNoCache(): bool;
+
+    /**
+     * Is this an AJAX request?
+     *
+     * @return bool
+     */
+    public function isXmlHttpRequest(): bool;
 }
