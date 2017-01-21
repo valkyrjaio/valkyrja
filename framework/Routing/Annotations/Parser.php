@@ -21,6 +21,92 @@ namespace Valkyrja\Routing\Annotations;
 class Parser
 {
     /**
+     * Route regex.
+     *
+     * @constant string
+     *
+     * @description
+     *
+     * @Route\(                                 Match the @Route annotation followed by an opening parenthesis
+     *      \s*                                      Followed by any whitespace
+     *      (                                        Begin capture
+     *          [                                       Begin any of following:
+     *              a-z                                     Lowercase character
+     *              A-Z                                     Uppercase character
+     *              0-9                                     Digit character
+     *              \_                                      Underscore
+     *              \-                                      Hyphen
+     *              \\                                      Backslash (for classes)
+     *              \/                                      Forward slash (for paths)
+     *              \:                                      Colon (for class constants)
+     *              \{                                      Opening curly brace (for params in paths)
+     *              \}                                      Closing curly brace (for params in paths)
+     *              \(                                      Opening parenthesis (for param regex in paths)
+     *              \)                                      Closing parenthesis (for param regex in paths)
+     *              \+                                      Addition sign (for param regex in paths)
+     *              \[                                      Opening bracket (for param regex in paths)
+     *              \]                                      Closing bracket (for param regex in paths)
+     *              \.                                      Period (for param regex in paths and dot notation on route name)
+     *              \=                                      Equal sign (for argument value/index separation)
+     *              \,                                      Comma (for argument separation)
+     *              \'                                      Single quote (for argument value enclosure)
+     *              \"                                      Double quote (for argument value enclosure)
+     *              \*                                      Asterisk (for multiline comments phpDoc)
+     *              \s                                      Whitespace
+     *          ]*                                      Allow any number of above
+     *      )                                        End capture
+     *      \s*                                      Followed by any whitespace
+     * )                                        Ending parenthesis for @Route annotation
+     */
+    public const ROUTE_REGEX = <<<'REGEX'
+    @Route\( 
+        \s* 
+            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\s]*)
+        \s* 
+    \)
+REGEX;
+
+    /**
+     * Route argument regex.
+     *
+     * @constant string
+     *
+     * @description
+     *
+     * ([a-zA-Z_]*)                             Match any lowercase, uppercase, and underscored word
+     * \s*                                      Followed by any whitespace
+     * \=                                       Followed by an equal sign
+     * \s*                                      Followed by any whitespace
+     * \'? "?                                   Followed by an optional single or double quote
+     * \s*                                      Followed by any whitespace
+     * (                                        Begin capture
+     *      [                                       Begin any of following:
+     *          a-z                                     Lowercase character
+     *          A-Z                                     Uppercase character
+     *          0-9                                     Digit character
+     *          \_                                      Underscore
+     *          \-                                      Hyphen
+     *          \\                                      Backslash (for classes)
+     *          \/                                      Forward slash (for paths)
+     *          \:                                      Colon (for class constants)
+     *          \{                                      Opening curly brace (for params in paths)
+     *          \}                                      Closing curly brace (for params in paths)
+     *          \(                                      Opening parenthesis (for param regex in paths)
+     *          \)                                      Closing parenthesis (for param regex in paths)
+     *          \+                                      Addition sign (for param regex in paths)
+     *          \[                                      Opening bracket (for param regex in paths)
+     *          \]                                      Closing bracket (for param regex in paths)
+     *          \.                                      Period (for param regex in paths and dot notation on route name)
+     *      ]*                                      Allow any number of above
+     * )                                        End capture
+     */
+    public const ARGUMENTS_REGEX = <<<'REGEX'
+    ([a-zA-Z_]*) 
+    \s* \= \s* \'? "? \s*
+    ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.]*)
+REGEX;
+
+    /**
      * Get route annotations from a given string.
      *
      * @param string $docString The doc string
@@ -29,56 +115,33 @@ class Parser
      */
     public function getRouteAnnotations(string $docString): array
     {
-        $regex = <<<'REGEX'
-    @Route\( 
-        \s* 
-            ([a-zA-Z0-9\_\-\\\/\:\,\=\'\"\{\}\(\)\+\[\]\*\.\s]*)
-        \s* 
-    \)
-REGEX;
-
         // Get all matches of @Route()
-        preg_match_all('/' . $regex . '/x', $docString, $matches);
+        preg_match_all('/' . static::ROUTE_REGEX . '/x', $docString, $routes);
 
         // Create a new array to return matches
         $annotations = [];
 
-        // If there are matches
-        if ($matches && $matches[0]) {
-            $parsedMatch = [];
+        // If routes were found
+        if ($routes && $routes[0]) {
+            // Iterate through the routes' contents found within the parenthesis
+            foreach ($routes[1] as $route) {
+                // Match all the arguments (I.E. path = '/')
+                preg_match_all('/' . static::ARGUMENTS_REGEX . '/x', $route, $arguments);
 
-            // Iterate through the matches individually
-            foreach ($matches[1] as $match) {
-                $match = trim($match);
-                // Explode the string by comma
-                $match = explode(',', $match);
+                $properties = [];
 
-                // Iterate through the exploded array
-                foreach ($match as $item) {
-                    $item = trim($item);
-                    // Explode the values by equal sign
-                    $items = explode('=', $item);
-
-                    // Iterate through each key value pair
-                    foreach ($items as $key => $subItem) {
-                        $subItem = trim($subItem);
-                        $subItemExplode = explode('::', $subItem);
-
-                        // If this is a class with a constant
-                        if (strpos($subItem, '::') && class_exists($subItemExplode[0])) {
-                            $subItem = constant("$subItemExplode[0]::$subItemExplode[1]");
-                        }
-
-                        // Trim the values and replace any quotes
-                        $items[$key] = str_replace(['\'', '\"'], '', trim($subItem));
+                foreach ($arguments[2] as $index => $argument) {
+                    // Determine if the argument is a constant
+                    if (defined($argument)) {
+                        $argument = constant($argument);
                     }
 
-                    // Set the first item as the key and second item as the value
-                    $parsedMatch[$items[0]] = $items[1];
+                    // Set the argument value to the argument index
+                    $properties[$arguments[1][$index]] = $argument;
                 }
 
                 // Set this as a new Route in the annotations array
-                $annotations[] = new Route($parsedMatch);
+                $annotations[] = new Route($properties);
             }
         }
 
