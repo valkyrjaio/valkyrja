@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Routing;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\RequestMethod;
 
@@ -185,7 +186,12 @@ REGEX;
     /**
      * Dispatch the route and find a match.
      *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
-    public function dispatch(): Response;
+    public function dispatch(Request $request): Response;
 }

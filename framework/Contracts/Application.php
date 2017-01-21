@@ -173,6 +173,9 @@ interface Application
      * Run the application.
      *
      * @return void
+     *
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
     public function run(): void;
 

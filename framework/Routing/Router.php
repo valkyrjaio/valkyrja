@@ -15,6 +15,7 @@ use Closure;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
+use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -545,15 +546,17 @@ class Router implements RouterContract
     /**
      * Dispatch the route and find a match.
      *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
-    public function dispatch(): ResponseContract
+    public function dispatch(RequestContract $request): ResponseContract
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestUri = $_SERVER['REQUEST_URI'];
+        $requestMethod = $request->getMethod();
+        $requestUri = $request->getPath();
         $arguments = [];
         $hasArguments = false;
         $route = [];

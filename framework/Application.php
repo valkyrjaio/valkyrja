@@ -18,6 +18,7 @@ use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
+use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Routing\Router;
@@ -292,12 +293,16 @@ class Application implements ApplicationContract
      *
      * @return void
      *
-     * @throws \Exception
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
     public function run(): void
     {
+        /** @var Request $request */
+        $request = $this->container()->get(Request::class);
+
         // Dispatch the request and send the response
-        $this->router()->dispatch()->send();
+        $this->router()->dispatch($request)->send();
     }
 
     /**
