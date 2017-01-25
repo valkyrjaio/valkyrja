@@ -556,7 +556,7 @@ class Router implements RouterContract
     public function dispatch(RequestContract $request): ResponseContract
     {
         $requestMethod = $request->getMethod();
-        $requestUri = $request->getPath();
+        $requestUri = explode('?', $request->getPath())[0];
         $arguments = [];
         $hasArguments = false;
         $route = [];
