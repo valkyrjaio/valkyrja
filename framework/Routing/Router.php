@@ -556,7 +556,17 @@ class Router implements RouterContract
     public function dispatch(RequestContract $request): ResponseContract
     {
         $requestMethod = $request->getMethod();
-        $requestUri = explode('?', $request->getPath())[0];
+        $requestUri = $request->getPath();
+
+        // Determine if the request uri has any query parameters
+        if (false !== $queryPosition = strpos($requestUri, '?')) {
+            // If so get the substring of the uri from start until the query param position
+            $requestUri = substr($requestUri, 0, $queryPosition);
+        }
+
+        // Decode the request uri
+        $requestUri = rawurldecode($requestUri);
+
         $arguments = [];
         $hasArguments = false;
         $route = [];
