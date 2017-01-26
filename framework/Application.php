@@ -11,6 +11,8 @@
 
 namespace Valkyrja;
 
+use Throwable;
+
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
 use Valkyrja\Container\Container;
@@ -24,6 +26,7 @@ use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
+use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Http\Exceptions\HttpException;
 
 /**
@@ -83,10 +86,10 @@ class Application implements ApplicationContract
             $config = new Config(new Env());
         }
 
-        // Check if debug has been turned on
+        // If debug is on, enable debug handling
         if ($config->app->debug) {
-            // Enable debug mode if so
-            Debug::enable();
+            // Debug to output exceptions
+            Debug::enable(E_ALL, $config->app->debug);
         }
 
         // Set the app static
@@ -289,6 +292,30 @@ class Application implements ApplicationContract
     }
 
     /**
+     * Handle a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     */
+    public function handle(Request $request): Response
+    {
+        try {
+            $response = $this->router()->dispatch($request);
+        }
+        catch (Throwable $exception) {
+            $handler = new ExceptionHandler($this->config()->app->debug);
+            $response = $handler->getResponse($exception);
+        }
+
+        // Dispatch the request and return it
+        return $response;
+    }
+
+    /**
      * Run the application.
      *
      * @return void
@@ -301,8 +328,8 @@ class Application implements ApplicationContract
         /** @var Request $request */
         $request = $this->container()->get(Request::class);
 
-        // Dispatch the request and send the response
-        $this->router()->dispatch($request)->send();
+        // Handle the request and send the response
+        $this->handle($request)->send();
     }
 
     /**

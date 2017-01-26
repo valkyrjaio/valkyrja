@@ -15,8 +15,10 @@ use ErrorException;
 use Exception;
 use Throwable;
 
+use Valkyrja\Application;
 use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
+use Valkyrja\Contracts\Http\Response;
 
 /**
  * Class ExceptionHandler
@@ -42,10 +44,20 @@ class ExceptionHandler implements ExceptionHandlerContract
     protected $fileLinkFormat;
 
     /**
-     * ExceptionHandler constructor.
+     * Whether to display errors.
+     *
+     * @var bool
      */
-    public function __construct()
+    protected $displayErrors;
+
+    /**
+     * ExceptionHandler constructor.
+     *
+     * @param bool $displayErrors [optional]
+     */
+    public function __construct(bool $displayErrors = false)
     {
+        $this->displayErrors = $displayErrors;
         $this->fileLinkFormat = ini_get('xdebug.file_link_format') ?? get_cfg_var('xdebug.file_link_format');
     }
 
@@ -110,27 +122,50 @@ class ExceptionHandler implements ExceptionHandlerContract
     }
 
     /**
+     * Get a response from an exception.
+     *
+     * @param \Throwable $exception The exception
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function getResponse($exception): Response
+    {
+        if (! $exception instanceof Throwable) {
+            $exception = new Exception($exception);
+        }
+
+        $headers = [];
+        $statusCode = 500;
+
+        if ($exception instanceof HttpException) {
+            foreach ($exception->getHeaders() as $name => $value) {
+                $headers[$name] = $value;
+            }
+
+            $statusCode = $exception->getStatusCode();
+        }
+
+        $response = Application::app()->response(
+            $this->html($this->getContent($exception), $this->getStylesheet()),
+            $statusCode,
+            $headers
+        );
+
+        $response->setCharset($this->charset);
+
+        return $response;
+    }
+
+    /**
      * Send response.
      *
-     * @param \Throwable $exception
+     * @param \Throwable $exception The exception
      *
      * @return void
      */
     public function sendResponse($exception): void
     {
-        if (! headers_sent()) {
-            if ($exception instanceof HttpException) {
-                header(sprintf('HTTP/1.0 %s', $exception->getStatusCode()));
-
-                foreach ($exception->getHeaders() as $name => $value) {
-                    header($name . ': ' . $value, false);
-                }
-            }
-
-            header('Content-Type: text/html; charset=' . $this->charset);
-        }
-
-        echo $this->html($this->getContent($exception), $this->getStylesheet());
+        $this->getResponse($exception)->send();
     }
 
     /**
@@ -150,29 +185,32 @@ class ExceptionHandler implements ExceptionHandlerContract
 
         $content = '';
 
-        try {
-            $exceptions = [
-                $exception,
-            ];
-            $e = $exception;
+        if ($this->displayErrors) {
 
-            while ($e = $e->getPrevious()) {
-                $exceptions[] = $e;
-            }
+            try {
+                $exceptions = [
+                    $exception,
+                ];
+                $e = $exception;
 
-            $count = count($exceptions);
-            $total = $count;
+                while ($e = $e->getPrevious()) {
+                    $exceptions[] = $e;
+                }
 
-            /**
-             * @var int        $position
-             * @var \Throwable $e
-             */
-            foreach ($exceptions as $position => $e) {
-                $ind = $count - $position;
-                $class = $this->formatClass(get_class($e));
-                $message = nl2br($this->escapeHtml($e->getMessage()));
-                $content .= sprintf(<<<'EOF'
-                        <h2 class="block_exception clear_fix">
+                $count = count($exceptions);
+                $total = $count;
+
+                /**
+                 * @var int        $position
+                 * @var \Throwable $e
+                 */
+                foreach ($exceptions as $position => $e) {
+                    $ind = $count - $position;
+                    $class = $this->formatClass(get_class($e));
+                    $message = nl2br($this->escapeHtml($e->getMessage()));
+                    $content .= sprintf(
+                        <<<'EOF'
+                                                <h2 class="block_exception clear_fix">
                             <span class="exception_counter">%d/%d</span>
                             <span class="exception_title">%s%s:</span>
                             <span class="exception_message">%s</span>
@@ -181,51 +219,53 @@ class ExceptionHandler implements ExceptionHandlerContract
                             <ol class="traces list_exception">
 
 EOF
-                    , $ind,
-                    $total,
-                    $class,
-                    $this->formatPath(
-                        $e->getTrace()[0]['file'] ?? 'Unknown file',
-                        $e->getTrace()[0]['line'] ?? 0
-                    ),
-                    $message
-                );
+                        ,
+                        $ind,
+                        $total,
+                        $class,
+                        $this->formatPath(
+                            $e->getTrace()[0]['file'] ?? 'Unknown file',
+                            $e->getTrace()[0]['line'] ?? 0
+                        ),
+                        $message
+                    );
 
-                foreach ($e->getTrace() as $trace) {
-                    $traceClass = $trace['class'] ?? '';
-                    $traceArgs = $trace['args'] ?? [];
-                    $traceType = $trace['type'] ?? '';
-                    $traceFunction = $trace['function'] ?? '';
+                    foreach ($e->getTrace() as $trace) {
+                        $traceClass = $trace['class'] ?? '';
+                        $traceArgs = $trace['args'] ?? [];
+                        $traceType = $trace['type'] ?? '';
+                        $traceFunction = $trace['function'] ?? '';
 
-                    $content .= '       <li>';
+                        $content .= '       <li>';
 
-                    if ($trace['function']) {
-                        $content .= sprintf(
-                            'at %s%s%s(%s)',
-                            $this->formatClass($traceClass),
-                            $traceType,
-                            $traceFunction,
-                            $this->formatArgs($traceArgs)
-                        );
+                        if ($trace['function']) {
+                            $content .= sprintf(
+                                'at %s%s%s(%s)',
+                                $this->formatClass($traceClass),
+                                $traceType,
+                                $traceFunction,
+                                $this->formatArgs($traceArgs)
+                            );
+                        }
+
+                        if (isset($trace['file'], $trace['line'])) {
+                            $content .= $this->formatPath($trace['file'], $trace['line']);
+                        }
+
+                        $content .= "</li>\n";
                     }
 
-                    if (isset($trace['file'], $trace['line'])) {
-                        $content .= $this->formatPath($trace['file'], $trace['line']);
-                    }
-
-                    $content .= "</li>\n";
+                    $content .= "    </ol>\n</div>\n";
                 }
-
-                $content .= "    </ol>\n</div>\n";
             }
-        }
-        catch (Exception $e) {
-            // Something nasty happened and we cannot throw an exception anymore
-            $title = sprintf(
-                'Exception thrown when handling an exception (%s: %s)',
-                get_class($e),
-                $this->escapeHtml($e->getMessage())
-            );
+            catch (Exception $e) {
+                // Something nasty happened and we cannot throw an exception anymore
+                $title = sprintf(
+                    'Exception thrown when handling an exception (%s: %s)',
+                    get_class($e),
+                    $this->escapeHtml($e->getMessage())
+                );
+            }
         }
 
         return <<<EOF

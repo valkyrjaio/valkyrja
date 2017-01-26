@@ -35,7 +35,7 @@ class Debug
      *
      * @return void
      */
-    public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = true): void
+    public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false) : void
     {
         // If debug is already enabled
         if (static::$enabled) {
@@ -47,9 +47,9 @@ class Debug
         static::$enabled = true;
 
         // The exception handler
-        $exceptionHandler = new ExceptionHandler();
+        $exceptionHandler = new ExceptionHandler($displayErrors);
         // The error handler
-        $errorHandler = new ErrorHandler();
+        $errorHandler = new ErrorHandler($displayErrors);
 
         // Set the error reporting level
         error_reporting($errorReportingLevel);

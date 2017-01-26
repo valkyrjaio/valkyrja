@@ -14,6 +14,7 @@ namespace Valkyrja\Contracts;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Routing\Router;
@@ -168,6 +169,18 @@ interface Application
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
     public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void;
+
+    /**
+     * Handle a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     */
+    public function handle(Request $request): Response;
 
     /**
      * Run the application.
