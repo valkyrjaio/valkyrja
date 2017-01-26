@@ -396,7 +396,7 @@ EOF;
      *
      * @return string
      */
-    protected function formatClass(string $class)
+    protected function formatClass(string $class): string
     {
         $parts = explode('\\', $class);
 
@@ -411,7 +411,7 @@ EOF;
      *
      * @return string
      */
-    protected function formatPath(string $path, int $line)
+    protected function formatPath(string $path, int $line): string
     {
         $path = $this->escapeHtml($path);
         $file = preg_match('#[^/\\\\]*$#', $path, $file)
@@ -444,7 +444,7 @@ EOF;
      *
      * @return string
      */
-    protected function formatArgs(array $args)
+    protected function formatArgs(array $args): string
     {
         $result = [];
 

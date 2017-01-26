@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Debug;
 
 use Throwable;
+use Valkyrja\Contracts\Http\Response;
 
 /**
  * Interface ExceptionHandler
@@ -46,6 +47,15 @@ interface ExceptionHandler
      * @return void
      */
     public function handleShutdown(): void;
+
+    /**
+     * Get a response from an exception.
+     *
+     * @param \Throwable $exception The exception
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function getResponse($exception): Response;
 
     /**
      * Send response.
