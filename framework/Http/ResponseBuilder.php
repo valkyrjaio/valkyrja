@@ -131,9 +131,6 @@ class ResponseBuilder implements ResponseBuilderContract
      */
     public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse
     {
-        // Get the uri from the router using the route and parameters
-        $uri = $this->app->router()->getRouteUrlByName($route, $parameters, RequestMethod::GET);
-
-        return $this->redirect($uri, $status, $headers);
+        return $this->app->route($route, $parameters, $status, $headers);
     }
 }

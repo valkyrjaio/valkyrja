@@ -30,6 +30,7 @@ use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\RequestMethod;
 
 /**
  * Class Application
@@ -225,6 +226,30 @@ class Application implements ApplicationContract
     {
         /** @var RedirectResponse $response */
         $response = $this->container->get(RedirectResponse::class);
+
+        return $response->createRedirect($uri, $status, $headers);
+    }
+
+    /**
+     * Return a new redirect response from the application for a given route.
+     *
+     * @param string $route      The route to match
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int    $status     [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     */
+    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse
+    {
+        /** @var RedirectResponse $response */
+        $response = $this->container->get(RedirectResponse::class);
+
+        // Get the uri from the router using the route and parameters
+        $uri = $this->router()->getRouteUrlByName($route, $parameters, RequestMethod::GET);
 
         return $response->createRedirect($uri, $status, $headers);
     }
