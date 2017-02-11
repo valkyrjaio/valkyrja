@@ -102,9 +102,9 @@ interface Application
     /**
      * Return a new json response from the application.
      *
-     * @param array  $data    [optional] An array of data
-     * @param int    $status  [optional] The status code to set
-     * @param array  $headers [optional] The headers to set
+     * @param array $data    [optional] An array of data
+     * @param int   $status  [optional] The status code to set
+     * @param array $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
