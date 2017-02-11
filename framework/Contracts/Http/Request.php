@@ -185,9 +185,9 @@ interface Request
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Contracts\Support\Collection
      */
-    public function cookies(): Cookies;
+    public function cookies(): Collection;
 
     /**
      * Set the COOKIES parameters.

@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 use Valkyrja\Contracts\Http\Files as FilesContract;
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Server as ServerContract;
@@ -68,7 +67,7 @@ class Request implements RequestContract
     /**
      * Cookies ($_COOKIE).
      *
-     * @var \Valkyrja\Contracts\Http\Cookies
+     * @var \Valkyrja\Contracts\Support\Collection
      */
     protected $cookies;
 
@@ -236,11 +235,11 @@ class Request implements RequestContract
             0 === strpos($request->headers->get('Content-Type'), 'application/x-www-form-urlencoded')
             &&
             in_array(
-                strtoupper($request->server->get('REQUEST_METHOD', 'GET')),
+                strtoupper($request->server->get('REQUEST_METHOD', RequestMethod::GET)),
                 [
-                    'PUT',
-                    'DELETE',
-                    'PATCH',
+                    RequestMethod::PUT,
+                    RequestMethod::DELETE,
+                    RequestMethod::PATCH,
                 ],
                 true
             )
@@ -497,9 +496,9 @@ class Request implements RequestContract
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Contracts\Support\Collection
      */
-    public function cookies(): CookiesContract
+    public function cookies(): CollectionContract
     {
         if (! $this->cookies) {
             $this->setCookies();
@@ -517,7 +516,7 @@ class Request implements RequestContract
      */
     public function setCookies(array $cookies = []): RequestContract
     {
-        $this->cookies = new Cookies($cookies);
+        $this->cookies = new Collection($cookies);
 
         return $this;
     }
