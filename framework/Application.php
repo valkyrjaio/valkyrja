@@ -21,6 +21,7 @@ use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -178,6 +179,8 @@ class Application implements ApplicationContract
      * @param array  $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \InvalidArgumentException
      */
     public function response(string $content = '', int $status = 200, array $headers = []): Response
     {
@@ -195,13 +198,35 @@ class Application implements ApplicationContract
      * @param array $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
+     *
+     * @throws \InvalidArgumentException
      */
-    public function responseJson(array $data = [], int $status = 200, array $headers = []): JsonResponse
+    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse
     {
         /** @var JsonResponse $response */
         $response = $this->container->get(JsonResponse::class);
 
-        return $response->create('', $status, $headers)->setData($data);
+        return $response->createJson('', $status, $headers, $data);
+    }
+
+    /**
+     * Return a new json response from the application.
+     *
+     * @param string $uri     [optional] The URI to redirect to
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     */
+    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse
+    {
+        /** @var RedirectResponse $response */
+        $response = $this->container->get(RedirectResponse::class);
+
+        return $response->createRedirect($uri, $status, $headers);
     }
 
     /**

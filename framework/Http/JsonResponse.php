@@ -52,7 +52,7 @@ class JsonResponse extends Response implements JsonResponseContract
     protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
-     * Response constructor.
+     * JsonResponse constructor.
      *
      * @param string $content [optional] The response content, see setContent()
      * @param int    $status  [optional] The response status code
@@ -65,7 +65,25 @@ class JsonResponse extends Response implements JsonResponseContract
     {
         parent::__construct($content, $status, $headers);
 
+        // Set the json data
         $this->setData($data);
+    }
+
+    /**
+     * Create a new json response.
+     *
+     * @param string $content [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
+     * @param array  $data    [optional] An array of data
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function createJson(string $content = '', int $status = 200, array $headers = [], array $data = []): JsonResponseContract
+    {
+        return new static($content, $status, $headers, $data);
     }
 
     /**

@@ -15,6 +15,7 @@ use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -107,7 +108,30 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function responseJson(array $data = [], int $status = 200, array $headers = []): JsonResponse;
+    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse;
+
+    /**
+     * Return a new redirect response from the application.
+     *
+     * @param string $uri     [optional] The URI to redirect to
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse;
+
+    /**
+     * Return a new redirect response from the application for a given route.
+     *
+     * @param string $route      The route to match
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int    $status     [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse;
 
     /**
      * Return a new response from the application.

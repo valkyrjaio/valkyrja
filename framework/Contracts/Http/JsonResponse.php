@@ -21,7 +21,7 @@ namespace Valkyrja\Contracts\Http;
 interface JsonResponse extends Response
 {
     /**
-     * Response constructor.
+     * JsonResponse constructor.
      *
      * @param string $content [optional] The response content, see setContent()
      * @param int    $status  [optional] The response status code
@@ -31,6 +31,20 @@ interface JsonResponse extends Response
      * @throws \InvalidArgumentException
      */
     public function __construct(string $content = '', int $status = 200, array $headers = [], array $data = []);
+
+    /**
+     * Create a new json response.
+     *
+     * @param string $content [optional] The response content, see setContent()
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
+     * @param array  $data    [optional] An array of data
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function createJson(string $content = '', int $status = 200, array $headers = [], array $data = []): JsonResponse;
 
     /**
      * Sets the JSONP callback.

@@ -13,6 +13,7 @@ namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 
@@ -51,7 +52,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []) : Response
+    public function make(string $content = '', int $status = 200, array $headers = []): Response
     {
         return $this->app->response($content, $status, $headers);
     }
@@ -66,7 +67,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []) : Response
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []): Response
     {
         $content = $this->app->view()->make($template, $data)->render();
 
@@ -82,9 +83,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = 200, array $headers = []) : JsonResponse
+    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse
     {
-        return $this->app->responseJson($data, $status, $headers);
+        return $this->app->json($data, $status, $headers);
     }
 
     /**
@@ -95,28 +96,27 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $status   [optional] The response status code
      * @param array  $headers  [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : Response
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []): JsonResponse
     {
-        return $this->app->responseJson($data, $status, $headers)->setCallback($callback);
+        return $this->json($data, $status, $headers)->setCallback($callback);
     }
 
     /**
      * Redirect to response builder.
      *
-     * @param string $path       The path to redirect to
-     * @param array  $parameters [optional] Any parameters to set for dynamic paths
-     * @param int    $status     [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string $uri     [optional] The uri to redirect to
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []) : Response
+    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse
     {
-        return $this->app->response();
+        return $this->app->redirect($uri, $status, $headers);
     }
 
     /**
@@ -127,10 +127,13 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $status     [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []) : Response
+    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse
     {
-        return $this->app->response();
+        // Get the uri from the router using the route and parameters
+        $uri = $this->app->router()->getRouteUrlByName($route, $parameters, RequestMethod::GET);
+
+        return $this->redirect($uri, $status, $headers);
     }
 }

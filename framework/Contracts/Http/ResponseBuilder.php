@@ -22,7 +22,6 @@ use Valkyrja\Contracts\Application;
  */
 interface ResponseBuilder
 {
-
     /**
      * ResponseBuilder constructor.
      *
@@ -39,7 +38,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []);
+    public function make(string $content = '', int $status = 200, array $headers = []): Response;
 
     /**
      * View response builder.
@@ -51,7 +50,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []);
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []): Response;
 
     /**
      * Json response builder.
@@ -60,9 +59,9 @@ interface ResponseBuilder
      * @param int   $status  [optional] The response status code
      * @param array $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = 200, array $headers = []);
+    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse;
 
     /**
      * JsonP response builder.
@@ -72,21 +71,20 @@ interface ResponseBuilder
      * @param int    $status   [optional] The response status code
      * @param array  $headers  [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []);
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []): JsonResponse;
 
     /**
      * Redirect to response builder.
      *
-     * @param string $path       The path to redirect to
-     * @param array  $parameters [optional] Any parameters to set for dynamic paths
-     * @param int    $status     [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string $uri     [optional] The uri to redirect to
+     * @param int    $status  [optional] The response status code
+     * @param array  $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []);
+    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse;
 
     /**
      * Redirect to a named route response builder.
@@ -96,7 +94,7 @@ interface ResponseBuilder
      * @param int    $status     [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []);
+    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse;
 }
