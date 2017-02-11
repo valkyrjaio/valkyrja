@@ -13,26 +13,23 @@ namespace Valkyrja\Container;
 
 use Closure;
 
-use Valkyrja\Config\Config;
-use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
+use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
-use Valkyrja\Contracts\Sessions\Session as SessionContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
+use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Routing\Router;
-use Valkyrja\Sessions\Session;
 use Valkyrja\View\View;
 
 /**
@@ -211,103 +208,77 @@ class Container implements ContainerContract
      */
     public function bootstrap(): void
     {
-        // Check if the config has already been set in the container
-        if (! $this->bound(ConfigContract::class)) {
-            $this->singleton(
-                ConfigContract::class,
-                function () {
-                    return new Config(new Env());
-                }
-            );
-        }
+        // Set the request contract
+        $this->singleton(
+            RequestContract::class,
+            function () {
+                return Request::createFromGlobals();
+            }
+        );
 
-        // Check if the request has already been set in the container
-        if (! $this->bound(RequestContract::class)) {
-            $this->bind(
-                RequestContract::class,
-                function () {
-                    return Request::createFromGlobals();
-                }
-            );
-        }
+        // Set the response contract
+        $this->bind(
+            ResponseContract::class,
+            function (string $content = '', int $status = 200, array $headers = []) {
+                return new Response($content, $status, $headers);
+            }
+        );
 
-        // Check if the response has already been set in the container
-        if (! $this->bound(ResponseContract::class)) {
-            $this->bind(
-                ResponseContract::class,
-                function (string $content = '', int $status = 200, array $headers = []) {
-                    return new Response($content, $status, $headers);
-                }
-            );
-        }
+        // Set the json response contract
+        $this->bind(
+            JsonResponseContract::class,
+            function (string $content = '', int $status = 200, array $headers = []) {
+                return new JsonResponse($content, $status, $headers);
+            }
+        );
 
-        // Check if the json response has already been set in the container
-        if (! $this->bound(JsonResponseContract::class)) {
-            $this->bind(
-                JsonResponseContract::class,
-                function (string $content = '', int $status = 200, array $headers = []) {
-                    return new JsonResponse($content, $status, $headers);
-                }
-            );
-        }
+        // Set the redirect response contract
+        $this->bind(
+            RedirectResponseContract::class,
+            function (string $content = '', int $status = 200, array $headers = []) {
+                return new RedirectResponse($content, $status, $headers);
+            }
+        );
 
-        // Check if the response builder has already been set in the container
-        if (! $this->bound(ResponseBuilderContract::class)) {
-            $this->singleton(
-                ResponseBuilderContract::class,
-                function () {
-                    /** @var \Valkyrja\Contracts\Application $app */
-                    $app = $this->get(Application::class);
+        // Set the response builder contract
+        $this->singleton(
+            ResponseBuilderContract::class,
+            function () {
+                /** @var \Valkyrja\Contracts\Application $app */
+                $app = $this->get(Application::class);
 
-                    return new ResponseBuilder($app);
-                }
-            );
-        }
+                return new ResponseBuilder($app);
+            }
+        );
 
-        // Check if the router has already been set in the container
-        if (! $this->bound(RouterContract::class)) {
-            $this->singleton(
-                RouterContract::class,
-                function () {
-                    /** @var \Valkyrja\Contracts\Application $app */
-                    $app = $this->get(Application::class);
+        // Set the router contract
+        $this->singleton(
+            RouterContract::class,
+            function () {
+                /** @var \Valkyrja\Contracts\Application $app */
+                $app = $this->get(Application::class);
 
-                    return new Router($app);
-                }
-            );
-        }
+                return new Router($app);
+            }
+        );
 
-        // Check if the session has already been set in the container
-        if (! $this->bound(SessionContract::class)) {
-            $this->singleton(
-                SessionContract::class,
-                function () {
-                    return new Session();
-                }
-            );
-        }
+        // Set the view contract
+        $this->bind(
+            ViewContract::class,
+            function (string $template = '', array $variables = []) {
+                /** @var \Valkyrja\Contracts\Application $app */
+                $app = $this->get(Application::class);
 
-        // Check if the view has already been set in the container
-        if (! $this->bound(ViewContract::class)) {
-            $this->bind(
-                ViewContract::class,
-                function (string $template = '', array $variables = []) {
-                    /** @var \Valkyrja\Contracts\Application $app */
-                    $app = $this->get(Application::class);
+                return new View($app, $template, $variables);
+            }
+        );
 
-                    return new View($app, $template, $variables);
-                }
-            );
-        }
-
-        // Check if the client has already been set in the container
-        if (! $this->bound(ClientContract::class)) {
-            $this->bind(
-                ClientContract::class,
-                function () {
-                    return new Client();
-                }
-            );
-        }
+        // Set the client contract
+        $this->singleton(
+            ClientContract::class,
+            function () {
+                return new Client();
+            }
+        );
     }
 }
