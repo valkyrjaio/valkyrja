@@ -151,6 +151,22 @@ if (! function_exists('response')) {
     }
 }
 
+if (! function_exists('json')) {
+    /**
+     * Return a new json response from the application.
+     *
+     * @param array $data    [optional] An array of data
+     * @param int   $status  [optional] The status code to set
+     * @param array $headers [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     */
+    function json(array $data = [], int $status = 200, array $headers = []): Valkyrja\Contracts\Http\JsonResponse
+    {
+        return app()->responseJson($data, $status, $headers);
+    }
+}
+
 if (! function_exists('view')) {
     /**
      * Helper function to get a new view.

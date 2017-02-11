@@ -14,6 +14,7 @@ namespace Valkyrja\Contracts;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -96,6 +97,17 @@ interface Application
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function response(string $content = '', int $status = 200, array $headers = []): Response;
+
+    /**
+     * Return a new json response from the application.
+     *
+     * @param array  $data    [optional] An array of data
+     * @param int    $status  [optional] The status code to set
+     * @param array  $headers [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     */
+    public function responseJson(array $data = [], int $status = 200, array $headers = []): JsonResponse;
 
     /**
      * Return a new response from the application.

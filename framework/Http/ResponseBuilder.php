@@ -7,13 +7,12 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * Based off work by Taylor Otwell for Illuminate/routing/ResponseFactory.php
  */
 
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 
@@ -52,9 +51,9 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []): Response
+    public function make(string $content = '', int $status = 200, array $headers = []) : Response
     {
-        return $this->app->response()->create($content, $status, $headers);
+        return $this->app->response($content, $status, $headers);
     }
 
     /**
@@ -67,7 +66,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []): Response
+    public function view(string $template, array $data = [], int $status = 200, array $headers = []) : Response
     {
         $content = $this->app->view()->make($template, $data)->render();
 
@@ -81,11 +80,11 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int   $status  [optional] The response status code
      * @param array $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = 200, array $headers = []): Response
+    public function json(array $data = [], int $status = 200, array $headers = []) : JsonResponse
     {
-        return $this->app->response();
+        return $this->app->responseJson($data, $status, $headers);
     }
 
     /**
@@ -97,10 +96,12 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param array  $headers  [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \InvalidArgumentException
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []): Response
+    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []) : Response
     {
-        return $this->app->response();
+        return $this->app->responseJson($data, $status, $headers)->setCallback($callback);
     }
 
     /**
@@ -113,7 +114,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []): Response
+    public function redirectTo(string $path, array $parameters = [], int $status = 302, array $headers = []) : Response
     {
         return $this->app->response();
     }
@@ -128,7 +129,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []): Response
+    public function redirectToRoute(string $route, array $parameters = [], int $status = 302, array $headers = []) : Response
     {
         return $this->app->response();
     }

@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
+use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -180,9 +181,27 @@ class Application implements ApplicationContract
      */
     public function response(string $content = '', int $status = 200, array $headers = []): Response
     {
+        /** @var Response $response */
         $response = $this->container->get(Response::class);
 
         return $response->create($content, $status, $headers);
+    }
+
+    /**
+     * Return a new json response from the application.
+     *
+     * @param array $data    [optional] An array of data
+     * @param int   $status  [optional] The status code to set
+     * @param array $headers [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     */
+    public function responseJson(array $data = [], int $status = 200, array $headers = []): JsonResponse
+    {
+        /** @var JsonResponse $response */
+        $response = $this->container->get(JsonResponse::class);
+
+        return $response->create('', $status, $headers)->setData($data);
     }
 
     /**
