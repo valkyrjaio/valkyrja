@@ -100,7 +100,7 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $content = '', int $status = Response::HTTP_OK, array $headers = [])
+    public function __construct(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = [])
     {
         $this->setHeaders($headers);
         $this->setContent($content);
@@ -123,7 +123,7 @@ class Response implements ResponseContract
      */
     public static function create(
         string $content = '',
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = []
     ): ResponseContract
     {
@@ -332,7 +332,7 @@ class Response implements ResponseContract
         // If no text was supplied
         if (null === $text) {
             // Set the status text from the status texts array
-            $this->statusText = static::STATUS_TEXTS[$code] ?? 'unknown status';
+            $this->statusText = ResponseCode::STATUS_TEXTS[$code] ?? 'unknown status';
 
             return $this;
         }
@@ -531,7 +531,7 @@ class Response implements ResponseContract
         if (! in_array(
             $this->statusCode,
             [
-                Response::HTTP_OK,
+                ResponseCode::HTTP_OK,
                 203,
                 300,
                 301,
@@ -971,7 +971,7 @@ class Response implements ResponseContract
      */
     public function isInformational(): bool
     {
-        return $this->statusCode >= 100 && $this->statusCode < Response::HTTP_OK;
+        return $this->statusCode >= 100 && $this->statusCode < ResponseCode::HTTP_OK;
     }
 
     /**
@@ -981,7 +981,7 @@ class Response implements ResponseContract
      */
     public function isSuccessful(): bool
     {
-        return $this->statusCode >= Response::HTTP_OK && $this->statusCode < 300;
+        return $this->statusCode >= ResponseCode::HTTP_OK && $this->statusCode < 300;
     }
 
     /**
@@ -1021,7 +1021,7 @@ class Response implements ResponseContract
      */
     public function isOk(): bool
     {
-        return Response::HTTP_OK === $this->statusCode;
+        return ResponseCode::HTTP_OK === $this->statusCode;
     }
 
     /**

@@ -63,7 +63,7 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public function __construct(
         string $content = '',
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
     )
@@ -88,7 +88,7 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public static function createJson(
         string $content = '',
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
     ): JsonResponseContract

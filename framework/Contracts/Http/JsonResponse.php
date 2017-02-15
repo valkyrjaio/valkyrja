@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Http;
 
+use Valkyrja\Http\ResponseCode;
+
 /**
  * Interface JsonResponse
  *
@@ -32,7 +34,7 @@ interface JsonResponse extends Response
      */
     public function __construct(
         string $content = '',
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
     );
@@ -51,7 +53,7 @@ interface JsonResponse extends Response
      */
     public static function createJson(
         string $content = '',
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
     ): JsonResponse;

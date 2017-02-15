@@ -29,6 +29,7 @@ use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\ResponseCode;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
 
@@ -219,7 +220,7 @@ class Container implements ContainerContract
         // Set the response contract
         $this->bind(
             ResponseContract::class,
-            function (string $content = '', int $status = Response::HTTP_OK, array $headers = []) {
+            function (string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []) {
                 return new Response($content, $status, $headers);
             }
         );
@@ -227,7 +228,7 @@ class Container implements ContainerContract
         // Set the json response contract
         $this->bind(
             JsonResponseContract::class,
-            function (string $content = '', int $status = Response::HTTP_OK, array $headers = []) {
+            function (string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []) {
                 return new JsonResponse($content, $status, $headers);
             }
         );
@@ -235,7 +236,7 @@ class Container implements ContainerContract
         // Set the redirect response contract
         $this->bind(
             RedirectResponseContract::class,
-            function (string $content = '', int $status = Response::HTTP_FOUND, array $headers = []) {
+            function (string $content = '', int $status = ResponseCode::HTTP_FOUND, array $headers = []) {
                 return new RedirectResponse($content, $status, $headers);
             }
         );

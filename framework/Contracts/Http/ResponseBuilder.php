@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Http;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Http\ResponseCode;
 
 /**
  * Interface ResponseBuilder
@@ -38,7 +39,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = Response::HTTP_OK, array $headers = []): Response;
+    public function make(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response;
 
     /**
      * View response builder.
@@ -53,7 +54,7 @@ interface ResponseBuilder
     public function view(
         string $template,
         array $data = [],
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = []
     ): Response;
 
@@ -68,7 +69,7 @@ interface ResponseBuilder
      */
     public function json(
         array $data = [],
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = []
     ): JsonResponse;
 
@@ -85,7 +86,7 @@ interface ResponseBuilder
     public function jsonp(
         string $callback,
         array $data = [],
-        int $status = Response::HTTP_OK,
+        int $status = ResponseCode::HTTP_OK,
         array $headers = []
     ): JsonResponse;
 
@@ -100,7 +101,7 @@ interface ResponseBuilder
      */
     public function redirect(
         string $uri = '/',
-        int $status = Response::HTTP_FOUND,
+        int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse;
 
@@ -117,7 +118,7 @@ interface ResponseBuilder
     public function route(
         string $route,
         array $parameters = [],
-        int $status = Response::HTTP_FOUND,
+        int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse;
 }

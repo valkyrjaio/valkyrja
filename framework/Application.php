@@ -31,6 +31,7 @@ use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\ResponseCode;
 
 /**
  * Class Application
@@ -183,7 +184,7 @@ class Application implements ApplicationContract
      *
      * @throws \InvalidArgumentException
      */
-    public function response(string $content = '', int $status = Response::HTTP_OK, array $headers = []): Response
+    public function response(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response
     {
         /** @var Response $response */
         $response = $this->container->get(Response::class);
@@ -202,7 +203,7 @@ class Application implements ApplicationContract
      *
      * @throws \InvalidArgumentException
      */
-    public function json(array $data = [], int $status = Response::HTTP_OK, array $headers = []): JsonResponse
+    public function json(array $data = [], int $status = ResponseCode::HTTP_OK, array $headers = []): JsonResponse
     {
         /** @var JsonResponse $response */
         $response = $this->container->get(JsonResponse::class);
@@ -222,7 +223,7 @@ class Application implements ApplicationContract
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
-    public function redirect(string $uri = '/', int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse
+    public function redirect(string $uri = '/', int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse
     {
         /** @var RedirectResponse $response */
         $response = $this->container->get(RedirectResponse::class);
@@ -243,7 +244,7 @@ class Application implements ApplicationContract
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
-    public function route(string $route, array $parameters = [], int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse
+    public function route(string $route, array $parameters = [], int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse
     {
         /** @var RedirectResponse $response */
         $response = $this->container->get(RedirectResponse::class);
@@ -355,7 +356,7 @@ class Application implements ApplicationContract
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = Response::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void
+    public function abort(int $statusCode = ResponseCode::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void
     {
         throw new HttpException($statusCode, $message, null, $headers, $code);
     }

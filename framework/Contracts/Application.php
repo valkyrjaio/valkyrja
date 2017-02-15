@@ -21,6 +21,7 @@ use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
+use Valkyrja\Http\ResponseCode;
 
 /**
  * Interface Application
@@ -97,7 +98,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response(string $content = '', int $status = Response::HTTP_OK, array $headers = []): Response;
+    public function response(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response;
 
     /**
      * Return a new json response from the application.
@@ -108,7 +109,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = Response::HTTP_OK, array $headers = []): JsonResponse;
+    public function json(array $data = [], int $status = ResponseCode::HTTP_OK, array $headers = []): JsonResponse;
 
     /**
      * Return a new redirect response from the application.
@@ -119,7 +120,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirect(string $uri = '/', int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse;
+    public function redirect(string $uri = '/', int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse;
 
     /**
      * Return a new redirect response from the application for a given route.
@@ -131,7 +132,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function route(string $route, array $parameters = [], int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse;
+    public function route(string $route, array $parameters = [], int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse;
 
     /**
      * Return a new response from the application.
@@ -204,7 +205,7 @@ interface Application
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = Response::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void;
+    public function abort(int $statusCode = ResponseCode::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void;
 
     /**
      * Handle a request.

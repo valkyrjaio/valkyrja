@@ -11,10 +11,14 @@
 
 namespace Valkyrja\Contracts\Http;
 
+use Valkyrja\Http\ResponseCode;
+
 /**
  * Interface RedirectResponse
  *
  * @package Valkyrja\Contracts\Http
+ *
+ * @author  Melech Mizrachi
  */
 interface RedirectResponse extends Response
 {
@@ -31,7 +35,7 @@ interface RedirectResponse extends Response
      */
     public function __construct(
         string $content = '',
-        int $status = Response::HTTP_FOUND,
+        int $status = ResponseCode::HTTP_FOUND,
         array $headers = [],
         string $uri = '/'
     );
@@ -50,7 +54,7 @@ interface RedirectResponse extends Response
      */
     public static function createRedirect(
         string $uri = '/',
-        int $status = Response::HTTP_FOUND,
+        int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse;
 
