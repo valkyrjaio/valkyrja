@@ -12,13 +12,13 @@
 namespace Valkyrja\Http;
 
 /**
- * Interface RequestMethod
+ * Final Class RequestMethod
  *
  * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
-interface RequestMethod
+final class RequestMethod
 {
     /**
      * Get request method constant.

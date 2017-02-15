@@ -12,13 +12,13 @@
 namespace Valkyrja\Http;
 
 /**
- * Interface ResponseCode
+ * Final Class ResponseCode
  *
  * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
-interface ResponseCode
+final class ResponseCode
 {
     /**
      * Status code constants.
