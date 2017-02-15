@@ -170,7 +170,7 @@ if (! function_exists('response')) {
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
+     * @return \Valkyrja\Contracts\Http\Response
      */
     function response(
         string $content = '',
