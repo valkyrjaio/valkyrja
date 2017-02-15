@@ -46,64 +46,64 @@ class ResponseBuilder implements ResponseBuilderContract
     /**
      * Make a new instance of Response.
      *
-     * @param string $content [optional] The response content
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
+     * @param string $content    [optional] The response content
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response
+    public function make(string $content = '', int $statusCode = ResponseCode::HTTP_OK, array $headers = []): Response
     {
-        return $this->app->response($content, $status, $headers);
+        return $this->app->response($content, $statusCode, $headers);
     }
 
     /**
      * View response builder.
      *
-     * @param string $template The view template to use
-     * @param array  $data     [optional] The view data
-     * @param int    $status   [optional] The response status code
-     * @param array  $headers  [optional] An array of response headers
+     * @param string $template   The view template to use
+     * @param array  $data       [optional] The view data
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function view(
         string $template,
         array $data = [],
-        int $status = ResponseCode::HTTP_OK,
+        int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
     ): Response
     {
         $content = $this->app->view()->make($template, $data)->render();
 
-        return $this->make($content, $status, $headers);
+        return $this->make($content, $statusCode, $headers);
     }
 
     /**
      * Json response builder.
      *
-     * @param array $data    [optional] The data to set
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
+     * @param array $data       [optional] The data to set
+     * @param int   $statusCode [optional] The response status code
+     * @param array $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function json(
         array $data = [],
-        int $status = ResponseCode::HTTP_OK,
+        int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
     ): JsonResponse
     {
-        return $this->app->json($data, $status, $headers);
+        return $this->app->json($data, $statusCode, $headers);
     }
 
     /**
      * JsonP response builder.
      *
-     * @param string $callback The jsonp callback
-     * @param array  $data     [optional] The data to set
-     * @param int    $status   [optional] The response status code
-     * @param array  $headers  [optional] An array of response headers
+     * @param string $callback   The jsonp callback
+     * @param array  $data       [optional] The data to set
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      *
@@ -112,29 +112,29 @@ class ResponseBuilder implements ResponseBuilderContract
     public function jsonp(
         string $callback,
         array $data = [],
-        int $status = ResponseCode::HTTP_OK,
+        int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
     ): JsonResponse
     {
-        return $this->json($data, $status, $headers)->setCallback($callback);
+        return $this->json($data, $statusCode, $headers)->setCallback($callback);
     }
 
     /**
      * Redirect to response builder.
      *
-     * @param string $uri     [optional] The uri to redirect to
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
+     * @param string $uri        [optional] The uri to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function redirect(
         string $uri = '/',
-        int $status = ResponseCode::HTTP_FOUND,
+        int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse
     {
-        return $this->app->redirect($uri, $status, $headers);
+        return $this->app->redirect($uri, $statusCode, $headers);
     }
 
     /**
@@ -142,7 +142,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @param string $route      The route to match
      * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $status     [optional] The response status code
+     * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
@@ -150,10 +150,10 @@ class ResponseBuilder implements ResponseBuilderContract
     public function route(
         string $route,
         array $parameters = [],
-        int $status = ResponseCode::HTTP_FOUND,
+        int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse
     {
-        return $this->app->route($route, $parameters, $status, $headers);
+        return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }

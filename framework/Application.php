@@ -30,6 +30,7 @@ use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
 
@@ -176,67 +177,62 @@ class Application implements ApplicationContract
     /**
      * Return a new response from the application.
      *
-     * @param string $content [optional] The content to set
-     * @param int    $status  [optional] The status code to set
-     * @param array  $headers [optional] The headers to set
+     * @param string $content    [optional] The content to set
+     * @param int    $statusCode [optional] The status code to set
+     * @param array  $headers    [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \InvalidArgumentException
      */
-    public function response(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response
+    public function response(
+        string $content = '',
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): Response
     {
         /** @var Response $response */
         $response = $this->container->get(Response::class);
 
-        return $response->create($content, $status, $headers);
+        if (func_num_args() === 0) {
+            return $response;
+        }
+
+        return $response->create($content, $statusCode, $headers);
     }
 
     /**
      * Return a new json response from the application.
      *
-     * @param array $data    [optional] An array of data
-     * @param int   $status  [optional] The status code to set
-     * @param array $headers [optional] The headers to set
+     * @param array $data       [optional] An array of data
+     * @param int   $statusCode [optional] The status code to set
+     * @param array $headers    [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      *
      * @throws \InvalidArgumentException
      */
-    public function json(array $data = [], int $status = ResponseCode::HTTP_OK, array $headers = []): JsonResponse
+    public function json(
+        array $data = [],
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): JsonResponse
     {
         /** @var JsonResponse $response */
         $response = $this->container->get(JsonResponse::class);
 
-        return $response->createJson('', $status, $headers, $data);
+        if (func_num_args() === 0) {
+            return $response;
+        }
+
+        return $response->createJson('', $statusCode, $headers, $data);
     }
 
     /**
      * Return a new json response from the application.
      *
-     * @param string $uri     [optional] The URI to redirect to
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
-     *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
-     */
-    public function redirect(string $uri = '/', int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse
-    {
-        /** @var RedirectResponse $response */
-        $response = $this->container->get(RedirectResponse::class);
-
-        return $response->createRedirect($uri, $status, $headers);
-    }
-
-    /**
-     * Return a new redirect response from the application for a given route.
-     *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $status     [optional] The response status code
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
@@ -244,15 +240,46 @@ class Application implements ApplicationContract
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
-    public function route(string $route, array $parameters = [], int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse
+    public function redirect(
+        string $uri = '/',
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse
     {
         /** @var RedirectResponse $response */
         $response = $this->container->get(RedirectResponse::class);
 
+        if (func_num_args() === 0) {
+            return $response;
+        }
+
+        return $response->createRedirect($uri, $statusCode, $headers);
+    }
+
+    /**
+     * Return a new redirect response from the application for a given route.
+     *
+     * @param string $route      The route to match
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     */
+    public function redirectRoute(
+        string $route,
+        array $parameters = [],
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse
+    {
         // Get the uri from the router using the route and parameters
         $uri = $this->router()->getRouteUrlByName($route, $parameters, RequestMethod::GET);
 
-        return $response->createRedirect($uri, $status, $headers);
+        return $this->redirect($uri, $statusCode, $headers);
     }
 
     /**
@@ -356,9 +383,34 @@ class Application implements ApplicationContract
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = ResponseCode::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void
+    public function abort(
+        int $statusCode = ResponseCode::HTTP_NOT_FOUND,
+        string $message = '',
+        array $headers = [],
+        int $code = 0
+    ): void
     {
         throw new HttpException($statusCode, $message, null, $headers, $code);
+    }
+
+    /**
+     * Redirect to a given uri, and abort the application.
+     *
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     */
+    public function redirectTo(
+        string $uri = '/',
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): void
+    {
+        throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
     }
 
     /**

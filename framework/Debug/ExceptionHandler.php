@@ -19,6 +19,8 @@ use Valkyrja\Application;
 use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Http\ResponseCode;
 
 /**
  * Class ExceptionHandler
@@ -78,7 +80,7 @@ class ExceptionHandler implements ExceptionHandlerContract
             $exception = new Exception($exception);
         }
 
-        $this->sendResponse($exception);
+        $this->sendExceptionResponse($exception);
     }
 
     /**
@@ -135,7 +137,8 @@ class ExceptionHandler implements ExceptionHandlerContract
         }
 
         $headers = [];
-        $statusCode = 500;
+        $statusCode = ResponseCode::HTTP_INTERNAL_SERVER_ERROR;
+        $content = $this->html($this->getContent($exception), $this->getStylesheet());
 
         if ($exception instanceof HttpException) {
             foreach ($exception->getHeaders() as $name => $value) {
@@ -145,11 +148,20 @@ class ExceptionHandler implements ExceptionHandlerContract
             $statusCode = $exception->getStatusCode();
         }
 
-        $response = Application::app()->response(
-            $this->html($this->getContent($exception), $this->getStylesheet()),
-            $statusCode,
-            $headers
-        );
+        if ($exception instanceof HttpRedirectException) {
+            $response = Application::app()->redirect(
+                $exception->getUri(),
+                $statusCode,
+                $headers
+            );
+        }
+        else {
+            $response = Application::app()->response(
+                $content,
+                $statusCode,
+                $headers
+            );
+        }
 
         $response->setCharset($this->charset);
 
@@ -166,6 +178,30 @@ class ExceptionHandler implements ExceptionHandlerContract
     public function sendResponse($exception): void
     {
         $this->getResponse($exception)->send();
+    }
+
+    /**
+     * Send response.
+     *
+     * @param \Throwable $exception
+     *
+     * @return void
+     */
+    public function sendExceptionResponse($exception): void
+    {
+        if (! headers_sent()) {
+            if ($exception instanceof HttpException) {
+                header(sprintf('HTTP/1.0 %s', $exception->getStatusCode()));
+
+                foreach ($exception->getHeaders() as $name => $value) {
+                    header($name . ': ' . $value, false);
+                }
+            }
+
+            header('Content-Type: text/html; charset=' . $this->charset);
+        }
+
+        echo $this->html($this->getContent($exception), $this->getStylesheet());
     }
 
     /**

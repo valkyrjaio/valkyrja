@@ -35,7 +35,7 @@ interface HttpException
      */
     public function __construct(
         int $statusCode,
-        ?string $message = null,
+        string $message = '',
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0

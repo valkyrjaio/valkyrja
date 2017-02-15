@@ -16,6 +16,7 @@ use Exception;
 use RuntimeException;
 
 use Valkyrja\Contracts\Http\Exceptions\HttpException as HttpExceptionContract;
+use Valkyrja\Http\ResponseCode;
 
 /**
  * Class Exception
@@ -52,15 +53,15 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int        $statusCode The status code to use
+     * @param int        $statusCode [optional] The status code to use
      * @param string     $message    [optional] The Exception message to throw
      * @param \Exception $previous   [optional] The previous exception used for the exception chaining
      * @param array      $headers    [optional] The headers to send
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
-        int $statusCode,
-        ?string $message = null,
+        int $statusCode = ResponseCode::HTTP_INTERNAL_SERVER_ERROR,
+        string $message = '',
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0

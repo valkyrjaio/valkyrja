@@ -45,6 +45,28 @@ if (! function_exists('abort')) {
     }
 }
 
+if (! function_exists('redirectTo')) {
+    /**
+     * Redirect to a given uri, and abort the application.
+     *
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     */
+    function redirectTo(
+        string $uri = '/',
+        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): void
+    {
+        app()->redirectTo($uri, $statusCode, $headers);
+    }
+}
+
 if (! function_exists('container')) {
     /**
      * Return the global $app variable.
@@ -145,18 +167,18 @@ if (! function_exists('response')) {
      * Return a new response from the application.
      *
      * @param string $content [optional] The content to set
-     * @param int    $status  [optional] The status code to set
+     * @param int    $statusCode  [optional] The status code to set
      * @param array  $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
     function response(
         string $content = '',
-        int $status = Valkyrja\Http\ResponseCode::HTTP_OK,
+        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
         array $headers = []
     ): Valkyrja\Contracts\Http\Response
     {
-        return app()->response($content, $status, $headers);
+        return app()->response($content, $statusCode, $headers);
     }
 }
 
@@ -165,18 +187,18 @@ if (! function_exists('json')) {
      * Return a new json response from the application.
      *
      * @param array $data    [optional] An array of data
-     * @param int   $status  [optional] The status code to set
+     * @param int   $statusCode  [optional] The status code to set
      * @param array $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     function json(
         array $data = [],
-        int $status = Valkyrja\Http\ResponseCode::HTTP_OK,
+        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
         array $headers = []
     ): Valkyrja\Contracts\Http\JsonResponse
     {
-        return app()->json($data, $status, $headers);
+        return app()->json($data, $statusCode, $headers);
     }
 }
 
@@ -185,40 +207,40 @@ if (! function_exists('redirect')) {
      * Return a new redirect response from the application.
      *
      * @param string $uri     [optional] The URI to redirect to
-     * @param int    $status  [optional] The response status code
+     * @param int    $statusCode  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     function redirect(
         string $uri = '/',
-        int $status = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
     ): \Valkyrja\Contracts\Http\RedirectResponse
     {
-        return app()->redirect($uri, $status, $headers);
+        return app()->redirect($uri, $statusCode, $headers);
     }
 }
 
-if (! function_exists('route')) {
+if (! function_exists('redirectRoute')) {
     /**
      * Return a new redirect response from the application for a given route.
      *
      * @param string $route      The route to match
      * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $status     [optional] The response status code
+     * @param int    $statusCode     [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    function route(
+    function redirectRoute(
         string $route,
         array $parameters = [],
-        int $status = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
     ): \Valkyrja\Contracts\Http\RedirectResponse
     {
-        return app()->route($route, $parameters, $status, $headers);
+        return app()->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }
 

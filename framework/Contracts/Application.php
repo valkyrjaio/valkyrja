@@ -93,46 +93,63 @@ interface Application
      * Return a new response from the application.
      *
      * @param string $content [optional] The content to set
-     * @param int    $status  [optional] The status code to set
+     * @param int    $statusCode  [optional] The status code to set
      * @param array  $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []): Response;
+    public function response(
+        string $content = '',
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): Response;
 
     /**
      * Return a new json response from the application.
      *
      * @param array $data    [optional] An array of data
-     * @param int   $status  [optional] The status code to set
+     * @param int   $statusCode  [optional] The status code to set
      * @param array $headers [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = ResponseCode::HTTP_OK, array $headers = []): JsonResponse;
+    public function json(
+        array $data = [],
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): JsonResponse;
 
     /**
      * Return a new redirect response from the application.
      *
      * @param string $uri     [optional] The URI to redirect to
-     * @param int    $status  [optional] The response status code
+     * @param int    $statusCode  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirect(string $uri = '/', int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse;
+    public function redirect(
+        string $uri = '/',
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse;
 
     /**
      * Return a new redirect response from the application for a given route.
      *
      * @param string $route      The route to match
      * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $status     [optional] The response status code
+     * @param int    $statusCode     [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function route(string $route, array $parameters = [], int $status = ResponseCode::HTTP_FOUND, array $headers = []): RedirectResponse;
+    public function redirectRoute(
+        string $route,
+        array $parameters = [],
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse;
 
     /**
      * Return a new response from the application.
@@ -205,7 +222,29 @@ interface Application
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = ResponseCode::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void;
+    public function abort(
+        int $statusCode = ResponseCode::HTTP_NOT_FOUND,
+        string $message = '',
+        array $headers = [],
+        int $code = 0
+    ): void;
+
+    /**
+     * Redirect to a given uri, and abort the application.
+     *
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     */
+    public function redirectTo(
+        string $uri = '/',
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): void;
 
     /**
      * Handle a request.
