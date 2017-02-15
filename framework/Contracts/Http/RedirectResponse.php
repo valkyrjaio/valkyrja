@@ -34,10 +34,9 @@ interface RedirectResponse extends Response
     /**
      * Create a new redirect response.
      *
-     * @param mixed  $content [optional] The response content, see setContent()
+     * @param string $uri     [optional] The URI to redirect to
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
-     * @param string $uri     [optional] The URI to redirect to
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      *
@@ -45,10 +44,9 @@ interface RedirectResponse extends Response
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public static function createRedirect(
-        string $content = '',
-        int $status = 200,
-        array $headers = [],
-        string $uri = '/'
+        string $uri = '/',
+        int $status = 302,
+        array $headers = []
     ): RedirectResponse;
 
     /**

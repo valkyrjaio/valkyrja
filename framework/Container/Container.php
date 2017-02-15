@@ -235,7 +235,7 @@ class Container implements ContainerContract
         // Set the redirect response contract
         $this->bind(
             RedirectResponseContract::class,
-            function (string $content = '', int $status = 200, array $headers = []) {
+            function (string $content = '', int $status = 302, array $headers = []) {
                 return new RedirectResponse($content, $status, $headers);
             }
         );
