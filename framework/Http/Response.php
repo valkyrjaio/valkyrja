@@ -100,7 +100,7 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $content = '', int $status = 200, array $headers = [])
+    public function __construct(string $content = '', int $status = Response::HTTP_OK, array $headers = [])
     {
         $this->setHeaders($headers);
         $this->setContent($content);
@@ -121,7 +121,11 @@ class Response implements ResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public static function create(string $content = '', int $status = 200, array $headers = []): ResponseContract
+    public static function create(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = []
+    ): ResponseContract
     {
         return new static($content, $status, $headers);
     }
@@ -527,7 +531,7 @@ class Response implements ResponseContract
         if (! in_array(
             $this->statusCode,
             [
-                200,
+                Response::HTTP_OK,
                 203,
                 300,
                 301,
@@ -967,7 +971,7 @@ class Response implements ResponseContract
      */
     public function isInformational(): bool
     {
-        return $this->statusCode >= 100 && $this->statusCode < 200;
+        return $this->statusCode >= 100 && $this->statusCode < Response::HTTP_OK;
     }
 
     /**
@@ -977,7 +981,7 @@ class Response implements ResponseContract
      */
     public function isSuccessful(): bool
     {
-        return $this->statusCode >= 200 && $this->statusCode < 300;
+        return $this->statusCode >= Response::HTTP_OK && $this->statusCode < 300;
     }
 
     /**
@@ -1017,7 +1021,7 @@ class Response implements ResponseContract
      */
     public function isOk(): bool
     {
-        return 200 === $this->statusCode;
+        return Response::HTTP_OK === $this->statusCode;
     }
 
     /**

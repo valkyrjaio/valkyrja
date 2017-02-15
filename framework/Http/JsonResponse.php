@@ -61,7 +61,12 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $content = '', int $status = 200, array $headers = [], array $data = [])
+    public function __construct(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = [],
+        array $data = []
+    )
     {
         parent::__construct($content, $status, $headers);
 
@@ -81,7 +86,12 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @throws \InvalidArgumentException
      */
-    public static function createJson(string $content = '', int $status = 200, array $headers = [], array $data = []): JsonResponseContract
+    public static function createJson(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = [],
+        array $data = []
+    ): JsonResponseContract
     {
         return new static($content, $status, $headers, $data);
     }

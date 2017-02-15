@@ -34,7 +34,12 @@ if (! function_exists('abort')) {
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void
+    function abort(
+        int $statusCode = Valkyrja\Contracts\Http\Response::HTTP_NOT_FOUND,
+        string $message = '',
+        array $headers = [],
+        int $code = 0
+    ): void
     {
         app()->abort($statusCode, $message, $headers, $code);
     }
@@ -145,7 +150,11 @@ if (! function_exists('response')) {
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
-    function response(string $content = '', int $status = 200, array $headers = []): Valkyrja\Contracts\Http\Response
+    function response(
+        string $content = '',
+        int $status = Valkyrja\Contracts\Http\Response::HTTP_OK,
+        array $headers = []
+    ): Valkyrja\Contracts\Http\Response
     {
         return app()->response($content, $status, $headers);
     }
@@ -161,7 +170,11 @@ if (! function_exists('json')) {
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    function json(array $data = [], int $status = 200, array $headers = []): Valkyrja\Contracts\Http\JsonResponse
+    function json(
+        array $data = [],
+        int $status = Valkyrja\Contracts\Http\Response::HTTP_OK,
+        array $headers = []
+    ): Valkyrja\Contracts\Http\JsonResponse
     {
         return app()->json($data, $status, $headers);
     }
@@ -177,7 +190,11 @@ if (! function_exists('redirect')) {
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    function redirect(string $uri = '/', int $status = 302, array $headers = []): \Valkyrja\Contracts\Http\RedirectResponse
+    function redirect(
+        string $uri = '/',
+        int $status = Valkyrja\Contracts\Http\Response::HTTP_FOUND,
+        array $headers = []
+    ): \Valkyrja\Contracts\Http\RedirectResponse
     {
         return app()->redirect($uri, $status, $headers);
     }
@@ -194,7 +211,12 @@ if (! function_exists('route')) {
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    function route(string $route, array $parameters = [], int $status = 302, array $headers = []): \Valkyrja\Contracts\Http\RedirectResponse
+    function route(
+        string $route,
+        array $parameters = [],
+        int $status = Valkyrja\Contracts\Http\Response::HTTP_FOUND,
+        array $headers = []
+    ): \Valkyrja\Contracts\Http\RedirectResponse
     {
         return app()->route($route, $parameters, $status, $headers);
     }

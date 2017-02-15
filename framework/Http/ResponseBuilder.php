@@ -52,7 +52,7 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function make(string $content = '', int $status = 200, array $headers = []): Response
+    public function make(string $content = '', int $status = Response::HTTP_OK, array $headers = []): Response
     {
         return $this->app->response($content, $status, $headers);
     }
@@ -67,7 +67,12 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function view(string $template, array $data = [], int $status = 200, array $headers = []): Response
+    public function view(
+        string $template,
+        array $data = [],
+        int $status = Response::HTTP_OK,
+        array $headers = []
+    ): Response
     {
         $content = $this->app->view()->make($template, $data)->render();
 
@@ -83,7 +88,11 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse
+    public function json(
+        array $data = [],
+        int $status = Response::HTTP_OK,
+        array $headers = []
+    ): JsonResponse
     {
         return $this->app->json($data, $status, $headers);
     }
@@ -100,7 +109,12 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @throws \InvalidArgumentException
      */
-    public function jsonp(string $callback, array $data = [], int $status = 200, array $headers = []): JsonResponse
+    public function jsonp(
+        string $callback,
+        array $data = [],
+        int $status = Response::HTTP_OK,
+        array $headers = []
+    ): JsonResponse
     {
         return $this->json($data, $status, $headers)->setCallback($callback);
     }
@@ -114,7 +128,11 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse
+    public function redirect(
+        string $uri = '/',
+        int $status = Response::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse
     {
         return $this->app->redirect($uri, $status, $headers);
     }
@@ -129,7 +147,12 @@ class ResponseBuilder implements ResponseBuilderContract
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse
+    public function route(
+        string $route,
+        array $parameters = [],
+        int $status = Response::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse
     {
         return $this->app->route($route, $parameters, $status, $headers);
     }

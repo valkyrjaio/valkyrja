@@ -29,7 +29,12 @@ interface RedirectResponse extends Response
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
-    public function __construct(string $content = '', int $status = 302, array $headers = [], string $uri = '/');
+    public function __construct(
+        string $content = '',
+        int $status = Response::HTTP_FOUND,
+        array $headers = [],
+        string $uri = '/'
+    );
 
     /**
      * Create a new redirect response.
@@ -45,7 +50,7 @@ interface RedirectResponse extends Response
      */
     public static function createRedirect(
         string $uri = '/',
-        int $status = 302,
+        int $status = Response::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse;
 

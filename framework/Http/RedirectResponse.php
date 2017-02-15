@@ -39,7 +39,12 @@ class RedirectResponse extends Response implements RedirectResponseContract
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
-    public function __construct(string $content = '', int $status = 302, array $headers = [], string $uri = '/')
+    public function __construct(
+        string $content = '',
+        int $status = Response::HTTP_FOUND,
+        array $headers = [],
+        string $uri = '/'
+    )
     {
         // Use the parent constructor to setup the class
         parent::__construct($content, $status, $headers);
@@ -68,7 +73,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public static function createRedirect(
         string $uri = '/',
-        int $status = 302,
+        int $status = Response::HTTP_FOUND,
         array $headers = []
     ): RedirectResponseContract
     {

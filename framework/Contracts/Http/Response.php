@@ -192,7 +192,7 @@ interface Response
      * @param int   $status  [optional] The response status code
      * @param array $headers [optional] An array of response headers
      */
-    public function __construct(string $content = '', int $status = 200, array $headers = []);
+    public function __construct(string $content = '', int $status = Response::HTTP_OK, array $headers = []);
 
     /**
      * Create a new response.
@@ -203,7 +203,11 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public static function create(string $content = '', int $status = 200, array $headers = []): Response;
+    public static function create(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = []
+    ): Response;
 
     /**
      * Set the content for the response.

@@ -97,7 +97,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function response(string $content = '', int $status = 200, array $headers = []): Response;
+    public function response(string $content = '', int $status = Response::HTTP_OK, array $headers = []): Response;
 
     /**
      * Return a new json response from the application.
@@ -108,7 +108,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function json(array $data = [], int $status = 200, array $headers = []): JsonResponse;
+    public function json(array $data = [], int $status = Response::HTTP_OK, array $headers = []): JsonResponse;
 
     /**
      * Return a new redirect response from the application.
@@ -119,7 +119,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function redirect(string $uri = '/', int $status = 302, array $headers = []): RedirectResponse;
+    public function redirect(string $uri = '/', int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse;
 
     /**
      * Return a new redirect response from the application for a given route.
@@ -131,7 +131,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function route(string $route, array $parameters = [], int $status = 302, array $headers = []): RedirectResponse;
+    public function route(string $route, array $parameters = [], int $status = Response::HTTP_FOUND, array $headers = []): RedirectResponse;
 
     /**
      * Return a new response from the application.
@@ -204,7 +204,7 @@ interface Application
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
-    public function abort(int $statusCode = 404, string $message = '', array $headers = [], int $code = 0): void;
+    public function abort(int $statusCode = Response::HTTP_NOT_FOUND, string $message = '', array $headers = [], int $code = 0): void;
 
     /**
      * Handle a request.

@@ -219,7 +219,7 @@ class Container implements ContainerContract
         // Set the response contract
         $this->bind(
             ResponseContract::class,
-            function (string $content = '', int $status = 200, array $headers = []) {
+            function (string $content = '', int $status = Response::HTTP_OK, array $headers = []) {
                 return new Response($content, $status, $headers);
             }
         );
@@ -227,7 +227,7 @@ class Container implements ContainerContract
         // Set the json response contract
         $this->bind(
             JsonResponseContract::class,
-            function (string $content = '', int $status = 200, array $headers = []) {
+            function (string $content = '', int $status = Response::HTTP_OK, array $headers = []) {
                 return new JsonResponse($content, $status, $headers);
             }
         );
@@ -235,7 +235,7 @@ class Container implements ContainerContract
         // Set the redirect response contract
         $this->bind(
             RedirectResponseContract::class,
-            function (string $content = '', int $status = 302, array $headers = []) {
+            function (string $content = '', int $status = Response::HTTP_FOUND, array $headers = []) {
                 return new RedirectResponse($content, $status, $headers);
             }
         );

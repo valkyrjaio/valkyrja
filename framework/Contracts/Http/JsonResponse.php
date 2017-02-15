@@ -30,7 +30,12 @@ interface JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $content = '', int $status = 200, array $headers = [], array $data = []);
+    public function __construct(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = [],
+        array $data = []
+    );
 
     /**
      * Create a new json response.
@@ -44,7 +49,12 @@ interface JsonResponse extends Response
      *
      * @throws \InvalidArgumentException
      */
-    public static function createJson(string $content = '', int $status = 200, array $headers = [], array $data = []): JsonResponse;
+    public static function createJson(
+        string $content = '',
+        int $status = Response::HTTP_OK,
+        array $headers = [],
+        array $data = []
+    ): JsonResponse;
 
     /**
      * Sets the JSONP callback.
