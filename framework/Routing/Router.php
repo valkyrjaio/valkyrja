@@ -23,6 +23,7 @@ use Valkyrja\Http\Exceptions\InvalidControllerException;
 use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\ResponseCode;
 use Valkyrja\Routing\Annotations\Parser;
 
 /**
@@ -599,7 +600,7 @@ class Router implements RouterContract
         // If no route is found
         if (! $route) {
             // Launch the 404 and abort the app
-            $this->app->abort(404);
+            $this->app->abort(ResponseCode::HTTP_NOT_FOUND);
         }
 
         // Set the action from the route to either the handler or controller action
@@ -683,7 +684,7 @@ class Router implements RouterContract
 
         // If the dispatch failed, 404
         if (! $dispatch) {
-            $this->app->abort(404);
+            $this->app->abort(ResponseCode::HTTP_NOT_FOUND);
         }
 
         // If the dispatch is a Response then simply return it
