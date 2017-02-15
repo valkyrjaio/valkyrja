@@ -166,9 +166,9 @@ if (! function_exists('response')) {
     /**
      * Return a new response from the application.
      *
-     * @param string $content [optional] The content to set
-     * @param int    $statusCode  [optional] The status code to set
-     * @param array  $headers [optional] The headers to set
+     * @param string $content    [optional] The content to set
+     * @param int    $statusCode [optional] The status code to set
+     * @param array  $headers    [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\Response|\Valkyrja\Contracts\Http\ResponseBuilder
      */
@@ -186,9 +186,9 @@ if (! function_exists('json')) {
     /**
      * Return a new json response from the application.
      *
-     * @param array $data    [optional] An array of data
-     * @param int   $statusCode  [optional] The status code to set
-     * @param array $headers [optional] The headers to set
+     * @param array $data       [optional] An array of data
+     * @param int   $statusCode [optional] The status code to set
+     * @param array $headers    [optional] The headers to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
@@ -206,9 +206,9 @@ if (! function_exists('redirect')) {
     /**
      * Return a new redirect response from the application.
      *
-     * @param string $uri     [optional] The URI to redirect to
-     * @param int    $statusCode  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
@@ -228,7 +228,7 @@ if (! function_exists('redirectRoute')) {
      *
      * @param string $route      The route to match
      * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $statusCode     [optional] The response status code
+     * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
