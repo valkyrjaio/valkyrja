@@ -532,12 +532,12 @@ class Response implements ResponseContract
             $this->statusCode,
             [
                 ResponseCode::HTTP_OK,
-                203,
-                300,
-                301,
-                302,
-                404,
-                410,
+                ResponseCode::HTTP_NON_AUTHORITATIVE_INFORMATION,
+                ResponseCode::HTTP_MULTIPLE_CHOICES,
+                ResponseCode::HTTP_MOVED_PERMANENTLY,
+                ResponseCode::HTTP_FOUND,
+                ResponseCode::HTTP_NOT_FOUND,
+                ResponseCode::HTTP_GONE,
             ],
             true
         )
@@ -938,7 +938,7 @@ class Response implements ResponseContract
      */
     public function setNotModified(): ResponseContract
     {
-        $this->setStatusCode(304);
+        $this->setStatusCode(ResponseCode::HTTP_NOT_MODIFIED);
         $this->setContent(null);
         $this->headers
             ->remove('Allow')
@@ -961,7 +961,8 @@ class Response implements ResponseContract
      */
     public function isInvalid(): bool
     {
-        return $this->statusCode < 100 || $this->statusCode >= 600;
+        return $this->statusCode < ResponseCode::HTTP_CONTINUE
+            || $this->statusCode >= ResponseCode::HTTP_NETWORK_AUTHENTICATION_REQUIRED;
     }
 
     /**
@@ -971,7 +972,8 @@ class Response implements ResponseContract
      */
     public function isInformational(): bool
     {
-        return $this->statusCode >= 100 && $this->statusCode < ResponseCode::HTTP_OK;
+        return $this->statusCode >= ResponseCode::HTTP_CONTINUE
+            && $this->statusCode < ResponseCode::HTTP_OK;
     }
 
     /**
@@ -981,7 +983,8 @@ class Response implements ResponseContract
      */
     public function isSuccessful(): bool
     {
-        return $this->statusCode >= ResponseCode::HTTP_OK && $this->statusCode < 300;
+        return $this->statusCode >= ResponseCode::HTTP_OK
+            && $this->statusCode < ResponseCode::HTTP_MULTIPLE_CHOICES;
     }
 
     /**
@@ -991,7 +994,8 @@ class Response implements ResponseContract
      */
     public function isRedirection(): bool
     {
-        return $this->statusCode >= 300 && $this->statusCode < 400;
+        return $this->statusCode >= ResponseCode::HTTP_MULTIPLE_CHOICES
+            && $this->statusCode < ResponseCode::HTTP_BAD_REQUEST;
     }
 
     /**
@@ -1001,7 +1005,8 @@ class Response implements ResponseContract
      */
     public function isClientError(): bool
     {
-        return $this->statusCode >= 400 && $this->statusCode < 500;
+        return $this->statusCode >= ResponseCode::HTTP_BAD_REQUEST
+            && $this->statusCode < ResponseCode::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     /**
@@ -1011,7 +1016,8 @@ class Response implements ResponseContract
      */
     public function isServerError(): bool
     {
-        return $this->statusCode >= 500 && $this->statusCode < 600;
+        return $this->statusCode >= ResponseCode::HTTP_INTERNAL_SERVER_ERROR
+            && $this->statusCode < 600;
     }
 
     /**
@@ -1031,7 +1037,7 @@ class Response implements ResponseContract
      */
     public function isForbidden(): bool
     {
-        return 403 === $this->statusCode;
+        return ResponseCode::HTTP_FORBIDDEN === $this->statusCode;
     }
 
     /**
@@ -1041,7 +1047,7 @@ class Response implements ResponseContract
      */
     public function isNotFound(): bool
     {
-        return 404 === $this->statusCode;
+        return ResponseCode::HTTP_NOT_FOUND === $this->statusCode;
     }
 
     /**
@@ -1056,12 +1062,12 @@ class Response implements ResponseContract
         return in_array(
                 $this->statusCode,
                 [
-                    201,
-                    301,
-                    302,
-                    303,
-                    307,
-                    308,
+                    ResponseCode::HTTP_CREATED,
+                    ResponseCode::HTTP_MOVED_PERMANENTLY,
+                    ResponseCode::HTTP_FOUND,
+                    ResponseCode::HTTP_SEE_OTHER,
+                    ResponseCode::HTTP_TEMPORARY_REDIRECT,
+                    ResponseCode::HTTP_PERMANENTLY_REDIRECT,
                 ],
                 true
             )
@@ -1079,8 +1085,8 @@ class Response implements ResponseContract
         return in_array(
             $this->statusCode,
             [
-                204,
-                304,
+                ResponseCode::HTTP_NO_CONTENT,
+                ResponseCode::HTTP_NOT_MODIFIED,
             ],
             true
         );
