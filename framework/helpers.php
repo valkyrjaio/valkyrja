@@ -470,6 +470,7 @@ if (! function_exists('dd')) {
      */
     function dd(): void
     {
+        /** @noinspection ForgottenDebugOutputInspection */
         var_dump(func_get_args());
 
         die(1);
