@@ -425,18 +425,6 @@ class Router implements RouterContract
                 $routes[$controller] = [];
                 /** @var \Valkyrja\Routing\Annotations\Route[] $controllerRoutes */
                 $controllerRoutes = $parser->getRouteAnnotations($reflection->getDocComment());
-                // The controller base path
-                $basePath = null;
-                // The controller base name
-                $baseName = null;
-
-                // If an @Route annotation is set on the controller
-                if ($controllerRoutes) {
-                    // Set the base path for this controller
-                    $basePath = $controllerRoutes[0]->get('path', null);
-                    // Set the base name for this controller
-                    $baseName = $controllerRoutes[0]->get('name', null);
-                }
 
                 // Iterate through all the methods in the controller
                 foreach ($reflection->getMethods() as $method) {
@@ -446,7 +434,7 @@ class Router implements RouterContract
                     // Ensure a route was defined
                     if ($actionRoutes) {
                         // Set the route for this action
-                        $routes[$controller][$method->getName()] = $actionRoutes;
+                        $routes[$controller][$method->getName()] = [];
                         // Setup to find any injectable objects through the service container
                         $injectable = [];
 
@@ -472,27 +460,51 @@ class Router implements RouterContract
                             // Set the injectable objects
                             $route->set('injectable', $injectable);
 
-                            // If there is a base path for this controller
-                            if ($basePath) {
-                                // Get the route's path
-                                $path = $route->get('path');
+                            // If controller routes exist
+                            if ($controllerRoutes) {
+                                // Iterate through the controller defined base routes
+                                foreach ($controllerRoutes as $controllerRoute) {
+                                    // Clone the route found for the method and begin applying the controller
+                                    // base route to it
+                                    $newRoute = clone $route;
 
-                                // If this is the index
-                                if ('/' === $path) {
-                                    // Set to blank so the final path will be just the base path
-                                    $path = '';
+                                    // If there is a base path for this controller
+                                    if (null !== $controllerRoute->get('path', null)) {
+                                        // Get the route's path
+                                        $path = $route->get('path');
+
+                                        // If this is the index
+                                        if ('/' === $path) {
+                                            // Set to blank so the final path will be just the base path
+                                            $path = '';
+                                        }
+
+                                        // Set the path to the base path and route path
+                                        $newRoute->set('path', $controllerRoute->get('path', '') . $path);
+                                    }
+
+                                    // If there is a base name for this controller
+                                    if (null !== $controllerRoute->get('name', null)) {
+                                        $name = $controllerRoute->get('name', '') . '.' . $route->get('name');
+
+                                        // Set the name to the base name and route name
+                                        $newRoute->set('name', $name);
+                                    }
+
+                                    // If the base is dynamic
+                                    if (false !== $controllerRoute->get('dynamic', false)) {
+                                        // Set the route to dynamic
+                                        $newRoute->set('dynamic', true);
+                                    }
+
+                                    // Add the route to the array
+                                    $routes[$controller][$method->getName()][] = $newRoute;
                                 }
-
-                                // Set the path to the base path and route path
-                                $route->set('path', $basePath . $path);
                             }
-
-                            // If there is a base name for this controller
-                            if ($baseName) {
-                                $name = $baseName . '.' . $route->get('name');
-
-                                // Set the name to the base name and route name
-                                $route->set('name', $name);
+                            // Otherwise there was no route defined on the controller level
+                            else {
+                                // So just add the route to the list
+                                $routes[$controller][$method->getName()][] = $route;
                             }
                         }
                     }
@@ -557,13 +569,7 @@ class Router implements RouterContract
     public function dispatch(RequestContract $request): ResponseContract
     {
         $requestMethod = $request->getMethod();
-        $requestUri = $request->getPath();
-
-        // Determine if the request uri has any query parameters
-        if (false !== $queryPosition = strpos($requestUri, '?')) {
-            // If so get the substring of the uri from start until the query param position
-            $requestUri = substr($requestUri, 0, $queryPosition);
-        }
+        $requestUri = $request->getPathClean();
 
         // Decode the request uri
         $requestUri = rawurldecode($requestUri);
