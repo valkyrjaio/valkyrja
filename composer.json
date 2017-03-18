@@ -34,7 +34,6 @@
     "predis/predis"           : "(^1.1).",
     "guzzlehttp/guzzle"       : "(^6.2).",
     "league/flysystem"        : "(^1.0).",
-    "monolog/monolog"         : "(^1.21).",
-    "mindplay/annotations"    : "(^1.3)."
+    "monolog/monolog"         : "(^1.21)."
   }
 }
