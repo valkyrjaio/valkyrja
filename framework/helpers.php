@@ -106,6 +106,18 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('request')) {
+    /**
+     * Get request.
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    function request(): Valkyrja\Contracts\Http\Request
+    {
+        return app()->request();
+    }
+}
+
 if (! function_exists('router')) {
     /**
      * Get router.

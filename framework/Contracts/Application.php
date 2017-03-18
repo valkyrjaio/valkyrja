@@ -90,6 +90,13 @@ interface Application
     public function router(): Router;
 
     /**
+     * Return the request instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function request(): Request;
+
+    /**
      * Return a new response from the application.
      *
      * @param string $content    [optional] The content to set

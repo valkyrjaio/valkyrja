@@ -175,6 +175,16 @@ class Application implements ApplicationContract
     }
 
     /**
+     * Return the request instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function request(): Request
+    {
+        return $this->container->get(Request::class);
+    }
+
+    /**
      * Return a new response from the application.
      *
      * @param string $content    [optional] The content to set
