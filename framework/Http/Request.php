@@ -781,6 +781,24 @@ class Request implements RequestContract
     }
 
     /**
+     * Returns the path being requested with no query string.
+     *
+     * @return string
+     */
+    public function getPathClean(): string
+    {
+        $requestUri = $this->getPath();
+
+        // Determine if the request uri has any query parameters
+        if (false !== $queryPosition = strpos($requestUri, '?')) {
+            // If so get the substring of the uri from start until the query param position
+            $requestUri = substr($requestUri, 0, $queryPosition);
+        }
+
+        return $requestUri;
+    }
+
+    /**
      * Gets the request's scheme.
      *
      * @return string

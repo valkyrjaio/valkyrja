@@ -351,6 +351,13 @@ interface Request
     public function getPath(): string;
 
     /**
+     * Returns the path being requested with no query string.
+     *
+     * @return string
+     */
+    public function getPathClean(): string;
+
+    /**
      * Gets the request's scheme.
      *
      * @return string
