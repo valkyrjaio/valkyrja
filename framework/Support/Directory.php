@@ -43,7 +43,7 @@ class Directory
      */
     public static function basePath(string $path = null): string
     {
-        return static::$BASE_PATH . ($path
+        return static::$BASE_PATH . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path);
     }
@@ -58,7 +58,7 @@ class Directory
     public static function appPath(string $path = null): string
     {
         return static::basePath(
-            'app' . ($path
+            'app' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -74,7 +74,7 @@ class Directory
     public static function configPath(string $path = null): string
     {
         return static::basePath(
-            'config' . ($path
+            'config' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -90,7 +90,7 @@ class Directory
     public static function frameworkPath(string $path = null): string
     {
         return static::basePath(
-            'framework' . ($path
+            'framework' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -106,7 +106,7 @@ class Directory
     public static function publicPath(string $path = null): string
     {
         return static::basePath(
-            'public' . ($path
+            'public' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -122,7 +122,7 @@ class Directory
     public static function resourcesPath(string $path = null): string
     {
         return static::basePath(
-            'resources' . ($path
+            'resources' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -138,7 +138,7 @@ class Directory
     public static function routesPath(string $path = null): string
     {
         return static::basePath(
-            'routes' . ($path
+            'routes' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -154,7 +154,7 @@ class Directory
     public static function storagePath(string $path = null): string
     {
         return static::basePath(
-            'storage' . ($path
+            'storage' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -170,7 +170,7 @@ class Directory
     public static function testsPath(string $path = null): string
     {
         return static::basePath(
-            'tests' . ($path
+            'tests' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
@@ -186,7 +186,7 @@ class Directory
     public static function vendorPath(string $path = null): string
     {
         return static::basePath(
-            'vendor' . ($path
+            'vendor' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
                 ? static::DIRECTORY_SEPARATOR . $path
                 : $path)
         );
