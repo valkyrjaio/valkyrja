@@ -1,22 +1,7 @@
 {
   "devDependencies" : {
-    "del"              : "latest",
     "gulp"             : "latest",
-    "gulp-concat"      : "latest",
-    "gulp-consolidate" : "latest",
-    "gulp-iconfont"    : "latest",
-    "gulp-include"     : "latest",
-    "gulp-jshint"      : "latest",
-    "gulp-less"        : "latest",
-    "gulp-clean-css"   : "latest",
-    "gulp-notify"      : "latest",
-    "gulp-rename"      : "latest",
-    "gulp-rev"         : "latest",
-    "gulp-svgmin"      : "latest",
-    "gulp-uglify"      : "latest",
-    "gulp-util"        : "latest",
     "gulp-watch"       : "latest",
-    "lodash"           : "latest",
     "run-sequence"     : "latest"
   }
 }
