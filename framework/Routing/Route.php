@@ -13,6 +13,8 @@ namespace Valkyrja\Routing;
 
 use Closure;
 
+use Valkyrja\Model\Model;
+
 /**
  * Class Route
  *
@@ -20,82 +22,86 @@ use Closure;
  *
  * @author  Melech Mizrachi
  */
-class Route
+class Route extends Model
 {
+    /**
+     * The method for this route.
+     *
+     * @var string
+     */
+    protected $method;
+
     /**
      * The path for this route.
      *
      * @var string
      */
-    public $path;
+    protected $path;
 
     /**
      * Name of this route.
      *
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * The controller to use for this route.
      *
      * @var string
      */
-    public $controller;
+    protected $controller;
 
     /**
      * The action to use for this route.
      *
      * @var string
      */
-    public $action;
+    protected $action;
 
     /**
      * The handler for this route.
      *
      * @var \Closure
      */
-    public $handler;
+    protected $handler;
 
     /**
      * Any injectable classes from the service container for the action/handler.
      *
      * @var array
      */
-    public $injectables = [];
+    protected $injectables = [];
 
     /**
      * Whether the route is dynamic.
      *
      * @var bool
      */
-    public $dynamic = false;
+    protected $dynamic = false;
 
     /**
-     * Route constructor.
+     * Get the route's method.
      *
-     * @param string   $path        The route path
-     * @param string   $name        [optional] The route name
-     * @param string   $controller  [optional] The route controller
-     * @param string   $action      [optional] The route action
-     * @param \Closure $handler     [optional] The route handler
-     * @param array    $injectables [optional] The route injectable objects
+     * @return string
      */
-    public function __construct(
-        string $path,
-        string $name = null,
-        string $controller = null,
-        string $action = null,
-        ?Closure $handler = null,
-        array $injectables = []
-    )
+    public function getMethod():? string
     {
-        $this->path = $path;
-        $this->name = $name;
-        $this->controller = $controller;
-        $this->action = $action;
-        $this->handler = $handler;
-        $this->injectables = $injectables;
+        return $this->method;
+    }
+
+    /**
+     * Set the route's method.
+     *
+     * @param string $method The route method
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    public function setMethod(string $method): Route
+    {
+        $this->method = $method;
+
+        return $this;
     }
 
     /**
@@ -103,7 +109,7 @@ class Route
      *
      * @return string
      */
-    public function getPath(): string
+    public function getPath():? string
     {
         return $this->path;
     }
@@ -127,7 +133,7 @@ class Route
      *
      * @return string
      */
-    public function getName(): string
+    public function getName():? string
     {
         return $this->name;
     }
@@ -151,7 +157,7 @@ class Route
      *
      * @return string
      */
-    public function getController(): string
+    public function getController():? string
     {
         return $this->controller;
     }
@@ -175,7 +181,7 @@ class Route
      *
      * @return string
      */
-    public function getAction(): string
+    public function getAction():? string
     {
         return $this->action;
     }
@@ -199,7 +205,7 @@ class Route
      *
      * @return \Closure
      */
-    public function getHandler(): Closure
+    public function getHandler():? Closure
     {
         return $this->handler;
     }
@@ -247,7 +253,7 @@ class Route
      *
      * @return boolean
      */
-    public function isDynamic(): bool
+    public function getDynamic(): bool
     {
         return $this->dynamic;
     }
@@ -255,11 +261,13 @@ class Route
     /**
      * Set the route as dynamic.
      *
+     * @param bool $dynamic Whether the route it dynamic
+     *
      * @return \Valkyrja\Routing\Route
      */
-    public function setDynamic(): Route
+    public function setDynamic(bool $dynamic): Route
     {
-        $this->dynamic = true;
+        $this->dynamic = $dynamic;
 
         return $this;
     }

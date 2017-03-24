@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotations;
+namespace Valkyrja\Contracts\Routing\Annotations;
 
 /**
- * Class Parser
+ * Interface RouteParser
  *
- * @package Valkyrja\Routing\Annotations
+ * @package Valkyrja\Contracts\Routing\Annotations
  *
  * @author  Melech Mizrachi
  */
-class Parser
+interface RouteParser
 {
     /**
      * Route regex.
@@ -111,40 +111,7 @@ REGEX;
      *
      * @param string $docString The doc string
      *
-     * @return array
+     * @return \Valkyrja\Routing\Route[]
      */
-    public function getRouteAnnotations(string $docString): array
-    {
-        // Get all matches of @Route()
-        preg_match_all('/' . static::ROUTE_REGEX . '/x', $docString, $routes);
-
-        // Create a new array to return matches
-        $annotations = [];
-
-        // If routes were found
-        if ($routes && $routes[0]) {
-            // Iterate through the routes' contents found within the parenthesis
-            foreach ($routes[1] as $route) {
-                // Match all the arguments (I.E. path = '/')
-                preg_match_all('/' . static::ARGUMENTS_REGEX . '/x', $route, $arguments);
-
-                $properties = [];
-
-                foreach ($arguments[2] as $index => $argument) {
-                    // Determine if the argument is a constant
-                    if (defined($argument)) {
-                        $argument = constant($argument);
-                    }
-
-                    // Set the argument value to the argument index
-                    $properties[$arguments[1][$index]] = $argument;
-                }
-
-                // Set this as a new Route in the annotations array
-                $annotations[] = new Route($properties);
-            }
-        }
-
-        return $annotations;
-    }
+    public function getRouteAnnotations(string $docString): array;
 }

@@ -21,6 +21,7 @@ use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
+use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Client;
@@ -30,6 +31,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\ResponseCode;
+use Valkyrja\Routing\Annotations\RouteParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
 
@@ -260,6 +262,14 @@ class Container implements ContainerContract
                 $app = $this->get(Application::class);
 
                 return new Router($app);
+            }
+        );
+
+        // Set the route parser contract
+        $this->singleton(
+            RouteParserContract::class,
+            function () {
+                return new RouteParser();
             }
         );
 

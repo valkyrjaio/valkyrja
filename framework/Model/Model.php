@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Models;
+namespace Valkyrja\Model;
 
 use JsonSerializable;
 

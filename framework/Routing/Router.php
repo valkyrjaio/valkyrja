@@ -13,10 +13,11 @@ namespace Valkyrja\Routing;
 
 use Closure;
 
-use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
+use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\InvalidControllerException;
@@ -24,7 +25,6 @@ use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
-use Valkyrja\Routing\Annotations\Parser;
 
 /**
  * Class Router
@@ -83,7 +83,7 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Contracts\Application $application
      */
-    public function __construct(Application $application)
+    public function __construct(ApplicationContract $application)
     {
         $this->app = $application;
     }
@@ -377,7 +377,8 @@ class Router implements RouterContract
     public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string
     {
         // Get the matching route
-        $route = $this->getRouteByName($name, $method, empty($data) ? static::STATIC_ROUTES_NAME : static::DYNAMIC_ROUTES_NAME);
+        $route = $this->getRouteByName($name, $method, empty($data) ? static::STATIC_ROUTES_NAME
+            : static::DYNAMIC_ROUTES_NAME);
 
         // If no route was found
         if (! $route) {
@@ -426,8 +427,10 @@ class Router implements RouterContract
 
         // If annotations are enabled and routing should use annotations
         if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
+            // Routes array
             $routes = [];
-            $parser = new Parser();
+            // The routes annotations parser
+            $parser = $this->app->container()->get(RouteParserContract::class);
 
             // Iterate through each controller
             foreach ($this->app->config()->routing->controllers as $controller) {
@@ -435,7 +438,7 @@ class Router implements RouterContract
                 $reflection = new \ReflectionClass($controller);
                 // Set an empty array for this controller to hold its defined routes
                 $routes[$controller] = [];
-                /** @var \Valkyrja\Routing\Annotations\Route[] $controllerRoutes */
+                /** @var \Valkyrja\Routing\Route[] $controllerRoutes */
                 $controllerRoutes = $parser->getRouteAnnotations($reflection->getDocComment());
 
                 // Iterate through all the methods in the controller
@@ -462,15 +465,15 @@ class Router implements RouterContract
                         /**
                          * Iterate through all the action's routes.
                          *
-                         * @var \Valkyrja\Routing\Annotations\Route $route
+                         * @var \Valkyrja\Routing\Route $route
                          */
                         foreach ($actionRoutes as $route) {
                             // Set the controller
-                            $route->set('controller', $controller);
+                            $route->setController($controller);
                             // Set the action
-                            $route->set('action', $method->getName());
+                            $route->setAction($method->getName());
                             // Set the injectable objects
-                            $route->set('injectable', $injectable);
+                            $route->setInjectables($injectable);
 
                             // If controller routes exist
                             if ($controllerRoutes) {
@@ -481,9 +484,9 @@ class Router implements RouterContract
                                     $newRoute = clone $route;
 
                                     // If there is a base path for this controller
-                                    if (null !== $controllerRoute->get('path', null)) {
+                                    if (null !== $controllerRoute->getPath()) {
                                         // Get the route's path
-                                        $path = $route->get('path');
+                                        $path = $route->getPath();
 
                                         // If this is the index
                                         if ('/' === $path) {
@@ -492,21 +495,21 @@ class Router implements RouterContract
                                         }
 
                                         // Set the path to the base path and route path
-                                        $newRoute->set('path', $controllerRoute->get('path', '') . $path);
+                                        $newRoute->setPath($controllerRoute->getPath() . $path);
                                     }
 
                                     // If there is a base name for this controller
-                                    if (null !== $controllerRoute->get('name', null)) {
-                                        $name = $controllerRoute->get('name', '') . '.' . $route->get('name');
+                                    if (null !== $controllerRoute->getName()) {
+                                        $name = $controllerRoute->getName() . '.' . $route->getName();
 
                                         // Set the name to the base name and route name
-                                        $newRoute->set('name', $name);
+                                        $newRoute->setName($name);
                                     }
 
                                     // If the base is dynamic
-                                    if (false !== $controllerRoute->get(static::DYNAMIC_ROUTES_NAME, false)) {
+                                    if (false !== $controllerRoute->getDynamic()) {
                                         // Set the route to dynamic
-                                        $newRoute->set(static::DYNAMIC_ROUTES_NAME, true);
+                                        $newRoute->setDynamic(true);
                                     }
 
                                     // Add the route to the array
@@ -540,16 +543,20 @@ class Router implements RouterContract
                     /**
                      * Iterate through the routes defined for each action.
                      *
-                     * @var string                              $key
-                     * @var \Valkyrja\Routing\Annotations\Route $route
+                     * @var string                  $key
+                     * @var \Valkyrja\Routing\Route $route
                      */
                     foreach ($methodRoutes as $key => $route) {
                         // Set the route
                         $this->addRoute(
-                            $route->get('method', RequestMethod::GET),
-                            $route->get('path'),
-                            $route->all(),
-                            $route->get(static::DYNAMIC_ROUTES_NAME)
+                            $route->getMethod() ?? RequestMethod::GET,
+                            $route->getPath(),
+                            [
+                                'controller'  => $route->getController(),
+                                'action'      => $route->getAction(),
+                                'injectable' => $route->getInjectables(),
+                            ],
+                            $route->getDynamic()
                         );
                     }
                 }
