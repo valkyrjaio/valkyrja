@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing;
+namespace Valkyrja\Routing\Models;
 
 use Closure;
 
@@ -18,7 +18,7 @@ use Valkyrja\Model\Model;
 /**
  * Class Route
  *
- * @package Valkyrja\Routing
+ * @package Valkyrja\Routing\Models
  *
  * @author  Melech Mizrachi
  */

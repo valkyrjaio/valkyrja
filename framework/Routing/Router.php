@@ -436,9 +436,7 @@ class Router implements RouterContract
             foreach ($this->app->config()->routing->controllers as $controller) {
                 // Get a reflection of the controller
                 $reflection = new \ReflectionClass($controller);
-                // Set an empty array for this controller to hold its defined routes
-                $routes[$controller] = [];
-                /** @var \Valkyrja\Routing\Route[] $controllerRoutes */
+                /** @var \Valkyrja\Routing\Models\Route[] $controllerRoutes */
                 $controllerRoutes = $parser->getRouteAnnotations($reflection->getDocComment());
 
                 // Iterate through all the methods in the controller
@@ -448,8 +446,6 @@ class Router implements RouterContract
 
                     // Ensure a route was defined
                     if ($actionRoutes) {
-                        // Set the route for this action
-                        $routes[$controller][$method->getName()] = [];
                         // Setup to find any injectable objects through the service container
                         $injectable = [];
 
@@ -465,7 +461,7 @@ class Router implements RouterContract
                         /**
                          * Iterate through all the action's routes.
                          *
-                         * @var \Valkyrja\Routing\Route $route
+                         * @var \Valkyrja\Routing\Models\Route $route
                          */
                         foreach ($actionRoutes as $route) {
                             // Set the controller
@@ -518,54 +514,33 @@ class Router implements RouterContract
                                     }
 
                                     // Add the route to the array
-                                    $routes[$controller][$method->getName()][] = $newRoute;
+                                    $routes[] = $newRoute;
                                 }
                             }
                             // Otherwise there was no route defined on the controller level
                             else {
                                 // So just add the route to the list
-                                $routes[$controller][$method->getName()][] = $route;
+                                $routes[] = $route;
                             }
                         }
                     }
                 }
             }
 
-            /**
-             * Iterate through the routes for each controller.
-             *
-             * @var string $controller
-             * @var array  $controllerRoutes
-             */
-            foreach ($routes as $controller => $controllerRoutes) {
-                /**
-                 * Iterate through the actions.
-                 *
-                 * @var string $action
-                 * @var array  $methodRoutes
-                 */
-                foreach ($controllerRoutes as $action => $methodRoutes) {
-                    /**
-                     * Iterate through the routes defined for each action.
-                     *
-                     * @var string                  $key
-                     * @var \Valkyrja\Routing\Route $route
-                     */
-                    foreach ($methodRoutes as $key => $route) {
-                        // Set the route
-                        $this->addRoute(
-                            $route->getMethod() ?? RequestMethod::GET,
-                            $route->getPath(),
-                            [
-                                'name'       => $route->getName(),
-                                'controller' => $route->getController(),
-                                'action'     => $route->getAction(),
-                                'injectable' => $route->getInjectables(),
-                            ],
-                            $route->getDynamic()
-                        );
-                    }
-                }
+            // Iterate through the routes
+            foreach ($routes as $route) {
+                // Set the route
+                $this->addRoute(
+                    $route->getMethod() ?? RequestMethod::GET,
+                    $route->getPath(),
+                    [
+                        'name'       => $route->getName(),
+                        'controller' => $route->getController(),
+                        'action'     => $route->getAction(),
+                        'injectable' => $route->getInjectables(),
+                    ],
+                    $route->getDynamic()
+                );
             }
 
             // If only annotations should be used for routing

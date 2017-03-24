@@ -13,7 +13,7 @@ namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Http\RequestMethod;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Models\Route;
 
 /**
  * Class Parser
@@ -29,7 +29,7 @@ class RouteParser implements RouteParserContract
      *
      * @param string $docString The doc string
      *
-     * @return \Valkyrja\Routing\Route[]
+     * @return \Valkyrja\Routing\Models\Route[]
      */
     public function getRouteAnnotations(string $docString): array
     {

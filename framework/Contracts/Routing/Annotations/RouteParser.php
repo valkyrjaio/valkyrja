@@ -111,7 +111,7 @@ REGEX;
      *
      * @param string $docString The doc string
      *
-     * @return \Valkyrja\Routing\Route[]
+     * @return \Valkyrja\Routing\Models\Route[]
      */
     public function getRouteAnnotations(string $docString): array;
 }
