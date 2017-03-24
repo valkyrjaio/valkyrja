@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Models;
 
+use JsonSerializable;
+
 /**
  * Class Model
  *
@@ -18,6 +20,70 @@ namespace Valkyrja\Models;
  *
  * @author  Melech Mizrachi
  */
-abstract class Model
+abstract class Model implements JsonSerializable
 {
+    /**
+     * Get a property.
+     *
+     * @param string $name The property to get
+     *
+     * @return mixed
+     */
+    public function __get(string $name)
+    {
+        $methodName = 'get' . ucfirst($name);
+
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName();
+        }
+
+        return $this->{$name};
+    }
+
+    /**
+     * Set a property.
+     *
+     * @param string $name  The property to set
+     * @param mixed  $value The value to set
+     *
+     * @return \Valkyrja\Models\Model
+     */
+    public function __set(string $name, $value): Model
+    {
+        $methodName = 'set' . ucfirst($name);
+
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName($value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check if a property is set.
+     *
+     * @param string $name The property to check
+     *
+     * @return bool
+     */
+    public function __isset(string $name): bool
+    {
+        $methodName = 'isset' . ucfirst($name);
+
+        if (method_exists($this, $methodName)) {
+            return $this->$methodName();
+        }
+
+        return property_exists($this, $name);
+    }
+
+    /**
+     * Serialize properties for json_encode.
+     *
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return get_object_vars($this);
+    }
 }
