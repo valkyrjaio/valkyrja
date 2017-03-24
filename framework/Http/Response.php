@@ -220,7 +220,7 @@ class Response implements ResponseContract
             fastcgi_finish_request();
         }
         // Otherwise if this isn't a cli request
-        elseif ('cli' !== PHP_SAPI) {
+        else if ('cli' !== PHP_SAPI) {
             // Use an internal method to finish the request
             static::closeOutputBuffers(0, true);
         }

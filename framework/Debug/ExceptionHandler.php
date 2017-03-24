@@ -488,19 +488,19 @@ EOF;
             if (is_object($item)) {
                 $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass(get_class($item)));
             }
-            elseif (is_array($item)) {
+            else if (is_array($item)) {
                 $formattedValue = sprintf('<em>array</em>(%s)', $this->formatArgs($item));
             }
-            elseif (is_string($item)) {
+            else if (is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
             }
-            elseif (null === $item) {
+            else if (null === $item) {
                 $formattedValue = '<em>null</em>';
             }
-            elseif (is_bool($item)) {
+            else if (is_bool($item)) {
                 $formattedValue = '<em>' . strtolower(var_export($item, true)) . '</em>';
             }
-            elseif (is_resource($item)) {
+            else if (is_resource($item)) {
                 $formattedValue = '<em>resource</em>';
             }
             else {

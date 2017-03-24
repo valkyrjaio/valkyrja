@@ -367,7 +367,7 @@ class Request implements RequestContract
                 $queryString = $components['query'];
             }
         }
-        elseif ($query) {
+        else if ($query) {
             $queryString = http_build_query($query, '', '&');
         }
 
@@ -970,7 +970,7 @@ class Request implements RequestContract
                 if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                     $this->method = strtoupper($method);
                 }
-                elseif (self::$httpMethodParameterOverride) {
+                else if (self::$httpMethodParameterOverride) {
                     $this->method = strtoupper(
                         $this->request->get('_method', $this->query->get('_method', RequestMethod::POST))
                     );

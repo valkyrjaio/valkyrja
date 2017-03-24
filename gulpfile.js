@@ -1,27 +1,27 @@
-var fs = require('fs');
-var crypto = require('crypto');
-var del = require('del');
-var gulp = require('gulp');
-var watch = require('gulp-watch');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
-var notify = require('gulp-notify');
-var include = require('gulp-include');
-var less = require('gulp-less');
-var minify = require('gulp-clean-css');
-var uglify = require('gulp-uglify');
-var rev = require('gulp-rev');
-var sequence = require('run-sequence');
-var iconfont = require('gulp-iconfont');
-var consolidate = require('gulp-consolidate');
-var svgmin = require('gulp-svgmin');
-var resourcesDir = 'resources/assets/';
-var destDir = 'public/static/';
-var cssPath = destDir + 'css';
-var jsPath = destDir + 'js';
-var buildPath = destDir + 'build';
-var dirs = fs.readdirSync(resourcesDir);
-var moduleTasks = [];
+var fs               = require('fs');
+var crypto           = require('crypto');
+var del              = require('del');
+var gulp             = require('gulp');
+var watch            = require('gulp-watch');
+var concat           = require('gulp-concat');
+var rename           = require('gulp-rename');
+var notify           = require('gulp-notify');
+var include          = require('gulp-include');
+var less             = require('gulp-less');
+var minify           = require('gulp-clean-css');
+var uglify           = require('gulp-uglify');
+var rev              = require('gulp-rev');
+var sequence         = require('run-sequence');
+var iconfont         = require('gulp-iconfont');
+var consolidate      = require('gulp-consolidate');
+var svgmin           = require('gulp-svgmin');
+var resourcesDir     = 'resources/assets/';
+var destDir          = 'public/static/';
+var cssPath          = destDir + 'css';
+var jsPath           = destDir + 'js';
+var buildPath        = destDir + 'build';
+var dirs             = fs.readdirSync(resourcesDir);
+var moduleTasks      = [];
 var moduleWatchTasks = [];
 
 /**
@@ -30,7 +30,8 @@ var moduleWatchTasks = [];
  * @param str
  * @returns {*}
  */
-function md5(str) {
+function md5(str)
+{
     return crypto.createHash('md5').update(str).digest('hex').substring(-22, 22);
 }
 /*
@@ -44,11 +45,12 @@ function md5(str) {
  | tasks to be run on default, and before global watch.
  |
  */
-dirs.forEach(function (moduleName/*, index, dirs*/) {
-    var jsTask = moduleName + '-js';
-    var cssTask = moduleName + '-css';
+dirs.forEach(function (moduleName/*, index, dirs*/)
+{
+    var jsTask     = moduleName + '-js';
+    var cssTask    = moduleName + '-css';
     var scriptsDir = resourcesDir + moduleName + '/scripts/';
-    var lessDir = resourcesDir + moduleName + '/less/';
+    var lessDir    = resourcesDir + moduleName + '/less/';
 
     /*
      |--------------------------------------------------------------------------
@@ -60,7 +62,8 @@ dirs.forEach(function (moduleName/*, index, dirs*/) {
      | the public directory of the app.
      |
      */
-    gulp.task(jsTask, function () {
+    gulp.task(jsTask, function ()
+    {
         return gulp.src(scriptsDir + moduleName + '.js')
             .pipe(include())
             .pipe(gulp.dest(destDir + 'js/' + moduleName))
@@ -78,7 +81,8 @@ dirs.forEach(function (moduleName/*, index, dirs*/) {
      | the public directory of the app.
      |
      */
-    gulp.task(cssTask, function () {
+    gulp.task(cssTask, function ()
+    {
         return gulp.src(lessDir + moduleName + '.less')
             .pipe(less())
             .pipe(gulp.dest(destDir + 'css/' + moduleName))
@@ -100,9 +104,11 @@ dirs.forEach(function (moduleName/*, index, dirs*/) {
      | when changes are detected.
      |
      */
-    gulp.task(jsTask + '-watch', function () {
+    gulp.task(jsTask + '-watch', function ()
+    {
         // Set a watcher on the module's scripts directory
-        watch(scriptsDir, function () {
+        watch(scriptsDir, function ()
+        {
             // When a change is detected run the module's js task
             gulp.start(jsTask);
         });
@@ -118,9 +124,11 @@ dirs.forEach(function (moduleName/*, index, dirs*/) {
      | when changes are detected.
      |
      */
-    gulp.task(cssTask + '-watch', function () {
+    gulp.task(cssTask + '-watch', function ()
+    {
         // Set a watcher on the module's less directory
-        watch(lessDir, function () {
+        watch(lessDir, function ()
+        {
             // When a change is detected run the module's css task
             gulp.start(cssTask);
         });
@@ -153,7 +161,8 @@ dirs.forEach(function (moduleName/*, index, dirs*/) {
  | uglify plugin.
  |
  */
-gulp.task('uglify-js', function () {
+gulp.task('uglify-js', function ()
+{
     // If the js min directory already exists
     if (fs.existsSync(jsPath + '/min/')) {
         // Destroy it with fire
@@ -177,7 +186,8 @@ gulp.task('uglify-js', function () {
  | css minify plugin.
  |
  */
-gulp.task('minify-css', function () {
+gulp.task('minify-css', function ()
+{
     // If the css min directory already exists
     if (fs.existsSync(cssPath + '/min/')) {
         // Destroy it with fire
@@ -203,7 +213,8 @@ gulp.task('minify-css', function () {
  | serve.
  |
  */
-gulp.task('make-build', function () {
+gulp.task('make-build', function ()
+{
     if (fs.existsSync(buildPath)) {
         del(buildPath);
     }
@@ -230,7 +241,8 @@ gulp.task('make-build', function () {
  | both complete it will run the make build task.
  |
  */
-gulp.task('version', function () {
+gulp.task('version', function ()
+{
     sequence(['minify-css', 'uglify-js'], 'make-build');
 });
 
@@ -245,7 +257,8 @@ gulp.task('version', function () {
  | once per file. Exceeding this number may break svg icons.
  |
  */
-gulp.task('optimize-icons', function () {
+gulp.task('optimize-icons', function ()
+{
     var path = resourcesDir + 'global/';
 
     return gulp.src([path + 'icons/*.svg'])
@@ -281,22 +294,24 @@ gulp.task('optimize-icons', function () {
  | should be run.
  |
  */
-gulp.task('icon-font', function () {
+gulp.task('icon-font', function ()
+{
     // The global module directory
-    var path = resourcesDir + 'global/';
+    var path         = resourcesDir + 'global/';
     // Set the name for the fonts files
-    var fontName = 'icons';
+    var fontName     = 'icons';
     // Get all the files in the icons directory
-    var files = fs.readdirSync(path + 'icons/');
+    var files        = fs.readdirSync(path + 'icons/');
     // Variable to house the aggregated contents of all icons
-    var contents = '';
+    var contents     = '';
     // The file name for the fonts
     var fontFileName = '';
 
     console.log('files', files);
 
     // Iterate through each file
-    files.forEach(function (file) {
+    files.forEach(function (file)
+    {
         // If it is an svg
         if (file.indexOf('.svg') !== -1) {
             // Add its contents to the variable
@@ -318,7 +333,8 @@ gulp.task('icon-font', function () {
             fontHeight         : 1000
         }))
         // Get the codepoints
-        .on('codepoints', function (codepoints/*, options*/) {
+        .on('codepoints', function (codepoints/*, options*/)
+        {
             console.log(codepoints);
             // Using lodash consolidate all the codepoints
             // and create a new less file in the
@@ -355,7 +371,8 @@ gulp.task('icon-font', function () {
  | module.
  |
  */
-gulp.task('watch', function () {
+gulp.task('watch', function ()
+{
     sequence(moduleTasks, moduleWatchTasks);
 });
 
