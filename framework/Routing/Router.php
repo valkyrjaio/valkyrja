@@ -698,12 +698,11 @@ class Router implements RouterContract
             return $dispatch;
         }
         // If the dispatch is a View, render it then wrap it in a new response and return it
-        else if ($dispatch instanceof ViewContract) {
+        if ($dispatch instanceof ViewContract) {
             return $this->app->response($dispatch->render());
         }
+
         // Otherwise its a string so wrap it in a new response and return it
-        else {
-            return $this->app->response($dispatch);
-        }
+        return $this->app->response((string) $dispatch);
     }
 }
