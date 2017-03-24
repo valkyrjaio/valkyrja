@@ -11,6 +11,9 @@ use Valkyrja\Routing\Annotations\Route;
  * Class HomeController
  *
  * @package App\Controllers
+ *
+ * @Route(path = '/', name = 'home')
+ * @Route(path = '/test', name = 'home.test')
  */
 class HomeController extends Controller
 {
