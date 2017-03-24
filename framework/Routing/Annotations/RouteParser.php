@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Routing\Annotations;
 
+use Valkyrja\Annotations\Parser\AnnotationsParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Models\Route;
@@ -22,7 +23,7 @@ use Valkyrja\Routing\Models\Route;
  *
  * @author  Melech Mizrachi
  */
-class RouteParser implements RouteParserContract
+class RouteParser extends AnnotationsParser implements RouteParserContract
 {
     /**
      * Get route annotations from a given string.
@@ -31,7 +32,7 @@ class RouteParser implements RouteParserContract
      *
      * @return \Valkyrja\Routing\Models\Route[]
      */
-    public function getRouteAnnotations(string $docString): array
+    public function getAnnotations(string $docString): array
     {
         // Get all matches of @Route()
         preg_match_all('/' . static::ROUTE_REGEX . '/x', $docString, $routes);

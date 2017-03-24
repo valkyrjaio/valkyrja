@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Routing\Annotations;
 
+use Valkyrja\Contracts\Annotations\Parser\AnnotationsParser;
+
 /**
  * Interface RouteParser
  *
@@ -18,7 +20,7 @@ namespace Valkyrja\Contracts\Routing\Annotations;
  *
  * @author  Melech Mizrachi
  */
-interface RouteParser
+interface RouteParser extends AnnotationsParser
 {
     /**
      * Route regex.
@@ -105,13 +107,4 @@ REGEX;
     \s* \= \s* \'? "? \s*
     ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.]*)
 REGEX;
-
-    /**
-     * Get route annotations from a given string.
-     *
-     * @param string $docString The doc string
-     *
-     * @return \Valkyrja\Routing\Models\Route[]
-     */
-    public function getRouteAnnotations(string $docString): array;
 }

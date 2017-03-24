@@ -430,6 +430,7 @@ class Router implements RouterContract
             // Routes array
             $routes = [];
             // The routes annotations parser
+            /** @var RouteParserContract $parser */
             $parser = $this->app->container()->get(RouteParserContract::class);
 
             // Iterate through each controller
@@ -437,12 +438,12 @@ class Router implements RouterContract
                 // Get a reflection of the controller
                 $reflection = new \ReflectionClass($controller);
                 /** @var \Valkyrja\Routing\Models\Route[] $controllerRoutes */
-                $controllerRoutes = $parser->getRouteAnnotations($reflection->getDocComment());
+                $controllerRoutes = $parser->getAnnotations($reflection->getDocComment());
 
                 // Iterate through all the methods in the controller
                 foreach ($reflection->getMethods() as $method) {
                     // Get the @Route annotation for the method
-                    $actionRoutes = $parser->getRouteAnnotations($method->getDocComment());
+                    $actionRoutes = $parser->getAnnotations($method->getDocComment());
 
                     // Ensure a route was defined
                     if ($actionRoutes) {
