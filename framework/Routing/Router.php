@@ -484,7 +484,7 @@ class Router implements RouterContract
                                     $newRoute = clone $route;
 
                                     // If there is a base path for this controller
-                                    if (null !== $controllerRoute->getPath()) {
+                                    if (null !== $controllerPath = $controllerRoute->getPath()) {
                                         // Get the route's path
                                         $path = $route->getPath();
 
@@ -493,14 +493,19 @@ class Router implements RouterContract
                                             // Set to blank so the final path will be just the base path
                                             $path = '';
                                         }
+                                        // If the controller route is the index
+                                        else if ('/' === $controllerPath) {
+                                            // Set to blank so the final path won't start with double slash
+                                            $controllerPath = '';
+                                        }
 
                                         // Set the path to the base path and route path
-                                        $newRoute->setPath($controllerRoute->getPath() . $path);
+                                        $newRoute->setPath($controllerPath . $path);
                                     }
 
                                     // If there is a base name for this controller
-                                    if (null !== $controllerRoute->getName()) {
-                                        $name = $controllerRoute->getName() . '.' . $route->getName();
+                                    if (null !== $controllerName = $controllerRoute->getName()) {
+                                        $name = $controllerName . '.' . $route->getName();
 
                                         // Set the name to the base name and route name
                                         $newRoute->setName($name);
@@ -552,8 +557,9 @@ class Router implements RouterContract
                             $route->getMethod() ?? RequestMethod::GET,
                             $route->getPath(),
                             [
-                                'controller'  => $route->getController(),
-                                'action'      => $route->getAction(),
+                                'name'       => $route->getName(),
+                                'controller' => $route->getController(),
+                                'action'     => $route->getAction(),
                                 'injectable' => $route->getInjectables(),
                             ],
                             $route->getDynamic()
