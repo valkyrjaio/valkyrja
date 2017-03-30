@@ -46,7 +46,7 @@ abstract class Model implements JsonSerializable
      * @param string $name  The property to set
      * @param mixed  $value The value to set
      *
-     * @return \Valkyrja\Models\Model
+     * @return \Valkyrja\Model\Model
      */
     public function __set(string $name, $value): Model
     {
