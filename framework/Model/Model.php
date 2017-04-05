@@ -48,7 +48,7 @@ abstract class Model implements JsonSerializable
      *
      * @return \Valkyrja\Model\Model
      */
-    public function __set(string $name, $value): Model
+    public function __set(string $name, $value): self
     {
         $methodName = 'set' . ucfirst($name);
 
