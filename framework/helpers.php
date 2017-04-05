@@ -382,7 +382,7 @@ if (! function_exists('vendorPath')) {
 
 if (! function_exists('dd')) {
     /**
-     * Dump the passed variables and end the script.
+     * Dump the passed variables and die.
      *
      * @param mixed
      *  The arguments to dump
