@@ -97,7 +97,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setMethod(string $method): Route
+    public function setMethod(string $method): self
     {
         $this->method = $method;
 
@@ -121,7 +121,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setPath(string $path): Route
+    public function setPath(string $path): self
     {
         $this->path = $path;
 
@@ -145,7 +145,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setName(string $name): Route
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -169,7 +169,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setController(string $controller): Route
+    public function setController(string $controller): self
     {
         $this->controller = $controller;
 
@@ -193,7 +193,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setAction(string $action): Route
+    public function setAction(string $action): self
     {
         $this->action = $action;
 
@@ -217,7 +217,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setHandler(Closure $handler): Route
+    public function setHandler(Closure $handler): self
     {
         $this->handler = $handler;
 
@@ -241,7 +241,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setInjectables(array $injectables): Route
+    public function setInjectables(array $injectables): self
     {
         $this->injectables = $injectables;
 
@@ -265,7 +265,7 @@ class Route extends Model
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setDynamic(bool $dynamic): Route
+    public function setDynamic(bool $dynamic): self
     {
         $this->dynamic = $dynamic;
 

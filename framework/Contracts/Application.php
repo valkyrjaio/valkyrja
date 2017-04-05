@@ -53,7 +53,7 @@ interface Application
      *
      * @return \Valkyrja\Contracts\Application
      */
-    public static function app(): Application;
+    public static function app(): self;
 
     /**
      * Get the container instance.

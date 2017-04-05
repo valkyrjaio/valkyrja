@@ -65,7 +65,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function set(string $key, $value): Collection;
+    public function set(string $key, $value): self;
 
     /**
      * Remove an item from the collection.
@@ -74,7 +74,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function remove(string $key): Collection;
+    public function remove(string $key): self;
 
     /**
      * Get all the items in the collection.
@@ -90,7 +90,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function setAll(array $collection): Collection;
+    public function setAll(array $collection): self;
 
     /**
      * Get all the keys in the collection.
@@ -139,7 +139,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function __set(string $key, $value): Collection;
+    public function __set(string $key, $value): self;
 
     /**
      * Remove an item from the collection.
@@ -148,7 +148,7 @@ interface Collection
      *
      * @return Collection
      */
-    public function __unset(string $key): Collection;
+    public function __unset(string $key): self;
 
     /**
      * Convert the collection to a string.

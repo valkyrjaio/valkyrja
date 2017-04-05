@@ -50,7 +50,7 @@ interface RedirectResponse extends Response
         string $uri = '/',
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponse;
+    ): self;
 
     /**
      * Get the uri.
@@ -66,12 +66,12 @@ interface RedirectResponse extends Response
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function setUri(string $uri): RedirectResponse;
+    public function setUri(string $uri): self;
 
     /**
      * Redirect back to the referer.
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
-    public function back(): RedirectResponse;
+    public function back(): self;
 }

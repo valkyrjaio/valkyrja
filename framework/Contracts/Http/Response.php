@@ -46,7 +46,7 @@ interface Response
         string $content = '',
         int $status = ResponseCode::HTTP_OK,
         array $headers = []
-    ): Response;
+    ): self;
 
     /**
      * Set the content for the response.
@@ -55,7 +55,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setContent(string $content): Response;
+    public function setContent(string $content): self;
 
     /**
      * Get the content for the response.
@@ -71,7 +71,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setProtocolVersion(string $version = '1.0'): Response;
+    public function setProtocolVersion(string $version = '1.0'): self;
 
     /**
      * Gets the HTTP protocol version.
@@ -91,7 +91,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setStatusCode(int $code, string $text = null): Response;
+    public function setStatusCode(int $code, string $text = null): self;
 
     /**
      * Retrieves the status code for the current web response.
@@ -107,7 +107,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCharset(string $charset): Response;
+    public function setCharset(string $charset): self;
 
     /**
      * Retrieves the response charset.
@@ -123,7 +123,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setHeaders(array $headers = []): Response;
+    public function setHeaders(array $headers = []): self;
 
     /**
      * Get response headers object.
@@ -146,7 +146,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setDateHeader(DateTime $date): Response;
+    public function setDateHeader(DateTime $date): self;
 
     /**
      * Get response cookies object.
@@ -163,7 +163,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function addCacheControl(string $name, string $value = null): Response;
+    public function addCacheControl(string $name, string $value = null): self;
 
     /**
      * Get a response cache control.
@@ -190,7 +190,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function removeCacheControl(string $name): Response;
+    public function removeCacheControl(string $name): self;
 
     /**
      * Returns true if the response is worth caching under any circumstance.
@@ -231,7 +231,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPrivate(): Response;
+    public function setPrivate(): self;
 
     /**
      * Marks the response as "public".
@@ -240,7 +240,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setPublic(): Response;
+    public function setPublic(): self;
 
     /**
      * Returns the age of the response.
@@ -254,7 +254,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function expire(): Response;
+    public function expire(): self;
 
     /**
      * Returns the value of the Expires header as a DateTime instance.
@@ -272,7 +272,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setExpires(DateTime $date = null): Response;
+    public function setExpires(DateTime $date = null): self;
 
     /**
      * Returns the number of seconds after the time specified in the response's Date
@@ -294,7 +294,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setMaxAge(int $value): Response;
+    public function setMaxAge(int $value): self;
 
     /**
      * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
@@ -305,7 +305,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setSharedMaxAge(int $value): Response;
+    public function setSharedMaxAge(int $value): self;
 
     /**
      * Returns the response's time-to-live in seconds.
@@ -328,7 +328,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setTtl(int $seconds): Response;
+    public function setTtl(int $seconds): self;
 
     /**
      * Sets the response's time-to-live for private/client caches.
@@ -339,7 +339,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setClientTtl(int $seconds): Response;
+    public function setClientTtl(int $seconds): self;
 
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
@@ -357,7 +357,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setLastModified(DateTime $date = null): Response;
+    public function setLastModified(DateTime $date = null): self;
 
     /**
      * Returns the literal value of the ETag HTTP header.
@@ -374,7 +374,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setEtag(string $etag = null, bool $weak = false): Response;
+    public function setEtag(string $etag = null, bool $weak = false): self;
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
@@ -385,7 +385,7 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function setCache(array $options): Response;
+    public function setCache(array $options): self;
 
     /**
      * Modifies the response so that it conforms to the rules defined for a 304 status code.
@@ -397,7 +397,7 @@ interface Response
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
-    public function setNotModified(): Response;
+    public function setNotModified(): self;
 
     /**
      * Is response invalid?
@@ -485,21 +485,21 @@ interface Response
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function sendHeaders(): Response;
+    public function sendHeaders(): self;
 
     /**
      * Sends content for the current web response.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function sendContent(): Response;
+    public function sendContent(): self;
 
     /**
      * Sends HTTP headers and content.
      *
      * @return \Valkyrja\Contracts\Http\Response
      */
-    public function send(): Response;
+    public function send(): self;
 
     /**
      * Cleans or flushes output buffers up to target level.

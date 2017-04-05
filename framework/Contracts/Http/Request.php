@@ -84,14 +84,14 @@ interface Request
         array $files = [],
         array $server = [],
         $content = null
-    ): Request;
+    ): self;
 
     /**
      * Creates a new request with values from PHP's super globals.
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public static function createFromGlobals(): Request;
+    public static function createFromGlobals(): self;
 
     /**
      * Creates a Request based on a given URI and configuration.
@@ -117,7 +117,7 @@ interface Request
         $files = [],
         $server = [],
         $content = null
-    ): Request;
+    ): self;
 
     /**
      * Clones the current request.
@@ -148,7 +148,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setQuery(array $query = []): Request;
+    public function setQuery(array $query = []): self;
 
     /**
      * Return the POST Collection.
@@ -164,7 +164,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setRequest(array $request = []): Request;
+    public function setRequest(array $request = []): self;
 
     /**
      * Return the attributes Collection.
@@ -180,7 +180,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setAttributes(array $attributes = []): Request;
+    public function setAttributes(array $attributes = []): self;
 
     /**
      * Return the COOKIES Collection.
@@ -196,7 +196,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setCookies(array $cookies = []): Request;
+    public function setCookies(array $cookies = []): self;
 
     /**
      * Return the FILES Collection.
@@ -212,7 +212,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setFiles(array $files = []): Request;
+    public function setFiles(array $files = []): self;
 
     /**
      * Return the SERVER Collection.
@@ -228,7 +228,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setServer(array $server = []): Request;
+    public function setServer(array $server = []): self;
 
     /**
      * Return the headers Collection.
@@ -244,7 +244,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setHeaders(array $headers = []): Request;
+    public function setHeaders(array $headers = []): self;
 
     /**
      * Get the content.
@@ -260,7 +260,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setContent(string $content = null): Request;
+    public function setContent(string $content = null): self;
 
     /**
      * Get the languages.
@@ -276,7 +276,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setLanguages(array $languages = []): Request;
+    public function setLanguages(array $languages = []): self;
 
     /**
      * Get the charsets.
@@ -292,7 +292,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setCharsets(array $charsets = []): Request;
+    public function setCharsets(array $charsets = []): self;
 
     /**
      * Get the encodings.
@@ -308,7 +308,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setEncodings(array $encodings = []): Request;
+    public function setEncodings(array $encodings = []): self;
 
     /**
      * Get the acceptable content types.
@@ -324,7 +324,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []): Request;
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
 
     /**
      * Gets a "parameter" value from any bag.
@@ -453,7 +453,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setMethod(string $method): Request;
+    public function setMethod(string $method): self;
 
     /**
      * Gets the request "intended" method.
@@ -516,7 +516,7 @@ interface Request
      *
      * @return \Valkyrja\Contracts\Http\Request
      */
-    public function setRequestFormat(string $format): Request;
+    public function setRequestFormat(string $format): self;
 
     /**
      * Gets the format associated with the request.

@@ -29,5 +29,5 @@ interface TwigView extends View
      *
      * @return \Valkyrja\Contracts\View\TwigView
      */
-    public function setTwig(Twig_Environment $twig): TwigView;
+    public function setTwig(Twig_Environment $twig): self;
 }

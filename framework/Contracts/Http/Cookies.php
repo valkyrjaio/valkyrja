@@ -38,7 +38,7 @@ interface Cookies
      *
      * @return \Valkyrja\Contracts\Http\Cookies
      */
-    public function set(Cookie $cookie): Cookies;
+    public function set(Cookie $cookie): self;
 
     /**
      * Removes a cookie from the array, but does not unset it in the browser.
@@ -49,5 +49,5 @@ interface Cookies
      *
      * @return \Valkyrja\Contracts\Http\Cookies
      */
-    public function remove(string $name, string $path = '/', string $domain = null): Cookies;
+    public function remove(string $name, string $path = '/', string $domain = null): self;
 }

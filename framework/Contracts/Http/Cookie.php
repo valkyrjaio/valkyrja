@@ -71,7 +71,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setName(string $name): Cookie;
+    public function setName(string $name): self;
 
     /**
      * Get the cookie's value.
@@ -87,7 +87,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setValue(string $value): Cookie;
+    public function setValue(string $value): self;
 
     /**
      * Get expire time for the cookie.
@@ -110,7 +110,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setExpire(int $expire): Cookie;
+    public function setExpire(int $expire): self;
 
     /**
      * Get the path the cookie is available to.
@@ -126,7 +126,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setPath(string $path): Cookie;
+    public function setPath(string $path): self;
 
     /**
      * Get the domain the cookie is available to.
@@ -142,7 +142,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setDomain(string $domain): Cookie;
+    public function setDomain(string $domain): self;
 
     /**
      * Whether the cookie should only be transmitted over a secure HTTPS connection.
@@ -158,7 +158,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setSecure(bool $secure): Cookie;
+    public function setSecure(bool $secure): self;
 
     /**
      * Whether the cookie will be made accessible only through the HTTP protocol.
@@ -174,7 +174,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setHttpOnly(bool $httpOnly): Cookie;
+    public function setHttpOnly(bool $httpOnly): self;
 
     /**
      * Whether the cookie value should be sent with no url encoding.
@@ -190,7 +190,7 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setRaw(bool $raw): Cookie;
+    public function setRaw(bool $raw): self;
 
     /**
      * Get whether the cookie will be available for cross-site requests.
@@ -206,5 +206,5 @@ interface Cookie
      *
      * @return \Valkyrja\Contracts\Http\Cookie
      */
-    public function setSameSite(string $sameSite): Cookie;
+    public function setSameSite(string $sameSite): self;
 }

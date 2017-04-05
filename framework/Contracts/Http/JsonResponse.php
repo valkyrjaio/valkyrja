@@ -52,7 +52,7 @@ interface JsonResponse extends Response
         int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
-    ): JsonResponse;
+    ): self;
 
     /**
      * Sets the JSONP callback.
@@ -61,7 +61,7 @@ interface JsonResponse extends Response
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setCallback(string $callback = null): JsonResponse;
+    public function setCallback(string $callback = null): self;
 
     /**
      * Sets a raw string containing a JSON document to be sent.
@@ -70,7 +70,7 @@ interface JsonResponse extends Response
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setJson(string $json): JsonResponse;
+    public function setJson(string $json): self;
 
     /**
      * Sets the data to be sent as JSON.
@@ -79,7 +79,7 @@ interface JsonResponse extends Response
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setData(array $data = []): JsonResponse;
+    public function setData(array $data = []): self;
 
     /**
      * Returns options used while encoding data to JSON.
@@ -95,5 +95,5 @@ interface JsonResponse extends Response
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
      */
-    public function setEncodingOptions(int $encodingOptions): JsonResponse;
+    public function setEncodingOptions(int $encodingOptions): self;
 }
