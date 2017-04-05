@@ -21,7 +21,6 @@ use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\InvalidControllerException;
-use Valkyrja\Http\Exceptions\InvalidMethodTypeException;
 use Valkyrja\Http\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
@@ -91,28 +90,17 @@ class Router implements RouterContract
     /**
      * Set a single route.
      *
-     * @param string $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Http\RequestMethod $method    The method type
+     * @param string                       $path      The path to set
+     * @param array                        $options   The closure or array of options
+     * @param bool                         $isDynamic [optional] Whether the route has parameters
      *
      * @return void
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false): void
+    public function addRoute(RequestMethod $method, string $path, array $options, bool $isDynamic = false): void
     {
-        // Ensure the method specified is allowed
-        if (! in_array(
-            $method,
-            RequestMethod::ACCEPTED_TYPES,
-            true
-        )
-        ) {
-            throw new InvalidMethodTypeException('Invalid method type for route: ' . $path);
-        }
-
         // Let's check the action method is callable before proceeding
         if (! isset($options['handler']) && ! is_callable(
                 [
@@ -198,11 +186,11 @@ class Router implements RouterContract
             $route['dynamicPath'] = $path;
 
             // Set it in the dynamic routes array
-            $this->routes[static::DYNAMIC_ROUTES_NAME][$method][$path] = $route;
+            $this->routes[static::DYNAMIC_ROUTES_NAME][(string) $method][$path] = $route;
         }
         // Otherwise set it in the static routes array
         else {
-            $this->routes[static::STATIC_ROUTES_NAME][$method][$path] = $route;
+            $this->routes[static::STATIC_ROUTES_NAME][(string) $method][$path] = $route;
         }
     }
 
@@ -219,7 +207,7 @@ class Router implements RouterContract
      */
     public function get(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::GET, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::GET), $path, $options, $isDynamic);
     }
 
     /**
@@ -235,7 +223,7 @@ class Router implements RouterContract
      */
     public function post(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::POST, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::POST), $path, $options, $isDynamic);
     }
 
     /**
@@ -251,7 +239,7 @@ class Router implements RouterContract
      */
     public function put(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::PUT, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::PUT), $path, $options, $isDynamic);
     }
 
     /**
@@ -267,7 +255,7 @@ class Router implements RouterContract
      */
     public function patch(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::PATCH, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::PATCH), $path, $options, $isDynamic);
     }
 
     /**
@@ -283,7 +271,7 @@ class Router implements RouterContract
      */
     public function delete(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::DELETE, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::DELETE), $path, $options, $isDynamic);
     }
 
     /**
@@ -299,7 +287,7 @@ class Router implements RouterContract
      */
     public function head(string $path, array $options, bool $isDynamic = false): void
     {
-        $this->addRoute(RequestMethod::HEAD, $path, $options, $isDynamic);
+        $this->addRoute(new RequestMethod(RequestMethod::HEAD), $path, $options, $isDynamic);
     }
 
     /**
@@ -411,6 +399,7 @@ class Router implements RouterContract
      *
      * @return void
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
@@ -532,7 +521,7 @@ class Router implements RouterContract
             foreach ($routes as $route) {
                 // Set the route
                 $this->addRoute(
-                    $route->getMethod() ?? RequestMethod::GET,
+                    new RequestMethod($route->getMethod() ?? RequestMethod::GET),
                     $route->getPath(),
                     [
                         'name'       => $route->getName(),

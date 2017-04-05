@@ -49,14 +49,14 @@ REGEX;
     /**
      * Set a single route.
      *
-     * @param string $method    The method type (GET, POST, PUT, PATCH, DELETE, HEAD)
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Http\RequestMethod $method    The method type
+     * @param string                       $path      The path to set
+     * @param array                        $options   The closure or array of options
+     * @param bool                         $isDynamic [optional] Whether the route has parameters
      *
      * @return void
      */
-    public function addRoute(string $method, string $path, array $options, bool $isDynamic = false): void;
+    public function addRoute(RequestMethod $method, string $path, array $options, bool $isDynamic = false): void;
 
     /**
      * Helper function to set a GET addRoute.
