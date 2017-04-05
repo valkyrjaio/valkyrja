@@ -79,9 +79,9 @@ interface Container
      * @param string $abstract  The abstract to get
      * @param array  $arguments [optional] Arguments to pass
      *
-     * @return object
+     * @return mixed
      */
-    public function get(string $abstract, array $arguments = []); // : object;
+    public function get(string $abstract, array $arguments = []);
 
     /**
      * Check whether an abstract is set in the container.

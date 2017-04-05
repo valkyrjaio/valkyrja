@@ -6,7 +6,7 @@
  *
  * @path /
  */
-get(
+router()->get(
     '/',
     [
         'handler' => function (): Valkyrja\Contracts\View\View {
@@ -21,7 +21,7 @@ get(
  *
  * @path /version
  */
-get(
+router()->get(
     '/version',
     [
         'handler' => function (): string {
@@ -36,7 +36,7 @@ get(
  *
  * @path /home
  */
-get(
+router()->get(
     '/home',
     [
         'controller' => App\Controllers\HomeController::class,
@@ -57,7 +57,7 @@ get(
  *
  * @path /home/:page
  */
-get(
+router()->get(
     '/home/{id:num}',
     [
         'controller' => App\Controllers\HomeController::class,

@@ -151,9 +151,9 @@ class Container implements ContainerContract
      * @param string $abstract  The abstract to get
      * @param array  $arguments [optional] Arguments to pass
      *
-     * @return object
+     * @return mixed
      */
-    public function get(string $abstract, array $arguments = []) // : object
+    public function get(string $abstract, array $arguments = [])
     {
         // If the abstract is set in the service container
         if (isset($this->serviceContainer[$abstract])) {

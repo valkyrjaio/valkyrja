@@ -38,7 +38,7 @@ trait TestRequest
     ): Response
     {
         /** @var \Valkyrja\Contracts\Http\Request $request */
-        $request = instance(Request::class);
+        $request = container()->get(Request::class);
 
         // If all routes should have a trailing slash
         // and the uri doesn't already end with a slash

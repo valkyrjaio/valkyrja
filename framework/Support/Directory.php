@@ -25,7 +25,7 @@ class Directory
      *
      * @constant string
      */
-    public const DIRECTORY_SEPARATOR = '/';
+    public const DIRECTORY_SEPARATOR = DIRECTORY_SEPARATOR;
 
     /**
      * Base directory path.
@@ -43,9 +43,7 @@ class Directory
      */
     public static function basePath(string $path = null): string
     {
-        return static::$BASE_PATH . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path);
+        return static::$BASE_PATH . static::path($path);
     }
 
     /**
@@ -57,11 +55,7 @@ class Directory
      */
     public static function appPath(string $path = null): string
     {
-        return static::basePath(
-            'app' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('app' . static::path($path));
     }
 
     /**
@@ -73,27 +67,7 @@ class Directory
      */
     public static function configPath(string $path = null): string
     {
-        return static::basePath(
-            'config' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
-    }
-
-    /**
-     * Get the framework directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function frameworkPath(string $path = null): string
-    {
-        return static::basePath(
-            'framework' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('config' . static::path($path));
     }
 
     /**
@@ -105,11 +79,7 @@ class Directory
      */
     public static function publicPath(string $path = null): string
     {
-        return static::basePath(
-            'public' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('public' . static::path($path));
     }
 
     /**
@@ -121,11 +91,7 @@ class Directory
      */
     public static function resourcesPath(string $path = null): string
     {
-        return static::basePath(
-            'resources' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('resources' . static::path($path));
     }
 
     /**
@@ -137,11 +103,7 @@ class Directory
      */
     public static function routesPath(string $path = null): string
     {
-        return static::basePath(
-            'routes' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('routes' . static::path($path));
     }
 
     /**
@@ -153,11 +115,7 @@ class Directory
      */
     public static function storagePath(string $path = null): string
     {
-        return static::basePath(
-            'storage' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('storage' . static::path($path));
     }
 
     /**
@@ -169,11 +127,7 @@ class Directory
      */
     public static function testsPath(string $path = null): string
     {
-        return static::basePath(
-            'tests' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('tests' . static::path($path));
     }
 
     /**
@@ -185,10 +139,20 @@ class Directory
      */
     public static function vendorPath(string $path = null): string
     {
-        return static::basePath(
-            'vendor' . ($path && $path[0] !== static::DIRECTORY_SEPARATOR
-                ? static::DIRECTORY_SEPARATOR . $path
-                : $path)
-        );
+        return static::basePath('vendor' . static::path($path));
+    }
+
+    /**
+     * Construct a path with the directory separator prepended.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    public static function path(string $path = null):? string
+    {
+        return $path && $path[0] !== static::DIRECTORY_SEPARATOR
+            ? static::DIRECTORY_SEPARATOR . $path
+            : $path;
     }
 }

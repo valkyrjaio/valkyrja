@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts;
 
-use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Http\JsonResponse;
@@ -44,9 +44,9 @@ interface Application
      * Application constructor.
      *
      * @param \Valkyrja\Contracts\Container\Container $container [optional] The container to use
-     * @param \Valkyrja\Contracts\Config\Config       $config    [optional] The config to use
+     * @param \Valkyrja\Config\Config                 $config    [optional] The config to use
      */
-    public function __construct(?Container $container = null, ?Config $config = null);
+    public function __construct(Container $container, Config $config);
 
     /**
      * Get the application instance.
@@ -56,13 +56,6 @@ interface Application
     public static function app(): Application;
 
     /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string;
-
-    /**
      * Get the container instance.
      *
      * @return \Valkyrja\Contracts\Container\Container
@@ -70,118 +63,25 @@ interface Application
     public function container(): Container;
 
     /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version(): string;
+
+    /**
      * Get the config class instance.
      *
-     * @return \Valkyrja\Contracts\Config\Config|\Valkyrja\Config\Config|\config\Config
+     * @return \Valkyrja\Config\Config|\config\Config
      */
     public function config(): Config;
 
     /**
      * Get environment variables.
      *
-     * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
+     * @return \Valkyrja\Contracts\Config\Env||config|Env
      */
     public function env(): Env;
-
-    /**
-     * Return the logger instance from the container.
-     *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     */
-    public function logger(): Logger;
-
-    /**
-     * Return the router instance from the container.
-     *
-     * @return \Valkyrja\Contracts\Routing\Router
-     */
-    public function router(): Router;
-
-    /**
-     * Return the request instance from the container.
-     *
-     * @return \Valkyrja\Contracts\Http\Request
-     */
-    public function request(): Request;
-
-    /**
-     * Return a new response from the application.
-     *
-     * @param string $content    [optional] The content to set
-     * @param int    $statusCode [optional] The status code to set
-     * @param array  $headers    [optional] The headers to set
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     */
-    public function response(
-        string $content = '',
-        int $statusCode = ResponseCode::HTTP_OK,
-        array $headers = []
-    ): Response;
-
-    /**
-     * Return a new json response from the application.
-     *
-     * @param array $data       [optional] An array of data
-     * @param int   $statusCode [optional] The status code to set
-     * @param array $headers    [optional] The headers to set
-     *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     */
-    public function json(
-        array $data = [],
-        int $statusCode = ResponseCode::HTTP_OK,
-        array $headers = []
-    ): JsonResponse;
-
-    /**
-     * Return a new redirect response from the application.
-     *
-     * @param string $uri        [optional] The URI to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
-     *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     */
-    public function redirect(
-        string $uri = '/',
-        int $statusCode = ResponseCode::HTTP_FOUND,
-        array $headers = []
-    ): RedirectResponse;
-
-    /**
-     * Return a new redirect response from the application for a given route.
-     *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
-     *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     */
-    public function redirectRoute(
-        string $route,
-        array $parameters = [],
-        int $statusCode = ResponseCode::HTTP_FOUND,
-        array $headers = []
-    ): RedirectResponse;
-
-    /**
-     * Return a new response from the application.
-     *
-     * @return \Valkyrja\Contracts\Http\ResponseBuilder
-     */
-    public function responseBuilder(): ResponseBuilder;
-
-    /**
-     * Helper function to get a new view.
-     *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
-     *
-     * @return \Valkyrja\Contracts\View\View
-     */
-    public function view(string $template = '', array $variables = []): View;
 
     /**
      * Get the environment with which the application is running in.
@@ -291,4 +191,104 @@ interface Application
      * @return void
      */
     public function register(string $serviceProvider): void;
+
+    /**
+     * Return the logger instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
+     */
+    public function logger(): Logger;
+
+    /**
+     * Return the request instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Request
+     */
+    public function request(): Request;
+
+    /**
+     * Return the router instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Routing\Router
+     */
+    public function router(): Router;
+
+    /**
+     * Return a new response from the application.
+     *
+     * @param string $content    [optional] The content to set
+     * @param int    $statusCode [optional] The status code to set
+     * @param array  $headers    [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    public function response(
+        string $content = '',
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): Response;
+
+    /**
+     * Return a new json response from the application.
+     *
+     * @param array $data       [optional] An array of data
+     * @param int   $statusCode [optional] The status code to set
+     * @param array $headers    [optional] The headers to set
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
+     */
+    public function json(
+        array $data = [],
+        int $statusCode = ResponseCode::HTTP_OK,
+        array $headers = []
+    ): JsonResponse;
+
+    /**
+     * Return a new redirect response from the application.
+     *
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function redirect(
+        string $uri = '/',
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse;
+
+    /**
+     * Return a new redirect response from the application for a given route.
+     *
+     * @param string $route      The route to match
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function redirectRoute(
+        string $route,
+        array $parameters = [],
+        int $statusCode = ResponseCode::HTTP_FOUND,
+        array $headers = []
+    ): RedirectResponse;
+
+    /**
+     * Return a new response from the application.
+     *
+     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     */
+    public function responseBuilder(): ResponseBuilder;
+
+    /**
+     * Helper function to get a new view.
+     *
+     * @param string $template  [optional] The template to use
+     * @param array  $variables [optional] The variables to use
+     *
+     * @return \Valkyrja\Contracts\View\View
+     */
+    public function view(string $template = '', array $variables = []): View;
 }
