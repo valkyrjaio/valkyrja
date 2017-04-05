@@ -22,7 +22,7 @@ namespace Valkyrja\Contracts\Http;
  */
 interface Cookie
 {
-    const LAX = 'lax';
+    const LAX    = 'lax';
     const STRICT = 'strict';
 
     /**

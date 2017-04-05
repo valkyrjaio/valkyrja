@@ -23,11 +23,11 @@ use Valkyrja\Http\RequestMethod;
  */
 interface Request
 {
-    const HEADER_FORWARDED = 'forwarded';
-    const HEADER_CLIENT_IP = 'client_ip';
-    const HEADER_CLIENT_HOST = 'client_host';
+    const HEADER_FORWARDED    = 'forwarded';
+    const HEADER_CLIENT_IP    = 'client_ip';
+    const HEADER_CLIENT_HOST  = 'client_host';
     const HEADER_CLIENT_PROTO = 'client_proto';
-    const HEADER_CLIENT_PORT = 'client_port';
+    const HEADER_CLIENT_PORT  = 'client_port';
 
     const FORMATS = [
         'html' => ['text/html', 'application/xhtml+xml'],

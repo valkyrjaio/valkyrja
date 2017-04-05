@@ -1,7 +1,7 @@
 {
   "devDependencies" : {
-    "gulp"             : "latest",
-    "gulp-watch"       : "latest",
-    "run-sequence"     : "latest"
+    "gulp"         : "latest",
+    "gulp-watch"   : "latest",
+    "run-sequence" : "latest"
   }
 }
