@@ -73,4 +73,11 @@ interface RedirectResponse extends Response
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function setUri(string $uri): RedirectResponse;
+
+    /**
+     * Redirect back to the referer.
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function back(): RedirectResponse;
 }

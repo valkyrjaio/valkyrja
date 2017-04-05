@@ -109,4 +109,18 @@ class RedirectResponse extends Response implements RedirectResponseContract
 
         return $this;
     }
+
+    /**
+     * Redirect back to the referer.
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function back(): RedirectResponseContract
+    {
+        $refererUri = request()->headers()->get('Referer');
+
+        $this->uri = $refererUri ?: '/';
+
+        return $this;
+    }
 }
