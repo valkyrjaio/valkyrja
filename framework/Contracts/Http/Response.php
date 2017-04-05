@@ -90,8 +90,6 @@ interface Response
      * status codes and left empty otherwise.
      *
      * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \InvalidArgumentException When the HTTP status code is not valid
      */
     public function setStatusCode(int $code, string $text = null): Response;
 
@@ -138,8 +136,6 @@ interface Response
      * Returns the Date header as a DateTime instance.
      *
      * @return \DateTime A \DateTime instance
-     *
-     * @throws \RuntimeException When the header is not parseable
      */
     public function getDateHeader(): DateTime;
 
@@ -349,8 +345,6 @@ interface Response
      * Returns the Last-Modified HTTP header as a DateTime instance.
      *
      * @return string A date string
-     *
-     * @throws \RuntimeException When the HTTP header is not parseable
      */
     public function getLastModified(): string;
 

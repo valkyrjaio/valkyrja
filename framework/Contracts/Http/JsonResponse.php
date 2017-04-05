@@ -29,8 +29,6 @@ interface JsonResponse extends Response
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
-     *
-     * @throws \InvalidArgumentException
      */
     public function __construct(
         string $content = '',
@@ -48,8 +46,6 @@ interface JsonResponse extends Response
      * @param array  $data    [optional] An array of data
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
-     * @throws \InvalidArgumentException
      */
     public static function createJson(
         string $content = '',
@@ -64,8 +60,6 @@ interface JsonResponse extends Response
      * @param string $callback [optional] The JSONP callback or null to use none
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
-     * @throws \InvalidArgumentException When the callback name is not valid
      */
     public function setCallback(string $callback = null): JsonResponse;
 
@@ -75,8 +69,6 @@ interface JsonResponse extends Response
      * @param string $json The json to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
-     * @throws \InvalidArgumentException
      */
     public function setJson(string $json): JsonResponse;
 
@@ -86,8 +78,6 @@ interface JsonResponse extends Response
      * @param mixed $data [optional] The data to set
      *
      * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
-     * @throws \InvalidArgumentException
      */
     public function setData(array $data = []): JsonResponse;
 

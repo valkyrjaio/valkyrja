@@ -55,8 +55,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function addRoute(string $method, string $path, array $options, bool $isDynamic = false): void;
 
@@ -68,8 +66,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function get(string $path, array $options, bool $isDynamic = false): void;
 
@@ -81,8 +77,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function post(string $path, array $options, bool $isDynamic = false): void;
 
@@ -94,8 +88,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function put(string $path, array $options, bool $isDynamic = false): void;
 
@@ -107,8 +99,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function patch(string $path, array $options, bool $isDynamic = false): void;
 
@@ -120,8 +110,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function delete(string $path, array $options, bool $isDynamic = false): void;
 
@@ -133,8 +121,6 @@ REGEX;
      * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
      *
      * @return void
-     *
-     * @throws \Exception
      */
     public function head(string $path, array $options, bool $isDynamic = false): void;
 
@@ -189,9 +175,6 @@ REGEX;
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
     public function dispatch(Request $request): Response;
 }

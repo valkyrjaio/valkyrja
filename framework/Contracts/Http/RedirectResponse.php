@@ -29,9 +29,6 @@ interface RedirectResponse extends Response
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      * @param string $uri     [optional] The URI to redirect to
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public function __construct(
         string $content = '',
@@ -48,9 +45,6 @@ interface RedirectResponse extends Response
      * @param array  $headers [optional] An array of response headers
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public static function createRedirect(
         string $uri = '/',

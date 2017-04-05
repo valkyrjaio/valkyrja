@@ -37,8 +37,6 @@ interface Cookie
      * @param bool   $httpOnly [optional] Whether the cookie will be made accessible only through the HTTP protocol
      * @param bool   $raw      [optional] Whether the cookie value should be sent with no url encoding
      * @param string $sameSite [optional] Whether the cookie will be available for cross-site requests
-     *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
      */
     public function __construct(
         string $name,

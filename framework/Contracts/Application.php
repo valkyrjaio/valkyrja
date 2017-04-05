@@ -134,8 +134,6 @@ interface Application
      * @param int    $code       [optional] The Exception code
      *
      * @return void
-     *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
      */
     public function abort(
         int $statusCode = ResponseCode::HTTP_NOT_FOUND,
@@ -152,8 +150,6 @@ interface Application
      * @param array  $headers    [optional] An array of response headers
      *
      * @return void
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
      */
     public function redirectTo(
         string $uri = '/',
@@ -167,9 +163,6 @@ interface Application
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
     public function handle(Request $request): Response;
 
@@ -177,9 +170,6 @@ interface Application
      * Run the application.
      *
      * @return void
-     *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
      */
     public function run(): void;
 
