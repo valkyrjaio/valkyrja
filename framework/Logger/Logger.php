@@ -14,7 +14,7 @@ namespace Valkyrja\Logger;
 use Psr\Log\LoggerInterface;
 
 use Valkyrja\Contracts\Logger\Logger as LoggerContract;
-use Valkyrja\Logger\Enum\LogLevel;
+use Valkyrja\Logger\Enums\LogLevel;
 
 /**
  * Class Logger
@@ -165,7 +165,7 @@ class Logger implements LoggerContract
     /**
      * Log a message.
      *
-     * @param \Valkyrja\Logger\Enum\LogLevel $level   The log level
+     * @param \Valkyrja\Logger\Enums\LogLevel $level   The log level
      * @param string                         $message The message
      * @param array                          $context [optional] The context
      *

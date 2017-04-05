@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logger\Enum;
+namespace Valkyrja\Logger\Enums;
 
 use Valkyrja\Enum\Enum;
 
 /**
  * Class LogLevel
  *
- * @package Valkyrja\Logger\Enum
+ * @package Valkyrja\Logger\Enums
  *
  * @author  Melech Mizrachi
  */

@@ -12,7 +12,7 @@
 namespace Valkyrja\Contracts\Logger;
 
 use Psr\Log\LoggerInterface;
-use Valkyrja\Logger\Enum\LogLevel;
+use Valkyrja\Logger\Enums\LogLevel;
 
 /**
  * Interface Logger
@@ -113,7 +113,7 @@ interface Logger
     /**
      * Log a message.
      *
-     * @param \Valkyrja\Logger\Enum\LogLevel $level   The log level
+     * @param \Valkyrja\Logger\Enums\LogLevel $level   The log level
      * @param string                         $message The message
      * @param array                          $context [optional] The context
      *
