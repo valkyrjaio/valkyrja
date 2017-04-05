@@ -114,8 +114,8 @@ interface Logger
      * Log a message.
      *
      * @param \Valkyrja\Logger\Enums\LogLevel $level   The log level
-     * @param string                         $message The message
-     * @param array                          $context [optional] The context
+     * @param string                          $message The message
+     * @param array                           $context [optional] The context
      *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
