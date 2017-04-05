@@ -19,6 +19,7 @@ use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Logger\Logger;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Http\ResponseCode;
@@ -81,6 +82,13 @@ interface Application
      * @return \Valkyrja\Contracts\Config\Env|\Valkyrja\Config\Env||config|Env
      */
     public function env(): Env;
+
+    /**
+     * Return the logger instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
+     */
+    public function logger(): Logger;
 
     /**
      * Return the router instance from the container.

@@ -25,6 +25,7 @@ use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
+use Valkyrja\Contracts\Logger\Logger;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
@@ -162,6 +163,16 @@ class Application implements ApplicationContract
     public function env(): EnvContract
     {
         return $this->config()->env;
+    }
+
+    /**
+     * Return the logger instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
+     */
+    public function logger(): Logger
+    {
+        return $this->container->get(Logger::class);
     }
 
     /**

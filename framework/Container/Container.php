@@ -13,6 +13,11 @@ namespace Valkyrja\Container;
 
 use Closure;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger as MonologLogger;
+
+use Psr\Log\LoggerInterface;
+
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
@@ -21,6 +26,7 @@ use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
+use Valkyrja\Contracts\Logger\Logger as LoggerContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -31,6 +37,8 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\ResponseCode;
+use Valkyrja\Logger\Enum\LogLevel;
+use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Annotations\RouteParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
@@ -289,6 +297,32 @@ class Container implements ContainerContract
             ClientContract::class,
             function () {
                 return new Client();
+            }
+        );
+
+        // Set the psr logger interface
+        $this->singleton(
+            LoggerInterface::class,
+            function () {
+                /** @var \Valkyrja\Contracts\Application $app */
+                $app = $this->get(Application::class);
+
+                $logger = new MonologLogger($app->config()->logger->name);
+
+                $logger->pushHandler(new StreamHandler($app->config()->logger->filePath, LogLevel::DEBUG));
+
+                return $logger;
+            }
+        );
+
+        // Set the logger
+        $this->singleton(
+            LoggerContract::class,
+            function () {
+                /** @var LoggerInterface $logger */
+                $logger = $this->get(LoggerInterface::class);
+
+                return new Logger($logger);
             }
         );
     }

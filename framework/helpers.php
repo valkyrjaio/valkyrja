@@ -106,6 +106,18 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('logger')) {
+    /**
+     * Get request.
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
+     */
+    function logger(): Valkyrja\Contracts\Logger\Logger
+    {
+        return app()->logger();
+    }
+}
+
 if (! function_exists('request')) {
     /**
      * Get request.
