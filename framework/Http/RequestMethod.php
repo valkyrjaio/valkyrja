@@ -32,18 +32,4 @@ final class RequestMethod extends Enum
     public const OPTIONS = 'OPTIONS';
     public const TRACE   = 'TRACE';
     public const CONNECT = 'CONNECT';
-
-    /**
-     * Accepted method types.
-     *
-     * @constant array
-     */
-    public const ACCEPTED_TYPES = [
-        self::GET,
-        self::POST,
-        self::PUT,
-        self::PATCH,
-        self::DELETE,
-        self::HEAD,
-    ];
 }
