@@ -173,7 +173,7 @@ class Logger implements LoggerContract
      */
     public function log(LogLevel $level, string $message, array $context = []): LoggerContract
     {
-        $this->logger->{$level}($message, $context);
+        $this->logger->{(string) $level}($message, $context);
 
         return $this;
     }
