@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Enum\Enum;
+
 /**
  * Final Class ResponseCode
  *
@@ -18,7 +20,7 @@ namespace Valkyrja\Http;
  *
  * @author  Melech Mizrachi
  */
-final class ResponseCode
+final class ResponseCode extends Enum
 {
     /**
      * Status code constants.

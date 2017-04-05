@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Enum\Enum;
+
 /**
  * Final Class RequestMethod
  *
@@ -18,76 +20,17 @@ namespace Valkyrja\Http;
  *
  * @author  Melech Mizrachi
  */
-final class RequestMethod
+final class RequestMethod extends Enum
 {
-    /**
-     * Get request method constant.
-     *
-     * @constant string
-     */
-    public const GET = 'GET';
-
-    /**
-     * Post request method constant.
-     *
-     * @constant string
-     */
-    public const POST = 'POST';
-
-    /**
-     * Put request method constant.
-     *
-     * @constant string
-     */
-    public const PUT = 'PUT';
-
-    /**
-     * Patch request method constant.
-     *
-     * @constant string
-     */
-    public const PATCH = 'PATCH';
-
-    /**
-     * Delete request method constant.
-     *
-     * @constant string
-     */
-    public const DELETE = 'DELETE';
-
-    /**
-     * Head request method constant.
-     *
-     * @constant string
-     */
-    public const HEAD = 'HEAD';
-
-    /**
-     * Purge request method constant.
-     *
-     * @constant string
-     */
-    public const PURGE = 'PURGE';
-
-    /**
-     * Options request method constant.
-     *
-     * @constant string
-     */
+    public const GET     = 'GET';
+    public const POST    = 'POST';
+    public const PUT     = 'PUT';
+    public const PATCH   = 'PATCH';
+    public const DELETE  = 'DELETE';
+    public const HEAD    = 'HEAD';
+    public const PURGE   = 'PURGE';
     public const OPTIONS = 'OPTIONS';
-
-    /**
-     * Trace request method constant.
-     *
-     * @constant string
-     */
-    public const TRACE = 'TRACE';
-
-    /**
-     * Connect request method constant.
-     *
-     * @constant string
-     */
+    public const TRACE   = 'TRACE';
     public const CONNECT = 'CONNECT';
 
     /**
