@@ -41,6 +41,13 @@ abstract class Enum implements JsonSerializable
     protected static $cache = [];
 
     /**
+     * The allowable enum values.
+     *
+     * @var array
+     */
+    protected const VALUES = null;
+
+    /**
      * Enum constructor.
      *
      * @param mixed $value The value to set
@@ -63,7 +70,9 @@ abstract class Enum implements JsonSerializable
      */
     public function setValue($value): void
     {
+        // If the value is not valid
         if (! static::isValid($value)) {
+            // Throw an exception
             throw new InvalidArgumentException(
                 sprintf(
                     'Invalid enumeration %s for Enum %s',
@@ -95,11 +104,13 @@ abstract class Enum implements JsonSerializable
      */
     public static function isValid($value): bool
     {
-        if (! in_array($value, static::validValues(), true)) {
-            return false;
+        // If the value is a set value in the enum
+        if (in_array($value, static::validValues(), true)) {
+            // It is valid!
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -109,15 +120,20 @@ abstract class Enum implements JsonSerializable
      */
     public static function validValues(): array
     {
+        // Get the class name that was called
         $className = get_called_class();
 
-        if (! array_key_exists($className, self::$cache)) {
+        // If the called enum isn't yet cached
+        // and the values aren't already set (to avoid a reflection class)
+        if (! array_key_exists($className, self::$cache) && null === static::VALUES) {
+            // Get a reflection class of the enum
             $reflectionClass = new ReflectionClass($className);
 
+            // Set the cache to avoid a reflection class creation on each new instance of the enum
             self::$cache[$className] = array_values($reflectionClass->getConstants());
         }
 
-        return self::$cache[$className];
+        return static::VALUES ?? self::$cache[$className] ?? [];
     }
 
     /**
