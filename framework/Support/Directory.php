@@ -35,6 +35,20 @@ class Directory
     public static $BASE_PATH;
 
     /**
+     * Various paths for the application.
+     *
+     * @var string
+     */
+    public static $APP_PATH       = 'app';
+    public static $CONFIG_PATH    = 'config';
+    public static $PUBLIC_PATH    = 'public';
+    public static $RESOURCES_PATH = 'resources';
+    public static $ROUTES_PATH    = 'routes';
+    public static $STORAGE_PATH   = 'storage';
+    public static $TESTS_PATH     = 'tests';
+    public static $VENDOR_PATH    = 'vendor';
+
+    /**
      * Get the base directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -55,7 +69,7 @@ class Directory
      */
     public static function appPath(string $path = null): string
     {
-        return static::basePath('app' . static::path($path));
+        return static::basePath(static::$APP_PATH . static::path($path));
     }
 
     /**
@@ -67,7 +81,7 @@ class Directory
      */
     public static function configPath(string $path = null): string
     {
-        return static::basePath('config' . static::path($path));
+        return static::basePath(static::$CONFIG_PATH . static::path($path));
     }
 
     /**
@@ -79,7 +93,7 @@ class Directory
      */
     public static function publicPath(string $path = null): string
     {
-        return static::basePath('public' . static::path($path));
+        return static::basePath(static::$PUBLIC_PATH . static::path($path));
     }
 
     /**
@@ -91,7 +105,7 @@ class Directory
      */
     public static function resourcesPath(string $path = null): string
     {
-        return static::basePath('resources' . static::path($path));
+        return static::basePath(static::$RESOURCES_PATH . static::path($path));
     }
 
     /**
@@ -103,7 +117,7 @@ class Directory
      */
     public static function routesPath(string $path = null): string
     {
-        return static::basePath('routes' . static::path($path));
+        return static::basePath(static::$ROUTES_PATH . static::path($path));
     }
 
     /**
@@ -115,7 +129,7 @@ class Directory
      */
     public static function storagePath(string $path = null): string
     {
-        return static::basePath('storage' . static::path($path));
+        return static::basePath(static::$STORAGE_PATH . static::path($path));
     }
 
     /**
@@ -127,7 +141,7 @@ class Directory
      */
     public static function testsPath(string $path = null): string
     {
-        return static::basePath('tests' . static::path($path));
+        return static::basePath(static::$TESTS_PATH . static::path($path));
     }
 
     /**
@@ -139,7 +153,7 @@ class Directory
      */
     public static function vendorPath(string $path = null): string
     {
-        return static::basePath('vendor' . static::path($path));
+        return static::basePath(static::$VENDOR_PATH . static::path($path));
     }
 
     /**
