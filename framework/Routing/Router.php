@@ -493,8 +493,6 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Routing\Exceptions\InvalidMethodTypeException
      * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
      */
     public function setupRoutes(): void
@@ -510,118 +508,8 @@ class Router implements RouterContract
 
         // If annotations are enabled and routing should use annotations
         if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
-            // Routes array
-            $routes = [];
-            // The routes annotations parser
-            /** @var RouteParserContract $parser */
-            $parser = $this->app->container()->get(RouteParserContract::class);
-
-            // Iterate through each controller
-            foreach ($this->app->config()->routing->controllers as $controller) {
-                // Get a reflection of the controller
-                $reflection = new \ReflectionClass($controller);
-                /** @var \Valkyrja\Routing\Models\Route[] $controllerRoutes */
-                $controllerRoutes = $parser->getAnnotations($reflection->getDocComment());
-
-                // Iterate through all the methods in the controller
-                foreach ($reflection->getMethods() as $method) {
-                    // Get the @Route annotation for the method
-                    $actionRoutes = $parser->getAnnotations($method->getDocComment());
-
-                    // Ensure a route was defined
-                    if ($actionRoutes) {
-                        // Setup to find any injectable objects through the service container
-                        $injectable = [];
-
-                        // Iterate through the method's parameters
-                        foreach ($method->getParameters() as $parameter) {
-                            // We only care for classes
-                            if ($parameter->getClass()) {
-                                // Set the injectable in the array
-                                $injectable[] = $parameter->getClass()->getName();
-                            }
-                        }
-
-                        /**
-                         * Iterate through all the action's routes.
-                         *
-                         * @var \Valkyrja\Routing\Models\Route $route
-                         */
-                        foreach ($actionRoutes as $route) {
-                            // Set the controller
-                            $route->setController($controller);
-                            // Set the action
-                            $route->setAction($method->getName());
-                            // Set the injectable objects
-                            $route->setInjectables($injectable);
-
-                            // If controller routes exist
-                            if ($controllerRoutes) {
-                                // Iterate through the controller defined base routes
-                                foreach ($controllerRoutes as $controllerRoute) {
-                                    // Clone the route found for the method and begin applying the controller
-                                    // base route to it
-                                    $newRoute = clone $route;
-
-                                    // If there is a base path for this controller
-                                    if (null !== $controllerPath = $controllerRoute->getPath()) {
-                                        // Get the route's path
-                                        $path = $route->getPath();
-
-                                        // If this is the index
-                                        if ('/' === $path) {
-                                            // Set to blank so the final path will be just the base path
-                                            $path = '';
-                                        }
-                                        // If the controller route is the index
-                                        else if ('/' === $controllerPath) {
-                                            // Set to blank so the final path won't start with double slash
-                                            $controllerPath = '';
-                                        }
-
-                                        // Set the path to the base path and route path
-                                        $newRoute->setPath($controllerPath . $path);
-                                    }
-
-                                    // If there is a base name for this controller
-                                    if (null !== $controllerName = $controllerRoute->getName()) {
-                                        $name = $controllerName . '.' . $route->getName();
-
-                                        // Set the name to the base name and route name
-                                        $newRoute->setName($name);
-                                    }
-
-                                    // If the base is dynamic
-                                    if (false !== $controllerRoute->getDynamic()) {
-                                        // Set the route to dynamic
-                                        $newRoute->setDynamic(true);
-                                    }
-
-                                    // If the base is secure
-                                    if (false !== $controllerRoute->getSecure()) {
-                                        // Set the route to dynamic
-                                        $newRoute->setSecure(true);
-                                    }
-
-                                    // Add the route to the array
-                                    $routes[] = $newRoute;
-                                }
-                            }
-                            // Otherwise there was no route defined on the controller level
-                            else {
-                                // So just add the route to the list
-                                $routes[] = $route;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Iterate through the routes
-            foreach ($routes as $route) {
-                // Set the route
-                $this->addRoute($route);
-            }
+            // Setup annotated routes
+            $this->setupAnnotatedRoutes();
 
             // If only annotations should be used for routing
             if ($this->app->config()->routing->useAnnotationsExclusively) {
@@ -634,6 +522,129 @@ class Router implements RouterContract
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
         require $this->app->config()->routing->routesFile;
+    }
+
+    /**
+     * Setup annotated routes.
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
+     */
+    public function setupAnnotatedRoutes(): void
+    {
+        // Routes array
+        $routes = [];
+        // The routes annotations parser
+        /** @var RouteParserContract $parser */
+        $parser = $this->app->container()->get(RouteParserContract::class);
+
+        // Iterate through each controller
+        foreach ($this->app->config()->routing->controllers as $controller) {
+            // Get a reflection of the controller
+            $reflection = new \ReflectionClass($controller);
+            /** @var \Valkyrja\Routing\Models\Route[] $controllerRoutes */
+            $controllerRoutes = $parser->getAnnotations($reflection->getDocComment());
+
+            // Iterate through all the methods in the controller
+            foreach ($reflection->getMethods() as $method) {
+                // Get the @Route annotation for the method
+                $actionRoutes = $parser->getAnnotations($method->getDocComment());
+
+                // Ensure a route was defined
+                if ($actionRoutes) {
+                    // Setup to find any injectable objects through the service container
+                    $injectable = [];
+
+                    // Iterate through the method's parameters
+                    foreach ($method->getParameters() as $parameter) {
+                        // We only care for classes
+                        if ($parameter->getClass()) {
+                            // Set the injectable in the array
+                            $injectable[] = $parameter->getClass()->getName();
+                        }
+                    }
+
+                    /**
+                     * Iterate through all the action's routes.
+                     *
+                     * @var \Valkyrja\Routing\Models\Route $route
+                     */
+                    foreach ($actionRoutes as $route) {
+                        // Set the controller
+                        $route->setController($controller);
+                        // Set the action
+                        $route->setAction($method->getName());
+                        // Set the injectable objects
+                        $route->setInjectables($injectable);
+
+                        // If controller routes exist
+                        if ($controllerRoutes) {
+                            // Iterate through the controller defined base routes
+                            foreach ($controllerRoutes as $controllerRoute) {
+                                // Clone the route found for the method and begin applying the controller
+                                // base route to it
+                                $newRoute = clone $route;
+
+                                // If there is a base path for this controller
+                                if (null !== $controllerPath = $controllerRoute->getPath()) {
+                                    // Get the route's path
+                                    $path = $route->getPath();
+
+                                    // If this is the index
+                                    if ('/' === $path) {
+                                        // Set to blank so the final path will be just the base path
+                                        $path = '';
+                                    }
+                                    // If the controller route is the index
+                                    else if ('/' === $controllerPath) {
+                                        // Set to blank so the final path won't start with double slash
+                                        $controllerPath = '';
+                                    }
+
+                                    // Set the path to the base path and route path
+                                    $newRoute->setPath($controllerPath . $path);
+                                }
+
+                                // If there is a base name for this controller
+                                if (null !== $controllerName = $controllerRoute->getName()) {
+                                    $name = $controllerName . '.' . $route->getName();
+
+                                    // Set the name to the base name and route name
+                                    $newRoute->setName($name);
+                                }
+
+                                // If the base is dynamic
+                                if (false !== $controllerRoute->getDynamic()) {
+                                    // Set the route to dynamic
+                                    $newRoute->setDynamic(true);
+                                }
+
+                                // If the base is secure
+                                if (false !== $controllerRoute->getSecure()) {
+                                    // Set the route to dynamic
+                                    $newRoute->setSecure(true);
+                                }
+
+                                // Add the route to the array
+                                $routes[] = $newRoute;
+                            }
+                        }
+                        // Otherwise there was no route defined on the controller level
+                        else {
+                            // So just add the route to the list
+                            $routes[] = $route;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Iterate through the routes
+        foreach ($routes as $route) {
+            // Set the route
+            $this->addRoute($route);
+        }
     }
 
     /**
