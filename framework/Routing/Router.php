@@ -108,7 +108,9 @@ class Router implements RouterContract
     public function addRoute(Route $route): void
     {
         // Let's check the action method is callable before proceeding
-        if (null === $route->getHandler() && ! is_callable(
+        if (
+            null === $route->getHandler()
+            && ! is_callable(
                 [
                     $route->getController(),
                     $route->getAction(),
@@ -124,81 +126,104 @@ class Router implements RouterContract
             );
         }
 
-        $path = $route->getPath();
-
-        // If all routes should have a trailing slash
-        // and the route doesn't already end with a slash
-        if ($this->app->config()->routing->trailingSlash && false === strpos($path, '/', -1)) {
-            // Add a trailing slash
-            $path .= '/';
-        }
+        $this->appendTrailingSlash($route);
 
         // If this is a dynamic route
         if ($route->getDynamic()) {
-            // Get all matches for {paramName} and {paramName:(validator)} in the path
-            preg_match_all(
-                '/' . static::VARIABLE_REGEX . '/x',
-                $path,
-                $params
-            );
-            /** @var array[] $params */
-
-            // Run through all matches
-            foreach ($params[0] as $key => $param) {
-                // Check if a global regex alias was used
-                switch ($params[2][$key]) {
-                    case 'num' :
-                        $replacement = '(\d+)';
-                        break;
-                    case 'slug' :
-                        $replacement = '([a-zA-Z0-9-]+)';
-                        break;
-                    case 'alpha' :
-                        $replacement = '([a-zA-Z]+)';
-                        break;
-                    case 'alpha-lowercase' :
-                        $replacement = '([a-z]+)';
-                        break;
-                    case 'alpha-uppercase' :
-                        $replacement = '([A-Z]+)';
-                        break;
-                    case 'alpha-num' :
-                        $replacement = '([a-zA-Z0-9]+)';
-                        break;
-                    case 'alpha-num-underscore' :
-                        $replacement = '(\w+)';
-                        break;
-                    default :
-                        // Check if a regex was set for this match, otherwise use a wildcard all
-                        $replacement = $params[2][$key] ?: '(.*)';
-                        break;
-                }
-
-                // Replace the matches with a regex
-                $path = str_replace($param, $replacement, $path);
-            }
-
-            $path = str_replace('/', '\/', $path);
-            $path = '/^' . $path . '$/';
-            $route->setPath($path);
-            $route->setParams($params);
+            $this->setDynamicRouteProperties($route);
 
             // Set it in the dynamic routes array
-            $this->routes[static::DYNAMIC_ROUTES_TYPE][$route->getMethod()][$path] = $route;
+            $this->routes[static::DYNAMIC_ROUTES_TYPE][$route->getMethod()][$route->getPath()] = $route;
         }
         // Otherwise set it in the static routes array
         else {
-            $route->setPath($path);
-            $this->routes[static::STATIC_ROUTES_TYPE][$route->getMethod()][$path] = $route;
+            $this->routes[static::STATIC_ROUTES_TYPE][$route->getMethod()][$route->getPath()] = $route;
         }
 
         if ($route->getName()) {
             $this->routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
                 $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
                 $route->getMethod(),
-                $path,
+                $route->getPath(),
             ];
         }
+    }
+
+    /**
+     * Append a trailing slash to the route path if required.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return void
+     */
+    protected function appendTrailingSlash(Route $route): void
+    {
+        // If all routes should have a trailing slash
+        // and the route doesn't already end with a slash
+        if ($this->app->config()->routing->trailingSlash && false === strpos($route->getPath(), '/', -1)) {
+            // Add a trailing slash
+            $route->setPath($route->getPath() . '/');
+        }
+    }
+
+    /**
+     * Set a dynamic route's properties.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return void
+     */
+    protected function setDynamicRouteProperties(Route $route): void
+    {
+        $path = $route->getPath();
+
+        // Get all matches for {paramName} and {paramName:(validator)} in the path
+        preg_match_all(
+            '/' . static::VARIABLE_REGEX . '/x',
+            $path,
+            $params
+        );
+        /** @var array[] $params */
+
+        // Run through all matches
+        foreach ($params[0] as $key => $param) {
+            // Check if a global regex alias was used
+            switch ($params[2][$key]) {
+                case 'num' :
+                    $replacement = '(\d+)';
+                    break;
+                case 'slug' :
+                    $replacement = '([a-zA-Z0-9-]+)';
+                    break;
+                case 'alpha' :
+                    $replacement = '([a-zA-Z]+)';
+                    break;
+                case 'alpha-lowercase' :
+                    $replacement = '([a-z]+)';
+                    break;
+                case 'alpha-uppercase' :
+                    $replacement = '([A-Z]+)';
+                    break;
+                case 'alpha-num' :
+                    $replacement = '([a-zA-Z0-9]+)';
+                    break;
+                case 'alpha-num-underscore' :
+                    $replacement = '(\w+)';
+                    break;
+                default :
+                    // Check if a regex was set for this match, otherwise use a wildcard all
+                    $replacement = $params[2][$key] ?: '(.*)';
+                    break;
+            }
+
+            // Replace the matches with a regex
+            $path = str_replace($param, $replacement, $path);
+        }
+
+        $path = str_replace('/', '\/', $path);
+        $path = '/^' . $path . '$/';
+        $route->setPath($path);
+        $route->setParams($params);
     }
 
     /**
