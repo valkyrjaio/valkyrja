@@ -37,16 +37,16 @@ use Valkyrja\Routing\Models\Route;
 class Router implements RouterContract
 {
     /**
-     * The static routes name.
+     * The static routes type.
      *
      * @constant string
      */
-    protected const STATIC_ROUTES_NAME = 'static';
+    protected const STATIC_ROUTES_TYPE = 'static';
 
     /**
-     * The dynamic routes name.
+     * The dynamic routes type.
      */
-    protected const DYNAMIC_ROUTES_NAME = 'dynamic';
+    protected const DYNAMIC_ROUTES_TYPE = 'dynamic';
 
     /**
      * Application.
@@ -61,7 +61,7 @@ class Router implements RouterContract
      * @var array
      */
     protected $routes = [
-        self::STATIC_ROUTES_NAME  => [
+        self::STATIC_ROUTES_TYPE  => [
             RequestMethod::GET    => [],
             RequestMethod::POST   => [],
             RequestMethod::PUT    => [],
@@ -69,7 +69,7 @@ class Router implements RouterContract
             RequestMethod::DELETE => [],
             RequestMethod::HEAD   => [],
         ],
-        self::DYNAMIC_ROUTES_NAME => [
+        self::DYNAMIC_ROUTES_TYPE => [
             RequestMethod::GET    => [],
             RequestMethod::POST   => [],
             RequestMethod::PUT    => [],
@@ -177,12 +177,12 @@ class Router implements RouterContract
             $route->setParams($params);
 
             // Set it in the dynamic routes array
-            $this->routes[static::DYNAMIC_ROUTES_NAME][$route->getMethod()][$path] = $route;
+            $this->routes[static::DYNAMIC_ROUTES_TYPE][$route->getMethod()][$path] = $route;
         }
         // Otherwise set it in the static routes array
         else {
             $route->setPath($path);
-            $this->routes[static::STATIC_ROUTES_NAME][$route->getMethod()][$path] = $route;
+            $this->routes[static::STATIC_ROUTES_TYPE][$route->getMethod()][$path] = $route;
         }
     }
 
@@ -312,7 +312,7 @@ class Router implements RouterContract
      *
      * @return \Valkyrja\Routing\Models\Route[]
      */
-    protected function getRoutesByMethod(string $method, string $type = self::STATIC_ROUTES_NAME): array
+    protected function getRoutesByMethod(string $method, string $type = self::STATIC_ROUTES_TYPE): array
     {
         return $this->routes[$type][$method];
     }
@@ -348,20 +348,20 @@ class Router implements RouterContract
         $route = null;
 
         // Let's check if the route is set in the static routes
-        if (isset($this->routes[static::STATIC_ROUTES_NAME][$method][$path])) {
-            $route = $this->routes[static::STATIC_ROUTES_NAME][$method][$path];
+        if (isset($this->routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
+            $route = $this->routes[static::STATIC_ROUTES_TYPE][$method][$path];
         }
         // If trailing slashes and non trailing are allowed check it too
         else if (
             $this->app->config()->routing->allowWithTrailingSlash &&
-            isset($this->routes[static::STATIC_ROUTES_NAME][$method][substr($path, 0, -1)])
+            isset($this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
         ) {
-            $route = $this->routes[static::STATIC_ROUTES_NAME][$method][substr($path, 0, -1)];
+            $route = $this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
         }
         // Otherwise check dynamic routes for a match
         else {
             // Attempt to find a match using dynamic routes that are set
-            foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_NAME) as $pathIndex => $dynamicRoute) {
+            foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $pathIndex => $dynamicRoute) {
                 // If the preg match is successful, we've found our route!
                 if (preg_match($pathIndex, $path, $matches)) {
                     $route = $dynamicRoute;
@@ -387,8 +387,8 @@ class Router implements RouterContract
     {
         $match = null;
         $type = empty($data)
-            ? static::STATIC_ROUTES_NAME
-            : static::DYNAMIC_ROUTES_NAME;
+            ? static::STATIC_ROUTES_TYPE
+            : static::DYNAMIC_ROUTES_TYPE;
 
         // Iterate through the routes of the type and method
         foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
