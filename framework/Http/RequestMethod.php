@@ -32,4 +32,17 @@ final class RequestMethod extends Enum
     public const OPTIONS = 'OPTIONS';
     public const TRACE   = 'TRACE';
     public const CONNECT = 'CONNECT';
+
+    protected const VALUES = [
+        self::GET,
+        self::POST,
+        self::PUT,
+        self::PATCH,
+        self::DELETE,
+        self::HEAD,
+        self::PURGE,
+        self::OPTIONS,
+        self::TRACE,
+        self::CONNECT,
+    ];
 }

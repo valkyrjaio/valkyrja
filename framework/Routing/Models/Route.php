@@ -13,6 +13,7 @@ namespace Valkyrja\Routing\Models;
 
 use Closure;
 
+use Valkyrja\Http\RequestMethod;
 use Valkyrja\Model\Model;
 
 /**
@@ -27,7 +28,7 @@ class Route extends Model
     /**
      * The method for this route.
      *
-     * @var string
+     * @var \Valkyrja\Http\RequestMethod
      */
     protected $method;
 
@@ -81,23 +82,36 @@ class Route extends Model
     protected $dynamic = false;
 
     /**
-     * Get the route's method.
+     * Whether the route is secure.
      *
-     * @return string
+     * @var bool
      */
-    public function getMethod():? string
+    protected $secure = false;
+
+    /**
+     * Get the method.
+     *
+     * @return \Valkyrja\Http\RequestMethod
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getMethod(): RequestMethod
     {
+        if (null === $this->method) {
+            $this->method = new RequestMethod(RequestMethod::GET);
+        }
+
         return $this->method;
     }
 
     /**
-     * Set the route's method.
+     * Set the method.
      *
-     * @param string $method The route method
+     * @param \Valkyrja\Http\RequestMethod $method The request method enum
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setMethod(string $method): self
+    public function setMethod(RequestMethod $method): self
     {
         $this->method = $method;
 
@@ -268,6 +282,30 @@ class Route extends Model
     public function setDynamic(bool $dynamic): self
     {
         $this->dynamic = $dynamic;
+
+        return $this;
+    }
+
+    /**
+     * Get whether the route is secure.
+     *
+     * @return bool
+     */
+    public function getSecure(): bool
+    {
+        return $this->secure;
+    }
+
+    /**
+     * Set whether the route is secure.
+     *
+     * @param bool $secure Whether the route is secure
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     */
+    public function setSecure(bool $secure): self
+    {
+        $this->secure = $secure;
 
         return $this;
     }

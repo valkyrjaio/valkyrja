@@ -15,6 +15,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Routing\Models\Route;
 
 /**
  * Interface Router
@@ -49,80 +50,67 @@ REGEX;
     /**
      * Set a single route.
      *
-     * @param \Valkyrja\Http\RequestMethod $method    The method type
-     * @param string                       $path      The path to set
-     * @param array                        $options   The closure or array of options
-     * @param bool                         $isDynamic [optional] Whether the route has parameters
+     * @param \Valkyrja\Routing\Models\Route $route
      *
      * @return void
+     *
+     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
-    public function addRoute(RequestMethod $method, string $path, array $options, bool $isDynamic = false): void;
+    public function addRoute(Route $route): void;
 
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function get(string $path, array $options, bool $isDynamic = false): void;
+    public function get(Route $route): void;
 
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function post(string $path, array $options, bool $isDynamic = false): void;
+    public function post(Route $route): void;
 
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function put(string $path, array $options, bool $isDynamic = false): void;
+    public function put(Route $route): void;
 
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function patch(string $path, array $options, bool $isDynamic = false): void;
+    public function patch(Route $route): void;
 
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function delete(string $path, array $options, bool $isDynamic = false): void;
+    public function delete(Route $route): void;
 
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param string $path      The path to set
-     * @param array  $options   The closure or array of options
-     * @param bool   $isDynamic [optional] Does the route have dynamic parameters?
+     * @param \Valkyrja\Routing\Models\Route $route The route
      *
      * @return void
      */
-    public function head(string $path, array $options, bool $isDynamic = false): void;
+    public function head(Route $route): void;
 
     /**
      * Set routes from a given array of routes.
@@ -139,6 +127,25 @@ REGEX;
      * @return array
      */
     public function getRoutes(): array;
+
+    /**
+     * Get a route by path.
+     *
+     * @param string $path   The path
+     * @param string $method [optional] The method type of get
+     *
+     * @return array
+     */
+    public function getRouteByPath(string $path, string $method = RequestMethod::GET): array;
+
+    /**
+     * Get a route from a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return array
+     */
+    public function getRouteFromRequest(Request $request): array;
 
     /**
      * Get a route by name.

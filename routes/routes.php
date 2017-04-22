@@ -6,13 +6,16 @@
  *
  * @path /
  */
+use Valkyrja\Routing\Models\Route;
+
 router()->get(
-    '/',
-    [
-        'handler' => function (): Valkyrja\Contracts\View\View {
-            return view('index')->withoutLayout();
-        },
-    ]
+    (new Route())
+        ->setPath('/')
+        ->setHandler(
+            function (): Valkyrja\Contracts\View\View {
+                return view('index')->withoutLayout();
+            }
+        )
 );
 
 /**
@@ -22,12 +25,13 @@ router()->get(
  * @path /version
  */
 router()->get(
-    '/version',
-    [
-        'handler' => function (): string {
-            return app()->version();
-        },
-    ]
+    (new Route())
+        ->setPath('/version')
+        ->setHandler(
+            function (): string {
+                return app()->version();
+            }
+        )
 );
 
 /**
@@ -37,17 +41,18 @@ router()->get(
  * @path /home
  */
 router()->get(
-    '/home',
-    [
-        'controller' => App\Controllers\HomeController::class,
-        'action'     => 'home',
-        'name'       => 'home',
-        'injectable' => [
-            // Any classes defined within the injectable array are
-            //   automatically be run through the service container for you.
-            Valkyrja\Contracts\Application::class,
-        ],
-    ]
+    (new Route())
+        ->setPath('/home')
+        ->setController(App\Controllers\HomeController::class)
+        ->setAction('home')
+        ->setName('home')
+        ->setInjectables(
+            [
+                // Any classes defined within the injectable array are
+                //   automatically be run through the service container for you.
+                Valkyrja\Contracts\Application::class,
+            ]
+        )
 );
 
 /**
@@ -58,16 +63,17 @@ router()->get(
  * @path /home/:page
  */
 router()->get(
-    '/home/{id:num}',
-    [
-        'controller' => App\Controllers\HomeController::class,
-        'action'     => 'home',
-        'name'       => 'homePage',
-        'injectable' => [
-            // Any classes defined within the injectable array are
-            //   automatically be run through the service container for you.
-            Valkyrja\Contracts\Application::class,
-        ],
-    ],
-    true
+    (new Route())
+        ->setPath('/home/{id:num}')
+        ->setController(App\Controllers\HomeController::class)
+        ->setAction('home')
+        ->setName('homePage')
+        ->setInjectables(
+            [
+                // Any classes defined within the injectable array are
+                //   automatically be run through the service container for you.
+                Valkyrja\Contracts\Application::class,
+            ]
+        )
+    ->setDynamic(true)
 );
