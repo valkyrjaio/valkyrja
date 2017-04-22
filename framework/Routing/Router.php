@@ -143,6 +143,7 @@ class Router implements RouterContract
                 $path,
                 $params
             );
+            /** @var array[] $params */
 
             // Run through all matches
             foreach ($params[0] as $key => $param) {
@@ -380,6 +381,7 @@ class Router implements RouterContract
         // If there is data
         if ($data) {
             // Get the route's params
+            /** @var array[] $params */
             $params = $route['params'];
 
             // Iterate through all the prams
@@ -559,7 +561,7 @@ class Router implements RouterContract
     public function dispatch(RequestContract $request): ResponseContract
     {
         $requestMethod = $request->getMethod();
-        $requestUri = $request->getPathClean();
+        $requestUri = $request->getPathOnly();
 
         // Decode the request uri
         $requestUri = rawurldecode($requestUri);
