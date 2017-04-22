@@ -596,6 +596,12 @@ class Router implements RouterContract
                                         $newRoute->setDynamic(true);
                                     }
 
+                                    // If the base is secure
+                                    if (false !== $controllerRoute->getSecure()) {
+                                        // Set the route to dynamic
+                                        $newRoute->setSecure(true);
+                                    }
+
                                     // Add the route to the array
                                     $routes[] = $newRoute;
                                 }
