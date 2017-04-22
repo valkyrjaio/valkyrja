@@ -375,9 +375,9 @@ interface Request
      * If your reverse proxy uses a different header name than "X-Forwarded-Port",
      * configure it via "setTrustedHeaderName()" with the "client-port" key.
      *
-     * @return string
+     * @return int
      */
-    public function getPort(): string;
+    public function getPort(): int;
 
     /**
      * Returns the user.

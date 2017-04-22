@@ -821,11 +821,11 @@ class Request implements RequestContract
      * If your reverse proxy uses a different header name than "X-Forwarded-Port",
      * configure it via "setTrustedHeaderName()" with the "client-port" key.
      *
-     * @return string
+     * @return int
      */
-    public function getPort(): string
+    public function getPort(): int
     {
-        return $this->server->get('SERVER_PORT');
+        return (int) $this->server->get('SERVER_PORT');
     }
 
     /**
@@ -936,7 +936,7 @@ class Request implements RequestContract
      */
     public function getHost()
     {
-        return $this->headers->get('Client-Host');
+        return $this->headers->get('Host');
     }
 
     /**
