@@ -67,7 +67,7 @@ class Router implements RouterContract
      *
      * @var array
      */
-    protected $routes = [
+    protected static $routes = [
         self::STATIC_ROUTES_TYPE  => [
             RequestMethod::GET    => [],
             RequestMethod::POST   => [],
@@ -134,15 +134,15 @@ class Router implements RouterContract
             $this->setDynamicRouteProperties($route);
 
             // Set it in the dynamic routes array
-            $this->routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
+            self::$routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
         }
         // Otherwise set it in the static routes array
         else {
-            $this->routes[static::STATIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
+            self::$routes[static::STATIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
         }
 
         if ($route->getName()) {
-            $this->routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
+            self::$routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
                 $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
                 $route->getRequestMethod(),
                 $route->getPath(),
@@ -330,7 +330,7 @@ class Router implements RouterContract
      */
     public function getRoutes(): array
     {
-        return $this->routes;
+        return self::$routes;
     }
 
     /**
@@ -343,7 +343,7 @@ class Router implements RouterContract
      */
     protected function getRoutesByMethod(string $method, string $type = self::STATIC_ROUTES_TYPE): array
     {
-        return $this->routes[$type][$method];
+        return self::$routes[$type][$method];
     }
 
     /**
@@ -355,7 +355,7 @@ class Router implements RouterContract
      */
     public function setRoutes(array $routes): void
     {
-        $this->routes = $routes;
+        self::$routes = $routes;
     }
 
     /**
@@ -370,7 +370,7 @@ class Router implements RouterContract
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useRoutesCacheFile) {
             // Set the application routes with said file
-            $this->routes = require $this->app->config()->routing->routesCacheFile;
+            self::$routes = require $this->app->config()->routing->routesCacheFile;
 
             // Then return out of routes setup
             return;
@@ -432,9 +432,9 @@ class Router implements RouterContract
         $route = null;
 
         // Let's check if the route is set in the static routes
-        if (isset($this->routes[static::NAME_ROUTES_TYPE][$name])) {
-            $routeName = $this->routes[static::NAME_ROUTES_TYPE][$name];
-            $route = $this->routes[$routeName[0]][$routeName[1]][$routeName[2]];
+        if (isset(self::$routes[static::NAME_ROUTES_TYPE][$name])) {
+            $routeName = self::$routes[static::NAME_ROUTES_TYPE][$name];
+            $route = self::$routes[$routeName[0]][$routeName[1]][$routeName[2]];
         }
 
         // If no route was found
@@ -454,7 +454,7 @@ class Router implements RouterContract
      */
     public function routeIsset(string $name): bool
     {
-        return isset($this->routes[static::NAME_ROUTES_TYPE][$name]);
+        return isset(self::$routes[static::NAME_ROUTES_TYPE][$name]);
     }
 
     /**
@@ -526,16 +526,16 @@ class Router implements RouterContract
     public function matchRoute(string $path, string $method = RequestMethod::GET): Route
     {
         // Let's check if the route is set in the static routes
-        if (isset($this->routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
-            return $this->routes[static::STATIC_ROUTES_TYPE][$method][$path];
+        if (isset(self::$routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
+            return self::$routes[static::STATIC_ROUTES_TYPE][$method][$path];
         }
 
         // If trailing slashes and non trailing are allowed check it too
         if (
             $this->app->config()->routing->allowWithTrailingSlash &&
-            isset($this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
+            isset(self::$routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
         ) {
-            return $this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
+            return self::$routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
         }
 
         // Attempt to find a match using dynamic routes that are set
