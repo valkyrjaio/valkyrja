@@ -129,10 +129,10 @@ class Container implements ContainerContract
     /**
      * Set an abstract in the service container.
      *
-     * @param string                 $abstract  The abstract to use as the key
-     * @param \Closure|string|object $closure   The instance to set
-     * @param bool                   $singleton [optional] Whether this abstract should be treated as a singleton
-     * @param bool                   $made      [optional] Whether this abstract is already made into an object or not
+     * @param string $abstract  The abstract to use as the key
+     * @param mixed  $closure   The instance to set
+     * @param bool   $singleton [optional] Whether this abstract should be treated as a singleton
+     * @param bool   $made      [optional] Whether this abstract is already made into an object or not
      *
      * @return void
      */
@@ -219,6 +219,26 @@ class Container implements ContainerContract
      */
     public function bootstrap(): void
     {
+        $this->bootstrapRequest();
+        $this->bootstrapResponse();
+        $this->bootstrapJsonResponse();
+        $this->bootstrapRedirectResponse();
+        $this->bootstrapResponseBuilder();
+        $this->bootstrapRouter();
+        $this->bootstrapRouteParser();
+        $this->bootstrapView();
+        $this->bootstrapClient();
+        $this->bootstrapLoggerInterface();
+        $this->bootstrapLogger();
+    }
+
+    /**
+     * Bootstrap the request.
+     *
+     * @return void
+     */
+    protected function bootstrapRequest(): void
+    {
         // Set the request contract
         $this->singleton(
             RequestContract::class,
@@ -226,7 +246,15 @@ class Container implements ContainerContract
                 return Request::createFromGlobals();
             }
         );
+    }
 
+    /**
+     * Bootstrap the response.
+     *
+     * @return void
+     */
+    protected function bootstrapResponse(): void
+    {
         // Set the response contract
         $this->bind(
             ResponseContract::class,
@@ -234,7 +262,15 @@ class Container implements ContainerContract
                 return new Response($content, $status, $headers);
             }
         );
+    }
 
+    /**
+     * Bootstrap the json response.
+     *
+     * @return void
+     */
+    protected function bootstrapJsonResponse(): void
+    {
         // Set the json response contract
         $this->bind(
             JsonResponseContract::class,
@@ -242,7 +278,15 @@ class Container implements ContainerContract
                 return new JsonResponse($content, $status, $headers);
             }
         );
+    }
 
+    /**
+     * Bootstrap the redirect response.
+     *
+     * @return void
+     */
+    protected function bootstrapRedirectResponse(): void
+    {
         // Set the redirect response contract
         $this->bind(
             RedirectResponseContract::class,
@@ -250,7 +294,15 @@ class Container implements ContainerContract
                 return new RedirectResponse($content, $status, $headers);
             }
         );
+    }
 
+    /**
+     * Bootstrap the response builder.
+     *
+     * @return void
+     */
+    protected function bootstrapResponseBuilder(): void
+    {
         // Set the response builder contract
         $this->singleton(
             ResponseBuilderContract::class,
@@ -261,7 +313,15 @@ class Container implements ContainerContract
                 return new ResponseBuilder($app);
             }
         );
+    }
 
+    /**
+     * Bootstrap the router.
+     *
+     * @return void
+     */
+    protected function bootstrapRouter(): void
+    {
         // Set the router contract
         $this->singleton(
             RouterContract::class,
@@ -272,7 +332,15 @@ class Container implements ContainerContract
                 return new Router($app);
             }
         );
+    }
 
+    /**
+     * Bootstrap the route parser.
+     *
+     * @return void
+     */
+    protected function bootstrapRouteParser(): void
+    {
         // Set the route parser contract
         $this->singleton(
             RouteParserContract::class,
@@ -280,7 +348,15 @@ class Container implements ContainerContract
                 return new RouteParser();
             }
         );
+    }
 
+    /**
+     * Bootstrap the view.
+     *
+     * @return void
+     */
+    protected function bootstrapView(): void
+    {
         // Set the view contract
         $this->bind(
             ViewContract::class,
@@ -291,7 +367,15 @@ class Container implements ContainerContract
                 return new View($app, $template, $variables);
             }
         );
+    }
 
+    /**
+     * Bootstrap the client.
+     *
+     * @return void
+     */
+    protected function bootstrapClient(): void
+    {
         // Set the client contract
         $this->singleton(
             ClientContract::class,
@@ -299,7 +383,15 @@ class Container implements ContainerContract
                 return new Client();
             }
         );
+    }
 
+    /**
+     * Bootstrap the logger interface.
+     *
+     * @return void
+     */
+    protected function bootstrapLoggerInterface(): void
+    {
         // Set the psr logger interface
         $this->singleton(
             LoggerInterface::class,
@@ -314,7 +406,15 @@ class Container implements ContainerContract
                 return $logger;
             }
         );
+    }
 
+    /**
+     * Bootstrap the logger.
+     *
+     * @return void
+     */
+    protected function bootstrapLogger(): void
+    {
         // Set the logger
         $this->singleton(
             LoggerContract::class,
