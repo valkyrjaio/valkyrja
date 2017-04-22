@@ -244,7 +244,7 @@ class Application implements ApplicationContract
      * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
      */
     public function redirectTo(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): void
@@ -403,7 +403,7 @@ class Application implements ApplicationContract
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public function redirect(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse

@@ -200,7 +200,7 @@ if (! function_exists('redirect')) {
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     function redirect(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
     ): \Valkyrja\Contracts\Http\RedirectResponse
@@ -244,7 +244,7 @@ if (! function_exists('redirectTo')) {
      * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
      */
     function redirectTo(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
     ): void

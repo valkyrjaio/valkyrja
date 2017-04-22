@@ -152,7 +152,7 @@ interface Application
      * @return void
      */
     public function redirectTo(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): void;
@@ -243,7 +243,7 @@ interface Application
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function redirect(
-        string $uri = '/',
+        string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponse;

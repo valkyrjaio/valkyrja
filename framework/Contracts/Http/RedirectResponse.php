@@ -34,7 +34,7 @@ interface RedirectResponse extends Response
         string $content = '',
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = [],
-        string $uri = '/'
+        string $uri = null
     );
 
     /**
@@ -47,7 +47,7 @@ interface RedirectResponse extends Response
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public static function createRedirect(
-        string $uri = '/',
+        string $uri = null,
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): self;

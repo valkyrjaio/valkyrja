@@ -46,7 +46,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         string $content = '',
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = [],
-        string $uri = '/'
+        string $uri = null
     )
     {
         // Use the parent constructor to setup the class
@@ -58,8 +58,10 @@ class RedirectResponse extends Response implements RedirectResponseContract
             throw new InvalidStatusCodeException("Status code of \"{$status}\" is not allowed");
         }
 
-        // Set the uri
-        $this->setUri($uri);
+        if (null !== $uri) {
+            // Set the uri
+            $this->setUri($uri);
+        }
     }
 
     /**
@@ -75,7 +77,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      */
     public static function createRedirect(
-        string $uri = '/',
+        string $uri = null,
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
     ): RedirectResponseContract
@@ -90,6 +92,10 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public function getUri(): string
     {
+        if (null === $this->uri) {
+            $this->setUri('/');
+        }
+
         return $this->uri;
     }
 
@@ -122,21 +128,28 @@ class RedirectResponse extends Response implements RedirectResponseContract
     {
         // If not path was set
         if (null === $path) {
-            // Set the path to the current path w/ query string
-            $path = request()->getPath();
+            // If the uri is already set
+            if (null !== $this->uri) {
+                // Set the path to it
+                $path = $this->uri;
+            }
+            else {
+                // Otherwise set the path to the current path w/ query string
+                $path = request()->getPath();
+            }
         }
 
         // If the path doesn't start with a /
         if ('/' !== $path[0]) {
             // Set the uri as the path
-            $this->uri = $path;
+            $this->setUri($path);
 
             // Return out of the method
             return $this;
         }
 
         // Set the uri to https with the host and path
-        $this->uri = 'https://' . request()->getHttpHost() . $path;
+        $this->setUri('https://' . request()->getHttpHost() . $path);
 
         return $this;
     }
