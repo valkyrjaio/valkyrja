@@ -134,7 +134,7 @@ class Request implements RequestContract
     protected $format;
 
     /**
-     * @var \Valkyrja\Contracts\Sessions\Session
+     * @var \Valkyrja\Contracts\Support\Collection
      */
     protected $session;
 
@@ -785,7 +785,7 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getPathClean(): string
+    public function getPathOnly(): string
     {
         $requestUri = $this->getPath();
 

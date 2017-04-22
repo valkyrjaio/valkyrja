@@ -355,7 +355,7 @@ interface Request
      *
      * @return string
      */
-    public function getPathClean(): string;
+    public function getPathOnly(): string;
 
     /**
      * Gets the request's scheme.
