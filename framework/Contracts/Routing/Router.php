@@ -151,19 +151,19 @@ REGEX;
      * Get a route by name.
      *
      * @param string $name   The name of the route to get
+     * @param array  $data   [optional] The route data if dynamic
      * @param string $method [optional] The method type of get
-     * @param string $type   [optional] The type of routes (static/dynamic)
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = 'static'):? Route;
+    public function getRouteByName(string $name, array $data = [], string $method = RequestMethod::GET):? Route;
 
     /**
      * Get a route url by name.
      *
      * @param string $name   The name of the route to get
-     * @param string $method [optional] The method type of get
      * @param array  $data   [optional] The route data if dynamic
+     * @param string $method [optional] The method type of get
      *
      * @return string
      */

@@ -377,14 +377,17 @@ class Router implements RouterContract
      * Get a route by name.
      *
      * @param string $name   The name of the route to get
+     * @param array  $data   [optional] The route data if dynamic
      * @param string $method [optional] The method type of get
-     * @param string $type   [optional] The type of routes (static/dynamic)
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = self::STATIC_ROUTES_NAME): Route
+    public function getRouteByName(string $name, array $data = [], string $method = RequestMethod::GET):? Route
     {
-        $match = [];
+        $match = null;
+        $type = empty($data)
+                ? static::STATIC_ROUTES_NAME
+                : static::DYNAMIC_ROUTES_NAME;
 
         // Iterate through the routes of the type and method
         foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
@@ -405,16 +408,15 @@ class Router implements RouterContract
      * Get a route url by name.
      *
      * @param string $name   The name of the route to get
-     * @param string $method [optional] The method type of get
      * @param array  $data   [optional] The route data if dynamic
+     * @param string $method [optional] The method type of get
      *
      * @return string
      */
     public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string
     {
         // Get the matching route
-        $route = $this->getRouteByName($name, $method, empty($data) ? static::STATIC_ROUTES_NAME
-            : static::DYNAMIC_ROUTES_NAME);
+        $route = $this->getRouteByName($name, $data, $method);
 
         // If no route was found
         if (! $route) {
