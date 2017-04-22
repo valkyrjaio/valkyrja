@@ -127,7 +127,7 @@ class Router implements RouterContract
             );
         }
 
-        $this->appendTrailingSlash($route);
+        $route->setPath('/' . trim($route->getPath(), '/'));
 
         // If this is a dynamic route
         if ($route->getDynamic()) {
@@ -147,23 +147,6 @@ class Router implements RouterContract
                 $route->getRequestMethod(),
                 $route->getPath(),
             ];
-        }
-    }
-
-    /**
-     * Append a trailing slash to the route path if required.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return void
-     */
-    protected function appendTrailingSlash(Route $route): void
-    {
-        // If all routes should have a trailing slash
-        // and the route doesn't already end with a slash
-        if ($this->app->config()->routing->trailingSlash && false === strpos($route->getPath(), '/', -1)) {
-            // Add a trailing slash
-            $route->setPath($route->getPath() . '/');
         }
     }
 
@@ -519,17 +502,11 @@ class Router implements RouterContract
      */
     public function matchRoute(string $path, string $method = RequestMethod::GET): Route
     {
+        $path = '/' . trim($path, '/');
+
         // Let's check if the route is set in the static routes
         if (isset(self::$routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
             return self::$routes[static::STATIC_ROUTES_TYPE][$method][$path];
-        }
-
-        // If trailing slashes and non trailing are allowed check it too
-        if (
-            $this->app->config()->routing->allowWithTrailingSlash &&
-            isset(self::$routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
-        ) {
-            return self::$routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
         }
 
         // Attempt to find a match using dynamic routes that are set
