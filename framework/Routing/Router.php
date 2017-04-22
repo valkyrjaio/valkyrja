@@ -20,10 +20,11 @@ use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Http\Exceptions\InvalidControllerException;
-use Valkyrja\Http\Exceptions\NonExistentActionException;
+use Valkyrja\Routing\Exceptions\InvalidControllerException;
+use Valkyrja\Routing\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
+use Valkyrja\Routing\Exceptions\InvalidHandlerException;
 use Valkyrja\Routing\Models\Route;
 
 /**
@@ -95,7 +96,7 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
+     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
      */
     public function addRoute(Route $route): void
     {
@@ -317,6 +318,24 @@ class Router implements RouterContract
     }
 
     /**
+     * Get a route from a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     */
+    public function getRouteFromRequest(RequestContract $request):? Route
+    {
+        $requestMethod = $request->getMethod();
+        $requestUri = $request->getPathOnly();
+
+        // Decode the request uri
+        $requestUri = rawurldecode($requestUri);
+
+        return $this->getRouteByPath($requestUri, $requestMethod);
+    }
+
+    /**
      * Get a route by path.
      *
      * @param string $path   The path
@@ -356,24 +375,6 @@ class Router implements RouterContract
     }
 
     /**
-     * Get a route from a request.
-     *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function getRouteFromRequest(RequestContract $request):? Route
-    {
-        $requestMethod = $request->getMethod();
-        $requestUri = $request->getPathOnly();
-
-        // Decode the request uri
-        $requestUri = rawurldecode($requestUri);
-
-        return $this->getRouteByPath($requestUri, $requestMethod);
-    }
-
-    /**
      * Get a route by name.
      *
      * @param string $name   The name of the route to get
@@ -386,8 +387,8 @@ class Router implements RouterContract
     {
         $match = null;
         $type = empty($data)
-                ? static::STATIC_ROUTES_NAME
-                : static::DYNAMIC_ROUTES_NAME;
+            ? static::STATIC_ROUTES_NAME
+            : static::DYNAMIC_ROUTES_NAME;
 
         // Iterate through the routes of the type and method
         foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
@@ -454,12 +455,12 @@ class Router implements RouterContract
      */
     public function getRouteArguments(Route $route): array
     {
+        // Set the arguments to return
         $arguments = [];
-        $matches = $route->getMatches() ?? false;
-
+        // Get the matches
+        $matches = $route->getMatches();
         // The injectable objects
-        $injectable = $route->getInjectables()
-            ?: [];
+        $injectable = $route->getInjectables();
 
         // If there are injectable items defined for this route
         if ($injectable) {
@@ -471,7 +472,7 @@ class Router implements RouterContract
         }
 
         // If there were matches from the dynamic route
-        if ($matches && is_array($matches)) {
+        if ($matches) {
             // Iterate through the matches
             foreach ($matches as $index => $match) {
                 // Disregard the first match (which is the route itself)
@@ -493,8 +494,8 @@ class Router implements RouterContract
      * @return void
      *
      * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidMethodTypeException
-     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
+     * @throws \Valkyrja\Routing\Exceptions\InvalidMethodTypeException
+     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
      */
     public function setupRoutes(): void
     {
@@ -643,12 +644,13 @@ class Router implements RouterContract
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
+     * @throws \Valkyrja\Routing\Exceptions\InvalidHandlerException
      */
     public function dispatch(RequestContract $request): ResponseContract
     {
+        // Get the route from the request
         $route = $this->getRouteFromRequest($request);
-        $dispatch = false;
 
         // If no route is found
         if (! $route) {
@@ -659,58 +661,113 @@ class Router implements RouterContract
         // If the route is secure and the current request is not secure
         if ($route->getSecure() && ! $request->isSecure()) {
             // Throw the redirect to the secure path
-            redirect()->secure($request->getPath())->throw();
+            return $this->app->redirect()->secure($request->getPath());
         }
 
-        // Set the action from the route to either the handler or controller action
-        $action = $route->getHandler()
-            ?: $route->getAction();
+        // If the route has an action and a controller
+        if ($route->getAction() && $route->getController()) {
+            return $this->dispatchAction($route);
+        }
+
+        return $this->dispatchHandler($route);
+    }
+
+    /**
+     * Dispatch a route's handler.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidHandlerException
+     */
+    public function dispatchHandler(Route $route): ResponseContract
+    {
         // Get the route's arguments
         $arguments = $this->getRouteArguments($route);
+        // Set the action as the route's handler
+        $action = $route->getHandler();
 
-        // If the action is a callable closure
-        if ($action instanceof Closure) {
-            // If there are arguments and they should be passed in individually
-            if ($arguments) {
-                // Call it and set it as our dispatch
-                $dispatch = $action(...$arguments);
-            }
-            // Otherwise no arguments just call the action
-            else {
-                // Call it and set it as our dispatch
-                $dispatch = $action();
-            }
-        }
-        // Otherwise the action should be a method in a controller
-        else if ($action && $route->getController()) {
-            // Set the controller through the container
-            $controller = $this->app->container()->get($route->getController());
-
-            // Let's make sure the controller is a controller
-            if (! $controller instanceof ControllerContract) {
-                throw new InvalidControllerException(
-                    'Invalid controller for route : '
-                    . $route->getPath()
-                    . ' Controller -> '
-                    . $route->getController()
-                );
-            }
-
-            // If there are arguments
-            if ($arguments) {
-                // Set the dispatch as the controller action
-                $dispatch = $controller->$action(...$arguments);
-            }
-            // Otherwise no arguments just call the action
-            else {
-                // Set the dispatch as the controller action
-                $dispatch = $controller->$action();
-            }
-
-            // Call the controller's after method
-            $controller->after();
+        // If this action is not a closure
+        if (! $action instanceof Closure) {
+            throw new InvalidHandlerException(
+                'Invalid handler for route : '
+                . $route->getPath()
+                . ' Name -> '
+                . $route->getName()
+            );
         }
 
+        // If there are arguments and they should be passed in individually
+        if ($arguments) {
+            // Call it and set it as our dispatch
+            $dispatch = $action(...$arguments);
+        }
+        // Otherwise no arguments just call the action
+        else {
+            // Call it and set it as our dispatch
+            $dispatch = $action();
+        }
+
+        // Get a response from the dispatch results
+        return $this->getResponseFromDispatch($dispatch);
+    }
+
+    /**
+     * Dispatch a route's action.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
+     */
+    public function dispatchAction(Route $route): ResponseContract
+    {
+        // Get the route's arguments
+        $arguments = $this->getRouteArguments($route);
+        // Set the action as the route's handler
+        $action = $route->getAction();
+        // Set the controller through the container
+        $controller = $this->app->container()->get($route->getController());
+
+        // Let's make sure the controller is a controller
+        if (! $controller instanceof ControllerContract) {
+            throw new InvalidControllerException(
+                'Invalid controller for route : '
+                . $route->getPath()
+                . ' Controller -> '
+                . $route->getController()
+            );
+        }
+
+        // If there are arguments
+        if ($arguments) {
+            // Set the dispatch as the controller action
+            $dispatch = $controller->$action(...$arguments);
+        }
+        // Otherwise no arguments just call the action
+        else {
+            // Set the dispatch as the controller action
+            $dispatch = $controller->$action();
+        }
+
+        // Call the controller's after method
+        $controller->after();
+
+        // Get a response from the dispatch results
+        return $this->getResponseFromDispatch($dispatch);
+    }
+
+    /**
+     * Get a response from a dispatch.
+     *
+     * @param mixed $dispatch The dispatch
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     */
+    protected function getResponseFromDispatch($dispatch): ResponseContract
+    {
         // If the dispatch failed, 404
         if (! $dispatch) {
             $this->app->abort(ResponseCode::HTTP_NOT_FOUND);

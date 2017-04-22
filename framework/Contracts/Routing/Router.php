@@ -53,8 +53,6 @@ REGEX;
      * @param \Valkyrja\Routing\Models\Route $route
      *
      * @return void
-     *
-     * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function addRoute(Route $route): void;
 
@@ -129,6 +127,15 @@ REGEX;
     public function getRoutes(): array;
 
     /**
+     * Get a route from a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     */
+    public function getRouteFromRequest(Request $request):? Route;
+
+    /**
      * Get a route by path.
      *
      * @param string $path   The path
@@ -137,15 +144,6 @@ REGEX;
      * @return \Valkyrja\Routing\Models\Route
      */
     public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route;
-
-    /**
-     * Get a route from a request.
-     *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function getRouteFromRequest(Request $request):? Route;
 
     /**
      * Get a route by name.
@@ -193,4 +191,26 @@ REGEX;
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function dispatch(Request $request): Response;
+
+    /**
+     * Dispatch a route's handler.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidHandlerException
+     */
+    public function dispatchHandler(Route $route): Response;
+
+    /**
+     * Dispatch a route's action.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return \Valkyrja\Contracts\Http\Response
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
+     */
+    public function dispatchAction(Route $route): Response;
 }

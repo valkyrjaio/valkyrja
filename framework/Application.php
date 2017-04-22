@@ -260,7 +260,7 @@ class Application implements ApplicationContract
      * @return \Valkyrja\Contracts\Http\Response
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
      */
     public function handle(Request $request): Response
     {
@@ -282,7 +282,7 @@ class Application implements ApplicationContract
      * @return void
      *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
-     * @throws \Valkyrja\Http\Exceptions\InvalidControllerException
+     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
      */
     public function run(): void
     {

@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Exceptions;
+namespace Valkyrja\Routing\Exceptions;
 
-use InvalidArgumentException;
+use Exception;
 
 /**
- * Class InvalidSameSiteTypeException
+ * Class InvalidHandlerException
  *
- * @package Valkyrja\Http\Exception
+ * @package Valkyrja\Routing\Exceptions
  *
  * @author  Melech Mizrachi
  */
-class InvalidSameSiteTypeException extends InvalidArgumentException
+class InvalidHandlerException extends Exception
 {
-    //
 }
