@@ -28,7 +28,7 @@ class Route extends Model
     /**
      * The method for this route.
      *
-     * @var \Valkyrja\Http\RequestMethod
+     * @var string
      */
     protected $method;
 
@@ -75,6 +75,20 @@ class Route extends Model
     protected $injectables = [];
 
     /**
+     * Any params for dynamic routes.
+     *
+     * @var array
+     */
+    protected $params = [];
+
+    /**
+     * Any matches for dynamic routes.
+     *
+     * @var array
+     */
+    protected $matches = [];
+
+    /**
      * Whether the route is dynamic.
      *
      * @var bool
@@ -91,14 +105,12 @@ class Route extends Model
     /**
      * Get the method.
      *
-     * @return \Valkyrja\Http\RequestMethod
-     *
-     * @throws \InvalidArgumentException
+     * @return string
      */
-    public function getMethod(): RequestMethod
+    public function getMethod(): string
     {
         if (null === $this->method) {
-            $this->method = new RequestMethod(RequestMethod::GET);
+            $this->method = RequestMethod::GET;
         }
 
         return $this->method;
@@ -107,11 +119,11 @@ class Route extends Model
     /**
      * Set the method.
      *
-     * @param \Valkyrja\Http\RequestMethod $method The request method enum
+     * @param string $method The method
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function setMethod(RequestMethod $method): self
+    public function setMethod(string $method): self
     {
         $this->method = $method;
 
@@ -263,6 +275,54 @@ class Route extends Model
     }
 
     /**
+     * Get the params.
+     *
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
+     * Set the params.
+     *
+     * @param array $params The params
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     */
+    public function setParams(array $params): self
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Get the matches.
+     *
+     * @return array
+     */
+    public function getMatches(): array
+    {
+        return $this->matches;
+    }
+
+    /**
+     * Set the matches.
+     *
+     * @param array $matches The matches
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     */
+    public function setMatches(array $matches): self
+    {
+        $this->matches = $matches;
+
+        return $this;
+    }
+
+    /**
      * Check whether the route is dynamic.
      *
      * @return boolean
@@ -308,5 +368,34 @@ class Route extends Model
         $this->secure = $secure;
 
         return $this;
+    }
+
+    /**
+     * Set the state of the route.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function __set_state(array $properties): self
+    {
+        $route = new Route();
+
+        $route
+            ->setPath($properties['path'])
+            ->setName($properties['name'])
+            ->setMethod($properties['method'])
+            ->setAction($properties['action'])
+            ->setController($properties['controller'])
+            ->setInjectables($properties['injectables'])
+            ->setParams($properties['params'])
+            ->setMatches($properties['matches'])
+            ->setDynamic($properties['dynamic'])
+            ->setSecure($properties['secure'])
+        ;
+
+        return $route;
     }
 }

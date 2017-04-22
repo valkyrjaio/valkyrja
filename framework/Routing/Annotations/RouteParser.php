@@ -31,8 +31,6 @@ class RouteParser extends AnnotationsParser implements RouteParserContract
      * @param string $docString The doc string
      *
      * @return \Valkyrja\Routing\Models\Route[]
-     *
-     * @throws \InvalidArgumentException
      */
     public function getAnnotations(string $docString): array
     {
@@ -66,7 +64,7 @@ class RouteParser extends AnnotationsParser implements RouteParserContract
                 $route = new Route();
 
                 // Set the method
-                $route->setMethod(new RequestMethod($properties['method'] ?? RequestMethod::GET));
+                $route->setMethod($properties['method'] ?? RequestMethod::GET);
 
                 // Set the path if it exists
                 if (isset($properties['path'])) {

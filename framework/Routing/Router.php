@@ -95,7 +95,6 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\NonExistentActionException
      */
     public function addRoute(Route $route): void
@@ -125,17 +124,6 @@ class Router implements RouterContract
             // Add a trailing slash
             $path .= '/';
         }
-
-        $routeArray = [
-            'path'       => $path,
-            'name'       => $route->getName() ?? $path,
-            'controller' => $route->getController() ?? false,
-            'action'     => $route->getAction() ?? false,
-            'handler'    => $route->getHandler() ?? false,
-            'injectable' => $route->getInjectables() ?? [],
-            'secure'     => $route->getSecure() ?? false,
-            'params'     => [],
-        ];
 
         // If this is a dynamic route
         if ($route->getDynamic()) {
@@ -182,18 +170,18 @@ class Router implements RouterContract
                 $path = str_replace($param, $replacement, $path);
             }
 
-            $routeArray['params'] = $params;
-
             $path = str_replace('/', '\/', $path);
             $path = '/^' . $path . '$/';
-            $routeArray['dynamicPath'] = $path;
+            $route->setPath($path);
+            $route->setParams($params);
 
             // Set it in the dynamic routes array
-            $this->routes[static::DYNAMIC_ROUTES_NAME][(string) $route->getMethod()][$path] = $routeArray;
+            $this->routes[static::DYNAMIC_ROUTES_NAME][$route->getMethod()][$path] = $route;
         }
         // Otherwise set it in the static routes array
         else {
-            $this->routes[static::STATIC_ROUTES_NAME][(string) $route->getMethod()][$path] = $routeArray;
+            $route->setPath($path);
+            $this->routes[static::STATIC_ROUTES_NAME][$route->getMethod()][$path] = $route;
         }
     }
 
@@ -321,7 +309,7 @@ class Router implements RouterContract
      * @param string $method The method type of get
      * @param string $type   [optional] The type of routes (static/dynamic)
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route[]
      */
     protected function getRoutesByMethod(string $method, string $type = self::STATIC_ROUTES_NAME): array
     {
@@ -334,11 +322,11 @@ class Router implements RouterContract
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByPath(string $path, string $method = RequestMethod::GET): array
+    public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route
     {
-        $route = [];
+        $route = null;
 
         // Let's check if the route is set in the static routes
         if (isset($this->routes[static::STATIC_ROUTES_NAME][$method][$path])) {
@@ -358,7 +346,7 @@ class Router implements RouterContract
                 // If the preg match is successful, we've found our route!
                 if (preg_match($pathIndex, $path, $matches)) {
                     $route = $dynamicRoute;
-                    $route['matches'] = $matches;
+                    $route->setMatches($matches);
                     break;
                 }
             }
@@ -372,9 +360,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteFromRequest(RequestContract $request): array
+    public function getRouteFromRequest(RequestContract $request):? Route
     {
         $requestMethod = $request->getMethod();
         $requestUri = $request->getPathOnly();
@@ -382,45 +370,7 @@ class Router implements RouterContract
         // Decode the request uri
         $requestUri = rawurldecode($requestUri);
 
-        $arguments = [];
-        $route = $this->getRouteByPath($requestUri, $requestMethod);
-        $matches = $route['matches'] ?? false;
-
-        // If no route is found
-        if (! $route) {
-            return [];
-        }
-
-        // The injectable objects
-        $injectable = $route['injectable']
-            ?: [];
-
-        // If there are injectable items defined for this route
-        if ($injectable) {
-            // Check for any injectable objects that have been set on the route
-            foreach ($injectable as $injectableObject) {
-                // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container()->get($injectableObject);
-            }
-        }
-
-        // If there were matches from the dynamic route
-        if ($matches && is_array($matches)) {
-            // Iterate through the matches
-            foreach ($matches as $index => $match) {
-                // Disregard the first match (which is the route itself)
-                if ($index === 0) {
-                    continue;
-                }
-
-                // Set the remaining arguments to pass to the action with those matches
-                $arguments[] = $match;
-            }
-        }
-
-        $route['arguments'] = $arguments;
-
-        return $route;
+        return $this->getRouteByPath($requestUri, $requestMethod);
     }
 
     /**
@@ -430,16 +380,16 @@ class Router implements RouterContract
      * @param string $method [optional] The method type of get
      * @param string $type   [optional] The type of routes (static/dynamic)
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = self::STATIC_ROUTES_NAME): array
+    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = self::STATIC_ROUTES_NAME): Route
     {
         $match = [];
 
         // Iterate through the routes of the type and method
         foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
             // If the route name matches the name we're trying to find
-            if ($route['name'] === $name) {
+            if ($route->getName() === $name) {
                 // Set the match as this route
                 $match = $route;
 
@@ -473,13 +423,13 @@ class Router implements RouterContract
         }
 
         // Set the path as the route's path
-        $path = $route['path'];
+        $path = $route->getPath();
 
         // If there is data
         if ($data) {
             // Get the route's params
             /** @var array[] $params */
-            $params = $route['params'];
+            $params = $route->getParams();
 
             // Iterate through all the prams
             foreach ($params[0] as $key => $param) {
@@ -491,6 +441,48 @@ class Router implements RouterContract
         }
 
         return $path;
+    }
+
+    /**
+     * Get a route's arguments.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return array
+     */
+    public function getRouteArguments(Route $route): array
+    {
+        $arguments = [];
+        $matches = $route->getMatches() ?? false;
+
+        // The injectable objects
+        $injectable = $route->getInjectables()
+            ?: [];
+
+        // If there are injectable items defined for this route
+        if ($injectable) {
+            // Check for any injectable objects that have been set on the route
+            foreach ($injectable as $injectableObject) {
+                // Set these as the first set of arguments to pass to the action
+                $arguments[] = $this->app->container()->get($injectableObject);
+            }
+        }
+
+        // If there were matches from the dynamic route
+        if ($matches && is_array($matches)) {
+            // Iterate through the matches
+            foreach ($matches as $index => $match) {
+                // Disregard the first match (which is the route itself)
+                if ($index === 0) {
+                    continue;
+                }
+
+                // Set the remaining arguments to pass to the action with those matches
+                $arguments[] = $match;
+            }
+        }
+
+        return $arguments;
     }
 
     /**
@@ -657,21 +649,23 @@ class Router implements RouterContract
         }
 
         // If the route is secure and the current request is not secure
-        if (isset($route['secure']) && ! $route['secure'] && ! $request->isSecure()) {
+        if ($route->getSecure() && ! $request->isSecure()) {
             // Throw the redirect to the secure path
             redirect()->secure($request->getPath())->throw();
         }
 
         // Set the action from the route to either the handler or controller action
-        $action = $route['handler']
-            ?: $route['action'];
+        $action = $route->getHandler()
+            ?: $route->getAction();
+        // Get the route's arguments
+        $arguments = $this->getRouteArguments($route);
 
         // If the action is a callable closure
         if ($action instanceof Closure) {
             // If there are arguments and they should be passed in individually
-            if ($route['arguments']) {
+            if ($arguments) {
                 // Call it and set it as our dispatch
-                $dispatch = $action(...$route['arguments']);
+                $dispatch = $action(...$arguments);
             }
             // Otherwise no arguments just call the action
             else {
@@ -680,24 +674,24 @@ class Router implements RouterContract
             }
         }
         // Otherwise the action should be a method in a controller
-        else if ($action && $route['controller']) {
+        else if ($action && $route->getController()) {
             // Set the controller through the container
-            $controller = $this->app->container()->get($route['controller']);
+            $controller = $this->app->container()->get($route->getController());
 
             // Let's make sure the controller is a controller
             if (! $controller instanceof ControllerContract) {
                 throw new InvalidControllerException(
                     'Invalid controller for route : '
-                    . $route['path']
+                    . $route->getPath()
                     . ' Controller -> '
-                    . $route['controller']
+                    . $route->getController()
                 );
             }
 
             // If there are arguments
-            if ($route['arguments']) {
+            if ($arguments) {
                 // Set the dispatch as the controller action
-                $dispatch = $controller->$action(...$route['arguments']);
+                $dispatch = $controller->$action(...$arguments);
             }
             // Otherwise no arguments just call the action
             else {

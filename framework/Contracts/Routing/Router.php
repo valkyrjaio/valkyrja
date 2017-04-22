@@ -134,18 +134,18 @@ REGEX;
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByPath(string $path, string $method = RequestMethod::GET): array;
+    public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route;
 
     /**
      * Get a route from a request.
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteFromRequest(Request $request): array;
+    public function getRouteFromRequest(Request $request):? Route;
 
     /**
      * Get a route by name.
@@ -154,9 +154,9 @@ REGEX;
      * @param string $method [optional] The method type of get
      * @param string $type   [optional] The type of routes (static/dynamic)
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = 'static'): array;
+    public function getRouteByName(string $name, string $method = RequestMethod::GET, string $type = 'static'):? Route;
 
     /**
      * Get a route url by name.
@@ -168,6 +168,15 @@ REGEX;
      * @return string
      */
     public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string;
+
+    /**
+     * Get a route's arguments.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return array
+     */
+    public function getRouteArguments(Route $route): array;
 
     /**
      * Setup routes.
