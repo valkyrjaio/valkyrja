@@ -57,7 +57,7 @@ interface RedirectResponse extends Response
      *
      * @return string
      */
-    public function getUri():? string;
+    public function getUri(): string;
 
     /**
      * Set the uri.

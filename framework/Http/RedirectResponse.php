@@ -88,7 +88,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      *
      * @return string
      */
-    public function getUri():? string
+    public function getUri(): string
     {
         return $this->uri;
     }
@@ -122,15 +122,8 @@ class RedirectResponse extends Response implements RedirectResponseContract
     {
         // If not path was set
         if (null === $path) {
-            // If the uri is already set
-            if (null !== $this->uri) {
-                // Set the path to it
-                $path = $this->uri;
-            }
-            else {
-                // Otherwise set the path to the current path w/ query string
-                $path = request()->getPath();
-            }
+            // Set the path to the current path w/ query string
+            $path = request()->getPath();
         }
 
         // If the path doesn't start with a /
