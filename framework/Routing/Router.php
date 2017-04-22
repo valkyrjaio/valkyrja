@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Routing\Exceptions\InvalidControllerException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Exceptions\NonExistentActionException;
@@ -323,18 +324,6 @@ class Router implements RouterContract
     }
 
     /**
-     * Set routes from a given array of routes.
-     *
-     * @param array $routes The routes to set
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes): void
-    {
-        $this->routes = $routes;
-    }
-
-    /**
      * Get all routes set by the application.
      *
      * @return array
@@ -358,177 +347,15 @@ class Router implements RouterContract
     }
 
     /**
-     * Get a route from a request.
+     * Set routes from a given array of routes.
      *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
+     * @param array $routes The routes to set
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return void
      */
-    public function getRouteFromRequest(RequestContract $request):? Route
+    public function setRoutes(array $routes): void
     {
-        $requestMethod = $request->getMethod();
-        $requestUri = $request->getPathOnly();
-
-        // Decode the request uri
-        $requestUri = rawurldecode($requestUri);
-
-        return $this->getRouteByPath($requestUri, $requestMethod);
-    }
-
-    /**
-     * Get a route by path.
-     *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route
-    {
-        $route = null;
-
-        // Let's check if the route is set in the static routes
-        if (isset($this->routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
-            $route = $this->routes[static::STATIC_ROUTES_TYPE][$method][$path];
-        }
-        // If trailing slashes and non trailing are allowed check it too
-        else if (
-            $this->app->config()->routing->allowWithTrailingSlash &&
-            isset($this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
-        ) {
-            $route = $this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
-        }
-        // Otherwise check dynamic routes for a match
-        else {
-            // Attempt to find a match using dynamic routes that are set
-            foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $pathIndex => $dynamicRoute) {
-                // If the preg match is successful, we've found our route!
-                if (preg_match($pathIndex, $path, $matches)) {
-                    $route = $dynamicRoute;
-                    $route->setMatches($matches);
-                    break;
-                }
-            }
-        }
-
-        return $route;
-    }
-
-    /**
-     * Determine whether a route name exists.
-     *
-     * @param string $name The name of the route
-     *
-     * @return bool
-     */
-    public function issetRouteName(string $name): bool
-    {
-        return isset($this->routes[static::NAME_ROUTES_TYPE][$name]);
-    }
-
-    /**
-     * Get a route by name.
-     *
-     * @param string $name The name of the route to get
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
-     */
-    public function getRouteByName(string $name): Route
-    {
-        $route = null;
-
-        // Let's check if the route is set in the static routes
-        if (isset($this->routes[static::NAME_ROUTES_TYPE][$name])) {
-            $route = $this->routes[static::NAME_ROUTES_TYPE][$name];
-            $route = $this->routes[$route[0]][$route[1]][$route[2]];
-        }
-
-        // If no route was found
-        if (! $route) {
-            throw new InvalidRouteName($name);
-        }
-
-        return $route;
-    }
-
-    /**
-     * Get a route url by name.
-     *
-     * @param string $name The name of the route to get
-     * @param array  $data [optional] The route data if dynamic
-     *
-     * @return string
-     *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
-     */
-    public function getRouteUrlByName(string $name, array $data = []): string
-    {
-        // Get the matching route
-        $route = $this->getRouteByName($name);
-
-        // Set the path as the route's path
-        $path = $route->getPath();
-
-        // If there is data
-        if ($data) {
-            // Get the route's params
-            /** @var array[] $params */
-            $params = $route->getParams();
-
-            // Iterate through all the prams
-            foreach ($params[0] as $key => $param) {
-                // Set the path by replacing the params with the data arguments
-                $path = str_replace($param, $data[$params[1][$key]], $path);
-            }
-
-            return $path;
-        }
-
-        return $path;
-    }
-
-    /**
-     * Get a route's arguments.
-     *
-     * @param \Valkyrja\Routing\Models\Route $route The route
-     *
-     * @return array
-     */
-    public function getRouteArguments(Route $route): array
-    {
-        // Set the arguments to return
-        $arguments = [];
-        // Get the matches
-        $matches = $route->getMatches();
-        // The injectable objects
-        $injectable = $route->getInjectables();
-
-        // If there are injectable items defined for this route
-        if ($injectable) {
-            // Check for any injectable objects that have been set on the route
-            foreach ($injectable as $injectableObject) {
-                // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container()->get($injectableObject);
-            }
-        }
-
-        // If there were matches from the dynamic route
-        if ($matches) {
-            // Iterate through the matches
-            foreach ($matches as $index => $match) {
-                // Disregard the first match (which is the route itself)
-                if ($index === 0) {
-                    continue;
-                }
-
-                // Set the remaining arguments to pass to the action with those matches
-                $arguments[] = $match;
-            }
-        }
-
-        return $arguments;
+        $this->routes = $routes;
     }
 
     /**
@@ -538,7 +365,7 @@ class Router implements RouterContract
      *
      * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
      */
-    public function setupRoutes(): void
+    public function setup(): void
     {
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useRoutesCacheFile) {
@@ -691,26 +518,195 @@ class Router implements RouterContract
     }
 
     /**
+     * Get a route by name.
+     *
+     * @param string $name The name of the route to get
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
+     */
+    public function route(string $name): Route
+    {
+        $route = null;
+
+        // Let's check if the route is set in the static routes
+        if (isset($this->routes[static::NAME_ROUTES_TYPE][$name])) {
+            $routeName = $this->routes[static::NAME_ROUTES_TYPE][$name];
+            $route = $this->routes[$routeName[0]][$routeName[1]][$routeName[2]];
+        }
+
+        // If no route was found
+        if (! $route) {
+            throw new InvalidRouteName($name);
+        }
+
+        return $route;
+    }
+
+    /**
+     * Determine whether a route name exists.
+     *
+     * @param string $name The name of the route
+     *
+     * @return bool
+     */
+    public function routeIsset(string $name): bool
+    {
+        return isset($this->routes[static::NAME_ROUTES_TYPE][$name]);
+    }
+
+    /**
+     * Get a route url by name.
+     *
+     * @param string $name The name of the route to get
+     * @param array  $data [optional] The route data if dynamic
+     *
+     * @return string
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
+     */
+    public function routeUrl(string $name, array $data = []): string
+    {
+        // Get the matching route
+        $route = $this->route($name);
+
+        // Set the path as the route's path
+        $path = $route->getPath();
+
+        // If there is data
+        if ($data) {
+            // Get the route's params
+            /** @var array[] $params */
+            $params = $route->getParams();
+
+            // Iterate through all the prams
+            foreach ($params[0] as $key => $param) {
+                // Set the path by replacing the params with the data arguments
+                $path = str_replace($param, $data[$params[1][$key]], $path);
+            }
+
+            return $path;
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get a route from a request.
+     *
+     * @param \Valkyrja\Contracts\Http\Request $request The request
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
+     */
+    public function requestRoute(RequestContract $request): Route
+    {
+        $requestMethod = $request->getMethod();
+        $requestUri = $request->getPathOnly();
+
+        // Decode the request uri
+        $requestUri = rawurldecode($requestUri);
+
+        return $this->matchRoute($requestUri, $requestMethod);
+    }
+
+    /**
+     * Get a route by path.
+     *
+     * @param string $path   The path
+     * @param string $method [optional] The method type of get
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
+     */
+    public function matchRoute(string $path, string $method = RequestMethod::GET): Route
+    {
+        // Let's check if the route is set in the static routes
+        if (isset($this->routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
+            return $this->routes[static::STATIC_ROUTES_TYPE][$method][$path];
+        }
+
+        // If trailing slashes and non trailing are allowed check it too
+        if (
+            $this->app->config()->routing->allowWithTrailingSlash &&
+            isset($this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)])
+        ) {
+            return $this->routes[static::STATIC_ROUTES_TYPE][$method][substr($path, 0, -1)];
+        }
+
+        // Attempt to find a match using dynamic routes that are set
+        foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $pathIndex => $dynamicRoute) {
+            // If the preg match is successful, we've found our route!
+            if (preg_match($pathIndex, $path, $matches)) {
+                $dynamicRoute->setMatches($matches);
+
+                return $dynamicRoute;
+            }
+        }
+
+        throw new NotFoundHttpException();
+    }
+
+    /**
+     * Get a route's arguments.
+     *
+     * @param \Valkyrja\Routing\Models\Route $route The route
+     *
+     * @return array
+     */
+    protected function getRouteArguments(Route $route): array
+    {
+        // Set the arguments to return
+        $arguments = [];
+        // Get the matches
+        $matches = $route->getMatches();
+        // The injectable objects
+        $injectable = $route->getInjectables();
+
+        // If there are injectable items defined for this route
+        if ($injectable) {
+            // Check for any injectable objects that have been set on the route
+            foreach ($injectable as $injectableObject) {
+                // Set these as the first set of arguments to pass to the action
+                $arguments[] = $this->app->container()->get($injectableObject);
+            }
+        }
+
+        // If there were matches from the dynamic route
+        if ($matches) {
+            // Iterate through the matches
+            foreach ($matches as $index => $match) {
+                // Disregard the first match (which is the route itself)
+                if ($index === 0) {
+                    continue;
+                }
+
+                // Set the remaining arguments to pass to the action with those matches
+                $arguments[] = $match;
+            }
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Dispatch the route and find a match.
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
      * @throws \Valkyrja\Routing\Exceptions\InvalidHandlerException
      */
     public function dispatch(RequestContract $request): ResponseContract
     {
         // Get the route from the request
-        $route = $this->getRouteFromRequest($request);
-
-        // If no route is found
-        if (! $route) {
-            // Throw the 404 and abort the app
-            $this->app->abort(ResponseCode::HTTP_NOT_FOUND);
-        }
+        $route = $this->requestRoute($request);
 
         // If the route is secure and the current request is not secure
         if ($route->getSecure() && ! $request->isSecure()) {

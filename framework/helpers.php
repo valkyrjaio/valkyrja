@@ -105,7 +105,7 @@ if (! function_exists('router')) {
     }
 }
 
-if (! function_exists('getRoute')) {
+if (! function_exists('route')) {
     /**
      * Get a route by name.
      *
@@ -113,9 +113,9 @@ if (! function_exists('getRoute')) {
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    function getRoute(string $name): Valkyrja\Routing\Models\Route
+    function route(string $name): Valkyrja\Routing\Models\Route
     {
-        return router()->getRouteByName($name);
+        return router()->route($name);
     }
 }
 
@@ -130,7 +130,7 @@ if (! function_exists('routeUrl')) {
      */
     function routeUrl(string $name, array $data = []): string
     {
-        return router()->getRouteUrlByName($name, $data);
+        return router()->routeUrl($name, $data);
     }
 }
 

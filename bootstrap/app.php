@@ -74,7 +74,7 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  *
  */
 
-$app->router()->setupRoutes();
+$app->router()->setup();
 
 /*
  *-------------------------------------------------------------------------

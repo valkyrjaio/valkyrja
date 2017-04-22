@@ -111,6 +111,13 @@ REGEX;
     public function head(Route $route): void;
 
     /**
+     * Get all routes set by the application.
+     *
+     * @return array
+     */
+    public function getRoutes(): array;
+
+    /**
      * Set routes from a given array of routes.
      *
      * @param array $routes The routes to set
@@ -120,39 +127,11 @@ REGEX;
     public function setRoutes(array $routes): void;
 
     /**
-     * Get all routes set by the application.
+     * Setup routes.
      *
-     * @return array
+     * @return void
      */
-    public function getRoutes(): array;
-
-    /**
-     * Get a route from a request.
-     *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function getRouteFromRequest(Request $request):? Route;
-
-    /**
-     * Get a route by path.
-     *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route;
-
-    /**
-     * Determine whether a route name exists.
-     *
-     * @param string $name The name of the route
-     *
-     * @return bool
-     */
-    public function issetRouteName(string $name): bool;
+    public function setup(): void;
 
     /**
      * Get a route by name.
@@ -161,7 +140,16 @@ REGEX;
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name): Route;
+    public function route(string $name): Route;
+
+    /**
+     * Determine whether a route name exists.
+     *
+     * @param string $name The name of the route
+     *
+     * @return bool
+     */
+    public function routeIsset(string $name): bool;
 
     /**
      * Get a route url by name.
@@ -171,23 +159,26 @@ REGEX;
      *
      * @return string
      */
-    public function getRouteUrlByName(string $name, array $data = []): string;
+    public function routeUrl(string $name, array $data = []): string;
 
     /**
-     * Get a route's arguments.
+     * Get a route from a request.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteArguments(Route $route): array;
+    public function requestRoute(Request $request): Route;
 
     /**
-     * Setup routes.
+     * Get a route by path.
      *
-     * @return void
+     * @param string $path   The path
+     * @param string $method [optional] The method type of get
+     *
+     * @return \Valkyrja\Routing\Models\Route
      */
-    public function setupRoutes(): void;
+    public function matchRoute(string $path, string $method = RequestMethod::GET): Route;
 
     /**
      * Dispatch the route and find a match.

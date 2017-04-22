@@ -19,9 +19,9 @@ use Valkyrja\Contracts\Http\Exceptions\HttpException as HttpExceptionContract;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class Exception
+ * Class HttpException
  *
- * @package Valkyrja\Exceptions
+ * @package Valkyrja\Http\Exceptions
  *
  * @author  Melech Mizrachi
  */

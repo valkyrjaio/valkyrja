@@ -29,7 +29,6 @@ use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
 
 /**
@@ -220,7 +219,7 @@ class Application implements ApplicationContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\HttpException
      */
     public function abort(
         int $statusCode = ResponseCode::HTTP_NOT_FOUND,
@@ -259,7 +258,7 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\HttpException
      * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
      */
     public function handle(Request $request): Response
@@ -281,7 +280,7 @@ class Application implements ApplicationContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\HttpException
      * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
      */
     public function run(): void
@@ -439,7 +438,7 @@ class Application implements ApplicationContract
     ): RedirectResponse
     {
         // Get the uri from the router using the route and parameters
-        $uri = $this->router()->getRouteUrlByName($route, $parameters, RequestMethod::GET);
+        $uri = $this->router()->routeUrl($route, $parameters);
 
         return $this->redirect($uri, $statusCode, $headers);
     }
