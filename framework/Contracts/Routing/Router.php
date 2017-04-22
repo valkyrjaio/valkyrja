@@ -146,26 +146,32 @@ REGEX;
     public function getRouteByPath(string $path, string $method = RequestMethod::GET):? Route;
 
     /**
+     * Determine whether a route name exists.
+     *
+     * @param string $name The name of the route
+     *
+     * @return bool
+     */
+    public function issetRouteName(string $name): bool;
+
+    /**
      * Get a route by name.
      *
      * @param string $name   The name of the route to get
-     * @param array  $data   [optional] The route data if dynamic
-     * @param string $method [optional] The method type of get
      *
      * @return \Valkyrja\Routing\Models\Route
      */
-    public function getRouteByName(string $name, array $data = [], string $method = RequestMethod::GET):? Route;
+    public function getRouteByName(string $name): Route;
 
     /**
      * Get a route url by name.
      *
      * @param string $name   The name of the route to get
      * @param array  $data   [optional] The route data if dynamic
-     * @param string $method [optional] The method type of get
      *
      * @return string
      */
-    public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string;
+    public function getRouteUrlByName(string $name, array $data = []): string;
 
     /**
      * Get a route's arguments.

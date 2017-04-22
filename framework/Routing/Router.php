@@ -21,6 +21,7 @@ use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Routing\Exceptions\InvalidControllerException;
+use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
@@ -47,6 +48,11 @@ class Router implements RouterContract
      * The dynamic routes type.
      */
     protected const DYNAMIC_ROUTES_TYPE = 'dynamic';
+
+    /**
+     * The name routes type.
+     */
+    protected const NAME_ROUTES_TYPE = 'name';
 
     /**
      * Application.
@@ -77,6 +83,7 @@ class Router implements RouterContract
             RequestMethod::DELETE => [],
             RequestMethod::HEAD   => [],
         ],
+        self::NAME_ROUTES_TYPE    => [],
     ];
 
     /**
@@ -183,6 +190,14 @@ class Router implements RouterContract
         else {
             $route->setPath($path);
             $this->routes[static::STATIC_ROUTES_TYPE][$route->getMethod()][$path] = $route;
+        }
+
+        if ($route->getName()) {
+            $this->routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
+                $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
+                $route->getMethod(),
+                $path,
+            ];
         }
     }
 
@@ -375,55 +390,58 @@ class Router implements RouterContract
     }
 
     /**
+     * Determine whether a route name exists.
+     *
+     * @param string $name The name of the route
+     *
+     * @return bool
+     */
+    public function issetRouteName(string $name): bool
+    {
+        return isset($this->routes[static::NAME_ROUTES_TYPE][$name]);
+    }
+
+    /**
      * Get a route by name.
      *
-     * @param string $name   The name of the route to get
-     * @param array  $data   [optional] The route data if dynamic
-     * @param string $method [optional] The method type of get
+     * @param string $name The name of the route to get
      *
      * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
      */
-    public function getRouteByName(string $name, array $data = [], string $method = RequestMethod::GET):? Route
+    public function getRouteByName(string $name): Route
     {
-        $match = null;
-        $type = empty($data)
-            ? static::STATIC_ROUTES_TYPE
-            : static::DYNAMIC_ROUTES_TYPE;
+        $route = null;
 
-        // Iterate through the routes of the type and method
-        foreach ($this->getRoutesByMethod($method, $type) as $index => $route) {
-            // If the route name matches the name we're trying to find
-            if ($route->getName() === $name) {
-                // Set the match as this route
-                $match = $route;
-
-                // Break as we have found our match
-                break;
-            }
+        // Let's check if the route is set in the static routes
+        if (isset($this->routes[static::NAME_ROUTES_TYPE][$name])) {
+            $route = $this->routes[static::NAME_ROUTES_TYPE][$name];
+            $route = $this->routes[$route[0]][$route[1]][$route[2]];
         }
 
-        return $match;
+        // If no route was found
+        if (! $route) {
+            throw new InvalidRouteName($name);
+        }
+
+        return $route;
     }
 
     /**
      * Get a route url by name.
      *
-     * @param string $name   The name of the route to get
-     * @param array  $data   [optional] The route data if dynamic
-     * @param string $method [optional] The method type of get
+     * @param string $name The name of the route to get
+     * @param array  $data [optional] The route data if dynamic
      *
      * @return string
+     *
+     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
      */
-    public function getRouteUrlByName(string $name, array $data = [], string $method = RequestMethod::GET): string
+    public function getRouteUrlByName(string $name, array $data = []): string
     {
         // Get the matching route
-        $route = $this->getRouteByName($name, $data, $method);
-
-        // If no route was found
-        if (! $route) {
-            // Return an empty string
-            return '';
-        }
+        $route = $this->getRouteByName($name);
 
         // Set the path as the route's path
         $path = $route->getPath();
@@ -531,7 +549,7 @@ class Router implements RouterContract
      *
      * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
      */
-    public function setupAnnotatedRoutes(): void
+    protected function setupAnnotatedRoutes(): void
     {
         // Routes array
         $routes = [];

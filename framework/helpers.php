@@ -109,15 +109,13 @@ if (! function_exists('getRoute')) {
     /**
      * Get a route by name.
      *
-     * @param string $name   The name of the route to get
-     * @param string $method [optional] The method type of get
-     * @param string $type   [optional] The type of route (static/dynamic)
+     * @param string $name The name of the route to get
      *
-     * @return array
+     * @return \Valkyrja\Routing\Models\Route
      */
-    function getRoute(string $name, string $method = Valkyrja\Http\RequestMethod::GET, string $type = 'static'): array
+    function getRoute(string $name): Valkyrja\Routing\Models\Route
     {
-        return router()->getRouteByName($name, $method, $type);
+        return router()->getRouteByName($name);
     }
 }
 
@@ -125,15 +123,14 @@ if (! function_exists('routeUrl')) {
     /**
      * Get a route url by name.
      *
-     * @param string $name   The name of the route to get
-     * @param string $method [optional] The method type of get
-     * @param array  $data   [optional] The route data if dynamic
+     * @param string $name The name of the route to get
+     * @param array  $data [optional] The route data if dynamic
      *
      * @return string
      */
-    function routeUrl(string $name, array $data = [], string $method = Valkyrja\Http\RequestMethod::GET): string
+    function routeUrl(string $name, array $data = []): string
     {
-        return router()->getRouteUrlByName($name, $data, $method);
+        return router()->getRouteUrlByName($name, $data);
     }
 }
 
