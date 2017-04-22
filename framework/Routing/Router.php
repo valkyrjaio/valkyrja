@@ -429,20 +429,14 @@ class Router implements RouterContract
      */
     public function route(string $name): Route
     {
-        $route = null;
-
-        // Let's check if the route is set in the static routes
-        if (isset(self::$routes[static::NAME_ROUTES_TYPE][$name])) {
-            $routeName = self::$routes[static::NAME_ROUTES_TYPE][$name];
-            $route = self::$routes[$routeName[0]][$routeName[1]][$routeName[2]];
-        }
-
         // If no route was found
-        if (! $route) {
+        if (! $this->routeIsset($name)) {
             throw new InvalidRouteName($name);
         }
 
-        return $route;
+        $routeName = self::$routes[static::NAME_ROUTES_TYPE][$name];
+
+        return self::$routes[$routeName[0]][$routeName[1]][$routeName[2]];
     }
 
     /**
