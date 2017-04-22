@@ -12,6 +12,7 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 
 /**
@@ -111,6 +112,43 @@ class RedirectResponse extends Response implements RedirectResponseContract
     }
 
     /**
+     * Set the redirect uri to secure.
+     *
+     * @param string $path The path
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function secure(string $path = null): RedirectResponseContract
+    {
+        // If not path was set
+        if (null === $path) {
+            // If the uri is already set
+            if (null !== $this->uri) {
+                // Set the path to it
+                $path = $this->uri;
+            }
+            else {
+                // Otherwise set the path to the current path w/ query string
+                $path = request()->getPath();
+            }
+        }
+
+        // If the path doesn't start with a /
+        if ('/' !== $path[0]) {
+            // Set the uri as the path
+            $this->uri = $path;
+
+            // Return out of the method
+            return $this;
+        }
+
+        // Set the uri to https with the host and path
+        $this->uri = 'https://' . request()->getHttpHost() . $path;
+
+        return $this;
+    }
+
+    /**
      * Redirect back to the referer.
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
@@ -122,5 +160,15 @@ class RedirectResponse extends Response implements RedirectResponseContract
         $this->uri = $refererUri ?: '/';
 
         return $this;
+    }
+
+    /**
+     * Throw this redirect.
+     *
+     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     */
+    public function throw(): void
+    {
+        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->headers->all());
     }
 }

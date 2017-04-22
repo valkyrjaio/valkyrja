@@ -69,9 +69,23 @@ interface RedirectResponse extends Response
     public function setUri(string $uri): self;
 
     /**
+     * Set the redirect uri to secure.
+     *
+     * @param string $path The path
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     */
+    public function secure(string $path = null): self;
+
+    /**
      * Redirect back to the referer.
      *
      * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function back(): self;
+
+    /**
+     * Throw this redirect.
+     */
+    public function throw(): void;
 }
