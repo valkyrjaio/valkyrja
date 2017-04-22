@@ -6,7 +6,7 @@
  *
  * @path /
  */
-use Valkyrja\Routing\Models\Route;
+use Valkyrja\Routing\Route;
 
 router()->get(
     (new Route())
@@ -46,7 +46,7 @@ router()->get(
         ->setController(App\Controllers\HomeController::class)
         ->setAction('home')
         ->setName('home')
-        ->setInjectables(
+        ->setDependencies(
             [
                 // Any classes defined within the injectable array are
                 //   automatically be run through the service container for you.
@@ -68,7 +68,7 @@ router()->get(
         ->setController(App\Controllers\HomeController::class)
         ->setAction('home')
         ->setName('homePage')
-        ->setInjectables(
+        ->setDependencies(
             [
                 // Any classes defined within the injectable array are
                 //   automatically be run through the service container for you.

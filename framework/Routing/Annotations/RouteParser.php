@@ -11,10 +11,10 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Annotations\Parser\AnnotationsParser;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Http\RequestMethod;
-use Valkyrja\Routing\Models\Route;
+use Valkyrja\Routing\Route;
 
 /**
  * Class Parser
@@ -30,7 +30,7 @@ class RouteParser extends AnnotationsParser implements RouteParserContract
      *
      * @param string $docString The doc string
      *
-     * @return \Valkyrja\Routing\Models\Route[]
+     * @return \Valkyrja\Routing\Route[]
      */
     public function getAnnotations(string $docString): array
     {
@@ -64,7 +64,7 @@ class RouteParser extends AnnotationsParser implements RouteParserContract
                 $route = new Route();
 
                 // Set the method
-                $route->setMethod($properties['method'] ?? RequestMethod::GET);
+                $route->setRequestMethod($properties['method'] ?? RequestMethod::GET);
 
                 // Set the path if it exists
                 if (isset($properties['path'])) {

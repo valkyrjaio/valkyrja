@@ -111,9 +111,9 @@ if (! function_exists('route')) {
      *
      * @param string $name The name of the route to get
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return \Valkyrja\Routing\Route
      */
-    function route(string $name): Valkyrja\Routing\Models\Route
+    function route(string $name): Valkyrja\Routing\Route
     {
         return router()->route($name);
     }

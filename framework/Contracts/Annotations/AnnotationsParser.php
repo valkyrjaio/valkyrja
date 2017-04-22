@@ -9,25 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations\Parser;
-
-use Valkyrja\Contracts\Annotations\Parser\AnnotationsParser as AnnotationsParserContract;
+namespace Valkyrja\Contracts\Annotations;
 
 /**
- * Class Annotations
+ * Interface AnnotationsParser
  *
- * @package Valkyrja\Annotations\Parser
+ * @package Valkyrja\Contracts\Annotations
  *
  * @author  Melech Mizrachi
  */
-abstract class AnnotationsParser implements AnnotationsParserContract
+interface AnnotationsParser
 {
     /**
      * Get annotations from a given string.
      *
      * @param string $docString The doc string
      *
-     * @return array
+     * @return \Valkyrja\Annotations\Annotation[]
      */
-    abstract public function getAnnotations(string $docString): array;
+    public function getAnnotations(string $docString): array;
 }

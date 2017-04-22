@@ -9,29 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Models;
+namespace Valkyrja\Routing;
 
 use Closure;
 
+use Valkyrja\Annotations\Annotation;
 use Valkyrja\Http\RequestMethod;
-use Valkyrja\Model\Model;
 
 /**
  * Class Route
  *
- * @package Valkyrja\Routing\Models
+ * @package Valkyrja\Routing
  *
  * @author  Melech Mizrachi
  */
-class Route extends Model
+class Route extends Annotation
 {
-    /**
-     * The method for this route.
-     *
-     * @var string
-     */
-    protected $method;
-
     /**
      * The path for this route.
      *
@@ -45,20 +38,12 @@ class Route extends Model
      * @var string
      */
     protected $name;
-
     /**
-     * The controller to use for this route.
+     * The request method for this route.
      *
      * @var string
      */
-    protected $controller;
-
-    /**
-     * The action to use for this route.
-     *
-     * @var string
-     */
-    protected $action;
+    protected $requestMethod;
 
     /**
      * The handler for this route.
@@ -72,7 +57,7 @@ class Route extends Model
      *
      * @var array
      */
-    protected $injectables = [];
+    protected $dependencies = [];
 
     /**
      * Any params for dynamic routes.
@@ -103,34 +88,6 @@ class Route extends Model
     protected $secure = false;
 
     /**
-     * Get the method.
-     *
-     * @return string
-     */
-    public function getMethod(): string
-    {
-        if (null === $this->method) {
-            $this->method = RequestMethod::GET;
-        }
-
-        return $this->method;
-    }
-
-    /**
-     * Set the method.
-     *
-     * @param string $method The method
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function setMethod(string $method): self
-    {
-        $this->method = $method;
-
-        return $this;
-    }
-
-    /**
      * Get the route's path.
      *
      * @return string
@@ -145,7 +102,7 @@ class Route extends Model
      *
      * @param string $path The route path
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setPath(string $path): self
     {
@@ -169,7 +126,7 @@ class Route extends Model
      *
      * @param string $name The route's name
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setName(string $name): self
     {
@@ -179,49 +136,29 @@ class Route extends Model
     }
 
     /**
-     * Get the route's controller.
+     * Get the request method.
      *
      * @return string
      */
-    public function getController():? string
+    public function getRequestMethod(): string
     {
-        return $this->controller;
+        if (null === $this->requestMethod) {
+            $this->requestMethod = RequestMethod::GET;
+        }
+
+        return $this->requestMethod;
     }
 
     /**
-     * Set the route's controller.
+     * Set the method.
      *
-     * @param string $controller The controller to use
+     * @param string $requestMethod The request method
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
-    public function setController(string $controller): self
+    public function setRequestMethod(string $requestMethod): self
     {
-        $this->controller = $controller;
-
-        return $this;
-    }
-
-    /**
-     * Get the route's action.
-     *
-     * @return string
-     */
-    public function getAction():? string
-    {
-        return $this->action;
-    }
-
-    /**
-     * Set the route's action.
-     *
-     * @param string $action The action to use in the controller
-     *
-     * @return \Valkyrja\Routing\Models\Route
-     */
-    public function setAction(string $action): self
-    {
-        $this->action = $action;
+        $this->requestMethod = $requestMethod;
 
         return $this;
     }
@@ -241,7 +178,7 @@ class Route extends Model
      *
      * @param \Closure $handler The closure to handle to route
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setHandler(Closure $handler): self
     {
@@ -255,21 +192,21 @@ class Route extends Model
      *
      * @return array
      */
-    public function getInjectables(): array
+    public function getDependencies(): array
     {
-        return $this->injectables;
+        return $this->dependencies;
     }
 
     /**
-     * Set the route's injectables.
+     * Set the route's dependencies.
      *
-     * @param array $injectables List of dependency injectable objects for the action/handler
+     * @param array $dependencies List of dependency injectable objects for the action/handler
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
-    public function setInjectables(array $injectables): self
+    public function setDependencies(array $dependencies): self
     {
-        $this->injectables = $injectables;
+        $this->dependencies = $dependencies;
 
         return $this;
     }
@@ -289,7 +226,7 @@ class Route extends Model
      *
      * @param array $params The params
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setParams(array $params): self
     {
@@ -313,7 +250,7 @@ class Route extends Model
      *
      * @param array $matches The matches
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setMatches(array $matches): self
     {
@@ -337,7 +274,7 @@ class Route extends Model
      *
      * @param bool $dynamic Whether the route it dynamic
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setDynamic(bool $dynamic): self
     {
@@ -361,7 +298,7 @@ class Route extends Model
      *
      * @param bool $secure Whether the route is secure
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      */
     public function setSecure(bool $secure): self
     {
@@ -375,7 +312,7 @@ class Route extends Model
      *
      * @param array $properties The properties to set
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return $this
      *
      * @throws \InvalidArgumentException
      */
@@ -386,14 +323,15 @@ class Route extends Model
         $route
             ->setPath($properties['path'])
             ->setName($properties['name'])
-            ->setMethod($properties['method'])
-            ->setAction($properties['action'])
-            ->setController($properties['controller'])
-            ->setInjectables($properties['injectables'])
+            ->setRequestMethod($properties['requestMethod'])
+            ->setDependencies($properties['dependencies'])
             ->setParams($properties['params'])
-            ->setMatches($properties['matches'])
             ->setDynamic($properties['dynamic'])
             ->setSecure($properties['secure'])
+            ->setMatches($properties['matches'])
+            ->setMethod($properties['method'])
+            ->setFunction($properties['function'])
+            ->setClass($properties['class'])
         ;
 
         return $route;
@@ -404,7 +342,7 @@ class Route extends Model
      *
      * @param array $properties The properties to set
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return \Valkyrja\Routing\Route
      *
      * @throws \InvalidArgumentException
      */

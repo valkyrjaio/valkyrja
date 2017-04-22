@@ -15,7 +15,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\RequestMethod;
-use Valkyrja\Routing\Models\Route;
+use Valkyrja\Routing\Route;
 
 /**
  * Interface Router
@@ -50,7 +50,7 @@ REGEX;
     /**
      * Set a single route.
      *
-     * @param \Valkyrja\Routing\Models\Route $route
+     * @param \Valkyrja\Routing\Route $route
      *
      * @return void
      */
@@ -59,7 +59,7 @@ REGEX;
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -68,7 +68,7 @@ REGEX;
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -77,7 +77,7 @@ REGEX;
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -86,7 +86,7 @@ REGEX;
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -95,7 +95,7 @@ REGEX;
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -104,7 +104,7 @@ REGEX;
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return void
      */
@@ -138,7 +138,7 @@ REGEX;
      *
      * @param string $name   The name of the route to get
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return \Valkyrja\Routing\Route
      */
     public function route(string $name): Route;
 
@@ -166,7 +166,7 @@ REGEX;
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return \Valkyrja\Routing\Route
      */
     public function requestRoute(Request $request): Route;
 
@@ -176,7 +176,7 @@ REGEX;
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return \Valkyrja\Routing\Models\Route
+     * @return \Valkyrja\Routing\Route
      */
     public function matchRoute(string $path, string $method = RequestMethod::GET): Route;
 
@@ -192,7 +192,7 @@ REGEX;
     /**
      * Dispatch a route's handler.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
@@ -203,7 +203,7 @@ REGEX;
     /**
      * Dispatch a route's action.
      *
-     * @param \Valkyrja\Routing\Models\Route $route The route
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return \Valkyrja\Contracts\Http\Response
      *

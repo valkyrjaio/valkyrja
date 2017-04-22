@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Routing\Annotations;
 
-use Valkyrja\Contracts\Annotations\Parser\AnnotationsParser;
+use Valkyrja\Contracts\Annotations\AnnotationsParser;
 
 /**
  * Interface RouteParser
