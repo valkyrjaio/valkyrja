@@ -371,7 +371,7 @@ class Route extends Model
     }
 
     /**
-     * Set the state of the route.
+     * Get a route from properties.
      *
      * @param array $properties The properties to set
      *
@@ -379,7 +379,7 @@ class Route extends Model
      *
      * @throws \InvalidArgumentException
      */
-    public static function __set_state(array $properties): self
+    public static function getRoute(array $properties): self
     {
         $route = new Route();
 
@@ -397,5 +397,19 @@ class Route extends Model
         ;
 
         return $route;
+    }
+
+    /**
+     * Set the state of the route.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return \Valkyrja\Routing\Models\Route
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function __set_state(array $properties): self
+    {
+        return static::getRoute($properties);
     }
 }
