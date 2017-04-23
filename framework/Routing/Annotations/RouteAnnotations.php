@@ -29,40 +29,23 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @param string[] $classes The classes
      *
-     * @return array
+     * @return \Valkyrja\Routing\Route[]
      */
     public function getRoutes(string ...$classes): array
     {
-        /** @var \Valkyrja\Routing\Route[] $routes */
-        $routes = [];
+        $routes = $this->getClassRoutes($classes);
         /** @var \Valkyrja\Routing\Route[] $finalRoutes */
         $finalRoutes = [];
 
-        // Iterate through all the classes
-        foreach ($classes as $class) {
-            // Get all the routes for each class and iterate through them
-            foreach ($this->methodsAnnotations($class) as $annotation) {
-                // Set the annotation in the routes list
-                $routes[] = $annotation;
-            }
-        }
-
         // Iterate through all the routes
         foreach ($routes as $route) {
-            // Setup to find any injectable objects through the service container
-            $dependencies = [];
-
-            // Iterate through the method's parameters
-            foreach ($this->getMethodReflection($route->getClass(), $route->getMethod())->getParameters() as $parameter) {
-                // We only care for classes
-                if ($parameter->getClass()) {
-                    // Set the injectable in the array
-                    $dependencies[] = $parameter->getClass()->getName();
-                }
-            }
-
             // Set the route's dependencies
-            $route->setDependencies($dependencies);
+            $route->setDependencies(
+                $this->getDependencies(
+                    $this->getMethodReflection($route->getClass(), $route->getMethod())
+                         ->getParameters()
+                )
+            );
 
             // If this route's class has annotations
             if ($classAnnotations = $this->classAnnotations($route->getClass())) {
@@ -83,6 +66,54 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     }
 
     /**
+     * Get all classes' routes.
+     *
+     * @param array $classes The classes
+     *
+     * @return \Valkyrja\Routing\Route[]
+     */
+    protected function getClassRoutes(array $classes): array
+    {
+        /** @var \Valkyrja\Routing\Route[] $routes */
+        $routes = [];
+
+        // Iterate through all the classes
+        foreach ($classes as $class) {
+            // Get all the routes for each class and iterate through them
+            foreach ($this->methodsAnnotations($class) as $annotation) {
+                // Set the annotation in the routes list
+                $routes[] = $annotation;
+            }
+        }
+
+        return $routes;
+    }
+
+    /**
+     * Get dependencies from parameters.
+     *
+     * @param array $parameters The parameters
+     *
+     * @return array
+     */
+    protected function getDependencies(array $parameters): array
+    {
+        // Setup to find any injectable objects through the service container
+        $dependencies = [];
+
+        // Iterate through the method's parameters
+        foreach ($parameters as $parameter) {
+            // We only care for classes
+            if ($parameter->getClass()) {
+                // Set the injectable in the array
+                $dependencies[] = $parameter->getClass()->getName();
+            }
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * Get a new route with controller route additions.
      *
      * @param \Valkyrja\Routing\Route $controllerRoute
@@ -95,31 +126,19 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         $newRoute = clone $route;
 
         // If there is a base path for this controller
-        if (null !== $controllerPath = $controllerRoute->getPath()) {
+        if (null !== $controllerRoute->getPath()) {
             // Get the route's path
-            $path = $route->getPath();
-
-            // If this is the index
-            if ('/' === $path) {
-                // Set to blank so the final path will be just the base path
-                $path = '';
-            }
-            // If the controller route is the index
-            else if ('/' === $controllerPath) {
-                // Set to blank so the final path won't start with double slash
-                $controllerPath = '';
-            }
+            $path = $this->validatePath($route->getPath());
+            $controllerPath = $this->validatePath($controllerRoute->getPath());
 
             // Set the path to the base path and route path
-            $newRoute->setPath($controllerPath . $path);
+            $newRoute->setPath($this->validatePath($controllerPath . $path));
         }
 
         // If there is a base name for this controller
-        if (null !== $controllerName = $controllerRoute->getName()) {
-            $name = $controllerName . '.' . $route->getName();
-
+        if (null !== $controllerRoute->getName()) {
             // Set the name to the base name and route name
-            $newRoute->setName($name);
+            $newRoute->setName($controllerRoute->getName() . '.' . $route->getName());
         }
 
         // If the base is dynamic
@@ -135,5 +154,17 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         return $newRoute;
+    }
+
+    /**
+     * Validate a path.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validatePath(string $path): string
+    {
+        return '/' . trim($path, '/');
     }
 }
