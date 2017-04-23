@@ -245,8 +245,6 @@ class Annotation extends Model
      * @param array $properties The properties to set
      *
      * @return $this
-     *
-     * @throws \InvalidArgumentException
      */
     public static function getAnnotation(array $properties): self
     {
@@ -269,8 +267,6 @@ class Annotation extends Model
      * @param array $properties The properties to set
      *
      * @return \Valkyrja\Annotations\Annotation
-     *
-     * @throws \InvalidArgumentException
      */
     public static function __set_state(array $properties): self
     {

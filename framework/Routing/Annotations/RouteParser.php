@@ -13,7 +13,6 @@ namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
-use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Route;
 
 /**
@@ -60,34 +59,8 @@ class RouteParser extends AnnotationsParser implements RouteParserContract
                     $properties[$arguments[1][$index]] = $argument;
                 }
 
-                // Set this as a new Route in the annotations array
-                $route = new Route();
-
-                // Set the method
-                $route->setRequestMethod($properties['method'] ?? RequestMethod::GET);
-
-                // Set the path if it exists
-                if (isset($properties['path'])) {
-                    $route->setPath($properties['path']);
-                }
-
-                // Set the name if it exists
-                if (isset($properties['name'])) {
-                    $route->setName($properties['name']);
-                }
-
-                // Set the dynamic if it exists
-                if (isset($properties['dynamic'])) {
-                    $route->setDynamic($properties['dynamic']);
-                }
-
-                // Set the secure if it exists
-                if (isset($properties['secure'])) {
-                    $route->setSecure($properties['secure']);
-                }
-
                 // Set the route within the annotations array to return
-                $annotations[] = $route;
+                $annotations[] = Route::getRoute($properties);
             }
         }
 

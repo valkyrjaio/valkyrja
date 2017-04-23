@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Routing;
 
-use Closure;
-
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Http\RequestMethod;
 
@@ -126,7 +124,7 @@ class Route extends Annotation
      *
      * @return $this
      */
-    public function setRequestMethod(string $requestMethod): self
+    public function setRequestMethod(string $requestMethod = null): self
     {
         $this->requestMethod = $requestMethod;
 
@@ -259,8 +257,6 @@ class Route extends Annotation
      * @param array $properties The properties to set
      *
      * @return $this
-     *
-     * @throws \InvalidArgumentException
      */
     public static function getRoute(array $properties): self
     {
@@ -268,13 +264,13 @@ class Route extends Annotation
 
         $route
             ->setPath($properties['path'])
-            ->setName($properties['name'])
-            ->setRequestMethod($properties['requestMethod'])
+            ->setName($properties['name'] ?? null)
+            ->setRequestMethod($properties['requestMethod'] ?? null)
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
             ->setMatches($properties['matches'] ?? null)
-            ->setDynamic($properties['dynamic'])
-            ->setSecure($properties['secure'])
+            ->setDynamic($properties['dynamic'] ?? false)
+            ->setSecure($properties['secure'] ?? false)
             ->setClass($properties['class'] ?? null)
             ->setMethod($properties['method'] ?? null)
             ->setFunction($properties['function'] ?? null)
@@ -290,8 +286,6 @@ class Route extends Annotation
      * @param array $properties The properties to set
      *
      * @return \Valkyrja\Routing\Route
-     *
-     * @throws \InvalidArgumentException
      */
     public static function __set_state(array $properties): Annotation
     {
