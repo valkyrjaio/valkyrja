@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Annotations;
 
+use Closure;
+
 use Valkyrja\Model\Model;
 
 /**
@@ -22,6 +24,13 @@ use Valkyrja\Model\Model;
  */
 class Annotation extends Model
 {
+    /**
+     * The name.
+     *
+     * @var string
+     */
+    protected $name;
+
     /**
      * The class.
      *
@@ -51,11 +60,49 @@ class Annotation extends Model
     protected $function;
 
     /**
+     * The closure.
+     *
+     * @var \Closure
+     */
+    protected $closure;
+
+    /**
+     * The dependencies.
+     *
+     * @var array
+     */
+    protected $dependencies;
+
+    /**
+     * Get the name.
+     *
+     * @return string
+     */
+    public function getName():? string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param string $name The name
+     *
+     * @return $this
+     */
+    public function setName(string $name = null): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * Get the class.
      *
      * @return string
      */
-    public function getClass(): string
+    public function getClass():? string
     {
         return $this->class;
     }
@@ -79,7 +126,7 @@ class Annotation extends Model
      *
      * @return string
      */
-    public function getProperty(): string
+    public function getProperty():? string
     {
         return $this->property;
     }
@@ -103,7 +150,7 @@ class Annotation extends Model
      *
      * @return string
      */
-    public function getMethod(): string
+    public function getMethod():? string
     {
         return $this->method;
     }
@@ -125,7 +172,7 @@ class Annotation extends Model
     /**
      * @return string
      */
-    public function getFunction(): string
+    public function getFunction():? string
     {
         return $this->function;
     }
@@ -142,5 +189,91 @@ class Annotation extends Model
         $this->function = $function;
 
         return $this;
+    }
+
+    /**
+     * Get the closure.
+     *
+     * @return \Closure
+     */
+    public function getClosure():? Closure
+    {
+        return $this->closure;
+    }
+
+    /**
+     * Set the closure.
+     *
+     * @param \Closure $closure The closure
+     *
+     * @return $this
+     */
+    public function setClosure(Closure $closure = null): self
+    {
+        $this->closure = $closure;
+
+        return $this;
+    }
+
+    /**
+     * Get the dependencies.
+     *
+     * @return array
+     */
+    public function getDependencies():? array
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * Set the dependencies.
+     *
+     * @param array $dependencies The dependencies
+     *
+     * @return $this
+     */
+    public function setDependencies(array $dependencies = null): self
+    {
+        $this->dependencies = $dependencies;
+
+        return $this;
+    }
+
+    /**
+     * Get an annotation from properties.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return $this
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function getAnnotation(array $properties): self
+    {
+        $annotation = new Annotation();
+
+        $annotation
+            ->setClass($properties['class'] ?? null)
+            ->setMethod($properties['method'] ?? null)
+            ->setProperty($properties['property'] ?? null)
+            ->setFunction($properties['function'] ?? null)
+            ->setClosure($properties['closure'] ?? null)
+            ->setDependencies($properties['dependencies'] ?? null);
+
+        return $annotation;
+    }
+
+    /**
+     * Set the state of the annotation.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return \Valkyrja\Annotations\Annotation
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function __set_state(array $properties): self
+    {
+        return static::getAnnotation($properties);
     }
 }

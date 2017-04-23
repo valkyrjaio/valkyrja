@@ -13,6 +13,7 @@ namespace Valkyrja\Routing;
 
 use Closure;
 
+use Valkyrja\Annotations\Traits\Annotatable;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
@@ -23,7 +24,6 @@ use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Routing\Exceptions\InvalidControllerException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
-use Valkyrja\Routing\Exceptions\NonExistentActionException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
 use Valkyrja\Routing\Exceptions\InvalidHandlerException;
@@ -37,6 +37,8 @@ use Valkyrja\Routing\Exceptions\InvalidHandlerException;
  */
 class Router implements RouterContract
 {
+    use Annotatable;
+
     /**
      * The static routes type.
      *
@@ -103,28 +105,14 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
      */
     public function addRoute(Route $route): void
     {
-        // Let's check the action method is callable before proceeding
-        if (
-            null === $route->getHandler()
-            && ! is_callable(
-                [
-                    $route->getClass(),
-                    $route->getMethod(),
-                ]
-            )
-        ) {
-            throw new NonExistentActionException(
-                'Action does not exist in controller for route : '
-                . $route->getPath()
-                . $route->getClass()
-                . '@'
-                . $route->getMethod()
-            );
-        }
+        $this->verifyDispatch($route);
 
         $route->setPath('/' . trim($route->getPath(), '/'));
 
@@ -345,7 +333,10 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
      */
     public function setup(): void
     {
@@ -381,7 +372,10 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Routing\Exceptions\NonExistentActionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
      */
     protected function setupAnnotatedRoutes(): void
     {
@@ -623,7 +617,7 @@ class Router implements RouterContract
         // Get the route's arguments
         $arguments = $this->getRouteArguments($route);
         // Set the action as the route's handler
-        $action = $route->getHandler();
+        $action = $route->getClosure();
 
         // If this action is not a closure
         if (! $action instanceof Closure) {

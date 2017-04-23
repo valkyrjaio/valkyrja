@@ -1,17 +1,18 @@
 <?php
 
+use Valkyrja\Routing\Route;
+
 /**
  * Welcome Route.
  * - Example of a view being returned
  *
  * @path /
  */
-use Valkyrja\Routing\Route;
-
 router()->get(
     (new Route())
         ->setPath('/')
-        ->setHandler(
+        ->setName('welcome')
+        ->setClosure(
             function (): Valkyrja\Contracts\View\View {
                 return view('index')->withoutLayout();
             }
@@ -27,7 +28,8 @@ router()->get(
 router()->get(
     (new Route())
         ->setPath('/version')
-        ->setHandler(
+        ->setName('version')
+        ->setClosure(
             function (): string {
                 return app()->version();
             }
@@ -43,9 +45,9 @@ router()->get(
 router()->get(
     (new Route())
         ->setPath('/home')
-        ->setController(App\Controllers\HomeController::class)
-        ->setAction('home')
         ->setName('home')
+        ->setClass(App\Controllers\HomeController::class)
+        ->setMethod('home')
         ->setDependencies(
             [
                 // Any classes defined within the injectable array are
@@ -65,9 +67,9 @@ router()->get(
 router()->get(
     (new Route())
         ->setPath('/home/{id:num}')
-        ->setController(App\Controllers\HomeController::class)
-        ->setAction('home')
         ->setName('homePage')
+        ->setClass(App\Controllers\HomeController::class)
+        ->setMethod('home')
         ->setDependencies(
             [
                 // Any classes defined within the injectable array are

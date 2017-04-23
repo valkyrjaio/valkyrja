@@ -33,12 +33,6 @@ class Route extends Annotation
     protected $path;
 
     /**
-     * Name of this route.
-     *
-     * @var string
-     */
-    protected $name;
-    /**
      * The request method for this route.
      *
      * @var string
@@ -53,13 +47,6 @@ class Route extends Annotation
     protected $handler;
 
     /**
-     * Any injectable classes from the service container for the action/handler.
-     *
-     * @var array
-     */
-    protected $dependencies = [];
-
-    /**
      * The regex for dynamic routes.
      *
      * @var string
@@ -71,14 +58,14 @@ class Route extends Annotation
      *
      * @var array
      */
-    protected $params = [];
+    protected $params;
 
     /**
      * Any matches for dynamic routes.
      *
      * @var array
      */
-    protected $matches = [];
+    protected $matches;
 
     /**
      * Whether the route is dynamic.
@@ -119,30 +106,6 @@ class Route extends Annotation
     }
 
     /**
-     * Get the route's name.
-     *
-     * @return string
-     */
-    public function getName():? string
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the route's name.
-     *
-     * @param string $name The route's name
-     *
-     * @return $this
-     */
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get the request method.
      *
      * @return string
@@ -166,54 +129,6 @@ class Route extends Annotation
     public function setRequestMethod(string $requestMethod): self
     {
         $this->requestMethod = $requestMethod;
-
-        return $this;
-    }
-
-    /**
-     * Get the route's handler.
-     *
-     * @return \Closure
-     */
-    public function getHandler():? Closure
-    {
-        return $this->handler;
-    }
-
-    /**
-     * Set the route's handler.
-     *
-     * @param \Closure $handler The closure to handle to route
-     *
-     * @return $this
-     */
-    public function setHandler(Closure $handler): self
-    {
-        $this->handler = $handler;
-
-        return $this;
-    }
-
-    /**
-     * Get the route's injectables.
-     *
-     * @return array
-     */
-    public function getDependencies(): array
-    {
-        return $this->dependencies;
-    }
-
-    /**
-     * Set the route's dependencies.
-     *
-     * @param array $dependencies List of dependency injectable objects for the action/handler
-     *
-     * @return $this
-     */
-    public function setDependencies(array $dependencies): self
-    {
-        $this->dependencies = $dependencies;
 
         return $this;
     }
@@ -247,7 +162,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getParams(): array
+    public function getParams():? array
     {
         return $this->params;
     }
@@ -259,7 +174,7 @@ class Route extends Annotation
      *
      * @return $this
      */
-    public function setParams(array $params): self
+    public function setParams(array $params = null): self
     {
         $this->params = $params;
 
@@ -271,7 +186,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getMatches(): array
+    public function getMatches():? array
     {
         return $this->matches;
     }
@@ -283,7 +198,7 @@ class Route extends Annotation
      *
      * @return $this
      */
-    public function setMatches(array $matches): self
+    public function setMatches(array $matches = null): self
     {
         $this->matches = $matches;
 
@@ -355,16 +270,16 @@ class Route extends Annotation
             ->setPath($properties['path'])
             ->setName($properties['name'])
             ->setRequestMethod($properties['requestMethod'])
-            ->setDependencies($properties['dependencies'])
-            ->setRegex($properties['regex'])
-            ->setParams($properties['params'])
+            ->setRegex($properties['regex'] ?? null)
+            ->setParams($properties['params'] ?? null)
+            ->setMatches($properties['matches'] ?? null)
             ->setDynamic($properties['dynamic'])
             ->setSecure($properties['secure'])
-            ->setMatches($properties['matches'])
-            ->setMethod($properties['method'])
-            ->setFunction($properties['function'])
-            ->setClass($properties['class'])
-        ;
+            ->setClass($properties['class'] ?? null)
+            ->setMethod($properties['method'] ?? null)
+            ->setFunction($properties['function'] ?? null)
+            ->setClosure($properties['closure'] ?? null)
+            ->setDependencies($properties['dependencies'] ?? null);
 
         return $route;
     }
@@ -378,7 +293,7 @@ class Route extends Annotation
      *
      * @throws \InvalidArgumentException
      */
-    public static function __set_state(array $properties): self
+    public static function __set_state(array $properties): Annotation
     {
         return static::getRoute($properties);
     }
