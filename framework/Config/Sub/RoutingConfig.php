@@ -31,13 +31,6 @@ class RoutingConfig
     public $trailingSlash = false;
 
     /**
-     * Whether to allow slash and non slash ending urls.
-     *
-     * @var bool
-     */
-    public $allowWithTrailingSlash = false;
-
-    /**
      * Use annotations on controllers?
      *
      * @var bool
@@ -95,7 +88,6 @@ class RoutingConfig
     {
         if ($this->setDefaults) {
             $this->trailingSlash = $env::ROUTING_TRAILING_SLASH ?? false;
-            $this->allowWithTrailingSlash = $env::ROUTING_ALLOW_WITH_TRAILING_SLASH ?? false;
             $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? false;
             $this->useAnnotationsExclusively = $env::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? false;
             $this->controllers = $env::ROUTING_CONTROLLERS ?? [];

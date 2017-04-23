@@ -17,11 +17,10 @@ use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
+use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
-use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Exceptions\InvalidControllerException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Exceptions\NonExistentActionException;
@@ -386,12 +385,10 @@ class Router implements RouterContract
      */
     protected function setupAnnotatedRoutes(): void
     {
-        // The routes annotations parser
-        /** @var RouteParserContract $parser */
-        $parser = $this->app->container()->get(RouteParserContract::class);
+        /** @var RouteAnnotationsContract $routeAnnotations */
+        $routeAnnotations = $this->app->container()->get(RouteAnnotationsContract::class);
 
-        $routeAnnotations = new RouteAnnotations($parser);
-
+        // Get all the annotated routes from the list of controllers
         $routes = $routeAnnotations->getRoutes(...$this->app->config()->routing->controllers);
 
         // Iterate through the routes

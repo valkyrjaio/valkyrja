@@ -27,6 +27,7 @@ use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\Logger\Logger as LoggerContract;
+use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -39,6 +40,7 @@ use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\ResponseCode;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Annotations\RouteParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
@@ -226,6 +228,7 @@ class Container implements ContainerContract
         $this->bootstrapResponseBuilder();
         $this->bootstrapRouter();
         $this->bootstrapRouteParser();
+        $this->bootstrapRouteAnnotations();
         $this->bootstrapView();
         $this->bootstrapClient();
         $this->bootstrapLoggerInterface();
@@ -239,7 +242,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapRequest(): void
     {
-        // Set the request contract
         $this->singleton(
             RequestContract::class,
             function () {
@@ -255,7 +257,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapResponse(): void
     {
-        // Set the response contract
         $this->bind(
             ResponseContract::class,
             function (string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []) {
@@ -271,7 +272,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapJsonResponse(): void
     {
-        // Set the json response contract
         $this->bind(
             JsonResponseContract::class,
             function (string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []) {
@@ -287,7 +287,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapRedirectResponse(): void
     {
-        // Set the redirect response contract
         $this->bind(
             RedirectResponseContract::class,
             function (string $content = '', int $status = ResponseCode::HTTP_FOUND, array $headers = []) {
@@ -303,7 +302,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapResponseBuilder(): void
     {
-        // Set the response builder contract
         $this->singleton(
             ResponseBuilderContract::class,
             function () {
@@ -322,7 +320,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapRouter(): void
     {
-        // Set the router contract
         $this->singleton(
             RouterContract::class,
             function () {
@@ -341,11 +338,28 @@ class Container implements ContainerContract
      */
     protected function bootstrapRouteParser(): void
     {
-        // Set the route parser contract
         $this->singleton(
             RouteParserContract::class,
             function () {
                 return new RouteParser();
+            }
+        );
+    }
+
+    /**
+     * Bootstrap the route annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapRouteAnnotations(): void
+    {
+        $this->singleton(
+            RouteAnnotationsContract::class,
+            function () {
+                /** @var \Valkyrja\Contracts\Routing\Annotations\RouteParser $parser */
+                $parser = $this->get(RouteParserContract::class);
+
+                return new RouteAnnotations($parser);
             }
         );
     }
@@ -357,7 +371,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapView(): void
     {
-        // Set the view contract
         $this->bind(
             ViewContract::class,
             function (string $template = '', array $variables = []) {
@@ -376,7 +389,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapClient(): void
     {
-        // Set the client contract
         $this->singleton(
             ClientContract::class,
             function () {
@@ -392,7 +404,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapLoggerInterface(): void
     {
-        // Set the psr logger interface
         $this->singleton(
             LoggerInterface::class,
             function () {
@@ -415,7 +426,6 @@ class Container implements ContainerContract
      */
     protected function bootstrapLogger(): void
     {
-        // Set the logger
         $this->singleton(
             LoggerContract::class,
             function () {

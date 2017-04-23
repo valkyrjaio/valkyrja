@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Routing\Annotations;
 
+use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Routing\Route;
 
@@ -21,7 +22,7 @@ use Valkyrja\Routing\Route;
  *
  * @author  Melech Mizrachi
  */
-class RouteAnnotations extends Annotations
+class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {
     /**
      * Get routes.
