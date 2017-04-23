@@ -18,7 +18,7 @@ use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Dispatcher\Traits\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Http\RequestMethod;

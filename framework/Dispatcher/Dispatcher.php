@@ -9,20 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Dispatcher\Traits;
+namespace Valkyrja\Dispatcher;
 
 use Closure;
 
-use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 
 /**
- * Class Dispatcher
+ * Trait Dispatcher
  *
- * @package Valkyrja\Dispatcher\Traits
+ * @package Valkyrja\Dispatcher
  */
 trait Dispatcher
 {

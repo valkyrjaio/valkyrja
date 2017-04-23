@@ -13,7 +13,7 @@ namespace Valkyrja\Events;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Events as EventsContract;
-use Valkyrja\Dispatcher\Traits\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 
 /**
  * Class Events
