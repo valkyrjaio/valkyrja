@@ -11,6 +11,9 @@
 
 namespace Valkyrja\Contracts\Annotations;
 
+use Valkyrja\Contracts\Annotations\Regex\ArgumentsRegex;
+use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
+
 /**
  * Interface AnnotationsParser
  *
@@ -18,7 +21,7 @@ namespace Valkyrja\Contracts\Annotations;
  *
  * @author  Melech Mizrachi
  */
-interface AnnotationsParser
+interface AnnotationsParser extends ClassRegex, ArgumentsRegex
 {
     /**
      * Get annotations from a given string.
