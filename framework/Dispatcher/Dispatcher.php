@@ -39,11 +39,11 @@ trait Dispatcher
         // If a class and method are set and not callable
         if (
             null !== $dispatch->getClass()
-            && null !== $dispatch->getMethod()
+            && (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
             && ! is_callable(
                 [
                     $dispatch->getClass(),
-                    $dispatch->getMethod(),
+                    $dispatch->getMethod() ?? $dispatch->getStaticMethod(),
                 ]
             )
         ) {
@@ -53,7 +53,7 @@ trait Dispatcher
                 . $dispatch->getName() . ' '
                 . $dispatch->getClass()
                 . '@'
-                . $dispatch->getMethod()
+                . ($dispatch->getMethod() ?? $dispatch->getStaticMethod())
             );
         }
     }
@@ -121,7 +121,8 @@ trait Dispatcher
             && null === $dispatch->getClosure()
             && (
                 null === $dispatch->getClass()
-                || null === $dispatch->getMethod()
+                ||
+                (null === $dispatch->getMethod() && null === $dispatch->getStaticMethod())
             )
         ) {
             // Throw a new invalid dispatch capability exception
@@ -170,10 +171,13 @@ trait Dispatcher
     protected function dispatchClassMethod(Dispatch $dispatch, array $arguments = [])
     {
         // If a class and method are set
-        if (null !== $dispatch->getClass() && null !== $dispatch->getMethod()) {
+        if (
+            null !== $dispatch->getClass()
+            && (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
+        ) {
             // Set the class through the container
             $class = container()->get($dispatch->getClass());
-            $method = $dispatch->getMethod();
+            $method = $dispatch->getMethod() ?? $dispatch->getStaticMethod();
             $response = null;
 
             // Before dispatch helper
@@ -182,13 +186,23 @@ trait Dispatcher
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $response = $class->$method(...$arguments);
+                if ($dispatch->getStaticMethod()) {
+                    $response = $class::$method(...$arguments);
+                }
+                else {
+                    $response = $class->$method(...$arguments);
+                }
             }
 
             // If there is no dispatch
             if (null === $response) {
                 // Dispatch without unpacking
-                $response = $class->$method();
+                if ($dispatch->getStaticMethod()) {
+                    $response = $class::$method();
+                }
+                else {
+                    $response = $class->$method();
+                }
             }
 
             // After dispatch helper

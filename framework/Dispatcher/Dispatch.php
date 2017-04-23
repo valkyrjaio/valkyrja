@@ -13,8 +13,6 @@ namespace Valkyrja\Dispatcher;
 
 use Closure;
 
-use Valkyrja\Model\Model;
-
 /**
  * Class Dispatch
  *
@@ -22,7 +20,7 @@ use Valkyrja\Model\Model;
  *
  * @author  Melech Mizrachi
  */
-class Dispatch extends Model
+class Dispatch
 {
     /**
      * The name.
@@ -51,6 +49,13 @@ class Dispatch extends Model
      * @var string
      */
     protected $method;
+
+    /**
+     * The static method.
+     *
+     * @var string
+     */
+    protected $staticMethod;
 
     /**
      * The function.
@@ -170,6 +175,30 @@ class Dispatch extends Model
     }
 
     /**
+     * Get the static method.
+     *
+     * @return string
+     */
+    public function getStaticMethod():? string
+    {
+        return $this->staticMethod;
+    }
+
+    /**
+     * Set the static method.
+     *
+     * @param string $staticMethod The static method
+     *
+     * @return $this
+     */
+    public function setStaticMethod(string $staticMethod = null): self
+    {
+        $this->staticMethod = $staticMethod;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFunction():? string
@@ -253,6 +282,7 @@ class Dispatch extends Model
         $dispatch
             ->setClass($properties['class'] ?? null)
             ->setMethod($properties['method'] ?? null)
+            ->setStaticMethod($properties['staticMethod'] ?? null)
             ->setProperty($properties['property'] ?? null)
             ->setFunction($properties['function'] ?? null)
             ->setClosure($properties['closure'] ?? null)
