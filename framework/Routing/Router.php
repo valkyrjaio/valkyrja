@@ -549,7 +549,7 @@ class Router implements RouterContract
     protected function getRouteArguments(Route $route): array
     {
         // Set the arguments to return
-        $arguments = $route->getDependencies();
+        $arguments = $this->getDependencies($route);
         // Get the matches
         $matches = $route->getMatches();
 
@@ -613,7 +613,7 @@ class Router implements RouterContract
         if ($class instanceof ControllerContract) {
             /** @var ControllerContract $controller */
             // Call the controller's before method
-            $controller->before($method, $arguments);
+            $class->before($method, $arguments);
         }
     }
 
@@ -632,7 +632,7 @@ class Router implements RouterContract
         if ($class instanceof ControllerContract) {
             /** @var ControllerContract $controller */
             // Call the controller's after method
-            $controller->after($method, $dispatch);
+            $class->after($method, $dispatch);
         }
     }
 
