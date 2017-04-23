@@ -9,149 +9,149 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations\Traits;
+namespace Valkyrja\Dispatcher\Traits;
 
 use Closure;
 
-use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Annotations\Exceptions\InvalidMethodException;
-use Valkyrja\Annotations\Exceptions\InvalidClosureException;
-use Valkyrja\Annotations\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 
 /**
- * Class Annotatable
+ * Class Dispatcher
  *
- * @package Valkyrja\Annotations\Traits
+ * @package Valkyrja\Dispatcher\Traits
  */
-trait Annotatable
+trait Dispatcher
 {
     /**
-     * Verify the class and method of an annotation.
+     * Verify the class and method of a dispatch.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
-    protected function verifyClassMethod(Annotation $annotation): void
+    protected function verifyClassMethod(Dispatch $dispatch): void
     {
         // If a class and method are set and not callable
         if (
-            null !== $annotation->getClass()
-            && null !== $annotation->getMethod()
+            null !== $dispatch->getClass()
+            && null !== $dispatch->getMethod()
             && ! is_callable(
                 [
-                    $annotation->getClass(),
-                    $annotation->getMethod(),
+                    $dispatch->getClass(),
+                    $dispatch->getMethod(),
                 ]
             )
         ) {
             // Throw a new invalid method exception
             throw new InvalidMethodException(
                 'Method does not exist in class : '
-                . $annotation->getName() . ' '
-                . $annotation->getClass()
+                . $dispatch->getName() . ' '
+                . $dispatch->getClass()
                 . '@'
-                . $annotation->getMethod()
+                . $dispatch->getMethod()
             );
         }
     }
 
     /**
-     * Verify the function of an annotation.
+     * Verify the function of a dispatch.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      */
-    protected function verifyFunction(Annotation $annotation): void
+    protected function verifyFunction(Dispatch $dispatch): void
     {
         // If a function is set and is not callable
-        if (null !== $annotation->getFunction() && ! is_callable($annotation->getFunction())) {
+        if (null !== $dispatch->getFunction() && ! is_callable($dispatch->getFunction())) {
             // Throw a new invalid function exception
             throw new InvalidFunctionException(
                 'Function is not callable for : '
-                . $annotation->getName() . ' '
-                . $annotation->getFunction()
+                . $dispatch->getName() . ' '
+                . $dispatch->getFunction()
             );
         }
     }
 
     /**
-     * Verify the closure of an annotation.
+     * Verify the closure of a dispatch.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      */
-    protected function verifyClosure(Annotation $annotation): void
+    protected function verifyClosure(Dispatch $dispatch): void
     {
         // If a closure is set and is not callable
-        if (null !== $annotation->getClosure() && ! $annotation->getClosure() instanceof Closure) {
+        if (null !== $dispatch->getClosure() && ! $dispatch->getClosure() instanceof Closure) {
             // Throw a new invalid closure exception
             throw new InvalidClosureException(
                 'Closure is not valid for : '
-                . $annotation->getName()
+                . $dispatch->getName()
             );
         }
     }
 
     /**
-     * Verify the annotation's dispatch capabilities.
+     * Verify the dispatch's dispatch capabilities.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
-    protected function verifyDispatch(Annotation $annotation): void
+    protected function verifyDispatch(Dispatch $dispatch): void
     {
         // If a function, closure, and class or method are not set
         if (
-            null === $annotation->getFunction()
-            && null === $annotation->getClosure()
+            null === $dispatch->getFunction()
+            && null === $dispatch->getClosure()
             && (
-                null === $annotation->getClass()
-                || null === $annotation->getMethod()
+                null === $dispatch->getClass()
+                || null === $dispatch->getMethod()
             )
         ) {
             // Throw a new invalid dispatch capability exception
             throw new InvalidDispatchCapabilityException(
                 'Dispatch capability is not valid for : '
-                . $annotation->getName()
+                . $dispatch->getName()
             );
         }
 
-        $this->verifyClassMethod($annotation);
-        $this->verifyFunction($annotation);
-        $this->verifyClosure($annotation);
+        $this->verifyClassMethod($dispatch);
+        $this->verifyFunction($dispatch);
+        $this->verifyClosure($dispatch);
     }
 
     /**
-     * Get an annotation's dependencies.
+     * Get a dispatch's dependencies.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return array
      */
-    protected function getDependencies(Annotation $annotation): array
+    protected function getDependencies(Dispatch $dispatch): array
     {
         $dependencies = [];
 
         // If there are dependencies
-        if ($annotation->getDependencies()) {
+        if ($dispatch->getDependencies()) {
             // Iterate through all the dependencies
-            foreach ($annotation->getDependencies() as $dependency) {
+            foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
                 $dependencies[] = container()->get($dependency);
             }
@@ -163,19 +163,19 @@ trait Annotatable
     /**
      * Dispatch a class method.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
-     * @param array                            $arguments  The arguments
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchClassMethod(Annotation $annotation, array $arguments = [])
+    protected function dispatchClassMethod(Dispatch $dispatch, array $arguments = [])
     {
         // If a class and method are set
-        if (null !== $annotation->getClass() && null !== $annotation->getMethod()) {
+        if (null !== $dispatch->getClass() && null !== $dispatch->getMethod()) {
             // Set the class through the container
-            $class = container()->get($annotation->getClass());
-            $method = $annotation->getMethod();
-            $dispatch = null;
+            $class = container()->get($dispatch->getClass());
+            $method = $dispatch->getMethod();
+            $response = null;
 
             // Before dispatch helper
             $this->beforeClassMethodDispatch($class, $method, $arguments);
@@ -183,19 +183,19 @@ trait Annotatable
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $dispatch = $class->$method(...$arguments);
+                $response = $class->$method(...$arguments);
             }
 
             // If there is no dispatch
-            if (null === $dispatch) {
+            if (null === $response) {
                 // Dispatch without unpacking
-                $dispatch = $class->$method();
+                $response = $class->$method();
             }
 
             // After dispatch helper
-            $this->afterClassMethodDispatch($class, $method, $dispatch);
+            $this->afterClassMethodDispatch($class, $method, $response);
 
-            return $dispatch;
+            return $response;
         }
 
         return null;
@@ -232,17 +232,17 @@ trait Annotatable
     /**
      * Dispatch a function.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
-     * @param array                            $arguments  The arguments
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchFunction(Annotation $annotation, array $arguments = [])
+    protected function dispatchFunction(Dispatch $dispatch, array $arguments = [])
     {
         // If a function is set
-        if (null !== $annotation->getFunction()) {
-            $function = $annotation->getFunction();
-            $dispatch = null;
+        if (null !== $dispatch->getFunction()) {
+            $function = $dispatch->getFunction();
+            $response = null;
 
             // Before dispatch helper
             $this->beforeFunctionDispatch($function, $arguments);
@@ -250,17 +250,17 @@ trait Annotatable
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $dispatch = $function(...$arguments);
+                $response = $function(...$arguments);
             }
 
             // If there is no dispatch
-            if (null === $dispatch) {
+            if (null === $response) {
                 // Dispatch without unpacking
-                $dispatch = $function();
+                $response = $function();
             }
 
             // After dispatch helper
-            $this->afterFunctionDispatch($function, $dispatch);
+            $this->afterFunctionDispatch($function, $response);
 
             return $dispatch;
         }
@@ -297,17 +297,17 @@ trait Annotatable
     /**
      * Dispatch a closure.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
-     * @param array                            $arguments  The arguments
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchClosure(Annotation $annotation, array $arguments = [])
+    protected function dispatchClosure(Dispatch $dispatch, array $arguments = [])
     {
         // If a closure is set
-        if (null !== $annotation->getClosure()) {
-            $closure = $annotation->getClosure();
-            $dispatch = null;
+        if (null !== $dispatch->getClosure()) {
+            $closure = $dispatch->getClosure();
+            $response = null;
 
             // Before dispatch helper
             $this->beforeClosureDispatch($closure, $arguments);
@@ -315,17 +315,17 @@ trait Annotatable
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $dispatch = $closure(...$arguments);
+                $response = $closure(...$arguments);
             }
 
             // If there is no dispatch
-            if (null === $dispatch) {
+            if (null === $response) {
                 // Dispatch without unpacking
-                $dispatch = $closure();
+                $response = $closure();
             }
 
             // After dispatch helper
-            $this->afterClosureDispatch($closure, $dispatch);
+            $this->afterClosureDispatch($closure, $response);
 
             return $dispatch;
         }
@@ -336,7 +336,7 @@ trait Annotatable
     /**
      * Before the closure has dispatched.
      *
-     * @param string $closure  The function
+     * @param string $closure   The function
      * @param array  $arguments The arguments
      *
      * @return void
@@ -349,7 +349,7 @@ trait Annotatable
     /**
      * After the closure has dispatched.
      *
-     * @param string $closure The function
+     * @param string $closure  The function
      * @param mixed  $dispatch The dispatch
      *
      * @return void
@@ -362,28 +362,28 @@ trait Annotatable
     /**
      * Dispatch a callable.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
-     * @param array                            $arguments  The arguments
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchCallable(Annotation $annotation, array $arguments = [])
+    protected function dispatchCallable(Dispatch $dispatch, array $arguments = [])
     {
-        // Attempt to dispatch the annotation using the class and method
-        $dispatch = $this->dispatchClassMethod($annotation, $arguments);
+        // Attempt to dispatch the dispatch using the class and method
+        $response = $this->dispatchClassMethod($dispatch, $arguments);
 
         // If there is no dispatch
-        if (! $dispatch) {
-            // Attempt to dispatch the annotation using the function
-            $dispatch = $this->dispatchFunction($annotation, $arguments);
+        if (! $response) {
+            // Attempt to dispatch the dispatch using the function
+            $response = $this->dispatchFunction($dispatch, $arguments);
         }
 
         // If there is still no dispatch
-        if (! $dispatch) {
-            // Attempt to dispatch the annotation using the closure
-            $dispatch = $this->dispatchClosure($annotation, $arguments);
+        if (! $response) {
+            // Attempt to dispatch the dispatch using the closure
+            $response = $this->dispatchClosure($dispatch, $arguments);
         }
 
-        return $dispatch;
+        return $response;
     }
 }

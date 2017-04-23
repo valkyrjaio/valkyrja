@@ -12,6 +12,7 @@
 namespace Valkyrja\Events;
 
 use Valkyrja\Annotations\Annotation;
+use Valkyrja\Dispatcher\Dispatch;
 
 /**
  * Class Event
@@ -20,6 +21,6 @@ use Valkyrja\Annotations\Annotation;
  *
  * @author  Melech Mizrachi
  */
-class Listener extends Annotation
+class Listener extends Dispatch implements Annotation
 {
 }

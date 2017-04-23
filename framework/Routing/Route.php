@@ -12,6 +12,7 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Annotations\Annotation;
+use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\RequestMethod;
 
 /**
@@ -21,7 +22,7 @@ use Valkyrja\Http\RequestMethod;
  *
  * @author  Melech Mizrachi
  */
-class Route extends Annotation
+class Route extends Dispatch implements Annotation
 {
     /**
      * The path for this route.
@@ -287,7 +288,7 @@ class Route extends Annotation
      *
      * @return \Valkyrja\Routing\Route
      */
-    public static function __set_state(array $properties): Annotation
+    public static function __set_state(array $properties)
     {
         return static::getRoute($properties);
     }

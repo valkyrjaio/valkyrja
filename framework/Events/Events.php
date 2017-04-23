@@ -11,9 +11,9 @@
 
 namespace Valkyrja\Events;
 
-use Valkyrja\Annotations\Traits\Annotatable;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Events as EventsContract;
+use Valkyrja\Dispatcher\Traits\Dispatcher;
 
 /**
  * Class Events
@@ -24,7 +24,7 @@ use Valkyrja\Contracts\Events\Events as EventsContract;
  */
 class Events implements EventsContract
 {
-    use Annotatable;
+    use Dispatcher;
 
     /**
      * The application.
@@ -58,10 +58,10 @@ class Events implements EventsContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function addListener(string $event, Listener $listener): void
     {

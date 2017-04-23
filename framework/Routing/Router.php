@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Annotations\Traits\Annotatable;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
@@ -19,6 +18,7 @@ use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
+use Valkyrja\Dispatcher\Traits\Dispatcher;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Http\RequestMethod;
@@ -33,7 +33,7 @@ use Valkyrja\Http\ResponseCode;
  */
 class Router implements RouterContract
 {
-    use Annotatable;
+    use Dispatcher;
 
     /**
      * The static routes type.
@@ -101,10 +101,10 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function addRoute(Route $route): void
     {
@@ -341,10 +341,10 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function setup(): void
     {
@@ -380,10 +380,10 @@ class Router implements RouterContract
      *
      * @return void
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     protected function setupAnnotatedRoutes(): void
     {

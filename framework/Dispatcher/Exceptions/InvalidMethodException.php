@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations\Exceptions;
+namespace Valkyrja\Dispatcher\Exceptions;
 
 use InvalidArgumentException;
 
 /**
- * Class InvalidDispatchCapabilityException
+ * Class InvalidClassMethodException
  *
- * @package Valkyrja\Annotations\Exceptions
+ * @package Valkyrja\Dispatcher\Exceptions
  *
  * @author  Melech Mizrachi
  */
-class InvalidDispatchCapabilityException extends InvalidArgumentException
+class InvalidMethodException extends InvalidArgumentException
 {
 }
