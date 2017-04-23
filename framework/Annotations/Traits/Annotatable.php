@@ -138,6 +138,29 @@ trait Annotatable
     }
 
     /**
+     * Get an annotation's dependencies.
+     *
+     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     *
+     * @return array
+     */
+    protected function getDependencies(Annotation $annotation): array
+    {
+        $dependencies = [];
+
+        // If there are dependencies
+        if ($annotation->getDependencies()) {
+            // Iterate through all the dependencies
+            foreach ($annotation->getDependencies() as $dependency) {
+                // Set the dependency in the list
+                $dependencies[] = container()->get($dependency);
+            }
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * Dispatch a class method.
      *
      * @param \Valkyrja\Annotations\Annotation $annotation The annotation

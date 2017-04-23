@@ -208,13 +208,7 @@ class Events implements EventsContract
         // If the listener has dependencies
         if ($listener->getDependencies()) {
             // Set the listener arguments to a new blank array
-            $listenerArguments = [];
-
-            // Iterate through all the dependencies
-            foreach ($listener->getDependencies() as $dependency) {
-                // Set the dependency in the arguments list
-                $listenerArguments[] = $this->app->container()->get($dependency);
-            }
+            $listenerArguments = $this->getDependencies($listener);
 
             // Iterate through the arguments
             foreach ($arguments as $argument) {

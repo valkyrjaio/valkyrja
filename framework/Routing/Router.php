@@ -549,20 +549,9 @@ class Router implements RouterContract
     protected function getRouteArguments(Route $route): array
     {
         // Set the arguments to return
-        $arguments = [];
+        $arguments = $route->getDependencies();
         // Get the matches
         $matches = $route->getMatches();
-        // The dependencies from the service container
-        $dependencies = $route->getDependencies();
-
-        // If there are injectable items defined for this route
-        if ($dependencies) {
-            // Check for any injectable objects that have been set on the route
-            foreach ($dependencies as $dependency) {
-                // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container()->get($dependency);
-            }
-        }
 
         // If there were matches from the dynamic route
         if ($matches) {
