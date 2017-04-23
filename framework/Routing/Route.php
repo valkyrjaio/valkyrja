@@ -60,6 +60,13 @@ class Route extends Annotation
     protected $dependencies = [];
 
     /**
+     * The regex for dynamic routes.
+     *
+     * @var string
+     */
+    protected $regex;
+
+    /**
      * Any params for dynamic routes.
      *
      * @var array
@@ -212,6 +219,30 @@ class Route extends Annotation
     }
 
     /**
+     * Get the regex.
+     *
+     * @return string
+     */
+    public function getRegex():? string
+    {
+        return $this->regex;
+    }
+
+    /**
+     * Set the regex.
+     *
+     * @param string $regex The regex
+     *
+     * @return $this
+     */
+    public function setRegex(string $regex = null): self
+    {
+        $this->regex = $regex;
+
+        return $this;
+    }
+
+    /**
      * Get the params.
      *
      * @return array
@@ -325,6 +356,7 @@ class Route extends Annotation
             ->setName($properties['name'])
             ->setRequestMethod($properties['requestMethod'])
             ->setDependencies($properties['dependencies'])
+            ->setRegex($properties['regex'])
             ->setParams($properties['params'])
             ->setDynamic($properties['dynamic'])
             ->setSecure($properties['secure'])

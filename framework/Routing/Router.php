@@ -206,7 +206,7 @@ class Router implements RouterContract
 
         $path = str_replace('/', '\/', $path);
         $path = '/^' . $path . '$/';
-        $route->setPath($path);
+        $route->setRegex($path);
         $route->setParams($params);
     }
 
@@ -464,7 +464,25 @@ class Router implements RouterContract
                 $path = str_replace($param, $data[$params[1][$key]], $path);
             }
 
-            return $path;
+            return $this->validateRouteUrl($path);
+        }
+
+        return $this->validateRouteUrl($path);
+    }
+
+    /**
+     * Validate the route url.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validateRouteUrl(string $path): string
+    {
+        // If the last character is not a slash and the config is set to ensure trailing slash
+        if ($path[-1] !== '/' && $this->app->config()->routing->trailingSlash) {
+            // add a trailing slash
+            $path .= '/';
         }
 
         return $path;
@@ -510,9 +528,9 @@ class Router implements RouterContract
         }
 
         // Attempt to find a match using dynamic routes that are set
-        foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $pathIndex => $dynamicRoute) {
+        foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $dynamicRoute) {
             // If the preg match is successful, we've found our route!
-            if (preg_match($pathIndex, $path, $matches)) {
+            if (preg_match($dynamicRoute->getRegex(), $path, $matches)) {
                 $dynamicRoute->setMatches($matches);
 
                 return $dynamicRoute;
