@@ -553,15 +553,15 @@ class Router implements RouterContract
         $arguments = [];
         // Get the matches
         $matches = $route->getMatches();
-        // The injectable objects
-        $injectable = $route->getDependencies();
+        // The dependencies from the service container
+        $dependencies = $route->getDependencies();
 
         // If there are injectable items defined for this route
-        if ($injectable) {
+        if ($dependencies) {
             // Check for any injectable objects that have been set on the route
-            foreach ($injectable as $injectableObject) {
+            foreach ($dependencies as $dependency) {
                 // Set these as the first set of arguments to pass to the action
-                $arguments[] = $this->app->container()->get($injectableObject);
+                $arguments[] = $this->app->container()->get($dependency);
             }
         }
 
