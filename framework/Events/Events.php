@@ -172,20 +172,27 @@ class Events implements EventsContract
      * @param string $event     The event
      * @param array  $arguments The arguments
      *
-     * @return void
+     * @return array
      */
-    public function trigger(string $event, array $arguments = []): void
+    public function trigger(string $event, array $arguments = []): array
     {
         $this->add($event);
+
+        // The responses
+        $responses = [];
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
             $listenerArguments = $this->getListenerArguments($listener, $arguments);
+            // Attempt to dispatch the event listener using any one of the callable options
+            $dispatch = $this->dispatchCallable($listener, $listenerArguments);
 
-            $this->dispatchClassMethod($listener, $listenerArguments);
-            $this->dispatchFunction($listener, $listenerArguments);
-            $this->dispatchClosure($listener, $listenerArguments);
+            if (null !== $dispatch) {
+                $responses[] = $dispatch;
+            }
         }
+
+        return $responses;
     }
 
     /**

@@ -21,7 +21,22 @@ namespace Valkyrja\Contracts\Http;
 interface Controller
 {
     /**
-     * After any action is called.
+     * Before any action is called.
+     *
+     * @param string $method    The method called
+     * @param array  $arguments The arguments
+     *
+     * @return void
      */
-    public function after();
+    public function before(string $method, array &$arguments): void;
+
+    /**
+     * After any action is called.
+     *
+     * @param string $method   The method called
+     * @param mixed  $dispatch The dispatch
+     *
+     * @return void
+     */
+    public function after(string $method, &$dispatch): void;
 }

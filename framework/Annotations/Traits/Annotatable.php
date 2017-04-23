@@ -138,84 +138,229 @@ trait Annotatable
     }
 
     /**
-     * Dispatch a class method event listener.
+     * Dispatch a class method.
      *
      * @param \Valkyrja\Annotations\Annotation $annotation The annotation
      * @param array                            $arguments  The arguments
      *
-     * @return void
+     * @return mixed
      */
-    protected function dispatchClassMethod(Annotation $annotation, array $arguments = []): void
+    protected function dispatchClassMethod(Annotation $annotation, array $arguments = [])
     {
         // If a class and method are set
         if (null !== $annotation->getClass() && null !== $annotation->getMethod()) {
-            $class = $annotation->getClass();
+            // Set the class through the container
+            $class = container()->get($annotation->getClass());
             $method = $annotation->getMethod();
+            $dispatch = null;
+
+            // Before dispatch helper
+            $this->beforeClassMethodDispatch($class, $method, $arguments);
 
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $class->$method(...$arguments);
+                $dispatch = $class->$method(...$arguments);
             }
-            // Otherwise no need to unpack
-            else {
-                // Dispatch
-                $class->$method();
+
+            // If there is no dispatch
+            if (null === $dispatch) {
+                // Dispatch without unpacking
+                $dispatch = $class->$method();
             }
+
+            // After dispatch helper
+            $this->afterClassMethodDispatch($class, $method, $dispatch);
+
+            return $dispatch;
         }
+
+        return null;
     }
 
     /**
-     * Dispatch a function event listener.
+     * Before the class method has dispatched.
+     *
+     * @param mixed  $class     The class
+     * @param string $method    The method
+     * @param array  $arguments The arguments
+     *
+     * @return void
+     */
+    protected function beforeClassMethodDispatch($class, string $method, array &$arguments): void
+    {
+        // Override this method for custom before dispatch functionality
+    }
+
+    /**
+     * After the class method has dispatched.
+     *
+     * @param mixed  $class    The class
+     * @param string $method   The method
+     * @param mixed  $dispatch The dispatch
+     *
+     * @return void
+     */
+    protected function afterClassMethodDispatch($class, string $method, &$dispatch): void
+    {
+        // Override this method for custom after dispatch functionality
+    }
+
+    /**
+     * Dispatch a function.
      *
      * @param \Valkyrja\Annotations\Annotation $annotation The annotation
      * @param array                            $arguments  The arguments
      *
-     * @return void
+     * @return mixed
      */
-    protected function dispatchFunction(Annotation $annotation, array $arguments = []): void
+    protected function dispatchFunction(Annotation $annotation, array $arguments = [])
     {
         // If a function is set
         if (null !== $annotation->getFunction()) {
             $function = $annotation->getFunction();
+            $dispatch = null;
+
+            // Before dispatch helper
+            $this->beforeFunctionDispatch($function, $arguments);
 
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $function(...$arguments);
+                $dispatch = $function(...$arguments);
             }
-            // Otherwise no need to unpack
-            else {
-                // Dispatch
-                $function();
+
+            // If there is no dispatch
+            if (null === $dispatch) {
+                // Dispatch without unpacking
+                $dispatch = $function();
             }
+
+            // After dispatch helper
+            $this->afterFunctionDispatch($function, $dispatch);
+
+            return $dispatch;
         }
+
+        return null;
     }
 
     /**
-     * Dispatch a closure event listener.
+     * Before the function has dispatched.
+     *
+     * @param string $function  The function
+     * @param array  $arguments The arguments
+     *
+     * @return void
+     */
+    protected function beforeFunctionDispatch(string $function, array &$arguments): void
+    {
+        // Override this method for custom before dispatch functionality
+    }
+
+    /**
+     * After the function has dispatched.
+     *
+     * @param string $function The function
+     * @param mixed  $dispatch The dispatch
+     *
+     * @return void
+     */
+    protected function afterFunctionDispatch(string $function, &$dispatch): void
+    {
+        // Override this method for custom after dispatch functionality
+    }
+
+    /**
+     * Dispatch a closure.
      *
      * @param \Valkyrja\Annotations\Annotation $annotation The annotation
      * @param array                            $arguments  The arguments
      *
-     * @return void
+     * @return mixed
      */
-    protected function dispatchClosure(Annotation $annotation, array $arguments = []): void
+    protected function dispatchClosure(Annotation $annotation, array $arguments = [])
     {
         // If a closure is set
         if (null !== $annotation->getClosure()) {
             $closure = $annotation->getClosure();
+            $dispatch = null;
+
+            // Before dispatch helper
+            $this->beforeClosureDispatch($closure, $arguments);
 
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                $closure(...$arguments);
+                $dispatch = $closure(...$arguments);
             }
-            // Otherwise no need to unpack
-            else {
-                // Dispatch
-                $closure();
+
+            // If there is no dispatch
+            if (null === $dispatch) {
+                // Dispatch without unpacking
+                $dispatch = $closure();
             }
+
+            // After dispatch helper
+            $this->afterClosureDispatch($closure, $dispatch);
+
+            return $dispatch;
         }
+
+        return null;
+    }
+
+    /**
+     * Before the closure has dispatched.
+     *
+     * @param string $closure  The function
+     * @param array  $arguments The arguments
+     *
+     * @return void
+     */
+    protected function beforeClosureDispatch(string $closure, array &$arguments): void
+    {
+        // Override this method for custom before dispatch functionality
+    }
+
+    /**
+     * After the closure has dispatched.
+     *
+     * @param string $closure The function
+     * @param mixed  $dispatch The dispatch
+     *
+     * @return void
+     */
+    protected function afterClosureDispatch(string $closure, &$dispatch): void
+    {
+        // Override this method for custom after dispatch functionality
+    }
+
+    /**
+     * Dispatch a callable.
+     *
+     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param array                            $arguments  The arguments
+     *
+     * @return mixed
+     */
+    protected function dispatchCallable(Annotation $annotation, array $arguments = [])
+    {
+        // Attempt to dispatch the annotation using the class and method
+        $dispatch = $this->dispatchClassMethod($annotation, $arguments);
+
+        // If there is no dispatch
+        if (! $dispatch) {
+            // Attempt to dispatch the annotation using the function
+            $dispatch = $this->dispatchFunction($annotation, $arguments);
+        }
+
+        // If there is still no dispatch
+        if (! $dispatch) {
+            // Attempt to dispatch the annotation using the closure
+            $dispatch = $this->dispatchClosure($annotation, $arguments);
+        }
+
+        return $dispatch;
     }
 }

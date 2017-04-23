@@ -188,26 +188,4 @@ REGEX;
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function dispatch(Request $request): Response;
-
-    /**
-     * Dispatch a route's handler.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidHandlerException
-     */
-    public function dispatchHandler(Route $route): Response;
-
-    /**
-     * Dispatch a route's action.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidControllerException
-     */
-    public function dispatchAction(Route $route): Response;
 }
