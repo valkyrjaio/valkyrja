@@ -24,6 +24,20 @@ use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
 interface AnnotationsParser extends ClassRegex, ArgumentsRegex
 {
     /**
+     * Annotation symbol.
+     *
+     * @constant string
+     */
+    public const ANNOTATION_SYMBOL = '@';
+
+    /**
+     * Get the annotation's name.
+     *
+     * @return string
+     */
+    public function getAnnotationName(): string;
+
+    /**
      * Get annotations from a given string.
      *
      * @param string $docString The doc string

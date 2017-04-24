@@ -25,6 +25,16 @@ use Valkyrja\Routing\Route;
 class RouteParser extends AnnotationsParser implements RouteParserContract
 {
     /**
+     * Get the annotation's name.
+     *
+     * @return string
+     */
+    public function getAnnotationName(): string
+    {
+        return 'Route';
+    }
+
+    /**
      * Get route annotations from a given string.
      *
      * @param string $docString The doc string

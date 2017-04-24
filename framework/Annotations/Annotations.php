@@ -41,7 +41,7 @@ class Annotations implements AnnotationsContract
      *
      * @var array
      */
-    protected $reflections = [];
+    protected static $reflections = [];
 
     /**
      * Cached annotations.
@@ -147,15 +147,17 @@ class Annotations implements AnnotationsContract
     public function methodAnnotations(string $class, string $method): array
     {
         $index = static::METHOD_CACHE . $class . $method;
+        $reflection = $this->getMethodReflection($class, $method);
 
         return $this->annotations[$index]
             ?? $this->annotations[$index] = $this->setAnnotationValues(
                 [
-                    'class'  => $class,
-                    'method' => $method,
+                    'class'        => $class,
+                    'method'       => ! $reflection->isStatic() ? $method : null,
+                    'staticMethod' => $reflection->isStatic() ? $method : null,
                 ],
                 ...$this->getReflectionFunctionAnnotations(
-                $this->getMethodReflection($class, $method)
+                $reflection
             )
             );
     }
@@ -178,15 +180,16 @@ class Annotations implements AnnotationsContract
             // Get the annotations for this method
             $methodAnnotations = $this->setAnnotationValues(
                 [
-                    'class'  => $class,
-                    'method' => $method->getName(),
+                    'class'        => $class,
+                    'method'       => ! $method->isStatic() ? $method->getName() : null,
+                    'staticMethod' => $method->isStatic() ? $method->getName() : null,
                 ],
                 ...$this->getReflectionFunctionAnnotations($method)
             );
 
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
-            $this->reflections[$index] = $method;
+            self::$reflections[$index] = $method;
             // Set the results in the annotations cache for later re-use
             $this->annotations[$index] = $methodAnnotations;
 
@@ -245,21 +248,11 @@ class Annotations implements AnnotationsContract
     protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
     {
         foreach ($annotations as $annotation) {
-            if (isset($properties['class'])) {
-                $annotation->setClass($properties['class']);
-            }
-
-            if (isset($properties['property'])) {
-                $annotation->setProperty($properties['property']);
-            }
-
-            if (isset($properties['method'])) {
-                $annotation->setMethod($properties['method']);
-            }
-
-            if (isset($properties['function'])) {
-                $annotation->setFunction($properties['function']);
-            }
+            $annotation->setClass($properties['class'] ?? null);
+            $annotation->setProperty($properties['property'] ?? null);
+            $annotation->setMethod($properties['method'] ?? null);
+            $annotation->setStaticMethod($properties['staticMethod'] ?? null);
+            $annotation->setFunction($properties['function'] ?? null);
         }
 
         return $annotations;
@@ -276,8 +269,8 @@ class Annotations implements AnnotationsContract
     {
         $index = static::CLASS_CACHE . $class;
 
-        return $this->reflections[$index]
-            ?? $this->reflections[$index] = new ReflectionClass($class);
+        return self::$reflections[$index]
+            ?? self::$reflections[$index] = new ReflectionClass($class);
     }
 
     /**
@@ -292,8 +285,8 @@ class Annotations implements AnnotationsContract
     {
         $index = static::PROPERTY_CACHE . $class . $property;
 
-        return $this->reflections[$index]
-            ?? $this->reflections[$index] = new ReflectionProperty($class, $property);
+        return self::$reflections[$index]
+            ?? self::$reflections[$index] = new ReflectionProperty($class, $property);
     }
 
     /**
@@ -308,8 +301,8 @@ class Annotations implements AnnotationsContract
     {
         $index = static::METHOD_CACHE . $class . $method;
 
-        return $this->reflections[$index]
-            ?? $this->reflections[$index] = new ReflectionMethod($class, $method);
+        return self::$reflections[$index]
+            ?? self::$reflections[$index] = new ReflectionMethod($class, $method);
     }
 
     /**
@@ -323,7 +316,7 @@ class Annotations implements AnnotationsContract
     {
         $index = static::FUNCTION_CACHE . $function;
 
-        return $this->reflections[$index]
-            ?? $this->reflections[$index] = new ReflectionFunction($function);
+        return self::$reflections[$index]
+            ?? self::$reflections[$index] = new ReflectionFunction($function);
     }
 }
