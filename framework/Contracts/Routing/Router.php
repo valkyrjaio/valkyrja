@@ -168,7 +168,7 @@ REGEX;
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function requestRoute(Request $request): Route;
+    public function requestRoute(Request $request):? Route;
 
     /**
      * Get a route by path.
@@ -178,7 +178,7 @@ REGEX;
      *
      * @return \Valkyrja\Routing\Route
      */
-    public function matchRoute(string $path, string $method = RequestMethod::GET): Route;
+    public function matchRoute(string $path, string $method = RequestMethod::GET):? Route;
 
     /**
      * Dispatch the route and find a match.

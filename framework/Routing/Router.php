@@ -496,7 +496,7 @@ class Router implements RouterContract
      *
      * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
-    public function requestRoute(RequestContract $request): Route
+    public function requestRoute(RequestContract $request):? Route
     {
         $requestMethod = $request->getMethod();
         $requestUri = $request->getPathOnly();
@@ -517,7 +517,7 @@ class Router implements RouterContract
      *
      * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
-    public function matchRoute(string $path, string $method = RequestMethod::GET): Route
+    public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
     {
         // Validate the path
         $path = $this->validatePath($path);
@@ -537,7 +537,7 @@ class Router implements RouterContract
             }
         }
 
-        throw new NotFoundHttpException();
+        return null;
     }
 
     /**
@@ -584,6 +584,10 @@ class Router implements RouterContract
     {
         // Get the route from the request
         $route = $this->requestRoute($request);
+
+        if (! $route instanceof Route) {
+            throw new NotFoundHttpException();
+        }
 
         // If the route is secure and the current request is not secure
         if ($route->getSecure() && ! $request->isSecure()) {
