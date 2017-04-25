@@ -450,6 +450,8 @@ class Router implements RouterContract
 
         // Set the path as the route's path
         $path = $route->getPath();
+        // Set the host to use
+        $host = $this->routeHost($route);
 
         // If there is data
         if ($data) {
@@ -463,10 +465,23 @@ class Router implements RouterContract
                 $path = str_replace($param, $data[$params[1][$key]], $path);
             }
 
-            return $this->validateRouteUrl($path);
+            return $host . $this->validateRouteUrl($path);
         }
 
-        return $this->validateRouteUrl($path);
+        return $host . $this->validateRouteUrl($path);
+    }
+
+    /**
+     * @param \Valkyrja\Routing\Route $route
+     *
+     * @return string
+     */
+    protected function routeHost(Route $route): string
+    {
+        return 'http'
+            . ($route->getSecure() ? 's' : '')
+            . '://'
+            . request()->getHttpHost();
     }
 
     /**
