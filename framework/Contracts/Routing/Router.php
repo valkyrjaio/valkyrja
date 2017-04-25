@@ -181,6 +181,15 @@ REGEX;
     public function matchRoute(string $path, string $method = RequestMethod::GET):? Route;
 
     /**
+     * Determine if a uri is valid.
+     *
+     * @param string $uri The uri to check
+     *
+     * @return bool
+     */
+    public function isInternalUri(string $uri): bool;
+
+    /**
      * Dispatch the route and find a match.
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request

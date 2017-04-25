@@ -508,8 +508,6 @@ class Router implements RouterContract
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Routing\Route
-     *
-     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
     public function requestRoute(RequestContract $request):? Route
     {
@@ -529,8 +527,6 @@ class Router implements RouterContract
      * @param string $method [optional] The method type of get
      *
      * @return \Valkyrja\Routing\Route
-     *
-     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
     public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
     {
@@ -553,6 +549,26 @@ class Router implements RouterContract
         }
 
         return null;
+    }
+
+    /**
+     * Determine if a uri is valid.
+     *
+     * @param string $uri The uri to check
+     *
+     * @return bool
+     */
+    public function isInternalUri(string $uri): bool
+    {
+        // Replace the scheme if it exists
+        $uri = str_replace(['http://', 'https://'], '', $uri);
+        // Get only the path (full string from the first slash to the end of the path)
+        $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
+
+        // Try to match the route
+        $route = $this->matchRoute($uri);
+
+        return $route instanceof Route;
     }
 
     /**
