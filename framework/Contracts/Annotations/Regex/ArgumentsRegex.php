@@ -51,12 +51,13 @@ interface ArgumentsRegex
      *          \[                                      Opening bracket (for param regex in paths)
      *          \]                                      Closing bracket (for param regex in paths)
      *          \.                                      Period (for param regex in paths and dot notation on route name)
+     *          \s                                      Any whitespace (for sentences)
      *      ]*                                      Allow any number of above
      * )                                        End capture
      */
     public const ARGUMENTS_REGEX = <<<'REGEX'
     ([a-zA-Z_]*) 
     \s* \= \s* \'? "? \s*
-    ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.]*)
+    ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\s]*)
 REGEX;
 }

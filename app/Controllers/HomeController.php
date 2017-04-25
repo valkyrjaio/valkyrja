@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\View\View;
-use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Routing\Route;
 
 /**
  * Class HomeController

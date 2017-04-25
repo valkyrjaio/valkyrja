@@ -18,7 +18,11 @@ use Monolog\Logger as MonologLogger;
 
 use Psr\Log\LoggerInterface;
 
+use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
+use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
@@ -28,7 +32,6 @@ use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Contracts\Logger\Logger as LoggerContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
-use Valkyrja\Contracts\Routing\Annotations\RouteParser as RouteParserContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Client;
@@ -41,7 +44,6 @@ use Valkyrja\Http\ResponseCode;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
-use Valkyrja\Routing\Annotations\RouteParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
 
@@ -221,18 +223,53 @@ class Container implements ContainerContract
      */
     public function bootstrap(): void
     {
+        $this->bootstrapAnnotationsParser();
+        $this->bootstrapAnnotations();
+        $this->bootstrapRequest();
         $this->bootstrapRequest();
         $this->bootstrapResponse();
         $this->bootstrapJsonResponse();
         $this->bootstrapRedirectResponse();
         $this->bootstrapResponseBuilder();
         $this->bootstrapRouter();
-        $this->bootstrapRouteParser();
         $this->bootstrapRouteAnnotations();
         $this->bootstrapView();
         $this->bootstrapClient();
         $this->bootstrapLoggerInterface();
         $this->bootstrapLogger();
+    }
+
+    /**
+     * Bootstrap the annotations parser.
+     *
+     * @return void
+     */
+    protected function bootstrapAnnotationsParser(): void
+    {
+        $this->singleton(
+            AnnotationsParserContract::class,
+            function () {
+                return new AnnotationsParser();
+            }
+        );
+    }
+
+    /**
+     * Bootstrap the annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapAnnotations(): void
+    {
+        $this->singleton(
+            AnnotationsContract::class,
+            function () {
+                /** @var AnnotationsParserContract $parser */
+                $parser = $this->get(AnnotationsParserContract::class);
+
+                return new Annotations($parser);
+            }
+        );
     }
 
     /**
@@ -332,21 +369,6 @@ class Container implements ContainerContract
     }
 
     /**
-     * Bootstrap the route parser.
-     *
-     * @return void
-     */
-    protected function bootstrapRouteParser(): void
-    {
-        $this->singleton(
-            RouteParserContract::class,
-            function () {
-                return new RouteParser();
-            }
-        );
-    }
-
-    /**
      * Bootstrap the route annotations.
      *
      * @return void
@@ -356,8 +378,8 @@ class Container implements ContainerContract
         $this->singleton(
             RouteAnnotationsContract::class,
             function () {
-                /** @var \Valkyrja\Contracts\Routing\Annotations\RouteParser $parser */
-                $parser = $this->get(RouteParserContract::class);
+                /** @var AnnotationsParserContract $parser */
+                $parser = $this->get(AnnotationsParserContract::class);
 
                 return new RouteAnnotations($parser);
             }

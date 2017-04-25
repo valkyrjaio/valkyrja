@@ -198,7 +198,7 @@ class Events implements EventsContract
     /**
      * Get an event listeners arguments.
      *
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param \Valkyrja\Events\Listener $listener  The event listener
      * @param array                     $arguments The arguments
      *
      * @return array

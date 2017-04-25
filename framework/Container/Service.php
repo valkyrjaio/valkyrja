@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Container;
 
+use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
@@ -20,8 +21,15 @@ use Valkyrja\Dispatcher\Dispatch;
  *
  * @author  Melech Mizrachi
  */
-class Service extends Dispatch
+class Service extends Dispatch implements Annotation
 {
+    /**
+     * The id to map to.
+     *
+     * @var string
+     */
+    protected $id;
+
     /**
      * Whether this service is an alias.
      *
@@ -75,6 +83,26 @@ class Service extends Dispatch
     protected $beforeMake;
 
     /**
+     * @return string
+     */
+    public function getId():? string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return $this;
+     */
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get whether this is an alias.
      *
      * @return bool
@@ -89,7 +117,7 @@ class Service extends Dispatch
      *
      * @param bool $alias Whether this is an alias
      *
-     * @return $this
+     * @return $this;
      */
     public function setAlias(bool $alias = null): self
     {
@@ -113,7 +141,7 @@ class Service extends Dispatch
      *
      * @param bool $singleton Whether this is a singleton
      *
-     * @return $this
+     * @return $this;
      */
     public function setSingleton(bool $singleton = null): self
     {
@@ -137,7 +165,7 @@ class Service extends Dispatch
      *
      * @param array $defaults The defaults.
      *
-     * @return $this
+     * @return $this;
      */
     public function setDefaults(array $defaults = null): self
     {
@@ -161,7 +189,7 @@ class Service extends Dispatch
      *
      * @param \Valkyrja\Dispatcher\Dispatch $beforeDependencies The dispatch
      *
-     * @return $this
+     * @return $this;
      */
     public function setBeforeDependencies(Dispatch $beforeDependencies = null): self
     {
@@ -185,7 +213,7 @@ class Service extends Dispatch
      *
      * @param \Valkyrja\Dispatcher\Dispatch $afterDependencies The dispatch
      *
-     * @return $this
+     * @return $this;
      */
     public function setAfterDependencies(Dispatch $afterDependencies = null): self
     {
@@ -209,7 +237,7 @@ class Service extends Dispatch
      *
      * @param \Valkyrja\Dispatcher\Dispatch $beforeMake The dispatch
      *
-     * @return $this
+     * @return $this;
      */
     public function setBeforeMake(Dispatch $beforeMake = null): self
     {

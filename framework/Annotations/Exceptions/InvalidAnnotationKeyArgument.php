@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations;
+namespace Valkyrja\Annotations\Exceptions;
 
-use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
+use InvalidArgumentException;
 
 /**
- * Class Annotation
+ * Class InvalidAnnotationKeyArgument
  *
- * @package Valkyrja\Annotations
+ * @package Valkyrja\Annotations\Exceptions
  *
  * @author  Melech Mizrachi
  */
-class Annotation implements AnnotationContract
+class InvalidAnnotationKeyArgument extends InvalidArgumentException
 {
-    use Annotatable;
 }

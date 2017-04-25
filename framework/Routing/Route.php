@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Annotations\Annotation;
+use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\RequestMethod;
 
@@ -95,7 +95,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param string $path The route path
      *
-     * @return $this
+     * @return $this;
      */
     public function setPath(string $path): self
     {
@@ -123,7 +123,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param string $requestMethod The request method
      *
-     * @return $this
+     * @return $this;
      */
     public function setRequestMethod(string $requestMethod = null): self
     {
@@ -147,7 +147,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param string $regex The regex
      *
-     * @return $this
+     * @return $this;
      */
     public function setRegex(string $regex = null): self
     {
@@ -171,35 +171,11 @@ class Route extends Dispatch implements Annotation
      *
      * @param array $params The params
      *
-     * @return $this
+     * @return $this;
      */
     public function setParams(array $params = null): self
     {
         $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * Get the matches.
-     *
-     * @return array
-     */
-    public function getMatches():? array
-    {
-        return $this->matches;
-    }
-
-    /**
-     * Set the matches.
-     *
-     * @param array $matches The matches
-     *
-     * @return $this
-     */
-    public function setMatches(array $matches = null): self
-    {
-        $this->matches = $matches;
 
         return $this;
     }
@@ -219,7 +195,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param bool $dynamic Whether the route it dynamic
      *
-     * @return $this
+     * @return $this;
      */
     public function setDynamic(bool $dynamic): self
     {
@@ -243,7 +219,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param bool $secure Whether the route is secure
      *
-     * @return $this
+     * @return $this;
      */
     public function setSecure(bool $secure): self
     {
@@ -257,7 +233,7 @@ class Route extends Dispatch implements Annotation
      *
      * @param array $properties The properties to set
      *
-     * @return $this
+     * @return $this;
      */
     public static function getRoute(array $properties): self
     {

@@ -136,7 +136,7 @@ REGEX;
     /**
      * Get a route by name.
      *
-     * @param string $name   The name of the route to get
+     * @param string $name The name of the route to get
      *
      * @return \Valkyrja\Routing\Route
      */
@@ -154,8 +154,8 @@ REGEX;
     /**
      * Get a route url by name.
      *
-     * @param string $name   The name of the route to get
-     * @param array  $data   [optional] The route data if dynamic
+     * @param string $name The name of the route to get
+     * @param array  $data [optional] The route data if dynamic
      *
      * @return string
      */

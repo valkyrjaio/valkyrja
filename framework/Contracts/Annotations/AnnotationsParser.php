@@ -13,6 +13,7 @@ namespace Valkyrja\Contracts\Annotations;
 
 use Valkyrja\Contracts\Annotations\Regex\ArgumentsRegex;
 use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
+use Valkyrja\Contracts\Annotations\Regex\LineRegex;
 
 /**
  * Interface AnnotationsParser
@@ -21,7 +22,7 @@ use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
  *
  * @author  Melech Mizrachi
  */
-interface AnnotationsParser extends ClassRegex, ArgumentsRegex
+interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
 {
     /**
      * Annotation symbol.
@@ -31,13 +32,6 @@ interface AnnotationsParser extends ClassRegex, ArgumentsRegex
     public const ANNOTATION_SYMBOL = '@';
 
     /**
-     * Get the annotation's name.
-     *
-     * @return string
-     */
-    public function getAnnotationName(): string;
-
-    /**
      * Get annotations from a given string.
      *
      * @param string $docString The doc string
@@ -45,4 +39,43 @@ interface AnnotationsParser extends ClassRegex, ArgumentsRegex
      * @return \Valkyrja\Annotations\Annotation[]
      */
     public function getAnnotations(string $docString): array;
+
+    /**
+     * Filter a string of arguments into an key => value array
+     *
+     * @param string $arguments The arguments
+     *
+     * @return array
+     */
+    public function getArguments(string $arguments = null):? array;
+
+    /**
+     * Get the annotations regex.
+     *
+     * @return string
+     */
+    public function getRegex(): string;
+
+    /**
+     * Get the arguments regex.
+     *
+     * @return string
+     */
+    public function getArgumentsRegex(): string;
+
+    /**
+     * Get the annotations map.
+     *
+     * @return array
+     */
+    public function getAnnotationsMap(): array;
+
+    /**
+     * Get an annotation model from the annotations map.
+     *
+     * @param string $annotationType The annotation type
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation
+     */
+    public function getAnnotationFromMap(string $annotationType): Annotation;
 }

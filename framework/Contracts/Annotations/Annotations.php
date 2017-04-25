@@ -54,9 +54,19 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classAnnotations(string $class): array;
+
+    /**
+     * Get a class's annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return array
+     */
+    public function classAnnotationsType(string $type, string $class): array;
 
     /**
      * Get a property's annotations.
@@ -64,9 +74,20 @@ interface Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array;
+
+    /**
+     * Get a property's annotations by type.
+     *
+     * @param string $type     The type
+     * @param string $class    The class
+     * @param string $property The property
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function propertyAnnotationsType(string $type, string $class, string $property): array;
 
     /**
      * Get a method's annotations.
@@ -74,34 +95,75 @@ interface Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array;
 
     /**
+     * Get a method's annotations by type.
+     *
+     * @param string $type   The type
+     * @param string $class  The class
+     * @param string $method The method
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function methodAnnotationsType(string $type, string $class, string $method): array;
+
+    /**
      * Get a class's methods' annotations.
      *
-     * @param string $class
+     * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodsAnnotations(string $class): array;
+
+    /**
+     * Get a class's methods' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function methodsAnnotationsType(string $type, string $class): array;
 
     /**
      * Get a function's annotations.
      *
      * @param string $function The function
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function functionAnnotations(string $function): array;
+
+    /**
+     * Get a function's annotations.
+     *
+     * @param string $type     The type
+     * @param string $function The function
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function functionAnnotationsType(string $type, string $function): array;
+
+    /**
+     * Filter annotations by type.
+     *
+     * @param string                                       $type           The type to match
+     * @param \Valkyrja\Contracts\Annotations\Annotation[] ...$annotations The annotations
+     *
+     * @return array
+     */
+    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array;
 
     /**
      * Get a reflection class's annotations.
      *
      * @param \ReflectionFunctionAbstract $reflection The reflection class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array;
 

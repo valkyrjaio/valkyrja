@@ -17,6 +17,7 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionProperty;
 
+use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 
@@ -48,7 +49,7 @@ class Annotations implements AnnotationsContract
      *
      * @var array
      */
-    protected $annotations = [];
+    protected static $annotations = [];
 
     /**
      * Cache index constants.
@@ -95,14 +96,14 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classAnnotations(string $class): array
     {
         $index = static::CLASS_CACHE . $class;
 
-        return $this->annotations[$index]
-            ?? $this->annotations[$index] = $this->setAnnotationValues(
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
                     'class' => $class,
                 ],
@@ -113,19 +114,32 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a class's annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return array
+     */
+    public function classAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->classAnnotations($class));
+    }
+
+    /**
      * Get a property's annotations.
      *
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array
     {
         $index = static::PROPERTY_CACHE . $class . $property;
 
-        return $this->annotations[$index]
-            ?? $this->annotations[$index] = $this->setAnnotationValues(
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
                     'class'    => $class,
                     'property' => $property,
@@ -137,20 +151,34 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a property's annotations by type.
+     *
+     * @param string $type     The type
+     * @param string $class    The class
+     * @param string $property The property
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function propertyAnnotationsType(string $type, string $class, string $property): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
+    }
+
+    /**
      * Get a method's annotations.
      *
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array
     {
         $index = static::METHOD_CACHE . $class . $method;
         $reflection = $this->getMethodReflection($class, $method);
 
-        return $this->annotations[$index]
-            ?? $this->annotations[$index] = $this->setAnnotationValues(
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
                     'class'        => $class,
                     'method'       => ! $reflection->isStatic() ? $method : null,
@@ -163,11 +191,25 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a method's annotations by type.
+     *
+     * @param string $type   The type
+     * @param string $class  The class
+     * @param string $method The method
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function methodAnnotationsType(string $type, string $class, string $method): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->methodAnnotations($class, $method));
+    }
+
+    /**
      * Get a class's methods' annotations.
      *
-     * @param string $class
+     * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodsAnnotations(string $class): array
     {
@@ -191,7 +233,7 @@ class Annotations implements AnnotationsContract
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
             // Set the results in the annotations cache for later re-use
-            $this->annotations[$index] = $methodAnnotations;
+            self::$annotations[$index] = $methodAnnotations;
 
             // Iterate through all the method annotations
             foreach ($methodAnnotations as $methodAnnotation) {
@@ -204,18 +246,31 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a class's methods' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function methodsAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->methodsAnnotations($class));
+    }
+
+    /**
      * Get a function's annotations.
      *
      * @param string $function The function
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function functionAnnotations(string $function): array
     {
         $index = static::FUNCTION_CACHE . $function;
 
-        return $this->annotations[$index]
-            ?? $this->annotations[$index] = $this->setAnnotationValues(
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
                     'function' => $function,
                 ],
@@ -226,11 +281,49 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a function's annotations.
+     *
+     * @param string $type     The type
+     * @param string $function The function
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function functionAnnotationsType(string $type, string $function): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->functionAnnotations($function));
+    }
+
+    /**
+     * Filter annotations by type.
+     *
+     * @param string                                       $type           The type to match
+     * @param \Valkyrja\Contracts\Annotations\Annotation[] ...$annotations The annotations
+     *
+     * @return array
+     */
+    public function filterAnnotationsByType(string $type, AnnotationContract ...$annotations): array
+    {
+        // Set a list of annotations to return
+        $annotationsList = [];
+
+        // Iterate through the annotation
+        foreach ($annotations as $annotation) {
+            // If the annotation's type matches the type requested
+            if ($annotation->getType() === $type) {
+                // Set the annotation in the list
+                $annotationsList[] = $annotation;
+            }
+        }
+
+        return $annotationsList;
+    }
+
+    /**
      * Get a reflection class's annotations.
      *
      * @param \ReflectionFunctionAbstract $reflection The reflection class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
     {
@@ -240,12 +333,12 @@ class Annotations implements AnnotationsContract
     /**
      * Set the base annotation model values.
      *
-     * @param array                              $properties  The properties
-     * @param \Valkyrja\Annotations\Annotation[] $annotations The annotations
+     * @param array                                        $properties  The properties
+     * @param \Valkyrja\Contracts\Annotations\Annotation[] $annotations The annotations
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
-    protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
+    protected function setAnnotationValues(array $properties, AnnotationContract ...$annotations): array
     {
         foreach ($annotations as $annotation) {
             $annotation->setClass($properties['class'] ?? null);

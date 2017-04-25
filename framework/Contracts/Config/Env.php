@@ -34,6 +34,7 @@ interface Env
      */
     public const ANNOTATIONS_ENABLED   = null;
     public const ANNOTATIONS_CACHE_DIR = null;
+    public const ANNOTATIONS_MAP       = null;
 
     /**
      * Logger env variables.

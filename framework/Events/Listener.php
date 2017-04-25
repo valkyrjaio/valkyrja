@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Events;
 
-use Valkyrja\Annotations\Annotation;
+use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**

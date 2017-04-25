@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations;
+namespace Valkyrja\Routing\Exceptions;
 
-use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
+use Exception;
 
 /**
- * Class Annotation
+ * Class InvalidRoutePath
  *
- * @package Valkyrja\Annotations
+ * @package Valkyrja\Routing\Exceptions
  *
  * @author  Melech Mizrachi
  */
-class Annotation implements AnnotationContract
+class InvalidRoutePath extends Exception
 {
-    use Annotatable;
 }

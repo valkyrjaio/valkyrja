@@ -11,7 +11,10 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Container\Service;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Events\Listener;
+use Valkyrja\Routing\Route;
 use Valkyrja\Support\Directory;
 
 /**
@@ -38,6 +41,17 @@ class AnnotationsConfig
     public $cacheDir;
 
     /**
+     * Map of annotation types to the class.
+     *
+     * @var array
+     */
+    public $map = [
+        'Listener' => Listener::class,
+        'Route'    => Route::class,
+        'Service'  => Service::class,
+    ];
+
+    /**
      * Set defaults?
      *
      * @var bool
@@ -54,6 +68,7 @@ class AnnotationsConfig
         if ($this->setDefaults) {
             $this->enabled = $env::ANNOTATIONS_ENABLED ?? false;
             $this->cacheDir = $env::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations');
+            $this->map = array_merge($this->map, $env::ANNOTATIONS_CACHE_DIR ?? []);
         }
     }
 }
