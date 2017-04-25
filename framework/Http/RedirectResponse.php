@@ -163,7 +163,13 @@ class RedirectResponse extends Response implements RedirectResponseContract
     {
         $refererUri = request()->headers()->get('Referer');
 
-        $this->uri = $refererUri ?: '/';
+        // Ensure the route being redirected to is a valid internal route
+        if (! router()->isInternalUri($refererUri)) {
+            // If not set as the index
+            $refererUri = '/';
+        }
+
+        $this->setUri($refererUri ?: '/');
 
         return $this;
     }
