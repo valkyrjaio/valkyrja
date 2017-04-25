@@ -85,27 +85,54 @@ class AnnotationsParser implements AnnotationsParserContract
 
         // Set the annotation's type
         $annotation->setType($properties['annotation']);
-        // Set all the matches
-        $annotation->setMatches($properties);
 
         // If there are arguments
         if (null !== $properties['arguments'] && $properties['arguments']) {
             // Filter the arguments and set them in the annotation
             $annotation->setArguments($this->getArguments($properties['arguments']));
 
-            // Iterate through the arguments
-            foreach ($annotation->getArguments() as $key => $argument) {
-                $methodName = 'set' . ucfirst($key);
+            // Having set the arguments there's no need to retain this key in the properties
+            unset($properties['arguments']);
 
-                // Check if there is a setter function for this argument
-                if (method_exists($annotation, $methodName)) {
-                    $annotation->{$methodName}($argument);
-                }
+            // Set the annotation's arguments to setters if they exist
+            $this->setAnnotationArguments($annotation);
+
+            // If all arguments have been set to their own properties in the annotation model
+            if (empty($annotation->getArguments())) {
+                // Set the arguments to null
+                $annotation->setArguments();
             }
         }
 
+        // Set all the matches
+        $annotation->setMatches($properties);
+
         // Set the annotation in the list
         $annotations[] = $annotation;
+    }
+
+    /**
+     * Set the annotation's arguments.
+     *
+     * @param \Valkyrja\Contracts\Annotations\Annotation $annotation The annotation
+     *
+     * @return void
+     */
+    protected function setAnnotationArguments(AnnotationContract $annotation): void
+    {
+        // Iterate through the arguments
+        foreach ($annotation->getArguments() as $key => $argument) {
+            $methodName = 'set' . ucfirst($key);
+
+            // Check if there is a setter function for this argument
+            if (method_exists($annotation, $methodName)) {
+                // Set the argument using the setter
+                $annotation->{$methodName}($argument);
+
+                // Unset from the arguments array
+                unset($annotation->getArguments()[$key]);
+            }
+        }
     }
 
     /**
