@@ -246,13 +246,13 @@ class AnnotationsParser implements AnnotationsParserContract
     protected function setArgument(array $matches, int $index, array &$arguments): void
     {
         // Set the key
-        $key = $this->determineConstant($this->cleanMatch($matches[1][$index]));
+        $key = $this->determineValue($this->cleanMatch($matches[1][$index]));
         // Set the value
-        $value = $this->determineConstant($this->cleanMatch($matches[2][$index]));
+        $value = $this->determineValue($this->cleanMatch($matches[2][$index]));
 
         // Constants can be bool, int, string, or arrays
         // If the key is an array throw an exception
-        if (is_array($key)) {
+        if (! is_int($key) && ! is_string($key) && ! is_bool($key)) {
             throw new InvalidAnnotationKeyArgument();
         }
 
@@ -267,12 +267,29 @@ class AnnotationsParser implements AnnotationsParserContract
      *
      * @return mixed
      */
-    protected function determineConstant(string $value)
+    protected function determineValue(string $value)
     {
+        // If there was no double colon found there's no need to go further
+        if (strpos($value, '::') === false) {
+            return $value;
+        }
+
         // Determine if the value is a constant
         if (defined($value)) {
             // Set the value as the constant's value
-            $value = constant($value);
+            return constant($value);
+        }
+
+        [$class, $member] = explode('::', $value);
+
+        // Check for static property
+        if (property_exists($class, $member)) {
+            return $class::$member;
+        }
+
+        // Check for static method
+        if (method_exists($class, $member)) {
+            return $class::$member();
         }
 
         return $value;
@@ -341,12 +358,16 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     public function getAnnotationFromMap(string $annotationType): AnnotationContract
     {
+        // Get the annotations map (annotation name to annotation class)
         $annotationsMap = $this->getAnnotationsMap();
 
+        // If an annotation is mapped to a class
         if ($annotationType && array_key_exists($annotationType, $annotationsMap)) {
+            // Set a new class based on the match found
             $annotation = new $annotationsMap[$annotationType]();
         }
         else {
+            // Otherwise set a new base annotation model
             $annotation = new Annotation();
         }
 
