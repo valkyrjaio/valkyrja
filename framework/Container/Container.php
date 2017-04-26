@@ -325,6 +325,9 @@ class Container implements ContainerContract
      */
     public function bootstrap(): void
     {
+        // TODO: Move to BootstrapContainer class
+        // $bootstrapContainer = new BootstrapContainer($this);
+
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
         $this->bootstrapRequest();
@@ -389,7 +392,8 @@ class Container implements ContainerContract
             (new Service())
                 ->setId(RequestContract::class)
                 ->setClass(Request::class)
-                ->setStaticMethod('createFromGlobals')
+                ->setMethod('createFromGlobals')
+                ->setStatic(true)
                 ->setSingleton(true)
         );
     }
@@ -543,6 +547,17 @@ class Container implements ContainerContract
 
         $this->bind(
             (new Service())
+                ->setId(StreamHandler::class)
+                ->setClass(StreamHandler::class)
+                ->setArguments([
+                    $app->config()->logger->filePath,
+                    LogLevel::DEBUG,
+                ])
+                ->setSingleton(true)
+        );
+
+        $this->bind(
+            (new Service())
                 ->setId(LoggerInterface::class)
                 ->setClass(MonologLogger::class)
                 ->setDependencies([Application::class])
@@ -550,11 +565,7 @@ class Container implements ContainerContract
                     $app->config()->logger->name,
                     [
                         (new Dispatch())
-                            ->setClass(StreamHandler::class)
-                            ->setArguments([
-                                $app->config()->logger->filePath,
-                                LogLevel::DEBUG,
-                            ]),
+                            ->setClass(StreamHandler::class),
                     ],
                 ])
                 ->setSingleton(true)

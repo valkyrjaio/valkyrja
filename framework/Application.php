@@ -296,11 +296,13 @@ class Application implements ApplicationContract
      * @param string $serviceProvider The service provider
      *
      * @return void
+     *
+     * TODO: Move this to Container()
      */
     public function register(string $serviceProvider): void
     {
         // Create a new instance of the service provider
-        new $serviceProvider($this);
+        $this->container->singleton($serviceProvider, new $serviceProvider($this));
     }
 
     /**

@@ -85,20 +85,20 @@ interface Annotation
     public function setMethod(string $method = null);
 
     /**
-     * Get the static method.
+     * Get whether the member is static.
      *
-     * @return string
+     * @return bool
      */
-    public function getStaticMethod():? string;
+    public function isStatic():? bool;
 
     /**
-     * Set the static method.
+     * Set whether the member is static.
      *
-     * @param string $staticMethod The static method
+     * @param bool $static Whether the member is static
      *
-     * @return mixed
+     * @return void
      */
-    public function setStaticMethod(string $staticMethod = null);
+    public function setStatic(bool $static = null);
 
     /**
      * Get the function.

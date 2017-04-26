@@ -49,11 +49,11 @@ trait Annotatable
     protected $method;
 
     /**
-     * The static method.
+     * Whether the property or method is static.
      *
-     * @var string
+     * @var bool
      */
-    protected $staticMethod;
+    protected $static;
 
     /**
      * The function.
@@ -165,25 +165,25 @@ trait Annotatable
     }
 
     /**
-     * Get the static method.
+     * Get whether the member is static.
      *
-     * @return string
+     * @return bool
      */
-    public function getStaticMethod():? string
+    public function isStatic(): bool
     {
-        return $this->staticMethod;
+        return $this->static;
     }
 
     /**
-     * Set the static method.
+     * Set whether the member is static.
      *
-     * @param string $staticMethod The static method
+     * @param bool $static Whether the member is static
      *
      * @return void
      */
-    public function setStaticMethod(string $staticMethod = null)
+    public function setStatic(bool $static = null)
     {
-        $this->staticMethod = $staticMethod;
+        $this->static = $static;
     }
 
     /**

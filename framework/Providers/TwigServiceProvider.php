@@ -30,6 +30,19 @@ use Twig_Loader_Filesystem;
 class TwigServiceProvider extends ServiceProvider
 {
     /**
+     * The services this provides.
+     *
+     * @return array
+     */
+    public function provides(): array
+    {
+        return [
+            Twig_Environment::class,
+            View::class,
+        ];
+    }
+
+    /**
      * Publish the service provider.
      *
      * @return void
@@ -41,52 +54,72 @@ class TwigServiceProvider extends ServiceProvider
         }
 
         // Set the env variable for views directory if its not set
-        $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir ?? Directory::resourcesPath('views/twig');
+        $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir
+            ?? Directory::resourcesPath('views/twig');
 
         $this->app->container()->bind(
             (new Service())
                 ->setId(Twig_Environment::class)
-                ->setClosure(
-                    function () {
-                        $loader = new Twig_Loader_Filesystem($this->app->config()->views->twig->dir);
-
-                        $twig = new Twig_Environment(
-                            $loader,
-                            [
-                                'cache'   => $this->app->config()->views->twig->compiledDir,
-                                'debug'   => $this->app->config()->app->debug,
-                                'charset' => 'utf-8',
-                            ]
-                        );
-
-                        $extensions = $this->app->config()->views->twig->extensions ?? [];
-
-                        // Twig Extensions registration
-                        if (is_array($extensions)) {
-                            foreach ($extensions as $extension) {
-                                $twig->addExtension(new $extension());
-                            }
-                        }
-
-                        return $twig;
-                    }
-                )
+                ->setClass(static::class)
+                ->setMethod('getTwigEnvironment')
+                ->setStatic(true)
                 ->setSingleton(true)
         );
 
         $this->app->container()->bind(
             (new Service())
                 ->setId(View::class)
-                ->setClosure(
-                    function ($template = '', array $variables = []) {
-                        $view = new TwigView($this->app, $template, $variables);
-
-                        $view->setTwig($this->app->container()->get(Twig_Environment::class));
-
-                        return $view;
-                    }
-                )
+                ->setClass(static::class)
+                ->setMethod('getTwigView')
+                ->setStatic(true)
         );
+    }
+
+    /**
+     * Get the twig environment.
+     *
+     * @return \Twig_Environment
+     */
+    public static function getTwigEnvironment(): Twig_Environment
+    {
+        $loader = new Twig_Loader_Filesystem(config()->views->twig->dir);
+
+        $twig = new Twig_Environment(
+            $loader,
+            [
+                'cache'   => config()->views->twig->compiledDir,
+                'debug'   => config()->app->debug,
+                'charset' => 'utf-8',
+            ]
+        );
+
+        $extensions = config()->views->twig->extensions ?? [];
+
+        // Twig Extensions registration
+        if (is_array($extensions)) {
+            foreach ($extensions as $extension) {
+                $twig->addExtension(new $extension());
+            }
+        }
+
+        return $twig;
+    }
+
+    /**
+     * Get the twig view when building a service container item.
+     *
+     * @param string $template The template
+     * @param array  $variables The variables
+     *
+     * @return \Valkyrja\View\TwigView
+     */
+    public static function getTwigView($template = '', array $variables = []): TwigView
+    {
+        $view = new TwigView(app(), $template, $variables);
+
+        $view->setTwig(container()->get(Twig_Environment::class));
+
+        return $view;
     }
 }
  

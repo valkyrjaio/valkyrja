@@ -175,25 +175,25 @@ class Dispatch
     }
 
     /**
-     * Get the static method.
+     * Get whether the member is static.
      *
-     * @return string
+     * @return bool
      */
-    public function getStaticMethod():? string
+    public function isStatic():? bool
     {
-        return $this->staticMethod;
+        return $this->static;
     }
 
     /**
-     * Set the static method.
+     * Set whether the member is static.
      *
-     * @param string $staticMethod The static method
+     * @param bool $static Whether the member is static
      *
      * @return $this
      */
-    public function setStaticMethod(string $staticMethod = null): self
+    public function setStatic(bool $static = null): self
     {
-        $this->staticMethod = $staticMethod;
+        $this->static = $static;
 
         return $this;
     }
@@ -328,10 +328,11 @@ class Dispatch
         $dispatch = new Dispatch();
 
         $dispatch
+            ->setId($properties['id'] ?? null)
             ->setClass($properties['class'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setStaticMethod($properties['staticMethod'] ?? null)
             ->setProperty($properties['property'] ?? null)
+            ->setMethod($properties['method'] ?? null)
+            ->setStatic($properties['static'] ?? null)
             ->setFunction($properties['function'] ?? null)
             ->setClosure($properties['closure'] ?? null)
             ->setMatches($properties['matches'] ?? null)

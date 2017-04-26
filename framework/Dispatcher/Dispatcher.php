@@ -38,11 +38,11 @@ trait Dispatcher
     {
         // If a class and method are set and not callable
         if (
-            (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
+            null !== $dispatch->getMethod()
             && ! is_callable(
                 [
                     $dispatch->getClass(),
-                    $dispatch->getMethod() ?? $dispatch->getStaticMethod(),
+                    $dispatch->getMethod(),
                 ]
             )
         ) {
@@ -52,7 +52,39 @@ trait Dispatcher
                 . $dispatch->getName() . ' '
                 . $dispatch->getClass()
                 . '@'
-                . ($dispatch->getMethod() ?? $dispatch->getStaticMethod())
+                . $dispatch->getMethod()
+            );
+        }
+    }
+
+    /**
+     * Verify the class and property of a dispatch.
+     *
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     */
+    protected function verifyClassProperty(Dispatch $dispatch): void
+    {
+        // If a class and method are set and not callable
+        if (
+            null !== $dispatch->getProperty()
+            && ! is_callable(
+                [
+                    $dispatch->getClass(),
+                    $dispatch->getProperty(),
+                ]
+            )
+        ) {
+            // Throw a new invalid method exception
+            throw new InvalidMethodException(
+                'Property does not exist in class : '
+                . $dispatch->getName() . ' '
+                . $dispatch->getClass()
+                . '@'
+                . $dispatch->getProperty()
             );
         }
     }
@@ -119,7 +151,8 @@ trait Dispatcher
             null === $dispatch->getFunction()
             && null === $dispatch->getClosure()
             && null === $dispatch->getClass()
-            && (null === $dispatch->getMethod() && null === $dispatch->getStaticMethod())
+            && null === $dispatch->getMethod()
+            && null === $dispatch->getProperty()
 
         ) {
             // Throw a new invalid dispatch capability exception
@@ -130,6 +163,7 @@ trait Dispatcher
         }
 
         $this->verifyClassMethod($dispatch);
+        $this->verifyClassProperty($dispatch);
         $this->verifyFunction($dispatch);
         $this->verifyClosure($dispatch);
     }
@@ -210,10 +244,12 @@ trait Dispatcher
     private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
         // If a class and method are set
-        if (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod()) {
-            // Set the class through the container
-            $class = container()->get($dispatch->getClass());
-            $method = $dispatch->getMethod() ?? $dispatch->getStaticMethod();
+        if (null !== $dispatch->getMethod()) {
+            // Set the class through the container if this isn't a static method
+            $class = $dispatch->isStatic()
+                ? $dispatch->getClass()
+                : container()->get($dispatch->getClass());
+            $method = $dispatch->getMethod();
             $response = null;
 
             // Before dispatch helper
@@ -222,7 +258,7 @@ trait Dispatcher
             // If there are arguments
             if ($arguments) {
                 // Unpack arguments and dispatch
-                if ($dispatch->getStaticMethod()) {
+                if ($dispatch->isStatic()) {
                     $response = $class::$method(...$arguments);
                 }
                 else {
@@ -233,7 +269,7 @@ trait Dispatcher
             // If there is no dispatch
             if (null === $response) {
                 // Dispatch without unpacking
-                if ($dispatch->getStaticMethod()) {
+                if ($dispatch->isStatic()) {
                     $response = $class::$method();
                 }
                 else {
@@ -490,8 +526,14 @@ trait Dispatcher
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 
+        // TODO: Get rid of before/after methods in favor of event triggers
+
         // Attempt to dispatch the dispatch using the class and method
+        // TODO: Add dispatchClassStaticMethod
         $response = $this->dispatchClassMethod($dispatch, $arguments);
+
+        // TODO: Add dispatchProperty
+        // TODO: Add dispatchStaticProperty
 
         // If there is no dispatch
         if (! $response) {
