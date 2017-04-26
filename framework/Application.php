@@ -91,7 +91,7 @@ class Application implements ApplicationContract
         $this->config = $config;
 
         // Set the application instance in the container
-        $container->instance(ApplicationContract::class, $this);
+        $container->singleton(ApplicationContract::class, $this);
         // Bootstrap the container
         $container->bootstrap();
 

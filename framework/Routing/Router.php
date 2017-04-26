@@ -542,7 +542,7 @@ class Router implements RouterContract
         foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             if (preg_match($dynamicRoute->getRegex(), $path, $matches)) {
-                $dynamicRoute->setMatches($matches);
+                $dynamicRoute->setArguments($matches);
 
                 return $dynamicRoute;
             }
@@ -572,37 +572,6 @@ class Router implements RouterContract
     }
 
     /**
-     * Get a route's arguments.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return array
-     */
-    protected function getRouteArguments(Route $route): array
-    {
-        // Set the arguments to return
-        $arguments = $this->getDependencies($route);
-        // Get the matches
-        $matches = $route->getMatches();
-
-        // If there were matches from the dynamic route
-        if ($matches) {
-            // Iterate through the matches
-            foreach ($matches as $index => $match) {
-                // Disregard the first match (which is the route itself)
-                if ($index === 0) {
-                    continue;
-                }
-
-                // Set the remaining arguments to pass to the action with those matches
-                $arguments[] = $match;
-            }
-        }
-
-        return $arguments;
-    }
-
-    /**
      * Dispatch the route and find a match.
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
@@ -626,10 +595,8 @@ class Router implements RouterContract
             return $this->app->redirect()->secure($request->getPath());
         }
 
-        // Get the route's arguments
-        $arguments = $this->getRouteArguments($route);
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->dispatchCallable($route, $arguments);
+        $dispatch = $this->dispatchCallable($route);
 
         return $this->getResponseFromDispatch($dispatch);
     }
@@ -637,19 +604,19 @@ class Router implements RouterContract
     /**
      * Before the class method has dispatched.
      *
-     * @param mixed  $class     The class
-     * @param string $method    The method
-     * @param array  $arguments The arguments
+     * @param mixed                   $class  The class
+     * @param string                  $method The method
+     * @param \Valkyrja\Routing\Route $route  The route
      *
      * @return void
      */
-    protected function beforeClassMethodDispatch($class, string $method, array &$arguments): void
+    protected function beforeClassMethodDispatch($class, string $method, Route $route): void
     {
         // If the class is a controller
         if ($class instanceof ControllerContract) {
             /** @var ControllerContract $controller */
             // Call the controller's before method
-            $class->before($method, $arguments);
+            $class->before($method, $route);
         }
     }
 

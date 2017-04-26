@@ -147,20 +147,4 @@ interface Annotation
      * @return void
      */
     public function setArguments(array $arguments = null);
-
-    /**
-     * Get the dependencies.
-     *
-     * @return array
-     */
-    public function getDependencies():? array;
-
-    /**
-     * Set the dependencies.
-     *
-     * @param array $dependencies The dependencies
-     *
-     * @return void
-     */
-    public function setDependencies(array $dependencies = null);
 }

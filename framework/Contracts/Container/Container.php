@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Container;
 
-use Closure;
+use Valkyrja\Container\Service;
 
 /**
  * Interface Container
@@ -23,74 +23,114 @@ use Closure;
 interface Container
 {
     /**
-     * Set the service container for dependency injection.
+     * Set an alias to the container.
      *
-     * @param array $serviceContainer The service container array to set
-     *
-     * @return void
-     */
-    public function setServiceContainer(array $serviceContainer): void;
-
-    /**
-     * Set an abstract in the service container.
-     *
-     * @param string   $abstract  The abstract to use as the key
-     * @param \Closure $closure   The instance to set
-     * @param bool     $singleton Whether this abstract should be treated as a singleton
+     * @param string $alias     The alias
+     * @param string $serviceId The service to return
      *
      * @return void
      */
-    public function bind(string $abstract, Closure $closure, bool $singleton = false): void;
+    public function alias(string $alias, string $serviceId): void;
 
     /**
-     * Set an abstract as a singleton in the service container.
+     * Bind a service to the container.
      *
-     * @param string   $abstract The abstract to use as the key
-     * @param \Closure $closure  The instance to set
+     * @param \Valkyrja\Container\Service $service The service model
      *
      * @return void
      */
-    public function singleton(string $abstract, Closure $closure): void;
+    public function bind(Service $service): void;
 
     /**
-     * Set an object in the service container.
+     * Bind a context to the container.
      *
-     * @param string $abstract The abstract to use as the key
-     * @param object $instance The instance to set
+     * @param string                      $serviceId   The service id
+     * @param \Valkyrja\Container\Service $giveService The service to give
+     * @param string|null                 $class       [optional] The context class
+     * @param string|null                 $method      [optional] The context method
      *
      * @return void
      */
-    public function instance(string $abstract, $instance): void;
+    public function context(string $serviceId, Service $giveService, string $class = null, string $method = null): void;
 
     /**
-     * Set an alias in the service container.
+     * Bind a singleton to the container.
      *
-     * @param string $abstract  The abstract to use as the key
-     * @param string $alias     The instance to set
-     * @param bool   $singleton Whether this abstract should be treated as a singleton
-     *
-     * @return void
+     * @param string $serviceId The service
+     * @param mixed  $singleton The singleton
      */
-    public function alias(string $abstract, string $alias, bool $singleton = false): void;
+    public function singleton(string $serviceId, $singleton): void;
 
     /**
-     * Get an abstract from the container.
+     * Check whether a given service exists.
      *
-     * @param string $abstract  The abstract to get
-     * @param array  $arguments [optional] Arguments to pass
-     *
-     * @return mixed
-     */
-    public function get(string $abstract, array $arguments = []);
-
-    /**
-     * Check whether an abstract is set in the container.
-     *
-     * @param string $abstract The abstract to check for
+     * @param string $serviceId The service
      *
      * @return bool
      */
-    public function bound(string $abstract): bool;
+    public function has(string $serviceId): bool;
+
+    /**
+     * Check whether a given service has context.
+     *
+     * @param string $serviceId The service
+     * @param string $class     [optional] The context class
+     * @param string $method    [optional] The context method
+     *
+     * @return bool
+     */
+    public function hasContext(string $serviceId, string $class = null, string $method = null): bool;
+
+    /**
+     * Check whether a given service is an alias.
+     *
+     * @param string $serviceId The service
+     *
+     * @return bool
+     */
+    public function isAlias(string $serviceId): bool;
+
+    /**
+     * Check whether a given service is a singleton.
+     *
+     * @param string $serviceId The service
+     *
+     * @return bool
+     */
+    public function isSingleton(string $serviceId): bool;
+
+    /**
+     * Get a service from the container.
+     *
+     * @param string $serviceId The service
+     * @param array  $arguments [optional] The arguments
+     * @param string $class     [optional] The context class
+     * @param string $method    [optional] The context method
+     *
+     * @return mixed
+     */
+    public function get(string $serviceId, array $arguments = null, string $class = null, string $method = null);
+
+    /**
+     * Make a service.
+     *
+     * @param string     $serviceId The service id
+     * @param array|null $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function make(string $serviceId, array $arguments = null);
+
+    /**
+     * Get the context service id.
+     *
+     * @param string $serviceId The service
+     * @param string $class     [optional] The context class
+     * @param string $method    [optional] The context method
+     *
+     * @return string
+     */
+    public function contextServiceId(string $serviceId, string $class = null, string $method = null):? string;
 
     /**
      * Bootstrap the container.

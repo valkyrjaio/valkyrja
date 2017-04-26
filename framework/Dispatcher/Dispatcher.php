@@ -38,8 +38,7 @@ trait Dispatcher
     {
         // If a class and method are set and not callable
         if (
-            null !== $dispatch->getClass()
-            && (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
+            (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
             && ! is_callable(
                 [
                     $dispatch->getClass(),
@@ -119,11 +118,9 @@ trait Dispatcher
         if (
             null === $dispatch->getFunction()
             && null === $dispatch->getClosure()
-            && (
-                null === $dispatch->getClass()
-                ||
-                (null === $dispatch->getMethod() && null === $dispatch->getStaticMethod())
-            )
+            && null === $dispatch->getClass()
+            && (null === $dispatch->getMethod() && null === $dispatch->getStaticMethod())
+
         ) {
             // Throw a new invalid dispatch capability exception
             throw new InvalidDispatchCapabilityException(
@@ -142,18 +139,18 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return array
+     * @return array|null
      */
-    protected function getDependencies(Dispatch $dispatch): array
+    protected function getDependencies(Dispatch $dispatch):? array
     {
-        $dependencies = [];
+        $dependencies = null;
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = container()->get($dependency);
+                $dependencies[] = container()->get($dependency/**, null, $dispatch->getId()*/);
             }
         }
 
@@ -161,27 +158,66 @@ trait Dispatcher
     }
 
     /**
+     * Get a dispatch's arguments.
+     *
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array|null                    $arguments The arguments
+     *
+     * @return array|null
+     */
+    protected function getArguments(Dispatch $dispatch, array $arguments = null):? array
+    {
+        // Get either the arguments passed or from the dispatch model
+        $arguments = $arguments ?? $dispatch->getArguments();
+
+        // If the listener has dependencies
+        if (null !== $dispatch->getDependencies()) {
+            // Set the listener arguments to a new blank array
+            $dependencies = $this->getDependencies($dispatch);
+
+            // If there are no arguments
+            if (null === $arguments) {
+                // Return the dependencies only
+                return $dependencies;
+            }
+
+            // Iterate through the arguments
+            foreach ($arguments as $argument) {
+                // If the argument is a dispatch
+                if ($argument instanceof Dispatch) {
+                    // Dispatch the argument and set the results to the argument
+                    $argument = $this->dispatchCallable($argument);
+                }
+
+                // Append the argument to the arguments list
+                $dependencies[] = $argument;
+            }
+
+            return $dependencies;
+        }
+
+        return $arguments;
+    }
+
+    /**
      * Dispatch a class method.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array|null                    $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchClassMethod(Dispatch $dispatch, array $arguments = [])
+    private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
         // If a class and method are set
-        if (
-            null !== $dispatch->getClass()
-            && (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod())
-        ) {
+        if (null !== $dispatch->getMethod() || null !== $dispatch->getStaticMethod()) {
             // Set the class through the container
             $class = container()->get($dispatch->getClass());
             $method = $dispatch->getMethod() ?? $dispatch->getStaticMethod();
             $response = null;
 
             // Before dispatch helper
-            $this->beforeClassMethodDispatch($class, $method, $arguments);
+            $this->beforeClassMethodDispatch($class, $method, $dispatch);
 
             // If there are arguments
             if ($arguments) {
@@ -217,13 +253,13 @@ trait Dispatcher
     /**
      * Before the class method has dispatched.
      *
-     * @param mixed  $class     The class
-     * @param string $method    The method
-     * @param array  $arguments The arguments
+     * @param mixed                         $class    The class
+     * @param string                        $method   The method
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      */
-    protected function beforeClassMethodDispatch($class, string $method, array &$arguments): void
+    protected function beforeClassMethodDispatch($class, string $method, Dispatch $dispatch): void
     {
         // Override this method for custom before dispatch functionality
     }
@@ -243,14 +279,85 @@ trait Dispatcher
     }
 
     /**
-     * Dispatch a function.
+     * Dispatch a class.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array|null                    $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchFunction(Dispatch $dispatch, array $arguments = [])
+    private function dispatchClass(Dispatch $dispatch, array $arguments = null)
+    {
+        // If a class and method are set
+        if (null !== $dispatch->getClass()) {
+            // Before dispatch helper
+            $this->beforeClassDispatch($dispatch);
+
+            // If the class is the id then this item is
+            // not set in the service container yet
+            // so it needs to a new instance
+            if ($dispatch->getClass() === $dispatch->getId()) {
+                // Get the class from the dispatcher
+                $class = $dispatch->getClass();
+
+                // If there are argument
+                if (null !== $arguments) {
+                    // Get a new class instance with the arguments
+                    $class = new $class(...$arguments);
+                }
+                else {
+                    // Otherwise just get a new class instance
+                    $class = new $class();
+                }
+            }
+            else {
+
+                // Set the class through the container
+                $class = container()->get($dispatch->getClass(), $arguments);
+            }
+
+            // After dispatch helper
+            $this->afterClassDispatch($class);
+
+            return $class;
+        }
+
+        return null;
+    }
+
+    /**
+     * Before the class has dispatched.
+     *
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     *
+     * @return void
+     */
+    protected function beforeClassDispatch(Dispatch $dispatch): void
+    {
+        // Override this method for custom before dispatch functionality
+    }
+
+    /**
+     * After the class has dispatched.
+     *
+     * @param mixed $class The class
+     *
+     * @return void
+     */
+    protected function afterClassDispatch($class): void
+    {
+        // Override this method for custom after dispatch functionality
+    }
+
+    /**
+     * Dispatch a function.
+     *
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param array|null                    $arguments The arguments
+     *
+     * @return mixed
+     */
+    private function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
         // If a function is set
         if (null !== $dispatch->getFunction()) {
@@ -258,7 +365,7 @@ trait Dispatcher
             $response = null;
 
             // Before dispatch helper
-            $this->beforeFunctionDispatch($function, $arguments);
+            $this->beforeFunctionDispatch($function, $dispatch);
 
             // If there are arguments
             if ($arguments) {
@@ -275,7 +382,7 @@ trait Dispatcher
             // After dispatch helper
             $this->afterFunctionDispatch($function, $response);
 
-            return $dispatch;
+            return $response;
         }
 
         return null;
@@ -284,12 +391,12 @@ trait Dispatcher
     /**
      * Before the function has dispatched.
      *
-     * @param string $function  The function
-     * @param array  $arguments The arguments
+     * @param string                        $function The function
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      */
-    protected function beforeFunctionDispatch(string $function, array &$arguments): void
+    protected function beforeFunctionDispatch(string $function, Dispatch $dispatch): void
     {
         // Override this method for custom before dispatch functionality
     }
@@ -311,11 +418,11 @@ trait Dispatcher
      * Dispatch a closure.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array|null                    $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchClosure(Dispatch $dispatch, array $arguments = [])
+    private function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
         // If a closure is set
         if (null !== $dispatch->getClosure()) {
@@ -323,7 +430,7 @@ trait Dispatcher
             $response = null;
 
             // Before dispatch helper
-            $this->beforeClosureDispatch($closure, $arguments);
+            $this->beforeClosureDispatch($dispatch);
 
             // If there are arguments
             if ($arguments) {
@@ -338,9 +445,9 @@ trait Dispatcher
             }
 
             // After dispatch helper
-            $this->afterClosureDispatch($closure, $response);
+            $this->afterClosureDispatch($response);
 
-            return $dispatch;
+            return $response;
         }
 
         return null;
@@ -349,12 +456,11 @@ trait Dispatcher
     /**
      * Before the closure has dispatched.
      *
-     * @param string $closure   The function
-     * @param array  $arguments The arguments
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
      * @return void
      */
-    protected function beforeClosureDispatch(string $closure, array &$arguments): void
+    protected function beforeClosureDispatch(Dispatch $dispatch): void
     {
         // Override this method for custom before dispatch functionality
     }
@@ -362,12 +468,11 @@ trait Dispatcher
     /**
      * After the closure has dispatched.
      *
-     * @param string $closure  The function
-     * @param mixed  $dispatch The dispatch
+     * @param mixed $dispatch The dispatch
      *
      * @return void
      */
-    protected function afterClosureDispatch(string $closure, &$dispatch): void
+    protected function afterClosureDispatch(&$dispatch): void
     {
         // Override this method for custom after dispatch functionality
     }
@@ -376,14 +481,23 @@ trait Dispatcher
      * Dispatch a callable.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array|null                    $arguments The arguments
      *
      * @return mixed
      */
-    protected function dispatchCallable(Dispatch $dispatch, array $arguments = [])
+    protected function dispatchCallable(Dispatch $dispatch, array $arguments = null)
     {
+        // Get the arguments with dependencies
+        $arguments = $this->getArguments($dispatch, $arguments);
+
         // Attempt to dispatch the dispatch using the class and method
         $response = $this->dispatchClassMethod($dispatch, $arguments);
+
+        // If there is no dispatch
+        if (! $response) {
+            // Attempt to dispatch the dispatch using the class
+            $response = $this->dispatchClass($dispatch, $arguments);
+        }
 
         // If there is no dispatch
         if (! $response) {

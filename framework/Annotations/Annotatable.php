@@ -77,13 +77,6 @@ trait Annotatable
     protected $arguments;
 
     /**
-     * The dependencies.
-     *
-     * @var array
-     */
-    protected $dependencies;
-
-    /**
      * Get the type.
      *
      * @return string
@@ -255,27 +248,5 @@ trait Annotatable
     public function setArguments(array $arguments = null)
     {
         $this->arguments = $arguments;
-    }
-
-    /**
-     * Get the dependencies.
-     *
-     * @return array
-     */
-    public function getDependencies():? array
-    {
-        return $this->dependencies;
-    }
-
-    /**
-     * Set the dependencies.
-     *
-     * @param array $dependencies The dependencies
-     *
-     * @return void
-     */
-    public function setDependencies(array $dependencies = null)
-    {
-        $this->dependencies = $dependencies;
     }
 }

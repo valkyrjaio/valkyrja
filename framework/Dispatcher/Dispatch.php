@@ -27,6 +27,13 @@ class Dispatch
     use Annotatable;
 
     /**
+     * The id.
+     *
+     * @var string
+     */
+    protected $id;
+
+    /**
      * The name.
      *
      * @var string
@@ -39,6 +46,37 @@ class Dispatch
      * @var \Closure
      */
     protected $closure;
+
+    /**
+     * The dependencies.
+     *
+     * @var array
+     */
+    protected $dependencies;
+
+    /**
+     * Get the id.
+     *
+     * @return string
+     */
+    public function getId():? string
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @param string $id The id
+     *
+     * @return $this
+     */
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Get the name.
@@ -55,7 +93,7 @@ class Dispatch
      *
      * @param string $name The name
      *
-     * @return $this;
+     * @return $this
      */
     public function setName(string $name = null): self
     {
@@ -79,7 +117,7 @@ class Dispatch
      *
      * @param string $class The class
      *
-     * @return $this;
+     * @return $this
      */
     public function setClass(string $class = null): self
     {
@@ -103,7 +141,7 @@ class Dispatch
      *
      * @param string $property The property
      *
-     * @return $this;
+     * @return $this
      */
     public function setProperty(string $property = null): self
     {
@@ -127,7 +165,7 @@ class Dispatch
      *
      * @param string $method The method
      *
-     * @return $this;
+     * @return $this
      */
     public function setMethod(string $method = null): self
     {
@@ -151,7 +189,7 @@ class Dispatch
      *
      * @param string $staticMethod The static method
      *
-     * @return $this;
+     * @return $this
      */
     public function setStaticMethod(string $staticMethod = null): self
     {
@@ -173,7 +211,7 @@ class Dispatch
      *
      * @param string $function The function
      *
-     * @return $this;
+     * @return $this
      */
     public function setFunction(string $function = null): self
     {
@@ -197,7 +235,7 @@ class Dispatch
      *
      * @param \Closure $closure The closure
      *
-     * @return $this;
+     * @return $this
      */
     public function setClosure(Closure $closure = null): self
     {
@@ -221,7 +259,7 @@ class Dispatch
      *
      * @param array $matches The matches
      *
-     * @return $this;
+     * @return $this
      */
     public function setMatches(array $matches = null): self
     {
@@ -245,7 +283,7 @@ class Dispatch
      *
      * @param array $arguments The arguments
      *
-     * @return $this;
+     * @return $this
      */
     public function setArguments(array $arguments = null): self
     {
@@ -269,7 +307,7 @@ class Dispatch
      *
      * @param array $dependencies The dependencies
      *
-     * @return $this;
+     * @return $this
      */
     public function setDependencies(array $dependencies = null): self
     {

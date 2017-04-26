@@ -75,6 +75,7 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
  */
 
 $app->router()->setup();
+// (new \Valkyrja\Console\Routing())->run();
 
 /*
  *-------------------------------------------------------------------------

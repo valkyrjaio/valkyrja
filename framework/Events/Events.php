@@ -183,9 +183,8 @@ class Events implements EventsContract
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
-            $listenerArguments = $this->getListenerArguments($listener, $arguments);
             // Attempt to dispatch the event listener using any one of the callable options
-            $dispatch = $this->dispatchCallable($listener, $listenerArguments);
+            $dispatch = $this->dispatchCallable($listener, $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;
@@ -193,33 +192,6 @@ class Events implements EventsContract
         }
 
         return $responses;
-    }
-
-    /**
-     * Get an event listeners arguments.
-     *
-     * @param \Valkyrja\Events\Listener $listener  The event listener
-     * @param array                     $arguments The arguments
-     *
-     * @return array
-     */
-    protected function getListenerArguments(Listener $listener, array $arguments = []): array
-    {
-        // If the listener has dependencies
-        if ($listener->getDependencies()) {
-            // Set the listener arguments to a new blank array
-            $listenerArguments = $this->getDependencies($listener);
-
-            // Iterate through the arguments
-            foreach ($arguments as $argument) {
-                // Append the argument to the arguments list
-                $listenerArguments[] = $argument;
-            }
-
-            return $listenerArguments;
-        }
-
-        return $arguments;
     }
 
     /**

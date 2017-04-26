@@ -10,8 +10,8 @@
  */
 
 $app->container()->bind(
-    App\Controllers\HomeController::class,
-    function () use ($app) {
-        return new App\Controllers\HomeController($app);
-    }
+    (new \Valkyrja\Container\Service())
+    ->setId(App\Controllers\HomeController::class)
+    ->setClass(App\Controllers\HomeController::class)
+    ->setDependencies([Valkyrja\Contracts\Application::class])
 );
