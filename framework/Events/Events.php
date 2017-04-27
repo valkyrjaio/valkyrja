@@ -124,9 +124,9 @@ class Events implements EventsContract
      */
     public function getListeners(string $event): array
     {
-        $this->add($event);
-
-        return $this->events[$event];
+        return $this->has($event)
+            ? $this->events[$event]
+            : [];
     }
 
     /**
@@ -191,10 +191,12 @@ class Events implements EventsContract
      */
     public function trigger(string $event, array $arguments = []): array
     {
-        $this->add($event);
-
         // The responses
         $responses = [];
+
+        if (! $this->has($event) || ! $this->hasListeners($event)) {
+            return $responses;
+        }
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
