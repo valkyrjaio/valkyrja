@@ -59,13 +59,25 @@ if (! function_exists('config')) {
 
 if (! function_exists('container')) {
     /**
-     * Return the global $app variable.
+     * Get container.
      *
      * @return \Valkyrja\Contracts\Container\Container
      */
     function container(): Valkyrja\Contracts\Container\Container
     {
         return app()->container();
+    }
+}
+
+if (! function_exists('events')) {
+    /**
+     * Get events.
+     *
+     * @return \Valkyrja\Contracts\Events\Events
+     */
+    function events(): Valkyrja\Contracts\Events\Events
+    {
+        return app()->events();
     }
 }
 

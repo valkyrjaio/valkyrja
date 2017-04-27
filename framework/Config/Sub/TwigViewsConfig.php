@@ -28,7 +28,7 @@ class TwigViewsConfig
      *
      * @var bool
      */
-    public $enabled;
+    public $enabled = false;
 
     /**
      * Twig templates directory.
@@ -49,14 +49,7 @@ class TwigViewsConfig
      *
      * @var array
      */
-    public $extensions;
-
-    /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
+    public $extensions = [];
 
     /**
      * TwigViewsConfig constructor.
@@ -65,11 +58,9 @@ class TwigViewsConfig
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->enabled = $env::VIEWS_TWIG_ENABLED ?? false;
-            $this->dir = $env::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views/twig');
-            $this->compiledDir = $env::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views/twig');
-            $this->extensions = $env::VIEWS_TWIG_EXTENSIONS ?? [];
-        }
+        $this->enabled = $env::VIEWS_TWIG_ENABLED ?? $this->enabled;
+        $this->dir = $env::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views/twig');
+        $this->compiledDir = $env::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views/twig');
+        $this->extensions = $env::VIEWS_TWIG_EXTENSIONS ?? $this->extensions;
     }
 }

@@ -17,6 +17,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Events\Listener;
 
 /**
  * Trait Dispatcher
@@ -243,75 +244,104 @@ trait Dispatcher
      */
     private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
-        // If a class and method are set
-        if (null !== $dispatch->getMethod()) {
-            // Set the class through the container if this isn't a static method
-            $class = $dispatch->isStatic()
-                ? $dispatch->getClass()
-                : container()->get($dispatch->getClass());
-            $method = $dispatch->getMethod();
-            $response = null;
-
-            // Before dispatch helper
-            $this->beforeClassMethodDispatch($class, $method, $dispatch);
-
-            // If there are arguments
-            if ($arguments) {
-                // Unpack arguments and dispatch
-                if ($dispatch->isStatic()) {
-                    $response = $class::$method(...$arguments);
-                }
-                else {
-                    $response = $class->$method(...$arguments);
-                }
-            }
-
-            // If there is no dispatch
-            if (null === $response) {
-                // Dispatch without unpacking
-                if ($dispatch->isStatic()) {
-                    $response = $class::$method();
-                }
-                else {
-                    $response = $class->$method();
-                }
-            }
-
-            // After dispatch helper
-            $this->afterClassMethodDispatch($class, $method, $response);
-
-            return $response;
+        if (null === $dispatch->getClass() || null === $dispatch->getMethod()) {
+            return null;
         }
 
-        return null;
+        // Set the class through the container if this isn't a static method
+        $class = $dispatch->isStatic()
+            ? $dispatch->getClass()
+            : container()->get($dispatch->getClass());
+        $method = $dispatch->getMethod();
+        $response = null;
+
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before.class.method', [$class, $method, $dispatch]);
+            events()->trigger(
+                "dispatch.before.{$dispatch->getClass()}.{$dispatch->getMethod()}",
+                [$class, $method, $dispatch]
+            );
+        }
+
+        // If there are arguments
+        if (null !== $arguments) {
+            // Unpack arguments and dispatch
+            if ($dispatch->isStatic()) {
+                $response = $class::$method(...$arguments);
+            }
+            else {
+                $response = $class->$method(...$arguments);
+            }
+        }
+        else {
+            // Dispatch without unpacking
+            if ($dispatch->isStatic()) {
+                $response = $class::$method();
+            }
+            else {
+                $response = $class->$method();
+            }
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after.class.method', [$class, $method, $response]);
+            events()->trigger(
+                "dispatch.after.{$dispatch->getClass()}.{$dispatch->getMethod()}",
+                [$class, $method, $response]
+            );
+        }
+
+        return $response ?? true;
     }
 
     /**
-     * Before the class method has dispatched.
+     * Dispatch a class property.
      *
-     * @param mixed                         $class    The class
-     * @param string                        $method   The method
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
+     * @return mixed
      */
-    protected function beforeClassMethodDispatch($class, string $method, Dispatch $dispatch): void
+    private function dispatchClassProperty(Dispatch $dispatch)
     {
-        // Override this method for custom before dispatch functionality
-    }
+        if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
+            return null;
+        }
 
-    /**
-     * After the class method has dispatched.
-     *
-     * @param mixed  $class    The class
-     * @param string $method   The method
-     * @param mixed  $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function afterClassMethodDispatch($class, string $method, &$dispatch): void
-    {
-        // Override this method for custom after dispatch functionality
+        // Set the class through the container if this isn't a static method
+        $class = $dispatch->isStatic()
+            ? $dispatch->getClass()
+            : container()->get($dispatch->getClass());
+        $property = $dispatch->getProperty();
+
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before.class.property', [$class, $property, $dispatch]);
+            events()->trigger(
+                "dispatch.before.{$dispatch->getClass()}.{$dispatch->getProperty()}",
+                [$class, $property, $dispatch]
+            );
+        }
+
+        // Dispatch without unpacking
+        if ($dispatch->isStatic()) {
+            $response = $class::$property();
+        }
+        else {
+            $response = $class->$property();
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after.class.property', [$class, $property, $response]);
+            events()->trigger(
+                "dispatch.after.{$dispatch->getClass()}.{$dispatch->getProperty()}",
+                [$class, $property, $response]
+            );
+        }
+
+        return $response ?? true;
     }
 
     /**
@@ -324,65 +354,45 @@ trait Dispatcher
      */
     private function dispatchClass(Dispatch $dispatch, array $arguments = null)
     {
-        // If a class and method are set
-        if (null !== $dispatch->getClass()) {
-            // Before dispatch helper
-            $this->beforeClassDispatch($dispatch);
-
-            // If the class is the id then this item is
-            // not set in the service container yet
-            // so it needs to a new instance
-            if ($dispatch->getClass() === $dispatch->getId()) {
-                // Get the class from the dispatcher
-                $class = $dispatch->getClass();
-
-                // If there are argument
-                if (null !== $arguments) {
-                    // Get a new class instance with the arguments
-                    $class = new $class(...$arguments);
-                }
-                else {
-                    // Otherwise just get a new class instance
-                    $class = new $class();
-                }
-            }
-            else {
-
-                // Set the class through the container
-                $class = container()->get($dispatch->getClass(), $arguments);
-            }
-
-            // After dispatch helper
-            $this->afterClassDispatch($class);
-
-            return $class;
+        if (null === $dispatch->getClass()) {
+            return null;
         }
 
-        return null;
-    }
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before.class', [$dispatch]);
+            events()->trigger("dispatch.before.{$dispatch->getClass()}", [$dispatch]);
+        }
 
-    /**
-     * Before the class has dispatched.
-     *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function beforeClassDispatch(Dispatch $dispatch): void
-    {
-        // Override this method for custom before dispatch functionality
-    }
+        // If the class is the id then this item is
+        // not set in the service container yet
+        // so it needs to a new instance
+        if ($dispatch->getClass() === $dispatch->getId()) {
+            // Get the class from the dispatcher
+            $class = $dispatch->getClass();
 
-    /**
-     * After the class has dispatched.
-     *
-     * @param mixed $class The class
-     *
-     * @return void
-     */
-    protected function afterClassDispatch($class): void
-    {
-        // Override this method for custom after dispatch functionality
+            // If there are argument
+            if (null !== $arguments) {
+                // Get a new class instance with the arguments
+                $class = new $class(...$arguments);
+            }
+            else {
+                // Otherwise just get a new class instance
+                $class = new $class();
+            }
+        }
+        else {
+            // Set the class through the container
+            $class = container()->get($dispatch->getClass(), $arguments);
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after.class', [$class]);
+            events()->trigger("dispatch.after.{$dispatch->getClass()}", [$class]);
+        }
+
+        return $class ?? true;
     }
 
     /**
@@ -395,59 +405,36 @@ trait Dispatcher
      */
     private function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
-        // If a function is set
-        if (null !== $dispatch->getFunction()) {
-            $function = $dispatch->getFunction();
-            $response = null;
-
-            // Before dispatch helper
-            $this->beforeFunctionDispatch($function, $dispatch);
-
-            // If there are arguments
-            if ($arguments) {
-                // Unpack arguments and dispatch
-                $response = $function(...$arguments);
-            }
-
-            // If there is no dispatch
-            if (null === $response) {
-                // Dispatch without unpacking
-                $response = $function();
-            }
-
-            // After dispatch helper
-            $this->afterFunctionDispatch($function, $response);
-
-            return $response;
+        if (null === $dispatch->getFunction()) {
+            return null;
         }
 
-        return null;
-    }
+        $function = $dispatch->getFunction();
+        $response = null;
 
-    /**
-     * Before the function has dispatched.
-     *
-     * @param string                        $function The function
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function beforeFunctionDispatch(string $function, Dispatch $dispatch): void
-    {
-        // Override this method for custom before dispatch functionality
-    }
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before.function', [$function, $dispatch]);
+            events()->trigger("dispatch.before.{$dispatch->getFunction()}", [$function, $dispatch]);
+        }
 
-    /**
-     * After the function has dispatched.
-     *
-     * @param string $function The function
-     * @param mixed  $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function afterFunctionDispatch(string $function, &$dispatch): void
-    {
-        // Override this method for custom after dispatch functionality
+        // If there are arguments
+        if (null !== $arguments) {
+            // Unpack arguments and dispatch
+            $response = $function(...$arguments);
+        }
+        else {
+            // Dispatch without unpacking
+            $response = $function();
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after.function', [$function, $response]);
+            events()->trigger("dispatch.after.{$dispatch->getFunction()}", [$function, $response]);
+        }
+
+        return $response ?? true;
     }
 
     /**
@@ -460,57 +447,34 @@ trait Dispatcher
      */
     private function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
-        // If a closure is set
-        if (null !== $dispatch->getClosure()) {
-            $closure = $dispatch->getClosure();
-            $response = null;
-
-            // Before dispatch helper
-            $this->beforeClosureDispatch($dispatch);
-
-            // If there are arguments
-            if ($arguments) {
-                // Unpack arguments and dispatch
-                $response = $closure(...$arguments);
-            }
-
-            // If there is no dispatch
-            if (null === $response) {
-                // Dispatch without unpacking
-                $response = $closure();
-            }
-
-            // After dispatch helper
-            $this->afterClosureDispatch($response);
-
-            return $response;
+        if (null === $dispatch->getClosure()) {
+            return null;
         }
 
-        return null;
-    }
+        $closure = $dispatch->getClosure();
+        $response = null;
 
-    /**
-     * Before the closure has dispatched.
-     *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function beforeClosureDispatch(Dispatch $dispatch): void
-    {
-        // Override this method for custom before dispatch functionality
-    }
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before.closure', [$dispatch]);
+        }
 
-    /**
-     * After the closure has dispatched.
-     *
-     * @param mixed $dispatch The dispatch
-     *
-     * @return void
-     */
-    protected function afterClosureDispatch(&$dispatch): void
-    {
-        // Override this method for custom after dispatch functionality
+        // If there are arguments
+        if (null !== $arguments) {
+            // Unpack arguments and dispatch
+            $response = $closure(...$arguments);
+        }
+        else {
+            // Dispatch without unpacking
+            $response = $closure();
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after.closure', [$response]);
+        }
+
+        return $response ?? true;
     }
 
     /**
@@ -526,14 +490,19 @@ trait Dispatcher
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 
-        // TODO: Get rid of before/after methods in favor of event triggers
+        if (! $dispatch instanceof Listener) {
+            // Before dispatch event
+            events()->trigger('dispatch.before', [$dispatch]);
+        }
 
         // Attempt to dispatch the dispatch using the class and method
-        // TODO: Add dispatchClassStaticMethod
         $response = $this->dispatchClassMethod($dispatch, $arguments);
 
-        // TODO: Add dispatchProperty
-        // TODO: Add dispatchStaticProperty
+        // If there is no dispatch
+        if (! $response) {
+            // Attempt to dispatch the dispatch using the class and property
+            $response = $this->dispatchClassProperty($dispatch);
+        }
 
         // If there is no dispatch
         if (! $response) {
@@ -551,6 +520,11 @@ trait Dispatcher
         if (! $response) {
             // Attempt to dispatch the dispatch using the closure
             $response = $this->dispatchClosure($dispatch, $arguments);
+        }
+
+        if (! $dispatch instanceof Listener) {
+            // After dispatch event
+            events()->trigger('dispatch.after', [$response]);
         }
 
         return $response;

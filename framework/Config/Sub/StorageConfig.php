@@ -38,22 +38,13 @@ class StorageConfig
     public $logsDir;
 
     /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
-
-    /**
      * StorageConfig constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->uploadsDir = $env::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app');
-            $this->logsDir = $env::STORAGE_LOGS_DIR ?? Directory::storagePath('logs');
-        }
+        $this->uploadsDir = $env::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app');
+        $this->logsDir = $env::STORAGE_LOGS_DIR ?? Directory::storagePath('logs');
     }
 }

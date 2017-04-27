@@ -28,7 +28,7 @@ class LoggerConfig
      *
      * @var string
      */
-    public $name;
+    public $name = 'ApplicationLog';
 
     /**
      * The log file Path.
@@ -38,23 +38,13 @@ class LoggerConfig
     public $filePath;
 
     /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
-
-    /**
      * LoggerConfig constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->name = $env::VIEWS_DIR ?? 'ApplicationLog';
-
-            $this->filePath = $env::VIEWS_DIR ?? Directory::storagePath('logs/valkyrja.log');
-        }
+        $this->name = $env::VIEWS_DIR ?? $this->name;
+        $this->filePath = $env::VIEWS_DIR ?? Directory::storagePath('logs/valkyrja.log');
     }
 }

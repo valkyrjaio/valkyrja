@@ -14,6 +14,7 @@ namespace Valkyrja\Contracts;
 use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
@@ -43,10 +44,11 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Contracts\Container\Container $container [optional] The container to use
-     * @param \Valkyrja\Config\Config                 $config    [optional] The config to use
+     * @param \Valkyrja\Contracts\Container\Container $container The container to use
+     * @param \Valkyrja\Contracts\Events\Events       $events    The events to use
+     * @param \Valkyrja\Config\Config                 $config    The config to use
      */
-    public function __construct(Container $container, Config $config);
+    public function __construct(Container $container, Events $events, Config $config);
 
     /**
      * Get the application instance.
@@ -61,6 +63,13 @@ interface Application
      * @return \Valkyrja\Contracts\Container\Container
      */
     public function container(): Container;
+
+    /**
+     * Get the events instance.
+     *
+     * @return \Valkyrja\Contracts\Events\Events
+     */
+    public function events(): Events;
 
     /**
      * Get the application version.

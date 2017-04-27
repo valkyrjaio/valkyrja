@@ -17,6 +17,7 @@ use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
@@ -62,6 +63,13 @@ class Application implements ApplicationContract
     protected $container;
 
     /**
+     * Get the instance of the events.
+     *
+     * @var \Valkyrja\Contracts\Events\Events
+     */
+    protected $events;
+
+    /**
      * Is the app using a compiled version?
      *
      * @var bool
@@ -71,10 +79,11 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Contracts\Container\Container $container [optional] The container to use
-     * @param \Valkyrja\Config\Config                 $config    [optional] The config to use
+     * @param \Valkyrja\Contracts\Container\Container $container The container to use
+     * @param \Valkyrja\Contracts\Events\Events       $events    The events to use
+     * @param \Valkyrja\Config\Config                 $config    The config to use
      */
-    public function __construct(Container $container, Config $config)
+    public function __construct(Container $container, Events $events, Config $config)
     {
         // If debug is on, enable debug handling
         if ($config->app->debug) {
@@ -87,11 +96,15 @@ class Application implements ApplicationContract
 
         // Set the container within the application
         $this->container = $container;
+        // Set the events within the application
+        $this->events = $events;
         // Set the config within the application
         $this->config = $config;
 
         // Set the application instance in the container
         $container->singleton(ApplicationContract::class, $this);
+        // Set the events instance in the container
+        $container->singleton(Events::class, $events);
         // Bootstrap the container
         $container->bootstrap();
 
@@ -117,6 +130,16 @@ class Application implements ApplicationContract
     public function container(): Container
     {
         return $this->container;
+    }
+
+    /**
+     * Get the events instance.
+     *
+     * @return \Valkyrja\Contracts\Events\Events
+     */
+    public function events(): Events
+    {
+        return $this->events;
     }
 
     /**

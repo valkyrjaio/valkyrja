@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Events;
 
-use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
@@ -27,28 +26,11 @@ class Events implements EventsContract
     use Dispatcher;
 
     /**
-     * The application.
-     *
-     * @var \Valkyrja\Contracts\Application
-     */
-    protected $app;
-
-    /**
      * The event listeners.
      *
      * @var array
      */
     protected $events = [];
-
-    /**
-     * Events constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     */
-    public function __construct(Application $application)
-    {
-        $this->app = $application;
-    }
 
     /**
      * Add an event listener.
@@ -63,40 +45,73 @@ class Events implements EventsContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
-    public function addListener(string $event, Listener $listener): void
+    public function listen(string $event, Listener $listener): void
     {
         $this->add($event);
 
         $this->verifyDispatch($listener);
 
-        $this->events[$event][$listener->getName()] = $listener;
+        // If this listener has an id
+        if (null !== $listener->getId()) {
+            // Use it when setting to allow removal
+            // or checking if it exists later
+            $this->events[$event][$listener->getId()] = $listener;
+        }
+        else {
+            // Otherwise set the listener normally
+            $this->events[$event][] = $listener;
+        }
+    }
+
+    /**
+     * Add a listener to many events.
+     *
+     * @param \Valkyrja\Events\Listener $listener  The listener
+     * @param string[]                  ...$events The events
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     */
+    public function listenMany(Listener $listener, string ...$events): void
+    {
+        // Iterate through the events
+        foreach ($events as $event) {
+            // Set a new listener for the event
+            $this->listen($event, $listener);
+        }
     }
 
     /**
      * Determine whether an event has a specified listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string $event      The event
+     * @param string $listenerId The event listener
      *
      * @return bool
      */
-    public function hasListener(string $event, Listener $listener): bool
+    public function hasListener(string $event, string $listenerId): bool
     {
-        return $this->has($event) && isset($this->events[$event][$listener]);
+        return $this->has($event) && isset($this->events[$event][$listenerId]);
     }
 
     /**
      * Remove an event listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string $event      The event
+     * @param string $listenerId The event listener
      *
      * @return void
      */
-    public function removeListener(string $event, Listener $listener): void
+    public function removeListener(string $event, string $listenerId): void
     {
-        if ($this->hasListener($event, $listener)) {
-            unset($this->events[$event][$listener]);
+        // If the listener exists
+        if ($this->hasListener($event, $listenerId)) {
+            // Unset it
+            unset($this->events[$event][$listenerId]);
         }
     }
 

@@ -197,4 +197,26 @@ REGEX;
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function dispatch(Request $request): Response;
+
+    /**
+     * Before the class method has dispatched.
+     *
+     * @param mixed                   $class  The class
+     * @param string                  $method The method
+     * @param \Valkyrja\Routing\Route $route  The route
+     *
+     * @return void
+     */
+    public static function beforeClassMethodDispatch($class, string $method, Route $route): void;
+
+    /**
+     * After the class method has dispatched.
+     *
+     * @param mixed  $class    The class
+     * @param string $method   The method
+     * @param mixed  $dispatch The dispatch
+     *
+     * @return void
+     */
+    public static function afterClassMethodDispatch($class, string $method, &$dispatch): void;
 }

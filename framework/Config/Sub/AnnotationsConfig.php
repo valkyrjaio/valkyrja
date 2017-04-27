@@ -52,23 +52,14 @@ class AnnotationsConfig
     ];
 
     /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
-
-    /**
      * AnnotationsConfig constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->enabled = $env::ANNOTATIONS_ENABLED ?? false;
-            $this->cacheDir = $env::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations');
-            $this->map = array_merge($this->map, $env::ANNOTATIONS_CACHE_DIR ?? []);
-        }
+        $this->enabled = $env::ANNOTATIONS_ENABLED ?? false;
+        $this->cacheDir = $env::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations');
+        $this->map = array_merge($env::ANNOTATIONS_MAP ?? [], $this->map);
     }
 }

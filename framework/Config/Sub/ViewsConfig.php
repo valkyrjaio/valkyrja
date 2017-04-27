@@ -38,23 +38,13 @@ class ViewsConfig
     public $twig;
 
     /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
-
-    /**
      * ViewsConfig constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->dir = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
-
-            $this->twig = new TwigViewsConfig($env);
-        }
+        $this->dir = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
+        $this->twig = new TwigViewsConfig($env);
     }
 }

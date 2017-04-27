@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Contracts\Events;
 
-use Valkyrja\Contracts\Application;
 use Valkyrja\Events\Listener;
 
 /**
@@ -24,13 +23,6 @@ use Valkyrja\Events\Listener;
 interface Events
 {
     /**
-     * Events constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     */
-    public function __construct(Application $application);
-
-    /**
      * Add an event listener.
      *
      * @param string                    $event    The event
@@ -38,27 +30,37 @@ interface Events
      *
      * @return void
      */
-    public function addListener(string $event, Listener $listener): void;
+    public function listen(string $event, Listener $listener): void;
+
+    /**
+     * Add a listener to many events.
+     *
+     * @param \Valkyrja\Events\Listener $listener  The listener
+     * @param string[]                  ...$events The events
+     *
+     * @return void
+     */
+    public function listenMany(Listener $listener, string ...$events): void;
 
     /**
      * Determine whether an event has a specified listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string $event      The event
+     * @param string $listenerId The event listener
      *
      * @return bool
      */
-    public function hasListener(string $event, Listener $listener): bool;
+    public function hasListener(string $event, string $listenerId): bool;
 
     /**
      * Remove an event listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string $event      The event
+     * @param string $listenerId The event listener
      *
      * @return void
      */
-    public function removeListener(string $event, Listener $listener): void;
+    public function removeListener(string $event, string $listenerId): void;
 
     /**
      * Get the event's listeners.

@@ -11,6 +11,7 @@ use tests\traits\TestRequest;
 
 use Valkyrja\Application;
 use Valkyrja\Container\Container;
+use Valkyrja\Events\Events;
 use Valkyrja\Providers\TwigServiceProvider;
 use Valkyrja\Support\Directory;
 
@@ -40,6 +41,8 @@ class TestCase extends PHPUnitTestCase
         $app = new Application(
         // Set the container
             new Container(),
+            // Set the events
+            new Events(),
             // Set the config
             new Config(
             // With environment variables
@@ -51,7 +54,7 @@ class TestCase extends PHPUnitTestCase
 
         $app->register(TwigServiceProvider::class);
 
-        $app->router()->setupRoutes();
+        $app->router()->setup();
 
         $this->app = $app;
     }

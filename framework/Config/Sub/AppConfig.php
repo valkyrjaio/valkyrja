@@ -56,14 +56,7 @@ class AppConfig
      *
      * @var string
      */
-    public $version = '1.0';
-
-    /**
-     * Set defaults?
-     *
-     * @var bool
-     */
-    protected $setDefaults = true;
+    public $version = Application::VERSION;
 
     /**
      * AppConfig constructor.
@@ -72,12 +65,10 @@ class AppConfig
      */
     public function __construct(Env $env)
     {
-        if ($this->setDefaults) {
-            $this->env = $env::APP_ENV ?? 'production';
-            $this->debug = $env::APP_DEBUG ?? false;
-            $this->url = $env::APP_URL ?? 'localhost';
-            $this->timezone = $env::APP_TIMEZONE ?? 'UTC';
-            $this->version = $env::APP_VERSION ?? Application::VERSION;
-        }
+        $this->env = $env::APP_ENV ?? $this->env;
+        $this->debug = $env::APP_DEBUG ?? $this->debug;
+        $this->url = $env::APP_URL ?? $this->url;
+        $this->timezone = $env::APP_TIMEZONE ?? $this->timezone;
+        $this->version = $env::APP_VERSION ?? $this->version;
     }
 }
