@@ -244,6 +244,7 @@ trait Dispatcher
      */
     private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
+        // Ensure a class and method exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getMethod()) {
             return null;
         }
@@ -255,6 +256,7 @@ trait Dispatcher
         $method = $dispatch->getMethod();
         $response = null;
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
             events()->trigger('dispatch.before.class.method', [$class, $method, $dispatch]);
@@ -284,6 +286,7 @@ trait Dispatcher
             }
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
             events()->trigger('dispatch.after.class.method', [$class, $method, $response]);
@@ -305,6 +308,7 @@ trait Dispatcher
      */
     private function dispatchClassProperty(Dispatch $dispatch)
     {
+        // Ensure a class and property exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
             return null;
         }
@@ -315,6 +319,7 @@ trait Dispatcher
             : container()->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
             events()->trigger('dispatch.before.class.property', [$class, $property, $dispatch]);
@@ -332,6 +337,7 @@ trait Dispatcher
             $response = $class->$property();
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
             events()->trigger('dispatch.after.class.property', [$class, $property, $response]);
@@ -354,10 +360,12 @@ trait Dispatcher
      */
     private function dispatchClass(Dispatch $dispatch, array $arguments = null)
     {
+        // Ensure a class exists before continuing
         if (null === $dispatch->getClass()) {
             return null;
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
             events()->trigger('dispatch.before.class', [$dispatch]);
@@ -386,6 +394,7 @@ trait Dispatcher
             $class = container()->get($dispatch->getClass(), $arguments);
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
             events()->trigger('dispatch.after.class', [$class]);
@@ -405,6 +414,7 @@ trait Dispatcher
      */
     private function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
+        // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
             return null;
         }
@@ -412,6 +422,7 @@ trait Dispatcher
         $function = $dispatch->getFunction();
         $response = null;
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
             events()->trigger('dispatch.before.function', [$function, $dispatch]);
@@ -428,6 +439,7 @@ trait Dispatcher
             $response = $function();
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
             events()->trigger('dispatch.after.function', [$function, $response]);
@@ -447,6 +459,7 @@ trait Dispatcher
      */
     private function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
+        // Ensure a closure exists before continuing
         if (null === $dispatch->getClosure()) {
             return null;
         }
@@ -454,6 +467,7 @@ trait Dispatcher
         $closure = $dispatch->getClosure();
         $response = null;
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
             events()->trigger('dispatch.before.closure', [$dispatch]);
@@ -469,6 +483,7 @@ trait Dispatcher
             $response = $closure();
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
             events()->trigger('dispatch.after.closure', [$response]);
@@ -490,9 +505,10 @@ trait Dispatcher
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // Before dispatch event
-            events()->trigger('dispatch.before', [$dispatch]);
+            events()->trigger('dispatch.before', [$dispatch, $arguments]);
         }
 
         // Attempt to dispatch the dispatch using the class and method
@@ -522,9 +538,10 @@ trait Dispatcher
             $response = $this->dispatchClosure($dispatch, $arguments);
         }
 
+        // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
-            events()->trigger('dispatch.after', [$response]);
+            events()->trigger('dispatch.after', [$dispatch, $response]);
         }
 
         return $response;
