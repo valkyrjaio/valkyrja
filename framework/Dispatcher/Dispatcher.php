@@ -26,6 +26,8 @@ use Valkyrja\Events\Listener;
  */
 trait Dispatcher
 {
+    protected $DISPATCHED = 'dispatcher.dispatched';
+
     /**
      * Verify the class and method of a dispatch.
      *
@@ -296,7 +298,7 @@ trait Dispatcher
             );
         }
 
-        return $response ?? true;
+        return $response ?? $this->DISPATCHED;
     }
 
     /**
@@ -347,7 +349,7 @@ trait Dispatcher
             );
         }
 
-        return $response ?? true;
+        return $response ?? $this->DISPATCHED;
     }
 
     /**
@@ -401,7 +403,7 @@ trait Dispatcher
             events()->trigger("dispatch.after.{$dispatch->getClass()}", [$class]);
         }
 
-        return $class ?? true;
+        return $class ?? $this->DISPATCHED;
     }
 
     /**
@@ -446,7 +448,7 @@ trait Dispatcher
             events()->trigger("dispatch.after.{$dispatch->getFunction()}", [$function, $response]);
         }
 
-        return $response ?? true;
+        return $response ?? $this->DISPATCHED;
     }
 
     /**
@@ -489,7 +491,7 @@ trait Dispatcher
             events()->trigger('dispatch.after.closure', [$response]);
         }
 
-        return $response ?? true;
+        return $response ?? $this->DISPATCHED;
     }
 
     /**
@@ -511,31 +513,18 @@ trait Dispatcher
             events()->trigger('dispatch.before', [$dispatch, $arguments]);
         }
 
-        // Attempt to dispatch the dispatch using the class and method
-        $response = $this->dispatchClassMethod($dispatch, $arguments);
+        // Attempt to dispatch the dispatch
+        $response = $this->dispatchClassMethod($dispatch, $arguments)
+            ?? $this->dispatchClassProperty($dispatch)
+            ?? $this->dispatchClass($dispatch, $arguments)
+            ?? $this->dispatchFunction($dispatch, $arguments)
+            ?? $this->dispatchClosure($dispatch, $arguments);
 
-        // If there is no dispatch
-        if (! $response) {
-            // Attempt to dispatch the dispatch using the class and property
-            $response = $this->dispatchClassProperty($dispatch);
-        }
-
-        // If there is no dispatch
-        if (! $response) {
-            // Attempt to dispatch the dispatch using the class
-            $response = $this->dispatchClass($dispatch, $arguments);
-        }
-
-        // If there is no dispatch
-        if (! $response) {
-            // Attempt to dispatch the dispatch using the function
-            $response = $this->dispatchFunction($dispatch, $arguments);
-        }
-
-        // If there is still no dispatch
-        if (! $response) {
-            // Attempt to dispatch the dispatch using the closure
-            $response = $this->dispatchClosure($dispatch, $arguments);
+        // If the response was initially null and we added the dispatched text to avoid
+        // calling each subsequent dispatcher thereafter
+        if ($response === $this->DISPATCHED) {
+            // Reset the response to null
+            $response = null;
         }
 
         // Avoid infinite recursion
