@@ -542,7 +542,11 @@ class Router implements RouterContract
         foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             if (preg_match($dynamicRoute->getRegex(), $path, $matches)) {
-                $dynamicRoute->setArguments($matches);
+                // The first match is the path itself
+                unset($matches[0]);
+
+                // Set the matches
+                $dynamicRoute->setMatches($matches);
 
                 return $dynamicRoute;
             }
@@ -596,7 +600,7 @@ class Router implements RouterContract
         }
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->dispatchCallable($route);
+        $dispatch = $this->dispatchCallable($route, $route->getMatches());
 
         return $this->getResponseFromDispatch($dispatch);
     }
