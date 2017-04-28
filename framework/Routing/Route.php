@@ -252,7 +252,8 @@ class Route extends Dispatch implements Annotation
             ->setMethod($properties['method'] ?? null)
             ->setFunction($properties['function'] ?? null)
             ->setClosure($properties['closure'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null);
+            ->setDependencies($properties['dependencies'] ?? null)
+            ->setStatic($properties['static'] ?? null);
 
         return $route;
     }

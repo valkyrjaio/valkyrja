@@ -100,7 +100,6 @@ class Service extends Dispatch implements Annotation
             ->setId($properties['id'] ?? null)
             ->setClass($properties['class'] ?? null)
             ->setMethod($properties['method'] ?? null)
-            ->setStaticMethod($properties['staticMethod'] ?? null)
             ->setProperty($properties['property'] ?? null)
             ->setFunction($properties['function'] ?? null)
             ->setClosure($properties['closure'] ?? null)
@@ -108,7 +107,8 @@ class Service extends Dispatch implements Annotation
             ->setArguments($properties['arguments'] ?? null)
             ->setDependencies($properties['dependencies'] ?? null)
             ->setSingleton($properties['singleton'] ?? null)
-            ->setDefaults($properties['defaults'] ?? null);
+            ->setDefaults($properties['defaults'] ?? null)
+            ->setStatic($properties['static'] ?? null);
 
         return $service;
     }
