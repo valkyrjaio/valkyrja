@@ -103,6 +103,8 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     *
+     * TODO: Update to use ContextService
      */
     public function context(string $serviceId, Service $giveService, string $class = null, string $method = null): void
     {
@@ -187,17 +189,19 @@ class Container implements ContainerContract
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $context   [optional] The context
+     *                          $context = class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          $member = method name || property name
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $class = null, string $method = null)
+    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
     {
         // If there is a context set for this class/method
-        if ($this->hasContext($serviceId, $class, $method)) {
+        if ($this->hasContext($serviceId, $context, $member)) {
             // Return that context
-            return $this->get($this->contextServiceId($serviceId, $class, $method), $arguments);
+            return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
         }
 
         // If the service is a singleton
@@ -209,7 +213,7 @@ class Container implements ContainerContract
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
             // Return the appropriate service
-            return $this->get($this->aliases[$serviceId], $arguments, $class, $method);
+            return $this->get($this->aliases[$serviceId], $arguments, $context, $member);
         }
 
         // If the service is in the container
@@ -262,8 +266,10 @@ class Container implements ContainerContract
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $class     [optional] The context
+     *                          $context = class name || function name || variable name
+     * @param string $method    [optional] The context member
+     *                          $member = method name || property name
      *
      * @return string
      */
@@ -295,13 +301,13 @@ class Container implements ContainerContract
     }
 
     /**
-     * Bootstrap the container.
+     * Setup the container.
      *
      * @return void
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      */
-    public function bootstrap(): void
+    public function setup(): void
     {
         new BootstrapContainer($this);
     }

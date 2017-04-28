@@ -105,8 +105,8 @@ class Application implements ApplicationContract
         $container->singleton(ApplicationContract::class, $this);
         // Set the events instance in the container
         $container->singleton(Events::class, $events);
-        // Bootstrap the container
-        $container->bootstrap();
+        // Setup the container
+        $container->setup();
 
         // Set the timezone for the application to run within
         $this->setTimezone();

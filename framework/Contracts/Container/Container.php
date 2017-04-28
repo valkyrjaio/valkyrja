@@ -104,12 +104,12 @@ interface Container
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $context   [optional] The context class
+     * @param string $member    [optional] The context method
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $class = null, string $method = null);
+    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null);
 
     /**
      * Make a service.
@@ -133,9 +133,9 @@ interface Container
     public function contextServiceId(string $serviceId, string $class = null, string $method = null):? string;
 
     /**
-     * Bootstrap the container.
+     * Setup the container.
      *
      * @return void
      */
-    public function bootstrap(): void;
+    public function setup(): void;
 }
