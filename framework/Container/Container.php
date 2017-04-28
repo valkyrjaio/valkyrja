@@ -259,10 +259,16 @@ class Container implements ContainerContract
      */
     public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
     {
-        // If there is a context set for this class/method
+        // If there is a context set for this context and member combination
         if (null !== $context && $this->hasContext($serviceId, $context, $member)) {
             // Return that context
             return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
+        }
+
+        // If there is a context set for this context only
+        if (null !== $context && $this->hasContext($serviceId, $context)) {
+            // Return that context
+            return $this->get($this->contextServiceId($serviceId, $context), $arguments);
         }
 
         // If the service is a singleton
