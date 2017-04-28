@@ -405,8 +405,8 @@ class Container implements ContainerContract
             return;
         }
 
-        // Bootstrap the container
-        new BootstrapContainer($this);
+        // Setup the bootstrap
+        $this->setupBootstrap();
 
         // If annotations are enabled and the container should use annotations
         if ($this->app()->config()->container->useAnnotations && $this->app()->config()->annotations->enabled) {
@@ -430,6 +430,17 @@ class Container implements ContainerContract
 
         // Finally setup service providers
         $this->setupServiceProviders();
+    }
+
+    /**
+     * Setup container bootstrapping.
+     *
+     * @return void
+     */
+    protected function setupBootstrap(): void
+    {
+        // Bootstrap the container
+        new BootstrapContainer($this);
     }
 
     /**
