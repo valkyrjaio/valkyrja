@@ -461,7 +461,7 @@ class Container implements ContainerContract
         $containerAnnotations = $this->get(ContainerAnnotations::class);
 
         // Get all the annotated services from the list of controllers
-        $services = $containerAnnotations->getServices(...$this->app()->config()->routing->controllers);
+        $services = $containerAnnotations->getServices(...$this->app()->config()->container->services);
 
         // Iterate through the services
         foreach ($services as $service) {
@@ -470,7 +470,7 @@ class Container implements ContainerContract
         }
 
         // Get all the annotated services from the list of controllers
-        $contextServices = $containerAnnotations->getContextServices(...$this->app()->config()->routing->controllers);
+        $contextServices = $containerAnnotations->getContextServices(...$this->app()->config()->container->contextServices);
 
         // Iterate through the services
         foreach ($contextServices as $context) {
@@ -479,7 +479,7 @@ class Container implements ContainerContract
         }
 
         // Get all the annotated services from the list of controllers
-        $aliasServices = $containerAnnotations->getContextServices(...$this->app()->config()->routing->controllers);
+        $aliasServices = $containerAnnotations->getAliasServices(...$this->app()->config()->container->services);
 
         // Iterate through the services
         foreach ($aliasServices as $alias) {

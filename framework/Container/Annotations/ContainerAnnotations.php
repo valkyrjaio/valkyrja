@@ -49,7 +49,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      */
     public function getServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType($this->contextServicesAnnotationType, ...$classes);
+        return $this->getAllClassesAnnotationsByType($this->servicesAnnotationType, ...$classes);
     }
 
     /**
