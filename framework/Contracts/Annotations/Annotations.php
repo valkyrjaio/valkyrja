@@ -90,6 +90,25 @@ interface Annotations
     public function propertyAnnotationsType(string $type, string $class, string $property): array;
 
     /**
+     * Get a class's properties' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function propertiesAnnotations(string $class): array;
+
+    /**
+     * Get a class's properties' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function propertiesAnnotationsType(string $type, string $class): array;
+
+    /**
      * Get a method's annotations.
      *
      * @param string $class  The class

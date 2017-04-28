@@ -97,6 +97,8 @@ class Annotations implements AnnotationsContract
      * @param string $class The class
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function classAnnotations(string $class): array
     {
@@ -120,6 +122,8 @@ class Annotations implements AnnotationsContract
      * @param string $class The class
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     public function classAnnotationsType(string $type, string $class): array
     {
@@ -133,6 +137,8 @@ class Annotations implements AnnotationsContract
      * @param string $property The property
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function propertyAnnotations(string $class, string $property): array
     {
@@ -158,10 +164,58 @@ class Annotations implements AnnotationsContract
      * @param string $property The property
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function propertyAnnotationsType(string $type, string $class, string $property): array
     {
         return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
+    }
+
+    /**
+     * Get a class's properties' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function propertiesAnnotations(string $class): array
+    {
+        $annotations = [];
+        // Get the class's reflection
+        $reflection = $this->getClassReflection($class);
+
+        // Iterate through the properties
+        foreach ($reflection->getProperties() as $property) {
+            $index = static::METHOD_CACHE . $class . $property->getName();
+            // Set the property's reflection class in the cache
+            self::$reflections[$index] = $property;
+
+            // Iterate through all the property's annotations
+            foreach ($this->propertyAnnotations($class, $property->getName()) as $propertyAnnotation) {
+                // Set the annotation in the list
+                $annotations[] = $propertyAnnotation;
+            }
+        }
+
+        return $annotations;
+    }
+
+    /**
+     * Get a class's properties' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function propertiesAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->propertiesAnnotations($class));
     }
 
     /**
@@ -171,6 +225,8 @@ class Annotations implements AnnotationsContract
      * @param string $method The method
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function methodAnnotations(string $class, string $method): array
     {
@@ -197,6 +253,8 @@ class Annotations implements AnnotationsContract
      * @param string $method The method
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function methodAnnotationsType(string $type, string $class, string $method): array
     {
@@ -209,6 +267,8 @@ class Annotations implements AnnotationsContract
      * @param string $class The class
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function methodsAnnotations(string $class): array
     {
@@ -218,23 +278,12 @@ class Annotations implements AnnotationsContract
 
         // Iterate through the methods
         foreach ($reflection->getMethods() as $method) {
-            // Get the annotations for this method
-            $methodAnnotations = $this->setAnnotationValues(
-                [
-                    'class'  => $class,
-                    'method' => $method->getName(),
-                ],
-                ...$this->getReflectionFunctionAnnotations($method)
-            );
-
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
-            // Set the results in the annotations cache for later re-use
-            self::$annotations[$index] = $methodAnnotations;
 
-            // Iterate through all the method annotations
-            foreach ($methodAnnotations as $methodAnnotation) {
+            // Iterate through all the method's annotations
+            foreach ($this->methodAnnotations($class, $method->getName()) as $methodAnnotation) {
                 // Set the annotation in the list
                 $annotations[] = $methodAnnotation;
             }
@@ -250,6 +299,8 @@ class Annotations implements AnnotationsContract
      * @param string $class The class
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function methodsAnnotationsType(string $type, string $class): array
     {
@@ -262,6 +313,8 @@ class Annotations implements AnnotationsContract
      * @param string $function The function
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function functionAnnotations(string $function): array
     {
@@ -285,6 +338,8 @@ class Annotations implements AnnotationsContract
      * @param string $function The function
      *
      * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
      */
     public function functionAnnotationsType(string $type, string $function): array
     {
@@ -354,6 +409,8 @@ class Annotations implements AnnotationsContract
      * @param string $class The class
      *
      * @return \ReflectionClass
+     *
+     * @throws \ReflectionException
      */
     public function getClassReflection(string $class): ReflectionClass
     {
@@ -370,6 +427,8 @@ class Annotations implements AnnotationsContract
      * @param string $property The property
      *
      * @return \ReflectionProperty
+     *
+     * @throws \ReflectionException
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
@@ -386,6 +445,8 @@ class Annotations implements AnnotationsContract
      * @param string $method The method
      *
      * @return \ReflectionMethod
+     *
+     * @throws \ReflectionException
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod
     {
@@ -401,6 +462,8 @@ class Annotations implements AnnotationsContract
      * @param string $function The function
      *
      * @return \ReflectionFunction
+     *
+     * @throws \ReflectionException
      */
     public function getFunctionReflection(string $function): ReflectionFunction
     {
