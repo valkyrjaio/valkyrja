@@ -105,6 +105,8 @@ class Application implements ApplicationContract
         $container->singleton(ApplicationContract::class, $this);
         // Set the events instance in the container
         $container->singleton(Events::class, $events);
+        // TODO: Move setup to construct
+        // self::$isSetup = false -> true
         // Setup the container
         $container->setup();
         // Setup the router

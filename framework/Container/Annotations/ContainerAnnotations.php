@@ -100,6 +100,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
                 // Set the type to null (we already know it's a service)
                 $annotation->setType();
+                // TODO: Get dependencies
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
             }

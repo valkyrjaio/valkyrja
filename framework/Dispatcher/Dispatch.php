@@ -71,7 +71,7 @@ class Dispatch
      *
      * @return $this
      */
-    public function setId(string $id): self
+    public function setId(string $id = null): self
     {
         $this->id = $id;
 

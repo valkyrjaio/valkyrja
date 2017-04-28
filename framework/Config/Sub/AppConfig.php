@@ -58,6 +58,10 @@ class AppConfig
      */
     public $version = Application::VERSION;
 
+    // TODO: Add Container core class impls
+    // public $container = Container::class;
+    // public $events = Events::class;
+
     /**
      * AppConfig constructor.
      *

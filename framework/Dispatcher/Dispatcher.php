@@ -181,13 +181,15 @@ trait Dispatcher
     protected function getDependencies(Dispatch $dispatch):? array
     {
         $dependencies = null;
+        $context = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = container()->get($dependency/**, null, $dispatch->getId()*/);
+                $dependencies[] = container()->get($dependency, null, $context, $member);
             }
         }
 
@@ -519,6 +521,8 @@ trait Dispatcher
             ?? $this->dispatchClass($dispatch, $arguments)
             ?? $this->dispatchFunction($dispatch, $arguments)
             ?? $this->dispatchClosure($dispatch, $arguments);
+        // TODO: Add Constant and Variable ability
+        // TODO: Reorder by most used (class method, class, closure, property, function constant variable
 
         // If the response was initially null and we added the dispatched text to avoid
         // calling each subsequent dispatcher thereafter
