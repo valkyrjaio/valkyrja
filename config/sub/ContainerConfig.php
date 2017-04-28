@@ -3,6 +3,7 @@
 namespace config\sub;
 
 use App\Providers\AppServiceProvider;
+
 use Valkyrja\Config\Sub\ContainerConfig as ValkyrjaContainerConfig;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Providers\TwigServiceProvider;
