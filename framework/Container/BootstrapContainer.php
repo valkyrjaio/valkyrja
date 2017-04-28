@@ -79,7 +79,6 @@ class BootstrapContainer
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
         $this->bootstrapRequest();
-        $this->bootstrapRequest();
         $this->bootstrapResponse();
         $this->bootstrapJsonResponse();
         $this->bootstrapRedirectResponse();
