@@ -9,25 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Container\Console;
+
+use Valkyrja\Console\Console;
 
 /**
- * Class Routing
+ * Class GenerateCache
  *
  * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
-class Routing extends Console
+class GenerateCache extends Console
 {
     /**
+     * Run the command.
      *
+     * @return mixed
      */
     public function run()
     {
-        file_put_contents(
-            config()->routing->routesCacheFile,
-            '<?php return ' . var_export(router()->getRoutes(), true) . ';'
+        return file_put_contents(
+            config()->container->cacheFilePath,
+            '<?php return ' . var_export(container()->getCacheable(), true) . ';'
         );
     }
 }

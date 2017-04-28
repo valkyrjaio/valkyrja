@@ -495,6 +495,19 @@ class Container implements ContainerContract
     }
 
     /**
+     * Get a cacheable representation of the service container.
+     *
+     * @return array
+     */
+    public function getCacheable(): array
+    {
+        return [
+            'services' => self::$services,
+            'aliases'  => self::$aliases,
+        ];
+    }
+
+    /**
      * Get the app.
      *
      * @return \Valkyrja\Contracts\Application

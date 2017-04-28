@@ -160,4 +160,11 @@ interface Container
      * @return void
      */
     public function setup(): void;
+
+    /**
+     * Get a cacheable representation of the service container.
+     *
+     * @return array
+     */
+    public function getCacheable(): array;
 }
