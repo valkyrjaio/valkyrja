@@ -54,10 +54,14 @@ class Annotations implements AnnotationsContract
     /**
      * Cache index constants.
      */
-    protected const CLASS_CACHE    = 'class';
-    protected const PROPERTY_CACHE = 'property';
-    protected const METHOD_CACHE   = 'method';
-    protected const FUNCTION_CACHE = 'function';
+    protected const CLASS_CACHE             = 'class';
+    protected const CLASS_MEMBERS_CACHE     = 'class.members';
+    protected const CLASS_AND_MEMBERS_CACHE = 'class.and.members';
+    protected const PROPERTY_CACHE          = 'property';
+    protected const PROPERTIES_CACHE        = 'properties';
+    protected const METHOD_CACHE            = 'method';
+    protected const METHODS_CACHE           = 'methods';
+    protected const FUNCTION_CACHE          = 'function';
 
     /**
      * Annotations constructor.
@@ -131,6 +135,82 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Get a class's members' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function classMembersAnnotations(string $class): array
+    {
+        $index = static::CLASS_MEMBERS_CACHE . $class;
+
+        if (isset(self::$annotations[$index])) {
+            return self::$annotations[$index];
+        }
+
+        return self::$annotations[$index] = array_merge(
+            $this->propertiesAnnotations($class),
+            $this->methodsAnnotations($class)
+        );
+    }
+
+    /**
+     * Get a class's members' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function classMembersAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->classMembersAnnotations($class));
+    }
+
+    /**
+     * Get a class's and class's members' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function classAndMembersAnnotations(string $class): array
+    {
+        $index = static::CLASS_AND_MEMBERS_CACHE . $class;
+
+        if (isset(self::$annotations[$index])) {
+            return self::$annotations[$index];
+        }
+
+        return self::$annotations[$index] = array_merge(
+            $this->classAnnotations($class),
+            $this->classMembersAnnotations($class)
+        );
+    }
+
+    /**
+     * Get a class's and class's members' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     *
+     * @throws \ReflectionException
+     */
+    public function classAndMembersAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->classAndMembersAnnotations($class));
+    }
+
+    /**
      * Get a property's annotations.
      *
      * @param string $class    The class
@@ -183,6 +263,12 @@ class Annotations implements AnnotationsContract
      */
     public function propertiesAnnotations(string $class): array
     {
+        $index = static::PROPERTIES_CACHE . $class;
+
+        if (isset(self::$annotations[$index])) {
+            return self::$annotations[$index];
+        }
+
         $annotations = [];
         // Get the class's reflection
         $reflection = $this->getClassReflection($class);
@@ -199,6 +285,8 @@ class Annotations implements AnnotationsContract
                 $annotations[] = $propertyAnnotation;
             }
         }
+
+        self::$annotations[$index] = $annotations;
 
         return $annotations;
     }
@@ -272,6 +360,12 @@ class Annotations implements AnnotationsContract
      */
     public function methodsAnnotations(string $class): array
     {
+        $index = static::METHODS_CACHE . $class;
+
+        if (isset(self::$annotations[$index])) {
+            return self::$annotations[$index];
+        }
+
         $annotations = [];
         // Get the class's reflection
         $reflection = $this->getClassReflection($class);
@@ -288,6 +382,8 @@ class Annotations implements AnnotationsContract
                 $annotations[] = $methodAnnotation;
             }
         }
+
+        self::$annotations[$index] = $annotations;
 
         return $annotations;
     }

@@ -69,6 +69,44 @@ interface Annotations
     public function classAnnotationsType(string $type, string $class): array;
 
     /**
+     * Get a class's members' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function classMembersAnnotations(string $class): array;
+
+    /**
+     * Get a class's members' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function classMembersAnnotationsType(string $type, string $class): array;
+
+    /**
+     * Get a class's and class's members' annotations.
+     *
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function classAndMembersAnnotations(string $class): array;
+
+    /**
+     * Get a class's and class's members' annotations by type.
+     *
+     * @param string $type  The type
+     * @param string $class The class
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
+     */
+    public function classAndMembersAnnotationsType(string $type, string $class): array;
+
+    /**
      * Get a property's annotations.
      *
      * @param string $class    The class
