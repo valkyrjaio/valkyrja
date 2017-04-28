@@ -24,16 +24,22 @@ use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAn
 class ContainerAnnotations extends Annotations implements ContainerAnnotationsContract
 {
     /**
+     * THe services annotation type.
+     *
      * @var string
      */
     protected $servicesAnnotationType = 'Service';
 
     /**
+     * The service alias annotation type.
+     *
      * @var string
      */
     protected $aliasServicesAnnotationType = 'ServiceAlias';
 
     /**
+     * The service context annotation type.
+     *
      * @var string
      */
     protected $contextServicesAnnotationType = 'ServiceContext';
@@ -97,15 +103,49 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
+            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
+                // Set the dependencies
+                $annotation->setDependencies(
+                    $this->getDependencies(
+                        $this->getMethodReflection(
+                            $class,
+                            $annotation->getMethod() ?? $annotation->getProperty() ?? '__construct'
+                        )
+                             ->getParameters()
+                    )
+                );
                 // Set the type to null (we already know it's a service)
                 $annotation->setType();
-                // TODO: Get dependencies
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
             }
         }
 
         return $annotations;
+    }
+
+    /**
+     * Get dependencies from parameters.
+     *
+     * @param array $parameters The parameters
+     *
+     * @return array
+     */
+    protected function getDependencies(array $parameters): array
+    {
+        // Setup to find any injectable objects through the service container
+        $dependencies = [];
+
+        // Iterate through the method's parameters
+        foreach ($parameters as $parameter) {
+            // We only care for classes
+            if ($parameter->getClass()) {
+                // Set the injectable in the array
+                $dependencies[] = $parameter->getClass()->getName();
+            }
+        }
+
+        return $dependencies;
     }
 }
