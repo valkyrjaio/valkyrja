@@ -12,6 +12,7 @@
 namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
 
 /**
  * Class ContainerAnnotations
@@ -20,7 +21,7 @@ use Valkyrja\Annotations\Annotations;
  *
  * @author  Melech Mizrachi
  */
-class ContainerAnnotations extends Annotations
+class ContainerAnnotations extends Annotations implements ContainerAnnotationsContract
 {
     /**
      * @var string
@@ -30,7 +31,12 @@ class ContainerAnnotations extends Annotations
     /**
      * @var string
      */
-    protected $contextServicesAnnotationType = 'ContextService';
+    protected $aliasServicesAnnotationType = 'ServiceAlias';
+
+    /**
+     * @var string
+     */
+    protected $contextServicesAnnotationType = 'ServiceContext';
 
     /**
      * Get the services.
@@ -47,11 +53,25 @@ class ContainerAnnotations extends Annotations
     }
 
     /**
+     * Get the alias services.
+     *
+     * @param string[] $classes The classes
+     *
+     * @return \Valkyrja\Container\ServiceContext[]
+     *
+     * @throws \ReflectionException
+     */
+    public function getAliasServices(string ...$classes): array
+    {
+        return $this->getAllClassesAnnotationsByType($this->aliasServicesAnnotationType, ...$classes);
+    }
+
+    /**
      * Get the context services.
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ContextService[]
+     * @return \Valkyrja\Container\ServiceContext[]
      *
      * @throws \ReflectionException
      */
@@ -78,6 +98,8 @@ class ContainerAnnotations extends Annotations
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
+                // Set the type to null (we already know it's a service)
+                $annotation->setType();
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
             }

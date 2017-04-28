@@ -2,7 +2,9 @@
 
 namespace config;
 
+use config\sub\AnnotationsConfig;
 use config\sub\AppConfig;
+use config\sub\ContainerConfig;
 use config\sub\LoggerConfig;
 use config\sub\RoutingConfig;
 use config\sub\StorageConfig;
@@ -28,6 +30,8 @@ class Config extends ValkyrjaConfig
         parent::__construct($env);
 
         $this->app = new AppConfig($env);
+        $this->annotations = new AnnotationsConfig($env);
+        $this->container = new ContainerConfig($env);
         $this->logger = new LoggerConfig($env);
         $this->routing = new RoutingConfig($env);
         $this->storage = new StorageConfig($env);

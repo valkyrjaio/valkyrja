@@ -13,6 +13,7 @@ namespace Valkyrja\Config;
 
 use Valkyrja\Config\Sub\AnnotationsConfig;
 use Valkyrja\Config\Sub\AppConfig;
+use Valkyrja\Config\Sub\ContainerConfig;
 use Valkyrja\Config\Sub\LoggerConfig;
 use Valkyrja\Config\Sub\RoutingConfig;
 use Valkyrja\Config\Sub\StorageConfig;
@@ -39,9 +40,16 @@ class Config implements ConfigContract
     /**
      * Annotations config.
      *
-     * @var AnnotationsConfig
+     * @var ContainerConfig
      */
     public $annotations;
+
+    /**
+     * Container config.
+     *
+     * @var AnnotationsConfig
+     */
+    public $container;
 
     /**
      * Environment variables.
@@ -87,8 +95,9 @@ class Config implements ConfigContract
     {
         $this->env = $env;
 
-        $this->app = new AppConfig($env);
         $this->annotations = new AnnotationsConfig($env);
+        $this->app = new AppConfig($env);
+        $this->container = new ContainerConfig($env);
         $this->logger = new LoggerConfig($env);
         $this->routing = new RoutingConfig($env);
         $this->storage = new StorageConfig($env);

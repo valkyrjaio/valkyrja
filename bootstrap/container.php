@@ -9,7 +9,7 @@
  *
  */
 
-$app->container()->bind(
+container()->bind(
     (new \Valkyrja\Container\Service())
     ->setId(App\Controllers\HomeController::class)
     ->setClass(App\Controllers\HomeController::class)

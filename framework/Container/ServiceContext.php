@@ -14,13 +14,13 @@ namespace Valkyrja\Container;
 use Closure;
 
 /**
- * Class ContextService
+ * Class ServiceContext
  *
  * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */
-class ContextService extends Service
+class ServiceContext extends Service
 {
     /**
      * The context class.

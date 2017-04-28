@@ -50,10 +50,6 @@ class TestCase extends PHPUnitTestCase
             )
         );
 
-        require Directory::basePath('bootstrap/container.php');
-
-        $app->register(TwigServiceProvider::class);
-
         $this->app = $app;
     }
 }

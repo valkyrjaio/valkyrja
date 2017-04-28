@@ -12,6 +12,7 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Support\Directory;
 
 /**
  * Class ContainerConfig
@@ -105,9 +106,9 @@ class ContainerConfig
         $this->contextServices = $env::CONTAINER_CONTEXT_SERVICES
             ?? $this->contextServices;
         $this->filePath = $env::CONTAINER_FILE_PATH
-            ?? $this->filePath;
+            ?? Directory::basePath('bootstrap/container.php');
         $this->cacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
-            ?? $this->cacheFilePath;
+            ?? Directory::storagePath('framework/cache/container.php');
         $this->useCacheFile = $env::CONTAINER_USE_CACHE_FILE
             ?? $this->useCacheFile;
     }

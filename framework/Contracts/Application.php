@@ -183,15 +183,6 @@ interface Application
     public function run(): void;
 
     /**
-     * Register a service provider.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return void
-     */
-    public function register(string $serviceProvider): void;
-
-    /**
      * Return the logger instance from the container.
      *
      * @return \Valkyrja\Contracts\Logger\Logger

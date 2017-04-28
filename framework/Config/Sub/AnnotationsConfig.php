@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Events\Listener;
@@ -46,9 +47,11 @@ class AnnotationsConfig
      * @var array
      */
     public $map = [
-        'Listener' => Listener::class,
-        'Route'    => Route::class,
-        'Service'  => Service::class,
+        'Listener'       => Listener::class,
+        'Route'          => Route::class,
+        'Service'        => Service::class,
+        'ServiceAlias'   => Service::class,
+        'ServiceContext' => ServiceContext::class,
     ];
 
     /**

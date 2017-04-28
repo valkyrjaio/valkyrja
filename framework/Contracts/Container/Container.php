@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Container;
 
-use Valkyrja\Container\ContextService;
+use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
 
 /**
@@ -45,11 +45,11 @@ interface Container
     /**
      * Bind a context to the container.
      *
-     * @param \Valkyrja\Container\ContextService $contextService The context service
+     * @param \Valkyrja\Container\ServiceContext $contextService The context service
      *
      * @return void
      */
-    public function context(ContextService $contextService): void;
+    public function context(ServiceContext $contextService): void;
 
     /**
      * Bind a singleton to the container.
@@ -58,6 +58,15 @@ interface Container
      * @param mixed  $singleton The singleton
      */
     public function singleton(string $serviceId, $singleton): void;
+
+    /**
+     * Register a service provider.
+     *
+     * @param string $serviceProvider The service provider
+     *
+     * @return void
+     */
+    public function register(string $serviceProvider): void;
 
     /**
      * Check whether a given service exists.
@@ -98,6 +107,15 @@ interface Container
      * @return bool
      */
     public function isSingleton(string $serviceId): bool;
+
+    /**
+     * Check whether a given service is provided by a deferred service provider.
+     *
+     * @param string $serviceId The service
+     *
+     * @return bool
+     */
+    public function isProvided(string $serviceId): bool;
 
     /**
      * Get a service from the container.

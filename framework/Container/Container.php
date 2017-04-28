@@ -13,6 +13,8 @@ namespace Valkyrja\Container;
 
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
@@ -32,21 +34,28 @@ class Container implements ContainerContract
      *
      * @var string[]
      */
-    protected $aliases = [];
+    protected static $aliases = [];
 
     /**
      * The services.
      *
      * @var \Valkyrja\Container\Service[]
      */
-    protected $services = [];
+    protected static $services = [];
 
     /**
      * The singletons.
      *
      * @var array
      */
-    protected $singletons = [];
+    protected static $singletons = [];
+
+    /**
+     * The services provided by service providers that are deferred.
+     *
+     * @var array[]
+     */
+    protected static $provided = [];
 
     /**
      * Set an alias to the container.
@@ -58,7 +67,7 @@ class Container implements ContainerContract
      */
     public function alias(string $alias, string $serviceId): void
     {
-        $this->aliases[$alias] = $serviceId;
+        self::$aliases[$alias] = $serviceId;
     }
 
     /**
@@ -84,13 +93,13 @@ class Container implements ContainerContract
 
         $this->verifyDispatch($service);
 
-        $this->services[$service->getId()] = $service;
+        self::$services[$service->getId()] = $service;
     }
 
     /**
      * Bind a context to the container.
      *
-     * @param \Valkyrja\Container\ContextService $contextService The context service
+     * @param \Valkyrja\Container\ServiceContext $contextService The context service
      *
      * @return void
      *
@@ -101,7 +110,7 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
-    public function context(ContextService $contextService): void
+    public function context(ServiceContext $contextService): void
     {
         $context = $contextService->getClass() ?? $contextService->getFunction();
         $member = $contextService->getMethod() ?? $contextService->getProperty();
@@ -136,7 +145,35 @@ class Container implements ContainerContract
      */
     public function singleton(string $serviceId, $singleton): void
     {
-        $this->singletons[$serviceId] = $singleton;
+        self::$singletons[$serviceId] = $singleton;
+    }
+
+    /**
+     * Register a service provider.
+     *
+     * @param string $serviceProvider The service provider
+     *
+     * @return void
+     */
+    public function register(string $serviceProvider): void
+    {
+        /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
+        $deferred = $serviceProvider::$deferred;
+        $provides = $serviceProvider::$provides;
+
+        // If the service provider is deferred
+        // and its defined what services it provides
+        if ($deferred && $provides) {
+            // Add the services to the service providers list
+            foreach ($provides as $provided) {
+                self::$provided[$provided] = $serviceProvider;
+            }
+
+            return;
+        }
+
+        // Create a new instance of the service provider
+        $this->singleton($serviceProvider, new $serviceProvider($this->app()));
     }
 
     /**
@@ -148,7 +185,7 @@ class Container implements ContainerContract
      */
     public function has(string $serviceId): bool
     {
-        return isset($this->services[$serviceId]) || isset($this->aliases[$serviceId]);
+        return isset(self::$services[$serviceId]) || isset(self::$aliases[$serviceId]);
     }
 
     /**
@@ -169,7 +206,7 @@ class Container implements ContainerContract
             return false;
         }
 
-        return isset($this->services[$contextIndex]);
+        return isset(self::$services[$contextIndex]);
     }
 
     /**
@@ -181,7 +218,7 @@ class Container implements ContainerContract
      */
     public function isAlias(string $serviceId): bool
     {
-        return isset($this->aliases[$serviceId]);
+        return isset(self::$aliases[$serviceId]);
     }
 
     /**
@@ -193,7 +230,19 @@ class Container implements ContainerContract
      */
     public function isSingleton(string $serviceId): bool
     {
-        return isset($this->singletons[$serviceId]);
+        return isset(self::$singletons[$serviceId]);
+    }
+
+    /**
+     * Check whether a given service is provided by a deferred service provider.
+     *
+     * @param string $serviceId The service
+     *
+     * @return bool
+     */
+    public function isProvided(string $serviceId): bool
+    {
+        return isset(self::$provided[$serviceId]);
     }
 
     /**
@@ -219,19 +268,30 @@ class Container implements ContainerContract
         // If the service is a singleton
         if ($this->isSingleton($serviceId)) {
             // Return the singleton
-            return $this->singletons[$serviceId];
+            return self::$singletons[$serviceId];
         }
 
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
             // Return the appropriate service
-            return $this->get($this->aliases[$serviceId], $arguments, $context, $member);
+            return $this->get(self::$aliases[$serviceId], $arguments, $context, $member);
         }
 
         // If the service is in the container
         if ($this->has($serviceId)) {
             // Return the made service
             return $this->make($serviceId, $arguments);
+        }
+
+        // Check if the service id is provided by a deferred service provider
+        if ($this->isProvided($serviceId)) {
+            /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
+            $serviceProvider = self::$provided[$serviceId];
+            $serviceProvider::$deferred = false;
+            // Register the service provider
+            $this->register($serviceProvider);
+
+            return $this->get($serviceId, $arguments);
         }
 
         // If there are no argument return a new object
@@ -253,24 +313,24 @@ class Container implements ContainerContract
      */
     public function make(string $serviceId, array $arguments = null)
     {
-        $service = $this->services[$serviceId];
+        $service = self::$services[$serviceId];
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        events()->trigger('service.make', [$serviceId, $service, $arguments]);
-        events()->trigger("service.make.{$serviceId}", [$service, $arguments]);
+        $this->app()->events()->trigger('service.make', [$serviceId, $service, $arguments]);
+        $this->app()->events()->trigger("service.make.{$serviceId}", [$service, $arguments]);
 
         // Make the object by dispatching the service
         $made = $this->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
-        events()->trigger('service.made', [$serviceId, $made]);
-        events()->trigger("service.made.{$serviceId}", [$made]);
+        $this->app()->events()->trigger('service.made', [$serviceId, $made]);
+        $this->app()->events()->trigger("service.made.{$serviceId}", [$made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            events()->trigger('service.made.singleton', [$serviceId, $made]);
-            events()->trigger("service.made.singleton.{$serviceId}", [$made]);
+            $this->app()->events()->trigger('service.made.singleton', [$serviceId, $made]);
+            $this->app()->events()->trigger("service.made.singleton.{$serviceId}", [$made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }
@@ -317,16 +377,130 @@ class Container implements ContainerContract
      * @return void
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
+     *
+     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function setup(): void
     {
-        // TODO: config()->container->useCacheFile
-        // TODO: require config()->container->cacheFilePath
+        // If the application should use the container cache files
+        if ($this->app()->config()->container->useCacheFile) {
+            // Set the application routes with said file
+            $cache = require $this->app()->config()->container->cacheFilePath;
 
+            self::$services = $cache['services'];
+            self::$aliases = $cache['aliases'];
+
+            // Then return out of routes setup
+            return;
+        }
+
+        // Bootstrap the container
         new BootstrapContainer($this);
 
-        // TODO: config()->container->useAnnotations
+        // If annotations are enabled and the container should use annotations
+        if ($this->app()->config()->container->useAnnotations && $this->app()->config()->annotations->enabled) {
+            // Setup annotated services, contexts, and aliases
+            $this->setupAnnotations();
 
-        // TODO: require config()->container->filePath
+            // If only annotations should be used
+            if ($this->app()->config()->container->useAnnotationsExclusively) {
+                // Finally setup service providers
+                $this->setupServiceProviders();
+
+                // Return to avoid loading container file
+                return;
+            }
+        }
+
+        // Include the container file
+        // NOTE: Included if annotations are set or not due to possibility of container items being defined
+        // within the classes as well as within the container file
+        require $this->app()->config()->container->filePath;
+
+        // Finally setup service providers
+        $this->setupServiceProviders();
+    }
+
+    /**
+     * Setup annotations.
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     */
+    protected function setupAnnotations(): void
+    {
+        /** @var ContainerAnnotations $containerAnnotations */
+        $containerAnnotations = $this->get(ContainerAnnotations::class);
+
+        // Get all the annotated services from the list of controllers
+        $services = $containerAnnotations->getServices(...$this->app()->config()->routing->controllers);
+
+        // Iterate through the services
+        foreach ($services as $service) {
+            // Set the service
+            $this->bind($service);
+        }
+
+        // Get all the annotated services from the list of controllers
+        $contextServices = $containerAnnotations->getContextServices(...$this->app()->config()->routing->controllers);
+
+        // Iterate through the services
+        foreach ($contextServices as $context) {
+            // Set the service
+            $this->context($context);
+        }
+
+        // Get all the annotated services from the list of controllers
+        $aliasServices = $containerAnnotations->getContextServices(...$this->app()->config()->routing->controllers);
+
+        // Iterate through the services
+        foreach ($aliasServices as $alias) {
+            // Set the service
+            $this->alias($alias->getName(), $alias->getId());
+        }
+    }
+
+    /**
+     * Setup service providers.
+     *
+     * @return void
+     */
+    protected function setupServiceProviders(): void
+    {
+        // Iterate through all the providers
+        foreach ($this->app()->config()->container->providers as $provider) {
+            $this->register($provider);
+        }
+
+        // If this is not a dev environment
+        if (! $this->app()->config()->app->debug) {
+            return;
+        }
+
+        // Iterate through all the providers
+        foreach ($this->app()->config()->container->devProviders as $provider) {
+            $this->register($provider);
+        }
+    }
+
+    /**
+     * Get the app.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    public function app(): Application
+    {
+        return $this->get(Application::class);
     }
 }

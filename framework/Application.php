@@ -316,21 +316,6 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Register a service provider.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return void
-     *
-     * TODO: Move this to Container()
-     */
-    public function register(string $serviceProvider): void
-    {
-        // Create a new instance of the service provider
-        $this->container->singleton($serviceProvider, new $serviceProvider($this));
-    }
-
-    /**
      * Return the logger instance from the container.
      *
      * @return \Valkyrja\Contracts\Logger\Logger

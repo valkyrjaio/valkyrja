@@ -26,12 +26,20 @@ use Valkyrja\Routing\Route;
 class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {
     /**
+     * The route annotation type.
+     *
+     * @var string
+     */
+    protected $routeAnnotationType = 'Route';
+
+    /**
      * Get routes.
      *
      * @param string[] $classes The classes
      *
      * @return \Valkyrja\Routing\Route[]
      *
+     * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
      */
     public function getRoutes(string ...$classes): array
@@ -46,7 +54,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
             $this->setRouteProperties($route);
 
             // If this route's class has annotations
-            if ($classAnnotations = $this->classAnnotationsType('Route', $route->getClass())) {
+            if ($classAnnotations = $this->classAnnotationsType($this->routeAnnotationType, $route->getClass())) {
                 /** @var Route $annotation */
                 // Iterate through all the annotations
                 foreach ($classAnnotations as $annotation) {
@@ -70,6 +78,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @return void
      *
+     * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
      */
     protected function setRouteProperties(Route $route): void
@@ -83,8 +92,10 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         );
 
         // Avoid having large arrays in cached routes file
-        $route->setArguments(null);
-        $route->setMatches(null);
+        $route->setArguments();
+        $route->setMatches();
+        // Set the type to null since we already know this is a route
+        $route->setType();
 
         if (null === $route->getPath()) {
             throw new InvalidRoutePath(
@@ -100,6 +111,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @param array $classes The classes
      *
+     * @throws \ReflectionException
      * @return \Valkyrja\Routing\Route[]
      */
     protected function getClassRoutes(array $classes): array
@@ -110,7 +122,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the routes for each class and iterate through them
-            foreach ($this->methodsAnnotationsType('Route', $class) as $annotation) {
+            foreach ($this->methodsAnnotationsType($this->routeAnnotationType, $class) as $annotation) {
                 // Set the annotation in the routes list
                 $routes[] = $annotation;
             }

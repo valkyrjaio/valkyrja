@@ -32,11 +32,20 @@ interface ContainerAnnotations extends Annotations
     public function getServices(string ...$classes): array;
 
     /**
+     * Get the alias services.
+     *
+     * @param string[] $classes The classes
+     *
+     * @return \Valkyrja\Container\ServiceAlias[]
+     */
+    public function getAliasServices(string ...$classes): array;
+
+    /**
      * Get the context services.
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ContextService[]
+     * @return \Valkyrja\Container\ServiceContext[]
      */
     public function getContextServices(string ...$classes): array;
 }

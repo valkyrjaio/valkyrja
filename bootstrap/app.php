@@ -37,34 +37,6 @@ $app = new Valkyrja\Application(
 );
 
 /*
- *---------------------------------------------------------------------
- * Application Service Container : Dependency Injection
- *---------------------------------------------------------------------
- *
- * Adding more instances to the service container is a great way to
- * ensure your application is setup for ease of change in the
- * future.
- *
- */
-
-require __DIR__ . '/container.php';
-
-/*
- *-------------------------------------------------------------------------
- * Service Providers : Providers Of The Services
- *-------------------------------------------------------------------------
- *
- * Service providers are a convenience way to add more functionality to
- * the application by registering new service container instances,
- * configuration options, or other functional needs your
- * application may need.
- *
- */
-
-$app->register(Valkyrja\Providers\TwigServiceProvider::class);
-// $app->register(App\Providers\AppServiceProvider::class);
-
-/*
  *-------------------------------------------------------------------------
  * Return The Application
  *-------------------------------------------------------------------------

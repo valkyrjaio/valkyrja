@@ -30,6 +30,20 @@ abstract class ServiceProvider
     protected $app;
 
     /**
+     * Whether the service provider is deferred.
+     *
+     * @var bool
+     */
+    public static $deferred = true;
+
+    /**
+     * What services are provided.
+     *
+     * @var array
+     */
+    public static $provides = [];
+
+    /**
      * ServiceProvider constructor.
      *
      * @param Application $app

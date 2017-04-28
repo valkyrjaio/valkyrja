@@ -30,17 +30,14 @@ use Twig_Loader_Filesystem;
 class TwigServiceProvider extends ServiceProvider
 {
     /**
-     * The services this provides.
+     * What services are provided.
      *
-     * @return array
+     * @var array
      */
-    public function provides(): array
-    {
-        return [
-            Twig_Environment::class,
-            View::class,
-        ];
-    }
+    public static $provides = [
+        Twig_Environment::class,
+        View::class,
+    ];
 
     /**
      * Publish the service provider.
