@@ -54,8 +54,6 @@ class TestCase extends PHPUnitTestCase
 
         $app->register(TwigServiceProvider::class);
 
-        $app->router()->setup();
-
         $this->app = $app;
     }
 }

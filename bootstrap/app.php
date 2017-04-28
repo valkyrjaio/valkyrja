@@ -65,21 +65,6 @@ $app->register(Valkyrja\Providers\TwigServiceProvider::class);
 // $app->register(App\Providers\AppServiceProvider::class);
 
 /*
- *---------------------------------------------------------------------
- * Application Routes
- *---------------------------------------------------------------------
- *
- * Match those silly strings in the url that your application's
- * users will visit, and tie it into some functionality
- * within the application to present your users with
- * something other than a blank screen.
- *
- */
-
-$app->router()->setup();
-// (new \Valkyrja\Console\Routing())->run();
-
-/*
  *-------------------------------------------------------------------------
  * Return The Application
  *-------------------------------------------------------------------------

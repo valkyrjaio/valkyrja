@@ -107,6 +107,8 @@ class Application implements ApplicationContract
         $container->singleton(Events::class, $events);
         // Setup the container
         $container->setup();
+        // Setup the router
+        $this->router()->setup();
 
         // Set the timezone for the application to run within
         $this->setTimezone();
