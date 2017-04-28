@@ -18,9 +18,11 @@ use Psr\Log\LoggerInterface;
 
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
+use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
@@ -75,6 +77,7 @@ class BootstrapContainer
     {
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
+        $this->bootstrapContainerAnnotations();
         $this->bootstrapRequest();
         $this->bootstrapRequest();
         $this->bootstrapResponse();
@@ -115,6 +118,22 @@ class BootstrapContainer
             (new Service())
                 ->setId(AnnotationsContract::class)
                 ->setClass(Annotations::class)
+                ->setDependencies([AnnotationsParserContract::class])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the container annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapContainerAnnotations(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(ContainerAnnotationsContract::class)
+                ->setClass(ContainerAnnotations::class)
                 ->setDependencies([AnnotationsParserContract::class])
                 ->setSingleton(true)
         );
