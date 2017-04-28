@@ -180,9 +180,8 @@ class Annotations implements AnnotationsContract
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
-                    'class'        => $class,
-                    'method'       => ! $reflection->isStatic() ? $method : null,
-                    'staticMethod' => $reflection->isStatic() ? $method : null,
+                    'class'  => $class,
+                    'method' => $method,
                 ],
                 ...$this->getReflectionFunctionAnnotations(
                 $reflection
@@ -222,9 +221,8 @@ class Annotations implements AnnotationsContract
             // Get the annotations for this method
             $methodAnnotations = $this->setAnnotationValues(
                 [
-                    'class'        => $class,
-                    'method'       => ! $method->isStatic() ? $method->getName() : null,
-                    'staticMethod' => $method->isStatic() ? $method->getName() : null,
+                    'class'  => $class,
+                    'method' => $method->getName(),
                 ],
                 ...$this->getReflectionFunctionAnnotations($method)
             );
@@ -344,7 +342,6 @@ class Annotations implements AnnotationsContract
             $annotation->setClass($properties['class'] ?? null);
             $annotation->setProperty($properties['property'] ?? null);
             $annotation->setMethod($properties['method'] ?? null);
-            $annotation->setStaticMethod($properties['staticMethod'] ?? null);
             $annotation->setFunction($properties['function'] ?? null);
         }
 
