@@ -30,6 +30,13 @@ use Twig_Loader_Filesystem;
 class TwigServiceProvider extends ServiceProvider
 {
     /**
+     * Whether the service provider is deferred.
+     *
+     * @var bool
+     */
+    public static $deferred = false;
+
+    /**
      * What services are provided.
      *
      * @var array
