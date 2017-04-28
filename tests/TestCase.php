@@ -12,7 +12,6 @@ use tests\traits\TestRequest;
 use Valkyrja\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Events\Events;
-use Valkyrja\Providers\TwigServiceProvider;
 use Valkyrja\Support\Directory;
 
 /**
@@ -38,7 +37,7 @@ class TestCase extends PHPUnitTestCase
     {
         Directory::$BASE_PATH = realpath(__DIR__ . '/../');
 
-        $app = new Application(
+        $this->app = new Application(
         // Set the container
             new Container(),
             // Set the events
@@ -49,7 +48,5 @@ class TestCase extends PHPUnitTestCase
                 new EnvTest()
             )
         );
-
-        $this->app = $app;
     }
 }
