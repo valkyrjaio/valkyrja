@@ -37,6 +37,19 @@ interface Env
     public const ANNOTATIONS_MAP       = null;
 
     /**
+     * Container env variables.
+     */
+    public const CONTAINER_PROVIDERS                   = null;
+    public const CONTAINER_DEV_PROVIDERS               = null;
+    public const CONTAINER_USE_ANNOTATIONS             = null;
+    public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    public const CONTAINER_SERVICES                    = null;
+    public const CONTAINER_CONTEXT_SERVICES            = null;
+    public const CONTAINER_FILE_PATH                   = null;
+    public const CONTAINER_CACHE_FILE_PATH             = null;
+    public const CONTAINER_USE_CACHE_FILE              = null;
+
+    /**
      * Logger env variables.
      */
     public const LOGGER_NAME      = null;

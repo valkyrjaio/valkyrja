@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Contracts\Container;
 
+use Valkyrja\Container\ContextService;
 use Valkyrja\Container\Service;
 
 /**
@@ -44,14 +45,11 @@ interface Container
     /**
      * Bind a context to the container.
      *
-     * @param string                      $serviceId   The service id
-     * @param \Valkyrja\Container\Service $giveService The service to give
-     * @param string                      $context     The context
-     * @param string                      $member      [optional] The context member
+     * @param \Valkyrja\Container\ContextService $contextService The context service
      *
      * @return void
      */
-    public function context(string $serviceId, Service $giveService, string $context, string $member = null): void;
+    public function context(ContextService $contextService): void;
 
     /**
      * Bind a singleton to the container.
@@ -136,7 +134,7 @@ interface Container
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null):? string;
+    public function contextServiceId(string $serviceId, string $context, string $member = null): string;
 
     /**
      * Setup the container.

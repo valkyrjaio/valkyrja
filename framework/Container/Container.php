@@ -90,10 +90,7 @@ class Container implements ContainerContract
     /**
      * Bind a context to the container.
      *
-     * @param string                      $serviceId   The service id
-     * @param \Valkyrja\Container\Service $giveService The service to give
-     * @param string                      $context     The context
-     * @param string                      $member      [optional] The context member
+     * @param \Valkyrja\Container\ContextService $contextService The context service
      *
      * @return void
      *
@@ -103,19 +100,32 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     *
-     * TODO: Update to use ContextService
      */
-    public function context(string $serviceId, Service $giveService, string $context, string $member = null): void
+    public function context(ContextService $contextService): void
     {
+        $context = $contextService->getClass() ?? $contextService->getFunction();
+        $member = $contextService->getMethod() ?? $contextService->getProperty();
+
         // If the context index is null then there's no context
-        if (null === $contextIndex = $this->contextServiceId($serviceId, $context, $member)) {
+        if (null === $context || null === $contextService->getId()) {
             throw new InvalidContextException();
         }
 
-        $giveService->setId($contextIndex);
-
-        $this->bind($giveService);
+        $this->bind(
+            (new Service())
+                ->setId($this->contextServiceId($contextService->getId(), $context, $member))
+                ->setName($contextService->getName())
+                ->setClass($contextService->getContextClass())
+                ->setProperty($contextService->getContextProperty())
+                ->setMethod($contextService->getContextMethod())
+                ->setFunction($contextService->getContextFunction())
+                ->setClosure($contextService->getContextClosure())
+                ->setDefaults($contextService->getDefaults())
+                ->setArguments($contextService->getArguments())
+                ->setDependencies($contextService->getDependencies())
+                ->setSingleton($contextService->isSingleton())
+                ->setStatic($contextService->isStatic())
+        );
     }
 
     /**
@@ -279,7 +289,7 @@ class Container implements ContainerContract
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null):? string
+    public function contextServiceId(string $serviceId, string $context, string $member = null): string
     {
         $index = $serviceId . '@' . ($context ?? '');
 
@@ -310,6 +320,13 @@ class Container implements ContainerContract
      */
     public function setup(): void
     {
+        // TODO: config()->container->useCacheFile
+        // TODO: require config()->container->cacheFilePath
+
         new BootstrapContainer($this);
+
+        // TODO: config()->container->useAnnotations
+
+        // TODO: require config()->container->filePath
     }
 }
