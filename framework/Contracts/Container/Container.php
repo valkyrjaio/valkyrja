@@ -46,12 +46,12 @@ interface Container
      *
      * @param string                      $serviceId   The service id
      * @param \Valkyrja\Container\Service $giveService The service to give
-     * @param string|null                 $class       [optional] The context class
-     * @param string|null                 $method      [optional] The context method
+     * @param string                      $context     The context
+     * @param string                      $member      [optional] The context member
      *
      * @return void
      */
-    public function context(string $serviceId, Service $giveService, string $class = null, string $method = null): void;
+    public function context(string $serviceId, Service $giveService, string $context, string $member = null): void;
 
     /**
      * Bind a singleton to the container.
@@ -74,12 +74,14 @@ interface Container
      * Check whether a given service has context.
      *
      * @param string $serviceId The service
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $context   The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
      *
      * @return bool
      */
-    public function hasContext(string $serviceId, string $class = null, string $method = null): bool;
+    public function hasContext(string $serviceId, string $context, string $member = null): bool;
 
     /**
      * Check whether a given service is an alias.
@@ -104,8 +106,10 @@ interface Container
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class
-     * @param string $member    [optional] The context method
+     * @param string $context   [optional] The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
      *
      * @return mixed
      */
@@ -114,8 +118,8 @@ interface Container
     /**
      * Make a service.
      *
-     * @param string     $serviceId The service id
-     * @param array|null $arguments [optional] The arguments
+     * @param string $serviceId The service id
+     * @param array  $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -125,12 +129,14 @@ interface Container
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $context   The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $class = null, string $method = null):? string;
+    public function contextServiceId(string $serviceId, string $context, string $member = null):? string;
 
     /**
      * Setup the container.

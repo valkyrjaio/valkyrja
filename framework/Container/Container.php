@@ -92,8 +92,8 @@ class Container implements ContainerContract
      *
      * @param string                      $serviceId   The service id
      * @param \Valkyrja\Container\Service $giveService The service to give
-     * @param string|null                 $class       [optional] The context class
-     * @param string|null                 $method      [optional] The context method
+     * @param string                      $context     The context
+     * @param string                      $member      [optional] The context member
      *
      * @return void
      *
@@ -106,10 +106,10 @@ class Container implements ContainerContract
      *
      * TODO: Update to use ContextService
      */
-    public function context(string $serviceId, Service $giveService, string $class = null, string $method = null): void
+    public function context(string $serviceId, Service $giveService, string $context, string $member = null): void
     {
         // If the context index is null then there's no context
-        if (null === $contextIndex = $this->contextServiceId($serviceId, $class, $method)) {
+        if (null === $contextIndex = $this->contextServiceId($serviceId, $context, $member)) {
             throw new InvalidContextException();
         }
 
@@ -145,15 +145,17 @@ class Container implements ContainerContract
      * Check whether a given service has context.
      *
      * @param string $serviceId The service
-     * @param string $class     [optional] The context class
-     * @param string $method    [optional] The context method
+     * @param string $context   The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
      *
      * @return bool
      */
-    public function hasContext(string $serviceId, string $class = null, string $method = null): bool
+    public function hasContext(string $serviceId, string $context, string $member = null): bool
     {
         // If no class or method were passed then the index will be null so return false
-        if (null === $contextIndex = $this->contextServiceId($serviceId, $class, $method)) {
+        if (null === $contextIndex = $this->contextServiceId($serviceId, $context, $member)) {
             return false;
         }
 
@@ -190,16 +192,16 @@ class Container implements ContainerContract
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
      * @param string $context   [optional] The context
-     *                          $context = class name || function name || variable name
+     *                          class name || function name || variable name
      * @param string $member    [optional] The context member
-     *                          $member = method name || property name
+     *                          method name || property name
      *
      * @return mixed
      */
     public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
     {
         // If there is a context set for this class/method
-        if ($this->hasContext($serviceId, $context, $member)) {
+        if (null !== $context && $this->hasContext($serviceId, $context, $member)) {
             // Return that context
             return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
         }
@@ -245,16 +247,20 @@ class Container implements ContainerContract
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        // TODO: Implement Event Dispatch
+        events()->trigger('service.make', [$serviceId, $service, $arguments]);
+        events()->trigger("service.make.{$serviceId}", [$service, $arguments]);
 
         // Make the object by dispatching the service
         $made = $this->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
-        // TODO: Implement Event Dispatch
+        events()->trigger('service.made', [$serviceId, $made]);
+        events()->trigger("service.made.{$serviceId}", [$made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
+            events()->trigger('service.made.singleton', [$serviceId, $made]);
+            events()->trigger("service.made.singleton.{$serviceId}", [$made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }
@@ -266,32 +272,27 @@ class Container implements ContainerContract
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $class     [optional] The context
-     *                          $context = class name || function name || variable name
-     * @param string $method    [optional] The context member
-     *                          $member = method name || property name
+     * @param string $context   The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $class = null, string $method = null):? string
+    public function contextServiceId(string $serviceId, string $context, string $member = null):? string
     {
-        // If there is no class or method there's no context set
-        if (null === $class && null === $method) {
-            return null;
-        }
-
-        $index = $serviceId . '@' . ($class ?? '');
+        $index = $serviceId . '@' . ($context ?? '');
 
         // If there is a method
-        if (null !== $method) {
+        if (null !== $member) {
             // If there is a class
-            if (null !== $class) {
+            if (null !== $context) {
                 // Add the double colon to separate the method name and class
                 $index .= '::';
             }
 
             // Append the method/function to the string
-            $index .= $method;
+            $index .= $member;
         }
 
         // service@class
