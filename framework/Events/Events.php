@@ -49,7 +49,7 @@ class Events implements EventsContract
     protected static $setup = false;
 
     /**
-     * Container constructor.
+     * Events constructor.
      *
      * @param \Valkyrja\Contracts\Application   $application The application
      */
@@ -264,7 +264,7 @@ class Events implements EventsContract
     }
 
     /**
-     * Setup the container.
+     * Setup the events.
      *
      * @return void
      *
@@ -293,12 +293,12 @@ class Events implements EventsContract
         }
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()->container->useAnnotations && $this->app->config()->annotations->enabled) {
+        if ($this->app->config()->events->useAnnotations && $this->app->config()->annotations->enabled) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()->container->useAnnotationsExclusively) {
+            if ($this->app->config()->events->useAnnotationsExclusively) {
                 // Return to avoid loading events file
                 return;
             }
@@ -325,10 +325,10 @@ class Events implements EventsContract
         /** @var ListenerAnnotations $containerAnnotations */
         $containerAnnotations = $this->app->container()->get(ListenerAnnotations::class);
 
-        // Get all the annotated services from the list of controllers
+        // Get all the annotated listeners from the list of classes
         $listeners = $containerAnnotations->getListeners(...$this->app->config()->events->classes);
 
-        // Iterate through the services
+        // Iterate through the listeners
         foreach ($listeners as $listener) {
             // Set the service
             $this->listen($listener->getEvent(), $listener);

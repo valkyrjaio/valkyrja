@@ -565,7 +565,7 @@ class Container implements ContainerContract
             $this->context($context);
         }
 
-        // Get all the annotated services from the list of controllers
+        // Get all the annotated services from the list of classes
         $aliasServices = $containerAnnotations->getAliasServices(...$this->app->config()->container->services);
 
         // Iterate through the services

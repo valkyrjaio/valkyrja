@@ -4,7 +4,7 @@ namespace config\sub;
 
 use App\Controllers\HomeController;
 
-use Valkyrja\Config\Sub\EventsConfig as EventsConfigConfig;
+use Valkyrja\Config\Sub\EventsConfig as ValkyrjaEventsConfig;
 use Valkyrja\Contracts\Config\Env;
 
 /**
@@ -12,7 +12,7 @@ use Valkyrja\Contracts\Config\Env;
  *
  * @package config\sub
  */
-class EventsConfig extends EventsConfigConfig
+class EventsConfig extends ValkyrjaEventsConfig
 {
     /**
      * EventsConfig constructor.

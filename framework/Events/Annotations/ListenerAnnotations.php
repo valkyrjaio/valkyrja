@@ -12,6 +12,7 @@
 namespace Valkyrja\Events\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations as ListenerAnnotationsContract;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
@@ -21,7 +22,7 @@ use Valkyrja\Dispatcher\Dispatch;
  *
  * @author  Melech Mizrachi
  */
-class ListenerAnnotations extends Annotations
+class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
 {
     /**
      * Get the events.
@@ -51,7 +52,7 @@ class ListenerAnnotations extends Annotations
     }
 
     /**
-     * Set the properties for a service annotation.
+     * Set the properties for a listener annotation.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch
      *
