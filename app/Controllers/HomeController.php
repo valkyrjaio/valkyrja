@@ -6,6 +6,9 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Routing\Route;
+use Valkyrja\Container\Service;
+use Valkyrja\Container\ServiceAlias;
+use Valkyrja\Container\ServiceContext;
 
 /**
  * Class HomeController
@@ -14,6 +17,9 @@ use Valkyrja\Routing\Route;
  *
  * @Route(path = '/', name = 'home')
  * @Route(path = '/test', name = 'home.test')
+ * @Service(id = App\Controllers\HomeController)
+ * @ServiceAlias(id = App\Controllers\HomeController, name = 'homeController')
+ * @ServiceContext(id = Valkyrja\Contracts\Application, contextClass = Valkyrja\Contracts\Application)
  */
 class HomeController extends Controller
 {
