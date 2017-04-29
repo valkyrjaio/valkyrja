@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
@@ -48,6 +49,7 @@ final class CoreComponent extends Enum
     public const ANNOTATIONS           = Annotations::class;
     public const ANNOTATIONS_PARSER    = AnnotationsParser::class;
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
+    public const LISTENER_ANNOTATIONS  = ListenerAnnotations::class;
     public const REQUEST               = Request::class;
     public const RESPONSE              = Response::class;
     public const JSON_RESPONSE         = JsonResponse::class;
@@ -68,6 +70,7 @@ final class CoreComponent extends Enum
         self::ANNOTATIONS,
         self::ANNOTATIONS_PARSER,
         self::CONTAINER_ANNOTATIONS,
+        self::LISTENER_ANNOTATIONS,
         self::REQUEST,
         self::RESPONSE,
         self::JSON_RESPONSE,

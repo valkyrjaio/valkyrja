@@ -25,6 +25,7 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContrac
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
@@ -98,6 +99,7 @@ class BootstrapContainer
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
+        $this->bootstrapListenerAnnotations();
         $this->bootstrapRequest();
         $this->bootstrapResponse();
         $this->bootstrapJsonResponse();
@@ -153,6 +155,22 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
                 ->setClass(ContainerAnnotations::class)
+                ->setDependencies([AnnotationsParserContract::class])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the listener annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapListenerAnnotations(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::LISTENER_ANNOTATIONS)
+                ->setClass(ListenerAnnotations::class)
                 ->setDependencies([AnnotationsParserContract::class])
                 ->setSingleton(true)
         );
