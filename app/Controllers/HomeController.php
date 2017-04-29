@@ -18,9 +18,20 @@ use Valkyrja\Routing\Route;
 class HomeController extends Controller
 {
     /**
+     * The applications.
+     *
      * @var \Valkyrja\Contracts\Application
      */
     protected $app;
+
+    /**
+     * Property routing example.
+     *
+     * @var string
+     *
+     * @Route(path = '/property', name = 'property')
+     */
+    public $propertyRouting = 'Property Routing Example';
 
     /**
      * HomeController constructor.

@@ -37,6 +37,20 @@ router()->get(
 );
 
 /**
+ * Property Routing Example Route.
+ * - Example of string being returned from a property
+ *
+ * @path /property
+ */
+router()->get(
+    (new Route())
+        ->setPath('/property')
+        ->setName('property')
+        ->setClass(App\Controllers\HomeController::class)
+        ->setProperty('propertyRouting')
+);
+
+/**
  * Home Route.
  * - Example with multiple routes to the same action
  *
@@ -77,5 +91,5 @@ router()->get(
                 Valkyrja\Contracts\Application::class,
             ]
         )
-    ->setDynamic(true)
+        ->setDynamic(true)
 );
