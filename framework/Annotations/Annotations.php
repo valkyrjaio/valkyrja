@@ -15,6 +15,7 @@ use ReflectionClass;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
@@ -567,5 +568,29 @@ class Annotations implements AnnotationsContract
 
         return self::$reflections[$index]
             ?? self::$reflections[$index] = new ReflectionFunction($function);
+    }
+
+    /**
+     * Get dependencies from parameters.
+     *
+     * @param \ReflectionParameter[] $parameters The parameters
+     *
+     * @return string[]
+     */
+    protected function getDependencies(ReflectionParameter ...$parameters): array
+    {
+        // Setup to find any injectable objects through the service container
+        $dependencies = [];
+
+        // Iterate through the method's parameters
+        foreach ($parameters as $parameter) {
+            // We only care for classes
+            if ($parameter->getClass()) {
+                // Set the injectable in the array
+                $dependencies[] = $parameter->getClass()->getName();
+            }
+        }
+
+        return $dependencies;
     }
 }

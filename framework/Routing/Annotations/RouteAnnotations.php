@@ -83,13 +83,13 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      */
     protected function setRouteProperties(Route $route): void
     {
-        // Set the route's dependencies
-        $route->setDependencies(
-            $this->getDependencies(
-                $this->getMethodReflection($route->getClass(), $route->getMethod())
-                     ->getParameters()
-            )
-        );
+        if (null === $route->getProperty()) {
+            $parameters = $this->getMethodReflection($route->getClass(), $route->getMethod() ?? '__construct')
+                               ->getParameters();
+
+            // Set the dependencies
+            $route->setDependencies($this->getDependencies(...$parameters));
+        }
 
         // Avoid having large arrays in cached routes file
         $route->setArguments();
@@ -122,37 +122,13 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the routes for each class and iterate through them
-            foreach ($this->methodsAnnotationsType($this->routeAnnotationType, $class) as $annotation) {
+            foreach ($this->classMembersAnnotationsType($this->routeAnnotationType, $class) as $annotation) {
                 // Set the annotation in the routes list
                 $routes[] = $annotation;
             }
         }
 
         return $routes;
-    }
-
-    /**
-     * Get dependencies from parameters.
-     *
-     * @param array $parameters The parameters
-     *
-     * @return array
-     */
-    protected function getDependencies(array $parameters): array
-    {
-        // Setup to find any injectable objects through the service container
-        $dependencies = [];
-
-        // Iterate through the method's parameters
-        foreach ($parameters as $parameter) {
-            // We only care for classes
-            if ($parameter->getClass()) {
-                // Set the injectable in the array
-                $dependencies[] = $parameter->getClass()->getName();
-            }
-        }
-
-        return $dependencies;
     }
 
     /**

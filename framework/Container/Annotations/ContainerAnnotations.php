@@ -13,6 +13,7 @@ namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
+use Valkyrja\Dispatcher\Dispatch;
 
 /**
  * Class ContainerAnnotations
@@ -105,18 +106,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
             // Get all the annotations for each class and iterate through them
             /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
-                // Set the dependencies
-                $annotation->setDependencies(
-                    $this->getDependencies(
-                        $this->getMethodReflection(
-                            $class,
-                            $annotation->getMethod() ?? $annotation->getProperty() ?? '__construct'
-                        )
-                             ->getParameters()
-                    )
-                );
-                // Set the type to null (we already know it's a service)
-                $annotation->setType();
+                $this->setServiceProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
             }
@@ -126,28 +116,25 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     }
 
     /**
-     * Get dependencies from parameters.
+     * Set the properties for a service annotation.
      *
-     * @param array $parameters The parameters
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch
      *
-     * @return array
+     * @return void
      *
-     * TODO: Move this to Annotations()
+     * @throws \ReflectionException
      */
-    protected function getDependencies(array $parameters): array
+    protected function setServiceProperties(Dispatch $dispatch): void
     {
-        // Setup to find any injectable objects through the service container
-        $dependencies = [];
+        if (null === $dispatch->getProperty()) {
+            $parameters = $this->getMethodReflection($dispatch->getClass(), $dispatch->getMethod() ?? '__construct')
+                               ->getParameters();
 
-        // Iterate through the method's parameters
-        foreach ($parameters as $parameter) {
-            // We only care for classes
-            if ($parameter->getClass()) {
-                // Set the injectable in the array
-                $dependencies[] = $parameter->getClass()->getName();
-            }
+            // Set the dependencies
+            $dispatch->setDependencies($this->getDependencies(...$parameters));
         }
 
-        return $dependencies;
+        // Set the type to null (we already know it's a service)
+        $dispatch->setType();
     }
 }
