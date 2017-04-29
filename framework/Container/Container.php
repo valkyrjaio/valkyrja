@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Container;
 
+use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Contracts\Application;
@@ -139,6 +140,7 @@ class Container implements ContainerContract
      * @return void
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -150,10 +152,24 @@ class Container implements ContainerContract
     {
         $context = $contextService->getClass() ?? $contextService->getFunction();
         $member = $contextService->getMethod() ?? $contextService->getProperty();
+        $contextContext = $contextService->getContextClass() ?? $contextService->getContextFunction();
 
         // If the context index is null then there's no context
         if (null === $context || null === $contextService->getId()) {
             throw new InvalidContextException();
+        }
+
+        // If the context is the same as the end service dispatch and the dispatch isn't static
+        // throw an error to disallow this kind of context as it will create
+        // an endless loop where the dispatcher will attempt to create the
+        // callable with the dependencies and the hasContext check in
+        // Container::get() will keep catching it
+        if ($context === $contextContext && ! $contextService->isStatic()) {
+            throw new EndlessContextLoopException('This kind of context will create'
+            . 'an endless loop where the dispatcher will attempt to create the '
+            . 'callable with the dependencies and the hasContext check in '
+            . 'Container::get() will keep catching it: '
+            . $this->contextServiceId($contextService->getId(), $context, $member));
         }
 
         $this->bind(
@@ -419,11 +435,13 @@ class Container implements ContainerContract
      * @return void
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function setup(): void
     {
@@ -489,11 +507,13 @@ class Container implements ContainerContract
      * @return void
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     protected function setupAnnotations(): void
     {

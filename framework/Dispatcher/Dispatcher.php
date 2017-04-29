@@ -177,6 +177,11 @@ trait Dispatcher
      */
     protected function getDependencies(Dispatch $dispatch):? array
     {
+        // If the dispatch is static it doesn't need dependencies
+        if ($dispatch->isStatic()) {
+            return null;
+        }
+
         $dependencies = null;
         $context = $dispatch->getClass() ?? $dispatch->getFunction();
         $member = $dispatch->getProperty() ?? $dispatch->getMethod();
@@ -203,6 +208,11 @@ trait Dispatcher
      */
     protected function getArguments(Dispatch $dispatch, array $arguments = null):? array
     {
+        // If the dispatch is static it doesn't need dependencies
+        if ($dispatch->isStatic()) {
+            return $arguments;
+        }
+
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
 
