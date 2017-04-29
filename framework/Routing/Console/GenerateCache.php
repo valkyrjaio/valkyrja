@@ -16,7 +16,7 @@ use Valkyrja\Console\Console;
 /**
  * Class GenerateCache
  *
- * @package Valkyrja\Routing
+ * @package Valkyrja\Routing\Console
  *
  * @author  Melech Mizrachi
  */

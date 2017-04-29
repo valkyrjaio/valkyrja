@@ -16,7 +16,7 @@ use Valkyrja\Console\Console;
 /**
  * Class GenerateCache
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Container\Console
  *
  * @author  Melech Mizrachi
  */
