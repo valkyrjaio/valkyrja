@@ -24,4 +24,8 @@ Valkyrja\Support\Directory::$BASE_PATH = realpath(__DIR__ . '/../');
  *
  */
 
-return new Valkyrja\Application(new config\Config( new config\Env()));
+return new Valkyrja\Application(
+    new config\Config(
+        new config\Env()
+    )
+);

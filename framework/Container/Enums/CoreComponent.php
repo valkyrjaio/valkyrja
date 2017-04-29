@@ -18,12 +18,17 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Config\Config;
+use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
@@ -44,11 +49,16 @@ use Valkyrja\Enum\Enum;
 final class CoreComponent extends Enum
 {
     public const APP                   = Application::class;
-    public const CONTAINER             = Container::class;
-    public const EVENTS                = Events::class;
     public const ANNOTATIONS           = Annotations::class;
     public const ANNOTATIONS_PARSER    = AnnotationsParser::class;
+    public const CONFIG                = Config::class;
+    public const CONSOLE               = Console::class;
+    public const CONSOLE_KERNEL        = ConsoleKernel::class;
+    public const CONTAINER             = Container::class;
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
+    public const ENV                   = Env::class;
+    public const EVENTS                = Events::class;
+    public const KERNEL                = Kernel::class;
     public const LISTENER_ANNOTATIONS  = ListenerAnnotations::class;
     public const REQUEST               = Request::class;
     public const RESPONSE              = Response::class;
@@ -65,11 +75,15 @@ final class CoreComponent extends Enum
 
     protected const VALUES = [
         self::APP,
-        self::CONTAINER,
-        self::EVENTS,
         self::ANNOTATIONS,
         self::ANNOTATIONS_PARSER,
+        self::CONFIG,
+        self::CONSOLE,
+        self::CONTAINER,
         self::CONTAINER_ANNOTATIONS,
+        self::ENV,
+        self::EVENTS,
+        self::KERNEL,
         self::LISTENER_ANNOTATIONS,
         self::REQUEST,
         self::RESPONSE,

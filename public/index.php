@@ -32,6 +32,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  *
  */
 
+/** @var \Valkyrja\Contracts\Application $app */
 $app = require __DIR__ . '/../bootstrap/app.php';
 
 // TODO: Remove when console is implemented
@@ -49,4 +50,4 @@ $app = require __DIR__ . '/../bootstrap/app.php';
  *
  */
 
-$app->run();
+$app->kernel()->run();

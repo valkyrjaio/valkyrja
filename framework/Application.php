@@ -11,15 +11,16 @@
 
 namespace Valkyrja;
 
-use Throwable;
-
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
@@ -28,7 +29,6 @@ use Valkyrja\Contracts\Logger\Logger;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
-use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
@@ -137,6 +137,10 @@ class Application implements ApplicationContract
         // Set the application instance in the container
         self::$container->singleton(CoreComponent::APP, $this);
         // Set the events instance in the container
+        self::$container->singleton(CoreComponent::ENV, self::$config->env);
+        // Set the events instance in the container
+        self::$container->singleton(CoreComponent::CONFIG, self::$config);
+        // Set the events instance in the container
         self::$container->singleton(CoreComponent::EVENTS, self::$events);
         // Set the container instance in the container
         self::$container->singleton(CoreComponent::CONTAINER, self::$container);
@@ -235,16 +239,6 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Is twig enabled?
-     *
-     * @return bool
-     */
-    public function isTwigEnabled(): bool
-    {
-        return $this->config()->views->twig->enabled ?? false;
-    }
-
-    /**
      * Set the timezone for the application process.
      *
      * @return void
@@ -317,42 +311,33 @@ class Application implements ApplicationContract
     }
 
     /**
-     * Handle a request.
+     * Return the console instance from the container.
      *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @return \Valkyrja\Contracts\Console\Console
      */
-    public function handle(Request $request): Response
+    public function console(): Console
     {
-        try {
-            $response = $this->router()->dispatch($request);
-        }
-        catch (Throwable $exception) {
-            $handler = new ExceptionHandler($this->config()->app->debug);
-            $response = $handler->getResponse($exception);
-        }
-
-        // Dispatch the request and return it
-        return $response;
+        return $this->container()->get(Console::class);
     }
 
     /**
-     * Run the application.
+     * Return the console kernel instance from the container.
      *
-     * @return void
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @return \Valkyrja\Contracts\Console\Kernel
      */
-    public function run(): void
+    public function consoleKernel(): ConsoleKernel
     {
-        /** @var Request $request */
-        $request = $this->container()->get(Request::class);
+        return $this->container()->get(ConsoleKernel::class);
+    }
 
-        // Handle the request and send the response
-        $this->handle($request)->send();
+    /**
+     * Return the kernel instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Kernel
+     */
+    public function kernel(): Kernel
+    {
+        return $this->container()->get(Kernel::class);
     }
 
     /**

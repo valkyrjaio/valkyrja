@@ -14,20 +14,20 @@ namespace Valkyrja\Container;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 
-use Psr\Log\LoggerInterface;
-
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Console\Console;
+use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
+use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -93,6 +93,9 @@ class BootstrapContainer
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
         $this->bootstrapListenerAnnotations();
+        $this->bootstrapConsole();
+        $this->bootstrapConsoleKernel();
+        $this->bootstrapKernel();
         $this->bootstrapRequest();
         $this->bootstrapResponse();
         $this->bootstrapJsonResponse();
@@ -132,7 +135,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::ANNOTATIONS)
                 ->setClass(Annotations::class)
-                ->setDependencies([AnnotationsParserContract::class])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
                 ->setSingleton(true)
         );
     }
@@ -148,7 +151,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
                 ->setClass(ContainerAnnotations::class)
-                ->setDependencies([AnnotationsParserContract::class])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
                 ->setSingleton(true)
         );
     }
@@ -164,7 +167,55 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::LISTENER_ANNOTATIONS)
                 ->setClass(ListenerAnnotations::class)
-                ->setDependencies([AnnotationsParserContract::class])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the console.
+     *
+     * @return void
+     */
+    protected function bootstrapConsole(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::CONSOLE)
+                ->setClass(Console::class)
+                ->setDependencies([CoreComponent::APP])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the console kernel.
+     *
+     * @return void
+     */
+    protected function bootstrapConsoleKernel(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::CONSOLE_KERNEL)
+                ->setClass(ConsoleKernel::class)
+                ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the kernel.
+     *
+     * @return void
+     */
+    protected function bootstrapKernel(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::KERNEL)
+                ->setClass(Kernel::class)
+                ->setDependencies([CoreComponent::APP, CoreComponent::ROUTER])
                 ->setSingleton(true)
         );
     }
@@ -239,7 +290,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::RESPONSE_BUILDER)
                 ->setClass(ResponseBuilder::class)
-                ->setDependencies([Application::class])
+                ->setDependencies([CoreComponent::APP])
                 ->setSingleton(true)
         );
     }
@@ -255,7 +306,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::ROUTER)
                 ->setClass(Router::class)
-                ->setDependencies([Application::class])
+                ->setDependencies([CoreComponent::APP])
                 ->setSingleton(true)
         );
     }
@@ -271,7 +322,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::ROUTE_ANNOTATIONS)
                 ->setClass(RouteAnnotations::class)
-                ->setDependencies([AnnotationsParserContract::class])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
                 ->setSingleton(true)
         );
     }
@@ -287,7 +338,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::VIEW)
                 ->setClass(View::class)
-                ->setDependencies([Application::class])
+                ->setDependencies([CoreComponent::APP])
         );
     }
 
@@ -351,7 +402,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::LOGGER)
                 ->setClass(Logger::class)
-                ->setDependencies([LoggerInterface::class])
+                ->setDependencies([CoreComponent::LOGGER_INTERFACE])
                 ->setSingleton(true)
         );
     }

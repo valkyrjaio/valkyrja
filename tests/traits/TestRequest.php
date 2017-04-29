@@ -49,7 +49,7 @@ trait TestRequest
 
         $request = $request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
 
-        return $this->app->handle($request);
+        return $this->app->kernel()->handle($request);
     }
 
     /**

@@ -53,10 +53,6 @@ class TwigServiceProvider extends ServiceProvider
      */
     public function publish(): void
     {
-        if (! $this->app->isTwigEnabled()) {
-            return;
-        }
-
         // Set the env variable for views directory if its not set
         $this->app->config()->views->twig->dir = $this->app->config()->views->twig->dir
             ?? Directory::resourcesPath('views/twig');

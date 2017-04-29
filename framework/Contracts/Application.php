@@ -13,9 +13,12 @@ namespace Valkyrja\Contracts;
 
 use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
@@ -105,13 +108,6 @@ interface Application
     public function debug(): string;
 
     /**
-     * Is twig enabled?
-     *
-     * @return bool
-     */
-    public function isTwigEnabled(): bool;
-
-    /**
      * Set the timezone for the application process.
      *
      * @return void
@@ -165,20 +161,25 @@ interface Application
     ): void;
 
     /**
-     * Handle a request.
+     * Return the console instance from the container.
      *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Contracts\Console\Console
      */
-    public function handle(Request $request): Response;
+    public function console(): Console;
 
     /**
-     * Run the application.
+     * Return the console kernel instance from the container.
      *
-     * @return void
+     * @return \Valkyrja\Contracts\Console\Kernel
      */
-    public function run(): void;
+    public function consoleKernel(): ConsoleKernel;
+
+    /**
+     * Return the kernel instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Kernel
+     */
+    public function kernel(): Kernel;
 
     /**
      * Return the logger instance from the container.
