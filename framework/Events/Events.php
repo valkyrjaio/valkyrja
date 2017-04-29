@@ -12,6 +12,7 @@
 namespace Valkyrja\Events;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
@@ -38,7 +39,14 @@ class Events implements EventsContract
      *
      * @var array
      */
-    protected $events = [];
+    protected static $events = [];
+
+    /**
+     * Whether the container has been setup.
+     *
+     * @var bool
+     */
+    protected static $setup = false;
 
     /**
      * Container constructor.
@@ -64,6 +72,7 @@ class Events implements EventsContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function listen(string $event, Listener $listener): void
     {
@@ -75,11 +84,11 @@ class Events implements EventsContract
         if (null !== $listener->getId()) {
             // Use it when setting to allow removal
             // or checking if it exists later
-            $this->events[$event][$listener->getId()] = $listener;
+            self::$events[$event][$listener->getId()] = $listener;
         }
         else {
             // Otherwise set the listener normally
-            $this->events[$event][] = $listener;
+            self::$events[$event][] = $listener;
         }
     }
 
@@ -95,6 +104,7 @@ class Events implements EventsContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function listenMany(Listener $listener, string ...$events): void
     {
@@ -115,7 +125,7 @@ class Events implements EventsContract
      */
     public function hasListener(string $event, string $listenerId): bool
     {
-        return $this->has($event) && isset($this->events[$event][$listenerId]);
+        return $this->has($event) && isset(self::$events[$event][$listenerId]);
     }
 
     /**
@@ -131,7 +141,7 @@ class Events implements EventsContract
         // If the listener exists
         if ($this->hasListener($event, $listenerId)) {
             // Unset it
-            unset($this->events[$event][$listenerId]);
+            unset(self::$events[$event][$listenerId]);
         }
     }
 
@@ -145,7 +155,7 @@ class Events implements EventsContract
     public function getListeners(string $event): array
     {
         return $this->has($event)
-            ? $this->events[$event]
+            ? self::$events[$event]
             : [];
     }
 
@@ -158,7 +168,7 @@ class Events implements EventsContract
      */
     public function hasListeners(string $event): bool
     {
-        return $this->has($event) && ! empty($this->events[$event]);
+        return $this->has($event) && ! empty(self::$events[$event]);
     }
 
     /**
@@ -171,7 +181,7 @@ class Events implements EventsContract
     public function add(string $event): void
     {
         if (! $this->has($event)) {
-            $this->events[$event] = [];
+            self::$events[$event] = [];
         }
     }
 
@@ -184,7 +194,7 @@ class Events implements EventsContract
      */
     public function has(string $event): bool
     {
-        return isset($this->events[$event]);
+        return isset(self::$events[$event]);
     }
 
     /**
@@ -197,7 +207,7 @@ class Events implements EventsContract
     public function remove(string $event): void
     {
         if ($this->has($event)) {
-            unset($this->events[$event]);
+            unset(self::$events[$event]);
         }
     }
 
@@ -238,7 +248,7 @@ class Events implements EventsContract
      */
     public function all(): array
     {
-        return $this->events;
+        return self::$events;
     }
 
     /**
@@ -250,6 +260,88 @@ class Events implements EventsContract
      */
     public function set(array $events): void
     {
-        $this->events = $events;
+        self::$events = $events;
+    }
+
+    /**
+     * Setup the container.
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     */
+    public function setup(): void
+    {
+        if (self::$setup) {
+            return;
+        }
+
+        self::$setup = true;
+
+        // If the application should use the events cache files
+        if ($this->app->config()->events->useCacheFile) {
+            // Set the application routes with said file
+            self::$events = require $this->app->config()->events->cacheFilePath;
+
+            // Then return out of routes setup
+            return;
+        }
+
+        // If annotations are enabled and the events should use annotations
+        if ($this->app->config()->container->useAnnotations && $this->app->config()->annotations->enabled) {
+            // Setup annotated event listeners
+            $this->setupAnnotations();
+
+            // If only annotations should be used
+            if ($this->app->config()->container->useAnnotationsExclusively) {
+                // Return to avoid loading events file
+                return;
+            }
+        }
+
+        // Include the events file
+        require $this->app->config()->events->filePath;
+    }
+
+    /**
+     * Setup annotations.
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     */
+    protected function setupAnnotations(): void
+    {
+        /** @var ListenerAnnotations $containerAnnotations */
+        $containerAnnotations = $this->app->container()->get(ListenerAnnotations::class);
+
+        // Get all the annotated services from the list of controllers
+        $listeners = $containerAnnotations->getListeners(...$this->app->config()->events->classes);
+
+        // Iterate through the services
+        foreach ($listeners as $listener) {
+            // Set the service
+            $this->listen($listener->getEvent(), $listener);
+        }
+    }
+
+    /**
+     * Get a cacheable representation of the events.
+     *
+     * @return array
+     */
+    public function getCacheable(): array
+    {
+        return self::$events;
     }
 }

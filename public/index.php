@@ -36,6 +36,7 @@ $app = require __DIR__ . '/../bootstrap/app.php';
 
 // TODO: Remove when console is implemented
 // (new Valkyrja\Container\Console\GenerateCache)->run();
+// (new Valkyrja\Events\Console\GenerateCache)->run();
 // (new Valkyrja\Routing\Console\GenerateCache)->run();
 
 /*

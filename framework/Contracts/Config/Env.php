@@ -53,6 +53,16 @@ interface Env
     public const CONTAINER_USE_CACHE_FILE              = null;
 
     /**
+     * Container env variables.
+     */
+    public const EVENTS_USE_ANNOTATIONS             = null;
+    public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    public const EVENTS_CLASSES                     = null;
+    public const EVENTS_FILE_PATH                   = null;
+    public const EVENTS_CACHE_FILE_PATH             = null;
+    public const EVENTS_USE_CACHE_FILE              = null;
+
+    /**
      * Logger env variables.
      */
     public const LOGGER_NAME      = null;

@@ -23,4 +23,34 @@ use Valkyrja\Dispatcher\Dispatch;
  */
 class Listener extends Dispatch implements Annotation
 {
+    /**
+     * The event to listen to.
+     *
+     * @var string
+     */
+    protected $event;
+
+    /**
+     * Get the event.
+     *
+     * @return string
+     */
+    public function getEvent():? string
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set the event.
+     *
+     * @param string $event The event
+     *
+     * @return \Valkyrja\Events\Listener
+     */
+    public function setEvent(string $event = null): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
 }

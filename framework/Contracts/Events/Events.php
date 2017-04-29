@@ -132,4 +132,18 @@ interface Events
      * @return void
      */
     public function set(array $events): void;
+
+    /**
+     * Setup the container.
+     *
+     * @return void
+     */
+    public function setup(): void;
+
+    /**
+     * Get a cacheable representation of the events.
+     *
+     * @return array
+     */
+    public function getCacheable(): array;
 }

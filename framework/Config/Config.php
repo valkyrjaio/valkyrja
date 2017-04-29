@@ -14,6 +14,7 @@ namespace Valkyrja\Config;
 use Valkyrja\Config\Sub\AnnotationsConfig;
 use Valkyrja\Config\Sub\AppConfig;
 use Valkyrja\Config\Sub\ContainerConfig;
+use Valkyrja\Config\Sub\EventsConfig;
 use Valkyrja\Config\Sub\LoggerConfig;
 use Valkyrja\Config\Sub\RoutingConfig;
 use Valkyrja\Config\Sub\StorageConfig;
@@ -33,21 +34,21 @@ class Config implements ConfigContract
     /**
      * Application config.
      *
-     * @var AppConfig
+     * @var \Valkyrja\Config\Sub\AppConfig
      */
     public $app;
 
     /**
      * Annotations config.
      *
-     * @var ContainerConfig
+     * @var \Valkyrja\Config\Sub\AnnotationsConfig
      */
     public $annotations;
 
     /**
      * Container config.
      *
-     * @var AnnotationsConfig
+     * @var \Valkyrja\Config\Sub\ContainerConfig
      */
     public $container;
 
@@ -59,6 +60,13 @@ class Config implements ConfigContract
     public $env;
 
     /**
+     * Events config.
+     *
+     * @var \Valkyrja\Config\Sub\EventsConfig
+     */
+    public $events;
+
+    /**
      * Logger config.
      *
      * @var \Valkyrja\Config\Sub\LoggerConfig
@@ -68,21 +76,21 @@ class Config implements ConfigContract
     /**
      * Routing config.
      *
-     * @var RoutingConfig
+     * @var \Valkyrja\Config\Sub\RoutingConfig
      */
     public $routing;
 
     /**
      * Storage config.
      *
-     * @var StorageConfig
+     * @var \Valkyrja\Config\Sub\StorageConfig
      */
     public $storage;
 
     /**
      * Views config.
      *
-     * @var ViewsConfig
+     * @var \Valkyrja\Config\Sub\ViewsConfig
      */
     public $views;
 
@@ -98,6 +106,7 @@ class Config implements ConfigContract
         $this->annotations = new AnnotationsConfig($env);
         $this->app = new AppConfig($env);
         $this->container = new ContainerConfig($env);
+        $this->events = new EventsConfig($env);
         $this->logger = new LoggerConfig($env);
         $this->routing = new RoutingConfig($env);
         $this->storage = new StorageConfig($env);

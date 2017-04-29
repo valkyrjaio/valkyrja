@@ -137,6 +137,10 @@ class Application implements ApplicationContract
         // NOTE: Not done in container construct to avoid container()
         // helper returning null self::$container
         self::$container->setup();
+        // Setup the events
+        // NOTE: Not done in events construct to avoid container dependency
+        // not existing within setup (for ListenerAnnotations)
+        self::$events->setup();
 
         // Set the timezone for the application to run within
         $this->setTimezone();
