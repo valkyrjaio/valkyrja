@@ -34,6 +34,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = require __DIR__ . '/../bootstrap/app.php';
 
+// TODO: Remove when console is implemented
+// (new Valkyrja\Container\Console\GenerateCache)->run();
+// (new Valkyrja\Routing\Console\GenerateCache)->run();
+
 /*
  *-------------------------------------------------------------------------
  * Run The Application
