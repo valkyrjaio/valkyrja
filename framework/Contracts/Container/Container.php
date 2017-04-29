@@ -25,7 +25,6 @@ use Valkyrja\Contracts\Events\Events;
  */
 interface Container
 {
-
     /**
      * Container constructor.
      *
@@ -78,6 +77,15 @@ interface Container
      * @return void
      */
     public function register(string $serviceProvider): void;
+
+    /**
+     * Determine whether a service provider has been registered.
+     *
+     * @param string $serviceProvider The service provider
+     *
+     * @return bool
+     */
+    public function isRegistered(string $serviceProvider): bool;
 
     /**
      * Check whether a given service exists.

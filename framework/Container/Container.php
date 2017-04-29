@@ -76,9 +76,16 @@ class Container implements ContainerContract
     /**
      * The services provided by service providers that are deferred.
      *
-     * @var array[]
+     * @var string[]
      */
     protected static $provided = [];
+
+    /**
+     * The registered service providers.
+     *
+     * @var array
+     */
+    protected static $registered = [];
 
     /**
      * Container constructor.
@@ -209,6 +216,11 @@ class Container implements ContainerContract
      */
     public function register(string $serviceProvider): void
     {
+        // No need to re-register providers
+        if ($this->isRegistered($serviceProvider)) {
+            return;
+        }
+
         /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
         $deferred = $serviceProvider::$deferred;
         $provides = $serviceProvider::$provides;
@@ -226,6 +238,20 @@ class Container implements ContainerContract
 
         // Create a new instance of the service provider
         $this->singleton($serviceProvider, new $serviceProvider($this->app, $this));
+
+        self::$registered[$serviceProvider] = true;
+    }
+
+    /**
+     * Determine whether a service provider has been registered.
+     *
+     * @param string $serviceProvider The service provider
+     *
+     * @return bool
+     */
+    public function isRegistered(string $serviceProvider): bool
+    {
+        return isset(self::$registered[$serviceProvider]);
     }
 
     /**
@@ -579,6 +605,16 @@ class Container implements ContainerContract
      */
     public function getCacheable(): array
     {
+        // Since service providers are deferred by default
+        // when we want to get a true representation of all the services
+        // We have to register the service providers that haven't yet been registered
+        /** @var \Valkyrja\Support\ServiceProvider $provider */
+        foreach (self::$provided as $provided => $provider) {
+            $provider::$deferred = false;
+
+            $this->register($provider);
+        }
+
         return [
             'services' => self::$services,
             'aliases'  => self::$aliases,
