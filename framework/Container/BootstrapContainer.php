@@ -89,13 +89,6 @@ class BootstrapContainer
      */
     public function bootstrap(): void
     {
-        // Set the application instance in the container
-        $this->container->singleton(Application::class, $this->app);
-        // Set the events instance in the container
-        $this->container->singleton(EventsContract::class, $this->events);
-        // Set the container instance in the container
-        $this->container->singleton(ContainerContract::class, $this->container);
-
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();

@@ -14,6 +14,7 @@ namespace Valkyrja;
 use Throwable;
 
 use Valkyrja\Config\Config;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Container\Container;
@@ -132,6 +133,13 @@ class Application implements ApplicationContract
         if (! self::$container instanceof Container) {
             throw new InvalidContainerImplementation('Invalid Container implementation');
         }
+
+        // Set the application instance in the container
+        self::$container->singleton(CoreComponent::APP, $this);
+        // Set the events instance in the container
+        self::$container->singleton(CoreComponent::EVENTS, self::$events);
+        // Set the container instance in the container
+        self::$container->singleton(CoreComponent::CONTAINER, self::$container);
 
         // Setup the container
         // NOTE: Not done in container construct to avoid container()
