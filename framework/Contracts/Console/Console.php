@@ -23,7 +23,6 @@ use Valkyrja\Contracts\Application;
  */
 interface Console
 {
-
     /**
      * Console constructor.
      *
