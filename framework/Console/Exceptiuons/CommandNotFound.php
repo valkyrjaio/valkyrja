@@ -9,16 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Console;
+namespace Valkyrja\Console\Exceptions;
+
+use RuntimeException;
 
 /**
- * Interface Command
+ * Class CommandNotFound
  *
- * @package Valkyrja\Contracts\Console
+ * @package Valkyrja\Console\Exceptions
  *
  * @author  Melech Mizrachi
  */
-interface Command
+class CommandNotFound extends RuntimeException
 {
-    //
 }

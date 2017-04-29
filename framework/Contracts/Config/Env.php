@@ -40,6 +40,16 @@ interface Env
     public const ANNOTATIONS_MAP       = null;
 
     /**
+     * Console env variables.
+     */
+    public const CONSOLE_USE_ANNOTATIONS             = null;
+    public const CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    public const CONSOLE_HANDLERS                    = null;
+    public const CONSOLE_FILE_PATH                   = null;
+    public const CONSOLE_CACHE_FILE_PATH             = null;
+    public const CONSOLE_USE_CACHE_FILE              = null;
+
+    /**
      * Container env variables.
      */
     public const CONTAINER_PROVIDERS                   = null;
@@ -53,7 +63,7 @@ interface Env
     public const CONTAINER_USE_CACHE_FILE              = null;
 
     /**
-     * Container env variables.
+     * Events env variables.
      */
     public const EVENTS_USE_ANNOTATIONS             = null;
     public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = null;

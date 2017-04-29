@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Console;
+namespace Valkyrja\Console\Handlers;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
  * Class GenerateCache
  *
- * @package Valkyrja\Container\Console
+ * @package Valkyrja\Console\Handlers
  *
  * @author  Melech Mizrachi
  */
@@ -30,8 +30,8 @@ class GenerateCache extends CommandHandler
     public function run()
     {
         return file_put_contents(
-            config()->container->cacheFilePath,
-            '<?php return ' . var_export(container()->getCacheable(), true) . ';'
+            config()->console->cacheFilePath,
+            '<?php return ' . var_export(console()->getCacheable(), true) . ';'
         );
     }
 }

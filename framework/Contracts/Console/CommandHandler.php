@@ -9,18 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
-
-use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Dispatcher\Dispatch;
+namespace Valkyrja\Contracts\Console;
 
 /**
- * Class Command
+ * Interface Command
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Contracts\Console
  *
  * @author  Melech Mizrachi
  */
-class Command extends Dispatch implements Annotation
+interface CommandHandler
 {
+    /**
+     * Run the command.
+     *
+     * @return mixed
+     */
+    public function run();
 }

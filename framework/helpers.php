@@ -57,6 +57,18 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('console')) {
+    /**
+     * Get console.
+     *
+     * @return \Valkyrja\Contracts\Console\Console
+     */
+    function console(): Valkyrja\Contracts\Console\Console
+    {
+        return app()->console();
+    }
+}
+
 if (! function_exists('container')) {
     /**
      * Get container.

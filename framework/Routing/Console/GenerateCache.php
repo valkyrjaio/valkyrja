@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Routing\Console;
 
-use Valkyrja\Console\Console;
+use Valkyrja\Console\CommandHandler;
 
 /**
  * Class GenerateCache
@@ -20,7 +20,7 @@ use Valkyrja\Console\Console;
  *
  * @author  Melech Mizrachi
  */
-class GenerateCache extends Console
+class GenerateCache extends CommandHandler
 {
     /**
      * Run the command.

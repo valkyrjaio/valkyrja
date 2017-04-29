@@ -16,6 +16,7 @@ use Monolog\Logger as MonologLogger;
 
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
@@ -95,6 +96,7 @@ class BootstrapContainer
         $this->bootstrapListenerAnnotations();
         $this->bootstrapConsole();
         $this->bootstrapConsoleKernel();
+        $this->bootstrapCommandAnnotations();
         $this->bootstrapKernel();
         $this->bootstrapRequest();
         $this->bootstrapResponse();
@@ -200,6 +202,22 @@ class BootstrapContainer
                 ->setId(CoreComponent::CONSOLE_KERNEL)
                 ->setClass(ConsoleKernel::class)
                 ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the command annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapCommandAnnotations(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::COMMAND_ANNOTATIONS)
+                ->setClass(CommandAnnotations::class)
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
                 ->setSingleton(true)
         );
     }

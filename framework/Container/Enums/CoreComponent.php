@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
@@ -51,6 +52,7 @@ final class CoreComponent extends Enum
     public const APP                   = Application::class;
     public const ANNOTATIONS           = Annotations::class;
     public const ANNOTATIONS_PARSER    = AnnotationsParser::class;
+    public const COMMAND_ANNOTATIONS   = CommandAnnotations::class;
     public const CONFIG                = Config::class;
     public const CONSOLE               = Console::class;
     public const CONSOLE_KERNEL        = ConsoleKernel::class;
@@ -78,6 +80,7 @@ final class CoreComponent extends Enum
         self::ANNOTATIONS,
         self::ANNOTATIONS_PARSER,
         self::CONFIG,
+        self::COMMAND_ANNOTATIONS,
         self::CONSOLE,
         self::CONTAINER,
         self::CONTAINER_ANNOTATIONS,
