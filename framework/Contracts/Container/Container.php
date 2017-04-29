@@ -13,6 +13,8 @@ namespace Valkyrja\Contracts\Container;
 
 use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Events\Events;
 
 /**
  * Interface Container
@@ -23,6 +25,15 @@ use Valkyrja\Container\Service;
  */
 interface Container
 {
+
+    /**
+     * Container constructor.
+     *
+     * @param \Valkyrja\Contracts\Application   $application The application
+     * @param \Valkyrja\Contracts\Events\Events $events      The events
+     */
+    public function __construct(Application $application, Events $events);
+
     /**
      * Set an alias to the container.
      *

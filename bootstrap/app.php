@@ -24,26 +24,4 @@ Valkyrja\Support\Directory::$BASE_PATH = realpath(__DIR__ . '/../');
  *
  */
 
-$app = new Valkyrja\Application(
-// Set the container
-    new Valkyrja\Container\Container(),
-    // Set the events
-    new Valkyrja\Events\Events(),
-    // Set the config
-    new config\Config(
-    // With environment variables
-        new config\Env()
-    )
-);
-
-/*
- *-------------------------------------------------------------------------
- * Return The Application
- *-------------------------------------------------------------------------
- *
- * Well, we kind of have to use the application after bootstrapping, so
- * let's return it back to the index file.
- *
- */
-
-return $app;
+return new Valkyrja\Application(new config\Config( new config\Env()));

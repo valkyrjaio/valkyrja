@@ -522,7 +522,6 @@ trait Dispatcher
             ?? $this->dispatchFunction($dispatch, $arguments)
             ?? $this->dispatchClosure($dispatch, $arguments);
         // TODO: Add Constant and Variable ability
-        // TODO: Reorder by most used (class method, class, closure, property, function constant variable
 
         // If the response was initially null and we added the dispatched text to avoid
         // calling each subsequent dispatcher thereafter

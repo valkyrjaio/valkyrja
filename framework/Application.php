@@ -28,6 +28,8 @@ use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ExceptionHandler;
+use Valkyrja\Exceptions\InvalidContainerImplementation;
+use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\ResponseCode;
@@ -49,25 +51,32 @@ class Application implements ApplicationContract
     protected static $app;
 
     /**
+     * Whether the application was setup.
+     *
+     * @var bool
+     */
+    protected static $setup = false;
+
+    /**
      * Application config
      *
      * @var \Valkyrja\Contracts\Config\Config
      */
-    protected $config;
+    protected static $config;
 
     /**
      * Get the instance of the container.
      *
      * @var \Valkyrja\Contracts\Container\Container
      */
-    protected $container;
+    protected static $container;
 
     /**
      * Get the instance of the events.
      *
      * @var \Valkyrja\Contracts\Events\Events
      */
-    protected $events;
+    protected static $events;
 
     /**
      * Is the app using a compiled version?
@@ -79,12 +88,21 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Contracts\Container\Container $container The container to use
-     * @param \Valkyrja\Contracts\Events\Events       $events    The events to use
-     * @param \Valkyrja\Config\Config                 $config    The config to use
+     * @param \Valkyrja\Config\Config $config The config to use
+     *
+     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      */
-    public function __construct(Container $container, Events $events, Config $config)
+    public function __construct(Config $config)
     {
+        // If the application was already setup, no need to do it again
+        if (self::$setup) {
+            return;
+        }
+
+        // Avoid re-setting up the app later
+        self::$setup = true;
+
         // If debug is on, enable debug handling
         if ($config->app->debug) {
             // Debug to output exceptions
@@ -92,25 +110,33 @@ class Application implements ApplicationContract
         }
 
         // Set the app static
-        static::$app = $this;
-
-        // Set the container within the application
-        $this->container = $container;
-        // Set the events within the application
-        $this->events = $events;
+        self::$app = $this;
         // Set the config within the application
-        $this->config = $config;
+        self::$config = $config;
 
-        // Set the application instance in the container
-        $container->singleton(ApplicationContract::class, $this);
-        // Set the events instance in the container
-        $container->singleton(Events::class, $events);
-        // TODO: Move setup to construct
-        // self::$isSetup = false -> true
+        $eventsImpl = self::$config->app->events;
+        $containerImpl = self::$config->app->container;
+
+        // Set the events to a new instance of the events implementation
+        self::$events = new $eventsImpl($this);
+
+        // If the events implementation specified does not adhere to the events contract
+        if (! self::$events instanceof Events) {
+            throw new InvalidEventsImplementation('Invalid Events implementation');
+        }
+
+        // Set the container to a new instance of the container implementation
+        self::$container = new $containerImpl($this, self::$events);
+
+        // If the container implementation specified does not adhere to the container contract
+        if (! self::$container instanceof Container) {
+            throw new InvalidContainerImplementation('Invalid Container implementation');
+        }
+
         // Setup the container
-        $container->setup();
-        // Setup the router
-        $this->router()->setup();
+        // NOTE: Not done in container construct to avoid container()
+        // helper returning null self::$container
+        self::$container->setup();
 
         // Set the timezone for the application to run within
         $this->setTimezone();
@@ -123,7 +149,7 @@ class Application implements ApplicationContract
      */
     public static function app(): ApplicationContract
     {
-        return static::$app;
+        return self::$app;
     }
 
     /**
@@ -133,7 +159,7 @@ class Application implements ApplicationContract
      */
     public function container(): Container
     {
-        return $this->container;
+        return self::$container;
     }
 
     /**
@@ -143,7 +169,7 @@ class Application implements ApplicationContract
      */
     public function events(): Events
     {
-        return $this->events;
+        return self::$events;
     }
 
     /**
@@ -163,7 +189,7 @@ class Application implements ApplicationContract
      */
     public function config(): Config
     {
-        return $this->config;
+        return self::$config;
     }
 
     /**
@@ -324,7 +350,7 @@ class Application implements ApplicationContract
      */
     public function logger(): Logger
     {
-        return $this->container->get(Logger::class);
+        return $this->container()->get(Logger::class);
     }
 
     /**
@@ -334,7 +360,7 @@ class Application implements ApplicationContract
      */
     public function request(): Request
     {
-        return $this->container->get(Request::class);
+        return $this->container()->get(Request::class);
     }
 
     /**
@@ -344,7 +370,7 @@ class Application implements ApplicationContract
      */
     public function router(): Router
     {
-        return $this->container->get(Router::class);
+        return $this->container()->get(Router::class);
     }
 
     /**
@@ -365,7 +391,7 @@ class Application implements ApplicationContract
     ): Response
     {
         /** @var Response $response */
-        $response = $this->container->get(Response::class);
+        $response = $this->container()->get(Response::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -392,7 +418,7 @@ class Application implements ApplicationContract
     ): JsonResponse
     {
         /** @var JsonResponse $response */
-        $response = $this->container->get(JsonResponse::class);
+        $response = $this->container()->get(JsonResponse::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -420,7 +446,7 @@ class Application implements ApplicationContract
     ): RedirectResponse
     {
         /** @var RedirectResponse $response */
-        $response = $this->container->get(RedirectResponse::class);
+        $response = $this->container()->get(RedirectResponse::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -462,7 +488,7 @@ class Application implements ApplicationContract
      */
     public function responseBuilder(): ResponseBuilder
     {
-        return $this->container->get(ResponseBuilder::class);
+        return $this->container()->get(ResponseBuilder::class);
     }
 
     /**
@@ -475,7 +501,7 @@ class Application implements ApplicationContract
      */
     public function view(string $template = '', array $variables = []): View
     {
-        return $this->container->get(
+        return $this->container()->get(
             View::class,
             [
                 $template,

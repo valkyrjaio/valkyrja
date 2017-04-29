@@ -19,21 +19,11 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
-use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
-use Valkyrja\Contracts\Http\Client as ClientContract;
+use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
-use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
-use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
-use Valkyrja\Contracts\Http\Request as RequestContract;
-use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
-use Valkyrja\Contracts\Logger\Logger as LoggerContract;
-use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
-use Valkyrja\Contracts\Routing\Router as RouterContract;
-use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
@@ -57,14 +47,37 @@ use Valkyrja\View\View;
 class BootstrapContainer
 {
     /**
+     * The application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
+    protected $app;
+
+    /**
+     * The events.
+     *
+     * @var \Valkyrja\Contracts\Events\Events
+     */
+    protected $events;
+
+    /**
      * @var \Valkyrja\Contracts\Container\Container
      */
     protected $container;
-    
-    public function __construct(ContainerContract $container)
+
+    /**
+     * BootstrapContainer constructor.
+     *
+     * @param \Valkyrja\Contracts\Application         $application The application
+     * @param \Valkyrja\Contracts\Events\Events       $events      The events
+     * @param \Valkyrja\Contracts\Container\Container $container
+     */
+    public function __construct(Application $application, EventsContract $events, ContainerContract $container)
     {
+        $this->app = $application;
+        $this->events = $events;
         $this->container = $container;
-        
+
         $this->bootstrap();
     }
 
@@ -75,6 +88,13 @@ class BootstrapContainer
      */
     public function bootstrap(): void
     {
+        // Set the application instance in the container
+        $this->container->singleton(Application::class, $this->app);
+        // Set the events instance in the container
+        $this->container->singleton(EventsContract::class, $this->events);
+        // Set the container instance in the container
+        $this->container->singleton(ContainerContract::class, $this->container);
+
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
@@ -100,7 +120,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(AnnotationsParserContract::class)
+                ->setId(CoreComponent::ANNOTATIONS_PARSER)
                 ->setClass(AnnotationsParser::class)
                 ->setSingleton(true)
         );
@@ -115,7 +135,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(AnnotationsContract::class)
+                ->setId(CoreComponent::ANNOTATIONS)
                 ->setClass(Annotations::class)
                 ->setDependencies([AnnotationsParserContract::class])
                 ->setSingleton(true)
@@ -131,7 +151,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(ContainerAnnotationsContract::class)
+                ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
                 ->setClass(ContainerAnnotations::class)
                 ->setDependencies([AnnotationsParserContract::class])
                 ->setSingleton(true)
@@ -147,7 +167,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(RequestContract::class)
+                ->setId(CoreComponent::REQUEST)
                 ->setClass(Request::class)
                 ->setMethod('createFromGlobals')
                 ->setStatic(true)
@@ -164,7 +184,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(ResponseContract::class)
+                ->setId(CoreComponent::RESPONSE)
                 ->setClass(Response::class)
         );
     }
@@ -178,7 +198,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(JsonResponseContract::class)
+                ->setId(CoreComponent::JSON_RESPONSE)
                 ->setClass(JsonResponse::class)
         );
     }
@@ -192,7 +212,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(RedirectResponseContract::class)
+                ->setId(CoreComponent::REDIRECT_RESPONSE)
                 ->setClass(RedirectResponse::class)
         );
     }
@@ -206,7 +226,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(ResponseBuilderContract::class)
+                ->setId(CoreComponent::RESPONSE_BUILDER)
                 ->setClass(ResponseBuilder::class)
                 ->setDependencies([Application::class])
                 ->setSingleton(true)
@@ -222,7 +242,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(RouterContract::class)
+                ->setId(CoreComponent::ROUTER)
                 ->setClass(Router::class)
                 ->setDependencies([Application::class])
                 ->setSingleton(true)
@@ -238,7 +258,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(RouteAnnotationsContract::class)
+                ->setId(CoreComponent::ROUTE_ANNOTATIONS)
                 ->setClass(RouteAnnotations::class)
                 ->setDependencies([AnnotationsParserContract::class])
                 ->setSingleton(true)
@@ -254,7 +274,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(ViewContract::class)
+                ->setId(CoreComponent::VIEW)
                 ->setClass(View::class)
                 ->setDependencies([Application::class])
         );
@@ -269,7 +289,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(ClientContract::class)
+                ->setId(CoreComponent::CLIENT)
                 ->setClass(Client::class)
                 ->setSingleton(true)
         );
@@ -282,14 +302,12 @@ class BootstrapContainer
      */
     protected function bootstrapLoggerInterface(): void
     {
-        $app = $this->container->get(Application::class);
-
         $this->container->bind(
             (new Service())
                 ->setId(StreamHandler::class)
                 ->setClass(StreamHandler::class)
                 ->setArguments([
-                    $app->config()->logger->filePath,
+                    $this->app->config()->logger->filePath,
                     LogLevel::DEBUG,
                 ])
                 ->setSingleton(true)
@@ -297,11 +315,11 @@ class BootstrapContainer
 
         $this->container->bind(
             (new Service())
-                ->setId(LoggerInterface::class)
+                ->setId(CoreComponent::LOGGER_INTERFACE)
                 ->setClass(MonologLogger::class)
                 ->setDependencies([Application::class])
                 ->setArguments([
-                    $app->config()->logger->name,
+                    $this->app->config()->logger->name,
                     [
                         (new Dispatch())
                             ->setClass(StreamHandler::class),
@@ -320,7 +338,7 @@ class BootstrapContainer
     {
         $this->container->bind(
             (new Service())
-                ->setId(LoggerContract::class)
+                ->setId(CoreComponent::LOGGER)
                 ->setClass(Logger::class)
                 ->setDependencies([LoggerInterface::class])
                 ->setSingleton(true)

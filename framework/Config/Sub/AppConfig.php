@@ -11,8 +11,10 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Events\Events;
 
 /**
  * Class AppConfig
@@ -58,9 +60,19 @@ class AppConfig
      */
     public $version = Application::VERSION;
 
-    // TODO: Add Container core class impls
-    // public $container = Container::class;
-    // public $events = Events::class;
+    /**
+     * The container implementation.
+     *
+     * @var string
+     */
+    public $container = Container::class;
+
+    /**
+     * The events implementation.
+     *
+     * @var string
+     */
+    public $events = Events::class;
 
     /**
      * AppConfig constructor.
@@ -69,10 +81,20 @@ class AppConfig
      */
     public function __construct(Env $env)
     {
-        $this->env = $env::APP_ENV ?? $this->env;
-        $this->debug = $env::APP_DEBUG ?? $this->debug;
-        $this->url = $env::APP_URL ?? $this->url;
-        $this->timezone = $env::APP_TIMEZONE ?? $this->timezone;
-        $this->version = $env::APP_VERSION ?? $this->version;
+        $this->env = $env::APP_ENV
+            ?? $this->env;
+        $this->debug = $env::APP_DEBUG
+            ?? $this->debug;
+        $this->url = $env::APP_URL
+            ?? $this->url;
+        $this->timezone = $env::APP_TIMEZONE
+            ?? $this->timezone;
+        $this->version = $env::APP_VERSION
+            ?? $this->version;
+
+        $this->container = $env::APP_CONTAINER
+            ?? $this->container;
+        $this->events = $env::APP_EVENTS
+            ?? $this->events;
     }
 }

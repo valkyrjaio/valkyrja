@@ -131,6 +131,8 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      * @param array $parameters The parameters
      *
      * @return array
+     *
+     * TODO: Move this to Annotations()
      */
     protected function getDependencies(array $parameters): array
     {

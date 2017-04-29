@@ -61,6 +61,13 @@ class Router implements RouterContract
     protected $app;
 
     /**
+     * Whether route's have been setup yet.
+     *
+     * @var bool
+     */
+    protected static $setup = false;
+
+    /**
      * Application routes.
      *
      * @var array
@@ -89,10 +96,17 @@ class Router implements RouterContract
      * Router constructor.
      *
      * @param \Valkyrja\Contracts\Application $application
+     *
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function __construct(ApplicationContract $application)
     {
         $this->app = $application;
+
+        $this->setup();
     }
 
     /**
@@ -349,6 +363,13 @@ class Router implements RouterContract
      */
     public function setup(): void
     {
+        // If route's have already been setup, no need to do it again
+        if (self::$setup) {
+            return;
+        }
+
+        self::$setup = true;
+
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useRoutesCacheFile) {
             // Set the application routes with said file

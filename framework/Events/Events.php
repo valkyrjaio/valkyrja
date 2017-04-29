@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Events;
 
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
@@ -26,11 +27,30 @@ class Events implements EventsContract
     use Dispatcher;
 
     /**
+     * The application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
+    protected $app;
+
+    /**
      * The event listeners.
      *
      * @var array
      */
     protected $events = [];
+
+    /**
+     * Container constructor.
+     *
+     * @param \Valkyrja\Contracts\Application   $application The application
+     */
+    public function __construct(Application $application)
+    {
+        $this->app = $application;
+
+        // $this->setup();
+    }
 
     /**
      * Add an event listener.

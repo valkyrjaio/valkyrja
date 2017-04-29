@@ -29,6 +29,9 @@ interface Env
     public const APP_TIMEZONE = null;
     public const APP_VERSION  = null;
 
+    public const APP_CONTAINER = null;
+    public const APP_EVENTS    = null;
+
     /**
      * Annotation env variables.
      */

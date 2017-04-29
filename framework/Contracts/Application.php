@@ -44,11 +44,9 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Contracts\Container\Container $container The container to use
-     * @param \Valkyrja\Contracts\Events\Events       $events    The events to use
-     * @param \Valkyrja\Config\Config                 $config    The config to use
+     * @param \Valkyrja\Config\Config $config The config to use
      */
-    public function __construct(Container $container, Events $events, Config $config);
+    public function __construct(Config $config);
 
     /**
      * Get the application instance.

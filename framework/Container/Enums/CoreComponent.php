@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Container\Enums;
 
+use Monolog\Handler\StreamHandler;
+
 use Psr\Log\LoggerInterface;
 
 use Valkyrja\Contracts\Annotations\Annotations;
@@ -20,6 +22,8 @@ use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\Client;
+use Valkyrja\Contracts\Http\JsonResponse;
+use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
@@ -46,11 +50,14 @@ final class CoreComponent extends Enum
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
     public const REQUEST               = Request::class;
     public const RESPONSE              = Response::class;
+    public const JSON_RESPONSE         = JsonResponse::class;
+    public const REDIRECT_RESPONSE     = RedirectResponse::class;
     public const RESPONSE_BUILDER      = ResponseBuilder::class;
     public const ROUTER                = Router::class;
     public const ROUTE_ANNOTATIONS     = RouteAnnotations::class;
     public const VIEW                  = View::class;
     public const CLIENT                = Client::class;
+    public const STREAM_HANDLER        = StreamHandler::class;
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
 
@@ -63,11 +70,14 @@ final class CoreComponent extends Enum
         self::CONTAINER_ANNOTATIONS,
         self::REQUEST,
         self::RESPONSE,
+        self::JSON_RESPONSE,
+        self::REDIRECT_RESPONSE,
         self::RESPONSE_BUILDER,
         self::ROUTER,
         self::ROUTE_ANNOTATIONS,
         self::VIEW,
         self::CLIENT,
+        self::STREAM_HANDLER,
         self::LOGGER_INTERFACE,
         self::LOGGER,
     ];

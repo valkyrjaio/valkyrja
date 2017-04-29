@@ -64,10 +64,10 @@ class TwigServiceProvider extends ServiceProvider
         $this->app->container()->bind(
             (new Service())
                 ->setId(Twig_Environment::class)
+                ->setSingleton(true)
                 ->setClass(static::class)
                 ->setMethod('getTwigEnvironment')
                 ->setStatic(true)
-                ->setSingleton(true)
         );
 
         $this->app->container()->bind(
@@ -86,6 +86,8 @@ class TwigServiceProvider extends ServiceProvider
      */
     public static function getTwigEnvironment(): Twig_Environment
     {
+        // TODO: Ability to do loader for third party vendors
+        // config()->views->twig->map [ 'name' => 'directory' ]
         $loader = new Twig_Loader_Filesystem(config()->views->twig->dir);
 
         $twig = new Twig_Environment(

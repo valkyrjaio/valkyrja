@@ -10,8 +10,6 @@ use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use tests\traits\TestRequest;
 
 use Valkyrja\Application;
-use Valkyrja\Container\Container;
-use Valkyrja\Events\Events;
 use Valkyrja\Support\Directory;
 
 /**
@@ -37,16 +35,6 @@ class TestCase extends PHPUnitTestCase
     {
         Directory::$BASE_PATH = realpath(__DIR__ . '/../');
 
-        $this->app = new Application(
-        // Set the container
-            new Container(),
-            // Set the events
-            new Events(),
-            // Set the config
-            new Config(
-            // With environment variables
-                new EnvTest()
-            )
-        );
+        $this->app = new Application(new Config(new EnvTest()));
     }
 }
