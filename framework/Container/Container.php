@@ -84,13 +84,6 @@ class Container implements ContainerContract
      *
      * @param \Valkyrja\Contracts\Application   $application The application
      * @param \Valkyrja\Contracts\Events\Events $events      The events
-     *
-     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      */
     public function __construct(Application $application, Events $events)
     {
@@ -123,6 +116,7 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function bind(Service $service): void
     {
@@ -150,6 +144,7 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function context(ServiceContext $contextService): void
     {
