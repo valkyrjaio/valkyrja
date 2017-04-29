@@ -315,9 +315,7 @@ trait Dispatcher
         }
 
         // Set the class through the container if this isn't a static method
-        $class = $dispatch->isStatic()
-            ? $dispatch->getClass()
-            : container()->get($dispatch->getClass());
+        $class = container()->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
         // Avoid infinite recursion
@@ -330,13 +328,7 @@ trait Dispatcher
             );
         }
 
-        // Dispatch without unpacking
-        if ($dispatch->isStatic()) {
-            $response = $class::$property();
-        }
-        else {
-            $response = $class->$property();
-        }
+        $response = $class->{$property};
 
         // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
