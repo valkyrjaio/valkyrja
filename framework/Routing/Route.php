@@ -249,6 +249,7 @@ class Route extends Dispatch implements Annotation
             ->setDynamic($properties['dynamic'] ?? false)
             ->setSecure($properties['secure'] ?? false)
             ->setClass($properties['class'] ?? null)
+            ->setProperty($properties['property'] ?? null)
             ->setMethod($properties['method'] ?? null)
             ->setFunction($properties['function'] ?? null)
             ->setClosure($properties['closure'] ?? null)
