@@ -17,6 +17,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Events\Listener;
 
 /**
@@ -67,22 +68,17 @@ trait Dispatcher
      *
      * @return void
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     protected function verifyClassProperty(Dispatch $dispatch): void
     {
         // If a class and method are set and not callable
         if (
             null !== $dispatch->getProperty()
-            && ! is_callable(
-                [
-                    $dispatch->getClass(),
-                    $dispatch->getProperty(),
-                ]
-            )
+            && ! property_exists($dispatch->getClass(), $dispatch->getProperty())
         ) {
-            // Throw a new invalid method exception
-            throw new InvalidMethodException(
+            // Throw a new invalid property exception
+            throw new InvalidPropertyException(
                 'Property does not exist in class : '
                 . $dispatch->getName() . ' '
                 . $dispatch->getClass()
@@ -146,6 +142,7 @@ trait Dispatcher
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     protected function verifyDispatch(Dispatch $dispatch): void
     {
