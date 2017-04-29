@@ -69,5 +69,7 @@ class ListenerAnnotations extends Annotations
 
         // Set the type to null (we already know it's a listener)
         $dispatch->setType();
+        $dispatch->setMatches();
+        $dispatch->setAnnotationArguments();
     }
 }

@@ -55,6 +55,13 @@ class Dispatch
     protected $dependencies;
 
     /**
+     * The arguments.
+     *
+     * @var array
+     */
+    protected $arguments;
+
+    /**
      * Get the id.
      *
      * @return string

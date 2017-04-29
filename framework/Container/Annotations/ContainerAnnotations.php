@@ -137,5 +137,6 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
         // Set the type to null (we already know it's a service)
         $dispatch->setType();
         $dispatch->setMatches();
+        $dispatch->setAnnotationArguments();
     }
 }

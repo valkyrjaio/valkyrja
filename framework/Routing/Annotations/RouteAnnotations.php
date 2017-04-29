@@ -92,7 +92,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         // Avoid having large arrays in cached routes file
-        $route->setArguments();
+        $route->setAnnotationArguments();
         $route->setMatches();
         // Set the type to null since we already know this is a route
         $route->setType();

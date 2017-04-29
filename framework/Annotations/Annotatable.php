@@ -74,7 +74,7 @@ trait Annotatable
      *
      * @var array
      */
-    protected $arguments;
+    protected $annotationArguments;
 
     /**
      * Get the type.
@@ -229,24 +229,24 @@ trait Annotatable
     }
 
     /**
-     * Get the arguments.
+     * Get the annotation arguments (within parentheses).
      *
      * @return array
      */
-    public function getArguments():? array
+    public function getAnnotationArguments():? array
     {
-        return $this->arguments;
+        return $this->annotationArguments;
     }
 
     /**
-     * Set the arguments.
+     * Set the annotation arguments (within parentheses).
      *
-     * @param array $arguments The arguments
+     * @param array $annotationArguments The annotation arguments (within parentheses)
      *
      * @return void
      */
-    public function setArguments(array $arguments = null)
+    public function setAnnotationArguments(array $annotationArguments = null)
     {
-        $this->arguments = $arguments;
+        $this->annotationArguments = $annotationArguments;
     }
 }

@@ -89,7 +89,7 @@ class AnnotationsParser implements AnnotationsParserContract
         // If there are arguments
         if (null !== $properties['arguments'] && $properties['arguments']) {
             // Filter the arguments and set them in the annotation
-            $annotation->setArguments($this->getArguments($properties['arguments']));
+            $annotation->setAnnotationArguments($this->getArguments($properties['arguments']));
 
             // Having set the arguments there's no need to retain this key in the properties
             unset($properties['arguments']);
@@ -98,9 +98,9 @@ class AnnotationsParser implements AnnotationsParserContract
             $this->setAnnotationArguments($annotation);
 
             // If all arguments have been set to their own properties in the annotation model
-            if (empty($annotation->getArguments())) {
+            if (empty($annotation->getAnnotationArguments())) {
                 // Set the arguments to null
-                $annotation->setArguments();
+                $annotation->setAnnotationArguments();
             }
         }
 
@@ -121,7 +121,7 @@ class AnnotationsParser implements AnnotationsParserContract
     protected function setAnnotationArguments(AnnotationContract $annotation): void
     {
         // Iterate through the arguments
-        foreach ($annotation->getArguments() as $key => $argument) {
+        foreach ($annotation->getAnnotationArguments() as $key => $argument) {
             $methodName = 'set' . ucfirst($key);
 
             // Check if there is a setter function for this argument
@@ -130,7 +130,7 @@ class AnnotationsParser implements AnnotationsParserContract
                 $annotation->{$methodName}($argument);
 
                 // Unset from the arguments array
-                unset($annotation->getArguments()[$key]);
+                unset($annotation->getAnnotationArguments()[$key]);
             }
         }
     }

@@ -133,18 +133,18 @@ interface Annotation
     public function setMatches(array $matches = null);
 
     /**
-     * Get the arguments.
+     * Get the annotation arguments (within parentheses).
      *
      * @return array
      */
-    public function getArguments():? array;
+    public function getAnnotationArguments():? array;
 
     /**
-     * Set the arguments.
+     * Set the annotation arguments (within parentheses).
      *
-     * @param array $arguments The arguments
+     * @param array $annotationArguments The annotation arguments (within parentheses)
      *
      * @return void
      */
-    public function setArguments(array $arguments = null);
+    public function setAnnotationArguments(array $annotationArguments = null);
 }
