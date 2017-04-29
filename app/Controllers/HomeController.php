@@ -19,7 +19,12 @@ use Valkyrja\Container\ServiceContext;
  * @Route(path = '/test', name = 'home.test')
  * @Service(id = App\Controllers\HomeController)
  * @ServiceAlias(id = App\Controllers\HomeController, name = 'homeController')
- * @ServiceContext(id = Valkyrja\Contracts\Application, contextClass = Valkyrja\Contracts\Application)
+ * @ServiceContext(
+ *     id = Valkyrja\Contracts\Application,
+ *     contextClass = App\Controllers\HomeController,
+ *     contextMethod = 'getApplication',
+ *     static = true
+ * )
  */
 class HomeController extends Controller
 {
@@ -95,5 +100,15 @@ class HomeController extends Controller
                     'page' => $page,
                 ])
         );
+    }
+
+    /**
+     * Service context application test.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    public static function getApplication(): Application
+    {
+        return app();
     }
 }

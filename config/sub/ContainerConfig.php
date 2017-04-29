@@ -34,5 +34,9 @@ class ContainerConfig extends ValkyrjaContainerConfig
         $this->services = [
             HomeController::class,
         ];
+
+        $this->contextServices = [
+            HomeController::class,
+        ];
     }
 }
