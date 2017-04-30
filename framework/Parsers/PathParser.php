@@ -56,9 +56,22 @@ REGEX;
 
         // Iterate through the segments
         foreach ($segments as $key => $segment) {
+            // If this is not the first segment then its an optional group
             if ($key > 0) {
+                // Add a non capturing group around this segment
                 $segment = '(?:' . $segment;
+                // Replace any end brackets with the appropriate group close
+                // NOTE: This will take care of missing end brackets in
+                // previous groups because the only way that occurs
+                // is when a group is nested within another
                 $segment = str_replace(['*]', ']'], [')*?', ')?'], $segment);
+            }
+            // Otherwise it is the first segment
+            else {
+                // Check for any capture groups within <> or <*>
+                // < > groups are normal capture groups
+                // < *> groups are repeatable capture groups
+                $segment = str_replace(['<', '*>', '>'], ['(?:', ')*', ')'], $segment);
             }
 
             $current .= $segment;
