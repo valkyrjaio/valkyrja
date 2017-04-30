@@ -11,9 +11,7 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
-use Valkyrja\Dispatcher\Dispatch;
 
 /**
  * Abstract Class CommandHandler
@@ -22,7 +20,7 @@ use Valkyrja\Dispatcher\Dispatch;
  *
  * @author  Melech Mizrachi
  */
-abstract class CommandHandler extends Dispatch implements Annotation, CommandHandlerContract
+abstract class CommandHandler implements CommandHandlerContract
 {
     /**
      * Run the command.
