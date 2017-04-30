@@ -78,7 +78,7 @@ class BootstrapContainer
      *
      * @return void
      */
-    public function bootstrap(): void
+    protected function bootstrap(): void
     {
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
