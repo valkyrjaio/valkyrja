@@ -13,6 +13,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Handlers\ConsoleCache;
 use Valkyrja\Container\Console\ContainerCache;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Events\Console\EventsCache;
@@ -70,6 +71,7 @@ class BootstrapConsole
                 ->setPath('console:cache[ -{h}][ --{help}]')
                 ->setName('console:cache')
                 ->setClass(ConsoleCache::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -85,6 +87,7 @@ class BootstrapConsole
                 ->setPath('container:cache[ -{h}][ --{help}]')
                 ->setName('container:cache')
                 ->setClass(ContainerCache::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -100,6 +103,7 @@ class BootstrapConsole
                 ->setPath('events:cache[ -{h}][ --{help}]')
                 ->setName('events:cache')
                 ->setClass(EventsCache::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -115,6 +119,7 @@ class BootstrapConsole
                 ->setPath('routing:cache[ -{h}][ --{help}]')
                 ->setName('routing:cache')
                 ->setClass(RoutingCache::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 }
