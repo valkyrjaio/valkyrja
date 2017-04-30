@@ -212,6 +212,9 @@ class Console implements ConsoleContract
             return;
         }
 
+        // Setup the bootstrap
+        $this->setupBootstrap();
+
         // If annotations are enabled and the events should use annotations
         if ($this->app->config()->console->useAnnotations && $this->app->config()->annotations->enabled) {
             // Setup annotated event listeners
@@ -226,6 +229,17 @@ class Console implements ConsoleContract
 
         // Include the events file
         require $this->app->config()->console->filePath;
+    }
+
+    /**
+     * Setup console bootstrapping.
+     *
+     * @return void
+     */
+    protected function setupBootstrap(): void
+    {
+        // Bootstrap the console
+        new BootstrapConsole($this->app, $this);
     }
 
     /**
