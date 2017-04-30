@@ -11,8 +11,12 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Console\Handlers\ConsoleCache;
+use Valkyrja\Container\Console\ContainerCache;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Events\Console\EventsCache;
+use Valkyrja\Routing\Console\RoutingCache;
 
 /**
  * Class BootstrapConsole
@@ -37,6 +41,8 @@ class BootstrapConsole
     {
         $this->app = $application;
         $this->console = $console;
+
+        $this->bootstrap();
     }
 
     /**
@@ -47,14 +53,68 @@ class BootstrapConsole
     protected function bootstrap(): void
     {
         $this->bootstrapConsoleCache();
+        $this->bootstrapContainerCache();
+        $this->bootstrapEventsCache();
+        $this->bootstrapRoutingCache();
     }
 
+    /**
+     * Bootstrap the console cache command.
+     *
+     * @return void
+     */
     protected function bootstrapConsoleCache(): void
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('console:cache[ -h[ --help]]')
+                ->setPath('console:cache[ -{h}][ --{help}]')
                 ->setName('console:cache')
+                ->setClass(ConsoleCache::class)
+        );
+    }
+
+    /**
+     * Bootstrap the container cache command.
+     *
+     * @return void
+     */
+    protected function bootstrapContainerCache(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath('container:cache[ -{h}][ --{help}]')
+                ->setName('container:cache')
+                ->setClass(ContainerCache::class)
+        );
+    }
+
+    /**
+     * Bootstrap the events cache command.
+     *
+     * @return void
+     */
+    protected function bootstrapEventsCache(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath('events:cache[ -{h}][ --{help}]')
+                ->setName('events:cache')
+                ->setClass(EventsCache::class)
+        );
+    }
+
+    /**
+     * Bootstrap the routing cache command.
+     *
+     * @return void
+     */
+    protected function bootstrapRoutingCache(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath('routing:cache[ -{h}][ --{help}]')
+                ->setName('routing:cache')
+                ->setClass(RoutingCache::class)
         );
     }
 }
