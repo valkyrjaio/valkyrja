@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Console;
+namespace Valkyrja\Container\Console;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
  * Class GenerateCache
  *
- * @package Valkyrja\Routing\Console
+ * @package Valkyrja\Container\Console
  *
  * @author  Melech Mizrachi
  */
-class GenerateCache extends CommandHandler
+class ContainerCache extends CommandHandler
 {
     /**
      * Run the command.
@@ -30,8 +30,8 @@ class GenerateCache extends CommandHandler
     public function run(): int
     {
         file_put_contents(
-            config()->routing->routesCacheFile,
-            '<?php return ' . var_export(router()->getRoutes(), true) . ';'
+            config()->container->cacheFilePath,
+            '<?php return ' . var_export(container()->getCacheable(), true) . ';'
         );
 
         return 1;

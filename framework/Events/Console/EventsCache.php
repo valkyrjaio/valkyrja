@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Handlers;
+namespace Valkyrja\Events\Console;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
  * Class GenerateCache
  *
- * @package Valkyrja\Console\Handlers
+ * @package Valkyrja\Events\Console
  *
  * @author  Melech Mizrachi
  */
-class GenerateCache extends CommandHandler
+class EventsCache extends CommandHandler
 {
     /**
      * Run the command.
@@ -30,8 +30,8 @@ class GenerateCache extends CommandHandler
     public function run(): int
     {
         file_put_contents(
-            config()->console->cacheFilePath,
-            '<?php return ' . var_export(console()->getCacheable(), true) . ';'
+            config()->events->cacheFilePath,
+            '<?php return ' . var_export(events()->getCacheable(), true) . ';'
         );
 
         return 1;
