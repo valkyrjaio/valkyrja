@@ -524,7 +524,7 @@ class Container implements ContainerContract
     protected function setupBootstrap(): void
     {
         // Bootstrap the container
-        new BootstrapContainer($this->app, $this->events, $this);
+        new BootstrapContainer($this->app, $this);
     }
 
     /**

@@ -22,7 +22,6 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
@@ -56,13 +55,6 @@ class BootstrapContainer
     protected $app;
 
     /**
-     * The events.
-     *
-     * @var \Valkyrja\Contracts\Events\Events
-     */
-    protected $events;
-
-    /**
      * @var \Valkyrja\Contracts\Container\Container
      */
     protected $container;
@@ -71,13 +63,11 @@ class BootstrapContainer
      * BootstrapContainer constructor.
      *
      * @param \Valkyrja\Contracts\Application         $application The application
-     * @param \Valkyrja\Contracts\Events\Events       $events      The events
      * @param \Valkyrja\Contracts\Container\Container $container
      */
-    public function __construct(Application $application, EventsContract $events, ContainerContract $container)
+    public function __construct(Application $application, ContainerContract $container)
     {
         $this->app = $application;
-        $this->events = $events;
         $this->container = $container;
 
         $this->bootstrap();
