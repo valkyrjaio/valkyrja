@@ -110,7 +110,7 @@ class TwigServiceProvider extends ServiceProvider
     /**
      * Get the twig view when building a service container item.
      *
-     * @param string $template The template
+     * @param string $template  The template
      * @param array  $variables The variables
      *
      * @return \Valkyrja\View\TwigView

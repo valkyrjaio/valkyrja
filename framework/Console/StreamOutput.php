@@ -38,7 +38,7 @@ class StreamOutput extends Output implements StreamOutputContract
      * Output constructor.
      *
      * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
-     * @param resource                                   $stream    The resource to use as a stream
+     * @param resource                                    $stream    The resource to use as a stream
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException

@@ -123,9 +123,9 @@ REGEX;
         $regex = '/^' . $regex . '$/';
 
         return [
-            'path'        => $path,
-            'regex'       => $regex,
-            'params'      => $params,
+            'path'   => $path,
+            'regex'  => $regex,
+            'params' => $params,
         ];
     }
 

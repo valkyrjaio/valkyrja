@@ -173,10 +173,10 @@ class Container implements ContainerContract
         // Container::get() will keep catching it
         if ($context === $contextContext && ! $contextService->isStatic()) {
             throw new EndlessContextLoopException('This kind of context will create'
-            . 'an endless loop where the dispatcher will attempt to create the '
-            . 'callable with the dependencies and the hasContext check in '
-            . 'Container::get() will keep catching it: '
-            . $this->contextServiceId($contextService->getId(), $context, $member));
+                . 'an endless loop where the dispatcher will attempt to create the '
+                . 'callable with the dependencies and the hasContext check in '
+                . 'Container::get() will keep catching it: '
+                . $this->contextServiceId($contextService->getId(), $context, $member));
         }
 
         $this->bind(

@@ -51,12 +51,11 @@ class Events implements EventsContract
     /**
      * Events constructor.
      *
-     * @param \Valkyrja\Contracts\Application   $application The application
+     * @param \Valkyrja\Contracts\Application $application The application
      */
     public function __construct(Application $application)
     {
         $this->app = $application;
-
         // $this->setup();
     }
 
