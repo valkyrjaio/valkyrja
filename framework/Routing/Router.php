@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Routing;
 
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
@@ -131,22 +132,13 @@ class Router implements RouterContract
 
         // If this is a dynamic route
         if ($route->getDynamic()) {
-            $this->setDynamicRouteProperties($route);
-
-            // Set it in the dynamic routes array
-            self::$routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
+            $this->setDynamicRoute($route);
         }
         // Otherwise set it in the static routes array
         else {
             self::$routes[static::STATIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
-        }
 
-        if ($route->getName()) {
-            self::$routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
-                $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
-                $route->getRequestMethod(),
-                $route->getPath(),
-            ];
+            $this->setNamedRoute($route);
         }
     }
 
@@ -169,57 +161,44 @@ class Router implements RouterContract
      *
      * @return void
      */
-    protected function setDynamicRouteProperties(Route $route): void
+    protected function setDynamicRoute(Route $route): void
     {
-        $path = $route->getPath();
+        /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
+        $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
 
-        // Get all matches for {paramName} and {paramName:(validator)} in the path
-        preg_match_all(
-            '/' . static::VARIABLE_REGEX . '/x',
-            $path,
-            $params
-        );
-        /** @var array[] $params */
+        // Get the parsed route (due to optional parts it may be more than one route)
+        foreach ($parser->parse($route->getPath()) as $key => $parsedRoute) {
+            // Clone the route
+            $newRoute = clone $route;
 
-        // Run through all matches
-        foreach ($params[0] as $key => $param) {
-            // Check if a global regex alias was used
-            switch ($params[2][$key]) {
-                case 'num' :
-                    $replacement = '(\d+)';
-                    break;
-                case 'slug' :
-                    $replacement = '([a-zA-Z0-9-]+)';
-                    break;
-                case 'alpha' :
-                    $replacement = '([a-zA-Z]+)';
-                    break;
-                case 'alpha-lowercase' :
-                    $replacement = '([a-z]+)';
-                    break;
-                case 'alpha-uppercase' :
-                    $replacement = '([A-Z]+)';
-                    break;
-                case 'alpha-num' :
-                    $replacement = '([a-zA-Z0-9]+)';
-                    break;
-                case 'alpha-num-underscore' :
-                    $replacement = '(\w+)';
-                    break;
-                default :
-                    // Check if a regex was set for this match, otherwise use a wildcard all
-                    $replacement = $params[2][$key] ?: '(.*)';
-                    break;
-            }
+            // Set the properties
+            $newRoute->setName($newRoute->getName() . $parsedRoute['optionalKey']);
+            $newRoute->setRegex($parsedRoute['regex']);
+            $newRoute->setParams($parsedRoute['params']);
 
-            // Replace the matches with a regex
-            $path = str_replace($param, $replacement, $path);
+            // Set it in the dynamic routes array
+            self::$routes[static::DYNAMIC_ROUTES_TYPE][$newRoute->getRequestMethod()][$newRoute->getPath()] = $newRoute;
+
+            $this->setNamedRoute($newRoute);
         }
+    }
 
-        $path = str_replace('/', '\/', $path);
-        $path = '/^' . $path . '$/';
-        $route->setRegex($path);
-        $route->setParams($params);
+    /**
+     * Set the named route.
+     *
+     * @param \Valkyrja\Routing\Route $route The route
+     *
+     * @return void
+     */
+    protected function setNamedRoute(Route $route): void
+    {
+        if ($route->getName()) {
+            self::$routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
+                $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
+                $route->getRequestMethod(),
+                $route->getPath(),
+            ];
+        }
     }
 
     /**

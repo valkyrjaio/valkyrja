@@ -35,6 +35,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Parsers\PathParser;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;
@@ -85,6 +86,7 @@ class BootstrapContainer
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
         $this->bootstrapListenerAnnotations();
+        $this->bootstrapPathParser();
         $this->bootstrapConsole();
         $this->bootstrapConsoleKernel();
         $this->bootstrapConsoleInput();
@@ -167,6 +169,37 @@ class BootstrapContainer
     }
 
     /**
+     * Bootstrap the path parser.
+     *
+     * @return void
+     */
+    protected function bootstrapPathParser(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::PATH_PARSER)
+                ->setClass(PathParser::class)
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the command annotations.
+     *
+     * @return void
+     */
+    protected function bootstrapCommandAnnotations(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::COMMAND_ANNOTATIONS)
+                ->setClass(CommandAnnotations::class)
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
      * Bootstrap the console.
      *
      * @return void
@@ -210,22 +243,6 @@ class BootstrapContainer
                 ->setId(CoreComponent::INPUT)
                 ->setClass(Input::class)
                 ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE])
-                ->setSingleton(true)
-        );
-    }
-
-    /**
-     * Bootstrap the command annotations.
-     *
-     * @return void
-     */
-    protected function bootstrapCommandAnnotations(): void
-    {
-        $this->container->bind(
-            (new Service())
-                ->setId(CoreComponent::COMMAND_ANNOTATIONS)
-                ->setClass(CommandAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
                 ->setSingleton(true)
         );
     }

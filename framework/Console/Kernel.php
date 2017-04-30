@@ -58,33 +58,37 @@ class Kernel implements KernelContract
      *
      * @param \Valkyrja\Contracts\Console\Input $input The input
      *
-     * @return mixed
+     * @return int
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      */
-    public function handle(Input $input)
+    public function handle(Input $input): int
     {
+        $exitCode = 1;
+
         try {
-            $this->console->dispatch($input);
+            $exitCode = $this->console->dispatch($input);
         }
         catch (Throwable $exception) {
+            // Show the exception
         }
 
-        $this->app->events()->trigger('Console.Kernel.handled', [$input]);
+        $this->app->events()->trigger('Console.Kernel.handled', [$input, $exitCode]);
 
-        return null;
+        return $exitCode;
     }
 
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input The input
+     * @param \Valkyrja\Contracts\Console\Input $input    The input
+     * @param int                               $exitCode The response
      *
      * @return void
      */
-    public function terminate(Input $input, $response): void
+    public function terminate(Input $input, int $exitCode): void
     {
-        $this->app->events()->trigger('Console.Kernel.terminate', [$input, $response]);
+        $this->app->events()->trigger('Console.Kernel.terminate', [$input, $exitCode]);
     }
 
     /**
@@ -104,11 +108,11 @@ class Kernel implements KernelContract
         }
 
         // Handle the request and get the response
-        $response = $this->handle($input);
+        $exitCode = $this->handle($input);
 
         // Terminate the application
-        $this->terminate($input, $response);
+        $this->terminate($input, $exitCode);
 
-        exit($response);
+        exit($exitCode);
     }
 }

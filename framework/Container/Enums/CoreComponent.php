@@ -36,6 +36,7 @@ use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Logger\Logger;
+use Valkyrja\Contracts\Parsers\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;
@@ -64,6 +65,7 @@ final class CoreComponent extends Enum
     public const INPUT                 = Input::class;
     public const KERNEL                = Kernel::class;
     public const LISTENER_ANNOTATIONS  = ListenerAnnotations::class;
+    public const PATH_PARSER           = PathParser::class;
     public const REQUEST               = Request::class;
     public const RESPONSE              = Response::class;
     public const JSON_RESPONSE         = JsonResponse::class;
@@ -91,6 +93,7 @@ final class CoreComponent extends Enum
         self::INPUT,
         self::KERNEL,
         self::LISTENER_ANNOTATIONS,
+        self::PATH_PARSER,
         self::REQUEST,
         self::RESPONSE,
         self::JSON_RESPONSE,

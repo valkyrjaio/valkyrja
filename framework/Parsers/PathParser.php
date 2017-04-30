@@ -35,15 +35,7 @@ class PathParser implements PathParserContract
 \{
     \s* ([a-zA-Z_][a-zA-Z0-9_-]*) \s*
     (?:
-        : \s* 
-        (
-            [
-                ^{}]*
-                (?:
-                \{(?-1)\}
-                [^{}
-            ]*)
-        *)
+        : \s* ([^{}]*(?:\{(?-1)\}[^{}]*)*)
     )?
 \}
 REGEX;
@@ -166,26 +158,39 @@ REGEX;
      */
     protected function parsePath(string $path): array
     {
+        /** @var array[] $params */
         // Get all matches for {paramName} and {paramName:(validator)} in the path
         preg_match_all(
             '/' . static::VARIABLE_REGEX . '/x',
             $path,
             $params
         );
-        /** @var array[] $params */
+        $regex = $path;
 
         // Run through all matches
         foreach ($params[0] as $key => $param) {
             // Replace the matches with a regex
-            $path = str_replace($param, $this->getParamReplacement($key, $params), $path);
+            $regex = str_replace($param, $this->getParamReplacement($key, $params), $regex);
         }
 
-        $path = str_replace('/', '\/', $path);
-        $path = '/^' . $path . '$/';
+        // Set the optionals key
+        $optionalKey = str_replace(
+        // Replace the first param
+            $params[1][0],
+            // With an empty string
+            '',
+            // Implode the param keys with a dot
+            implode('.', $params[1])
+        );
+
+        $regex = str_replace('/', '\/', $regex);
+        $regex = '/^' . $regex . '$/';
 
         return [
-            'regex'  => $path,
-            'params' => $params,
+            'path'       => $path,
+            'regex'       => $regex,
+            'params'      => $params,
+            'optionalKey' => $optionalKey,
         ];
     }
 

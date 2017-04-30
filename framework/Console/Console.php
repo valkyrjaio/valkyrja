@@ -12,6 +12,7 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
@@ -91,16 +92,43 @@ class Console implements ConsoleContract
      */
     public function addCommand(Command $command): void
     {
-        $parser = new CommandParser();
-
-        var_dump($parser->parse($command->getPath()));exit;
-
         $this->verifyDispatch($command);
 
+        /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
+        $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
+
+        // Get the parsed route (due to optional parts it may be more than one route)
+        foreach ($parser->parse($command->getPath()) as $key => $parsedCommand) {
+            $this->addParsedCommand($command, $parsedCommand);
+        }
+    }
+
+    /**
+     * Add a parsed command.
+     *
+     * @param \Valkyrja\Console\Command $command       The command
+     * @param array                     $parsedCommand The parsed command
+     *
+     * @return void
+     */
+    protected function addParsedCommand(Command $command, array $parsedCommand): void
+    {
+        // Clone the command
+        $newCommand = clone $command;
+
+        // Set the properties
+        $newCommand->setName($newCommand->getName() . $parsedCommand['optionalKey']);
+        $newCommand->setPath($parsedCommand['path']);
+        $newCommand->setRegex($parsedCommand['regex']);
+        $newCommand->setParams($parsedCommand['params']);
+
+        // Set the command in the commands list
+        self::$commands[$newCommand->getPath()] = $newCommand;
+
         // If the command has a name
-        if (null !== $command->getName()) {
+        if (null !== $newCommand->getName()) {
             // Set in the named commands list to find it more easily later
-            self::$namedCommands[$command->getName()] = $command->getPath();
+            self::$namedCommands[$newCommand->getName()] = $newCommand->getPath();
         }
     }
 
