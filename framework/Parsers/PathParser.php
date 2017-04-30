@@ -151,7 +151,7 @@ REGEX;
                 break;
             default :
                 // Check if a regex was set for this match, otherwise use a wildcard all
-                $replacement = '(' . ($params[2][$key] ?? $params[1][$key]) . ')';
+                $replacement = '(' . ($params[2][$key] ?: $params[1][$key]) . ')';
                 break;
         }
 
