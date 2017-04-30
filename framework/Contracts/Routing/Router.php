@@ -135,13 +135,6 @@ REGEX;
     public function setRoutes(array $routes): void;
 
     /**
-     * Setup routes.
-     *
-     * @return void
-     */
-    public function setup(): void;
-
-    /**
      * Get a route by name.
      *
      * @param string $name The name of the route to get
@@ -227,4 +220,11 @@ REGEX;
      * @return void
      */
     public static function afterClassMethodDispatch($class, string $method, &$dispatch): void;
+
+    /**
+     * Setup routes.
+     *
+     * @return void
+     */
+    public function setup(): void;
 }

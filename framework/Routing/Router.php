@@ -333,79 +333,6 @@ class Router implements RouterContract
     }
 
     /**
-     * Setup routes.
-     *
-     * @return void
-     *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     */
-    public function setup(): void
-    {
-        // If route's have already been setup, no need to do it again
-        if (self::$setup) {
-            return;
-        }
-
-        self::$setup = true;
-
-        // If the application should use the routes cache file
-        if ($this->app->config()->routing->useRoutesCacheFile) {
-            // Set the application routes with said file
-            self::$routes = require $this->app->config()->routing->routesCacheFile;
-
-            // Then return out of routes setup
-            return;
-        }
-
-        // If annotations are enabled and routing should use annotations
-        if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
-            // Setup annotated routes
-            $this->setupAnnotatedRoutes();
-
-            // If only annotations should be used for routing
-            if ($this->app->config()->routing->useAnnotationsExclusively) {
-                // Return to avoid loading routes file
-                return;
-            }
-        }
-
-        // Include the routes file
-        // NOTE: Included if annotations are set or not due to possibility of routes being defined
-        // within the controllers as well as within the routes file
-        require $this->app->config()->routing->routesFile;
-    }
-
-    /**
-     * Setup annotated routes.
-     *
-     * @return void
-     *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     */
-    protected function setupAnnotatedRoutes(): void
-    {
-        /** @var RouteAnnotationsContract $routeAnnotations */
-        $routeAnnotations = $this->app->container()->get(RouteAnnotationsContract::class);
-
-        // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config()->routing->controllers);
-
-        // Iterate through the routes
-        foreach ($routes as $route) {
-            // Set the route
-            $this->addRoute($route);
-        }
-    }
-
-    /**
      * Get a route by name.
      *
      * @param string $name The name of the route to get
@@ -735,5 +662,78 @@ class Router implements RouterContract
 
         // Otherwise its a string so wrap it in a new response and return it
         return $this->app->response((string) $dispatch);
+    }
+
+    /**
+     * Setup routes.
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     */
+    public function setup(): void
+    {
+        // If route's have already been setup, no need to do it again
+        if (self::$setup) {
+            return;
+        }
+
+        self::$setup = true;
+
+        // If the application should use the routes cache file
+        if ($this->app->config()->routing->useRoutesCacheFile) {
+            // Set the application routes with said file
+            self::$routes = require $this->app->config()->routing->routesCacheFile;
+
+            // Then return out of routes setup
+            return;
+        }
+
+        // If annotations are enabled and routing should use annotations
+        if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
+            // Setup annotated routes
+            $this->setupAnnotatedRoutes();
+
+            // If only annotations should be used for routing
+            if ($this->app->config()->routing->useAnnotationsExclusively) {
+                // Return to avoid loading routes file
+                return;
+            }
+        }
+
+        // Include the routes file
+        // NOTE: Included if annotations are set or not due to possibility of routes being defined
+        // within the controllers as well as within the routes file
+        require $this->app->config()->routing->routesFile;
+    }
+
+    /**
+     * Setup annotated routes.
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     */
+    protected function setupAnnotatedRoutes(): void
+    {
+        /** @var RouteAnnotationsContract $routeAnnotations */
+        $routeAnnotations = $this->app->container()->get(RouteAnnotationsContract::class);
+
+        // Get all the annotated routes from the list of controllers
+        $routes = $routeAnnotations->getRoutes(...$this->app->config()->routing->controllers);
+
+        // Iterate through the routes
+        foreach ($routes as $route) {
+            // Set the route
+            $this->addRoute($route);
+        }
     }
 }
