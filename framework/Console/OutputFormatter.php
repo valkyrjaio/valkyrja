@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Contract\Console\OutputFormatter as OutputFormatterContract;
+use Valkyrja\Contracts\Console\OutputFormatter as OutputFormatterContract;
 
 /**
  * Class OutputFormatter

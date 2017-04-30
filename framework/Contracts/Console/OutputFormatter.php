@@ -14,7 +14,7 @@ namespace Valkyrja\Contracts\Console;
 /**
  * Interface OutputFormatter
  *
- * @package Valkyrja\Contract\Console
+ * @package Valkyrja\Contracts\Console
  *
  * @author  Melech Mizrachi
  */

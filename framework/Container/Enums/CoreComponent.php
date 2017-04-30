@@ -24,6 +24,8 @@ use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
+use Valkyrja\Contracts\Console\Output;
+use Valkyrja\Contracts\Console\OutputFormatter;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
@@ -63,6 +65,8 @@ final class CoreComponent extends Enum
     public const ENV                   = Env::class;
     public const EVENTS                = Events::class;
     public const INPUT                 = Input::class;
+    public const OUTPUT                = Output::class;
+    public const OUTPUT_FORMATTER      = OutputFormatter::class;
     public const KERNEL                = Kernel::class;
     public const LISTENER_ANNOTATIONS  = ListenerAnnotations::class;
     public const PATH_PARSER           = PathParser::class;
@@ -91,6 +95,8 @@ final class CoreComponent extends Enum
         self::ENV,
         self::EVENTS,
         self::INPUT,
+        self::OUTPUT,
+        self::OUTPUT_FORMATTER,
         self::KERNEL,
         self::LISTENER_ANNOTATIONS,
         self::PATH_PARSER,

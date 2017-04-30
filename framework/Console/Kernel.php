@@ -17,6 +17,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input;
 use Valkyrja\Contracts\Console\Kernel as KernelContract;
+use Valkyrja\Contracts\Console\Output;
 
 /**
  * Class ConsoleKernel
@@ -56,18 +57,19 @@ class Kernel implements KernelContract
     /**
      * Handle a console input.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input The input
+     * @param \Valkyrja\Contracts\Console\Input  $input  The input
+     * @param \Valkyrja\Contracts\Console\Output $output The output
      *
      * @return int
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      */
-    public function handle(Input $input): int
+    public function handle(Input $input, Output $output): int
     {
         $exitCode = 1;
 
         try {
-            $exitCode = $this->console->dispatch($input);
+            $exitCode = $this->console->dispatch($input, $output);
         }
         catch (Throwable $exception) {
             // Show the exception
@@ -94,21 +96,27 @@ class Kernel implements KernelContract
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input The input
+     * @param \Valkyrja\Contracts\Console\Input  $input  The input
+     * @param \Valkyrja\Contracts\Console\Output $output The output
      *
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      */
-    public function run(Input $input = null): void
+    public function run(Input $input = null, Output $output = null): void
     {
-        // If no request was passed get the bootstrapped definition
+        // If no input was passed get the bootstrapped definition
         if (null === $input) {
             $input = $this->app->container()->get(Input::class);
         }
 
+        // If no output was passed get the bootstrapped definition
+        if (null === $output) {
+            $output = $this->app->container()->get(Output::class);
+        }
+
         // Handle the request and get the response
-        $exitCode = $this->handle($input);
+        $exitCode = $this->handle($input, $output);
 
         // Terminate the application
         $this->terminate($input, $exitCode);

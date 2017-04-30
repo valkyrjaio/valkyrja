@@ -108,13 +108,14 @@ REGEX;
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input
+     * @param \Valkyrja\Contracts\Console\Input  $input  The input
+     * @param \Valkyrja\Contracts\Console\Output $output The output
      *
      * @return mixed
      *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      */
-    public function dispatch(Input $input);
+    public function dispatch(Input $input, Output $output);
 
     /**
      * Get all commands.

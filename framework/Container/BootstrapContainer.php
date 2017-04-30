@@ -20,6 +20,8 @@ use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as ConsoleKernel;
+use Valkyrja\Console\Output;
+use Valkyrja\Console\OutputFormatter;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
@@ -90,6 +92,7 @@ class BootstrapContainer
         $this->bootstrapConsole();
         $this->bootstrapConsoleKernel();
         $this->bootstrapConsoleInput();
+        $this->bootstrapConsoleOutput();
         $this->bootstrapCommandAnnotations();
         $this->bootstrapKernel();
         $this->bootstrapRequest();
@@ -243,6 +246,30 @@ class BootstrapContainer
                 ->setId(CoreComponent::INPUT)
                 ->setClass(Input::class)
                 ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the console output.
+     *
+     * @return void
+     */
+    protected function bootstrapConsoleOutput(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::OUTPUT_FORMATTER)
+                ->setClass(OutputFormatter::class)
+                ->setDependencies()
+                ->setSingleton(true)
+        );
+
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::OUTPUT)
+                ->setClass(Output::class)
+                ->setDependencies([CoreComponent::OUTPUT_FORMATTER])
                 ->setSingleton(true)
         );
     }

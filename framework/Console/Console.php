@@ -17,6 +17,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
 use Valkyrja\Contracts\Console\Input;
+use Valkyrja\Contracts\Console\Output;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
@@ -224,13 +225,14 @@ class Console implements ConsoleContract
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input
+     * @param \Valkyrja\Contracts\Console\Input  $input  The input
+     * @param \Valkyrja\Contracts\Console\Output $output The output
      *
      * @return mixed
      *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      */
-    public function dispatch(Input $input)
+    public function dispatch(Input $input, Output $output)
     {
         // Verify the command exists
         if (null === $command = $this->inputCommand($input)) {
