@@ -13,6 +13,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Handlers\ConsoleCache;
 use Valkyrja\Console\Handlers\ConsoleCommands;
+use Valkyrja\Console\Handlers\ConsoleCommandsForBash;
 use Valkyrja\Container\Console\ContainerCache;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Container\Service;
@@ -30,8 +31,18 @@ use Valkyrja\Routing\Console\RoutingCache;
  */
 class BootstrapConsole
 {
+    /**
+     * The application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
     protected $app;
 
+    /**
+     * The console.
+     *
+     * @var \Valkyrja\Contracts\Console\Console
+     */
     protected $console;
 
     /**
@@ -56,6 +67,7 @@ class BootstrapConsole
     protected function bootstrap(): void
     {
         $this->bootstrapConsoleCommands();
+        $this->bootstrapConsoleCommandsForBash();
         $this->bootstrapConsoleCache();
         $this->bootstrapContainerCache();
         $this->bootstrapEventsCache();
@@ -82,6 +94,30 @@ class BootstrapConsole
                 ->setName('console:commands')
                 ->setDescription('List all the commands')
                 ->setClass(ConsoleCommands::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
+        );
+    }
+
+    /**
+     * Bootstrap the console commands for bash command.
+     *
+     * @return void
+     */
+    protected function bootstrapConsoleCommandsForBash(): void
+    {
+        $this->app->container()->bind(
+            (new Service())
+                ->setId(ConsoleCommandsForBash::class)
+                ->setClass(ConsoleCommandsForBash::class)
+                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
+        );
+
+        $this->console->addCommand(
+            (new Command())
+                ->setPath('console:commandsForBash[ commandTyped={commandTyped:alpha}]')
+                ->setName('console:commandsForBash')
+                ->setDescription('List all the commands for bash auto complete')
+                ->setClass(ConsoleCommandsForBash::class)
                 ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }

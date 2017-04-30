@@ -141,6 +141,13 @@ REGEX;
     public function setup(): void;
 
     /**
+     * Get the named commands list.
+     *
+     * @return array
+     */
+    public function getNamedCommands(): array;
+
+    /**
      * Get a cacheable representation of the commands.
      *
      * @return \Valkyrja\Console\Command[]

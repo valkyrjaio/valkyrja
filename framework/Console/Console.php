@@ -362,6 +362,16 @@ class Console implements ConsoleContract
     }
 
     /**
+     * Get the named commands list.
+     *
+     * @return array
+     */
+    public function getNamedCommands(): array
+    {
+        return self::$namedCommands;
+    }
+
+    /**
      * Get a cacheable representation of the commands.
      *
      * @return \Valkyrja\Console\Command[]
