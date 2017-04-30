@@ -11,10 +11,15 @@
 
 console()->addCommand(
     (new \Valkyrja\Console\Command())
-        ->setPath('make:command -is={is:alpha}[ --name={name:alpha}[ --test={test:alpha}]]')
-        ->setClosure(function ($is, $name = null, $test = null) {
-            return [
-                $is, $name, $test
-            ];
+        ->setPath('make:command -is={is:alpha}[ -{optional}][ --name={name:alpha}[ --test={test:alpha}]]')
+        ->setClosure(function ($is, $optional = null, $name = null, $test = null) {
+            var_dump([
+                $is,
+                $optional,
+                $name,
+                $test,
+            ]);
+
+            return 1;
         })
 );

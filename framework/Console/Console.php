@@ -106,10 +106,7 @@ class Console implements ConsoleContract
         /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
         $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
 
-        // Get the parsed route (due to optional parts it may be more than one route)
-        foreach ($parser->parse($command->getPath()) as $key => $parsedCommand) {
-            $this->addParsedCommand($command, $parsedCommand);
-        }
+        $this->addParsedCommand($command, $parser->parse($command->getPath()));
     }
 
     /**
@@ -122,22 +119,17 @@ class Console implements ConsoleContract
      */
     protected function addParsedCommand(Command $command, array $parsedCommand): void
     {
-        // Clone the command
-        $newCommand = clone $command;
-
         // Set the properties
-        $newCommand->setName($newCommand->getName() . $parsedCommand['optionalKey']);
-        $newCommand->setPath($parsedCommand['path']);
-        $newCommand->setRegex($parsedCommand['regex']);
-        $newCommand->setParams($parsedCommand['params']);
+        $command->setRegex($parsedCommand['regex']);
+        $command->setParams($parsedCommand['params']);
 
         // Set the command in the commands list
-        self::$commands[$newCommand->getPath()] = $newCommand;
+        self::$commands[$command->getPath()] = $command;
 
         // If the command has a name
-        if (null !== $newCommand->getName()) {
+        if (null !== $command->getName()) {
             // Set in the named commands list to find it more easily later
-            self::$namedCommands[$newCommand->getName()] = $newCommand->getPath();
+            self::$namedCommands[$command->getName()] = $command->getPath();
         }
     }
 

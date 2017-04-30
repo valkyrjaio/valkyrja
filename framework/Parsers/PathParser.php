@@ -12,10 +12,6 @@
 namespace Valkyrja\Parsers;
 
 use Valkyrja\Contracts\Parsers\PathParser as PathParserContract;
-use Valkyrja\Parser\Exceptions\InvalidOptionalPart;
-use Valkyrja\Parser\Exceptions\OptionalSegmentsMismatch;
-use Valkyrja\Parser\Exceptions\OptionalSegmentsMisplaced;
-use Valkyrja\Parser\Exceptions\RegexRequired;
 
 /**
  * Class PathParser
@@ -46,11 +42,6 @@ REGEX;
      * @param string $path The path
      *
      * @return array
-     *
-     * @throws \Valkyrja\Parser\Exceptions\InvalidOptionalPart
-     * @throws \Valkyrja\Parser\Exceptions\OptionalSegmentsMismatch
-     * @throws \Valkyrja\Parser\Exceptions\OptionalSegmentsMisplaced
-     * @throws \Valkyrja\Parser\Exceptions\RegexRequired
      */
     public function parse(string $path): array
     {
@@ -58,42 +49,22 @@ REGEX;
         $segments = $this->getSegments($path);
 
         // Verify the path and its segments
-        $this->verifySegments($path, $segments);
+        // $this->verifySegments($path, $segments);
 
         // The current path
         $current = '';
-        // The paths built
-        $paths = [];
 
         // Iterate through the segments
-        foreach ($segments as $n => $segment) {
-            // If the segment is empty and not the first segment
-            if ($segment === '' && $n !== 0) {
-                // Throw an exception
-                throw new InvalidOptionalPart('Empty optional part');
+        foreach ($segments as $key => $segment) {
+            if ($key > 0) {
+                $segment = '(?:' . $segment;
+                $segment = str_replace(']', ')?', $segment);
             }
 
-            // Build the path and the current path with the segment
-            // This ensures all subsequent segments have the
-            // previous parts of the path
             $current .= $segment;
-            // Set the parsed results in the list to return
-            $paths[] = $this->parsePath($current);
         }
 
-        return $paths;
-    }
-
-    /**
-     * Get the path without closing optional brackets.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function noClosingOptionals(string $path): string
-    {
-        return rtrim($path, ']');
+        return $this->parsePath($current);
     }
 
     /**
@@ -107,44 +78,8 @@ REGEX;
     {
         return preg_split(
             '~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x',
-            $this->noClosingOptionals($path)
+            $path
         );
-    }
-
-    /**
-     * Get the number of optional parts in the path.
-     *
-     * @param string $path The path
-     *
-     * @return int
-     */
-    protected function countOptionals(string $path): int
-    {
-        return strlen($path) - strlen(rtrim($path, ']'));
-    }
-
-    /**
-     * Verify the path's segments.
-     *
-     * @param string $path     The path
-     * @param array  $segments The split segments
-     *
-     * @return void
-     *
-     * @throws \Valkyrja\Parser\Exceptions\OptionalSegmentsMismatch
-     * @throws \Valkyrja\Parser\Exceptions\OptionalSegmentsMisplaced
-     */
-    protected function verifySegments(string $path, array $segments): void
-    {
-        // If the total optional count does not match the segments
-        if ($this->countOptionals($path) !== count($segments) - 1) {
-            // If there are any ] in the middle of the route, throw a more specific error message
-            if (preg_match('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \]~x', $this->noClosingOptionals($path))) {
-                throw new OptionalSegmentsMisplaced('Optional segments can only occur at the end of a path');
-            }
-
-            throw new OptionalSegmentsMismatch('Number of opening \'[\' and closing \']\' does not match');
-        }
     }
 
     /**
@@ -153,8 +88,6 @@ REGEX;
      * @param string $path The path
      *
      * @return array
-     *
-     * @throws \Valkyrja\Parser\Exceptions\RegexRequired
      */
     protected function parsePath(string $path): array
     {
@@ -173,24 +106,13 @@ REGEX;
             $regex = str_replace($param, $this->getParamReplacement($key, $params), $regex);
         }
 
-        // Set the optionals key
-        $optionalKey = str_replace(
-        // Replace the first param
-            $params[1][0],
-            // With an empty string
-            '',
-            // Implode the param keys with a dot
-            implode('.', $params[1])
-        );
-
         $regex = str_replace('/', '\/', $regex);
         $regex = '/^' . $regex . '$/';
 
         return [
-            'path'       => $path,
+            'path'        => $path,
             'regex'       => $regex,
             'params'      => $params,
-            'optionalKey' => $optionalKey,
         ];
     }
 
@@ -201,17 +123,9 @@ REGEX;
      * @param array  $params The params
      *
      * @return string
-     *
-     * @throws \Valkyrja\Parser\Exceptions\RegexRequired
      */
     protected function getParamReplacement(string $key, array $params): string
     {
-        // If there is no regex for this param
-        if (! isset($params[2][$key]) || ! $params[2][$key]) {
-            // Throw an error
-            throw new RegexRequired('Regex, or regex alias, is required');
-        }
-
         // Check if a global regex alias was used
         switch ($params[2][$key]) {
             case 'num' :
@@ -237,7 +151,7 @@ REGEX;
                 break;
             default :
                 // Check if a regex was set for this match, otherwise use a wildcard all
-                $replacement = '(' . $params[2][$key] . ')';
+                $replacement = '(' . ($params[2][$key] ?? $params[1][$key]) . ')';
                 break;
         }
 

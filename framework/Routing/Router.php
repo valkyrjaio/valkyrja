@@ -166,21 +166,16 @@ class Router implements RouterContract
         /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
         $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
 
-        // Get the parsed route (due to optional parts it may be more than one route)
-        foreach ($parser->parse($route->getPath()) as $key => $parsedRoute) {
-            // Clone the route
-            $newRoute = clone $route;
+        $parsedRoute = $parser->parse($route->getPath());
 
-            // Set the properties
-            $newRoute->setName($newRoute->getName() . $parsedRoute['optionalKey']);
-            $newRoute->setRegex($parsedRoute['regex']);
-            $newRoute->setParams($parsedRoute['params']);
+        // Set the properties
+        $route->setRegex($parsedRoute['regex']);
+        $route->setParams($parsedRoute['params']);
 
-            // Set it in the dynamic routes array
-            self::$routes[static::DYNAMIC_ROUTES_TYPE][$newRoute->getRequestMethod()][$newRoute->getPath()] = $newRoute;
+        // Set it in the dynamic routes array
+        self::$routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
 
-            $this->setNamedRoute($newRoute);
-        }
+        $this->setNamedRoute($route);
     }
 
     /**
