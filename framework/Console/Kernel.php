@@ -109,10 +109,16 @@ class Kernel implements KernelContract
         if (null === $input) {
             $input = $this->app->container()->get(Input::class);
         }
+        else {
+            $this->app->container()->singleton(Input::class, $input);
+        }
 
         // If no output was passed get the bootstrapped definition
         if (null === $output) {
             $output = $this->app->container()->get(Output::class);
+        }
+        else {
+            $this->app->container()->singleton(Output::class, $output);
         }
 
         // Handle the request and get the response

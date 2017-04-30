@@ -14,13 +14,13 @@ namespace Valkyrja\Console\Handlers;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class GenerateCache
+ * Class ConsoleCommands
  *
  * @package Valkyrja\Console\Handlers
  *
  * @author  Melech Mizrachi
  */
-class ConsoleCache extends CommandHandler
+class ConsoleCommands extends CommandHandler
 {
     /**
      * Run the command.
@@ -29,18 +29,11 @@ class ConsoleCache extends CommandHandler
      */
     public function run(): int
     {
-        $result = file_put_contents(
-            config()->console->cacheFilePath,
-            '<?php return ' . var_export(console()->getCacheable(), true) . ';'
-        );
+        $list = console()->getCacheable();
 
-        if ($result === false) {
-            $this->output->writeMessage('An error occurred while generating cache.', true);
-
-            return 0;
+        foreach ($list as $item) {
+            $this->output->writeMessage("{$item->getName()}      {$item->getDescription()}", true);
         }
-
-        $this->output->writeMessage('Cache generated successfully', true);
 
         return 1;
     }

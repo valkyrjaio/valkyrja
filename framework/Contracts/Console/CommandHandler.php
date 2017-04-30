@@ -21,6 +21,14 @@ namespace Valkyrja\Contracts\Console;
 interface CommandHandler
 {
     /**
+     * CommandHandler constructor.
+     *
+     * @param \Valkyrja\Contracts\Console\Input  $input  The input
+     * @param \Valkyrja\Contracts\Console\Output $output The output
+     */
+    public function __construct(Input $input, Output $output);
+
+    /**
      * Run the command.
      *
      * @return mixed

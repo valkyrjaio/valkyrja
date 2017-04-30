@@ -143,7 +143,7 @@ REGEX;
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return array
+     * @return \Valkyrja\Console\Command[]
      */
     public function getCacheable(): array;
 }

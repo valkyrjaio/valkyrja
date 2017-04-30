@@ -45,6 +45,13 @@ class Command extends Dispatch implements Annotation
     protected $params;
 
     /**
+     * The description.
+     *
+     * @var string
+     */
+    protected $description;
+
+    /**
      * Get the path.
      *
      * @return string
@@ -114,5 +121,70 @@ class Command extends Dispatch implements Annotation
         $this->params = $params;
 
         return $this;
+    }
+
+    /**
+     * Get the description.
+     *
+     * @return string
+     */
+    public function getDescription():? string
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the description.
+     *
+     * @param string $description The description
+     *
+     * @return $this
+     */
+    public function setDescription(string $description = null): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get a command from properties.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    public static function getCommand(array $properties): self
+    {
+        $dispatch = new Command();
+
+        $dispatch
+            ->setPath($properties['path'] ?? null)
+            ->setRegex($properties['regex'] ?? null)
+            ->setParams($properties['params'] ?? null)
+            ->setDescription($properties['description'] ?? null)
+            ->setClass($properties['class'] ?? null)
+            ->setProperty($properties['property'] ?? null)
+            ->setMethod($properties['method'] ?? null)
+            ->setStatic($properties['static'] ?? null)
+            ->setFunction($properties['function'] ?? null)
+            ->setClosure($properties['closure'] ?? null)
+            ->setMatches($properties['matches'] ?? null)
+            ->setArguments($properties['arguments'] ?? null)
+            ->setDependencies($properties['dependencies'] ?? null);
+
+        return $dispatch;
+    }
+
+    /**
+     * Set the state of the command.
+     *
+     * @param array $properties The properties to set
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    public static function __set_state(array $properties)
+    {
+        return static::getCommand($properties);
     }
 }

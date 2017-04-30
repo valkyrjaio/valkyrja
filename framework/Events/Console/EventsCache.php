@@ -29,10 +29,18 @@ class EventsCache extends CommandHandler
      */
     public function run(): int
     {
-        file_put_contents(
+        $result = file_put_contents(
             config()->events->cacheFilePath,
             '<?php return ' . var_export(events()->getCacheable(), true) . ';'
         );
+
+        if ($result === false) {
+            $this->output->writeMessage('An error occurred while generating cache.', true);
+
+            return 0;
+        }
+
+        $this->output->writeMessage('Cache generated successfully', true);
 
         return 1;
     }

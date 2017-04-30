@@ -12,8 +12,8 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
-use \Valkyrja\Contracts\Console\Input;
-use \Valkyrja\Contracts\Console\Output;
+use Valkyrja\Contracts\Console\Input;
+use Valkyrja\Contracts\Console\Output;
 
 /**
  * Abstract Class CommandHandler
