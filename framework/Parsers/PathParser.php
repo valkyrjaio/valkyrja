@@ -58,7 +58,7 @@ REGEX;
         foreach ($segments as $key => $segment) {
             if ($key > 0) {
                 $segment = '(?:' . $segment;
-                $segment = str_replace(']', ')?', $segment);
+                $segment = str_replace(['*]', ']'], [')*?', ')?'], $segment);
             }
 
             $current .= $segment;
