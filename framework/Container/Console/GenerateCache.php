@@ -25,13 +25,15 @@ class GenerateCache extends CommandHandler
     /**
      * Run the command.
      *
-     * @return mixed
+     * @return int
      */
-    public function run()
+    public function run(): int
     {
-        return file_put_contents(
+        file_put_contents(
             config()->container->cacheFilePath,
             '<?php return ' . var_export(container()->getCacheable(), true) . ';'
         );
+
+        return 1;
     }
 }

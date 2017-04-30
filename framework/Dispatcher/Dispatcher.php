@@ -42,7 +42,8 @@ trait Dispatcher
     {
         // If a class and method are set and not callable
         if (
-            null !== $dispatch->getMethod()
+            null !== $dispatch->getClass()
+            && null !== $dispatch->getMethod()
             && ! is_callable(
                 [
                     $dispatch->getClass(),
@@ -74,7 +75,8 @@ trait Dispatcher
     {
         // If a class and method are set and not callable
         if (
-            null !== $dispatch->getProperty()
+            null !== $dispatch->getClass()
+            && null !== $dispatch->getProperty()
             && ! property_exists($dispatch->getClass(), $dispatch->getProperty())
         ) {
             // Throw a new invalid property exception

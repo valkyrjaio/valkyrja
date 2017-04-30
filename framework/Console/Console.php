@@ -31,6 +31,11 @@ class Console implements ConsoleContract
     use Dispatcher;
 
     /**
+     * The run method to call within command handlers.
+     */
+    public const RUN_METHOD = 'run';
+
+    /**
      * The application.
      *
      * @var \Valkyrja\Contracts\Application
@@ -92,7 +97,11 @@ class Console implements ConsoleContract
      */
     public function addCommand(Command $command): void
     {
-        $this->verifyDispatch($command);
+        $command->setMethod(static::RUN_METHOD);
+
+        $this->verifyClassMethod($command);
+        $this->verifyFunction($command);
+        $this->verifyClosure($command);
 
         /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
         $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);

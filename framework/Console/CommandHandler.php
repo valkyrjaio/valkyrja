@@ -23,9 +23,56 @@ use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
 abstract class CommandHandler implements CommandHandlerContract
 {
     /**
+     * The input.
+     *
+     * @var \Valkyrja\Console\Input
+     */
+    protected $input;
+
+    /**
+     * CommandHandler constructor.
+     *
+     * @param \Valkyrja\Console\Input $input The input
+     */
+    public function __construct(Input $input)
+    {
+        $this->input = $input;
+    }
+
+    /**
      * Run the command.
      *
-     * @return mixed
+     * @return int
      */
-    abstract public function run();
+    abstract public function run(): int;
+
+    /**
+     * Help docs for this command.
+     *
+     * @return int
+     */
+    public function help(): int
+    {
+        return 1;
+    }
+
+    /**
+     * Get the valid arguments.
+     *
+     * @return array
+     */
+    protected function getArguments(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get the valid options.
+     *
+     * @return array
+     */
+    protected function getOptions(): array
+    {
+        return [];
+    }
 }

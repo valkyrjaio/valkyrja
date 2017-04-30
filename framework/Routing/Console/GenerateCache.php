@@ -25,13 +25,15 @@ class GenerateCache extends CommandHandler
     /**
      * Run the command.
      *
-     * @return mixed
+     * @return int
      */
-    public function run()
+    public function run(): int
     {
-        return file_put_contents(
+        file_put_contents(
             config()->routing->routesCacheFile,
             '<?php return ' . var_export(router()->getRoutes(), true) . ';'
         );
+
+        return 1;
     }
 }

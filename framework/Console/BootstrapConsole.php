@@ -39,7 +39,22 @@ class BootstrapConsole
         $this->console = $console;
     }
 
+    /**
+     * Bootstrap the console commands.
+     *
+     * @return void
+     */
     protected function bootstrap(): void
     {
+        $this->bootstrapConsoleCache();
+    }
+
+    protected function bootstrapConsoleCache(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath('console:cache[ -h[ --help]]')
+                ->setName('console:cache')
+        );
     }
 }
