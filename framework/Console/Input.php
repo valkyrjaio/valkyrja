@@ -70,7 +70,7 @@ class Input implements InputContract
      */
     public function getArguments(): array
     {
-        return $this->arguments ?? $this->getRequestArguments();
+        return $this->arguments;
     }
 
     /**
@@ -80,7 +80,7 @@ class Input implements InputContract
      */
     public function getStringArguments(): string
     {
-        return implode(' ', $this->getArguments());
+        return implode(' ', $this->getRequestArguments());
     }
 
     /**
