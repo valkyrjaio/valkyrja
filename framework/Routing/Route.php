@@ -53,13 +53,6 @@ class Route extends Dispatch implements Annotation
     protected $params;
 
     /**
-     * Any matches for dynamic routes.
-     *
-     * @var array
-     */
-    protected $matches;
-
-    /**
      * Whether the route is dynamic.
      *
      * @var bool
