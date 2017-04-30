@@ -15,6 +15,7 @@ use Throwable;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Contracts\Console\Input;
 use Valkyrja\Contracts\Console\Kernel as KernelContract;
 
 /**
@@ -55,18 +56,21 @@ class Kernel implements KernelContract
     /**
      * Handle a console input.
      *
+     * @param \Valkyrja\Contracts\Console\Input $input The input
+     *
      * @return mixed
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      */
-    public function handle()
+    public function handle(Input $input)
     {
         try {
+            $this->console->dispatch($input);
         }
         catch (Throwable $exception) {
         }
 
-        $this->app->events()->trigger('Console.Kernel.handled');
+        $this->app->events()->trigger('Console.Kernel.handled', [$input]);
 
         return null;
     }
@@ -74,26 +78,37 @@ class Kernel implements KernelContract
     /**
      * Terminate the kernel request.
      *
+     * @param \Valkyrja\Contracts\Console\Input $input The input
+     *
      * @return void
      */
-    public function terminate(): void
+    public function terminate(Input $input, $response): void
     {
-        $this->app->events()->trigger('Console.Kernel.terminate');
+        $this->app->events()->trigger('Console.Kernel.terminate', [$input, $response]);
     }
 
     /**
      * Run the kernel.
      *
+     * @param \Valkyrja\Contracts\Console\Input $input The input
+     *
      * @return void
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      */
-    public function run(): void
+    public function run(Input $input = null): void
     {
-        // Handle the request and send the response
-        $response = $this->handle()->send();
+        // If no request was passed get the bootstrapped definition
+        if (null === $input) {
+            $input = $this->app->container()->get(Input::class);
+        }
+
+        // Handle the request and get the response
+        $response = $this->handle($input);
 
         // Terminate the application
-        $this->terminate();
+        $this->terminate($input, $response);
+
+        exit($response);
     }
 }

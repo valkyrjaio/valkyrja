@@ -22,6 +22,7 @@ use Valkyrja\Contracts\Config\Config;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console;
+use Valkyrja\Contracts\Console\Input;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
@@ -60,6 +61,7 @@ final class CoreComponent extends Enum
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
     public const ENV                   = Env::class;
     public const EVENTS                = Events::class;
+    public const INPUT                 = Input::class;
     public const KERNEL                = Kernel::class;
     public const LISTENER_ANNOTATIONS  = ListenerAnnotations::class;
     public const REQUEST               = Request::class;
@@ -86,6 +88,7 @@ final class CoreComponent extends Enum
         self::CONTAINER_ANNOTATIONS,
         self::ENV,
         self::EVENTS,
+        self::INPUT,
         self::KERNEL,
         self::LISTENER_ANNOTATIONS,
         self::REQUEST,

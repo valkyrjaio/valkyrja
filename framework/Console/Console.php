@@ -15,6 +15,7 @@ use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
+use Valkyrja\Contracts\Console\Input;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
@@ -41,6 +42,13 @@ class Console implements ConsoleContract
      * @var \Valkyrja\Console\Command[]
      */
     protected static $commands = [];
+
+    /**
+     * The commands by name.
+     *
+     * @var string[]
+     */
+    protected static $namedCommands = [];
 
     /**
      * Whether the console has been setup.
@@ -83,67 +91,120 @@ class Console implements ConsoleContract
      */
     public function addCommand(Command $command): void
     {
+        $parser = new CommandParser();
+
+        var_dump($parser->parse($command->getPath()));exit;
+
         $this->verifyDispatch($command);
 
-        self::$commands[$command->getName()] = $command;
+        // If the command has a name
+        if (null !== $command->getName()) {
+            // Set in the named commands list to find it more easily later
+            self::$namedCommands[$command->getName()] = $command->getPath();
+        }
     }
 
     /**
-     * Get a command.
+     * Get a command by name.
      *
-     * @param string $command The command name
+     * @param string $name The command name
      *
      * @return \Valkyrja\Console\Command
      */
-    public function command(string $command):? Command
+    public function command(string $name):? Command
     {
-        if ($this->hasCommand($command)) {
-            return self::$commands[$command];
+        if ($this->hasCommand($name)) {
+            return self::$commands[self::$namedCommands[$name]];
         }
 
         return null;
     }
 
     /**
-     * Determine whether a command exists.
+     * Determine whether a command exists by name.
      *
-     * @param string $command The command
+     * @param string $name The command name
      *
      * @return bool
      */
-    public function hasCommand(string $command): bool
+    public function hasCommand(string $name): bool
     {
-        return isset(self::$commands[$command]);
+        return isset(self::$namedCommands[$name]);
     }
 
     /**
      * Remove a command.
      *
-     * @param string $command The command
+     * @param string $name The command name
      *
      * @return void
      */
-    public function removeCommand(string $command): void
+    public function removeCommand(string $name): void
     {
-        if ($this->hasCommand($command)) {
-            unset(self::$commands[$command]);
+        if ($this->hasCommand($name)) {
+            unset(
+                self::$commands[self::$namedCommands[$name]],
+                self::$namedCommands[$name]
+            );
         }
+    }
+
+    /**
+     * Get a command from an input.
+     *
+     * @param \Valkyrja\Contracts\Console\Input $input The input
+     *
+     * @return null|\Valkyrja\Console\Command
+     */
+    public function inputCommand(Input $input):? Command
+    {
+        return $this->matchCommand($input->getStringArguments());
+    }
+
+    /**
+     * Match a command by path.
+     *
+     * @param string $path The path
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    public function matchCommand(string $path):? Command
+    {
+        // If the path matches a set command path
+        if (isset(self::$commands[$path])) {
+            return self::$commands[$path];
+        }
+
+        // Otherwise iterate through the commands and attempt to match via regex
+        foreach (self::$commands as $command) {
+            // If the preg match is successful, we've found our command!
+            if (preg_match($command->getRegex(), $path, $matches)) {
+                // The first match is the path itself
+                unset($matches[0]);
+
+                // Set the matches
+                $command->setMatches($matches);
+
+                return $command;
+            }
+        }
+
+        return null;
     }
 
     /**
      * Dispatch a command.
      *
-     * @param string $commandName The command name
-     * @param array  $arguments   The arguments
+     * @param \Valkyrja\Contracts\Console\Input $input
      *
      * @return mixed
      *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      */
-    public function dispatch(string $commandName, array $arguments = [])
+    public function dispatch(Input $input)
     {
         // Verify the command exists
-        if (null === $command = $this->command($commandName)) {
+        if (null === $command = $this->inputCommand($input)) {
             throw new CommandNotFound();
         }
 
@@ -151,7 +212,7 @@ class Console implements ConsoleContract
         $this->app->events()->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->dispatchCallable($command, $arguments);
+        $dispatch = $this->dispatchCallable($command, $command->getMatches());
 
         // Trigger an event after dispatching
         $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);

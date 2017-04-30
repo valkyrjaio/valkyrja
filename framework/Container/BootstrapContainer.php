@@ -18,6 +18,7 @@ use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Console;
+use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
@@ -86,6 +87,7 @@ class BootstrapContainer
         $this->bootstrapListenerAnnotations();
         $this->bootstrapConsole();
         $this->bootstrapConsoleKernel();
+        $this->bootstrapConsoleInput();
         $this->bootstrapCommandAnnotations();
         $this->bootstrapKernel();
         $this->bootstrapRequest();
@@ -192,6 +194,22 @@ class BootstrapContainer
                 ->setId(CoreComponent::CONSOLE_KERNEL)
                 ->setClass(ConsoleKernel::class)
                 ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE])
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the console input.
+     *
+     * @return void
+     */
+    protected function bootstrapConsoleInput(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::INPUT)
+                ->setClass(Input::class)
+                ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE])
                 ->setSingleton(true)
         );
     }

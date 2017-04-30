@@ -24,6 +24,27 @@ use Valkyrja\Contracts\Application;
 interface Console
 {
     /**
+     * The variable regex.
+     *
+     * @constant string
+     */
+    public const VARIABLE_REGEX = <<<'REGEX'
+\{
+    \s* ([a-zA-Z0-9_-]*) \s*
+    (?:
+        : \s* 
+        (
+            [
+                ^{}]*
+                (?:\{(?-1)\}
+                [^{}
+            ]*)
+        *)
+    )?
+\}
+REGEX;
+
+    /**
      * Console constructor.
      *
      * @param \Valkyrja\Contracts\Application $application The application
@@ -40,32 +61,60 @@ interface Console
     public function addCommand(Command $command): void;
 
     /**
+     * Get a command by name.
+     *
+     * @param string $name The command name
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    public function command(string $name):? Command;
+
+    /**
      * Determine whether a command exists.
      *
-     * @param string $command The command
+     * @param string $name The command
      *
      * @return bool
      */
-    public function hasCommand(string $command): bool;
+    public function hasCommand(string $name): bool;
 
     /**
      * Remove a command.
      *
-     * @param string $command The command
+     * @param string $name The command
      *
      * @return void
      */
-    public function removeCommand(string $command): void;
+    public function removeCommand(string $name): void;
+
+    /**
+     * Get a command from an input.
+     *
+     * @param \Valkyrja\Contracts\Console\Input $input The input
+     *
+     * @return null|\Valkyrja\Console\Command
+     */
+    public function inputCommand(Input $input):? Command;
+
+    /**
+     * Match a command.
+     *
+     * @param string $path The command name
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    public function matchCommand(string $path):? Command;
 
     /**
      * Dispatch a command.
      *
-     * @param string $commandName The command name
-     * @param array  $arguments   The arguments
+     * @param \Valkyrja\Contracts\Console\Input $input
      *
      * @return mixed
+     *
+     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      */
-    public function dispatch(string $commandName, array $arguments = []);
+    public function dispatch(Input $input);
 
     /**
      * Get all commands.
