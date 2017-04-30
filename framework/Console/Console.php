@@ -119,6 +119,7 @@ class Console implements ConsoleContract
      */
     protected function addParsedCommand(Command $command, array $parsedCommand): void
     {
+        dd($parsedCommand['regex']);
         // Set the properties
         $command->setRegex($parsedCommand['regex']);
         $command->setParams($parsedCommand['params']);

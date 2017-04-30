@@ -14,21 +14,21 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum InputArgument
+ * Class OutputStyle
  *
  * @package Valkyrja\Console\Enums
  *
  * @author  Melech Mizrachi
  */
-final class InputArgument extends Enum
+final class OutputStyle extends Enum
 {
-    public const REQUIRED = 'REQUIRED';
-    public const OPTIONAL = 'OPTIONAL';
-    public const IS_ARRAY = 'IS_ARRAY';
+    public const NORMAL = 'NORMAL';
+    public const PLAIN  = 'PLAIN';
+    public const RAW    = 'RAW';
 
     protected const VALUES = [
-        self::REQUIRED,
-        self::OPTIONAL,
-        self::IS_ARRAY,
+        self::NORMAL,
+        self::PLAIN,
+        self::RAW,
     ];
 }

@@ -74,6 +74,36 @@ class Input implements InputContract
     }
 
     /**
+     * Get the short options.
+     *
+     * @return array
+     */
+    public function getShortOptions(): array
+    {
+        return $this->shortOptions;
+    }
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getLongOptions(): array
+    {
+        return $this->longOptions;
+    }
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return array_merge($this->longOptions, $this->shortOptions);
+    }
+
+    /**
      * Get the arguments as a string.
      *
      * @return string
@@ -112,22 +142,33 @@ class Input implements InputContract
 
             $key = $exploded[0];
             $value = $exploded[1] ?? null;
+            $type = 'arguments';
 
             // If the key has double dash it is a long option
             if (strpos($key, '--') !== false) {
-                // Set it as a long option
-                $this->longOptions[$key] = $value;
+                $type = 'longOptions';
             }
             // If the key has a single dash it is a short option
             else if (strpos($key, '-') !== false) {
-                // Set it as a short option
-                $this->shortOptions[$key] = $value;
+                $type = 'shortOptions';
             }
-            // Otherwise it is an argument
-            else {
-                // Set it as an argument
-                $this->arguments[$key] = $value;
+
+            // If the key is already set
+            if (isset($this->{$type}[$key])) {
+                // If the key isn't already an array
+                if (! is_array($this->{$type}[$key])) {
+                    // Make it an array with the current value
+                    $this->{$type}[$key] = [$this->{$type}[$key]];
+                }
+
+                // Add the next value to the array
+                $this->{$type}[$key][] = $value;
+
+                continue;
             }
+
+            // Set the key value pair
+            $this->{$type}[$key] = $value;
         }
     }
 

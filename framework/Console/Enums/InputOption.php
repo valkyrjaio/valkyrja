@@ -22,5 +22,15 @@ use Valkyrja\Enum\Enum;
  */
 final class InputOption extends Enum
 {
+    public const NONE     = 'NONE';
+    public const REQUIRED = 'REQUIRED';
+    public const OPTIONAL = 'OPTIONAL';
+    public const IS_ARRAY = 'IS_ARRAY';
 
+    protected const VALUES = [
+        self::NONE,
+        self::REQUIRED,
+        self::OPTIONAL,
+        self::IS_ARRAY,
+    ];
 }

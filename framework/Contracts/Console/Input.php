@@ -37,6 +37,27 @@ interface Input
     public function getArguments(): array;
 
     /**
+     * Get the short options.
+     *
+     * @return array
+     */
+    public function getShortOptions(): array;
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getLongOptions(): array;
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getOptions(): array;
+
+    /**
      * Get the arguments as a string.
      *
      * @return string
