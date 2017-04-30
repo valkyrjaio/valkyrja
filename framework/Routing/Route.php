@@ -39,13 +39,6 @@ class Route extends Dispatch implements Annotation
     protected $requestMethod;
 
     /**
-     * The handler for this route.
-     *
-     * @var \Closure
-     */
-    protected $handler;
-
-    /**
      * The regex for dynamic routes.
      *
      * @var string
