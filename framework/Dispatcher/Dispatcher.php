@@ -229,12 +229,6 @@ trait Dispatcher
         $context = $dispatch->getClass() ?? $dispatch->getFunction();
         $member = $dispatch->getProperty() ?? $dispatch->getMethod();
 
-        // If the listener has no dependencies
-        if (null === $dispatch->getDependencies()) {
-            // Return the arguments
-            return $arguments;
-        }
-
         // Set the listener arguments to a new blank array
         $dependencies = $this->getDependencies($dispatch);
 
