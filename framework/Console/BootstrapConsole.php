@@ -15,8 +15,6 @@ use Valkyrja\Console\Handlers\ConsoleCache;
 use Valkyrja\Console\Handlers\ConsoleCommands;
 use Valkyrja\Console\Handlers\ConsoleCommandsForBash;
 use Valkyrja\Container\Console\ContainerCache;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Events\Console\EventsCache;
@@ -81,13 +79,6 @@ class BootstrapConsole
      */
     protected function bootstrapConsoleCommands(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(ConsoleCommands::class)
-                ->setClass(ConsoleCommands::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('console:commands[ -{h}][ --{help}]')
@@ -104,13 +95,6 @@ class BootstrapConsole
      */
     protected function bootstrapConsoleCommandsForBash(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(ConsoleCommandsForBash::class)
-                ->setClass(ConsoleCommandsForBash::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('console:commandsForBash valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]')
@@ -127,13 +111,6 @@ class BootstrapConsole
      */
     protected function bootstrapConsoleCache(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(ConsoleCache::class)
-                ->setClass(ConsoleCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('console:cache[ -{h}][ --{help}]')
@@ -150,13 +127,6 @@ class BootstrapConsole
      */
     protected function bootstrapContainerCache(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(ContainerCache::class)
-                ->setClass(ContainerCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('container:cache[ -{h}][ --{help}]')
@@ -173,13 +143,6 @@ class BootstrapConsole
      */
     protected function bootstrapEventsCache(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(EventsCache::class)
-                ->setClass(EventsCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('events:cache[ -{h}][ --{help}]')
@@ -196,13 +159,6 @@ class BootstrapConsole
      */
     protected function bootstrapRoutingCache(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(RoutingCache::class)
-                ->setClass(RoutingCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
-        );
-
         $this->console->addCommand(
             (new Command())
                 ->setPath('routes:cache[ -{h}][ --{help}]')

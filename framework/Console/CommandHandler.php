@@ -12,8 +12,6 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
-use Valkyrja\Contracts\Console\Input;
-use Valkyrja\Contracts\Console\Output;
 
 /**
  * Abstract Class CommandHandler
@@ -24,39 +22,6 @@ use Valkyrja\Contracts\Console\Output;
  */
 abstract class CommandHandler implements CommandHandlerContract
 {
-    /**
-     * The input.
-     *
-     * @var \Valkyrja\Console\Input
-     */
-    protected $input;
-
-    /**
-     * The output.
-     *
-     * @var \Valkyrja\Contracts\Console\Output
-     */
-    protected $output;
-
-    /**
-     * CommandHandler constructor.
-     *
-     * @param \Valkyrja\Contracts\Console\Input  $input  The input
-     * @param \Valkyrja\Contracts\Console\Output $output The output
-     */
-    public function __construct(Input $input, Output $output)
-    {
-        $this->input = $input;
-        $this->output = $output;
-    }
-
-    /**
-     * Run the command.
-     *
-     * @return int
-     */
-    abstract public function run(): int;
-
     /**
      * Help docs for this command.
      *

@@ -31,8 +31,9 @@ class ConsoleCommands extends CommandHandler
     {
         $list = console()->getCacheable();
 
-        foreach ($list as $item) {
-            $this->output->writeMessage("{$item->getName()}      {$item->getDescription()}", true);
+        /** @var \Valkyrja\Console\Command $item */
+        foreach ($list['commands'] as $item) {
+            output()->writeMessage("{$item->getName()}      {$item->getDescription()}", true);
         }
 
         return 1;

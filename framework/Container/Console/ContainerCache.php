@@ -44,12 +44,12 @@ class ContainerCache extends CommandHandler
         config()->container->useCacheFile = $originalUseCacheFile;
 
         if ($result === false) {
-            $this->output->writeMessage('An error occurred while generating cache.', true);
+            output()->writeMessage('An error occurred while generating cache.', true);
 
             return 0;
         }
 
-        $this->output->writeMessage('Cache generated successfully', true);
+        output()->writeMessage('Cache generated successfully', true);
 
         return 1;
     }

@@ -50,7 +50,7 @@ class ConsoleCommandsForBash extends CommandHandler
             $possibleCommands = $allCommands;
         }
 
-        $this->output->writeMessage(implode(' ', $possibleCommands));
+        output()->writeMessage(implode(' ', $possibleCommands));
 
         return 1;
     }

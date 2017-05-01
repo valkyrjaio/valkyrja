@@ -93,6 +93,18 @@ if (! function_exists('events')) {
     }
 }
 
+if (! function_exists('input')) {
+    /**
+     * Get input.
+     *
+     * @return \Valkyrja\Contracts\Console\Input
+     */
+    function input(): Valkyrja\Contracts\Console\Input
+    {
+        return container()->get(Valkyrja\Container\Enums\CoreComponent::INPUT);
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Get request.
@@ -102,6 +114,18 @@ if (! function_exists('logger')) {
     function logger(): Valkyrja\Contracts\Logger\Logger
     {
         return app()->logger();
+    }
+}
+
+if (! function_exists('output')) {
+    /**
+     * Get output.
+     *
+     * @return \Valkyrja\Contracts\Console\Output
+     */
+    function output(): Valkyrja\Contracts\Console\Output
+    {
+        return container()->get(Valkyrja\Container\Enums\CoreComponent::OUTPUT);
     }
 }
 

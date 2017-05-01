@@ -30,9 +30,9 @@ class RoutingCache extends CommandHandler
     public function run(): int
     {
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = config()->routing->useCacheFile;
+        $originalUseCacheFile = config()->routing->useRoutesCacheFile;
         // Avoid using the cache file we already have
-        config()->routing->useCacheFile = false;
+        config()->routing->useRoutesCacheFile = false;
 
         // Get the results of the cache attempt
         $result = file_put_contents(
@@ -41,15 +41,15 @@ class RoutingCache extends CommandHandler
         );
 
         // Reset the use cache file value
-        config()->routing->useCacheFile = $originalUseCacheFile;
+        config()->routing->useRoutesCacheFile = $originalUseCacheFile;
 
         if ($result === false) {
-            $this->output->writeMessage('An error occurred while generating cache.', true);
+            output()->writeMessage('An error occurred while generating cache.', true);
 
             return 0;
         }
 
-        $this->output->writeMessage('Cache generated successfully', true);
+        output()->writeMessage('Cache generated successfully', true);
 
         return 1;
     }

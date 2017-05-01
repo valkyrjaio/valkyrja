@@ -73,6 +73,7 @@ class Kernel implements KernelContract
         }
         catch (Throwable $exception) {
             // Show the exception
+            // TODO: Implement
         }
 
         $this->app->events()->trigger('Console.Kernel.handled', [$input, $exitCode]);
