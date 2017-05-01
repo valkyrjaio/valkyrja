@@ -229,38 +229,39 @@ trait Dispatcher
         $context = $dispatch->getClass() ?? $dispatch->getFunction();
         $member = $dispatch->getProperty() ?? $dispatch->getMethod();
 
-        // If the listener has dependencies
-        if (null !== $dispatch->getDependencies()) {
-            // Set the listener arguments to a new blank array
-            $dependencies = $this->getDependencies($dispatch);
+        // If the listener has no dependencies
+        if (null === $dispatch->getDependencies()) {
+            // Return the arguments
+            return $arguments;
+        }
 
-            // If there are no arguments
-            if (null === $arguments) {
-                // Return the dependencies only
-                return $dependencies;
-            }
+        // Set the listener arguments to a new blank array
+        $dependencies = $this->getDependencies($dispatch);
 
-            // Iterate through the arguments
-            foreach ($arguments as $argument) {
-                // If the argument is a service
-                if ($argument instanceof Service) {
-                    // Dispatch the argument and set the results to the argument
-                    $argument = container()->get($argument, null, $context, $member);
-                }
-                // If the argument is a dispatch
-                else if ($argument instanceof Dispatch) {
-                    // Dispatch the argument and set the results to the argument
-                    $argument = $this->dispatchCallable($argument);
-                }
-
-                // Append the argument to the arguments list
-                $dependencies[] = $argument;
-            }
-
+        // If there are no arguments
+        if (null === $arguments) {
+            // Return the dependencies only
             return $dependencies;
         }
 
-        return $arguments;
+        // Iterate through the arguments
+        foreach ($arguments as $argument) {
+            // If the argument is a service
+            if ($argument instanceof Service) {
+                // Dispatch the argument and set the results to the argument
+                $argument = container()->get($argument, null, $context, $member);
+            }
+            // If the argument is a dispatch
+            else if ($argument instanceof Dispatch) {
+                // Dispatch the argument and set the results to the argument
+                $argument = $this->dispatchCallable($argument);
+            }
+
+            // Append the argument to the arguments list
+            $dependencies[] = $argument;
+        }
+
+        return $dependencies;
     }
 
     /**
