@@ -337,9 +337,26 @@ class Events implements EventsContract
      * Get a cacheable representation of the events.
      *
      * @return array
+     *
+     * @throws \ReflectionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function getCacheable(): array
     {
+        // The original use cache file value (may not be using cache to begin with)
+        $originalUseCacheFile = $this->app->config()->events->useCacheFile;
+        // Avoid using the cache file we already have
+        $this->app->config()->events->useCacheFile = false;
+        self::$setup = false;
+        $this->setup();
+
+        // Reset the use cache file value
+        $this->app->config()->events->useCacheFile = $originalUseCacheFile;
+
         return self::$events;
     }
 }

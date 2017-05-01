@@ -34,28 +34,19 @@ class ContainerCache extends CommandHandler
      */
     public function run(): int
     {
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = config()->container->useCacheFile;
-        // Avoid using the cache file we already have
-        config()->container->useCacheFile = false;
-        container()->setup();
-
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()->container->cacheFilePath,
             '<?php return ' . var_export(container()->getCacheable(), true) . ';'
         );
 
-        // Reset the use cache file value
-        config()->container->useCacheFile = $originalUseCacheFile;
-
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating cache.', true);
+            output()->writeMessage('An error occurred while generating container cache.', true);
 
             return 0;
         }
 
-        output()->writeMessage('Cache generated successfully', true);
+        output()->writeMessage('Container cache generated successfully', true);
 
         return 1;
     }

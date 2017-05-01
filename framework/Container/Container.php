@@ -602,9 +602,28 @@ class Container implements ContainerContract
      * Get a cacheable representation of the service container.
      *
      * @return array
+     *
+     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
+     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
+     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function getCacheable(): array
     {
+        // The original use cache file value (may not be using cache to begin with)
+        $originalUseCacheFile = $this->app->config()->container->useCacheFile;
+        // Avoid using the cache file we already have
+        $this->app->config()->container->useCacheFile = false;
+        self::$setup = false;
+        $this->setup();
+
+        // Reset the use cache file value
+        $this->app->config()->container->useCacheFile = $originalUseCacheFile;
+
         // Since service providers are deferred by default
         // when we want to get a true representation of all the services
         // We have to register the service providers that haven't yet been registered

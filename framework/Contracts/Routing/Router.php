@@ -12,6 +12,7 @@
 namespace Valkyrja\Contracts\Routing;
 
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\RequestMethod;
@@ -24,30 +25,8 @@ use Valkyrja\Routing\Route;
  *
  * @author  Melech Mizrachi
  */
-interface Router
+interface Router extends Cacheable
 {
-    /**
-     * The variable regex.
-     *
-     * @constant string
-     */
-    public const VARIABLE_REGEX = <<<'REGEX'
-\{
-    \s* ([a-zA-Z_][a-zA-Z0-9_-]*) \s*
-    (?:
-        : \s* 
-        (
-            [
-                ^{}]*
-                (?:
-                \{(?-1)\}
-                [^{}
-            ]*)
-        *)
-    )?
-\}
-REGEX;
-
     /**
      * Router constructor.
      *
@@ -220,11 +199,4 @@ REGEX;
      * @return void
      */
     public static function afterClassMethodDispatch($class, string $method, &$dispatch): void;
-
-    /**
-     * Setup routes.
-     *
-     * @return void
-     */
-    public function setup(): void;
 }

@@ -34,28 +34,19 @@ class EventsCache extends CommandHandler
      */
     public function run(): int
     {
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = config()->events->useCacheFile;
-        // Avoid using the cache file we already have
-        config()->events->useCacheFile = false;
-        events()->setup();
-
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()->events->cacheFilePath,
             '<?php return ' . var_export(events()->getCacheable(), true) . ';'
         );
 
-        // Reset the use cache file value
-        config()->events->useCacheFile = $originalUseCacheFile;
-
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating cache.', true);
+            output()->writeMessage('An error occurred while generating events cache.', true);
 
             return 0;
         }
 
-        output()->writeMessage('Cache generated successfully', true);
+        output()->writeMessage('Events cache generated successfully', true);
 
         return 1;
     }
