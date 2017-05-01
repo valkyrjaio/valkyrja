@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Contracts\Events;
 
+use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Events\Listener;
 
 /**
@@ -20,7 +21,7 @@ use Valkyrja\Events\Listener;
  *
  * @author  Melech Mizrachi
  */
-interface Events
+interface Events extends Cacheable
 {
     /**
      * Add an event listener.
@@ -132,18 +133,4 @@ interface Events
      * @return void
      */
     public function set(array $events): void;
-
-    /**
-     * Setup the container.
-     *
-     * @return void
-     */
-    public function setup(): void;
-
-    /**
-     * Get a cacheable representation of the events.
-     *
-     * @return array
-     */
-    public function getCacheable(): array;
 }

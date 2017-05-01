@@ -14,6 +14,7 @@ namespace Valkyrja\Contracts\Container;
 use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Events\Events;
 
 /**
@@ -23,7 +24,7 @@ use Valkyrja\Contracts\Events\Events;
  *
  * @author  Melech Mizrachi
  */
-interface Container
+interface Container extends Cacheable
 {
     /**
      * Container constructor.
@@ -172,18 +173,4 @@ interface Container
      * @return string
      */
     public function contextServiceId(string $serviceId, string $context, string $member = null): string;
-
-    /**
-     * Setup the container.
-     *
-     * @return void
-     */
-    public function setup(): void;
-
-    /**
-     * Get a cacheable representation of the service container.
-     *
-     * @return array
-     */
-    public function getCacheable(): array;
 }

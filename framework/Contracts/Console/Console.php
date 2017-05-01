@@ -13,6 +13,7 @@ namespace Valkyrja\Contracts\Console;
 
 use Valkyrja\Console\Command;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Contracts\Cache\Cacheable;
 
 /**
  * Interface Console
@@ -21,7 +22,7 @@ use Valkyrja\Contracts\Application;
  *
  * @author  Melech Mizrachi
  */
-interface Console
+interface Console extends Cacheable
 {
     /**
      * The variable regex.
@@ -134,23 +135,9 @@ REGEX;
     public function set(Command ...$commands): void;
 
     /**
-     * Setup the container.
-     *
-     * @return void
-     */
-    public function setup(): void;
-
-    /**
      * Get the named commands list.
      *
      * @return array
      */
     public function getNamedCommands(): array;
-
-    /**
-     * Get a cacheable representation of the commands.
-     *
-     * @return \Valkyrja\Console\Command[]
-     */
-    public function getCacheable(): array;
 }
