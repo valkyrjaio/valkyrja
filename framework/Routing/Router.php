@@ -69,27 +69,27 @@ class Router implements RouterContract
     protected static $setup = false;
 
     /**
+     * The routes group model.
+     *
+     * @var array
+     */
+    protected const ROUTES_GROUP = [
+        RequestMethod::GET    => [],
+        RequestMethod::POST   => [],
+        RequestMethod::PUT    => [],
+        RequestMethod::PATCH  => [],
+        RequestMethod::DELETE => [],
+        RequestMethod::HEAD   => [],
+    ];
+
+    /**
      * Application routes.
      *
      * @var array
      */
     protected static $routes = [
-        self::STATIC_ROUTES_TYPE  => [
-            RequestMethod::GET    => [],
-            RequestMethod::POST   => [],
-            RequestMethod::PUT    => [],
-            RequestMethod::PATCH  => [],
-            RequestMethod::DELETE => [],
-            RequestMethod::HEAD   => [],
-        ],
-        self::DYNAMIC_ROUTES_TYPE => [
-            RequestMethod::GET    => [],
-            RequestMethod::POST   => [],
-            RequestMethod::PUT    => [],
-            RequestMethod::PATCH  => [],
-            RequestMethod::DELETE => [],
-            RequestMethod::HEAD   => [],
-        ],
+        self::STATIC_ROUTES_TYPE  => self::ROUTES_GROUP,
+        self::DYNAMIC_ROUTES_TYPE => self::ROUTES_GROUP,
         self::NAME_ROUTES_TYPE    => [],
     ];
 
@@ -745,6 +745,12 @@ class Router implements RouterContract
      */
     public function getCacheable(): array
     {
+        self::$routes = [
+            self::STATIC_ROUTES_TYPE  => self::ROUTES_GROUP,
+            self::DYNAMIC_ROUTES_TYPE => self::ROUTES_GROUP,
+            self::NAME_ROUTES_TYPE    => [],
+        ];
+
         // The original use cache file value (may not be using cache to begin with)
         $originalUseCacheFile = $this->app->config()->routing->useRoutesCacheFile;
         // Avoid using the cache file we already have
