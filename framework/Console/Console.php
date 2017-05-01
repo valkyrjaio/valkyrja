@@ -239,6 +239,18 @@ class Console implements ConsoleContract
             throw new CommandNotFound();
         }
 
+        return $this->dispatchCommand($command);
+    }
+
+    /**
+     * Dispatch a command.
+     *
+     * @param \Valkyrja\Console\Command $command The command
+     *
+     * @return mixed
+     */
+    public function dispatchCommand(Command $command)
+    {
         // Trigger an event before dispatching
         $this->app->events()->trigger('Command.dispatching', [$command]);
 

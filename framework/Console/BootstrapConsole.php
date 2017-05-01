@@ -81,8 +81,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('console:commands[ -{h}][ --{help}]')
-                ->setName('console:commands')
+                ->setPath(ConsoleCommands::COMMAND . '[ -{h}][ --{help}]')
+                ->setName(ConsoleCommands::COMMAND)
                 ->setDescription('List all the commands')
                 ->setClass(ConsoleCommands::class)
         );
@@ -97,8 +97,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('console:commandsForBash valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]')
-                ->setName('console:commandsForBash')
+                ->setPath(ConsoleCommandsForBash::COMMAND . ' valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]')
+                ->setName(ConsoleCommandsForBash::COMMAND)
                 ->setDescription('List all the commands for bash auto complete')
                 ->setClass(ConsoleCommandsForBash::class)
         );
@@ -113,8 +113,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('console:cache[ -{h}][ --{help}]')
-                ->setName('console:cache')
+                ->setPath(ConsoleCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setName(ConsoleCache::COMMAND)
                 ->setDescription('Generate the console cache')
                 ->setClass(ConsoleCache::class)
         );
@@ -129,8 +129,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('container:cache[ -{h}][ --{help}]')
-                ->setName('container:cache')
+                ->setPath(ContainerCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setName(ContainerCache::COMMAND)
                 ->setDescription('Generate the container cache')
                 ->setClass(ContainerCache::class)
         );
@@ -145,8 +145,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('events:cache[ -{h}][ --{help}]')
-                ->setName('events:cache')
+                ->setPath(EventsCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setName(EventsCache::COMMAND)
                 ->setDescription('Generate the events cache')
                 ->setClass(EventsCache::class)
         );
@@ -161,8 +161,8 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('routes:cache[ -{h}][ --{help}]')
-                ->setName('routes:cache')
+                ->setPath(RoutingCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setName(RoutingCache::COMMAND)
                 ->setDescription('Generate the routes cache')
                 ->setClass(RoutingCache::class)
         );

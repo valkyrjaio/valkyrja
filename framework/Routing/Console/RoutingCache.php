@@ -23,6 +23,11 @@ use Valkyrja\Console\CommandHandler;
 class RoutingCache extends CommandHandler
 {
     /**
+     * The command.
+     */
+    public const COMMAND = 'routes:cache';
+
+    /**
      * Run the command.
      *
      * @return int
@@ -33,6 +38,7 @@ class RoutingCache extends CommandHandler
         $originalUseCacheFile = config()->routing->useRoutesCacheFile;
         // Avoid using the cache file we already have
         config()->routing->useRoutesCacheFile = false;
+        router()->setup();
 
         // Get the results of the cache attempt
         $result = file_put_contents(

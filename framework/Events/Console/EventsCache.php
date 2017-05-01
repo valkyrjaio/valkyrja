@@ -23,6 +23,11 @@ use Valkyrja\Console\CommandHandler;
 class EventsCache extends CommandHandler
 {
     /**
+     * The command.
+     */
+    public const COMMAND = 'events:cache';
+
+    /**
      * Run the command.
      *
      * @return int
@@ -33,6 +38,7 @@ class EventsCache extends CommandHandler
         $originalUseCacheFile = config()->events->useCacheFile;
         // Avoid using the cache file we already have
         config()->events->useCacheFile = false;
+        events()->setup();
 
         // Get the results of the cache attempt
         $result = file_put_contents(

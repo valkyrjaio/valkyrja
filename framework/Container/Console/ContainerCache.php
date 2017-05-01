@@ -23,6 +23,11 @@ use Valkyrja\Console\CommandHandler;
 class ContainerCache extends CommandHandler
 {
     /**
+     * The command.
+     */
+    public const COMMAND = 'container:cache';
+
+    /**
      * Run the command.
      *
      * @return int
@@ -33,6 +38,7 @@ class ContainerCache extends CommandHandler
         $originalUseCacheFile = config()->container->useCacheFile;
         // Avoid using the cache file we already have
         config()->container->useCacheFile = false;
+        container()->setup();
 
         // Get the results of the cache attempt
         $result = file_put_contents(

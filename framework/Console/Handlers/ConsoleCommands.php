@@ -23,6 +23,11 @@ use Valkyrja\Console\CommandHandler;
 class ConsoleCommands extends CommandHandler
 {
     /**
+     * The command.
+     */
+    public const COMMAND = 'console:commands';
+
+    /**
      * Run the command.
      *
      * @return int

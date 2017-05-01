@@ -23,6 +23,11 @@ use Valkyrja\Console\CommandHandler;
 class ConsoleCommandsForBash extends CommandHandler
 {
     /**
+     * The command.
+     */
+    public const COMMAND = 'console:commandsForBash';
+
+    /**
      * Run the command.
      *
      * @param string $commandTyped The command typed

@@ -25,27 +25,6 @@ use Valkyrja\Contracts\Cache\Cacheable;
 interface Console extends Cacheable
 {
     /**
-     * The variable regex.
-     *
-     * @constant string
-     */
-    public const VARIABLE_REGEX = <<<'REGEX'
-\{
-    \s* ([a-zA-Z0-9_-]*) \s*
-    (?:
-        : \s* 
-        (
-            [
-                ^{}]*
-                (?:\{(?-1)\}
-                [^{}
-            ]*)
-        *)
-    )?
-\}
-REGEX;
-
-    /**
      * Console constructor.
      *
      * @param \Valkyrja\Contracts\Application $application The application
@@ -117,6 +96,15 @@ REGEX;
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      */
     public function dispatch(Input $input, Output $output);
+
+    /**
+     * Dispatch a command.
+     *
+     * @param \Valkyrja\Console\Command $command The command
+     *
+     * @return mixed
+     */
+    public function dispatchCommand(Command $command);
 
     /**
      * Get all commands.
