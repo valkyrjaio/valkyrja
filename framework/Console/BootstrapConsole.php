@@ -94,7 +94,6 @@ class BootstrapConsole
                 ->setName('console:commands')
                 ->setDescription('List all the commands')
                 ->setClass(ConsoleCommands::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -118,7 +117,6 @@ class BootstrapConsole
                 ->setName('console:commandsForBash')
                 ->setDescription('List all the commands for bash auto complete')
                 ->setClass(ConsoleCommandsForBash::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -142,7 +140,6 @@ class BootstrapConsole
                 ->setName('console:cache')
                 ->setDescription('Generate the console cache')
                 ->setClass(ConsoleCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -166,7 +163,6 @@ class BootstrapConsole
                 ->setName('container:cache')
                 ->setDescription('Generate the container cache')
                 ->setClass(ContainerCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -190,7 +186,6 @@ class BootstrapConsole
                 ->setName('events:cache')
                 ->setDescription('Generate the events cache')
                 ->setClass(EventsCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 
@@ -214,7 +209,6 @@ class BootstrapConsole
                 ->setName('routes:cache')
                 ->setDescription('Generate the routes cache')
                 ->setClass(RoutingCache::class)
-                ->setDependencies([CoreComponent::INPUT, CoreComponent::OUTPUT])
         );
     }
 }
