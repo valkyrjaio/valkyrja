@@ -25,11 +25,12 @@ class ConsoleCommandsForBash extends CommandHandler
     /**
      * Run the command.
      *
+     * @param string $commandTyped The command typed
+     *
      * @return int
      */
-    public function run(): int
+    public function run(string $commandTyped = null): int
     {
-        $commandTyped = $this->input->getArgument('commandTyped');
         $allCommands = array_keys(console()->getNamedCommands());
 
         if ($commandTyped) {
