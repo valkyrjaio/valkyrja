@@ -298,7 +298,10 @@ class Console implements ConsoleContract
         // If the application should use the events cache files
         if ($this->app->config()->console->useCacheFile) {
             // Set the application routes with said file
-            self::$commands = require $this->app->config()->console->cacheFilePath;
+            $cache = require $this->app->config()->console->cacheFilePath;
+
+            self::$commands = $cache['commands'];
+            self::$namedCommands = $cache['namedCommands'];
 
             // Then return out of routes setup
             return;
@@ -374,10 +377,13 @@ class Console implements ConsoleContract
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return \Valkyrja\Console\Command[]
+     * @return array
      */
     public function getCacheable(): array
     {
-        return self::$commands;
+        return [
+            'commands'      => self::$commands,
+            'namedCommands' => self::$namedCommands,
+        ];
     }
 }
