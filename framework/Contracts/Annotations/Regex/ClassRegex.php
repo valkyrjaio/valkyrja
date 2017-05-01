@@ -52,6 +52,9 @@ interface ClassRegex
      *              \'                                      Single quote (for argument value enclosure)
      *              \"                                      Double quote (for argument value enclosure)
      *              \*                                      Asterisk (for multiline comments phpDoc)
+     *              \<                                      Argument Group Open (replaced with '(?:')
+     *              \>                                      Argument Group Close (replaced with ')')
+     *              \|                                      Pipe or for regex
      *              \s                                      Whitespace
      *          ]*                                      Allow any number of above
      *      )                                        End capture
@@ -61,7 +64,7 @@ interface ClassRegex
     public const CLASS_REGEX = <<<'REGEX'
     \( 
         \s* 
-            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\s]*)
+            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\|\s]*)
         \s* 
     \)
 REGEX;
