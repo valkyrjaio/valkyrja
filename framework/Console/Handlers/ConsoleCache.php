@@ -29,10 +29,19 @@ class ConsoleCache extends CommandHandler
      */
     public function run(): int
     {
+        // The original use cache file value (may not be using cache to begin with)
+        $originalUseCacheFile = config()->console->useCacheFile;
+        // Avoid using the cache file we already have
+        config()->console->useCacheFile = false;
+
+        // Get the results of the cache attempt
         $result = file_put_contents(
             config()->console->cacheFilePath,
             '<?php return ' . var_export(console()->getCacheable(), true) . ';'
         );
+
+        // Reset the use cache file value
+        config()->console->useCacheFile = $originalUseCacheFile;
 
         if ($result === false) {
             $this->output->writeMessage('An error occurred while generating cache.', true);
