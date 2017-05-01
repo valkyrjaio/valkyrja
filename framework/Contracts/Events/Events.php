@@ -111,11 +111,11 @@ interface Events
      * Trigger an event.
      *
      * @param string $event     The event
-     * @param array  $arguments The arguments
+     * @param array  $arguments [optional] The arguments
      *
      * @return array
      */
-    public function trigger(string $event, array $arguments = []): array;
+    public function trigger(string $event, array $arguments = null): array;
 
     /**
      * Get all events.

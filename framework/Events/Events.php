@@ -56,7 +56,6 @@ class Events implements EventsContract
     public function __construct(Application $application)
     {
         $this->app = $application;
-        // $this->setup();
     }
 
     /**
@@ -214,11 +213,11 @@ class Events implements EventsContract
      * Trigger an event.
      *
      * @param string $event     The event
-     * @param array  $arguments The arguments
+     * @param array  $arguments [optional] The arguments
      *
      * @return array
      */
-    public function trigger(string $event, array $arguments = []): array
+    public function trigger(string $event, array $arguments = null): array
     {
         // The responses
         $responses = [];
