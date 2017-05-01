@@ -115,6 +115,12 @@ REGEX;
 
         // Run through all matches
         foreach ($params[0] as $key => $param) {
+            // Undo replacements made in parse foreach loop (see line 67)
+            [$params[0][$key], $params[2][$key]] = str_replace(
+                [')*?', ')?'],
+                ['*]', ']'],
+                [$params[0][$key], $params[2][$key]]
+            );
             // Replace the matches with a regex
             $regex = str_replace($param, $this->getParamReplacement($key, $params), $regex);
         }
@@ -164,8 +170,6 @@ REGEX;
                 break;
             default :
                 $regex = ($params[2][$key] ?: $params[1][$key]);
-                // Undo replacements made in parse foreach loop (see line 67)
-                $regex = str_replace([')*?', ')?'], ['*]', ']'], $regex);
 
                 // Check if a regex was set for this match, otherwise use a wildcard all
                 $replacement = '(' . $regex . ')';
