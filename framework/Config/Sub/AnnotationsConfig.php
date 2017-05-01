@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Console\Command;
 use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
 use Valkyrja\Contracts\Config\Env;
@@ -47,6 +48,7 @@ class AnnotationsConfig
      * @var array
      */
     public $map = [
+        'Command'        => Command::class,
         'Listener'       => Listener::class,
         'Route'          => Route::class,
         'Service'        => Service::class,

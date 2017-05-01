@@ -40,6 +40,14 @@ class CommandAnnotations extends Annotations
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
+            foreach ($this->classAnnotationsType('Command', $class) as $annotation) {
+                $this->setCommandProperties($annotation);
+                // Set the annotation in the annotations list
+                $annotations[] = $annotation;
+            }
+
+            // Get all the annotations for each class and iterate through them
+            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
             foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
@@ -61,11 +69,18 @@ class CommandAnnotations extends Annotations
      */
     protected function setCommandProperties(Dispatch $dispatch): void
     {
-        $parameters = $this->getMethodReflection($dispatch->getClass(), $dispatch->getMethod() ?? '__construct')
-                           ->getParameters();
+        $classReflection = $this->getClassReflection($dispatch->getClass());
 
-        // Set the dependencies
-        $dispatch->setDependencies($this->getDependencies(...$parameters));
+        if ($dispatch->getMethod() || $classReflection->hasMethod('__construct')) {
+            $methodReflection = $this->getMethodReflection(
+                $dispatch->getClass(),
+                $dispatch->getMethod() ?? '__construct'
+            );
+            $parameters = $methodReflection->getParameters();
+
+            // Set the dependencies
+            $dispatch->setDependencies($this->getDependencies(...$parameters));
+        }
 
         // Set the type to null (we already know it's a listener)
         $dispatch->setType();

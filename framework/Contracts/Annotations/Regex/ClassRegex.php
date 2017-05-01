@@ -61,7 +61,7 @@ interface ClassRegex
     public const CLASS_REGEX = <<<'REGEX'
     \( 
         \s* 
-            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\s]*)
+            ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\s]*)
         \s* 
     \)
 REGEX;

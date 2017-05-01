@@ -98,7 +98,7 @@ class Console implements ConsoleContract
      */
     public function addCommand(Command $command): void
     {
-        $command->setMethod(static::RUN_METHOD);
+        $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
 
         $this->verifyClassMethod($command);
         $this->verifyFunction($command);
