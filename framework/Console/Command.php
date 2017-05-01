@@ -160,6 +160,7 @@ class Command extends Dispatch implements Annotation
 
         $dispatch
             ->setPath($properties['path'] ?? null)
+            ->setName($properties['name'] ?? null)
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
             ->setDescription($properties['description'] ?? null)
