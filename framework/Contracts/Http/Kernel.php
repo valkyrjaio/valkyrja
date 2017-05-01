@@ -37,8 +37,6 @@ interface Kernel
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
      */
     public function handle(Request $request): Response;
 
@@ -58,8 +56,6 @@ interface Kernel
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return void
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
      */
     public function run(Request $request = null): void;
 }
