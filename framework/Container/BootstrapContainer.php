@@ -449,16 +449,27 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::LOGGER_INTERFACE)
                 ->setClass(MonologLogger::class)
-                ->setDependencies([Application::class])
                 ->setArguments([
                     $this->app->config()->logger->name,
-                    [
-                        (new Dispatch())
-                            ->setClass(StreamHandler::class),
-                    ],
+                    (new Dispatch())
+                        ->setClass(static::class)
+                        ->setMethod('getLoggerHandlers')
+                        ->setStatic(true),
                 ])
                 ->setSingleton(true)
         );
+    }
+
+    /**
+     * Get the monolog arguments.
+     *
+     * @return array
+     */
+    public static function getLoggerHandlers(): array
+    {
+        return [
+            container()->get(StreamHandler::class),
+        ];
     }
 
     /**
