@@ -113,7 +113,7 @@ class BootstrapConsole
 
         $this->console->addCommand(
             (new Command())
-                ->setPath('console:commandsForBash valkyrja[ {commandTyped:alpha}]')
+                ->setPath('console:commandsForBash valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]')
                 ->setName('console:commandsForBash')
                 ->setDescription('List all the commands for bash auto complete')
                 ->setClass(ConsoleCommandsForBash::class)
