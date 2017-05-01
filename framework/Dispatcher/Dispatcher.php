@@ -13,6 +13,7 @@ namespace Valkyrja\Dispatcher;
 
 use Closure;
 
+use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -225,6 +226,8 @@ trait Dispatcher
 
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
+        $context = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // If the listener has dependencies
         if (null !== $dispatch->getDependencies()) {
@@ -239,8 +242,13 @@ trait Dispatcher
 
             // Iterate through the arguments
             foreach ($arguments as $argument) {
+                // If the argument is a service
+                if ($argument instanceof Service) {
+                    // Dispatch the argument and set the results to the argument
+                    $argument = container()->get($argument, null, $context, $member);
+                }
                 // If the argument is a dispatch
-                if ($argument instanceof Dispatch) {
+                else if ($argument instanceof Dispatch) {
                     // Dispatch the argument and set the results to the argument
                     $argument = $this->dispatchCallable($argument);
                 }
