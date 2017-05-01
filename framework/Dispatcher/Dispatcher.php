@@ -27,6 +27,14 @@ use Valkyrja\Events\Listener;
  */
 trait Dispatcher
 {
+    /**
+     * The return value to use when a dispatch was successful
+     * but no data was returned from the dispatch.
+     * This avoids having to check each and every
+     * other type of dispatch down the chain.
+     *
+     * @var string
+     */
     protected $DISPATCHED = 'dispatcher.dispatched';
 
     /**
@@ -269,15 +277,12 @@ trait Dispatcher
         $method = $dispatch->getMethod();
         $response = null;
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before.class.method', [$class, $method, $dispatch]);
-            events()->trigger(
-                "dispatch.before.{$dispatch->getClass()}.{$dispatch->getMethod()}",
-                [$class, $method, $dispatch]
-            );
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before.class.method', [$class, $method, $dispatch]);
+        $this->dispatcherEvent($dispatch,
+            "dispatch.before.{$dispatch->getClass()}.{$dispatch->getMethod()}",
+            [$class, $method, $dispatch]
+        );
 
         // If there are arguments
         if (null !== $arguments) {
@@ -299,15 +304,12 @@ trait Dispatcher
             }
         }
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            events()->trigger('dispatch.after.class.method', [$class, $method, $response]);
-            events()->trigger(
-                "dispatch.after.{$dispatch->getClass()}.{$dispatch->getMethod()}",
-                [$class, $method, $response]
-            );
-        }
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after.class.method', [$class, $method, $response]);
+        $this->dispatcherEvent($dispatch,
+            "dispatch.after.{$dispatch->getClass()}.{$dispatch->getMethod()}",
+            [$class, $method, $response]
+        );
 
         return $response ?? $this->DISPATCHED;
     }
@@ -330,27 +332,21 @@ trait Dispatcher
         $class = container()->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before.class.property', [$class, $property, $dispatch]);
-            events()->trigger(
-                "dispatch.before.{$dispatch->getClass()}.{$dispatch->getProperty()}",
-                [$class, $property, $dispatch]
-            );
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before.class.property', [$class, $property, $dispatch]);
+        $this->dispatcherEvent($dispatch,
+            "dispatch.before.{$dispatch->getClass()}.{$dispatch->getProperty()}",
+            [$class, $property, $dispatch]
+        );
 
         $response = $class->{$property};
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            events()->trigger('dispatch.after.class.property', [$class, $property, $response]);
-            events()->trigger(
-                "dispatch.after.{$dispatch->getClass()}.{$dispatch->getProperty()}",
-                [$class, $property, $response]
-            );
-        }
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after.class.property', [$class, $property, $response]);
+        $this->dispatcherEvent($dispatch,
+            "dispatch.after.{$dispatch->getClass()}.{$dispatch->getProperty()}",
+            [$class, $property, $response]
+        );
 
         return $response ?? $this->DISPATCHED;
     }
@@ -370,12 +366,9 @@ trait Dispatcher
             return null;
         }
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before.class', [$dispatch]);
-            events()->trigger("dispatch.before.{$dispatch->getClass()}", [$dispatch]);
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before.class', [$dispatch]);
+        $this->dispatcherEvent($dispatch, "dispatch.before.{$dispatch->getClass()}", [$dispatch]);
 
         // If the class is the id then this item is
         // not set in the service container yet
@@ -399,12 +392,9 @@ trait Dispatcher
             $class = container()->get($dispatch->getClass(), $arguments);
         }
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            events()->trigger('dispatch.after.class', [$class]);
-            events()->trigger("dispatch.after.{$dispatch->getClass()}", [$class]);
-        }
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after.class', [$class]);
+        $this->dispatcherEvent($dispatch, "dispatch.after.{$dispatch->getClass()}", [$class]);
 
         return $class ?? $this->DISPATCHED;
     }
@@ -427,12 +417,9 @@ trait Dispatcher
         $function = $dispatch->getFunction();
         $response = null;
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before.function', [$function, $dispatch]);
-            events()->trigger("dispatch.before.{$dispatch->getFunction()}", [$function, $dispatch]);
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before.function', [$function, $dispatch]);
+        $this->dispatcherEvent($dispatch, "dispatch.before.{$dispatch->getFunction()}", [$function, $dispatch]);
 
         // If there are arguments
         if (null !== $arguments) {
@@ -444,12 +431,9 @@ trait Dispatcher
             $response = $function();
         }
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            events()->trigger('dispatch.after.function', [$function, $response]);
-            events()->trigger("dispatch.after.{$dispatch->getFunction()}", [$function, $response]);
-        }
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after.function', [$function, $response]);
+        $this->dispatcherEvent($dispatch, "dispatch.after.{$dispatch->getFunction()}", [$function, $response]);
 
         return $response ?? $this->DISPATCHED;
     }
@@ -472,11 +456,8 @@ trait Dispatcher
         $closure = $dispatch->getClosure();
         $response = null;
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before.closure', [$dispatch]);
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before.closure', [$dispatch]);
 
         // If there are arguments
         if (null !== $arguments) {
@@ -488,11 +469,8 @@ trait Dispatcher
             $response = $closure();
         }
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            events()->trigger('dispatch.after.closure', [$response]);
-        }
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after.closure', [$response]);
 
         return $response ?? $this->DISPATCHED;
     }
@@ -510,11 +488,8 @@ trait Dispatcher
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // Before dispatch event
-            events()->trigger('dispatch.before', [$dispatch, $arguments]);
-        }
+        // Before dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.before', [$dispatch, $arguments]);
 
         // Attempt to dispatch the dispatch
         $response = $this->dispatchClassMethod($dispatch, $arguments)
@@ -524,19 +499,34 @@ trait Dispatcher
             ?? $this->dispatchClosure($dispatch, $arguments);
         // TODO: Add Constant and Variable ability
 
-        // If the response was initially null and we added the dispatched text to avoid
-        // calling each subsequent dispatcher thereafter
+        // If the response was initially null and we added the dispatched
+        // text to avoid calling each subsequent dispatcher thereafter
         if ($response === $this->DISPATCHED) {
             // Reset the response to null
             $response = null;
         }
 
+        // After dispatch event
+        $this->dispatcherEvent($dispatch, 'dispatch.after', [$dispatch, $response]);
+
+        return $response;
+    }
+
+    /**
+     * Trigger a dispatcher event.
+     *
+     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
+     * @param string                        $event     The event
+     * @param array                         $arguments [optional] The arguments
+     *
+     * @return void
+     */
+    protected function dispatcherEvent(Dispatch $dispatch, string $event, array $arguments = null): void
+    {
         // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
-            events()->trigger('dispatch.after', [$dispatch, $response]);
+            events()->trigger($event, $arguments);
         }
-
-        return $response;
     }
 }
