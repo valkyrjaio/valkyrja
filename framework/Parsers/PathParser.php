@@ -74,7 +74,7 @@ REGEX;
             $current .= $segment;
         }
 
-        return $this->parsePath($current);
+        return $this->parsePath($current, $this->splitSegments($segments));
     }
 
     /**
@@ -93,13 +93,53 @@ REGEX;
     }
 
     /**
-     * Parse a path with no optionals.
+     * Split segments based on ending bracket within the segments.
      *
-     * @param string $path The path
+     * @param array $segments The segments
      *
      * @return array
      */
-    protected function parsePath(string $path): array
+    protected function splitSegments(array $segments): array
+    {
+        // The final segments to return
+        $returnSegments = [];
+
+        // Iterate through the segments once more
+        foreach ($segments as $segment) {
+            // If the segment has an ending bracket
+            if (strpos($segment, ']') !== false) {
+                // Split the segment on that bracket
+                $parts = explode(']', $segment);
+
+                // Iterate through the parts
+                foreach ($parts as $part) {
+                    if (! $part) {
+                        continue;
+                    }
+
+                    // Setting each part individually
+                    $returnSegments[] = $part;
+                }
+
+                continue;
+            }
+
+            // Otherwise set the segment normally
+            $returnSegments[] = $segment;
+        }
+
+        return $returnSegments;
+    }
+
+    /**
+     * Parse a path with no optionals.
+     *
+     * @param string $path     The path
+     * @param array  $segments The segments
+     *
+     * @return array
+     */
+    protected function parsePath(string $path, array $segments): array
     {
         /** @var array[] $params */
         // Get all matches for {paramName} and {paramName:(validator)} in the path
@@ -109,6 +149,7 @@ REGEX;
             $params
         );
         $regex = $path;
+        $paramsReturn = [];
 
         // Run through all matches
         foreach ($params[0] as $key => $param) {
@@ -118,17 +159,25 @@ REGEX;
                 ['*]', ']'],
                 [$params[0][$key], $params[2][$key]]
             );
+            // Get the regex for this param
+            $paramRegex = $this->getParamReplacement($key, $params);
             // Replace the matches with a regex
-            $regex = str_replace($param, $this->getParamReplacement($key, $params), $regex);
+            $regex = str_replace($param, $paramRegex, $regex);
+
+            // Set the param in the array of params to return
+            $paramsReturn[$params[1][$key]] = [
+                'replace' => $params[0][$key],
+                'regex'   => $paramRegex,
+            ];
         }
 
         $regex = str_replace('/', '\/', $regex);
         $regex = '/^' . $regex . '$/';
 
         return [
-            'path'   => $path,
-            'regex'  => $regex,
-            'params' => $params,
+            'regex'    => $regex,
+            'params'   => $paramsReturn,
+            'segments' => $segments,
         ];
     }
 
@@ -142,6 +191,7 @@ REGEX;
      */
     protected function getParamReplacement(string $key, array $params): string
     {
+        // TODO: Move to mapper to allow for customization
         // Check if a global regex alias was used
         switch ($params[2][$key]) {
             case 'num' :

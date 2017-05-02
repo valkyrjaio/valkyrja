@@ -45,6 +45,13 @@ class Command extends Dispatch implements Annotation
     protected $params;
 
     /**
+     * Any segments for optional parts of path.
+     *
+     * @var array
+     */
+    protected $segments;
+
+    /**
      * The description.
      *
      * @var string
@@ -124,6 +131,30 @@ class Command extends Dispatch implements Annotation
     }
 
     /**
+     * Get the segments.
+     *
+     * @return array
+     */
+    public function getSegments():? array
+    {
+        return $this->segments;
+    }
+
+    /**
+     * Set the segments.
+     *
+     * @param array $segments The segments
+     *
+     * @return $this
+     */
+    public function setSegments(array $segments = null): self
+    {
+        $this->segments = $segments;
+
+        return $this;
+    }
+
+    /**
      * Get the description.
      *
      * @return string
@@ -163,6 +194,7 @@ class Command extends Dispatch implements Annotation
             ->setName($properties['name'] ?? null)
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
+            ->setSegments($properties['segments'] ?? null)
             ->setDescription($properties['description'] ?? null)
             ->setClass($properties['class'] ?? null)
             ->setProperty($properties['property'] ?? null)

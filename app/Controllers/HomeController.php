@@ -89,8 +89,7 @@ class HomeController extends Controller
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
-     * @Route(path = '/home', name = 'home')
-     * @Route(path = '/home/{id:num}', name = 'homePaged', dynamic = true)
+     * @Route(path = '/home[/page/{id:num}]', name = 'home', dynamic = true)
      */
     public function home(Application $application, int $page = 1): Response
     {

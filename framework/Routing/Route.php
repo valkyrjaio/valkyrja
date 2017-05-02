@@ -53,6 +53,13 @@ class Route extends Dispatch implements Annotation
     protected $params;
 
     /**
+     * Any segments for optional parts of path.
+     *
+     * @var array
+     */
+    protected $segments;
+
+    /**
      * Whether the route is dynamic.
      *
      * @var bool
@@ -167,6 +174,30 @@ class Route extends Dispatch implements Annotation
     }
 
     /**
+     * Get the segments.
+     *
+     * @return array
+     */
+    public function getSegments():? array
+    {
+        return $this->segments;
+    }
+
+    /**
+     * Set the segments.
+     *
+     * @param array $segments The segments
+     *
+     * @return $this
+     */
+    public function setSegments(array $segments = null): self
+    {
+        $this->segments = $segments;
+
+        return $this;
+    }
+
+    /**
      * Check whether the route is dynamic.
      *
      * @return boolean
@@ -231,6 +262,7 @@ class Route extends Dispatch implements Annotation
             ->setRequestMethod($properties['requestMethod'] ?? null)
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
+            ->setSegments($properties['segments'] ?? null)
             ->setMatches($properties['matches'] ?? null)
             ->setDynamic($properties['dynamic'] ?? false)
             ->setSecure($properties['secure'] ?? false)

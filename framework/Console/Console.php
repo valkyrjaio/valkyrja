@@ -123,6 +123,7 @@ class Console implements ConsoleContract
         // Set the properties
         $command->setRegex($parsedCommand['regex']);
         $command->setParams($parsedCommand['params']);
+        $command->setSegments($parsedCommand['segments']);
 
         // Set the command in the commands list
         self::$commands[$command->getPath()] = $command;

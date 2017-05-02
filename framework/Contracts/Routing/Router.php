@@ -134,12 +134,13 @@ interface Router extends Cacheable
     /**
      * Get a route url by name.
      *
-     * @param string $name The name of the route to get
-     * @param array  $data [optional] The route data if dynamic
+     * @param string $name     The name of the route to get
+     * @param array  $data     [optional] The route data if dynamic
+     * @param bool   $absolute [optional] Whether this url should be absolute
      *
      * @return string
      */
-    public function routeUrl(string $name, array $data = []): string;
+    public function routeUrl(string $name, array $data = null, bool $absolute = null): string;
 
     /**
      * Get a route from a request.

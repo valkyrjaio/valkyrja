@@ -171,6 +171,7 @@ class Router implements RouterContract
         // Set the properties
         $route->setRegex($parsedRoute['regex']);
         $route->setParams($parsedRoute['params']);
+        $route->setSegments($parsedRoute['segments']);
 
         // Set it in the dynamic routes array
         self::$routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
@@ -363,43 +364,41 @@ class Router implements RouterContract
     /**
      * Get a route url by name.
      *
-     * @param string $name The name of the route to get
-     * @param array  $data [optional] The route data if dynamic
+     * @param string $name     The name of the route to get
+     * @param array  $data     [optional] The route data if dynamic
+     * @param bool   $absolute [optional] Whether this url should be absolute
      *
      * @return string
      *
      * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
      */
-    public function routeUrl(string $name, array $data = []): string
+    public function routeUrl(string $name, array $data = null, bool $absolute = null): string
     {
         // Get the matching route
         $route = $this->route($name);
-
+        // Get the segments of the path
+        $segments = $route->getSegments();
         // Set the path as the route's path
-        $path = $route->getPath();
-        // Set the host to use
-        $host = $this->routeHost($route);
+        $path = $segments[0];
+        // Set the host to use if this is an absolute url
+        // or the route is secure (needs https:// appended)
+        $host = $absolute || $route->getSecure()
+            ? $this->routeHost($route)
+            : '';
 
-        // If there is data
-        if ($data) {
-            // Get the route's params
-            /** @var array[] $params */
-            $params = $route->getParams();
-
-            // Iterate through all the prams
-            foreach ($params[0] as $key => $param) {
-                // Set the path by replacing the params with the data arguments
-                $path = str_replace($param, $data[$params[1][$key]], $path);
-            }
-
+        // If there's no data
+        if (! $data) {
+            // Return just the first segment
             return $host . $this->validateRouteUrl($path);
         }
 
-        return $host . $this->validateRouteUrl($path);
+        return $host . $this->validateRouteUrl($this->replaceSegments($segments, $data, $route->getParams()));
     }
 
     /**
-     * @param \Valkyrja\Routing\Route $route
+     * Get a route's host.
+     *
+     * @param \Valkyrja\Routing\Route $route The route
      *
      * @return string
      */
@@ -409,6 +408,56 @@ class Router implements RouterContract
             . ($route->getSecure() ? 's' : '')
             . '://'
             . request()->getHttpHost();
+    }
+
+    /**
+     * Replace segments's params with data.
+     *
+     * @param array $segments The segments
+     * @param array $data     The data
+     * @param array $params   The params
+     *
+     * @return string
+     */
+    protected function replaceSegments(array $segments, array $data, array $params): string
+    {
+        $path = '';
+        $replace = [];
+        $replacement = [];
+
+        // Iterate through all the data properties for the route
+        foreach ($data as $key => $datum) {
+            // If the data isn't found in the params array it is not a valid param
+            if (! isset($params[$key])) {
+                throw new \InvalidArgumentException("Invalid route param '{$key}' with value '{$datum}'");
+            }
+
+            $regex = $params[$key]['regex'];
+
+            // If the value of the data doesn't match what was specified when the route was made
+            if (preg_match('/^' . $regex . '$/', $datum) === 0) {
+                throw new \InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
+            }
+
+            // Set what to replace
+            $replace[] = $params[$key]['replace'];
+            // With the data value to replace with
+            $replacement[] = $datum;
+        }
+
+        // Iterate through the segments
+        foreach ($segments as $index => $segment) {
+            // Replace any parameters
+            $segment = str_replace($replace, $replacement, $segment);
+
+            // If parameters were replaced or none to begin with
+            if (strpos($segment, '{') === false) {
+                // Append this segment
+                $path .= $segment;
+            }
+        }
+
+        return $path;
     }
 
     /**
