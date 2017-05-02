@@ -13,6 +13,7 @@ namespace Valkyrja\Events;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
+use Valkyrja\Contracts\Events\Event;
 use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
@@ -237,6 +238,18 @@ class Events implements EventsContract
         }
 
         return $responses;
+    }
+
+    /**
+     * Trigger an event interface.
+     *
+     * @param \Valkyrja\Contracts\Events\Event $event The event
+     *
+     * @return array
+     */
+    public function event(Event $event): array
+    {
+        return $this->trigger(get_class($event), [$event]);
     }
 
     /**
