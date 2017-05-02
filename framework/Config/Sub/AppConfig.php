@@ -75,6 +75,21 @@ class AppConfig
     public $events = Events::class;
 
     /**
+     * The regex map.
+     *
+     * @var array
+     */
+    public $pathRegexMap = [
+        'num'                  => '(\d+)',
+        'slug'                 => '([a-zA-Z0-9-]+)',
+        'alpha'                => '([a-zA-Z]+)',
+        'alpha-lowercase'      => '([a-z]+)',
+        'alpha-uppercase'      => '([A-Z]+)',
+        'alpha-num'            => '([a-zA-Z0-9]+)',
+        'alpha-num-underscore' => '(\w+)',
+    ];
+
+    /**
      * AppConfig constructor.
      *
      * @param \Valkyrja\Contracts\Config\Env $env

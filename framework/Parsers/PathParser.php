@@ -191,38 +191,7 @@ REGEX;
      */
     protected function getParamReplacement(string $key, array $params): string
     {
-        // TODO: Move to mapper to allow for customization
-        // Check if a global regex alias was used
-        switch ($params[2][$key]) {
-            case 'num' :
-                $replacement = '(\d+)';
-                break;
-            case 'slug' :
-                $replacement = '([a-zA-Z0-9-]+)';
-                break;
-            case 'alpha' :
-                $replacement = '([a-zA-Z]+)';
-                break;
-            case 'alpha-lowercase' :
-                $replacement = '([a-z]+)';
-                break;
-            case 'alpha-uppercase' :
-                $replacement = '([A-Z]+)';
-                break;
-            case 'alpha-num' :
-                $replacement = '([a-zA-Z0-9]+)';
-                break;
-            case 'alpha-num-underscore' :
-                $replacement = '(\w+)';
-                break;
-            default :
-                $regex = ($params[2][$key] ?: $params[1][$key]);
-
-                // Check if a regex was set for this match, otherwise use a wildcard all
-                $replacement = '(' . $regex . ')';
-                break;
-        }
-
-        return $replacement;
+        return config()->app->pathRegexMap[$params[2][$key]]
+            ?? '(' . ($params[2][$key] ?: $params[1][$key]) . ')';
     }
 }
