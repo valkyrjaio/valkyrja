@@ -14,7 +14,7 @@ namespace Valkyrja\Console\Handlers;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class GenerateCache
+ * Class ConsoleCache
  *
  * @package Valkyrja\Console\Handlers
  *
