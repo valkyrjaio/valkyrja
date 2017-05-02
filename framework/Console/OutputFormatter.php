@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Console\Enums\FormatBackground;
+use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Contracts\Console\OutputFormatter as OutputFormatterContract;
 
 /**
@@ -23,6 +25,51 @@ use Valkyrja\Contracts\Console\OutputFormatter as OutputFormatterContract;
 class OutputFormatter implements OutputFormatterContract
 {
     /**
+     * The foreground color.
+     *
+     * @var \Valkyrja\Console\Enums\FormatForeground
+     */
+    protected $foreground;
+
+    /**
+     * The background color.
+     *
+     * @var \Valkyrja\Console\Enums\FormatBackground
+     */
+    protected $background;
+
+    /**
+     * The options.
+     *
+     * @var \Valkyrja\Console\Enums\FormatOption[]
+     */
+    protected $options = [];
+
+    /**
+     * Set the foreground.
+     *
+     * @param \Valkyrja\Console\Enums\FormatForeground $foreground The foreground color
+     *
+     * @return void
+     */
+    public function setForeground(FormatForeground $foreground = null): void
+    {
+        $this->foreground = $foreground;
+    }
+
+    /**
+     * Set the background.
+     *
+     * @param \Valkyrja\Console\Enums\FormatBackground $background The background
+     *
+     * @return void
+     */
+    public function setBackground(FormatBackground $background = null): void
+    {
+        $this->background = $background;
+    }
+
+    /**
      * Format a message.
      *
      * @param string $message The message
@@ -31,6 +78,30 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function format(string $message): string
     {
-        return $message;
+        $set = [];
+        $unset = [];
+
+        if (null !== $this->foreground) {
+            $set[] = $this->foreground->getValue();
+            $unset[] = FormatForeground::DEFAULT;
+        }
+
+        if (null !== $this->background) {
+            $set[] = $this->background->getValue();
+            $unset[] = FormatBackground::DEFAULT;
+        }
+
+        if (count($this->options)) {
+            foreach ($this->options as $option) {
+                $set[] = $option->getValue();
+                $unset[] = 0;
+            }
+        }
+
+        if (0 === count($set)) {
+            return $message;
+        }
+
+        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
     }
 }

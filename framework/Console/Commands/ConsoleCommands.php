@@ -54,7 +54,7 @@ class ConsoleCommands extends CommandHandler
             $spacesToAdd = $longestLength - strlen($item->getName());
             $name = $item->getName() . ($spacesToAdd > 0 ? str_repeat(' ', $spacesToAdd) : '');
 
-            output()->writeMessage("{$name}\t\t{$item->getDescription()}", true);
+            output()->writeMessage("\033[35m{$name}\033[39m\t\t{$item->getDescription()}", true);
         }
 
         return 1;
