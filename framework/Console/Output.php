@@ -42,6 +42,28 @@ class Output implements OutputContract
     }
 
     /**
+     * Get the formatter.
+     *
+     * @return \Valkyrja\Contracts\Console\OutputFormatter
+     */
+    public function getFormatter(): OutputFormatter
+    {
+        return $this->formatter;
+    }
+
+    /**
+     * Set the formatter.
+     *
+     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter
+     *
+     * @return void
+     */
+    public function setFormatter(OutputFormatter $formatter): void
+    {
+        $this->formatter = $formatter;
+    }
+
+    /**
      * Write messages to the console.
      *
      * @param array                               $messages    The messages

@@ -25,9 +25,25 @@ interface Output
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Contract\Console\OutputFormatter $formatter The output formatter
+     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
      */
     public function __construct(OutputFormatter $formatter);
+
+    /**
+     * Get the formatter.
+     *
+     * @return \Valkyrja\Contracts\Console\OutputFormatter
+     */
+    public function getFormatter(): OutputFormatter;
+
+    /**
+     * Set the formatter.
+     *
+     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter
+     *
+     * @return void
+     */
+    public function setFormatter(OutputFormatter $formatter): void;
 
     /**
      * Write messages to the console.

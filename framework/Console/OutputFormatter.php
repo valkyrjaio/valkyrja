@@ -13,6 +13,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
+use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Contracts\Console\OutputFormatter as OutputFormatterContract;
 
 /**
@@ -27,21 +28,21 @@ class OutputFormatter implements OutputFormatterContract
     /**
      * The foreground color.
      *
-     * @var \Valkyrja\Console\Enums\FormatForeground
+     * @var int
      */
     protected $foreground;
 
     /**
      * The background color.
      *
-     * @var \Valkyrja\Console\Enums\FormatBackground
+     * @var int
      */
     protected $background;
 
     /**
      * The options.
      *
-     * @var \Valkyrja\Console\Enums\FormatOption[]
+     * @var int[]
      */
     protected $options = [];
 
@@ -54,7 +55,13 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function setForeground(FormatForeground $foreground = null): void
     {
-        $this->foreground = $foreground;
+        if (null === $foreground) {
+            $this->foreground = null;
+
+            return;
+        }
+
+        $this->foreground = $foreground->getValue();
     }
 
     /**
@@ -66,7 +73,242 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function setBackground(FormatBackground $background = null): void
     {
-        $this->background = $background;
+        if (null === $background) {
+            $this->background = null;
+
+            return;
+        }
+
+        $this->background = $background->getValue();
+    }
+
+    /**
+     * Set foreground or background to black.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function black(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
+    }
+
+    /**
+     * Set foreground or background to red.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function red(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
+    }
+
+    /**
+     * Set foreground or background to green.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function green(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
+    }
+
+    /**
+     * Set foreground or background to yellow.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function yellow(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
+    }
+
+    /**
+     * Set foreground or background to blue.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function blue(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
+    }
+
+    /**
+     * Set foreground or background to magenta.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function magenta(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
+    }
+
+    /**
+     * Set foreground or background to cyan.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function cyan(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
+    }
+
+    /**
+     * Set foreground or background to white.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function white(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
+    }
+
+    /**
+     * Set a color.
+     *
+     * @param int  $color      The color
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    protected function setColor(int $color, bool $background = null): void
+    {
+        if (null !== $background) {
+            $this->background = $color;
+
+            return;
+        }
+
+        $this->foreground = $color;
+    }
+
+    /**
+     * Set an option.
+     *
+     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     *
+     * @return void
+     */
+    public function setOption(FormatOption $option): void
+    {
+        $this->options[$option->getValue()] = $option->getValue();
+    }
+
+    /**
+     * Determine whether an option has been set.
+     *
+     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     *
+     * @return bool
+     */
+    public function hasOption(FormatOption $option): bool
+    {
+        return isset($this->options[$option->getValue()]);
+    }
+
+    /**
+     * Remove an option.
+     *
+     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     *
+     * @return void
+     */
+    public function removeOption(FormatOption $option): void
+    {
+        if ($this->hasOption($option)) {
+            unset($this->options[$option->getValue()]);
+        }
+    }
+
+    /**
+     * Set options.
+     *
+     * @param \Valkyrja\Console\Enums\FormatOption[] ...$options The options
+     *
+     * @return void
+     */
+    public function setOptions(FormatOption ...$options): void
+    {
+        foreach ($options as $option) {
+            $this->setOption($option);
+        }
+    }
+
+    /**
+     * Set the bold option.
+     *
+     * @return void
+     */
+    public function bold(): void
+    {
+        $this->setOptionNum(FormatOption::BOLD);
+    }
+
+    /**
+     * Set the underscore option.
+     *
+     * @return void
+     */
+    public function underscore(): void
+    {
+        $this->setOptionNum(FormatOption::UNDERSCORE);
+    }
+
+    /**
+     * Set the blink option.
+     *
+     * @return void
+     */
+    public function blink(): void
+    {
+        $this->setOptionNum(FormatOption::BLINK);
+    }
+
+    /**
+     * Set the reverse option.
+     *
+     * @return void
+     */
+    public function reverse(): void
+    {
+        $this->setOptionNum(FormatOption::REVERSE);
+    }
+
+    /**
+     * Set the conceal option.
+     *
+     * @return void
+     */
+    public function conceal(): void
+    {
+        $this->setOptionNum(FormatOption::CONCEAL);
+    }
+
+    /**
+     * Set an option by its number value.
+     *
+     * @param int $option The option
+     *
+     * @return void
+     */
+    protected function setOptionNum(int $option): void
+    {
+        $this->options[$option] = $option;
     }
 
     /**
@@ -82,18 +324,18 @@ class OutputFormatter implements OutputFormatterContract
         $unset = [];
 
         if (null !== $this->foreground) {
-            $set[] = $this->foreground->getValue();
+            $set[] = $this->foreground;
             $unset[] = FormatForeground::DEFAULT;
         }
 
         if (null !== $this->background) {
-            $set[] = $this->background->getValue();
+            $set[] = $this->background;
             $unset[] = FormatBackground::DEFAULT;
         }
 
         if (count($this->options)) {
             foreach ($this->options as $option) {
-                $set[] = $option->getValue();
+                $set[] = $option;
                 $unset[] = 0;
             }
         }
