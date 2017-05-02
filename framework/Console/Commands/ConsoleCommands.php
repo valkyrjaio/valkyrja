@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Commands;
 
+use Valkyrja\Console\Command;
 use Valkyrja\Console\CommandHandler;
 
 /**
@@ -34,11 +35,26 @@ class ConsoleCommands extends CommandHandler
      */
     public function run(): int
     {
-        $list = console()->getCacheable();
+        $list = console()->getCacheable()['commands'];
+        $longestLength = 0;
+
+        usort($list, function (Command $item1, Command $item2) {
+            return $item1->getName() <=> $item2->getName();
+        });
 
         /** @var \Valkyrja\Console\Command $item */
-        foreach ($list['commands'] as $item) {
-            output()->writeMessage("{$item->getName()}      {$item->getDescription()}", true);
+        foreach ($list as $item) {
+            if ($longestLength < $nameLength = strlen($item->getName())) {
+                $longestLength = $nameLength;
+            }
+        }
+
+        /** @var \Valkyrja\Console\Command $item */
+        foreach ($list as $item) {
+            $spacesToAdd = $longestLength - strlen($item->getName());
+            $name = $item->getName() . ($spacesToAdd > 0 ? str_repeat(' ', $spacesToAdd) : '');
+
+            output()->writeMessage("{$name}\t\t{$item->getDescription()}", true);
         }
 
         return 1;
