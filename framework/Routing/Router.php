@@ -376,10 +376,6 @@ class Router implements RouterContract
     {
         // Get the matching route
         $route = $this->route($name);
-        // Get the segments of the path
-        $segments = $route->getSegments();
-        // Set the path as the route's path
-        $path = $segments[0];
         // Set the host to use if this is an absolute url
         // or the route is secure (needs https:// appended)
         $host = $absolute || $route->getSecure()
@@ -389,10 +385,10 @@ class Router implements RouterContract
         // If there's no data
         if (! $data) {
             // Return just the first segment
-            return $host . $this->validateRouteUrl($path);
+            return $host . $this->validateRouteUrl($route->getPath());
         }
 
-        return $host . $this->validateRouteUrl($this->replaceSegments($segments, $data, $route->getParams()));
+        return $host . $this->validateRouteUrl($this->replaceSegments($route->getSegments(), $data, $route->getParams()));
     }
 
     /**
