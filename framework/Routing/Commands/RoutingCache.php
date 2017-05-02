@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Console;
+namespace Valkyrja\Routing\Commands;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class GenerateCache
+ * Class RoutingCache
  *
- * @package Valkyrja\Routing\Console
+ * @package Valkyrja\Routing\Commands
  *
  * @author  Melech Mizrachi
  */

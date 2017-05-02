@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Handlers;
+namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
  * Class ConsoleCommands
  *
- * @package Valkyrja\Console\Handlers
+ * @package Valkyrja\Console\Commands
  *
  * @author  Melech Mizrachi
  */

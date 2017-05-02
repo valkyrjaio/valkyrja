@@ -11,14 +11,14 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Console\Handlers\ConsoleCache;
-use Valkyrja\Console\Handlers\ConsoleCommands;
-use Valkyrja\Console\Handlers\ConsoleCommandsForBash;
-use Valkyrja\Container\Console\ContainerCache;
+use Valkyrja\Console\Commands\ConsoleCache;
+use Valkyrja\Console\Commands\ConsoleCommands;
+use Valkyrja\Console\Commands\ConsoleCommandsForBash;
+use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
-use Valkyrja\Events\Console\EventsCache;
-use Valkyrja\Routing\Console\RoutingCache;
+use Valkyrja\Events\Commands\EventsCache;
+use Valkyrja\Routing\Commands\RoutingCache;
 
 /**
  * Class BootstrapConsole

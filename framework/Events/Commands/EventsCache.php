@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Console;
+namespace Valkyrja\Events\Commands;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class GenerateCache
+ * Class EventsCache
  *
- * @package Valkyrja\Events\Console
+ * @package Valkyrja\Events\Commands
  *
  * @author  Melech Mizrachi
  */

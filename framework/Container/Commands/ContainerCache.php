@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Handlers;
+namespace Valkyrja\Container\Commands;
 
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class ConsoleCache
+ * Class ContainerCache
  *
- * @package Valkyrja\Console\Handlers
+ * @package Valkyrja\Container\Commands
  *
  * @author  Melech Mizrachi
  */
-class ConsoleCache extends CommandHandler
+class ContainerCache extends CommandHandler
 {
     /**
      * The command.
      */
-    public const COMMAND = 'console:cache';
+    public const COMMAND = 'container:cache';
 
     /**
      * Run the command.
@@ -36,17 +36,17 @@ class ConsoleCache extends CommandHandler
     {
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()->console->cacheFilePath,
-            '<?php return ' . var_export(console()->getCacheable(), true) . ';'
+            config()->container->cacheFilePath,
+            '<?php return ' . var_export(container()->getCacheable(), true) . ';'
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating console cache.', true);
+            output()->writeMessage('An error occurred while generating container cache.', true);
 
             return 0;
         }
 
-        output()->writeMessage('Console cache generated successfully', true);
+        output()->writeMessage('Container cache generated successfully', true);
 
         return 1;
     }
