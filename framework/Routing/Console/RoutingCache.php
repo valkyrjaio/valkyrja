@@ -36,7 +36,7 @@ class RoutingCache extends CommandHandler
     {
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()->routing->routesCacheFile,
+            config()->routing->cacheFilePath,
             '<?php return ' . var_export(router()->getCacheable(), true) . ';'
         );
 

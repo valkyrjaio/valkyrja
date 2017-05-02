@@ -729,9 +729,9 @@ class Router implements RouterContract
         self::$setup = true;
 
         // If the application should use the routes cache file
-        if ($this->app->config()->routing->useRoutesCacheFile) {
+        if ($this->app->config()->routing->useCacheFile) {
             // Set the application routes with said file
-            self::$routes = require $this->app->config()->routing->routesCacheFile;
+            self::$routes = require $this->app->config()->routing->cacheFilePath;
 
             // Then return out of routes setup
             return;
@@ -752,7 +752,7 @@ class Router implements RouterContract
         // Include the routes file
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
-        require $this->app->config()->routing->routesFile;
+        require $this->app->config()->routing->filePath;
     }
 
     /**
@@ -801,14 +801,14 @@ class Router implements RouterContract
         ];
 
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()->routing->useRoutesCacheFile;
+        $originalUseCacheFile = $this->app->config()->routing->useCacheFile;
         // Avoid using the cache file we already have
-        $this->app->config()->routing->useRoutesCacheFile = false;
+        $this->app->config()->routing->useCacheFile = false;
         self::$setup = false;
         $this->setup();
 
         // Reset the use cache file value
-        $this->app->config()->routing->useRoutesCacheFile = $originalUseCacheFile;
+        $this->app->config()->routing->useCacheFile = $originalUseCacheFile;
 
         return self::$routes;
     }

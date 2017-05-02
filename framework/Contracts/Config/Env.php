@@ -85,9 +85,9 @@ interface Env
     public const ROUTING_USE_ANNOTATIONS             = null;
     public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = null;
     public const ROUTING_CONTROLLERS                 = null;
-    public const ROUTING_ROUTES_FILE                 = null;
-    public const ROUTING_ROUTES_CACHE_FILE           = null;
-    public const ROUTING_USE_ROUTES_CACHE_FILE       = null;
+    public const ROUTING_FILE_PATH                   = null;
+    public const ROUTING_CACHE_FILE_PATH             = null;
+    public const ROUTING_USE_CACHE_FILE              = null;
 
     /**
      * Storage env variables.

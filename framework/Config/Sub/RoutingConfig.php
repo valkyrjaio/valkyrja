@@ -56,21 +56,21 @@ class RoutingConfig
      *
      * @var string
      */
-    public $routesFile;
+    public $filePath;
 
     /**
      * The routes cache file path.
      *
      * @var string
      */
-    public $routesCacheFile;
+    public $cacheFilePath;
 
     /**
      * Whether to use the routes cache file.
      *
      * @var bool
      */
-    public $useRoutesCacheFile = false;
+    public $useCacheFile = false;
 
     /**
      * RoutingConfig constructor.
@@ -83,8 +83,8 @@ class RoutingConfig
         $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? $this->useAnnotationsExclusively;
         $this->controllers = $env::ROUTING_CONTROLLERS ?? $this->controllers;
-        $this->routesFile = $env::ROUTING_ROUTES_FILE ?? Directory::routesPath('routes.php');
-        $this->routesCacheFile = $env::ROUTING_ROUTES_CACHE_FILE ?? Directory::storagePath('framework/cache/routes.php');
-        $this->useRoutesCacheFile = $env::ROUTING_USE_ROUTES_CACHE_FILE ?? $this->useRoutesCacheFile;
+        $this->filePath = $env::ROUTING_FILE_PATH ?? Directory::routesPath('routes.php');
+        $this->cacheFilePath = $env::ROUTING_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/routes.php');
+        $this->useCacheFile = $env::ROUTING_USE_CACHE_FILE ?? $this->useCacheFile;
     }
 }
