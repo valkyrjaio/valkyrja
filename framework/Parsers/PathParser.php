@@ -48,9 +48,6 @@ REGEX;
         // Split on [ while skipping placeholders
         $segments = $this->getSegments($path);
 
-        // Verify the path and its segments
-        // $this->verifySegments($path, $segments);
-
         // The current path
         $current = '';
 
