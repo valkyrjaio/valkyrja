@@ -81,7 +81,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(ConsoleCommands::COMMAND . '[ -{h}][ --{help}]')
+                ->setPath(ConsoleCommands::COMMAND . '[ {help:-h|--help}]')
                 ->setName(ConsoleCommands::COMMAND)
                 ->setDescription('List all the commands')
                 ->setClass(ConsoleCommands::class)
@@ -113,7 +113,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(ConsoleCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setPath(ConsoleCache::COMMAND . '[ {help:-h|--help}]')
                 ->setName(ConsoleCache::COMMAND)
                 ->setDescription('Generate the console cache')
                 ->setClass(ConsoleCache::class)
@@ -129,7 +129,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(ContainerCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setPath(ContainerCache::COMMAND . '[ {help:-h|--help}]')
                 ->setName(ContainerCache::COMMAND)
                 ->setDescription('Generate the container cache')
                 ->setClass(ContainerCache::class)
@@ -145,7 +145,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(EventsCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setPath(EventsCache::COMMAND . '[ {help:-h|--help}]')
                 ->setName(EventsCache::COMMAND)
                 ->setDescription('Generate the events cache')
                 ->setClass(EventsCache::class)
@@ -161,7 +161,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(RoutingCache::COMMAND . '[ -{h}][ --{help}]')
+                ->setPath(RoutingCache::COMMAND . '[ {help:-h|--help}]')
                 ->setName(RoutingCache::COMMAND)
                 ->setDescription('Generate the routes cache')
                 ->setClass(RoutingCache::class)
