@@ -74,7 +74,7 @@ REGEX;
             $current .= $segment;
         }
 
-        return $this->parsePath($current, $this->splitSegments($segments));
+        return $this->parsePath($current, $segments);
     }
 
     /**
@@ -139,7 +139,7 @@ REGEX;
      *
      * @return array
      */
-    protected function parsePath(string $path, array $segments): array
+    protected function parsePath(string $path, array &$segments): array
     {
         /** @var array[] $params */
         // Get all matches for {paramName} and {paramName:(validator)} in the path
@@ -163,12 +163,22 @@ REGEX;
             $paramRegex = $this->getParamReplacement($key, $params);
             // Replace the matches with a regex
             $regex = str_replace($param, $paramRegex, $regex);
+            // What to replace in the segment for this item
+            $replace = '{' . $params[1][$key] . '}';
 
             // Set the param in the array of params to return
             $paramsReturn[$params[1][$key]] = [
-                'replace' => $params[0][$key],
+                'replace' => $replace,
                 'regex'   => $paramRegex,
             ];
+
+            // Iterate through the segments
+            foreach ($segments as $segmentKey => $segment) {
+                // Replace this match with the replace text thus removing any regex
+                // in the segment this fixes any regexes with brackets from being
+                // messed up in the splitSegments() method
+                $segments[$segmentKey] = str_replace($params[0][$key], $replace, $segment);
+            }
         }
 
         $regex = str_replace('/', '\/', $regex);
@@ -177,7 +187,7 @@ REGEX;
         return [
             'regex'    => $regex,
             'params'   => $paramsReturn,
-            'segments' => $segments,
+            'segments' => $this->splitSegments($segments),
         ];
     }
 
