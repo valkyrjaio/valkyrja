@@ -400,6 +400,9 @@ class Console implements ConsoleContract
      */
     public function getCacheable(): array
     {
+        self::$commands = [];
+        self::$namedCommands = [];
+
         // The original use cache file value (may not be using cache to begin with)
         $originalUseCacheFile = $this->app->config()->console->useCacheFile;
         // Avoid using the cache file we already have
