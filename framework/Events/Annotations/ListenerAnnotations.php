@@ -75,8 +75,6 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
             $dispatch->setDependencies($this->getDependencies(...$parameters));
         }
 
-        // Set the type to null (we already know it's a listener)
-        $dispatch->setType();
         $dispatch->setMatches();
         $dispatch->setAnnotationArguments();
     }
