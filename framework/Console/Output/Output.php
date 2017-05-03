@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Console\Output;
 
 use Valkyrja\Console\Enums\OutputStyle;
-use Valkyrja\Contracts\Console\Output as OutputContract;
-use Valkyrja\Contracts\Console\OutputFormatter;
+use Valkyrja\Contracts\Console\Output\Output as OutputContract;
+use Valkyrja\Contracts\Console\Output\OutputFormatter;
 
 /**
  * Class Output
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -27,14 +27,14 @@ class Output implements OutputContract
     /**
      * The formatter.
      *
-     * @var \Valkyrja\Contracts\Console\OutputFormatter
+     * @var \Valkyrja\Contracts\Console\Output\OutputFormatter
      */
     protected $formatter;
 
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
      */
     public function __construct(OutputFormatter $formatter)
     {
@@ -44,7 +44,7 @@ class Output implements OutputContract
     /**
      * Get the formatter.
      *
-     * @return \Valkyrja\Contracts\Console\OutputFormatter
+     * @return \Valkyrja\Contracts\Console\Output\OutputFormatter
      */
     public function getFormatter(): OutputFormatter
     {
@@ -54,7 +54,7 @@ class Output implements OutputContract
     /**
      * Set the formatter.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter
      *
      * @return void
      */

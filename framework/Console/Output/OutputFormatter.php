@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Console\Output;
 
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Contracts\Console\OutputFormatter as OutputFormatterContract;
+use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract;
 
 /**
  * Class OutputFormatter
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */

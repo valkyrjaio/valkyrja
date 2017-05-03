@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Console;
+namespace Valkyrja\Contracts\Console\Output;
 
 /**
  * Interface Output
  *
- * @package Valkyrja\Contracts\Console
+ * @package Valkyrja\Contracts\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -23,8 +23,8 @@ interface StreamOutput extends Output
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
-     * @param resource                                    $stream    The resource to use as a stream
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
+     * @param resource                                           $stream    The resource to use as a stream
      */
     public function __construct(OutputFormatter $formatter, $stream = null);
 }

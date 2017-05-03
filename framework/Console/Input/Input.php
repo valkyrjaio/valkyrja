@@ -9,16 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Console\Input;
 
-use Valkyrja\Console\Input\Option;
-use Valkyrja\Contracts\Console\Input as InputContract;
+use Valkyrja\Contracts\Console\Input\Input as InputContract;
 use Valkyrja\Contracts\Http\Request;
 
 /**
  * Class Input
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Console\Input
  *
  * @author  Melech Mizrachi
  */

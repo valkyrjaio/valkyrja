@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Console\Output;
 
 use InvalidArgumentException;
 
 use RuntimeException;
 
-use Valkyrja\Contracts\Console\OutputFormatter;
-use Valkyrja\Contracts\Console\StreamOutput as StreamOutputContract;
+use Valkyrja\Contracts\Console\Output\OutputFormatter;
+use Valkyrja\Contracts\Console\Output\StreamOutput as StreamOutputContract;
 
 /**
  * Class Output
  *
- * @package Valkyrja\Console
+ * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -37,8 +37,8 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
-     * @param resource                                    $stream    The resource to use as a stream
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
+     * @param resource                                           $stream    The resource to use as a stream
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException

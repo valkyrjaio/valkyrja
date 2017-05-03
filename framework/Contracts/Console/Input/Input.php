@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Console;
+namespace Valkyrja\Contracts\Console\Input;
 
 use Valkyrja\Contracts\Http\Request;
 
 /**
  * Interface Input
  *
- * @package Valkyrja\Contracts\Console
+ * @package Valkyrja\Contracts\Console\Input
  *
  * @author  Melech Mizrachi
  */

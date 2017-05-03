@@ -15,9 +15,9 @@ use Throwable;
 
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
-use Valkyrja\Contracts\Console\Input;
+use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Kernel as KernelContract;
-use Valkyrja\Contracts\Console\Output;
+use Valkyrja\Contracts\Console\Output\Output;
 
 /**
  * Class ConsoleKernel
@@ -57,8 +57,8 @@ class Kernel implements KernelContract
     /**
      * Handle a console input.
      *
-     * @param \Valkyrja\Contracts\Console\Input  $input  The input
-     * @param \Valkyrja\Contracts\Console\Output $output The output
+     * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
+     * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
      * @return int
      *
@@ -85,8 +85,8 @@ class Kernel implements KernelContract
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input    The input
-     * @param int                               $exitCode The response
+     * @param \Valkyrja\Contracts\Console\Input\Input $input    The input
+     * @param int                                     $exitCode The response
      *
      * @return void
      */
@@ -98,8 +98,8 @@ class Kernel implements KernelContract
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Contracts\Console\Input  $input  The input
-     * @param \Valkyrja\Contracts\Console\Output $output The output
+     * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
+     * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
      * @return void
      *

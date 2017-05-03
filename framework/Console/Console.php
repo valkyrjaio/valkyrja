@@ -16,8 +16,8 @@ use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
-use Valkyrja\Contracts\Console\Input;
-use Valkyrja\Contracts\Console\Output;
+use Valkyrja\Contracts\Console\Input\Input;
+use Valkyrja\Contracts\Console\Output\Output;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
@@ -183,7 +183,7 @@ class Console implements ConsoleContract
     /**
      * Get a command from an input.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input The input
+     * @param \Valkyrja\Contracts\Console\Input\Input $input The input
      *
      * @return null|\Valkyrja\Console\Command
      */
@@ -228,8 +228,8 @@ class Console implements ConsoleContract
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Contracts\Console\Input  $input  The input
-     * @param \Valkyrja\Contracts\Console\Output $output The output
+     * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
+     * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
      * @return mixed
      *

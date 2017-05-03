@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Console;
+namespace Valkyrja\Contracts\Console\Output;
 
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
@@ -18,7 +18,7 @@ use Valkyrja\Console\Enums\FormatOption;
 /**
  * Interface OutputFormatter
  *
- * @package Valkyrja\Contracts\Console
+ * @package Valkyrja\Contracts\Console\Output
  *
  * @author  Melech Mizrachi
  */

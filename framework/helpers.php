@@ -97,9 +97,9 @@ if (! function_exists('input')) {
     /**
      * Get input.
      *
-     * @return \Valkyrja\Contracts\Console\Input
+     * @return \Valkyrja\Contracts\Console\Input\Input
      */
-    function input(): Valkyrja\Contracts\Console\Input
+    function input(): \Valkyrja\Contracts\Console\Input\Input
     {
         return container()->get(Valkyrja\Container\Enums\CoreComponent::INPUT);
     }
@@ -121,9 +121,9 @@ if (! function_exists('output')) {
     /**
      * Get output.
      *
-     * @return \Valkyrja\Contracts\Console\Output
+     * @return \Valkyrja\Contracts\Console\Output\Output
      */
-    function output(): Valkyrja\Contracts\Console\Output
+    function output(): \Valkyrja\Contracts\Console\Output\Output
     {
         return container()->get(Valkyrja\Container\Enums\CoreComponent::OUTPUT);
     }

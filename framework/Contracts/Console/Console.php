@@ -14,6 +14,8 @@ namespace Valkyrja\Contracts\Console;
 use Valkyrja\Console\Command;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
+use Valkyrja\Contracts\Console\Input\Input;
+use Valkyrja\Contracts\Console\Output\Output;
 
 /**
  * Interface Console
@@ -70,7 +72,7 @@ interface Console extends Cacheable
     /**
      * Get a command from an input.
      *
-     * @param \Valkyrja\Contracts\Console\Input $input The input
+     * @param \Valkyrja\Contracts\Console\Input\Input $input The input
      *
      * @return null|\Valkyrja\Console\Command
      */
@@ -88,8 +90,8 @@ interface Console extends Cacheable
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Contracts\Console\Input  $input  The input
-     * @param \Valkyrja\Contracts\Console\Output $output The output
+     * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
+     * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
      * @return mixed
      *

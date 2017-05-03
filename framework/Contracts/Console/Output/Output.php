@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Contracts\Console;
+namespace Valkyrja\Contracts\Console\Output;
 
 use Valkyrja\Console\Enums\OutputStyle;
 
 /**
  * Interface Output
  *
- * @package Valkyrja\Contract\Console
+ * @package Valkyrja\Contract\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -25,21 +25,21 @@ interface Output
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter The output formatter
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
      */
     public function __construct(OutputFormatter $formatter);
 
     /**
      * Get the formatter.
      *
-     * @return \Valkyrja\Contracts\Console\OutputFormatter
+     * @return \Valkyrja\Contracts\Console\Output\OutputFormatter
      */
     public function getFormatter(): OutputFormatter;
 
     /**
      * Set the formatter.
      *
-     * @param \Valkyrja\Contracts\Console\OutputFormatter $formatter
+     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter
      *
      * @return void
      */
