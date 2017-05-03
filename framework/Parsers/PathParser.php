@@ -142,7 +142,7 @@ REGEX;
     protected function parsePath(string $path, array &$segments): array
     {
         /** @var array[] $params */
-        // Get all matches for {paramName} and {paramName:(validator)} in the path
+        // Get all matches for {paramName} and {paramName:regex} in the path
         preg_match_all(
             '/' . static::VARIABLE_REGEX . '/x',
             $path,
