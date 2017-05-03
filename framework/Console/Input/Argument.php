@@ -23,6 +23,8 @@ use Valkyrja\Console\Enums\ArgumentMode;
 class Argument
 {
     /**
+     * The name.
+     *
      * @var string
      */
     protected $name;
@@ -33,7 +35,9 @@ class Argument
     protected $description;
 
     /**
-     * @var \Valkyrja\Console\Enums\ArgumentMode
+     * The mode.
+     *
+     * @var string
      */
     protected $mode;
 
@@ -48,10 +52,12 @@ class Argument
     {
         $this->name = $name;
         $this->description = $description;
-        $this->mode = $mode ?? new ArgumentMode(ArgumentMode::OPTIONAL);
+        $this->mode = $mode ? $mode->getValue() : ArgumentMode::OPTIONAL;
     }
 
     /**
+     * Get the name.
+     *
      * @return string
      */
     public function getName(): string
@@ -60,6 +66,8 @@ class Argument
     }
 
     /**
+     * Get the description.
+     *
      * @return string
      */
     public function getDescription(): string
@@ -68,9 +76,11 @@ class Argument
     }
 
     /**
-     * @return \Valkyrja\Console\Enums\ArgumentMode
+     * Get the mode.
+     *
+     * @return string
      */
-    public function getMode():? ArgumentMode
+    public function getMode(): string
     {
         return $this->mode;
     }

@@ -48,6 +48,9 @@ abstract class CommandHandler implements CommandHandlerContract
     {
         $this->usageMessage();
         $this->sectionDivider();
+        $this->argumentsSection();
+        $this->sectionDivider();
+        $this->optionsSection();
 
         return 1;
     }
@@ -207,7 +210,7 @@ abstract class CommandHandler implements CommandHandlerContract
     protected function optionsSection(Option ...$options): void
     {
         if (! $options) {
-            $options = $this->getArguments();
+            $options = $this->getOptions();
         }
 
         if (! $options) {

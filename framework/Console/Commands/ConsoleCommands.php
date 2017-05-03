@@ -61,12 +61,15 @@ class ConsoleCommands extends CommandHandler
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
 
-        $this->sectionTitleMessage('Commands');
+        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"{$namespace}\" namespace" : ''));
 
         /** @var \Valkyrja\Console\Command $command */
         foreach ($commands as $command) {
-            $this->commandSection($command, $previousSection);
-            $this->sectionMessage(static::TAB . $command->getName(), $command->getDescription(), $longestLength);
+            if (null === $namespace) {
+                $this->commandSection($command, $previousSection);
+            }
+
+            $this->sectionMessage((! $namespace ? static::TAB : '') . $command->getName(), $command->getDescription(), $longestLength + 2);
         }
 
         return 1;

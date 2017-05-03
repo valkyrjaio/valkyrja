@@ -23,22 +23,30 @@ use Valkyrja\Console\Enums\OptionMode;
 class Option
 {
     /**
+     * The name.
+     *
      * @var string
      */
     protected $name;
 
     /**
+     * The shortcut.
+     *
      * @var string
      */
     protected $shortcut;
 
     /**
+     * The description.
+     *
      * @var string
      */
     protected $description;
 
     /**
-     * @var \Valkyrja\Console\Enums\OptionMode
+     * The mode.
+     *
+     * @var string
      */
     protected $mode;
 
@@ -55,10 +63,12 @@ class Option
         $this->name = $name;
         $this->shortcut = $shortcut;
         $this->description = $description;
-        $this->mode = $mode ?? new OptionMode(OptionMode::NONE);
+        $this->mode = $mode ? $mode->getValue() : OptionMode::NONE;
     }
 
     /**
+     * Get the name.
+     *
      * @return string
      */
     public function getName(): string
@@ -67,6 +77,8 @@ class Option
     }
 
     /**
+     * Get the shortcut.
+     *
      * @return string
      */
     public function getShortcut():? string
@@ -75,6 +87,8 @@ class Option
     }
 
     /**
+     * Get the description.
+     *
      * @return string
      */
     public function getDescription(): string
@@ -83,9 +97,11 @@ class Option
     }
 
     /**
-     * @return \Valkyrja\Console\Enums\OptionMode
+     * Get the mode.
+     *
+     * @return string
      */
-    public function getMode(): OptionMode
+    public function getMode(): string
     {
         return $this->mode;
     }
