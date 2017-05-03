@@ -119,12 +119,7 @@ class Input implements InputContract
     public function getStringArguments(): string
     {
         $arguments = $this->getRequestArguments();
-        $globalArguments = [];
-
-        foreach ($this->getGlobalOptions() as $globalOption) {
-            $globalArguments[] = '--' . $globalOption->getName();
-            $globalArguments[] = '-' . $globalOption->getShortcut();
-        }
+        $globalArguments = $this->getGlobalOptionsFlat();
 
         foreach ($arguments as $key => $argument) {
             if (in_array($argument, $globalArguments, true)) {
@@ -304,6 +299,21 @@ class Input implements InputContract
         return [
             new Option('help', 'The help option for the command', 'h'),
             new Option('version', 'The version of this application', 'V'),
+        ];
+    }
+
+    /**
+     * Get the global options as a flat array.
+     *
+     * @return array
+     */
+    public function getGlobalOptionsFlat(): array
+    {
+        return [
+            '-h',
+            '--help',
+            '-V',
+            '--version'
         ];
     }
 }

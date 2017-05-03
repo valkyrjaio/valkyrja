@@ -246,6 +246,10 @@ class Console implements ConsoleContract
             $command->setMethod('help');
         }
 
+        if ($input->hasOption('-V') || $input->hasOption('--version')) {
+            $command->setMethod('version');
+        }
+
         return $this->dispatchCommand($command);
     }
 

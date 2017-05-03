@@ -39,13 +39,26 @@ abstract class CommandHandler implements CommandHandlerContract
 
     /**
      * Help docs for this command.
-            *
+     *
      * @return int
-        */
+     */
     public function help(): int
     {
         $this->usageMessage();
         $this->sectionDivider();
+
+        return 1;
+    }
+
+    /**
+     * Get the command version.
+     *
+     * @return int
+     */
+    public function version(): int
+    {
+        $this->applicationMessage();
+        output()->writeMessage(PHP_EOL);
 
         return 1;
     }
