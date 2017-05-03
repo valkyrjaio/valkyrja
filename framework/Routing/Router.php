@@ -514,6 +514,8 @@ class Router implements RouterContract
         foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             if (preg_match($dynamicRoute->getRegex(), $path, $matches)) {
+                // Clone the route to avoid changing the one set in the master array
+                $dynamicRoute = clone $dynamicRoute;
                 // The first match is the path itself
                 unset($matches[0]);
 

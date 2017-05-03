@@ -20,7 +20,7 @@ use Valkyrja\Enum\Enum;
  *
  * @author  Melech Mizrachi
  */
-final class InputArgument extends Enum
+final class ArgumentMode extends Enum
 {
     public const REQUIRED = 'REQUIRED';
     public const OPTIONAL = 'OPTIONAL';

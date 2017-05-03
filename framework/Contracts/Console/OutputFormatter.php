@@ -115,6 +115,15 @@ interface OutputFormatter
     public function white(bool $background = null): void;
 
     /**
+     * Set foreground or background to default.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function resetColor(bool $background = null): void;
+
+    /**
      * Set an option.
      *
      * @param \Valkyrja\Console\Enums\FormatOption $option The option
@@ -184,6 +193,13 @@ interface OutputFormatter
      * @return void
      */
     public function conceal(): void;
+
+    /**
+     * Reset the options.
+     *
+     * @return void
+     */
+    public function resetOptions(): void;
 
     /**
      * Format a message.

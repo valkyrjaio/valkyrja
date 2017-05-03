@@ -81,7 +81,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath('[' . ConsoleCommands::COMMAND . '][ {help:-h|--help}]')
+                ->setPath('[' . ConsoleCommands::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]')
                 ->setName(ConsoleCommands::COMMAND)
                 ->setDescription('List all the commands')
                 ->setClass(ConsoleCommands::class)

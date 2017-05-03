@@ -210,6 +210,8 @@ class Console implements ConsoleContract
         foreach (self::$commands as $command) {
             // If the preg match is successful, we've found our command!
             if (preg_match($command->getRegex(), $path, $matches)) {
+                // Clone the command to avoid changing the one set in the master array
+                $command = clone $command;
                 // The first match is the path itself
                 unset($matches[0]);
 
@@ -238,6 +240,10 @@ class Console implements ConsoleContract
         // Verify the command exists
         if (null === $command = $this->inputCommand($input)) {
             throw new CommandNotFound();
+        }
+
+        if ($input->hasOption('-h') || $input->hasOption('--help')) {
+            $command->setMethod('help');
         }
 
         return $this->dispatchCommand($command);

@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Console\Input\Option;
 use Valkyrja\Contracts\Console\Input as InputContract;
 use Valkyrja\Contracts\Http\Request;
 
@@ -29,6 +30,13 @@ class Input implements InputContract
      * @var \Valkyrja\Contracts\Http\Request
      */
     protected $request;
+
+    /**
+     * The request arguments.
+     *
+     * @var array
+     */
+    protected $requestArguments;
 
     /**
      * The arguments.
@@ -110,7 +118,21 @@ class Input implements InputContract
      */
     public function getStringArguments(): string
     {
-        return implode(' ', $this->getRequestArguments());
+        $arguments = $this->getRequestArguments();
+        $globalArguments = [];
+
+        foreach ($this->getGlobalOptions() as $globalOption) {
+            $globalArguments[] = '--' . $globalOption->getName();
+            $globalArguments[] = '-' . $globalOption->getShortcut();
+        }
+
+        foreach ($arguments as $key => $argument) {
+            if (in_array($argument, $globalArguments, true)) {
+                unset($arguments[$key]);
+            }
+        }
+
+        return implode(' ', $arguments);
     }
 
     /**
@@ -120,12 +142,16 @@ class Input implements InputContract
      */
     public function getRequestArguments(): array
     {
+        if (null !== $this->requestArguments) {
+            return $this->requestArguments;
+        }
+
         $arguments = $this->request->server()->get('argv');
 
         // strip the application name
         array_shift($arguments);
 
-        return $arguments;
+        return $this->requestArguments = $arguments;
     }
 
     /**
@@ -141,7 +167,7 @@ class Input implements InputContract
             $exploded = explode('=', $argument);
 
             $key = $exploded[0];
-            $value = $exploded[1] ?? null;
+            $value = $exploded[1] ?? true;
             $type = 'arguments';
 
             // If the key has double dash it is a long option
@@ -266,5 +292,18 @@ class Input implements InputContract
     public function hasOption(string $option): bool
     {
         return $this->hasShortOption($option) || $this->hasLongOption($option);
+    }
+
+    /**
+     * Get the global options.
+     *
+     * @return \Valkyrja\Console\Input\Option[]
+     */
+    public function getGlobalOptions(): array
+    {
+        return [
+            new Option('help', 'The help option for the command', 'h'),
+            new Option('version', 'The version of this application', 'V'),
+        ];
     }
 }

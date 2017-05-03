@@ -179,6 +179,18 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
+     * Set foreground or background to default.
+     *
+     * @param bool $background [optional] Whether this is to set the background
+     *
+     * @return void
+     */
+    public function resetColor(bool $background = null): void
+    {
+        $this->setColor($background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT, $background);
+    }
+
+    /**
      * Set a color.
      *
      * @param int  $color      The color
@@ -300,6 +312,16 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
+     * Reset the options.
+     *
+     * @return void
+     */
+    public function resetOptions(): void
+    {
+        $this->options = [];
+    }
+
+    /**
      * Set an option by its number value.
      *
      * @param int $option The option
@@ -321,22 +343,18 @@ class OutputFormatter implements OutputFormatterContract
     public function format(string $message): string
     {
         $set = [];
-        $unset = [];
 
         if (null !== $this->foreground) {
             $set[] = $this->foreground;
-            $unset[] = FormatForeground::DEFAULT;
         }
 
         if (null !== $this->background) {
             $set[] = $this->background;
-            $unset[] = FormatBackground::DEFAULT;
         }
 
         if (count($this->options)) {
             foreach ($this->options as $option) {
                 $set[] = $option;
-                $unset[] = 0;
             }
         }
 
@@ -344,6 +362,6 @@ class OutputFormatter implements OutputFormatterContract
             return $message;
         }
 
-        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
+        return sprintf("\033[%sm%s\033[0m", implode(';', $set), $message);
     }
 }

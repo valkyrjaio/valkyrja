@@ -42,7 +42,7 @@ interface Application
      *
      * @constant string
      */
-    const VERSION = 'Valkyrja (1.0.0 Alpha)';
+    const VERSION = '0.2017.5.2.2130 Alpha';
 
     /**
      * Application constructor.

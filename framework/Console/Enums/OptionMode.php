@@ -20,7 +20,7 @@ use Valkyrja\Enum\Enum;
  *
  * @author  Melech Mizrachi
  */
-final class InputOption extends Enum
+final class OptionMode extends Enum
 {
     public const NONE     = 'NONE';
     public const REQUIRED = 'REQUIRED';
