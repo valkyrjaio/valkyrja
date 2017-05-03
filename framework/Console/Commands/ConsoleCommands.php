@@ -34,8 +34,8 @@ class ConsoleCommands extends CommandHandler
     /**
      * Tabbing structure to use.
      */
-    protected const SECTION_TAB = '  ';
-    protected const COMMAND_TAB = self::SECTION_TAB . self::SECTION_TAB;
+    protected const TAB        = '  ';
+    protected const DOUBLE_TAB = self::TAB . self::TAB;
 
     /**
      * Run the command.
@@ -54,14 +54,19 @@ class ConsoleCommands extends CommandHandler
 
         $this->applicationMessage();
         $this->sectionDivider();
+
         $this->usageMessage('command [options] [arguments]');
         $this->sectionDivider();
-        $this->commandsSectionMessage();
+
+        $this->optionsSection(...input()->getGlobalOptions());
+        $this->sectionDivider();
+
+        $this->sectionTitleMessage('Commands');
 
         /** @var \Valkyrja\Console\Command $command */
         foreach ($commands as $command) {
             $this->commandSection($command, $previousSection);
-            $this->commandMessage($command, $longestLength);
+            $this->sectionMessage(static::TAB . $command->getName(), $command->getDescription(), $longestLength);
         }
 
         return 1;
@@ -135,18 +140,6 @@ class ConsoleCommands extends CommandHandler
     }
 
     /**
-     * The commands section message.
-     *
-     * @return void
-     */
-    protected function commandsSectionMessage(): void
-    {
-        output()->getFormatter()->underscore();
-        output()->writeMessage('Commands:', true);
-        output()->getFormatter()->resetOptions();
-    }
-
-    /**
      * The command section.
      *
      * @param \Valkyrja\Console\Command $command         The current command
@@ -162,31 +155,10 @@ class ConsoleCommands extends CommandHandler
 
         if ($previousSection !== $currentSection) {
             output()->getFormatter()->cyan();
-            output()->writeMessage(static::SECTION_TAB);
+            output()->writeMessage(static::TAB);
             output()->writeMessage($currentSection, true);
 
             $previousSection = $currentSection;
         }
-    }
-
-    /**
-     * The command message.
-     *
-     * @param \Valkyrja\Console\Command $command       The command
-     * @param int                       $longestLength The longest length
-     *
-     * @return void
-     */
-    protected function commandMessage(Command $command, int $longestLength): void
-    {
-        $spacesToAdd = $longestLength - strlen($command->getName());
-
-        output()->getFormatter()->green();
-        output()->writeMessage(static::COMMAND_TAB);
-        output()->writeMessage($command->getName());
-        output()->getFormatter()->resetColor();
-        output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
-        output()->writeMessage(str_repeat('.', 8));
-        output()->writeMessage($command->getDescription(), true);
     }
 }

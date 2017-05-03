@@ -142,4 +142,18 @@ interface Input
      * @return bool
      */
     public function hasOption(string $option): bool;
+
+    /**
+     * Get the global options.
+     *
+     * @return \Valkyrja\Console\Input\Option[]
+     */
+    public function getGlobalOptions(): array;
+
+    /**
+     * Get the global options as a flat array.
+     *
+     * @return array
+     */
+    public function getGlobalOptionsFlat(): array;
 }

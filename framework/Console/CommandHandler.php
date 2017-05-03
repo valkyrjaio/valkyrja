@@ -12,6 +12,8 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Enums\ArgumentMode;
+use Valkyrja\Console\Input\Argument;
+use Valkyrja\Console\Input\Option;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
 
@@ -34,8 +36,8 @@ abstract class CommandHandler implements CommandHandlerContract
     /**
      * Tabbing structure to use.
      */
-    protected const SECTION_TAB = '  ';
-    protected const COMMAND_TAB = self::SECTION_TAB . self::SECTION_TAB;
+    protected const TAB        = '  ';
+    protected const DOUBLE_TAB = self::TAB . self::TAB;
 
     /**
      * Help docs for this command.
@@ -58,7 +60,6 @@ abstract class CommandHandler implements CommandHandlerContract
     public function version(): int
     {
         $this->applicationMessage();
-        output()->writeMessage(PHP_EOL);
 
         return 1;
     }
@@ -90,7 +91,7 @@ abstract class CommandHandler implements CommandHandlerContract
      */
     protected function sectionDivider(): void
     {
-        output()->writeMessage(PHP_EOL . PHP_EOL);
+        output()->writeMessage(PHP_EOL);
     }
 
     /**
@@ -105,8 +106,22 @@ abstract class CommandHandler implements CommandHandlerContract
         output()->getFormatter()->resetColor();
         output()->writeMessage(' version ');
         output()->getFormatter()->cyan();
-        output()->writeMessage(Application::VERSION);
+        output()->writeMessage(Application::VERSION, true);
         output()->getFormatter()->resetColor();
+    }
+
+    /**
+     * The section message.
+     *
+     * @param string $sectionName
+     *
+     * @return void
+     */
+    protected function sectionTitleMessage(string $sectionName): void
+    {
+        output()->getFormatter()->underscore();
+        output()->writeMessage($sectionName . ':', true);
+        output()->getFormatter()->resetOptions();
     }
 
     /**
@@ -118,27 +133,144 @@ abstract class CommandHandler implements CommandHandlerContract
      */
     protected function usageMessage(string $message = null): void
     {
-        if (null === $message) {
-            $message = static::COMMAND;
+        $message = $message ?? $this->usagePath();
 
-            if ($this->getOptions()) {
-                $message .= ' [options]';
-            }
+        $this->sectionTitleMessage('Usage');
+        output()->writeMessage(static::TAB);
+        output()->writeMessage($message, true);
+    }
 
-            foreach ($this->getArguments() as $argument) {
-                $message .= ' '
-                    . ($argument->getMode() === ArgumentMode::OPTIONAL ? '[' : '')
-                    . '<'
-                    . $argument->getName()
-                    . '>'
-                    . ($argument->getMode() === ArgumentMode::OPTIONAL ? ']' : '');
+    /**
+     * Get the usage path.
+     *
+     * @return string
+     */
+    protected function usagePath(): string
+    {
+        $message = static::COMMAND;
+
+        if ($this->getOptions()) {
+            $message .= ' [options]';
+        }
+
+        foreach ($this->getArguments() as $argument) {
+            $message .= ' '
+                . ($argument->getMode() === ArgumentMode::OPTIONAL ? '[' : '')
+                . '<'
+                . $argument->getName()
+                . '>'
+                . ($argument->getMode() === ArgumentMode::OPTIONAL ? ']' : '');
+        }
+
+        return $message;
+    }
+
+    /**
+     * The arguments section.
+     *
+     * @param \Valkyrja\Console\Input\Argument[] ...$arguments The argument
+     *
+     * @return void
+     */
+    protected function argumentsSection(Argument ...$arguments): void
+    {
+        if (! $arguments) {
+            $arguments = $this->getArguments();
+        }
+
+        if (! $arguments) {
+            return;
+        }
+
+        $longestLength = 0;
+
+        $this->sectionTitleMessage('Arguments');
+
+        foreach ($arguments as $argument) {
+            if ($longestLength < $nameLength = strlen($argument->getName())) {
+                $longestLength = $nameLength;
             }
         }
 
-        output()->getFormatter()->underscore();
-        output()->writeMessage('Usage:', true);
-        output()->getFormatter()->resetOptions();
-        output()->writeMessage(static::SECTION_TAB);
-        output()->writeMessage($message);
+        foreach ($arguments as $argument) {
+            $this->sectionMessage(static::TAB . $argument->getName(), $argument->getDescription(), $longestLength);
+        }
+    }
+
+    /**
+     * The options section.
+     *
+     * @param \Valkyrja\Console\Input\Option[] ...$options The options
+     *
+     * @return void
+     */
+    protected function optionsSection(Option ...$options): void
+    {
+        if (! $options) {
+            $options = $this->getArguments();
+        }
+
+        if (! $options) {
+            return;
+        }
+
+        $longestLength = 0;
+
+        $this->sectionTitleMessage('Options');
+
+        foreach ($options as $option) {
+            if ($longestLength < $nameLength = strlen($this->getOptionName($option))) {
+                $longestLength = $nameLength;
+            }
+        }
+
+        foreach ($options as $option) {
+            $this->sectionMessage($this->getOptionName($option), $option->getDescription(), $longestLength);
+        }
+    }
+
+    /**
+     * Get an options name for the options section.
+     *
+     * @param \Valkyrja\Console\Input\Option $option The option
+     *
+     * @return string
+     */
+    protected function getOptionName(Option $option): string
+    {
+        $name = '';
+
+        if ($option->getShortcut()) {
+            $name .= '-' . $option->getShortcut() . ', ';
+        }
+        else {
+            $name .= static::DOUBLE_TAB;
+        }
+
+        $name .= '--' . $option->getName();
+
+        return $name;
+    }
+
+    /**
+     * The section message.
+     *
+     * @param string $name          The name
+     * @param string $description   The description
+     * @param int    $longestLength The longest item length
+     *
+     * @return void
+     */
+    protected function sectionMessage(string $name, string $description, int $longestLength = null): void
+    {
+        $longestLength = $longestLength ?? 0;
+        $spacesToAdd = $longestLength - strlen($name);
+
+        output()->getFormatter()->green();
+        output()->writeMessage(static::TAB . $name);
+        output()->getFormatter()->resetColor();
+        output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
+        output()->writeMessage(str_repeat('.', 8));
+        output()->writeMessage($description, true);
     }
 }
