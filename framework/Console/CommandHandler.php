@@ -12,7 +12,6 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Enums\ArgumentMode;
-use Valkyrja\Console\Input\Option;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
 
