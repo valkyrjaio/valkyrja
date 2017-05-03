@@ -113,7 +113,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(ConsoleCache::COMMAND . '[ {help:-h|--help}]')
+                ->setPath(ConsoleCache::COMMAND)
                 ->setName(ConsoleCache::COMMAND)
                 ->setDescription('Generate the console cache')
                 ->setClass(ConsoleCache::class)
@@ -129,7 +129,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(ContainerCache::COMMAND . '[ {help:-h|--help}]')
+                ->setPath(ContainerCache::COMMAND)
                 ->setName(ContainerCache::COMMAND)
                 ->setDescription('Generate the container cache')
                 ->setClass(ContainerCache::class)
@@ -145,7 +145,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(EventsCache::COMMAND . '[ {help:-h|--help}]')
+                ->setPath(EventsCache::COMMAND)
                 ->setName(EventsCache::COMMAND)
                 ->setDescription('Generate the events cache')
                 ->setClass(EventsCache::class)
@@ -161,7 +161,7 @@ class BootstrapConsole
     {
         $this->console->addCommand(
             (new Command())
-                ->setPath(RoutingCache::COMMAND . '[ {help:-h|--help}]')
+                ->setPath(RoutingCache::COMMAND)
                 ->setName(RoutingCache::COMMAND)
                 ->setDescription('Generate the routes cache')
                 ->setClass(RoutingCache::class)
