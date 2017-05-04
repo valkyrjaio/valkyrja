@@ -45,6 +45,42 @@ REGEX;
      */
     public function parse(string $path): array
     {
+        // Check for any non-capturing groups within <> or <*>
+        // < > groups are normal non-capturing groups
+        // < *> groups are repeatable non-capturing groups
+        // NOTE: have to use an alias to avoid breaking @Annotations() usage
+        // Replace any end brackets with the appropriate group close
+        // NOTE: This will take care of missing end brackets in
+        // previous groups because the only way that occurs
+        // is when a group is nested within another
+        $path = str_replace(
+            [
+                // Opening non-capture required group
+                '<',
+                // Close non-capture repeatable required group
+                '*>',
+                // Close non-capture required group
+                '>',
+                // Close non-capture repeatable optional group
+                '*]',
+                // Close non-capture optional group
+                ']',
+            ],
+            [
+                // Non-capture required group regex open
+                '(?:',
+                // Non-capture required repeatable group regex close
+                ')*',
+                // Non-capture required group regex close
+                ')',
+                // Non-capture repeatable optional group regex close
+                ')*?',
+                // Non-capture optional group regex close
+                ')?',
+            ],
+            $path
+        );
+
         // Split on [ while skipping placeholders
         $segments = $this->getSegments($path);
 
@@ -56,20 +92,15 @@ REGEX;
             // If this is not the first segment then its an optional group
             if ($key > 0) {
                 // Add a non capturing group around this segment
+                // NOTE: Since the path was originally split into segments on [
+                // it is safe to do this as there SHOULD be a closing bracket
+                // before another required group and so there shouldn't
+                // be any conflicts in mismatching opening  and closing
+                // regex non-capture groups. This assumes the
+                // developer did their job correctly in
+                // the amount of opening required
+                // and optional groups
                 $segment = '(?:' . $segment;
-                // Replace any end brackets with the appropriate group close
-                // NOTE: This will take care of missing end brackets in
-                // previous groups because the only way that occurs
-                // is when a group is nested within another
-                $segment = str_replace(['*]', ']'], [')*?', ')?'], $segment);
-            }
-            // Otherwise it is the first segment
-            else {
-                // Check for any non-capturing groups within <> or <*>
-                // < > groups are normal non-capturing groups
-                // < *> groups are repeatable non-capturing groups
-                // NOTE: have to use an alias to avoid breaking @Annotations() usage
-                $segment = str_replace(['<', '*>', '>'], ['(?:', ')*', ')'], $segment);
             }
 
             $current .= $segment;
