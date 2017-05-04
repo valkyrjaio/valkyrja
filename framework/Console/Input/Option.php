@@ -44,6 +44,13 @@ class Option
     protected $description;
 
     /**
+     * The default value.
+     *
+     * @var string
+     */
+    protected $default;
+
+    /**
      * The mode.
      *
      * @var string
@@ -57,13 +64,15 @@ class Option
      * @param string                             $description The description
      * @param string                             $shortcut    [optional] The shortcut
      * @param \Valkyrja\Console\Enums\OptionMode $mode        [optional] The mode
+     * @param string                             $default     [optional] The default value
      */
-    public function __construct(string $name, string $description, string $shortcut = null, OptionMode $mode = null)
+    public function __construct(string $name, string $description, string $shortcut = null, OptionMode $mode = null, string $default = null)
     {
         $this->name = $name;
         $this->shortcut = $shortcut;
         $this->description = $description;
         $this->mode = $mode ? $mode->getValue() : OptionMode::NONE;
+        $this->default = $default;
     }
 
     /**
@@ -94,6 +103,16 @@ class Option
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    /**
+     * The default value.
+     *
+     * @return string
+     */
+    public function getDefault():? string
+    {
+        return $this->default;
     }
 
     /**
