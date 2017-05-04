@@ -37,7 +37,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
-use Valkyrja\Parsers\PathParser;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Router;
 use Valkyrja\View\View;

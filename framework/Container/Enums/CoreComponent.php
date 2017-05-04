@@ -38,7 +38,7 @@ use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Logger\Logger;
-use Valkyrja\Contracts\Parsers\PathParser;
+use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\View\View;

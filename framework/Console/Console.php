@@ -104,7 +104,7 @@ class Console implements ConsoleContract
         $this->verifyFunction($command);
         $this->verifyClosure($command);
 
-        /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
+        /** @var \Valkyrja\Contracts\Path\PathParser $parser */
         $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
 
         $this->addParsedCommand($command, $parser->parse($command->getPath()));

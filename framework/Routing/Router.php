@@ -163,7 +163,7 @@ class Router implements RouterContract
      */
     protected function setDynamicRoute(Route $route): void
     {
-        /** @var \Valkyrja\Contracts\Parsers\PathParser $parser */
+        /** @var \Valkyrja\Contracts\Path\PathParser $parser */
         $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
 
         $parsedRoute = $parser->parse($route->getPath());

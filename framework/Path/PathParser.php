@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Parsers;
+namespace Valkyrja\Path;
 
-use Valkyrja\Contracts\Parsers\PathParser as PathParserContract;
+use Valkyrja\Contracts\Path\PathParser as PathParserContract;
 
 /**
  * Class PathParser
