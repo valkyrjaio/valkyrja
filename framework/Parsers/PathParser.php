@@ -65,9 +65,10 @@ REGEX;
             }
             // Otherwise it is the first segment
             else {
-                // Check for any capture groups within <> or <*>
-                // < > groups are normal capture groups
-                // < *> groups are repeatable capture groups
+                // Check for any non-capturing groups within <> or <*>
+                // < > groups are normal non-capturing groups
+                // < *> groups are repeatable non-capturing groups
+                // NOTE: have to use an alias to avoid breaking @Annotations() usage
                 $segment = str_replace(['<', '*>', '>'], ['(?:', ')*', ')'], $segment);
             }
 
@@ -95,31 +96,24 @@ REGEX;
     /**
      * Split segments based on ending bracket within the segments.
      *
-     * @param array $segments The segments
+     * @param array  $segments    The segments
+     * @param string $deliminator The deliminator
      *
      * @return array
      */
-    protected function splitSegments(array $segments): array
+    protected function splitSegments(array $segments, string $deliminator): array
     {
         // The final segments to return
         $returnSegments = [];
 
         // Iterate through the segments once more
         foreach ($segments as $segment) {
-            // If the segment has an ending bracket
-            if (strpos($segment, ']') !== false) {
-                // Split the segment on that bracket
-                $parts = explode(']', $segment);
+            // Replacing non-capturing group condition (see line 71 for more explanation)
+            $segment = str_replace('<', '', $segment);
 
-                // Iterate through the parts
-                foreach ($parts as $part) {
-                    if (! $part) {
-                        continue;
-                    }
-
-                    // Setting each part individually
-                    $returnSegments[] = $part;
-                }
+            // If the segment has the deliminator
+            if (strpos($segment, $deliminator) !== false) {
+                $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
 
                 continue;
             }
@@ -129,6 +123,36 @@ REGEX;
         }
 
         return $returnSegments;
+    }
+
+    /**
+     * @param array  $segments    The segments
+     * @param string $segment     The segment
+     * @param string $deliminator The deliminator
+     *
+     * @return void
+     */
+    protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
+    {
+        // Split the segment on that bracket
+        $parts = explode($deliminator, $segment);
+
+        // Iterate through the parts
+        foreach ($parts as $part) {
+            if (! $part) {
+                continue;
+            }
+
+            // If the segment has the deliminator
+            if (strpos($part, $deliminator) !== false) {
+                $this->splitSegmentsDeliminator($segments, $part, $deliminator);
+
+                continue;
+            }
+
+            // Setting each part individually
+            $segments[] = $part;
+        }
     }
 
     /**
@@ -153,7 +177,7 @@ REGEX;
 
         // Run through all matches
         foreach ($params[0] as $key => $param) {
-            // Undo replacements made in parse foreach loop (see line 67)
+            // Undo replacements made in parse foreach loop (see line 64)
             [$params[0][$key], $params[2][$key]] = str_replace(
                 [')*?', ')?'],
                 ['*]', ']'],
@@ -184,10 +208,13 @@ REGEX;
         $regex = str_replace('/', '\/', $regex);
         $regex = '/^' . $regex . '$/';
 
+        $segmentsReturn = $this->splitSegments($segments, ']');
+        $segmentsReturn = $this->splitSegments($segmentsReturn, '>');
+
         return [
             'regex'    => $regex,
             'params'   => $paramsReturn,
-            'segments' => $this->splitSegments($segments),
+            'segments' => $segmentsReturn,
         ];
     }
 
