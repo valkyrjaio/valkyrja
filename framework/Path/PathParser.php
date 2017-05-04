@@ -257,8 +257,6 @@ REGEX;
         $segmentsReturn = $this->splitSegments($segmentsReturn, '<');
         $segmentsReturn = $this->splitSegments($segmentsReturn, '>');
 
-        dd($segmentsReturn);
-
         return [
             'regex'    => $regex,
             'params'   => $paramsReturn,
