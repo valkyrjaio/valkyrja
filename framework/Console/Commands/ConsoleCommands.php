@@ -32,12 +32,6 @@ class ConsoleCommands extends CommandHandler
     public const DESCRIPTION       = '';
 
     /**
-     * Tabbing structure to use.
-     */
-    protected const TAB        = '  ';
-    protected const DOUBLE_TAB = self::TAB . self::TAB;
-
-    /**
      * Run the command.
      *
      * @param string $namespace [optional] The namespace to show commands for
@@ -106,25 +100,40 @@ class ConsoleCommands extends CommandHandler
             $commandName = $parts[1] ?? null;
             $commandNamespace = $commandName ? $parts[0] : 'global';
 
+            // If there was a namespace passed to the command (commands namespace)
+            // and the namespace for this command doesn't match what was passed
+            // then get rid of it so only commands in the namespace
+            // are shown.
             if ($commandNamespace !== $namespace && null !== $namespace) {
                 unset($commands[$key]);
 
                 continue;
             }
 
+            // If the longest length is shorter than the length of this command
             if ($longestLength < $nameLength = strlen($command->getName())) {
+                // Set the longest length to the length of this command
                 $longestLength = $nameLength;
             }
 
-            if (null === $commandNamespace) {
+            // If this is a global namespaced command
+            if ('global' === $commandNamespace) {
+                // Set it in the global commands array so when we show the list of commands
+                // global commands will be at the top
                 $globalCommands[] = $command;
 
+                // Unset from the commands list to avoid duplicates
                 unset($commands[$key]);
             }
         }
 
+        // Sort the global commands by name
+        $this->sortCommands($globalCommands);
+        // Sort the rest of the commands by name
         $this->sortCommands($commands);
 
+        // Set the commands as the merged results of the global and other commands
+        // with the global commands at the top of the list
         $commands = array_merge($globalCommands, $commands);
     }
 
