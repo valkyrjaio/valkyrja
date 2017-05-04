@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Path;
 
+use InvalidArgumentException;
+
 use Valkyrja\Contracts\Path\PathParser as PathParserContract;
 
 /**
@@ -42,25 +44,13 @@ REGEX;
      * @param string $path The path
      *
      * @return array
+     *
+     * @throws \InvalidArgumentException
      */
     public function parse(string $path): array
     {
-        $requiredGroupsOpen = substr_count($path, '<');
-        $requiredGroupsClose = substr_count($path, '>');
-        $optionalGroupsOpen = substr_count($path, '<');
-        $optionalGroupsClose = substr_count($path, '>');
-
-        // If the count of required opening and closing tags doesn't match
-        if ($requiredGroupsOpen !== $requiredGroupsClose) {
-            // Throw an error letting the develop know they made a bad path
-            throw new \InvalidArgumentException('Mismatch of required groups for path: ' . $path);
-        }
-
-        // If the count of optional opening and closing tags doesn't match
-        if ($optionalGroupsOpen !== $optionalGroupsClose) {
-            // Throw an error letting the develop know they made a bad path
-            throw new \InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
-        }
+        // Validate the path for opening and closing tags
+        $this->validatePath($path);
 
         // Split on [ while skipping placeholders
         $segments = $this->getSegments($path);
@@ -127,6 +117,39 @@ REGEX;
     }
 
     /**
+     * Validate a path's opening and closing tags.
+     *
+     * @param string $path The path
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validatePath(string $path): void
+    {
+        // The number of opening required non-capture groups <
+        $requiredGroupsOpen = substr_count($path, '<');
+        // The number of closing required non-capture groups >
+        $requiredGroupsClose = substr_count($path, '>');
+        // The number of opening optional non-capture groups [
+        $optionalGroupsOpen = substr_count($path, '[');
+        // The number of closing optional non-capture groups ]
+        $optionalGroupsClose = substr_count($path, ']');
+
+        // If the count of required opening and closing tags doesn't match
+        if ($requiredGroupsOpen !== $requiredGroupsClose) {
+            // Throw an error letting the develop know they made a bad path
+            throw new InvalidArgumentException('Mismatch of required groups for path: ' . $path);
+        }
+
+        // If the count of optional opening and closing tags doesn't match
+        if ($optionalGroupsOpen !== $optionalGroupsClose) {
+            // Throw an error letting the develop know they made a bad path
+            throw new InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
+        }
+    }
+
+    /**
      * Get a path's segments.
      *
      * @param string $path The path
@@ -171,6 +194,8 @@ REGEX;
     }
 
     /**
+     * Split a segment by deliminator (recursive).
+     *
      * @param array  $segments    The segments
      * @param string $segment     The segment
      * @param string $deliminator The deliminator
@@ -222,7 +247,7 @@ REGEX;
 
         // Run through all matches
         foreach ($params[0] as $key => $param) {
-            // Undo replacements made in parse foreach loop (see line 64)
+            // Undo replacements made in parse foreach loop (see line 85)
             [$params[0][$key], $params[2][$key]] = str_replace(
                 [')*?', ')?'],
                 ['*]', ']'],

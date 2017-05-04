@@ -84,7 +84,7 @@ class PathGenerator implements PathGeneratorContract
      */
     protected function parseData(array $segments, array $data, array $params, array &$replace, array &$replacements): void
     {
-        // Iterate through all the data properties for the route
+        // Iterate through all the data properties
         foreach ($data as $key => $datum) {
             // If the data isn't found in the params array it is not a valid param
             if (! isset($params[$key])) {
