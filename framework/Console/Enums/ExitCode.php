@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console;
+namespace Valkyrja\Console\Enums;
 
 use Valkyrja\Enum\Enum;
 
