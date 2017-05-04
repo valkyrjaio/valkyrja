@@ -37,6 +37,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Router;
@@ -88,6 +89,7 @@ class BootstrapContainer
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
         $this->bootstrapListenerAnnotations();
+        $this->bootstrapPathGenerator();
         $this->bootstrapPathParser();
         $this->bootstrapConsole();
         $this->bootstrapConsoleKernel();
@@ -172,6 +174,21 @@ class BootstrapContainer
     }
 
     /**
+     * Bootstrap the path generator.
+     *
+     * @return void
+     */
+    protected function bootstrapPathGenerator(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::PATH_GENERATOR)
+                ->setClass(PathGenerator::class)
+                ->setSingleton(true)
+        );
+    }
+
+    /**
      * Bootstrap the path parser.
      *
      * @return void
@@ -213,7 +230,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::CONSOLE)
                 ->setClass(Console::class)
-                ->setDependencies([CoreComponent::APP])
+                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
                 ->setSingleton(true)
         );
     }
@@ -376,7 +393,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::ROUTER)
                 ->setClass(Router::class)
-                ->setDependencies([CoreComponent::APP])
+                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
                 ->setSingleton(true)
         );
     }

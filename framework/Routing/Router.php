@@ -11,11 +11,12 @@
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
+use Valkyrja\Contracts\Path\PathGenerator;
+use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -62,6 +63,20 @@ class Router implements RouterContract
     protected $app;
 
     /**
+     * The path parser.
+     *
+     * @var \Valkyrja\Contracts\Path\PathParser
+     */
+    protected $pathParser;
+
+    /**
+     * The path generator.
+     *
+     * @var \Valkyrja\Contracts\Path\PathGenerator
+     */
+    protected $pathGenerator;
+
+    /**
      * Whether route's have been setup yet.
      *
      * @var bool
@@ -96,7 +111,9 @@ class Router implements RouterContract
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Contracts\Application $application
+     * @param \Valkyrja\Contracts\Application        $application   The application
+     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
+     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -104,9 +121,11 @@ class Router implements RouterContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
-    public function __construct(ApplicationContract $application)
+    public function __construct(ApplicationContract $application, PathParser $pathParser, PathGenerator $pathGenerator)
     {
         $this->app = $application;
+        $this->pathParser = $pathParser;
+        $this->pathGenerator = $pathGenerator;
 
         $this->setup();
     }
@@ -163,10 +182,7 @@ class Router implements RouterContract
      */
     protected function setDynamicRoute(Route $route): void
     {
-        /** @var \Valkyrja\Contracts\Path\PathParser $parser */
-        $parser = $this->app->container()->get(CoreComponent::PATH_PARSER);
-
-        $parsedRoute = $parser->parse($route->getPath());
+        $parsedRoute = $this->pathParser->parse($route->getPath());
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);
@@ -381,14 +397,10 @@ class Router implements RouterContract
         $host = $absolute || $route->getSecure()
             ? $this->routeHost($route)
             : '';
+        // Get the path from the generator
+        $path = $this->pathGenerator->parse($route->getSegments(), $data, $route->getParams());
 
-        // If there's no data
-        if (! $data) {
-            // Return just the first segment
-            return $host . $this->validateRouteUrl($route->getPath());
-        }
-
-        return $host . $this->validateRouteUrl($this->replaceSegments($route->getSegments(), $data, $route->getParams()));
+        return $host . $this->validateRouteUrl($path);
     }
 
     /**
@@ -404,56 +416,6 @@ class Router implements RouterContract
             . ($route->getSecure() ? 's' : '')
             . '://'
             . request()->getHttpHost();
-    }
-
-    /**
-     * Replace segments's params with data.
-     *
-     * @param array $segments The segments
-     * @param array $data     The data
-     * @param array $params   The params
-     *
-     * @return string
-     */
-    protected function replaceSegments(array $segments, array $data, array $params): string
-    {
-        $path = '';
-        $replace = [];
-        $replacement = [];
-
-        // Iterate through all the data properties for the route
-        foreach ($data as $key => $datum) {
-            // If the data isn't found in the params array it is not a valid param
-            if (! isset($params[$key])) {
-                throw new \InvalidArgumentException("Invalid route param '{$key}' with value '{$datum}'");
-            }
-
-            $regex = $params[$key]['regex'];
-
-            // If the value of the data doesn't match what was specified when the route was made
-            if (preg_match('/^' . $regex . '$/', $datum) === 0) {
-                throw new \InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
-            }
-
-            // Set what to replace
-            $replace[] = $params[$key]['replace'];
-            // With the data value to replace with
-            $replacement[] = $datum;
-        }
-
-        // Iterate through the segments
-        foreach ($segments as $index => $segment) {
-            // Replace any parameters
-            $segment = str_replace($replace, $replacement, $segment);
-
-            // If parameters were replaced or none to begin with
-            if (strpos($segment, '{') === false) {
-                // Append this segment
-                $path .= $segment;
-            }
-        }
-
-        return $path;
     }
 
     /**
