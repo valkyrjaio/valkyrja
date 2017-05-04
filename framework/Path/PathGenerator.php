@@ -37,11 +37,6 @@ class PathGenerator implements PathGeneratorContract
      */
     public function parse(array $segments, array $data = null, array $params = null): string
     {
-        // If data was not passed in
-        if (null === $data) {
-            return $segments[0];
-        }
-
         // If data was passed but no params
         if (null === $params && null !== $data) {
             throw new InvalidArgumentException('Route params are required when supplying data');
@@ -49,8 +44,46 @@ class PathGenerator implements PathGeneratorContract
 
         $path = '';
         $replace = [];
-        $replacement = [];
+        $replacements = [];
 
+        // If there is data, parse the replacements
+        if (null !== $data) {
+            $this->parseData($segments, $data, $params, $replace, $replacements);
+        }
+
+        // Iterate through the segments
+        foreach ($segments as $index => $segment) {
+            // No need to do replacements if there was no data
+            if (null !== $data) {
+                // Replace any parameters
+                $segment = str_replace($replace, $replacements, $segment);
+            }
+
+            // If parameters were replaced or none to begin with
+            if (strpos($segment, '{') === false) {
+                // Append this segment
+                $path .= $segment;
+            }
+        }
+
+        return $path;
+    }
+
+    /**
+     * Parse data for replacements.
+     *
+     * @param array $segments     The segments
+     * @param array $data         The data
+     * @param array $params       The params
+     * @param array $replace      The replace array
+     * @param array $replacements The replacements array
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseData(array $segments, array $data, array $params, array &$replace, array &$replacements): void
+    {
         // Iterate through all the data properties for the route
         foreach ($data as $key => $datum) {
             // If the data isn't found in the params array it is not a valid param
@@ -65,13 +98,13 @@ class PathGenerator implements PathGeneratorContract
             if (is_array($datum)) {
                 // Get the segment by the param key and replace the {key} within it
                 // to get the repeatable portion of the segment
-                $segment = $this->findParamSegment($segments, $key);
-                $deliminator = str_replace('{' . $key . '}', '', $segment);
+                $segment = $this->findParamSegment($segments, $params[$key]['replace']);
+                $deliminator = str_replace($params[$key]['replace'] . '*', '', $segment);
 
                 // Set what to replace
                 $replace[] = $params[$key]['replace'] . '*';
                 // With the data value to replace with
-                $replacement[] = implode($deliminator, $datum);
+                $replacements[] = implode($deliminator, $datum);
 
                 continue;
             }
@@ -79,22 +112,8 @@ class PathGenerator implements PathGeneratorContract
             // Set what to replace
             $replace[] = $params[$key]['replace'];
             // With the data value to replace with
-            $replacement[] = $datum;
+            $replacements[] = $datum;
         }
-
-        // Iterate through the segments
-        foreach ($segments as $index => $segment) {
-            // Replace any parameters
-            $segment = str_replace($replace, $replacement, $segment);
-
-            // If parameters were replaced or none to begin with
-            if (strpos($segment, '{') === false) {
-                // Append this segment
-                $path .= $segment;
-            }
-        }
-
-        return $path;
     }
 
     /**
@@ -134,8 +153,6 @@ class PathGenerator implements PathGeneratorContract
      */
     protected function findParamSegment(array $segments, string $param):? string
     {
-        $param = '{' . $param . '}';
-
         foreach ($segments as $segment) {
             if (strpos($segment, $param) !== false) {
                 return $segment;
