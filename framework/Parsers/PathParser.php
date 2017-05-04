@@ -45,6 +45,23 @@ REGEX;
      */
     public function parse(string $path): array
     {
+        $requiredGroupsOpen = substr_count($path, '<');
+        $requiredGroupsClose = substr_count($path, '>');
+        $optionalGroupsOpen = substr_count($path, '<');
+        $optionalGroupsClose = substr_count($path, '>');
+
+        // If the count of required opening and closing tags doesn't match
+        if ($requiredGroupsOpen !== $requiredGroupsClose) {
+            // Throw an error letting the develop know they made a bad path
+            throw new \InvalidArgumentException('Mismatch of required groups for path: ' . $path);
+        }
+
+        // If the count of optional opening and closing tags doesn't match
+        if ($optionalGroupsOpen !== $optionalGroupsClose) {
+            // Throw an error letting the develop know they made a bad path
+            throw new \InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
+        }
+
         // Check for any non-capturing groups within <> or <*>
         // < > groups are normal non-capturing groups
         // < *> groups are repeatable non-capturing groups
