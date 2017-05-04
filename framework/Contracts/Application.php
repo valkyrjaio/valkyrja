@@ -42,7 +42,7 @@ interface Application
      *
      * @constant string
      */
-    const VERSION = '0.2017.5.3.2112 Alpha';
+    const VERSION = '0.2017.5.3.2149 Alpha';
 
     /**
      * Application constructor.

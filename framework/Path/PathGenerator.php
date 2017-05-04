@@ -55,15 +55,12 @@ class PathGenerator implements PathGeneratorContract
         foreach ($data as $key => $datum) {
             // If the data isn't found in the params array it is not a valid param
             if (! isset($params[$key])) {
-                throw new InvalidArgumentException("Invalid route param '{$key}' with value '{$datum}'");
+                throw new InvalidArgumentException("Invalid route param '{$key}'");
             }
 
             $regex = $params[$key]['regex'];
 
-            // If the value of the data doesn't match what was specified when the route was made
-            if (preg_match('/^' . $regex . '$/', $datum) === 0) {
-                throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
-            }
+            $this->validateDatum($key, $datum, $regex);
 
             // Set what to replace
             $replace[] = $params[$key]['replace'];
@@ -84,5 +81,32 @@ class PathGenerator implements PathGeneratorContract
         }
 
         return $path;
+    }
+
+    /**
+     * Validate a datum.
+     *
+     * @param string $key   The key
+     * @param mixed  $datum The datum
+     * @param string $regex The regex
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validateDatum(string $key, $datum, string $regex): void
+    {
+        if (is_array($datum)) {
+            foreach ($datum as $datumItem) {
+                $this->validateDatum($key, $datumItem, $regex);
+            }
+
+            return;
+        }
+
+        // If the value of the data doesn't match what was specified when the route was made
+        if (preg_match('/^' . $regex . '$/', $datum) === 0) {
+            throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
+        }
     }
 }
