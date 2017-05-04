@@ -62,42 +62,6 @@ REGEX;
             throw new \InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
         }
 
-        // Check for any non-capturing groups within <> or <*>
-        // < > groups are normal non-capturing groups
-        // < *> groups are repeatable non-capturing groups
-        // NOTE: have to use an alias to avoid breaking @Annotations() usage
-        // Replace any end brackets with the appropriate group close
-        // NOTE: This will take care of missing end brackets in
-        // previous groups because the only way that occurs
-        // is when a group is nested within another
-        $path = str_replace(
-            [
-                // Opening non-capture required group
-                '<',
-                // Close non-capture repeatable required group
-                '*>',
-                // Close non-capture required group
-                '>',
-                // Close non-capture repeatable optional group
-                '*]',
-                // Close non-capture optional group
-                ']',
-            ],
-            [
-                // Non-capture required group regex open
-                '(?:',
-                // Non-capture required repeatable group regex close
-                ')*',
-                // Non-capture required group regex close
-                ')',
-                // Non-capture repeatable optional group regex close
-                ')*?',
-                // Non-capture optional group regex close
-                ')?',
-            ],
-            $path
-        );
-
         // Split on [ while skipping placeholders
         $segments = $this->getSegments($path);
 
@@ -119,6 +83,42 @@ REGEX;
                 // and optional groups
                 $segment = '(?:' . $segment;
             }
+
+            // Check for any non-capturing groups within <> or <*>
+            // < > groups are normal non-capturing groups
+            // < *> groups are repeatable non-capturing groups
+            // NOTE: have to use an alias to avoid breaking @Annotations() usage
+            // Replace any end brackets with the appropriate group close
+            // NOTE: This will take care of missing end brackets in
+            // previous groups because the only way that occurs
+            // is when a group is nested within another
+            $segment = str_replace(
+                [
+                    // Opening non-capture required group
+                    '<',
+                    // Close non-capture repeatable required group
+                    '*>',
+                    // Close non-capture required group
+                    '>',
+                    // Close non-capture repeatable optional group
+                    '*]',
+                    // Close non-capture optional group
+                    ']',
+                ],
+                [
+                    // Non-capture required group regex open
+                    '(?:',
+                    // Non-capture required repeatable group regex close
+                    ')*',
+                    // Non-capture required group regex close
+                    ')',
+                    // Non-capture repeatable optional group regex close
+                    ')*?',
+                    // Non-capture optional group regex close
+                    ')?',
+                ],
+                $segment
+            );
 
             $current .= $segment;
         }
@@ -156,9 +156,6 @@ REGEX;
 
         // Iterate through the segments once more
         foreach ($segments as $segment) {
-            // Replacing non-capturing group condition (see line 71 for more explanation)
-            $segment = str_replace('<', '', $segment);
-
             // If the segment has the deliminator
             if (strpos($segment, $deliminator) !== false) {
                 $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
@@ -257,7 +254,10 @@ REGEX;
         $regex = '/^' . $regex . '$/';
 
         $segmentsReturn = $this->splitSegments($segments, ']');
+        $segmentsReturn = $this->splitSegments($segmentsReturn, '<');
         $segmentsReturn = $this->splitSegments($segmentsReturn, '>');
+
+        dd($segmentsReturn);
 
         return [
             'regex'    => $regex,

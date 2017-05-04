@@ -62,6 +62,20 @@ class PathGenerator implements PathGeneratorContract
 
             $this->validateDatum($key, $datum, $regex);
 
+            if (is_array($datum)) {
+                // Get the segment by the param key and replace the {key} within it
+                // to get the repeatable portion of the segment
+                $segment = $this->findParamSegment($segments, $key);
+                $deliminator = str_replace('{' . $key . '}', '', $segment);
+
+                // Set what to replace
+                $replace[] = $params[$key]['replace'] . '*';
+                // With the data value to replace with
+                $replacement[] = implode($deliminator, $datum);
+
+                continue;
+            }
+
             // Set what to replace
             $replace[] = $params[$key]['replace'];
             // With the data value to replace with
@@ -108,5 +122,26 @@ class PathGenerator implements PathGeneratorContract
         if (preg_match('/^' . $regex . '$/', $datum) === 0) {
             throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
         }
+    }
+
+    /**
+     * Find a segment with a param key.
+     *
+     * @param array  $segments
+     * @param string $param
+     *
+     * @return string
+     */
+    protected function findParamSegment(array $segments, string $param):? string
+    {
+        $param = '{' . $param . '}';
+
+        foreach ($segments as $segment) {
+            if (strpos($segment, $param) !== false) {
+                return $segment;
+            }
+        }
+
+        return null;
     }
 }
