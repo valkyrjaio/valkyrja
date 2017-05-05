@@ -110,11 +110,7 @@ class ConsoleCommands extends CommandHandler
                 continue;
             }
 
-            // If the longest length is shorter than the length of this command
-            if ($longestLength < $nameLength = strlen($command->getName())) {
-                // Set the longest length to the length of this command
-                $longestLength = $nameLength;
-            }
+            $longestLength = max(strlen($command->getName()), $longestLength);
 
             // If this is a global namespaced command
             if ('global' === $commandNamespace) {

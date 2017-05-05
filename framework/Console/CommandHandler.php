@@ -189,9 +189,7 @@ abstract class CommandHandler implements CommandHandlerContract
         $this->sectionTitleMessage('Arguments');
 
         foreach ($arguments as $argument) {
-            if ($longestLength < $nameLength = strlen($argument->getName())) {
-                $longestLength = $nameLength;
-            }
+            $longestLength = max(strlen($argument->getName()), $longestLength);
         }
 
         foreach ($arguments as $argument) {
@@ -222,9 +220,7 @@ abstract class CommandHandler implements CommandHandlerContract
         $this->sectionTitleMessage('Options');
 
         foreach ($options as $option) {
-            if ($longestLength < $nameLength = strlen($this->getOptionName($option))) {
-                $longestLength = $nameLength;
-            }
+            $longestLength = max(strlen($this->getOptionName($option)), $longestLength);
         }
 
         foreach ($options as $option) {
