@@ -88,7 +88,7 @@ abstract class Enum implements JsonSerializable
     /**
      * Get the enum value.
      *
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
