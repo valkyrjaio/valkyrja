@@ -393,12 +393,15 @@ class Router implements RouterContract
         // Get the matching route
         $route = $this->route($name);
         // Set the host to use if this is an absolute url
+        // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $route->getSecure()
+        $host = $absolute || $this->app->config()->routing->useAbsoluteUrls || $route->getSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
-        $path = $this->pathGenerator->parse($route->getSegments(), $data, $route->getParams());
+        $path = $route->getSegments()
+            ? $this->pathGenerator->parse($route->getSegments(), $data, $route->getParams())
+            : $route->getPath();
 
         return $host . $this->validateRouteUrl($path);
     }

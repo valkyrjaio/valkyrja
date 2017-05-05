@@ -618,6 +618,7 @@ class Container implements ContainerContract
         $originalUseCacheFile = $this->app->config()->container->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()->container->useCacheFile = false;
+        self::$registered = [];
         self::$setup = false;
         $this->setup();
 

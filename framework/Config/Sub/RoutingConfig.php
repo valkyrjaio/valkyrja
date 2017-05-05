@@ -31,6 +31,13 @@ class RoutingConfig
     public $trailingSlash = false;
 
     /**
+     * Whether all route urls should be absolute.
+     *
+     * @var bool
+     */
+    public $useAbsoluteUrls = false;
+
+    /**
      * Use annotations on controllers?
      *
      * @var bool
@@ -80,6 +87,7 @@ class RoutingConfig
     public function __construct(Env $env)
     {
         $this->trailingSlash = $env::ROUTING_TRAILING_SLASH ?? $this->trailingSlash;
+        $this->useAbsoluteUrls = $env::ROUTING_USE_ABSOLUTE_URLS ?? $this->useAbsoluteUrls;
         $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? $this->useAnnotationsExclusively;
         $this->controllers = $env::ROUTING_CONTROLLERS ?? $this->controllers;

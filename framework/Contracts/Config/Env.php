@@ -82,6 +82,7 @@ interface Env
      * Routing env variables.
      */
     public const ROUTING_TRAILING_SLASH              = null;
+    public const ROUTING_USE_ABSOLUTE_URLS           = null;
     public const ROUTING_USE_ANNOTATIONS             = null;
     public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = null;
     public const ROUTING_CONTROLLERS                 = null;
