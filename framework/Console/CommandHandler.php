@@ -47,9 +47,7 @@ abstract class CommandHandler implements CommandHandlerContract
     public function help(): int
     {
         $this->usageMessage();
-        $this->sectionDivider();
         $this->argumentsSection();
-        $this->sectionDivider();
         $this->optionsSection();
 
         return 1;
@@ -94,7 +92,7 @@ abstract class CommandHandler implements CommandHandlerContract
      */
     protected function sectionDivider(): void
     {
-        output()->writeMessage(PHP_EOL);
+        output()->writeMessage('', PHP_EOL);
     }
 
     /**
@@ -187,6 +185,7 @@ abstract class CommandHandler implements CommandHandlerContract
 
         $longestLength = 0;
 
+        $this->sectionDivider();
         $this->sectionTitleMessage('Arguments');
 
         foreach ($arguments as $argument) {
@@ -219,6 +218,7 @@ abstract class CommandHandler implements CommandHandlerContract
 
         $longestLength = 0;
 
+        $this->sectionDivider();
         $this->sectionTitleMessage('Options');
 
         foreach ($options as $option) {

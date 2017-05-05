@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Console\Commands\CacheAllCommand;
 use Valkyrja\Console\Commands\ConsoleCache;
 use Valkyrja\Console\Commands\ConsoleCommands;
 use Valkyrja\Console\Commands\ConsoleCommandsForBash;
@@ -66,6 +67,7 @@ class BootstrapConsole
     {
         $this->bootstrapConsoleCommands();
         $this->bootstrapConsoleCommandsForBash();
+        $this->bootstrapCacheAll();
         $this->bootstrapConsoleCache();
         $this->bootstrapContainerCache();
         $this->bootstrapEventsCache();
@@ -101,6 +103,22 @@ class BootstrapConsole
                 ->setName(ConsoleCommandsForBash::COMMAND)
                 ->setDescription('List all the commands for bash auto complete')
                 ->setClass(ConsoleCommandsForBash::class)
+        );
+    }
+
+    /**
+     * Bootstrap the cache:all command.
+     *
+     * @return void
+     */
+    protected function bootstrapCacheAll(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath(CacheAllCommand::COMMAND . '[ {sync:-s|--sync}]')
+                ->setName(CacheAllCommand::COMMAND)
+                ->setDescription(CacheAllCommand::SHORT_DESCRIPTION)
+                ->setClass(CacheAllCommand::class)
         );
     }
 
