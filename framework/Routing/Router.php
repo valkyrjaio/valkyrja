@@ -39,23 +39,6 @@ class Router implements RouterContract
     use Dispatcher;
 
     /**
-     * The static routes type.
-     *
-     * @constant string
-     */
-    protected const STATIC_ROUTES_TYPE = 'static';
-
-    /**
-     * The dynamic routes type.
-     */
-    protected const DYNAMIC_ROUTES_TYPE = 'dynamic';
-
-    /**
-     * The name routes type.
-     */
-    protected const NAME_ROUTES_TYPE = 'name';
-
-    /**
      * Application.
      *
      * @var \Valkyrja\Contracts\Application
@@ -84,29 +67,32 @@ class Router implements RouterContract
     protected static $setup = false;
 
     /**
-     * The routes group model.
+     * The routes.
      *
-     * @var array
+     * @var \Valkyrja\Routing\Route[]
      */
-    protected const ROUTES_GROUP = [
-        RequestMethod::GET    => [],
-        RequestMethod::POST   => [],
-        RequestMethod::PUT    => [],
-        RequestMethod::PATCH  => [],
-        RequestMethod::DELETE => [],
-        RequestMethod::HEAD   => [],
-    ];
+    protected static $routes = [];
 
     /**
-     * Application routes.
+     * The static routes.
      *
-     * @var array
+     * @var string[]
      */
-    protected static $routes = [
-        self::STATIC_ROUTES_TYPE  => self::ROUTES_GROUP,
-        self::DYNAMIC_ROUTES_TYPE => self::ROUTES_GROUP,
-        self::NAME_ROUTES_TYPE    => [],
-    ];
+    protected static $staticRoutes = [];
+
+    /**
+     * The dynamic routes.
+     *
+     * @var string[]
+     */
+    protected static $dynamicRoutes = [];
+
+    /**
+     * The named routes.
+     *
+     * @var string[]
+     */
+    protected static $namedRoutes = [];
 
     /**
      * Router constructor.
@@ -115,6 +101,7 @@ class Router implements RouterContract
      * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
      * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -137,6 +124,7 @@ class Router implements RouterContract
      *
      * @return void
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -148,17 +136,22 @@ class Router implements RouterContract
         $this->verifyDispatch($route);
 
         $route->setPath($this->validatePath($route->getPath()));
+        // Ensure the request methods are set
+        $route->getRequestMethods();
 
         // If this is a dynamic route
         if ($route->getDynamic()) {
             $this->setDynamicRoute($route);
+            self::$dynamicRoutes[] = $route->getPath();
         }
         // Otherwise set it in the static routes array
         else {
-            self::$routes[static::STATIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
+            self::$staticRoutes[$route->getPath()] = true;
 
             $this->setNamedRoute($route);
         }
+
+        self::$routes[$route->getPath()] = $route;
     }
 
     /**
@@ -189,9 +182,6 @@ class Router implements RouterContract
         $route->setParams($parsedRoute['params']);
         $route->setSegments($parsedRoute['segments']);
 
-        // Set it in the dynamic routes array
-        self::$routes[static::DYNAMIC_ROUTES_TYPE][$route->getRequestMethod()][$route->getPath()] = $route;
-
         $this->setNamedRoute($route);
     }
 
@@ -205,11 +195,7 @@ class Router implements RouterContract
     protected function setNamedRoute(Route $route): void
     {
         if ($route->getName()) {
-            self::$routes[static::NAME_ROUTES_TYPE][$route->getName()] = [
-                $route->getDynamic() ? static::DYNAMIC_ROUTES_TYPE : static::STATIC_ROUTES_TYPE,
-                $route->getRequestMethod(),
-                $route->getPath(),
-            ];
+            self::$namedRoutes[$route->getName()] = $route->getPath();
         }
     }
 
@@ -224,7 +210,7 @@ class Router implements RouterContract
      */
     public function get(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::GET));
+        $route->setRequestMethods([RequestMethod::GET, RequestMethod::HEAD]);
 
         $this->addRoute($route);
     }
@@ -240,7 +226,7 @@ class Router implements RouterContract
      */
     public function post(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::POST));
+        $route->setRequestMethods([RequestMethod::POST]);
 
         $this->addRoute($route);
     }
@@ -256,7 +242,7 @@ class Router implements RouterContract
      */
     public function put(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::PUT));
+        $route->setRequestMethods([RequestMethod::PUT]);
 
         $this->addRoute($route);
     }
@@ -272,7 +258,7 @@ class Router implements RouterContract
      */
     public function patch(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::PATCH));
+        $route->setRequestMethods([RequestMethod::PATCH]);
 
         $this->addRoute($route);
     }
@@ -288,7 +274,7 @@ class Router implements RouterContract
      */
     public function delete(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::DELETE));
+        $route->setRequestMethods([RequestMethod::DELETE]);
 
         $this->addRoute($route);
     }
@@ -304,7 +290,7 @@ class Router implements RouterContract
      */
     public function head(Route $route): void
     {
-        $route->setRequestMethod(new RequestMethod(RequestMethod::HEAD));
+        $route->setRequestMethods([RequestMethod::HEAD]);
 
         $this->addRoute($route);
     }
@@ -317,31 +303,6 @@ class Router implements RouterContract
     public function getRoutes(): array
     {
         return self::$routes;
-    }
-
-    /**
-     * Get routes by method type.
-     *
-     * @param string $method The method type of get
-     * @param string $type   [optional] The type of routes (static/dynamic)
-     *
-     * @return \Valkyrja\Routing\Route[]
-     */
-    protected function getRoutesByMethod(string $method, string $type = self::STATIC_ROUTES_TYPE): array
-    {
-        return self::$routes[$type][$method];
-    }
-
-    /**
-     * Set routes from a given array of routes.
-     *
-     * @param array $routes The routes to set
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes): void
-    {
-        self::$routes = $routes;
     }
 
     /**
@@ -360,9 +321,7 @@ class Router implements RouterContract
             throw new InvalidRouteName($name);
         }
 
-        $routeName = self::$routes[static::NAME_ROUTES_TYPE][$name];
-
-        return self::$routes[$routeName[0]][$routeName[1]][$routeName[2]];
+        return self::$routes[self::$namedRoutes[$name]];
     }
 
     /**
@@ -374,7 +333,7 @@ class Router implements RouterContract
      */
     public function routeIsset(string $name): bool
     {
-        return isset(self::$routes[static::NAME_ROUTES_TYPE][$name]);
+        return isset(self::$namedRoutes[$name]);
     }
 
     /**
@@ -445,6 +404,8 @@ class Router implements RouterContract
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
      * @return \Valkyrja\Routing\Route
+     *
+     * @throws \InvalidArgumentException
      */
     public function requestRoute(RequestContract $request):? Route
     {
@@ -464,6 +425,8 @@ class Router implements RouterContract
      * @param string $method [optional] The method type of get
      *
      * @return \Valkyrja\Routing\Route
+     *
+     * @throws \InvalidArgumentException
      */
     public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
     {
@@ -471,23 +434,29 @@ class Router implements RouterContract
         $path = $this->validatePath($path);
 
         // Let's check if the route is set in the static routes
-        if (isset(self::$routes[static::STATIC_ROUTES_TYPE][$method][$path])) {
-            return self::$routes[static::STATIC_ROUTES_TYPE][$method][$path];
+        if (isset(self::$staticRoutes[$path])) {
+            $route = self::$routes[$path];
+
+            if (in_array($method, $route->getRequestMethods(), true)) {
+                return $route;
+            }
         }
 
         // Attempt to find a match using dynamic routes that are set
-        foreach ($this->getRoutesByMethod($method, static::DYNAMIC_ROUTES_TYPE) as $dynamicRoute) {
+        foreach (self::$dynamicRoutes as $regex => $dynamicRoute) {
             // If the preg match is successful, we've found our route!
-            if (preg_match($dynamicRoute->getRegex(), $path, $matches)) {
+            if (preg_match($regex, $path, $matches)) {
                 // Clone the route to avoid changing the one set in the master array
-                $dynamicRoute = clone $dynamicRoute;
+                $dynamicRoute = clone self::$routes[$dynamicRoute];
                 // The first match is the path itself
                 unset($matches[0]);
 
                 // Set the matches
                 $dynamicRoute->setMatches($matches);
 
-                return $dynamicRoute;
+                if (in_array($method, $dynamicRoute->getRequestMethods(), false)) {
+                    return $dynamicRoute;
+                }
             }
         }
 
@@ -500,6 +469,8 @@ class Router implements RouterContract
      * @param string $uri The uri to check
      *
      * @return bool
+     *
+     * @throws \InvalidArgumentException
      */
     public function isInternalUri(string $uri): bool
     {
@@ -521,6 +492,7 @@ class Router implements RouterContract
      *
      * @return \Valkyrja\Contracts\Http\Response
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
     public function dispatch(RequestContract $request): ResponseContract
@@ -676,6 +648,7 @@ class Router implements RouterContract
      *
      * @return void
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -694,7 +667,12 @@ class Router implements RouterContract
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useCacheFile) {
             // Set the application routes with said file
-            self::$routes = require $this->app->config()->routing->cacheFilePath;
+            $routesCache = require $this->app->config()->routing->cacheFilePath;
+
+            self::$routes = $routesCache['routes'];
+            self::$staticRoutes = $routesCache['staticRoutes'];
+            self::$dynamicRoutes = $routesCache['dynamicRoutes'];
+            self::$namedRoutes = $routesCache['namedRoutes'];
 
             // Then return out of routes setup
             return;
@@ -723,6 +701,7 @@ class Router implements RouterContract
      *
      * @return void
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -749,6 +728,7 @@ class Router implements RouterContract
      *
      * @return array
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -757,11 +737,10 @@ class Router implements RouterContract
      */
     public function getCacheable(): array
     {
-        self::$routes = [
-            self::STATIC_ROUTES_TYPE  => self::ROUTES_GROUP,
-            self::DYNAMIC_ROUTES_TYPE => self::ROUTES_GROUP,
-            self::NAME_ROUTES_TYPE    => [],
-        ];
+        self::$routes = [];
+        self::$staticRoutes = [];
+        self::$dynamicRoutes = [];
+        self::$namedRoutes = [];
 
         // The original use cache file value (may not be using cache to begin with)
         $originalUseCacheFile = $this->app->config()->routing->useCacheFile;
@@ -773,6 +752,11 @@ class Router implements RouterContract
         // Reset the use cache file value
         $this->app->config()->routing->useCacheFile = $originalUseCacheFile;
 
-        return self::$routes;
+        return [
+            'routes'        => self::$routes,
+            'staticRoutes'  => self::$staticRoutes,
+            'dynamicRoutes' => self::$dynamicRoutes,
+            'namedRoutes'   => self::$namedRoutes,
+        ];
     }
 }

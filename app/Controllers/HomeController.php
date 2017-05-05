@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\View\View;
+use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Route;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceAlias;
@@ -73,7 +74,7 @@ class HomeController extends Controller
      *
      * @return string
      *
-     * @Route(path = '/version', name = 'version')
+     * @Route(path = '/version', name = 'version', requestMethods = [[GET | POST | HEAD]])
      */
     public function version(): string
     {

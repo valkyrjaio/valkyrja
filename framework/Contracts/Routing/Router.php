@@ -107,15 +107,6 @@ interface Router extends Cacheable
     public function getRoutes(): array;
 
     /**
-     * Set routes from a given array of routes.
-     *
-     * @param array $routes The routes to set
-     *
-     * @return void
-     */
-    public function setRoutes(array $routes): void;
-
-    /**
      * Get a route by name.
      *
      * @param string $name The name of the route to get

@@ -32,11 +32,11 @@ class Route extends Dispatch implements Annotation
     protected $path;
 
     /**
-     * The request method for this route.
+     * The request methods for this route.
      *
-     * @var string
+     * @var array
      */
-    protected $requestMethod;
+    protected $requestMethods;
 
     /**
      * The regex for dynamic routes.
@@ -98,29 +98,38 @@ class Route extends Dispatch implements Annotation
     }
 
     /**
-     * Get the request method.
+     * Get the request methods.
      *
-     * @return string
+     * @return array
+     *
+     * @throws \InvalidArgumentException
      */
-    public function getRequestMethod(): string
+    public function getRequestMethods(): array
     {
-        if (null === $this->requestMethod) {
-            $this->requestMethod = RequestMethod::GET;
+        if (null === $this->requestMethods) {
+            $this->requestMethods = [
+                RequestMethod::GET,
+                RequestMethod::HEAD,
+            ];
         }
 
-        return $this->requestMethod;
+        return $this->requestMethods;
     }
 
     /**
-     * Set the method.
+     * Set the request methods.
      *
-     * @param string $requestMethod The request method
+     * @param array $requestMethods The request methods
      *
      * @return $this
      */
-    public function setRequestMethod(string $requestMethod = null): self
+    public function setRequestMethods(array $requestMethods): self
     {
-        $this->requestMethod = $requestMethod;
+        if (array_diff($requestMethods, RequestMethod::validValues())) {
+            throw new \InvalidArgumentException('Invalid request methods set');
+        }
+
+        $this->requestMethods = $requestMethods;
 
         return $this;
     }
@@ -259,7 +268,7 @@ class Route extends Dispatch implements Annotation
         $route
             ->setPath($properties['path'])
             ->setName($properties['name'] ?? null)
-            ->setRequestMethod($properties['requestMethod'] ?? null)
+            ->setRequestMethods($properties['requestMethod'] ?? [])
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
             ->setSegments($properties['segments'] ?? null)

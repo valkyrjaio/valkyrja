@@ -269,6 +269,19 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function determineValue(string $value)
     {
+        // If this value starts with [[ and has pipe deliminations within it
+        // then it's an array of values to parse (ex: [[Test | Test2 | Test3]]
+        if (strpos($value, '[[') === 0 && strpos($value, '|') !== false) {
+            $value = (string) substr($value, 2, -2);
+            $parts = explode(' | ', $value);
+
+            foreach ($parts as &$part) {
+                $part = $this->determineValue($part);
+            }
+
+            return $parts;
+        }
+
         // If there was no double colon found there's no need to go further
         if (strpos($value, '::') === false) {
             return $value;
