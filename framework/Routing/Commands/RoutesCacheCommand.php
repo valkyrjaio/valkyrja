@@ -20,12 +20,14 @@ use Valkyrja\Console\CommandHandler;
  *
  * @author  Melech Mizrachi
  */
-class RoutingCache extends CommandHandler
+class RoutesCacheCommand extends CommandHandler
 {
     /**
      * The command.
      */
-    public const COMMAND = 'routes:cache';
+    public const COMMAND           = 'routes:cache';
+    public const SHORT_DESCRIPTION = 'Generate the routes cache';
+    public const DESCRIPTION       = '';
 
     /**
      * Run the command.

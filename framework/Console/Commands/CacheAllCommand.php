@@ -15,7 +15,7 @@ use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Events\Commands\EventsCache;
-use Valkyrja\Routing\Commands\RoutingCache;
+use Valkyrja\Routing\Commands\RoutesCacheCommand;
 
 /**
  * Class CacheAllCommand
@@ -44,7 +44,7 @@ class CacheAllCommand extends CommandHandler
         $consoleCache = console()->matchCommand(ConsoleCache::COMMAND);
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
         $eventsCache = console()->matchCommand(EventsCache::COMMAND);
-        $routesCache = console()->matchCommand(RoutingCache::COMMAND);
+        $routesCache = console()->matchCommand(RoutesCacheCommand::COMMAND);
 
         console()->dispatchCommand($consoleCache);
         console()->dispatchCommand($containerCache);
