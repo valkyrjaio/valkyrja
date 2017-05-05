@@ -269,13 +269,26 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function determineValue(string $value)
     {
+        // Trim the value of spaces
+        $value = trim($value);
+
         // If this value starts with [[ and has pipe deliminations within it
         // then it's an array of values to parse (ex: [[Test | Test2 | Test3]]
-        if (strpos($value, '[[') === 0 && strpos($value, '|') !== false) {
+        if (strpos($value, '[[') === 0 && strpos($value, ']]') === strlen($value) - 2) {
+            // Strip the value of the [[ ]] at the ends of the string
             $value = (string) substr($value, 2, -2);
+            // Split the value into parts
             $parts = explode(' | ', $value);
 
+            // Iterate through the parts
             foreach ($parts as &$part) {
+                // Ensure the part is valid
+                if (! $part) {
+                    continue;
+                }
+
+                // Set the part as a recurse of the part in case special cases were
+                // used within the array such as another array, constant, etc
                 $part = $this->determineValue($part);
             }
 

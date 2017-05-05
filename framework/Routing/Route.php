@@ -268,7 +268,7 @@ class Route extends Dispatch implements Annotation
         $route
             ->setPath($properties['path'])
             ->setName($properties['name'] ?? null)
-            ->setRequestMethods($properties['requestMethod'] ?? [])
+            ->setRequestMethods($properties['requestMethods'] ?? [])
             ->setRegex($properties['regex'] ?? null)
             ->setParams($properties['params'] ?? null)
             ->setSegments($properties['segments'] ?? null)

@@ -102,7 +102,7 @@ interface Router extends Cacheable
     /**
      * Get all routes set by the application.
      *
-     * @return array
+     * @return \Valkyrja\Routing\Route[]
      */
     public function getRoutes(): array;
 

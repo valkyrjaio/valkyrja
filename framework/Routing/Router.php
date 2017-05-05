@@ -142,7 +142,7 @@ class Router implements RouterContract
         // If this is a dynamic route
         if ($route->getDynamic()) {
             $this->setDynamicRoute($route);
-            self::$dynamicRoutes[] = $route->getPath();
+            self::$dynamicRoutes[$route->getRegex()] = $route->getPath();
         }
         // Otherwise set it in the static routes array
         else {
@@ -298,7 +298,7 @@ class Router implements RouterContract
     /**
      * Get all routes set by the application.
      *
-     * @return array
+     * @return \Valkyrja\Routing\Route[]
      */
     public function getRoutes(): array
     {
