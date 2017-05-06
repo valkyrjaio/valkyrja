@@ -34,7 +34,7 @@ interface Output
      *
      * @return \Valkyrja\Contracts\Console\Output\OutputFormatter
      */
-    public function getFormatter(): OutputFormatter;
+    public function formatter(): OutputFormatter;
 
     /**
      * Set the formatter.

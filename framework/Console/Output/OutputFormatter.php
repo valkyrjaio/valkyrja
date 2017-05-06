@@ -343,25 +343,34 @@ class OutputFormatter implements OutputFormatterContract
     public function format(string $message): string
     {
         $set = [];
+        $unset = [];
 
+        // Check if a foreground was specified
         if (null !== $this->foreground) {
             $set[] = $this->foreground;
+            $unset[] = FormatForeground::DEFAULT;
         }
 
+        // Check if a background was specified
         if (null !== $this->background) {
             $set[] = $this->background;
+            $unset[] = FormatBackground::DEFAULT;
         }
 
+        // Check if options were specified
         if (count($this->options)) {
+            // Iterate through all the options
             foreach ($this->options as $option) {
                 $set[] = $option;
+                $unset[] = FormatOption::DEFAULT[$option];
             }
         }
 
+        // No need to format if there's nothing to set
         if (0 === count($set)) {
             return $message;
         }
 
-        return sprintf("\033[%sm%s\033[0m", implode(';', $set), $message);
+        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
     }
 }

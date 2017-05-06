@@ -161,7 +161,7 @@ class ConsoleCommands extends CommandHandler
         $currentSection = $commandName ? $parts[0] : 'global';
 
         if ($previousSection !== $currentSection) {
-            output()->getFormatter()->cyan();
+            output()->formatter()->cyan();
             output()->writeMessage(static::TAB);
             output()->writeMessage($currentSection, true);
 

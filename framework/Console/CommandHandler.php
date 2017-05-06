@@ -102,13 +102,13 @@ abstract class CommandHandler implements CommandHandlerContract
      */
     protected function applicationMessage(): void
     {
-        output()->getFormatter()->magenta();
+        output()->formatter()->magenta();
         output()->writeMessage('Valkyrja Application');
-        output()->getFormatter()->resetColor();
+        output()->formatter()->resetColor();
         output()->writeMessage(' version ');
-        output()->getFormatter()->cyan();
+        output()->formatter()->cyan();
         output()->writeMessage(Application::VERSION, true);
-        output()->getFormatter()->resetColor();
+        output()->formatter()->resetColor();
     }
 
     /**
@@ -120,9 +120,9 @@ abstract class CommandHandler implements CommandHandlerContract
      */
     protected function sectionTitleMessage(string $sectionName): void
     {
-        output()->getFormatter()->underscore();
+        output()->formatter()->underscore();
         output()->writeMessage($sectionName . ':', true);
-        output()->getFormatter()->resetOptions();
+        output()->formatter()->resetOptions();
     }
 
     /**
@@ -265,9 +265,9 @@ abstract class CommandHandler implements CommandHandlerContract
         $longestLength = $longestLength ?? 0;
         $spacesToAdd = $longestLength - strlen($name);
 
-        output()->getFormatter()->green();
+        output()->formatter()->green();
         output()->writeMessage(static::TAB . $name);
-        output()->getFormatter()->resetColor();
+        output()->formatter()->resetColor();
         output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
         output()->writeMessage(str_repeat('.', 8));
         output()->writeMessage($description, true);

@@ -27,6 +27,13 @@ final class FormatOption extends Enum
     public const BLINK      = '5';
     public const INVERSE    = '7';
     public const CONCEAL    = '8';
+    public const DEFAULT    = [
+        self::BOLD       => 22,
+        self::UNDERSCORE => 24,
+        self::BLINK      => 25,
+        self::INVERSE    => 27,
+        self::CONCEAL    => 28,
+    ];
 
     protected const VALUES = [
         self::BOLD,

@@ -46,7 +46,7 @@ class Output implements OutputContract
      *
      * @return \Valkyrja\Contracts\Console\Output\OutputFormatter
      */
-    public function getFormatter(): OutputFormatter
+    public function formatter(): OutputFormatter
     {
         return $this->formatter;
     }
