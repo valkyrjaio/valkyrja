@@ -63,6 +63,9 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
                 }
             }
             else {
+                // Validate the path before setting the route
+                $route->setPath($this->validatePath($route->getPath()));
+
                 // Otherwise just set the route in the final array
                 $finalRoutes[] = $route;
             }
@@ -181,6 +184,21 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      */
     protected function validatePath(string $path): string
     {
-        return '/' . trim($path, '/');
+        // Trim slashes from the beginning and end of the path
+        $path = trim($path, '/');
+
+        // If the path only had a slash
+        if (! $path) {
+            // Return as just slash
+            return '/';
+        }
+
+        // If the route doesn't begin with an optional or required group
+        if ($path[0] !== '[' && $path[0] !== '<') {
+            // Append a slash
+            return '/' . $path;
+        }
+
+        return $path;
     }
 }

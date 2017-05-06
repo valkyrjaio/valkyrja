@@ -298,7 +298,7 @@ class Router implements RouterContract
     /**
      * Get all routes set by the application.
      *
-     * @return \Valkyrja\Routing\Route[]
+     * @return array
      */
     public function getRoutes(): array
     {
@@ -450,6 +450,16 @@ class Router implements RouterContract
                 $dynamicRoute = clone self::$routes[$dynamicRoute];
                 // The first match is the path itself
                 unset($matches[0]);
+
+                // Iterate through the matches
+                foreach ($matches as $key => $match) {
+                    // If there is no match (middle of regex optional group)
+                    if (! $match) {
+                        // Set the value to null so the controller's action
+                        // can use the default it sets
+                        $matches[$key] = null;
+                    }
+                }
 
                 // Set the matches
                 $dynamicRoute->setMatches($matches);
