@@ -50,7 +50,6 @@ class ConsoleCommands extends CommandHandler
         $this->sectionDivider();
 
         $this->usageMessage('command [options] [arguments]');
-        $this->sectionDivider();
 
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
