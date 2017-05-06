@@ -298,7 +298,7 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function reverse(): void
     {
-        $this->setOptionNum(FormatOption::REVERSE);
+        $this->setOptionNum(FormatOption::INVERSE);
     }
 
     /**

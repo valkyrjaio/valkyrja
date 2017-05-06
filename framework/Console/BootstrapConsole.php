@@ -20,6 +20,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Events\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCacheCommand;
+use Valkyrja\Routing\Commands\RoutesListCommand;
 
 /**
  * Class BootstrapConsole
@@ -72,6 +73,7 @@ class BootstrapConsole
         $this->bootstrapContainerCache();
         $this->bootstrapEventsCache();
         $this->bootstrapRoutingCache();
+        $this->bootstrapRoutingRoutes();
     }
 
     /**
@@ -171,7 +173,7 @@ class BootstrapConsole
     }
 
     /**
-     * Bootstrap the routing cache command.
+     * Bootstrap the routes cache command.
      *
      * @return void
      */
@@ -183,6 +185,22 @@ class BootstrapConsole
                 ->setName(RoutesCacheCommand::COMMAND)
                 ->setDescription(RoutesCacheCommand::SHORT_DESCRIPTION)
                 ->setClass(RoutesCacheCommand::class)
+        );
+    }
+
+    /**
+     * Bootstrap the routes list command.
+     *
+     * @return void
+     */
+    protected function bootstrapRoutingRoutes(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath(RoutesListCommand::COMMAND)
+                ->setName(RoutesListCommand::COMMAND)
+                ->setDescription(RoutesListCommand::SHORT_DESCRIPTION)
+                ->setClass(RoutesListCommand::class)
         );
     }
 }

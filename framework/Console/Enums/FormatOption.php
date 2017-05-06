@@ -25,14 +25,14 @@ final class FormatOption extends Enum
     public const BOLD       = '1';
     public const UNDERSCORE = '4';
     public const BLINK      = '5';
-    public const REVERSE    = '7';
+    public const INVERSE    = '7';
     public const CONCEAL    = '8';
 
     protected const VALUES = [
         self::BOLD,
         self::UNDERSCORE,
         self::BLINK,
-        self::REVERSE,
+        self::INVERSE,
         self::CONCEAL,
     ];
 }
