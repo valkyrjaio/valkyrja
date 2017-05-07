@@ -25,6 +25,7 @@ use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Logger\Logger;
 use Valkyrja\Contracts\Routing\Router;
+use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Http\ResponseCode;
 
@@ -42,7 +43,7 @@ interface Application
      *
      * @constant string
      */
-    const VERSION = '0.2017.5.6.1523 Alpha';
+    const VERSION = '0.2017.5.6.1905 Alpha';
 
     /**
      * Application constructor.
@@ -270,6 +271,13 @@ interface Application
      * @return \Valkyrja\Contracts\Http\ResponseBuilder
      */
     public function responseBuilder(): ResponseBuilder;
+
+    /**
+     * Return the session.
+     *
+     * @return \Valkyrja\Contracts\Session\Session
+     */
+    public function session(): Session;
 
     /**
      * Helper function to get a new view.

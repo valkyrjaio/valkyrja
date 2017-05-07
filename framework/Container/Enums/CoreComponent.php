@@ -42,6 +42,7 @@ use Valkyrja\Contracts\Path\PathGenerator;
 use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Contracts\Routing\Router;
+use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Enum\Enum;
 
@@ -79,6 +80,7 @@ final class CoreComponent extends Enum
     public const RESPONSE_BUILDER      = ResponseBuilder::class;
     public const ROUTER                = Router::class;
     public const ROUTE_ANNOTATIONS     = RouteAnnotations::class;
+    public const SESSION               = Session::class;
     public const VIEW                  = View::class;
     public const CLIENT                = Client::class;
     public const STREAM_HANDLER        = StreamHandler::class;
@@ -110,6 +112,7 @@ final class CoreComponent extends Enum
         self::RESPONSE_BUILDER,
         self::ROUTER,
         self::ROUTE_ANNOTATIONS,
+        self::SESSION,
         self::VIEW,
         self::CLIENT,
         self::STREAM_HANDLER,

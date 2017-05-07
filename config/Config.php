@@ -8,6 +8,7 @@ use config\sub\ContainerConfig;
 use config\sub\EventsConfig;
 use config\sub\LoggerConfig;
 use config\sub\RoutingConfig;
+use config\sub\SessionConfig;
 use config\sub\StorageConfig;
 use config\sub\ViewsConfig;
 
@@ -36,6 +37,7 @@ class Config extends ValkyrjaConfig
         $this->events = new EventsConfig($env);
         $this->logger = new LoggerConfig($env);
         $this->routing = new RoutingConfig($env);
+        $this->session = new SessionConfig($env);
         $this->storage = new StorageConfig($env);
         $this->views = new ViewsConfig($env);
     }

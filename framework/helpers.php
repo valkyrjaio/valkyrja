@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Valkyrja\Contracts\Session\Session;
+
 if (! function_exists('app')) {
     /**
      * Return the global $app variable.
@@ -296,6 +298,18 @@ if (! function_exists('redirectTo')) {
     ): void
     {
         app()->redirectTo($uri, $statusCode, $headers);
+    }
+}
+
+if (! function_exists('session')) {
+    /**
+     * Return the session.
+     *T
+     * @return \Valkyrja\Contracts\Session\Session
+     */
+    function session(): Session
+    {
+        return app()->session();
     }
 }
 

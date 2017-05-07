@@ -134,11 +134,6 @@ class Request implements RequestContract
     protected $format;
 
     /**
-     * @var \Valkyrja\Contracts\Support\Collection
-     */
-    protected $session;
-
-    /**
      * @var string
      */
     protected $locale;
@@ -174,18 +169,19 @@ class Request implements RequestContract
         $content = null
     )
     {
-        $this->setQuery($query)
-             ->setRequest($request)
-             ->setAttributes($attributes)
-             ->setCookies($cookies)
-             ->setFiles($files)
-             ->setServer($server)
-             ->setHeaders()
-             ->setContent($content)
-             ->setLanguages()
-             ->setCharsets()
-             ->setEncodings()
-             ->setAcceptableContentTypes();
+        $this
+            ->setQuery($query)
+            ->setRequest($request)
+            ->setAttributes($attributes)
+            ->setCookies($cookies)
+            ->setFiles($files)
+            ->setServer($server)
+            ->setHeaders()
+            ->setContent($content)
+            ->setLanguages()
+            ->setCharsets()
+            ->setEncodings()
+            ->setAcceptableContentTypes();
 
         $this->path = null;
         $this->requestUri = null;
@@ -229,13 +225,14 @@ class Request implements RequestContract
     public static function createFromGlobals(): RequestContract
     {
         // Create a new request from the PHP globals
+        /** @var RequestContract $request */
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         if (
-            0 === strpos($request->headers->get('Content-Type'), 'application/x-www-form-urlencoded')
+            0 === strpos($request->headers()->get('Content-Type'), 'application/x-www-form-urlencoded')
             &&
             in_array(
-                strtoupper($request->server->get('REQUEST_METHOD', RequestMethod::GET)),
+                strtoupper($request->server()->get('REQUEST_METHOD', RequestMethod::GET)),
                 [
                     RequestMethod::PUT,
                     RequestMethod::DELETE,

@@ -27,6 +27,7 @@ use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Logger\Logger;
 use Valkyrja\Contracts\Routing\Router;
+use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
@@ -486,6 +487,16 @@ class Application implements ApplicationContract
     public function responseBuilder(): ResponseBuilder
     {
         return $this->container()->get(ResponseBuilder::class);
+    }
+
+    /**
+     * Return the session.
+     *
+     * @return \Valkyrja\Contracts\Session\Session
+     */
+    public function session(): Session
+    {
+        return $this->container()->get(Session::class);
     }
 
     /**

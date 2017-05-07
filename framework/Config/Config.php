@@ -18,6 +18,7 @@ use Valkyrja\Config\Sub\ContainerConfig;
 use Valkyrja\Config\Sub\EventsConfig;
 use Valkyrja\Config\Sub\LoggerConfig;
 use Valkyrja\Config\Sub\RoutingConfig;
+use Valkyrja\Config\Sub\SessionConfig;
 use Valkyrja\Config\Sub\StorageConfig;
 use Valkyrja\Config\Sub\ViewsConfig;
 use Valkyrja\Contracts\Config\Config as ConfigContract;
@@ -89,6 +90,13 @@ class Config implements ConfigContract
     public $routing;
 
     /**
+     * Session config.
+     *
+     * @var \Valkyrja\Config\Sub\SessionConfig
+     */
+    public $session;
+
+    /**
      * Storage config.
      *
      * @var \Valkyrja\Config\Sub\StorageConfig
@@ -118,6 +126,7 @@ class Config implements ConfigContract
         $this->events = new EventsConfig($env);
         $this->logger = new LoggerConfig($env);
         $this->routing = new RoutingConfig($env);
+        $this->session = new SessionConfig($env);
         $this->storage = new StorageConfig($env);
         $this->views = new ViewsConfig($env);
     }

@@ -41,6 +41,7 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Router;
+use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
 /**
@@ -85,6 +86,7 @@ class BootstrapContainer
      */
     protected function bootstrap(): void
     {
+        $this->bootstrapSession();
         $this->bootstrapAnnotationsParser();
         $this->bootstrapAnnotations();
         $this->bootstrapContainerAnnotations();
@@ -108,6 +110,21 @@ class BootstrapContainer
         $this->bootstrapClient();
         $this->bootstrapLoggerInterface();
         $this->bootstrapLogger();
+    }
+
+    /**
+     * Bootstrap the session.
+     *
+     * @return void
+     */
+    public function bootstrapSession(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::SESSION)
+                ->setClass(Session::class)
+                ->setSingleton(true)
+        );
     }
 
     /**

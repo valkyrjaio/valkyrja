@@ -91,6 +91,12 @@ interface Env
     public const ROUTING_USE_CACHE_FILE              = null;
 
     /**
+     * Session env variables.
+     */
+    public const SESSION_ID   = null;
+    public const SESSION_NAME = null;
+
+    /**
      * Storage env variables.
      */
     public const STORAGE_UPLOADS_DIR = null;
