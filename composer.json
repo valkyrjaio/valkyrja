@@ -17,7 +17,7 @@
   ],
   "require"           : {
     "php"              : ">=7.1",
-    "monolog/monolog/" : "~2.0",
+    "monolog/monolog/" : "~1.22",
     "league/flysystem" : "~1.0"
   },
   "require-dev"       : {
