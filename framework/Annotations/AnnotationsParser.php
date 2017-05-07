@@ -391,8 +391,7 @@ class AnnotationsParser implements AnnotationsParserContract
         if ($annotationType && array_key_exists($annotationType, $annotationsMap)) {
             // Set a new class based on the match found
             $annotation = new $annotationsMap[$annotationType]();
-        }
-        else {
+        } else {
             // Otherwise set a new base annotation model
             $annotation = new Annotation();
         }

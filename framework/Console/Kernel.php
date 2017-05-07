@@ -70,8 +70,7 @@ class Kernel implements KernelContract
 
         try {
             $exitCode = $this->console->dispatch($input, $output);
-        }
-        catch (Throwable $exception) {
+        } catch (Throwable $exception) {
             // Show the exception
             // TODO: Implement
             dd($exception);
@@ -110,16 +109,14 @@ class Kernel implements KernelContract
         // If no input was passed get the bootstrapped definition
         if (null === $input) {
             $input = $this->app->container()->get(Input::class);
-        }
-        else {
+        } else {
             $this->app->container()->singleton(Input::class, $input);
         }
 
         // If no output was passed get the bootstrapped definition
         if (null === $output) {
             $output = $this->app->container()->get(Output::class);
-        }
-        else {
+        } else {
             $this->app->container()->singleton(Output::class, $output);
         }
 

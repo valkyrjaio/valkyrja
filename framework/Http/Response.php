@@ -171,8 +171,7 @@ class Response implements ResponseContract
                     $cookie->isSecure(),
                     $cookie->isHttpOnly()
                 );
-            }
-            // Otherwise
+            } // Otherwise
             else {
                 // Set the cookie normally
                 setcookie(
@@ -218,9 +217,8 @@ class Response implements ResponseContract
         if (function_exists('fastcgi_finish_request')) {
             // Use it to finish the request
             fastcgi_finish_request();
-        }
-        // Otherwise if this isn't a cli request
-        else if ('cli' !== PHP_SAPI) {
+        } // Otherwise if this isn't a cli request
+        elseif ('cli' !== PHP_SAPI) {
             // Use an internal method to finish the request
             static::closeOutputBuffers(0, true);
         }
@@ -655,8 +653,7 @@ class Response implements ResponseContract
     {
         try {
             return $this->headers->get('Expires');
-        }
-        catch (\RuntimeException $e) {
+        } catch (\RuntimeException $e) {
             // according to RFC 2616 invalid date formats (e.g. "0" and "-1") must be treated as in the past
             return DateTime::createFromFormat(DATE_RFC2822, 'Sat, 01 Jan 00 00:00:00 +0000');
         }
@@ -675,8 +672,7 @@ class Response implements ResponseContract
     {
         if (null === $date) {
             $this->headers->remove('Expires');
-        }
-        else {
+        } else {
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
             $this->headers->set('Expires', $date->format('D, d M Y H:i:s') . ' GMT');
@@ -828,8 +824,7 @@ class Response implements ResponseContract
     {
         if (null === $date) {
             $this->headers->remove('Last-Modified');
-        }
-        else {
+        } else {
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
             $this->headers->set('Last-Modified', $date->format('D, d M Y H:i:s') . ' GMT');
@@ -860,8 +855,7 @@ class Response implements ResponseContract
     {
         if (null === $etag) {
             $this->headers->remove('Etag');
-        }
-        else {
+        } else {
             if (0 !== strpos($etag, '"')) {
                 $etag = '"' . $etag . '"';
             }
@@ -906,8 +900,7 @@ class Response implements ResponseContract
         if (isset($options['public'])) {
             if ($options['public']) {
                 $this->setPublic();
-            }
-            else {
+            } else {
                 $this->setPrivate();
             }
         }
@@ -915,8 +908,7 @@ class Response implements ResponseContract
         if (isset($options['private'])) {
             if ($options['private']) {
                 $this->setPrivate();
-            }
-            else {
+            } else {
                 $this->setPublic();
             }
         }
@@ -1119,8 +1111,7 @@ class Response implements ResponseContract
         ) {
             if ($flush) {
                 ob_end_flush();
-            }
-            else {
+            } else {
                 ob_end_clean();
             }
         }

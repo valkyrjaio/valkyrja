@@ -304,7 +304,7 @@ if (! function_exists('redirectTo')) {
 if (! function_exists('session')) {
     /**
      * Return the session.
-     *T
+     *
      * @return \Valkyrja\Contracts\Session\Session
      */
     function session(): Session

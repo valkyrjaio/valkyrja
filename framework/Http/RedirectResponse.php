@@ -132,8 +132,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
             if (null !== $this->uri) {
                 // Set the path to it
                 $path = $this->uri;
-            }
-            else {
+            } else {
                 // Otherwise set the path to the current path w/ query string
                 $path = request()->getPath();
             }

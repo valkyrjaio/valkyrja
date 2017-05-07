@@ -141,8 +141,7 @@ class Cookie implements CookieContract
 
         if ('' === $this->value) {
             $str .= 'deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001) . '; max-age=-31536001';
-        }
-        else {
+        } else {
             $str .= urlencode($this->value);
 
             if ($this->expire !== 0) {

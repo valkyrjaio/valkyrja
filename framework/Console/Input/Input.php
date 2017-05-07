@@ -167,9 +167,8 @@ class Input implements InputContract
             // If the key has double dash it is a long option
             if (strpos($key, '--') !== false) {
                 $type = 'longOptions';
-            }
-            // If the key has a single dash it is a short option
-            else if (strpos($key, '-') !== false) {
+            } // If the key has a single dash it is a short option
+            elseif (strpos($key, '-') !== false) {
                 $type = 'shortOptions';
             }
 
@@ -312,7 +311,7 @@ class Input implements InputContract
             '-h',
             '--help',
             '-V',
-            '--version'
+            '--version',
         ];
     }
 }

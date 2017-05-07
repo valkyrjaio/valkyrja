@@ -70,8 +70,7 @@ class Kernel implements KernelContract
 
         try {
             $response = $this->router->dispatch($request);
-        }
-        catch (Throwable $exception) {
+        } catch (Throwable $exception) {
             $handler = new ExceptionHandler($this->app->config()->app->debug);
             $response = $handler->getResponse($exception);
         }

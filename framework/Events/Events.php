@@ -84,8 +84,7 @@ class Events implements EventsContract
             // Use it when setting to allow removal
             // or checking if it exists later
             self::$events[$event][$listener->getId()] = $listener;
-        }
-        else {
+        } else {
             // Otherwise set the listener normally
             self::$events[$event][] = $listener;
         }

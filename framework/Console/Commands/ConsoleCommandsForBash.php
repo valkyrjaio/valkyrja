@@ -49,8 +49,7 @@ class ConsoleCommandsForBash extends CommandHandler
                     $possibleCommands[] = $colonAt ? substr($command, $colonAt + 1) : $command;
                 }
             }
-        }
-        else {
+        } else {
             // Nothing typed, return all
             $possibleCommands = $allCommands;
         }

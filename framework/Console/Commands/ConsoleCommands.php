@@ -62,7 +62,11 @@ class ConsoleCommands extends CommandHandler
                 $this->commandSection($command, $previousSection);
             }
 
-            $this->sectionMessage((! $namespace ? static::TAB : '') . $command->getName(), $command->getDescription(), $longestLength + 2);
+            $this->sectionMessage(
+                (! $namespace ? static::TAB : '') . $command->getName(),
+                $command->getDescription(),
+                $longestLength + 2
+            );
         }
 
         return 1;

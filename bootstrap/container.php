@@ -11,7 +11,7 @@
 
 container()->bind(
     (new \Valkyrja\Container\Service())
-    ->setId(App\Controllers\HomeController::class)
-    ->setClass(App\Controllers\HomeController::class)
-    ->setDependencies([Valkyrja\Contracts\Application::class])
+        ->setId(App\Controllers\HomeController::class)
+        ->setClass(App\Controllers\HomeController::class)
+        ->setDependencies([Valkyrja\Contracts\Application::class])
 );

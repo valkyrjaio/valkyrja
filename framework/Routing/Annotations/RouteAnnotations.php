@@ -61,8 +61,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
                     // And set a new route with the controller defined annotation additions
                     $finalRoutes[] = $this->getControllerBuiltRoute($annotation, $route);
                 }
-            }
-            else {
+            } else {
                 // Validate the path before setting the route
                 $route->setPath($this->validatePath($route->getPath()));
 

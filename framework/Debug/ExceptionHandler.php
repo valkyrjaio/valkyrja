@@ -154,8 +154,7 @@ class ExceptionHandler implements ExceptionHandlerContract
                 $statusCode,
                 $headers
             );
-        }
-        else {
+        } else {
             $response = Application::app()->response(
                 $content,
                 $statusCode,
@@ -293,8 +292,7 @@ EOF
 
                     $content .= "    </ol>\n</div>\n";
                 }
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 // Something nasty happened and we cannot throw an exception anymore
                 $title = sprintf(
                     'Exception thrown when handling an exception (%s: %s)',
@@ -487,23 +485,17 @@ EOF;
         foreach ($args as $key => $item) {
             if (is_object($item)) {
                 $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass(get_class($item)));
-            }
-            else if (is_array($item)) {
+            } elseif (is_array($item)) {
                 $formattedValue = sprintf('<em>array</em>(%s)', $this->formatArgs($item));
-            }
-            else if (is_string($item)) {
+            } elseif (is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
-            }
-            else if (null === $item) {
+            } elseif (null === $item) {
                 $formattedValue = '<em>null</em>';
-            }
-            else if (is_bool($item)) {
+            } elseif (is_bool($item)) {
                 $formattedValue = '<em>' . strtolower(var_export($item, true)) . '</em>';
-            }
-            else if (is_resource($item)) {
+            } elseif (is_resource($item)) {
                 $formattedValue = '<em>resource</em>';
-            }
-            else {
+            } else {
                 $formattedValue = str_replace("\n", '', var_export($this->escapeHtml((string) $item), true));
             }
 

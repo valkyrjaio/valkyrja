@@ -307,8 +307,7 @@ class Request implements RequestContract
             if ('https' === $components['scheme']) {
                 $server['HTTPS'] = 'on';
                 $server['SERVER_PORT'] = 443;
-            }
-            else {
+            } else {
                 unset($server['HTTPS']);
                 $server['SERVER_PORT'] = 80;
             }
@@ -358,13 +357,11 @@ class Request implements RequestContract
             if ($query) {
                 $query = array_replace($qs, $query);
                 $queryString = http_build_query($query, '', '&');
-            }
-            else {
+            } else {
                 $query = $qs;
                 $queryString = $components['query'];
             }
-        }
-        else if ($query) {
+        } elseif ($query) {
             $queryString = http_build_query($query, '', '&');
         }
 
@@ -966,8 +963,7 @@ class Request implements RequestContract
             if (RequestMethod::POST === $this->method) {
                 if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                     $this->method = strtoupper($method);
-                }
-                else if (self::$httpMethodParameterOverride) {
+                } elseif (self::$httpMethodParameterOverride) {
                     $this->method = strtoupper(
                         $this->request->get('_method', $this->query->get('_method', RequestMethod::POST))
                     );

@@ -143,8 +143,7 @@ class Router implements RouterContract
         if ($route->getDynamic()) {
             $this->setDynamicRoute($route);
             self::$dynamicRoutes[$route->getRegex()] = $route->getPath();
-        }
-        // Otherwise set it in the static routes array
+        } // Otherwise set it in the static routes array
         else {
             self::$staticRoutes[$route->getPath()] = true;
 

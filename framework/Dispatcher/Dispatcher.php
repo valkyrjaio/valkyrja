@@ -244,9 +244,8 @@ trait Dispatcher
             if ($argument instanceof Service) {
                 // Dispatch the argument and set the results to the argument
                 $argument = container()->get($argument, null, $context, $member);
-            }
-            // If the argument is a dispatch
-            else if ($argument instanceof Dispatch) {
+            } // If the argument is a dispatch
+            elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
                 $argument = $this->dispatchCallable($argument);
             }
@@ -292,17 +291,14 @@ trait Dispatcher
             // Unpack arguments and dispatch
             if ($dispatch->isStatic()) {
                 $response = $class::$method(...$arguments);
-            }
-            else {
+            } else {
                 $response = $class->$method(...$arguments);
             }
-        }
-        else {
+        } else {
             // Dispatch without unpacking
             if ($dispatch->isStatic()) {
                 $response = $class::$method();
-            }
-            else {
+            } else {
                 $response = $class->$method();
             }
         }
@@ -384,13 +380,11 @@ trait Dispatcher
             if (null !== $arguments) {
                 // Get a new class instance with the arguments
                 $class = new $class(...$arguments);
-            }
-            else {
+            } else {
                 // Otherwise just get a new class instance
                 $class = new $class();
             }
-        }
-        else {
+        } else {
             // Set the class through the container
             $class = container()->get($dispatch->getClass(), $arguments);
         }
@@ -428,8 +422,7 @@ trait Dispatcher
         if (null !== $arguments) {
             // Unpack arguments and dispatch
             $response = $function(...$arguments);
-        }
-        else {
+        } else {
             // Dispatch without unpacking
             $response = $function();
         }
@@ -466,8 +459,7 @@ trait Dispatcher
         if (null !== $arguments) {
             // Unpack arguments and dispatch
             $response = $closure(...$arguments);
-        }
-        else {
+        } else {
             // Dispatch without unpacking
             $response = $closure();
         }

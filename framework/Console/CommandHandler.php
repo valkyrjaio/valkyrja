@@ -241,8 +241,7 @@ abstract class CommandHandler implements CommandHandlerContract
 
         if ($option->getShortcut()) {
             $name .= '-' . $option->getShortcut() . ', ';
-        }
-        else {
+        } else {
             $name .= static::DOUBLE_TAB;
         }
 

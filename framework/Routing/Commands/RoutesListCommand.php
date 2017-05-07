@@ -109,8 +109,7 @@ class RoutesListCommand extends CommandHandler
 
         if (null !== $route->getFunction()) {
             $dispatch = $route->getFunction();
-        }
-        else if (null !== $route->getClass()) {
+        } elseif (null !== $route->getClass()) {
             $dispatch = $route->getClass()
                 . ($route->isStatic() ? '::' : '->')
                 . ($route->getMethod() ? $route->getMethod() . '()' : $route->getProperty());
