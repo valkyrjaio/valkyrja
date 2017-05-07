@@ -25,7 +25,7 @@ trait Annotatable
      *
      * @var string
      */
-    protected $type;
+    protected $annotationType;
 
     /**
      * The class.
@@ -81,21 +81,21 @@ trait Annotatable
      *
      * @return string
      */
-    public function getType():? string
+    public function getAnnotationType():? string
     {
-        return $this->type;
+        return $this->annotationType;
     }
 
     /**
      * Set the type.
      *
-     * @param string $type The type
+     * @param string $annotationType The type
      *
      * @return void
      */
-    public function setType(string $type = null)
+    public function setAnnotationType(string $annotationType = null)
     {
-        $this->type = $type;
+        $this->annotationType = $annotationType;
     }
 
     /**

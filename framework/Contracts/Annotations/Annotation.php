@@ -25,7 +25,7 @@ interface Annotation
      *
      * @return string
      */
-    public function getType():? string;
+    public function getAnnotationType():? string;
 
     /**
      * Set the type.
@@ -34,7 +34,7 @@ interface Annotation
      *
      * @return void
      */
-    public function setType(string $type = null);
+    public function setAnnotationType(string $type = null);
 
     /**
      * Get the class.

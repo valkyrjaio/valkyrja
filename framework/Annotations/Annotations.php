@@ -459,7 +459,7 @@ class Annotations implements AnnotationsContract
         // Iterate through the annotation
         foreach ($annotations as $annotation) {
             // If the annotation's type matches the type requested
-            if ($annotation->getType() === $type) {
+            if ($annotation->getAnnotationType() === $type) {
                 // Set the annotation in the list
                 $annotationsList[] = $annotation;
             }

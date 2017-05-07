@@ -84,7 +84,7 @@ class AnnotationsParser implements AnnotationsParserContract
         $annotation = $this->getAnnotationFromMap($properties['annotation']);
 
         // Set the annotation's type
-        $annotation->setType($properties['annotation']);
+        $annotation->setAnnotationType($properties['annotation']);
 
         // If there are arguments
         if (null !== $properties['arguments'] && $properties['arguments']) {
