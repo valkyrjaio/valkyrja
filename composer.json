@@ -38,6 +38,7 @@
     "predis/predis"     : "Required for use with Redis Valkyrja Cache(^1.1)."
   },
   "minimum-stability" : "dev",
+  "prefer-stable"     : true,
   "extra"             : {
     "branch-alias" : {
       "dev-master" : "0.1-dev"
