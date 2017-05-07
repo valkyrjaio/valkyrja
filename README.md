@@ -2,7 +2,7 @@
 A simple framework for speed and efficiency
 
 <p align="center">
-    <a href="https://travis-ci.org/valkyrja/valkyrja"><img src="https://travis-ci.org/valkyrja/valkyrja.svg" alt="Build Status"></a>
+    <a href="https://travis-ci.org/valkyrjaio/valkyrja"><img src="https://travis-ci.org/valkyrjaio/valkyrja.svg" alt="Build Status"></a>
 </p>
 
 ## MVC
