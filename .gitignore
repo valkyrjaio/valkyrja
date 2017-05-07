@@ -1,10 +1,6 @@
-/.idea
-/bower_components
-/node_modules
-/public/assets/*
 /vendor
-.DS_Store
-.env.php
 composer.lock
-npm-debug.log
+.DS_Store
+.php_cs.cache
+phpunit.xml
 Thumbs.db

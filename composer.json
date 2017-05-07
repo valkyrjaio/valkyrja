@@ -1,41 +1,46 @@
 {
-  "name"        : "valkyrja/valkyrja",
-  "description" : "The Valkyrja Framework.",
-  "keywords"    : [
+  "name"              : "valkyrjaio/valkyrja",
+  "type"              : "project",
+  "description"       : "The Valkyrja Framework.",
+  "homepage"          : "http://www.valkyrja.io",
+  "keywords"          : [
     "framework",
     "valkyrja"
   ],
-  "license"     : "MIT",
-  "type"        : "project",
-  "require"     : {
-    "php"               : ">=7.1",
-    "twig/twig"         : "^1.25",
-    "guzzlehttp/guzzle" : "^6.2",
-    "monolog/monolog"   : "^1.21"
+  "license"           : "MIT",
+  "authors"           : [
+    {
+      "name"  : "Melech Mizrachi",
+      "email" : "melechmizrachi@valkyrja.io"
+    }
+  ],
+  "require"           : {
+    "php"              : ">=7.1",
+    "monolog/monolog/" : "~1.33",
+    "league/flysystem" : "~1.0"
   },
-  "require-dev" : {
+  "require-dev"       : {
     "fzaninotto/faker" : "~1.4",
     "mockery/mockery"  : "0.9.*",
     "phpunit/phpunit"  : "~5.0"
   },
-  "autoload"    : {
+  "autoload"          : {
     "psr-4" : {
-      "App\\"      : "app/",
-      "config\\"   : "config/",
-      "Valkyrja\\" : "framework/"
+      "Valkyrja\\" : "src/Valkyrja"
     },
     "files" : [
-      "framework/helpers.php"
+      "src/Valkyrja/helpers.php"
     ]
   },
-  "scripts"     : {
-    "post-root-package-install" : [
-      "php -r \"file_exists('config/Env.php') || copy('config/Env.example.php', 'config/Env.php');\""
-    ]
+  "suggest"           : {
+    "guzzlehttp/guzzle" : "Required for use with Valkyrja Client (^6.2).",
+    "twig/twig"         : "Optional templating engine. Required if using TwigServiceProvider (^1.33).",
+    "predis/predis"     : "Required for use with Redis Valkyrja Cache(^1.1)."
   },
-  "suggest"     : {
-    "twig/twig"        : "(^1.25).",
-    "predis/predis"    : "(^1.1).",
-    "league/flysystem" : "(^1.0)."
+  "minimum-stability" : "dev",
+  "extra"             : {
+    "branch-alias" : {
+      "dev-master" : "0.1-dev"
+    }
   }
 }
