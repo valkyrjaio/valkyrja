@@ -30,6 +30,7 @@ use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Contracts\Filesystem\Filesystem;
 use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
@@ -66,6 +67,7 @@ final class CoreComponent extends Enum
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
     public const ENV                   = Env::class;
     public const EVENTS                = Events::class;
+    public const FILESYSTEM            = Filesystem::class;
     public const INPUT                 = Input::class;
     public const OUTPUT                = Output::class;
     public const OUTPUT_FORMATTER      = OutputFormatter::class;
@@ -98,6 +100,7 @@ final class CoreComponent extends Enum
         self::CONTAINER_ANNOTATIONS,
         self::ENV,
         self::EVENTS,
+        self::FILESYSTEM,
         self::INPUT,
         self::OUTPUT,
         self::OUTPUT_FORMATTER,

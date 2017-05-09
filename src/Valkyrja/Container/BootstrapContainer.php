@@ -28,6 +28,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
+use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Client;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
@@ -108,6 +109,7 @@ class BootstrapContainer
         $this->bootstrapRouteAnnotations();
         $this->bootstrapView();
         $this->bootstrapClient();
+        $this->bootstrapFilesystem();
         $this->bootstrapLoggerInterface();
         $this->bootstrapLogger();
     }
@@ -458,6 +460,21 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::CLIENT)
                 ->setClass(Client::class)
+                ->setSingleton(true)
+        );
+    }
+
+    /**
+     * Bootstrap the filesystem.
+     *
+     * @return void
+     */
+    protected function bootstrapFilesystem(): void
+    {
+        $this->container->bind(
+            (new Service())
+                ->setId(CoreComponent::FILESYSTEM)
+                ->setClass(Filesystem::class)
                 ->setSingleton(true)
         );
     }
