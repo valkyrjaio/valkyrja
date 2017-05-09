@@ -41,6 +41,12 @@ class CacheAllCommand extends CommandHandler
      */
     public function run(string $sync = null): int
     {
+        $originalDebug = config()->app->debug;
+        $originalEnv = config()->app->env;
+
+        config()->app->debug = false;
+        config()->app->env = 'production';
+
         $consoleCache = console()->matchCommand(ConsoleCache::COMMAND);
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
         $eventsCache = console()->matchCommand(EventsCache::COMMAND);
@@ -64,6 +70,9 @@ class CacheAllCommand extends CommandHandler
                 output()->writeMessage('Copied: ' . $file, true);
             }
         }
+
+        config()->app->debug = $originalDebug;
+        config()->app->env = $originalEnv;
 
         return 1;
     }
