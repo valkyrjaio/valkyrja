@@ -123,6 +123,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::SESSION)
                 ->setClass(Session::class)
+                ->setDependencies([CoreComponent::APP])
                 ->setSingleton(true)
         );
     }

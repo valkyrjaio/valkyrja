@@ -25,6 +25,11 @@ use Valkyrja\Session\Exceptions\SessionStartFailure;
  */
 class Session implements SessionContract
 {
+    /**
+     * The application.
+     *
+     * @var \Valkyrja\Contracts\Application
+     */
     protected $app;
 
     /**
@@ -49,6 +54,7 @@ class Session implements SessionContract
      * @param string                          $sessionName [optional] The session name
      *
      * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
+     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
      */
     public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
     {
@@ -68,6 +74,9 @@ class Session implements SessionContract
             // Set the name
             $this->setName($sessionName);
         }
+
+        // Start the session
+        $this->start();
     }
 
     /**
@@ -80,7 +89,7 @@ class Session implements SessionContract
     public function start(): void
     {
         // If the session is already active
-        if (null !== $this->isActive()) {
+        if ($this->isActive()) {
             // No need to reactivate
             return;
         }
@@ -227,7 +236,7 @@ class Session implements SessionContract
      */
     public function csrf(string $id): string
     {
-        $token = random_bytes(64);
+        $token = bin2hex(random_bytes(64));
 
         $this->set($id, $token);
 
