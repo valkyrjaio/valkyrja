@@ -43,7 +43,7 @@ interface Application
      *
      * @constant string
      */
-    const VERSION = '0.1';
+    const VERSION = '0.1.1';
 
     /**
      * Application constructor.
