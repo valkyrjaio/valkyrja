@@ -16,8 +16,8 @@
   ],
   "require"           : {
     "php"              : ">=7.1",
-    "monolog/monolog"  : "~1.22",
-    "league/flysystem" : "~1.0"
+    "league/flysystem" : "~1.0",
+    "monolog/monolog"  : "~1.22"
   },
   "require-dev"       : {
     "fzaninotto/faker" : "~1.4",
@@ -35,7 +35,7 @@
   "suggest"           : {
     "guzzlehttp/guzzle" : "Required for use with Valkyrja Client (^6.2).",
     "twig/twig"         : "Optional templating engine. Required if using TwigServiceProvider (^1.33).",
-    "predis/predis"     : "Required for use with Redis Valkyrja Cache(^1.1)."
+    "predis/predis"     : "Required for use with Redis Valkyrja Cache (^1.1)."
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
