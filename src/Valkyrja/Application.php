@@ -62,7 +62,7 @@ class Application implements ApplicationContract
     /**
      * Application config
      *
-     * @var \Valkyrja\Contracts\Config\Config
+     * @var \Valkyrja\Config\Config
      */
     protected static $config;
 
@@ -97,6 +97,21 @@ class Application implements ApplicationContract
      */
     public function __construct(Config $config)
     {
+        $this->setup($config);
+    }
+
+    /**
+     * Setup the application.
+     *
+     * @param \Valkyrja\Config\Config $config The config
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
+     */
+    public function setup(Config $config): void
+    {
         // If the application was already setup, no need to do it again
         if (self::$setup) {
             return;
@@ -105,18 +120,53 @@ class Application implements ApplicationContract
         // Avoid re-setting up the app later
         self::$setup = true;
 
-        // If debug is on, enable debug handling
-        if ($config->app->debug) {
-            // Debug to output exceptions
-            Debug::enable(E_ALL, $config->app->debug);
-        }
+        // Set a global constant for when the framework started
+        define('VALKYRJA_START', microtime(true));
 
         // Set the app static
         self::$app = $this;
         // Set the config within the application
         self::$config = $config;
 
+        // Bootstrap debug capabilities
+        $this->bootstrapDebug();
+        // Bootstrap core functionality
+        $this->bootstrapCore();
+        // Bootstrap the container
+        $this->bootstrapContainer();
+        // Bootstrap setup
+        $this->bootstrapSetup();
+        // Bootstrap the timezone
+        $this->bootstrapTimezone();
+    }
+
+    /**
+     * Bootstrap debug capabilities.
+     *
+     * @return void
+     */
+    protected function bootstrapDebug(): void
+    {
+        // If debug is on, enable debug handling
+        if (self::$config->app->debug) {
+            // Debug to output exceptions
+            Debug::enable(E_ALL, self::$config->app->debug);
+        }
+    }
+
+    /**
+     * Bootstrap core functionality.
+     *
+     * @return void
+     *
+     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
+     */
+    protected function bootstrapCore(): void
+    {
+        // The events class to use from the config
         $eventsImpl = self::$config->app->events;
+        // The container class to use from the config
         $containerImpl = self::$config->app->container;
 
         // Set the events to a new instance of the events implementation
@@ -134,7 +184,15 @@ class Application implements ApplicationContract
         if (! self::$container instanceof Container) {
             throw new InvalidContainerImplementation('Invalid Container implementation');
         }
+    }
 
+    /**
+     * Bootstrap the container.
+     *
+     * @return void
+     */
+    protected function bootstrapContainer(): void
+    {
         // Set the application instance in the container
         self::$container->singleton(CoreComponent::APP, $this);
         // Set the events instance in the container
@@ -145,7 +203,15 @@ class Application implements ApplicationContract
         self::$container->singleton(CoreComponent::EVENTS, self::$events);
         // Set the container instance in the container
         self::$container->singleton(CoreComponent::CONTAINER, self::$container);
+    }
 
+    /**
+     * Bootstrap main components setup.
+     *
+     * @return void
+     */
+    protected function bootstrapSetup(): void
+    {
         // Setup the container
         // NOTE: Not done in container construct to avoid container()
         // helper returning null self::$container
@@ -154,9 +220,16 @@ class Application implements ApplicationContract
         // NOTE: Not done in events construct to avoid container dependency
         // not existing within setup (for ListenerAnnotations)
         self::$events->setup();
+    }
 
-        // Set the timezone for the application to run within
-        $this->setTimezone();
+    /**
+     * Bootstrap the timezone.
+     *
+     * @return void
+     */
+    protected function bootstrapTimezone(): void
+    {
+        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
     }
 
     /**
@@ -237,16 +310,6 @@ class Application implements ApplicationContract
     public function debug(): string
     {
         return $this->config()->app->debug ?? false;
-    }
-
-    /**
-     * Set the timezone for the application process.
-     *
-     * @return void
-     */
-    public function setTimezone(): void
-    {
-        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
     }
 
     /**

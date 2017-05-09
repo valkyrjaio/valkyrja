@@ -109,13 +109,6 @@ interface Application
     public function debug(): string;
 
     /**
-     * Set the timezone for the application process.
-     *
-     * @return void
-     */
-    public function setTimezone(): void;
-
-    /**
      * Get whether the application is using a compiled version.
      *
      * @return bool
