@@ -53,11 +53,9 @@ trait Dispatcher
         if (
             null !== $dispatch->getClass()
             && null !== $dispatch->getMethod()
-            && ! is_callable(
-                [
-                    $dispatch->getClass(),
-                    $dispatch->getMethod(),
-                ]
+            && ! method_exists(
+                $dispatch->getClass(),
+                $dispatch->getMethod()
             )
         ) {
             // Throw a new invalid method exception
