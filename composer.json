@@ -26,7 +26,8 @@
   },
   "autoload"          : {
     "psr-4" : {
-      "Valkyrja\\" : "src/Valkyrja"
+      "Valkyrja\\"        : "src/Valkyrja",
+      "Valkyrja\\Tests\\" : "tests"
     },
     "files" : [
       "src/Valkyrja/helpers.php"
