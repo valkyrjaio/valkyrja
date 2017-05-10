@@ -18,7 +18,6 @@ use ReflectionClass;
 /**
  * Class Enum.
  *
- *
  * @author  Melech Mizrachi
  */
 abstract class Enum implements JsonSerializable
@@ -29,6 +28,7 @@ abstract class Enum implements JsonSerializable
      * @var array
      */
     protected const VALUES = null;
+
     /**
      * The enum cache to avoid more than one reflection class per enum.
      *

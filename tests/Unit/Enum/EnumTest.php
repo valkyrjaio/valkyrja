@@ -154,11 +154,14 @@ class EnumTest extends TestCase
     public function testValidValuesReflection(): void
     {
         $this->assertEquals(
-            [
-                EnumClass::FOO,
-                EnumClass::BAR,
-            ],
-            $this->getEnumEmpty()->validValues()
+            [],
+            array_diff(
+                [
+                    EnumClass::FOO,
+                    EnumClass::BAR,
+                ],
+                $this->getEnumEmpty()->validValues()
+            )
         );
     }
 
