@@ -195,6 +195,8 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     public function getArguments(string $arguments = null):? array
     {
+        $argumentsList = null;
+
         // If a valid arguments list was passed in
         if (null !== $arguments && $arguments) {
             // Set an arguments list to return
@@ -211,6 +213,8 @@ class AnnotationsParser implements AnnotationsParserContract
 
             return $argumentsList;
         }
+
+        return $argumentsList;
     }
 
     /**
@@ -406,7 +410,7 @@ class AnnotationsParser implements AnnotationsParserContract
     protected function cleanMatch(string $match = null):? string
     {
         if (null === $match) {
-            return;
+            return $match;
         }
 
         return trim(str_replace('*', '', $match));

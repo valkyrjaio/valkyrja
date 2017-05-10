@@ -188,11 +188,7 @@ class Session implements SessionContract
      */
     public function get(string $id)
     {
-        if (! $this->has($id)) {
-            return;
-        }
-
-        return $this->data[$id];
+        return $this->has($id) ? $this->data[$id] : null;
     }
 
     /**

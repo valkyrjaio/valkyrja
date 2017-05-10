@@ -429,7 +429,8 @@ class Router implements RouterContract
     public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
     {
         // Validate the path
-        $path = $this->validatePath($path);
+        $path  = $this->validatePath($path);
+        $route = null;
 
         // Let's check if the route is set in the static routes
         if (isset(self::$staticRoutes[$path])) {
@@ -467,6 +468,8 @@ class Router implements RouterContract
                 }
             }
         }
+
+        return $route;
     }
 
     /**

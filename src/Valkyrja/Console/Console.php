@@ -159,9 +159,9 @@ class Console implements ConsoleContract
      */
     public function command(string $name):? Command
     {
-        if ($this->hasCommand($name)) {
-            return self::$commands[self::$namedCommands[$name]];
-        }
+        return $this->hasCommand($name)
+            ? self::$commands[self::$namedCommands[$name]]
+            : null;
     }
 
     /**
@@ -219,6 +219,8 @@ class Console implements ConsoleContract
             return self::$commands[$path];
         }
 
+        $command = null;
+
         // Otherwise iterate through the commands and attempt to match via regex
         foreach (self::$commands as $command) {
             // If the preg match is successful, we've found our command!
@@ -234,6 +236,8 @@ class Console implements ConsoleContract
                 return $command;
             }
         }
+
+        return $command;
     }
 
     /**

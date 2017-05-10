@@ -151,10 +151,14 @@ class PathGenerator implements PathGeneratorContract
      */
     protected function findParamSegment(array $segments, string $param):? string
     {
+        $segment = null;
+
         foreach ($segments as $segment) {
             if (strpos($segment, $param) !== false) {
                 return $segment;
             }
         }
+
+        return $segment;
     }
 }

@@ -183,14 +183,15 @@ trait Dispatcher
      */
     protected function getDependencies(Dispatch $dispatch):? array
     {
+        $dependencies = null;
+
         // If the dispatch is static it doesn't need dependencies
         if ($dispatch->isStatic()) {
-            return;
+            return $dependencies;
         }
 
-        $dependencies = null;
-        $context      = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member       = $dispatch->getProperty() ?? $dispatch->getMethod();
+        $context = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member  = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
@@ -262,13 +263,15 @@ trait Dispatcher
      */
     private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
+        $response = null;
+
         // Ensure a class and method exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getMethod()) {
-            return;
+            return $response;
         }
 
         // Set the class through the container if this isn't a static method
-        $class = $dispatch->isStatic()
+        $class    = $dispatch->isStatic()
             ? $dispatch->getClass()
             : container()->get($dispatch->getClass());
         $method   = $dispatch->getMethod();
@@ -317,9 +320,11 @@ trait Dispatcher
      */
     private function dispatchClassProperty(Dispatch $dispatch)
     {
+        $response = null;
+
         // Ensure a class and property exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
-            return;
+            return $response;
         }
 
         // Set the class through the container if this isn't a static method
@@ -357,7 +362,7 @@ trait Dispatcher
     {
         // Ensure a class exists before continuing
         if (null === $dispatch->getClass()) {
-            return;
+            return $dispatch->getClass();
         }
 
         // Before dispatch event
@@ -403,7 +408,7 @@ trait Dispatcher
     {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
-            return;
+            return $dispatch->getFunction();
         }
 
         $function = $dispatch->getFunction();
@@ -441,7 +446,7 @@ trait Dispatcher
     {
         // Ensure a closure exists before continuing
         if (null === $dispatch->getClosure()) {
-            return;
+            return $dispatch->getClosure();
         }
 
         $closure  = $dispatch->getClosure();
