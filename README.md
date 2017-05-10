@@ -3,6 +3,7 @@
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/d/total.svg" alt="Total Downloads"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/stable.svg" alt="Latest Stable Version"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license.svg" alt="License"></a>
+    <a href="https://styleci.io/repos/89089332"><img src="https://styleci.io/repos/89089332/shield?branch=master" alt="StyleCI"></a>
 </p>
 
 # Valkyrja Framework
