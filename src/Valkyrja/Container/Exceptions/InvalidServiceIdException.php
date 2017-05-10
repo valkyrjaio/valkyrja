@@ -14,9 +14,8 @@ namespace Valkyrja\Container\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidServiceIdException
+ * Class InvalidServiceIdException.
  *
- * @package Valkyrja\Container\Exception
  *
  * @author  Melech Mizrachi
  */

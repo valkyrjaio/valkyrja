@@ -12,9 +12,7 @@
 namespace Valkyrja\Container\Enums;
 
 use Monolog\Handler\StreamHandler;
-
 use Psr\Log\LoggerInterface;
-
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
@@ -48,9 +46,8 @@ use Valkyrja\Contracts\View\View;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum CoreComponent
+ * Enum CoreComponent.
  *
- * @package Valkyrja\Container\Enums
  *
  * @author  Melech Mizrachi
  */

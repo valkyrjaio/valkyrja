@@ -20,9 +20,8 @@ use Valkyrja\Contracts\Path\PathGenerator;
 use Valkyrja\Contracts\Path\PathParser;
 
 /**
- * Interface Console
+ * Interface Console.
  *
- * @package Valkyrja\Contracts\Console
  *
  * @author  Melech Mizrachi
  */
@@ -97,9 +96,9 @@ interface Console extends Cacheable
      * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
      * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
-     * @return mixed
-     *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
+     * @return mixed
      */
     public function dispatch(Input $input, Output $output);
 

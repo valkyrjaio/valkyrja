@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Routing\Router;
 
 /**
- * Interface Kernel
+ * Interface Kernel.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

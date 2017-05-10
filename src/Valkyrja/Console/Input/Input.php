@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Console\Input\Input as InputContract;
 use Valkyrja\Contracts\Http\Request;
 
 /**
- * Class Input
+ * Class Input.
  *
- * @package Valkyrja\Console\Input
  *
  * @author  Melech Mizrachi
  */
@@ -117,7 +116,7 @@ class Input implements InputContract
      */
     public function getStringArguments(): string
     {
-        $arguments = $this->getRequestArguments();
+        $arguments       = $this->getRequestArguments();
         $globalArguments = $this->getGlobalOptionsFlat();
 
         foreach ($arguments as $key => $argument) {
@@ -160,9 +159,9 @@ class Input implements InputContract
             // Split the string on an equal sign
             $exploded = explode('=', $argument);
 
-            $key = $exploded[0];
+            $key   = $exploded[0];
             $value = $exploded[1] ?? true;
-            $type = 'arguments';
+            $type  = 'arguments';
 
             // If the key has double dash it is a long option
             if (strpos($key, '--') !== false) {
@@ -276,7 +275,7 @@ class Input implements InputContract
     }
 
     /**
-     * Check if an option exists (long or short)
+     * Check if an option exists (long or short).
      *
      * @param string $option The option
      *

@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Cache;
 
 /**
- * Interface Cacheable
+ * Interface Cacheable.
  *
- * @package Valkyrja\Contracts\Cache
  *
  * @author  Melech Mizrachi
  */

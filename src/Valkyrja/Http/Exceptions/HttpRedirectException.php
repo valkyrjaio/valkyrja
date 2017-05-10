@@ -12,13 +12,11 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class HttpRedirectException
+ * Class HttpRedirectException.
  *
- * @package Valkyrja\Exceptions
  *
  * @author  Melech Mizrachi
  */
@@ -48,8 +46,7 @@ class HttpRedirectException extends HttpException
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0
-    )
-    {
+    ) {
         $this->uri = $uri;
 
         parent::__construct($statusCode, 'Redirect', $previous, $headers, $code);

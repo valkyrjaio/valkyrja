@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Http\Cookie as CookieContract;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 
 /**
- * Class Cookie
+ * Class Cookie.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -113,15 +112,14 @@ class Cookie implements CookieContract
         bool $httpOnly = true,
         bool $raw = false,
         string $sameSite = null
-    )
-    {
-        $this->name = $name;
-        $this->value = $value;
+    ) {
+        $this->name   = $name;
+        $this->value  = $value;
         $this->expire = $expire;
-        $this->path = $path;
+        $this->path   = $path;
         $this->domain = $domain;
         $this->secure = $secure;
-        $this->raw = $raw;
+        $this->raw    = $raw;
 
         if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException('The "sameSite" parameter value is not valid.');

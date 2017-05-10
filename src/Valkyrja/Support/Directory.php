@@ -12,9 +12,8 @@
 namespace Valkyrja\Support;
 
 /**
- * class Directory
+ * class Directory.
  *
- * @package Valkyrja
  *
  * @author  Melech Mizrachi
  */

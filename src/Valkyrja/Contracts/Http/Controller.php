@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Http;
 use Valkyrja\Routing\Route;
 
 /**
- * Interface Controller
+ * Interface Controller.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

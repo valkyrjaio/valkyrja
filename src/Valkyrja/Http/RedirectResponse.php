@@ -16,9 +16,8 @@ use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 
 /**
- * Class RedirectResponse
+ * Class RedirectResponse.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -47,8 +46,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = [],
         string $uri = null
-    )
-    {
+    ) {
         // Use the parent constructor to setup the class
         parent::__construct($content, $status, $headers);
 
@@ -71,17 +69,16 @@ class RedirectResponse extends Response implements RedirectResponseContract
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public static function createRedirect(
         string $uri = null,
         int $status = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponseContract
-    {
+    ): RedirectResponseContract {
         return new static('', $status, $headers, $uri);
     }
 

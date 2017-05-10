@@ -14,9 +14,8 @@ namespace Valkyrja\Routing\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidMethodTypeException
+ * Class InvalidMethodTypeException.
  *
- * @package Valkyrja\Routing\Exception
  *
  * @author  Melech Mizrachi
  */

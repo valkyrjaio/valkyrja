@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Http\Server as ServerContract;
 use Valkyrja\Support\Collection;
 
 /**
- * Class Server
+ * Class Server.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -32,7 +31,7 @@ class Server extends Collection implements ServerContract
      */
     public function getHeaders(): array
     {
-        $headers = [];
+        $headers        = [];
         $specialHeaders = self::SPECIAL_HEADERS;
 
         foreach ($this->collection as $key => $value) {

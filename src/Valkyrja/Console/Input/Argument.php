@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Input;
 use Valkyrja\Console\Enums\ArgumentMode;
 
 /**
- * Class Argument
+ * Class Argument.
  *
- * @package Valkyrja\Console\Input
  *
  * @author  Melech Mizrachi
  */
@@ -50,9 +49,9 @@ class Argument
      */
     public function __construct(string $name, string $description, ArgumentMode $mode = null)
     {
-        $this->name = $name;
+        $this->name        = $name;
         $this->description = $description;
-        $this->mode = $mode ? $mode->getValue() : ArgumentMode::OPTIONAL;
+        $this->mode        = $mode ? $mode->getValue() : ArgumentMode::OPTIONAL;
     }
 
     /**

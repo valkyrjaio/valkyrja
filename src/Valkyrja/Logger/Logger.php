@@ -12,14 +12,12 @@
 namespace Valkyrja\Logger;
 
 use Psr\Log\LoggerInterface;
-
 use Valkyrja\Contracts\Logger\Logger as LoggerContract;
 use Valkyrja\Logger\Enums\LogLevel;
 
 /**
- * Class Logger
+ * Class Logger.
  *
- * @package Valkyrja\Logger
  *
  * @author  Melech Mizrachi
  */
@@ -48,9 +46,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function debug(string $message, array $context = []): LoggerContract
     {
@@ -63,9 +61,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function info(string $message, array $context = []): LoggerContract
     {
@@ -78,9 +76,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function notice(string $message, array $context = []): LoggerContract
     {
@@ -93,9 +91,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function warning(string $message, array $context = []): LoggerContract
     {
@@ -108,9 +106,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function error(string $message, array $context = []): LoggerContract
     {
@@ -123,9 +121,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function critical(string $message, array $context = []): LoggerContract
     {
@@ -138,9 +136,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function alert(string $message, array $context = []): LoggerContract
     {
@@ -153,9 +151,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function emergency(string $message, array $context = []): LoggerContract
     {

@@ -12,16 +12,13 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-
 use RuntimeException;
-
 use Valkyrja\Contracts\Http\Exceptions\HttpException as HttpExceptionContract;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class HttpException
+ * Class HttpException.
  *
- * @package Valkyrja\Http\Exceptions
  *
  * @author  Melech Mizrachi
  */
@@ -65,10 +62,9 @@ class HttpException extends RuntimeException implements HttpExceptionContract
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0
-    )
-    {
+    ) {
         $this->statusCode = $statusCode;
-        $this->headers = $headers;
+        $this->headers    = $headers;
 
         parent::__construct($message, $code, $previous);
     }

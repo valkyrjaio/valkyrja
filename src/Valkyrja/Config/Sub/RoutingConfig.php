@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
- * Class RoutingConfig
+ * Class RoutingConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -86,13 +85,13 @@ class RoutingConfig
      */
     public function __construct(Env $env)
     {
-        $this->trailingSlash = $env::ROUTING_TRAILING_SLASH ?? $this->trailingSlash;
-        $this->useAbsoluteUrls = $env::ROUTING_USE_ABSOLUTE_URLS ?? $this->useAbsoluteUrls;
-        $this->useAnnotations = $env::ROUTING_USE_ANNOTATIONS ?? $this->useAnnotations;
+        $this->trailingSlash             = $env::ROUTING_TRAILING_SLASH ?? $this->trailingSlash;
+        $this->useAbsoluteUrls           = $env::ROUTING_USE_ABSOLUTE_URLS ?? $this->useAbsoluteUrls;
+        $this->useAnnotations            = $env::ROUTING_USE_ANNOTATIONS ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? $this->useAnnotationsExclusively;
-        $this->controllers = $env::ROUTING_CONTROLLERS ?? $this->controllers;
-        $this->filePath = $env::ROUTING_FILE_PATH ?? Directory::routesPath('routes.php');
-        $this->cacheFilePath = $env::ROUTING_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/routes.php');
-        $this->useCacheFile = $env::ROUTING_USE_CACHE_FILE ?? $this->useCacheFile;
+        $this->controllers               = $env::ROUTING_CONTROLLERS ?? $this->controllers;
+        $this->filePath                  = $env::ROUTING_FILE_PATH ?? Directory::routesPath('routes.php');
+        $this->cacheFilePath             = $env::ROUTING_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/routes.php');
+        $this->useCacheFile              = $env::ROUTING_USE_CACHE_FILE ?? $this->useCacheFile;
     }
 }

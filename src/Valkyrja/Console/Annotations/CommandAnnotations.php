@@ -15,9 +15,8 @@ use Valkyrja\Annotations\Annotations;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class CommandAnnotations
+ * Class CommandAnnotations.
  *
- * @package Valkyrja\Console\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -28,9 +27,9 @@ class CommandAnnotations extends Annotations
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Console\Command[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Console\Command[]
      */
     public function getCommands(string ...$classes): array
     {
@@ -63,9 +62,9 @@ class CommandAnnotations extends Annotations
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch
      *
-     * @return void
-     *
      * @throws \ReflectionException
+     *
+     * @return void
      */
     protected function setCommandProperties(Dispatch $dispatch): void
     {

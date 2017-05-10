@@ -18,9 +18,8 @@ use Valkyrja\Contracts\Events\Events as EventsContract;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
- * Class Events
+ * Class Events.
  *
- * @package Valkyrja\Events
  *
  * @author  Melech Mizrachi
  */
@@ -65,13 +64,13 @@ class Events implements EventsContract
      * @param string                    $event    The event
      * @param \Valkyrja\Events\Listener $listener The event listener
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function listen(string $event, Listener $listener): void
     {
@@ -96,13 +95,13 @@ class Events implements EventsContract
      * @param \Valkyrja\Events\Listener $listener  The listener
      * @param string[]                  ...$events The events
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function listenMany(Listener $listener, string ...$events): void
     {
@@ -276,14 +275,14 @@ class Events implements EventsContract
     /**
      * Setup the events.
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function setup(): void
     {
@@ -321,14 +320,14 @@ class Events implements EventsContract
     /**
      * Setup annotations.
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -348,14 +347,14 @@ class Events implements EventsContract
     /**
      * Get a cacheable representation of the events.
      *
-     * @return array
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {
@@ -363,7 +362,7 @@ class Events implements EventsContract
         $originalUseCacheFile = $this->app->config()->events->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()->events->useCacheFile = false;
-        self::$setup = false;
+        self::$setup                               = false;
         $this->setup();
 
         // Reset the use cache file value

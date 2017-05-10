@@ -14,9 +14,8 @@
 namespace Valkyrja\Contracts\Support;
 
 /**
- * Interface Collection
+ * Interface Collection.
  *
- * @package Valkyrja\Contracts\Support
  *
  * @author  Melech Mizrachi
  */
@@ -37,7 +36,9 @@ interface Collection
      *
      * @return mixed
      */
-    public function get(string $key, $default = false); // : mixed;
+    public function get(string $key, $default = false);
+
+ // : mixed;
 
     /**
      * Determine if an item is in the collection.
@@ -120,7 +121,9 @@ interface Collection
      *
      * @return mixed
      */
-    public function __get(string $key); // : mixed;
+    public function __get(string $key);
+
+ // : mixed;
 
     /**
      * Determine if an item is in the collection.

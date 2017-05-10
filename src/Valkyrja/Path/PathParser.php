@@ -12,13 +12,11 @@
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
-
 use Valkyrja\Contracts\Path\PathParser as PathParserContract;
 
 /**
- * Class PathParser
+ * Class PathParser.
  *
- * @package Valkyrja\Parsers
  *
  * @author  Melech Mizrachi
  */
@@ -43,9 +41,9 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public function parse(string $path): array
     {
@@ -121,9 +119,9 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     protected function validatePath(string $path): void
     {
@@ -235,14 +233,14 @@ REGEX;
      */
     protected function parsePath(string $path, array &$segments): array
     {
-        /** @var array[] $params */
+        /* @var array[] $params */
         // Get all matches for {paramName} and {paramName:regex} in the path
         preg_match_all(
             '/' . static::VARIABLE_REGEX . '/x',
             $path,
             $params
         );
-        $regex = $path;
+        $regex        = $path;
         $paramsReturn = [];
 
         // Run through all matches

@@ -18,9 +18,8 @@ use Valkyrja\Events\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCacheCommand;
 
 /**
- * Class CacheAllCommand
+ * Class CacheAllCommand.
  *
- * @package Valkyrja\Console\Commands
  *
  * @author  Melech Mizrachi
  */
@@ -42,15 +41,15 @@ class CacheAllCommand extends CommandHandler
     public function run(string $sync = null): int
     {
         $originalDebug = config()->app->debug;
-        $originalEnv = config()->app->env;
+        $originalEnv   = config()->app->env;
 
         config()->app->debug = false;
-        config()->app->env = 'production';
+        config()->app->env   = 'production';
 
-        $consoleCache = console()->matchCommand(ConsoleCache::COMMAND);
+        $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
-        $eventsCache = console()->matchCommand(EventsCache::COMMAND);
-        $routesCache = console()->matchCommand(RoutesCacheCommand::COMMAND);
+        $eventsCache    = console()->matchCommand(EventsCache::COMMAND);
+        $routesCache    = console()->matchCommand(RoutesCacheCommand::COMMAND);
 
         console()->dispatchCommand($consoleCache);
         console()->dispatchCommand($containerCache);
@@ -72,7 +71,7 @@ class CacheAllCommand extends CommandHandler
         }
 
         config()->app->debug = $originalDebug;
-        config()->app->env = $originalEnv;
+        config()->app->env   = $originalEnv;
 
         return 1;
     }

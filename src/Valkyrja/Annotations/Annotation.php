@@ -14,9 +14,8 @@ namespace Valkyrja\Annotations;
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 
 /**
- * Class Annotation
+ * Class Annotation.
  *
- * @package Valkyrja\Annotations
  *
  * @author  Melech Mizrachi
  */

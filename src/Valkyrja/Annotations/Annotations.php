@@ -17,15 +17,13 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 
 /**
- * Class Annotations
+ * Class Annotations.
  *
- * @package Valkyrja\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -101,9 +99,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classAnnotations(string $class): array
     {
@@ -126,9 +124,9 @@ class Annotations implements AnnotationsContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return array
-     *
      * @throws \ReflectionException
+     *
+     * @return array
      */
     public function classAnnotationsType(string $type, string $class): array
     {
@@ -140,9 +138,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classMembersAnnotations(string $class): array
     {
@@ -164,9 +162,9 @@ class Annotations implements AnnotationsContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classMembersAnnotationsType(string $type, string $class): array
     {
@@ -178,9 +176,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classAndMembersAnnotations(string $class): array
     {
@@ -202,9 +200,9 @@ class Annotations implements AnnotationsContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function classAndMembersAnnotationsType(string $type, string $class): array
     {
@@ -217,9 +215,9 @@ class Annotations implements AnnotationsContract
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array
     {
@@ -244,9 +242,9 @@ class Annotations implements AnnotationsContract
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertyAnnotationsType(string $type, string $class, string $property): array
     {
@@ -258,9 +256,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertiesAnnotations(string $class): array
     {
@@ -298,9 +296,9 @@ class Annotations implements AnnotationsContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function propertiesAnnotationsType(string $type, string $class): array
     {
@@ -313,13 +311,13 @@ class Annotations implements AnnotationsContract
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array
     {
-        $index = static::METHOD_CACHE . $class . $method;
+        $index      = static::METHOD_CACHE . $class . $method;
         $reflection = $this->getMethodReflection($class, $method);
 
         return self::$annotations[$index]
@@ -341,9 +339,9 @@ class Annotations implements AnnotationsContract
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodAnnotationsType(string $type, string $class, string $method): array
     {
@@ -355,9 +353,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodsAnnotations(string $class): array
     {
@@ -395,9 +393,9 @@ class Annotations implements AnnotationsContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function methodsAnnotationsType(string $type, string $class): array
     {
@@ -409,9 +407,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $function The function
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function functionAnnotations(string $function): array
     {
@@ -434,9 +432,9 @@ class Annotations implements AnnotationsContract
      * @param string $type     The type
      * @param string $function The function
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function functionAnnotationsType(string $type, string $function): array
     {
@@ -505,9 +503,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $class The class
      *
-     * @return \ReflectionClass
-     *
      * @throws \ReflectionException
+     *
+     * @return \ReflectionClass
      */
     public function getClassReflection(string $class): ReflectionClass
     {
@@ -523,9 +521,9 @@ class Annotations implements AnnotationsContract
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \ReflectionProperty
-     *
      * @throws \ReflectionException
+     *
+     * @return \ReflectionProperty
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
@@ -541,9 +539,9 @@ class Annotations implements AnnotationsContract
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \ReflectionMethod
-     *
      * @throws \ReflectionException
+     *
+     * @return \ReflectionMethod
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod
     {
@@ -558,9 +556,9 @@ class Annotations implements AnnotationsContract
      *
      * @param string $function The function
      *
-     * @return \ReflectionFunction
-     *
      * @throws \ReflectionException
+     *
+     * @return \ReflectionFunction
      */
     public function getFunctionReflection(string $function): ReflectionFunction
     {

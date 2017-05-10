@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Console\Output;
 use Valkyrja\Console\Enums\OutputStyle;
 
 /**
- * Interface Output
+ * Interface Output.
  *
- * @package Valkyrja\Contract\Console\Output
  *
  * @author  Melech Mizrachi
  */

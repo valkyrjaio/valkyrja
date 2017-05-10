@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Console;
 
 /**
- * Interface Command
+ * Interface Command.
  *
- * @package Valkyrja\Contracts\Console
  *
  * @author  Melech Mizrachi
  */

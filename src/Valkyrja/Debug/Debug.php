@@ -12,9 +12,8 @@
 namespace Valkyrja\Debug;
 
 /**
- * Class Debug
+ * Class Debug.
  *
- * @package Valkyrja\Debug
  *
  * @author  Melech Mizrachi
  */

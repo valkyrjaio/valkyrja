@@ -21,9 +21,8 @@ use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
- * Class Container
+ * Class Container.
  *
- * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */
@@ -95,7 +94,7 @@ class Container implements ContainerContract
      */
     public function __construct(Application $application, Events $events)
     {
-        $this->app = $application;
+        $this->app    = $application;
         $this->events = $events;
     }
 
@@ -117,14 +116,14 @@ class Container implements ContainerContract
      *
      * @param \Valkyrja\Container\Service $service The service model
      *
-     * @return void
-     *
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function bind(Service $service): void
     {
@@ -144,8 +143,6 @@ class Container implements ContainerContract
      *
      * @param \Valkyrja\Container\ServiceContext $contextService The context service
      *
-     * @return void
-     *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
@@ -154,11 +151,13 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function context(ServiceContext $contextService): void
     {
-        $context = $contextService->getClass() ?? $contextService->getFunction();
-        $member = $contextService->getMethod() ?? $contextService->getProperty();
+        $context        = $contextService->getClass() ?? $contextService->getFunction();
+        $member         = $contextService->getMethod() ?? $contextService->getProperty();
         $contextContext = $contextService->getContextClass() ?? $contextService->getContextFunction();
 
         // If the context index is null then there's no context
@@ -370,7 +369,7 @@ class Container implements ContainerContract
         // Check if the service id is provided by a deferred service provider
         if ($this->isProvided($serviceId)) {
             /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
-            $serviceProvider = self::$provided[$serviceId];
+            $serviceProvider            = self::$provided[$serviceId];
             $serviceProvider::$deferred = false;
             // Register the service provider
             $this->register($serviceProvider);
@@ -380,7 +379,7 @@ class Container implements ContainerContract
 
         // If there are no argument return a new object
         if (null === $arguments) {
-            return new $serviceId;
+            return new $serviceId();
         }
 
         // Return a new object with the arguments
@@ -397,7 +396,7 @@ class Container implements ContainerContract
      */
     public function make(string $serviceId, array $arguments = null)
     {
-        $service = self::$services[$serviceId];
+        $service   = self::$services[$serviceId];
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
@@ -458,8 +457,6 @@ class Container implements ContainerContract
     /**
      * Setup the container.
      *
-     * @return void
-     *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
@@ -468,6 +465,8 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function setup(): void
     {
@@ -483,7 +482,7 @@ class Container implements ContainerContract
             $cache = require $this->app->config()->container->cacheFilePath;
 
             self::$services = $cache['services'];
-            self::$aliases = $cache['aliases'];
+            self::$aliases  = $cache['aliases'];
 
             // Then return out of routes setup
             return;
@@ -530,8 +529,6 @@ class Container implements ContainerContract
     /**
      * Setup annotations.
      *
-     * @return void
-     *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
@@ -540,6 +537,8 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -601,8 +600,6 @@ class Container implements ContainerContract
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return array
-     *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
@@ -611,6 +608,8 @@ class Container implements ContainerContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {
@@ -618,8 +617,8 @@ class Container implements ContainerContract
         $originalUseCacheFile = $this->app->config()->container->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()->container->useCacheFile = false;
-        self::$registered = [];
-        self::$setup = false;
+        self::$registered                             = [];
+        self::$setup                                  = false;
         $this->setup();
 
         // Reset the use cache file value

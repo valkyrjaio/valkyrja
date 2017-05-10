@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Console\Annotations;
 use Valkyrja\Contracts\Annotations\Annotations;
 
 /**
- * Class CommandAnnotations
+ * Class CommandAnnotations.
  *
- * @package Valkyrja\Contracts\Console\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -27,9 +26,9 @@ interface CommandAnnotations extends Annotations
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Console\Command[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Console\Command[]
      */
     public function getCommands(string ...$classes): array;
 }

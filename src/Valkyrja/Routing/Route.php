@@ -16,9 +16,8 @@ use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\RequestMethod;
 
 /**
- * Class Route
+ * Class Route.
  *
- * @package Valkyrja\Routing
  *
  * @author  Melech Mizrachi
  */
@@ -100,9 +99,9 @@ class Route extends Dispatch implements Annotation
     /**
      * Get the request methods.
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     public function getRequestMethods(): array
     {
@@ -209,7 +208,7 @@ class Route extends Dispatch implements Annotation
     /**
      * Check whether the route is dynamic.
      *
-     * @return boolean
+     * @return bool
      */
     public function getDynamic(): bool
     {
@@ -263,7 +262,7 @@ class Route extends Dispatch implements Annotation
      */
     public static function getRoute(array $properties): self
     {
-        $route = new Route();
+        $route = new self();
 
         $route
             ->setPath($properties['path'])

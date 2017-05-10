@@ -12,16 +12,13 @@
 namespace Valkyrja\Console\Output;
 
 use InvalidArgumentException;
-
 use RuntimeException;
-
 use Valkyrja\Contracts\Console\Output\OutputFormatter;
 use Valkyrja\Contracts\Console\Output\StreamOutput as StreamOutputContract;
 
 /**
- * Class Output
+ * Class Output.
  *
- * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -67,9 +64,9 @@ class StreamOutput extends Output implements StreamOutputContract
      * @param string $message
      * @param bool   $newLine
      *
-     * @return void
-     *
      * @throws \RuntimeException
+     *
+     * @return void
      */
     protected function writeOut(string $message, bool $newLine): void
     {

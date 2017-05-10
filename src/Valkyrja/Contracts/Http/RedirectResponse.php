@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Http;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Interface RedirectResponse
+ * Interface RedirectResponse.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

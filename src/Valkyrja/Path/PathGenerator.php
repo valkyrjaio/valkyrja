@@ -12,13 +12,11 @@
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
-
 use Valkyrja\Contracts\Path\PathGenerator as PathGeneratorContract;
 
 /**
- * Class PathGenerator
+ * Class PathGenerator.
  *
- * @package Valkyrja\Path
  *
  * @author  Melech Mizrachi
  */
@@ -31,9 +29,9 @@ class PathGenerator implements PathGeneratorContract
      * @param array $data     [optional] The data
      * @param array $params   [optional] The params
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function parse(array $segments, array $data = null, array $params = null): string
     {
@@ -42,8 +40,8 @@ class PathGenerator implements PathGeneratorContract
             throw new InvalidArgumentException('Route params are required when supplying data');
         }
 
-        $path = '';
-        $replace = [];
+        $path         = '';
+        $replace      = [];
         $replacements = [];
 
         // If there is data, parse the replacements
@@ -78,9 +76,9 @@ class PathGenerator implements PathGeneratorContract
      * @param array $replace      The replace array
      * @param array $replacements The replacements array
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     protected function parseData(array $segments, array $data, array $params, array &$replace, array &$replacements): void
     {
@@ -98,7 +96,7 @@ class PathGenerator implements PathGeneratorContract
             if (is_array($datum)) {
                 // Get the segment by the param key and replace the {key} within it
                 // to get the repeatable portion of the segment
-                $segment = $this->findParamSegment($segments, $params[$key]['replace']);
+                $segment     = $this->findParamSegment($segments, $params[$key]['replace']);
                 $deliminator = str_replace($params[$key]['replace'] . '*', '', $segment);
 
                 // Set what to replace
@@ -123,9 +121,9 @@ class PathGenerator implements PathGeneratorContract
      * @param mixed  $datum The datum
      * @param string $regex The regex
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     protected function validateDatum(string $key, $datum, string $regex): void
     {
@@ -158,7 +156,5 @@ class PathGenerator implements PathGeneratorContract
                 return $segment;
             }
         }
-
-        return null;
     }
 }

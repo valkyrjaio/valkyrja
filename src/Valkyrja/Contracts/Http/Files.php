@@ -16,9 +16,8 @@ namespace Valkyrja\Contracts\Http;
 use Valkyrja\Contracts\Support\Collection;
 
 /**
- * Interface Files
+ * Interface Files.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

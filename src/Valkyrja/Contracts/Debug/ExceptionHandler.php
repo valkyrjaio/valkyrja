@@ -15,9 +15,8 @@ use Throwable;
 use Valkyrja\Contracts\Http\Response;
 
 /**
- * Interface ExceptionHandler
+ * Interface ExceptionHandler.
  *
- * @package Valkyrja\Contracts\Debug
  *
  * @author  Melech Mizrachi
  */

@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum InputArgument
+ * Enum InputArgument.
  *
- * @package Valkyrja\Console\Enums
  *
  * @author  Melech Mizrachi
  */

@@ -16,9 +16,8 @@ use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Support\Directory;
 
 /**
- * Class View
+ * Class View.
  *
- * @package Valkyrja\View
  *
  * @author  Melech Mizrachi
  */
@@ -133,7 +132,7 @@ class View implements ViewContract
     }
 
     /**
-     * Set the variables
+     * Set the variables.
      *
      * @param array $variables [optional] The variables to set
      *

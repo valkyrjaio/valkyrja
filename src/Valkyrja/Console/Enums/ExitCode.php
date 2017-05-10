@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Class ExitCode
+ * Class ExitCode.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */

@@ -14,9 +14,8 @@ namespace Valkyrja\Http\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidStatusCodeException
+ * Class InvalidStatusCodeException.
  *
- * @package Valkyrja\Http\Exception
  *
  * @author  Melech Mizrachi
  */

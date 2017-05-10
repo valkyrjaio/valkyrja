@@ -14,9 +14,8 @@ namespace Valkyrja\Routing\Exceptions;
 use Exception;
 
 /**
- * Class InvalidRouteName
+ * Class InvalidRouteName.
  *
- * @package Valkyrja\Routing\Exceptions
  *
  * @author  Melech Mizrachi
  */

@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Path;
 
 /**
- * Interface PathParser
+ * Interface PathParser.
  *
- * @package Valkyrja\Contracts\Parsers
  *
  * @author  Melech Mizrachi
  */

@@ -14,9 +14,8 @@ namespace Valkyrja\Http;
 use Valkyrja\Contracts\Http\Client as ClientContract;
 
 /**
- * Class Client
+ * Class Client.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */

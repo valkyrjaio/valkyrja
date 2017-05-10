@@ -15,9 +15,8 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Logger\Enums\LogLevel;
 
 /**
- * Interface Logger
+ * Interface Logger.
  *
- * @package Valkyrja\Contracts\Logger
  *
  * @author  Melech Mizrachi
  */

@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Events;
 
 /**
- * Interface Event
+ * Interface Event.
  *
- * @package Valkyrja\Contracts\Events
  *
  * @author  Melech Mizrachi
  */

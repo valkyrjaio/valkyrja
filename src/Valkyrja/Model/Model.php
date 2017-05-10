@@ -14,9 +14,8 @@ namespace Valkyrja\Model;
 use JsonSerializable;
 
 /**
- * Class Model
+ * Class Model.
  *
- * @package Valkyrja\Models
  *
  * @author  Melech Mizrachi
  */

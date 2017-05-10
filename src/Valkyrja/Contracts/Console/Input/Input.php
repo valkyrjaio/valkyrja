@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Console\Input;
 use Valkyrja\Contracts\Http\Request;
 
 /**
- * Interface Input
+ * Interface Input.
  *
- * @package Valkyrja\Contracts\Console\Input
  *
  * @author  Melech Mizrachi
  */
@@ -135,7 +134,7 @@ interface Input
     public function getOption(string $option):? string;
 
     /**
-     * Check if an option exists (long or short)
+     * Check if an option exists (long or short).
      *
      * @param string $option The option
      *

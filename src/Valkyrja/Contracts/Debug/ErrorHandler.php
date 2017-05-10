@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Debug;
 
 /**
- * Interface ErrorHandler
+ * Interface ErrorHandler.
  *
- * @package Valkyrja\Contracts\Debug
  *
  * @author  Melech Mizrachi
  */

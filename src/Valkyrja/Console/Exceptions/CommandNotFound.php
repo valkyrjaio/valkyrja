@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Exceptions;
 use RuntimeException;
 
 /**
- * Class CommandNotFound
+ * Class CommandNotFound.
  *
- * @package Valkyrja\Console\Exceptions
  *
  * @author  Melech Mizrachi
  */

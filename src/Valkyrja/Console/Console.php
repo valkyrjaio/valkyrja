@@ -22,9 +22,8 @@ use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Dispatcher\Dispatcher;
 
 /**
- * Class Console
+ * Class Console.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
@@ -95,8 +94,8 @@ class Console implements ConsoleContract
      */
     public function __construct(Application $application, PathParser $pathParser, PathGenerator $pathGenerator)
     {
-        $this->app = $application;
-        $this->pathParser = $pathParser;
+        $this->app           = $application;
+        $this->pathParser    = $pathParser;
         $this->pathGenerator = $pathGenerator;
 
         $this->setup();
@@ -107,13 +106,13 @@ class Console implements ConsoleContract
      *
      * @param \Valkyrja\Console\Command $command The command
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function addCommand(Command $command): void
     {
@@ -163,8 +162,6 @@ class Console implements ConsoleContract
         if ($this->hasCommand($name)) {
             return self::$commands[self::$namedCommands[$name]];
         }
-
-        return null;
     }
 
     /**
@@ -237,8 +234,6 @@ class Console implements ConsoleContract
                 return $command;
             }
         }
-
-        return null;
     }
 
     /**
@@ -247,9 +242,9 @@ class Console implements ConsoleContract
      * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
      * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
-     * @return mixed
-     *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
+     * @return mixed
      */
     public function dispatch(Input $input, Output $output)
     {
@@ -315,14 +310,14 @@ class Console implements ConsoleContract
     /**
      * Setup the console.
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function setup(): void
     {
@@ -339,7 +334,7 @@ class Console implements ConsoleContract
             // Set the application routes with said file
             $cache = require $this->app->config()->console->cacheFilePath;
 
-            self::$commands = $cache['commands'];
+            self::$commands      = $cache['commands'];
             self::$namedCommands = $cache['namedCommands'];
 
             // Then return out of routes setup
@@ -379,14 +374,14 @@ class Console implements ConsoleContract
     /**
      * Setup annotations.
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -416,25 +411,25 @@ class Console implements ConsoleContract
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return array
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {
-        self::$commands = [];
+        self::$commands      = [];
         self::$namedCommands = [];
 
         // The original use cache file value (may not be using cache to begin with)
         $originalUseCacheFile = $this->app->config()->console->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()->console->useCacheFile = false;
-        self::$setup = false;
+        self::$setup                                = false;
         $this->setup();
 
         // Reset the use cache file value

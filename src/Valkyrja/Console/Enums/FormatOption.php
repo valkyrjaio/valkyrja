@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum FormatOption
+ * Enum FormatOption.
  *
- * @package Valkyrja\Console\Enums
  *
  * @author  Melech Mizrachi
  */

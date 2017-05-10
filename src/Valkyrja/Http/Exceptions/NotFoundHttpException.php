@@ -12,13 +12,11 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class NotFoundHttpException
+ * Class NotFoundHttpException.
  *
- * @package Valkyrja\Http\Exceptions
  *
  * @author  Melech Mizrachi
  */
@@ -39,8 +37,7 @@ class NotFoundHttpException extends HttpException
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0
-    )
-    {
+    ) {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
     }
 }

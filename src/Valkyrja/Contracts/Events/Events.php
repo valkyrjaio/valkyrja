@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Events\Listener;
 
 /**
- * Interface Events
+ * Interface Events.
  *
- * @package Valkyrja\Contracts\Events
  *
  * @author  Melech Mizrachi
  */

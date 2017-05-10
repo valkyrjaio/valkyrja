@@ -14,9 +14,8 @@ namespace Valkyrja\Container;
 use Closure;
 
 /**
- * Class ServiceContext
+ * Class ServiceContext.
  *
- * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */

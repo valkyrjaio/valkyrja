@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Interface ResponseBuilder
+ * Interface ResponseBuilder.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

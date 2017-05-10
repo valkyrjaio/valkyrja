@@ -14,9 +14,8 @@ namespace Valkyrja\Config\Sub;
 use Valkyrja\Contracts\Config\Env;
 
 /**
- * Class SessionConfig
+ * Class SessionConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -43,7 +42,7 @@ class SessionConfig
      */
     public function __construct(Env $env)
     {
-        $this->id = $env::SESSION_ID ?? $this->id;
+        $this->id   = $env::SESSION_ID ?? $this->id;
         $this->name = $env::SESSION_NAME ?? $this->name;
     }
 }

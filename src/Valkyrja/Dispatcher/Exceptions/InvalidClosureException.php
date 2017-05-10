@@ -14,9 +14,8 @@ namespace Valkyrja\Dispatcher\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidClosureException
+ * Class InvalidClosureException.
  *
- * @package Valkyrja\Dispatcher\Exceptions
  *
  * @author  Melech Mizrachi
  */

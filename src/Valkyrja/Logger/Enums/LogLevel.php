@@ -14,9 +14,8 @@ namespace Valkyrja\Logger\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum Class LogLevel
+ * Enum Class LogLevel.
  *
- * @package Valkyrja\Logger\Enums
  *
  * @author  Melech Mizrachi
  */

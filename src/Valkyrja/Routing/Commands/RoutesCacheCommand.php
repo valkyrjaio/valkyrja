@@ -14,9 +14,8 @@ namespace Valkyrja\Routing\Commands;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class RoutingCache
+ * Class RoutingCache.
  *
- * @package Valkyrja\Routing\Commands
  *
  * @author  Melech Mizrachi
  */

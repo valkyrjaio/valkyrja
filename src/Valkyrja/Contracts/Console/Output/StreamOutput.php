@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Console\Output;
 
 /**
- * Interface Output
+ * Interface Output.
  *
- * @package Valkyrja\Contracts\Console\Output
  *
  * @author  Melech Mizrachi
  */

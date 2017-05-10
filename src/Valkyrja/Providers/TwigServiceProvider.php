@@ -11,19 +11,17 @@
 
 namespace Valkyrja\Providers;
 
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 use Valkyrja\Container\Service;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\ServiceProvider;
 use Valkyrja\View\TwigView;
 
-use Twig_Environment;
-use Twig_Loader_Filesystem;
-
 /**
- * Class TwigServiceProvider
+ * Class TwigServiceProvider.
  *
- * @package Valkyrja\Providers
  *
  * @author  Melech Mizrachi
  */
@@ -124,4 +122,3 @@ class TwigServiceProvider extends ServiceProvider
         return $view;
     }
 }
- 

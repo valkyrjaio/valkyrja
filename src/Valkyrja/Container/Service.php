@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Service
+ * Class Service.
  *
- * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */
@@ -94,7 +93,7 @@ class Service extends Dispatch implements Annotation
      */
     public static function getService(array $properties): self
     {
-        $service = new Service();
+        $service = new self();
 
         $service
             ->setId($properties['id'] ?? null)

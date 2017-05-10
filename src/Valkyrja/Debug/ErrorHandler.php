@@ -13,13 +13,11 @@ namespace Valkyrja\Debug;
 
 use ErrorException;
 use Exception;
-
 use Valkyrja\Contracts\Debug\ErrorHandler as ErrorHandlerContract;
 
 /**
- * Class ErrorHandler
+ * Class ErrorHandler.
  *
- * @package Valkyrja\Debug
  *
  * @author  Melech Mizrachi
  */
@@ -34,9 +32,9 @@ class ErrorHandler implements ErrorHandlerContract
      * @param int    $line    [optional] The line which threw the error
      * @param array  $context [optional] The context for the exception
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []): void
     {

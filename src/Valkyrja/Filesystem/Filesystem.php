@@ -14,9 +14,8 @@ namespace Valkyrja\Filesystem;
 use Valkyrja\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 /**
- * Class Filesystem
+ * Class Filesystem.
  *
- * @package Valkyrja\Filesystem
  *
  * @author  Melech Mizrachi
  */

@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Http\Cookie;
 use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 
 /**
- * Class Cookies
+ * Class Cookies.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  *

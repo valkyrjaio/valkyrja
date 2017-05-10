@@ -18,9 +18,8 @@ use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 
 /**
- * Class ResponseBuilder
+ * Class ResponseBuilder.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -72,8 +71,7 @@ class ResponseBuilder implements ResponseBuilderContract
         array $data = [],
         int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
-    ): Response
-    {
+    ): Response {
         $content = $this->app->view()->make($template, $data)->render();
 
         return $this->make($content, $statusCode, $headers);
@@ -92,8 +90,7 @@ class ResponseBuilder implements ResponseBuilderContract
         array $data = [],
         int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->app->json($data, $statusCode, $headers);
     }
 
@@ -105,17 +102,16 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function jsonp(
         string $callback,
         array $data = [],
         int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return $this->json($data, $statusCode, $headers)->setCallback($callback);
     }
 
@@ -132,8 +128,7 @@ class ResponseBuilder implements ResponseBuilderContract
         string $uri = '/',
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->app->redirect($uri, $statusCode, $headers);
     }
 
@@ -152,8 +147,7 @@ class ResponseBuilder implements ResponseBuilderContract
         array $parameters = [],
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }

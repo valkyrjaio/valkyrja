@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Session;
 use Valkyrja\Contracts\Application;
 
 /**
- * Interface Session
+ * Interface Session.
  *
- * @package Valkyrja\Contracts\Session
  *
  * @author  Melech Mizrachi
  */

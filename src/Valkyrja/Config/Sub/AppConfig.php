@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Events\Events;
 
 /**
- * Class AppConfig
+ * Class AppConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */

@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
- * Class EventsConfig
+ * Class EventsConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */

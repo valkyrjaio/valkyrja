@@ -14,9 +14,8 @@ namespace Valkyrja\Http;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 
 /**
- * Class JsonResponse
+ * Class JsonResponse.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -28,7 +27,7 @@ class JsonResponse extends Response implements JsonResponseContract
      * Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
      * 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
      */
-    const DEFAULT_ENCODING_OPTIONS = 15;
+    public const DEFAULT_ENCODING_OPTIONS = 15;
 
     /**
      * Json data.
@@ -66,8 +65,7 @@ class JsonResponse extends Response implements JsonResponseContract
         int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($content, $status, $headers);
 
         // Set the json data
@@ -82,17 +80,16 @@ class JsonResponse extends Response implements JsonResponseContract
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public static function createJson(
         string $content = '',
         int $status = ResponseCode::HTTP_OK,
         array $headers = [],
         array $data = []
-    ): JsonResponseContract
-    {
+    ): JsonResponseContract {
         return new static($content, $status, $headers, $data);
     }
 
@@ -101,16 +98,16 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException When the callback name is not valid
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function setCallback(string $callback = null): JsonResponseContract
     {
         if (null !== $callback) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
             $pattern = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
-            $parts = explode('.', $callback);
+            $parts   = explode('.', $callback);
 
             foreach ($parts as $part) {
                 if (! preg_match($pattern, $part)) {
@@ -129,9 +126,9 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @param string $json The json to set
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function setJson(string $json): JsonResponseContract
     {
@@ -145,9 +142,9 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @param array $data [optional] The data to set
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function setData(array $data = []): JsonResponseContract
     {
@@ -175,9 +172,9 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function setEncodingOptions(int $encodingOptions): JsonResponseContract
     {

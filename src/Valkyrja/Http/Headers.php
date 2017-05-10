@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Support\Collection;
 
 /**
- * Class Headers
+ * Class Headers.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */

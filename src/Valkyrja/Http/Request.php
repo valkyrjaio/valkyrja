@@ -13,15 +13,14 @@ namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\Files as FilesContract;
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
+use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Server as ServerContract;
 use Valkyrja\Contracts\Support\Collection as CollectionContract;
-use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Support\Collection;
 
 /**
- * Class Request
+ * Class Request.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -167,8 +166,7 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    )
-    {
+    ) {
         $this
             ->setQuery($query)
             ->setRequest($request)
@@ -183,12 +181,12 @@ class Request implements RequestContract
             ->setEncodings()
             ->setAcceptableContentTypes();
 
-        $this->path = null;
+        $this->path       = null;
         $this->requestUri = null;
-        $this->baseUrl = null;
-        $this->basePath = null;
-        $this->method = null;
-        $this->format = null;
+        $this->baseUrl    = null;
+        $this->basePath   = null;
+        $this->method     = null;
+        $this->format     = null;
     }
 
     /**
@@ -212,8 +210,7 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ): RequestContract
-    {
+    ): RequestContract {
         return new static($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
@@ -272,8 +269,7 @@ class Request implements RequestContract
         $files = [],
         $server = [],
         $content = null
-    ): RequestContract
-    {
+    ): RequestContract {
         $server = array_replace(
             [
                 'SERVER_NAME'          => 'localhost',
@@ -292,20 +288,20 @@ class Request implements RequestContract
             $server
         );
 
-        $server['PATH_INFO'] = '';
+        $server['PATH_INFO']      = '';
         $server['REQUEST_METHOD'] = strtoupper($method);
-        $components = parse_url($uri);
-        $request = [];
-        $query = [];
+        $components               = parse_url($uri);
+        $request                  = [];
+        $query                    = [];
 
         if (isset($components['host'])) {
             $server['SERVER_NAME'] = $components['host'];
-            $server['HTTP_HOST'] = $components['host'];
+            $server['HTTP_HOST']   = $components['host'];
         }
 
         if (isset($components['scheme'])) {
             if ('https' === $components['scheme']) {
-                $server['HTTPS'] = 'on';
+                $server['HTTPS']       = 'on';
                 $server['SERVER_PORT'] = 443;
             } else {
                 unset($server['HTTPS']);
@@ -315,7 +311,7 @@ class Request implements RequestContract
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST'] = $server['HTTP_HOST'] . ':' . $components['port'];
+            $server['HTTP_HOST']   = $server['HTTP_HOST'] . ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -331,9 +327,9 @@ class Request implements RequestContract
         }
 
         switch (strtoupper($method)) {
-            case RequestMethod::POST :
-            case RequestMethod::PUT :
-            case RequestMethod::DELETE :
+            case RequestMethod::POST:
+            case RequestMethod::PUT:
+            case RequestMethod::DELETE:
                 if (! isset($server['CONTENT_TYPE'])) {
                     $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
                 }
@@ -341,10 +337,10 @@ class Request implements RequestContract
                 $query = $parameters;
 
                 break;
-            case RequestMethod::PATCH :
+            case RequestMethod::PATCH:
                 $request = $parameters;
                 break;
-            default :
+            default:
                 $query = $parameters;
                 break;
         }
@@ -355,17 +351,17 @@ class Request implements RequestContract
             parse_str(html_entity_decode($components['query']), $qs);
 
             if ($query) {
-                $query = array_replace($qs, $query);
+                $query       = array_replace($qs, $query);
                 $queryString = http_build_query($query, '', '&');
             } else {
-                $query = $qs;
+                $query       = $qs;
                 $queryString = $components['query'];
             }
         } elseif ($query) {
             $queryString = http_build_query($query, '', '&');
         }
 
-        $server['REQUEST_URI'] = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
+        $server['REQUEST_URI']  = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
         $server['QUERY_STRING'] = $queryString;
 
         return self::factory($query, $request, [], $cookies, $files, $server, $content);
@@ -379,13 +375,13 @@ class Request implements RequestContract
      */
     public function __clone()
     {
-        $this->query = clone $this->query;
-        $this->request = clone $this->request;
+        $this->query      = clone $this->query;
+        $this->request    = clone $this->request;
         $this->attributes = clone $this->attributes;
-        $this->cookies = clone $this->cookies;
-        $this->files = clone $this->files;
-        $this->server = clone $this->server;
-        $this->headers = clone $this->headers;
+        $this->cookies    = clone $this->cookies;
+        $this->files      = clone $this->files;
+        $this->server     = clone $this->server;
+        $this->headers    = clone $this->headers;
     }
 
     /**
@@ -850,7 +846,7 @@ class Request implements RequestContract
     public function getUserInfo(): string
     {
         $userinfo = $this->getUser();
-        $pass = $this->getPassword();
+        $pass     = $this->getPassword();
 
         if ($pass) {
             $userinfo .= ':' . $pass;
@@ -869,7 +865,7 @@ class Request implements RequestContract
     public function getHttpHost(): string
     {
         $scheme = $this->getScheme();
-        $port = $this->getPort();
+        $port   = $this->getPort();
 
         if (('http' === $scheme && $port === 80) || ('https' === $scheme && $port === 443)) {
             return $this->getHost();

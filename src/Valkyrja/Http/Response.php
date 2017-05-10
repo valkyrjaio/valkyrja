@@ -13,16 +13,14 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
-
 use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 
 /**
- * Class Response
+ * Class Response.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -117,16 +115,15 @@ class Response implements ResponseContract
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public static function create(
         string $content = '',
         int $status = ResponseCode::HTTP_OK,
         array $headers = []
-    ): ResponseContract
-    {
+    ): ResponseContract {
         return new static($content, $status, $headers);
     }
 
@@ -314,9 +311,9 @@ class Response implements ResponseContract
      * If the status text is null it will be automatically populated for the known
      * status codes and left empty otherwise.
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function setStatusCode(int $code, string $text = null): ResponseContract
     {
@@ -414,9 +411,9 @@ class Response implements ResponseContract
     /**
      * Returns the Date header as a DateTime instance.
      *
-     * @return DateTime A DateTime instance
-     *
      * @throws \RuntimeException When the header is not parseable
+     *
+     * @return DateTime A DateTime instance
      */
     public function getDateHeader(): DateTime
     {
@@ -520,9 +517,9 @@ class Response implements ResponseContract
      * Responses with neither a freshness lifetime (Expires, max-age) nor cache
      * validator (Last-Modified, ETag) are considered uncacheable.
      *
-     * @return bool true if the response is worth caching, false otherwise
-     *
      * @throws \RuntimeException
+     *
+     * @return bool true if the response is worth caching, false otherwise
      */
     public function isCacheable(): bool
     {
@@ -557,9 +554,9 @@ class Response implements ResponseContract
      * origin. A response is considered fresh when it includes a Cache-Control/max-age
      * indicator or Expires header and the calculated age is less than the freshness lifetime.
      *
-     * @return bool true if the response is fresh, false otherwise
-     *
      * @throws \RuntimeException
+     *
+     * @return bool true if the response is fresh, false otherwise
      */
     public function isFresh(): bool
     {
@@ -610,9 +607,9 @@ class Response implements ResponseContract
     /**
      * Returns the age of the response.
      *
-     * @return int The age of the response in seconds
-     *
      * @throws \RuntimeException
+     *
+     * @return int The age of the response in seconds
      */
     public function getAge(): int
     {
@@ -629,9 +626,9 @@ class Response implements ResponseContract
     /**
      * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \RuntimeException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function expire(): ResponseContract
     {
@@ -643,7 +640,7 @@ class Response implements ResponseContract
     }
 
     /**
-     * Todo
+     * Todo.
      *
      * Returns the value of the Expires header as a DateTime instance.
      *
@@ -688,9 +685,9 @@ class Response implements ResponseContract
      * First, it checks for a s-maxage directive, then a max-age directive, and then it falls
      * back on an expires header. It returns null when no maximum age can be established.
      *
-     * @return int Number of seconds
-     *
      * @throws \RuntimeException
+     *
+     * @return int Number of seconds
      */
     public function getMaxAge(): int
     {
@@ -750,9 +747,9 @@ class Response implements ResponseContract
      * When the responses TTL is <= 0, the response may not be served from cache without first
      * revalidating with the origin.
      *
-     * @return int The TTL in seconds
-     *
      * @throws \RuntimeException
+     *
+     * @return int The TTL in seconds
      */
     public function getTtl(): int
     {
@@ -770,9 +767,9 @@ class Response implements ResponseContract
      *
      * @param int $seconds Number of seconds
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \RuntimeException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function setTtl(int $seconds): ResponseContract
     {
@@ -788,9 +785,9 @@ class Response implements ResponseContract
      *
      * @param int $seconds Number of seconds
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \RuntimeException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function setClientTtl(int $seconds): ResponseContract
     {
@@ -802,9 +799,9 @@ class Response implements ResponseContract
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
      *
-     * @return string A date string
-     *
      * @throws \RuntimeException When the HTTP header is not parseable
+     *
+     * @return string A date string
      */
     public function getLastModified(): string
     {
@@ -922,9 +919,9 @@ class Response implements ResponseContract
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
@@ -1097,7 +1094,7 @@ class Response implements ResponseContract
     public static function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
         $status = ob_get_status(true);
-        $level = count($status);
+        $level  = count($status);
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
         $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE')
             ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush

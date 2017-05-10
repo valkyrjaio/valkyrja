@@ -12,9 +12,8 @@
 namespace Valkyrja\Repositories;
 
 /**
- * Class Repository
+ * Class Repository.
  *
- * @package Valkyrja\Repositories
  *
  * @author  Melech Mizrachi
  */

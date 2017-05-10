@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Throwable;
-
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Kernel as KernelContract;
 use Valkyrja\Contracts\Http\Request;
@@ -21,9 +20,8 @@ use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Debug\ExceptionHandler;
 
 /**
- * Class Kernel
+ * Class Kernel.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -51,7 +49,7 @@ class Kernel implements KernelContract
      */
     public function __construct(Application $application, Router $router)
     {
-        $this->app = $application;
+        $this->app    = $application;
         $this->router = $router;
     }
 
@@ -60,9 +58,9 @@ class Kernel implements KernelContract
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function handle(Request $request): Response
     {
@@ -71,7 +69,7 @@ class Kernel implements KernelContract
         try {
             $response = $this->router->dispatch($request);
         } catch (Throwable $exception) {
-            $handler = new ExceptionHandler($this->app->config()->app->debug);
+            $handler  = new ExceptionHandler($this->app->config()->app->debug);
             $response = $handler->getResponse($exception);
         }
 
@@ -99,9 +97,9 @@ class Kernel implements KernelContract
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return void
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     public function run(Request $request = null): void
     {

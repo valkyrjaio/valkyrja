@@ -37,9 +37,8 @@ use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class Application
+ * Class Application.
  *
- * @package Valkyrja
  *
  * @author  Melech Mizrachi
  */
@@ -60,7 +59,7 @@ class Application implements ApplicationContract
     protected static $setup = false;
 
     /**
-     * Application config
+     * Application config.
      *
      * @var \Valkyrja\Config\Config
      */
@@ -105,10 +104,10 @@ class Application implements ApplicationContract
      *
      * @param \Valkyrja\Config\Config $config The config
      *
-     * @return void
-     *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
+     *
+     * @return void
      */
     public function setup(Config $config): void
     {
@@ -157,10 +156,10 @@ class Application implements ApplicationContract
     /**
      * Bootstrap core functionality.
      *
-     * @return void
-     *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
+     *
+     * @return void
      */
     protected function bootstrapCore(): void
     {
@@ -340,17 +339,16 @@ class Application implements ApplicationContract
      * @param array  $headers    [optional] The headers to send
      * @param int    $code       [optional] The Exception code
      *
-     * @return void
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     public function abort(
         int $statusCode = ResponseCode::HTTP_NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
-    ): void
-    {
+    ): void {
         throw new HttpException($statusCode, $message, null, $headers, $code);
     }
 
@@ -361,16 +359,15 @@ class Application implements ApplicationContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return void
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     *
+     * @return void
      */
     public function redirectTo(
         string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): void
-    {
+    ): void {
         throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
     }
 
@@ -441,16 +438,15 @@ class Application implements ApplicationContract
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function response(
         string $content = '',
         int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
-    ): Response
-    {
+    ): Response {
         /** @var Response $response */
         $response = $this->container()->get(Response::class);
 
@@ -468,16 +464,15 @@ class Application implements ApplicationContract
      * @param int   $statusCode [optional] The status code to set
      * @param array $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Contracts\Http\JsonResponse
      */
     public function json(
         array $data = [],
         int $statusCode = ResponseCode::HTTP_OK,
         array $headers = []
-    ): JsonResponse
-    {
+    ): JsonResponse {
         /** @var JsonResponse $response */
         $response = $this->container()->get(JsonResponse::class);
 
@@ -495,17 +490,16 @@ class Application implements ApplicationContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function redirect(
         string $uri = null,
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         /** @var RedirectResponse $response */
         $response = $this->container()->get(RedirectResponse::class);
 
@@ -524,18 +518,17 @@ class Application implements ApplicationContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     *
+     * @return \Valkyrja\Contracts\Http\RedirectResponse
      */
     public function redirectRoute(
         string $route,
         array $parameters = [],
         int $statusCode = ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): RedirectResponse
-    {
+    ): RedirectResponse {
         // Get the uri from the router using the route and parameters
         $uri = $this->router()->routeUrl($route, $parameters);
 

@@ -16,9 +16,8 @@ use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 
 /**
- * Interface OutputFormatter
+ * Interface OutputFormatter.
  *
- * @package Valkyrja\Contracts\Console\Output
  *
  * @author  Melech Mizrachi
  */

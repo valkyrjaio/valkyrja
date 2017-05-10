@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Http\Files as FilesContract;
 use Valkyrja\Support\Collection;
 
 /**
- * Class Files
+ * Class Files.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */

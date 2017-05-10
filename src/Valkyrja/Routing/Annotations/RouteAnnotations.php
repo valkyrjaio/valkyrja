@@ -11,15 +11,14 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route;
 
 /**
- * Class RouteAnnotations
+ * Class RouteAnnotations.
  *
- * @package Valkyrja\Routing\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -37,10 +36,10 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Routing\Route[]
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
+     *
+     * @return \Valkyrja\Routing\Route[]
      */
     public function getRoutes(string ...$classes): array
     {
@@ -78,10 +77,10 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @param \Valkyrja\Routing\Route $route
      *
-     * @return void
-     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
+     *
+     * @return void
      */
     protected function setRouteProperties(Route $route): void
     {
@@ -112,6 +111,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      * @param array $classes The classes
      *
      * @throws \ReflectionException
+     *
      * @return \Valkyrja\Routing\Route[]
      */
     protected function getClassRoutes(array $classes): array
@@ -146,7 +146,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         // If there is a base path for this controller
         if (null !== $controllerRoute->getPath()) {
             // Get the route's path
-            $path = $this->validatePath($route->getPath());
+            $path           = $this->validatePath($route->getPath());
             $controllerPath = $this->validatePath($controllerRoute->getPath());
 
             // Set the path to the base path and route path
