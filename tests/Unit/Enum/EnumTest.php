@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Tests\Unit\Enum;
 
+use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Enum\Enum;
 
@@ -26,9 +28,36 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testSetValue(): void
+    public function testSetValueExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'setValue'));
+    }
+
+    /**
+     * Test the set value method
+     *
+     * @return void
+     */
+    public function testSetValue(): void
+    {
+        $enum = new EnumClass(EnumClass::BAR);
+        $enum->setValue(EnumClass::FOO);
+
+        $this->assertEquals(EnumClass::FOO, $enum->getValue());
+    }
+
+    /**
+     * Test the set value method with an invalid value.
+     *
+     * @return void
+     */
+    public function testSetValueInvalid(): void
+    {
+        try {
+            new EnumClass('invalid value');
+        } catch (Exception $exception) {
+            $this->assertEquals(InvalidArgumentException::class, get_class($exception));
+        }
     }
 
     /**
@@ -36,7 +65,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testGetValue(): void
+    public function testGetValueExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'getValue'));
     }
@@ -46,7 +75,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testIsValid(): void
+    public function testIsValidExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'isValid'));
     }
@@ -56,7 +85,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testValidValues(): void
+    public function testValidValuesExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'validValues'));
     }
@@ -66,7 +95,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testJsonSerialize(): void
+    public function testJsonSerializeExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'jsonSerialize'));
     }
@@ -76,7 +105,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testToString(): void
+    public function testToStringExists(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, '__toString'));
     }
