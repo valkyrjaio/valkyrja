@@ -12,9 +12,8 @@
 namespace Valkyrja\Annotations;
 
 /**
- * Class Annotatable
+ * Class Annotatable.
  *
- * @package Valkyrja\Annotations
  *
  * @author  Melech Mizrachi
  */

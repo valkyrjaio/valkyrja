@@ -16,9 +16,8 @@ use Valkyrja\Contracts\Console\Output\Output as OutputContract;
 use Valkyrja\Contracts\Console\Output\OutputFormatter;
 
 /**
- * Class Output
+ * Class Output.
  *
- * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -70,9 +69,9 @@ class Output implements OutputContract
      * @param bool                                $newLine     [optional] Whether to use new lines between each message
      * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
@@ -88,22 +87,22 @@ class Output implements OutputContract
      * @param bool                                $newLine     [optional] Whether to use new lines between each message
      * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
-        $newLine = $newLine ?? false;
+        $newLine     = $newLine ?? false;
         $outputStyle = $outputStyle ?? new OutputStyle(OutputStyle::NORMAL);
 
         switch ($outputStyle->getValue()) {
-            case OutputStyle::NORMAL :
+            case OutputStyle::NORMAL:
                 $message = $this->formatter->format($message);
                 break;
-            case OutputStyle::RAW :
+            case OutputStyle::RAW:
                 break;
-            case OutputStyle::PLAIN :
+            case OutputStyle::PLAIN:
                 $message = strip_tags($this->formatter->format($message));
                 break;
         }

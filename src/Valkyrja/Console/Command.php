@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Command
+ * Class Command.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
@@ -187,7 +186,7 @@ class Command extends Dispatch implements Annotation
      */
     public static function getCommand(array $properties): self
     {
-        $dispatch = new Command();
+        $dispatch = new self();
 
         $dispatch
             ->setPath($properties['path'] ?? null)

@@ -15,21 +15,20 @@ use Valkyrja\Contracts\Support\Collection;
 use Valkyrja\Http\RequestMethod;
 
 /**
- * Interface Request
+ * Interface Request.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */
 interface Request
 {
-    const HEADER_FORWARDED    = 'forwarded';
-    const HEADER_CLIENT_IP    = 'client_ip';
-    const HEADER_CLIENT_HOST  = 'client_host';
-    const HEADER_CLIENT_PROTO = 'client_proto';
-    const HEADER_CLIENT_PORT  = 'client_port';
+    public const HEADER_FORWARDED    = 'forwarded';
+    public const HEADER_CLIENT_IP    = 'client_ip';
+    public const HEADER_CLIENT_HOST  = 'client_host';
+    public const HEADER_CLIENT_PROTO = 'client_proto';
+    public const HEADER_CLIENT_PORT  = 'client_port';
 
-    const FORMATS = [
+    public const FORMATS = [
         'html' => ['text/html', 'application/xhtml+xml'],
         'txt'  => ['text/plain'],
         'js'   => ['application/javascript', 'application/x-javascript', 'text/javascript'],
@@ -334,7 +333,9 @@ interface Request
      *
      * @return mixed
      */
-    public function get(string $key, $default = null); // : mixed;
+    public function get(string $key, $default = null);
+
+ // : mixed;
 
     /**
      * Returns current script name.

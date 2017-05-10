@@ -14,9 +14,8 @@ namespace Valkyrja\Annotations\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidAnnotationKeyArgument
+ * Class InvalidAnnotationKeyArgument.
  *
- * @package Valkyrja\Annotations\Exceptions
  *
  * @author  Melech Mizrachi
  */

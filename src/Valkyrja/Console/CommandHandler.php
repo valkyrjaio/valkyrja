@@ -18,9 +18,8 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
 
 /**
- * Abstract Class CommandHandler
+ * Abstract Class CommandHandler.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
@@ -262,7 +261,7 @@ abstract class CommandHandler implements CommandHandlerContract
     protected function sectionMessage(string $name, string $description, int $longestLength = null): void
     {
         $longestLength = $longestLength ?? 0;
-        $spacesToAdd = $longestLength - strlen($name);
+        $spacesToAdd   = $longestLength - strlen($name);
 
         output()->formatter()->green();
         output()->writeMessage(static::TAB . $name);

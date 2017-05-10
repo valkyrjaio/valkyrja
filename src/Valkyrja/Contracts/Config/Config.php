@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Config;
 
 /**
- * Interface Config
+ * Interface Config.
  *
- * @package Valkyrja\Contracts\Config
  *
  * @author  Melech Mizrachi
  */

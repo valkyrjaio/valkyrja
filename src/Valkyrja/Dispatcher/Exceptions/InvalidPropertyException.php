@@ -14,9 +14,8 @@ namespace Valkyrja\Dispatcher\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidPropertyException
+ * Class InvalidPropertyException.
  *
- * @package Valkyrja\Dispatcher\Exceptions
  *
  * @author  Melech Mizrachi
  */

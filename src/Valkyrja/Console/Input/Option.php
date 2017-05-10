@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Input;
 use Valkyrja\Console\Enums\OptionMode;
 
 /**
- * Class Option
+ * Class Option.
  *
- * @package Valkyrja\Console\Input
  *
  * @author  Melech Mizrachi
  */
@@ -68,11 +67,11 @@ class Option
      */
     public function __construct(string $name, string $description, string $shortcut = null, OptionMode $mode = null, string $default = null)
     {
-        $this->name = $name;
-        $this->shortcut = $shortcut;
+        $this->name        = $name;
+        $this->shortcut    = $shortcut;
         $this->description = $description;
-        $this->mode = $mode ? $mode->getValue() : OptionMode::NONE;
-        $this->default = $default;
+        $this->mode        = $mode ? $mode->getValue() : OptionMode::NONE;
+        $this->default     = $default;
     }
 
     /**

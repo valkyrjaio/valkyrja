@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
- * Class ViewsConfig
+ * Class ViewsConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -44,7 +43,7 @@ class ViewsConfig
      */
     public function __construct(Env $env)
     {
-        $this->dir = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
+        $this->dir  = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
         $this->twig = new TwigViewsConfig($env);
     }
 }

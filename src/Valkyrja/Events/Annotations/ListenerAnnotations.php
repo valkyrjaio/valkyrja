@@ -16,9 +16,8 @@ use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations as ListenerAnnotat
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class ListenerAnnotations
+ * Class ListenerAnnotations.
  *
- * @package Valkyrja\Events\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -29,9 +28,9 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Events\Listener[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Events\Listener[]
      */
     public function getListeners(string ...$classes): array
     {
@@ -56,9 +55,9 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch
      *
-     * @return void
-     *
      * @throws \ReflectionException
+     *
+     * @return void
      */
     protected function setListenerProperties(Dispatch $dispatch): void
     {

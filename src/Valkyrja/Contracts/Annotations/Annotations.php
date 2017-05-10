@@ -18,9 +18,8 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * Interface Annotations
+ * Interface Annotations.
  *
- * @package Valkyrja\Contracts\Annotations
  *
  * @author  Melech Mizrachi
  */

@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Filesystem;
 
 /**
- * Interface Filesystem
+ * Interface Filesystem.
  *
- * @package Valkyrja\Filesystem
  *
  * @author  Melech Mizrachi
  */

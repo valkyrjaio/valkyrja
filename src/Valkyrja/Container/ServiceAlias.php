@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class ServiceAlias
+ * Class ServiceAlias.
  *
- * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */

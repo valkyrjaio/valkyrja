@@ -32,17 +32,16 @@ if (! function_exists('abort')) {
      * @param array  $headers    [optional] The headers to send
      * @param int    $code       [optional] The Exception code
      *
-     * @return void
-     *
      * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     function abort(
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
-    ): void
-    {
+    ): void {
         app()->abort($statusCode, $message, $headers, $code);
     }
 }
@@ -211,8 +210,7 @@ if (! function_exists('response')) {
         string $content = '',
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
         array $headers = []
-    ): Valkyrja\Contracts\Http\Response
-    {
+    ): Valkyrja\Contracts\Http\Response {
         return app()->response($content, $statusCode, $headers);
     }
 }
@@ -231,8 +229,7 @@ if (! function_exists('json')) {
         array $data = [],
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
         array $headers = []
-    ): Valkyrja\Contracts\Http\JsonResponse
-    {
+    ): Valkyrja\Contracts\Http\JsonResponse {
         return app()->json($data, $statusCode, $headers);
     }
 }
@@ -251,8 +248,7 @@ if (! function_exists('redirect')) {
         string $uri = null,
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): \Valkyrja\Contracts\Http\RedirectResponse
-    {
+    ): \Valkyrja\Contracts\Http\RedirectResponse {
         return app()->redirect($uri, $statusCode, $headers);
     }
 }
@@ -273,8 +269,7 @@ if (! function_exists('redirectRoute')) {
         array $parameters = [],
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): \Valkyrja\Contracts\Http\RedirectResponse
-    {
+    ): \Valkyrja\Contracts\Http\RedirectResponse {
         return app()->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }
@@ -287,16 +282,15 @@ if (! function_exists('redirectTo')) {
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return void
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     *
+     * @return void
      */
     function redirectTo(
         string $uri = null,
         int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
         array $headers = []
-    ): void
-    {
+    ): void {
         app()->redirectTo($uri, $statusCode, $headers);
     }
 }
@@ -451,7 +445,7 @@ if (! function_exists('dd')) {
      */
     function dd(): void
     {
-        /** @noinspection ForgottenDebugOutputInspection */
+        /* @noinspection ForgottenDebugOutputInspection */
         var_dump(func_get_args());
 
         die(1);

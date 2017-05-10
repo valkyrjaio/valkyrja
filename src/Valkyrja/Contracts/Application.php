@@ -30,9 +30,8 @@ use Valkyrja\Contracts\View\View;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Interface Application
+ * Interface Application.
  *
- * @package Valkyrja\Contracts
  *
  * @author  Melech Mizrachi
  */
@@ -43,7 +42,7 @@ interface Application
      *
      * @constant string
      */
-    const VERSION = '0.1.1';
+    public const VERSION = '0.1.1';
 
     /**
      * Application constructor.

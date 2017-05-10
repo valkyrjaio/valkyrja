@@ -14,9 +14,8 @@ namespace Valkyrja\Providers;
 use Valkyrja\Support\ServiceProvider;
 
 /**
- * Class AppServiceProvider
+ * Class AppServiceProvider.
  *
- * @package Valkyrja\Providers
  *
  * @author  Melech Mizrachi
  */
@@ -32,4 +31,3 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 }
- 

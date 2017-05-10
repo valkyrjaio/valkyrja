@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
- * Class StorageConfig
+ * Class StorageConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -45,6 +44,6 @@ class StorageConfig
     public function __construct(Env $env)
     {
         $this->uploadsDir = $env::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app');
-        $this->logsDir = $env::STORAGE_LOGS_DIR ?? Directory::storagePath('logs');
+        $this->logsDir    = $env::STORAGE_LOGS_DIR ?? Directory::storagePath('logs');
     }
 }

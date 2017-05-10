@@ -12,17 +12,16 @@
 namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Console\Command;
-use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
+use Valkyrja\Container\ServiceContext;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Events\Listener;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Directory;
 
 /**
- * Class AnnotationsConfig
+ * Class AnnotationsConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -63,8 +62,8 @@ class AnnotationsConfig
      */
     public function __construct(Env $env)
     {
-        $this->enabled = $env::ANNOTATIONS_ENABLED ?? false;
+        $this->enabled  = $env::ANNOTATIONS_ENABLED ?? false;
         $this->cacheDir = $env::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations');
-        $this->map = array_merge($env::ANNOTATIONS_MAP ?? [], $this->map);
+        $this->map      = array_merge($env::ANNOTATIONS_MAP ?? [], $this->map);
     }
 }

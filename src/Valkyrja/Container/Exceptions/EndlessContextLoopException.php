@@ -14,9 +14,8 @@ namespace Valkyrja\Container\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class EndlessContextLoopException
+ * Class EndlessContextLoopException.
  *
- * @package Valkyrja\Container\Exception
  *
  * @author  Melech Mizrachi
  */

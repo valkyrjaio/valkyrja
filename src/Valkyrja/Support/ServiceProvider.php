@@ -14,9 +14,8 @@ namespace Valkyrja\Support;
 use Valkyrja\Contracts\Application;
 
 /**
- * Class ServiceProvider
+ * Class ServiceProvider.
  *
- * @package Valkyrja\Support
  *
  * @author  Melech Mizrachi
  */

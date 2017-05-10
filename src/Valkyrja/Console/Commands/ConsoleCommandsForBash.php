@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Commands;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class ConsoleCommands
+ * Class ConsoleCommands.
  *
- * @package Valkyrja\Console\Commands
  *
  * @author  Melech Mizrachi
  */
@@ -39,7 +38,7 @@ class ConsoleCommandsForBash extends CommandHandler
         $allCommands = array_keys(console()->getNamedCommands());
 
         if ($commandTyped) {
-            $colonAt = strpos($commandTyped, ':');
+            $colonAt          = strpos($commandTyped, ':');
             $possibleCommands = [];
 
             foreach ($allCommands as $command) {

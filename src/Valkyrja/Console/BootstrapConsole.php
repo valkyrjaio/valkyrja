@@ -23,9 +23,8 @@ use Valkyrja\Routing\Commands\RoutesCacheCommand;
 use Valkyrja\Routing\Commands\RoutesListCommand;
 
 /**
- * Class BootstrapConsole
+ * Class BootstrapConsole.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
@@ -53,7 +52,7 @@ class BootstrapConsole
      */
     public function __construct(Application $application, Console $console)
     {
-        $this->app = $application;
+        $this->app     = $application;
         $this->console = $console;
 
         $this->bootstrap();

@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\View;
 use Valkyrja\Contracts\Application;
 
 /**
- * Interface View
+ * Interface View.
  *
- * @package Valkyrja\Contracts\View
  *
  * @author  Melech Mizrachi
  */
@@ -67,7 +66,7 @@ interface View
     public function setTemplate(string $template): self;
 
     /**
-     * Set the variables
+     * Set the variables.
      *
      * @param array $variables [optional] The variables to set
      *

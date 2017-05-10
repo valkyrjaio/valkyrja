@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Annotations\Regex;
 
 /**
- * Interface ArgumentsRegex
+ * Interface ArgumentsRegex.
  *
- * @package Valkyrja\Contracts\Annotations\Regex
  *
  * @author  Melech Mizrachi
  */

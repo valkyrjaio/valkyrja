@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Container\Annotations;
 use Valkyrja\Contracts\Annotations\Annotations;
 
 /**
- * Interface ContainerAnnotations
+ * Interface ContainerAnnotations.
  *
- * @package Valkyrja\Contracts\Container\Annotations
  *
  * @author  Melech Mizrachi
  */

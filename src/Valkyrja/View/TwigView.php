@@ -11,17 +11,15 @@
 
 namespace Valkyrja\View;
 
+use Twig_Environment;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\View\TwigView as TwigViewContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Support\Directory;
 
-use Twig_Environment;
-
 /**
- * Class TwigView
+ * Class TwigView.
  *
- * @package Valkyrja\View
  *
  * @author  Melech Mizrachi
  */
@@ -98,11 +96,11 @@ class TwigView extends View implements TwigViewContract
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return string
-     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     *
+     * @return string
      */
     public function render(array $variables = []): string
     {

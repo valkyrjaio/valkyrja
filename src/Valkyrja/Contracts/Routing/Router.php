@@ -21,9 +21,8 @@ use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Route;
 
 /**
- * Interface Router
+ * Interface Router.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

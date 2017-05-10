@@ -12,13 +12,11 @@
 namespace Valkyrja\Dispatcher;
 
 use Closure;
-
 use Valkyrja\Annotations\Annotatable;
 
 /**
- * Class Dispatch
+ * Class Dispatch.
  *
- * @package Valkyrja\Dispatcher
  *
  * @author  Melech Mizrachi
  */
@@ -332,7 +330,7 @@ class Dispatch
      */
     public static function getDispatch(array $properties): self
     {
-        $dispatch = new Dispatch();
+        $dispatch = new self();
 
         $dispatch
             ->setId($properties['id'] ?? null)

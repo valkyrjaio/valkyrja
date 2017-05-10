@@ -14,7 +14,6 @@ namespace Valkyrja\Debug;
 use ErrorException;
 use Exception;
 use Throwable;
-
 use Valkyrja\Application;
 use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
@@ -23,9 +22,8 @@ use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Class ExceptionHandler
+ * Class ExceptionHandler.
  *
- * @package Valkyrja\Debug
  *
  * @author  Melech Mizrachi
  */
@@ -59,7 +57,7 @@ class ExceptionHandler implements ExceptionHandlerContract
      */
     public function __construct(bool $displayErrors = false)
     {
-        $this->displayErrors = $displayErrors;
+        $this->displayErrors  = $displayErrors;
         $this->fileLinkFormat = ini_get('xdebug.file_link_format') ?? get_cfg_var('xdebug.file_link_format');
     }
 
@@ -136,9 +134,9 @@ class ExceptionHandler implements ExceptionHandlerContract
             $exception = new Exception($exception);
         }
 
-        $headers = [];
+        $headers    = [];
         $statusCode = ResponseCode::HTTP_INTERNAL_SERVER_ERROR;
-        $content = $this->html($this->getContent($exception), $this->getStylesheet());
+        $content    = $this->html($this->getContent($exception), $this->getStylesheet());
 
         if ($exception instanceof HttpException) {
             foreach ($exception->getHeaders() as $name => $value) {
@@ -221,7 +219,6 @@ class ExceptionHandler implements ExceptionHandlerContract
         $content = '';
 
         if ($this->displayErrors) {
-
             try {
                 $exceptions = [
                     $exception,
@@ -236,12 +233,12 @@ class ExceptionHandler implements ExceptionHandlerContract
                 $total = $count;
 
                 /**
-                 * @var int        $position
+                 * @var int
                  * @var \Throwable $e
                  */
                 foreach ($exceptions as $position => $e) {
-                    $ind = $count - $position;
-                    $class = $this->formatClass(get_class($e));
+                    $ind     = $count - $position;
+                    $class   = $this->formatClass(get_class($e));
                     $message = nl2br($this->escapeHtml($e->getMessage()));
                     $content .= sprintf(
                         <<<'EOF'
@@ -266,9 +263,9 @@ EOF
                     );
 
                     foreach ($e->getTrace() as $trace) {
-                        $traceClass = $trace['class'] ?? '';
-                        $traceArgs = $trace['args'] ?? [];
-                        $traceType = $trace['type'] ?? '';
+                        $traceClass    = $trace['class'] ?? '';
+                        $traceArgs     = $trace['args'] ?? [];
+                        $traceType     = $trace['type'] ?? '';
                         $traceFunction = $trace['function'] ?? '';
 
                         $content .= '       <li>';

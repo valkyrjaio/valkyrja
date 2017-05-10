@@ -16,9 +16,8 @@ use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAn
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class ContainerAnnotations
+ * Class ContainerAnnotations.
  *
- * @package Valkyrja\Container\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -50,9 +49,9 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\Service[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Container\Service[]
      */
     public function getServices(string ...$classes): array
     {
@@ -64,9 +63,9 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ServiceContext[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Container\ServiceContext[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -78,9 +77,9 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ServiceContext[]
-     *
      * @throws \ReflectionException
+     *
+     * @return \Valkyrja\Container\ServiceContext[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -93,9 +92,9 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      * @param string   $type       The type
      * @param string[] ...$classes The classes
      *
-     * @return array
-     *
      * @throws \ReflectionException
+     *
+     * @return array
      */
     protected function getAllClassesAnnotationsByType(string $type, string ...$classes): array
     {
@@ -120,9 +119,9 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch
      *
-     * @return void
-     *
      * @throws \ReflectionException
+     *
+     * @return void
      */
     protected function setServiceProperties(Dispatch $dispatch): void
     {

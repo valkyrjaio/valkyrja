@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\View;
 use Twig_Environment;
 
 /**
- * Interface TwigView
+ * Interface TwigView.
  *
- * @package Valkyrja\Contracts\View
  *
  * @author  Melech Mizrachi
  */

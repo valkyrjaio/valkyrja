@@ -17,9 +17,8 @@ use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract;
 
 /**
- * Class OutputFormatter
+ * Class OutputFormatter.
  *
- * @package Valkyrja\Console\Output
  *
  * @author  Melech Mizrachi
  */
@@ -342,18 +341,18 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function format(string $message): string
     {
-        $set = [];
+        $set   = [];
         $unset = [];
 
         // Check if a foreground was specified
         if (null !== $this->foreground) {
-            $set[] = $this->foreground;
+            $set[]   = $this->foreground;
             $unset[] = FormatForeground::DEFAULT;
         }
 
         // Check if a background was specified
         if (null !== $this->background) {
-            $set[] = $this->background;
+            $set[]   = $this->background;
             $unset[] = FormatBackground::DEFAULT;
         }
 
@@ -361,7 +360,7 @@ class OutputFormatter implements OutputFormatterContract
         if (count($this->options)) {
             // Iterate through all the options
             foreach ($this->options as $option) {
-                $set[] = $option;
+                $set[]   = $option;
                 $unset[] = FormatOption::DEFAULT[$option];
             }
         }

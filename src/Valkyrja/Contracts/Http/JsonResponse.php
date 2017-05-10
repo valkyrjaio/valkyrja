@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Http;
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Interface JsonResponse
+ * Interface JsonResponse.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

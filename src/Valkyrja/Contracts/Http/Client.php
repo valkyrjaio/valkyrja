@@ -12,9 +12,8 @@
 namespace Valkyrja\Contracts\Http;
 
 /**
- * Interface Client
+ * Interface Client.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

@@ -23,14 +23,13 @@ use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Listener;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
-use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
+use Valkyrja\Routing\Exceptions\InvalidRouteName;
 
 /**
- * Class Router
+ * Class Router.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -110,8 +109,8 @@ class Router implements RouterContract
      */
     public function __construct(ApplicationContract $application, PathParser $pathParser, PathGenerator $pathGenerator)
     {
-        $this->app = $application;
-        $this->pathParser = $pathParser;
+        $this->app           = $application;
+        $this->pathParser    = $pathParser;
         $this->pathGenerator = $pathGenerator;
 
         $this->setup();
@@ -122,14 +121,14 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function addRoute(Route $route): void
     {
@@ -203,9 +202,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function get(Route $route): void
     {
@@ -219,9 +218,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function post(Route $route): void
     {
@@ -235,9 +234,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function put(Route $route): void
     {
@@ -251,9 +250,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function patch(Route $route): void
     {
@@ -267,9 +266,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function delete(Route $route): void
     {
@@ -283,9 +282,9 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Routing\Route $route The route
      *
-     * @return void
-     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function head(Route $route): void
     {
@@ -309,9 +308,9 @@ class Router implements RouterContract
      *
      * @param string $name The name of the route to get
      *
-     * @return \Valkyrja\Routing\Route
-     *
      * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
+     *
+     * @return \Valkyrja\Routing\Route
      */
     public function route(string $name): Route
     {
@@ -342,9 +341,9 @@ class Router implements RouterContract
      * @param array  $data     [optional] The route data if dynamic
      * @param bool   $absolute [optional] Whether this url should be absolute
      *
-     * @return string
-     *
      * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
+     *
+     * @return string
      */
     public function routeUrl(string $name, array $data = null, bool $absolute = null): string
     {
@@ -402,14 +401,14 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return \Valkyrja\Routing\Route
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Routing\Route
      */
     public function requestRoute(RequestContract $request):? Route
     {
         $requestMethod = $request->getMethod();
-        $requestUri = $request->getPathOnly();
+        $requestUri    = $request->getPathOnly();
 
         // Decode the request uri
         $requestUri = rawurldecode($requestUri);
@@ -423,9 +422,9 @@ class Router implements RouterContract
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return \Valkyrja\Routing\Route
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Valkyrja\Routing\Route
      */
     public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
     {
@@ -468,8 +467,6 @@ class Router implements RouterContract
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -477,9 +474,9 @@ class Router implements RouterContract
      *
      * @param string $uri The uri to check
      *
-     * @return bool
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return bool
      */
     public function isInternalUri(string $uri): bool
     {
@@ -499,10 +496,10 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request
      *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
+     *
+     * @return \Valkyrja\Contracts\Http\Response
      */
     public function dispatch(RequestContract $request): ResponseContract
     {
@@ -600,7 +597,7 @@ class Router implements RouterContract
     {
         // If the class is a controller
         if ($class instanceof ControllerContract) {
-            /** @var ControllerContract $controller */
+            /* @var ControllerContract $controller */
             // Call the controller's before method
             $class->before($method, $route);
         }
@@ -619,7 +616,7 @@ class Router implements RouterContract
     {
         // If the class is a controller
         if ($class instanceof ControllerContract) {
-            /** @var ControllerContract $controller */
+            /* @var ControllerContract $controller */
             // Call the controller's after method
             $class->after($method, $dispatch);
         }
@@ -655,14 +652,14 @@ class Router implements RouterContract
     /**
      * Setup routes.
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     public function setup(): void
     {
@@ -678,10 +675,10 @@ class Router implements RouterContract
             // Set the application routes with said file
             $routesCache = require $this->app->config()->routing->cacheFilePath;
 
-            self::$routes = $routesCache['routes'];
-            self::$staticRoutes = $routesCache['staticRoutes'];
+            self::$routes        = $routesCache['routes'];
+            self::$staticRoutes  = $routesCache['staticRoutes'];
             self::$dynamicRoutes = $routesCache['dynamicRoutes'];
-            self::$namedRoutes = $routesCache['namedRoutes'];
+            self::$namedRoutes   = $routesCache['namedRoutes'];
 
             // Then return out of routes setup
             return;
@@ -708,14 +705,14 @@ class Router implements RouterContract
     /**
      * Setup annotated routes.
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function setupAnnotatedRoutes(): void
     {
@@ -735,27 +732,27 @@ class Router implements RouterContract
     /**
      * Get a cacheable representation of the data.
      *
-     * @return array
-     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {
-        self::$routes = [];
-        self::$staticRoutes = [];
+        self::$routes        = [];
+        self::$staticRoutes  = [];
         self::$dynamicRoutes = [];
-        self::$namedRoutes = [];
+        self::$namedRoutes   = [];
 
         // The original use cache file value (may not be using cache to begin with)
         $originalUseCacheFile = $this->app->config()->routing->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()->routing->useCacheFile = false;
-        self::$setup = false;
+        self::$setup                                = false;
         $this->setup();
 
         // Reset the use cache file value

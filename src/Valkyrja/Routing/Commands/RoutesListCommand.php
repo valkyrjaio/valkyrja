@@ -17,9 +17,8 @@ use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Routing\Route;
 
 /**
- * Class RoutesListCommand
+ * Class RoutesListCommand.
  *
- * @package Valkyrja\Routing\Commands
  *
  * @author  Melech Mizrachi
  */
@@ -41,15 +40,15 @@ class RoutesListCommand extends CommandHandler
     /**
      * Run the command.
      *
-     * @return int
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return int
      */
     public function run(): int
     {
         $routerRoutes = router()->getRoutes();
-        $routes = [];
-        $headerTexts = [
+        $routes       = [];
+        $headerTexts  = [
             'Request Methods',
             'Path',
             'Name',
@@ -67,7 +66,7 @@ class RoutesListCommand extends CommandHandler
         }
 
         $sepLine = $this->getSepLine($lengths);
-        $odd = false;
+        $odd     = false;
 
         output()->writeMessage($this->oddFormat(! $odd) . $sepLine, true);
         $this->headerMessage($headerTexts, $lengths);
@@ -80,7 +79,7 @@ class RoutesListCommand extends CommandHandler
                 . ' | ' . $route[3] . str_repeat(' ', $lengths[3] - strlen($route[3]))
                 . ' |';
 
-            $odd = $key % 2 > 0;
+            $odd          = $key % 2 > 0;
             $routeMessage = $this->oddFormat($odd) . $routeMessage;
 
             output()->writeMessage($routeMessage . static::END_FORMAT, true);
@@ -98,14 +97,14 @@ class RoutesListCommand extends CommandHandler
      * @param array                   $routes  The flat routes
      * @param array                   $lengths The longest string lengths
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     protected function setRoute(Route $route, array &$routes, array &$lengths): void
     {
         $requestMethod = implode(' | ', $route->getRequestMethods());
-        $dispatch = 'Closure';
+        $dispatch      = 'Closure';
 
         if (null !== $route->getFunction()) {
             $dispatch = $route->getFunction();

@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Event
+ * Class Event.
  *
- * @package Valkyrja\Events
  *
  * @author  Melech Mizrachi
  */

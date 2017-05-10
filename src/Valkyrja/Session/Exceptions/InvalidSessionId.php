@@ -14,9 +14,8 @@ namespace Valkyrja\Session\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidSessionId
+ * Class InvalidSessionId.
  *
- * @package Valkyrja\Session\Exceptions
  *
  * @author  Melech Mizrachi
  */

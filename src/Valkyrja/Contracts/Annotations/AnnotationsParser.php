@@ -16,9 +16,8 @@ use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
 use Valkyrja\Contracts\Annotations\Regex\LineRegex;
 
 /**
- * Interface AnnotationsParser
+ * Interface AnnotationsParser.
  *
- * @package Valkyrja\Contracts\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -41,7 +40,7 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
     public function getAnnotations(string $docString): array;
 
     /**
-     * Filter a string of arguments into an key => value array
+     * Filter a string of arguments into an key => value array.
      *
      * @param string $arguments The arguments
      *

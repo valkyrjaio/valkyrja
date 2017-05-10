@@ -14,9 +14,8 @@ namespace Valkyrja\Session\Exceptions;
 use RuntimeException;
 
 /**
- * Class SessionStartFailure
+ * Class SessionStartFailure.
  *
- * @package Valkyrja\Session\Exceptions
  *
  * @author  Melech Mizrachi
  */

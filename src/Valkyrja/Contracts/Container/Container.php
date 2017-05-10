@@ -11,16 +11,15 @@
 
 namespace Valkyrja\Contracts\Container;
 
-use Valkyrja\Container\ServiceContext;
 use Valkyrja\Container\Service;
+use Valkyrja\Container\ServiceContext;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Events\Events;
 
 /**
- * Interface Container
+ * Interface Container.
  *
- * @package Valkyrja\Contracts\Container
  *
  * @author  Melech Mizrachi
  */

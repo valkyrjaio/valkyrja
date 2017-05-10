@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Commands;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class ConsoleCache
+ * Class ConsoleCache.
  *
- * @package Valkyrja\Console\Commands
  *
  * @author  Melech Mizrachi
  */

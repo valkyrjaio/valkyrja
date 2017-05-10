@@ -16,9 +16,8 @@ use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
 
 /**
- * Class Annotations
+ * Class Annotations.
  *
- * @package Valkyrja\Annotations
  *
  * @author  Melech Mizrachi
  */
@@ -29,9 +28,9 @@ class AnnotationsParser implements AnnotationsParserContract
      *
      * @param string $docString The doc string
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotation[]
-     *
      * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotation[]
      */
     public function getAnnotations(string $docString): array
     {
@@ -72,9 +71,9 @@ class AnnotationsParser implements AnnotationsParserContract
      * @param int   $index       The index
      * @param array $annotations The annotations list
      *
-     * @return void
-     *
      * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
+     *
+     * @return void
      */
     protected function setAnnotation(array $matches, int $index, array &$annotations): void
     {
@@ -186,13 +185,13 @@ class AnnotationsParser implements AnnotationsParserContract
     }
 
     /**
-     * Filter a string of arguments into an key => value array
+     * Filter a string of arguments into an key => value array.
      *
      * @param string $arguments The arguments
      *
-     * @return array
-     *
      * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
+     *
+     * @return array
      */
     public function getArguments(string $arguments = null):? array
     {
@@ -212,8 +211,6 @@ class AnnotationsParser implements AnnotationsParserContract
 
             return $argumentsList;
         }
-
-        return null;
     }
 
     /**
@@ -239,9 +236,9 @@ class AnnotationsParser implements AnnotationsParserContract
      * @param int   $index     The index
      * @param array $arguments The arguments list
      *
-     * @return void
-     *
      * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
+     *
+     * @return void
      */
     protected function setArgument(array $matches, int $index, array &$arguments): void
     {
@@ -328,7 +325,7 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     public function getRegex(): string
     {
-        /**
+        /*
          * @description
          *
          * This regex will produce an array matches list of
@@ -409,7 +406,7 @@ class AnnotationsParser implements AnnotationsParserContract
     protected function cleanMatch(string $match = null):? string
     {
         if (null === $match) {
-            return null;
+            return;
         }
 
         return trim(str_replace('*', '', $match));

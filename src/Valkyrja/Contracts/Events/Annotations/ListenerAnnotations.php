@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Events\Annotations;
 use Valkyrja\Contracts\Annotations\Annotations;
 
 /**
- * Interface ListenerAnnotations
+ * Interface ListenerAnnotations.
  *
- * @package Valkyrja\Contracts\Events\Annotations
  *
  * @author  Melech Mizrachi
  */

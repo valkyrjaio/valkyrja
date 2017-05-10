@@ -17,9 +17,8 @@ use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
 /**
- * Class Session
+ * Class Session.
  *
- * @package Valkyrja\Session
  *
  * @author  Melech Mizrachi
  */
@@ -60,7 +59,7 @@ class Session implements SessionContract
     {
         $this->app = $application;
 
-        $sessionId = $sessionId ?? $this->app->config()->session->id;
+        $sessionId   = $sessionId ?? $this->app->config()->session->id;
         $sessionName = $sessionName ?? $this->app->config()->session->name;
 
         // If a session id is provided
@@ -82,9 +81,9 @@ class Session implements SessionContract
     /**
      * Start the session.
      *
-     * @return void
-     *
      * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
+     *
+     * @return void
      */
     public function start(): void
     {
@@ -119,9 +118,9 @@ class Session implements SessionContract
      *
      * @param string $id The session id
      *
-     * @return void
-     *
      * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
+     *
+     * @return void
      */
     public function setId(string $id): void
     {
@@ -190,7 +189,7 @@ class Session implements SessionContract
     public function get(string $id)
     {
         if (! $this->has($id)) {
-            return null;
+            return;
         }
 
         return $this->data[$id];

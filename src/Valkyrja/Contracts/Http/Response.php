@@ -12,13 +12,11 @@
 namespace Valkyrja\Contracts\Http;
 
 use DateTime;
-
 use Valkyrja\Http\ResponseCode;
 
 /**
- * Interface Response
+ * Interface Response.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */

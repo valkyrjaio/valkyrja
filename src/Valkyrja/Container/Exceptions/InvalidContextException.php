@@ -14,9 +14,8 @@ namespace Valkyrja\Container\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidContextException
+ * Class InvalidContextException.
  *
- * @package Valkyrja\Container\Exception
  *
  * @author  Melech Mizrachi
  */

@@ -14,9 +14,8 @@ namespace Valkyrja\Config;
 use Valkyrja\Contracts\Config\Env as EnvContract;
 
 /**
- * Class Env
+ * Class Env.
  *
- * @package Valkyrja\Config
  *
  * @author  Melech Mizrachi
  */

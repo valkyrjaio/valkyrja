@@ -25,9 +25,8 @@ use Valkyrja\Contracts\Config\Config as ConfigContract;
 use Valkyrja\Contracts\Config\Env;
 
 /**
- * Class Config
+ * Class Config.
  *
- * @package Valkyrja\Config
  *
  * @author  Melech Mizrachi
  */
@@ -120,14 +119,14 @@ class Config implements ConfigContract
         $this->env = $env;
 
         $this->annotations = new AnnotationsConfig($env);
-        $this->app = new AppConfig($env);
-        $this->container = new ContainerConfig($env);
-        $this->console = new ConsoleConfig($env);
-        $this->events = new EventsConfig($env);
-        $this->logger = new LoggerConfig($env);
-        $this->routing = new RoutingConfig($env);
-        $this->session = new SessionConfig($env);
-        $this->storage = new StorageConfig($env);
-        $this->views = new ViewsConfig($env);
+        $this->app         = new AppConfig($env);
+        $this->container   = new ContainerConfig($env);
+        $this->console     = new ConsoleConfig($env);
+        $this->events      = new EventsConfig($env);
+        $this->logger      = new LoggerConfig($env);
+        $this->routing     = new RoutingConfig($env);
+        $this->session     = new SessionConfig($env);
+        $this->storage     = new StorageConfig($env);
+        $this->views       = new ViewsConfig($env);
     }
 }

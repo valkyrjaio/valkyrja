@@ -14,9 +14,8 @@ namespace Valkyrja\Container\Commands;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class ContainerCache
+ * Class ContainerCache.
  *
- * @package Valkyrja\Container\Commands
  *
  * @author  Melech Mizrachi
  */

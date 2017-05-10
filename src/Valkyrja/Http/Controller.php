@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Routing\Route;
 
 /**
- * Class Controller
+ * Class Controller.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */

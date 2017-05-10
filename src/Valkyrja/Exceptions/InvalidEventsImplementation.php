@@ -14,9 +14,8 @@ namespace Valkyrja\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidEventsImplementation
+ * Class InvalidEventsImplementation.
  *
- * @package Valkyrja\Exception
  *
  * @author  Melech Mizrachi
  */

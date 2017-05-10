@@ -17,9 +17,8 @@ use Valkyrja\Contracts\Http\Query as QueryContract;
 use Valkyrja\Support\Collection;
 
 /**
- * Class Query
+ * Class Query.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */
@@ -36,7 +35,7 @@ class Query extends Collection implements QueryContract
             return '';
         }
 
-        $str = '?';
+        $str      = '?';
         $lastItem = end($this->collection);
 
         foreach ($this->collection as $itemKey => $item) {

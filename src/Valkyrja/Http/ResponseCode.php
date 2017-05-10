@@ -14,9 +14,8 @@ namespace Valkyrja\Http;
 use Valkyrja\Enum\Enum;
 
 /**
- * Final Class ResponseCode
+ * Final Class ResponseCode.
  *
- * @package Valkyrja\Http
  *
  * @author  Melech Mizrachi
  */

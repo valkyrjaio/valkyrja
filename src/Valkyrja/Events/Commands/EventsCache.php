@@ -14,9 +14,8 @@ namespace Valkyrja\Events\Commands;
 use Valkyrja\Console\CommandHandler;
 
 /**
- * Class EventsCache
+ * Class EventsCache.
  *
- * @package Valkyrja\Events\Commands
  *
  * @author  Melech Mizrachi
  */

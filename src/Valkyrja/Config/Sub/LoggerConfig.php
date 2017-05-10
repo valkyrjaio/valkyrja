@@ -15,9 +15,8 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
- * Class LoggerConfig
+ * Class LoggerConfig.
  *
- * @package Valkyrja\Config\Sub
  *
  * @author  Melech Mizrachi
  */
@@ -44,7 +43,7 @@ class LoggerConfig
      */
     public function __construct(Env $env)
     {
-        $this->name = $env::VIEWS_DIR ?? $this->name;
+        $this->name     = $env::VIEWS_DIR ?? $this->name;
         $this->filePath = $env::VIEWS_DIR ?? Directory::storagePath('logs/valkyrja.log');
     }
 }

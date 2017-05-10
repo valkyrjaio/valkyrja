@@ -13,7 +13,6 @@ namespace Valkyrja\Container;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
-
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Console\Annotations\CommandAnnotations;
@@ -46,9 +45,8 @@ use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
 /**
- * Class BootstrapContainer
+ * Class BootstrapContainer.
  *
- * @package Valkyrja\Container
  *
  * @author  Melech Mizrachi
  */
@@ -74,7 +72,7 @@ class BootstrapContainer
      */
     public function __construct(Application $application, ContainerContract $container)
     {
-        $this->app = $application;
+        $this->app       = $application;
         $this->container = $container;
 
         $this->bootstrap();

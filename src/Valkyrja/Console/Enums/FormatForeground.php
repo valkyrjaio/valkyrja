@@ -14,9 +14,8 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum FormatForeground
+ * Enum FormatForeground.
  *
- * @package Valkyrja\Console\Enums
  *
  * @author  Melech Mizrachi
  */

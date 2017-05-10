@@ -14,16 +14,15 @@
 namespace Valkyrja\Contracts\Http;
 
 /**
- * Interface Cookie
+ * Interface Cookie.
  *
- * @package Valkyrja\Contracts\Http
  *
  * @author  Melech Mizrachi
  */
 interface Cookie
 {
-    const LAX    = 'lax';
-    const STRICT = 'strict';
+    public const LAX    = 'lax';
+    public const STRICT = 'strict';
 
     /**
      * Cookie constructor.

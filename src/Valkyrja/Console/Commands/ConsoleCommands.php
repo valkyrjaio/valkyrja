@@ -16,9 +16,8 @@ use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Argument;
 
 /**
- * Class ConsoleCommands
+ * Class ConsoleCommands.
  *
- * @package Valkyrja\Console\Commands
  *
  * @author  Melech Mizrachi
  */
@@ -40,8 +39,8 @@ class ConsoleCommands extends CommandHandler
      */
     public function run(string $namespace = null): int
     {
-        $commands = console()->getCacheable()['commands'];
-        $longestLength = 0;
+        $commands        = console()->getCacheable()['commands'];
+        $longestLength   = 0;
         $previousSection = '';
 
         $this->filterCommands($commands, $longestLength, $namespace);
@@ -99,8 +98,8 @@ class ConsoleCommands extends CommandHandler
 
         /** @var \Valkyrja\Console\Command $command */
         foreach ($commands as $key => $command) {
-            $parts = explode(':', $command->getName());
-            $commandName = $parts[1] ?? null;
+            $parts            = explode(':', $command->getName());
+            $commandName      = $parts[1] ?? null;
             $commandNamespace = $commandName ? $parts[0] : 'global';
 
             // If there was a namespace passed to the command (commands namespace)
@@ -160,8 +159,8 @@ class ConsoleCommands extends CommandHandler
      */
     protected function commandSection(Command $command, string &$previousSection): void
     {
-        $parts = explode(':', $command->getName());
-        $commandName = $parts[1] ?? null;
+        $parts          = explode(':', $command->getName());
+        $commandName    = $parts[1] ?? null;
         $currentSection = $commandName ? $parts[0] : 'global';
 
         if ($previousSection !== $currentSection) {

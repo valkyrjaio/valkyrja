@@ -16,9 +16,8 @@ namespace Valkyrja\Support;
 use Valkyrja\Contracts\Support\Collection as CollectionContract;
 
 /**
- * Class Collection
+ * Class Collection.
  *
- * @package Valkyrja\Support
  *
  * @author  Melech Mizrachi
  */

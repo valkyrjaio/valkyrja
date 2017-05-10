@@ -12,19 +12,16 @@
 namespace Valkyrja\Dispatcher;
 
 use Closure;
-
 use Valkyrja\Container\Service;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Events\Listener;
 
 /**
- * Trait Dispatcher
- *
- * @package Valkyrja\Dispatcher
+ * Trait Dispatcher.
  */
 trait Dispatcher
 {
@@ -43,9 +40,9 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     *
+     * @return void
      */
     protected function verifyClassMethod(Dispatch $dispatch): void
     {
@@ -74,9 +71,9 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function verifyClassProperty(Dispatch $dispatch): void
     {
@@ -102,9 +99,9 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     *
+     * @return void
      */
     protected function verifyFunction(Dispatch $dispatch): void
     {
@@ -124,9 +121,9 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     *
+     * @return void
      */
     protected function verifyClosure(Dispatch $dispatch): void
     {
@@ -145,13 +142,13 @@ trait Dispatcher
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return void
-     *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
      */
     protected function verifyDispatch(Dispatch $dispatch): void
     {
@@ -188,12 +185,12 @@ trait Dispatcher
     {
         // If the dispatch is static it doesn't need dependencies
         if ($dispatch->isStatic()) {
-            return null;
+            return;
         }
 
         $dependencies = null;
-        $context = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member = $dispatch->getProperty() ?? $dispatch->getMethod();
+        $context      = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member       = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
@@ -224,8 +221,8 @@ trait Dispatcher
 
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
-        $context = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member = $dispatch->getProperty() ?? $dispatch->getMethod();
+        $context   = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member    = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // Set the listener arguments to a new blank array
         $dependencies = $this->getDependencies($dispatch);
@@ -267,14 +264,14 @@ trait Dispatcher
     {
         // Ensure a class and method exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getMethod()) {
-            return null;
+            return;
         }
 
         // Set the class through the container if this isn't a static method
         $class = $dispatch->isStatic()
             ? $dispatch->getClass()
             : container()->get($dispatch->getClass());
-        $method = $dispatch->getMethod();
+        $method   = $dispatch->getMethod();
         $response = null;
 
         // Before dispatch event
@@ -322,11 +319,11 @@ trait Dispatcher
     {
         // Ensure a class and property exist before continuing
         if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
-            return null;
+            return;
         }
 
         // Set the class through the container if this isn't a static method
-        $class = container()->get($dispatch->getClass());
+        $class    = container()->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
         // Before dispatch event
@@ -360,7 +357,7 @@ trait Dispatcher
     {
         // Ensure a class exists before continuing
         if (null === $dispatch->getClass()) {
-            return null;
+            return;
         }
 
         // Before dispatch event
@@ -406,7 +403,7 @@ trait Dispatcher
     {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
-            return null;
+            return;
         }
 
         $function = $dispatch->getFunction();
@@ -444,10 +441,10 @@ trait Dispatcher
     {
         // Ensure a closure exists before continuing
         if (null === $dispatch->getClosure()) {
-            return null;
+            return;
         }
 
-        $closure = $dispatch->getClosure();
+        $closure  = $dispatch->getClosure();
         $response = null;
 
         // Before dispatch event

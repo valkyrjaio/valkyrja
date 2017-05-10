@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Http\Exceptions;
 use Exception;
 
 /**
- * Interface HttpException
+ * Interface HttpException.
  *
- * @package Valkyrja\Contracts\Exceptions
  *
  * @author  Melech Mizrachi
  */

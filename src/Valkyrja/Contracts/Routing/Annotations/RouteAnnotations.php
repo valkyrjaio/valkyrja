@@ -14,9 +14,8 @@ namespace Valkyrja\Contracts\Routing\Annotations;
 use Valkyrja\Contracts\Annotations\Annotations;
 
 /**
- * Interface RouteAnnotations
+ * Interface RouteAnnotations.
  *
- * @package Valkyrja\Contracts\Routing\Annotations
  *
  * @author  Melech Mizrachi
  */

@@ -12,7 +12,6 @@
 namespace Valkyrja\Console;
 
 use Throwable;
-
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input\Input;
@@ -20,9 +19,8 @@ use Valkyrja\Contracts\Console\Kernel as KernelContract;
 use Valkyrja\Contracts\Console\Output\Output;
 
 /**
- * Class ConsoleKernel
+ * Class ConsoleKernel.
  *
- * @package Valkyrja\Console
  *
  * @author  Melech Mizrachi
  */
@@ -50,7 +48,7 @@ class Kernel implements KernelContract
      */
     public function __construct(Application $application, Console $console)
     {
-        $this->app = $application;
+        $this->app     = $application;
         $this->console = $console;
     }
 
@@ -60,9 +58,9 @@ class Kernel implements KernelContract
      * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
      * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
-     * @return int
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return int
      */
     public function handle(Input $input, Output $output): int
     {
@@ -100,9 +98,9 @@ class Kernel implements KernelContract
      * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input
      * @param \Valkyrja\Contracts\Console\Output\Output $output The output
      *
-     * @return void
-     *
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     public function run(Input $input = null, Output $output = null): void
     {

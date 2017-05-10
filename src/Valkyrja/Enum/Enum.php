@@ -12,15 +12,12 @@
 namespace Valkyrja\Enum;
 
 use InvalidArgumentException;
-
 use JsonSerializable;
-
 use ReflectionClass;
 
 /**
- * Class Enum
+ * Class Enum.
  *
- * @package Valkyrja\Enum
  *
  * @author  Melech Mizrachi
  */
@@ -64,9 +61,9 @@ abstract class Enum implements JsonSerializable
      *
      * @param mixed $value The value to set
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return void
      */
     public function setValue($value): void
     {
@@ -96,7 +93,7 @@ abstract class Enum implements JsonSerializable
     }
 
     /**
-     * Check if the set value on this enum is a valid value for the enum
+     * Check if the set value on this enum is a valid value for the enum.
      *
      * @param mixed $value The value to check
      *
