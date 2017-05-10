@@ -147,6 +147,32 @@ class EnumTest extends TestCase
     }
 
     /**
+     * Test the valid values through use of the reflection class.
+     *
+     * @return void
+     */
+    public function testValidValuesReflection(): void
+    {
+        assertEquals(
+            [
+                EnumClass::FOO,
+                EnumClass::BAR,
+            ],
+            $this->getEnumEmpty()->validValues()
+        );
+    }
+
+    /**
+     * Get an enum with no default values set to test with.
+     *
+     * @return \Valkyrja\Enum\Enum
+     */
+    protected function getEnumEmpty(): Enum
+    {
+        return new EnumClassEmpty(EnumClassEmpty::FOO);
+    }
+
+    /**
      * Ensure the json serialize method exists in the Enum abstract class.
      *
      * @return void
