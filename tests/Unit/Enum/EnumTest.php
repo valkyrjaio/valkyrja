@@ -34,7 +34,7 @@ class EnumTest extends TestCase
     }
 
     /**
-     * Test the set value method
+     * Test the set value method.
      *
      * @return void
      */
