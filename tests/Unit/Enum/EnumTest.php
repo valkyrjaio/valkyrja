@@ -30,7 +30,7 @@ class EnumTest extends TestCase
      */
     public function testSetValueExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'setValue'));
+        assertEquals(true, method_exists(Enum::class, 'setValue'));
     }
 
     /**
@@ -40,10 +40,20 @@ class EnumTest extends TestCase
      */
     public function testSetValue(): void
     {
-        $enum = new EnumClass(EnumClass::BAR);
+        $enum = $this->getEnum();
         $enum->setValue(EnumClass::FOO);
 
-        $this->assertEquals(EnumClass::FOO, $enum->getValue());
+        assertEquals(EnumClass::FOO, $enum->getValue());
+    }
+
+    /**
+     * Get an enum to test with.
+     *
+     * @return \Valkyrja\Enum\Enum
+     */
+    protected function getEnum(): Enum
+    {
+        return new EnumClass(EnumClass::BAR);
     }
 
     /**
@@ -56,7 +66,7 @@ class EnumTest extends TestCase
         try {
             new EnumClass('invalid value');
         } catch (Exception $exception) {
-            $this->assertEquals(InvalidArgumentException::class, get_class($exception));
+            assertEquals(InvalidArgumentException::class, get_class($exception));
         }
     }
 
@@ -67,7 +77,17 @@ class EnumTest extends TestCase
      */
     public function testGetValueExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'getValue'));
+        assertEquals(true, method_exists(Enum::class, 'getValue'));
+    }
+
+    /**
+     * Ensure the get value method functions correctly.
+     *
+     * @return void
+     */
+    public function testGetValue(): void
+    {
+        assertEquals(EnumClass::BAR, $this->getEnum()->getValue());
     }
 
     /**
@@ -77,7 +97,27 @@ class EnumTest extends TestCase
      */
     public function testIsValidExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'isValid'));
+        assertEquals(true, method_exists(Enum::class, 'isValid'));
+    }
+
+    /**
+     * Test the is valid method with a valid value.
+     *
+     * @return void
+     */
+    public function testIsValid(): void
+    {
+        assertEquals(true, $this->getEnum()->isValid(EnumClass::FOO));
+    }
+
+    /**
+     * Test the is valid method with an invalid enum value.
+     *
+     * @return void
+     */
+    public function testNotValid(): void
+    {
+        assertEquals(false, $this->getEnum()->isValid('invalid value'));
     }
 
     /**
@@ -87,7 +127,23 @@ class EnumTest extends TestCase
      */
     public function testValidValuesExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'validValues'));
+        assertEquals(true, method_exists(Enum::class, 'validValues'));
+    }
+
+    /**
+     * Test the valid values of an enum.
+     *
+     * @return void
+     */
+    public function testValidValues(): void
+    {
+        assertEquals(
+            [
+                EnumClass::FOO,
+                EnumClass::BAR,
+            ],
+            $this->getEnum()->validValues()
+        );
     }
 
     /**
@@ -97,7 +153,20 @@ class EnumTest extends TestCase
      */
     public function testJsonSerializeExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'jsonSerialize'));
+        assertEquals(true, method_exists(Enum::class, 'jsonSerialize'));
+    }
+
+    /**
+     * Test json serialization of the enum.
+     *
+     * @return void
+     */
+    public function testJsonSerialize(): void
+    {
+        $jsonSerialized = json_encode($this->getEnum());
+        $serialized     = '"foo"';
+
+        assertEquals($serialized, $jsonSerialized);
     }
 
     /**
@@ -107,6 +176,16 @@ class EnumTest extends TestCase
      */
     public function testToStringExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, '__toString'));
+        assertEquals(true, method_exists(Enum::class, '__toString'));
+    }
+
+    /**
+     * Test the enum __toString capability.
+     *
+     * @return void
+     */
+    public function testToString(): void
+    {
+        assertEquals('foo', $this->getEnum());
     }
 }
