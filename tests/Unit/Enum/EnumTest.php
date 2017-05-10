@@ -26,7 +26,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testSetValueExists(): void
+    public function testSetValue(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'setValue'));
     }
@@ -36,7 +36,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testGetValueExists(): void
+    public function testGetValue(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'getValue'));
     }
@@ -46,7 +46,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testIsValidExists(): void
+    public function testIsValid(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'isValid'));
     }
@@ -56,7 +56,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testValidValuesExists(): void
+    public function testValidValues(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'validValues'));
     }
@@ -66,7 +66,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testJsonSerializeExists(): void
+    public function testJsonSerialize(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, 'jsonSerialize'));
     }
@@ -76,7 +76,7 @@ class EnumTest extends TestCase
      *
      * @return void
      */
-    public function testToStringExists(): void
+    public function testToString(): void
     {
         $this->assertEquals(true, method_exists(Enum::class, '__toString'));
     }
