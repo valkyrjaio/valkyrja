@@ -318,6 +318,7 @@ class ApplicationTest extends TestCase
     public function testSession(): void
     {
         // TODO: Mock Session
+        $this->assertEquals(true, PHP_SESSION_ACTIVE === session_status());
         // $this->assertEquals(true, $this->app->session() instanceof Session);
     }
 
