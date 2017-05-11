@@ -2,6 +2,8 @@
 
 namespace Valkyrja\Tests\Unit\Routing;
 
+use Exception;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Route;
@@ -97,6 +99,20 @@ class RouteTest extends TestCase
         $set = $this->getRoute()->setRequestMethods([RequestMethod::POST]);
 
         $this->assertEquals(true, $set instanceof Route);
+    }
+
+    /**
+     * Test the setRequestMethods setter method with invalid data.
+     *
+     * @return void
+     */
+    public function testSetRequestMethodsInvalid(): void
+    {
+        try {
+            $this->getRoute()->setRequestMethods(['invalid value']);
+        } catch (Exception $exception) {
+            $this->assertEquals(InvalidArgumentException::class, get_class($exception));
+        }
     }
 
     /**
@@ -332,8 +348,6 @@ class RouteTest extends TestCase
 
     /**
      * Test the __set_state magic method.
-     *
-     * @covers \Valkyrja\Routing\Route::__set_state
      *
      * @return void
      */
