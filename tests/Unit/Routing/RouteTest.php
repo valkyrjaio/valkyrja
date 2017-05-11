@@ -338,7 +338,7 @@ class RouteTest extends TestCase
     public function testSetState(): void
     {
         /* @noinspection ImplicitMagicMethodCallInspection */
-        $route = call_user_func('Route::__set_state', [['path' => $this->stringValue]]);
+        $route = call_user_func(Route::class . '::__set_state', [['path' => $this->stringValue]]);
 
         $this->assertEquals(true, $route instanceof Route);
     }
