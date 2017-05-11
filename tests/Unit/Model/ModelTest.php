@@ -19,16 +19,6 @@ class ModelTest extends TestCase
     protected $model;
 
     /**
-     * Test the model's magic __get method.
-     *
-     * @return void
-     */
-    public function testMagicGet(): void
-    {
-        $this->assertEquals(null, $this->getModel()->property);
-    }
-
-    /**
      * Get the model class to test with.
      *
      * @return \Valkyrja\Tests\Unit\Model\ModelClass
@@ -36,6 +26,16 @@ class ModelTest extends TestCase
     protected function getModel(): ModelClass
     {
         return $this->model ?? $this->model = new ModelClass();
+    }
+
+    /**
+     * Test the model's magic __get method.
+     *
+     * @return void
+     */
+    public function testMagicGet(): void
+    {
+        $this->assertEquals(null, $this->getModel()->property);
     }
 
     /**
@@ -70,8 +70,7 @@ class ModelTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        $json                       = '{"property":"test"}';
-        $this->getModel()->property = 'test';
+        $json = '{"property":null}';
 
         $this->assertEquals($json, json_encode($this->getModel()));
     }

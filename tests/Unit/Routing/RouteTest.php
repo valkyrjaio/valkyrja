@@ -28,16 +28,6 @@ class RouteTest extends TestCase
     protected $stringValue = 'test';
 
     /**
-     * Test the getPath getter method default value.
-     *
-     * @return void
-     */
-    public function testGetPathDefault(): void
-    {
-        $this->assertEquals(null, $this->getRoute()->getPath());
-    }
-
-    /**
      * Get the route model to test with.
      *
      * @return \Valkyrja\Routing\Route
@@ -45,6 +35,16 @@ class RouteTest extends TestCase
     protected function getRoute(): Route
     {
         return $this->route ?? $this->route = new Route();
+    }
+
+    /**
+     * Test the getPath getter method default value.
+     *
+     * @return void
+     */
+    public function testGetPathDefault(): void
+    {
+        $this->assertEquals(null, $this->getRoute()->getPath());
     }
 
     /**
