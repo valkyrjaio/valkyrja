@@ -117,7 +117,7 @@ class ModelTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        $json = '{"property":null}';
+        $json = '{"property":null,"prop":null}';
 
         $this->assertEquals($json, json_encode($this->getModel()));
     }
