@@ -55,10 +55,11 @@ interface Application
      * Setup the application.
      *
      * @param \Valkyrja\Config\Config $config The config
+     * @param bool                    $force  Whether to force a setup
      *
      * @return void
      */
-    public function setup(Config $config): void;
+    public function setup(Config $config, bool $force = null): void;
 
     /**
      * Get the application instance.

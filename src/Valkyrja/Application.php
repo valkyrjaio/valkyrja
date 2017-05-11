@@ -103,16 +103,17 @@ class Application implements ApplicationContract
      * Setup the application.
      *
      * @param \Valkyrja\Config\Config $config The config
+     * @param bool                    $force  Whether to force a setup
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      *
      * @return void
      */
-    public function setup(Config $config): void
+    public function setup(Config $config, bool $force = null): void
     {
         // If the application was already setup, no need to do it again
-        if (self::$setup) {
+        if (self::$setup && null === $force) {
             return;
         }
 

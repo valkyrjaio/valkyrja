@@ -348,8 +348,8 @@ class ApplicationTest extends TestCase
         $config = $this->app->config();
 
         $config->app->debug = true;
-        $app                = new Application($config);
+        $this->app->setup($config, true);
 
-        $this->assertEquals(true, $app->config()->app->debug);
+        $this->assertEquals(true, $this->app->config()->app->debug);
     }
 }
