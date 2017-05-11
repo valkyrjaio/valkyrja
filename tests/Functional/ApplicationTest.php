@@ -238,6 +238,16 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test the response() helper method with arguments.
+     *
+     * @return void
+     */
+    public function testResponseWithArgs(): void
+    {
+        $this->assertEquals(true, $this->app->response('test') instanceof Response);
+    }
+
+    /**
      * Test the json() helper method.
      *
      * @return void
@@ -248,6 +258,16 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test the json() helper method with arguments.
+     *
+     * @return void
+     */
+    public function testJsonWithArgs(): void
+    {
+        $this->assertEquals(true, $this->app->json(['test' => 'value']) instanceof JsonResponse);
+    }
+
+    /**
      * Test the redirect() helper method.
      *
      * @return void
@@ -255,6 +275,16 @@ class ApplicationTest extends TestCase
     public function testRedirect(): void
     {
         $this->assertEquals(true, $this->app->redirect() instanceof RedirectResponse);
+    }
+
+    /**
+     * Test the redirect() helper method with arguments.
+     *
+     * @return void
+     */
+    public function testRedirectWithArgs(): void
+    {
+        $this->assertEquals(true, $this->app->redirect('/') instanceof RedirectResponse);
     }
 
     /**
