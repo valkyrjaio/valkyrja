@@ -338,7 +338,7 @@ class ApplicationTest extends TestCase
      */
     public function testSetupTwice(): void
     {
-        $config = $this->app->config();
+        $config = clone $this->app->config();
 
         // Set debug to true
         $config->app->debug = true;
@@ -357,7 +357,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = $this->app->config();
+        $config = clone $this->app->config();
 
         $config->app->debug = true;
         $this->app->setup($config, true);
@@ -373,7 +373,7 @@ class ApplicationTest extends TestCase
     public function testInvalidContainer(): void
     {
         try {
-            $config = $this->app->config();
+            $config = clone $this->app->config();
 
             $config->app->container = HomeController::class;
             $this->app->setup($config, true);
@@ -390,7 +390,7 @@ class ApplicationTest extends TestCase
     public function testInvalidEvents(): void
     {
         try {
-            $config = $this->app->config();
+            $config = clone $this->app->config();
 
             $config->app->events = HomeController::class;
             $this->app->setup($config, true);
