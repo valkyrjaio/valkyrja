@@ -35,7 +35,7 @@ class DirectoryTest extends TestCase
     {
         parent::setUp();
 
-        Directory::$BASE_PATH = 'test';
+        Directory::$BASE_PATH = $this->basePath;
     }
 
     /**
