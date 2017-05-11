@@ -120,8 +120,11 @@ class Application implements ApplicationContract
         // Avoid re-setting up the app later
         self::$setup = true;
 
-        // Set a global constant for when the framework started
-        define('VALKYRJA_START', microtime(true));
+        // If the VALKYRJA_START constant hasn't already been set
+        if (! defined('VALKYRJA_START')) {
+            // Set a global constant for when the framework started
+            define('VALKYRJA_START', microtime(true));
+        }
 
         // Set the app static
         self::$app = $this;
