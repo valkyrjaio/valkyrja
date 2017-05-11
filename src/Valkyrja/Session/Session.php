@@ -88,13 +88,13 @@ class Session implements SessionContract
     public function start(): void
     {
         // If the session is already active
-        if ($this->isActive()) {
+        if ($this->isActive() || headers_sent()) {
             // No need to reactivate
             return;
         }
 
-        // If the session failed to start but headers haven't been sent yet
-        if (! session_start() && ! headers_sent()) {
+        // If the session failed to start
+        if (! session_start()) {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }
