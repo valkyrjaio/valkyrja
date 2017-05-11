@@ -10,7 +10,6 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\View\View;
-use Valkyrja\Debug\Debug;
 use Valkyrja\Events\Events;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -349,8 +348,8 @@ class ApplicationTest extends TestCase
         $config = $this->app->config();
 
         $config->app->debug = true;
-        new Application($config);
+        $app                = new Application($config);
 
-        $this->assertEquals(true, Debug::$enabled);
+        $this->assertEquals(true, $app->config()->app->debug);
     }
 }
