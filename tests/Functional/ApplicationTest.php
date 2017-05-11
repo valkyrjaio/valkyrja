@@ -11,6 +11,8 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
+use Valkyrja\Exceptions\InvalidContainerImplementation;
+use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
@@ -21,6 +23,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Router;
+use Valkyrja\Tests\App\App\Controllers\HomeController;
 
 /**
  * Test the functionality of the Application.
@@ -351,5 +354,39 @@ class ApplicationTest extends TestCase
         $this->app->setup($config, true);
 
         $this->assertEquals(true, $this->app->config()->app->debug);
+    }
+
+    /**
+     * Test an invalid container class.
+     *
+     * @return void
+     */
+    public function testInvalidContainer(): void
+    {
+        try {
+            $config = $this->app->config();
+
+            $config->app->container = HomeController::class;
+            $this->app->setup($config, true);
+        } catch (Exception $exception) {
+            $this->assertEquals(InvalidContainerImplementation::class, get_class($exception));
+        }
+    }
+
+    /**
+     * Test an invalid container class.
+     *
+     * @return void
+     */
+    public function testInvalidEvents(): void
+    {
+        try {
+            $config = $this->app->config();
+
+            $config->app->events = HomeController::class;
+            $this->app->setup($config, true);
+        } catch (Exception $exception) {
+            $this->assertEquals(InvalidEventsImplementation::class, get_class($exception));
+        }
     }
 }
