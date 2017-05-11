@@ -36,7 +36,7 @@ router()->get(
         )
 );
 
-/**
+/*
  * Property Routing Example Route.
  * - Example of string being returned from a property
  *

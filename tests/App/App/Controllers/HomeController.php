@@ -12,9 +12,7 @@ use Valkyrja\Http\Controller;
 use Valkyrja\Routing\Route;
 
 /**
- * Class HomeController
- *
- * @package App\Controllers
+ * Class HomeController.
  *
  * @Route(path = '/', name = 'home')
  * @Route(path = '/test', name = 'home.test')
@@ -57,7 +55,7 @@ class HomeController extends Controller
 
     /**
      * Welcome action.
-     * - Example of a view being returned
+     * - Example of a view being returned.
      *
      * @return \Valkyrja\Contracts\View\View
      *
@@ -70,7 +68,7 @@ class HomeController extends Controller
 
     /**
      * Application version action.
-     * - Example of string being returned
+     * - Example of string being returned.
      *
      * @return string
      *
@@ -83,7 +81,7 @@ class HomeController extends Controller
 
     /**
      * Homepage action.
-     * - Example with multiple routes to the same action
+     * - Example with multiple routes to the same action.
      *
      * @param Application $application The application (Dependency injection example)
      * @param int         $page        The current page
