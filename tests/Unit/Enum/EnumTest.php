@@ -215,6 +215,6 @@ class EnumTest extends TestCase
      */
     public function testToString(): void
     {
-        $this->assertEquals('foo', $this->getEnum());
+        $this->assertEquals('foo', (string) $this->getEnum());
     }
 }
