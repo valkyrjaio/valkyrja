@@ -10,6 +10,7 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\View\View;
+use Valkyrja\Debug\Debug;
 use Valkyrja\Events\Events;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -37,16 +38,6 @@ class ApplicationTest extends TestCase
     public function testConstruct(): void
     {
         $this->assertEquals(true, $this->app instanceof Application);
-    }
-
-    /**
-     * Test the application setup being called a second time.
-     *
-     * @return void
-     */
-    public function testSetupTwice(): void
-    {
-        $this->assertEquals(null, $this->app->setUp($this->app->config()) ?? null);
     }
 
     /**
@@ -336,5 +327,30 @@ class ApplicationTest extends TestCase
     public function testView(): void
     {
         $this->assertEquals(true, $this->app->view() instanceof View);
+    }
+
+    /**
+     * Test the application setup being called a second time.
+     *
+     * @return void
+     */
+    public function testSetupTwice(): void
+    {
+        $this->assertEquals(null, $this->app->setUp($this->app->config()) ?? null);
+    }
+
+    /**
+     * Test the application setup with debug on.
+     *
+     * @return void
+     */
+    public function testDebugOn(): void
+    {
+        $config = $this->app->config();
+
+        $config->app->debug = true;
+        new Application($config);
+
+        $this->assertEquals(true, Debug::$enabled);
     }
 }
