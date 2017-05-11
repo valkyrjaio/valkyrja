@@ -333,6 +333,8 @@ class RouteTest extends TestCase
     /**
      * Test the __set_state magic method.
      *
+     * @covers \Valkyrja\Routing\Route::__set_state()
+     *
      * @return void
      */
     public function testSetState(): void

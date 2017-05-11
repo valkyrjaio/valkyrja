@@ -31,6 +31,8 @@ class ModelTest extends TestCase
     /**
      * Test the model's magic __get method.
      *
+     * @covers \Valkyrja\Model\Model::__get()
+     *
      * @return void
      */
     public function testMagicGet(): void
@@ -40,6 +42,8 @@ class ModelTest extends TestCase
 
     /**
      * Test the model's magic __set method.
+     *
+     * @covers \Valkyrja\Model\Model::__set()
      *
      * @return void
      */
@@ -53,6 +57,8 @@ class ModelTest extends TestCase
 
     /**
      * Test the model's magic isset method.
+     *
+     * @covers \Valkyrja\Model\Model::__isset()
      *
      * @return void
      */
