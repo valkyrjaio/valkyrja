@@ -11,7 +11,7 @@ use Valkyrja\Routing\Route;
 router()->get(
     (new Route())
         ->setPath('/')
-        ->setName('welcome')
+        ->setName('home.welcome')
         ->setClosure(
             function (): Valkyrja\Contracts\View\View {
                 return view('index')->withoutLayout();
