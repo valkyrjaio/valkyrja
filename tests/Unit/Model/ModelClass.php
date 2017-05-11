@@ -30,7 +30,7 @@ class ModelClass extends Model
      *
      * @return string
      */
-    public function getProp(): string
+    public function getProp():? string
     {
         return $this->prop;
     }
@@ -50,10 +50,12 @@ class ModelClass extends Model
      *
      * @param string $prop The prop
      *
-     * @return void
+     * @return \Valkyrja\Tests\Unit\Model\ModelClass
      */
-    public function setProp(string $prop): void
+    public function setProp(string $prop): ModelClass
     {
         $this->prop = $prop;
+
+        return $this;
     }
 }
