@@ -55,6 +55,8 @@ abstract class Model implements JsonSerializable
             return $this->$methodName($value);
         }
 
+        $this->{$name} = $value;
+
         return $this;
     }
 
