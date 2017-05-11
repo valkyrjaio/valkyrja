@@ -49,10 +49,11 @@ class ModelTest extends TestCase
      */
     public function testMagicSet(): void
     {
-        $value                      = 'test';
-        $this->getModel()->property = $value;
+        $model           = $this->getModel();
+        $value           = 'test';
+        $model->property = $value;
 
-        $this->assertEquals($value, $this->getModel()->property);
+        $this->assertEquals($value, $model->property);
     }
 
     /**
