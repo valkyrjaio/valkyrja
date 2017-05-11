@@ -42,12 +42,12 @@ class HttpRedirectException extends HttpException
      */
     public function __construct(
         int $statusCode = ResponseCode::HTTP_FOUND,
-        string $uri = '/',
+        string $uri = null,
         ?Exception $previous = null,
         array $headers = [],
         int $code = 0
     ) {
-        $this->uri = $uri;
+        $this->uri = $uri ?? '/';
 
         parent::__construct($statusCode, 'Redirect', $previous, $headers, $code);
     }

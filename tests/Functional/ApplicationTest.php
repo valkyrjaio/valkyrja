@@ -11,8 +11,8 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
@@ -21,7 +21,6 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
 
 /**
  * Test the functionality of the Application.
@@ -107,7 +106,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $this->assertEquals($this->app->env()::APP_ENV, $this->app->environment());
+        $this->assertEquals($this->app->config()->app->env, $this->app->environment());
     }
 
     /**
@@ -117,7 +116,17 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        $this->assertEquals($this->app->env()::APP_DEBUG, $this->app->debug());
+        $this->assertEquals($this->app->config()->app->debug, $this->app->debug());
+    }
+
+    /**
+     * Test the isCompiled() helper method.
+     *
+     * @return void
+     */
+    public function testIsCompiled(): void
+    {
+        $this->assertEquals(false, $this->app->isCompiled());
     }
 
     /**
@@ -131,16 +140,6 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the isCompiled() helper method.
-     *
-     * @return void
-     */
-    public function testIsCompiled(): void
-    {
-        $this->assertEquals(true, $this->app->isCompiled());
-    }
-
-    /**
      * Test the abort() helper method.
      *
      * @return void
@@ -150,7 +149,7 @@ class ApplicationTest extends TestCase
         try {
             $this->app->abort();
         } catch (Exception $exception) {
-            $this->assertEquals(NotFoundHttpException::class, get_class($exception));
+            $this->assertEquals(HttpException::class, get_class($exception));
         }
     }
 
@@ -285,7 +284,8 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, $this->app->session() instanceof Session);
+        // TODO: Mock Session
+        // $this->assertEquals(true, $this->app->session() instanceof Session);
     }
 
     /**

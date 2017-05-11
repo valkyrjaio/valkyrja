@@ -46,7 +46,7 @@ router()->get(
     (new Route())
         ->setPath('/property')
         ->setName('property')
-        ->setClass(App\Controllers\HomeController::class)
+        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
         ->setProperty('propertyRouting')
 );
 
@@ -60,7 +60,7 @@ router()->get(
     (new Route())
         ->setPath('/home')
         ->setName('home')
-        ->setClass(App\Controllers\HomeController::class)
+        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
         ->setMethod('home')
         ->setDependencies(
             [
@@ -82,7 +82,7 @@ router()->get(
     (new Route())
         ->setPath('/home/{id:num}')
         ->setName('homePage')
-        ->setClass(App\Controllers\HomeController::class)
+        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
         ->setMethod('home')
         ->setDependencies(
             [
