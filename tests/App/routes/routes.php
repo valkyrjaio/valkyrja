@@ -2,7 +2,7 @@
 
 use Valkyrja\Routing\Route;
 
-/**
+/*
  * Welcome Route.
  * - Example of a view being returned
  *
@@ -19,7 +19,7 @@ router()->get(
         )
 );
 
-/**
+/*
  * Framework Version Route.
  * - Example of string being returned
  *
@@ -50,7 +50,7 @@ router()->get(
         ->setProperty('propertyRouting')
 );
 
-/**
+/*
  * Home Route.
  * - Example with multiple routes to the same action
  *
@@ -71,7 +71,7 @@ router()->get(
         )
 );
 
-/**
+/*
  * Home Paged Route.
  * - An example route with dependency injection and a parameter.
  * - Example with multiple routes to the same action
