@@ -113,7 +113,7 @@ class Application implements ApplicationContract
     public function setup(Config $config, bool $force = null): void
     {
         // If the application was already setup, no need to do it again
-        if (self::$setup && null === $force) {
+        if (self::$setup && ! $force) {
             return;
         }
 
