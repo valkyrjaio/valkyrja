@@ -23,6 +23,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Router;
+use Valkyrja\Session\Session;
 use Valkyrja\Tests\App\App\Controllers\HomeController;
 
 /**
@@ -317,9 +318,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        // TODO: Mock Session
-        $this->assertEquals(true, PHP_SESSION_ACTIVE === session_status());
-        // $this->assertEquals(true, $this->app->session() instanceof Session);
+        $this->assertEquals(true, $this->app->session() instanceof Session);
     }
 
     /**
@@ -333,13 +332,22 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the application setup being called a second time.
+     * Test the application setup being called a second time without forcing.
      *
      * @return void
      */
     public function testSetupTwice(): void
     {
-        $this->assertEquals(null, $this->app->setUp($this->app->config()) ?? null);
+        $config = $this->app->config();
+
+        // Set debug to true
+        $config->app->debug = true;
+        // Try to re-setup the application
+        $this->app->setup($config);
+
+        // It shouldn't have used the new config settings and kept the old
+        // so debug should still be false
+        $this->assertEquals(false, $this->app->config()->app->debug);
     }
 
     /**

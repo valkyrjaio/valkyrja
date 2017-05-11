@@ -93,8 +93,8 @@ class Session implements SessionContract
             return;
         }
 
-        // If the session failed to start
-        if (! session_start()) {
+        // If the session failed to start but headers haven't been sent yet
+        if (! session_start() && ! headers_sent()) {
             // Throw a new exception
             throw new SessionStartFailure('The session failed to start!');
         }
