@@ -17,4 +17,43 @@ class ModelClass extends Model
      * @var string
      */
     protected $property;
+
+    /**
+     * A property to test with using getter/setter.
+     *
+     * @var string
+     */
+    protected $prop;
+
+    /**
+     * Get the prop.
+     *
+     * @return string
+     */
+    public function getProp(): string
+    {
+        return $this->prop;
+    }
+
+    /**
+     * Determine if the prop is set.
+     *
+     * @return bool
+     */
+    public function issetProp(): bool
+    {
+        return null !== $this->prop;
+    }
+
+    /**
+     * Set the prop.
+     *
+     * @param string $prop The prop
+     *
+     * @return void
+     */
+    public function setProp(string $prop): void
+    {
+        $this->prop = $prop;
+    }
 }

@@ -31,7 +31,7 @@ class ModelTest extends TestCase
     /**
      * Test the model's magic __get method.
      *
-     * @covers \Valkyrja\Model\Model::__get()
+     * @covers \Valkyrja\Model\Model::__get
      *
      * @return void
      */
@@ -41,9 +41,21 @@ class ModelTest extends TestCase
     }
 
     /**
+     * Test the model's getter through the magic __get method.
+     *
+     * @covers \Valkyrja\Model\Model::__get
+     *
+     * @return void
+     */
+    public function testMagicGetter(): void
+    {
+        $this->assertEquals(null, $this->getModel()->prop);
+    }
+
+    /**
      * Test the model's magic __set method.
      *
-     * @covers \Valkyrja\Model\Model::__set()
+     * @covers \Valkyrja\Model\Model::__set
      *
      * @return void
      */
@@ -56,9 +68,24 @@ class ModelTest extends TestCase
     }
 
     /**
+     * Test the model's setter through the magic __set method.
+     *
+     * @covers \Valkyrja\Model\Model::__set
+     *
+     * @return void
+     */
+    public function testMagicSetter(): void
+    {
+        $value                  = 'test';
+        $this->getModel()->prop = $value;
+
+        $this->assertEquals($value, $this->getModel()->prop);
+    }
+
+    /**
      * Test the model's magic isset method.
      *
-     * @covers \Valkyrja\Model\Model::__isset()
+     * @covers \Valkyrja\Model\Model::__isset
      *
      * @return void
      */
@@ -67,6 +94,20 @@ class ModelTest extends TestCase
         $this->getModel()->property = 'test';
 
         $this->assertEquals(true, isset($this->getModel()->property));
+    }
+
+    /**
+     * Test the model's isset through magic isset method.
+     *
+     * @covers \Valkyrja\Model\Model::__isset
+     *
+     * @return void
+     */
+    public function testMagicIssetMethod(): void
+    {
+        $this->getModel()->prop = 'test';
+
+        $this->assertEquals(true, isset($this->getModel()->prop));
     }
 
     /**
