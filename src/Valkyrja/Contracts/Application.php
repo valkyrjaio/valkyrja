@@ -52,6 +52,15 @@ interface Application
     public function __construct(Config $config);
 
     /**
+     * Setup the application.
+     *
+     * @param \Valkyrja\Config\Config $config The config
+     *
+     * @return void
+     */
+    public function setup(Config $config): void;
+
+    /**
      * Get the application instance.
      *
      * @return \Valkyrja\Contracts\Application

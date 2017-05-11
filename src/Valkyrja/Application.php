@@ -109,7 +109,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    protected function setup(Config $config): void
+    public function setup(Config $config): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup) {

@@ -40,6 +40,16 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test the application setup being called a second time.
+     *
+     * @return void
+     */
+    public function testSetupTwice(): void
+    {
+        $this->assertEquals(null, $this->app->setUp($this->app->config()) ?? null);
+    }
+
+    /**
      * Test the app() static helper method.
      *
      * @return void
