@@ -38,6 +38,6 @@ class ServerTest extends TestCase
      */
     public function testGetHeaders(): void
     {
-        $this->assertEquals($_SERVER, $this->class->getHeaders());
+        $this->assertEquals(true, is_array($this->class->getHeaders()));
     }
 }
