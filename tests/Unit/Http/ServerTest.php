@@ -20,6 +20,30 @@ class ServerTest extends TestCase
     protected $class;
 
     /**
+     * The server array to test with.
+     *
+     * @var array
+     */
+    protected $server = [
+        'NON_HEADER'     => 'test',
+        'BOGUS'          => 'test',
+        'CONTENT_TYPE'   => 'test',
+        'CONTENT_LENGTH' => 'test',
+        'HTTP_HEADER'    => 'test',
+    ];
+
+    /**
+     * The headers that should be returned.
+     *
+     * @var array
+     */
+    protected $headers = [
+        'CONTENT_TYPE'   => 'test',
+        'CONTENT_LENGTH' => 'test',
+        'HTTP_HEADER'    => 'test',
+    ];
+
+    /**
      * Setup the test.
      *
      * @return void
@@ -28,7 +52,7 @@ class ServerTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Server($_SERVER);
+        $this->class = new Server($this->server);
     }
 
     /**
@@ -38,6 +62,6 @@ class ServerTest extends TestCase
      */
     public function testGetHeaders(): void
     {
-        $this->assertEquals(true, is_array($this->class->getHeaders()));
+        $this->assertEquals($this->headers, $this->class->getHeaders());
     }
 }
