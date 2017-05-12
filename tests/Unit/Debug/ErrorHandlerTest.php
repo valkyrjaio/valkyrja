@@ -5,6 +5,7 @@ namespace Valkyrja\Tests\Unit\Debug;
 use ErrorException;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Valkyrja\Debug\Debug;
 use Valkyrja\Debug\ErrorHandler;
 
 /**
@@ -30,7 +31,7 @@ class ErrorHandlerTest extends TestCase
     {
         parent::setUp();
 
-        error_reporting(1);
+        Debug::enable(E_ALL, true);
         $this->class = new ErrorHandler();
     }
 
@@ -42,7 +43,7 @@ class ErrorHandlerTest extends TestCase
     public function testHandleError(): void
     {
         try {
-            $this->class->handleError(1, 'message');
+            $this->class->handleError(E_ALL, 'message');
         } catch (Exception $exception) {
             $this->assertEquals(ErrorException::class, get_class($exception));
         }
