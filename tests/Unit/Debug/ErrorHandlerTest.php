@@ -64,6 +64,6 @@ class ErrorHandlerTest extends TestCase
             ]
         );
 
-        $this->assertEquals(true, $errorException instanceof ErrorException::class);
+        $this->assertEquals(true, $errorException instanceof ErrorException);
     }
 }
