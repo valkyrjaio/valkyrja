@@ -19,8 +19,7 @@ use Valkyrja\Support\Collection;
 /**
  * Class Server.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Server extends Collection implements ServerContract
 {
