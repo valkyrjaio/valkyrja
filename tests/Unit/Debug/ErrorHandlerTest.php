@@ -50,6 +50,19 @@ class ErrorHandlerTest extends TestCase
     }
 
     /**
+     * Test the handleError method's return.
+     *
+     * @return void
+     */
+    public function testHandleErrorReturn(): void
+    {
+        error_reporting(-1);
+        $return = $this->class->handleError(1, 'message') ?? null;
+
+        $this->assertEquals(null, $return);
+    }
+
+    /**
      * Test the fatalExceptionFromError method.
      *
      * @return void
