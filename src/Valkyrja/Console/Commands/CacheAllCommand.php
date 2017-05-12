@@ -56,6 +56,9 @@ class CacheAllCommand extends CommandHandler
         console()->dispatchCommand($eventsCache);
         console()->dispatchCommand($routesCache);
 
+        config()->app->debug = $originalDebug;
+        config()->app->env   = $originalEnv;
+
         if (null !== $sync && config()->app->debug) {
             $files = [
                 config()->console->cacheFilePath,
@@ -69,9 +72,6 @@ class CacheAllCommand extends CommandHandler
                 output()->writeMessage('Copied: ' . $file, true);
             }
         }
-
-        config()->app->debug = $originalDebug;
-        config()->app->env   = $originalEnv;
 
         return 1;
     }
