@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Events\Listener;
 
 /**
- * Test the dispatch model.
+ * Test the listener model.
  *
  * @author Melech Mizrachi
  */
