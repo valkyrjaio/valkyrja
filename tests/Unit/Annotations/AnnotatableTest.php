@@ -224,7 +224,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setStatic(true);
 
-        $this->assertEquals($this->value, $this->class->isStatic());
+        $this->assertEquals(true, $this->class->isStatic());
     }
 
     /**
