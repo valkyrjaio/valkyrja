@@ -27,7 +27,7 @@ use Valkyrja\Session\Session;
  *
  * @author Melech Mizrachi
  */
-class HelpersTestBK extends TestCase
+class HelpersTest extends TestCase
 {
     /**
      * Test the app() static helper method.
