@@ -43,7 +43,7 @@ class ErrorHandlerTest extends TestCase
     public function testHandleError(): void
     {
         try {
-            $this->class->handleError(E_ALL, 'message');
+            $this->class->handleError(1, 'message');
         } catch (Exception $exception) {
             $this->assertEquals(ErrorException::class, get_class($exception));
         }
