@@ -400,4 +400,14 @@ class ApplicationTest extends TestCase
             $this->assertEquals(InvalidEventsImplementation::class, get_class($exception));
         }
     }
+
+    /**
+     * Test resetting the application with proper config.
+     *
+     * @return void
+     */
+    public function testResetApplication(): void
+    {
+        $this->assertEquals(null, $this->app->setup($this->app->config(), true) ?? null);
+    }
 }
