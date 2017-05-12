@@ -57,7 +57,7 @@ class ErrorHandlerTest extends TestCase
     public function testHandleErrorReturn(): void
     {
         error_reporting(0);
-        $return = $this->class->handleError(-1, 'message') ?? null;
+        $return = $this->class->handleError(1, 'message') ?? null;
 
         $this->assertEquals(null, $return);
     }
