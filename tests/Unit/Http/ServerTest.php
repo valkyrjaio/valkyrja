@@ -38,9 +38,9 @@ class ServerTest extends TestCase
      * @var array
      */
     protected $headers = [
-        'CONTENT_TYPE'   => 'test',
-        'CONTENT_LENGTH' => 'test',
-        'HTTP_HEADER'    => 'test',
+        'Content-Type'   => 'test',
+        'Content-Length' => 'test',
+        'Header'         => 'test',
     ];
 
     /**
