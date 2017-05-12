@@ -30,7 +30,7 @@ install:
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --stderr
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

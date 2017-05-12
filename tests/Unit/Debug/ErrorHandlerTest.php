@@ -60,7 +60,7 @@ class ErrorHandlerTest extends TestCase
             $this->class->fatalExceptionFromError(
                 [
                     'message' => 'test',
-                    'type'    => 'test',
+                    'type'    => 1,
                     'file'    => 'test',
                     'line'    => 1,
                 ]
