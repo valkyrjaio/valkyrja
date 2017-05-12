@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Contracts\Debug;
 
+use Exception;
+
 /**
  * Interface ErrorHandler.
  *
@@ -31,4 +33,13 @@ interface ErrorHandler
      * @return void
      */
     public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []): void;
+
+    /**
+     * Create a new fatal exception instance from an error array.
+     *
+     * @param array $error The error array to use
+     *
+     * @return \Exception
+     */
+    public function fatalExceptionFromError(array $error): Exception;
 }

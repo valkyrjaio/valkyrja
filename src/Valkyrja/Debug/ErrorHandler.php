@@ -50,7 +50,7 @@ class ErrorHandler implements ErrorHandlerContract
      *
      * @return \Exception
      */
-    protected function fatalExceptionFromError(array $error): Exception
+    public function fatalExceptionFromError(array $error): Exception
     {
         return new ErrorException(
             $error['message'], 0, $error['type'], $error['file'], $error['line']
