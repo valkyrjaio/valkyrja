@@ -244,7 +244,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetStatic(): void
     {
-        $this->assertEquals(null, $this->class->setStatic($this->value) ?? null);
+        $this->assertEquals(null, $this->class->setStatic(true) ?? null);
     }
 
     /**
@@ -328,7 +328,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetMatches(): void
     {
-        $this->assertEquals(null, $this->class->setMatches($this->value) ?? null);
+        $this->assertEquals(null, $this->class->setMatches([$this->value]) ?? null);
     }
 
     /**
@@ -370,6 +370,6 @@ class AnnotatableTest extends TestCase
      */
     public function testSetAnnotationArguments(): void
     {
-        $this->assertEquals(null, $this->class->setAnnotationArguments($this->value) ?? null);
+        $this->assertEquals(null, $this->class->setAnnotationArguments([$this->value]) ?? null);
     }
 }

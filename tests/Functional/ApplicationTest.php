@@ -408,6 +408,6 @@ class ApplicationTest extends TestCase
      */
     public function testResetApplication(): void
     {
-        $this->assertEquals(null, $this->app->setup($this->app->config(), true) ?? null);
+        $this->assertEquals(null, $this->app->setup(new Config(new Env()), true) ?? null);
     }
 }

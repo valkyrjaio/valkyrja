@@ -168,7 +168,7 @@ trait Annotatable
      *
      * @return bool
      */
-    public function isStatic(): bool
+    public function isStatic():? bool
     {
         return $this->static;
     }
