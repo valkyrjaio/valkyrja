@@ -55,16 +55,15 @@ class ErrorHandlerTest extends TestCase
      */
     public function testFatalExceptionFromError(): void
     {
-        $this->assertEquals(
-            ErrorException::class,
-            $this->class->fatalExceptionFromError(
-                [
-                    'message' => 'test',
-                    'type'    => 1,
-                    'file'    => 'test',
-                    'line'    => 1,
-                ]
-            )
+        $errorException = $this->class->fatalExceptionFromError(
+            [
+                'message' => 'test',
+                'type'    => 1,
+                'file'    => 'test',
+                'line'    => 1,
+            ]
         );
+
+        $this->assertEquals(true, $errorException instanceof ErrorException::class);
     }
 }
