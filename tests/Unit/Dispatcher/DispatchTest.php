@@ -546,4 +546,29 @@ class DispatchTest extends TestCase
 
         $this->assertEquals(true, $set instanceof Dispatch);
     }
+
+    /**
+     * Test the getDispatch method.
+     *
+     * @return void
+     */
+    public function testGetDispatch(): void
+    {
+        $dispatch = Dispatch::getDispatch(['class' => $this->value]);
+
+        $this->assertEquals(true, $dispatch instanceof Dispatch);
+    }
+
+    /**
+     * Test the __set_state magic method.
+     *
+     * @return void
+     */
+    public function testSetState(): void
+    {
+        /* @noinspection ImplicitMagicMethodCallInspection */
+        $dispatch = Dispatch::__set_state(['class' => $this->value]);
+
+        $this->assertEquals(true, $dispatch instanceof Dispatch);
+    }
 }
