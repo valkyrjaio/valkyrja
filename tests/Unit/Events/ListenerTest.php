@@ -67,7 +67,9 @@ class ListenerTest extends TestCase
      */
     public function testSetEventNull(): void
     {
-        $this->assertEquals(null, $this->class->setEvent(null) ?? null);
+        $set = $this->class->setEvent(null);
+
+        $this->assertEquals(true, $set instanceof Listener);
     }
 
     /**
@@ -77,6 +79,8 @@ class ListenerTest extends TestCase
      */
     public function testSetEvent(): void
     {
-        $this->assertEquals(null, $this->class->setEvent($this->value) ?? null);
+        $set = $this->class->setEvent($this->value);
+
+        $this->assertEquals(true, $set instanceof Listener);
     }
 }
