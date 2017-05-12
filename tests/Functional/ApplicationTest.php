@@ -48,7 +48,7 @@ class ApplicationTest extends TestCase
      *
      * @return void
      */
-    public function testAppHelper(): void
+    public function testApp(): void
     {
         $this->assertEquals(true, Application::app() instanceof Application);
     }
@@ -58,7 +58,7 @@ class ApplicationTest extends TestCase
      *
      * @return void
      */
-    public function testContainerHelper(): void
+    public function testContainer(): void
     {
         $this->assertEquals(true, $this->app->container() instanceof Container);
     }
@@ -68,7 +68,7 @@ class ApplicationTest extends TestCase
      *
      * @return void
      */
-    public function testEventsHelper(): void
+    public function testEvents(): void
     {
         $this->assertEquals(true, $this->app->events() instanceof Events);
     }

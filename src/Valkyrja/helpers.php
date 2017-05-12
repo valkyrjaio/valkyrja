@@ -106,6 +106,30 @@ if (! function_exists('input')) {
     }
 }
 
+if (! function_exists('kernel')) {
+    /**
+     * Get kernel.
+     *
+     * @return \Valkyrja\Contracts\Http\Kernel
+     */
+    function kernel(): \Valkyrja\Contracts\Http\Kernel
+    {
+        return app()->kernel();
+    }
+}
+
+if (! function_exists('consoleKernel')) {
+    /**
+     * Get console kernel.
+     *
+     * @return \Valkyrja\Contracts\Console\Kernel
+     */
+    function consoleKernel(): \Valkyrja\Contracts\Console\Kernel
+    {
+        return app()->consoleKernel();
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Get request.
