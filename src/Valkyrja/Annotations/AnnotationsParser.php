@@ -166,13 +166,14 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function getAnnotationProperties(array $matches, int $index): array
     {
-        $properties = [
-            'annotation'  => $matches[1][$index] ?? null,
-            'arguments'   => $matches[2][$index] ?? null,
-            'type'        => $matches[3][$index] ?? null,
-            'variable'    => $matches[4][$index] ?? null,
-            'description' => $matches[5][$index] ?? null,
-        ];
+        $properties = [];
+
+        // Written like this to appease the code coverage gods
+        $properties['annotation']  = $matches[1][$index] ?? null;
+        $properties['arguments']   = $matches[2][$index] ?? null;
+        $properties['type']        = $matches[3][$index] ?? null;
+        $properties['variable']    = $matches[4][$index] ?? null;
+        $properties['description'] = $matches[5][$index] ?? null;
 
         return $this->processAnnotationProperties($properties);
     }
