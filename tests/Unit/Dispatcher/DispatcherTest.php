@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
@@ -159,13 +160,45 @@ class DispatcherTest extends TestCase
     }
 
     /**
+     * Verify a valid closure dispatch.
+     *
+     * @return void
+     */
+    public function testVerifyClosure(): void
+    {
+        $valid = $this->verifyClosure(
+                (new Dispatch())
+                    ->setClosure(function () {
+                    })
+            ) ?? null;
+
+        $this->assertEquals(null, $valid);
+    }
+
+    /**
+     * Verify an invalid closure dispatch.
+     *
+     * @return void
+     */
+    public function testVerifyClosureInvalid(): void
+    {
+        try {
+            $this->verifyClosure(
+                new InvalidClosureDispatch()
+            );
+        } catch (Exception $exception) {
+            $this->assertEquals(true, $exception instanceof InvalidClosureException);
+        }
+    }
+
+    /**
      * Verify a valid dispatch.
      *
      * @return void
      */
     public function testVerifyDispatch(): void
     {
-        $valid = $this->verifyClosure(
+        $valid = $this->verifyDispatch(
                 (new Dispatch())
                     ->setClosure(function () {
                     })
