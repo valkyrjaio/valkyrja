@@ -96,7 +96,7 @@ class AnnotationsParserTest extends TestCase
         $reflection = new ReflectionClass(self::class);
         $docString  = $reflection->getDocComment();
 
-        $this->assertCount(2, $this->class->getAnnotations($docString));
+        $this->assertCount(4, $this->class->getAnnotations($docString));
     }
 
     /**
@@ -113,8 +113,8 @@ class AnnotationsParserTest extends TestCase
             // Empty | at the end to test for line 288
             . 'requestMethods = [[POST | GET | HEAD | ]], '
             . 'constant = Valkyrja\\Application::VERSION, '
-            . 'property = Valkyrja\Tests\Unit\Annotations::property, '
-            . 'method = Valkyrja\Tests\Unit\Annotations::staticMethod';
+            . 'property = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::property, '
+            . 'method = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::staticMethod';
 
         $this->assertCount(7, $this->class->getArguments($arguments));
     }
@@ -128,7 +128,7 @@ class AnnotationsParserTest extends TestCase
     {
         $arguments = 'path = \'/\', name = \'test\'';
 
-        $this->assertCount(6, $this->class->getArguments($arguments));
+        $this->assertCount(2, $this->class->getArguments($arguments));
     }
 
     /**
@@ -138,7 +138,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsInvalidKey(): void
     {
-        $arguments = 'path = Valkyrja\Tests\Unit\Annotations::invalidKeyArray, name = \'test\'';
+        $arguments = 'path = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray, name = \'test\'';
 
         try {
             $this->class->getArguments($arguments);
