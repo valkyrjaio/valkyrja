@@ -93,13 +93,14 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArguments(): void
     {
-        $arguments = 'path = \'/\', name = \'test\', '
+        $arguments = 'path = \'/\', '
+            . 'name = \'test\', '
             . 'requestMethods = [[POST | GET | HEAD]], '
             . 'constant = Valkyrja\\Application::VERSION, '
             . 'property = Valkyrja\Tests\Unit\Annotations::property, '
             . 'method = Valkyrja\Tests\Unit\Annotations::staticMethod';
 
-        $this->assertCount(5, $this->class->getArguments($arguments));
+        $this->assertCount(6, $this->class->getArguments($arguments));
     }
 
     /**
