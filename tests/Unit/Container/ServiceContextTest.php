@@ -61,18 +61,6 @@ class ServiceContextTest extends TestCase
     }
 
     /**
-     * Test the setContextClass method with null value.
-     *
-     * @return void
-     */
-    public function testSetContextClassNull(): void
-    {
-        $set = $this->class->setContextClass(null);
-
-        $this->assertEquals(true, $set instanceof ServiceContext);
-    }
-
-    /**
      * Test the setContextClass method.
      *
      * @return void
@@ -104,18 +92,6 @@ class ServiceContextTest extends TestCase
         $this->class->setContextProperty($this->value);
 
         $this->assertEquals($this->value, $this->class->getContextProperty());
-    }
-
-    /**
-     * Test the setContextProperty method with null value.
-     *
-     * @return void
-     */
-    public function testSetContextPropertyNull(): void
-    {
-        $set = $this->class->setContextProperty(null);
-
-        $this->assertEquals(true, $set instanceof ServiceContext);
     }
 
     /**
@@ -153,18 +129,6 @@ class ServiceContextTest extends TestCase
     }
 
     /**
-     * Test the setContextMethod method with null value.
-     *
-     * @return void
-     */
-    public function testSetContextMethodNull(): void
-    {
-        $set = $this->class->setContextMethod(null);
-
-        $this->assertEquals(true, $set instanceof ServiceContext);
-    }
-
-    /**
      * Test the setContextMethod method.
      *
      * @return void
@@ -196,18 +160,6 @@ class ServiceContextTest extends TestCase
         $this->class->setContextFunction($this->value);
 
         $this->assertEquals($this->value, $this->class->getContextFunction());
-    }
-
-    /**
-     * Test the setContextFunction method with null value.
-     *
-     * @return void
-     */
-    public function testSetContextFunctionNull(): void
-    {
-        $set = $this->class->setContextFunction(null);
-
-        $this->assertEquals(true, $set instanceof ServiceContext);
     }
 
     /**
@@ -244,18 +196,6 @@ class ServiceContextTest extends TestCase
         $this->class->setContextClosure($value);
 
         $this->assertEquals($value, $this->class->getContextClosure());
-    }
-
-    /**
-     * Test the setContextClosure method with null value.
-     *
-     * @return void
-     */
-    public function testSetContextClosureNull(): void
-    {
-        $set = $this->class->setContextClosure(null);
-
-        $this->assertEquals(true, $set instanceof ServiceContext);
     }
 
     /**
