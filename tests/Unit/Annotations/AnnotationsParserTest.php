@@ -99,6 +99,8 @@ class AnnotationsParserTest extends TestCase
         $reflection = new ReflectionClass(self::class);
         $docString  = $reflection->getDocComment();
 
+        var_dump($this->class->getAnnotations($docString), PHP_EOL);
+
         $this->assertCount(4, $this->class->getAnnotations($docString));
     }
 
