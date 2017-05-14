@@ -26,7 +26,7 @@ interface ArgumentsRegex
      *
      * @description
      *
-     * ([a-zA-Z_]*)                             Match any lowercase, uppercase, and underscored word
+     * ([a-zA-Z0-9_\\\:]*)                      Match any lowercase, uppercase, numerical, and underscored word
      * \s*                                      Followed by any whitespace
      * \=                                       Followed by an equal sign
      * \s*                                      Followed by any whitespace
@@ -58,7 +58,7 @@ interface ArgumentsRegex
      * )                                        End capture
      */
     public const ARGUMENTS_REGEX = <<<'REGEX'
-    ([a-zA-Z_]*) 
+    ([a-zA-Z0-9_\\\:]*) 
     \s* \= \s* \'? "? \s*
     ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\<\>\|\s]*)
 REGEX;

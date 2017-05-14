@@ -268,7 +268,6 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function setArgument(array $matches, int $index, array &$arguments): void
     {
-        var_dump($matches);
         // Set the key
         $key = $this->determineValue($this->cleanMatch($matches[1][$index]));
         // Set the value
