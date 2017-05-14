@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Providers;
+namespace Valkyrja\Tests\Unit\Support;
 
 use Valkyrja\Support\ServiceProvider;
 
 /**
- * Class AppServiceProvider.
- *
+ * Class to use to test the service provider.
  *
  * @author  Melech Mizrachi
  */
-class AppServiceProvider extends ServiceProvider
+class ServiceProviderClass extends ServiceProvider
 {
     /**
      * Publish the service provider.
@@ -28,6 +27,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function publish(): void
     {
-        //
     }
 }
