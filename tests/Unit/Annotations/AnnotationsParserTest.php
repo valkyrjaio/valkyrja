@@ -11,9 +11,11 @@
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotations\Annotation;
+use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Console\Command;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceAlias;
@@ -23,6 +25,10 @@ use Valkyrja\Routing\Route;
 
 /**
  * Test the AnnotationsParser class.
+ *
+ * @description A description to test with
+ *
+ * @param string $param A description test
  *
  * @Route(path = '/')
  *
@@ -36,6 +42,13 @@ class AnnotationsParserTest extends TestCase
      * @var string
      */
     public static $property = 'test';
+
+    /**
+     * A static property to test with for invalid key array (Line 257).
+     *
+     * @var string
+     */
+    public static $invalidKeyArray = ['test'];
 
     /**
      * The class to test with.
@@ -95,12 +108,43 @@ class AnnotationsParserTest extends TestCase
     {
         $arguments = 'path = \'/\', '
             . 'name = \'test\', '
-            . 'requestMethods = [[POST | GET | HEAD]], '
+            // Test for line 413
+            . 'empty = \'\', '
+            // Empty | at the end to test for line 288
+            . 'requestMethods = [[POST | GET | HEAD | ]], '
             . 'constant = Valkyrja\\Application::VERSION, '
             . 'property = Valkyrja\Tests\Unit\Annotations::property, '
             . 'method = Valkyrja\Tests\Unit\Annotations::staticMethod';
 
         $this->assertCount(6, $this->class->getArguments($arguments));
+    }
+
+    /**
+     * Test the getArguments method setting the arguments to null after having set all to setter methods (Line 102).
+     *
+     * @return void
+     */
+    public function testGetArgumentsSettingToNull(): void
+    {
+        $arguments = 'path = \'/\', name = \'test\'';
+
+        $this->assertCount(6, $this->class->getArguments($arguments));
+    }
+
+    /**
+     * Test the getArguments method with an array for a key from a constant/static property/method.
+     *
+     * @return void
+     */
+    public function testGetArgumentsInvalidKey(): void
+    {
+        $arguments = 'path = Valkyrja\Tests\Unit\Annotations::invalidKeyArray, name = \'test\'';
+
+        try {
+            $this->class->getArguments($arguments);
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(InvalidAnnotationKeyArgument::class, $exception);
+        }
     }
 
     /**
