@@ -196,9 +196,9 @@ class Collection implements CollectionContract
      * @param string $key   The key
      * @param mixed  $value The value
      *
-     * @return CollectionContract
+     * @return mixed
      */
-    public function __set(string $key, $value): CollectionContract
+    public function __set(string $key, $value)
     {
         return $this->set($key, $value);
     }

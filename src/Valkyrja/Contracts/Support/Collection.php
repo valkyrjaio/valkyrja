@@ -136,9 +136,9 @@ interface Collection
      * @param string $key   The key
      * @param mixed  $value The value
      *
-     * @return Collection
+     * @return mixed
      */
-    public function __set(string $key, $value): self;
+    public function __set(string $key, $value);
 
     /**
      * Remove an item from the collection.
