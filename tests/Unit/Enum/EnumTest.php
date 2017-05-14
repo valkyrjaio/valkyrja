@@ -199,6 +199,22 @@ class EnumTest extends TestCase
     }
 
     /**
+     * Test setting an invalid enum value after creating an enum with a valid value.
+     *
+     * @return void
+     */
+    public function testSetInvalidEnumValue(): void
+    {
+        $enum = new EnumClass(EnumClass::FOO);
+
+        try {
+            $enum->setValue('invalid');
+        } catch (Exception $exception) {
+            $this->assertEquals(true, $exception instanceof InvalidArgumentException);
+        }
+    }
+
+    /**
      * Ensure the to string method exists in the Enum abstract class.
      *
      * @return void
