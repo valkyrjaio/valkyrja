@@ -30,7 +30,7 @@ use Valkyrja\Routing\Route;
  *
  * @param string $param A description test
  *
- * @Route(path = '/')
+ * @Route(path = '/', name = 'noAClass::Property')
  *
  * @author Melech Mizrachi
  */
@@ -117,18 +117,6 @@ class AnnotationsParserTest extends TestCase
             . 'method = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::staticMethod';
 
         $this->assertCount(7, $this->class->getArguments($arguments));
-    }
-
-    /**
-     * Test the getArguments method setting the arguments to null after having set all to setter methods (Line 102).
-     *
-     * @return void
-     */
-    public function testGetArgumentsSettingToNull(): void
-    {
-        $arguments = 'path = \'/\', name = \'test\'';
-
-        $this->assertCount(2, $this->class->getArguments($arguments));
     }
 
     /**

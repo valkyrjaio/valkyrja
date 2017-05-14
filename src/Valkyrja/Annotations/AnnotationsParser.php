@@ -409,7 +409,7 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function cleanMatch(string $match = null):? string
     {
-        if (null === $match) {
+        if (! $match) {
             return $match;
         }
 
