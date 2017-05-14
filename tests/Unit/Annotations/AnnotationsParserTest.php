@@ -132,7 +132,7 @@ class AnnotationsParserTest extends TestCase
         $arguments = 'Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray = \'value\', name = \'test\'';
 
         try {
-            $this->class->getArguments($arguments);
+            var_dump($this->class->getArguments($arguments));
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidAnnotationKeyArgument::class, $exception);
         }
