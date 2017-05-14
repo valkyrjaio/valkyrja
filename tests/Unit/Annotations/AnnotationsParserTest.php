@@ -119,6 +119,7 @@ class AnnotationsParserTest extends TestCase
             . 'property = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::property, '
             . 'method = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::staticMethod';
 
+        var_dump($this->class->getArguments($arguments));
         $this->assertCount(7, $this->class->getArguments($arguments));
     }
 
@@ -132,7 +133,7 @@ class AnnotationsParserTest extends TestCase
         $arguments = 'Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray = \'value\', name = \'test\'';
 
         try {
-            var_dump($this->class->getArguments($arguments));
+            $this->class->getArguments($arguments);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidAnnotationKeyArgument::class, $exception);
         }
