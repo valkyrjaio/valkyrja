@@ -116,7 +116,7 @@ class AnnotationsParserTest extends TestCase
             . 'property = Valkyrja\Tests\Unit\Annotations::property, '
             . 'method = Valkyrja\Tests\Unit\Annotations::staticMethod';
 
-        $this->assertCount(6, $this->class->getArguments($arguments));
+        $this->assertCount(7, $this->class->getArguments($arguments));
     }
 
     /**
