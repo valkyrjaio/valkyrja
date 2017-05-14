@@ -12,6 +12,9 @@
 namespace Valkyrja\Dispatcher;
 
 use Valkyrja\Container\Service;
+use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Dispatcher\Dispatcher as DispatcherContract;
+use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -20,9 +23,11 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Events\Listener;
 
 /**
- * Trait Dispatcher.
+ * Class Dispatcher.
+ *
+ * @author Melech Mizrachi
  */
-trait Dispatcher
+class Dispatcher implements DispatcherContract
 {
     /**
      * The return value to use when a dispatch was successful
@@ -35,6 +40,32 @@ trait Dispatcher
     protected $DISPATCHED = 'dispatcher.dispatched';
 
     /**
+     * The container.
+     *
+     * @var \Valkyrja\Contracts\Container\Container
+     */
+    protected $container;
+
+    /**
+     * The events.
+     *
+     * @var \Valkyrja\Contracts\Events\Events
+     */
+    protected $events;
+
+    /**
+     * Dispatcher constructor.
+     *
+     * @param \Valkyrja\Contracts\Container\Container $container The container
+     * @param \Valkyrja\Contracts\Events\Events       $events    The events
+     */
+    public function __construct(Container $container, Events $events)
+    {
+        $this->container = $container;
+        $this->events    = $events;
+    }
+
+    /**
      * Verify the class and method of a dispatch.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
@@ -43,7 +74,7 @@ trait Dispatcher
      *
      * @return void
      */
-    protected function verifyClassMethod(Dispatch $dispatch): void
+    public function verifyClassMethod(Dispatch $dispatch): void
     {
         // If a class and method are set and not callable
         if (
@@ -74,7 +105,7 @@ trait Dispatcher
      *
      * @return void
      */
-    protected function verifyClassProperty(Dispatch $dispatch): void
+    public function verifyClassProperty(Dispatch $dispatch): void
     {
         // If a class and method are set and not callable
         if (
@@ -102,7 +133,7 @@ trait Dispatcher
      *
      * @return void
      */
-    protected function verifyFunction(Dispatch $dispatch): void
+    public function verifyFunction(Dispatch $dispatch): void
     {
         // If a function is set and is not callable
         if (null !== $dispatch->getFunction() && ! is_callable($dispatch->getFunction())) {
@@ -124,7 +155,7 @@ trait Dispatcher
      *
      * @return void
      */
-    protected function verifyClosure(Dispatch $dispatch): void
+    public function verifyClosure(Dispatch $dispatch): void
     {
         // If a closure is set and is not callable
         if (
@@ -155,7 +186,7 @@ trait Dispatcher
      *
      * @return void
      */
-    protected function verifyDispatch(Dispatch $dispatch): void
+    public function verifyDispatch(Dispatch $dispatch): void
     {
         // If a function, closure, and class or method are not set
         if (
@@ -203,7 +234,7 @@ trait Dispatcher
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = container()->get($dependency, null, $context, $member);
+                $dependencies[] = $this->container->get($dependency, null, $context, $member);
             }
         }
 
@@ -244,7 +275,7 @@ trait Dispatcher
             // If the argument is a service
             if ($argument instanceof Service) {
                 // Dispatch the argument and set the results to the argument
-                $argument = container()->get($argument, null, $context, $member);
+                $argument = $this->container->get($argument, null, $context, $member);
             } // If the argument is a dispatch
             elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
@@ -266,7 +297,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    private function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
         $response = null;
 
@@ -278,7 +309,7 @@ trait Dispatcher
         // Set the class through the container if this isn't a static method
         $class    = $dispatch->isStatic()
             ? $dispatch->getClass()
-            : container()->get($dispatch->getClass());
+            : $this->container->get($dispatch->getClass());
         $method   = $dispatch->getMethod();
         $response = null;
 
@@ -323,7 +354,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    private function dispatchClassProperty(Dispatch $dispatch)
+    public function dispatchClassProperty(Dispatch $dispatch)
     {
         $response = null;
 
@@ -333,7 +364,7 @@ trait Dispatcher
         }
 
         // Set the class through the container if this isn't a static method
-        $class    = container()->get($dispatch->getClass());
+        $class    = $this->container->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
         // Before dispatch event
@@ -363,7 +394,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    private function dispatchClass(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClass(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a class exists before continuing
         if (null === $dispatch->getClass()) {
@@ -391,7 +422,7 @@ trait Dispatcher
             }
         } else {
             // Set the class through the container
-            $class = container()->get($dispatch->getClass(), $arguments);
+            $class = $this->container->get($dispatch->getClass(), $arguments);
         }
 
         // After dispatch event
@@ -409,7 +440,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    private function dispatchFunction(Dispatch $dispatch, array $arguments = null)
+    public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
@@ -447,7 +478,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    private function dispatchClosure(Dispatch $dispatch, array $arguments = null)
+    public function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a closure exists before continuing
         if (null === $dispatch->getClosure()) {
@@ -483,7 +514,7 @@ trait Dispatcher
      *
      * @return mixed
      */
-    protected function dispatchCallable(Dispatch $dispatch, array $arguments = null)
+    public function dispatchCallable(Dispatch $dispatch, array $arguments = null)
     {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
@@ -526,7 +557,7 @@ trait Dispatcher
         // Avoid infinite recursion
         if (! $dispatch instanceof Listener) {
             // After dispatch event
-            events()->trigger($event, $arguments);
+            $this->events->trigger($event, $arguments);
         }
     }
 }

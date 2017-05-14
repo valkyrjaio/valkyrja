@@ -14,6 +14,7 @@ namespace Valkyrja\Config\Sub;
 use Valkyrja\Container\Container;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
 
 /**
@@ -67,6 +68,13 @@ class AppConfig
     public $container = Container::class;
 
     /**
+     * The dispatcher implementation.
+     *
+     * @var string
+     */
+    public $dispatcher = Dispatcher::class;
+
+    /**
      * The events implementation.
      *
      * @var string
@@ -106,9 +114,11 @@ class AppConfig
         $this->version = $env::APP_VERSION
             ?? $this->version;
 
-        $this->container = $env::APP_CONTAINER
+        $this->container  = $env::APP_CONTAINER
             ?? $this->container;
-        $this->events = $env::APP_EVENTS
+        $this->dispatcher = $env::APP_DISPATCHER
+            ?? $this->dispatcher;
+        $this->events     = $env::APP_EVENTS
             ?? $this->events;
     }
 }

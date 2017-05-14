@@ -18,6 +18,7 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
@@ -31,6 +32,7 @@ use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
+use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -73,6 +75,13 @@ class Application implements ApplicationContract
     protected static $container;
 
     /**
+     * Get the instance of the dispatcher.
+     *
+     * @var \Valkyrja\Contracts\Dispatcher\Dispatcher
+     */
+    protected static $dispatcher;
+
+    /**
      * Get the instance of the events.
      *
      * @var \Valkyrja\Contracts\Events\Events
@@ -92,6 +101,7 @@ class Application implements ApplicationContract
      * @param \Valkyrja\Config\Config $config The config to use
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      */
     public function __construct(Config $config)
@@ -106,6 +116,7 @@ class Application implements ApplicationContract
      * @param bool                    $force  Whether to force a setup
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      *
      * @return void
@@ -161,6 +172,7 @@ class Application implements ApplicationContract
      * Bootstrap core functionality.
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
+     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      *
      * @return void
@@ -171,6 +183,8 @@ class Application implements ApplicationContract
         $eventsImpl = self::$config->app->events;
         // The container class to use from the config
         $containerImpl = self::$config->app->container;
+        // The dispatcher class to use from the config
+        $dispatcherImpl = self::$config->app->dispatcher;
 
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
@@ -187,6 +201,14 @@ class Application implements ApplicationContract
         if (! self::$container instanceof Container) {
             throw new InvalidContainerImplementation('Invalid Container implementation');
         }
+
+        // Set the dispatcher to a new instance of the dispatcher implementation
+        self::$dispatcher = new $dispatcherImpl(self::$container, self::$events);
+
+        // If the dispatcher implementation specified does not adhere to the dispatcher contract
+        if (! self::$dispatcher instanceof Dispatcher) {
+            throw new InvalidDispatcherImplementation('Invalid Dispatcher implementation');
+        }
     }
 
     /**
@@ -202,10 +224,12 @@ class Application implements ApplicationContract
         self::$container->singleton(CoreComponent::ENV, self::$config->env);
         // Set the events instance in the container
         self::$container->singleton(CoreComponent::CONFIG, self::$config);
-        // Set the events instance in the container
-        self::$container->singleton(CoreComponent::EVENTS, self::$events);
         // Set the container instance in the container
         self::$container->singleton(CoreComponent::CONTAINER, self::$container);
+        // Set the dispatcher instance in the dispatcher
+        self::$container->singleton(CoreComponent::DISPATCHER, self::$dispatcher);
+        // Set the events instance in the container
+        self::$container->singleton(CoreComponent::EVENTS, self::$events);
     }
 
     /**
@@ -253,6 +277,16 @@ class Application implements ApplicationContract
     public function container(): Container
     {
         return self::$container;
+    }
+
+    /**
+     * Get the dispatcher instance.
+     *
+     * @return \Valkyrja\Contracts\Dispatcher\Dispatcher
+     */
+    public function dispatcher(): Dispatcher
+    {
+        return self::$dispatcher;
     }
 
     /**

@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidEventsImplementation.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidEventsImplementation extends InvalidArgumentException
 {

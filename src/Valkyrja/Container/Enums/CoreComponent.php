@@ -26,6 +26,7 @@ use Valkyrja\Contracts\Console\Output\Output;
 use Valkyrja\Contracts\Console\Output\OutputFormatter;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Filesystem\Filesystem;
@@ -62,6 +63,7 @@ final class CoreComponent extends Enum
     public const CONSOLE_KERNEL        = ConsoleKernel::class;
     public const CONTAINER             = Container::class;
     public const CONTAINER_ANNOTATIONS = ContainerAnnotations::class;
+    public const DISPATCHER            = Dispatcher::class;
     public const ENV                   = Env::class;
     public const EVENTS                = Events::class;
     public const FILESYSTEM            = Filesystem::class;
@@ -95,6 +97,7 @@ final class CoreComponent extends Enum
         self::CONSOLE,
         self::CONTAINER,
         self::CONTAINER_ANNOTATIONS,
+        self::DISPATCHER,
         self::ENV,
         self::EVENTS,
         self::FILESYSTEM,

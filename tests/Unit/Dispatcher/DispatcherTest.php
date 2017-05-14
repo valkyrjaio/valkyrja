@@ -4,6 +4,8 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -19,8 +21,19 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
  */
 class DispatcherTest extends TestCase
 {
-    use Dispatcher;
+    /**
+     * The class to test with.
+     *
+     * @var \Valkyrja\Dispatcher\Dispatcher
+     */
+    protected $class;
 
+    /**
+     * The value to test with.
+     *
+     * @var string
+     */
+    protected $value = 'test';
     /**
      * A valid property.
      *
@@ -34,6 +47,23 @@ class DispatcherTest extends TestCase
      * @var string
      */
     public static $validStaticProperty = 'test';
+
+    /**
+     * Setup the test.
+     *
+     * @return void
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        /** @var Container $container */
+        $container = $this->createMock(Container::class);
+        /** @var Events $events */
+        $events = $this->createMock(Events::class);
+
+        $this->class = new Dispatcher($container, $events);
+    }
 
     /**
      * A valid method.
@@ -66,7 +96,7 @@ class DispatcherTest extends TestCase
      */
     public function testVerifyClassMethod(): void
     {
-        $valid = $this->verifyClassMethod(
+        $valid = $this->class->verifyClassMethod(
                 (new Dispatch())
                     ->setClass(self::class)
                     ->setMethod('validMethod')
@@ -83,7 +113,7 @@ class DispatcherTest extends TestCase
     public function testVerifyClassMethodInvalid(): void
     {
         try {
-            $this->verifyClassMethod(
+            $this->class->verifyClassMethod(
                 (new Dispatch())
                     ->setClass(self::class)
                     ->setMethod('invalidMethod')
@@ -100,7 +130,7 @@ class DispatcherTest extends TestCase
      */
     public function testVerifyClassProperty(): void
     {
-        $valid = $this->verifyClassProperty(
+        $valid = $this->class->verifyClassProperty(
                 (new Dispatch())
                     ->setClass(self::class)
                     ->setProperty('validProperty')
@@ -117,7 +147,7 @@ class DispatcherTest extends TestCase
     public function testVerifyClassPropertyInvalid(): void
     {
         try {
-            $this->verifyClassProperty(
+            $this->class->verifyClassProperty(
                 (new Dispatch())
                     ->setClass(self::class)
                     ->setProperty('invalidProperty')
@@ -134,7 +164,7 @@ class DispatcherTest extends TestCase
      */
     public function testVerifyFunction(): void
     {
-        $valid = $this->verifyFunction(
+        $valid = $this->class->verifyFunction(
                 (new Dispatch())
                     ->setFunction('routeUrl')
             ) ?? null;
@@ -150,7 +180,7 @@ class DispatcherTest extends TestCase
     public function testVerifyFunctionInvalid(): void
     {
         try {
-            $this->verifyFunction(
+            $this->class->verifyFunction(
                 (new Dispatch())
                     ->setFunction('invalidFunction')
             );
@@ -166,7 +196,7 @@ class DispatcherTest extends TestCase
      */
     public function testVerifyClosure(): void
     {
-        $valid = $this->verifyClosure(
+        $valid = $this->class->verifyClosure(
                 (new Dispatch())
                     ->setClosure(function () {
                     })
@@ -183,7 +213,7 @@ class DispatcherTest extends TestCase
     public function testVerifyClosureInvalid(): void
     {
         try {
-            $this->verifyClosure(
+            $this->class->verifyClosure(
                 new Dispatch()
             );
         } catch (Exception $exception) {
@@ -198,7 +228,7 @@ class DispatcherTest extends TestCase
      */
     public function testVerifyDispatch(): void
     {
-        $valid = $this->verifyDispatch(
+        $valid = $this->class->verifyDispatch(
                 (new Dispatch())
                     ->setClosure(function () {
                     })
@@ -215,7 +245,7 @@ class DispatcherTest extends TestCase
     public function testVerifyDispatchInvalid(): void
     {
         try {
-            $this->verifyDispatch(
+            $this->class->verifyDispatch(
                 new Dispatch()
             );
         } catch (Exception $exception) {

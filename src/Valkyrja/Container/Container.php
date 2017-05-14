@@ -18,7 +18,6 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Events\Events;
-use Valkyrja\Dispatcher\Dispatcher;
 
 /**
  * Class Container.
@@ -28,8 +27,6 @@ use Valkyrja\Dispatcher\Dispatcher;
  */
 class Container implements ContainerContract
 {
-    use Dispatcher;
-
     /**
      * The application.
      *
@@ -133,7 +130,7 @@ class Container implements ContainerContract
             throw new InvalidServiceIdException();
         }
 
-        $this->verifyDispatch($service);
+        $this->app->dispatcher()->verifyDispatch($service);
 
         self::$services[$service->getId()] = $service;
     }
@@ -404,7 +401,7 @@ class Container implements ContainerContract
         $this->events->trigger("service.make.{$serviceId}", [$service, $arguments]);
 
         // Make the object by dispatching the service
-        $made = $this->dispatchCallable($service, $arguments);
+        $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
         $this->events->trigger('service.made', [$serviceId, $made]);

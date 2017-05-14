@@ -19,7 +19,6 @@ use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
 use Valkyrja\Contracts\Path\PathGenerator;
 use Valkyrja\Contracts\Path\PathParser;
-use Valkyrja\Dispatcher\Dispatcher;
 
 /**
  * Class Console.
@@ -29,8 +28,6 @@ use Valkyrja\Dispatcher\Dispatcher;
  */
 class Console implements ConsoleContract
 {
-    use Dispatcher;
-
     /**
      * The run method to call within command handlers.
      */
@@ -118,9 +115,9 @@ class Console implements ConsoleContract
     {
         $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
 
-        $this->verifyClassMethod($command);
-        $this->verifyFunction($command);
-        $this->verifyClosure($command);
+        $this->app->dispatcher()->verifyClassMethod($command);
+        $this->app->dispatcher()->verifyFunction($command);
+        $this->app->dispatcher()->verifyClosure($command);
 
         $this->addParsedCommand($command, $this->pathParser->parse($command->getPath()));
     }
@@ -281,7 +278,7 @@ class Console implements ConsoleContract
         $this->app->events()->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->dispatchCallable($command, $command->getMatches());
+        $dispatch = $this->app->dispatcher()->dispatchCallable($command, $command->getMatches());
 
         // Trigger an event after dispatching
         $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);

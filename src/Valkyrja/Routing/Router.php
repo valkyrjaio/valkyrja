@@ -20,7 +20,6 @@ use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Listener;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\RequestMethod;
@@ -35,8 +34,6 @@ use Valkyrja\Routing\Exceptions\InvalidRouteName;
  */
 class Router implements RouterContract
 {
-    use Dispatcher;
-
     /**
      * Application.
      *
@@ -132,7 +129,7 @@ class Router implements RouterContract
      */
     public function addRoute(Route $route): void
     {
-        $this->verifyDispatch($route);
+        $this->app->dispatcher()->verifyDispatch($route);
 
         $route->setPath($this->validatePath($route->getPath()));
         // Ensure the request methods are set
@@ -522,7 +519,7 @@ class Router implements RouterContract
         $this->setDispatchListeners($route);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->dispatchCallable($route, $route->getMatches());
+        $dispatch = $this->app->dispatcher()->dispatchCallable($route, $route->getMatches());
 
         // Unset the dispatch listeners
         $this->unsetDispatchListeners($route);

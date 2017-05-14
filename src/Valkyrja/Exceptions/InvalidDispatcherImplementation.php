@@ -14,11 +14,11 @@ namespace Valkyrja\Exceptions;
 use InvalidArgumentException;
 
 /**
- * Class InvalidContainerImplementation.
+ * Class InvalidDispatcherImplementation.
  *
  * @author Melech Mizrachi
  */
-class InvalidContainerImplementation extends InvalidArgumentException
+class InvalidDispatcherImplementation extends InvalidArgumentException
 {
     //
 }

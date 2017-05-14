@@ -15,7 +15,6 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Event;
 use Valkyrja\Contracts\Events\Events as EventsContract;
-use Valkyrja\Dispatcher\Dispatcher;
 
 /**
  * Class Events.
@@ -25,8 +24,6 @@ use Valkyrja\Dispatcher\Dispatcher;
  */
 class Events implements EventsContract
 {
-    use Dispatcher;
-
     /**
      * The application.
      *
@@ -76,7 +73,7 @@ class Events implements EventsContract
     {
         $this->add($event);
 
-        $this->verifyDispatch($listener);
+        $this->app->dispatcher()->verifyDispatch($listener);
 
         // If this listener has an id
         if (null !== $listener->getId()) {
@@ -228,7 +225,7 @@ class Events implements EventsContract
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
             // Attempt to dispatch the event listener using any one of the callable options
-            $dispatch = $this->dispatchCallable($listener, $arguments);
+            $dispatch = $this->app->dispatcher()->dispatchCallable($listener, $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;

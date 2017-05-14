@@ -16,6 +16,7 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
@@ -74,6 +75,13 @@ interface Application
      * @return \Valkyrja\Contracts\Container\Container
      */
     public function container(): Container;
+
+    /**
+     * Get the dispatcher instance.
+     *
+     * @return \Valkyrja\Contracts\Dispatcher\Dispatcher
+     */
+    public function dispatcher(): Dispatcher;
 
     /**
      * Get the events instance.

@@ -12,6 +12,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
+use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -25,6 +26,7 @@ use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\App\App\Controllers\HomeController;
+use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 
 /**
  * Test the functionality of the Application.
@@ -343,7 +345,7 @@ class ApplicationTest extends TestCase
         // Set debug to true
         $config->app->debug = true;
         // Try to re-setup the application
-        $this->app->setup($config);
+        $this->app->setup($config, true);
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
@@ -368,6 +370,23 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test an invalid dispatcher class.
+     *
+     * @return void
+     */
+    public function testInvalidDispatcher(): void
+    {
+        try {
+            $config = clone $this->app->config();
+
+            $config->app->dispatcher = InvalidDispatcherClass::class;
+            $this->app->setup($config, true);
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(InvalidDispatcherImplementation::class, $exception);
+        }
+    }
+
+    /**
      * Test an invalid container class.
      *
      * @return void
@@ -380,7 +399,7 @@ class ApplicationTest extends TestCase
             $config->app->container = HomeController::class;
             $this->app->setup($config, true);
         } catch (Exception $exception) {
-            $this->assertEquals(InvalidContainerImplementation::class, get_class($exception));
+            $this->assertInstanceOf(InvalidContainerImplementation::class, $exception);
         }
     }
 
@@ -397,7 +416,7 @@ class ApplicationTest extends TestCase
             $config->app->events = HomeController::class;
             $this->app->setup($config, true);
         } catch (Exception $exception) {
-            $this->assertEquals(InvalidEventsImplementation::class, get_class($exception));
+            $this->assertInstanceOf(InvalidEventsImplementation::class, $exception);
         }
     }
 
