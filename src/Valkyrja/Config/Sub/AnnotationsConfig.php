@@ -13,6 +13,7 @@ namespace Valkyrja\Config\Sub;
 
 use Valkyrja\Console\Command;
 use Valkyrja\Container\Service;
+use Valkyrja\Container\ServiceAlias;
 use Valkyrja\Container\ServiceContext;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Events\Listener;
@@ -51,7 +52,7 @@ class AnnotationsConfig
         'Listener'       => Listener::class,
         'Route'          => Route::class,
         'Service'        => Service::class,
-        'ServiceAlias'   => Service::class,
+        'ServiceAlias'   => ServiceAlias::class,
         'ServiceContext' => ServiceContext::class,
     ];
 
