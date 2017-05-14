@@ -147,11 +147,7 @@ abstract class Enum implements JsonSerializable
         if (! static::isValid($value)) {
             // Throw an exception
             throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid enumeration %s for Enum %s',
-                    $value,
-                    get_class($this)
-                )
+                sprintf('Invalid enumeration %s for Enum %s', $value, get_class($this))
             );
         }
 
