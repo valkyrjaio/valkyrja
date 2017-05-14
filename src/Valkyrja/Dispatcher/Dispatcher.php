@@ -11,9 +11,7 @@
 
 namespace Valkyrja\Dispatcher;
 
-use Closure;
 use Valkyrja\Container\Service;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
@@ -117,27 +115,6 @@ trait Dispatcher
     }
 
     /**
-     * Verify the closure of a dispatch.
-     *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
-     *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     *
-     * @return void
-     */
-    protected function verifyClosure(Dispatch $dispatch): void
-    {
-        // If a closure is set and is not callable
-        if (null !== $dispatch->getClosure() && ! $dispatch->getClosure() instanceof Closure) {
-            // Throw a new invalid closure exception
-            throw new InvalidClosureException(
-                'Closure is not valid for : '
-                . $dispatch->getName()
-            );
-        }
-    }
-
-    /**
      * Verify the dispatch's dispatch capabilities.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
@@ -171,7 +148,6 @@ trait Dispatcher
         $this->verifyClassMethod($dispatch);
         $this->verifyClassProperty($dispatch);
         $this->verifyFunction($dispatch);
-        $this->verifyClosure($dispatch);
     }
 
     /**
