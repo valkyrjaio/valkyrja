@@ -311,7 +311,7 @@ class AnnotationsParser implements AnnotationsParserContract
 
         // Check for static property
         if (property_exists($class, $member)) {
-            return $class::$member;
+            return $class::$$member;
         }
 
         // Check for static method
