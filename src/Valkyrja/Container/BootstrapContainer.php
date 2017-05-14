@@ -139,6 +139,7 @@ class BootstrapContainer
             (new Service())
                 ->setId(CoreComponent::ANNOTATIONS_PARSER)
                 ->setClass(AnnotationsParser::class)
+                ->setDependencies([CoreComponent::CONFIG])
                 ->setSingleton(true)
         );
     }

@@ -12,6 +12,7 @@
 namespace Valkyrja\Annotations;
 
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
+use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
 
@@ -23,6 +24,23 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContrac
  */
 class AnnotationsParser implements AnnotationsParserContract
 {
+    /**
+     * The config.
+     *
+     * @var \Valkyrja\Config\Config
+     */
+    protected $config;
+
+    /**
+     * AnnotationsParser constructor.
+     *
+     * @param \Valkyrja\Config\Config $config The config
+     */
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * Get annotations from a given string.
      *
@@ -373,7 +391,7 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     public function getAnnotationsMap(): array
     {
-        return config()->annotations->map;
+        return $this->config->annotations->map;
     }
 
     /**

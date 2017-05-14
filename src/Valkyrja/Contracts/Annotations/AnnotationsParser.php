@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Contracts\Annotations;
 
+use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Annotations\Regex\ArgumentsRegex;
 use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
 use Valkyrja\Contracts\Annotations\Regex\LineRegex;
@@ -23,6 +24,13 @@ use Valkyrja\Contracts\Annotations\Regex\LineRegex;
  */
 interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
 {
+    /**
+     * AnnotationsParser constructor.
+     *
+     * @param \Valkyrja\Config\Config $config The config
+     */
+    public function __construct(Config $config);
+
     /**
      * Annotation symbol.
      *
