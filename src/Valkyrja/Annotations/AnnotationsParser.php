@@ -137,6 +137,8 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function setAnnotationArguments(AnnotationContract $annotation): void
     {
+        $arguments = $annotation->getAnnotationArguments();
+
         // Iterate through the arguments
         foreach ($annotation->getAnnotationArguments() as $key => $argument) {
             $methodName = 'set' . ucfirst($key);
@@ -147,9 +149,11 @@ class AnnotationsParser implements AnnotationsParserContract
                 $annotation->{$methodName}($argument);
 
                 // Unset from the arguments array
-                unset($annotation->getAnnotationArguments()[$key]);
+                unset($arguments[$key]);
             }
         }
+
+        $annotation->setAnnotationArguments($arguments);
     }
 
     /**
