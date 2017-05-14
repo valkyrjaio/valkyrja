@@ -43,12 +43,12 @@ class Collection implements CollectionContract
     /**
      * Get a single item from the collection.
      *
-     * @param string $key
-     * @param mixed  $default
+     * @param string $key     The key to get
+     * @param mixed  $default [optional] The default value
      *
      * @return mixed
      */
-    public function get(string $key, $default = false) // : mixed
+    public function get(string $key, $default = null) // : mixed
     {
         return $this->has($key)
             ? $this->collection[$key]
@@ -58,7 +58,7 @@ class Collection implements CollectionContract
     /**
      * Determine if an item is in the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return bool
      */
@@ -68,22 +68,22 @@ class Collection implements CollectionContract
     }
 
     /**
-     * Determine if an item exists in the collection.
+     * Determine if a value exists in the collection.
      *
-     * @param string $key
+     * @param mixed $value The value
      *
      * @return bool
      */
-    public function exists(string $key): bool
+    public function exists($value): bool
     {
-        return array_key_exists($key, $this->collection);
+        return in_array($value, $this->collection, true);
     }
 
     /**
      * Set a new item into the collection.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   The key
+     * @param mixed  $value The value
      *
      * @return CollectionContract
      */
@@ -97,7 +97,7 @@ class Collection implements CollectionContract
     /**
      * Remove an item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return CollectionContract
      */
@@ -125,7 +125,7 @@ class Collection implements CollectionContract
     /**
      * Set the collection.
      *
-     * @param array $collection
+     * @param array $collection The collection
      *
      * @return CollectionContract
      */
@@ -169,7 +169,7 @@ class Collection implements CollectionContract
     /**
      * Get a single item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return mixed
      */
@@ -181,7 +181,7 @@ class Collection implements CollectionContract
     /**
      * Determine if an item is in the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return bool
      */
@@ -193,8 +193,8 @@ class Collection implements CollectionContract
     /**
      * Set a new item into the collection.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   The key
+     * @param mixed  $value The value
      *
      * @return CollectionContract
      */
@@ -206,13 +206,13 @@ class Collection implements CollectionContract
     /**
      * Remove an item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
-     * @return CollectionContract
+     * @return void
      */
-    public function __unset(string $key): CollectionContract
+    public function __unset(string $key): void
     {
-        return $this->remove($key);
+        $this->remove($key);
     }
 
     /**

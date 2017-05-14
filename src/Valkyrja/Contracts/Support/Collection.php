@@ -31,38 +31,36 @@ interface Collection
     /**
      * Get a single item from the collection.
      *
-     * @param string $key
-     * @param mixed  $default
+     * @param string $key     The key to get
+     * @param mixed  $default [optional] The default value
      *
      * @return mixed
      */
-    public function get(string $key, $default = false);
-
- // : mixed;
+    public function get(string $key, $default = null);
 
     /**
      * Determine if an item is in the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return bool
      */
     public function has(string $key): bool;
 
     /**
-     * Determine if an item exists in the collection.
+     * Determine if a value exists in the collection.
      *
-     * @param string $key
+     * @param mixed $value The value
      *
      * @return bool
      */
-    public function exists(string $key): bool;
+    public function exists($value): bool;
 
     /**
      * Set a new item into the collection.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   The key
+     * @param mixed  $value The value
      *
      * @return Collection
      */
@@ -71,7 +69,7 @@ interface Collection
     /**
      * Remove an item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return Collection
      */
@@ -87,7 +85,7 @@ interface Collection
     /**
      * Set the collection.
      *
-     * @param array $collection
+     * @param array $collection The collection
      *
      * @return Collection
      */
@@ -117,18 +115,16 @@ interface Collection
     /**
      * Get a single item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return mixed
      */
     public function __get(string $key);
 
- // : mixed;
-
     /**
      * Determine if an item is in the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
      * @return bool
      */
@@ -137,8 +133,8 @@ interface Collection
     /**
      * Set a new item into the collection.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param string $key   The key
+     * @param mixed  $value The value
      *
      * @return Collection
      */
@@ -147,11 +143,11 @@ interface Collection
     /**
      * Remove an item from the collection.
      *
-     * @param string $key
+     * @param string $key The key
      *
-     * @return Collection
+     * @return void
      */
-    public function __unset(string $key): self;
+    public function __unset(string $key): void;
 
     /**
      * Convert the collection to a string.
