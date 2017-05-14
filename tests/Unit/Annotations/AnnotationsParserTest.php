@@ -99,8 +99,6 @@ class AnnotationsParserTest extends TestCase
         $reflection = new ReflectionClass(self::class);
         $docString  = $reflection->getDocComment();
 
-        var_dump($this->class->getAnnotations($docString), PHP_EOL);
-
         $this->assertCount(4, $this->class->getAnnotations($docString));
     }
 
@@ -131,7 +129,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsInvalidKey(): void
     {
-        $arguments = 'path = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray, name = \'test\'';
+        $arguments = 'Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray = \'value\', name = \'test\'';
 
         try {
             $this->class->getArguments($arguments);
