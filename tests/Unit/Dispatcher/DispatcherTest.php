@@ -184,7 +184,7 @@ class DispatcherTest extends TestCase
     {
         try {
             $this->verifyClosure(
-                new Dispatch()
+                new InvalidClosureDispatch()
             );
         } catch (Exception $exception) {
             $this->assertEquals(true, $exception instanceof InvalidClosureException);
