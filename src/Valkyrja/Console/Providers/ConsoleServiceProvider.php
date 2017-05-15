@@ -43,6 +43,8 @@ class ConsoleServiceProvider extends ServiceProvider
         $this->bindInput();
         $this->bindOutputFormatter();
         $this->bindOutput();
+
+        $this->app->console()->setup();
     }
 
     /**

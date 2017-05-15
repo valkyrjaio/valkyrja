@@ -17,6 +17,7 @@ use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Filesystem\Providers\FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ClientServiceProvider;
 use Valkyrja\Logger\Providers\LoggerServiceProvider;
+use Valkyrja\Routing\Providers\RoutingServiceProvider;
 use Valkyrja\Support\Directory;
 
 /**
@@ -45,6 +46,7 @@ class ContainerConfig
         ConsoleServiceProvider::class,
         FilesystemServiceProvider::class,
         LoggerServiceProvider::class,
+        RoutingServiceProvider::class,
     ];
 
     /**

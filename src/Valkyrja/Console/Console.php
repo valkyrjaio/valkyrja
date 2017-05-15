@@ -94,8 +94,6 @@ class Console implements ConsoleContract
         $this->app           = $application;
         $this->pathParser    = $pathParser;
         $this->pathGenerator = $pathGenerator;
-
-        $this->setup();
     }
 
     /**

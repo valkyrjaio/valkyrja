@@ -22,7 +22,6 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
@@ -76,7 +75,6 @@ class BootstrapContainer
         $this->bootstrapJsonResponse();
         $this->bootstrapRedirectResponse();
         $this->bootstrapResponseBuilder();
-        $this->bootstrapRouter();
         $this->bootstrapView();
     }
 
@@ -213,22 +211,6 @@ class BootstrapContainer
                 ->setId(CoreComponent::RESPONSE_BUILDER)
                 ->setClass(ResponseBuilder::class)
                 ->setDependencies([CoreComponent::APP])
-                ->setSingleton(true)
-        );
-    }
-
-    /**
-     * Bootstrap the router.
-     *
-     * @return void
-     */
-    protected function bootstrapRouter(): void
-    {
-        $this->container->bind(
-            (new Service())
-                ->setId(CoreComponent::ROUTER)
-                ->setClass(Router::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
                 ->setSingleton(true)
         );
     }

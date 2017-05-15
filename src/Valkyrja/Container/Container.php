@@ -366,10 +366,17 @@ class Container implements ContainerContract
         // Check if the service id is provided by a deferred service provider
         if ($this->isProvided($serviceId)) {
             /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
-            $serviceProvider            = self::$provided[$serviceId];
+            $serviceProvider = self::$provided[$serviceId];
+            // The original value for the service provider's deferred status
+            $originalDeferred = $serviceProvider::$deferred;
+            // Do not defer the service provider
             $serviceProvider::$deferred = false;
+
             // Register the service provider
             $this->register($serviceProvider);
+
+            // Reset back to the original value
+            $serviceProvider::$deferred = $originalDeferred;
 
             return $this->get($serviceId, $arguments);
         }
