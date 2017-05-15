@@ -109,8 +109,6 @@ class Router implements RouterContract
         $this->app           = $application;
         $this->pathParser    = $pathParser;
         $this->pathGenerator = $pathGenerator;
-
-        $this->setup();
     }
 
     /**
