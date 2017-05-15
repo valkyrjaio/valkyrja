@@ -11,7 +11,12 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Valkyrja\Annotations\Providers\AnnotationsServiceProvider;
+use Valkyrja\Console\Providers\ConsoleServiceProvider;
 use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Filesystem\Providers\FilesystemServiceProvider;
+use Valkyrja\Http\Providers\ClientServiceProvider;
+use Valkyrja\Logger\Providers\LoggerServiceProvider;
 use Valkyrja\Support\Directory;
 
 /**
@@ -28,6 +33,19 @@ class ContainerConfig
      * @var array
      */
     public $providers = [];
+
+    /**
+     * App Service providers.
+     *
+     * @var array
+     */
+    public $appProviders = [
+        AnnotationsServiceProvider::class,
+        ClientServiceProvider::class,
+        ConsoleServiceProvider::class,
+        FilesystemServiceProvider::class,
+        LoggerServiceProvider::class,
+    ];
 
     /**
      * Development environment service providers.
@@ -92,23 +110,25 @@ class ContainerConfig
      */
     public function __construct(Env $env)
     {
-        $this->providers = $env::CONTAINER_PROVIDERS
+        $this->providers                 = $env::CONTAINER_PROVIDERS
             ?? $this->providers;
-        $this->devProviders = $env::CONTAINER_DEV_PROVIDERS
+        $this->appProviders              = $env::CONTAINER_APP_PROVIDERS
+            ?? $this->appProviders;
+        $this->devProviders              = $env::CONTAINER_DEV_PROVIDERS
             ?? $this->devProviders;
-        $this->useAnnotations = $env::CONTAINER_USE_ANNOTATIONS
+        $this->useAnnotations            = $env::CONTAINER_USE_ANNOTATIONS
             ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY
             ?? $this->useAnnotationsExclusively;
-        $this->services = $env::CONTAINER_SERVICES
+        $this->services                  = $env::CONTAINER_SERVICES
             ?? $this->services;
-        $this->contextServices = $env::CONTAINER_CONTEXT_SERVICES
+        $this->contextServices           = $env::CONTAINER_CONTEXT_SERVICES
             ?? $this->contextServices;
-        $this->filePath = $env::CONTAINER_FILE_PATH
+        $this->filePath                  = $env::CONTAINER_FILE_PATH
             ?? Directory::basePath('bootstrap/container.php');
-        $this->cacheFilePath = $env::CONTAINER_CACHE_FILE_PATH
+        $this->cacheFilePath             = $env::CONTAINER_CACHE_FILE_PATH
             ?? Directory::storagePath('framework/cache/container.php');
-        $this->useCacheFile = $env::CONTAINER_USE_CACHE_FILE
+        $this->useCacheFile              = $env::CONTAINER_USE_CACHE_FILE
             ?? $this->useCacheFile;
     }
 }

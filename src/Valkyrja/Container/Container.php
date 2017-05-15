@@ -479,6 +479,7 @@ class Container implements ContainerContract
             $cache = require $this->app->config()->container->cacheFilePath;
 
             self::$services = $cache['services'];
+            self::$provided = $cache['provided'];
             self::$aliases  = $cache['aliases'];
 
             // Then return out of routes setup
@@ -552,8 +553,9 @@ class Container implements ContainerContract
         }
 
         // Get all the annotated services from the list of controllers
-        $contextServices = $containerAnnotations->getContextServices(...$this->app
-            ->config()->container->contextServices);
+        $contextServices = $containerAnnotations->getContextServices(
+            ...$this->app->config()->container->contextServices
+        );
 
         // Iterate through the services
         foreach ($contextServices as $context) {
@@ -578,6 +580,11 @@ class Container implements ContainerContract
      */
     protected function setupServiceProviders(): void
     {
+        // Iterate through all the providers
+        foreach ($this->app->config()->container->appProviders as $provider) {
+            $this->register($provider);
+        }
+
         // Iterate through all the providers
         foreach ($this->app->config()->container->providers as $provider) {
             $this->register($provider);
@@ -615,25 +622,18 @@ class Container implements ContainerContract
         // Avoid using the cache file we already have
         $this->app->config()->container->useCacheFile = false;
         self::$registered                             = [];
+        self::$services                               = [];
+        self::$provided                               = [];
         self::$setup                                  = false;
         $this->setup();
 
         // Reset the use cache file value
         $this->app->config()->container->useCacheFile = $originalUseCacheFile;
 
-        // Since service providers are deferred by default
-        // when we want to get a true representation of all the services
-        // We have to register the service providers that haven't yet been registered
-        /** @var \Valkyrja\Support\ServiceProvider $provider */
-        foreach (self::$provided as $provided => $provider) {
-            $provider::$deferred = false;
-
-            $this->register($provider);
-        }
-
         return [
             'services' => self::$services,
             'aliases'  => self::$aliases,
+            'provided' => self::$provided,
         ];
     }
 }
