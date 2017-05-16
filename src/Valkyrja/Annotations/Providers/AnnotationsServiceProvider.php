@@ -57,10 +57,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::ANNOTATIONS_PARSER)
                 ->setClass(AnnotationsParser::class)
                 ->setDependencies([CoreComponent::CONFIG])
-                ->setSingleton(true)
         );
     }
 
@@ -73,10 +73,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::ANNOTATIONS)
                 ->setClass(Annotations::class)
                 ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
-                ->setSingleton(true)
         );
     }
 
@@ -89,10 +89,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
                 ->setClass(ContainerAnnotations::class)
                 ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
-                ->setSingleton(true)
         );
     }
 
@@ -105,10 +105,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::LISTENER_ANNOTATIONS)
                 ->setClass(ListenerAnnotations::class)
                 ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
-                ->setSingleton(true)
         );
     }
 
@@ -121,10 +121,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::COMMAND_ANNOTATIONS)
                 ->setClass(CommandAnnotations::class)
                 ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
-                ->setSingleton(true)
         );
     }
 
@@ -137,10 +137,10 @@ class AnnotationsServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::ROUTE_ANNOTATIONS)
                 ->setClass(RouteAnnotations::class)
                 ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
-                ->setSingleton(true)
         );
     }
 }

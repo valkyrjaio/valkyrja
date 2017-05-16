@@ -22,7 +22,6 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
 /**
@@ -66,7 +65,6 @@ class BootstrapContainer
      */
     protected function bootstrap(): void
     {
-        $this->bootstrapSession();
         $this->bootstrapPathGenerator();
         $this->bootstrapPathParser();
         $this->bootstrapKernel();
@@ -76,22 +74,6 @@ class BootstrapContainer
         $this->bootstrapRedirectResponse();
         $this->bootstrapResponseBuilder();
         $this->bootstrapView();
-    }
-
-    /**
-     * Bootstrap the session.
-     *
-     * @return void
-     */
-    public function bootstrapSession(): void
-    {
-        $this->container->bind(
-            (new Service())
-                ->setId(CoreComponent::SESSION)
-                ->setClass(Session::class)
-                ->setDependencies([CoreComponent::APP])
-                ->setSingleton(true)
-        );
     }
 
     /**

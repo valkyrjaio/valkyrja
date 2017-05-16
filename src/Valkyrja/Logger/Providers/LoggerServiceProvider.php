@@ -49,17 +49,18 @@ class LoggerServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(StreamHandler::class)
                 ->setClass(StreamHandler::class)
                 ->setArguments([
                     $this->app->config()->logger->filePath,
                     LogLevel::DEBUG,
                 ])
-                ->setSingleton(true)
         );
 
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::LOGGER_INTERFACE)
                 ->setClass(MonologLogger::class)
                 ->setArguments([
@@ -69,7 +70,6 @@ class LoggerServiceProvider extends ServiceProvider
                         ->setMethod('getLoggerHandlers')
                         ->setStatic(true),
                 ])
-                ->setSingleton(true)
         );
     }
 
@@ -94,10 +94,10 @@ class LoggerServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::LOGGER)
                 ->setClass(Logger::class)
                 ->setDependencies([CoreComponent::LOGGER_INTERFACE])
-                ->setSingleton(true)
         );
     }
 }

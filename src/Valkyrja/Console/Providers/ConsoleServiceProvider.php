@@ -56,10 +56,10 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::CONSOLE)
                 ->setClass(Console::class)
                 ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
-                ->setSingleton(true)
         );
     }
 
@@ -72,10 +72,10 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::CONSOLE_KERNEL)
                 ->setClass(Kernel::class)
                 ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE])
-                ->setSingleton(true)
         );
     }
 
@@ -88,10 +88,10 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::INPUT)
                 ->setClass(Input::class)
                 ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE])
-                ->setSingleton(true)
         );
     }
 
@@ -104,10 +104,10 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::OUTPUT_FORMATTER)
                 ->setClass(OutputFormatter::class)
                 ->setDependencies()
-                ->setSingleton(true)
         );
     }
 
@@ -120,10 +120,10 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::OUTPUT)
                 ->setClass(Output::class)
                 ->setDependencies([CoreComponent::OUTPUT_FORMATTER])
-                ->setSingleton(true)
         );
     }
 }

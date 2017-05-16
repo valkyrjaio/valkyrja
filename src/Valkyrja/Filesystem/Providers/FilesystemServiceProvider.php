@@ -42,9 +42,9 @@ class FilesystemServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::FILESYSTEM)
                 ->setClass(Filesystem::class)
-                ->setSingleton(true)
         );
     }
 }

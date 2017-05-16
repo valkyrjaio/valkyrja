@@ -1,18 +1,18 @@
 <?php
 
-namespace Valkyrja\Http\Providers;
+namespace Valkyrja\Session\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Container\Service;
-use Valkyrja\Http\Client;
+use Valkyrja\Session\Session;
 use Valkyrja\Support\ServiceProvider;
 
 /**
- * Class ClientServiceProvider.
+ * Class SessionServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class ClientServiceProvider extends ServiceProvider
+class SessionServiceProvider extends ServiceProvider
 {
     /**
      * What services are provided.
@@ -20,7 +20,7 @@ class ClientServiceProvider extends ServiceProvider
      * @var array
      */
     public static $provides = [
-        CoreComponent::CLIENT,
+        CoreComponent::SESSION,
     ];
 
     /**
@@ -30,21 +30,22 @@ class ClientServiceProvider extends ServiceProvider
      */
     public function publish(): void
     {
-        $this->bindClient();
+        $this->bindSession();
     }
 
     /**
-     * Bind the client.
+     * Bind the session.
      *
      * @return void
      */
-    protected function bindClient(): void
+    public function bindSession(): void
     {
         $this->app->container()->bind(
             (new Service())
                 ->setSingleton(true)
-                ->setId(CoreComponent::CLIENT)
-                ->setClass(Client::class)
+                ->setId(CoreComponent::SESSION)
+                ->setClass(Session::class)
+                ->setDependencies([CoreComponent::APP])
         );
     }
 }

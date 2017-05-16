@@ -18,13 +18,13 @@ use Valkyrja\Filesystem\Providers\FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ClientServiceProvider;
 use Valkyrja\Logger\Providers\LoggerServiceProvider;
 use Valkyrja\Routing\Providers\RoutingServiceProvider;
+use Valkyrja\Session\Providers\SessionServiceProvider;
 use Valkyrja\Support\Directory;
 
 /**
  * Class ContainerConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ContainerConfig
 {
@@ -47,6 +47,7 @@ class ContainerConfig
         FilesystemServiceProvider::class,
         LoggerServiceProvider::class,
         RoutingServiceProvider::class,
+        SessionServiceProvider::class,
     ];
 
     /**

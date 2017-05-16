@@ -44,10 +44,10 @@ class RoutingServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::ROUTER)
                 ->setClass(Router::class)
                 ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
-                ->setSingleton(true)
         );
     }
 }
