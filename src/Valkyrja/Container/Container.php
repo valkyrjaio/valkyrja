@@ -496,6 +496,9 @@ class Container implements ContainerContract
         // Setup the bootstrap
         $this->setupBootstrap();
 
+        // Finally setup service providers
+        $this->setupServiceProviders();
+
         // If annotations are enabled and the container should use annotations
         if ($this->app->config()->container->useAnnotations && $this->app->config()->annotations->enabled) {
             // Setup annotated services, contexts, and aliases
@@ -503,9 +506,6 @@ class Container implements ContainerContract
 
             // If only annotations should be used
             if ($this->app->config()->container->useAnnotationsExclusively) {
-                // Finally setup service providers
-                $this->setupServiceProviders();
-
                 // Return to avoid loading container file
                 return;
             }
@@ -515,9 +515,6 @@ class Container implements ContainerContract
         // NOTE: Included if annotations are set or not due to possibility of container items being defined
         // within the classes as well as within the container file
         require $this->app->config()->container->filePath;
-
-        // Finally setup service providers
-        $this->setupServiceProviders();
     }
 
     /**
