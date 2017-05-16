@@ -313,13 +313,6 @@ class Dispatcher implements DispatcherContract
         $method   = $dispatch->getMethod();
         $response = null;
 
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before.class.method', [$class, $method, $dispatch]);
-        $this->dispatcherEvent($dispatch,
-            "dispatch.before.{$dispatch->getClass()}.{$dispatch->getMethod()}",
-            [$class, $method, $dispatch]
-        );
-
         // If there are arguments
         if (null !== $arguments) {
             // Unpack arguments and dispatch
@@ -336,13 +329,6 @@ class Dispatcher implements DispatcherContract
                 $response = $class->$method();
             }
         }
-
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after.class.method', [$class, $method, $response]);
-        $this->dispatcherEvent($dispatch,
-            "dispatch.after.{$dispatch->getClass()}.{$dispatch->getMethod()}",
-            [$class, $method, $response]
-        );
 
         return $response ?? $this->DISPATCHED;
     }
@@ -367,21 +353,7 @@ class Dispatcher implements DispatcherContract
         $class    = $this->container->get($dispatch->getClass());
         $property = $dispatch->getProperty();
 
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before.class.property', [$class, $property, $dispatch]);
-        $this->dispatcherEvent($dispatch,
-            "dispatch.before.{$dispatch->getClass()}.{$dispatch->getProperty()}",
-            [$class, $property, $dispatch]
-        );
-
         $response = $class->{$property};
-
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after.class.property', [$class, $property, $response]);
-        $this->dispatcherEvent($dispatch,
-            "dispatch.after.{$dispatch->getClass()}.{$dispatch->getProperty()}",
-            [$class, $property, $response]
-        );
 
         return $response ?? $this->DISPATCHED;
     }
@@ -400,10 +372,6 @@ class Dispatcher implements DispatcherContract
         if (null === $dispatch->getClass()) {
             return $dispatch->getClass();
         }
-
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before.class', [$dispatch]);
-        $this->dispatcherEvent($dispatch, "dispatch.before.{$dispatch->getClass()}", [$dispatch]);
 
         // If the class is the id then this item is
         // not set in the service container yet
@@ -424,10 +392,6 @@ class Dispatcher implements DispatcherContract
             // Set the class through the container
             $class = $this->container->get($dispatch->getClass(), $arguments);
         }
-
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after.class', [$class]);
-        $this->dispatcherEvent($dispatch, "dispatch.after.{$dispatch->getClass()}", [$class]);
 
         return $class ?? $this->DISPATCHED;
     }
@@ -450,10 +414,6 @@ class Dispatcher implements DispatcherContract
         $function = $dispatch->getFunction();
         $response = null;
 
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before.function', [$function, $dispatch]);
-        $this->dispatcherEvent($dispatch, "dispatch.before.{$dispatch->getFunction()}", [$function, $dispatch]);
-
         // If there are arguments
         if (null !== $arguments) {
             // Unpack arguments and dispatch
@@ -462,10 +422,6 @@ class Dispatcher implements DispatcherContract
             // Dispatch without unpacking
             $response = $function();
         }
-
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after.function', [$function, $response]);
-        $this->dispatcherEvent($dispatch, "dispatch.after.{$dispatch->getFunction()}", [$function, $response]);
 
         return $response ?? $this->DISPATCHED;
     }
@@ -488,9 +444,6 @@ class Dispatcher implements DispatcherContract
         $closure  = $dispatch->getClosure();
         $response = null;
 
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before.closure', [$dispatch]);
-
         // If there are arguments
         if (null !== $arguments) {
             // Unpack arguments and dispatch
@@ -499,9 +452,6 @@ class Dispatcher implements DispatcherContract
             // Dispatch without unpacking
             $response = $closure();
         }
-
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after.closure', [$response]);
 
         return $response ?? $this->DISPATCHED;
     }

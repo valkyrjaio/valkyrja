@@ -31,7 +31,9 @@ interface Router extends Cacheable
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Contracts\Application $application
+     * @param \Valkyrja\Contracts\Application        $application   The application
+     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
+     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
      */
     public function __construct(Application $application, PathParser $pathParser, PathGenerator $pathGenerator);
 
@@ -170,26 +172,4 @@ interface Router extends Cacheable
      * @return \Valkyrja\Contracts\Http\Response
      */
     public function dispatch(Request $request): Response;
-
-    /**
-     * Before the class method has dispatched.
-     *
-     * @param mixed                   $class  The class
-     * @param string                  $method The method
-     * @param \Valkyrja\Routing\Route $route  The route
-     *
-     * @return void
-     */
-    public static function beforeClassMethodDispatch($class, string $method, Route $route): void;
-
-    /**
-     * After the class method has dispatched.
-     *
-     * @param mixed  $class    The class
-     * @param string $method   The method
-     * @param mixed  $dispatch The dispatch
-     *
-     * @return void
-     */
-    public static function afterClassMethodDispatch($class, string $method, &$dispatch): void;
 }

@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Http\Controller as ControllerContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Path\PathGenerator;
@@ -20,7 +19,6 @@ use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Events\Listener;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\ResponseCode;
@@ -513,111 +511,10 @@ class Router implements RouterContract
             return $this->app->redirect()->secure($request->getPath());
         }
 
-        // Set the dispatch listeners
-        $this->setDispatchListeners($route);
-
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->app->dispatcher()->dispatchCallable($route, $route->getMatches());
 
-        // Unset the dispatch listeners
-        $this->unsetDispatchListeners($route);
-
         return $this->getResponseFromDispatch($dispatch);
-    }
-
-    /**
-     * Set dispatch listeners.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return void
-     */
-    protected function setDispatchListeners(Route $route): void
-    {
-        // If no class or method are set in this route do not set listeners
-        if (null === $route->getClass() || null === $route->getMethod()) {
-            return;
-        }
-
-        $this->app->events()->listen(
-            "dispatch.before.{$route->getClass()}.{$route->getMethod()}",
-            (new Listener())
-                ->setId("Router.dispatch.before.{$route->getClass()}.{$route->getMethod()}")
-                ->setClass(static::class)
-                ->setMethod('beforeClassMethodDispatch')
-                ->setStatic(true)
-        );
-
-        $this->app->events()->listen(
-            "dispatch.after.{$route->getClass()}.{$route->getMethod()}",
-            (new Listener())
-                ->setId("Router.dispatch.after.{$route->getClass()}.{$route->getMethod()}")
-                ->setClass(static::class)
-                ->setMethod('afterClassMethodDispatch')
-                ->setStatic(true)
-        );
-    }
-
-    /**
-     * Unset dispatch listeners.
-     *
-     * @param \Valkyrja\Routing\Route $route The route
-     *
-     * @return void
-     */
-    protected function unsetDispatchListeners(Route $route): void
-    {
-        // If no class or method are set in this route do not unset listeners since they weren't created
-        if (null === $route->getClass() || null === $route->getMethod()) {
-            return;
-        }
-
-        $this->app->events()->removeListener(
-            "dispatch.before.{$route->getClass()}.{$route->getMethod()}",
-            "Router.dispatch.before.{$route->getClass()}.{$route->getMethod()}"
-        );
-        $this->app->events()->removeListener(
-            "dispatch.after.{$route->getClass()}.{$route->getMethod()}",
-            "Router.dispatch.after.{$route->getClass()}.{$route->getMethod()}"
-        );
-    }
-
-    /**
-     * Before the class method has dispatched.
-     *
-     * @param mixed                   $class  The class
-     * @param string                  $method The method
-     * @param \Valkyrja\Routing\Route $route  The route
-     *
-     * @return void
-     */
-    public static function beforeClassMethodDispatch($class, string $method, Route $route): void
-    {
-        // If the class is a controller
-        if ($class instanceof ControllerContract) {
-            /* @var ControllerContract $controller */
-            // Call the controller's before method
-            $class->before($method, $route);
-        }
-    }
-
-    /**
-     * After the class method has dispatched.
-     *
-     * @param mixed  $class    The class
-     * @param string $method   The method
-     * @param mixed  $dispatch The dispatch
-     *
-     * @return void
-     */
-    public static function afterClassMethodDispatch($class, string $method, &$dispatch): void
-    {
-        // If the class is a controller
-        if ($class instanceof ControllerContract) {
-            /* @var ControllerContract $controller */
-            // Call the controller's after method
-            $class->after($method, $dispatch);
-        }
     }
 
     /**
