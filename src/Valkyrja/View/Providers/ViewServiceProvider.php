@@ -53,7 +53,8 @@ class ViewServiceProvider extends ServiceProvider
             (new Service())
                 ->setId(CoreComponent::VIEW)
                 ->setClass(View::class)
-                ->setDependencies([CoreComponent::APP])
+                ->setDependencies([CoreComponent::APP]),
+            false
         );
     }
 }

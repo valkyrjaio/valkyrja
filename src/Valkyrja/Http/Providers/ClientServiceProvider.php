@@ -53,7 +53,8 @@ class ClientServiceProvider extends ServiceProvider
             (new Service())
                 ->setSingleton(true)
                 ->setId(CoreComponent::CLIENT)
-                ->setClass(Client::class)
+                ->setClass(Client::class),
+            false
         );
     }
 }

@@ -69,7 +69,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::ANNOTATIONS_PARSER)
                 ->setClass(AnnotationsParser::class)
-                ->setDependencies([CoreComponent::CONFIG])
+                ->setDependencies([CoreComponent::CONFIG]),
+            false
         );
     }
 
@@ -85,7 +86,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::ANNOTATIONS)
                 ->setClass(Annotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
+            false
         );
     }
 
@@ -101,7 +103,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
                 ->setClass(ContainerAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
+            false
         );
     }
 
@@ -117,7 +120,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::LISTENER_ANNOTATIONS)
                 ->setClass(ListenerAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
+            false
         );
     }
 
@@ -133,7 +137,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::COMMAND_ANNOTATIONS)
                 ->setClass(CommandAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
+            false
         );
     }
 
@@ -149,7 +154,8 @@ class AnnotationsServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::ROUTE_ANNOTATIONS)
                 ->setClass(RouteAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER])
+                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
+            false
         );
     }
 }

@@ -64,7 +64,8 @@ class LoggerServiceProvider extends ServiceProvider
                 ->setArguments([
                     $this->app->config()->logger->filePath,
                     LogLevel::DEBUG,
-                ])
+                ]),
+            false
         );
 
         $this->app->container()->bind(
@@ -78,7 +79,8 @@ class LoggerServiceProvider extends ServiceProvider
                         ->setClass(static::class)
                         ->setMethod('getLoggerHandlers')
                         ->setStatic(true),
-                ])
+                ]),
+            false
         );
     }
 
@@ -106,7 +108,8 @@ class LoggerServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::LOGGER)
                 ->setClass(Logger::class)
-                ->setDependencies([CoreComponent::LOGGER_INTERFACE])
+                ->setDependencies([CoreComponent::LOGGER_INTERFACE]),
+            false
         );
     }
 }

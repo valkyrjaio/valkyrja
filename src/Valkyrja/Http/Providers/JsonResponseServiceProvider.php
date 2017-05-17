@@ -52,7 +52,8 @@ class JsonResponseServiceProvider extends ServiceProvider
         $this->app->container()->bind(
             (new Service())
                 ->setId(CoreComponent::JSON_RESPONSE)
-                ->setClass(JsonResponse::class)
+                ->setClass(JsonResponse::class),
+            false
         );
     }
 }

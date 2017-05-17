@@ -56,7 +56,8 @@ class RoutingServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::ROUTER)
                 ->setClass(Router::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
+                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR]),
+            false
         );
     }
 }

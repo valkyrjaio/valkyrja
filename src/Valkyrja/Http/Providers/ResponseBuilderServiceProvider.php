@@ -51,10 +51,11 @@ class ResponseBuilderServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::RESPONSE_BUILDER)
                 ->setClass(ResponseBuilder::class)
-                ->setDependencies([CoreComponent::APP])
-                ->setSingleton(true)
+                ->setDependencies([CoreComponent::APP]),
+            false
         );
     }
 }

@@ -52,7 +52,8 @@ class RedirectResponseServiceProvider extends ServiceProvider
         $this->app->container()->bind(
             (new Service())
                 ->setId(CoreComponent::REDIRECT_RESPONSE)
-                ->setClass(RedirectResponse::class)
+                ->setClass(RedirectResponse::class),
+            false
         );
     }
 }

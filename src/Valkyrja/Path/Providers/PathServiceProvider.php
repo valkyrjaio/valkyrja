@@ -54,9 +54,10 @@ class PathServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
-                ->setId(CoreComponent::PATH_GENERATOR)
-                ->setClass(PathGenerator::class)
                 ->setSingleton(true)
+                ->setId(CoreComponent::PATH_GENERATOR)
+                ->setClass(PathGenerator::class),
+            false
         );
     }
 
@@ -69,9 +70,10 @@ class PathServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
-                ->setId(CoreComponent::PATH_PARSER)
-                ->setClass(PathParser::class)
                 ->setSingleton(true)
+                ->setId(CoreComponent::PATH_PARSER)
+                ->setClass(PathParser::class),
+            false
         );
     }
 }

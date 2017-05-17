@@ -54,7 +54,8 @@ class SessionServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::SESSION)
                 ->setClass(Session::class)
-                ->setDependencies([CoreComponent::APP])
+                ->setDependencies([CoreComponent::APP]),
+            false
         );
     }
 }

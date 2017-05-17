@@ -57,10 +57,11 @@ class HttpServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::KERNEL)
                 ->setClass(Kernel::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::ROUTER])
-                ->setSingleton(true)
+                ->setDependencies([CoreComponent::APP, CoreComponent::ROUTER]),
+            false
         );
     }
 
@@ -73,11 +74,12 @@ class HttpServiceProvider extends ServiceProvider
     {
         $this->app->container()->bind(
             (new Service())
+                ->setSingleton(true)
                 ->setId(CoreComponent::REQUEST)
                 ->setClass(Request::class)
                 ->setMethod('createFromGlobals')
-                ->setStatic(true)
-                ->setSingleton(true)
+                ->setStatic(true),
+            false
         );
     }
 
@@ -91,7 +93,8 @@ class HttpServiceProvider extends ServiceProvider
         $this->app->container()->bind(
             (new Service())
                 ->setId(CoreComponent::RESPONSE)
-                ->setClass(Response::class)
+                ->setClass(Response::class),
+            false
         );
     }
 }

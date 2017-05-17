@@ -68,7 +68,8 @@ class ConsoleServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::CONSOLE)
                 ->setClass(Console::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR])
+                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR]),
+            false
         );
     }
 
@@ -84,7 +85,8 @@ class ConsoleServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::CONSOLE_KERNEL)
                 ->setClass(Kernel::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE])
+                ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE]),
+            false
         );
     }
 
@@ -100,7 +102,8 @@ class ConsoleServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::INPUT)
                 ->setClass(Input::class)
-                ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE])
+                ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE]),
+            false
         );
     }
 
@@ -116,7 +119,8 @@ class ConsoleServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::OUTPUT_FORMATTER)
                 ->setClass(OutputFormatter::class)
-                ->setDependencies()
+                ->setDependencies(),
+            false
         );
     }
 
@@ -132,7 +136,8 @@ class ConsoleServiceProvider extends ServiceProvider
                 ->setSingleton(true)
                 ->setId(CoreComponent::OUTPUT)
                 ->setClass(Output::class)
-                ->setDependencies([CoreComponent::OUTPUT_FORMATTER])
+                ->setDependencies([CoreComponent::OUTPUT_FORMATTER]),
+            false
         );
     }
 }

@@ -53,7 +53,8 @@ class FilesystemServiceProvider extends ServiceProvider
             (new Service())
                 ->setSingleton(true)
                 ->setId(CoreComponent::FILESYSTEM)
-                ->setClass(Filesystem::class)
+                ->setClass(Filesystem::class),
+            false
         );
     }
 }
