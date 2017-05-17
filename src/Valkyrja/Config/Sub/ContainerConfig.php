@@ -16,10 +16,16 @@ use Valkyrja\Console\Providers\ConsoleServiceProvider;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Filesystem\Providers\FilesystemServiceProvider;
 use Valkyrja\Http\Providers\ClientServiceProvider;
+use Valkyrja\Http\Providers\HttpServiceProvider;
+use Valkyrja\Http\Providers\JsonResponseServiceProvider;
+use Valkyrja\Http\Providers\RedirectResponseServiceProvider;
+use Valkyrja\Http\Providers\ResponseBuilderServiceProvider;
 use Valkyrja\Logger\Providers\LoggerServiceProvider;
+use Valkyrja\Path\Providers\PathServiceProvider;
 use Valkyrja\Routing\Providers\RoutingServiceProvider;
 use Valkyrja\Session\Providers\SessionServiceProvider;
 use Valkyrja\Support\Directory;
+use Valkyrja\View\Providers\ViewServiceProvider;
 
 /**
  * Class ContainerConfig.
@@ -36,18 +42,24 @@ class ContainerConfig
     public $providers = [];
 
     /**
-     * App Service providers.
+     * Core framework service providers.
      *
      * @var array
      */
-    public $appProviders = [
+    public $coreProviders = [
         AnnotationsServiceProvider::class,
         ClientServiceProvider::class,
         ConsoleServiceProvider::class,
         FilesystemServiceProvider::class,
+        HttpServiceProvider::class,
+        JsonResponseServiceProvider::class,
         LoggerServiceProvider::class,
+        PathServiceProvider::class,
+        RedirectResponseServiceProvider::class,
+        ResponseBuilderServiceProvider::class,
         RoutingServiceProvider::class,
         SessionServiceProvider::class,
+        ViewServiceProvider::class,
     ];
 
     /**
@@ -115,8 +127,8 @@ class ContainerConfig
     {
         $this->providers                 = $env::CONTAINER_PROVIDERS
             ?? $this->providers;
-        $this->appProviders              = $env::CONTAINER_APP_PROVIDERS
-            ?? $this->appProviders;
+        $this->coreProviders             = $env::CONTAINER_APP_PROVIDERS
+            ?? $this->coreProviders;
         $this->devProviders              = $env::CONTAINER_DEV_PROVIDERS
             ?? $this->devProviders;
         $this->useAnnotations            = $env::CONTAINER_USE_ANNOTATIONS

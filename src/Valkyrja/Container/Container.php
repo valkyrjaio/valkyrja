@@ -492,9 +492,6 @@ class Container implements ContainerContract
             return;
         }
 
-        // Setup the bootstrap
-        $this->setupBootstrap();
-
         // Setup service providers
         $this->setupServiceProviders();
 
@@ -514,17 +511,6 @@ class Container implements ContainerContract
         // NOTE: Included if annotations are set or not due to possibility of container items being defined
         // within the classes as well as within the container file
         require $this->app->config()->container->filePath;
-    }
-
-    /**
-     * Setup container bootstrapping.
-     *
-     * @return void
-     */
-    protected function setupBootstrap(): void
-    {
-        // Bootstrap the container
-        new BootstrapContainer($this->app, $this);
     }
 
     /**
@@ -584,7 +570,7 @@ class Container implements ContainerContract
     protected function setupServiceProviders(): void
     {
         // Iterate through all the providers
-        foreach ($this->app->config()->container->appProviders as $provider) {
+        foreach ($this->app->config()->container->coreProviders as $provider) {
             $this->register($provider);
         }
 

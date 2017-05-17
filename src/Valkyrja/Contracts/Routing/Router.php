@@ -15,8 +15,6 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Contracts\Path\PathGenerator;
-use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Routing\Route;
 
@@ -30,11 +28,9 @@ interface Router extends Cacheable
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Contracts\Application        $application   The application
-     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
-     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
+     * @param \Valkyrja\Contracts\Application $application The application
      */
-    public function __construct(Application $application, PathParser $pathParser, PathGenerator $pathGenerator);
+    public function __construct(Application $application);
 
     /**
      * Set a single route.

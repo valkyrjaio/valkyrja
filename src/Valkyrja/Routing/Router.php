@@ -14,8 +14,6 @@ namespace Valkyrja\Routing;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
-use Valkyrja\Contracts\Path\PathGenerator;
-use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
@@ -37,20 +35,6 @@ class Router implements RouterContract
      * @var \Valkyrja\Contracts\Application
      */
     protected $app;
-
-    /**
-     * The path parser.
-     *
-     * @var \Valkyrja\Contracts\Path\PathParser
-     */
-    protected $pathParser;
-
-    /**
-     * The path generator.
-     *
-     * @var \Valkyrja\Contracts\Path\PathGenerator
-     */
-    protected $pathGenerator;
 
     /**
      * Whether route's have been setup yet.
@@ -90,9 +74,7 @@ class Router implements RouterContract
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Contracts\Application        $application   The application
-     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
-     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
+     * @param \Valkyrja\Contracts\Application $application The application
      *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -101,11 +83,9 @@ class Router implements RouterContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
-    public function __construct(ApplicationContract $application, PathParser $pathParser, PathGenerator $pathGenerator)
+    public function __construct(ApplicationContract $application)
     {
-        $this->app           = $application;
-        $this->pathParser    = $pathParser;
-        $this->pathGenerator = $pathGenerator;
+        $this->app = $application;
     }
 
     /**
@@ -165,7 +145,7 @@ class Router implements RouterContract
      */
     protected function setDynamicRoute(Route $route): void
     {
-        $parsedRoute = $this->pathParser->parse($route->getPath());
+        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);
@@ -349,7 +329,7 @@ class Router implements RouterContract
             : '';
         // Get the path from the generator
         $path = $route->getSegments()
-            ? $this->pathGenerator->parse($route->getSegments(), $data, $route->getParams())
+            ? $this->app->pathGenerator()->parse($route->getSegments(), $data, $route->getParams())
             : $route->getPath();
 
         return $host . $this->validateRouteUrl($path);
@@ -436,6 +416,7 @@ class Router implements RouterContract
         // Attempt to find a match using dynamic routes that are set
         foreach (self::$dynamicRoutes as $regex => $dynamicRoute) {
             // If the preg match is successful, we've found our route!
+            /* @var array $matches */
             if (preg_match($regex, $path, $matches)) {
                 // Clone the route to avoid changing the one set in the master array
                 $dynamicRoute = clone self::$routes[$dynamicRoute];

@@ -25,6 +25,8 @@ use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder;
 use Valkyrja\Contracts\Logger\Logger;
+use Valkyrja\Contracts\Path\PathGenerator;
+use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
@@ -197,6 +199,20 @@ interface Application
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function logger(): Logger;
+
+    /**
+     * Return the path generator instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Path\PathGenerator
+     */
+    public function pathGenerator(): PathGenerator;
+
+    /**
+     * Return the path parser instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Path\PathParser
+     */
+    public function pathParser(): PathParser;
 
     /**
      * Return the request instance from the container.
