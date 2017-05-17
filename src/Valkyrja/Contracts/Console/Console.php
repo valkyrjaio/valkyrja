@@ -16,8 +16,6 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
-use Valkyrja\Contracts\Path\PathGenerator;
-use Valkyrja\Contracts\Path\PathParser;
 
 /**
  * Interface Console.
@@ -29,11 +27,9 @@ interface Console extends Cacheable
     /**
      * Console constructor.
      *
-     * @param \Valkyrja\Contracts\Application        $application   The application
-     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
-     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
+     * @param \Valkyrja\Contracts\Application $application The application
      */
-    public function __construct(Application $application, PathParser $pathParser, PathGenerator $pathGenerator);
+    public function __construct(Application $application);
 
     /**
      * Add a new command.

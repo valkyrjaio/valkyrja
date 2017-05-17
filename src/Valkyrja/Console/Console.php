@@ -17,8 +17,6 @@ use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
-use Valkyrja\Contracts\Path\PathGenerator;
-use Valkyrja\Contracts\Path\PathParser;
 
 /**
  * Class Console.
@@ -38,20 +36,6 @@ class Console implements ConsoleContract
      * @var \Valkyrja\Contracts\Application
      */
     protected $app;
-
-    /**
-     * The path parser.
-     *
-     * @var \Valkyrja\Contracts\Path\PathParser
-     */
-    protected $pathParser;
-
-    /**
-     * The path generator.
-     *
-     * @var \Valkyrja\Contracts\Path\PathGenerator
-     */
-    protected $pathGenerator;
 
     /**
      * The commands.
@@ -77,9 +61,7 @@ class Console implements ConsoleContract
     /**
      * Console constructor.
      *
-     * @param \Valkyrja\Contracts\Application        $application   The application
-     * @param \Valkyrja\Contracts\Path\PathParser    $pathParser    The path parser
-     * @param \Valkyrja\Contracts\Path\PathGenerator $pathGenerator The path generator
+     * @param \Valkyrja\Contracts\Application $application The application
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -88,11 +70,9 @@ class Console implements ConsoleContract
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
-    public function __construct(Application $application, PathParser $pathParser, PathGenerator $pathGenerator)
+    public function __construct(Application $application)
     {
-        $this->app           = $application;
-        $this->pathParser    = $pathParser;
-        $this->pathGenerator = $pathGenerator;
+        $this->app = $application;
     }
 
     /**
@@ -116,7 +96,7 @@ class Console implements ConsoleContract
         $this->app->dispatcher()->verifyFunction($command);
         $this->app->dispatcher()->verifyClosure($command);
 
-        $this->addParsedCommand($command, $this->pathParser->parse($command->getPath()));
+        $this->addParsedCommand($command, $this->app->pathParser()->parse($command->getPath()));
     }
 
     /**
