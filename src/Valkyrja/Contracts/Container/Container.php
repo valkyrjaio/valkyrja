@@ -46,10 +46,11 @@ interface Container extends Cacheable
      * Bind a service to the container.
      *
      * @param \Valkyrja\Container\Service $service The service model
+     * @param bool                        $verify  [optional] Whether to verify the service
      *
      * @return void
      */
-    public function bind(Service $service): void;
+    public function bind(Service $service, bool $verify = true): void;
 
     /**
      * Bind a context to the container.

@@ -111,6 +111,7 @@ class Container implements ContainerContract
      * Bind a service to the container.
      *
      * @param \Valkyrja\Container\Service $service The service model
+     * @param bool                        $verify  [optional] Whether to verify the service
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -121,7 +122,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function bind(Service $service): void
+    public function bind(Service $service, bool $verify = true): void
     {
         // If there is no id
         if (null === $service->getId()) {
@@ -129,7 +130,11 @@ class Container implements ContainerContract
             throw new InvalidServiceIdException();
         }
 
-        $this->app->dispatcher()->verifyDispatch($service);
+        // If we should verify the dispatch
+        if ($verify) {
+            // Then verify it
+            $this->app->dispatcher()->verifyDispatch($service);
+        }
 
         self::$services[$service->getId()] = $service;
     }
