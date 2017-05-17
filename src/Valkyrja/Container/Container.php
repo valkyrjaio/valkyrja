@@ -496,7 +496,7 @@ class Container implements ContainerContract
         // Setup the bootstrap
         $this->setupBootstrap();
 
-        // Finally setup service providers
+        // Setup service providers
         $this->setupServiceProviders();
 
         // If annotations are enabled and the container should use annotations
