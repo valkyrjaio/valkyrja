@@ -21,8 +21,7 @@ use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 /**
  * Class Response.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Response implements ResponseContract
 {

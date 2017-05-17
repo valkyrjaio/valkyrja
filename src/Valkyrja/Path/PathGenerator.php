@@ -17,8 +17,7 @@ use Valkyrja\Contracts\Path\PathGenerator as PathGeneratorContract;
 /**
  * Class PathGenerator.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class PathGenerator implements PathGeneratorContract
 {

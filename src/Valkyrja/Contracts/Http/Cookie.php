@@ -16,8 +16,7 @@ namespace Valkyrja\Contracts\Http;
 /**
  * Interface Cookie.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Cookie
 {

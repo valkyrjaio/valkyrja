@@ -16,8 +16,7 @@ use Closure;
 /**
  * Class ServiceContext.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ServiceContext extends Service
 {

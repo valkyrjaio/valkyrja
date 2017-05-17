@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidSessionId.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidSessionId extends InvalidArgumentException
 {

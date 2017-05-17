@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Console\Output\OutputFormatter;
 /**
  * Class Output.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Output implements OutputContract
 {

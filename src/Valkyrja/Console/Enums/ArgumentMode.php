@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Enum InputArgument.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class ArgumentMode extends Enum
 {

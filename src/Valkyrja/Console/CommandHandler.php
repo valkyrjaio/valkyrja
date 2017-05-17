@@ -20,8 +20,7 @@ use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
 /**
  * Abstract Class CommandHandler.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 abstract class CommandHandler implements CommandHandlerContract
 {

@@ -27,8 +27,7 @@ use Valkyrja\View\View;
 /**
  * Class BootstrapContainer.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class BootstrapContainer
 {

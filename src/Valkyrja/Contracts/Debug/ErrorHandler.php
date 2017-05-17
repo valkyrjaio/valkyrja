@@ -16,8 +16,7 @@ use Exception;
 /**
  * Interface ErrorHandler.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface ErrorHandler
 {

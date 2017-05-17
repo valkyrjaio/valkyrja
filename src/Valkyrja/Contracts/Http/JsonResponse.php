@@ -16,8 +16,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Interface JsonResponse.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface JsonResponse extends Response
 {

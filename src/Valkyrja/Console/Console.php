@@ -23,8 +23,7 @@ use Valkyrja\Contracts\Path\PathParser;
 /**
  * Class Console.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Console implements ConsoleContract
 {

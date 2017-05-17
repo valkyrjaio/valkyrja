@@ -20,8 +20,7 @@ use Valkyrja\Routing\Commands\RoutesCacheCommand;
 /**
  * Class CacheAllCommand.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class CacheAllCommand extends CommandHandler
 {

@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Application;
 /**
  * Interface Session.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Session
 {

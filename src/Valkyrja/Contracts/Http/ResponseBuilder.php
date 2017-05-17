@@ -17,8 +17,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Interface ResponseBuilder.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface ResponseBuilder
 {

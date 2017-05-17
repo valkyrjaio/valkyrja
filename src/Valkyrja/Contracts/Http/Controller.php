@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Http;
 /**
  * Interface Controller.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Controller
 {

@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Console;
 /**
  * Interface Command.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface CommandHandler
 {

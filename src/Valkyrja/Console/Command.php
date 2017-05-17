@@ -17,8 +17,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class Command.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Command extends Dispatch implements Annotation
 {

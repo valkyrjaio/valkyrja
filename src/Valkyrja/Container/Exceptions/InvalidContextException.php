@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidContextException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidContextException extends InvalidArgumentException
 {

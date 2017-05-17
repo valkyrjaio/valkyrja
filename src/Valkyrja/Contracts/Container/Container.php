@@ -20,8 +20,7 @@ use Valkyrja\Contracts\Events\Events;
 /**
  * Interface Container.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Container extends Cacheable
 {

@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidStatusCodeException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidStatusCodeException extends InvalidArgumentException
 {

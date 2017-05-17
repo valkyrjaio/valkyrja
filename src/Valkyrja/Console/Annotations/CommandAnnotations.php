@@ -17,8 +17,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class CommandAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class CommandAnnotations extends Annotations
 {
@@ -75,7 +74,7 @@ class CommandAnnotations extends Annotations
                 $dispatch->getClass(),
                 $dispatch->getMethod() ?? '__construct'
             );
-            $parameters = $methodReflection->getParameters();
+            $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
             $dispatch->setDependencies($this->getDependencies(...$parameters));

@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Annotations\Annotations;
 /**
  * Interface ListenerAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface ListenerAnnotations extends Annotations
 {

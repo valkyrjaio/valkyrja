@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Http\Controller as ControllerContract;
 /**
  * Class Controller.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 abstract class Controller implements ControllerContract
 {

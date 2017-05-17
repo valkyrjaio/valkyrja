@@ -16,8 +16,7 @@ use Valkyrja\Console\CommandHandler;
 /**
  * Class ConsoleCache.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ConsoleCache extends CommandHandler
 {

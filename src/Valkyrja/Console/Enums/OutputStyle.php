@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Class OutputStyle.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class OutputStyle extends Enum
 {

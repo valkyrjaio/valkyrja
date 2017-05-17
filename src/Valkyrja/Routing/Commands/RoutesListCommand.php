@@ -19,8 +19,7 @@ use Valkyrja\Routing\Route;
 /**
  * Class RoutesListCommand.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class RoutesListCommand extends CommandHandler
 {
@@ -54,7 +53,7 @@ class RoutesListCommand extends CommandHandler
             'Name',
             'Dispatch',
         ];
-        $lengths = [
+        $lengths      = [
             strlen($headerTexts[0]),
             strlen($headerTexts[1]),
             strlen($headerTexts[2]),

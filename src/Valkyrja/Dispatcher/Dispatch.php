@@ -17,8 +17,7 @@ use Valkyrja\Annotations\Annotatable;
 /**
  * Class Dispatch.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Dispatch
 {

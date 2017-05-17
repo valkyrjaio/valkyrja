@@ -17,8 +17,7 @@ use Valkyrja\Logger\Enums\LogLevel;
 /**
  * Interface Logger.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Logger
 {

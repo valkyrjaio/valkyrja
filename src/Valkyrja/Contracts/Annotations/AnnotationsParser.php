@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Annotations\Regex\LineRegex;
 /**
  * Interface AnnotationsParser.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
 {

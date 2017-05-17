@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Http\Client as ClientContract;
 /**
  * Class Client.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Client implements ClientContract
 {

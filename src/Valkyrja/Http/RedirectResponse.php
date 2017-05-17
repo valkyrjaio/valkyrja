@@ -18,8 +18,7 @@ use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 /**
  * Class RedirectResponse.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class RedirectResponse extends Response implements RedirectResponseContract
 {

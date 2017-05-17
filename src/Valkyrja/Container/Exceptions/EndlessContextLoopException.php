@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class EndlessContextLoopException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class EndlessContextLoopException extends InvalidArgumentException
 {

@@ -16,8 +16,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Interface RedirectResponse.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface RedirectResponse extends Response
 {

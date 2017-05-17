@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Annotations\Annotations;
 /**
  * Class CommandAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface CommandAnnotations extends Annotations
 {

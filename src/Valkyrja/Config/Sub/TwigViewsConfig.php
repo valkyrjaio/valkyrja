@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class TwigViewsConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class TwigViewsConfig
 {

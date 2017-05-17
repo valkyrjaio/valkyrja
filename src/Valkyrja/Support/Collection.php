@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Support\Collection as CollectionContract;
 /**
  * Class Collection.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Collection implements CollectionContract
 {

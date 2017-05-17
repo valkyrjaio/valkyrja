@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidClosureException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidClosureException extends InvalidArgumentException
 {

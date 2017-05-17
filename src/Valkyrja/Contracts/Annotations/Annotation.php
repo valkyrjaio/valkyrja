@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Annotations;
 /**
  * Interface Annotation.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Annotation
 {

@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Application;
 /**
  * Class ServiceProvider.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 abstract class ServiceProvider
 {

@@ -16,8 +16,7 @@ use Valkyrja\Console\Enums\OptionMode;
 /**
  * Class Option.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Option
 {

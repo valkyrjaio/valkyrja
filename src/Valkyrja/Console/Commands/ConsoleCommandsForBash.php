@@ -16,8 +16,7 @@ use Valkyrja\Console\CommandHandler;
 /**
  * Class ConsoleCommands.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ConsoleCommandsForBash extends CommandHandler
 {

@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidDispatchCapabilityException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidDispatchCapabilityException extends InvalidArgumentException
 {

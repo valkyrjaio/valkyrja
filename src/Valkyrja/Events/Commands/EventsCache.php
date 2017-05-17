@@ -16,8 +16,7 @@ use Valkyrja\Console\CommandHandler;
 /**
  * Class EventsCache.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class EventsCache extends CommandHandler
 {

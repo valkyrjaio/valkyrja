@@ -19,8 +19,7 @@ use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 /**
  * Class Cookie.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Cookie implements CookieContract
 {

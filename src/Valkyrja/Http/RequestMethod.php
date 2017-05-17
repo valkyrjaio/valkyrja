@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Final Class RequestMethod.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class RequestMethod extends Enum
 {

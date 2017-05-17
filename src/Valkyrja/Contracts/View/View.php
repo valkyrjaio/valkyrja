@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Application;
 /**
  * Interface View.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface View
 {

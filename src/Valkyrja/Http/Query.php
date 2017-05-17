@@ -19,8 +19,7 @@ use Valkyrja\Support\Collection;
 /**
  * Class Query.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Query extends Collection implements QueryContract
 {

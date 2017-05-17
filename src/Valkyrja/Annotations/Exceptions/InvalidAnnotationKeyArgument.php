@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidAnnotationKeyArgument.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidAnnotationKeyArgument extends InvalidArgumentException
 {

@@ -21,8 +21,7 @@ use Valkyrja\Contracts\Console\Output\Output;
 /**
  * Class ConsoleKernel.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Kernel implements KernelContract
 {

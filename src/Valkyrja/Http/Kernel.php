@@ -22,8 +22,7 @@ use Valkyrja\Debug\ExceptionHandler;
 /**
  * Class Kernel.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Kernel implements KernelContract
 {

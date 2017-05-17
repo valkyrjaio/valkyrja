@@ -21,8 +21,7 @@ use Valkyrja\Support\Collection;
 /**
  * Class Request.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Request implements RequestContract
 {

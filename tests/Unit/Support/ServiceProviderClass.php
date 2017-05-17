@@ -16,7 +16,7 @@ use Valkyrja\Support\ServiceProvider;
 /**
  * Class to use to test the service provider.
  *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ServiceProviderClass extends ServiceProvider
 {

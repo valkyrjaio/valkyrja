@@ -17,8 +17,7 @@ use Valkyrja\Support\Collection;
 /**
  * Class Headers.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Headers extends Collection implements HeadersContract
 {

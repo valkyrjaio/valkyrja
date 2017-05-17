@@ -16,8 +16,7 @@ use Twig_Environment;
 /**
  * Interface TwigView.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface TwigView extends View
 {

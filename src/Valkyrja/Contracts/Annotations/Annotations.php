@@ -20,8 +20,7 @@ use ReflectionProperty;
 /**
  * Interface Annotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Annotations
 {

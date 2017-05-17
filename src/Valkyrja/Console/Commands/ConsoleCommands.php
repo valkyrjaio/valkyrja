@@ -18,8 +18,7 @@ use Valkyrja\Console\Input\Argument;
 /**
  * Class ConsoleCommands.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ConsoleCommands extends CommandHandler
 {

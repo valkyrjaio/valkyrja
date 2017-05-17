@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class RoutingConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class RoutingConfig
 {

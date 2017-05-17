@@ -16,8 +16,7 @@ use JsonSerializable;
 /**
  * Class Model.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 abstract class Model implements JsonSerializable
 {

@@ -18,8 +18,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class ContainerAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ContainerAnnotations extends Annotations implements ContainerAnnotationsContract
 {

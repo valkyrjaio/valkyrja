@@ -35,7 +35,7 @@ use Valkyrja\Routing\Route;
  *
  * @Route(path = '/', name = 'noAClass::Property')
  *
- * @author Melech Mizrachi
+ * @author      Melech Mizrachi
  */
 class AnnotationsParserTest extends TestCase
 {

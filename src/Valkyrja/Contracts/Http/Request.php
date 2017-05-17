@@ -17,8 +17,7 @@ use Valkyrja\Http\RequestMethod;
 /**
  * Interface Request.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Request
 {
@@ -335,7 +334,7 @@ interface Request
      */
     public function get(string $key, $default = null);
 
- // : mixed;
+    // : mixed;
 
     /**
      * Returns current script name.

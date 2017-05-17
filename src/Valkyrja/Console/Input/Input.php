@@ -17,8 +17,7 @@ use Valkyrja\Contracts\Http\Request;
 /**
  * Class Input.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Input implements InputContract
 {

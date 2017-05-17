@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Enum FormatBackground.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class FormatBackground extends Enum
 {

@@ -20,8 +20,7 @@ use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 /**
  * Class ResponseBuilder.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ResponseBuilder implements ResponseBuilderContract
 {

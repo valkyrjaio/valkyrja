@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Path;
 /**
  * Interface PathGenerator.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface PathGenerator
 {

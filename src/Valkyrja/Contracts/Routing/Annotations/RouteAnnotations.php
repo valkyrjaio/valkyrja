@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Annotations\Annotations;
 /**
  * Interface RouteAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface RouteAnnotations extends Annotations
 {

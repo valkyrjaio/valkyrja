@@ -18,8 +18,7 @@ use Valkyrja\Console\Enums\FormatOption;
 /**
  * Interface OutputFormatter.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface OutputFormatter
 {

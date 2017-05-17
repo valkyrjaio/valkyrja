@@ -17,8 +17,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class ServiceAlias.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ServiceAlias extends Dispatch implements Annotation
 {

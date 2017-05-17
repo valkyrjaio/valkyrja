@@ -49,8 +49,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Enum CoreComponent.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class CoreComponent extends Enum
 {

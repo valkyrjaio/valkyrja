@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Support\Collection;
 /**
  * Interface Headers.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Headers extends Collection
 {

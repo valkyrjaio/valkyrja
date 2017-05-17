@@ -22,8 +22,7 @@ use Valkyrja\Contracts\Path\PathParser;
 /**
  * Interface Console.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Console extends Cacheable
 {

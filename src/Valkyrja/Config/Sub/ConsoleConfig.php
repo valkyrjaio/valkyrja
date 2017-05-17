@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class ConsoleConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ConsoleConfig
 {
@@ -71,17 +70,17 @@ class ConsoleConfig
      */
     public function __construct(Env $env)
     {
-        $this->useAnnotations = $env::CONSOLE_USE_ANNOTATIONS
+        $this->useAnnotations            = $env::CONSOLE_USE_ANNOTATIONS
             ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY
             ?? $this->useAnnotationsExclusively;
-        $this->handlers = $env::CONSOLE_HANDLERS
+        $this->handlers                  = $env::CONSOLE_HANDLERS
             ?? $this->handlers;
-        $this->filePath = $env::CONSOLE_FILE_PATH
+        $this->filePath                  = $env::CONSOLE_FILE_PATH
             ?? Directory::basePath('bootstrap/commands.php');
-        $this->cacheFilePath = $env::CONSOLE_CACHE_FILE_PATH
+        $this->cacheFilePath             = $env::CONSOLE_CACHE_FILE_PATH
             ?? Directory::storagePath('framework/cache/commands.php');
-        $this->useCacheFile = $env::CONSOLE_USE_CACHE_FILE
+        $this->useCacheFile              = $env::CONSOLE_USE_CACHE_FILE
             ?? $this->useCacheFile;
     }
 }

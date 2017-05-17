@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Config\Env as EnvContract;
 /**
  * Class Env.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Env implements EnvContract
 {

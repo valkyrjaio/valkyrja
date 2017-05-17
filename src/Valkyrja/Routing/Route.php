@@ -18,8 +18,7 @@ use Valkyrja\Http\RequestMethod;
 /**
  * Class Route.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Route extends Dispatch implements Annotation
 {

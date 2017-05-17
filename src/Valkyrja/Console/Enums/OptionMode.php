@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Enum InputOption.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class OptionMode extends Enum
 {

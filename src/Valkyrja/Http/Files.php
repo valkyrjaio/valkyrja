@@ -19,8 +19,7 @@ use Valkyrja\Support\Collection;
 /**
  * Class Files.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Files extends Collection implements FilesContract
 {

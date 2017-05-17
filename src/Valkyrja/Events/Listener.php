@@ -17,8 +17,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class Event.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Listener extends Dispatch implements Annotation
 {

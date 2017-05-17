@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Console;
 /**
  * Interface ConsoleKernel.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Kernel
 {

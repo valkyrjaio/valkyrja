@@ -16,8 +16,7 @@ use Exception;
 /**
  * Interface HttpException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface HttpException
 {

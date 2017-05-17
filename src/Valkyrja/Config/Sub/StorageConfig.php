@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class StorageConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class StorageConfig
 {

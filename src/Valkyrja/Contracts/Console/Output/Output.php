@@ -16,8 +16,7 @@ use Valkyrja\Console\Enums\OutputStyle;
 /**
  * Interface Output.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Output
 {

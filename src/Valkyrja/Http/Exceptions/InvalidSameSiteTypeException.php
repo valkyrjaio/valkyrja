@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidSameSiteTypeException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidSameSiteTypeException extends InvalidArgumentException
 {

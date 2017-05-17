@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidFunctionException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidFunctionException extends InvalidArgumentException
 {

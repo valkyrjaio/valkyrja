@@ -16,8 +16,7 @@ use Valkyrja\Console\CommandHandler;
 /**
  * Class RoutingCache.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class RoutesCacheCommand extends CommandHandler
 {

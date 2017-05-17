@@ -16,8 +16,7 @@ use Exception;
 /**
  * Class InvalidRoutePath.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidRoutePath extends Exception
 {

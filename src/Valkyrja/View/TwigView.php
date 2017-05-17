@@ -20,8 +20,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class TwigView.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class TwigView extends View implements TwigViewContract
 {

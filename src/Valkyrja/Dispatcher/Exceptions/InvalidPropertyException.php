@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidPropertyException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidPropertyException extends InvalidArgumentException
 {

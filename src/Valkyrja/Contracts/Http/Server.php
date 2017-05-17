@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Support\Collection;
 /**
  * Interface Server.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Server extends Collection
 {

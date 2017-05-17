@@ -16,8 +16,7 @@ use RuntimeException;
 /**
  * Class SessionStartFailure.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class SessionStartFailure extends RuntimeException
 {

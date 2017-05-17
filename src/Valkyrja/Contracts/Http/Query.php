@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Support\Collection;
 /**
  * Interface Query.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Query extends Collection
 {

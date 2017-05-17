@@ -18,8 +18,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class ListenerAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
 {
@@ -68,7 +67,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
                 $dispatch->getClass(),
                 $dispatch->getMethod() ?? '__construct'
             );
-            $parameters = $methodReflection->getParameters();
+            $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
             $dispatch->setDependencies($this->getDependencies(...$parameters));

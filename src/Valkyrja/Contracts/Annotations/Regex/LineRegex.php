@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Annotations\Regex;
 /**
  * Interface LineRegex.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface LineRegex
 {

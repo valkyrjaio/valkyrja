@@ -33,8 +33,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Interface Application.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Application
 {

@@ -17,8 +17,7 @@ use Valkyrja\Dispatcher\Dispatch;
 /**
  * Class Service.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Service extends Dispatch implements Annotation
 {

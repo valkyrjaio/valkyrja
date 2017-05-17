@@ -25,8 +25,7 @@ use Valkyrja\Routing\Commands\RoutesListCommand;
 /**
  * Class BootstrapConsole.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class BootstrapConsole
 {

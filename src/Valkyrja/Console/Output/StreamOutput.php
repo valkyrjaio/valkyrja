@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Console\Output\StreamOutput as StreamOutputContract;
 /**
  * Class Output.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class StreamOutput extends Output implements StreamOutputContract
 {

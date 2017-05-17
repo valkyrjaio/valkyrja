@@ -18,7 +18,7 @@ use ReflectionClass;
 /**
  * Class Enum.
  *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 abstract class Enum implements JsonSerializable
 {

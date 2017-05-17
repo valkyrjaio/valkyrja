@@ -22,8 +22,7 @@ use Valkyrja\Contracts\Events\Events;
 /**
  * Class Container.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Container implements ContainerContract
 {

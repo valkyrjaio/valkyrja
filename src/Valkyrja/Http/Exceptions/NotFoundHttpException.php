@@ -17,8 +17,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Class NotFoundHttpException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class NotFoundHttpException extends HttpException
 {

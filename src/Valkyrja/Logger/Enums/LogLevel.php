@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Enum Class LogLevel.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class LogLevel extends Enum
 {

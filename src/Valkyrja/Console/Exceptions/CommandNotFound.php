@@ -16,8 +16,7 @@ use RuntimeException;
 /**
  * Class CommandNotFound.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class CommandNotFound extends RuntimeException
 {

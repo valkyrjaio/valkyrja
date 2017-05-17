@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Http\Request;
 /**
  * Interface Input.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Input
 {

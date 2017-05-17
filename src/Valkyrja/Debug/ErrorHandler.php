@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Debug\ErrorHandler as ErrorHandlerContract;
 /**
  * Class ErrorHandler.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ErrorHandler implements ErrorHandlerContract
 {

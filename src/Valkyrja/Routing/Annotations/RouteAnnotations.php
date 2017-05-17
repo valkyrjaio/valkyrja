@@ -19,8 +19,7 @@ use Valkyrja\Routing\Route;
 /**
  * Class RouteAnnotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {

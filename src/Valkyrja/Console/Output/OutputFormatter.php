@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract
 /**
  * Class OutputFormatter.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class OutputFormatter implements OutputFormatterContract
 {

@@ -14,8 +14,7 @@ namespace Valkyrja\Contracts\Console\Output;
 /**
  * Interface Output.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface StreamOutput extends Output
 {

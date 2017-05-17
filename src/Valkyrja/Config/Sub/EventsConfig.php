@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class EventsConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class EventsConfig
 {
@@ -71,17 +70,17 @@ class EventsConfig
      */
     public function __construct(Env $env)
     {
-        $this->useAnnotations = $env::EVENTS_USE_ANNOTATIONS
+        $this->useAnnotations            = $env::EVENTS_USE_ANNOTATIONS
             ?? $this->useAnnotations;
         $this->useAnnotationsExclusively = $env::EVENTS_USE_ANNOTATIONS_EXCLUSIVELY
             ?? $this->useAnnotationsExclusively;
-        $this->classes = $env::EVENTS_CLASSES
+        $this->classes                   = $env::EVENTS_CLASSES
             ?? $this->classes;
-        $this->filePath = $env::EVENTS_FILE_PATH
+        $this->filePath                  = $env::EVENTS_FILE_PATH
             ?? Directory::basePath('bootstrap/events.php');
-        $this->cacheFilePath = $env::EVENTS_CACHE_FILE_PATH
+        $this->cacheFilePath             = $env::EVENTS_CACHE_FILE_PATH
             ?? Directory::storagePath('framework/cache/events.php');
-        $this->useCacheFile = $env::EVENTS_USE_CACHE_FILE
+        $this->useCacheFile              = $env::EVENTS_USE_CACHE_FILE
             ?? $this->useCacheFile;
     }
 }

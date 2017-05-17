@@ -19,8 +19,7 @@ use Valkyrja\Session\Exceptions\SessionStartFailure;
 /**
  * Class Session.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Session implements SessionContract
 {

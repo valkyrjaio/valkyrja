@@ -24,8 +24,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Class ExceptionHandler.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ExceptionHandler implements ExceptionHandlerContract
 {
@@ -223,7 +222,7 @@ class ExceptionHandler implements ExceptionHandlerContract
                 $exceptions = [
                     $exception,
                 ];
-                $e = $exception;
+                $e          = $exception;
 
                 while ($e = $e->getPrevious()) {
                     $exceptions[] = $e;

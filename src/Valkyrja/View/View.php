@@ -18,8 +18,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class View.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class View implements ViewContract
 {

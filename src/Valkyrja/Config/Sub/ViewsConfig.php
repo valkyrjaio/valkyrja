@@ -17,8 +17,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class ViewsConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class ViewsConfig
 {

@@ -20,8 +20,7 @@ use Valkyrja\Events\Events;
 /**
  * Class AppConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class AppConfig
 {
@@ -103,15 +102,15 @@ class AppConfig
      */
     public function __construct(Env $env)
     {
-        $this->env = $env::APP_ENV
+        $this->env      = $env::APP_ENV
             ?? $this->env;
-        $this->debug = $env::APP_DEBUG
+        $this->debug    = $env::APP_DEBUG
             ?? $this->debug;
-        $this->url = $env::APP_URL
+        $this->url      = $env::APP_URL
             ?? $this->url;
         $this->timezone = $env::APP_TIMEZONE
             ?? $this->timezone;
-        $this->version = $env::APP_VERSION
+        $this->version  = $env::APP_VERSION
             ?? $this->version;
 
         $this->container  = $env::APP_CONTAINER

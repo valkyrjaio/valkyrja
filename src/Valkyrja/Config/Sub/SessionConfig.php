@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Config\Env;
 /**
  * Class SessionConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class SessionConfig
 {

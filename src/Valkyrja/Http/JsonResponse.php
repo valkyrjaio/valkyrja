@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 /**
  * Class JsonResponse.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class JsonResponse extends Response implements JsonResponseContract
 {

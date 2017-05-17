@@ -19,8 +19,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Class HttpException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class HttpException extends RuntimeException implements HttpExceptionContract
 {

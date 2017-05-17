@@ -17,8 +17,7 @@ use Valkyrja\Events\Listener;
 /**
  * Interface Events.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Events extends Cacheable
 {

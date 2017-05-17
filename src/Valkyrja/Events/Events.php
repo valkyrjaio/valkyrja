@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Events\Events as EventsContract;
 /**
  * Class Events.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Events implements EventsContract
 {

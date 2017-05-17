@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Class ExitCode.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class ExitCode extends Enum
 {

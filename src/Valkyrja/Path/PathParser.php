@@ -17,8 +17,7 @@ use Valkyrja\Contracts\Path\PathParser as PathParserContract;
 /**
  * Class PathParser.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class PathParser implements PathParserContract
 {

@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 /**
  * Class Cookies.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  *
  * @property \Valkyrja\Contracts\Http\Cookie[] $collection
  *

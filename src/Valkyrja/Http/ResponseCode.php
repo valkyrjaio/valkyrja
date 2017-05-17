@@ -16,8 +16,7 @@ use Valkyrja\Enum\Enum;
 /**
  * Final Class ResponseCode.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 final class ResponseCode extends Enum
 {

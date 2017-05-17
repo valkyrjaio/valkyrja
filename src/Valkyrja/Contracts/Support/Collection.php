@@ -16,8 +16,7 @@ namespace Valkyrja\Contracts\Support;
 /**
  * Interface Collection.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Collection
 {

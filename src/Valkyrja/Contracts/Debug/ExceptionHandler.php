@@ -17,8 +17,7 @@ use Valkyrja\Contracts\Http\Response;
 /**
  * Interface ExceptionHandler.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface ExceptionHandler
 {

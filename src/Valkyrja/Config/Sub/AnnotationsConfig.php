@@ -23,8 +23,7 @@ use Valkyrja\Support\Directory;
 /**
  * Class AnnotationsConfig.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class AnnotationsConfig
 {

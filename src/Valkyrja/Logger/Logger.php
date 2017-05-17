@@ -18,8 +18,7 @@ use Valkyrja\Logger\Enums\LogLevel;
 /**
  * Class Logger.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Logger implements LoggerContract
 {

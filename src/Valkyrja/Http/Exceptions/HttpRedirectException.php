@@ -17,8 +17,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Class HttpRedirectException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class HttpRedirectException extends HttpException
 {

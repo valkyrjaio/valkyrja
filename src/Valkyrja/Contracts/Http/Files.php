@@ -18,8 +18,7 @@ use Valkyrja\Contracts\Support\Collection;
 /**
  * Interface Files.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Files extends Collection
 {

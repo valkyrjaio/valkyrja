@@ -41,8 +41,7 @@ use Valkyrja\Http\ResponseCode;
 /**
  * Class Application.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Application implements ApplicationContract
 {

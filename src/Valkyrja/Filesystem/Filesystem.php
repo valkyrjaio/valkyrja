@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Filesystem\Filesystem as FilesystemContract;
 /**
  * Class Filesystem.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Filesystem implements FilesystemContract
 {

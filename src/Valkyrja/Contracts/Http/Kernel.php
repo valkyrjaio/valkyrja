@@ -17,8 +17,7 @@ use Valkyrja\Contracts\Routing\Router;
 /**
  * Interface Kernel.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Kernel
 {

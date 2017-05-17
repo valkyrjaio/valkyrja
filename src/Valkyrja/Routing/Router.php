@@ -27,8 +27,7 @@ use Valkyrja\Routing\Exceptions\InvalidRouteName;
 /**
  * Class Router.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Router implements RouterContract
 {

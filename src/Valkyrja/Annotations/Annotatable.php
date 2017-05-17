@@ -14,8 +14,7 @@ namespace Valkyrja\Annotations;
 /**
  * Class Annotatable.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 trait Annotatable
 {

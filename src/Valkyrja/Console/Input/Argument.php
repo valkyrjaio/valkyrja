@@ -16,8 +16,7 @@ use Valkyrja\Console\Enums\ArgumentMode;
 /**
  * Class Argument.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Argument
 {

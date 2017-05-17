@@ -16,8 +16,7 @@ use InvalidArgumentException;
 /**
  * Class InvalidServiceIdException.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class InvalidServiceIdException extends InvalidArgumentException
 {

@@ -23,8 +23,7 @@ use Valkyrja\Routing\Route;
 /**
  * Interface Router.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 interface Router extends Cacheable
 {

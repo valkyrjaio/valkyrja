@@ -19,8 +19,7 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContrac
 /**
  * Class Annotations.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class AnnotationsParser implements AnnotationsParserContract
 {

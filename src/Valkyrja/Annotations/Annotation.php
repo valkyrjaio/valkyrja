@@ -16,8 +16,7 @@ use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 /**
  * Class Annotation.
  *
- *
- * @author  Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class Annotation implements AnnotationContract
 {
