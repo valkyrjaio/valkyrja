@@ -45,13 +45,13 @@ class CacheAllCommand extends CommandHandler
         config()->app->debug = false;
         config()->app->env   = 'production';
 
-        $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
+        $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
         $eventsCache    = console()->matchCommand(EventsCache::COMMAND);
         $routesCache    = console()->matchCommand(RoutesCacheCommand::COMMAND);
 
-        console()->dispatchCommand($consoleCache);
         console()->dispatchCommand($containerCache);
+        console()->dispatchCommand($consoleCache);
         console()->dispatchCommand($eventsCache);
         console()->dispatchCommand($routesCache);
 
