@@ -32,10 +32,12 @@ class ConsoleCache extends CommandHandler
      */
     public function run(): int
     {
+        $cache = base64_encode(serialize(console()->getCacheable()));
+
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()->console->cacheFilePath,
-            '<?php return ' . var_export(console()->getCacheable(), true) . ';'
+            '<?php return ' . var_export($cache, true) . ';'
         );
 
         if ($result === false) {

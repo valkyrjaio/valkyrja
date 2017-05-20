@@ -541,7 +541,7 @@ class Router implements RouterContract
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useCacheFile) {
             // Set the application routes with said file
-            $routesCache = unserialize(
+            $cache = unserialize(
                 base64_decode(require $this->app->config()->routing->cacheFilePath, true),
                 [
                     'allowed_classes' => [
@@ -550,10 +550,10 @@ class Router implements RouterContract
                 ]
             );
 
-            self::$routes        = $routesCache['routes'];
-            self::$staticRoutes  = $routesCache['staticRoutes'];
-            self::$dynamicRoutes = $routesCache['dynamicRoutes'];
-            self::$namedRoutes   = $routesCache['namedRoutes'];
+            self::$routes        = $cache['routes'];
+            self::$staticRoutes  = $cache['staticRoutes'];
+            self::$dynamicRoutes = $cache['dynamicRoutes'];
+            self::$namedRoutes   = $cache['namedRoutes'];
 
             // Then return out of routes setup
             return;
@@ -634,12 +634,10 @@ class Router implements RouterContract
         $this->app->config()->routing->useCacheFile = $originalUseCacheFile;
 
         return [
-            base64_encode(serialize([
-                'routes'        => self::$routes,
-                'staticRoutes'  => self::$staticRoutes,
-                'dynamicRoutes' => self::$dynamicRoutes,
-                'namedRoutes'   => self::$namedRoutes,
-            ])),
+            'routes'        => self::$routes,
+            'staticRoutes'  => self::$staticRoutes,
+            'dynamicRoutes' => self::$dynamicRoutes,
+            'namedRoutes'   => self::$namedRoutes,
         ];
     }
 }

@@ -303,7 +303,14 @@ class Console implements ConsoleContract
         // If the application should use the events cache files
         if ($this->app->config()->console->useCacheFile) {
             // Set the application routes with said file
-            $cache = require $this->app->config()->console->cacheFilePath;
+            $cache = unserialize(
+                base64_decode(require $this->app->config()->console->cacheFilePath, true),
+                [
+                    'allowed_classes' => [
+                        Command::class,
+                    ],
+                ]
+            );
 
             self::$commands      = $cache['commands'];
             self::$namedCommands = $cache['namedCommands'];

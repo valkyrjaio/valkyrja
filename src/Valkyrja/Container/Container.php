@@ -487,7 +487,14 @@ class Container implements ContainerContract
         // If the application should use the container cache files
         if ($this->app->config()->container->useCacheFile) {
             // Set the application routes with said file
-            $cache = require $this->app->config()->container->cacheFilePath;
+            $cache = unserialize(
+                base64_decode(require $this->app->config()->container->cacheFilePath, true),
+                [
+                    'allowed_classes' => [
+                        Service::class,
+                    ],
+                ]
+            );
 
             self::$services = $cache['services'];
             self::$provided = $cache['provided'];

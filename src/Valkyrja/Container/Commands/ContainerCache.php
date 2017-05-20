@@ -32,10 +32,12 @@ class ContainerCache extends CommandHandler
      */
     public function run(): int
     {
+        $cache = base64_encode(serialize(container()->getCacheable()));
+
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()->container->cacheFilePath,
-            '<?php return ' . var_export(container()->getCacheable(), true) . ';'
+            '<?php return ' . var_export($cache, true) . ';'
         );
 
         if ($result === false) {

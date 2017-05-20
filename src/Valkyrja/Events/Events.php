@@ -291,7 +291,14 @@ class Events implements EventsContract
         // If the application should use the events cache files
         if ($this->app->config()->events->useCacheFile) {
             // Set the application routes with said file
-            self::$events = require $this->app->config()->events->cacheFilePath;
+            self::$events = unserialize(
+                base64_decode(require $this->app->config()->events->cacheFilePath, true),
+                [
+                    'allowed_classes' => [
+                        Event::class,
+                    ],
+                ]
+            );
 
             // Then return out of routes setup
             return;
