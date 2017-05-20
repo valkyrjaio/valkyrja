@@ -20,9 +20,12 @@
     "monolog/monolog"  : "~1.22"
   },
   "require-dev"       : {
-    "fzaninotto/faker" : "~1.4",
-    "mockery/mockery"  : "0.9.*",
-    "phpunit/phpunit"  : "~6.1"
+    "fzaninotto/faker"  : "~1.4",
+    "guzzlehttp/guzzle" : "~6.2",
+    "mockery/mockery"   : "~0.9",
+    "phpunit/phpunit"   : "~6.1",
+    "predis/predis"     : "~1.1",
+    "twig/twig"         : "~1.33"
   },
   "autoload"          : {
     "psr-4" : {
@@ -35,8 +38,8 @@
   },
   "suggest"           : {
     "guzzlehttp/guzzle" : "Required for use with Valkyrja Client (^6.2).",
-    "twig/twig"         : "Optional templating engine. Required if using TwigServiceProvider (^1.33).",
-    "predis/predis"     : "Required for use with Redis Valkyrja Cache (^1.1)."
+    "predis/predis"     : "Required for use with Redis Valkyrja Cache (^1.1).",
+    "twig/twig"         : "Optional templating engine. Required if using TwigServiceProvider (^1.33)."
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
