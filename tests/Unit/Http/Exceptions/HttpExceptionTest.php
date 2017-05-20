@@ -12,8 +12,8 @@
 namespace Valkyrja\Tests\Unit\Http\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
 
 /**
  * Test the HttpException class.
