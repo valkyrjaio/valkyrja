@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Container\Enums;
 
-use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
@@ -83,7 +82,6 @@ final class CoreComponent extends Enum
     public const SESSION               = Session::class;
     public const VIEW                  = View::class;
     public const CLIENT                = Client::class;
-    public const STREAM_HANDLER        = StreamHandler::class;
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
 
@@ -117,7 +115,6 @@ final class CoreComponent extends Enum
         self::SESSION,
         self::VIEW,
         self::CLIENT,
-        self::STREAM_HANDLER,
         self::LOGGER_INTERFACE,
         self::LOGGER,
     ];

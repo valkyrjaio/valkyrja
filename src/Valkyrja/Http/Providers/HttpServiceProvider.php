@@ -12,7 +12,6 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -39,6 +38,8 @@ class HttpServiceProvider extends ServiceProvider
     /**
      * Publish the service provider.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     public function publish(): void
@@ -55,13 +56,9 @@ class HttpServiceProvider extends ServiceProvider
      */
     protected function bindKernel(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::KERNEL)
-                ->setClass(Kernel::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::ROUTER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::KERNEL,
+            new Kernel($this->app, $this->app->router())
         );
     }
 
@@ -72,29 +69,24 @@ class HttpServiceProvider extends ServiceProvider
      */
     protected function bindRequest(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::REQUEST)
-                ->setClass(Request::class)
-                ->setMethod('createFromGlobals')
-                ->setStatic(true),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::REQUEST,
+            Request::createFromGlobals()
         );
     }
 
     /**
      * Bind the response.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     protected function bindResponse(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(CoreComponent::RESPONSE)
-                ->setClass(Response::class),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::RESPONSE,
+            new Response()
         );
     }
 }

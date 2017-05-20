@@ -12,7 +12,6 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Support\ServiceProvider;
 
@@ -49,13 +48,9 @@ class ResponseBuilderServiceProvider extends ServiceProvider
      */
     protected function bindResponseBuilder(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::RESPONSE_BUILDER)
-                ->setClass(ResponseBuilder::class)
-                ->setDependencies([CoreComponent::APP]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::RESPONSE_BUILDER,
+            new ResponseBuilder($this->app)
         );
     }
 }

@@ -12,7 +12,6 @@
 namespace Valkyrja\Session\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\ServiceProvider;
 
@@ -35,6 +34,9 @@ class SessionServiceProvider extends ServiceProvider
     /**
      * Publish the service provider.
      *
+     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
+     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
+     *
      * @return void
      */
     public function publish(): void
@@ -45,17 +47,16 @@ class SessionServiceProvider extends ServiceProvider
     /**
      * Bind the session.
      *
+     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
+     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
+     *
      * @return void
      */
     public function bindSession(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::SESSION)
-                ->setClass(Session::class)
-                ->setDependencies([CoreComponent::APP]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::SESSION,
+            new Session($this->app)
         );
     }
 }

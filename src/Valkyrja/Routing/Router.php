@@ -75,13 +75,6 @@ class Router implements RouterContract
      * Router constructor.
      *
      * @param \Valkyrja\Contracts\Application $application The application
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      */
     public function __construct(ApplicationContract $application)
     {

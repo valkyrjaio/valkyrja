@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Routing\Router;
 use Valkyrja\Support\ServiceProvider;
 
@@ -51,13 +50,9 @@ class RoutingServiceProvider extends ServiceProvider
      */
     protected function bindRouter(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::ROUTER)
-                ->setClass(Router::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::ROUTER,
+            new Router($this->app)
         );
     }
 }

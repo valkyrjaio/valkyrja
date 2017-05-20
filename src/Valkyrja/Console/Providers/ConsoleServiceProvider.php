@@ -17,7 +17,6 @@ use Valkyrja\Console\Kernel;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Output\OutputFormatter;
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Support\ServiceProvider;
 
 /**
@@ -63,13 +62,9 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function bindConsole(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::CONSOLE)
-                ->setClass(Console::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::PATH_PARSER, CoreComponent::PATH_GENERATOR]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::CONSOLE,
+            new Console($this->app)
         );
     }
 
@@ -80,13 +75,12 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function bindKernel(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::CONSOLE_KERNEL)
-                ->setClass(Kernel::class)
-                ->setDependencies([CoreComponent::APP, CoreComponent::CONSOLE]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::CONSOLE_KERNEL,
+            new Kernel(
+                $this->app,
+                $this->app->container()->get(CoreComponent::CONSOLE)
+            )
         );
     }
 
@@ -97,13 +91,12 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function bindInput(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::INPUT)
-                ->setClass(Input::class)
-                ->setDependencies([CoreComponent::REQUEST, CoreComponent::CONSOLE]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::INPUT,
+            new Input(
+                $this->app->container()->get(CoreComponent::REQUEST),
+                $this->app->container()->get(CoreComponent::CONSOLE)
+            )
         );
     }
 
@@ -114,13 +107,9 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function bindOutputFormatter(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::OUTPUT_FORMATTER)
-                ->setClass(OutputFormatter::class)
-                ->setDependencies(),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::OUTPUT_FORMATTER,
+            new OutputFormatter()
         );
     }
 
@@ -131,13 +120,11 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected function bindOutput(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::OUTPUT)
-                ->setClass(Output::class)
-                ->setDependencies([CoreComponent::OUTPUT_FORMATTER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::OUTPUT,
+            new Output(
+                $this->app->container()->get(CoreComponent::OUTPUT_FORMATTER)
+            )
         );
     }
 }

@@ -14,8 +14,6 @@ namespace Valkyrja\Logger\Providers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
-use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Support\ServiceProvider;
@@ -33,7 +31,6 @@ class LoggerServiceProvider extends ServiceProvider
      * @var array
      */
     public static $provides = [
-        StreamHandler::class,
         CoreComponent::LOGGER_INTERFACE,
         CoreComponent::LOGGER,
     ];
@@ -56,44 +53,18 @@ class LoggerServiceProvider extends ServiceProvider
      */
     protected function bindLoggerInterface(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(StreamHandler::class)
-                ->setClass(StreamHandler::class)
-                ->setArguments([
-                    $this->app->config()->logger->filePath,
-                    LogLevel::DEBUG,
-                ]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::LOGGER_INTERFACE,
+            new MonologLogger(
+                $this->app->config()->logger->name,
+                [
+                    new StreamHandler(
+                        $this->app->config()->logger->filePath,
+                        LogLevel::DEBUG
+                    ),
+                ]
+            )
         );
-
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::LOGGER_INTERFACE)
-                ->setClass(MonologLogger::class)
-                ->setArguments([
-                    $this->app->config()->logger->name,
-                    (new Dispatch())
-                        ->setClass(static::class)
-                        ->setMethod('getLoggerHandlers')
-                        ->setStatic(true),
-                ]),
-            false
-        );
-    }
-
-    /**
-     * Get the monolog arguments.
-     *
-     * @return array
-     */
-    public static function getLoggerHandlers(): array
-    {
-        return [
-            container()->get(StreamHandler::class),
-        ];
     }
 
     /**
@@ -103,13 +74,11 @@ class LoggerServiceProvider extends ServiceProvider
      */
     protected function bindLogger(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::LOGGER)
-                ->setClass(Logger::class)
-                ->setDependencies([CoreComponent::LOGGER_INTERFACE]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::LOGGER,
+            new Logger(
+                $this->app->container()->get(CoreComponent::LOGGER_INTERFACE)
+            )
         );
     }
 }

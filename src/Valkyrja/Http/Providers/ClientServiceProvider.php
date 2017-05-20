@@ -12,7 +12,6 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Http\Client;
 use Valkyrja\Support\ServiceProvider;
 
@@ -49,12 +48,9 @@ class ClientServiceProvider extends ServiceProvider
      */
     protected function bindClient(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::CLIENT)
-                ->setClass(Client::class),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::CLIENT,
+            new Client()
         );
     }
 }

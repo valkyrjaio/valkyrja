@@ -12,7 +12,6 @@
 namespace Valkyrja\Filesystem\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Support\ServiceProvider;
 
@@ -49,12 +48,9 @@ class FilesystemServiceProvider extends ServiceProvider
      */
     protected function bindFilesystem(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::FILESYSTEM)
-                ->setClass(Filesystem::class),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::FILESYSTEM,
+            new Filesystem()
         );
     }
 }

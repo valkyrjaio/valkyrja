@@ -16,7 +16,6 @@ use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Support\ServiceProvider;
@@ -64,13 +63,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindAnnotationsParser(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::ANNOTATIONS_PARSER)
-                ->setClass(AnnotationsParser::class)
-                ->setDependencies([CoreComponent::CONFIG]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::ANNOTATIONS_PARSER,
+            new AnnotationsParser(
+                $this->app->container()->get(CoreComponent::CONFIG)
+            )
         );
     }
 
@@ -81,13 +78,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindAnnotations(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::ANNOTATIONS)
-                ->setClass(Annotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::ANNOTATIONS,
+            new Annotations(
+                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+            )
         );
     }
 
@@ -98,13 +93,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindContainerAnnotations(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::CONTAINER_ANNOTATIONS)
-                ->setClass(ContainerAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::CONTAINER_ANNOTATIONS,
+            new ContainerAnnotations(
+                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+            )
         );
     }
 
@@ -115,13 +108,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindListenerAnnotations(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::LISTENER_ANNOTATIONS)
-                ->setClass(ListenerAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::LISTENER_ANNOTATIONS,
+            new ListenerAnnotations(
+                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+            )
         );
     }
 
@@ -132,13 +123,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindCommandAnnotations(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::COMMAND_ANNOTATIONS)
-                ->setClass(CommandAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::COMMAND_ANNOTATIONS,
+            new CommandAnnotations(
+                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+            )
         );
     }
 
@@ -149,13 +138,11 @@ class AnnotationsServiceProvider extends ServiceProvider
      */
     protected function bindRouteAnnotations(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setSingleton(true)
-                ->setId(CoreComponent::ROUTE_ANNOTATIONS)
-                ->setClass(RouteAnnotations::class)
-                ->setDependencies([CoreComponent::ANNOTATIONS_PARSER]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::ROUTE_ANNOTATIONS,
+            new RouteAnnotations(
+                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+            )
         );
     }
 }
