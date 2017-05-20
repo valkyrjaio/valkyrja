@@ -592,8 +592,7 @@ class Request implements RequestContract
      */
     public function setHeaders(array $headers = []): RequestContract
     {
-        $headers = $headers
-            ?: $this->server()->getHeaders();
+        $headers = $headers ?: $this->server()->getHeaders();
 
         $this->headers = new Headers($headers);
 
