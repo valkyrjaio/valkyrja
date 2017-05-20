@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Config\Sub;
 
+use Twig_Loader_Filesystem;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Support\Directory;
 
@@ -36,6 +37,13 @@ class TwigViewsConfig
     public $dir;
 
     /**
+     * Twig templates directories.
+     *
+     * @var array
+     */
+    public $dirs = [];
+
+    /**
      * Twig compiled templates directory.
      *
      * @var string
@@ -57,7 +65,11 @@ class TwigViewsConfig
     public function __construct(Env $env)
     {
         $this->dir         = $env::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views/twig');
+        $this->dirs        = $env::VIEWS_TWIG_DIRS ?? $this->dirs;
         $this->compiledDir = $env::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views/twig');
         $this->extensions  = $env::VIEWS_TWIG_EXTENSIONS ?? $this->extensions;
+
+        // Add the main directory to the list of directories as the main namespace
+        $this->dirs[Twig_Loader_Filesystem::MAIN_NAMESPACE] = $this->dir;
     }
 }
