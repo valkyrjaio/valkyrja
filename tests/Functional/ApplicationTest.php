@@ -18,6 +18,8 @@ use Valkyrja\Config\Env;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
+use Valkyrja\Contracts\Path\PathGenerator;
+use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
@@ -210,6 +212,26 @@ class ApplicationTest extends TestCase
     public function testKernel(): void
     {
         $this->assertEquals(true, $this->app->kernel() instanceof Kernel);
+    }
+
+    /**
+     * Test the pathGenerator() helper method.
+     *
+     * @return void
+     */
+    public function testPathGenerator(): void
+    {
+        $this->assertEquals(true, $this->app->pathGenerator() instanceof PathGenerator);
+    }
+
+    /**
+     * Test the pathParser() helper method.
+     *
+     * @return void
+     */
+    public function testPathParser(): void
+    {
+        $this->assertEquals(true, $this->app->pathParser() instanceof PathParser);
     }
 
     /**
