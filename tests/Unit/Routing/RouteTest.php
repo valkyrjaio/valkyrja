@@ -342,29 +342,4 @@ class RouteTest extends TestCase
 
         $this->assertEquals(true, $this->getRoute()->getSecure());
     }
-
-    /**
-     * Test the getRoute method.
-     *
-     * @return void
-     */
-    public function testGetRoute(): void
-    {
-        $route = Route::getRoute(['path' => $this->stringValue]);
-
-        $this->assertEquals(true, $route instanceof Route);
-    }
-
-    /**
-     * Test the __set_state magic method.
-     *
-     * @return void
-     */
-    public function testSetState(): void
-    {
-        /* @noinspection ImplicitMagicMethodCallInspection */
-        $route = Route::__set_state(['path' => $this->stringValue]);
-
-        $this->assertEquals(true, $route instanceof Route);
-    }
 }

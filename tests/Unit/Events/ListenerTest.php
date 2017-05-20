@@ -92,29 +92,4 @@ class ListenerTest extends TestCase
 
         $this->assertEquals(true, $set instanceof Listener);
     }
-
-    /**
-     * Test the getListener method.
-     *
-     * @return void
-     */
-    public function testGetListener(): void
-    {
-        $dispatch = Listener::getListener(['event' => $this->value]);
-
-        $this->assertEquals(true, $dispatch instanceof Listener);
-    }
-
-    /**
-     * Test the __set_state magic method.
-     *
-     * @return void
-     */
-    public function testSetState(): void
-    {
-        /* @noinspection ImplicitMagicMethodCallInspection */
-        $dispatch = Listener::__set_state(['event' => $this->value]);
-
-        $this->assertEquals(true, $dispatch instanceof Listener);
-    }
 }

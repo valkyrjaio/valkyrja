@@ -138,29 +138,4 @@ class ServiceTest extends TestCase
 
         $this->assertEquals(true, $set instanceof Service);
     }
-
-    /**
-     * Test the getService method.
-     *
-     * @return void
-     */
-    public function testGetService(): void
-    {
-        $service = Service::getService(['class' => $this->value]);
-
-        $this->assertEquals(true, $service instanceof Service);
-    }
-
-    /**
-     * Test the __set_state magic method.
-     *
-     * @return void
-     */
-    public function testSetState(): void
-    {
-        /* @noinspection ImplicitMagicMethodCallInspection */
-        $service = Service::__set_state(['class' => $this->value]);
-
-        $this->assertEquals(true, $service instanceof Service);
-    }
 }

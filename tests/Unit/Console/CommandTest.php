@@ -264,29 +264,4 @@ class CommandTest extends TestCase
 
         $this->assertEquals(true, $set instanceof Command);
     }
-
-    /**
-     * Test the getCommand method.
-     *
-     * @return void
-     */
-    public function testGetCommand(): void
-    {
-        $command = Command::getCommand(['path' => $this->value]);
-
-        $this->assertEquals(true, $command instanceof Command);
-    }
-
-    /**
-     * Test the __set_state magic method.
-     *
-     * @return void
-     */
-    public function testSetState(): void
-    {
-        /* @noinspection ImplicitMagicMethodCallInspection */
-        $command = Command::__set_state(['path' => $this->value]);
-
-        $this->assertEquals(true, $command instanceof Command);
-    }
 }
