@@ -139,8 +139,8 @@ class EnumTest extends TestCase
     {
         $this->assertEquals(
             [
-                EnumClass::FOO,
-                EnumClass::BAR,
+                EnumClass::FOO => EnumClass::FOO,
+                EnumClass::BAR => EnumClass::BAR,
             ],
             $this->getEnum()->validValues()
         );
@@ -157,8 +157,8 @@ class EnumTest extends TestCase
             [],
             array_diff(
                 [
-                    EnumClass::FOO,
-                    EnumClass::BAR,
+                    EnumClass::FOO => EnumClass::FOO,
+                    EnumClass::BAR => EnumClass::BAR,
                 ],
                 $this->getEnumEmpty()->validValues()
             )
