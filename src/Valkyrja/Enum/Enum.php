@@ -66,13 +66,7 @@ abstract class Enum implements JsonSerializable
      */
     public static function isValid($value): bool
     {
-        // If the value is a set value in the enum
-        if (in_array($value, static::validValues(), true)) {
-            // It is valid!
-            return true;
-        }
-
-        return false;
+        return in_array($value, static::validValues(), true);
     }
 
     /**
