@@ -36,9 +36,9 @@ use Valkyrja\Debug\Debug;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class Application.

@@ -18,8 +18,8 @@ use Valkyrja\Application;
 use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
 
 /**
  * Class ExceptionHandler.
