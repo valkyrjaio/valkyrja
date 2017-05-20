@@ -14,7 +14,7 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Class OutputStyle.
+ * Enum OutputStyle.
  *
  * @author Melech Mizrachi
  */
@@ -25,8 +25,8 @@ final class OutputStyle extends Enum
     public const RAW    = 'RAW';
 
     protected const VALUES = [
-        self::NORMAL,
-        self::PLAIN,
-        self::RAW,
+        self::NORMAL => self::NORMAL,
+        self::PLAIN  => self::PLAIN,
+        self::RAW    => self::RAW,
     ];
 }

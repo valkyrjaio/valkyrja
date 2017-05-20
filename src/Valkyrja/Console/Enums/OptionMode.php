@@ -26,9 +26,9 @@ final class OptionMode extends Enum
     public const IS_ARRAY = 'IS_ARRAY';
 
     protected const VALUES = [
-        self::NONE,
-        self::REQUIRED,
-        self::OPTIONAL,
-        self::IS_ARRAY,
+        self::NONE     => self::NONE,
+        self::REQUIRED => self::REQUIRED,
+        self::OPTIONAL => self::OPTIONAL,
+        self::IS_ARRAY => self::IS_ARRAY,
     ];
 }

@@ -25,8 +25,8 @@ final class ArgumentMode extends Enum
     public const IS_ARRAY = 'IS_ARRAY';
 
     protected const VALUES = [
-        self::REQUIRED,
-        self::OPTIONAL,
-        self::IS_ARRAY,
+        self::REQUIRED => self::REQUIRED,
+        self::OPTIONAL => self::OPTIONAL,
+        self::IS_ARRAY => self::IS_ARRAY,
     ];
 }

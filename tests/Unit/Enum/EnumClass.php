@@ -24,7 +24,7 @@ class EnumClass extends Enum
     public const BAR = 'foo';
 
     protected const VALUES = [
-        self::FOO,
-        self::BAR,
+        self::FOO => self::FOO,
+        self::BAR => self::BAR,
     ];
 }

@@ -14,7 +14,7 @@ namespace Valkyrja\Console\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Class ExitCode.
+ * Enum ExitCode.
  *
  * @author Melech Mizrachi
  */
@@ -25,8 +25,8 @@ final class ExitCode extends Enum
     public const AUTO_EXIT = 255;
 
     protected const VALUES = [
-        self::SUCCESS,
-        self::FAILURE,
-        self::AUTO_EXIT,
+        self::SUCCESS   => self::SUCCESS,
+        self::FAILURE   => self::FAILURE,
+        self::AUTO_EXIT => self::AUTO_EXIT,
     ];
 }

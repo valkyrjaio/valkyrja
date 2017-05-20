@@ -14,7 +14,7 @@ namespace Valkyrja\Logger\Enums;
 use Valkyrja\Enum\Enum;
 
 /**
- * Enum Class LogLevel.
+ * Enum LogLevel.
  *
  * @author Melech Mizrachi
  */
@@ -30,13 +30,13 @@ final class LogLevel extends Enum
     public const EMERGENCY = 'emergency';
 
     protected const VALUES = [
-        self::DEBUG,
-        self::INFO,
-        self::NOTICE,
-        self::WARNING,
-        self::ERROR,
-        self::CRITICAL,
-        self::ALERT,
-        self::EMERGENCY,
+        self::DEBUG     => self::DEBUG,
+        self::INFO      => self::INFO,
+        self::NOTICE    => self::NOTICE,
+        self::WARNING   => self::WARNING,
+        self::ERROR     => self::ERROR,
+        self::CRITICAL  => self::CRITICAL,
+        self::ALERT     => self::ALERT,
+        self::EMERGENCY => self::EMERGENCY,
     ];
 }

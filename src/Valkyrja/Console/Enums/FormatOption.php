@@ -34,10 +34,10 @@ final class FormatOption extends Enum
     ];
 
     protected const VALUES = [
-        self::BOLD,
-        self::UNDERSCORE,
-        self::BLINK,
-        self::INVERSE,
-        self::CONCEAL,
+        self::BOLD       => self::BOLD,
+        self::UNDERSCORE => self::UNDERSCORE,
+        self::BLINK      => self::BLINK,
+        self::INVERSE    => self::INVERSE,
+        self::CONCEAL    => self::CONCEAL,
     ];
 }

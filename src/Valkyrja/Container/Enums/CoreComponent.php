@@ -84,38 +84,4 @@ final class CoreComponent extends Enum
     public const CLIENT                = Client::class;
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
-
-    protected const VALUES = [
-        self::APP,
-        self::ANNOTATIONS,
-        self::ANNOTATIONS_PARSER,
-        self::CONFIG,
-        self::COMMAND_ANNOTATIONS,
-        self::CONSOLE,
-        self::CONTAINER,
-        self::CONTAINER_ANNOTATIONS,
-        self::DISPATCHER,
-        self::ENV,
-        self::EVENTS,
-        self::FILESYSTEM,
-        self::INPUT,
-        self::OUTPUT,
-        self::OUTPUT_FORMATTER,
-        self::KERNEL,
-        self::LISTENER_ANNOTATIONS,
-        self::PATH_GENERATOR,
-        self::PATH_PARSER,
-        self::REQUEST,
-        self::RESPONSE,
-        self::JSON_RESPONSE,
-        self::REDIRECT_RESPONSE,
-        self::RESPONSE_BUILDER,
-        self::ROUTER,
-        self::ROUTE_ANNOTATIONS,
-        self::SESSION,
-        self::VIEW,
-        self::CLIENT,
-        self::LOGGER_INTERFACE,
-        self::LOGGER,
-    ];
 }
