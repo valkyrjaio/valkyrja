@@ -319,42 +319,4 @@ class Dispatch
 
         return $this;
     }
-
-    /**
-     * Get an dispatch from properties.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Dispatcher\Dispatch
-     */
-    public static function getDispatch(array $properties): self
-    {
-        $dispatch = new self();
-
-        $dispatch
-            ->setId($properties['id'] ?? null)
-            ->setClass($properties['class'] ?? null)
-            ->setProperty($properties['property'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setStatic($properties['static'] ?? null)
-            ->setFunction($properties['function'] ?? null)
-            ->setClosure($properties['closure'] ?? null)
-            ->setMatches($properties['matches'] ?? null)
-            ->setArguments($properties['arguments'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null);
-
-        return $dispatch;
-    }
-
-    /**
-     * Set the state of the dispatch.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Dispatcher\Dispatch
-     */
-    public static function __set_state(array $properties)
-    {
-        return static::getDispatch($properties);
-    }
 }

@@ -175,47 +175,4 @@ class Command extends Dispatch implements Annotation
 
         return $this;
     }
-
-    /**
-     * Get a command from properties.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Console\Command
-     */
-    public static function getCommand(array $properties): self
-    {
-        $dispatch = new self();
-
-        $dispatch
-            ->setPath($properties['path'] ?? null)
-            ->setName($properties['name'] ?? null)
-            ->setRegex($properties['regex'] ?? null)
-            ->setParams($properties['params'] ?? null)
-            ->setSegments($properties['segments'] ?? null)
-            ->setDescription($properties['description'] ?? null)
-            ->setClass($properties['class'] ?? null)
-            ->setProperty($properties['property'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setStatic($properties['static'] ?? null)
-            ->setFunction($properties['function'] ?? null)
-            ->setClosure($properties['closure'] ?? null)
-            ->setMatches($properties['matches'] ?? null)
-            ->setArguments($properties['arguments'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null);
-
-        return $dispatch;
-    }
-
-    /**
-     * Set the state of the command.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Console\Command
-     */
-    public static function __set_state(array $properties)
-    {
-        return static::getCommand($properties);
-    }
 }

@@ -82,44 +82,4 @@ class Service extends Dispatch implements Annotation
 
         return $this;
     }
-
-    /**
-     * Get a service from properties.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Container\Service
-     */
-    public static function getService(array $properties): self
-    {
-        $service = new self();
-
-        $service
-            ->setId($properties['id'] ?? null)
-            ->setClass($properties['class'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setProperty($properties['property'] ?? null)
-            ->setFunction($properties['function'] ?? null)
-            ->setClosure($properties['closure'] ?? null)
-            ->setMatches($properties['matches'] ?? null)
-            ->setArguments($properties['arguments'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null)
-            ->setSingleton($properties['singleton'] ?? null)
-            ->setDefaults($properties['defaults'] ?? null)
-            ->setStatic($properties['static'] ?? null);
-
-        return $service;
-    }
-
-    /**
-     * Set the state of the service.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Container\Service
-     */
-    public static function __set_state(array $properties)
-    {
-        return static::getService($properties);
-    }
 }

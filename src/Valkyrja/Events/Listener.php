@@ -51,43 +51,4 @@ class Listener extends Dispatch implements Annotation
 
         return $this;
     }
-
-    /**
-     * Get an listener from properties.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Events\Listener
-     */
-    public static function getListener(array $properties): self
-    {
-        $dispatch = new self();
-
-        $dispatch
-            ->setEvent($properties['event'] ?? null)
-            ->setId($properties['id'] ?? null)
-            ->setClass($properties['class'] ?? null)
-            ->setProperty($properties['property'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setStatic($properties['static'] ?? null)
-            ->setFunction($properties['function'] ?? null)
-            ->setClosure($properties['closure'] ?? null)
-            ->setMatches($properties['matches'] ?? null)
-            ->setArguments($properties['arguments'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null);
-
-        return $dispatch;
-    }
-
-    /**
-     * Set the state of the listener.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Events\Listener
-     */
-    public static function __set_state(array $properties)
-    {
-        return static::getListener($properties);
-    }
 }

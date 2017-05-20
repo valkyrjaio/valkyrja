@@ -295,7 +295,7 @@ class Events implements EventsContract
                 base64_decode(require $this->app->config()->events->cacheFilePath, true),
                 [
                     'allowed_classes' => [
-                        Event::class,
+                        Listener::class,
                     ],
                 ]
             );

@@ -251,48 +251,4 @@ class Route extends Dispatch implements Annotation
 
         return $this;
     }
-
-    /**
-     * Get a route from properties.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return $this
-     */
-    public static function getRoute(array $properties): self
-    {
-        $route = new self();
-
-        $route
-            ->setPath($properties['path'])
-            ->setName($properties['name'] ?? null)
-            ->setRequestMethods($properties['requestMethods'] ?? [])
-            ->setRegex($properties['regex'] ?? null)
-            ->setParams($properties['params'] ?? null)
-            ->setSegments($properties['segments'] ?? null)
-            ->setMatches($properties['matches'] ?? null)
-            ->setDynamic($properties['dynamic'] ?? false)
-            ->setSecure($properties['secure'] ?? false)
-            ->setClass($properties['class'] ?? null)
-            ->setProperty($properties['property'] ?? null)
-            ->setMethod($properties['method'] ?? null)
-            ->setFunction($properties['function'] ?? null)
-            ->setClosure($properties['closure'] ?? null)
-            ->setDependencies($properties['dependencies'] ?? null)
-            ->setStatic($properties['static'] ?? null);
-
-        return $route;
-    }
-
-    /**
-     * Set the state of the route.
-     *
-     * @param array $properties The properties to set
-     *
-     * @return \Valkyrja\Routing\Route
-     */
-    public static function __set_state(array $properties)
-    {
-        return static::getRoute($properties);
-    }
 }
