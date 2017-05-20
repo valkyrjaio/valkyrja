@@ -105,7 +105,8 @@ interface Env
     /**
      * Views env variables.
      */
-    public const VIEWS_DIR = null;
+    public const VIEWS_DIR      = null;
+    public const VIEWS_USE_TWIG = null;
 
     /**
      * Twig views env variables.

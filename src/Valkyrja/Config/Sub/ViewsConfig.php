@@ -29,6 +29,13 @@ class ViewsConfig
     public $dir;
 
     /**
+     * Whether to use twig or not.
+     *
+     * @var bool
+     */
+    public $useTwig = false;
+
+    /**
      * Twig views config.
      *
      * @var TwigViewsConfig
@@ -42,7 +49,11 @@ class ViewsConfig
      */
     public function __construct(Env $env)
     {
-        $this->dir  = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
-        $this->twig = new TwigViewsConfig($env);
+        $this->dir     = $env::VIEWS_DIR ?? Directory::resourcesPath('views/php');
+        $this->useTwig = $env::VIEWS_USE_TWIG ?? $this->useTwig;
+
+        if ($this->useTwig) {
+            $this->twig = new TwigViewsConfig($env);
+        }
     }
 }
