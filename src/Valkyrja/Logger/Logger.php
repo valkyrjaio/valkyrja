@@ -45,13 +45,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function debug(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::DEBUG), $message, $context);
+        $this->logger->{LogLevel::DEBUG}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -60,13 +60,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function info(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::INFO), $message, $context);
+        $this->logger->{LogLevel::INFO}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -75,13 +75,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function notice(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::NOTICE), $message, $context);
+        $this->logger->{LogLevel::NOTICE}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -90,13 +90,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function warning(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::WARNING), $message, $context);
+        $this->logger->{LogLevel::WARNING}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -105,13 +105,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function error(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::ERROR), $message, $context);
+        $this->logger->{LogLevel::ERROR}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -120,13 +120,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function critical(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::CRITICAL), $message, $context);
+        $this->logger->{LogLevel::CRITICAL}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -135,13 +135,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function alert(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::ALERT), $message, $context);
+        $this->logger->{LogLevel::ALERT}($message, $context);
+
+        return $this;
     }
 
     /**
@@ -150,13 +150,13 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @throws \InvalidArgumentException
-     *
      * @return \Valkyrja\Contracts\Logger\Logger
      */
     public function emergency(string $message, array $context = []): LoggerContract
     {
-        return $this->log(new LogLevel(LogLevel::EMERGENCY), $message, $context);
+        $this->logger->{LogLevel::EMERGENCY}($message, $context);
+
+        return $this;
     }
 
     /**
