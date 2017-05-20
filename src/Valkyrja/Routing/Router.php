@@ -541,7 +541,7 @@ class Router implements RouterContract
         // If the application should use the routes cache file
         if ($this->app->config()->routing->useCacheFile) {
             // Set the application routes with said file
-            $routesCache = require $this->app->config()->routing->cacheFilePath;
+            $routesCache = unserialize(base64_decode(require $this->app->config()->routing->cacheFilePath));
 
             self::$routes        = $routesCache['routes'];
             self::$staticRoutes  = $routesCache['staticRoutes'];
@@ -626,11 +626,11 @@ class Router implements RouterContract
         // Reset the use cache file value
         $this->app->config()->routing->useCacheFile = $originalUseCacheFile;
 
-        return [
+        return [base64_encode(serialize([
             'routes'        => self::$routes,
             'staticRoutes'  => self::$staticRoutes,
             'dynamicRoutes' => self::$dynamicRoutes,
             'namedRoutes'   => self::$namedRoutes,
-        ];
+        ]))];
     }
 }
