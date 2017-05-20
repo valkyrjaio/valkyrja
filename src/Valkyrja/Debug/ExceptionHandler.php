@@ -19,7 +19,7 @@ use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class ExceptionHandler.
@@ -134,7 +134,7 @@ class ExceptionHandler implements ExceptionHandlerContract
         }
 
         $headers    = [];
-        $statusCode = ResponseCode::HTTP_INTERNAL_SERVER_ERROR;
+        $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
         $content    = $this->html($this->getContent($exception), $this->getStylesheet());
 
         if ($exception instanceof HttpException) {

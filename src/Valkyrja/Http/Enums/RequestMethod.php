@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\Http\Enums;
 
 use Valkyrja\Enum\Enum;
 
 /**
- * Final Class RequestMethod.
+ * Enum RequestMethod.
  *
  * @author Melech Mizrachi
  */
@@ -32,15 +32,15 @@ final class RequestMethod extends Enum
     public const CONNECT = 'CONNECT';
 
     protected const VALUES = [
-        self::GET,
-        self::POST,
-        self::PUT,
-        self::PATCH,
-        self::DELETE,
-        self::HEAD,
-        self::PURGE,
-        self::OPTIONS,
-        self::TRACE,
-        self::CONNECT,
+        self::GET     => self::GET,
+        self::POST    => self::POST,
+        self::PUT     => self::PUT,
+        self::PATCH   => self::PATCH,
+        self::DELETE  => self::DELETE,
+        self::HEAD    => self::HEAD,
+        self::PURGE   => self::PURGE,
+        self::OPTIONS => self::OPTIONS,
+        self::TRACE   => self::TRACE,
+        self::CONNECT => self::CONNECT,
     ];
 }

@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Unit\Http\Exceptions;
 
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Test the HttpException class.
@@ -56,7 +56,7 @@ class HttpExceptionTest extends TestCase
      */
     public function testGetStatusCode(): void
     {
-        $this->assertEquals(ResponseCode::HTTP_INTERNAL_SERVER_ERROR, $this->getException()->getStatusCode());
+        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $this->getException()->getStatusCode());
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Interface RedirectResponse.
@@ -30,7 +30,7 @@ interface RedirectResponse extends Response
      */
     public function __construct(
         string $content = '',
-        int $status = ResponseCode::HTTP_FOUND,
+        int $status = \Valkyrja\Http\Enums\StatusCode::FOUND,
         array $headers = [],
         string $uri = null
     );
@@ -46,7 +46,7 @@ interface RedirectResponse extends Response
      */
     public static function createRedirect(
         string $uri = null,
-        int $status = ResponseCode::HTTP_FOUND,
+        int $status = StatusCode::FOUND,
         array $headers = []
     ): self;
 

@@ -12,6 +12,7 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 
@@ -42,7 +43,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public function __construct(
         string $content = '',
-        int $status = ResponseCode::HTTP_FOUND,
+        int $status = StatusCode::FOUND,
         array $headers = [],
         string $uri = null
     ) {
@@ -75,7 +76,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public static function createRedirect(
         string $uri = null,
-        int $status = ResponseCode::HTTP_FOUND,
+        int $status = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponseContract {
         return new static('', $status, $headers, $uri);

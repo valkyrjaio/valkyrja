@@ -37,7 +37,7 @@ if (! function_exists('abort')) {
      * @return void
      */
     function abort(
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_NOT_FOUND,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
@@ -232,7 +232,7 @@ if (! function_exists('response')) {
      */
     function response(
         string $content = '',
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::OK,
         array $headers = []
     ): Valkyrja\Contracts\Http\Response {
         return app()->response($content, $statusCode, $headers);
@@ -251,7 +251,7 @@ if (! function_exists('json')) {
      */
     function json(
         array $data = [],
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_OK,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::OK,
         array $headers = []
     ): Valkyrja\Contracts\Http\JsonResponse {
         return app()->json($data, $statusCode, $headers);
@@ -270,7 +270,7 @@ if (! function_exists('redirect')) {
      */
     function redirect(
         string $uri = null,
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
         array $headers = []
     ): \Valkyrja\Contracts\Http\RedirectResponse {
         return app()->redirect($uri, $statusCode, $headers);
@@ -291,7 +291,7 @@ if (! function_exists('redirectRoute')) {
     function redirectRoute(
         string $route,
         array $parameters = [],
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
         array $headers = []
     ): \Valkyrja\Contracts\Http\RedirectResponse {
         return app()->redirectRoute($route, $parameters, $statusCode, $headers);
@@ -312,7 +312,7 @@ if (! function_exists('redirectTo')) {
      */
     function redirectTo(
         string $uri = null,
-        int $statusCode = Valkyrja\Http\ResponseCode::HTTP_FOUND,
+        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
         array $headers = []
     ): void {
         app()->redirectTo($uri, $statusCode, $headers);

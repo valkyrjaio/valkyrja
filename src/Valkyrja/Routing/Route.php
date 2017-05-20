@@ -13,7 +13,7 @@ namespace Valkyrja\Routing;
 
 use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
 
 /**
  * Class Route.

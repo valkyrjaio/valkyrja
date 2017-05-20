@@ -12,6 +12,7 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class JsonResponse.
@@ -61,7 +62,7 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public function __construct(
         string $content = '',
-        int $status = ResponseCode::HTTP_OK,
+        int $status = StatusCode::OK,
         array $headers = [],
         array $data = []
     ) {
@@ -85,7 +86,7 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public static function createJson(
         string $content = '',
-        int $status = ResponseCode::HTTP_OK,
+        int $status = StatusCode::OK,
         array $headers = [],
         array $data = []
     ): JsonResponseContract {

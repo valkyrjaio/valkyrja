@@ -15,7 +15,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Route;
 
 /**

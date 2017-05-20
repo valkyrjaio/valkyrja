@@ -12,7 +12,7 @@
 namespace Valkyrja\Contracts\Http;
 
 use Valkyrja\Contracts\Support\Collection;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
 
 /**
  * Interface Request.

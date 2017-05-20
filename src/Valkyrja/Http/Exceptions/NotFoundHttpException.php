@@ -12,7 +12,7 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class NotFoundHttpException.
@@ -31,7 +31,7 @@ class NotFoundHttpException extends HttpException
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
-        int $statusCode = ResponseCode::HTTP_NOT_FOUND,
+        int $statusCode = StatusCode::NOT_FOUND,
         string $message = '',
         ?Exception $previous = null,
         array $headers = [],

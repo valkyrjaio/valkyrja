@@ -12,7 +12,7 @@
 namespace Valkyrja\Contracts\Http;
 
 use DateTime;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Interface Response.
@@ -28,7 +28,7 @@ interface Response
      * @param int   $status  [optional] The response status code
      * @param array $headers [optional] An array of response headers
      */
-    public function __construct(string $content = '', int $status = ResponseCode::HTTP_OK, array $headers = []);
+    public function __construct(string $content = '', int $status = StatusCode::OK, array $headers = []);
 
     /**
      * Create a new response.
@@ -41,7 +41,7 @@ interface Response
      */
     public static function create(
         string $content = '',
-        int $status = ResponseCode::HTTP_OK,
+        int $status = StatusCode::OK,
         array $headers = []
     ): self;
 

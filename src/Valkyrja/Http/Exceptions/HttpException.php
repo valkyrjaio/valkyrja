@@ -14,7 +14,7 @@ namespace Valkyrja\Http\Exceptions;
 use Exception;
 use RuntimeException;
 use Valkyrja\Contracts\Http\Exceptions\HttpException as HttpExceptionContract;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class HttpException.
@@ -56,7 +56,7 @@ class HttpException extends RuntimeException implements HttpExceptionContract
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
-        int $statusCode = ResponseCode::HTTP_INTERNAL_SERVER_ERROR,
+        int $statusCode = StatusCode::INTERNAL_SERVER_ERROR,
         string $message = '',
         ?Exception $previous = null,
         array $headers = [],

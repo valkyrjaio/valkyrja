@@ -30,7 +30,7 @@ use Valkyrja\Contracts\Path\PathParser;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Interface Application.
@@ -151,7 +151,7 @@ interface Application
      * @return void
      */
     public function abort(
-        int $statusCode = ResponseCode::HTTP_NOT_FOUND,
+        int $statusCode = StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
@@ -168,7 +168,7 @@ interface Application
      */
     public function redirectTo(
         string $uri = null,
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): void;
 
@@ -239,7 +239,7 @@ interface Application
      */
     public function response(
         string $content = '',
-        int $statusCode = ResponseCode::HTTP_OK,
+        int $statusCode = StatusCode::OK,
         array $headers = []
     ): Response;
 
@@ -254,7 +254,7 @@ interface Application
      */
     public function json(
         array $data = [],
-        int $statusCode = ResponseCode::HTTP_OK,
+        int $statusCode = StatusCode::OK,
         array $headers = []
     ): JsonResponse;
 
@@ -269,7 +269,7 @@ interface Application
      */
     public function redirect(
         string $uri = null,
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse;
 
@@ -286,7 +286,7 @@ interface Application
     public function redirectRoute(
         string $route,
         array $parameters = [],
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse;
 

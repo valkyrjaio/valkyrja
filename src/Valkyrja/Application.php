@@ -38,7 +38,7 @@ use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class Application.
@@ -383,7 +383,7 @@ class Application implements ApplicationContract
      * @return void
      */
     public function abort(
-        int $statusCode = ResponseCode::HTTP_NOT_FOUND,
+        int $statusCode = StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
@@ -404,7 +404,7 @@ class Application implements ApplicationContract
      */
     public function redirectTo(
         string $uri = null,
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): void {
         throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
@@ -503,7 +503,7 @@ class Application implements ApplicationContract
      */
     public function response(
         string $content = '',
-        int $statusCode = ResponseCode::HTTP_OK,
+        int $statusCode = StatusCode::OK,
         array $headers = []
     ): Response {
         /** @var Response $response */
@@ -529,7 +529,7 @@ class Application implements ApplicationContract
      */
     public function json(
         array $data = [],
-        int $statusCode = ResponseCode::HTTP_OK,
+        int $statusCode = StatusCode::OK,
         array $headers = []
     ): JsonResponse {
         /** @var JsonResponse $response */
@@ -556,7 +556,7 @@ class Application implements ApplicationContract
      */
     public function redirect(
         string $uri = null,
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse {
         /** @var RedirectResponse $response */
@@ -585,7 +585,7 @@ class Application implements ApplicationContract
     public function redirectRoute(
         string $route,
         array $parameters = [],
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse {
         // Get the uri from the router using the route and parameters

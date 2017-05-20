@@ -16,6 +16,7 @@ use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Server as ServerContract;
 use Valkyrja\Contracts\Support\Collection as CollectionContract;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 
 /**

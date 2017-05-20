@@ -12,7 +12,7 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class HttpRedirectException.
@@ -40,7 +40,7 @@ class HttpRedirectException extends HttpException
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
-        int $statusCode = ResponseCode::HTTP_FOUND,
+        int $statusCode = StatusCode::FOUND,
         string $uri = null,
         ?Exception $previous = null,
         array $headers = [],

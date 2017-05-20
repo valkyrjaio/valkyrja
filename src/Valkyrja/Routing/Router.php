@@ -18,8 +18,8 @@ use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsC
 use Valkyrja\Contracts\Routing\Router as RouterContract;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
-use Valkyrja\Http\RequestMethod;
-use Valkyrja\Http\ResponseCode;
+use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 
 /**
@@ -501,7 +501,7 @@ class Router implements RouterContract
     {
         // If the dispatch failed, 404
         if (! $dispatch) {
-            $this->app->abort(ResponseCode::HTTP_NOT_FOUND);
+            $this->app->abort(StatusCode::NOT_FOUND);
         }
 
         // If the dispatch is a Response then simply return it
