@@ -12,12 +12,14 @@
 namespace Valkyrja\Contracts;
 
 use Valkyrja\Config\Config;
+use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
@@ -171,6 +173,20 @@ interface Application
         int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): void;
+
+    /**
+     * Return the annotations instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotations
+     */
+    public function annotations(): Annotations;
+
+    /**
+     * Return the client instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Client
+     */
+    public function client(): Client;
 
     /**
      * Return the console instance from the container.

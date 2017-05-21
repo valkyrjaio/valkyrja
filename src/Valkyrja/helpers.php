@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Contracts\Session\Session;
-
 if (! function_exists('app')) {
     /**
      * Return the global $app variable.
@@ -43,6 +41,30 @@ if (! function_exists('abort')) {
         int $code = 0
     ): void {
         app()->abort($statusCode, $message, $headers, $code);
+    }
+}
+
+if (! function_exists('annotations')) {
+    /**
+     * Return the annotations instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotations
+     */
+    function annotations(): \Valkyrja\Contracts\Annotations\Annotations
+    {
+        return app()->annotations();
+    }
+}
+
+if (! function_exists('client')) {
+    /**
+     * Return the client instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Client
+     */
+    function client(): \Valkyrja\Contracts\Http\Client
+    {
+        return app()->client();
     }
 }
 
@@ -325,7 +347,7 @@ if (! function_exists('session')) {
      *
      * @return \Valkyrja\Contracts\Session\Session
      */
-    function session(): Session
+    function session(): \Valkyrja\Contracts\Session\Session
     {
         return app()->session();
     }

@@ -12,19 +12,18 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
+use Valkyrja\Annotations\Annotations;
 use Valkyrja\Application;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
-use Valkyrja\Contracts\Path\PathGenerator;
-use Valkyrja\Contracts\Path\PathParser;
-use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Http\Client;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
@@ -34,10 +33,13 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Path\PathGenerator;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\App\App\Controllers\HomeController;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
+use Valkyrja\View\View;
 
 /**
  * Test the functionality of the Application.
@@ -182,6 +184,26 @@ class ApplicationTest extends TestCase
         } catch (Exception $exception) {
             $this->assertEquals(HttpRedirectException::class, get_class($exception));
         }
+    }
+
+    /**
+     * Test the annotations() helper method.
+     *
+     * @return void
+     */
+    public function testAnnotations(): void
+    {
+        $this->assertEquals(true, $this->app->annotations() instanceof Annotations);
+    }
+
+    /**
+     * Test the client() helper method.
+     *
+     * @return void
+     */
+    public function testClient(): void
+    {
+        $this->assertEquals(true, $this->app->client() instanceof Client);
     }
 
     /**

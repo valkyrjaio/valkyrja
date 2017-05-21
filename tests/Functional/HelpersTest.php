@@ -12,13 +12,14 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
+use Valkyrja\Annotations\Annotations;
 use Valkyrja\Application;
 use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
-use Valkyrja\Contracts\View\View;
 use Valkyrja\Events\Events;
+use Valkyrja\Http\Client;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
@@ -30,6 +31,7 @@ use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
+use Valkyrja\View\View;
 
 /**
  * Test the functionality of the helper functions.
@@ -104,6 +106,26 @@ class HelpersTest extends TestCase
         } catch (Exception $exception) {
             $this->assertEquals(HttpRedirectException::class, get_class($exception));
         }
+    }
+
+    /**
+     * Test the annotations() helper method.
+     *
+     * @return void
+     */
+    public function testAnnotations(): void
+    {
+        $this->assertEquals(true, annotations() instanceof Annotations);
+    }
+
+    /**
+     * Test the client() helper method.
+     *
+     * @return void
+     */
+    public function testClient(): void
+    {
+        $this->assertEquals(true, client() instanceof Client);
     }
 
     /**

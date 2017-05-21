@@ -13,6 +13,7 @@ namespace Valkyrja;
 
 use Valkyrja\Config\Config;
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Console;
@@ -20,6 +21,7 @@ use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
@@ -408,6 +410,26 @@ class Application implements ApplicationContract
         array $headers = []
     ): void {
         throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
+    }
+
+    /**
+     * Return the annotations instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Annotations\Annotations
+     */
+    public function annotations(): Annotations
+    {
+        return $this->container()->get(Annotations::class);
+    }
+
+    /**
+     * Return the client instance from the container.
+     *
+     * @return \Valkyrja\Contracts\Http\Client
+     */
+    public function client(): Client
+    {
+        return $this->container()->get(Client::class);
     }
 
     /**
