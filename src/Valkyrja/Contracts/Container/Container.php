@@ -161,6 +161,29 @@ interface Container extends Cacheable
     public function make(string $serviceId, array $arguments = null);
 
     /**
+     * Get a singleton from the container.
+     *
+     * @param string $serviceId The service
+     *
+     * @return mixed
+     */
+    public function getSingleton(string $serviceId);
+
+    /**
+     * Get a provided service from the container.
+     *
+     * @param string $serviceId The service
+     * @param array  $arguments [optional] The arguments
+     * @param string $context   [optional] The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
+     *
+     * @return mixed
+     */
+    public function getProvided(string $serviceId, array $arguments = null, string $context = null, string $member = null);
+
+    /**
      * Get the context service id.
      *
      * @param string $serviceId The service

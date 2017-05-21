@@ -352,7 +352,7 @@ class Container implements ContainerContract
         // If the service is a singleton
         if ($this->isSingleton($serviceId)) {
             // Return the singleton
-            return self::$singletons[$serviceId];
+            return $this->getSingleton($serviceId);
         }
 
         // If this service is an alias
@@ -369,20 +369,7 @@ class Container implements ContainerContract
 
         // Check if the service id is provided by a deferred service provider
         if ($this->isProvided($serviceId)) {
-            /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
-            $serviceProvider = self::$provided[$serviceId];
-            // The original value for the service provider's deferred status
-            $originalDeferred = $serviceProvider::$deferred;
-            // Do not defer the service provider
-            $serviceProvider::$deferred = false;
-
-            // Register the service provider
-            $this->register($serviceProvider);
-
-            // Reset back to the original value
-            $serviceProvider::$deferred = $originalDeferred;
-
-            return $this->get($serviceId, $arguments);
+            return $this->getProvided($serviceId, $arguments, $context, $member);
         }
 
         // If there are no argument return a new object
@@ -409,24 +396,81 @@ class Container implements ContainerContract
 
         // Dispatch before make event
         $this->events->trigger('service.make', [$serviceId, $service, $arguments]);
-        $this->events->trigger("service.make.{$serviceId}", [$service, $arguments]);
 
         // Make the object by dispatching the service
         $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
         $this->events->trigger('service.made', [$serviceId, $made]);
-        $this->events->trigger("service.made.{$serviceId}", [$made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
             $this->events->trigger('service.made.singleton', [$serviceId, $made]);
-            $this->events->trigger("service.made.singleton.{$serviceId}", [$made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }
 
         return $made;
+    }
+
+    /**
+     * Get a singleton from the container.
+     *
+     * @param string $serviceId The service
+     *
+     * @return mixed
+     */
+    public function getSingleton(string $serviceId)
+    {
+        // If the service isn't a singleton but is provided
+        if (! $this->isSingleton($serviceId) && $this->isProvided($serviceId)) {
+            // Initialize the provided service
+            $this->initializeProvided($serviceId);
+        }
+
+        return self::$singletons[$serviceId];
+    }
+
+    /**
+     * Get a provided service from the container.
+     *
+     * @param string $serviceId The service
+     * @param array  $arguments [optional] The arguments
+     * @param string $context   [optional] The context
+     *                          class name || function name || variable name
+     * @param string $member    [optional] The context member
+     *                          method name || property name
+     *
+     * @return mixed
+     */
+    public function getProvided(string $serviceId, array $arguments = null, string $context = null, string $member = null)
+    {
+        $this->initializeProvided($serviceId);
+
+        return $this->get($serviceId, $arguments, $context, $member);
+    }
+
+    /**
+     * Initialize a provided service.
+     *
+     * @param string $serviceId The service
+     *
+     * @return void
+     */
+    protected function initializeProvided(string $serviceId): void
+    {
+        /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
+        $serviceProvider = self::$provided[$serviceId];
+        // The original value for the service provider's deferred status
+        $originalDeferred = $serviceProvider::$deferred;
+        // Do not defer the service provider
+        $serviceProvider::$deferred = false;
+
+        // Register the service provider
+        $this->register($serviceProvider);
+
+        // Reset back to the original value
+        $serviceProvider::$deferred = $originalDeferred;
     }
 
     /**

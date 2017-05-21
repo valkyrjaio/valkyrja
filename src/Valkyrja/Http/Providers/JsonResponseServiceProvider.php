@@ -12,7 +12,6 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Support\ServiceProvider;
 
@@ -35,6 +34,8 @@ class JsonResponseServiceProvider extends ServiceProvider
     /**
      * Publish the service provider.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     public function publish(): void
@@ -45,15 +46,15 @@ class JsonResponseServiceProvider extends ServiceProvider
     /**
      * Bootstrap the json response.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     protected function bindJsonResponse(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(CoreComponent::JSON_RESPONSE)
-                ->setClass(JsonResponse::class),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::JSON_RESPONSE,
+            new JsonResponse()
         );
     }
 }

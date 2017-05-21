@@ -419,7 +419,7 @@ class Application implements ApplicationContract
      */
     public function annotations(): Annotations
     {
-        return $this->container()->get(Annotations::class);
+        return $this->container()->getSingleton(Annotations::class);
     }
 
     /**
@@ -429,7 +429,7 @@ class Application implements ApplicationContract
      */
     public function client(): Client
     {
-        return $this->container()->get(Client::class);
+        return $this->container()->getSingleton(Client::class);
     }
 
     /**
@@ -439,7 +439,7 @@ class Application implements ApplicationContract
      */
     public function console(): Console
     {
-        return $this->container()->get(Console::class);
+        return $this->container()->getSingleton(Console::class);
     }
 
     /**
@@ -449,7 +449,7 @@ class Application implements ApplicationContract
      */
     public function consoleKernel(): ConsoleKernel
     {
-        return $this->container()->get(ConsoleKernel::class);
+        return $this->container()->getSingleton(ConsoleKernel::class);
     }
 
     /**
@@ -459,7 +459,7 @@ class Application implements ApplicationContract
      */
     public function kernel(): Kernel
     {
-        return $this->container()->get(Kernel::class);
+        return $this->container()->getSingleton(Kernel::class);
     }
 
     /**
@@ -469,7 +469,7 @@ class Application implements ApplicationContract
      */
     public function logger(): Logger
     {
-        return $this->container()->get(Logger::class);
+        return $this->container()->getSingleton(Logger::class);
     }
 
     /**
@@ -479,7 +479,7 @@ class Application implements ApplicationContract
      */
     public function pathGenerator(): PathGenerator
     {
-        return $this->container()->get(PathGenerator::class);
+        return $this->container()->getSingleton(PathGenerator::class);
     }
 
     /**
@@ -489,7 +489,7 @@ class Application implements ApplicationContract
      */
     public function pathParser(): PathParser
     {
-        return $this->container()->get(PathParser::class);
+        return $this->container()->getSingleton(PathParser::class);
     }
 
     /**
@@ -499,7 +499,7 @@ class Application implements ApplicationContract
      */
     public function request(): Request
     {
-        return $this->container()->get(Request::class);
+        return $this->container()->getSingleton(Request::class);
     }
 
     /**
@@ -509,7 +509,7 @@ class Application implements ApplicationContract
      */
     public function router(): Router
     {
-        return $this->container()->get(Router::class);
+        return $this->container()->getSingleton(Router::class);
     }
 
     /**
@@ -529,7 +529,7 @@ class Application implements ApplicationContract
         array $headers = []
     ): Response {
         /** @var Response $response */
-        $response = $this->container()->get(Response::class);
+        $response = $this->container()->getSingleton(Response::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -555,7 +555,7 @@ class Application implements ApplicationContract
         array $headers = []
     ): JsonResponse {
         /** @var JsonResponse $response */
-        $response = $this->container()->get(JsonResponse::class);
+        $response = $this->container()->getSingleton(JsonResponse::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -582,7 +582,7 @@ class Application implements ApplicationContract
         array $headers = []
     ): RedirectResponse {
         /** @var RedirectResponse $response */
-        $response = $this->container()->get(RedirectResponse::class);
+        $response = $this->container()->getSingleton(RedirectResponse::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -623,7 +623,7 @@ class Application implements ApplicationContract
      */
     public function responseBuilder(): ResponseBuilder
     {
-        return $this->container()->get(ResponseBuilder::class);
+        return $this->container()->getSingleton(ResponseBuilder::class);
     }
 
     /**
@@ -633,7 +633,7 @@ class Application implements ApplicationContract
      */
     public function session(): Session
     {
-        return $this->container()->get(Session::class);
+        return $this->container()->getSingleton(Session::class);
     }
 
     /**
@@ -646,12 +646,13 @@ class Application implements ApplicationContract
      */
     public function view(string $template = '', array $variables = []): View
     {
-        return $this->container()->get(
-            View::class,
-            [
-                $template,
-                $variables,
-            ]
-        );
+        /** @var \Valkyrja\Contracts\View\View $view */
+        $view = $this->container()->getSingleton(View::class);
+
+        if (func_num_args() === 0) {
+            return $view;
+        }
+
+        return $view->make($template, $variables);
     }
 }

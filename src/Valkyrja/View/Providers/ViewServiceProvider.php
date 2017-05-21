@@ -12,7 +12,6 @@
 namespace Valkyrja\View\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
 use Valkyrja\Support\ServiceProvider;
 use Valkyrja\View\View;
 
@@ -49,12 +48,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function bindView(): void
     {
-        $this->app->container()->bind(
-            (new Service())
-                ->setId(CoreComponent::VIEW)
-                ->setClass(View::class)
-                ->setDependencies([CoreComponent::APP]),
-            false
+        $this->app->container()->singleton(
+            CoreComponent::VIEW,
+            new View($this->app)
         );
     }
 }
