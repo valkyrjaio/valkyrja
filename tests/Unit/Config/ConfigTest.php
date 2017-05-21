@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Unit\Config;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
+use Valkyrja\Config\Sub\TwigViewsConfig;
 
 /**
  * Test the default config class.
@@ -156,6 +157,8 @@ class ConfigTest extends TestCase
      */
     public function testTwigViewsConfig(): void
     {
+        $this->getConfig()->views->twig = new TwigViewsConfig(new Env());
+
         $this->assertEquals(true, isset($this->getConfig()->views->twig));
     }
 }
