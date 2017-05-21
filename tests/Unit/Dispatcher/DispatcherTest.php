@@ -45,12 +45,20 @@ class DispatcherTest extends TestCase
      * @var string
      */
     protected $value = 'test';
+
     /**
      * A valid property.
      *
      * @var string
      */
     public $validProperty = 'test';
+
+    /**
+     * A valid property with null value.
+     *
+     * @var string
+     */
+    public $validPropertyNull;
 
     /**
      * A valid static property.
@@ -476,6 +484,20 @@ class DispatcherTest extends TestCase
     }
 
     /**
+     * Test the dispatchCallable method with a null dispatch return.
+     *
+     * @return void
+     */
+    public function testDispatchCallableNullDispatchReturn(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setProperty('validPropertyNull');
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+    }
+
+    /**
      * Test the dispatchCallable method with arguments.
      *
      * @return void
@@ -495,23 +517,37 @@ class DispatcherTest extends TestCase
      */
     public function testDispatchCallableWithArgsInDispatch(): void
     {
-        $array    = ['foo', 'bar'];
         $dispatch = new Dispatch();
-        $service  = new Service();
+        $service  = (new Service())
+            ->setId(static::class);
         $dispatch = (new Dispatch())
             ->setArguments(['test', $dispatch, $service]);
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch, [$array]));
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
     }
 
     /**
-     * Test the dispatchCallable method with arguments.
+     * Test the dispatchCallable method with dependencies.
      *
      * @return void
      */
     public function testDispatchCallableWithDependencies(): void
     {
         $dispatch = (new Dispatch())
+            ->setDependencies([static::class]);
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+    }
+
+    /**
+     * Test the dispatchCallable method with a static dispatch and dependencies.
+     *
+     * @return void
+     */
+    public function testDispatchCallableStaticWithDependencies(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setStatic(true)
             ->setDependencies([static::class]);
 
         $this->assertEquals(null, $this->class->dispatchCallable($dispatch));

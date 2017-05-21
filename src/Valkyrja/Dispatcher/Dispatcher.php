@@ -251,11 +251,6 @@ class Dispatcher implements DispatcherContract
      */
     protected function getArguments(Dispatch $dispatch, array $arguments = null):? array
     {
-        // If the dispatch is static it doesn't need dependencies
-        if ($dispatch->isStatic()) {
-            return $arguments;
-        }
-
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
         $context   = $dispatch->getClass() ?? $dispatch->getFunction();
@@ -275,7 +270,7 @@ class Dispatcher implements DispatcherContract
             // If the argument is a service
             if ($argument instanceof Service) {
                 // Dispatch the argument and set the results to the argument
-                $argument = $this->container->get($argument, null, $context, $member);
+                $argument = $this->container->get($argument->getId(), null, $context, $member);
             } // If the argument is a dispatch
             elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
