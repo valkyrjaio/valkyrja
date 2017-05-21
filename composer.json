@@ -15,29 +15,35 @@
     }
   ],
   "require"           : {
-    "php"              : ">=7.1",
-    "league/flysystem" : "~1.0",
-    "monolog/monolog"  : "~1.22"
+    "php" : ">=7.1"
   },
   "require-dev"       : {
     "fzaninotto/faker"  : "~1.4",
     "guzzlehttp/guzzle" : "~6.2",
+    "league/flysystem"  : "~1.0",
     "mockery/mockery"   : "~0.9",
+    "monolog/monolog"   : "~1.22",
     "phpunit/phpunit"   : "~6.1",
     "predis/predis"     : "~1.1",
     "twig/twig"         : "~1.33"
   },
   "autoload"          : {
     "psr-4" : {
-      "Valkyrja\\"        : "src/Valkyrja",
-      "Valkyrja\\Tests\\" : "tests"
+      "Valkyrja\\" : "src/Valkyrja"
     },
     "files" : [
       "src/Valkyrja/helpers.php"
     ]
   },
+  "autoload-dev"      : {
+    "psr-4" : {
+      "Valkyrja\\Tests\\" : "tests"
+    }
+  },
   "suggest"           : {
     "guzzlehttp/guzzle" : "Required for use with Valkyrja Client (^6.2).",
+    "league/flysystem"  : "Required for use with Valkyrja FileSystem (^1.0).",
+    "monolog/monolog"   : "Required for use with Valkyrja Logger (^1.22).",
     "predis/predis"     : "Required for use with Redis Valkyrja Cache (^1.1).",
     "twig/twig"         : "Optional templating engine. Required if using TwigServiceProvider (^1.33)."
   },
