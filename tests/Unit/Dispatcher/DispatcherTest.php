@@ -13,7 +13,9 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Contracts\Container\Container;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Service;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -66,10 +68,12 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        /** @var Container $container */
-        $container = $this->createMock(Container::class);
+        /** @var Application $app */
+        $app = $this->createMock(Application::class);
         /** @var Events $events */
         $events = $this->createMock(Events::class);
+        /** @var Container $container */
+        $container = new Container($app, $events);
 
         $this->class = new Dispatcher($container, $events);
     }
@@ -260,5 +264,256 @@ class DispatcherTest extends TestCase
         } catch (Exception $exception) {
             $this->assertEquals(true, $exception instanceof InvalidDispatchCapabilityException);
         }
+    }
+
+    /**
+     * Test the dispatchClassMethod method.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethod(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setMethod('validMethod');
+
+        $this->assertEquals($this->validMethod(), $this->class->dispatchClassMethod($dispatch));
+    }
+
+    /**
+     * Test the dispatchClassMethod method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodWithArgs(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setMethod('validMethod');
+
+        $this->assertEquals($this->validMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
+    }
+
+    /**
+     * Test the dispatchClassMethod method with a static dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodStatic(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setMethod('validStaticMethod')
+            ->setStatic(true);
+
+        $this->assertEquals(static::validStaticMethod(), $this->class->dispatchClassMethod($dispatch));
+    }
+
+    /**
+     * Test the dispatchClassMethod method with a static dispatch and arguments.
+     *
+     * @return void
+     */
+    public function testDispatchClassMethodStaticWithArgs(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setMethod('validStaticMethod')
+            ->setStatic(true);
+
+        $this->assertEquals(static::validStaticMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
+    }
+
+    /**
+     * Test the dispatchClassProperty method.
+     *
+     * @return void
+     */
+    public function testDispatchClassProperty(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setProperty('validProperty');
+
+        $this->assertEquals($this->validProperty, $this->class->dispatchClassProperty($dispatch));
+    }
+
+    /**
+     * Test the dispatchClassProperty method with a static dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchClassPropertyStatic(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setProperty('validStaticProperty')
+            ->setStatic(true);
+
+        $this->assertEquals(static::$validStaticProperty, $this->class->dispatchClassProperty($dispatch));
+    }
+
+    /**
+     * Test the dispatchClass method.
+     *
+     * @return void
+     */
+    public function testDispatchClass(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class)
+            ->setId(static::class);
+
+        $this->assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
+    }
+
+    /**
+     * Test the dispatchClass method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchClassWithArgs(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(InvalidDispatcherClass::class)
+            ->setId(InvalidDispatcherClass::class);
+
+        $events    = $this->createMock(Events::class);
+        $container = $this->createMock(\Valkyrja\Contracts\Container\Container::class);
+
+        $this->assertInstanceOf(
+            InvalidDispatcherClass::class,
+            $this->class->dispatchClass($dispatch,
+                [
+                    $container,
+                    $events,
+                ]
+            )
+        );
+    }
+
+    /**
+     * Test the dispatchClass method with a class from the container.
+     *
+     * @return void
+     */
+    public function testDispatchClassFromContainer(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClass(static::class);
+
+        $this->assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
+    }
+
+    /**
+     * Test the dispatchFunction method.
+     *
+     * @return void
+     */
+    public function testDispatchFunction(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setFunction('microtime');
+
+        $this->assertEquals(true, microtime() <= $this->class->dispatchFunction($dispatch));
+    }
+
+    /**
+     * Test the dispatchFunction method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchFunctionWithArgs(): void
+    {
+        $array    = ['foo', 'bar'];
+        $dispatch = (new Dispatch())
+            ->setFunction('count');
+
+        $this->assertEquals(count($array), $this->class->dispatchFunction($dispatch, [$array]));
+    }
+
+    /**
+     * Test the dispatchClosure method.
+     *
+     * @return void
+     */
+    public function testDispatchClosure(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setClosure(function () {
+                return 'test';
+            });
+
+        $this->assertEquals('test', $this->class->dispatchClosure($dispatch));
+    }
+
+    /**
+     * Test the dispatchClosure method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchClosureWithArgs(): void
+    {
+        $array    = ['foo', 'bar'];
+        $dispatch = (new Dispatch())
+            ->setClosure(function (array $array) {
+                return count($array);
+            });
+
+        $this->assertEquals(count($array), $this->class->dispatchClosure($dispatch, [$array]));
+    }
+
+    /**
+     * Test the dispatchCallable method.
+     *
+     * @return void
+     */
+    public function testDispatchCallable(): void
+    {
+        $dispatch = new Dispatch();
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+    }
+
+    /**
+     * Test the dispatchCallable method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchCallableWithArgs(): void
+    {
+        $array    = ['foo', 'bar'];
+        $dispatch = new Dispatch();
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch, [$array]));
+    }
+
+    /**
+     * Test the dispatchCallable method with arguments in the dispatch.
+     *
+     * @return void
+     */
+    public function testDispatchCallableWithArgsInDispatch(): void
+    {
+        $array    = ['foo', 'bar'];
+        $dispatch = new Dispatch();
+        $service  = new Service();
+        $dispatch = (new Dispatch())
+            ->setArguments(['test', $dispatch, $service]);
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch, [$array]));
+    }
+
+    /**
+     * Test the dispatchCallable method with arguments.
+     *
+     * @return void
+     */
+    public function testDispatchCallableWithDependencies(): void
+    {
+        $dispatch = (new Dispatch())
+            ->setDependencies([static::class]);
+
+        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
     }
 }

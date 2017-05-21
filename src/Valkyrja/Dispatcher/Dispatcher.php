@@ -215,7 +215,7 @@ class Dispatcher implements DispatcherContract
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
      *
-     * @return array|null
+     * @return array
      */
     protected function getDependencies(Dispatch $dispatch):? array
     {
@@ -245,9 +245,9 @@ class Dispatcher implements DispatcherContract
      * Get a dispatch's arguments.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
-     * @return array|null
+     * @return array
      */
     protected function getArguments(Dispatch $dispatch, array $arguments = null):? array
     {
@@ -293,7 +293,7 @@ class Dispatcher implements DispatcherContract
      * Dispatch a class method.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
@@ -349,11 +349,17 @@ class Dispatcher implements DispatcherContract
             return $response;
         }
 
-        // Set the class through the container if this isn't a static method
-        $class    = $this->container->get($dispatch->getClass());
+        $class    = $dispatch->getClass();
         $property = $dispatch->getProperty();
 
-        $response = $class->{$property};
+        // If this is a static property
+        if ($dispatch->isStatic()) {
+            $response = $class::$$property;
+        } else {
+            // Get the class from the container
+            $class    = $this->container->get($dispatch->getClass());
+            $response = $class->{$property};
+        }
 
         return $response ?? $this->DISPATCHED;
     }
@@ -362,7 +368,7 @@ class Dispatcher implements DispatcherContract
      * Dispatch a class.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
@@ -373,9 +379,9 @@ class Dispatcher implements DispatcherContract
             return $dispatch->getClass();
         }
 
-        // If the class is the id then this item is
-        // not set in the service container yet
-        // so it needs to a new instance
+        // If the class is the id then this item is not yet set
+        // in the service container yet so it needs a new
+        // instance returned
         if ($dispatch->getClass() === $dispatch->getId()) {
             // Get the class from the dispatcher
             $class = $dispatch->getClass();
@@ -400,7 +406,7 @@ class Dispatcher implements DispatcherContract
      * Dispatch a function.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
@@ -430,7 +436,7 @@ class Dispatcher implements DispatcherContract
      * Dispatch a closure.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
@@ -460,7 +466,7 @@ class Dispatcher implements DispatcherContract
      * Dispatch a callable.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param array                         $arguments The arguments
      *
      * @return mixed
      */
