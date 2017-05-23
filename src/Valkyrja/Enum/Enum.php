@@ -66,6 +66,9 @@ abstract class Enum implements JsonSerializable
      */
     public static function isValid($value): bool
     {
+        // Get the valid values to compare with
+        $validValues = static::validValues();
+
         // If the value isset in the valid values array and the value matches the value to check
         // ?? Why is this here ??
         // As is known by all isset is faster than in_array. We want to capitalize on that with
@@ -77,11 +80,11 @@ abstract class Enum implements JsonSerializable
         // item in the array, otherwise we'll get false positives where its a
         // normal array of 0 => value, 1 => value and we check for 0 being
         // a valid value where it may very well not be valid at all.
-        if (isset(static::validValues()[$value]) && static::validValues()[$value] === $value) {
+        if (isset($validValues[$value]) && $validValues[$value] === $value) {
             return true;
         }
 
-        return in_array($value, static::validValues(), true);
+        return in_array($value, $validValues, true);
     }
 
     /**
