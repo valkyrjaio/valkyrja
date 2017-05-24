@@ -71,13 +71,23 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * Test the env() helper method.
+     *
+     * @return void
+     */
+    public function testEnv(): void
+    {
+        $this->assertEquals(true, is_string(env()));
+    }
+
+    /**
      * Test the config() helper method.
      *
      * @return void
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, config() instanceof Config);
+        $this->assertEquals(true, is_array(config()));
     }
 
     /**
@@ -255,7 +265,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, redirectRoute('home.welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**
