@@ -12,10 +12,10 @@
 namespace Valkyrja\Container\Enums;
 
 use Psr\Log\LoggerInterface;
+use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input\Input;

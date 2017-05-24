@@ -11,10 +11,10 @@
 
 namespace Valkyrja;
 
+use Valkyrja\Config\Env;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
