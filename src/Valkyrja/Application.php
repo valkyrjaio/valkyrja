@@ -141,6 +141,10 @@ class Application implements ApplicationContract
 
         // Avoid re-setting up the app later
         self::$setup = true;
+        // Set the app static
+        self::$app = $this;
+        // Set the env
+        self::$env = $env ?? Env::class;
 
         // If the VALKYRJA_START constant hasn't already been set
         if (! defined('VALKYRJA_START')) {
@@ -150,11 +154,6 @@ class Application implements ApplicationContract
 
         $config     = $config ?? [];
         $coreConfig = require __DIR__ . '/config.php';
-
-        // Set the app static
-        self::$app = $this;
-        // Set the env
-        self::$env = $env ?? Env::class;
         // Set the config within the application
         self::$config = array_replace_recursive($coreConfig, $config);
 
@@ -286,6 +285,26 @@ class Application implements ApplicationContract
     }
 
     /**
+     * Get environment variables.
+     *
+     * @return \Valkyrja\Contracts\Config\Env||config|Env
+     */
+    public function env(): string
+    {
+        return self::$env;
+    }
+
+    /**
+     * Get the config class instance.
+     *
+     * @return array
+     */
+    public function config(): array
+    {
+        return self::$config;
+    }
+
+    /**
      * Get the container instance.
      *
      * @return \Valkyrja\Contracts\Container\Container
@@ -323,26 +342,6 @@ class Application implements ApplicationContract
     public function version(): string
     {
         return static::VERSION;
-    }
-
-    /**
-     * Get the config class instance.
-     *
-     * @return array
-     */
-    public function config(): array
-    {
-        return self::$config;
-    }
-
-    /**
-     * Get environment variables.
-     *
-     * @return \Valkyrja\Contracts\Config\Env||config|Env
-     */
-    public function env(): string
-    {
-        return self::$env;
     }
 
     /**

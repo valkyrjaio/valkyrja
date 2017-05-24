@@ -112,11 +112,7 @@ if (! function_exists('env')) {
      */
     function env(): string
     {
-        if (! class_exists('\\config\\Env')) {
-            return '\\Valkyrja\\Config\\Env';
-        }
-
-        return '\\config\\Env';
+        return app()->env();
     }
 }
 

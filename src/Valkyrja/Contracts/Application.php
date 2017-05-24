@@ -73,6 +73,20 @@ interface Application
     public static function app(): self;
 
     /**
+     * Get environment variables.
+     *
+     * @return \Valkyrja\Contracts\Config\Env||config|Env
+     */
+    public function env(): string;
+
+    /**
+     * Get the config class instance.
+     *
+     * @return array
+     */
+    public function config(): array;
+
+    /**
      * Get the container instance.
      *
      * @return \Valkyrja\Contracts\Container\Container
@@ -99,20 +113,6 @@ interface Application
      * @return string
      */
     public function version(): string;
-
-    /**
-     * Get the config class instance.
-     *
-     * @return array
-     */
-    public function config(): array;
-
-    /**
-     * Get environment variables.
-     *
-     * @return \Valkyrja\Contracts\Config\Env||config|Env
-     */
-    public function env(): string;
 
     /**
      * Get the environment with which the application is running in.
