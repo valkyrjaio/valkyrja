@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Functional;
 use Exception;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Application;
-use Valkyrja\Config\Config;
 use Valkyrja\Config\Env;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -105,7 +104,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, $this->app->config() instanceof Config);
+        $this->assertEquals(true, is_array($this->app->config()));
     }
 
     /**
