@@ -50,20 +50,18 @@ interface Application
      * Application constructor.
      *
      * @param array  $config [optional] The config to use
-     * @param string $env    [optional] The env class to use
      */
-    public function __construct(array $config = null, string $env = null);
+    public function __construct(array $config = null);
 
     /**
      * Setup the application.
      *
      * @param array  $config [optional] The config to use
-     * @param string $env    [optional] The env class to use
      * @param bool   $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(array $config = null, string $env = null, bool $force = null): void;
+    public function setup(array $config = null, bool $force = null): void;
 
     /**
      * Get the application instance.
@@ -75,9 +73,11 @@ interface Application
     /**
      * Get environment variables.
      *
+     * @param string $env [optional] The env file to use
+     *
      * @return \Valkyrja\Contracts\Config\Env||config|Env
      */
-    public function env(): string;
+    public static function env(string $env = null): string;
 
     /**
      * Get the config class instance.

@@ -14,7 +14,6 @@ namespace Valkyrja\Tests\Functional;
 use Exception;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Application;
-use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;

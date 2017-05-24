@@ -107,14 +107,13 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param array  $config [optional] The config to use
-     * @param string $env    [optional] The env class to use
+     * @param array $config [optional] The config to use
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      */
-    public function __construct(array $config = null, string $env = null)
+    public function __construct(array $config = null)
     {
         $this->setup($config);
     }
@@ -122,9 +121,8 @@ class Application implements ApplicationContract
     /**
      * Setup the application.
      *
-     * @param array  $config [optional] The config to use
-     * @param string $env    [optional] The env class to use
-     * @param bool   $force  [optional] Whether to force a setup
+     * @param array $config [optional] The config to use
+     * @param bool  $force  [optional] Whether to force a setup
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
@@ -132,7 +130,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setup(array $config = null, string $env = null, bool $force = null): void
+    public function setup(array $config = null, bool $force = null): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -143,8 +141,8 @@ class Application implements ApplicationContract
         self::$setup = true;
         // Set the app static
         self::$app = $this;
-        // Set the env
-        self::$env = $env ?? Env::class;
+        // Ensure the env has been set
+        self::env();
 
         // If the VALKYRJA_START constant hasn't already been set
         if (! defined('VALKYRJA_START')) {
@@ -154,6 +152,7 @@ class Application implements ApplicationContract
 
         $config     = $config ?? [];
         $coreConfig = require __DIR__ . '/config.php';
+
         // Set the config within the application
         self::$config = array_replace_recursive($coreConfig, $config);
 
@@ -287,11 +286,13 @@ class Application implements ApplicationContract
     /**
      * Get environment variables.
      *
+     * @param string $env [optional] The env file to use
+     *
      * @return \Valkyrja\Contracts\Config\Env||config|Env
      */
-    public function env(): string
+    public static function env(string $env = null): string
     {
-        return self::$env;
+        return self::$env ?? self::$env = $env ?? Env::class;
     }
 
     /**

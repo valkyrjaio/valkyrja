@@ -112,7 +112,7 @@ if (! function_exists('env')) {
      */
     function env(): string
     {
-        return app()->env();
+        return Valkyrja\Application::env();
     }
 }
 

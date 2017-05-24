@@ -113,7 +113,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnv(): void
     {
-        $this->assertEquals(true, is_string($this->app->env()));
+        $this->assertEquals(true, is_string($this->app::env()));
     }
 
     /**
@@ -401,7 +401,7 @@ class ApplicationTest extends TestCase
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
         // TODO: Look into this
-        // $this->assertEquals(false, $this->app->config()['app']['BLAH']debug);
+        // $this->assertEquals(false, $this->app->config()['app']['debug']);
         $this->assertEquals(null, $this->app->setup($config) ?? null);
     }
 
@@ -415,7 +415,7 @@ class ApplicationTest extends TestCase
         $config = $this->app->config();
 
         $config['app']['debug'] = true;
-        $this->app->setup($config, null, true);
+        $this->app->setup($config, true);
 
         $this->assertEquals(true, $this->app->config()['app']['debug']);
     }
@@ -431,7 +431,7 @@ class ApplicationTest extends TestCase
             $config = $this->app->config();
 
             $config['app']['dispatcher'] = InvalidDispatcherClass::class;
-            $this->app->setup($config, null, true);
+            $this->app->setup($config, true);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidDispatcherImplementation::class, $exception);
         }
@@ -448,7 +448,7 @@ class ApplicationTest extends TestCase
             $config = $this->app->config();
 
             $config['app']['container'] = HomeController::class;
-            $this->app->setup($config, null, true);
+            $this->app->setup($config, true);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidContainerImplementation::class, $exception);
         }
@@ -465,7 +465,7 @@ class ApplicationTest extends TestCase
             $config = $this->app->config();
 
             $config['app']['events'] = HomeController::class;
-            $this->app->setup($config, null, true);
+            $this->app->setup($config, true);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidEventsImplementation::class, $exception);
         }
@@ -478,6 +478,6 @@ class ApplicationTest extends TestCase
      */
     public function testResetApplication(): void
     {
-        $this->assertEquals(null, $this->app->setup(null, null, true) ?? null);
+        $this->assertEquals(null, $this->app->setup(null, true) ?? null);
     }
 }
