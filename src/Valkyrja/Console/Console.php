@@ -407,7 +407,7 @@ class Console implements ConsoleContract
         $originalUseCacheFile = $this->app->config()['console']->useCacheFile;
         // Avoid using the cache file we already have
         $this->app->config()['console']->useCacheFile = false;
-        self::$setup                                = false;
+        self::$setup                                  = false;
         $this->setup();
 
         // Reset the use cache file value

@@ -13,9 +13,9 @@ use Valkyrja\Console\Command;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceAlias;
 use Valkyrja\Container\ServiceContext;
-use Valkyrja\Support\Directory;
 use Valkyrja\Events\Listener;
 use Valkyrja\Routing\Route;
+use Valkyrja\Support\Directory;
 
 /*
  *-------------------------------------------------------------------------
