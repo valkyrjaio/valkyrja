@@ -17,8 +17,7 @@ use ReflectionClass;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Config\Config;
-use Valkyrja\Config\Env;
+use Valkyrja\Application;
 use Valkyrja\Console\Command;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceAlias;
@@ -76,7 +75,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new AnnotationsParser(new Config(new Env()));
+        $this->class = new AnnotationsParser(new Application());
     }
 
     /**

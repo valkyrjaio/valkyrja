@@ -66,7 +66,7 @@ class AnnotationsServiceProvider extends ServiceProvider
         $this->app->container()->singleton(
             CoreComponent::ANNOTATIONS_PARSER,
             new AnnotationsParser(
-                $this->app->container()->get(CoreComponent::CONFIG)
+                $this->app->container()->get(CoreComponent::APP)
             )
         );
     }
