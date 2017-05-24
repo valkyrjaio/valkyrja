@@ -34,7 +34,7 @@ class ConfigTest extends TestCase
      */
     protected function getConfig(): array
     {
-        return $this->config ?? $this->config = require __DIR__ . '/../../../src/Valkyrja/config.php';
+        return $this->config ?? $this->config = require __DIR__ . '/../../../src/Valkyrja/Config/config.php';
     }
 
     /**
