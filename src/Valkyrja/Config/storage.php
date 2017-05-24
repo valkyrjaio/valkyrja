@@ -31,5 +31,5 @@ return [
      * //
      *
      */
-    'uploadsDir'             => env()::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app'),
+    'uploadsDir' => env()::STORAGE_UPLOADS_DIR ?? Directory::storagePath('app'),
 ];

@@ -70,7 +70,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'                  => env()::CONSOLE_CACHE_FILE_PATH ?? Directory::basePath('framework/cache/commands.php'),
+    'cacheFilePath'             => env()::CONSOLE_CACHE_FILE_PATH ?? Directory::basePath('framework/cache/commands.php'),
 
     /*
      *-------------------------------------------------------------------------
@@ -80,5 +80,5 @@ return [
      * //
      *
      */
-    'useCacheFile'                  => env()::CONSOLE_USE_CACHE_FILE ?? true,
+    'useCacheFile'              => env()::CONSOLE_USE_CACHE_FILE ?? true,
 ];

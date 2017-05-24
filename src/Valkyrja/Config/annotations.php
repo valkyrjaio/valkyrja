@@ -56,11 +56,11 @@ return [
      *
      */
     'map'      => env()::ANNOTATIONS_MAP ?? [
-        'Command'        => Command::class,
-        'Listener'       => Listener::class,
-        'Route'          => Route::class,
-        'Service'        => Service::class,
-        'ServiceAlias'   => ServiceAlias::class,
-        'ServiceContext' => ServiceContext::class,
-    ],
+            'Command'        => Command::class,
+            'Listener'       => Listener::class,
+            'Route'          => Route::class,
+            'Service'        => Service::class,
+            'ServiceAlias'   => ServiceAlias::class,
+            'ServiceContext' => ServiceContext::class,
+        ],
 ];
