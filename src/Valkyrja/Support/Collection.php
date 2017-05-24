@@ -13,14 +13,12 @@
 
 namespace Valkyrja\Support;
 
-use Valkyrja\Contracts\Support\Collection as CollectionContract;
-
 /**
  * Class Collection.
  *
  * @author Melech Mizrachi
  */
-class Collection implements CollectionContract
+class Collection
 {
     /**
      * The collection of items.
@@ -84,9 +82,9 @@ class Collection implements CollectionContract
      * @param string $key   The key
      * @param mixed  $value The value
      *
-     * @return CollectionContract
+     * @return self
      */
-    public function set(string $key, $value): CollectionContract
+    public function set(string $key, $value): self
     {
         $this->collection[$key] = $value;
 
@@ -98,9 +96,9 @@ class Collection implements CollectionContract
      *
      * @param string $key The key
      *
-     * @return CollectionContract
+     * @return self
      */
-    public function remove(string $key): CollectionContract
+    public function remove(string $key): self
     {
         if (! $this->has($key)) {
             return $this;
@@ -126,9 +124,9 @@ class Collection implements CollectionContract
      *
      * @param array $collection The collection
      *
-     * @return CollectionContract
+     * @return self
      */
-    public function setAll(array $collection): CollectionContract
+    public function setAll(array $collection): self
     {
         $this->collection = $collection;
 

@@ -11,11 +11,7 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Http\Files as FilesContract;
-use Valkyrja\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
-use Valkyrja\Http\Server as ServerContract;
-use Valkyrja\Contracts\Support\Collection as CollectionContract;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 
@@ -31,14 +27,14 @@ class Request implements RequestContract
     /**
      * Custom parameters.
      *
-     * @var \Valkyrja\Contracts\Support\Collection
+     * @var \Valkyrja\Support\Collection
      */
     protected $attributes;
 
     /**
      * Request body parameters ($_POST).
      *
-     * @var \Valkyrja\Contracts\Support\Collection
+     * @var \Valkyrja\Support\Collection
      */
     protected $request;
 
@@ -66,7 +62,7 @@ class Request implements RequestContract
     /**
      * Cookies ($_COOKIE).
      *
-     * @var \Valkyrja\Contracts\Support\Collection
+     * @var \Valkyrja\Support\Collection
      */
     protected $cookies;
 
@@ -402,9 +398,9 @@ class Request implements RequestContract
     /**
      * Return the GET Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
-    public function query(): CollectionContract
+    public function query(): Collection
     {
         if (! $this->query) {
             $this->setQuery();
@@ -430,9 +426,9 @@ class Request implements RequestContract
     /**
      * Return the POST Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
-    public function request(): CollectionContract
+    public function request(): Collection
     {
         if (! $this->request) {
             $this->setRequest();
@@ -458,9 +454,9 @@ class Request implements RequestContract
     /**
      * Return the attributes Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
-    public function attributes(): CollectionContract
+    public function attributes(): Collection
     {
         if (! $this->attributes) {
             $this->setAttributes();
@@ -486,9 +482,9 @@ class Request implements RequestContract
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
-    public function cookies(): CollectionContract
+    public function cookies(): Collection
     {
         if (! $this->cookies) {
             $this->setCookies();
@@ -516,7 +512,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Http\Files
      */
-    public function files(): FilesContract
+    public function files(): Files
     {
         if (! $this->files) {
             $this->setFiles();
@@ -544,7 +540,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Http\Server
      */
-    public function server(): ServerContract
+    public function server(): Server
     {
         if (! $this->server) {
             $this->setServer();
@@ -575,7 +571,7 @@ class Request implements RequestContract
      *
      * @return \Valkyrja\Http\Headers
      */
-    public function headers(): HeadersContract
+    public function headers(): Headers
     {
         if (! $this->headers) {
             $this->setHeaders();
@@ -923,7 +919,7 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->headers->get('Host');
     }

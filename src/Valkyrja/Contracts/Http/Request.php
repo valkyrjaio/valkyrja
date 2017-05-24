@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Contracts\Support\Collection;
+use Valkyrja\Support\Collection;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Files;
 use Valkyrja\Http\Headers;
@@ -138,7 +138,7 @@ interface Request
     /**
      * Return the GET Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
     public function query(): Collection;
 
@@ -154,7 +154,7 @@ interface Request
     /**
      * Return the POST Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
     public function request(): Collection;
 
@@ -170,7 +170,7 @@ interface Request
     /**
      * Return the attributes Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
     public function attributes(): Collection;
 
@@ -186,7 +186,7 @@ interface Request
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Contracts\Support\Collection
+     * @return \Valkyrja\Support\Collection
      */
     public function cookies(): Collection;
 
@@ -211,7 +211,7 @@ interface Request
      *
      * @param array $files
      *
-     * @return \Valkyrja\Http\Request
+     * @return \Valkyrja\Contracts\Http\Request
      */
     public function setFiles(array $files = []): self;
 
@@ -447,7 +447,7 @@ interface Request
      *
      * @return string
      */
-    public function getHost();
+    public function getHost(): string;
 
     /**
      * Sets the request method.

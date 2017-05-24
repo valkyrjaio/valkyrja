@@ -12,7 +12,6 @@
 namespace Valkyrja\Tests\Unit\Events;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Contracts\Support\Collection as CollectionContract;
 use Valkyrja\Support\Collection;
 
 /**
@@ -62,7 +61,7 @@ class CollectionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(CollectionContract::class, new Collection());
+        $this->assertInstanceOf(Collection::class, new Collection());
     }
 
     /**
@@ -72,7 +71,7 @@ class CollectionTest extends TestCase
      */
     public function testConstructWithData(): void
     {
-        $this->assertInstanceOf(CollectionContract::class, new Collection(['test', 'test2']));
+        $this->assertInstanceOf(Collection::class, new Collection(['test', 'test2']));
     }
 
     /**

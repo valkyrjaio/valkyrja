@@ -12,7 +12,9 @@
 namespace Valkyrja\Contracts\Http;
 
 use DateTime;
+use Valkyrja\Http\Cookies;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Headers;
 
 /**
  * Interface Response.
@@ -125,7 +127,7 @@ interface Response
     /**
      * Get response headers object.
      *
-     * @return \Valkyrja\Contracts\Http\Headers
+     * @return \Valkyrja\Http\Headers
      */
     public function headers(): Headers;
 
@@ -148,7 +150,7 @@ interface Response
     /**
      * Get response cookies object.
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Http\Cookies
      */
     public function cookies(): Cookies;
 

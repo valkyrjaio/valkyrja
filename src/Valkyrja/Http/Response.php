@@ -13,8 +13,6 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
-use Valkyrja\Contracts\Http\Cookies as CookiesContract;
-use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
@@ -29,7 +27,7 @@ class Response implements ResponseContract
     /**
      * Response headers.
      *
-     * @var \Valkyrja\Contracts\Http\Headers
+     * @var \Valkyrja\Http\Headers
      */
     protected $headers;
 
@@ -43,7 +41,7 @@ class Response implements ResponseContract
     /**
      * Response cookies.
      *
-     * @var \Valkyrja\Contracts\Http\Cookies
+     * @var \Valkyrja\Http\Cookies
      */
     protected $cookies;
 
@@ -401,9 +399,9 @@ class Response implements ResponseContract
     /**
      * Get response headers collection.
      *
-     * @return \Valkyrja\Contracts\Http\Headers
+     * @return \Valkyrja\Http\Headers
      */
-    public function headers(): HeadersContract
+    public function headers(): Headers
     {
         return $this->headers;
     }
@@ -442,9 +440,9 @@ class Response implements ResponseContract
     /**
      * Get response cookies collection.
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Http\Cookies
      */
-    public function cookies(): CookiesContract
+    public function cookies(): Cookies
     {
         return $this->cookies;
     }
