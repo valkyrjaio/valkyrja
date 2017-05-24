@@ -49,15 +49,15 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param array  $config [optional] The config to use
+     * @param array $config [optional] The config to use
      */
     public function __construct(array $config = null);
 
     /**
      * Setup the application.
      *
-     * @param array  $config [optional] The config to use
-     * @param bool   $force  [optional] Whether to force a setup
+     * @param array $config [optional] The config to use
+     * @param bool  $force  [optional] Whether to force a setup
      *
      * @return void
      */
