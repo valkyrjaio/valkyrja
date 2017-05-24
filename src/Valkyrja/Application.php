@@ -151,7 +151,7 @@ class Application implements ApplicationContract
         }
 
         $config     = $config ?? [];
-        $coreConfig = require __DIR__ . '/config.php';
+        $coreConfig = require __DIR__ . '/Config/config.php';
 
         // Set the config within the application
         self::$config = array_replace_recursive($coreConfig, $config);
