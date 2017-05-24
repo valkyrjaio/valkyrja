@@ -13,7 +13,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Query as QueryContract;
 use Valkyrja\Support\Collection;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Support\Collection;
  *
  * @author Melech Mizrachi
  */
-class Query extends Collection implements QueryContract
+class Query extends Collection
 {
     /**
      * Convert the query parameters in the collection to a query string.
@@ -34,17 +33,6 @@ class Query extends Collection implements QueryContract
             return '';
         }
 
-        $str      = '?';
-        $lastItem = end($this->collection);
-
-        foreach ($this->collection as $itemKey => $item) {
-            $str .= $itemKey . '=' . $item;
-
-            if ($item !== $lastItem) {
-                $str .= '&';
-            }
-        }
-
-        return $str;
+        return '?' . http_build_query($this->collection);
     }
 }

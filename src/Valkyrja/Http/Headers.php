@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Headers as HeadersContract;
 use Valkyrja\Support\Collection;
 
 /**
@@ -19,7 +18,7 @@ use Valkyrja\Support\Collection;
  *
  * @author Melech Mizrachi
  */
-class Headers extends Collection implements HeadersContract
+class Headers extends Collection
 {
     //
 }

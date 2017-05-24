@@ -14,7 +14,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Contracts\Http\Cookie;
-use Valkyrja\Contracts\Http\Cookies as CookiesContract;
 
 /**
  * Class Cookies.
@@ -25,7 +24,7 @@ use Valkyrja\Contracts\Http\Cookies as CookiesContract;
  *
  * @method get(string $key, $default = false): \Valkyrja\Contracts\Http\Cookie
  */
-class Cookies implements CookiesContract
+class Cookies
 {
     /**
      * Array of cookies.

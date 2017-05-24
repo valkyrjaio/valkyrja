@@ -13,6 +13,9 @@ namespace Valkyrja\Contracts\Http;
 
 use Valkyrja\Contracts\Support\Collection;
 use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Files;
+use Valkyrja\Http\Headers;
+use Valkyrja\Http\Server;
 
 /**
  * Interface Request.
@@ -199,7 +202,7 @@ interface Request
     /**
      * Return the FILES Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Files
+     * @return \Valkyrja\Http\Files
      */
     public function files(): Files;
 
@@ -208,14 +211,14 @@ interface Request
      *
      * @param array $files
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
     public function setFiles(array $files = []): self;
 
     /**
      * Return the SERVER Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Server
+     * @return \Valkyrja\Http\Server
      */
     public function server(): Server;
 
@@ -231,7 +234,7 @@ interface Request
     /**
      * Return the headers Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Headers
+     * @return \Valkyrja\Http\Headers
      */
     public function headers(): Headers;
 

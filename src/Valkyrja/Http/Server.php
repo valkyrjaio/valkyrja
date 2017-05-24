@@ -13,7 +13,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Server as ServerContract;
 use Valkyrja\Support\Collection;
 
 /**
@@ -21,8 +20,22 @@ use Valkyrja\Support\Collection;
  *
  * @author Melech Mizrachi
  */
-class Server extends Collection implements ServerContract
+class Server extends Collection
 {
+    /**
+     * Special HTTP headers that do not have the "HTTP_" prefix.
+     *
+     * @var array
+     */
+    public const SPECIAL_HEADERS = [
+        'CONTENT_TYPE',
+        'CONTENT_LENGTH',
+        'PHP_AUTH_USER',
+        'PHP_AUTH_PW',
+        'PHP_AUTH_DIGEST',
+        'AUTH_TYPE',
+    ];
+
     /**
      * Get all headers from server.
      *

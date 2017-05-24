@@ -13,7 +13,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Files as FilesContract;
 use Valkyrja\Support\Collection;
 
 /**
@@ -21,7 +20,7 @@ use Valkyrja\Support\Collection;
  *
  * @author Melech Mizrachi
  */
-class Files extends Collection implements FilesContract
+class Files extends Collection
 {
     //
 }

@@ -11,10 +11,10 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Files as FilesContract;
-use Valkyrja\Contracts\Http\Headers as HeadersContract;
+use Valkyrja\Http\Files as FilesContract;
+use Valkyrja\Http\Headers as HeadersContract;
 use Valkyrja\Contracts\Http\Request as RequestContract;
-use Valkyrja\Contracts\Http\Server as ServerContract;
+use Valkyrja\Http\Server as ServerContract;
 use Valkyrja\Contracts\Support\Collection as CollectionContract;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
@@ -45,21 +45,21 @@ class Request implements RequestContract
     /**
      * Query string parameters ($_GET).
      *
-     * @var \Valkyrja\Contracts\Http\Query
+     * @var \Valkyrja\Http\Query
      */
     protected $query;
 
     /**
      * Server and execution environment parameters ($_SERVER).
      *
-     * @var \Valkyrja\Contracts\Http\Server
+     * @var \Valkyrja\Http\Server
      */
     protected $server;
 
     /**
      * Uploaded files ($_FILES).
      *
-     * @var \Valkyrja\Contracts\Http\Files
+     * @var \Valkyrja\Http\Files
      */
     protected $files;
 
@@ -73,7 +73,7 @@ class Request implements RequestContract
     /**
      * Headers (taken from the $_SERVER).
      *
-     * @var \Valkyrja\Contracts\Http\Headers
+     * @var \Valkyrja\Http\Headers
      */
     protected $headers;
 
@@ -514,7 +514,7 @@ class Request implements RequestContract
     /**
      * Return the FILES Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Files
+     * @return \Valkyrja\Http\Files
      */
     public function files(): FilesContract
     {
@@ -542,7 +542,7 @@ class Request implements RequestContract
     /**
      * Return the SERVER Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Server
+     * @return \Valkyrja\Http\Server
      */
     public function server(): ServerContract
     {
@@ -573,7 +573,7 @@ class Request implements RequestContract
     /**
      * Return the headers Collection.
      *
-     * @return \Valkyrja\Contracts\Http\Headers
+     * @return \Valkyrja\Http\Headers
      */
     public function headers(): HeadersContract
     {
