@@ -31,7 +31,7 @@ return [
      * settings for the application as a whole.
      *
      */
-    'app'         => require __DIR__ . '/Config/app.php',
+    'app'         => require __DIR__ . '/app.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
      * configured to work within the application can be found here.
      *
      */
-    'annotations' => require __DIR__ . '/Config/annotations.php',
+    'annotations' => require __DIR__ . '/annotations.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
      * work can be found here.
      *
      */
-    'console'     => require __DIR__ . '/Config/console.php',
+    'console'     => require __DIR__ . '/console.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
      * necessary to make it run correctly can be found here.
      *
      */
-    'container'   => require __DIR__ . '/Config/container.php',
+    'container'   => require __DIR__ . '/container.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
      * events work without a hitch.
      *
      */
-    'events'      => require __DIR__ . '/Config/events.php',
+    'events'      => require __DIR__ . '/events.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
      * applications. Configure that manipulative module here.
      *
      */
-    'filesystem'  => require __DIR__ . '/Config/filesystem.php',
+    'filesystem'  => require __DIR__ . '/filesystem.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -102,7 +102,7 @@ return [
      * from you and your developers. Configure that helpfulness here.
      *
      */
-    'logger'      => require __DIR__ . '/Config/logger.php',
+    'logger'      => require __DIR__ . '/logger.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -115,7 +115,7 @@ return [
      * all the configurations for routing can be found here.
      *
      */
-    'routing'     => require __DIR__ . '/Config/routing.php',
+    'routing'     => require __DIR__ . '/routing.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -127,7 +127,7 @@ return [
      * configurations to make the session work properly.
      *
      */
-    'session'     => require __DIR__ . '/Config/session.php',
+    'session'     => require __DIR__ . '/session.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -140,7 +140,7 @@ return [
      * that setup the storage of all the things.
      *
      */
-    'storage'     => require __DIR__ . '/Config/storage.php',
+    'storage'     => require __DIR__ . '/storage.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -152,5 +152,5 @@ return [
      * all the configurations necessary to make that work properly.
      *
      */
-    'views'       => require __DIR__ . '/Config/views.php',
+    'views'       => require __DIR__ . '/views.php',
 ];
