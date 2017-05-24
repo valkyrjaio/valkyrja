@@ -11,11 +11,11 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Support\Collection;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Files;
 use Valkyrja\Http\Headers;
 use Valkyrja\Http\Server;
+use Valkyrja\Support\Collection;
 
 /**
  * Interface Request.
