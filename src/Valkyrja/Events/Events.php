@@ -289,10 +289,10 @@ class Events implements EventsContract
         self::$setup = true;
 
         // If the application should use the events cache files
-        if ($this->app->config()->events->useCacheFile) {
+        if ($this->app->config()['events']['useCacheFile']) {
             // Set the application routes with said file
             self::$events = unserialize(
-                base64_decode(require $this->app->config()->events->cacheFilePath, true),
+                base64_decode(require $this->app->config()['events']['cacheFilePath'], true),
                 [
                     'allowed_classes' => [
                         Listener::class,
@@ -305,19 +305,19 @@ class Events implements EventsContract
         }
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()->events->useAnnotations && $this->app->config()->annotations->enabled) {
+        if ($this->app->config()['events']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()->events->useAnnotationsExclusively) {
+            if ($this->app->config()['events']['useAnnotationsExclusively']) {
                 // Return to avoid loading events file
                 return;
             }
         }
 
         // Include the events file
-        require $this->app->config()->events->filePath;
+        require $this->app->config()['events']['filePath'];
     }
 
     /**
@@ -338,7 +338,7 @@ class Events implements EventsContract
         $containerAnnotations = $this->app->container()->get(ListenerAnnotations::class);
 
         // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(...$this->app->config()->events->classes);
+        $listeners = $containerAnnotations->getListeners(...$this->app->config()['events']['classes']);
 
         // Iterate through the listeners
         foreach ($listeners as $listener) {
@@ -362,14 +362,14 @@ class Events implements EventsContract
     public function getCacheable(): array
     {
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()->events->useCacheFile;
+        $originalUseCacheFile = $this->app->config()['events']['useCacheFile'];
         // Avoid using the cache file we already have
-        $this->app->config()->events->useCacheFile = false;
-        self::$setup                               = false;
+        $this->app->config()['events']['useCacheFile'] = false;
+        self::$setup                                   = false;
         $this->setup();
 
         // Reset the use cache file value
-        $this->app->config()->events->useCacheFile = $originalUseCacheFile;
+        $this->app->config()['events']['useCacheFile'] = $originalUseCacheFile;
 
         return self::$events;
     }

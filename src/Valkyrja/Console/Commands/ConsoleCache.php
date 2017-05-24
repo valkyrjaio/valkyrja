@@ -36,7 +36,7 @@ class ConsoleCache extends CommandHandler
 
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()->console->cacheFilePath,
+            config()['console']['cacheFilePath'],
             '<?php return ' . var_export($cache, true) . ';'
         );
 

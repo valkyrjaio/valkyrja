@@ -317,7 +317,7 @@ class Router implements RouterContract
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $this->app->config()->routing->useAbsoluteUrls || $route->getSecure()
+        $host = $absolute || $this->app->config()['routing']['useAbsoluteUrls'] || $route->getSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -353,7 +353,7 @@ class Router implements RouterContract
     protected function validateRouteUrl(string $path): string
     {
         // If the last character is not a slash and the config is set to ensure trailing slash
-        if ($path[-1] !== '/' && $this->app->config()->routing->trailingSlash) {
+        if ($path[-1] !== '/' && $this->app->config()['routing']['trailingSlash']) {
             // add a trailing slash
             $path .= '/';
         }
@@ -539,10 +539,10 @@ class Router implements RouterContract
         self::$setup = true;
 
         // If the application should use the routes cache file
-        if ($this->app->config()->routing->useCacheFile) {
+        if ($this->app->config()['routing']['useCacheFile']) {
             // Set the application routes with said file
             $cache = unserialize(
-                base64_decode(require $this->app->config()->routing->cacheFilePath, true),
+                base64_decode(require $this->app->config()['routing']['cacheFilePath'], true),
                 [
                     'allowed_classes' => [
                         Route::class,
@@ -560,12 +560,12 @@ class Router implements RouterContract
         }
 
         // If annotations are enabled and routing should use annotations
-        if ($this->app->config()->routing->useAnnotations && $this->app->config()->annotations->enabled) {
+        if ($this->app->config()['routing']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
             // Setup annotated routes
             $this->setupAnnotatedRoutes();
 
             // If only annotations should be used for routing
-            if ($this->app->config()->routing->useAnnotationsExclusively) {
+            if ($this->app->config()['routing']['useAnnotationsExclusively']) {
                 // Return to avoid loading routes file
                 return;
             }
@@ -574,7 +574,7 @@ class Router implements RouterContract
         // Include the routes file
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
-        require $this->app->config()->routing->filePath;
+        require $this->app->config()['routing']['filePath'];
     }
 
     /**
@@ -595,7 +595,7 @@ class Router implements RouterContract
         $routeAnnotations = $this->app->container()->get(RouteAnnotationsContract::class);
 
         // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config()->routing->controllers);
+        $routes = $routeAnnotations->getRoutes(...$this->app->config()['routing']['controllers']);
 
         // Iterate through the routes
         foreach ($routes as $route) {
@@ -624,14 +624,14 @@ class Router implements RouterContract
         self::$namedRoutes   = [];
 
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()->routing->useCacheFile;
+        $originalUseCacheFile = $this->app->config()['routing']['useCacheFile'];
         // Avoid using the cache file we already have
-        $this->app->config()->routing->useCacheFile = false;
-        self::$setup                                = false;
+        $this->app->config()['routing']['useCacheFile'] = false;
+        self::$setup                                    = false;
         $this->setup();
 
         // Reset the use cache file value
-        $this->app->config()->routing->useCacheFile = $originalUseCacheFile;
+        $this->app->config()['routing']['useCacheFile'] = $originalUseCacheFile;
 
         return [
             'routes'        => self::$routes,

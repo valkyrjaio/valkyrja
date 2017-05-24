@@ -36,7 +36,7 @@ class ContainerCache extends CommandHandler
 
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()->container->cacheFilePath,
+            config()['container']['cacheFilePath'],
             '<?php return ' . var_export($cache, true) . ';'
         );
 

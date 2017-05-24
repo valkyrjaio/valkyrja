@@ -21,11 +21,12 @@ interface Env
     /**
      * Application env variables.
      */
-    public const APP_ENV      = null;
-    public const APP_DEBUG    = null;
-    public const APP_URL      = null;
-    public const APP_TIMEZONE = null;
-    public const APP_VERSION  = null;
+    public const APP_ENV            = null;
+    public const APP_DEBUG          = null;
+    public const APP_URL            = null;
+    public const APP_TIMEZONE       = null;
+    public const APP_VERSION        = null;
+    public const APP_PATH_REGEX_MAP = null;
 
     public const APP_CONTAINER  = null;
     public const APP_DISPATCHER = null;
@@ -111,6 +112,7 @@ interface Env
      * Twig views env variables.
      */
     public const VIEWS_TWIG_DIR          = null;
+    public const VIEWS_TWIG_DIR_NS       = null;
     public const VIEWS_TWIG_DIRS         = null;
     public const VIEWS_TWIG_COMPILED_DIR = null;
     public const VIEWS_TWIG_EXTENSIONS   = null;

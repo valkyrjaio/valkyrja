@@ -56,10 +56,10 @@ class LoggerServiceProvider extends ServiceProvider
         $this->app->container()->singleton(
             CoreComponent::LOGGER_INTERFACE,
             new MonologLogger(
-                $this->app->config()->logger->name,
+                $this->app->config()['logger']['name'],
                 [
                     new StreamHandler(
-                        $this->app->config()->logger->filePath,
+                        $this->app->config()['logger']['filePath'],
                         LogLevel::DEBUG
                     ),
                 ]

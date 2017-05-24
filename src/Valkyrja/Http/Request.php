@@ -275,7 +275,7 @@ class Request implements RequestContract
                 'SERVER_NAME'          => 'localhost',
                 'SERVER_PORT'          => 80,
                 'HTTP_HOST'            => 'localhost',
-                'HTTP_USER_AGENT'      => config()->app->version,
+                'HTTP_USER_AGENT'      => config()['app']['version'],
                 'HTTP_ACCEPT'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                 'HTTP_ACCEPT_LANGUAGE' => 'en-us,en;q=0.5',
                 'HTTP_ACCEPT_CHARSET'  => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',

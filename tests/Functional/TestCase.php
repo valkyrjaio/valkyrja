@@ -13,8 +13,6 @@ namespace Valkyrja\Tests\Functional;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application;
-use Valkyrja\Config\Config;
-use Valkyrja\Config\Env;
 use Valkyrja\Support\Directory;
 
 /**
@@ -40,6 +38,6 @@ class TestCase extends PHPUnitTestCase
     {
         Directory::$BASE_PATH = realpath(__DIR__ . '/../App/');
 
-        $this->app = new Application(new Config(new Env()));
+        $this->app = new Application();
     }
 }

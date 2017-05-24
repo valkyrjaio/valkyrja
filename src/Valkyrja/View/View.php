@@ -74,7 +74,7 @@ class View implements ViewContract
         $this->app = $app;
         $this->setVariables($variables);
         $this->setTemplate($template);
-        $this->setTemplateDir($this->app->config()->views->dir ?? resourcesPath('views'));
+        $this->setTemplateDir($this->app->config()['views']['dir']);
     }
 
     /**

@@ -72,9 +72,9 @@ if (! function_exists('config')) {
     /**
      * Get config.
      *
-     * @return \config\Config|\Valkyrja\Config\Config|\Valkyrja\Contracts\Config\Config
+     * @return array
      */
-    function config(): Valkyrja\Contracts\Config\Config
+    function config(): array
     {
         return app()->config();
     }
@@ -101,6 +101,22 @@ if (! function_exists('container')) {
     function container(): Valkyrja\Contracts\Container\Container
     {
         return app()->container();
+    }
+}
+
+if (! function_exists('env')) {
+    /**
+     * Get env.
+     *
+     * @return \Valkyrja\Config\Env|\config\Env
+     */
+    function env(): string
+    {
+        if (! class_exists('\\config\\Env')) {
+            return '\\Valkyrja\\Config\\Env';
+        }
+
+        return '\\config\\Env';
     }
 }
 

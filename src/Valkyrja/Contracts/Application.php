@@ -11,9 +11,7 @@
 
 namespace Valkyrja\Contracts;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Contracts\Annotations\Annotations;
-use Valkyrja\Contracts\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
@@ -51,19 +49,21 @@ interface Application
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Config\Config $config The config to use
+     * @param array  $config [optional] The config to use
+     * @param string $env    [optional] The env class to use
      */
-    public function __construct(Config $config);
+    public function __construct(array $config = null, string $env = null);
 
     /**
      * Setup the application.
      *
-     * @param \Valkyrja\Config\Config $config The config
-     * @param bool                    $force  Whether to force a setup
+     * @param array  $config [optional] The config to use
+     * @param string $env    [optional] The env class to use
+     * @param bool   $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(Config $config, bool $force = null): void;
+    public function setup(array $config = null, string $env = null, bool $force = null): void;
 
     /**
      * Get the application instance.
@@ -103,16 +103,16 @@ interface Application
     /**
      * Get the config class instance.
      *
-     * @return \Valkyrja\Config\Config|\config\Config
+     * @return array
      */
-    public function config(): Config;
+    public function config(): array;
 
     /**
      * Get environment variables.
      *
      * @return \Valkyrja\Contracts\Config\Env||config|Env
      */
-    public function env(): Env;
+    public function env(): string;
 
     /**
      * Get the environment with which the application is running in.

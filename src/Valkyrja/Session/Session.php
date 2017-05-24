@@ -58,8 +58,8 @@ class Session implements SessionContract
     {
         $this->app = $application;
 
-        $sessionId   = $sessionId ?? $this->app->config()->session->id;
-        $sessionName = $sessionName ?? $this->app->config()->session->name;
+        $sessionId   = $sessionId ?? $this->app->config()['session']['id'];
+        $sessionName = $sessionName ?? $this->app->config()['session']['name'];
 
         // If a session id is provided
         if (null !== $sessionId) {

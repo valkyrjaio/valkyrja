@@ -296,7 +296,7 @@ REGEX;
      */
     protected function getParamReplacement(string $key, array $params): string
     {
-        return config()->app->pathRegexMap[$params[2][$key]]
+        return config()['app']['pathRegexMap'][$params[2][$key]]
             ?? '(' . ($params[2][$key] ?: $params[1][$key]) . ')';
     }
 }

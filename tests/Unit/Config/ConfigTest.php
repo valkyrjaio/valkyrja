@@ -12,9 +12,6 @@
 namespace Valkyrja\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Config\Config;
-use Valkyrja\Config\Env;
-use Valkyrja\Config\Sub\TwigViewsConfig;
 
 /**
  * Test the default config class.
@@ -26,18 +23,18 @@ class ConfigTest extends TestCase
     /**
      * The config.
      *
-     * @var \Valkyrja\Config\Config
+     * @var array
      */
     protected $config;
 
     /**
      * Get the config to test with.
      *
-     * @return \Valkyrja\Config\Config
+     * @return array
      */
-    protected function getConfig(): Config
+    protected function getConfig(): array
     {
-        return $this->config ?? $this->config = new Config(new Env());
+        return $this->config ?? $this->config = require __DIR__ . '../../../src/Valkyrja/config.php';
     }
 
     /**
@@ -47,7 +44,7 @@ class ConfigTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getConfig() instanceof Config);
+        $this->assertEquals(true, is_array($this->getConfig()));
     }
 
     /**
@@ -57,7 +54,7 @@ class ConfigTest extends TestCase
      */
     public function testAnnotationsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->annotations));
+        $this->assertEquals(true, isset($this->getConfig()['annotations']));
     }
 
     /**
@@ -67,7 +64,7 @@ class ConfigTest extends TestCase
      */
     public function testAppConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->app));
+        $this->assertEquals(true, isset($this->getConfig()['app']));
     }
 
     /**
@@ -77,7 +74,7 @@ class ConfigTest extends TestCase
      */
     public function testContainerConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->container));
+        $this->assertEquals(true, isset($this->getConfig()['container']));
     }
 
     /**
@@ -87,7 +84,7 @@ class ConfigTest extends TestCase
      */
     public function testConsoleConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->console));
+        $this->assertEquals(true, isset($this->getConfig()['console']));
     }
 
     /**
@@ -97,7 +94,7 @@ class ConfigTest extends TestCase
      */
     public function testEventsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->events));
+        $this->assertEquals(true, isset($this->getConfig()['events']));
     }
 
     /**
@@ -107,7 +104,7 @@ class ConfigTest extends TestCase
      */
     public function testLoggerConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->logger));
+        $this->assertEquals(true, isset($this->getConfig()['logger']));
     }
 
     /**
@@ -117,7 +114,7 @@ class ConfigTest extends TestCase
      */
     public function testRoutingConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->routing));
+        $this->assertEquals(true, isset($this->getConfig()['routing']));
     }
 
     /**
@@ -127,7 +124,7 @@ class ConfigTest extends TestCase
      */
     public function testSessionConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->session));
+        $this->assertEquals(true, isset($this->getConfig()['session']));
     }
 
     /**
@@ -137,7 +134,7 @@ class ConfigTest extends TestCase
      */
     public function testStorageConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->storage));
+        $this->assertEquals(true, isset($this->getConfig()['storage']));
     }
 
     /**
@@ -147,18 +144,6 @@ class ConfigTest extends TestCase
      */
     public function testViewsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()->views));
-    }
-
-    /**
-     * Test to ensure the twig views config is set in the default config instance.
-     *
-     * @return void
-     */
-    public function testTwigViewsConfig(): void
-    {
-        $this->getConfig()->views->twig = new TwigViewsConfig(new Env());
-
-        $this->assertEquals(true, isset($this->getConfig()->views->twig));
+        $this->assertEquals(true, isset($this->getConfig()['views']));
     }
 }

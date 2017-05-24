@@ -529,10 +529,10 @@ class Container implements ContainerContract
         self::$setup = true;
 
         // If the application should use the container cache files
-        if ($this->app->config()->container->useCacheFile) {
+        if (config()['container']['useCacheFile']) {
             // Set the application routes with said file
             $cache = unserialize(
-                base64_decode(require $this->app->config()->container->cacheFilePath, true),
+                base64_decode(require config()['container']['cacheFilePath'], true),
                 [
                     'allowed_classes' => [
                         Service::class,
@@ -552,12 +552,12 @@ class Container implements ContainerContract
         $this->setupServiceProviders();
 
         // If annotations are enabled and the container should use annotations
-        if ($this->app->config()->container->useAnnotations && $this->app->config()->annotations->enabled) {
+        if (config()['container']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
             // Setup annotated services, contexts, and aliases
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()->container->useAnnotationsExclusively) {
+            if (config()['container']['useAnnotationsExclusively']) {
                 // Return to avoid loading container file
                 return;
             }
@@ -566,7 +566,7 @@ class Container implements ContainerContract
         // Include the container file
         // NOTE: Included if annotations are set or not due to possibility of container items being defined
         // within the classes as well as within the container file
-        require $this->app->config()->container->filePath;
+        require config()['container']['filePath'];
     }
 
     /**
@@ -589,7 +589,7 @@ class Container implements ContainerContract
         $containerAnnotations = $this->get(ContainerAnnotations::class);
 
         // Get all the annotated services from the list of controllers
-        $services = $containerAnnotations->getServices(...$this->app->config()->container->services);
+        $services = $containerAnnotations->getServices(...config()['container']['services']);
 
         // Iterate through the services
         foreach ($services as $service) {
@@ -599,7 +599,7 @@ class Container implements ContainerContract
 
         // Get all the annotated services from the list of controllers
         $contextServices = $containerAnnotations->getContextServices(
-            ...$this->app->config()->container->contextServices
+            ...config()['container']['contextServices']
         );
 
         // Iterate through the services
@@ -609,7 +609,7 @@ class Container implements ContainerContract
         }
 
         // Get all the annotated services from the list of classes
-        $aliasServices = $containerAnnotations->getAliasServices(...$this->app->config()->container->services);
+        $aliasServices = $containerAnnotations->getAliasServices(...config()['container']['services']);
 
         // Iterate through the services
         foreach ($aliasServices as $alias) {
@@ -626,22 +626,22 @@ class Container implements ContainerContract
     protected function setupServiceProviders(): void
     {
         // Iterate through all the providers
-        foreach ($this->app->config()->container->coreProviders as $provider) {
+        foreach (config()['container']['coreProviders'] as $provider) {
             $this->register($provider);
         }
 
         // Iterate through all the providers
-        foreach ($this->app->config()->container->providers as $provider) {
+        foreach (config()['container']['providers'] as $provider) {
             $this->register($provider);
         }
 
         // If this is not a dev environment
-        if (! $this->app->config()->app->debug) {
+        if (! $this->app->debug()) {
             return;
         }
 
         // Iterate through all the providers
-        foreach ($this->app->config()->container->devProviders as $provider) {
+        foreach (config()['container']['devProviders'] as $provider) {
             $this->register($provider);
         }
     }
@@ -663,17 +663,17 @@ class Container implements ContainerContract
     public function getCacheable(): array
     {
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()->container->useCacheFile;
+        $originalUseCacheFile = config()['container']['useCacheFile'];
         // Avoid using the cache file we already have
-        $this->app->config()->container->useCacheFile = false;
-        self::$registered                             = [];
-        self::$services                               = [];
-        self::$provided                               = [];
-        self::$setup                                  = false;
+        config()['container']['useCacheFile'] = false;
+        self::$registered                     = [];
+        self::$services                       = [];
+        self::$provided                       = [];
+        self::$setup                          = false;
         $this->setup();
 
         // Reset the use cache file value
-        $this->app->config()->container->useCacheFile = $originalUseCacheFile;
+        config()['container']['useCacheFile'] = $originalUseCacheFile;
 
         return [
             'services' => self::$services,

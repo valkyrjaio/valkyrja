@@ -11,7 +11,6 @@
 
 namespace Valkyrja;
 
-use Valkyrja\Config\Config;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Application as ApplicationContract;
@@ -64,9 +63,16 @@ class Application implements ApplicationContract
     protected static $setup = false;
 
     /**
+     * Application env.
+     *
+     * @var \Valkyrja\Config\Env|\config\Env
+     */
+    protected static $env;
+
+    /**
      * Application config.
      *
-     * @var \Valkyrja\Config\Config
+     * @var array
      */
     protected static $config;
 
@@ -101,13 +107,14 @@ class Application implements ApplicationContract
     /**
      * Application constructor.
      *
-     * @param \Valkyrja\Config\Config $config The config to use
+     * @param array  $config [optional] The config to use
+     * @param string $env    [optional] The env class to use
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
      * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
      */
-    public function __construct(Config $config)
+    public function __construct(array $config = null, string $env = null)
     {
         $this->setup($config);
     }
@@ -115,8 +122,9 @@ class Application implements ApplicationContract
     /**
      * Setup the application.
      *
-     * @param \Valkyrja\Config\Config $config The config
-     * @param bool                    $force  Whether to force a setup
+     * @param array  $config [optional] The config to use
+     * @param string $env    [optional] The env class to use
+     * @param bool   $force  [optional] Whether to force a setup
      *
      * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
      * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
@@ -124,7 +132,7 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setup(Config $config, bool $force = null): void
+    public function setup(array $config = null, string $env = null, bool $force = null): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -140,10 +148,15 @@ class Application implements ApplicationContract
             define('VALKYRJA_START', microtime(true));
         }
 
+        $config     = $config ?? [];
+        $coreConfig = require __DIR__ . '/config.php';
+
         // Set the app static
         self::$app = $this;
+        // Set the env
+        self::$env = $env ?? Env::class;
         // Set the config within the application
-        self::$config = $config;
+        self::$config = array_replace_recursive($coreConfig, $config);
 
         // Bootstrap debug capabilities
         $this->bootstrapDebug();
@@ -165,9 +178,9 @@ class Application implements ApplicationContract
     protected function bootstrapDebug(): void
     {
         // If debug is on, enable debug handling
-        if (self::$config->app->debug) {
+        if (self::$config['app']['debug']) {
             // Debug to output exceptions
-            Debug::enable(E_ALL, self::$config->app->debug);
+            Debug::enable(E_ALL, true);
         }
     }
 
@@ -183,11 +196,11 @@ class Application implements ApplicationContract
     protected function bootstrapCore(): void
     {
         // The events class to use from the config
-        $eventsImpl = self::$config->app->events;
+        $eventsImpl = self::$config['app']['events'];
         // The container class to use from the config
-        $containerImpl = self::$config->app->container;
+        $containerImpl = self::$config['app']['container'];
         // The dispatcher class to use from the config
-        $dispatcherImpl = self::$config->app->dispatcher;
+        $dispatcherImpl = self::$config['app']['dispatcher'];
 
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
@@ -224,7 +237,7 @@ class Application implements ApplicationContract
         // Set the application instance in the container
         self::$container->singleton(CoreComponent::APP, $this);
         // Set the events instance in the container
-        self::$container->singleton(CoreComponent::ENV, self::$config->env);
+        self::$container->singleton(CoreComponent::ENV, self::$env);
         // Set the events instance in the container
         self::$container->singleton(CoreComponent::CONFIG, self::$config);
         // Set the container instance in the container
@@ -259,7 +272,7 @@ class Application implements ApplicationContract
      */
     protected function bootstrapTimezone(): void
     {
-        date_default_timezone_set($this->config()->app->timezone ?? 'UTC');
+        date_default_timezone_set(self::$config['app']['timezone']);
     }
 
     /**
@@ -315,9 +328,9 @@ class Application implements ApplicationContract
     /**
      * Get the config class instance.
      *
-     * @return \Valkyrja\Config\Config|\config\Config
+     * @return array
      */
-    public function config(): Config
+    public function config(): array
     {
         return self::$config;
     }
@@ -327,9 +340,9 @@ class Application implements ApplicationContract
      *
      * @return \Valkyrja\Contracts\Config\Env||config|Env
      */
-    public function env(): Env
+    public function env(): string
     {
-        return $this->config()->env;
+        return self::$env;
     }
 
     /**
@@ -339,7 +352,7 @@ class Application implements ApplicationContract
      */
     public function environment(): string
     {
-        return $this->config()->app->env ?? 'production';
+        return self::$config['app']['env'];
     }
 
     /**
@@ -349,7 +362,7 @@ class Application implements ApplicationContract
      */
     public function debug(): string
     {
-        return $this->config()->app->debug ?? false;
+        return self::$config['app']['debug'];
     }
 
     /**

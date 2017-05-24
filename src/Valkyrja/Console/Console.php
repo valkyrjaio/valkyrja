@@ -301,10 +301,10 @@ class Console implements ConsoleContract
         self::$setup = true;
 
         // If the application should use the events cache files
-        if ($this->app->config()->console->useCacheFile) {
+        if ($this->app->config()['console']['useCacheFile']) {
             // Set the application routes with said file
             $cache = unserialize(
-                base64_decode(require $this->app->config()->console->cacheFilePath, true),
+                base64_decode(require $this->app->config()['console']['cacheFilePath'], true),
                 [
                     'allowed_classes' => [
                         Command::class,
@@ -323,19 +323,19 @@ class Console implements ConsoleContract
         $this->setupBootstrap();
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()->console->useAnnotations && $this->app->config()->annotations->enabled) {
+        if ($this->app->config()['console']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()->console->useAnnotationsExclusively) {
+            if ($this->app->config()['console']['useAnnotationsExclusively']) {
                 // Return to avoid loading events file
                 return;
             }
         }
 
         // Include the events file
-        require $this->app->config()->console->filePath;
+        require $this->app->config()['console']['filePath'];
     }
 
     /**
@@ -367,7 +367,7 @@ class Console implements ConsoleContract
         $containerAnnotations = $this->app->container()->get(CommandAnnotations::class);
 
         // Get all the annotated commands from the list of handlers
-        $commands = $containerAnnotations->getCommands(...$this->app->config()->console->handlers);
+        $commands = $containerAnnotations->getCommands(...$this->app->config()['console']->handlers);
 
         // Iterate through the commands
         foreach ($commands as $command) {
@@ -404,14 +404,14 @@ class Console implements ConsoleContract
         self::$namedCommands = [];
 
         // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()->console->useCacheFile;
+        $originalUseCacheFile = $this->app->config()['console']->useCacheFile;
         // Avoid using the cache file we already have
-        $this->app->config()->console->useCacheFile = false;
+        $this->app->config()['console']->useCacheFile = false;
         self::$setup                                = false;
         $this->setup();
 
         // Reset the use cache file value
-        $this->app->config()->console->useCacheFile = $originalUseCacheFile;
+        $this->app->config()['console']->useCacheFile = $originalUseCacheFile;
 
         return [
             'commands'      => self::$commands,

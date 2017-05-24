@@ -39,11 +39,11 @@ class CacheAllCommand extends CommandHandler
      */
     public function run(string $sync = null): int
     {
-        $originalDebug = config()->app->debug;
-        $originalEnv   = config()->app->env;
+        $originalDebug = config()['app']['debug'];
+        $originalEnv   = config()['app']['env'];
 
-        config()->app->debug = false;
-        config()->app->env   = 'production';
+        config()['app']['debug'] = false;
+        config()['app']['env']   = 'production';
 
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
         $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
@@ -55,15 +55,15 @@ class CacheAllCommand extends CommandHandler
         console()->dispatchCommand($eventsCache);
         console()->dispatchCommand($routesCache);
 
-        config()->app->debug = $originalDebug;
-        config()->app->env   = $originalEnv;
+        config()['app']['debug'] = $originalDebug;
+        config()['app']['env']   = $originalEnv;
 
-        if (null !== $sync && config()->app->debug) {
+        if (null !== $sync && config()['app']['debug']) {
             $files = [
-                config()->console->cacheFilePath,
-                config()->container->cacheFilePath,
-                config()->events->cacheFilePath,
-                config()->routing->cacheFilePath,
+                config()['console']['cacheFilePath'],
+                config()['container']['cacheFilePath'],
+                config()['events']['cacheFilePath'],
+                config()['routing']['cacheFilePath'],
             ];
 
             foreach ($files as $file) {
