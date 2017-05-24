@@ -28,8 +28,8 @@ class Debug
     /**
      * Enable debug mode.
      *
-     * @param int  $errorReportingLevel [optional]
-     * @param bool $displayErrors       [optional]
+     * @param int  $errorReportingLevel [optional] The error reporting level
+     * @param bool $displayErrors       [optional] Whether to display errors
      *
      * @return void
      */

@@ -15,8 +15,7 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Config\Config;
-use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input\Input;
@@ -56,7 +55,7 @@ final class CoreComponent extends Enum
     public const ANNOTATIONS           = Annotations::class;
     public const ANNOTATIONS_PARSER    = AnnotationsParser::class;
     public const COMMAND_ANNOTATIONS   = CommandAnnotations::class;
-    public const CONFIG                = Config::class;
+    public const CONFIG                = 'config';
     public const CONSOLE               = Console::class;
     public const CONSOLE_KERNEL        = ConsoleKernel::class;
     public const CONTAINER             = Container::class;

@@ -75,7 +75,7 @@ interface Application
      *
      * @param string $env [optional] The env file to use
      *
-     * @return \Valkyrja\Contracts\Config\Env||config|Env
+     * @return \Valkyrja\Config\Env||config|Env
      */
     public static function env(string $env = null): string;
 

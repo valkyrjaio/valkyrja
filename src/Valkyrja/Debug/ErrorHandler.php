@@ -13,14 +13,13 @@ namespace Valkyrja\Debug;
 
 use ErrorException;
 use Exception;
-use Valkyrja\Contracts\Debug\ErrorHandler as ErrorHandlerContract;
 
 /**
  * Class ErrorHandler.
  *
  * @author Melech Mizrachi
  */
-class ErrorHandler implements ErrorHandlerContract
+class ErrorHandler
 {
     /**
      * Convert a PHP error to an ErrorException.

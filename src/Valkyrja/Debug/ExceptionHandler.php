@@ -15,7 +15,6 @@ use ErrorException;
 use Exception;
 use Throwable;
 use Valkyrja\Application;
-use Valkyrja\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Valkyrja\Contracts\Http\Exceptions\HttpException;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Http\Enums\StatusCode;
@@ -26,7 +25,7 @@ use Valkyrja\Http\Exceptions\HttpRedirectException;
  *
  * @author Melech Mizrachi
  */
-class ExceptionHandler implements ExceptionHandlerContract
+class ExceptionHandler
 {
     /**
      * Charset.

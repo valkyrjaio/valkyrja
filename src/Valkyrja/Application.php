@@ -14,7 +14,7 @@ namespace Valkyrja;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Application as ApplicationContract;
-use Valkyrja\Contracts\Config\Env;
+use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
@@ -288,7 +288,7 @@ class Application implements ApplicationContract
      *
      * @param string $env [optional] The env file to use
      *
-     * @return \Valkyrja\Contracts\Config\Env||config|Env
+     * @return \Valkyrja\Config\Env||config|Env
      */
     public static function env(string $env = null): string
     {

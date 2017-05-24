@@ -11,13 +11,11 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Controller as ControllerContract;
-
 /**
  * Class Controller.
  *
  * @author Melech Mizrachi
  */
-abstract class Controller implements ControllerContract
+abstract class Controller
 {
 }
