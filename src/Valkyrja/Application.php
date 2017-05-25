@@ -151,12 +151,8 @@ class Application implements ApplicationContract
             define('VALKYRJA_START', microtime(true));
         }
 
-        $config     = $config ?? [];
-        $coreConfig = require __DIR__ . '/Config/config.php';
-
-        // Set the config within the application
-        self::$config = array_replace_recursive($coreConfig, $config);
-
+        // Bootstrap debug capabilities
+        $this->bootstrapConfig();
         // Bootstrap debug capabilities
         $this->bootstrapDebug();
         // Bootstrap core functionality
@@ -167,6 +163,30 @@ class Application implements ApplicationContract
         $this->bootstrapSetup();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
+    }
+
+    /**
+     * Bootstrap the config.
+     *
+     * @param array $config [optional] The config
+     *
+     * @return void
+     */
+    protected function bootstrapConfig(array $config = null): void
+    {
+        if (self::$env::CONFIG_USE_CACHE_FILE) {
+            $cache = require self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
+
+            self::$config = unserialize(base64_decode($cache, true), ['allowed_classes' => []]);
+
+            return;
+        }
+
+        $config     = $config ?? [];
+        $coreConfig = require __DIR__ . '/Config/config.php';
+
+        // Set the config within the application
+        self::$config = array_replace_recursive($coreConfig, $config);
     }
 
     /**
@@ -181,28 +201,6 @@ class Application implements ApplicationContract
             // Debug to output exceptions
             Debug::enable(E_ALL, true);
         }
-    }
-
-    /**
-     * Bootstrap the config.
-     *
-     * @param array $config [optional] The config
-     *
-     * @return void
-     */
-    protected function bootstrapConfig(array $config = null): void
-    {
-        if (self::$env::CONFIG_USE_CACHE_FILE) {
-            self::$config = require self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
-
-            return;
-        }
-
-        $config     = $config ?? [];
-        $coreConfig = require __DIR__ . '/Config/config.php';
-
-        // Set the config within the application
-        self::$config = array_replace_recursive($coreConfig, $config);
     }
 
     /**
