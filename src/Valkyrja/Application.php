@@ -174,10 +174,10 @@ class Application implements ApplicationContract
      */
     protected function bootstrapConfig(array $config = null): void
     {
+        // If we should use the config cache file
         if (self::$env::CONFIG_USE_CACHE_FILE) {
-            $cache = require self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
-
-            self::$config = unserialize(base64_decode($cache, true), ['allowed_classes' => []]);
+            // Get the config from the cache file's contents
+            self::$config = require self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
 
             return;
         }

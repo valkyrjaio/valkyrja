@@ -32,7 +32,7 @@ class ConfigCache extends CommandHandler
      */
     public function run(): int
     {
-        $cache = base64_encode(serialize(config()));
+        $cache = config();
 
         // Get the results of the cache attempt
         $result = file_put_contents(
