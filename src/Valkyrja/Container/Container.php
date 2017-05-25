@@ -531,16 +531,16 @@ class Container implements ContainerContract
         // If the application should use the container cache files
         if (config()['container']['useCacheFile']) {
             // Set the application routes with said file
-            $cache = unserialize(
-                base64_decode(require config()['container']['cacheFilePath'], true),
+            $cache = require config()['container']['cacheFilePath'];
+
+            self::$services = unserialize(
+                base64_decode($cache['services'], true),
                 [
                     'allowed_classes' => [
                         Service::class,
                     ],
                 ]
             );
-
-            self::$services = $cache['services'];
             self::$provided = $cache['provided'];
             self::$aliases  = $cache['aliases'];
 
@@ -676,7 +676,7 @@ class Container implements ContainerContract
         config()['container']['useCacheFile'] = $originalUseCacheFile;
 
         return [
-            'services' => self::$services,
+            'services' => base64_encode(serialize(self::$services)),
             'aliases'  => self::$aliases,
             'provided' => self::$provided,
         ];

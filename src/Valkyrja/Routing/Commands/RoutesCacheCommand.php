@@ -34,7 +34,7 @@ class RoutesCacheCommand extends CommandHandler
      */
     public function run(): int
     {
-        $cache = base64_encode(serialize(router()->getCacheable()));
+        $cache = router()->getCacheable();
 
         // Get the results of the cache attempt
         $result = file_put_contents(
