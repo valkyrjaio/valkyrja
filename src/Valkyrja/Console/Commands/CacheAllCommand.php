@@ -40,12 +40,6 @@ class CacheAllCommand extends CommandHandler
      */
     public function run(string $sync = null): int
     {
-        $originalDebug = config()['app']['debug'];
-        $originalEnv   = config()['app']['env'];
-
-        config()['app']['debug'] = false;
-        config()['app']['env']   = 'production';
-
         $containerCache = console()->matchCommand(ContainerCache::COMMAND);
         $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
         $eventsCache    = console()->matchCommand(EventsCache::COMMAND);
@@ -55,9 +49,6 @@ class CacheAllCommand extends CommandHandler
         console()->dispatchCommand($consoleCache);
         console()->dispatchCommand($eventsCache);
         console()->dispatchCommand($routesCache);
-
-        config()['app']['debug'] = $originalDebug;
-        config()['app']['env']   = $originalEnv;
 
         $configCache = console()->matchCommand(ConfigCache::COMMAND);
         console()->dispatchCommand($configCache);

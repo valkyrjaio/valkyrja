@@ -34,7 +34,16 @@ class RoutesCacheCommand extends CommandHandler
      */
     public function run(): int
     {
+        $originalDebug = config()['app']['debug'];
+        $originalEnv   = config()['app']['env'];
+
+        config()['app']['debug'] = false;
+        config()['app']['env']   = 'production';
+
         $cache = router()->getCacheable();
+
+        config()['app']['debug'] = $originalDebug;
+        config()['app']['env']   = $originalEnv;
 
         // Get the results of the cache attempt
         $result = file_put_contents(
