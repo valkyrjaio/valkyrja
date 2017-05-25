@@ -43,9 +43,6 @@ class CacheAllCommand extends CommandHandler
         $originalDebug = config()['app']['debug'];
         $originalEnv   = config()['app']['env'];
 
-        $configCache = console()->matchCommand(ConfigCache::COMMAND);
-        console()->dispatchCommand($configCache);
-
         config()['app']['debug'] = false;
         config()['app']['env']   = 'production';
 
@@ -61,6 +58,9 @@ class CacheAllCommand extends CommandHandler
 
         config()['app']['debug'] = $originalDebug;
         config()['app']['env']   = $originalEnv;
+
+        $configCache = console()->matchCommand(ConfigCache::COMMAND);
+        console()->dispatchCommand($configCache);
 
         if (null !== $sync && config()['app']['debug']) {
             $files = [
