@@ -152,7 +152,7 @@ class Application implements ApplicationContract
         }
 
         // Bootstrap debug capabilities
-        $this->bootstrapConfig();
+        $this->bootstrapConfig($config);
         // Bootstrap debug capabilities
         $this->bootstrapDebug();
         // Bootstrap core functionality
