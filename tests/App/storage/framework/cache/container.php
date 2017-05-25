@@ -1,1 +1,35 @@
-<?php return 'YTozOntzOjg6InNlcnZpY2VzIjthOjA6e31zOjc6ImFsaWFzZXMiO2E6MDp7fXM6ODoicHJvdmlkZWQiO2E6MjY6e3M6NDg6IlZhbGt5cmphXENvbnRyYWN0c1xBbm5vdGF0aW9uc1xBbm5vdGF0aW9uc1BhcnNlciI7czo1NzoiVmFsa3lyamFcQW5ub3RhdGlvbnNcUHJvdmlkZXJzXEFubm90YXRpb25zU2VydmljZVByb3ZpZGVyIjtzOjQyOiJWYWxreXJqYVxDb250cmFjdHNcQW5ub3RhdGlvbnNcQW5ub3RhdGlvbnMiO3M6NTc6IlZhbGt5cmphXEFubm90YXRpb25zXFByb3ZpZGVyc1xBbm5vdGF0aW9uc1NlcnZpY2VQcm92aWRlciI7czo2MToiVmFsa3lyamFcQ29udHJhY3RzXENvbnRhaW5lclxBbm5vdGF0aW9uc1xDb250YWluZXJBbm5vdGF0aW9ucyI7czo1NzoiVmFsa3lyamFcQW5ub3RhdGlvbnNcUHJvdmlkZXJzXEFubm90YXRpb25zU2VydmljZVByb3ZpZGVyIjtzOjU3OiJWYWxreXJqYVxDb250cmFjdHNcRXZlbnRzXEFubm90YXRpb25zXExpc3RlbmVyQW5ub3RhdGlvbnMiO3M6NTc6IlZhbGt5cmphXEFubm90YXRpb25zXFByb3ZpZGVyc1xBbm5vdGF0aW9uc1NlcnZpY2VQcm92aWRlciI7czo1NzoiVmFsa3lyamFcQ29udHJhY3RzXENvbnNvbGVcQW5ub3RhdGlvbnNcQ29tbWFuZEFubm90YXRpb25zIjtzOjU3OiJWYWxreXJqYVxBbm5vdGF0aW9uc1xQcm92aWRlcnNcQW5ub3RhdGlvbnNTZXJ2aWNlUHJvdmlkZXIiO3M6NTU6IlZhbGt5cmphXENvbnRyYWN0c1xSb3V0aW5nXEFubm90YXRpb25zXFJvdXRlQW5ub3RhdGlvbnMiO3M6NTc6IlZhbGt5cmphXEFubm90YXRpb25zXFByb3ZpZGVyc1xBbm5vdGF0aW9uc1NlcnZpY2VQcm92aWRlciI7czozMDoiVmFsa3lyamFcQ29udHJhY3RzXEh0dHBcQ2xpZW50IjtzOjQ1OiJWYWxreXJqYVxIdHRwXFByb3ZpZGVyc1xDbGllbnRTZXJ2aWNlUHJvdmlkZXIiO3M6MzQ6IlZhbGt5cmphXENvbnRyYWN0c1xDb25zb2xlXENvbnNvbGUiO3M6NDk6IlZhbGt5cmphXENvbnNvbGVcUHJvdmlkZXJzXENvbnNvbGVTZXJ2aWNlUHJvdmlkZXIiO3M6MzM6IlZhbGt5cmphXENvbnRyYWN0c1xDb25zb2xlXEtlcm5lbCI7czo0OToiVmFsa3lyamFcQ29uc29sZVxQcm92aWRlcnNcQ29uc29sZVNlcnZpY2VQcm92aWRlciI7czozODoiVmFsa3lyamFcQ29udHJhY3RzXENvbnNvbGVcSW5wdXRcSW5wdXQiO3M6NDk6IlZhbGt5cmphXENvbnNvbGVcUHJvdmlkZXJzXENvbnNvbGVTZXJ2aWNlUHJvdmlkZXIiO3M6NDk6IlZhbGt5cmphXENvbnRyYWN0c1xDb25zb2xlXE91dHB1dFxPdXRwdXRGb3JtYXR0ZXIiO3M6NDk6IlZhbGt5cmphXENvbnNvbGVcUHJvdmlkZXJzXENvbnNvbGVTZXJ2aWNlUHJvdmlkZXIiO3M6NDA6IlZhbGt5cmphXENvbnRyYWN0c1xDb25zb2xlXE91dHB1dFxPdXRwdXQiO3M6NDk6IlZhbGt5cmphXENvbnNvbGVcUHJvdmlkZXJzXENvbnNvbGVTZXJ2aWNlUHJvdmlkZXIiO3M6NDA6IlZhbGt5cmphXENvbnRyYWN0c1xGaWxlc3lzdGVtXEZpbGVzeXN0ZW0iO3M6NTU6IlZhbGt5cmphXEZpbGVzeXN0ZW1cUHJvdmlkZXJzXEZpbGVzeXN0ZW1TZXJ2aWNlUHJvdmlkZXIiO3M6MzA6IlZhbGt5cmphXENvbnRyYWN0c1xIdHRwXEtlcm5lbCI7czo0MzoiVmFsa3lyamFcSHR0cFxQcm92aWRlcnNcSHR0cFNlcnZpY2VQcm92aWRlciI7czozMToiVmFsa3lyamFcQ29udHJhY3RzXEh0dHBcUmVxdWVzdCI7czo0MzoiVmFsa3lyamFcSHR0cFxQcm92aWRlcnNcSHR0cFNlcnZpY2VQcm92aWRlciI7czozMjoiVmFsa3lyamFcQ29udHJhY3RzXEh0dHBcUmVzcG9uc2UiO3M6NDM6IlZhbGt5cmphXEh0dHBcUHJvdmlkZXJzXEh0dHBTZXJ2aWNlUHJvdmlkZXIiO3M6MzY6IlZhbGt5cmphXENvbnRyYWN0c1xIdHRwXEpzb25SZXNwb25zZSI7czo1MToiVmFsa3lyamFcSHR0cFxQcm92aWRlcnNcSnNvblJlc3BvbnNlU2VydmljZVByb3ZpZGVyIjtzOjIzOiJQc3JcTG9nXExvZ2dlckludGVyZmFjZSI7czo0NzoiVmFsa3lyamFcTG9nZ2VyXFByb3ZpZGVyc1xMb2dnZXJTZXJ2aWNlUHJvdmlkZXIiO3M6MzI6IlZhbGt5cmphXENvbnRyYWN0c1xMb2dnZXJcTG9nZ2VyIjtzOjQ3OiJWYWxreXJqYVxMb2dnZXJcUHJvdmlkZXJzXExvZ2dlclNlcnZpY2VQcm92aWRlciI7czozNzoiVmFsa3lyamFcQ29udHJhY3RzXFBhdGhcUGF0aEdlbmVyYXRvciI7czo0MzoiVmFsa3lyamFcUGF0aFxQcm92aWRlcnNcUGF0aFNlcnZpY2VQcm92aWRlciI7czozNDoiVmFsa3lyamFcQ29udHJhY3RzXFBhdGhcUGF0aFBhcnNlciI7czo0MzoiVmFsa3lyamFcUGF0aFxQcm92aWRlcnNcUGF0aFNlcnZpY2VQcm92aWRlciI7czo0MDoiVmFsa3lyamFcQ29udHJhY3RzXEh0dHBcUmVkaXJlY3RSZXNwb25zZSI7czo1NToiVmFsa3lyamFcSHR0cFxQcm92aWRlcnNcUmVkaXJlY3RSZXNwb25zZVNlcnZpY2VQcm92aWRlciI7czozOToiVmFsa3lyamFcQ29udHJhY3RzXEh0dHBcUmVzcG9uc2VCdWlsZGVyIjtzOjU0OiJWYWxreXJqYVxIdHRwXFByb3ZpZGVyc1xSZXNwb25zZUJ1aWxkZXJTZXJ2aWNlUHJvdmlkZXIiO3M6MzM6IlZhbGt5cmphXENvbnRyYWN0c1xSb3V0aW5nXFJvdXRlciI7czo0OToiVmFsa3lyamFcUm91dGluZ1xQcm92aWRlcnNcUm91dGluZ1NlcnZpY2VQcm92aWRlciI7czozNDoiVmFsa3lyamFcQ29udHJhY3RzXFNlc3Npb25cU2Vzc2lvbiI7czo0OToiVmFsa3lyamFcU2Vzc2lvblxQcm92aWRlcnNcU2Vzc2lvblNlcnZpY2VQcm92aWRlciI7czoyODoiVmFsa3lyamFcQ29udHJhY3RzXFZpZXdcVmlldyI7czo0MzoiVmFsa3lyamFcVmlld1xQcm92aWRlcnNcVmlld1NlcnZpY2VQcm92aWRlciI7fX0=';
+<?php return array (
+  'services' => 'YTowOnt9',
+  'aliases' => 
+  array (
+  ),
+  'provided' => 
+  array (
+    'Valkyrja\\Contracts\\Annotations\\AnnotationsParser' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Annotations\\Annotations' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Container\\Annotations\\ContainerAnnotations' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Events\\Annotations\\ListenerAnnotations' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Annotations\\CommandAnnotations' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Routing\\Annotations\\RouteAnnotations' => 'Valkyrja\\Annotations\\Providers\\AnnotationsServiceProvider',
+    'Valkyrja\\Contracts\\Http\\Client' => 'Valkyrja\\Http\\Providers\\ClientServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Console' => 'Valkyrja\\Console\\Providers\\ConsoleServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Kernel' => 'Valkyrja\\Console\\Providers\\ConsoleServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Input\\Input' => 'Valkyrja\\Console\\Providers\\ConsoleServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Output\\OutputFormatter' => 'Valkyrja\\Console\\Providers\\ConsoleServiceProvider',
+    'Valkyrja\\Contracts\\Console\\Output\\Output' => 'Valkyrja\\Console\\Providers\\ConsoleServiceProvider',
+    'Valkyrja\\Contracts\\Filesystem\\Filesystem' => 'Valkyrja\\Filesystem\\Providers\\FilesystemServiceProvider',
+    'Valkyrja\\Contracts\\Http\\Kernel' => 'Valkyrja\\Http\\Providers\\HttpServiceProvider',
+    'Valkyrja\\Contracts\\Http\\Request' => 'Valkyrja\\Http\\Providers\\HttpServiceProvider',
+    'Valkyrja\\Contracts\\Http\\Response' => 'Valkyrja\\Http\\Providers\\HttpServiceProvider',
+    'Valkyrja\\Contracts\\Http\\JsonResponse' => 'Valkyrja\\Http\\Providers\\JsonResponseServiceProvider',
+    'Psr\\Log\\LoggerInterface' => 'Valkyrja\\Logger\\Providers\\LoggerServiceProvider',
+    'Valkyrja\\Contracts\\Logger\\Logger' => 'Valkyrja\\Logger\\Providers\\LoggerServiceProvider',
+    'Valkyrja\\Contracts\\Path\\PathGenerator' => 'Valkyrja\\Path\\Providers\\PathServiceProvider',
+    'Valkyrja\\Contracts\\Path\\PathParser' => 'Valkyrja\\Path\\Providers\\PathServiceProvider',
+    'Valkyrja\\Contracts\\Http\\RedirectResponse' => 'Valkyrja\\Http\\Providers\\RedirectResponseServiceProvider',
+    'Valkyrja\\Contracts\\Http\\ResponseBuilder' => 'Valkyrja\\Http\\Providers\\ResponseBuilderServiceProvider',
+    'Valkyrja\\Contracts\\Routing\\Router' => 'Valkyrja\\Routing\\Providers\\RoutingServiceProvider',
+    'Valkyrja\\Contracts\\Session\\Session' => 'Valkyrja\\Session\\Providers\\SessionServiceProvider',
+    'Valkyrja\\Contracts\\View\\View' => 'Valkyrja\\View\\Providers\\ViewServiceProvider',
+  ),
+);
