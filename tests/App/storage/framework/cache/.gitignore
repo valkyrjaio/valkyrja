@@ -1,0 +1,6 @@
+*
+!.gitignore
+!commands.php
+!container.php
+!events.php
+!routes.php
