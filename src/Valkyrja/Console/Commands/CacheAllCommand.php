@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Commands;
 
+use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Container\Commands\ContainerCache;
@@ -42,6 +43,9 @@ class CacheAllCommand extends CommandHandler
         $originalDebug = config()['app']['debug'];
         $originalEnv   = config()['app']['env'];
 
+        $configCache = console()->matchCommand(ConfigCache::COMMAND);
+        console()->dispatchCommand($configCache);
+
         config()['app']['debug'] = false;
         config()['app']['env']   = 'production';
 
@@ -64,6 +68,7 @@ class CacheAllCommand extends CommandHandler
                 config()['container']['cacheFilePath'],
                 config()['events']['cacheFilePath'],
                 config()['routing']['cacheFilePath'],
+                config()['cacheFilePath'],
             ];
 
             foreach ($files as $file) {

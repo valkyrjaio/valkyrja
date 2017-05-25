@@ -40,6 +40,7 @@ use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Support\Directory;
 
 /**
  * Class Application.
@@ -180,6 +181,28 @@ class Application implements ApplicationContract
             // Debug to output exceptions
             Debug::enable(E_ALL, true);
         }
+    }
+
+    /**
+     * Bootstrap the config.
+     *
+     * @param array $config [optional] The config
+     *
+     * @return void
+     */
+    protected function bootstrapConfig(array $config = null): void
+    {
+        if (self::$env::CONFIG_USE_CACHE_FILE) {
+            self::$config = require self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
+
+            return;
+        }
+
+        $config     = $config ?? [];
+        $coreConfig = require __DIR__ . '/Config/config.php';
+
+        // Set the config within the application
+        self::$config = array_replace_recursive($coreConfig, $config);
     }
 
     /**

@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Console\Commands\CacheAllCommand;
 use Valkyrja\Console\Commands\ConsoleCache;
 use Valkyrja\Console\Commands\ConsoleCommands;
@@ -67,6 +68,7 @@ class BootstrapConsole
         $this->bootstrapConsoleCommands();
         $this->bootstrapConsoleCommandsForBash();
         $this->bootstrapCacheAll();
+        $this->bootstrapConfigCache();
         $this->bootstrapConsoleCache();
         $this->bootstrapContainerCache();
         $this->bootstrapEventsCache();
@@ -119,6 +121,22 @@ class BootstrapConsole
                 ->setName(CacheAllCommand::COMMAND)
                 ->setDescription(CacheAllCommand::SHORT_DESCRIPTION)
                 ->setClass(CacheAllCommand::class)
+        );
+    }
+
+    /**
+     * Bootstrap the console cache command.
+     *
+     * @return void
+     */
+    protected function bootstrapConfigCache(): void
+    {
+        $this->console->addCommand(
+            (new Command())
+                ->setPath(ConfigCache::COMMAND)
+                ->setName(ConfigCache::COMMAND)
+                ->setDescription('Generate the config cache')
+                ->setClass(ConfigCache::class)
         );
     }
 
