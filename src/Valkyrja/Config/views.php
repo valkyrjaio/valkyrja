@@ -30,5 +30,5 @@ return [
      * //
      *
      */
-    'dir' => env()::VIEWS_DIR ?? Directory::resourcesPath('views/php'),
+    'dir' => env()::VIEWS_DIR ?? Directory::resourcesPath('views'),
 ];

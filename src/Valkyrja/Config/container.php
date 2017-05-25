@@ -127,7 +127,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::CONTAINER_FILE_PATH ?? Directory::basePath('bootstrap/container.php'),
+    'filePath'                  => env()::CONTAINER_FILE_PATH ?? Directory::bootstrapPath('container.php'),
 
     /*
      *-------------------------------------------------------------------------
@@ -137,7 +137,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::CONTAINER_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/container.php'),
+    'cacheFilePath'             => env()::CONTAINER_CACHE_FILE_PATH ?? Directory::cachePath('container.php'),
 
     /*
      *-------------------------------------------------------------------------

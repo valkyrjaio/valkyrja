@@ -60,7 +60,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::EVENTS_FILE_PATH ?? Directory::basePath('bootstrap/events.php'),
+    'filePath'                  => env()::EVENTS_FILE_PATH ?? Directory::bootstrapPath('events.php'),
 
     /*
      *-------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::EVENTS_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/events.php'),
+    'cacheFilePath'             => env()::EVENTS_CACHE_FILE_PATH ?? Directory::cachePath('events.php'),
 
     /*
      *-------------------------------------------------------------------------

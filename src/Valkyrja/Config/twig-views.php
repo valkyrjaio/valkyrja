@@ -29,7 +29,7 @@ return [
      *
      */
     'dirs'        => env()::VIEWS_TWIG_DIRS ?? [
-            env()::VIEWS_TWIG_DIR_NS ?? Twig_Loader_Filesystem::MAIN_NAMESPACE => env()::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views/twig'),
+            env()::VIEWS_TWIG_DIR_NS ?? Twig_Loader_Filesystem::MAIN_NAMESPACE => env()::VIEWS_TWIG_DIR ?? Directory::resourcesPath('views'),
         ],
 
     /*
@@ -40,7 +40,7 @@ return [
      * //
      *
      */
-    'compiledDir' => env()::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views/twig'),
+    'compiledDir' => env()::VIEWS_TWIG_COMPILED_DIR ?? Directory::storagePath('views'),
 
     /*
      *-------------------------------------------------------------------------

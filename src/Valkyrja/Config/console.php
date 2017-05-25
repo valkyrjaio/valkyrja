@@ -60,7 +60,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::CONSOLE_FILE_PATH ?? Directory::basePath('bootstrap/commands.php'),
+    'filePath'                  => env()::CONSOLE_FILE_PATH ?? Directory::bootstrapPath('commands.php'),
 
     /*
      *-------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::CONSOLE_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/commands.php'),
+    'cacheFilePath'             => env()::CONSOLE_CACHE_FILE_PATH ?? Directory::cachePath('commands.php'),
 
     /*
      *-------------------------------------------------------------------------

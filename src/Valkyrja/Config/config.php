@@ -158,13 +158,23 @@ return [
 
     /*
      *-------------------------------------------------------------------------
+     * Config File Path
+     *-------------------------------------------------------------------------
+     *
+     * //
+     *
+     */
+    'filePath' => env()::CONFIG_CACHE_FILE_PATH ?? Directory::configPath('config.php'),
+
+    /*
+     *-------------------------------------------------------------------------
      * Config Cache File Path
      *-------------------------------------------------------------------------
      *
      * //
      *
      */
-    'cacheFilePath' => env()::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php'),
+    'cacheFilePath' => env()::CONFIG_CACHE_FILE_PATH ?? Directory::cachePath('config.php'),
 
     /*
      *-------------------------------------------------------------------------

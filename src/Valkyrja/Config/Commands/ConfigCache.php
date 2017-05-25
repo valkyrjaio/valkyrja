@@ -32,6 +32,14 @@ class ConfigCache extends CommandHandler
      */
     public function run(): int
     {
+        if (file_exists(config()['cacheFilePath'])) {
+            unlink(config()['cacheFilePath']);
+        }
+
+        if (file_exists(config()['filePath'])) {
+            app()->setup(require config()['filePath'], true);
+        }
+
         $cache = config();
 
         // Get the results of the cache attempt

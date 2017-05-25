@@ -38,11 +38,13 @@ class Directory
      * @var string
      */
     public static $APP_PATH       = 'app';
+    public static $BOOTSTRAP_PATH = 'bootstrap';
     public static $CONFIG_PATH    = 'config';
     public static $PUBLIC_PATH    = 'public';
     public static $RESOURCES_PATH = 'resources';
     public static $ROUTES_PATH    = 'routes';
     public static $STORAGE_PATH   = 'storage';
+    public static $CACHE_PATH     = 'framework/cache';
     public static $TESTS_PATH     = 'tests';
     public static $VENDOR_PATH    = 'vendor';
 
@@ -68,6 +70,18 @@ class Directory
     public static function appPath(string $path = null): string
     {
         return static::basePath(static::$APP_PATH . static::path($path));
+    }
+
+    /**
+     * Get the bootstrap directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function bootstrapPath(string $path = null): string
+    {
+        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
 
     /**
@@ -128,6 +142,18 @@ class Directory
     public static function storagePath(string $path = null): string
     {
         return static::basePath(static::$STORAGE_PATH . static::path($path));
+    }
+
+    /**
+     * Get the cache directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function cachePath(string $path = null): string
+    {
+        return static::storagePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**

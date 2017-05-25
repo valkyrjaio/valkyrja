@@ -91,7 +91,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::ROUTING_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/routes.php'),
+    'cacheFilePath'             => env()::ROUTING_CACHE_FILE_PATH ?? Directory::cachePath('routes.php'),
 
     /*
      *-------------------------------------------------------------------------
