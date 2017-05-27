@@ -12,15 +12,16 @@
 namespace Valkyrja\Filesystem\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class FilesystemServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class FilesystemServiceProvider extends ServiceProvider
+class FilesystemServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,23 +33,27 @@ class FilesystemServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindFilesystem();
+        static::bindFilesystem($app);
     }
 
     /**
      * Bind the filesystem.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindFilesystem(): void
+    protected static function bindFilesystem(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::FILESYSTEM,
             new Filesystem()
         );

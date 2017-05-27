@@ -12,15 +12,16 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Http\Client;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class ClientServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class ClientServiceProvider extends ServiceProvider
+class ClientServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,23 +33,27 @@ class ClientServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindClient();
+        static::bindClient($app);
     }
 
     /**
      * Bind the client.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindClient(): void
+    protected static function bindClient(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::CLIENT,
             new Client()
         );

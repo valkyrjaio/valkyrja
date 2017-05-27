@@ -12,15 +12,16 @@
 namespace Valkyrja\Routing\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Routing\Router;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class RoutingServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class RoutingServiceProvider extends ServiceProvider
+class RoutingServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,27 +33,31 @@ class RoutingServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindRouter();
+        static::bindRouter($app);
 
-        $this->app->router()->setup();
+        $app->router()->setup();
     }
 
     /**
      * Bind the router.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindRouter(): void
+    protected static function bindRouter(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::ROUTER,
-            new Router($this->app)
+            new Router($app)
         );
     }
 }

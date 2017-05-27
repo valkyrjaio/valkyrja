@@ -12,15 +12,16 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class RedirectResponseServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class RedirectResponseServiceProvider extends ServiceProvider
+class RedirectResponseServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,27 +33,31 @@ class RedirectResponseServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindRedirectResponse();
+        static::bindRedirectResponse($app);
     }
 
     /**
      * Bootstrap the redirect response.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function bindRedirectResponse(): void
+    protected static function bindRedirectResponse(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::REDIRECT_RESPONSE,
             new RedirectResponse()
         );

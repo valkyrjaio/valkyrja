@@ -12,17 +12,18 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class HttpServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class HttpServiceProvider extends ServiceProvider
+class HttpServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -36,40 +37,46 @@ class HttpServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindKernel();
-        $this->bindRequest();
-        $this->bindResponse();
+        static::bindKernel($app);
+        static::bindRequest($app);
+        static::bindResponse($app);
     }
 
     /**
      * Bind the kernel.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindKernel(): void
+    protected static function bindKernel(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::KERNEL,
-            new Kernel($this->app, $this->app->router())
+            new Kernel($app, $app->router())
         );
     }
 
     /**
      * Bind the request.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindRequest(): void
+    protected static function bindRequest(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::REQUEST,
             Request::createFromGlobals()
         );
@@ -78,13 +85,15 @@ class HttpServiceProvider extends ServiceProvider
     /**
      * Bind the response.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function bindResponse(): void
+    protected static function bindResponse(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::RESPONSE,
             new Response()
         );

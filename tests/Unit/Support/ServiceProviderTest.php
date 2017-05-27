@@ -22,13 +22,6 @@ use Valkyrja\Contracts\Application;
 class ServiceProviderTest extends TestCase
 {
     /**
-     * The class to test with.
-     *
-     * @var \Valkyrja\Tests\Unit\Support\ServiceProviderClass
-     */
-    protected $class;
-
-    /**
      * Test the service provider.
      *
      * @return void
@@ -38,8 +31,6 @@ class ServiceProviderTest extends TestCase
         /** @var Application $app */
         $app = $this->createMock(Application::class);
 
-        $this->class = new ServiceProviderClass($app);
-
-        $this->assertEquals(null, $this->class->publish() ?? null);
+        $this->assertEquals(null, ProviderClass::publish($app) ?? null);
     }
 }

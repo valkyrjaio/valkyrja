@@ -16,16 +16,17 @@ use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class AnnotationsServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class AnnotationsServiceProvider extends ServiceProvider
+class AnnotationsServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -42,31 +43,35 @@ class AnnotationsServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindAnnotationsParser();
-        $this->bindAnnotations();
-        $this->bindContainerAnnotations();
-        $this->bindListenerAnnotations();
-        $this->bindCommandAnnotations();
-        $this->bindRouteAnnotations();
+        static::bindAnnotationsParser($app);
+        static::bindAnnotations($app);
+        static::bindContainerAnnotations($app);
+        static::bindListenerAnnotations($app);
+        static::bindCommandAnnotations($app);
+        static::bindRouteAnnotations($app);
     }
 
     /**
      * Bind the annotations parser.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindAnnotationsParser(): void
+    protected static function bindAnnotationsParser(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::ANNOTATIONS_PARSER,
             new AnnotationsParser(
-                $this->app->container()->get(CoreComponent::APP)
+                $app->container()->getSingleton(CoreComponent::APP)
             )
         );
     }
@@ -74,14 +79,16 @@ class AnnotationsServiceProvider extends ServiceProvider
     /**
      * Bind the annotations.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindAnnotations(): void
+    protected static function bindAnnotations(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::ANNOTATIONS,
             new Annotations(
-                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );
     }
@@ -89,14 +96,16 @@ class AnnotationsServiceProvider extends ServiceProvider
     /**
      * Bind the container annotations.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindContainerAnnotations(): void
+    protected static function bindContainerAnnotations(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::CONTAINER_ANNOTATIONS,
             new ContainerAnnotations(
-                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );
     }
@@ -104,14 +113,16 @@ class AnnotationsServiceProvider extends ServiceProvider
     /**
      * Bind the listener annotations.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindListenerAnnotations(): void
+    protected static function bindListenerAnnotations(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::LISTENER_ANNOTATIONS,
             new ListenerAnnotations(
-                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );
     }
@@ -119,14 +130,16 @@ class AnnotationsServiceProvider extends ServiceProvider
     /**
      * Bind the command annotations.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindCommandAnnotations(): void
+    protected static function bindCommandAnnotations(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::COMMAND_ANNOTATIONS,
             new CommandAnnotations(
-                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );
     }
@@ -134,14 +147,16 @@ class AnnotationsServiceProvider extends ServiceProvider
     /**
      * Bind the route annotations.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindRouteAnnotations(): void
+    protected static function bindRouteAnnotations(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::ROUTE_ANNOTATIONS,
             new RouteAnnotations(
-                $this->app->container()->get(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );
     }

@@ -12,17 +12,17 @@
 namespace Valkyrja\Path\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Container\Service;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class PathServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class PathServiceProvider extends ServiceProvider
+class PathServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -35,24 +35,28 @@ class PathServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindPathGenerator();
-        $this->bindPathParser();
+        static::bindPathGenerator($app);
+        static::bindPathParser($app);
     }
 
     /**
      * Bind the path generator.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindPathGenerator(): void
+    protected static function bindPathGenerator(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::PATH_GENERATOR,
             new PathGenerator()
         );
@@ -61,11 +65,13 @@ class PathServiceProvider extends ServiceProvider
     /**
      * Bind the path parser.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindPathParser(): void
+    protected static function bindPathParser(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::PATH_PARSER,
             new PathParser()
         );

@@ -16,13 +16,14 @@ use Valkyrja\Container\ServiceContext;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Contracts\Support\AllowsProviders;
 
 /**
  * Interface Container.
  *
  * @author Melech Mizrachi
  */
-interface Container extends Cacheable
+interface Container extends Cacheable, AllowsProviders
 {
     /**
      * Container constructor.
@@ -68,24 +69,6 @@ interface Container extends Cacheable
      * @param mixed  $singleton The singleton
      */
     public function singleton(string $serviceId, $singleton): void;
-
-    /**
-     * Register a service provider.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return void
-     */
-    public function register(string $serviceProvider): void;
-
-    /**
-     * Determine whether a service provider has been registered.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return bool
-     */
-    public function isRegistered(string $serviceProvider): bool;
 
     /**
      * Check whether a given service exists.

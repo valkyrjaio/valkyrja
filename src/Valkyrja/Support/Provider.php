@@ -9,26 +9,37 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Support;
+namespace Valkyrja\Support;
 
 use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Provider;
 
 /**
- * Class to use to test the provider.
+ * Abstract Class Provider.
  *
  * @author Melech Mizrachi
  */
-class ProviderClass extends Provider
+abstract class Provider
 {
     /**
-     * Publish the service provider.
+     * Whether the provider is deferred.
+     *
+     * @var bool
+     */
+    public static $deferred = true;
+
+    /**
+     * What classes are provided.
+     *
+     * @var array
+     */
+    public static $provides = [];
+
+    /**
+     * Publish the provider.
      *
      * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public static function publish(Application $app): void
-    {
-    }
+    abstract public static function publish(Application $app): void;
 }

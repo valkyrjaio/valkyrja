@@ -17,14 +17,15 @@ use Valkyrja\Console\Kernel;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Output\OutputFormatter;
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Provider;
 
 /**
  * Class ContainerServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class ConsoleServiceProvider extends ServiceProvider
+class ConsoleServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -40,46 +41,52 @@ class ConsoleServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindConsole();
-        $this->bindKernel();
-        $this->bindInput();
-        $this->bindOutputFormatter();
-        $this->bindOutput();
+        static::bindConsole($app);
+        static::bindKernel($app);
+        static::bindInput($app);
+        static::bindOutputFormatter($app);
+        static::bindOutput($app);
 
-        $this->app->console()->setup();
+        $app->console()->setup();
     }
 
     /**
      * Bind the console.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindConsole(): void
+    protected static function bindConsole(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::CONSOLE,
-            new Console($this->app)
+            new Console($app)
         );
     }
 
     /**
      * Bind the kernel.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindKernel(): void
+    protected static function bindKernel(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::CONSOLE_KERNEL,
             new Kernel(
-                $this->app,
-                $this->app->container()->get(CoreComponent::CONSOLE)
+                $app,
+                $app->container()->getSingleton(CoreComponent::CONSOLE)
             )
         );
     }
@@ -87,15 +94,17 @@ class ConsoleServiceProvider extends ServiceProvider
     /**
      * Bind the input.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindInput(): void
+    protected static function bindInput(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::INPUT,
             new Input(
-                $this->app->container()->get(CoreComponent::REQUEST),
-                $this->app->container()->get(CoreComponent::CONSOLE)
+                $app->container()->getSingleton(CoreComponent::REQUEST),
+                $app->container()->getSingleton(CoreComponent::CONSOLE)
             )
         );
     }
@@ -103,11 +112,13 @@ class ConsoleServiceProvider extends ServiceProvider
     /**
      * Bind the output formatter.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindOutputFormatter(): void
+    protected static function bindOutputFormatter(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::OUTPUT_FORMATTER,
             new OutputFormatter()
         );
@@ -116,14 +127,16 @@ class ConsoleServiceProvider extends ServiceProvider
     /**
      * Bind the output.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindOutput(): void
+    protected static function bindOutput(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::OUTPUT,
             new Output(
-                $this->app->container()->get(CoreComponent::OUTPUT_FORMATTER)
+                $app->container()->getSingleton(CoreComponent::OUTPUT_FORMATTER)
             )
         );
     }

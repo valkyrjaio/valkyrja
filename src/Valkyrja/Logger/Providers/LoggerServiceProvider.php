@@ -14,16 +14,17 @@ namespace Valkyrja\Logger\Providers;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class LoggerServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class LoggerServiceProvider extends ServiceProvider
+class LoggerServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -36,30 +37,34 @@ class LoggerServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindLoggerInterface();
-        $this->bindLogger();
+        static::bindLoggerInterface($app);
+        static::bindLogger($app);
     }
 
     /**
      * Bind the logger interface.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindLoggerInterface(): void
+    protected static function bindLoggerInterface(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::LOGGER_INTERFACE,
             new MonologLogger(
-                $this->app->config()['logger']['name'],
+                $app->config()['logger']['name'],
                 [
                     new StreamHandler(
-                        $this->app->config()['logger']['filePath'],
+                        $app->config()['logger']['filePath'],
                         LogLevel::DEBUG
                     ),
                 ]
@@ -70,14 +75,16 @@ class LoggerServiceProvider extends ServiceProvider
     /**
      * Bind the logger.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindLogger(): void
+    protected static function bindLogger(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::LOGGER,
             new Logger(
-                $this->app->container()->get(CoreComponent::LOGGER_INTERFACE)
+                $app->container()->getSingleton(CoreComponent::LOGGER_INTERFACE)
             )
         );
     }

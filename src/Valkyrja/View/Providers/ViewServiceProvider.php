@@ -12,7 +12,8 @@
 namespace Valkyrja\View\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Provider;
 use Valkyrja\View\View;
 
 /**
@@ -20,7 +21,7 @@ use Valkyrja\View\View;
  *
  * @author Melech Mizrachi
  */
-class ViewServiceProvider extends ServiceProvider
+class ViewServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,25 +33,29 @@ class ViewServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindView();
+        static::bindView($app);
     }
 
     /**
      * Bind the view.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindView(): void
+    protected static function bindView(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::VIEW,
-            new View($this->app)
+            new View($app)
         );
     }
 }

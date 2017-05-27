@@ -18,6 +18,7 @@ use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Contracts\Container\Container as ContainerContract;
 use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Support\AllowsProviders;
 
 /**
  * Class Container.
@@ -26,6 +27,8 @@ use Valkyrja\Contracts\Events\Events;
  */
 class Container implements ContainerContract
 {
+    use AllowsProviders;
+
     /**
      * The application.
      *
@@ -67,20 +70,6 @@ class Container implements ContainerContract
      * @var array
      */
     protected static $singletons = [];
-
-    /**
-     * The services provided by service providers that are deferred.
-     *
-     * @var string[]
-     */
-    protected static $provided = [];
-
-    /**
-     * The registered service providers.
-     *
-     * @var array
-     */
-    protected static $registered = [];
 
     /**
      * Container constructor.
@@ -205,53 +194,6 @@ class Container implements ContainerContract
     public function singleton(string $serviceId, $singleton): void
     {
         self::$singletons[$serviceId] = $singleton;
-    }
-
-    /**
-     * Register a service provider.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return void
-     */
-    public function register(string $serviceProvider): void
-    {
-        // No need to re-register providers
-        if ($this->isRegistered($serviceProvider)) {
-            return;
-        }
-
-        /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
-        $deferred = $serviceProvider::$deferred;
-        $provides = $serviceProvider::$provides;
-
-        // If the service provider is deferred
-        // and its defined what services it provides
-        if ($deferred && $provides) {
-            // Add the services to the service providers list
-            foreach ($provides as $provided) {
-                self::$provided[$provided] = $serviceProvider;
-            }
-
-            return;
-        }
-
-        // Create a new instance of the service provider
-        $this->singleton($serviceProvider, new $serviceProvider($this->app, $this));
-
-        self::$registered[$serviceProvider] = true;
-    }
-
-    /**
-     * Determine whether a service provider has been registered.
-     *
-     * @param string $serviceProvider The service provider
-     *
-     * @return bool
-     */
-    public function isRegistered(string $serviceProvider): bool
-    {
-        return isset(self::$registered[$serviceProvider]);
     }
 
     /**
@@ -448,29 +390,6 @@ class Container implements ContainerContract
         $this->initializeProvided($serviceId);
 
         return $this->get($serviceId, $arguments, $context, $member);
-    }
-
-    /**
-     * Initialize a provided service.
-     *
-     * @param string $serviceId The service
-     *
-     * @return void
-     */
-    protected function initializeProvided(string $serviceId): void
-    {
-        /** @var \Valkyrja\Support\ServiceProvider $serviceProvider */
-        $serviceProvider = self::$provided[$serviceId];
-        // The original value for the service provider's deferred status
-        $originalDeferred = $serviceProvider::$deferred;
-        // Do not defer the service provider
-        $serviceProvider::$deferred = false;
-
-        // Register the service provider
-        $this->register($serviceProvider);
-
-        // Reset back to the original value
-        $serviceProvider::$deferred = $originalDeferred;
     }
 
     /**

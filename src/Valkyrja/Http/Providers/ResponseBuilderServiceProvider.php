@@ -12,15 +12,16 @@
 namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Support\ServiceProvider;
+use Valkyrja\Support\Provider;
 
 /**
  * Class ResponseBuilderServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class ResponseBuilderServiceProvider extends ServiceProvider
+class ResponseBuilderServiceProvider extends Provider
 {
     /**
      * What services are provided.
@@ -32,25 +33,29 @@ class ResponseBuilderServiceProvider extends ServiceProvider
     ];
 
     /**
-     * Publish the service provider.
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
      *
      * @return void
      */
-    public function publish(): void
+    public static function publish(Application $app): void
     {
-        $this->bindResponseBuilder();
+        static::bindResponseBuilder($app);
     }
 
     /**
      * Bind the response builder.
      *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
      * @return void
      */
-    protected function bindResponseBuilder(): void
+    protected static function bindResponseBuilder(Application $app): void
     {
-        $this->app->container()->singleton(
+        $app->container()->singleton(
             CoreComponent::RESPONSE_BUILDER,
-            new ResponseBuilder($this->app)
+            new ResponseBuilder($app)
         );
     }
 }
