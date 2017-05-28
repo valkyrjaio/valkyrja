@@ -25,13 +25,6 @@ use Valkyrja\Contracts\Console\Output\Output;
 interface Console extends Cacheable
 {
     /**
-     * Console constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     */
-    public function __construct(Application $application);
-
-    /**
      * Add a new command.
      *
      * @param \Valkyrja\Console\Command $command The command

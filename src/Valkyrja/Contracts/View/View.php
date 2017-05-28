@@ -21,15 +21,6 @@ use Valkyrja\Contracts\Application;
 interface View
 {
     /**
-     * View constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $app       The application
-     * @param string                          $template  [optional] The template to set
-     * @param array                           $variables [optional] The variables to set
-     */
-    public function __construct(Application $app, string $template = '', array $variables = []);
-
-    /**
      * Make a new View.
      *
      * @param string $template  [optional] The template to set

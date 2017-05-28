@@ -21,21 +21,6 @@ use Valkyrja\Http\Enums\StatusCode;
 interface JsonResponse extends Response
 {
     /**
-     * JsonResponse constructor.
-     *
-     * @param string $content [optional] The response content, see setContent()
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
-     * @param array  $data    [optional] An array of data
-     */
-    public function __construct(
-        string $content = '',
-        int $status = \Valkyrja\Http\Enums\StatusCode::OK,
-        array $headers = [],
-        array $data = []
-    );
-
-    /**
      * Create a new json response.
      *
      * @param string $content [optional] The response content, see setContent()

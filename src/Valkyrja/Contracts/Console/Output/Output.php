@@ -21,13 +21,6 @@ use Valkyrja\Console\Enums\OutputStyle;
 interface Output
 {
     /**
-     * Output constructor.
-     *
-     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
-     */
-    public function __construct(OutputFormatter $formatter);
-
-    /**
      * Get the formatter.
      *
      * @return \Valkyrja\Contracts\Console\Output\OutputFormatter

@@ -26,13 +26,6 @@ use Valkyrja\Routing\Route;
 interface Router extends Cacheable
 {
     /**
-     * Router constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     */
-    public function __construct(Application $application);
-
-    /**
      * Set a single route.
      *
      * @param \Valkyrja\Routing\Route $route

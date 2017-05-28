@@ -22,13 +22,6 @@ use Valkyrja\Http\Enums\StatusCode;
 interface ResponseBuilder
 {
     /**
-     * ResponseBuilder constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $app
-     */
-    public function __construct(Application $app);
-
-    /**
      * Make a new instance of Response.
      *
      * @param mixed $content    [optional] The response content

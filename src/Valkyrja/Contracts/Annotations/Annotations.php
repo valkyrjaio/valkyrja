@@ -25,13 +25,6 @@ use ReflectionProperty;
 interface Annotations
 {
     /**
-     * Annotations constructor.
-     *
-     * @param \Valkyrja\Contracts\Annotations\AnnotationsParser $parser The parser
-     */
-    public function __construct(AnnotationsParser $parser);
-
-    /**
      * Get the parser.
      *
      * @return \Valkyrja\Contracts\Annotations\AnnotationsParser

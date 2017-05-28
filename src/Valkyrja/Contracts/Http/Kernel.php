@@ -22,14 +22,6 @@ use Valkyrja\Contracts\Routing\Router;
 interface Kernel
 {
     /**
-     * Kernel constructor.
-     *
-     * @param \Valkyrja\Contracts\Application    $application The application
-     * @param \Valkyrja\Contracts\Routing\Router $router      The router
-     */
-    public function __construct(Application $application, Router $router);
-
-    /**
      * Handle a request.
      *
      * @param \Valkyrja\Contracts\Http\Request $request The request

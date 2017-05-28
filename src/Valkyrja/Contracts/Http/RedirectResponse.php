@@ -21,21 +21,6 @@ use Valkyrja\Http\Enums\StatusCode;
 interface RedirectResponse extends Response
 {
     /**
-     * RedirectResponse constructor.
-     *
-     * @param string $content [optional] The response content, see setContent()
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
-     * @param string $uri     [optional] The URI to redirect to
-     */
-    public function __construct(
-        string $content = '',
-        int $status = \Valkyrja\Http\Enums\StatusCode::FOUND,
-        array $headers = [],
-        string $uri = null
-    );
-
-    /**
      * Create a new redirect response.
      *
      * @param string $uri     [optional] The URI to redirect to

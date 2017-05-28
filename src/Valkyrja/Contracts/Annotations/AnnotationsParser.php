@@ -24,13 +24,6 @@ use Valkyrja\Contracts\Application;
 interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
 {
     /**
-     * AnnotationsParser constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     */
-    public function __construct(Application $application);
-
-    /**
      * Annotation symbol.
      *
      * @constant string

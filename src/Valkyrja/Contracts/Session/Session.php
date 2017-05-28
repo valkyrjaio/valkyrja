@@ -21,17 +21,6 @@ use Valkyrja\Contracts\Application;
 interface Session
 {
     /**
-     * Session constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     * @param string                          $sessionId   [optional] The session id
-     * @param string                          $sessionName [optional] The session name
-     *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     */
-    public function __construct(Application $application, string $sessionId = null, string $sessionName = null);
-
-    /**
      * Start the session.
      *
      * @return void

@@ -22,13 +22,6 @@ use Valkyrja\Logger\Enums\LogLevel;
 interface Logger
 {
     /**
-     * Logger constructor.
-     *
-     * @param \Psr\Log\LoggerInterface $logger The logger
-     */
-    public function __construct(LoggerInterface $logger);
-
-    /**
      * Log a debug message.
      *
      * @param string $message The message

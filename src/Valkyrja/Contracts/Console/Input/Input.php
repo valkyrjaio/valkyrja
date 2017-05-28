@@ -21,13 +21,6 @@ use Valkyrja\Contracts\Http\Request;
 interface Input
 {
     /**
-     * Input constructor.
-     *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     */
-    public function __construct(Request $request);
-
-    /**
      * Get the arguments.
      *
      * @return array

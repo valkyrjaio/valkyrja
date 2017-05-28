@@ -24,15 +24,6 @@ use Valkyrja\Http\Headers;
 interface Response
 {
     /**
-     * Response constructor.
-     *
-     * @param mixed $content [optional] The response content, see setContent()
-     * @param int   $status  [optional] The response status code
-     * @param array $headers [optional] An array of response headers
-     */
-    public function __construct(string $content = '', int $status = StatusCode::OK, array $headers = []);
-
-    /**
      * Create a new response.
      *
      * @param mixed $content [optional] The response content, see setContent()

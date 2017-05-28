@@ -24,31 +24,6 @@ interface Cookie
     public const STRICT = 'strict';
 
     /**
-     * Cookie constructor.
-     *
-     * @param string $name     The cookie's name
-     * @param string $value    [optional] The cookie's value
-     * @param int    $expire   [optional] The time the cookie should expire
-     * @param string $path     [optional] The path the cookie is available to
-     * @param string $domain   [optional] The domain the cookie is available to
-     * @param bool   $secure   [optional] Whether the cookie should only be transmitted over a secure HTTPS connection
-     * @param bool   $httpOnly [optional] Whether the cookie will be made accessible only through the HTTP protocol
-     * @param bool   $raw      [optional] Whether the cookie value should be sent with no url encoding
-     * @param string $sameSite [optional] Whether the cookie will be available for cross-site requests
-     */
-    public function __construct(
-        string $name,
-        string $value = null,
-        int $expire = 0,
-        string $path = '/',
-        string $domain = null,
-        bool $secure = false,
-        bool $httpOnly = true,
-        bool $raw = false,
-        string $sameSite = null
-    );
-
-    /**
      * Returns the cookie as a string.
      *
      * @return string The cookie

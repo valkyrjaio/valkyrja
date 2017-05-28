@@ -18,11 +18,4 @@ namespace Valkyrja\Contracts\Console\Output;
  */
 interface StreamOutput extends Output
 {
-    /**
-     * Output constructor.
-     *
-     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
-     * @param resource                                           $stream    The resource to use as a stream
-     */
-    public function __construct(OutputFormatter $formatter, $stream = null);
 }

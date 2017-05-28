@@ -47,13 +47,6 @@ interface Application
     public const VERSION = '0.1.1';
 
     /**
-     * Application constructor.
-     *
-     * @param array $config [optional] The config to use
-     */
-    public function __construct(array $config = null);
-
-    /**
      * Setup the application.
      *
      * @param array $config [optional] The config to use

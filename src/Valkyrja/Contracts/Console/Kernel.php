@@ -23,14 +23,6 @@ use Valkyrja\Contracts\Console\Output\Output;
 interface Kernel
 {
     /**
-     * Kernel constructor.
-     *
-     * @param \Valkyrja\Contracts\Application     $application The application
-     * @param \Valkyrja\Contracts\Console\Console $console     The console
-     */
-    public function __construct(Application $application, Console $console);
-
-    /**
      * Handle a console input.
      *
      * @param \Valkyrja\Contracts\Console\Input\Input   $input  The input

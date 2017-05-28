@@ -26,14 +26,6 @@ use Valkyrja\Contracts\Support\AllowsProviders;
 interface Container extends Cacheable, AllowsProviders
 {
     /**
-     * Container constructor.
-     *
-     * @param \Valkyrja\Contracts\Application   $application The application
-     * @param \Valkyrja\Contracts\Events\Events $events      The events
-     */
-    public function __construct(Application $application, Events $events);
-
-    /**
      * Set an alias to the container.
      *
      * @param string $alias     The alias
