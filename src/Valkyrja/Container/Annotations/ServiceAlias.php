@@ -13,14 +13,13 @@ namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotatable;
 use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Dispatcher\Dispatch;
 
 /**
  * Class ServiceAlias.
  *
  * @author Melech Mizrachi
  */
-class ServiceAlias extends Dispatch implements Annotation
+class ServiceAlias implements Annotation
 {
     use Annotatable;
 }
