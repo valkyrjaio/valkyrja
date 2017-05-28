@@ -14,6 +14,7 @@ namespace Valkyrja\Container\Annotations;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Container\Service as ContainerService;
+use Valkyrja\Container\ServiceContext as ContainerContextService;
 use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
@@ -70,7 +71,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws \ReflectionException
      *
-     * @return \Valkyrja\Container\ServiceContext[]
+     * @return \Valkyrja\Container\Annotations\ServiceContext[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -84,7 +85,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws \ReflectionException
      *
-     * @return \Valkyrja\Container\ServiceContext[]
+     * @return \Valkyrja\Container\Annotations\ServiceContext[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -116,6 +117,14 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
                 if ($type === $this->servicesAnnotationType) {
                     /* @var \Valkyrja\Container\Annotations\Service $annotation */
                     $annotations[] = $this->getServiceFromAnnotation($annotation);
+
+                    continue;
+                }
+
+                // If this annotation is a context service
+                if ($type === $this->contextServicesAnnotationType) {
+                    /* @var \Valkyrja\Container\Annotations\ServiceContext $annotation */
+                    $annotations[] = $this->getServiceContextFromAnnotation($annotation);
 
                     continue;
                 }
@@ -160,6 +169,34 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     protected function getServiceFromAnnotation(Service $service): ContainerService
     {
         return (new ContainerService())
+            ->setDefaults($service->getDefaults())
+            ->setSingleton($service->isSingleton())
+            ->setId($service->getId())
+            ->setName($service->getName())
+            ->setClass($service->getClass())
+            ->setProperty($service->getProperty())
+            ->setMethod($service->getMethod())
+            ->setStatic($service->isStatic())
+            ->setFunction($service->getFunction())
+            ->setMatches($service->getMatches())
+            ->setDependencies($service->getDependencies())
+            ->setArguments($service->getArguments());
+    }
+
+    /**
+     * Get a service context from a service context annotation.
+     *
+     * @param \Valkyrja\Container\Annotations\ServiceContext $service The service context annotation
+     *
+     * @return \Valkyrja\Container\ServiceContext
+     */
+    protected function getServiceContextFromAnnotation(ServiceContext $service): ContainerContextService
+    {
+        return (new ContainerContextService())
+            ->setContextClass($service->getContextClass())
+            ->setContextProperty($service->getContextProperty())
+            ->setContextMethod($service->getContextMethod())
+            ->setContextFunction($service->getContextFunction())
             ->setDefaults($service->getDefaults())
             ->setSingleton($service->isSingleton())
             ->setId($service->getId())

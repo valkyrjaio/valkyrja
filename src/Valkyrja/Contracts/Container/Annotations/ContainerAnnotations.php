@@ -34,7 +34,7 @@ interface ContainerAnnotations extends Annotations
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ServiceAlias[]
+     * @return \Valkyrja\Container\Annotations\ServiceAlias[]
      */
     public function getAliasServices(string ...$classes): array;
 
@@ -43,7 +43,7 @@ interface ContainerAnnotations extends Annotations
      *
      * @param string[] $classes The classes
      *
-     * @return \Valkyrja\Container\ServiceContext[]
+     * @return \Valkyrja\Container\Annotations\ServiceContext[]
      */
     public function getContextServices(string ...$classes): array;
 }
