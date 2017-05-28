@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application as ApplicationContract;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
@@ -81,7 +80,7 @@ class Router implements RouterContract
      *
      * @param \Valkyrja\Contracts\Application $application The application
      */
-    public function __construct(ApplicationContract $application)
+    public function __construct(Application $application)
     {
         $this->app = $application;
     }
