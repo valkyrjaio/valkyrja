@@ -101,7 +101,6 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
             ->setStatic($listener->isStatic())
             ->setFunction($listener->getFunction())
             ->setMatches($listener->getMatches())
-            ->setClosure($listener->getClosure())
             ->setDependencies($listener->getDependencies())
             ->setArguments($listener->getArguments());
     }

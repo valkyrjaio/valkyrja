@@ -229,7 +229,6 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
             ->setStatic($route->isStatic())
             ->setFunction($route->getFunction())
             ->setMatches($route->getMatches())
-            ->setClosure($route->getClosure())
             ->setDependencies($route->getDependencies())
             ->setArguments($route->getArguments());
     }

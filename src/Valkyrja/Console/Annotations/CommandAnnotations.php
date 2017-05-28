@@ -112,7 +112,6 @@ class CommandAnnotations extends Annotations
             ->setStatic($command->isStatic())
             ->setFunction($command->getFunction())
             ->setMatches($command->getMatches())
-            ->setClosure($command->getClosure())
             ->setDependencies($command->getDependencies())
             ->setArguments($command->getArguments());
     }

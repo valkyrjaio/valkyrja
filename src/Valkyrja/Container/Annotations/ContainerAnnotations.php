@@ -170,7 +170,6 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
             ->setStatic($service->isStatic())
             ->setFunction($service->getFunction())
             ->setMatches($service->getMatches())
-            ->setClosure($service->getClosure())
             ->setDependencies($service->getDependencies())
             ->setArguments($service->getArguments());
     }

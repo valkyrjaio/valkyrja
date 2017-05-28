@@ -26,6 +26,20 @@ trait Annotatable
     protected $annotationType;
 
     /**
+     * The id.
+     *
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * The name.
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
      * The class.
      *
      * @var string
@@ -68,6 +82,20 @@ trait Annotatable
     protected $matches;
 
     /**
+     * The dependencies.
+     *
+     * @var array
+     */
+    protected $dependencies;
+
+    /**
+     * The arguments.
+     *
+     * @var array
+     */
+    protected $arguments;
+
+    /**
      * The arguments.
      *
      * @var array
@@ -94,6 +122,50 @@ trait Annotatable
     public function setAnnotationType(string $annotationType = null)
     {
         $this->annotationType = $annotationType;
+    }
+
+    /**
+     * Get the id.
+     *
+     * @return string
+     */
+    public function getId():? string
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the id.
+     *
+     * @param string $id The id
+     *
+     * @return void
+     */
+    public function setId(string $id = null)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * Get the name.
+     *
+     * @return string
+     */
+    public function getName():? string
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name.
+     *
+     * @param string $name The name
+     *
+     * @return void
+     */
+    public function setName(string $name = null)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -224,6 +296,50 @@ trait Annotatable
     public function setMatches(array $matches = null)
     {
         $this->matches = $matches;
+    }
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getArguments():? array
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * Set the arguments.
+     *
+     * @param array $arguments The arguments
+     *
+     * @return void
+     */
+    public function setArguments(array $arguments = null)
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * Get the dependencies.
+     *
+     * @return array
+     */
+    public function getDependencies():? array
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * Set the dependencies.
+     *
+     * @param array $dependencies The dependencies
+     *
+     * @return void
+     */
+    public function setDependencies(array $dependencies = null)
+    {
+        $this->dependencies = $dependencies;
     }
 
     /**
