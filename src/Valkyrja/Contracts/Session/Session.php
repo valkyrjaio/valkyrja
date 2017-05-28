@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Contracts\Session;
 
-use Valkyrja\Contracts\Application;
-
 /**
  * Interface Session.
  *

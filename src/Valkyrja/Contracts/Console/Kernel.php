@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Contracts\Console;
 
-use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
 

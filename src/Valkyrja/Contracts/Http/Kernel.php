@@ -11,9 +11,6 @@
 
 namespace Valkyrja\Contracts\Http;
 
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Routing\Router;
-
 /**
  * Interface Kernel.
  *

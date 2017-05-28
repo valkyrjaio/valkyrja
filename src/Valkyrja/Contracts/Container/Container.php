@@ -13,9 +13,7 @@ namespace Valkyrja\Contracts\Container;
 
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceContext;
-use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
-use Valkyrja\Contracts\Events\Events;
 use Valkyrja\Contracts\Support\AllowsProviders;
 
 /**
