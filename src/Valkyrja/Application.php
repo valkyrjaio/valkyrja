@@ -131,10 +131,10 @@ class Application implements ApplicationContract
      *
      * @return void
      */
-    public function setup(array $config = null, bool $force = null): void
+    public function setup(array $config = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
-        if (self::$setup && ! $force) {
+        if (self::$setup && false === $force) {
             return;
         }
 
@@ -332,6 +332,24 @@ class Application implements ApplicationContract
     public function config(): array
     {
         return self::$config;
+    }
+
+    /**
+     * Add to the global config array.
+     *
+     * @param array $newConfig The new config to add
+     * @param bool  $isRoot    [optional] Whether the config passed is root
+     *
+     * @return void
+     */
+    public function addConfig(array $newConfig, bool $isRoot = false): void
+    {
+        if (false === $isRoot) {
+            $newConfig = [$newConfig];
+        }
+
+        // Set the config within the application
+        self::$config = array_replace_recursive(self::$config, $newConfig);
     }
 
     /**

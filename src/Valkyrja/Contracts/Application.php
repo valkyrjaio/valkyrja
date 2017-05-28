@@ -54,7 +54,7 @@ interface Application
      *
      * @return void
      */
-    public function setup(array $config = null, bool $force = null): void;
+    public function setup(array $config = null, bool $force = false): void;
 
     /**
      * Get the application instance.
@@ -78,6 +78,16 @@ interface Application
      * @return array
      */
     public function config(): array;
+
+    /**
+     * Add to the global config array.
+     *
+     * @param array $newConfig The new config to add
+     * @param bool  $isRoot    [optional] Whether the config passed is root
+     *
+     * @return void
+     */
+    public function addConfig(array $newConfig, bool $isRoot = false): void;
 
     /**
      * Get the container instance.
