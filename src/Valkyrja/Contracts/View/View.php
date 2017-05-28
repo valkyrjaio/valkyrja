@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Contracts\View;
 
-use Valkyrja\Contracts\Application;
-
 /**
  * Interface View.
  *

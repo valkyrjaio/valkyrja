@@ -12,7 +12,6 @@
 namespace Valkyrja\Contracts\Console;
 
 use Valkyrja\Console\Command;
-use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;

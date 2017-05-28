@@ -14,7 +14,6 @@ namespace Valkyrja\Contracts\Annotations;
 use Valkyrja\Contracts\Annotations\Regex\ArgumentsRegex;
 use Valkyrja\Contracts\Annotations\Regex\ClassRegex;
 use Valkyrja\Contracts\Annotations\Regex\LineRegex;
-use Valkyrja\Contracts\Application;
 
 /**
  * Interface AnnotationsParser.
