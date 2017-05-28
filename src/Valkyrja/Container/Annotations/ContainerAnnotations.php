@@ -85,7 +85,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws \ReflectionException
      *
-     * @return \Valkyrja\Container\Annotations\ServiceContext[]
+     * @return \Valkyrja\Container\ServiceContext[]
      */
     public function getContextServices(string ...$classes): array
     {
