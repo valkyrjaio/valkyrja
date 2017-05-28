@@ -11,8 +11,11 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Support\Provides;
 
 /**
  * Class JsonResponse.
@@ -21,6 +24,8 @@ use Valkyrja\Http\Enums\StatusCode;
  */
 class JsonResponse extends Response implements JsonResponseContract
 {
+    use Provides;
+
     /**
      * @constant
      *
@@ -32,7 +37,7 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * Json data.
      *
-     * @var array
+     * @var string
      */
     protected $data;
 
@@ -208,5 +213,34 @@ class JsonResponse extends Response implements JsonResponseContract
         $this->setContent($this->data);
 
         return $this;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::JSON_RESPONSE,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::JSON_RESPONSE,
+            new JsonResponse()
+        );
     }
 }

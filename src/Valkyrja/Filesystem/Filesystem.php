@@ -11,7 +11,10 @@
 
 namespace Valkyrja\Filesystem;
 
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Filesystem.
@@ -20,4 +23,32 @@ use Valkyrja\Contracts\Filesystem\Filesystem as FilesystemContract;
  */
 class Filesystem implements FilesystemContract
 {
+    use Provides;
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::FILESYSTEM,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::FILESYSTEM,
+            new Filesystem()
+        );
+    }
 }

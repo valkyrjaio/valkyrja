@@ -11,12 +11,14 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\RedirectResponse;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Support\Provides;
 
 /**
  * Class ResponseBuilder.
@@ -25,6 +27,8 @@ use Valkyrja\Http\Enums\StatusCode;
  */
 class ResponseBuilder implements ResponseBuilderContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -149,5 +153,32 @@ class ResponseBuilder implements ResponseBuilderContract
         array $headers = []
     ): RedirectResponse {
         return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::RESPONSE_BUILDER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::RESPONSE_BUILDER,
+            new ResponseBuilder($app)
+        );
     }
 }

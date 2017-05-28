@@ -12,8 +12,11 @@
 namespace Valkyrja\Events\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations as ListenerAnnotationsContract;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Support\Provides;
 
 /**
  * Class ListenerAnnotations.
@@ -22,6 +25,8 @@ use Valkyrja\Dispatcher\Dispatch;
  */
 class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
 {
+    use Provides;
+
     /**
      * Get the events.
      *
@@ -75,5 +80,34 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
 
         $dispatch->setMatches();
         $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::LISTENER_ANNOTATIONS,
+        ];
+    }
+
+    /**
+     * Bind the listener annotations.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::LISTENER_ANNOTATIONS,
+            new ListenerAnnotations(
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+            )
+        );
     }
 }

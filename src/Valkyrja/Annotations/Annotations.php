@@ -17,9 +17,12 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\Annotations as AnnotationsContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
+use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Annotations.
@@ -28,6 +31,8 @@ use Valkyrja\Contracts\Annotations\AnnotationsParser;
  */
 class Annotations implements AnnotationsContract
 {
+    use Provides;
+
     /**
      * The parser.
      *
@@ -589,5 +594,34 @@ class Annotations implements AnnotationsContract
         }
 
         return $dependencies;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::ANNOTATIONS,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::ANNOTATIONS,
+            new Annotations(
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+            )
+        );
     }
 }

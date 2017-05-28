@@ -12,8 +12,11 @@
 namespace Valkyrja\Console\Output;
 
 use Valkyrja\Console\Enums\OutputStyle;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Output\Output as OutputContract;
 use Valkyrja\Contracts\Console\Output\OutputFormatter;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Output.
@@ -22,6 +25,8 @@ use Valkyrja\Contracts\Console\Output\OutputFormatter;
  */
 class Output implements OutputContract
 {
+    use Provides;
+
     /**
      * The formatter.
      *
@@ -124,5 +129,34 @@ class Output implements OutputContract
         if ($newLine) {
             echo PHP_EOL;
         }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::OUTPUT,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::OUTPUT,
+            new Output(
+                $app->container()->getSingleton(CoreComponent::OUTPUT_FORMATTER)
+            )
+        );
     }
 }

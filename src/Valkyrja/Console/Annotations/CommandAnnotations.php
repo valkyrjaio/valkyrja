@@ -12,7 +12,10 @@
 namespace Valkyrja\Console\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Support\Provides;
 
 /**
  * Class CommandAnnotations.
@@ -21,6 +24,8 @@ use Valkyrja\Dispatcher\Dispatch;
  */
 class CommandAnnotations extends Annotations
 {
+    use Provides;
+
     /**
      * Get the commands.
      *
@@ -82,5 +87,34 @@ class CommandAnnotations extends Annotations
 
         $dispatch->setMatches();
         $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::COMMAND_ANNOTATIONS,
+        ];
+    }
+
+    /**
+     * Bind the command annotations.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::COMMAND_ANNOTATIONS,
+            new CommandAnnotations(
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+            )
+        );
     }
 }

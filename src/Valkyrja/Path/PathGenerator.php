@@ -12,7 +12,10 @@
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Path\PathGenerator as PathGeneratorContract;
+use Valkyrja\Support\Provides;
 
 /**
  * Class PathGenerator.
@@ -21,6 +24,8 @@ use Valkyrja\Contracts\Path\PathGenerator as PathGeneratorContract;
  */
 class PathGenerator implements PathGeneratorContract
 {
+    use Provides;
+
     /**
      * Parse segments, data, and params into a path.
      *
@@ -159,5 +164,32 @@ class PathGenerator implements PathGeneratorContract
         }
 
         return $segment;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::PATH_GENERATOR,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::PATH_GENERATOR,
+            new PathGenerator()
+        );
     }
 }

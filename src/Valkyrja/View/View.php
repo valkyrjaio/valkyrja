@@ -11,9 +11,11 @@
 
 namespace Valkyrja\View;
 
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\View\View as ViewContract;
 use Valkyrja\Support\Directory;
+use Valkyrja\Support\Provides;
 
 /**
  * Class View.
@@ -22,6 +24,8 @@ use Valkyrja\Support\Directory;
  */
 class View implements ViewContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -266,5 +270,32 @@ class View implements ViewContract
     public function __toString(): string
     {
         return $this->render();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::VIEW,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::VIEW,
+            new View($app)
+        );
     }
 }

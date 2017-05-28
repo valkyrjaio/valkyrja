@@ -12,8 +12,11 @@
 namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Support\Provides;
 
 /**
  * Class ContainerAnnotations.
@@ -22,6 +25,8 @@ use Valkyrja\Dispatcher\Dispatch;
  */
 class ContainerAnnotations extends Annotations implements ContainerAnnotationsContract
 {
+    use Provides;
+
     /**
      * THe services annotation type.
      *
@@ -134,5 +139,34 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
 
         $dispatch->setMatches();
         $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::CONTAINER_ANNOTATIONS,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::CONTAINER_ANNOTATIONS,
+            new ContainerAnnotations(
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+            )
+        );
     }
 }

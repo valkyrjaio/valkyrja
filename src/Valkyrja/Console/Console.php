@@ -12,11 +12,13 @@
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Console.
@@ -25,6 +27,8 @@ use Valkyrja\Contracts\Console\Output\Output;
  */
 class Console implements ConsoleContract
 {
+    use Provides;
+
     /**
      * The run method to call within command handlers.
      */
@@ -417,5 +421,34 @@ class Console implements ConsoleContract
             'commands'      => base64_encode(serialize(self::$commands)),
             'namedCommands' => self::$namedCommands,
         ];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::CONSOLE,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::CONSOLE,
+            new Console($app)
+        );
+
+        $app->console()->setup();
     }
 }

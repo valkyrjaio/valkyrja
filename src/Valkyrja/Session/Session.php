@@ -11,10 +11,12 @@
 
 namespace Valkyrja\Session;
 
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Session\Session as SessionContract;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Session.
@@ -23,6 +25,8 @@ use Valkyrja\Session\Exceptions\SessionStartFailure;
  */
 class Session implements SessionContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -284,5 +288,35 @@ class Session implements SessionContract
         $this->data = [];
 
         session_unset();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::SESSION,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
+     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::SESSION,
+            new Session($app)
+        );
     }
 }

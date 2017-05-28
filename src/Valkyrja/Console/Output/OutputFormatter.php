@@ -14,7 +14,10 @@ namespace Valkyrja\Console\Output;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract;
+use Valkyrja\Support\Provides;
 
 /**
  * Class OutputFormatter.
@@ -23,6 +26,8 @@ use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract
  */
 class OutputFormatter implements OutputFormatterContract
 {
+    use Provides;
+
     /**
      * The foreground color.
      *
@@ -370,5 +375,32 @@ class OutputFormatter implements OutputFormatterContract
         }
 
         return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::OUTPUT_FORMATTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::OUTPUT_FORMATTER,
+            new OutputFormatter()
+        );
     }
 }

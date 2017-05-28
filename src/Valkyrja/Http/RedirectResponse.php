@@ -11,10 +11,13 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\RedirectResponse as RedirectResponseContract;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
+use Valkyrja\Support\Provides;
 
 /**
  * Class RedirectResponse.
@@ -23,6 +26,8 @@ use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
  */
 class RedirectResponse extends Response implements RedirectResponseContract
 {
+    use Provides;
+
     /**
      * The uri to redirect to.
      *
@@ -178,5 +183,34 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public function throw(): void
     {
         throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->headers->all());
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::REDIRECT_RESPONSE,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::REDIRECT_RESPONSE,
+            new RedirectResponse()
+        );
     }
 }

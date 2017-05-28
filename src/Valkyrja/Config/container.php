@@ -9,20 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Annotations\Providers\AnnotationsServiceProvider;
-use Valkyrja\Console\Providers\ConsoleServiceProvider;
-use Valkyrja\Filesystem\Providers\FilesystemServiceProvider;
-use Valkyrja\Http\Providers\ClientServiceProvider;
-use Valkyrja\Http\Providers\HttpServiceProvider;
-use Valkyrja\Http\Providers\JsonResponseServiceProvider;
-use Valkyrja\Http\Providers\RedirectResponseServiceProvider;
-use Valkyrja\Http\Providers\ResponseBuilderServiceProvider;
-use Valkyrja\Logger\Providers\LoggerServiceProvider;
-use Valkyrja\Path\Providers\PathServiceProvider;
-use Valkyrja\Routing\Providers\RoutingServiceProvider;
-use Valkyrja\Session\Providers\SessionServiceProvider;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Providers\ViewServiceProvider;
 
 /*
  *-------------------------------------------------------------------------
@@ -54,19 +41,31 @@ return [
      *
      */
     'coreProviders'             => env()::CONTAINER_APP_PROVIDERS ?? [
-            AnnotationsServiceProvider::class,
-            ClientServiceProvider::class,
-            ConsoleServiceProvider::class,
-            FilesystemServiceProvider::class,
-            HttpServiceProvider::class,
-            JsonResponseServiceProvider::class,
-            LoggerServiceProvider::class,
-            PathServiceProvider::class,
-            RedirectResponseServiceProvider::class,
-            ResponseBuilderServiceProvider::class,
-            RoutingServiceProvider::class,
-            SessionServiceProvider::class,
-            ViewServiceProvider::class,
+            Valkyrja\Annotations\AnnotationsParser::class,
+            Valkyrja\Annotations\Annotations::class,
+            Valkyrja\Console\Console::class,
+            Valkyrja\Console\Kernel::class,
+            Valkyrja\Console\Input\Input::class,
+            Valkyrja\Console\Output\Output::class,
+            Valkyrja\Console\Output\OutputFormatter::class,
+            Valkyrja\Console\Annotations\CommandAnnotations::class,
+            Valkyrja\Container\Annotations\ContainerAnnotations::class,
+            Valkyrja\Events\Annotations\ListenerAnnotations::class,
+            Valkyrja\Filesystem\Filesystem::class,
+            Valkyrja\Http\Client::class,
+            Valkyrja\Http\Kernel::class,
+            Valkyrja\Http\Request::class,
+            Valkyrja\Http\JsonResponse::class,
+            Valkyrja\Http\RedirectResponse::class,
+            Valkyrja\Http\Response::class,
+            Valkyrja\Http\ResponseBuilder::class,
+            Valkyrja\Logger\Providers\LoggerServiceProvider::class,
+            Valkyrja\Path\PathGenerator::class,
+            Valkyrja\Path\PathParser::class,
+            Valkyrja\Routing\Router::class,
+            Valkyrja\Routing\Annotations\RouteAnnotations::class,
+            Valkyrja\Session\Session::class,
+            Valkyrja\View\View::class,
         ],
 
     /*

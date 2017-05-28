@@ -12,9 +12,11 @@
 namespace Valkyrja\Annotations;
 
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
 use Valkyrja\Contracts\Annotations\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Contracts\Application;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Annotations.
@@ -23,6 +25,8 @@ use Valkyrja\Contracts\Application;
  */
 class AnnotationsParser implements AnnotationsParserContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -436,5 +440,34 @@ class AnnotationsParser implements AnnotationsParserContract
         }
 
         return trim(str_replace('*', '', $match));
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::ANNOTATIONS_PARSER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::ANNOTATIONS_PARSER,
+            new AnnotationsParser(
+                $app->container()->getSingleton(CoreComponent::APP)
+            )
+        );
     }
 }

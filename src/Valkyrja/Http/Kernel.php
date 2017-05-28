@@ -12,12 +12,14 @@
 namespace Valkyrja\Http;
 
 use Throwable;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Kernel as KernelContract;
 use Valkyrja\Contracts\Http\Request;
 use Valkyrja\Contracts\Http\Response;
 use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Debug\ExceptionHandler;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Kernel.
@@ -26,6 +28,8 @@ use Valkyrja\Debug\ExceptionHandler;
  */
 class Kernel implements KernelContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -112,5 +116,32 @@ class Kernel implements KernelContract
 
         // Terminate the application
         $this->terminate($request, $response);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::KERNEL,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::KERNEL,
+            new Kernel($app, $app->router())
+        );
     }
 }

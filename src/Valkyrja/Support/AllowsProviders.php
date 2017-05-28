@@ -36,25 +36,24 @@ trait AllowsProviders
      * Register a provider.
      *
      * @param string $provider The provider
+     * @param bool   $force    [optional] Whether to force regardless of deferred status
      *
      * @return void
      */
-    public function register(string $provider): void
+    public function register(string $provider, bool $force = false): void
     {
         // No need to re-register providers
         if ($this->isRegistered($provider)) {
             return;
         }
 
-        /** @var \Valkyrja\Support\Provider $provider */
-        $deferred = $provider::$deferred;
-        $provides = $provider::$provides;
+        /** @var \Valkyrja\Support\Provides $provider */
 
         // If the service provider is deferred
         // and its defined what services it provides
-        if ($deferred && $provides) {
+        if (! $force && $provider::deferred() && $provider::provides()) {
             // Add the services to the service providers list
-            foreach ($provides as $provided) {
+            foreach ($provider::provides() as $provided) {
                 self::$provided[$provided] = $provider;
             }
 
@@ -88,17 +87,10 @@ trait AllowsProviders
      */
     public function initializeProvided(string $serviceId): void
     {
-        /** @var \Valkyrja\Support\Provider $serviceProvider */
-        $serviceProvider = self::$provided[$serviceId];
-        // The original value for the service provider's deferred status
-        $originalDeferred = $serviceProvider::$deferred;
-        // Do not defer the service provider
-        $serviceProvider::$deferred = false;
+        /** @var \Valkyrja\Support\Provides $provider */
+        $provider = self::$provided[$serviceId];
 
         // Register the service provider
-        $this->register($serviceProvider);
-
-        // Reset back to the original value
-        $serviceProvider::$deferred = $originalDeferred;
+        $this->register($provider, true);
     }
 }

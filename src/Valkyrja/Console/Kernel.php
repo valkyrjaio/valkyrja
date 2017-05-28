@@ -12,11 +12,13 @@
 namespace Valkyrja\Console;
 
 use Throwable;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Console;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Kernel as KernelContract;
 use Valkyrja\Contracts\Console\Output\Output;
+use Valkyrja\Support\Provides;
 
 /**
  * Class ConsoleKernel.
@@ -25,6 +27,8 @@ use Valkyrja\Contracts\Console\Output\Output;
  */
 class Kernel implements KernelContract
 {
+    use Provides;
+
     /**
      * The application.
      *
@@ -124,5 +128,35 @@ class Kernel implements KernelContract
         $this->terminate($input, $exitCode);
 
         exit($exitCode);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::CONSOLE_KERNEL,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::CONSOLE_KERNEL,
+            new Kernel(
+                $app,
+                $app->container()->getSingleton(CoreComponent::CONSOLE)
+            )
+        );
     }
 }

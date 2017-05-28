@@ -11,8 +11,11 @@
 
 namespace Valkyrja\Console\Input;
 
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Console\Input\Input as InputContract;
 use Valkyrja\Contracts\Http\Request;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Input.
@@ -21,6 +24,8 @@ use Valkyrja\Contracts\Http\Request;
  */
 class Input implements InputContract
 {
+    use Provides;
+
     /**
      * The request.
      *
@@ -311,5 +316,34 @@ class Input implements InputContract
             '-V',
             '--version',
         ];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::INPUT,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::INPUT,
+            new Input(
+                $app->container()->getSingleton(CoreComponent::REQUEST)
+            )
+        );
     }
 }

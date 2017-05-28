@@ -12,9 +12,12 @@
 namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route;
+use Valkyrja\Support\Provides;
 
 /**
  * Class RouteAnnotations.
@@ -23,6 +26,8 @@ use Valkyrja\Routing\Route;
  */
 class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {
+    use Provides;
+
     /**
      * The route annotation type.
      *
@@ -198,5 +203,34 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         return $path;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::ROUTE_ANNOTATIONS,
+        ];
+    }
+
+    /**
+     * Bind the route annotations.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::ROUTE_ANNOTATIONS,
+            new RouteAnnotations(
+                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+            )
+        );
     }
 }

@@ -11,9 +11,12 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Request.
@@ -22,6 +25,8 @@ use Valkyrja\Support\Collection;
  */
 class Request implements RequestContract
 {
+    use Provides;
+
     protected static $httpMethodParameterOverride = false;
 
     /**
@@ -1119,5 +1124,32 @@ class Request implements RequestContract
     public function isXmlHttpRequest(): bool
     {
         return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::REQUEST,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::REQUEST,
+            Request::createFromGlobals()
+        );
     }
 }

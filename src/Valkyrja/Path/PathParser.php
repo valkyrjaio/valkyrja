@@ -12,7 +12,10 @@
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Path\PathParser as PathParserContract;
+use Valkyrja\Support\Provides;
 
 /**
  * Class PathParser.
@@ -21,6 +24,8 @@ use Valkyrja\Contracts\Path\PathParser as PathParserContract;
  */
 class PathParser implements PathParserContract
 {
+    use Provides;
+
     /**
      * The variable regex.
      *
@@ -298,5 +303,32 @@ REGEX;
     {
         return config()['app']['pathRegexMap'][$params[2][$key]]
             ?? '(' . ($params[2][$key] ?: $params[1][$key]) . ')';
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::PATH_PARSER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::PATH_PARSER,
+            new PathParser()
+        );
     }
 }

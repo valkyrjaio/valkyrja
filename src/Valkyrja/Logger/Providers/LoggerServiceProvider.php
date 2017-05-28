@@ -37,6 +37,16 @@ class LoggerServiceProvider extends Provider
     ];
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return static::$provides;
+    }
+
+    /**
      * Publish the provider.
      *
      * @param \Valkyrja\Contracts\Application $app The application

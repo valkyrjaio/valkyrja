@@ -13,9 +13,12 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
+use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Response.
@@ -24,6 +27,8 @@ use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
  */
 class Response implements ResponseContract
 {
+    use Provides;
+
     /**
      * Response headers.
      *
@@ -1110,5 +1115,34 @@ class Response implements ResponseContract
                 ob_end_clean();
             }
         }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::RESPONSE,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::RESPONSE,
+            new Response()
+        );
     }
 }

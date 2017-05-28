@@ -11,7 +11,9 @@
 
 namespace Valkyrja\Routing;
 
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application as ApplicationContract;
+use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Http\Request as RequestContract;
 use Valkyrja\Contracts\Http\Response as ResponseContract;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
@@ -21,6 +23,7 @@ use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
+use Valkyrja\Support\Provides;
 
 /**
  * Class Router.
@@ -29,6 +32,8 @@ use Valkyrja\Routing\Exceptions\InvalidRouteName;
  */
 class Router implements RouterContract
 {
+    use Provides;
+
     /**
      * Application.
      *
@@ -639,5 +644,34 @@ class Router implements RouterContract
             'dynamicRoutes' => self::$dynamicRoutes,
             'namedRoutes'   => self::$namedRoutes,
         ];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CoreComponent::ROUTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param \Valkyrja\Contracts\Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CoreComponent::ROUTER,
+            new Router($app)
+        );
+
+        $app->router()->setup();
     }
 }

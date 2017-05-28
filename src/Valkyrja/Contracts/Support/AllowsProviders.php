@@ -22,10 +22,11 @@ interface AllowsProviders
      * Register a provider.
      *
      * @param string $provider The provider
+     * @param bool   $force    [optional] Whether to force regardless of deferred status
      *
      * @return void
      */
-    public function register(string $provider): void;
+    public function register(string $provider, bool $force = false): void;
 
     /**
      * Determine whether a provider has been registered.
