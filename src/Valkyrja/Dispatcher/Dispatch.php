@@ -12,7 +12,6 @@
 namespace Valkyrja\Dispatcher;
 
 use Closure;
-use Valkyrja\Annotations\Annotatable;
 
 /**
  * Class Dispatch.
@@ -21,8 +20,6 @@ use Valkyrja\Annotations\Annotatable;
  */
 class Dispatch
 {
-    use Annotatable;
-
     /**
      * The id.
      *
@@ -36,6 +33,48 @@ class Dispatch
      * @var string
      */
     protected $name;
+
+    /**
+     * The class.
+     *
+     * @var string
+     */
+    protected $class;
+
+    /**
+     * The property.
+     *
+     * @var string
+     */
+    protected $property;
+
+    /**
+     * The method.
+     *
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * Whether the property or method is static.
+     *
+     * @var bool
+     */
+    protected $static;
+
+    /**
+     * The function.
+     *
+     * @var string
+     */
+    protected $function;
+
+    /**
+     * The matches.
+     *
+     * @var array
+     */
+    protected $matches;
 
     /**
      * The closure.

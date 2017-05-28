@@ -16,7 +16,7 @@ use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Routing\Annotations\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Route as RouterRoute;
 use Valkyrja\Support\Provides;
 
 /**
@@ -62,14 +62,14 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
                 // Iterate through all the annotations
                 foreach ($classAnnotations as $annotation) {
                     // And set a new route with the controller defined annotation additions
-                    $finalRoutes[] = $this->getControllerBuiltRoute($annotation, $route);
+                    $finalRoutes[] = $this->getRouteFromAnnotation($this->getControllerBuiltRoute($annotation, $route));
                 }
             } else {
                 // Validate the path before setting the route
                 $route->setPath($this->validatePath($route->getPath()));
 
                 // Otherwise just set the route in the final array
-                $finalRoutes[] = $route;
+                $finalRoutes[] = $this->getRouteFromAnnotation($route);
             }
         }
 
@@ -79,7 +79,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     /**
      * Set the route properties from arguments.
      *
-     * @param \Valkyrja\Routing\Route $route
+     * @param \Valkyrja\Routing\Annotations\Route $route
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
@@ -97,7 +97,6 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         // Avoid having large arrays in cached routes file
-        $route->setAnnotationArguments();
         $route->setMatches();
 
         if (null === $route->getPath()) {
@@ -138,10 +137,10 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     /**
      * Get a new route with controller route additions.
      *
-     * @param \Valkyrja\Routing\Route $controllerRoute
-     * @param \Valkyrja\Routing\Route $route
+     * @param \Valkyrja\Routing\Annotations\Route $controllerRoute
+     * @param \Valkyrja\Routing\Annotations\Route $route
      *
-     * @return \Valkyrja\Routing\Route
+     * @return \Valkyrja\Routing\Annotations\Route
      */
     protected function getControllerBuiltRoute(Route $controllerRoute, Route $route): Route
     {
@@ -203,6 +202,36 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         return $path;
+    }
+
+    /**
+     * Get a route from a route annotation.
+     *
+     * @param \Valkyrja\Routing\Annotations\Route $route The route annotation
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    protected function getRouteFromAnnotation(Route $route): RouterRoute
+    {
+        return (new RouterRoute())
+            ->setPath($route->getRegex())
+            ->setRegex($route->getRegex())
+            ->setParams($route->getParams())
+            ->setSegments($route->getSegments())
+            ->setRequestMethods($route->getRequestMethods())
+            ->setSecure($route->getSecure())
+            ->setDynamic($route->getDynamic())
+            ->setId($route->getId())
+            ->setName($route->getName())
+            ->setClass($route->getClass())
+            ->setProperty($route->getProperty())
+            ->setMethod($route->getMethod())
+            ->setStatic($route->isStatic())
+            ->setFunction($route->getFunction())
+            ->setMatches($route->getMatches())
+            ->setClosure($route->getClosure())
+            ->setDependencies($route->getDependencies())
+            ->setArguments($route->getArguments());
     }
 
     /**

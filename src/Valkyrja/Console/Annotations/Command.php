@@ -9,16 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container;
+namespace Valkyrja\Console\Annotations;
 
+use Valkyrja\Annotations\Annotatable;
+use Valkyrja\Console\Command as ConsoleCommand;
 use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class ServiceAlias.
+ * Class Command.
  *
  * @author Melech Mizrachi
  */
-class ServiceAlias extends Dispatch implements Annotation
+class Command extends ConsoleCommand implements Annotation
 {
+    use Annotatable;
 }

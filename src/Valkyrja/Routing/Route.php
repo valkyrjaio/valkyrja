@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\Enums\RequestMethod;
 
@@ -20,7 +19,7 @@ use Valkyrja\Http\Enums\RequestMethod;
  *
  * @author Melech Mizrachi
  */
-class Route extends Dispatch implements Annotation
+class Route extends Dispatch
 {
     /**
      * The path for this route.

@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
@@ -19,7 +18,7 @@ use Valkyrja\Dispatcher\Dispatch;
  *
  * @author Melech Mizrachi
  */
-class Command extends Dispatch implements Annotation
+class Command extends Dispatch
 {
     /**
      * The path.

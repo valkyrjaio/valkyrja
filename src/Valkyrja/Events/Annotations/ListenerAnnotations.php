@@ -16,6 +16,7 @@ use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations as ListenerAnnotationsContract;
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Events\Listener as EventListener;
 use Valkyrja\Support\Provides;
 
 /**
@@ -43,11 +44,11 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
+            /** @var \Valkyrja\Events\Annotations\Listener $annotation */
             foreach ($this->methodsAnnotationsType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
-                $annotations[] = $annotation;
+                $annotations[] = $this->getListenerFromAnnotation($annotation);
             }
         }
 
@@ -79,7 +80,30 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
         }
 
         $dispatch->setMatches();
-        $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * Get a listener from a listener annotation.
+     *
+     * @param \Valkyrja\Events\Annotations\Listener $listener The listener annotation
+     *
+     * @return \Valkyrja\Events\Listener
+     */
+    protected function getListenerFromAnnotation(Listener $listener): EventListener
+    {
+        return (new EventListener())
+            ->setEvent($listener->getEvent())
+            ->setId($listener->getId())
+            ->setName($listener->getName())
+            ->setClass($listener->getClass())
+            ->setProperty($listener->getProperty())
+            ->setMethod($listener->getMethod())
+            ->setStatic($listener->isStatic())
+            ->setFunction($listener->getFunction())
+            ->setMatches($listener->getMatches())
+            ->setClosure($listener->getClosure())
+            ->setDependencies($listener->getDependencies())
+            ->setArguments($listener->getArguments());
     }
 
     /**

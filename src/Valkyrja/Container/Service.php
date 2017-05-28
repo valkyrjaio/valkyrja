@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
@@ -19,7 +18,7 @@ use Valkyrja\Dispatcher\Dispatch;
  *
  * @author Melech Mizrachi
  */
-class Service extends Dispatch implements Annotation
+class Service extends Dispatch
 {
     /**
      * Whether this service is a singleton.

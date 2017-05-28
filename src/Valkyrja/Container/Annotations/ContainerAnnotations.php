@@ -13,6 +13,7 @@ namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
 use Valkyrja\Dispatcher\Dispatch;
@@ -110,6 +111,15 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
             /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
+
+                // If this annotation is a service
+                if ($type === $this->servicesAnnotationType) {
+                    /* @var \Valkyrja\Container\Annotations\Service $annotation */
+                    $annotations[] = $this->getServiceFromAnnotation($annotation);
+
+                    continue;
+                }
+
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
             }
@@ -138,7 +148,31 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
         }
 
         $dispatch->setMatches();
-        $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * Get a service from a service annotation.
+     *
+     * @param \Valkyrja\Container\Annotations\Service $service The service annotation
+     *
+     * @return \Valkyrja\Container\Service
+     */
+    protected function getServiceFromAnnotation(Service $service): ContainerService
+    {
+        return (new ContainerService())
+            ->setDefaults($service->getDefaults())
+            ->setSingleton($service->isSingleton())
+            ->setId($service->getId())
+            ->setName($service->getName())
+            ->setClass($service->getClass())
+            ->setProperty($service->getProperty())
+            ->setMethod($service->getMethod())
+            ->setStatic($service->isStatic())
+            ->setFunction($service->getFunction())
+            ->setMatches($service->getMatches())
+            ->setClosure($service->getClosure())
+            ->setDependencies($service->getDependencies())
+            ->setArguments($service->getArguments());
     }
 
     /**

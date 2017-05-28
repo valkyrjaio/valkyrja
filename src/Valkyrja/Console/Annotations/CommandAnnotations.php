@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Annotations;
 
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Console\Command as ConsoleCommand;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Dispatcher\Dispatch;
@@ -42,19 +43,19 @@ class CommandAnnotations extends Annotations
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
+            /** @var \Valkyrja\Console\Annotations\Command $annotation */
             foreach ($this->classAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
-                $annotations[] = $annotation;
+                $annotations[] = $this->getCommandFromAnnotation($annotation);
             }
 
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
+            /** @var \Valkyrja\Console\Annotations\Command $annotation */
             foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
-                $annotations[] = $annotation;
+                $annotations[] = $this->getCommandFromAnnotation($annotation);
             }
         }
 
@@ -86,7 +87,34 @@ class CommandAnnotations extends Annotations
         }
 
         $dispatch->setMatches();
-        $dispatch->setAnnotationArguments();
+    }
+
+    /**
+     * Get a command from a command annotation.
+     *
+     * @param \Valkyrja\Console\Annotations\Command $command The command annotation
+     *
+     * @return \Valkyrja\Console\Command
+     */
+    protected function getCommandFromAnnotation(Command $command): ConsoleCommand
+    {
+        return (new ConsoleCommand())
+            ->setPath($command->getRegex())
+            ->setRegex($command->getRegex())
+            ->setParams($command->getParams())
+            ->setSegments($command->getSegments())
+            ->setDescription($command->getDescription())
+            ->setId($command->getId())
+            ->setName($command->getName())
+            ->setClass($command->getClass())
+            ->setProperty($command->getProperty())
+            ->setMethod($command->getMethod())
+            ->setStatic($command->isStatic())
+            ->setFunction($command->getFunction())
+            ->setMatches($command->getMatches())
+            ->setClosure($command->getClosure())
+            ->setDependencies($command->getDependencies())
+            ->setArguments($command->getArguments());
     }
 
     /**
