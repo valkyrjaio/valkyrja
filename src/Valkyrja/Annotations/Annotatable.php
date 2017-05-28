@@ -111,11 +111,13 @@ trait Annotatable
      *
      * @param string $class The class
      *
-     * @return void
+     * @return $this
      */
-    public function setClass(string $class = null)
+    public function setClass(string $class = null): self
     {
         $this->class = $class;
+
+        return $this;
     }
 
     /**
@@ -133,11 +135,13 @@ trait Annotatable
      *
      * @param string $property The property
      *
-     * @return void
+     * @return $this
      */
-    public function setProperty(string $property = null)
+    public function setProperty(string $property = null): self
     {
         $this->property = $property;
+
+        return $this;
     }
 
     /**
@@ -155,11 +159,13 @@ trait Annotatable
      *
      * @param string $method The method
      *
-     * @return void
+     * @return $this
      */
-    public function setMethod(string $method = null)
+    public function setMethod(string $method = null): self
     {
         $this->method = $method;
+
+        return $this;
     }
 
     /**
@@ -177,11 +183,13 @@ trait Annotatable
      *
      * @param bool $static Whether the member is static
      *
-     * @return void
+     * @return $this
      */
-    public function setStatic(bool $static = null)
+    public function setStatic(bool $static = null): self
     {
         $this->static = $static;
+
+        return $this;
     }
 
     /**
@@ -197,11 +205,13 @@ trait Annotatable
      *
      * @param string $function The function
      *
-     * @return void
+     * @return $this
      */
-    public function setFunction(string $function = null)
+    public function setFunction(string $function = null): self
     {
         $this->function = $function;
+
+        return $this;
     }
 
     /**
@@ -219,11 +229,37 @@ trait Annotatable
      *
      * @param array $matches The matches
      *
-     * @return void
+     * @return $this
      */
-    public function setMatches(array $matches = null)
+    public function setMatches(array $matches = null): self
     {
         $this->matches = $matches;
+
+        return $this;
+    }
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getArguments():? array
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * Set the arguments.
+     *
+     * @param array $arguments The arguments
+     *
+     * @return $this
+     */
+    public function setArguments(array $arguments = null): self
+    {
+        $this->arguments = $arguments;
+
+        return $this;
     }
 
     /**
