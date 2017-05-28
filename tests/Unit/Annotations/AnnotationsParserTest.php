@@ -18,12 +18,12 @@ use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application;
-use Valkyrja\Console\Command;
-use Valkyrja\Container\Service;
-use Valkyrja\Container\ServiceAlias;
-use Valkyrja\Container\ServiceContext;
-use Valkyrja\Events\Listener;
-use Valkyrja\Routing\Route;
+use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Container\Annotations\Service;
+use Valkyrja\Container\Annotations\ServiceAlias;
+use Valkyrja\Container\Annotations\ServiceContext;
+use Valkyrja\Events\Annotations\Listener;
+use Valkyrja\Routing\Annotations\Route;
 
 /**
  * Test the AnnotationsParser class.

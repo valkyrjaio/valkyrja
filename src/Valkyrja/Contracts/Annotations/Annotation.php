@@ -35,6 +35,38 @@ interface Annotation
     public function setAnnotationType(string $type = null);
 
     /**
+     * Get the id.
+     *
+     * @return string
+     */
+    public function getId():? string;
+
+    /**
+     * Set the id.
+     *
+     * @param string $id The id
+     *
+     * @return void
+     */
+    public function setId(string $id = null);
+
+    /**
+     * Get the name.
+     *
+     * @return string
+     */
+    public function getName():? string;
+
+    /**
+     * Set the name.
+     *
+     * @param string $name The name
+     *
+     * @return void
+     */
+    public function setName(string $name = null);
+
+    /**
      * Get the class.
      *
      * @return string
@@ -129,6 +161,38 @@ interface Annotation
      * @return void
      */
     public function setMatches(array $matches = null);
+
+    /**
+     * Get the arguments.
+     *
+     * @return array
+     */
+    public function getArguments():? array;
+
+    /**
+     * Set the arguments.
+     *
+     * @param array $arguments The arguments
+     *
+     * @return void
+     */
+    public function setArguments(array $arguments = null);
+
+    /**
+     * Get the dependencies.
+     *
+     * @return array
+     */
+    public function getDependencies():? array;
+
+    /**
+     * Set the dependencies.
+     *
+     * @param array $dependencies The dependencies
+     *
+     * @return void
+     */
+    public function setDependencies(array $dependencies = null);
 
     /**
      * Get the annotation arguments (within parentheses).

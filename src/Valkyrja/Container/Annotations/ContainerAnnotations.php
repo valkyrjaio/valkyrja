@@ -14,9 +14,9 @@ namespace Valkyrja\Container\Annotations;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Container\Service as ContainerService;
+use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Container\Annotations\ContainerAnnotations as ContainerAnnotationsContract;
-use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Support\Provides;
 
 /**
@@ -108,7 +108,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Dispatcher\Dispatch $annotation */
+            /** @var \Valkyrja\Contracts\Annotations\Annotation $annotation */
             foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
 
@@ -131,23 +131,23 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     /**
      * Set the properties for a service annotation.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch
+     * @param \Valkyrja\Contracts\Annotations\Annotation $annotation
      *
      * @throws \ReflectionException
      *
      * @return void
      */
-    protected function setServiceProperties(Dispatch $dispatch): void
+    protected function setServiceProperties(Annotation $annotation): void
     {
-        if (null === $dispatch->getProperty()) {
-            $parameters = $this->getMethodReflection($dispatch->getClass(), $dispatch->getMethod() ?? '__construct')
+        if (null === $annotation->getProperty()) {
+            $parameters = $this->getMethodReflection($annotation->getClass(), $annotation->getMethod() ?? '__construct')
                                ->getParameters();
 
             // Set the dependencies
-            $dispatch->setDependencies($this->getDependencies(...$parameters));
+            $annotation->setDependencies($this->getDependencies(...$parameters));
         }
 
-        $dispatch->setMatches();
+        $annotation->setMatches();
     }
 
     /**

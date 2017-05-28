@@ -14,8 +14,8 @@ namespace Valkyrja\Console\Annotations;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Console\Command as ConsoleCommand;
 use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Contracts\Annotations\Annotation;
 use Valkyrja\Contracts\Application;
-use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Support\Provides;
 
 /**
@@ -65,28 +65,28 @@ class CommandAnnotations extends Annotations
     /**
      * Set the properties for a command annotation.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch
+     * @param \Valkyrja\Contracts\Annotations\Annotation $annotation
      *
      * @throws \ReflectionException
      *
      * @return void
      */
-    protected function setCommandProperties(Dispatch $dispatch): void
+    protected function setCommandProperties(Annotation $annotation): void
     {
-        $classReflection = $this->getClassReflection($dispatch->getClass());
+        $classReflection = $this->getClassReflection($annotation->getClass());
 
-        if ($dispatch->getMethod() || $classReflection->hasMethod('__construct')) {
+        if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->getMethodReflection(
-                $dispatch->getClass(),
-                $dispatch->getMethod() ?? '__construct'
+                $annotation->getClass(),
+                $annotation->getMethod() ?? '__construct'
             );
             $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $dispatch->setDependencies($this->getDependencies(...$parameters));
+            $annotation->setDependencies($this->getDependencies(...$parameters));
         }
 
-        $dispatch->setMatches();
+        $annotation->setMatches();
     }
 
     /**

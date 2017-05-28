@@ -15,7 +15,6 @@ use Valkyrja\Annotations\Annotations;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Application;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations as ListenerAnnotationsContract;
-use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Events\Listener as EventListener;
 use Valkyrja\Support\Provides;
 
@@ -58,28 +57,28 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     /**
      * Set the properties for a listener annotation.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch
+     * @param \Valkyrja\Events\Annotations\Listener $listener
      *
      * @throws \ReflectionException
      *
      * @return void
      */
-    protected function setListenerProperties(Dispatch $dispatch): void
+    protected function setListenerProperties(Listener $listener): void
     {
-        $classReflection = $this->getClassReflection($dispatch->getClass());
+        $classReflection = $this->getClassReflection($listener->getClass());
 
-        if ($dispatch->getMethod() || $classReflection->hasMethod('__construct')) {
+        if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->getMethodReflection(
-                $dispatch->getClass(),
-                $dispatch->getMethod() ?? '__construct'
+                $listener->getClass(),
+                $listener->getMethod() ?? '__construct'
             );
             $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $dispatch->setDependencies($this->getDependencies(...$parameters));
+            $listener->setDependencies($this->getDependencies(...$parameters));
         }
 
-        $dispatch->setMatches();
+        $listener->setMatches();
     }
 
     /**
