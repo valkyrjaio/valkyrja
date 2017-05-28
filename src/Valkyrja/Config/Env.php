@@ -21,6 +21,8 @@ class Env
     /**
      * Config env variables.
      */
+    public const CONFIG_PROVIDERS       = null;
+    public const CONFIG_FILE_PATH       = null;
     public const CONFIG_CACHE_FILE_PATH = null;
     public const CONFIG_USE_CACHE_FILE  = null;
 

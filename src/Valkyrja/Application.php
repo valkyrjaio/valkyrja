@@ -189,6 +189,12 @@ class Application implements ApplicationContract
 
         // Set the config within the application
         self::$config = array_replace_recursive($coreConfig, $config);
+
+        /* @var \Valkyrja\Support\Provider $provider */
+        foreach (self::$config['providers'] as $provider) {
+            // Config providers are NOT deferred and will not follow the deferred value
+            $provider::publish($this);
+        }
     }
 
     /**

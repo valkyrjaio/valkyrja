@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Console\Annotations\Command;
-use Valkyrja\Container\Annotations\Service;
-use Valkyrja\Container\Annotations\ServiceAlias;
-use Valkyrja\Container\Annotations\ServiceContext;
-use Valkyrja\Events\Annotations\Listener;
-use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Support\Directory;
 
 /*
@@ -56,11 +50,11 @@ return [
      *
      */
     'map'      => env()::ANNOTATIONS_MAP ?? [
-            'Command'        => Command::class,
-            'Listener'       => Listener::class,
-            'Route'          => Route::class,
-            'Service'        => Service::class,
-            'ServiceAlias'   => ServiceAlias::class,
-            'ServiceContext' => ServiceContext::class,
+            'Command'        => Valkyrja\Console\Annotations\Command::class,
+            'Listener'       => Valkyrja\Events\Annotations\Listener::class,
+            'Route'          => Valkyrja\Routing\Annotations\Route::class,
+            'Service'        => Valkyrja\Container\Annotations\Service::class,
+            'ServiceAlias'   => Valkyrja\Container\Annotations\ServiceAlias::class,
+            'ServiceContext' => Valkyrja\Container\Annotations\ServiceContext::class,
         ],
 ];
