@@ -15,13 +15,14 @@ use Valkyrja\Console\Command;
 use Valkyrja\Contracts\Cache\Cacheable;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
+use Valkyrja\Contracts\Support\AllowsProviders;
 
 /**
  * Interface Console.
  *
  * @author Melech Mizrachi
  */
-interface Console extends Cacheable
+interface Console extends Cacheable, AllowsProviders
 {
     /**
      * Add a new command.

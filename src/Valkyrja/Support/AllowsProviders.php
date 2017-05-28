@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Support;
 
+use Valkyrja\Contracts\Application;
+
 /**
  * Trait AllowsProviders.
  *
@@ -61,7 +63,7 @@ trait AllowsProviders
         }
 
         // Publish the service provider
-        $provider::publish(app());
+        $provider::publish($this->getApplication());
 
         self::$registered[$provider] = true;
     }
@@ -93,4 +95,11 @@ trait AllowsProviders
         // Register the service provider
         $this->register($provider, true);
     }
+
+    /**
+     * Get the application.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    abstract protected function getApplication(): Application;
 }

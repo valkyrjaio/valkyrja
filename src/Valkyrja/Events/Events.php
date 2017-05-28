@@ -335,7 +335,7 @@ class Events implements EventsContract
     protected function setupAnnotations(): void
     {
         /** @var ListenerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->get(ListenerAnnotations::class);
+        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
 
         // Get all the annotated listeners from the list of classes
         $listeners = $containerAnnotations->getListeners(...$this->app->config()['events']['classes']);

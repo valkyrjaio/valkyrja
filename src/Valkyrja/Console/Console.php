@@ -18,6 +18,7 @@ use Valkyrja\Contracts\Console\Annotations\CommandAnnotations;
 use Valkyrja\Contracts\Console\Console as ConsoleContract;
 use Valkyrja\Contracts\Console\Input\Input;
 use Valkyrja\Contracts\Console\Output\Output;
+use Valkyrja\Support\AllowsProviders;
 use Valkyrja\Support\Provides;
 
 /**
@@ -27,6 +28,7 @@ use Valkyrja\Support\Provides;
  */
 class Console implements ConsoleContract
 {
+    use AllowsProviders;
     use Provides;
 
     /**
@@ -354,6 +356,29 @@ class Console implements ConsoleContract
     }
 
     /**
+     * Setup command providers.
+     *
+     * @return void
+     */
+    protected function setupCommandProviders(): void
+    {
+        // Iterate through all the providers
+        foreach ($this->app->config()['console']['providers'] as $provider) {
+            $this->register($provider);
+        }
+
+        // If this is not a dev environment
+        if (! $this->app->debug()) {
+            return;
+        }
+
+        // Iterate through all the providers
+        foreach ($this->app->config()['console']['devProviders'] as $provider) {
+            $this->register($provider);
+        }
+    }
+
+    /**
      * Setup annotations.
      *
      * @throws \ReflectionException
@@ -368,7 +393,7 @@ class Console implements ConsoleContract
     protected function setupAnnotations(): void
     {
         /** @var CommandAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->get(CommandAnnotations::class);
+        $containerAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
 
         // Get all the annotated commands from the list of handlers
         $commands = $containerAnnotations->getCommands(...$this->app->config()['console']['handlers']);
@@ -450,5 +475,15 @@ class Console implements ConsoleContract
         );
 
         $app->console()->setup();
+    }
+
+    /**
+     * Get the application.
+     *
+     * @return \Valkyrja\Contracts\Application
+     */
+    protected function getApplication(): Application
+    {
+        return $this->app;
     }
 }

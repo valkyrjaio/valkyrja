@@ -596,7 +596,7 @@ class Router implements RouterContract
     protected function setupAnnotatedRoutes(): void
     {
         /** @var RouteAnnotationsContract $routeAnnotations */
-        $routeAnnotations = $this->app->container()->get(RouteAnnotationsContract::class);
+        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotationsContract::class);
 
         // Get all the annotated routes from the list of controllers
         $routes = $routeAnnotations->getRoutes(...$this->app->config()['routing']['controllers']);
