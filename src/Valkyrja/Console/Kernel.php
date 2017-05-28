@@ -153,7 +153,7 @@ class Kernel implements KernelContract
     {
         $app->container()->singleton(
             CoreComponent::CONSOLE_KERNEL,
-            new Kernel(
+            new static(
                 $app,
                 $app->container()->getSingleton(CoreComponent::CONSOLE)
             )

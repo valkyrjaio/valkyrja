@@ -1142,7 +1142,7 @@ class Response implements ResponseContract
     {
         $app->container()->singleton(
             CoreComponent::RESPONSE,
-            new Response()
+            new static()
         );
     }
 }

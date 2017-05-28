@@ -295,7 +295,7 @@ class View implements ViewContract
     {
         $app->container()->singleton(
             CoreComponent::VIEW,
-            new View($app)
+            new static($app)
         );
     }
 }

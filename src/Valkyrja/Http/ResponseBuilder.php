@@ -178,7 +178,7 @@ class ResponseBuilder implements ResponseBuilderContract
     {
         $app->container()->singleton(
             CoreComponent::RESPONSE_BUILDER,
-            new ResponseBuilder($app)
+            new static($app)
         );
     }
 }

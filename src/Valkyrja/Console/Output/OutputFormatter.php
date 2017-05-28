@@ -400,7 +400,7 @@ class OutputFormatter implements OutputFormatterContract
     {
         $app->container()->singleton(
             CoreComponent::OUTPUT_FORMATTER,
-            new OutputFormatter()
+            new static()
         );
     }
 }

@@ -129,7 +129,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     {
         $app->container()->singleton(
             CoreComponent::LISTENER_ANNOTATIONS,
-            new ListenerAnnotations(
+            new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );

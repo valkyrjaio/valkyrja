@@ -189,7 +189,7 @@ class PathGenerator implements PathGeneratorContract
     {
         $app->container()->singleton(
             CoreComponent::PATH_GENERATOR,
-            new PathGenerator()
+            new static()
         );
     }
 }

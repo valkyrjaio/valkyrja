@@ -328,7 +328,7 @@ REGEX;
     {
         $app->container()->singleton(
             CoreComponent::PATH_PARSER,
-            new PathParser()
+            new static()
         );
     }
 }

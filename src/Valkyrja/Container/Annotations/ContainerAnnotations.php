@@ -198,7 +198,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     {
         $app->container()->singleton(
             CoreComponent::CONTAINER_ANNOTATIONS,
-            new ContainerAnnotations(
+            new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );

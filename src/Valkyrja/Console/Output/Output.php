@@ -154,7 +154,7 @@ class Output implements OutputContract
     {
         $app->container()->singleton(
             CoreComponent::OUTPUT,
-            new Output(
+            new static(
                 $app->container()->getSingleton(CoreComponent::OUTPUT_FORMATTER)
             )
         );

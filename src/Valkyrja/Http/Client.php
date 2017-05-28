@@ -48,7 +48,7 @@ class Client implements ClientContract
     {
         $app->container()->singleton(
             CoreComponent::CLIENT,
-            new Client()
+            new static()
         );
     }
 }

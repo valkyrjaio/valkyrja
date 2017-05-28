@@ -48,7 +48,7 @@ class Filesystem implements FilesystemContract
     {
         $app->container()->singleton(
             CoreComponent::FILESYSTEM,
-            new Filesystem()
+            new static()
         );
     }
 }

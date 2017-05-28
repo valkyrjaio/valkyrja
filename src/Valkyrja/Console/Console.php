@@ -446,7 +446,7 @@ class Console implements ConsoleContract
     {
         $app->container()->singleton(
             CoreComponent::CONSOLE,
-            new Console($app)
+            new static($app)
         );
 
         $app->console()->setup();

@@ -240,7 +240,7 @@ class JsonResponse extends Response implements JsonResponseContract
     {
         $app->container()->singleton(
             CoreComponent::JSON_RESPONSE,
-            new JsonResponse()
+            new static()
         );
     }
 }

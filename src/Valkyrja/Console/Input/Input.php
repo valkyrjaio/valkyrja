@@ -341,7 +341,7 @@ class Input implements InputContract
     {
         $app->container()->singleton(
             CoreComponent::INPUT,
-            new Input(
+            new static(
                 $app->container()->getSingleton(CoreComponent::REQUEST)
             )
         );

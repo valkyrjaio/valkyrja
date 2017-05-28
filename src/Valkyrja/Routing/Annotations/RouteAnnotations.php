@@ -257,7 +257,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     {
         $app->container()->singleton(
             CoreComponent::ROUTE_ANNOTATIONS,
-            new RouteAnnotations(
+            new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );

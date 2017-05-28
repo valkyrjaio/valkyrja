@@ -210,7 +210,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     {
         $app->container()->singleton(
             CoreComponent::REDIRECT_RESPONSE,
-            new RedirectResponse()
+            new static()
         );
     }
 }

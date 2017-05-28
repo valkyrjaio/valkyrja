@@ -1149,7 +1149,7 @@ class Request implements RequestContract
     {
         $app->container()->singleton(
             CoreComponent::REQUEST,
-            Request::createFromGlobals()
+            static::createFromGlobals()
         );
     }
 }

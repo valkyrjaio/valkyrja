@@ -619,7 +619,7 @@ class Annotations implements AnnotationsContract
     {
         $app->container()->singleton(
             CoreComponent::ANNOTATIONS,
-            new Annotations(
+            new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );

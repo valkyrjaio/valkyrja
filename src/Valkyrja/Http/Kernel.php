@@ -141,7 +141,7 @@ class Kernel implements KernelContract
     {
         $app->container()->singleton(
             CoreComponent::KERNEL,
-            new Kernel($app, $app->router())
+            new static($app, $app->router())
         );
     }
 }

@@ -669,7 +669,7 @@ class Router implements RouterContract
     {
         $app->container()->singleton(
             CoreComponent::ROUTER,
-            new Router($app)
+            new static($app)
         );
 
         $app->router()->setup();

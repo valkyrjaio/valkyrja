@@ -140,7 +140,7 @@ class CommandAnnotations extends Annotations
     {
         $app->container()->singleton(
             CoreComponent::COMMAND_ANNOTATIONS,
-            new CommandAnnotations(
+            new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )
         );

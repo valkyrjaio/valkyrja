@@ -316,7 +316,7 @@ class Session implements SessionContract
     {
         $app->container()->singleton(
             CoreComponent::SESSION,
-            new Session($app)
+            new static($app)
         );
     }
 }
