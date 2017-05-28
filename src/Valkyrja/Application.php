@@ -177,7 +177,7 @@ class Application implements ApplicationContract
         $cacheFilePath = self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
 
         // If we should use the config cache file
-        if (self::$env::CONFIG_USE_CACHE_FILE || file_exists($cacheFilePath)) {
+        if (self::$env::CONFIG_USE_CACHE_FILE || is_file($cacheFilePath)) {
             // Get the config from the cache file's contents
             self::$config = require $cacheFilePath;
 
