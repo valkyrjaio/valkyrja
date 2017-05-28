@@ -13,14 +13,230 @@ namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Annotations\Annotatable;
 use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Routing\Route as RouterRoute;
+use Valkyrja\Http\Enums\RequestMethod;
 
 /**
  * Class Route.
  *
  * @author Melech Mizrachi
  */
-class Route extends RouterRoute implements Annotation
+class Route implements Annotation
 {
     use Annotatable;
+
+    /**
+     * The path for this route.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * The request methods for this route.
+     *
+     * @var array
+     */
+    protected $requestMethods;
+
+    /**
+     * The regex for dynamic routes.
+     *
+     * @var string
+     */
+    protected $regex;
+
+    /**
+     * Any params for dynamic routes.
+     *
+     * @var array
+     */
+    protected $params;
+
+    /**
+     * Any segments for optional parts of path.
+     *
+     * @var array
+     */
+    protected $segments;
+
+    /**
+     * Whether the route is dynamic.
+     *
+     * @var bool
+     */
+    protected $dynamic = false;
+
+    /**
+     * Whether the route is secure.
+     *
+     * @var bool
+     */
+    protected $secure = false;
+
+    /**
+     * Get the route's path.
+     *
+     * @return string
+     */
+    public function getPath():? string
+    {
+        return $this->path;
+    }
+
+    /**
+     * Set the route's path.
+     *
+     * @param string $path The route path
+     *
+     * @return void
+     */
+    public function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * Get the request methods.
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array
+     */
+    public function getRequestMethods(): array
+    {
+        if (null === $this->requestMethods) {
+            $this->requestMethods = [
+                RequestMethod::GET,
+                RequestMethod::HEAD,
+            ];
+        }
+
+        return $this->requestMethods;
+    }
+
+    /**
+     * Set the request methods.
+     *
+     * @param array $requestMethods The request methods
+     *
+     * @return void
+     */
+    public function setRequestMethods(array $requestMethods): void
+    {
+        if (array_diff($requestMethods, RequestMethod::validValues())) {
+            throw new \InvalidArgumentException('Invalid request methods set');
+        }
+
+        $this->requestMethods = $requestMethods;
+    }
+
+    /**
+     * Get the regex.
+     *
+     * @return string
+     */
+    public function getRegex():? string
+    {
+        return $this->regex;
+    }
+
+    /**
+     * Set the regex.
+     *
+     * @param string $regex The regex
+     *
+     * @return void
+     */
+    public function setRegex(string $regex = null): void
+    {
+        $this->regex = $regex;
+    }
+
+    /**
+     * Get the params.
+     *
+     * @return array
+     */
+    public function getParams():? array
+    {
+        return $this->params;
+    }
+
+    /**
+     * Set the params.
+     *
+     * @param array $params The params
+     *
+     * @return void
+     */
+    public function setParams(array $params = null): void
+    {
+        $this->params = $params;
+    }
+
+    /**
+     * Get the segments.
+     *
+     * @return array
+     */
+    public function getSegments():? array
+    {
+        return $this->segments;
+    }
+
+    /**
+     * Set the segments.
+     *
+     * @param array $segments The segments
+     *
+     * @return void
+     */
+    public function setSegments(array $segments = null): void
+    {
+        $this->segments = $segments;
+    }
+
+    /**
+     * Check whether the route is dynamic.
+     *
+     * @return bool
+     */
+    public function getDynamic(): bool
+    {
+        return $this->dynamic;
+    }
+
+    /**
+     * Set the route as dynamic.
+     *
+     * @param bool $dynamic Whether the route it dynamic
+     *
+     * @return void
+     */
+    public function setDynamic(bool $dynamic): void
+    {
+        $this->dynamic = $dynamic;
+    }
+
+    /**
+     * Get whether the route is secure.
+     *
+     * @return bool
+     */
+    public function getSecure(): bool
+    {
+        return $this->secure;
+    }
+
+    /**
+     * Set whether the route is secure.
+     *
+     * @param bool $secure Whether the route is secure
+     *
+     * @return void
+     */
+    public function setSecure(bool $secure): void
+    {
+        $this->secure = $secure;
+    }
 }

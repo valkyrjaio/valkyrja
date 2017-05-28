@@ -13,14 +13,42 @@ namespace Valkyrja\Events\Annotations;
 
 use Valkyrja\Annotations\Annotatable;
 use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Events\Listener as EventListener;
 
 /**
  * Class Event.
  *
  * @author Melech Mizrachi
  */
-class Listener extends EventListener implements Annotation
+class Listener implements Annotation
 {
     use Annotatable;
+
+    /**
+     * The event to listen to.
+     *
+     * @var string
+     */
+    protected $event;
+
+    /**
+     * Get the event.
+     *
+     * @return string
+     */
+    public function getEvent():? string
+    {
+        return $this->event;
+    }
+
+    /**
+     * Set the event.
+     *
+     * @param string $event The event
+     *
+     * @return void
+     */
+    public function setEvent(string $event = null): void
+    {
+        $this->event = $event;
+    }
 }

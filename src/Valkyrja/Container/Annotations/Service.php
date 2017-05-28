@@ -12,7 +12,6 @@
 namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotatable;
-use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Contracts\Annotations\Annotation;
 
 /**
@@ -20,7 +19,65 @@ use Valkyrja\Contracts\Annotations\Annotation;
  *
  * @author Melech Mizrachi
  */
-class Service extends ContainerService implements Annotation
+class Service implements Annotation
 {
     use Annotatable;
+
+    /**
+     * Whether this service is a singleton.
+     *
+     * @var bool
+     */
+    protected $singleton;
+
+    /**
+     * Default arguments.
+     *
+     * @var array
+     */
+    protected $defaults;
+
+    /**
+     * Get whether this is a singleton.
+     *
+     * @return bool
+     */
+    public function isSingleton():? bool
+    {
+        return $this->singleton;
+    }
+
+    /**
+     * Set whether this is a singleton.
+     *
+     * @param bool $singleton Whether this is a singleton
+     *
+     * @return void
+     */
+    public function setSingleton(bool $singleton = null): void
+    {
+        $this->singleton = $singleton;
+    }
+
+    /**
+     * Get defaults.
+     *
+     * @return array
+     */
+    public function getDefaults():? array
+    {
+        return $this->defaults;
+    }
+
+    /**
+     * Set defaults.
+     *
+     * @param array $defaults The defaults.
+     *
+     * @return void
+     */
+    public function setDefaults(array $defaults = null): void
+    {
+        $this->defaults = $defaults;
+    }
 }
