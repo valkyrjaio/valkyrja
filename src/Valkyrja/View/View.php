@@ -250,7 +250,7 @@ class View implements ViewContract
         include $this->getTemplatePath();
         $view = ob_get_clean();
 
-        if (! $this->layout) {
+        if (null === $this->layout) {
             return $view;
         }
 
