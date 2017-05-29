@@ -22,6 +22,7 @@ use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Events\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
 
@@ -263,5 +264,32 @@ class AnnotationsParserTest extends TestCase
     public function testGetServiceContextAnnotationFromMap(): void
     {
         $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof ServiceContext);
+    }
+
+    /**
+     * Test the provides method.
+     *
+     * @return void
+     */
+    public function testProvides(): void
+    {
+        $expected = [
+            CoreComponent::ANNOTATIONS_PARSER,
+        ];
+
+        $this->assertEquals($expected, $this->class::provides());
+    }
+
+    /**
+     * Test the publish method.
+     *
+     * @return void
+     */
+    public function testPublish(): void
+    {
+        /* @var \Valkyrja\Contracts\Application $app */
+        $app = $this->createMock(\Valkyrja\Contracts\Application::class);
+
+        $this->assertEquals(null, $this->class::publish($app) ?? null);
     }
 }

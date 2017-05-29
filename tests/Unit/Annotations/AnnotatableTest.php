@@ -89,6 +89,90 @@ class AnnotatableTest extends TestCase
     }
 
     /**
+     * Test the getId method's default value.
+     *
+     * @return void
+     */
+    public function testGetIdDefault(): void
+    {
+        $this->assertEquals(null, $this->class->getId());
+    }
+
+    /**
+     * Test the getId method.
+     *
+     * @return void
+     */
+    public function testGetId(): void
+    {
+        $this->class->setId($this->value);
+
+        $this->assertEquals($this->value, $this->class->getId());
+    }
+
+    /**
+     * Test the setId method with null value.
+     *
+     * @return void
+     */
+    public function testSetIdNull(): void
+    {
+        $this->assertEquals(null, $this->class->setId(null) ?? null);
+    }
+
+    /**
+     * Test the setId method.
+     *
+     * @return void
+     */
+    public function testSetId(): void
+    {
+        $this->assertEquals(null, $this->class->setId($this->value) ?? null);
+    }
+
+    /**
+     * Test the getName method's default value.
+     *
+     * @return void
+     */
+    public function testGetNameDefault(): void
+    {
+        $this->assertEquals(null, $this->class->getName());
+    }
+
+    /**
+     * Test the getName method.
+     *
+     * @return void
+     */
+    public function testGetName(): void
+    {
+        $this->class->setName($this->value);
+
+        $this->assertEquals($this->value, $this->class->getName());
+    }
+
+    /**
+     * Test the setName method with null value.
+     *
+     * @return void
+     */
+    public function testSetNameNull(): void
+    {
+        $this->assertEquals(null, $this->class->setName(null) ?? null);
+    }
+
+    /**
+     * Test the setName method.
+     *
+     * @return void
+     */
+    public function testSetName(): void
+    {
+        $this->assertEquals(null, $this->class->setName($this->value) ?? null);
+    }
+
+    /**
      * Test the getClass method's default value.
      *
      * @return void
@@ -328,6 +412,90 @@ class AnnotatableTest extends TestCase
     public function testSetMatches(): void
     {
         $this->assertEquals(null, $this->class->setMatches([$this->value]) ?? null);
+    }
+
+    /**
+     * Test the getArguments method's default value.
+     *
+     * @return void
+     */
+    public function testGetArgumentsDefault(): void
+    {
+        $this->assertEquals(null, $this->class->getArguments());
+    }
+
+    /**
+     * Test the getArguments method.
+     *
+     * @return void
+     */
+    public function testGetArguments(): void
+    {
+        $this->class->setArguments([$this->value]);
+
+        $this->assertEquals([$this->value], $this->class->getArguments());
+    }
+
+    /**
+     * Test the setArguments method with null value.
+     *
+     * @return void
+     */
+    public function testSetArgumentsNull(): void
+    {
+        $this->assertEquals(null, $this->class->setArguments(null) ?? null);
+    }
+
+    /**
+     * Test the setArguments method.
+     *
+     * @return void
+     */
+    public function testSetArguments(): void
+    {
+        $this->assertEquals(null, $this->class->setArguments([$this->value]) ?? null);
+    }
+
+    /**
+     * Test the getDependencies method's default value.
+     *
+     * @return void
+     */
+    public function testGetDependenciesDefault(): void
+    {
+        $this->assertEquals(null, $this->class->getDependencies());
+    }
+
+    /**
+     * Test the getDependencies method.
+     *
+     * @return void
+     */
+    public function testGetDependencies(): void
+    {
+        $this->class->setDependencies([$this->value]);
+
+        $this->assertEquals([$this->value], $this->class->getDependencies());
+    }
+
+    /**
+     * Test the setDependencies method with null value.
+     *
+     * @return void
+     */
+    public function testSetDependenciesNull(): void
+    {
+        $this->assertEquals(null, $this->class->setDependencies(null) ?? null);
+    }
+
+    /**
+     * Test the setDependencies method.
+     *
+     * @return void
+     */
+    public function testSetDependencies(): void
+    {
+        $this->assertEquals(null, $this->class->setDependencies([$this->value]) ?? null);
     }
 
     /**

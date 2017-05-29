@@ -17,6 +17,7 @@ use Valkyrja\Application;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
@@ -77,6 +78,16 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test the dispatcher() helper method.
+     *
+     * @return void
+     */
+    public function testDispatcher(): void
+    {
+        $this->assertEquals(true, $this->app->dispatcher() instanceof Dispatcher);
+    }
+
+    /**
      * Test the events() helper method.
      *
      * @return void
@@ -104,6 +115,18 @@ class ApplicationTest extends TestCase
     public function testConfig(): void
     {
         $this->assertEquals(true, is_array($this->app->config()));
+    }
+
+    /**
+     * Test the addConfig() helper method.
+     *
+     * @return void
+     */
+    public function testAddConfig(): void
+    {
+        $this->app->addConfig(['new' => []]);
+
+        $this->assertEquals(true, isset($this->app->config()['new']));
     }
 
     /**
