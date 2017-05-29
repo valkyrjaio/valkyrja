@@ -70,18 +70,6 @@ class ServiceTest extends TestCase
     }
 
     /**
-     * Test the setSingleton method with null value.
-     *
-     * @return void
-     */
-    public function testSetSingletonNull(): void
-    {
-        $set = $this->class->setSingleton(null);
-
-        $this->assertEquals(true, $set instanceof Service);
-    }
-
-    /**
      * Test the setSingleton method.
      *
      * @return void

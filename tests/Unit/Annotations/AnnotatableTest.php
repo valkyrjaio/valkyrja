@@ -237,16 +237,6 @@ class AnnotatableTest extends TestCase
     }
 
     /**
-     * Test the setStatic method with null value.
-     *
-     * @return void
-     */
-    public function testSetStaticNull(): void
-    {
-        $this->assertEquals(null, $this->class->setStatic(null) ?? null);
-    }
-
-    /**
      * Test the setStatic method.
      *
      * @return void
