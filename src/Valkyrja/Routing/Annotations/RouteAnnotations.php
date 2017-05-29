@@ -163,13 +163,13 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         // If the base is dynamic
-        if (false !== $controllerRoute->getDynamic()) {
+        if (false !== $controllerRoute->isDynamic()) {
             // Set the route to dynamic
             $newRoute->setDynamic(true);
         }
 
         // If the base is secure
-        if (false !== $controllerRoute->getSecure()) {
+        if (false !== $controllerRoute->isSecure()) {
             // Set the route to dynamic
             $newRoute->setSecure(true);
         }
@@ -219,8 +219,8 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
             ->setParams($route->getParams())
             ->setSegments($route->getSegments())
             ->setRequestMethods($route->getRequestMethods())
-            ->setSecure($route->getSecure())
-            ->setDynamic($route->getDynamic())
+            ->setSecure($route->isSecure())
+            ->setDynamic($route->isDynamic())
             ->setId($route->getId())
             ->setName($route->getName())
             ->setClass($route->getClass())

@@ -208,7 +208,7 @@ class Route extends Dispatch
      *
      * @return bool
      */
-    public function getDynamic(): bool
+    public function isDynamic(): bool
     {
         return $this->dynamic;
     }
@@ -232,7 +232,7 @@ class Route extends Dispatch
      *
      * @return bool
      */
-    public function getSecure(): bool
+    public function isSecure(): bool
     {
         return $this->secure;
     }

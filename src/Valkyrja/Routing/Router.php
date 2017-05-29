@@ -108,7 +108,7 @@ class Router implements RouterContract
         $route->getRequestMethods();
 
         // If this is a dynamic route
-        if ($route->getDynamic()) {
+        if ($route->isDynamic()) {
             $this->setDynamicRoute($route);
             self::$dynamicRoutes[$route->getRegex()] = $route->getPath();
         } // Otherwise set it in the static routes array
@@ -321,7 +321,7 @@ class Router implements RouterContract
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $this->app->config()['routing']['useAbsoluteUrls'] || $route->getSecure()
+        $host = $absolute || $this->app->config()['routing']['useAbsoluteUrls'] || $route->isSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -342,7 +342,7 @@ class Router implements RouterContract
     protected function routeHost(Route $route): string
     {
         return 'http'
-            . ($route->getSecure() ? 's' : '')
+            . ($route->isSecure() ? 's' : '')
             . '://'
             . request()->getHttpHost();
     }
@@ -483,7 +483,7 @@ class Router implements RouterContract
         }
 
         // If the route is secure and the current request is not secure
-        if ($route->getSecure() && ! $request->isSecure()) {
+        if ($route->isSecure() && ! $request->isSecure()) {
             // Throw the redirect to the secure path
             return $this->app->redirect()->secure($request->getPath());
         }

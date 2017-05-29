@@ -282,7 +282,7 @@ class RouteTest extends TestCase
      */
     public function testGetDynamicDefault(): void
     {
-        $this->assertEquals(false, $this->getRoute()->getDynamic());
+        $this->assertEquals(false, $this->getRoute()->isDynamic());
     }
 
     /**
@@ -306,7 +306,7 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setDynamic(true);
 
-        $this->assertEquals(true, $this->getRoute()->getDynamic());
+        $this->assertEquals(true, $this->getRoute()->isDynamic());
     }
 
     /**
@@ -316,7 +316,7 @@ class RouteTest extends TestCase
      */
     public function testGetSecureDefault(): void
     {
-        $this->assertEquals(false, $this->getRoute()->getSecure());
+        $this->assertEquals(false, $this->getRoute()->isSecure());
     }
 
     /**
@@ -340,6 +340,6 @@ class RouteTest extends TestCase
     {
         $this->getRoute()->setSecure(true);
 
-        $this->assertEquals(true, $this->getRoute()->getSecure());
+        $this->assertEquals(true, $this->getRoute()->isSecure());
     }
 }
