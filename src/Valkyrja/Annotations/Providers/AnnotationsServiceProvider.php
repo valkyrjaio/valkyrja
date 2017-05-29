@@ -81,7 +81,7 @@ class AnnotationsServiceProvider extends Provider
         $app->container()->singleton(
             CoreComponent::ANNOTATIONS_PARSER,
             new AnnotationsParser(
-                $app->container()->getSingleton(CoreComponent::APP)
+                $app
             )
         );
     }

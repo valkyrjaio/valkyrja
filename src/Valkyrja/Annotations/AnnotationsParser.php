@@ -466,7 +466,7 @@ class AnnotationsParser implements AnnotationsParserContract
         $app->container()->singleton(
             CoreComponent::ANNOTATIONS_PARSER,
             new static(
-                $app->container()->getSingleton(CoreComponent::APP)
+                $app
             )
         );
     }
