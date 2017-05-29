@@ -108,7 +108,7 @@ class Kernel implements KernelContract
     {
         // If no request was passed get the bootstrapped definition
         if (null === $request) {
-            $request = $this->app->container()->get(Request::class);
+            $request = $this->app->container()->getSingleton(Request::class);
         }
 
         // Handle the request and send the response
