@@ -119,7 +119,7 @@ interface Annotation
      *
      * @return bool
      */
-    public function isStatic():? bool;
+    public function isStatic(): bool;
 
     /**
      * Set whether the member is static.
@@ -128,7 +128,7 @@ interface Annotation
      *
      * @return void
      */
-    public function setStatic(bool $static = null);
+    public function setStatic(bool $static = true);
 
     /**
      * Get the function.

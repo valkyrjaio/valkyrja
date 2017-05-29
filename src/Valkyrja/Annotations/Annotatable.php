@@ -65,7 +65,7 @@ trait Annotatable
      *
      * @var bool
      */
-    protected $static;
+    protected $static = false;
 
     /**
      * The function.
@@ -239,7 +239,7 @@ trait Annotatable
      *
      * @return bool
      */
-    public function isStatic():? bool
+    public function isStatic(): bool
     {
         return $this->static;
     }
@@ -251,7 +251,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setStatic(bool $static = null)
+    public function setStatic(bool $static = true)
     {
         $this->static = $static;
     }

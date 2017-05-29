@@ -300,18 +300,6 @@ class DispatchTest extends TestCase
     }
 
     /**
-     * Test the setStatic method with null value.
-     *
-     * @return void
-     */
-    public function testSetStaticNull(): void
-    {
-        $set = $this->class->setStatic(null);
-
-        $this->assertEquals(true, $set instanceof Dispatch);
-    }
-
-    /**
      * Test the setStatic method.
      *
      * @return void
