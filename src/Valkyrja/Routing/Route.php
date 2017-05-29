@@ -220,7 +220,7 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setDynamic(bool $dynamic): self
+    public function setDynamic(bool $dynamic = true): self
     {
         $this->dynamic = $dynamic;
 
@@ -244,7 +244,7 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setSecure(bool $secure): self
+    public function setSecure(bool $secure = true): self
     {
         $this->secure = $secure;
 

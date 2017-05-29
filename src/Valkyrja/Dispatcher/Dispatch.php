@@ -60,7 +60,7 @@ class Dispatch
      *
      * @var bool
      */
-    protected $static;
+    protected $static = false;
 
     /**
      * The function.
@@ -222,7 +222,7 @@ class Dispatch
      *
      * @return bool
      */
-    public function isStatic():? bool
+    public function isStatic(): bool
     {
         return $this->static;
     }
@@ -234,7 +234,7 @@ class Dispatch
      *
      * @return $this
      */
-    public function setStatic(bool $static = null): self
+    public function setStatic(bool $static = true): self
     {
         $this->static = $static;
 

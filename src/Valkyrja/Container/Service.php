@@ -25,7 +25,7 @@ class Service extends Dispatch
      *
      * @var bool
      */
-    protected $singleton;
+    protected $singleton = false;
 
     /**
      * Default arguments.
@@ -39,7 +39,7 @@ class Service extends Dispatch
      *
      * @return bool
      */
-    public function isSingleton():? bool
+    public function isSingleton(): bool
     {
         return $this->singleton;
     }
@@ -51,7 +51,7 @@ class Service extends Dispatch
      *
      * @return $this
      */
-    public function setSingleton(bool $singleton = null): self
+    public function setSingleton(bool $singleton = true): self
     {
         $this->singleton = $singleton;
 
