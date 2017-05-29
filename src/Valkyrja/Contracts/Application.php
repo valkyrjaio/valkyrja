@@ -83,11 +83,10 @@ interface Application
      * Add to the global config array.
      *
      * @param array $newConfig The new config to add
-     * @param bool  $isRoot    [optional] Whether the config passed is root
      *
      * @return void
      */
-    public function addConfig(array $newConfig, bool $isRoot = false): void;
+    public function addConfig(array $newConfig): void;
 
     /**
      * Get the container instance.

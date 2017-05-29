@@ -338,16 +338,11 @@ class Application implements ApplicationContract
      * Add to the global config array.
      *
      * @param array $newConfig The new config to add
-     * @param bool  $isRoot    [optional] Whether the config passed is root
      *
      * @return void
      */
-    public function addConfig(array $newConfig, bool $isRoot = false): void
+    public function addConfig(array $newConfig): void
     {
-        if (false === $isRoot) {
-            $newConfig = [$newConfig];
-        }
-
         // Set the config within the application
         self::$config = array_replace_recursive(self::$config, $newConfig);
     }
