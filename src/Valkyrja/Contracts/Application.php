@@ -44,7 +44,7 @@ interface Application
      *
      * @constant string
      */
-    public const VERSION = '0.1.1';
+    public const VERSION = '0.6';
 
     /**
      * Setup the application.
