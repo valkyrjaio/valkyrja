@@ -29,7 +29,7 @@ class ConsoleCommands extends CommandHandler
      * The command.
      */
     public const COMMAND           = 'commands';
-    public const PATH              = '[' . ConsoleCommands::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]';
+    public const PATH              = '[' . self::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]';
     public const SHORT_DESCRIPTION = 'List all the commands';
     public const DESCRIPTION       = 'List all the commands';
 

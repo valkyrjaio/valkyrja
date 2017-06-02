@@ -32,7 +32,7 @@ class CacheAllCommand extends CommandHandler
      * The command.
      */
     public const COMMAND           = 'cache:all';
-    public const PATH              = CacheAllCommand::COMMAND . '[ {sync:-s|--sync}]';
+    public const PATH              = self::COMMAND . '[ {sync:-s|--sync}]';
     public const SHORT_DESCRIPTION = 'Generate all caches and sync';
 
     /**
