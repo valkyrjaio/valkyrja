@@ -84,8 +84,13 @@ class PathGenerator implements PathGeneratorContract
      *
      * @return void
      */
-    protected function parseData(array $segments, array $data, array $params, array &$replace, array &$replacements): void
-    {
+    protected function parseData(
+        array $segments,
+        array $data,
+        array $params,
+        array &$replace,
+        array &$replacements
+    ): void {
         // Iterate through all the data properties
         foreach ($data as $key => $datum) {
             // If the data isn't found in the params array it is not a valid param

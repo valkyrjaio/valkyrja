@@ -34,8 +34,13 @@ class ErrorHandler
      *
      * @return void
      */
-    public function handleError(int $level, string $message, string $file = '', int $line = 0, array $context = []): void
-    {
+    public function handleError(
+        int $level,
+        string $message,
+        string $file = '',
+        int $line = 0,
+        array $context = []
+    ): void {
         if (error_reporting() & $level) {
             throw new ErrorException($message, 0, $level, $file, $line);
         }

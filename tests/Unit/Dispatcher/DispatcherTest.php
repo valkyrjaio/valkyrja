@@ -219,8 +219,10 @@ class DispatcherTest extends TestCase
     {
         $valid = $this->class->verifyClosure(
                 (new Dispatch())
-                    ->setClosure(function () {
-                    })
+                    ->setClosure(
+                        function () {
+                        }
+                    )
             ) ?? null;
 
         $this->assertEquals(null, $valid);
@@ -251,8 +253,10 @@ class DispatcherTest extends TestCase
     {
         $valid = $this->class->verifyDispatch(
                 (new Dispatch())
-                    ->setClosure(function () {
-                    })
+                    ->setClosure(
+                        function () {
+                        }
+                    )
             ) ?? null;
 
         $this->assertEquals(null, $valid);
@@ -391,7 +395,8 @@ class DispatcherTest extends TestCase
 
         $this->assertInstanceOf(
             InvalidDispatcherClass::class,
-            $this->class->dispatchClass($dispatch,
+            $this->class->dispatchClass(
+                $dispatch,
                 [
                     $container,
                     $events,
@@ -448,9 +453,11 @@ class DispatcherTest extends TestCase
     public function testDispatchClosure(): void
     {
         $dispatch = (new Dispatch())
-            ->setClosure(function () {
-                return 'test';
-            });
+            ->setClosure(
+                function () {
+                    return 'test';
+                }
+            );
 
         $this->assertEquals('test', $this->class->dispatchClosure($dispatch));
     }
@@ -464,9 +471,11 @@ class DispatcherTest extends TestCase
     {
         $array    = ['foo', 'bar'];
         $dispatch = (new Dispatch())
-            ->setClosure(function (array $array) {
-                return count($array);
-            });
+            ->setClosure(
+                function (array $array) {
+                    return count($array);
+                }
+            );
 
         $this->assertEquals(count($array), $this->class->dispatchClosure($dispatch, [$array]));
     }

@@ -129,7 +129,9 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsInvalidKey(): void
     {
-        $arguments = 'Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::invalidKeyArray = \'value\', name = \'test\'';
+        $arguments = static::class . '::invalidKeyArray'
+            . ' = \'value\', '
+            . 'name = \'test\'';
 
         try {
             $this->class->getArguments($arguments);

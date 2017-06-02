@@ -64,7 +64,13 @@ class OptionTest extends TestCase
      */
     protected function getClass(): Option
     {
-        return $this->class ?? $this->class = new Option($this->name, $this->description, $this->shortcut, null, $this->default);
+        return $this->class ?? $this->class = new Option(
+                $this->name,
+                $this->description,
+                $this->shortcut,
+                null,
+                $this->default
+            );
     }
 
     /**

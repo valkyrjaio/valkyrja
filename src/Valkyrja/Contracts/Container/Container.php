@@ -154,7 +154,12 @@ interface Container extends Cacheable, AllowsProviders
      *
      * @return mixed
      */
-    public function getProvided(string $serviceId, array $arguments = null, string $context = null, string $member = null);
+    public function getProvided(
+        string $serviceId,
+        array $arguments = null,
+        string $context = null,
+        string $member = null
+    );
 
     /**
      * Get the context service id.

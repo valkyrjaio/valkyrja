@@ -64,8 +64,13 @@ class Option
      * @param \Valkyrja\Console\Enums\OptionMode $mode        [optional] The mode
      * @param string                             $default     [optional] The default value
      */
-    public function __construct(string $name, string $description, string $shortcut = null, OptionMode $mode = null, string $default = null)
-    {
+    public function __construct(
+        string $name,
+        string $description,
+        string $shortcut = null,
+        OptionMode $mode = null,
+        string $default = null
+    ) {
         $this->name        = $name;
         $this->shortcut    = $shortcut;
         $this->description = $description;

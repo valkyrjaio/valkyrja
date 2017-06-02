@@ -400,8 +400,10 @@ class DispatchTest extends TestCase
      */
     public function testSetClosure(): void
     {
-        $set = $this->class->setClosure(function () {
-        });
+        $set = $this->class->setClosure(
+            function () {
+            }
+        );
 
         $this->assertEquals(true, $set instanceof Dispatch);
     }
