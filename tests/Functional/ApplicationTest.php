@@ -374,7 +374,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, $this->app->redirectRoute('home.welcome') instanceof RedirectResponse);
     }
 
     /**

@@ -11,7 +11,7 @@ use Valkyrja\Routing\Route;
 router()->get(
     (new Route())
         ->setPath('/')
-        ->setName('welcome')
+        ->setName('home.welcome')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
         ->setProperty('welcome')
 );
@@ -25,9 +25,9 @@ router()->get(
 router()->get(
     (new Route())
         ->setPath('/version')
-        ->setName('version')
+        ->setName('home.version')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setProperty('version')
+        ->setMethod('version')
 );
 
 /*
@@ -39,7 +39,7 @@ router()->get(
 router()->get(
     (new Route())
         ->setPath('/property')
-        ->setName('property')
+        ->setName('home.property')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setProperty('propertyRouting')
+        ->setMethod('propertyRouting')
 );
