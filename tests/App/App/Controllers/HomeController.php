@@ -11,38 +11,21 @@
 
 namespace Valkyrja\Tests\App\App\Controllers;
 
-use Valkyrja\Container\Service;
-use Valkyrja\Container\ServiceAlias;
-use Valkyrja\Container\ServiceContext;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Http\Response;
+use Valkyrja\Container\Annotations\Service;
+use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Http\Controller;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Annotations\Route;
 
 /**
  * Class HomeController.
  *
  * @Route(path = '/', name = 'home')
- * @Route(path = '/test', name = 'home.test')
  * @Service(id = App\Controllers\HomeController)
  * @ServiceAlias(id = App\Controllers\HomeController, name = 'homeController')
- * @ServiceContext(
- *     id = Valkyrja\Contracts\Application,
- *     contextClass = App\Controllers\HomeController,
- *     contextMethod = 'getApplication',
- *     static = true
- * )
  */
 class HomeController extends Controller
 {
-    /**
-     * The applications.
-     *
-     * @var \Valkyrja\Contracts\Application
-     */
-    protected $app;
-
     /**
      * Property routing example.
      *
@@ -51,16 +34,6 @@ class HomeController extends Controller
      * @Route(path = '/property', name = 'property')
      */
     public $propertyRouting = 'Property Routing Example';
-
-    /**
-     * HomeController constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * Welcome action.
@@ -85,37 +58,6 @@ class HomeController extends Controller
      */
     public function version(): string
     {
-        return $this->app->version();
-    }
-
-    /**
-     * Homepage action.
-     * - Example with multiple routes to the same action.
-     *
-     * @param Application $application The application (Dependency injection example)
-     * @param int         $page        The current page
-     *
-     * @return \Valkyrja\Contracts\Http\Response
-     *
-     * @Route(path = '/home[/page/{id:num}]', name = 'home', dynamic = true)
-     */
-    public function home(Application $application, int $page = 1): Response
-    {
-        return response(view('home/home',
-                [
-                    'app'  => $application,
-                    'page' => $page,
-                ])
-        );
-    }
-
-    /**
-     * Service context application test.
-     *
-     * @return \Valkyrja\Contracts\Application
-     */
-    public static function getApplication(): Application
-    {
-        return app();
+        return app()->version();
     }
 }
