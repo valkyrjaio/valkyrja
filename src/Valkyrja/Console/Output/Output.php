@@ -101,12 +101,12 @@ class Output implements OutputContract
         $outputStyleType = $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
 
         switch ($outputStyleType) {
-            case OutputStyle::NORMAL :
+            case OutputStyle::NORMAL:
                 $message = $this->formatter->format($message);
                 break;
-            case OutputStyle::RAW :
+            case OutputStyle::RAW:
                 break;
-            case OutputStyle::PLAIN :
+            case OutputStyle::PLAIN:
                 $message = strip_tags($this->formatter->format($message));
                 break;
         }
