@@ -12,11 +12,11 @@
 namespace Valkyrja\Console\Support;
 
 /**
- * Class CommandProvider.
+ * Abstract Class CommandProvider.
  *
  * @author Melech Mizrachi
  */
-class CommandProvider
+abstract class CommandProvider
 {
     use ProvidesCommand;
 }
