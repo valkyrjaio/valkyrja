@@ -103,7 +103,7 @@ abstract class Enum implements JsonSerializable
         }
 
         // Get the class name that was called
-        $className = get_called_class();
+        $className = static::class;
 
         // If the called enum isn't yet cached
         // and the values aren't already set (to avoid a reflection class)
