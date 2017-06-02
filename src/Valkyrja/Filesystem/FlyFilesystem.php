@@ -360,6 +360,8 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
+     * @throws \League\Flysystem\RootViolationException
+     *
      * @return bool
      */
     public function deleteDir(string $path): bool
