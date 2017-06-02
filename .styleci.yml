@@ -12,3 +12,7 @@ enabled:
   - short_list_syntax
   - strict_comparison
   - strict_param
+
+disabled:
+  - concat_without_spaces
+  - unalign_equals
