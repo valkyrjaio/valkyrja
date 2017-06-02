@@ -11,6 +11,8 @@ matrix:
   fast_finish: true
   include:
     - php: 7.1
+      env: setup=basic
+    - php: 7.1
       env: setup=lowest
     - php: 7.1
       env: setup=stable
