@@ -16,3 +16,7 @@ enabled:
 disabled:
   - concat_without_spaces
   - unalign_equals
+
+finder:
+  exclude:
+    - "tests"
