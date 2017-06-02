@@ -11,12 +11,9 @@ use Valkyrja\Routing\Route;
 router()->get(
     (new Route())
         ->setPath('/')
-        ->setName('home.welcome')
-        ->setClosure(
-            function (): Valkyrja\Contracts\View\View {
-                return view('index')->withoutLayout();
-            }
-        )
+        ->setName('welcome')
+        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
+        ->setProperty('welcome')
 );
 
 /*
@@ -29,11 +26,8 @@ router()->get(
     (new Route())
         ->setPath('/version')
         ->setName('version')
-        ->setClosure(
-            function (): string {
-                return app()->version();
-            }
-        )
+        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
+        ->setProperty('version')
 );
 
 /*
@@ -48,48 +42,4 @@ router()->get(
         ->setName('property')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
         ->setProperty('propertyRouting')
-);
-
-/*
- * Home Route.
- * - Example with multiple routes to the same action
- *
- * @path /home
- */
-router()->get(
-    (new Route())
-        ->setPath('/home')
-        ->setName('home')
-        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setMethod('home')
-        ->setDependencies(
-            [
-                // Any classes defined within the injectable array are
-                //   automatically be run through the service container for you.
-                Valkyrja\Contracts\Application::class,
-            ]
-        )
-);
-
-/*
- * Home Paged Route.
- * - An example route with dependency injection and a parameter.
- * - Example with multiple routes to the same action
- *
- * @path /home/:page
- */
-router()->get(
-    (new Route())
-        ->setPath('/home/{id:num}')
-        ->setName('homePage')
-        ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setMethod('home')
-        ->setDependencies(
-            [
-                // Any classes defined within the injectable array are
-                //   automatically be run through the service container for you.
-                Valkyrja\Contracts\Application::class,
-            ]
-        )
-        ->setDynamic(true)
 );
