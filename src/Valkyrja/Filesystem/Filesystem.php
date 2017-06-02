@@ -19,15 +19,6 @@ namespace Valkyrja\Filesystem;
 interface Filesystem
 {
     /**
-     * Get a filesystem for an adapter.
-     *
-     * @param string $adapter The adapter
-     *
-     * @return \Valkyrja\Filesystem\Filesystem
-     */
-    public function adapter(string $adapter): self;
-
-    /**
      * Determine whether a path exists.
      *
      * @param string $path The path
@@ -226,7 +217,7 @@ interface Filesystem
     public function deleteDir(string $path): bool;
 
     /**
-     * List the contents of a directory
+     * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
      * @param bool   $recursive [optional] Whether to recurse through the directory
@@ -234,6 +225,15 @@ interface Filesystem
      * @return array
      */
     public function listContents(string $directory = null, bool $recursive = false): array;
+
+    /**
+     * Get a filesystem for an adapter.
+     *
+     * @param string $adapter The adapter
+     *
+     * @return \Valkyrja\Filesystem\Filesystem
+     */
+    public function adapter(string $adapter): self;
 
     /**
      * Get the local filesystem.

@@ -89,11 +89,7 @@ class FlyFilesystem implements Filesystem
     {
         $read = $this->flySystem->read($path);
 
-        if (false === $read) {
-            return null;
-        }
-
-        return $read;
+        return false !== $read ? $read : null;
     }
 
     /**
@@ -245,11 +241,7 @@ class FlyFilesystem implements Filesystem
     {
         $metadata = $this->flySystem->getMetadata($path);
 
-        if (false === $metadata) {
-            return null;
-        }
-
-        return $metadata;
+        return false !== $metadata ? $metadata : null;
     }
 
     /**
@@ -265,11 +257,7 @@ class FlyFilesystem implements Filesystem
     {
         $mimetype = $this->flySystem->getMimetype($path);
 
-        if (false === $mimetype) {
-            return null;
-        }
-
-        return $mimetype;
+        return false !== $mimetype ? $mimetype : null;
     }
 
     /**
@@ -283,11 +271,7 @@ class FlyFilesystem implements Filesystem
     {
         $size = $this->flySystem->getSize($path);
 
-        if (false === $size) {
-            return null;
-        }
-
-        return $size;
+        return false !== $size ? $size : null;
     }
 
     /**
@@ -303,11 +287,7 @@ class FlyFilesystem implements Filesystem
     {
         $timestamp = $this->flySystem->getTimestamp($path);
 
-        if (false === $timestamp) {
-            return null;
-        }
-
-        return $timestamp;
+        return false !== $timestamp ? $timestamp : null;
     }
 
     /**
@@ -323,11 +303,7 @@ class FlyFilesystem implements Filesystem
     {
         $visibility = $this->flySystem->getVisibility($path);
 
-        if (false === $visibility) {
-            return null;
-        }
-
-        return $visibility;
+        return false !== $visibility ? $visibility : null;
     }
 
     /**
@@ -392,7 +368,7 @@ class FlyFilesystem implements Filesystem
     }
 
     /**
-     * List the contents of a directory
+     * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
      * @param bool   $recursive [optional] Whether to recurse through the directory
