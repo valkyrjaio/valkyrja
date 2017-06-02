@@ -4,7 +4,7 @@
     <a href="https://travis-ci.org/valkyrjaio/valkyrja"><img src="https://travis-ci.org/valkyrjaio/valkyrja.svg" alt="Build Status"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/license.svg" alt="License"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/d/total.svg" alt="Total Downloads"></a>
-    <a href="https://styleci.io/repos/89089332"><img src="https://styleci.io/repos/89089332/shield?branch=master" alt="StyleCI"></a>
+    <a href="https://styleci.io/repos/89089332"><img src="https://styleci.io/repos/89089332/shield?branch=master&style=flat" alt="StyleCI"></a>
     <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
 </p>
 
