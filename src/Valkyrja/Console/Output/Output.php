@@ -97,16 +97,16 @@ class Output implements OutputContract
      */
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
-        $newLine     = $newLine ?? false;
-        $outputStyle = $outputStyle ?? new OutputStyle(OutputStyle::NORMAL);
+        $newLine         = $newLine ?? false;
+        $outputStyleType = $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
 
-        switch ($outputStyle->getValue()) {
-            case OutputStyle::NORMAL:
+        switch ($outputStyleType) {
+            case OutputStyle::NORMAL :
                 $message = $this->formatter->format($message);
                 break;
-            case OutputStyle::RAW:
+            case OutputStyle::RAW :
                 break;
-            case OutputStyle::PLAIN:
+            case OutputStyle::PLAIN :
                 $message = strip_tags($this->formatter->format($message));
                 break;
         }
@@ -124,6 +124,10 @@ class Output implements OutputContract
      */
     protected function writeOut(string $message, bool $newLine): void
     {
+        if (config()['console']['quiet'] || input()->hasOption('--quiet')) {
+            return;
+        }
+
         echo $message;
 
         if ($newLine) {

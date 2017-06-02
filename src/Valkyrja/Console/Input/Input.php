@@ -299,6 +299,7 @@ class Input implements InputContract
     {
         return [
             new Option('help', 'The help option for the command', 'h'),
+            new Option('quiet', 'Do not output to the console', 'q'),
             new Option('version', 'The version of this application', 'V'),
         ];
     }
@@ -313,6 +314,8 @@ class Input implements InputContract
         return [
             '-h',
             '--help',
+            '-q',
+            '--quite',
             '-V',
             '--version',
         ];

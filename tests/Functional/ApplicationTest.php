@@ -543,7 +543,7 @@ class ApplicationTest extends TestCase
         $this->app->console()->dispatchCommand($configCacheCommand);
 
         // Set some config differently
-        $config = $this->app->config();
+        $config                 = $this->app->config();
         $config['app']['debug'] = true;
 
         // Resetup the app with the new config and force
@@ -555,5 +555,8 @@ class ApplicationTest extends TestCase
 
         // Delete the config cache file to avoid headaches later
         unlink($this->app->config()['cacheFilePath']);
+
+        // Reset the application to normal operations
+        $this->app->setup(null, true);
     }
 }

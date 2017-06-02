@@ -53,6 +53,7 @@ class Env
     public const CONSOLE_PROVIDERS                   = null;
     public const CONSOLE_CORE_PROVIDERS              = null;
     public const CONSOLE_DEV_PROVIDERS               = null;
+    public const CONSOLE_QUIET                       = null;
     public const CONSOLE_USE_ANNOTATIONS             = null;
     public const CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY = null;
     public const CONSOLE_HANDLERS                    = null;
