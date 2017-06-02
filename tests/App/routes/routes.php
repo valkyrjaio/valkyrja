@@ -13,7 +13,7 @@ router()->get(
         ->setPath('/')
         ->setName('home.welcome')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setProperty('welcome')
+        ->setMethod('welcome')
 );
 
 /*
@@ -41,5 +41,5 @@ router()->get(
         ->setPath('/property')
         ->setName('home.property')
         ->setClass(Valkyrja\Tests\App\App\Controllers\HomeController::class)
-        ->setMethod('propertyRouting')
+        ->setProperty('propertyRouting')
 );
