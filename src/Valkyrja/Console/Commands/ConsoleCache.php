@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class ConsoleCache.
@@ -20,10 +21,14 @@ use Valkyrja\Console\CommandHandler;
  */
 class ConsoleCache extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
-    public const COMMAND = 'console:cache';
+    public const COMMAND           = 'console:cache';
+    public const PATH              = self::COMMAND;
+    public const SHORT_DESCRIPTION = 'Generate the console cache';
 
     /**
      * Run the command.

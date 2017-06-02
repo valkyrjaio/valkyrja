@@ -14,6 +14,7 @@ namespace Valkyrja\Console\Commands;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Argument;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class ConsoleCommands.
@@ -22,12 +23,15 @@ use Valkyrja\Console\Input\Argument;
  */
 class ConsoleCommands extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
     public const COMMAND           = 'commands';
-    public const SHORT_DESCRIPTION = '';
-    public const DESCRIPTION       = '';
+    public const PATH              = '[' . ConsoleCommands::COMMAND . '][ {namespace:[a-zA-Z0-9]+}]';
+    public const SHORT_DESCRIPTION = 'List all the commands';
+    public const DESCRIPTION       = 'List all the commands';
 
     /**
      * Run the command.
@@ -38,7 +42,7 @@ class ConsoleCommands extends CommandHandler
      */
     public function run(string $namespace = null): int
     {
-        $commands        = console()->getCacheable()['commands'];
+        $commands        = console()->all();
         $longestLength   = 0;
         $previousSection = '';
 
@@ -143,9 +147,12 @@ class ConsoleCommands extends CommandHandler
      */
     protected function sortCommands(array &$commands): void
     {
-        usort($commands, function (Command $item1, Command $item2) {
-            return $item1->getName() <=> $item2->getName();
-        });
+        usort(
+            $commands,
+            function (Command $item1, Command $item2) {
+                return $item1->getName() <=> $item2->getName();
+            }
+        );
     }
 
     /**

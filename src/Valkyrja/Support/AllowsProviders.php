@@ -69,6 +69,18 @@ trait AllowsProviders
     }
 
     /**
+     * Check whether a given item is provided by a deferred provider.
+     *
+     * @param string $itemId The item
+     *
+     * @return bool
+     */
+    public function isProvided(string $itemId): bool
+    {
+        return isset(self::$provided[$itemId]);
+    }
+
+    /**
      * Determine whether a provider has been registered.
      *
      * @param string $provider The provider
@@ -81,18 +93,18 @@ trait AllowsProviders
     }
 
     /**
-     * Initialize a provided service.
+     * Initialize a provided item.
      *
-     * @param string $serviceId The service
+     * @param string $itemId The item
      *
      * @return void
      */
-    public function initializeProvided(string $serviceId): void
+    public function initializeProvided(string $itemId): void
     {
         /** @var \Valkyrja\Support\Provides $provider */
-        $provider = self::$provided[$serviceId];
+        $provider = self::$provided[$itemId];
 
-        // Register the service provider
+        // Register the provider
         $this->register($provider, true);
     }
 

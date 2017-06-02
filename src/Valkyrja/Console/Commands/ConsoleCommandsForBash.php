@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class ConsoleCommands.
@@ -20,10 +21,14 @@ use Valkyrja\Console\CommandHandler;
  */
 class ConsoleCommandsForBash extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
-    public const COMMAND = 'console:commandsForBash';
+    public const COMMAND           = 'console:commandsForBash';
+    public const PATH              = self::COMMAND . ' valkyrja[ {commandTyped:[a-zA-Z0-9\:]+}]';
+    public const SHORT_DESCRIPTION = 'List all the commands for bash auto complete';
 
     /**
      * Run the command.

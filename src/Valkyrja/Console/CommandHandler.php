@@ -28,6 +28,7 @@ abstract class CommandHandler implements CommandHandlerContract
      * The command.
      */
     public const COMMAND           = '';
+    public const PATH              = '';
     public const SHORT_DESCRIPTION = '';
     public const DESCRIPTION       = '';
 

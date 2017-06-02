@@ -51,6 +51,7 @@ class Env
      * Console env variables.
      */
     public const CONSOLE_PROVIDERS                   = null;
+    public const CONSOLE_CORE_PROVIDERS              = null;
     public const CONSOLE_DEV_PROVIDERS               = null;
     public const CONSOLE_USE_ANNOTATIONS             = null;
     public const CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY = null;
@@ -63,7 +64,7 @@ class Env
      * Container env variables.
      */
     public const CONTAINER_PROVIDERS                   = null;
-    public const CONTAINER_APP_PROVIDERS               = null;
+    public const CONTAINER_CORE_PROVIDERS              = null;
     public const CONTAINER_DEV_PROVIDERS               = null;
     public const CONTAINER_USE_ANNOTATIONS             = null;
     public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = null;

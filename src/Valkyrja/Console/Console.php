@@ -28,7 +28,9 @@ use Valkyrja\Support\Provides;
  */
 class Console implements ConsoleContract
 {
-    use AllowsProviders;
+    use AllowsProviders {
+        register as traitRegister;
+    }
     use Provides;
 
     /**
@@ -49,6 +51,13 @@ class Console implements ConsoleContract
      * @var \Valkyrja\Console\Command[]
      */
     protected static $commands = [];
+
+    /**
+     * The command paths.
+     *
+     * @var string[]
+     */
+    protected static $paths = [];
 
     /**
      * The commands by name.
@@ -115,6 +124,8 @@ class Console implements ConsoleContract
 
         // Set the command in the commands list
         self::$commands[$command->getPath()] = $command;
+        // Set the command in the commands paths list
+        self::$paths[$command->getRegex()] = $command->getPath();
 
         // If the command has a name
         if (null !== $command->getName()) {
@@ -195,11 +206,17 @@ class Console implements ConsoleContract
         $command = null;
 
         // Otherwise iterate through the commands and attempt to match via regex
-        foreach (self::$commands as $command) {
+        foreach (self::$paths as $regex => $commandPath) {
             // If the preg match is successful, we've found our command!
-            if (preg_match($command->getRegex(), $path, $matches)) {
+            if (preg_match($regex, $path, $matches)) {
+                // Check if this command is provided
+                if ($this->isProvided($commandPath)) {
+                    // Initialize the provided command
+                    $this->initializeProvided($commandPath);
+                }
+
                 // Clone the command to avoid changing the one set in the master array
-                $command = clone $command;
+                $command = clone self::$commands[$commandPath];
                 // The first match is the path itself
                 unset($matches[0]);
 
@@ -269,6 +286,12 @@ class Console implements ConsoleContract
      */
     public function all(): array
     {
+        // Iterate through all the command providers to set any deferred commands
+        foreach (self::$provided as $provided => $provider) {
+            // Initialize the provided command
+            $this->initializeProvided($provided);
+        }
+
         return self::$commands;
     }
 
@@ -319,14 +342,16 @@ class Console implements ConsoleContract
                     ],
                 ]
             );
+            self::$paths         = $cache['paths'];
             self::$namedCommands = $cache['namedCommands'];
+            self::$provided      = $cache['provided'];
 
             // Then return out of routes setup
             return;
         }
 
-        // Setup the bootstrap
-        $this->setupBootstrap();
+        // Setup command providers
+        $this->setupCommandProviders();
 
         // If annotations are enabled and the events should use annotations
         if ($this->app->config()['console']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
@@ -345,23 +370,17 @@ class Console implements ConsoleContract
     }
 
     /**
-     * Setup console bootstrapping.
-     *
-     * @return void
-     */
-    protected function setupBootstrap(): void
-    {
-        // Bootstrap the console
-        new BootstrapConsole($this->app, $this);
-    }
-
-    /**
      * Setup command providers.
      *
      * @return void
      */
     protected function setupCommandProviders(): void
     {
+        // Iterate through all the core providers
+        foreach ($this->app->config()['console']['coreProviders'] as $provider) {
+            $this->register($provider);
+        }
+
         // Iterate through all the providers
         foreach ($this->app->config()['console']['providers'] as $provider) {
             $this->register($provider);
@@ -375,6 +394,29 @@ class Console implements ConsoleContract
         // Iterate through all the providers
         foreach ($this->app->config()['console']['devProviders'] as $provider) {
             $this->register($provider);
+        }
+    }
+
+    /**
+     * Register a provider.
+     *
+     * @param string $provider The provider
+     * @param bool   $force    [optional] Whether to force regardless of deferred status
+     *
+     * @return void
+     */
+    public function register(string $provider, bool $force = false): void
+    {
+        // Do the default registration of the service provider
+        $this->traitRegister($provider, $force);
+
+        /* @var \Valkyrja\Console\Support\CommandProvider $provider */
+        foreach ($provider::provides() as $provided) {
+            // Parse the provided path
+            $parsedPath = $this->app->pathParser()->parse($provided);
+
+            // Set the path and regex in the paths list
+            self::$paths[$parsedPath['regex']] = $provided;
         }
     }
 
@@ -444,7 +486,9 @@ class Console implements ConsoleContract
 
         return [
             'commands'      => base64_encode(serialize(self::$commands)),
+            'paths'         => self::$paths,
             'namedCommands' => self::$namedCommands,
+            'provided'      => self::$provided,
         ];
     }
 

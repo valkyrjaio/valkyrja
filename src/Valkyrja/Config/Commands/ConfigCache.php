@@ -12,6 +12,7 @@
 namespace Valkyrja\Config\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class ConfigCache.
@@ -20,10 +21,14 @@ use Valkyrja\Console\CommandHandler;
  */
 class ConfigCache extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
-    public const COMMAND = 'config:cache';
+    public const COMMAND           = 'config:cache';
+    public const PATH              = self::COMMAND;
+    public const SHORT_DESCRIPTION = 'Generate the config cache';
 
     /**
      * Run the command.

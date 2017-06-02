@@ -12,6 +12,7 @@
 namespace Valkyrja\Events\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class EventsCache.
@@ -20,10 +21,14 @@ use Valkyrja\Console\CommandHandler;
  */
 class EventsCache extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
-    public const COMMAND = 'events:cache';
+    public const COMMAND           = 'events:cache';
+    public const PATH              = self::COMMAND;
+    public const SHORT_DESCRIPTION = 'Generate the events cache';
 
     /**
      * Run the command.

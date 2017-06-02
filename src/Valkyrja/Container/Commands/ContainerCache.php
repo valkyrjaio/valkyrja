@@ -12,6 +12,7 @@
 namespace Valkyrja\Container\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class ContainerCache.
@@ -20,10 +21,14 @@ use Valkyrja\Console\CommandHandler;
  */
 class ContainerCache extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
-    public const COMMAND = 'container:cache';
+    public const COMMAND           = 'container:cache';
+    public const PATH              = self::COMMAND;
+    public const SHORT_DESCRIPTION = 'Generate the container cache';
 
     /**
      * Run the command.

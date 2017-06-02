@@ -14,6 +14,7 @@ namespace Valkyrja\Console\Commands;
 use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Option;
+use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Events\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCacheCommand;
@@ -25,10 +26,13 @@ use Valkyrja\Routing\Commands\RoutesCacheCommand;
  */
 class CacheAllCommand extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
     public const COMMAND           = 'cache:all';
+    public const PATH              = CacheAllCommand::COMMAND . '[ {sync:-s|--sync}]';
     public const SHORT_DESCRIPTION = 'Generate all caches and sync';
 
     /**

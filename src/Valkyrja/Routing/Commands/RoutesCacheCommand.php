@@ -12,6 +12,7 @@
 namespace Valkyrja\Routing\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
  * Class RoutingCache.
@@ -20,10 +21,13 @@ use Valkyrja\Console\CommandHandler;
  */
 class RoutesCacheCommand extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
     public const COMMAND           = 'routes:cache';
+    public const PATH              = self::COMMAND;
     public const SHORT_DESCRIPTION = 'Generate the routes cache';
     public const DESCRIPTION       = '';
 

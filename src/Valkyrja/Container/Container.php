@@ -254,18 +254,6 @@ class Container implements ContainerContract
     }
 
     /**
-     * Check whether a given service is provided by a deferred service provider.
-     *
-     * @param string $serviceId The service
-     *
-     * @return bool
-     */
-    public function isProvided(string $serviceId): bool
-    {
-        return isset(self::$provided[$serviceId]);
-    }
-
-    /**
      * Get a service from the container.
      *
      * @param string $serviceId The service

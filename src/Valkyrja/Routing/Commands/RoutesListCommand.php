@@ -14,6 +14,7 @@ namespace Valkyrja\Routing\Commands;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
+use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Routing\Route;
 
 /**
@@ -23,10 +24,13 @@ use Valkyrja\Routing\Route;
  */
 class RoutesListCommand extends CommandHandler
 {
+    use ProvidesCommand;
+
     /**
      * The command.
      */
     public const COMMAND           = 'routes:list';
+    public const PATH              = self::COMMAND;
     public const SHORT_DESCRIPTION = 'List all routes';
     public const DESCRIPTION       = '';
 

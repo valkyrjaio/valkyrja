@@ -40,7 +40,7 @@ return [
      * //
      *
      */
-    'coreProviders'             => env()::CONTAINER_APP_PROVIDERS ?? [
+    'coreProviders'             => env()::CONTAINER_CORE_PROVIDERS ?? [
             Valkyrja\Annotations\AnnotationsParser::class,
             Valkyrja\Annotations\Annotations::class,
             Valkyrja\Console\Console::class,
@@ -146,5 +146,5 @@ return [
      * //
      *
      */
-    'useCacheFile'              => env()::CONTAINER_USE_CACHE_FILE ?? true,
+    'useCacheFile'              => env()::CONTAINER_USE_CACHE_FILE ?? false,
 ];
