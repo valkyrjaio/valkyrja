@@ -264,7 +264,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, redirectRoute('home.welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**

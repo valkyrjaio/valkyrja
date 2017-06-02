@@ -36,8 +36,9 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
-use Valkyrja\Tests\App\App\Controllers\HomeController;
+use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
+use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\View\View;
 
 /**
@@ -374,7 +375,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, $this->app->redirectRoute('home.welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**
@@ -418,14 +419,12 @@ class ApplicationTest extends TestCase
 
         // Set debug to true
         $config['app']['debug'] = true;
-        // Try to re-setup the application
-        $this->app->setup($config, true);
+        // Try to re-setup the application without forcing
+        $this->app->setup($config);
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
-        // TODO: Look into this
-        // $this->assertEquals(false, $this->app->config()['app']['debug']);
-        $this->assertEquals(null, $this->app->setup($config) ?? null);
+        $this->assertEquals(false, $this->app->config()['app']['debug']);
     }
 
     /**
@@ -470,7 +469,7 @@ class ApplicationTest extends TestCase
         try {
             $config = $this->app->config();
 
-            $config['app']['container'] = HomeController::class;
+            $config['app']['container'] = InvalidContainerClass::class;
             $this->app->setup($config, true);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidContainerImplementation::class, $exception);
@@ -487,7 +486,7 @@ class ApplicationTest extends TestCase
         try {
             $config = $this->app->config();
 
-            $config['app']['events'] = HomeController::class;
+            $config['app']['events'] = InvalidEventsClass::class;
             $this->app->setup($config, true);
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidEventsImplementation::class, $exception);

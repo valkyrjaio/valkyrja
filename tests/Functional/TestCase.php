@@ -36,7 +36,7 @@ class TestCase extends PHPUnitTestCase
      */
     public function setUp(): void
     {
-        Directory::$BASE_PATH = realpath(__DIR__ . '/../App/');
+        Directory::$BASE_PATH = __DIR__ . '/../../vendor/valkyrja/valkyrja-app/';
 
         $this->app = new Application();
     }

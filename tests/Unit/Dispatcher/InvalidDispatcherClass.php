@@ -36,7 +36,7 @@ class InvalidDispatcherClass
     protected $events;
 
     /**
-     * Dispatcher constructor.
+     * InvalidDispatcherClass constructor.
      *
      * @param \Valkyrja\Contracts\Container\Container $container The container
      * @param \Valkyrja\Contracts\Events\Events       $events    The events
