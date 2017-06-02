@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Functional;
 use Exception;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Application;
+use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -39,6 +40,7 @@ use Valkyrja\Session\Session;
 use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
+use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\View;
 
 /**
@@ -457,6 +459,8 @@ class ApplicationTest extends TestCase
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidDispatcherImplementation::class, $exception);
         }
+
+        $this->app->setup(null, true);
     }
 
     /**
@@ -474,6 +478,8 @@ class ApplicationTest extends TestCase
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidContainerImplementation::class, $exception);
         }
+
+        $this->app->setup(null, true);
     }
 
     /**
@@ -491,6 +497,8 @@ class ApplicationTest extends TestCase
         } catch (Exception $exception) {
             $this->assertInstanceOf(InvalidEventsImplementation::class, $exception);
         }
+
+        $this->app->setup(null, true);
     }
 
     /**
@@ -501,5 +509,51 @@ class ApplicationTest extends TestCase
     public function testResetApplication(): void
     {
         $this->assertEquals(null, $this->app->setup(null, true) ?? null);
+    }
+
+    /**
+     * Test resetting the application with a config provider.
+     *
+     * @return void
+     */
+    public function testApplicationSetupWithConfigProvider(): void
+    {
+        $config              = $this->app->config();
+        $config['providers'] = [
+            ProviderClass::class,
+        ];
+
+        $this->app->setup($config, true);
+
+        $this->assertEquals(ProviderClass::class, $this->app->config()['providers'][0]);
+
+        $this->app->setup(null, true);
+    }
+
+    /**
+     * Test resetting the application with a config provider.
+     *
+     * @return void
+     */
+    public function testApplicationSetupWithCachedConfig(): void
+    {
+        // Get the config cache command
+        $configCacheCommand = $this->app->console()->matchCommand(ConfigCache::COMMAND);
+        // Run the config cache command
+        $this->app->console()->dispatchCommand($configCacheCommand);
+
+        // Set some config differently
+        $config = $this->app->config();
+        $config['app']['debug'] = true;
+
+        // Resetup the app with the new config and force
+        $this->app->setup($config, true);
+
+        // Because the app will use the config cache the forced changes to the config made above shouldn't
+        //take effect and the value for app.debug should still be false.
+        $this->assertEquals(false, $this->app->config()['app']['debug']);
+
+        // Delete the config cache file to avoid headaches later
+        unlink($this->app->config()['cacheFilePath']);
     }
 }
