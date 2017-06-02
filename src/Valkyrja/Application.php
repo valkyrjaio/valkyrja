@@ -11,6 +11,7 @@
 
 namespace Valkyrja;
 
+use Valkyrja\Client\Client;
 use Valkyrja\Config\Env;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Contracts\Annotations\Annotations;
@@ -20,7 +21,6 @@ use Valkyrja\Contracts\Console\Kernel as ConsoleKernel;
 use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Events;
-use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
@@ -480,7 +480,7 @@ class Application implements ApplicationContract
     /**
      * Return the client instance from the container.
      *
-     * @return \Valkyrja\Contracts\Http\Client
+     * @return \Valkyrja\Client\Client
      */
     public function client(): Client
     {

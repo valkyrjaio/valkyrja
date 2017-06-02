@@ -12,6 +12,7 @@
 namespace Valkyrja\Container\Enums;
 
 use Psr\Log\LoggerInterface;
+use Valkyrja\Client\Client;
 use Valkyrja\Config\Env;
 use Valkyrja\Contracts\Annotations\Annotations;
 use Valkyrja\Contracts\Annotations\AnnotationsParser;
@@ -27,8 +28,6 @@ use Valkyrja\Contracts\Container\Container;
 use Valkyrja\Contracts\Dispatcher\Dispatcher;
 use Valkyrja\Contracts\Events\Annotations\ListenerAnnotations;
 use Valkyrja\Contracts\Events\Events;
-use Valkyrja\Contracts\Filesystem\Filesystem;
-use Valkyrja\Contracts\Http\Client;
 use Valkyrja\Contracts\Http\JsonResponse;
 use Valkyrja\Contracts\Http\Kernel;
 use Valkyrja\Contracts\Http\RedirectResponse;
@@ -43,6 +42,7 @@ use Valkyrja\Contracts\Routing\Router;
 use Valkyrja\Contracts\Session\Session;
 use Valkyrja\Contracts\View\View;
 use Valkyrja\Enum\Enum;
+use Valkyrja\Filesystem\Filesystem;
 
 /**
  * Enum CoreComponent.

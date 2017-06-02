@@ -60,9 +60,9 @@ if (! function_exists('client')) {
     /**
      * Return the client instance from the container.
      *
-     * @return \Valkyrja\Contracts\Http\Client
+     * @return \Valkyrja\Client\Client
      */
-    function client(): \Valkyrja\Contracts\Http\Client
+    function client(): \Valkyrja\Client\Client
     {
         return app()->client();
     }

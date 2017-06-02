@@ -43,6 +43,7 @@ return [
     'coreProviders'             => env()::CONTAINER_CORE_PROVIDERS ?? [
             Valkyrja\Annotations\AnnotationsParser::class,
             Valkyrja\Annotations\Annotations::class,
+            Valkyrja\Client\GuzzleClient::class,
             Valkyrja\Console\Console::class,
             Valkyrja\Console\Kernel::class,
             Valkyrja\Console\Input\Input::class,
@@ -51,8 +52,7 @@ return [
             Valkyrja\Console\Annotations\CommandAnnotations::class,
             Valkyrja\Container\Annotations\ContainerAnnotations::class,
             Valkyrja\Events\Annotations\ListenerAnnotations::class,
-            Valkyrja\Filesystem\Filesystem::class,
-            Valkyrja\Http\Client::class,
+            Valkyrja\Filesystem\FlyFilesystem::class,
             Valkyrja\Http\Kernel::class,
             Valkyrja\Http\Request::class,
             Valkyrja\Http\JsonResponse::class,
