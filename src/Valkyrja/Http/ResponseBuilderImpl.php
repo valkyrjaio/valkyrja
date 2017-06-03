@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -158,7 +157,7 @@ class ResponseBuilderImpl implements ResponseBuilder
     public static function provides(): array
     {
         return [
-            CoreComponent::RESPONSE_BUILDER,
+            ResponseBuilder::class,
         ];
     }
 
@@ -172,7 +171,7 @@ class ResponseBuilderImpl implements ResponseBuilder
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::RESPONSE_BUILDER,
+            ResponseBuilder::class,
             new static($app)
         );
     }

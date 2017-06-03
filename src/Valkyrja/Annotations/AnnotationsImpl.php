@@ -601,7 +601,7 @@ class AnnotationsImpl implements Annotations
     public static function provides(): array
     {
         return [
-            CoreComponent::ANNOTATIONS,
+            Annotations::class,
         ];
     }
 
@@ -615,7 +615,7 @@ class AnnotationsImpl implements Annotations
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::ANNOTATIONS,
+            Annotations::class,
             new static(
                 $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
             )

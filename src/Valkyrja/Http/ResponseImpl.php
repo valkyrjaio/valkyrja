@@ -14,7 +14,6 @@ namespace Valkyrja\Http;
 use DateTime;
 use DateTimeZone;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
 
@@ -1121,7 +1120,7 @@ class ResponseImpl implements Response
     public static function provides(): array
     {
         return [
-            CoreComponent::RESPONSE,
+            Response::class,
         ];
     }
 
@@ -1137,7 +1136,7 @@ class ResponseImpl implements Response
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::RESPONSE,
+            Response::class,
             new static()
         );
     }

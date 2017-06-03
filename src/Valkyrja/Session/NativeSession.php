@@ -12,7 +12,6 @@
 namespace Valkyrja\Session;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Providers\Provides;
@@ -297,7 +296,7 @@ class NativeSession implements Session
     public static function provides(): array
     {
         return [
-            CoreComponent::SESSION,
+            Session::class,
         ];
     }
 
@@ -314,7 +313,7 @@ class NativeSession implements Session
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::SESSION,
+            Session::class,
             new static($app)
         );
     }

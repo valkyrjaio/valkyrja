@@ -13,8 +13,9 @@ namespace Valkyrja\Logger\Providers;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
+use Psr\Log\LoggerInterface;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
+use Valkyrja\Logger\Logger;
 use Valkyrja\Logger\LogLevel;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Support\Providers\Provider;
@@ -32,8 +33,8 @@ class LoggerServiceProvider extends Provider
      * @var array
      */
     public static $provides = [
-        CoreComponent::LOGGER_INTERFACE,
-        CoreComponent::LOGGER,
+        LoggerInterface::class,
+        Logger::class,
     ];
 
     /**
@@ -73,7 +74,7 @@ class LoggerServiceProvider extends Provider
     protected static function bindLoggerInterface(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::LOGGER_INTERFACE,
+            LoggerInterface::class,
             new Monolog(
                 $app->config()['logger']['name'],
                 [
@@ -96,9 +97,9 @@ class LoggerServiceProvider extends Provider
     protected static function bindLogger(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::LOGGER,
+            Logger::class,
             new MonologLogger(
-                $app->container()->getSingleton(CoreComponent::LOGGER_INTERFACE)
+                $app->container()->getSingleton(LoggerInterface::class)
             )
         );
     }

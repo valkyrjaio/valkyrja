@@ -13,7 +13,6 @@ namespace Valkyrja\Path;
 
 use InvalidArgumentException;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -178,7 +177,7 @@ class PathGeneratorImpl implements PathGenerator
     public static function provides(): array
     {
         return [
-            CoreComponent::PATH_GENERATOR,
+            PathGenerator::class,
         ];
     }
 
@@ -192,7 +191,7 @@ class PathGeneratorImpl implements PathGenerator
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::PATH_GENERATOR,
+            PathGenerator::class,
             new static()
         );
     }

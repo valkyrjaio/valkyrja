@@ -12,8 +12,8 @@
 namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
 use Valkyrja\Support\Providers\Provides;
@@ -240,7 +240,7 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     public static function provides(): array
     {
         return [
-            CoreComponent::ROUTE_ANNOTATIONS,
+            RouteAnnotations::class,
         ];
     }
 
@@ -254,9 +254,9 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::ROUTE_ANNOTATIONS,
+            RouteAnnotations::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(AnnotationsParser::class)
             )
         );
     }

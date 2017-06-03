@@ -13,7 +13,6 @@ namespace Valkyrja\Http;
 
 use Throwable;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Routing\Router;
 use Valkyrja\Support\Providers\Provides;
@@ -123,7 +122,7 @@ class KernelImpl implements Kernel
     public static function provides(): array
     {
         return [
-            CoreComponent::KERNEL,
+            Kernel::class,
         ];
     }
 
@@ -137,7 +136,7 @@ class KernelImpl implements Kernel
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::KERNEL,
+            Kernel::class,
             new static($app, $app->router())
         );
     }

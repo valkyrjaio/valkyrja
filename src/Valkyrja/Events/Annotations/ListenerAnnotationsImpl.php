@@ -12,8 +12,8 @@
 namespace Valkyrja\Events\Annotations;
 
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Events\Listener as EventListener;
 use Valkyrja\Support\Providers\Provides;
 
@@ -111,7 +111,7 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     public static function provides(): array
     {
         return [
-            CoreComponent::LISTENER_ANNOTATIONS,
+            ListenerAnnotations::class,
         ];
     }
 
@@ -125,9 +125,9 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::LISTENER_ANNOTATIONS,
+            ListenerAnnotations::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(AnnotationsParser::class)
             )
         );
     }

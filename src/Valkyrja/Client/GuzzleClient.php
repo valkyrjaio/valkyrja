@@ -14,7 +14,6 @@ namespace Valkyrja\Client;
 use GuzzleHttp\Client as Guzzle;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -143,7 +142,7 @@ class GuzzleClient implements Client
     public static function provides(): array
     {
         return [
-            CoreComponent::CLIENT,
+            Client::class,
         ];
     }
 
@@ -157,7 +156,7 @@ class GuzzleClient implements Client
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::CLIENT,
+            Client::class,
             new static(new Guzzle())
         );
     }

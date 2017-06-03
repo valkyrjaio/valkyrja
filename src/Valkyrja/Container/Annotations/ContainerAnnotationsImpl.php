@@ -13,8 +13,8 @@ namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
 use Valkyrja\Support\Providers\Provides;
@@ -218,7 +218,7 @@ class ContainerAnnotationsImpl extends AnnotationsImpl implements ContainerAnnot
     public static function provides(): array
     {
         return [
-            CoreComponent::CONTAINER_ANNOTATIONS,
+            ContainerAnnotations::class,
         ];
     }
 
@@ -232,9 +232,9 @@ class ContainerAnnotationsImpl extends AnnotationsImpl implements ContainerAnnot
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::CONTAINER_ANNOTATIONS,
+            ContainerAnnotations::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(AnnotationsParser::class)
             )
         );
     }

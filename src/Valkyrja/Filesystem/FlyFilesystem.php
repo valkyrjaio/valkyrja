@@ -17,7 +17,6 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem as FlySystem;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -479,7 +478,7 @@ class FlyFilesystem implements Filesystem
     public static function provides(): array
     {
         return [
-            CoreComponent::FILESYSTEM,
+            Filesystem::class,
         ];
     }
 
@@ -493,7 +492,7 @@ class FlyFilesystem implements Filesystem
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::FILESYSTEM,
+            Filesystem::class,
             new static($app)
         );
     }

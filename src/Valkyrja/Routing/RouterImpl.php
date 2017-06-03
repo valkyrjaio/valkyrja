@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\RequestMethod;
@@ -652,7 +651,7 @@ class RouterImpl implements Router
     public static function provides(): array
     {
         return [
-            CoreComponent::ROUTER,
+            Router::class,
         ];
     }
 
@@ -666,7 +665,7 @@ class RouterImpl implements Router
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::ROUTER,
+            Router::class,
             new static($app)
         );
 

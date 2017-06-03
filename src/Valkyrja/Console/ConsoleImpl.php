@@ -16,7 +16,6 @@ use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\AllowsProvidersTrait;
 use Valkyrja\Support\Providers\Provides;
 
@@ -497,7 +496,7 @@ class ConsoleImpl implements Console
     public static function provides(): array
     {
         return [
-            CoreComponent::CONSOLE,
+            Console::class,
         ];
     }
 
@@ -511,7 +510,7 @@ class ConsoleImpl implements Console
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::CONSOLE,
+            Console::class,
             new static($app)
         );
 

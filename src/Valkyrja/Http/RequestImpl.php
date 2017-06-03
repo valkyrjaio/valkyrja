@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
 
@@ -1132,7 +1131,7 @@ class RequestImpl implements Request
     public static function provides(): array
     {
         return [
-            CoreComponent::REQUEST,
+            Request::class,
         ];
     }
 
@@ -1146,7 +1145,7 @@ class RequestImpl implements Request
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::REQUEST,
+            Request::class,
             static::createFromGlobals()
         );
     }

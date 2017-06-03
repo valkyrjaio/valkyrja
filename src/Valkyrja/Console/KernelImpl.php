@@ -15,7 +15,6 @@ use Throwable;
 use Valkyrja\Application;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -136,7 +135,7 @@ class KernelImpl implements Kernel
     public static function provides(): array
     {
         return [
-            CoreComponent::CONSOLE_KERNEL,
+            Kernel::class,
         ];
     }
 
@@ -150,10 +149,10 @@ class KernelImpl implements Kernel
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::CONSOLE_KERNEL,
+            Kernel::class,
             new static(
                 $app,
-                $app->container()->getSingleton(CoreComponent::CONSOLE)
+                $app->console()
             )
         );
     }

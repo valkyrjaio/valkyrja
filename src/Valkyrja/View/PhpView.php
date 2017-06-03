@@ -12,7 +12,6 @@
 namespace Valkyrja\View;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 
@@ -279,7 +278,7 @@ class PhpView implements View
     public static function provides(): array
     {
         return [
-            CoreComponent::VIEW,
+            View::class,
         ];
     }
 
@@ -293,7 +292,7 @@ class PhpView implements View
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::VIEW,
+            View::class,
             new static($app)
         );
     }

@@ -13,9 +13,9 @@ namespace Valkyrja\Console\Annotations;
 
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -124,7 +124,7 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     public static function provides(): array
     {
         return [
-            CoreComponent::COMMAND_ANNOTATIONS,
+            CommandAnnotations::class,
         ];
     }
 
@@ -138,9 +138,9 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::COMMAND_ANNOTATIONS,
+            CommandAnnotations::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(AnnotationsParser::class)
             )
         );
     }

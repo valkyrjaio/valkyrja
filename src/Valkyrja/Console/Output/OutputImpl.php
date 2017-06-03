@@ -13,7 +13,6 @@ namespace Valkyrja\Console\Output;
 
 use Valkyrja\Application;
 use Valkyrja\Console\Enums\OutputStyle;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -141,7 +140,7 @@ class OutputImpl implements Output
     public static function provides(): array
     {
         return [
-            CoreComponent::OUTPUT,
+            Output::class,
         ];
     }
 
@@ -155,9 +154,9 @@ class OutputImpl implements Output
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::OUTPUT,
+            Output::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::OUTPUT_FORMATTER)
+                $app->container()->getSingleton(OutputFormatter::class)
             )
         );
     }

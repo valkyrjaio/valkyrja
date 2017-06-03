@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -221,7 +220,7 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
     public static function provides(): array
     {
         return [
-            CoreComponent::JSON_RESPONSE,
+            JsonResponse::class,
         ];
     }
 
@@ -237,7 +236,7 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::JSON_RESPONSE,
+            JsonResponse::class,
             new static()
         );
     }

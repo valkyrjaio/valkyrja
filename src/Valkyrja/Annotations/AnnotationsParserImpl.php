@@ -13,7 +13,6 @@ namespace Valkyrja\Annotations;
 
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -86,7 +85,7 @@ class AnnotationsParserImpl implements AnnotationsParser
      * Set a matched annotation.
      *
      * @param array $matches     The matches
-     *                           [0 => matches, 1 => annotation, 2 => type, 3 => args, 4 => var, 5=> desc]
+     *                           [0 => matches, 1 => annotation, 2 => type, 3 => args, 4 => var, 5 => desc]
      * @param int   $index       The index
      * @param array $annotations The annotations list
      *
@@ -448,7 +447,7 @@ class AnnotationsParserImpl implements AnnotationsParser
     public static function provides(): array
     {
         return [
-            CoreComponent::ANNOTATIONS_PARSER,
+            AnnotationsParser::class,
         ];
     }
 
@@ -462,7 +461,7 @@ class AnnotationsParserImpl implements AnnotationsParser
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::ANNOTATIONS_PARSER,
+            AnnotationsParser::class,
             new static(
                 $app
             )

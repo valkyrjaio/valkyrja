@@ -13,7 +13,6 @@ namespace Valkyrja\Path;
 
 use InvalidArgumentException;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -312,7 +311,7 @@ REGEX;
     public static function provides(): array
     {
         return [
-            CoreComponent::PATH_PARSER,
+            PathParser::class,
         ];
     }
 
@@ -326,7 +325,7 @@ REGEX;
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::PATH_PARSER,
+            PathParser::class,
             new static()
         );
     }

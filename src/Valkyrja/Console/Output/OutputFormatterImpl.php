@@ -15,7 +15,6 @@ use Valkyrja\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -384,7 +383,7 @@ class OutputFormatterImpl implements OutputFormatter
     public static function provides(): array
     {
         return [
-            CoreComponent::OUTPUT_FORMATTER,
+            OutputFormatter::class,
         ];
     }
 
@@ -398,7 +397,7 @@ class OutputFormatterImpl implements OutputFormatter
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::OUTPUT_FORMATTER,
+            OutputFormatter::class,
             new static()
         );
     }

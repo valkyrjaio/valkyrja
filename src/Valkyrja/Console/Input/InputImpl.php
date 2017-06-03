@@ -12,7 +12,6 @@
 namespace Valkyrja\Console\Input;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
 
@@ -328,7 +327,7 @@ class InputImpl implements Input
     public static function provides(): array
     {
         return [
-            CoreComponent::INPUT,
+            Input::class,
         ];
     }
 
@@ -342,9 +341,9 @@ class InputImpl implements Input
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::INPUT,
+            Input::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::REQUEST)
+                $app->request()
             )
         );
     }

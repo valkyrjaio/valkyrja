@@ -17,7 +17,6 @@ use Valkyrja\Config\Env;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
@@ -263,17 +262,17 @@ class Valkyrja implements Application
     protected function bootstrapContainer(): void
     {
         // Set the application instance in the container
-        self::$container->singleton(CoreComponent::APP, $this);
+        self::$container->singleton(Application::class, $this);
         // Set the events instance in the container
-        self::$container->singleton(CoreComponent::ENV, self::$env);
+        self::$container->singleton('env', self::$env);
         // Set the events instance in the container
-        self::$container->singleton(CoreComponent::CONFIG, self::$config);
+        self::$container->singleton('config', self::$config);
         // Set the container instance in the container
-        self::$container->singleton(CoreComponent::CONTAINER, self::$container);
+        self::$container->singleton(Container::class, self::$container);
         // Set the dispatcher instance in the dispatcher
-        self::$container->singleton(CoreComponent::DISPATCHER, self::$dispatcher);
+        self::$container->singleton(Dispatcher::class, self::$dispatcher);
         // Set the events instance in the container
-        self::$container->singleton(CoreComponent::EVENTS, self::$events);
+        self::$container->singleton(Events::class, self::$events);
     }
 
     /**

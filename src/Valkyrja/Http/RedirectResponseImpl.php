@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
@@ -191,7 +190,7 @@ class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
     public static function provides(): array
     {
         return [
-            CoreComponent::REDIRECT_RESPONSE,
+            RedirectResponse::class,
         ];
     }
 
@@ -207,7 +206,7 @@ class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CoreComponent::REDIRECT_RESPONSE,
+            RedirectResponse::class,
             new static()
         );
     }
