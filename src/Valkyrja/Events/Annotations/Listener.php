@@ -11,18 +11,15 @@
 
 namespace Valkyrja\Events\Annotations;
 
-use Valkyrja\Annotations\Annotatable;
-use Valkyrja\Contracts\Annotations\Annotation;
+use Valkyrja\Annotations\Annotation;
 
 /**
  * Class Event.
  *
  * @author Melech Mizrachi
  */
-class Listener implements Annotation
+class Listener extends Annotation
 {
-    use Annotatable;
-
     /**
      * The event to listen to.
      *

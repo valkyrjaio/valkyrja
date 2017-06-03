@@ -11,18 +11,15 @@
 
 namespace Valkyrja\Container\Annotations;
 
-use Valkyrja\Annotations\Annotatable;
-use Valkyrja\Contracts\Annotations\Annotation;
+use Valkyrja\Annotations\Annotation;
 
 /**
  * Class Service.
  *
  * @author Melech Mizrachi
  */
-class Service implements Annotation
+class Service extends Annotation
 {
-    use Annotatable;
-
     /**
      * Whether this service is a singleton.
      *

@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Http\Exceptions;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 
 /**

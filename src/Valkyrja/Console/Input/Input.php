@@ -11,188 +11,54 @@
 
 namespace Valkyrja\Console\Input;
 
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Console\Input\Input as InputContract;
-use Valkyrja\Contracts\Http\Request;
-use Valkyrja\Support\Provides;
-
 /**
- * Class Input.
+ * Interface Input.
  *
  * @author Melech Mizrachi
  */
-class Input implements InputContract
+interface Input
 {
-    use Provides;
-
-    /**
-     * The request.
-     *
-     * @var \Valkyrja\Contracts\Http\Request
-     */
-    protected $request;
-
-    /**
-     * The request arguments.
-     *
-     * @var array
-     */
-    protected $requestArguments;
-
-    /**
-     * The arguments.
-     *
-     * @var array
-     */
-    protected $arguments = [];
-
-    /**
-     * The short options.
-     *
-     * @var array
-     */
-    protected $shortOptions = [];
-
-    /**
-     * The long options.
-     *
-     * @var array
-     */
-    protected $longOptions = [];
-
-    /**
-     * Input constructor.
-     *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-
-        $this->parseRequestArguments();
-    }
-
     /**
      * Get the arguments.
      *
      * @return array
      */
-    public function getArguments(): array
-    {
-        return $this->arguments;
-    }
+    public function getArguments(): array;
 
     /**
      * Get the short options.
      *
      * @return array
      */
-    public function getShortOptions(): array
-    {
-        return $this->shortOptions;
-    }
+    public function getShortOptions(): array;
 
     /**
      * Get the arguments.
      *
      * @return array
      */
-    public function getLongOptions(): array
-    {
-        return $this->longOptions;
-    }
+    public function getLongOptions(): array;
 
     /**
      * Get the arguments.
      *
      * @return array
      */
-    public function getOptions(): array
-    {
-        return array_merge($this->longOptions, $this->shortOptions);
-    }
+    public function getOptions(): array;
 
     /**
      * Get the arguments as a string.
      *
      * @return string
      */
-    public function getStringArguments(): string
-    {
-        $arguments       = $this->getRequestArguments();
-        $globalArguments = $this->getGlobalOptionsFlat();
-
-        foreach ($arguments as $key => $argument) {
-            if (in_array($argument, $globalArguments, true)) {
-                unset($arguments[$key]);
-            }
-        }
-
-        return implode(' ', $arguments);
-    }
+    public function getStringArguments(): string;
 
     /**
      * Get the arguments from the request.
      *
      * @return array
      */
-    public function getRequestArguments(): array
-    {
-        if (null !== $this->requestArguments) {
-            return $this->requestArguments;
-        }
-
-        $arguments = $this->request->server()->get('argv');
-
-        // strip the application name
-        array_shift($arguments);
-
-        return $this->requestArguments = $arguments;
-    }
-
-    /**
-     * Parse request arguments to split by options and arguments.
-     *
-     * @return void
-     */
-    protected function parseRequestArguments(): void
-    {
-        // Iterate through the request arguments
-        foreach ($this->getRequestArguments() as $argument) {
-            // Split the string on an equal sign
-            $exploded = explode('=', $argument);
-
-            $key   = $exploded[0];
-            $value = $exploded[1] ?? true;
-            $type  = 'arguments';
-
-            // If the key has double dash it is a long option
-            if (strpos($key, '--') !== false) {
-                $type = 'longOptions';
-            } // If the key has a single dash it is a short option
-            elseif (strpos($key, '-') !== false) {
-                $type = 'shortOptions';
-            }
-
-            // If the key is already set
-            if (isset($this->{$type}[$key])) {
-                // If the key isn't already an array
-                if (! is_array($this->{$type}[$key])) {
-                    // Make it an array with the current value
-                    $this->{$type}[$key] = [$this->{$type}[$key]];
-                }
-
-                // Add the next value to the array
-                $this->{$type}[$key][] = $value;
-
-                continue;
-            }
-
-            // Set the key value pair
-            $this->{$type}[$key] = $value;
-        }
-    }
+    public function getRequestArguments(): array;
 
     /**
      * Get an argument.
@@ -201,10 +67,7 @@ class Input implements InputContract
      *
      * @return string
      */
-    public function getArgument(string $argument):? string
-    {
-        return $this->arguments[$argument] ?? null;
-    }
+    public function getArgument(string $argument):? string;
 
     /**
      * Determine if an argument exists.
@@ -213,10 +76,7 @@ class Input implements InputContract
      *
      * @return bool
      */
-    public function hasArgument(string $argument): bool
-    {
-        return isset($this->arguments[$argument]);
-    }
+    public function hasArgument(string $argument): bool;
 
     /**
      * Get a short option.
@@ -225,10 +85,7 @@ class Input implements InputContract
      *
      * @return string
      */
-    public function getShortOption(string $option):? string
-    {
-        return $this->shortOptions[$option] ?? null;
-    }
+    public function getShortOption(string $option):? string;
 
     /**
      * Determine if a short option exists.
@@ -237,10 +94,7 @@ class Input implements InputContract
      *
      * @return bool
      */
-    public function hasShortOption(string $option): bool
-    {
-        return isset($this->shortOptions[$option]);
-    }
+    public function hasShortOption(string $option): bool;
 
     /**
      * Get a long option.
@@ -249,10 +103,7 @@ class Input implements InputContract
      *
      * @return string
      */
-    public function getLongOption(string $option):? string
-    {
-        return $this->longOptions[$option] ?? null;
-    }
+    public function getLongOption(string $option):? string;
 
     /**
      * Determine if a long option exists.
@@ -261,10 +112,7 @@ class Input implements InputContract
      *
      * @return bool
      */
-    public function hasLongOption(string $option): bool
-    {
-        return isset($this->longOptions[$option]);
-    }
+    public function hasLongOption(string $option): bool;
 
     /**
      * Get an option (short or long).
@@ -273,10 +121,7 @@ class Input implements InputContract
      *
      * @return string
      */
-    public function getOption(string $option):? string
-    {
-        return $this->shortOptions[$option] ?? $this->longOptions[$option] ?? null;
-    }
+    public function getOption(string $option):? string;
 
     /**
      * Check if an option exists (long or short).
@@ -285,68 +130,19 @@ class Input implements InputContract
      *
      * @return bool
      */
-    public function hasOption(string $option): bool
-    {
-        return $this->hasShortOption($option) || $this->hasLongOption($option);
-    }
+    public function hasOption(string $option): bool;
 
     /**
      * Get the global options.
      *
      * @return \Valkyrja\Console\Input\Option[]
      */
-    public function getGlobalOptions(): array
-    {
-        return [
-            new Option('help', 'The help option for the command', 'h'),
-            new Option('quiet', 'Do not output to the console', 'q'),
-            new Option('version', 'The version of this application', 'V'),
-        ];
-    }
+    public function getGlobalOptions(): array;
 
     /**
      * Get the global options as a flat array.
      *
      * @return array
      */
-    public function getGlobalOptionsFlat(): array
-    {
-        return [
-            '-h',
-            '--help',
-            '-q',
-            '--quite',
-            '-V',
-            '--version',
-        ];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::INPUT,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::INPUT,
-            new static(
-                $app->container()->getSingleton(CoreComponent::REQUEST)
-            )
-        );
-    }
+    public function getGlobalOptionsFlat(): array;
 }

@@ -20,5 +20,4 @@ use InvalidArgumentException;
  */
 class InvalidDispatcherImplementation extends InvalidArgumentException
 {
-    //
 }

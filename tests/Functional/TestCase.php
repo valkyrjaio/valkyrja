@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Functional;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Application;
+use Valkyrja\Valkyrja;
 use Valkyrja\Config\EnvTest;
 use Valkyrja\Support\Directory;
 
@@ -26,7 +26,7 @@ class TestCase extends PHPUnitTestCase
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var \Valkyrja\Valkyrja
      */
     protected $app;
 
@@ -39,8 +39,8 @@ class TestCase extends PHPUnitTestCase
     {
         Directory::$BASE_PATH = __DIR__ . '/../../vendor/valkyrja/valkyrja-app/';
 
-        Application::env(EnvTest::class);
+        Valkyrja::env(EnvTest::class);
 
-        $this->app = new Application();
+        $this->app = new Valkyrja();
     }
 }

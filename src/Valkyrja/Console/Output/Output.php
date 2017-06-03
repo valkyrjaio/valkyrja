@@ -12,59 +12,29 @@
 namespace Valkyrja\Console\Output;
 
 use Valkyrja\Console\Enums\OutputStyle;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Console\Output\Output as OutputContract;
-use Valkyrja\Contracts\Console\Output\OutputFormatter;
-use Valkyrja\Support\Provides;
 
 /**
- * Class Output.
+ * Interface Output.
  *
  * @author Melech Mizrachi
  */
-class Output implements OutputContract
+interface Output
 {
-    use Provides;
-
-    /**
-     * The formatter.
-     *
-     * @var \Valkyrja\Contracts\Console\Output\OutputFormatter
-     */
-    protected $formatter;
-
-    /**
-     * Output constructor.
-     *
-     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter The output formatter
-     */
-    public function __construct(OutputFormatter $formatter)
-    {
-        $this->formatter = $formatter;
-    }
-
     /**
      * Get the formatter.
      *
-     * @return \Valkyrja\Contracts\Console\Output\OutputFormatter
+     * @return \Valkyrja\Console\Output\OutputFormatter
      */
-    public function formatter(): OutputFormatter
-    {
-        return $this->formatter;
-    }
+    public function formatter(): OutputFormatter;
 
     /**
      * Set the formatter.
      *
-     * @param \Valkyrja\Contracts\Console\Output\OutputFormatter $formatter
+     * @param \Valkyrja\Console\Output\OutputFormatter $formatter
      *
      * @return void
      */
-    public function setFormatter(OutputFormatter $formatter): void
-    {
-        $this->formatter = $formatter;
-    }
+    public function setFormatter(OutputFormatter $formatter): void;
 
     /**
      * Write messages to the console.
@@ -73,16 +43,9 @@ class Output implements OutputContract
      * @param bool                                $newLine     [optional] Whether to use new lines between each message
      * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
      */
-    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
-    {
-        foreach ($messages as $message) {
-            $this->writeMessage($message, $newLine, $outputStyle);
-        }
-    }
+    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void;
 
     /**
      * Write a message to the console.
@@ -91,76 +54,7 @@ class Output implements OutputContract
      * @param bool                                $newLine     [optional] Whether to use new lines between each message
      * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
      */
-    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
-    {
-        $newLine         = $newLine ?? false;
-        $outputStyleType = $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
-
-        switch ($outputStyleType) {
-            case OutputStyle::NORMAL:
-                $message = $this->formatter->format($message);
-                break;
-            case OutputStyle::RAW:
-                break;
-            case OutputStyle::PLAIN:
-                $message = strip_tags($this->formatter->format($message));
-                break;
-        }
-
-        $this->writeOut($message, $newLine);
-    }
-
-    /**
-     * Write a message out to the console.
-     *
-     * @param string $message
-     * @param bool   $newLine
-     *
-     * @return void
-     */
-    protected function writeOut(string $message, bool $newLine): void
-    {
-        if (config()['console']['quiet'] || input()->hasOption('--quiet')) {
-            return;
-        }
-
-        echo $message;
-
-        if ($newLine) {
-            echo PHP_EOL;
-        }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::OUTPUT,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::OUTPUT,
-            new static(
-                $app->container()->getSingleton(CoreComponent::OUTPUT_FORMATTER)
-            )
-        );
-    }
+    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void;
 }

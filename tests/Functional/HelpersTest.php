@@ -12,25 +12,25 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotations\Annotations;
-use Valkyrja\Application;
+use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
-use Valkyrja\Console\Console;
-use Valkyrja\Console\Kernel as ConsoleKernel;
-use Valkyrja\Container\Container;
-use Valkyrja\Events\Events;
+use Valkyrja\Console\ConsoleImpl;
+use Valkyrja\Console\KernelImpl as ConsoleKernel;
+use Valkyrja\Container\ContainerImpl;
+use Valkyrja\Events\EventsImpl;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\Kernel;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Logger\Logger;
-use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
-use Valkyrja\View\View;
+use Valkyrja\Http\JsonResponseImpl;
+use Valkyrja\Http\KernelImpl;
+use Valkyrja\Http\RedirectResponseImpl;
+use Valkyrja\Http\RequestImpl;
+use Valkyrja\Http\ResponseImpl;
+use Valkyrja\Http\ResponseBuilderImpl;
+use Valkyrja\Logger\MonologLogger;
+use Valkyrja\Routing\RouterImpl;
+use Valkyrja\Session\NativeSession;
+use Valkyrja\View\PhpView;
 
 /**
  * Test the functionality of the helper functions.
@@ -46,7 +46,7 @@ class HelpersTest extends TestCase
      */
     public function testApp(): void
     {
-        $this->assertEquals(true, app() instanceof Application);
+        $this->assertEquals(true, app() instanceof Valkyrja);
     }
 
     /**
@@ -56,7 +56,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, container() instanceof Container);
+        $this->assertEquals(true, container() instanceof ContainerImpl);
     }
 
     /**
@@ -66,7 +66,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, events() instanceof Events);
+        $this->assertEquals(true, events() instanceof EventsImpl);
     }
 
     /**
@@ -124,7 +124,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotations() instanceof Annotations);
+        $this->assertEquals(true, annotations() instanceof AnnotationsImpl);
     }
 
     /**
@@ -144,7 +144,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, console() instanceof Console);
+        $this->assertEquals(true, console() instanceof ConsoleImpl);
     }
 
     /**
@@ -164,7 +164,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, kernel() instanceof Kernel);
+        $this->assertEquals(true, kernel() instanceof KernelImpl);
     }
 
     /**
@@ -174,7 +174,7 @@ class HelpersTest extends TestCase
      */
     public function testLogger(): void
     {
-        $this->assertEquals(true, logger() instanceof Logger);
+        $this->assertEquals(true, logger() instanceof MonologLogger);
     }
 
     /**
@@ -184,7 +184,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, request() instanceof Request);
+        $this->assertEquals(true, request() instanceof RequestImpl);
     }
 
     /**
@@ -194,7 +194,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, router() instanceof Router);
+        $this->assertEquals(true, router() instanceof RouterImpl);
     }
 
     /**
@@ -204,7 +204,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, response() instanceof Response);
+        $this->assertEquals(true, response() instanceof ResponseImpl);
     }
 
     /**
@@ -214,7 +214,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, response('test') instanceof Response);
+        $this->assertEquals(true, response('test') instanceof ResponseImpl);
     }
 
     /**
@@ -224,7 +224,7 @@ class HelpersTest extends TestCase
      */
     public function testJson(): void
     {
-        $this->assertEquals(true, json() instanceof JsonResponse);
+        $this->assertEquals(true, json() instanceof JsonResponseImpl);
     }
 
     /**
@@ -234,7 +234,7 @@ class HelpersTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        $this->assertEquals(true, json(['test' => 'value']) instanceof JsonResponse);
+        $this->assertEquals(true, json(['test' => 'value']) instanceof JsonResponseImpl);
     }
 
     /**
@@ -244,7 +244,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirect(): void
     {
-        $this->assertEquals(true, redirect() instanceof RedirectResponse);
+        $this->assertEquals(true, redirect() instanceof RedirectResponseImpl);
     }
 
     /**
@@ -254,7 +254,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        $this->assertEquals(true, redirect('/') instanceof RedirectResponse);
+        $this->assertEquals(true, redirect('/') instanceof RedirectResponseImpl);
     }
 
     /**
@@ -264,7 +264,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponseImpl);
     }
 
     /**
@@ -274,7 +274,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, responseBuilder() instanceof ResponseBuilder);
+        $this->assertEquals(true, responseBuilder() instanceof ResponseBuilderImpl);
     }
 
     /**
@@ -284,7 +284,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, session() instanceof Session);
+        $this->assertEquals(true, session() instanceof NativeSession);
     }
 
     /**
@@ -294,6 +294,6 @@ class HelpersTest extends TestCase
      */
     public function testView(): void
     {
-        $this->assertEquals(true, view() instanceof View);
+        $this->assertEquals(true, view() instanceof PhpView);
     }
 }

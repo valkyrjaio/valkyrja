@@ -13,15 +13,14 @@ namespace Valkyrja\Http\Exceptions;
 
 use Exception;
 use RuntimeException;
-use Valkyrja\Contracts\Http\Exceptions\HttpException as HttpExceptionContract;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\StatusCode;
 
 /**
  * Class HttpException.
  *
  * @author Melech Mizrachi
  */
-class HttpException extends RuntimeException implements HttpExceptionContract
+class HttpException extends RuntimeException
 {
     /**
      * The status code for this exception.

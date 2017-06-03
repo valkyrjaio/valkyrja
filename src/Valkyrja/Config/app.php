@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Container\Container;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Events\Events;
+use Valkyrja\Container\ContainerImpl;
+use Valkyrja\Application;
+use Valkyrja\Dispatcher\DispatcherImpl;
+use Valkyrja\Events\EventsImpl;
 
 /*
  *-------------------------------------------------------------------------
@@ -82,7 +82,7 @@ return [
      * //
      *
      */
-    'container'    => env()::APP_CONTAINER ?? Container::class,
+    'container'    => env()::APP_CONTAINER ?? ContainerImpl::class,
 
     /*
      *-------------------------------------------------------------------------
@@ -92,7 +92,7 @@ return [
      * //
      *
      */
-    'dispatcher'   => env()::APP_DISPATCHER ?? Dispatcher::class,
+    'dispatcher'   => env()::APP_DISPATCHER ?? DispatcherImpl::class,
 
     /*
      *-------------------------------------------------------------------------
@@ -102,7 +102,7 @@ return [
      * //
      *
      */
-    'events'       => env()::APP_EVENTS ?? Events::class,
+    'events'       => env()::APP_EVENTS ?? EventsImpl::class,
 
     /*
      *-------------------------------------------------------------------------

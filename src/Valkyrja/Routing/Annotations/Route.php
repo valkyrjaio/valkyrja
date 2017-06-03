@@ -11,19 +11,16 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Annotations\Annotatable;
-use Valkyrja\Contracts\Annotations\Annotation;
-use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Annotations\Annotation;
+use Valkyrja\Http\RequestMethod;
 
 /**
  * Class Route.
  *
  * @author Melech Mizrachi
  */
-class Route implements Annotation
+class Route extends Annotation
 {
-    use Annotatable;
-
     /**
      * The path for this route.
      *

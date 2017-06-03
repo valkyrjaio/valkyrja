@@ -14,10 +14,10 @@ namespace Valkyrja\Debug;
 use ErrorException;
 use Exception;
 use Throwable;
-use Valkyrja\Application;
-use Valkyrja\Contracts\Http\Exceptions\HttpException;
-use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Valkyrja;
+use Valkyrja\Http\Response;
+use Valkyrja\Http\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 
 /**
@@ -124,7 +124,7 @@ class ExceptionHandler
      *
      * @param \Throwable $exception The exception
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Http\Response
      */
     public function getResponse($exception): Response
     {
@@ -145,13 +145,13 @@ class ExceptionHandler
         }
 
         if ($exception instanceof HttpRedirectException) {
-            $response = Application::app()->redirect(
+            $response = Valkyrja::app()->redirect(
                 $exception->getUri(),
                 $statusCode,
                 $headers
             );
         } else {
-            $response = Application::app()->response(
+            $response = Valkyrja::app()->response(
                 $content,
                 $statusCode,
                 $headers

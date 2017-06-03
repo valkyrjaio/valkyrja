@@ -11,18 +11,15 @@
 
 namespace Valkyrja\Console\Annotations;
 
-use Valkyrja\Annotations\Annotatable;
-use Valkyrja\Contracts\Annotations\Annotation;
+use Valkyrja\Annotations\Annotation;
 
 /**
  * Class Command.
  *
  * @author Melech Mizrachi
  */
-class Command implements Annotation
+class Command extends Annotation
 {
-    use Annotatable;
-
     /**
      * The path.
      *

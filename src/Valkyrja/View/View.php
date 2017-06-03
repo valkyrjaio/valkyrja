@@ -11,142 +11,56 @@
 
 namespace Valkyrja\View;
 
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\View\View as ViewContract;
-use Valkyrja\Support\Directory;
-use Valkyrja\Support\Provides;
-
 /**
- * Class View.
+ * Interface View.
  *
  * @author Melech Mizrachi
  */
-class View implements ViewContract
+interface View
 {
-    use Provides;
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * The layout template.
-     *
-     * @var string
-     */
-    protected $layout = 'layout';
-
-    /**
-     * The body content template.
-     *
-     * @var
-     */
-    protected $template = 'index';
-
-    /**
-     * The template directory.
-     *
-     * @var string
-     */
-    protected $templateDir;
-
-    /**
-     * @var string
-     */
-    protected $fileExtension = '.php';
-
-    /**
-     * The view variables.
-     *
-     * @var array
-     */
-    protected $variables = [];
-
-    /**
-     * View constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $app       The application
-     * @param string                          $template  [optional] The template to set
-     * @param array                           $variables [optional] The variables to set
-     */
-    public function __construct(Application $app, string $template = '', array $variables = [])
-    {
-        $this->app = $app;
-        $this->setVariables($variables);
-        $this->setTemplate($template);
-        $this->setTemplateDir($this->app->config()['views']['dir']);
-    }
-
     /**
      * Make a new View.
      *
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return View
      */
-    public function make(string $template = '', array $variables = []): ViewContract
-    {
-        return new static($this->app, $template, $variables);
-    }
+    public function make(string $template = '', array $variables = []): self;
 
     /**
-     * Set the master template.
+     * Set the layout template.
      *
      * @param string $template The master template to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function setLayout(string $template): ViewContract
-    {
-        $this->layout = $template;
-
-        return $this;
-    }
+    public function setLayout(string $template): self;
 
     /**
      * Set to use no layout.
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function withoutLayout(): ViewContract
-    {
-        $this->layout = null;
-
-        return $this;
-    }
+    public function withoutLayout(): self;
 
     /**
      * Set the template.
      *
      * @param string $template The template to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function setTemplate(string $template): ViewContract
-    {
-        $this->template = $template;
-
-        return $this;
-    }
+    public function setTemplate(string $template): self;
 
     /**
      * Set the variables.
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function setVariables(array $variables = []): ViewContract
-    {
-        $this->variables = array_merge($this->variables, $variables);
-
-        return $this;
-    }
+    public function setVariables(array $variables = []): self;
 
     /**
      * Set a single variable.
@@ -154,14 +68,9 @@ class View implements ViewContract
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function variable(string $key, $value): ViewContract
-    {
-        $this->variables[$key] = $value;
-
-        return $this;
-    }
+    public function variable(string $key, $value): self;
 
     /**
      * Get the template directory.
@@ -170,70 +79,46 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null): string
-    {
-        return $this->templateDir . ($path
-                ? Directory::DIRECTORY_SEPARATOR . $path
-                : $path);
-    }
+    public function getTemplateDir(string $path = null): string;
 
     /**
      * Set the template directory.
      *
      * @param string $templateDir The path to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function setTemplateDir(string $templateDir): ViewContract
-    {
-        $this->templateDir = $templateDir;
-
-        return $this;
-    }
+    public function setTemplateDir(string $templateDir): self;
 
     /**
      * Get the file extension.
      *
      * @return string
      */
-    public function getFileExtension(): string
-    {
-        return $this->fileExtension;
-    }
+    public function getFileExtension(): string;
 
     /**
      * Set the file extension.
      *
      * @param string $extension The extension to set
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    public function setFileExtension(string $extension): ViewContract
-    {
-        $this->fileExtension = $extension;
-
-        return $this;
-    }
+    public function setFileExtension(string $extension): self;
 
     /**
      * Get the template path.
      *
      * @return string
      */
-    public function getTemplatePath(): string
-    {
-        return $this->getTemplateDir($this->template . $this->getFileExtension());
-    }
+    public function getTemplatePath(): string;
 
     /**
      * Get the layout template path.
      *
      * @return string
      */
-    public function getLayoutPath(): string
-    {
-        return $this->getTemplateDir($this->layout . $this->getFileExtension());
-    }
+    public function getLayoutPath(): string;
 
     /**
      * Render the templates and view.
@@ -242,60 +127,12 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function render(array $variables = []): string
-    {
-        extract(array_merge($this->variables, $variables), EXTR_OVERWRITE);
-
-        ob_start();
-        include $this->getTemplatePath();
-        $view = ob_get_clean();
-
-        if (null === $this->layout) {
-            return $view;
-        }
-
-        extract(['body' => $view], EXTR_OVERWRITE);
-
-        ob_start();
-        include $this->getLayoutPath();
-
-        return ob_get_clean();
-    }
+    public function render(array $variables = []): string;
 
     /**
      * Get the view as a string.
      *
      * @return string
      */
-    public function __toString(): string
-    {
-        return $this->render();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::VIEW,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::VIEW,
-            new static($app)
-        );
-    }
+    public function __toString(): string;
 }

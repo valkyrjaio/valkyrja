@@ -12,12 +12,12 @@
 namespace Valkyrja\Logger\Providers;
 
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger as MonologLogger;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Logger\Enums\LogLevel;
-use Valkyrja\Logger\Logger;
-use Valkyrja\Support\Provider;
+use Monolog\Logger as Monolog;
+use Valkyrja\Container\CoreComponent;
+use Valkyrja\Application;
+use Valkyrja\Logger\LogLevel;
+use Valkyrja\Logger\MonologLogger;
+use Valkyrja\Support\Providers\Provider;
 
 /**
  * Class LoggerServiceProvider.
@@ -49,7 +49,9 @@ class LoggerServiceProvider extends Provider
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
+     *
+     * @throws \Exception
      *
      * @return void
      */
@@ -62,7 +64,9 @@ class LoggerServiceProvider extends Provider
     /**
      * Bind the logger interface.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
+     *
+     * @throws \Exception
      *
      * @return void
      */
@@ -70,7 +74,7 @@ class LoggerServiceProvider extends Provider
     {
         $app->container()->singleton(
             CoreComponent::LOGGER_INTERFACE,
-            new MonologLogger(
+            new Monolog(
                 $app->config()['logger']['name'],
                 [
                     new StreamHandler(
@@ -85,7 +89,7 @@ class LoggerServiceProvider extends Provider
     /**
      * Bind the logger.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
      *
      * @return void
      */
@@ -93,7 +97,7 @@ class LoggerServiceProvider extends Provider
     {
         $app->container()->singleton(
             CoreComponent::LOGGER,
-            new Logger(
+            new MonologLogger(
                 $app->container()->getSingleton(CoreComponent::LOGGER_INTERFACE)
             )
         );

@@ -14,41 +14,14 @@ namespace Valkyrja\Console\Output;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Console\Output\OutputFormatter as OutputFormatterContract;
-use Valkyrja\Support\Provides;
 
 /**
- * Class OutputFormatter.
+ * Interface OutputFormatter.
  *
  * @author Melech Mizrachi
  */
-class OutputFormatter implements OutputFormatterContract
+interface OutputFormatter
 {
-    use Provides;
-
-    /**
-     * The foreground color.
-     *
-     * @var int
-     */
-    protected $foreground;
-
-    /**
-     * The background color.
-     *
-     * @var int
-     */
-    protected $background;
-
-    /**
-     * The options.
-     *
-     * @var int[]
-     */
-    protected $options = [];
-
     /**
      * Set the foreground.
      *
@@ -56,16 +29,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function setForeground(FormatForeground $foreground = null): void
-    {
-        if (null === $foreground) {
-            $this->foreground = null;
-
-            return;
-        }
-
-        $this->foreground = $foreground->getValue();
-    }
+    public function setForeground(FormatForeground $foreground = null): void;
 
     /**
      * Set the background.
@@ -74,16 +38,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function setBackground(FormatBackground $background = null): void
-    {
-        if (null === $background) {
-            $this->background = null;
-
-            return;
-        }
-
-        $this->background = $background->getValue();
-    }
+    public function setBackground(FormatBackground $background = null): void;
 
     /**
      * Set foreground or background to black.
@@ -92,10 +47,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function black(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
-    }
+    public function black(bool $background = null): void;
 
     /**
      * Set foreground or background to red.
@@ -104,10 +56,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function red(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
-    }
+    public function red(bool $background = null): void;
 
     /**
      * Set foreground or background to green.
@@ -116,10 +65,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function green(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
-    }
+    public function green(bool $background = null): void;
 
     /**
      * Set foreground or background to yellow.
@@ -128,10 +74,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function yellow(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
-    }
+    public function yellow(bool $background = null): void;
 
     /**
      * Set foreground or background to blue.
@@ -140,10 +83,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function blue(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
-    }
+    public function blue(bool $background = null): void;
 
     /**
      * Set foreground or background to magenta.
@@ -152,10 +92,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function magenta(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
-    }
+    public function magenta(bool $background = null): void;
 
     /**
      * Set foreground or background to cyan.
@@ -164,10 +101,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function cyan(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
-    }
+    public function cyan(bool $background = null): void;
 
     /**
      * Set foreground or background to white.
@@ -176,10 +110,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function white(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
-    }
+    public function white(bool $background = null): void;
 
     /**
      * Set foreground or background to default.
@@ -188,29 +119,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function resetColor(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT, $background);
-    }
-
-    /**
-     * Set a color.
-     *
-     * @param int  $color      The color
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    protected function setColor(int $color, bool $background = null): void
-    {
-        if (null !== $background) {
-            $this->background = $color;
-
-            return;
-        }
-
-        $this->foreground = $color;
-    }
+    public function resetColor(bool $background = null): void;
 
     /**
      * Set an option.
@@ -219,10 +128,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function setOption(FormatOption $option): void
-    {
-        $this->options[$option->getValue()] = $option->getValue();
-    }
+    public function setOption(FormatOption $option): void;
 
     /**
      * Determine whether an option has been set.
@@ -231,10 +137,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return bool
      */
-    public function hasOption(FormatOption $option): bool
-    {
-        return isset($this->options[$option->getValue()]);
-    }
+    public function hasOption(FormatOption $option): bool;
 
     /**
      * Remove an option.
@@ -243,12 +146,7 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function removeOption(FormatOption $option): void
-    {
-        if ($this->hasOption($option)) {
-            unset($this->options[$option->getValue()]);
-        }
-    }
+    public function removeOption(FormatOption $option): void;
 
     /**
      * Set options.
@@ -257,84 +155,49 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return void
      */
-    public function setOptions(FormatOption ...$options): void
-    {
-        foreach ($options as $option) {
-            $this->setOption($option);
-        }
-    }
+    public function setOptions(FormatOption ...$options): void;
 
     /**
      * Set the bold option.
      *
      * @return void
      */
-    public function bold(): void
-    {
-        $this->setOptionNum(FormatOption::BOLD);
-    }
+    public function bold(): void;
 
     /**
      * Set the underscore option.
      *
      * @return void
      */
-    public function underscore(): void
-    {
-        $this->setOptionNum(FormatOption::UNDERSCORE);
-    }
+    public function underscore(): void;
 
     /**
      * Set the blink option.
      *
      * @return void
      */
-    public function blink(): void
-    {
-        $this->setOptionNum(FormatOption::BLINK);
-    }
+    public function blink(): void;
 
     /**
      * Set the reverse option.
      *
      * @return void
      */
-    public function reverse(): void
-    {
-        $this->setOptionNum(FormatOption::INVERSE);
-    }
+    public function reverse(): void;
 
     /**
      * Set the conceal option.
      *
      * @return void
      */
-    public function conceal(): void
-    {
-        $this->setOptionNum(FormatOption::CONCEAL);
-    }
+    public function conceal(): void;
 
     /**
      * Reset the options.
      *
      * @return void
      */
-    public function resetOptions(): void
-    {
-        $this->options = [];
-    }
-
-    /**
-     * Set an option by its number value.
-     *
-     * @param int $option The option
-     *
-     * @return void
-     */
-    protected function setOptionNum(int $option): void
-    {
-        $this->options[$option] = $option;
-    }
+    public function resetOptions(): void;
 
     /**
      * Format a message.
@@ -343,64 +206,5 @@ class OutputFormatter implements OutputFormatterContract
      *
      * @return string
      */
-    public function format(string $message): string
-    {
-        $set   = [];
-        $unset = [];
-
-        // Check if a foreground was specified
-        if (null !== $this->foreground) {
-            $set[]   = $this->foreground;
-            $unset[] = FormatForeground::DEFAULT;
-        }
-
-        // Check if a background was specified
-        if (null !== $this->background) {
-            $set[]   = $this->background;
-            $unset[] = FormatBackground::DEFAULT;
-        }
-
-        // Check if options were specified
-        if (count($this->options)) {
-            // Iterate through all the options
-            foreach ($this->options as $option) {
-                $set[]   = $option;
-                $unset[] = FormatOption::DEFAULT[$option];
-            }
-        }
-
-        // No need to format if there's nothing to set
-        if (0 === count($set)) {
-            return $message;
-        }
-
-        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::OUTPUT_FORMATTER,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::OUTPUT_FORMATTER,
-            new static()
-        );
-    }
+    public function format(string $message): string;
 }

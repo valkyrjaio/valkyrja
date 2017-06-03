@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Support;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Contracts\Application;
+use Valkyrja\Application;
 
 /**
  * Test the ServiceProvider support class.

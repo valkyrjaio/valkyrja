@@ -13,9 +13,9 @@ namespace Valkyrja\Client;
 
 use GuzzleHttp\Client as Guzzle;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Provides;
+use Valkyrja\Container\CoreComponent;
+use Valkyrja\Application;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class Client.
@@ -150,7 +150,7 @@ class GuzzleClient implements Client
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
      *
      * @return void
      */

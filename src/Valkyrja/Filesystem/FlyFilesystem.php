@@ -16,9 +16,9 @@ use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\Filesystem as FlySystem;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Provides;
+use Valkyrja\Container\CoreComponent;
+use Valkyrja\Application;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class Filesystem.
@@ -32,7 +32,7 @@ class FlyFilesystem implements Filesystem
     /**
      * The application.
      *
-     * @var \Valkyrja\Contracts\Application
+     * @var \Valkyrja\Application
      */
     protected $app;
 
@@ -53,7 +53,7 @@ class FlyFilesystem implements Filesystem
     /**
      * FlyFilesystem constructor.
      *
-     * @param \Valkyrja\Contracts\Application   $application The application
+     * @param \Valkyrja\Application             $application The application
      * @param \League\Flysystem\Filesystem|null $flySystem   [optional] The FlyFilesystem
      */
     public function __construct(Application $application, FlySystem $flySystem = null)
@@ -486,7 +486,7 @@ class FlyFilesystem implements Filesystem
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
      *
      * @return void
      */

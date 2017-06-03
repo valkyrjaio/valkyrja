@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Tests\Unit\Container;
 
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Application;
+use Valkyrja\Events\Events;
 
 /**
  * Invalid container class to test with.
@@ -24,22 +24,22 @@ class InvalidContainerClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Contracts\Application
+     * @var \Valkyrja\Application
      */
     protected $app;
 
     /**
      * The events.
      *
-     * @var \Valkyrja\Contracts\Events\Events
+     * @var \Valkyrja\Events\Events
      */
     protected $events;
 
     /**
      * InvalidContainerClass constructor.
      *
-     * @param \Valkyrja\Contracts\Application   $application The application
-     * @param \Valkyrja\Contracts\Events\Events $events      The events
+     * @param \Valkyrja\Application   $application The application
+     * @param \Valkyrja\Events\Events $events      The events
      */
     public function __construct(Application $application, Events $events)
     {

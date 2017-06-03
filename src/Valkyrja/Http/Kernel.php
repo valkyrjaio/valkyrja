@@ -11,137 +11,38 @@
 
 namespace Valkyrja\Http;
 
-use Throwable;
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Http\Kernel as KernelContract;
-use Valkyrja\Contracts\Http\Request;
-use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Contracts\Routing\Router;
-use Valkyrja\Debug\ExceptionHandler;
-use Valkyrja\Support\Provides;
-
 /**
- * Class Kernel.
+ * Interface Kernel.
  *
  * @author Melech Mizrachi
  */
-class Kernel implements KernelContract
+interface Kernel
 {
-    use Provides;
-
-    /**
-     * The application.
-     *
-     * @var \Valkyrja\Contracts\Application
-     */
-    protected $app;
-
-    /**
-     * The router.
-     *
-     * @var \Valkyrja\Contracts\Routing\Router
-     */
-    protected $router;
-
-    /**
-     * Kernel constructor.
-     *
-     * @param \Valkyrja\Contracts\Application    $application The application
-     * @param \Valkyrja\Contracts\Routing\Router $router      The router
-     */
-    public function __construct(Application $application, Router $router)
-    {
-        $this->app    = $application;
-        $this->router = $router;
-    }
-
     /**
      * Handle a request.
      *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
+     * @param \Valkyrja\Http\Request $request The request
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Http\Response
      */
-    public function handle(Request $request): Response
-    {
-        $this->app->container()->singleton(Request::class, $request);
-
-        try {
-            $response = $this->router->dispatch($request);
-        } catch (Throwable $exception) {
-            $handler  = new ExceptionHandler($this->app->debug());
-            $response = $handler->getResponse($exception);
-        }
-
-        $this->app->events()->trigger('Kernel.handled', [$request, $response]);
-
-        // Dispatch the request and return it
-        return $response;
-    }
+    public function handle(Request $request): Response;
 
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Contracts\Http\Request  $request  The request
-     * @param \Valkyrja\Contracts\Http\Response $response The response
+     * @param \Valkyrja\Http\Request  $request  The request
+     * @param \Valkyrja\Http\Response $response The response
      *
      * @return void
      */
-    public function terminate(Request $request, Response $response): void
-    {
-        $this->app->events()->trigger('Kernel.terminate', [$request, $response]);
-    }
+    public function terminate(Request $request, Response $response): void;
 
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Contracts\Http\Request $request The request
-     *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @param \Valkyrja\Http\Request $request The request
      *
      * @return void
      */
-    public function run(Request $request = null): void
-    {
-        // If no request was passed get the bootstrapped definition
-        if (null === $request) {
-            $request = $this->app->container()->getSingleton(Request::class);
-        }
-
-        // Handle the request and send the response
-        $response = $this->handle($request)->send();
-
-        // Terminate the application
-        $this->terminate($request, $response);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::KERNEL,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::KERNEL,
-            new static($app, $app->router())
-        );
-    }
+    public function run(Request $request = null): void;
 }

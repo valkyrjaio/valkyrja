@@ -11,142 +11,42 @@
 
 namespace Valkyrja\Session;
 
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Session\Session as SessionContract;
-use Valkyrja\Session\Exceptions\InvalidSessionId;
-use Valkyrja\Session\Exceptions\SessionStartFailure;
-use Valkyrja\Support\Provides;
-
 /**
- * Class Session.
+ * Interface Session.
  *
  * @author Melech Mizrachi
  */
-class Session implements SessionContract
+interface Session
 {
-    use Provides;
-
-    /**
-     * The application.
-     *
-     * @var \Valkyrja\Contracts\Application
-     */
-    protected $app;
-
-    /**
-     * The session data.
-     *
-     * @var array
-     */
-    protected $data = [];
-
-    /**
-     * Whether the session has been started.
-     *
-     * @var bool
-     */
-    protected $started;
-
-    /**
-     * Session constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $application The application
-     * @param string                          $sessionId   [optional] The session id
-     * @param string                          $sessionName [optional] The session name
-     *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
-     */
-    public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
-    {
-        $this->app = $application;
-
-        $sessionId   = $sessionId ?? $this->app->config()['session']['id'];
-        $sessionName = $sessionName ?? $this->app->config()['session']['name'];
-
-        // If a session id is provided
-        if (null !== $sessionId) {
-            // Set the id
-            $this->setId($sessionId);
-        }
-
-        // If a session name is provided
-        if (null !== $sessionName) {
-            // Set the name
-            $this->setName($sessionName);
-        }
-
-        // Start the session
-        $this->start();
-    }
-
     /**
      * Start the session.
      *
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
-     *
      * @return void
      */
-    public function start(): void
-    {
-        // If the session is already active
-        if ($this->isActive() || headers_sent()) {
-            // No need to reactivate
-            return;
-        }
-
-        // If the session failed to start
-        if (! session_start()) {
-            // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
-        }
-
-        // Set the data
-        $this->data = &$_SESSION;
-    }
+    public function start(): void;
 
     /**
      * Get the session id.
      *
      * @return string
      */
-    public function id(): string
-    {
-        return session_id();
-    }
+    public function id(): string;
 
     /**
      * Set the session id.
      *
      * @param string $id The session id
      *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     *
      * @return void
      */
-    public function setId(string $id): void
-    {
-        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
-            throw new InvalidSessionId(
-                "The session id, '{$id}', is invalid! "
-                . 'Session id can only contain alpha numeric characters, dashes, commas, '
-                . 'and be at least 1 character in length but up to 128 characters long.'
-            );
-        }
-
-        session_id($id);
-    }
+    public function setId(string $id): void;
 
     /**
      * Get the session name.
      *
      * @return string
      */
-    public function name(): string
-    {
-        return session_name();
-    }
+    public function name(): string;
 
     /**
      * Set the session name.
@@ -155,20 +55,14 @@ class Session implements SessionContract
      *
      * @return void
      */
-    public function setName(string $name): void
-    {
-        session_name($name);
-    }
+    public function setName(string $name): void;
 
     /**
      * Is a session active?
      *
      * @return bool
      */
-    public function isActive(): bool
-    {
-        return PHP_SESSION_ACTIVE === session_status();
-    }
+    public function isActive(): bool;
 
     /**
      * Determine whether the session has an item.
@@ -177,10 +71,7 @@ class Session implements SessionContract
      *
      * @return bool
      */
-    public function has(string $id): bool
-    {
-        return isset($this->data[$id]);
-    }
+    public function has(string $id): bool;
 
     /**
      * Get an item from the session.
@@ -189,10 +80,7 @@ class Session implements SessionContract
      *
      * @return mixed
      */
-    public function get(string $id)
-    {
-        return $this->has($id) ? $this->data[$id] : null;
-    }
+    public function get(string $id);
 
     /**
      * Set an item into the session.
@@ -202,10 +90,7 @@ class Session implements SessionContract
      *
      * @return void
      */
-    public function set(string $id, string $value): void
-    {
-        $this->data[$id] = $value;
-    }
+    public function set(string $id, string $value): void;
 
     /**
      * Remove a session item.
@@ -214,16 +99,7 @@ class Session implements SessionContract
      *
      * @return bool
      */
-    public function remove(string $id): bool
-    {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        unset($this->data[$id]);
-
-        return true;
-    }
+    public function remove(string $id): bool;
 
     /**
      * Get a csrf token for a unique token id.
@@ -232,14 +108,7 @@ class Session implements SessionContract
      *
      * @return string
      */
-    public function csrf(string $id): string
-    {
-        $token = bin2hex(random_bytes(64));
-
-        $this->set($id, $token);
-
-        return $token;
-    }
+    public function csrf(string $id): string;
 
     /**
      * Validate a csrf token.
@@ -249,74 +118,19 @@ class Session implements SessionContract
      *
      * @return bool
      */
-    public function validateCsrf(string $id, string $token): bool
-    {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        $sessionToken = $this->get($id);
-
-        if (! is_string($sessionToken)) {
-            return false;
-        }
-
-        $this->remove($id);
-
-        return hash_equals($token, $sessionToken);
-    }
+    public function validateCsrf(string $id, string $token): bool;
 
     /**
      * Clear the local session.
      *
      * @return void
      */
-    public function clear(): void
-    {
-        $this->data = [];
-
-        session_unset();
-    }
+    public function clear(): void;
 
     /**
      * Destroy the session.
      *
      * @return void
      */
-    public function destroy(): void
-    {
-        $this->data = [];
-
-        session_unset();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::SESSION,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::SESSION,
-            new static($app)
-        );
-    }
+    public function destroy(): void;
 }

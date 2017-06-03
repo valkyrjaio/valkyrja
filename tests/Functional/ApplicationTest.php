@@ -12,36 +12,36 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotations\Annotations;
-use Valkyrja\Application;
+use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Console\Console;
-use Valkyrja\Console\Kernel as ConsoleKernel;
-use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Events\Events;
+use Valkyrja\Console\ConsoleImpl;
+use Valkyrja\Console\KernelImpl as ConsoleKernel;
+use Valkyrja\Container\ContainerImpl;
+use Valkyrja\Dispatcher\DispatcherImpl;
+use Valkyrja\Events\EventsImpl;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\Kernel;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Logger\Logger;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
-use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
+use Valkyrja\Http\JsonResponseImpl;
+use Valkyrja\Http\KernelImpl;
+use Valkyrja\Http\RedirectResponseImpl;
+use Valkyrja\Http\RequestImpl;
+use Valkyrja\Http\ResponseImpl;
+use Valkyrja\Http\ResponseBuilderImpl;
+use Valkyrja\Logger\MonologLogger;
+use Valkyrja\Path\PathGeneratorImpl;
+use Valkyrja\Path\PathParserImpl;
+use Valkyrja\Routing\RouterImpl;
+use Valkyrja\Session\NativeSession;
 use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
-use Valkyrja\View\View;
+use Valkyrja\View\PhpView;
 
 /**
  * Test the functionality of the Application.
@@ -57,7 +57,7 @@ class ApplicationTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->app instanceof Application);
+        $this->assertEquals(true, $this->app instanceof Valkyrja);
     }
 
     /**
@@ -67,7 +67,7 @@ class ApplicationTest extends TestCase
      */
     public function testApp(): void
     {
-        $this->assertEquals(true, Application::app() instanceof Application);
+        $this->assertEquals(true, Valkyrja::app() instanceof Valkyrja);
     }
 
     /**
@@ -77,7 +77,7 @@ class ApplicationTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, $this->app->container() instanceof Container);
+        $this->assertEquals(true, $this->app->container() instanceof ContainerImpl);
     }
 
     /**
@@ -87,7 +87,7 @@ class ApplicationTest extends TestCase
      */
     public function testDispatcher(): void
     {
-        $this->assertEquals(true, $this->app->dispatcher() instanceof Dispatcher);
+        $this->assertEquals(true, $this->app->dispatcher() instanceof DispatcherImpl);
     }
 
     /**
@@ -97,7 +97,7 @@ class ApplicationTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, $this->app->events() instanceof Events);
+        $this->assertEquals(true, $this->app->events() instanceof EventsImpl);
     }
 
     /**
@@ -107,7 +107,7 @@ class ApplicationTest extends TestCase
      */
     public function testVersion(): void
     {
-        $this->assertEquals(Application::VERSION, $this->app->version());
+        $this->assertEquals(Valkyrja::VERSION, $this->app->version());
     }
 
     /**
@@ -217,7 +217,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, $this->app->annotations() instanceof Annotations);
+        $this->assertEquals(true, $this->app->annotations() instanceof AnnotationsImpl);
     }
 
     /**
@@ -237,7 +237,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, $this->app->console() instanceof Console);
+        $this->assertEquals(true, $this->app->console() instanceof ConsoleImpl);
     }
 
     /**
@@ -257,7 +257,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, $this->app->kernel() instanceof Kernel);
+        $this->assertEquals(true, $this->app->kernel() instanceof KernelImpl);
     }
 
     /**
@@ -267,7 +267,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        $this->assertEquals(true, $this->app->pathGenerator() instanceof PathGenerator);
+        $this->assertEquals(true, $this->app->pathGenerator() instanceof PathGeneratorImpl);
     }
 
     /**
@@ -277,7 +277,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        $this->assertEquals(true, $this->app->pathParser() instanceof PathParser);
+        $this->assertEquals(true, $this->app->pathParser() instanceof PathParserImpl);
     }
 
     /**
@@ -287,7 +287,7 @@ class ApplicationTest extends TestCase
      */
     public function testLogger(): void
     {
-        $this->assertEquals(true, $this->app->logger() instanceof Logger);
+        $this->assertEquals(true, $this->app->logger() instanceof MonologLogger);
     }
 
     /**
@@ -297,7 +297,7 @@ class ApplicationTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, $this->app->request() instanceof Request);
+        $this->assertEquals(true, $this->app->request() instanceof RequestImpl);
     }
 
     /**
@@ -307,7 +307,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, $this->app->router() instanceof Router);
+        $this->assertEquals(true, $this->app->router() instanceof RouterImpl);
     }
 
     /**
@@ -317,7 +317,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, $this->app->response() instanceof Response);
+        $this->assertEquals(true, $this->app->response() instanceof ResponseImpl);
     }
 
     /**
@@ -327,7 +327,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->response('test') instanceof Response);
+        $this->assertEquals(true, $this->app->response('test') instanceof ResponseImpl);
     }
 
     /**
@@ -337,7 +337,7 @@ class ApplicationTest extends TestCase
      */
     public function testJson(): void
     {
-        $this->assertEquals(true, $this->app->json() instanceof JsonResponse);
+        $this->assertEquals(true, $this->app->json() instanceof JsonResponseImpl);
     }
 
     /**
@@ -347,7 +347,7 @@ class ApplicationTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->json(['test' => 'value']) instanceof JsonResponse);
+        $this->assertEquals(true, $this->app->json(['test' => 'value']) instanceof JsonResponseImpl);
     }
 
     /**
@@ -357,7 +357,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirect(): void
     {
-        $this->assertEquals(true, $this->app->redirect() instanceof RedirectResponse);
+        $this->assertEquals(true, $this->app->redirect() instanceof RedirectResponseImpl);
     }
 
     /**
@@ -367,7 +367,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->redirect('/') instanceof RedirectResponse);
+        $this->assertEquals(true, $this->app->redirect('/') instanceof RedirectResponseImpl);
     }
 
     /**
@@ -377,7 +377,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof RedirectResponse);
+        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof RedirectResponseImpl);
     }
 
     /**
@@ -387,7 +387,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, $this->app->responseBuilder() instanceof ResponseBuilder);
+        $this->assertEquals(true, $this->app->responseBuilder() instanceof ResponseBuilderImpl);
     }
 
     /**
@@ -397,7 +397,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, $this->app->session() instanceof Session);
+        $this->assertEquals(true, $this->app->session() instanceof NativeSession);
     }
 
     /**
@@ -407,7 +407,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        $this->assertEquals(true, $this->app->view() instanceof View);
+        $this->assertEquals(true, $this->app->view() instanceof PhpView);
     }
 
     /**

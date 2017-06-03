@@ -12,8 +12,8 @@
 namespace Valkyrja\Console\Support;
 
 use Valkyrja\Console\Command;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Support\Provides;
+use Valkyrja\Application;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Trait ProvidesCommand.
@@ -39,7 +39,7 @@ trait ProvidesCommand
     /**
      * Publish the command.
      *
-     * @param \Valkyrja\Contracts\Application $app The application
+     * @param \Valkyrja\Application $app The application
      *
      * @return void
      */

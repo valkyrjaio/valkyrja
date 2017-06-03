@@ -15,14 +15,14 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Annotations\AnnotationsParserImpl;
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Application;
+use Valkyrja\Valkyrja;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
-use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Events\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
 
@@ -56,7 +56,7 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Annotations\AnnotationsParser
+     * @var \Valkyrja\Annotations\AnnotationsParserImpl
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new AnnotationsParser(new Application());
+        $this->class = new AnnotationsParserImpl(new Valkyrja());
     }
 
     /**
@@ -158,10 +158,10 @@ class AnnotationsParserTest extends TestCase
     public function testGetRegex(): void
     {
         $regex = '/'
-            . AnnotationsParser::ANNOTATION_SYMBOL
+            . AnnotationsParserImpl::ANNOTATION_SYMBOL
             . '([a-zA-Z]*)'
-            . '(?:' . AnnotationsParser::CLASS_REGEX . ')?'
-            . AnnotationsParser::LINE_REGEX
+            . '(?:' . AnnotationsParserImpl::CLASS_REGEX . ')?'
+            . AnnotationsParserImpl::LINE_REGEX
             . '/x';
 
         $this->assertEquals($regex, $this->class->getRegex());
@@ -174,7 +174,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsRegex(): void
     {
-        $regex = '/' . AnnotationsParser::ARGUMENTS_REGEX . '/x';
+        $regex = '/' . AnnotationsParserImpl::ARGUMENTS_REGEX . '/x';
 
         $this->assertEquals($regex, $this->class->getArgumentsRegex());
     }
@@ -289,8 +289,8 @@ class AnnotationsParserTest extends TestCase
      */
     public function testPublish(): void
     {
-        /* @var \Valkyrja\Contracts\Application $app */
-        $app = $this->createMock(\Valkyrja\Contracts\Application::class);
+        /* @var \Valkyrja\Application $app */
+        $app = $this->createMock(\Valkyrja\Application::class);
 
         $this->assertEquals(null, $this->class::publish($app) ?? null);
     }

@@ -20,5 +20,4 @@ use InvalidArgumentException;
  */
 class InvalidMethodTypeException extends InvalidArgumentException
 {
-    //
 }

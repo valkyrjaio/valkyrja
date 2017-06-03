@@ -27,7 +27,7 @@
     "phpunit/phpunit"            : "6.1.4",
     "predis/predis"              : "1.1.1",
     "satooshi/php-coveralls"     : "0.7.0",
-    "valkyrja/valkyrja-app"      : "^0.6.1@dev"
+    "valkyrja/valkyrja-app"      : "^0.7@dev"
   },
   "autoload"          : {
     "psr-4" : {
@@ -53,7 +53,7 @@
   "prefer-stable"     : true,
   "extra"             : {
     "branch-alias" : {
-      "dev-master" : "0.6.1-dev"
+      "dev-master" : "0.7-dev"
     }
   }
 }

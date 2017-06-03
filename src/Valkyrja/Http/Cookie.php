@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Cookie as CookieContract;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 
 /**
@@ -19,8 +18,11 @@ use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
  *
  * @author Melech Mizrachi
  */
-class Cookie implements CookieContract
+class Cookie
 {
+    public const LAX    = 'lax';
+    public const STRICT = 'strict';
+    
     /**
      * The cookie name.
      *
@@ -182,9 +184,9 @@ class Cookie implements CookieContract
      *
      * @param string $name The name
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setName(string $name): CookieContract
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -206,9 +208,9 @@ class Cookie implements CookieContract
      *
      * @param string $value The value
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setValue(string $value): CookieContract
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
@@ -242,9 +244,9 @@ class Cookie implements CookieContract
      *
      * @param int $expire The expire time
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setExpire(int $expire): CookieContract
+    public function setExpire(int $expire): self
     {
         $this->expire = $expire;
 
@@ -266,9 +268,9 @@ class Cookie implements CookieContract
      *
      * @param string $path The path
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setPath(string $path): CookieContract
+    public function setPath(string $path): self
     {
         $this->path = $path;
 
@@ -290,9 +292,9 @@ class Cookie implements CookieContract
      *
      * @param string $domain The domain
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setDomain(string $domain): CookieContract
+    public function setDomain(string $domain): self
     {
         $this->domain = $domain;
 
@@ -314,9 +316,9 @@ class Cookie implements CookieContract
      *
      * @param bool $secure
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setSecure(bool $secure): CookieContract
+    public function setSecure(bool $secure): self
     {
         $this->secure = $secure;
 
@@ -338,9 +340,9 @@ class Cookie implements CookieContract
      *
      * @param bool $httpOnly
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setHttpOnly(bool $httpOnly): CookieContract
+    public function setHttpOnly(bool $httpOnly): self
     {
         $this->httpOnly = $httpOnly;
 
@@ -362,9 +364,9 @@ class Cookie implements CookieContract
      *
      * @param bool $raw
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setRaw(bool $raw): CookieContract
+    public function setRaw(bool $raw): self
     {
         $this->raw = $raw;
 
@@ -386,9 +388,9 @@ class Cookie implements CookieContract
      *
      * @param string $sameSite
      *
-     * @return \Valkyrja\Contracts\Http\Cookie
+     * @return \Valkyrja\Http\Cookie
      */
-    public function setSameSite(string $sameSite): CookieContract
+    public function setSameSite(string $sameSite): self
     {
         $this->sameSite = $sameSite;
 

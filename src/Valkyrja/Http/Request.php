@@ -11,184 +11,33 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Http\Request as RequestContract;
-use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
-use Valkyrja\Support\Provides;
 
 /**
- * Class Request.
+ * Interface Request.
  *
  * @author Melech Mizrachi
  */
-class Request implements RequestContract
+interface Request
 {
-    use Provides;
+    public const HEADER_FORWARDED    = 'forwarded';
+    public const HEADER_CLIENT_IP    = 'client_ip';
+    public const HEADER_CLIENT_HOST  = 'client_host';
+    public const HEADER_CLIENT_PROTO = 'client_proto';
+    public const HEADER_CLIENT_PORT  = 'client_port';
 
-    protected static $httpMethodParameterOverride = false;
-
-    /**
-     * Custom parameters.
-     *
-     * @var \Valkyrja\Support\Collection
-     */
-    protected $attributes;
-
-    /**
-     * Request body parameters ($_POST).
-     *
-     * @var \Valkyrja\Support\Collection
-     */
-    protected $request;
-
-    /**
-     * Query string parameters ($_GET).
-     *
-     * @var \Valkyrja\Http\Query
-     */
-    protected $query;
-
-    /**
-     * Server and execution environment parameters ($_SERVER).
-     *
-     * @var \Valkyrja\Http\Server
-     */
-    protected $server;
-
-    /**
-     * Uploaded files ($_FILES).
-     *
-     * @var \Valkyrja\Http\Files
-     */
-    protected $files;
-
-    /**
-     * Cookies ($_COOKIE).
-     *
-     * @var \Valkyrja\Support\Collection
-     */
-    protected $cookies;
-
-    /**
-     * Headers (taken from the $_SERVER).
-     *
-     * @var \Valkyrja\Http\Headers
-     */
-    protected $headers;
-
-    /**
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * @var array
-     */
-    protected $languages;
-
-    /**
-     * @var array
-     */
-    protected $charsets;
-
-    /**
-     * @var array
-     */
-    protected $encodings;
-
-    /**
-     * @var array
-     */
-    protected $acceptableContentTypes;
-
-    /**
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * @var string
-     */
-    protected $requestUri;
-
-    /**
-     * @var string
-     */
-    protected $baseUrl;
-
-    /**
-     * @var string
-     */
-    protected $basePath;
-
-    /**
-     * @var string
-     */
-    protected $method;
-
-    /**
-     * @var string
-     */
-    protected $format;
-
-    /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * @var string
-     */
-    protected $defaultLocale = 'en';
-
-    /**
-     * @var array
-     */
-    protected static $formats;
-
-    /**
-     * Request Constructor.
-     *
-     * @param array           $query      The GET parameters
-     * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array           $cookies    The COOKIE parameters
-     * @param array           $files      The FILES parameters
-     * @param array           $server     The SERVER parameters
-     * @param string|resource $content    The raw body data
-     */
-    public function __construct(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        $content = null
-    ) {
-        $this
-            ->setQuery($query)
-            ->setRequest($request)
-            ->setAttributes($attributes)
-            ->setCookies($cookies)
-            ->setFiles($files)
-            ->setServer($server)
-            ->setHeaders()
-            ->setContent($content)
-            ->setLanguages()
-            ->setCharsets()
-            ->setEncodings()
-            ->setAcceptableContentTypes();
-
-        $this->path       = null;
-        $this->requestUri = null;
-        $this->baseUrl    = null;
-        $this->basePath   = null;
-        $this->method     = null;
-        $this->format     = null;
-    }
+    public const FORMATS = [
+        'html' => ['text/html', 'application/xhtml+xml'],
+        'txt'  => ['text/plain'],
+        'js'   => ['application/javascript', 'application/x-javascript', 'text/javascript'],
+        'css'  => ['text/css'],
+        'json' => ['application/json', 'application/x-json'],
+        'xml'  => ['text/xml', 'application/xml', 'application/x-xml'],
+        'rdf'  => ['application/rdf+xml'],
+        'atom' => ['application/atom+xml'],
+        'rss'  => ['application/rss+xml'],
+        'form' => ['application/x-www-form-urlencoded'],
+    ];
 
     /**
      * Create a new Request instance.
@@ -201,7 +50,7 @@ class Request implements RequestContract
      * @param array           $server     The SERVER parameters
      * @param string|resource $content    The raw body data
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
     public static function factory(
         array $query = [],
@@ -211,40 +60,14 @@ class Request implements RequestContract
         array $files = [],
         array $server = [],
         $content = null
-    ): RequestContract {
-        return new static($query, $request, $attributes, $cookies, $files, $server, $content);
-    }
+    ): self;
 
     /**
      * Creates a new request with values from PHP's super globals.
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public static function createFromGlobals(): RequestContract
-    {
-        // Create a new request from the PHP globals
-        /** @var RequestContract $request */
-        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
-
-        if (
-            0 === strpos($request->headers()->get('Content-Type'), 'application/x-www-form-urlencoded')
-            &&
-            in_array(
-                strtoupper($request->server()->get('REQUEST_METHOD', RequestMethod::GET)),
-                [
-                    RequestMethod::PUT,
-                    RequestMethod::DELETE,
-                    RequestMethod::PATCH,
-                ],
-                true
-            )
-        ) {
-            parse_str($request->getContent(), $data);
-            $request->request = new Collection($data);
-        }
-
-        return $request;
-    }
+    public static function createFromGlobals(): self;
 
     /**
      * Creates a Request based on a given URI and configuration.
@@ -260,7 +83,7 @@ class Request implements RequestContract
      * @param array  $server     The server parameters ($_SERVER)
      * @param string $content    The raw body data
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
     public static function create(
         $uri,
@@ -270,456 +93,206 @@ class Request implements RequestContract
         $files = [],
         $server = [],
         $content = null
-    ): RequestContract {
-        $server = array_replace(
-            [
-                'SERVER_NAME'          => 'localhost',
-                'SERVER_PORT'          => 80,
-                'HTTP_HOST'            => 'localhost',
-                'HTTP_USER_AGENT'      => config()['app']['version'],
-                'HTTP_ACCEPT'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'HTTP_ACCEPT_LANGUAGE' => 'en-us,en;q=0.5',
-                'HTTP_ACCEPT_CHARSET'  => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-                'REMOTE_ADDR'          => '127.0.0.1',
-                'SCRIPT_NAME'          => '',
-                'SCRIPT_FILENAME'      => '',
-                'SERVER_PROTOCOL'      => 'HTTP/1.1',
-                'REQUEST_TIME'         => time(),
-            ],
-            $server
-        );
-
-        $server['PATH_INFO']      = '';
-        $server['REQUEST_METHOD'] = strtoupper($method);
-        $components               = parse_url($uri);
-        $request                  = [];
-        $query                    = [];
-
-        if (isset($components['host'])) {
-            $server['SERVER_NAME'] = $components['host'];
-            $server['HTTP_HOST']   = $components['host'];
-        }
-
-        if (isset($components['scheme'])) {
-            if ('https' === $components['scheme']) {
-                $server['HTTPS']       = 'on';
-                $server['SERVER_PORT'] = 443;
-            } else {
-                unset($server['HTTPS']);
-                $server['SERVER_PORT'] = 80;
-            }
-        }
-
-        if (isset($components['port'])) {
-            $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   = $server['HTTP_HOST'] . ':' . $components['port'];
-        }
-
-        if (isset($components['user'])) {
-            $server['PHP_AUTH_USER'] = $components['user'];
-        }
-
-        if (isset($components['pass'])) {
-            $server['PHP_AUTH_PW'] = $components['pass'];
-        }
-
-        if (! isset($components['path'])) {
-            $components['path'] = '/';
-        }
-
-        switch (strtoupper($method)) {
-            case RequestMethod::POST:
-            case RequestMethod::PUT:
-            case RequestMethod::DELETE:
-                if (! isset($server['CONTENT_TYPE'])) {
-                    $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-                }
-
-                $query = $parameters;
-
-                break;
-            case RequestMethod::PATCH:
-                $request = $parameters;
-                break;
-            default:
-                $query = $parameters;
-                break;
-        }
-
-        $queryString = '';
-
-        if (isset($components['query'])) {
-            parse_str(html_entity_decode($components['query']), $qs);
-
-            if ($query) {
-                $query       = array_replace($qs, $query);
-                $queryString = http_build_query($query, '', '&');
-            } else {
-                $query       = $qs;
-                $queryString = $components['query'];
-            }
-        } elseif ($query) {
-            $queryString = http_build_query($query, '', '&');
-        }
-
-        $server['REQUEST_URI']  = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
-        $server['QUERY_STRING'] = $queryString;
-
-        return self::factory($query, $request, [], $cookies, $files, $server, $content);
-    }
-
-    /**
-     * Clones the current request.
-     *
-     * Note that the session is not cloned as duplicated requests
-     * are most of the time sub-requests of the main one.
-     */
-    public function __clone()
-    {
-        $this->query      = clone $this->query;
-        $this->request    = clone $this->request;
-        $this->attributes = clone $this->attributes;
-        $this->cookies    = clone $this->cookies;
-        $this->files      = clone $this->files;
-        $this->server     = clone $this->server;
-        $this->headers    = clone $this->headers;
-    }
+    ): self;
 
     /**
      * Returns the request as a string.
      *
      * @return string The request
      */
-    public function __toString(): string
-    {
-        return
-            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL'))
-            . "\r\n"
-            . $this->headers
-            . "\r\n"
-            . $this->getContent();
-    }
+    public function __toString(): string;
 
     /**
      * Return the GET Collection.
      *
      * @return \Valkyrja\Support\Collection
      */
-    public function query(): Collection
-    {
-        if (! $this->query) {
-            $this->setQuery();
-        }
-
-        return $this->query;
-    }
+    public function query(): Collection;
 
     /**
      * Set the GET parameters.
      *
      * @param array $query
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setQuery(array $query = []): RequestContract
-    {
-        $this->query = new Query($query);
-
-        return $this;
-    }
+    public function setQuery(array $query = []): self;
 
     /**
      * Return the POST Collection.
      *
      * @return \Valkyrja\Support\Collection
      */
-    public function request(): Collection
-    {
-        if (! $this->request) {
-            $this->setRequest();
-        }
-
-        return $this->request;
-    }
+    public function request(): Collection;
 
     /**
      * Set the POST parameters.
      *
      * @param array $request
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setRequest(array $request = []): RequestContract
-    {
-        $this->request = new Collection($request);
-
-        return $this;
-    }
+    public function setRequest(array $request = []): self;
 
     /**
      * Return the attributes Collection.
      *
      * @return \Valkyrja\Support\Collection
      */
-    public function attributes(): Collection
-    {
-        if (! $this->attributes) {
-            $this->setAttributes();
-        }
-
-        return $this->attributes;
-    }
+    public function attributes(): Collection;
 
     /**
      * Set the attributes.
      *
      * @param array $attributes
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setAttributes(array $attributes = []): RequestContract
-    {
-        $this->attributes = new Collection($attributes);
-
-        return $this;
-    }
+    public function setAttributes(array $attributes = []): self;
 
     /**
      * Return the COOKIES Collection.
      *
      * @return \Valkyrja\Support\Collection
      */
-    public function cookies(): Collection
-    {
-        if (! $this->cookies) {
-            $this->setCookies();
-        }
-
-        return $this->cookies;
-    }
+    public function cookies(): Collection;
 
     /**
      * Set the COOKIES parameters.
      *
      * @param array $cookies
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setCookies(array $cookies = []): RequestContract
-    {
-        $this->cookies = new Collection($cookies);
-
-        return $this;
-    }
+    public function setCookies(array $cookies = []): self;
 
     /**
      * Return the FILES Collection.
      *
      * @return \Valkyrja\Http\Files
      */
-    public function files(): Files
-    {
-        if (! $this->files) {
-            $this->setFiles();
-        }
-
-        return $this->files;
-    }
+    public function files(): Files;
 
     /**
      * Set the FILES parameters.
      *
      * @param array $files
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setFiles(array $files = []): RequestContract
-    {
-        $this->files = new Files($files);
-
-        return $this;
-    }
+    public function setFiles(array $files = []): self;
 
     /**
      * Return the SERVER Collection.
      *
      * @return \Valkyrja\Http\Server
      */
-    public function server(): Server
-    {
-        if (! $this->server) {
-            $this->setServer();
-        }
-
-        return $this->server;
-    }
+    public function server(): Server;
 
     /**
      * Set the SERVER parameters.
      *
      * @param array $server
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setServer(array $server = []): RequestContract
-    {
-        $server = $server
-            ?: $_SERVER;
-
-        $this->server = new Server($server);
-
-        return $this;
-    }
+    public function setServer(array $server = []): self;
 
     /**
      * Return the headers Collection.
      *
      * @return \Valkyrja\Http\Headers
      */
-    public function headers(): Headers
-    {
-        if (! $this->headers) {
-            $this->setHeaders();
-        }
-
-        return $this->headers;
-    }
+    public function headers(): Headers;
 
     /**
      * Set the headers parameters.
      *
      * @param array $headers
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setHeaders(array $headers = []): RequestContract
-    {
-        $headers = $headers ?: $this->server()->getHeaders();
-
-        $this->headers = new Headers($headers);
-
-        return $this;
-    }
+    public function setHeaders(array $headers = []): self;
 
     /**
      * Get the content.
      *
      * @return string
      */
-    public function getContent(): string
-    {
-        return $this->content;
-    }
+    public function getContent(): string;
 
     /**
      * Set the content.
      *
      * @param string $content
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setContent(string $content = null): RequestContract
-    {
-        $this->content = $content;
-
-        return $this;
-    }
+    public function setContent(string $content = null): self;
 
     /**
      * Get the languages.
      *
      * @return array
      */
-    public function getLanguages(): array
-    {
-        return $this->languages;
-    }
+    public function getLanguages(): array;
 
     /**
      * Set the languages.
      *
      * @param array $languages
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setLanguages(array $languages = []): RequestContract
-    {
-        $this->languages = $languages;
-
-        return $this;
-    }
+    public function setLanguages(array $languages = []): self;
 
     /**
      * Get the charsets.
      *
      * @return array
      */
-    public function getCharsets(): array
-    {
-        return $this->charsets;
-    }
+    public function getCharsets(): array;
 
     /**
      * Set the charsets.
      *
      * @param array $charsets
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setCharsets(array $charsets = []): RequestContract
-    {
-        $this->charsets = $charsets;
-
-        return $this;
-    }
+    public function setCharsets(array $charsets = []): self;
 
     /**
      * Get the encodings.
      *
      * @return array
      */
-    public function getEncodings(): array
-    {
-        return $this->encodings;
-    }
+    public function getEncodings(): array;
 
     /**
      * Set the encodings.
      *
      * @param array $encodings
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setEncodings(array $encodings = []): RequestContract
-    {
-        $this->encodings = $encodings;
-
-        return $this;
-    }
+    public function setEncodings(array $encodings = []): self;
 
     /**
      * Get the acceptable content types.
      *
      * @return array
      */
-    public function getAcceptableContentTypes(): array
-    {
-        return $this->acceptableContentTypes;
-    }
+    public function getAcceptableContentTypes(): array;
 
     /**
      * Set the acceptable content types.
      *
      * @param array $acceptableContentTypes
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []): RequestContract
-    {
-        $this->acceptableContentTypes = $acceptableContentTypes;
-
-        return $this;
-    }
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
 
     /**
      * Gets a "parameter" value from any bag.
@@ -729,76 +302,37 @@ class Request implements RequestContract
      *
      * @return mixed
      */
-    public function get(string $key, $default = null) // : mixed
-    {
-        if ($this !== $result = $this->attributes->get($key, $this)) {
-            return $result;
-        }
+    public function get(string $key, $default = null);
 
-        if ($this !== $result = $this->query->get($key, $this)) {
-            return $result;
-        }
-
-        if ($this !== $result = $this->request->get($key, $this)) {
-            return $result;
-        }
-
-        return $default;
-    }
+    // : mixed;
 
     /**
      * Returns current script name.
      *
      * @return string
      */
-    public function getScriptName(): string
-    {
-        return $this->server->get('SCRIPT_NAME', $this->server->get('ORIG_SCRIPT_NAME', ''));
-    }
+    public function getScriptName(): string;
 
     /**
      * Returns the path being requested relative to the executed script.
      *
      * @return string
      */
-    public function getPath(): string
-    {
-        if (null === $this->path) {
-            $this->path = $this->server()->get('REQUEST_URI');
-        }
-
-        return $this->path;
-    }
+    public function getPath(): string;
 
     /**
      * Returns the path being requested with no query string.
      *
      * @return string
      */
-    public function getPathOnly(): string
-    {
-        $requestUri = $this->getPath();
-
-        // Determine if the request uri has any query parameters
-        if (false !== $queryPosition = strpos($requestUri, '?')) {
-            // If so get the substring of the uri from start until the query param position
-            $requestUri = substr($requestUri, 0, $queryPosition);
-        }
-
-        return $requestUri;
-    }
+    public function getPathOnly(): string;
 
     /**
      * Gets the request's scheme.
      *
      * @return string
      */
-    public function getScheme(): string
-    {
-        return $this->isSecure()
-            ? 'https'
-            : 'http';
-    }
+    public function getScheme(): string;
 
     /**
      * Returns the port on which the request is made.
@@ -813,47 +347,28 @@ class Request implements RequestContract
      *
      * @return int
      */
-    public function getPort(): int
-    {
-        return (int) $this->server->get('SERVER_PORT');
-    }
+    public function getPort(): int;
 
     /**
      * Returns the user.
      *
      * @return string
      */
-    public function getUser(): string
-    {
-        return $this->headers->get('PHP_AUTH_USER');
-    }
+    public function getUser(): string;
 
     /**
      * Returns the password.
      *
      * @return string
      */
-    public function getPassword(): string
-    {
-        return $this->headers->get('PHP_AUTH_PW');
-    }
+    public function getPassword(): string;
 
     /**
      * Gets the user info.
      *
      * @return string
      */
-    public function getUserInfo(): string
-    {
-        $userinfo = $this->getUser();
-        $pass     = $this->getPassword();
-
-        if ($pass) {
-            $userinfo .= ':' . $pass;
-        }
-
-        return $userinfo;
-    }
+    public function getUserInfo(): string;
 
     /**
      * Returns the HTTP host being requested.
@@ -862,41 +377,21 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getHttpHost(): string
-    {
-        $scheme = $this->getScheme();
-        $port   = $this->getPort();
-
-        if (('http' === $scheme && $port === 80) || ('https' === $scheme && $port === 443)) {
-            return $this->getHost();
-        }
-
-        return $this->getHost() . ':' . $port;
-    }
+    public function getHttpHost(): string;
 
     /**
      * Returns the requested URI (path and query string).
      *
      * @return string
      */
-    public function getRequestUri(): string
-    {
-        if (null === $this->requestUri) {
-            $this->requestUri = $this->getPath() . $this->query;
-        }
-
-        return $this->requestUri;
-    }
+    public function getRequestUri(): string;
 
     /**
      * Gets the scheme and HTTP host.
      *
      * @return string
      */
-    public function getSchemeAndHttpHost(): string
-    {
-        return $this->getScheme() . '://' . $this->getHttpHost();
-    }
+    public function getSchemeAndHttpHost(): string;
 
     /**
      * Checks whether the request is secure or not.
@@ -912,37 +407,23 @@ class Request implements RequestContract
      *
      * @return bool
      */
-    public function isSecure(): bool
-    {
-        $https = $this->server->get('HTTPS');
-
-        return $https && 'off' !== strtolower($https);
-    }
+    public function isSecure(): bool;
 
     /**
      * Returns the host name.
      *
      * @return string
      */
-    public function getHost(): string
-    {
-        return $this->headers->get('Host');
-    }
+    public function getHost(): string;
 
     /**
      * Sets the request method.
      *
      * @param string $method
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setMethod(string $method): RequestContract
-    {
-        $this->method = null;
-        $this->server->set('REQUEST_METHOD', $method);
-
-        return $this;
-    }
+    public function setMethod(string $method): self;
 
     /**
      * Gets the request "intended" method.
@@ -951,24 +432,7 @@ class Request implements RequestContract
      *
      * @see getRealMethod()
      */
-    public function getMethod(): string
-    {
-        if (null === $this->method) {
-            $this->method = strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
-
-            if (RequestMethod::POST === $this->method) {
-                if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
-                    $this->method = strtoupper($method);
-                } elseif (self::$httpMethodParameterOverride) {
-                    $this->method = strtoupper(
-                        $this->request->get('_method', $this->query->get('_method', RequestMethod::POST))
-                    );
-                }
-            }
-        }
-
-        return $this->method;
-    }
+    public function getMethod(): string;
 
     /**
      * Gets the "real" request method.
@@ -977,10 +441,7 @@ class Request implements RequestContract
      *
      * @see getMethod()
      */
-    public function getRealMethod(): string
-    {
-        return strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
-    }
+    public function getRealMethod(): string;
 
     /**
      * Gets the mime type associated with the format.
@@ -989,12 +450,7 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getMimeType(string $format): string
-    {
-        return isset(static::$formats[$format])
-            ? static::$formats[$format][0]
-            : null;
-    }
+    public function getMimeType(string $format): string;
 
     /**
      * Gets the mime types associated with the format.
@@ -1003,10 +459,7 @@ class Request implements RequestContract
      *
      * @return array
      */
-    public static function getMimeTypes(string $format): array
-    {
-        return static::$formats[$format] ?? [];
-    }
+    public static function getMimeTypes(string $format): array;
 
     /**
      * Gets the format associated with the mime type.
@@ -1015,26 +468,7 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getFormat(string $mimeType): string
-    {
-        $canonicalMimeType = null;
-
-        if (false !== $pos = strpos($mimeType, ';')) {
-            $canonicalMimeType = substr($mimeType, 0, $pos);
-        }
-
-        foreach (static::FORMATS as $format => $mimeTypes) {
-            if (in_array($mimeType, $mimeTypes, true)) {
-                return $format;
-            }
-
-            if (null !== $canonicalMimeType && in_array($canonicalMimeType, $mimeTypes, true)) {
-                return $format;
-            }
-        }
-
-        return 'html';
-    }
+    public function getFormat(string $mimeType): string;
 
     /**
      * Gets the request format.
@@ -1043,48 +477,30 @@ class Request implements RequestContract
      *
      * @return string
      */
-    public function getRequestFormat(string $default = 'html'): string
-    {
-        if (null === $this->format) {
-            $this->format = $this->attributes->get('_format', $default);
-        }
-
-        return $this->format;
-    }
+    public function getRequestFormat(string $default = 'html'): string;
 
     /**
      * Sets the request format.
      *
      * @param string $format The request format
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    public function setRequestFormat(string $format): RequestContract
-    {
-        $this->format = $format;
-
-        return $this;
-    }
+    public function setRequestFormat(string $format): self;
 
     /**
      * Gets the format associated with the request.
      *
      * @return string
      */
-    public function getContentType(): string
-    {
-        return $this->getFormat($this->headers->get('Content-Type'));
-    }
+    public function getContentType(): string;
 
     /**
      * Get the locale.
      *
      * @return string
      */
-    public function getLocale(): string
-    {
-        return $this->locale ?? $this->defaultLocale;
-    }
+    public function getLocale(): string;
 
     /**
      * Checks if the request method is of specified type.
@@ -1093,63 +509,24 @@ class Request implements RequestContract
      *
      * @return bool
      */
-    public function isMethod(string $method): bool
-    {
-        return $this->getMethod() === strtoupper($method);
-    }
+    public function isMethod(string $method): bool;
 
     /**
      * Gets the Etags.
      *
      * @return array
      */
-    public function getETags(): array
-    {
-        return preg_split('/\s*,\s*/', $this->headers->get('If-None-Match'), null, PREG_SPLIT_NO_EMPTY);
-    }
+    public function getETags(): array;
 
     /**
      * @return bool
      */
-    public function isNoCache(): bool
-    {
-        return 'no-cache' === $this->headers->get('Pragma');
-    }
+    public function isNoCache(): bool;
 
     /**
      * Is this an AJAX request?
      *
      * @return bool
      */
-    public function isXmlHttpRequest(): bool
-    {
-        return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::REQUEST,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::REQUEST,
-            static::createFromGlobals()
-        );
-    }
+    public function isXmlHttpRequest(): bool;
 }

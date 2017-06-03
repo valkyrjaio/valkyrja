@@ -11,54 +11,23 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Http\JsonResponse;
-use Valkyrja\Contracts\Http\RedirectResponse;
-use Valkyrja\Contracts\Http\Response;
-use Valkyrja\Contracts\Http\ResponseBuilder as ResponseBuilderContract;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Support\Provides;
-
 /**
- * Class ResponseBuilder.
+ * Interface ResponseBuilder.
  *
  * @author Melech Mizrachi
  */
-class ResponseBuilder implements ResponseBuilderContract
+interface ResponseBuilder
 {
-    use Provides;
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * ResponseBuilder constructor.
-     *
-     * @param \Valkyrja\Contracts\Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
     /**
      * Make a new instance of Response.
      *
-     * @param string $content    [optional] The response content
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param mixed $content    [optional] The response content
+     * @param int   $statusCode [optional] The response status code
+     * @param array $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Http\Response
      */
-    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
-    {
-        return $this->app->response($content, $statusCode, $headers);
-    }
+    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
 
     /**
      * View response builder.
@@ -68,18 +37,14 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Http\Response
      */
     public function view(
         string $template,
         array $data = [],
         int $statusCode = StatusCode::OK,
         array $headers = []
-    ): Response {
-        $content = $this->app->view()->make($template, $data)->render();
-
-        return $this->make($content, $statusCode, $headers);
-    }
+    ): Response;
 
     /**
      * Json response builder.
@@ -88,15 +53,13 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int   $statusCode [optional] The response status code
      * @param array $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
+     * @return \Valkyrja\Http\JsonResponse
      */
     public function json(
         array $data = [],
         int $statusCode = StatusCode::OK,
         array $headers = []
-    ): JsonResponse {
-        return $this->app->json($data, $statusCode, $headers);
-    }
+    ): JsonResponse;
 
     /**
      * JsonP response builder.
@@ -106,18 +69,14 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
+     * @return \Valkyrja\Http\JsonResponse
      */
     public function jsonp(
         string $callback,
         array $data = [],
         int $statusCode = StatusCode::OK,
         array $headers = []
-    ): JsonResponse {
-        return $this->json($data, $statusCode, $headers)->setCallback($callback);
-    }
+    ): JsonResponse;
 
     /**
      * Redirect to response builder.
@@ -126,15 +85,13 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     * @return \Valkyrja\Http\RedirectResponse
      */
     public function redirect(
         string $uri = '/',
         int $statusCode = StatusCode::FOUND,
         array $headers = []
-    ): RedirectResponse {
-        return $this->app->redirect($uri, $statusCode, $headers);
-    }
+    ): RedirectResponse;
 
     /**
      * Redirect to a named route response builder.
@@ -144,41 +101,12 @@ class ResponseBuilder implements ResponseBuilderContract
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     * @return \Valkyrja\Http\RedirectResponse
      */
     public function route(
         string $route,
         array $parameters = [],
         int $statusCode = StatusCode::FOUND,
         array $headers = []
-    ): RedirectResponse {
-        return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CoreComponent::RESPONSE_BUILDER,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Contracts\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CoreComponent::RESPONSE_BUILDER,
-            new static($app)
-        );
-    }
+    ): RedirectResponse;
 }

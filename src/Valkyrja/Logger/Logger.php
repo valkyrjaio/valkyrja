@@ -12,47 +12,23 @@
 namespace Valkyrja\Logger;
 
 use Psr\Log\LoggerInterface;
-use Valkyrja\Contracts\Logger\Logger as LoggerContract;
-use Valkyrja\Logger\Enums\LogLevel;
 
 /**
- * Class Logger.
+ * Interface Logger.
  *
  * @author Melech Mizrachi
  */
-class Logger implements LoggerContract
+interface Logger
 {
-    /**
-     * The logger.
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Logger constructor.
-     *
-     * @param \Psr\Log\LoggerInterface $logger The logger
-     */
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
-
     /**
      * Log a debug message.
      *
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function debug(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::DEBUG}($message, $context);
-
-        return $this;
-    }
+    public function debug(string $message, array $context = []): self;
 
     /**
      * Log an info message.
@@ -60,14 +36,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function info(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::INFO}($message, $context);
-
-        return $this;
-    }
+    public function info(string $message, array $context = []): self;
 
     /**
      * Log a notice message.
@@ -75,14 +46,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function notice(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::NOTICE}($message, $context);
-
-        return $this;
-    }
+    public function notice(string $message, array $context = []): self;
 
     /**
      * Log a warning message.
@@ -90,14 +56,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function warning(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::WARNING}($message, $context);
-
-        return $this;
-    }
+    public function warning(string $message, array $context = []): self;
 
     /**
      * Log a error message.
@@ -105,14 +66,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function error(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::ERROR}($message, $context);
-
-        return $this;
-    }
+    public function error(string $message, array $context = []): self;
 
     /**
      * Log a critical message.
@@ -120,14 +76,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function critical(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::CRITICAL}($message, $context);
-
-        return $this;
-    }
+    public function critical(string $message, array $context = []): self;
 
     /**
      * Log a alert message.
@@ -135,14 +86,9 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function alert(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::ALERT}($message, $context);
-
-        return $this;
-    }
+    public function alert(string $message, array $context = []): self;
 
     /**
      * Log a emergency message.
@@ -150,52 +96,34 @@ class Logger implements LoggerContract
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function emergency(string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{LogLevel::EMERGENCY}($message, $context);
-
-        return $this;
-    }
+    public function emergency(string $message, array $context = []): self;
 
     /**
      * Log a message.
      *
-     * @param \Valkyrja\Logger\Enums\LogLevel $level   The log level
-     * @param string                          $message The message
-     * @param array                           $context [optional] The context
+     * @param \Valkyrja\Logger\LogLevel $level   The log level
+     * @param string                    $message The message
+     * @param array                     $context [optional] The context
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function log(LogLevel $level, string $message, array $context = []): LoggerContract
-    {
-        $this->logger->{(string) $level}($message, $context);
-
-        return $this;
-    }
+    public function log(LogLevel $level, string $message, array $context = []): self;
 
     /**
      * Get the logger.
      *
      * @return \Psr\Log\LoggerInterface
      */
-    public function getLogger(): LoggerInterface
-    {
-        return $this->logger;
-    }
+    public function getLogger(): LoggerInterface;
 
     /**
      * Set the logger.
      *
      * @param \Psr\Log\LoggerInterface $logger The logger
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    public function setLogger(LoggerInterface $logger): LoggerContract
-    {
-        $this->logger = $logger;
-
-        return $this;
-    }
+    public function setLogger(LoggerInterface $logger): self;
 }

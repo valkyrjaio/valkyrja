@@ -11,14 +11,12 @@
 
 namespace Valkyrja\Annotations;
 
-use Valkyrja\Contracts\Annotations\Annotation as AnnotationContract;
-
 /**
  * Class Annotation.
  *
  * @author Melech Mizrachi
  */
-class Annotation implements AnnotationContract
+class Annotation
 {
     use Annotatable;
 }

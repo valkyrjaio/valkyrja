@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use Valkyrja\Contracts\Container\Container;
-use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Container\Container;
+use Valkyrja\Events\Events;
 
 /**
  * Invalid dispatcher class to test with.
@@ -24,22 +24,22 @@ class InvalidDispatcherClass
     /**
      * The container.
      *
-     * @var \Valkyrja\Contracts\Container\Container
+     * @var \Valkyrja\Container\Container
      */
     protected $container;
 
     /**
      * The events.
      *
-     * @var \Valkyrja\Contracts\Events\Events
+     * @var \Valkyrja\Events\Events
      */
     protected $events;
 
     /**
      * InvalidDispatcherClass constructor.
      *
-     * @param \Valkyrja\Contracts\Container\Container $container The container
-     * @param \Valkyrja\Contracts\Events\Events       $events    The events
+     * @param \Valkyrja\Container\Container $container The container
+     * @param \Valkyrja\Events\Events       $events    The events
      */
     public function __construct(Container $container, Events $events)
     {

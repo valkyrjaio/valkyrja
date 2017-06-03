@@ -12,7 +12,7 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\StatusCode;
 
 /**
  * Class NotFoundHttpException.

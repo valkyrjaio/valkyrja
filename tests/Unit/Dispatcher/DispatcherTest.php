@@ -13,12 +13,12 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Container;
+use Valkyrja\Container\ContainerImpl;
 use Valkyrja\Container\Service;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Events\Events;
+use Valkyrja\Application;
+use Valkyrja\Events\Events;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Dispatcher\DispatcherImpl;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -35,7 +35,7 @@ class DispatcherTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Dispatcher\Dispatcher
+     * @var \Valkyrja\Dispatcher\DispatcherImpl
      */
     protected $class;
 
@@ -80,10 +80,10 @@ class DispatcherTest extends TestCase
         $app = $this->createMock(Application::class);
         /** @var Events $events */
         $events = $this->createMock(Events::class);
-        /** @var Container $container */
-        $container = new Container($app, $events);
+        /** @var ContainerImpl $container */
+        $container = new ContainerImpl($app, $events);
 
-        $this->class = new Dispatcher($container, $events);
+        $this->class = new DispatcherImpl($container, $events);
     }
 
     /**
@@ -391,7 +391,7 @@ class DispatcherTest extends TestCase
             ->setId(InvalidDispatcherClass::class);
 
         $events    = $this->createMock(Events::class);
-        $container = $this->createMock(\Valkyrja\Contracts\Container\Container::class);
+        $container = $this->createMock(\Valkyrja\Container\Container::class);
 
         $this->assertInstanceOf(
             InvalidDispatcherClass::class,

@@ -14,15 +14,14 @@ namespace Valkyrja\Console;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Input\Argument;
 use Valkyrja\Console\Input\Option;
-use Valkyrja\Contracts\Application;
-use Valkyrja\Contracts\Console\CommandHandler as CommandHandlerContract;
+use Valkyrja\Application;
 
 /**
  * Abstract Class CommandHandler.
  *
  * @author Melech Mizrachi
  */
-abstract class CommandHandler implements CommandHandlerContract
+abstract class CommandHandler
 {
     /**
      * The command.

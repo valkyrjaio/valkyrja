@@ -13,11 +13,11 @@ if (! function_exists('app')) {
     /**
      * Return the global $app variable.
      *
-     * @return \Valkyrja\Contracts\Application
+     * @return \Valkyrja\Application
      */
-    function app(): Valkyrja\Contracts\Application
+    function app(): Valkyrja\Application
     {
-        return Valkyrja\Application::app();
+        return Valkyrja\Valkyrja::app();
     }
 }
 
@@ -30,12 +30,12 @@ if (! function_exists('abort')) {
      * @param array  $headers    [optional] The headers to send
      * @param int    $code       [optional] The Exception code
      *
-     * @throws \Valkyrja\Contracts\Http\Exceptions\HttpException
+     * @throws \Valkyrja\Http\Exceptions\HttpException
      *
      * @return void
      */
     function abort(
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::NOT_FOUND,
+        int $statusCode = \Valkyrja\Http\StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
@@ -48,9 +48,9 @@ if (! function_exists('annotations')) {
     /**
      * Return the annotations instance from the container.
      *
-     * @return \Valkyrja\Contracts\Annotations\Annotations
+     * @return \Valkyrja\Annotations\Annotations
      */
-    function annotations(): \Valkyrja\Contracts\Annotations\Annotations
+    function annotations(): \Valkyrja\Annotations\Annotations
     {
         return app()->annotations();
     }
@@ -84,9 +84,9 @@ if (! function_exists('console')) {
     /**
      * Get console.
      *
-     * @return \Valkyrja\Contracts\Console\Console
+     * @return \Valkyrja\Console\Console
      */
-    function console(): Valkyrja\Contracts\Console\Console
+    function console(): \Valkyrja\Console\Console
     {
         return app()->console();
     }
@@ -96,9 +96,9 @@ if (! function_exists('container')) {
     /**
      * Get container.
      *
-     * @return \Valkyrja\Contracts\Container\Container
+     * @return \Valkyrja\Container\Container
      */
-    function container(): Valkyrja\Contracts\Container\Container
+    function container(): \Valkyrja\Container\Container
     {
         return app()->container();
     }
@@ -112,7 +112,7 @@ if (! function_exists('env')) {
      */
     function env(): string
     {
-        return Valkyrja\Application::env();
+        return Valkyrja\Valkyrja::env();
     }
 }
 
@@ -120,9 +120,9 @@ if (! function_exists('events')) {
     /**
      * Get events.
      *
-     * @return \Valkyrja\Contracts\Events\Events
+     * @return \Valkyrja\Events\Events
      */
-    function events(): Valkyrja\Contracts\Events\Events
+    function events(): \Valkyrja\Events\Events
     {
         return app()->events();
     }
@@ -132,11 +132,11 @@ if (! function_exists('input')) {
     /**
      * Get input.
      *
-     * @return \Valkyrja\Contracts\Console\Input\Input
+     * @return \Valkyrja\Console\Input\Input
      */
-    function input(): \Valkyrja\Contracts\Console\Input\Input
+    function input(): \Valkyrja\Console\Input\Input
     {
-        return container()->get(Valkyrja\Container\Enums\CoreComponent::INPUT);
+        return container()->get(\Valkyrja\Container\CoreComponent::INPUT);
     }
 }
 
@@ -144,9 +144,9 @@ if (! function_exists('kernel')) {
     /**
      * Get kernel.
      *
-     * @return \Valkyrja\Contracts\Http\Kernel
+     * @return \Valkyrja\Http\Kernel
      */
-    function kernel(): \Valkyrja\Contracts\Http\Kernel
+    function kernel(): \Valkyrja\Http\Kernel
     {
         return app()->kernel();
     }
@@ -156,9 +156,9 @@ if (! function_exists('consoleKernel')) {
     /**
      * Get console kernel.
      *
-     * @return \Valkyrja\Contracts\Console\Kernel
+     * @return \Valkyrja\Console\Kernel
      */
-    function consoleKernel(): \Valkyrja\Contracts\Console\Kernel
+    function consoleKernel(): \Valkyrja\Console\Kernel
     {
         return app()->consoleKernel();
     }
@@ -168,9 +168,9 @@ if (! function_exists('logger')) {
     /**
      * Get request.
      *
-     * @return \Valkyrja\Contracts\Logger\Logger
+     * @return \Valkyrja\Logger\Logger
      */
-    function logger(): Valkyrja\Contracts\Logger\Logger
+    function logger(): \Valkyrja\Logger\Logger
     {
         return app()->logger();
     }
@@ -180,11 +180,11 @@ if (! function_exists('output')) {
     /**
      * Get output.
      *
-     * @return \Valkyrja\Contracts\Console\Output\Output
+     * @return \Valkyrja\Console\Output\Output
      */
-    function output(): \Valkyrja\Contracts\Console\Output\Output
+    function output(): \Valkyrja\Console\Output\Output
     {
-        return container()->get(Valkyrja\Container\Enums\CoreComponent::OUTPUT);
+        return container()->get(\Valkyrja\Container\CoreComponent::OUTPUT);
     }
 }
 
@@ -192,9 +192,9 @@ if (! function_exists('request')) {
     /**
      * Get request.
      *
-     * @return \Valkyrja\Contracts\Http\Request
+     * @return \Valkyrja\Http\Request
      */
-    function request(): Valkyrja\Contracts\Http\Request
+    function request(): \Valkyrja\Http\Request
     {
         return app()->request();
     }
@@ -204,9 +204,9 @@ if (! function_exists('router')) {
     /**
      * Get router.
      *
-     * @return \Valkyrja\Contracts\Routing\Router
+     * @return \Valkyrja\Routing\Router
      */
-    function router(): Valkyrja\Contracts\Routing\Router
+    function router(): \Valkyrja\Routing\Router
     {
         return app()->router();
     }
@@ -246,9 +246,9 @@ if (! function_exists('responseBuilder')) {
     /**
      * Get the response builder.
      *
-     * @return \Valkyrja\Contracts\Http\ResponseBuilder
+     * @return \Valkyrja\Http\ResponseBuilder
      */
-    function responseBuilder(): Valkyrja\Contracts\Http\ResponseBuilder
+    function responseBuilder(): \Valkyrja\Http\ResponseBuilder
     {
         return app()->responseBuilder();
     }
@@ -262,13 +262,13 @@ if (! function_exists('response')) {
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\Response
+     * @return \Valkyrja\Http\Response
      */
     function response(
         string $content = '',
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::OK,
+        int $statusCode = \Valkyrja\Http\StatusCode::OK,
         array $headers = []
-    ): Valkyrja\Contracts\Http\Response {
+    ): \Valkyrja\Http\Response {
         return app()->response($content, $statusCode, $headers);
     }
 }
@@ -281,13 +281,13 @@ if (! function_exists('json')) {
      * @param int   $statusCode [optional] The status code to set
      * @param array $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Contracts\Http\JsonResponse
+     * @return \Valkyrja\Http\JsonResponse
      */
     function json(
         array $data = [],
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::OK,
+        int $statusCode = \Valkyrja\Http\StatusCode::OK,
         array $headers = []
-    ): Valkyrja\Contracts\Http\JsonResponse {
+    ): \Valkyrja\Http\JsonResponse {
         return app()->json($data, $statusCode, $headers);
     }
 }
@@ -300,13 +300,13 @@ if (! function_exists('redirect')) {
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     * @return \Valkyrja\Http\RedirectResponse
      */
     function redirect(
         string $uri = null,
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
+        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
-    ): \Valkyrja\Contracts\Http\RedirectResponse {
+    ): \Valkyrja\Http\RedirectResponse {
         return app()->redirect($uri, $statusCode, $headers);
     }
 }
@@ -320,14 +320,14 @@ if (! function_exists('redirectRoute')) {
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Contracts\Http\RedirectResponse
+     * @return \Valkyrja\Http\RedirectResponse
      */
     function redirectRoute(
         string $route,
         array $parameters = [],
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
+        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
-    ): \Valkyrja\Contracts\Http\RedirectResponse {
+    ): \Valkyrja\Http\RedirectResponse {
         return app()->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }
@@ -346,7 +346,7 @@ if (! function_exists('redirectTo')) {
      */
     function redirectTo(
         string $uri = null,
-        int $statusCode = \Valkyrja\Http\Enums\StatusCode::FOUND,
+        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
     ): void {
         app()->redirectTo($uri, $statusCode, $headers);
@@ -357,9 +357,9 @@ if (! function_exists('session')) {
     /**
      * Return the session.
      *
-     * @return \Valkyrja\Contracts\Session\Session
+     * @return \Valkyrja\Session\Session
      */
-    function session(): \Valkyrja\Contracts\Session\Session
+    function session(): \Valkyrja\Session\Session
     {
         return app()->session();
     }
@@ -372,9 +372,9 @@ if (! function_exists('view')) {
      * @param string $template  [optional] The template to use
      * @param array  $variables [optional] The variables to use
      *
-     * @return \Valkyrja\Contracts\View\View
+     * @return \Valkyrja\View\View
      */
-    function view(string $template = '', array $variables = []): Valkyrja\Contracts\View\View
+    function view(string $template = '', array $variables = []): \Valkyrja\View\View
     {
         return app()->view($template, $variables);
     }

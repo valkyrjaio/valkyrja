@@ -11,16 +11,14 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Contracts\Http\Cookie;
-
 /**
  * Class Cookies.
  *
  * @author Melech Mizrachi
  *
- * @property \Valkyrja\Contracts\Http\Cookie[] $collection
+ * @property \Valkyrja\Http\Cookie[] $collection
  *
- * @method get(string $key, $default = false): \Valkyrja\Contracts\Http\Cookie
+ * @method get(string $key, $default = false): \Valkyrja\Http\Cookie
  */
 class Cookies
 {
@@ -36,7 +34,7 @@ class Cookies
      *
      * @param bool $asString [optional] Get the cookies as a string?
      *
-     * @return \Valkyrja\Contracts\Http\Cookie[]
+     * @return \Valkyrja\Http\Cookie[]
      */
     public function all(bool $asString = true): array
     {
@@ -50,7 +48,7 @@ class Cookies
         foreach ($this->cookies as $path) {
             /** @var array $cookies */
             foreach ($path as $cookies) {
-                /** @var \Valkyrja\Contracts\Http\Cookie $cookie */
+                /** @var \Valkyrja\Http\Cookie $cookie */
                 foreach ($cookies as $cookie) {
                     $flattenedCookies[] = $cookie;
                 }
@@ -63,11 +61,11 @@ class Cookies
     /**
      * Set a response cookie.
      *
-     * @param \Valkyrja\Contracts\Http\Cookie $cookie The cookie object
+     * @param \Valkyrja\Http\Cookie $cookie The cookie object
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Http\Cookies
      */
-    public function set(Cookie $cookie): CookiesContract
+    public function set(Cookie $cookie): self
     {
         $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
 
@@ -81,9 +79,9 @@ class Cookies
      * @param string $path   [optional] Cookie path
      * @param string $domain [optional] Cookie domain
      *
-     * @return \Valkyrja\Contracts\Http\Cookies
+     * @return \Valkyrja\Http\Cookies
      */
-    public function remove(string $name, string $path = '/', string $domain = null): CookiesContract
+    public function remove(string $name, string $path = '/', string $domain = null): self
     {
         if (null === $path) {
             $path = '/';
