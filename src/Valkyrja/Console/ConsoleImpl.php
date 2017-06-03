@@ -448,6 +448,9 @@ class ConsoleImpl implements Console
      */
     public function getNamedCommands(): array
     {
+        // Set all the commands
+        $this->all();
+
         return self::$namedCommands;
     }
 
