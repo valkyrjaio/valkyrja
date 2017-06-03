@@ -13,8 +13,8 @@ namespace Valkyrja\Logger\Providers;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Logger\LogLevel;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Support\Providers\Provider;

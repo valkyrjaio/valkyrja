@@ -12,8 +12,8 @@
 namespace Valkyrja\Events\Annotations;
 
 use Valkyrja\Annotations\AnnotationsImpl;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Events\Listener as EventListener;
 use Valkyrja\Support\Providers\Provides;
 

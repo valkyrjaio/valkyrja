@@ -11,11 +11,11 @@
 
 namespace Valkyrja\Container;
 
+use Valkyrja\Application;
+use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
-use Valkyrja\Application;
-use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Events\Events;
 use Valkyrja\Support\Providers\AllowsProvidersTrait;
 

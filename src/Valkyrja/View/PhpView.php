@@ -11,8 +11,8 @@
 
 namespace Valkyrja\View;
 
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 

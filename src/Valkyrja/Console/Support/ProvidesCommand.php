@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Console\Support;
 
-use Valkyrja\Console\Command;
 use Valkyrja\Application;
+use Valkyrja\Console\Command;
 use Valkyrja\Support\Providers\Provides;
 
 /**

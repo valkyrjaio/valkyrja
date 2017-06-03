@@ -13,8 +13,8 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
 

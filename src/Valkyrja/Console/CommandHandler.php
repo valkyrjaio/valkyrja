@@ -11,10 +11,10 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Application;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Input\Argument;
 use Valkyrja\Console\Input\Option;
-use Valkyrja\Application;
 
 /**
  * Abstract Class CommandHandler.

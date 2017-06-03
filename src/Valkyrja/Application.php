@@ -11,8 +11,8 @@
 
 namespace Valkyrja;
 
-use Valkyrja\Client\Client;
 use Valkyrja\Annotations\Annotations;
+use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -24,13 +24,13 @@ use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
-use Valkyrja\Http\StatusCode;
 
 /**
  * Interface Application.

@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Session;
 
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Providers\Provides;

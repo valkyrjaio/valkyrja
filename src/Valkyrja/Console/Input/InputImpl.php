@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Console\Input;
 
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
 

@@ -12,10 +12,10 @@
 namespace Valkyrja\Console;
 
 use Throwable;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**

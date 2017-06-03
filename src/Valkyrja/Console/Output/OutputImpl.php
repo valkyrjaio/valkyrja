@@ -11,9 +11,9 @@
 
 namespace Valkyrja\Console\Output;
 
+use Valkyrja\Application;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Container\CoreComponent;
-use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
 /**

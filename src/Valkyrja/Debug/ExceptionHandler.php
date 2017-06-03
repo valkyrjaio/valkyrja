@@ -14,11 +14,11 @@ namespace Valkyrja\Debug;
 use ErrorException;
 use Exception;
 use Throwable;
-use Valkyrja\Valkyrja;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Http\Response;
+use Valkyrja\Http\StatusCode;
+use Valkyrja\Valkyrja;
 
 /**
  * Class ExceptionHandler.

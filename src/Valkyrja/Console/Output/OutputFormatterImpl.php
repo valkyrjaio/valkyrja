@@ -11,11 +11,11 @@
 
 namespace Valkyrja\Console\Output;
 
+use Valkyrja\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Container\CoreComponent;
-use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
 /**
