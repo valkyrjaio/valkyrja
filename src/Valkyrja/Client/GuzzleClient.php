@@ -29,7 +29,7 @@ class GuzzleClient implements Client
     /**
      * The guzzle client.
      *
-     * @var \Guzzle\Http\Client
+     * @var \GuzzleHttp\Client
      */
     protected $guzzle;
 
