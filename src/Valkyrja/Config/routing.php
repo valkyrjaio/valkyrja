@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Routing Configuration
@@ -31,7 +29,7 @@ return [
      * //
      *
      */
-    'trailingSlash'             => env()::ROUTING_TRAILING_SLASH ?? false,
+    'trailingSlash'             => env('ROUTING_TRAILING_SLASH', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -41,7 +39,7 @@ return [
      * //
      *
      */
-    'useAbsoluteUrls'           => env()::ROUTING_USE_ABSOLUTE_URLS ?? false,
+    'useAbsoluteUrls'           => env('ROUTING_USE_ABSOLUTE_URLS', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -51,7 +49,7 @@ return [
      * //
      *
      */
-    'useAnnotations'            => env()::ROUTING_USE_ANNOTATIONS ?? false,
+    'useAnnotations'            => env('ROUTING_USE_ANNOTATIONS', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -61,7 +59,7 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env()::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY ?? false,
+    'useAnnotationsExclusively' => env('ROUTING_USE_ANNOTATIONS_EXCLUSIVELY', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -71,7 +69,7 @@ return [
      * //
      *
      */
-    'controllers'               => env()::ROUTING_CONTROLLERS ?? [],
+    'controllers'               => env('ROUTING_CONTROLLERS', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -81,7 +79,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::ROUTING_FILE_PATH ?? Directory::routesPath('routes.php'),
+    'filePath'                  => env('ROUTING_FILE_PATH', routesPath('routes.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -91,7 +89,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::ROUTING_CACHE_FILE_PATH ?? Directory::cachePath('routes.php'),
+    'cacheFilePath'             => env('ROUTING_CACHE_FILE_PATH', cachePath('routes.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -101,5 +99,5 @@ return [
      * //
      *
      */
-    'useCacheFile'              => env()::ROUTING_USE_CACHE_FILE ?? false,
+    'useCacheFile'              => env('ROUTING_USE_CACHE_FILE', false),
 ];

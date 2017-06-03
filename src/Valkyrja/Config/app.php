@@ -27,7 +27,7 @@ return [
      * //
      *
      */
-    'env'          => env()::APP_ENV ?? 'production',
+    'env'          => env('APP_ENV', 'production'),
 
     /*
      *-------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
      * //
      *
      */
-    'debug'        => env()::APP_DEBUG ?? false,
+    'debug'        => env('APP_DEBUG', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -47,7 +47,7 @@ return [
      * //
      *
      */
-    'url'          => env()::APP_URL ?? 'localhost',
+    'url'          => env('APP_URL', 'localhost'),
 
     /*
      *-------------------------------------------------------------------------
@@ -57,7 +57,7 @@ return [
      * //
      *
      */
-    'timezone'     => env()::APP_TIMEZONE ?? 'UTC',
+    'timezone'     => env('APP_TIMEZONE', 'UTC'),
 
     /*
      *-------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return [
      * //
      *
      */
-    'version'      => env()::APP_VERSION ?? Valkyrja\Application::VERSION,
+    'version'      => env('APP_VERSION', Valkyrja\Application::VERSION),
 
     /*
      *-------------------------------------------------------------------------
@@ -77,7 +77,7 @@ return [
      * //
      *
      */
-    'container'    => env()::APP_CONTAINER ?? Valkyrja\Container\ContainerImpl::class,
+    'container'    => env('APP_CONTAINER', Valkyrja\Container\ContainerImpl::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -87,7 +87,7 @@ return [
      * //
      *
      */
-    'dispatcher'   => env()::APP_DISPATCHER ?? Valkyrja\Dispatcher\DispatcherImpl::class,
+    'dispatcher'   => env('APP_DISPATCHER', Valkyrja\Dispatcher\DispatcherImpl::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -97,7 +97,7 @@ return [
      * //
      *
      */
-    'events'       => env()::APP_EVENTS ?? Valkyrja\Events\EventsImpl::class,
+    'events'       => env('APP_EVENTS', Valkyrja\Events\EventsImpl::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -107,7 +107,8 @@ return [
      * //
      *
      */
-    'pathRegexMap' => env()::APP_PATH_REGEX_MAP ?? [
+    'pathRegexMap' => env('APP_PATH_REGEX_MAP',
+        [
             'num'                  => '(\d+)',
             'slug'                 => '([a-zA-Z0-9-]+)',
             'alpha'                => '([a-zA-Z]+)',
@@ -115,5 +116,6 @@ return [
             'alpha-uppercase'      => '([A-Z]+)',
             'alpha-num'            => '([a-zA-Z0-9]+)',
             'alpha-num-underscore' => '(\w+)',
-        ],
+        ]
+    ),
 ];

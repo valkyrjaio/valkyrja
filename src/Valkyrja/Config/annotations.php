@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Annotations Configuration
@@ -29,7 +27,7 @@ return [
      * //
      *
      */
-    'enabled'  => env()::ANNOTATIONS_ENABLED ?? false,
+    'enabled'  => env('ANNOTATIONS_ENABLED', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -39,7 +37,7 @@ return [
      * //
      *
      */
-    'cacheDir' => env()::ANNOTATIONS_CACHE_DIR ?? Directory::storagePath('vendor/annotations'),
+    'cacheDir' => env('ANNOTATIONS_CACHE_DIR', storagePath('vendor/annotations')),
 
     /*
      *-------------------------------------------------------------------------
@@ -49,12 +47,14 @@ return [
      * //
      *
      */
-    'map'      => env()::ANNOTATIONS_MAP ?? [
+    'map'      => env('ANNOTATIONS_MAP',
+        [
             'Command'        => Valkyrja\Console\Annotations\Command::class,
             'Listener'       => Valkyrja\Events\Annotations\Listener::class,
             'Route'          => Valkyrja\Routing\Annotations\Route::class,
             'Service'        => Valkyrja\Container\Annotations\Service::class,
             'ServiceAlias'   => Valkyrja\Container\Annotations\ServiceAlias::class,
             'ServiceContext' => Valkyrja\Container\Annotations\ServiceContext::class,
-        ],
+        ]
+    ),
 ];

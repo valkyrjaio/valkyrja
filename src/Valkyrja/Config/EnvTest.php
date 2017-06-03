@@ -16,7 +16,7 @@ namespace Valkyrja\Config;
  *
  * @author Melech Mizrachi
  */
-class EnvTest extends Env
+class EnvTest
 {
     /**
      * Console env variables.

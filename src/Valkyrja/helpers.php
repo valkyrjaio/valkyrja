@@ -106,13 +106,16 @@ if (! function_exists('container')) {
 
 if (! function_exists('env')) {
     /**
-     * Get env.
+     * Get an environment variable.
      *
-     * @return \Valkyrja\Config\Env|\config\Env
+     * @param string $variable [optional] The variable to get
+     * @param string $default  [optional] The default value to return
+     *
+     * @return mixed|\Valkyrja\Config\Env||config|Env
      */
-    function env(): string
+    function env(string $variable = null, $default = null)
     {
-        return Valkyrja\Valkyrja::env();
+        return Valkyrja\Valkyrja::env($variable, $default);
     }
 }
 
@@ -420,6 +423,34 @@ if (! function_exists('appPath')) {
     }
 }
 
+if (! function_exists('bootstrapPath')) {
+    /**
+     * Helper function to get bootstrap path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function bootstrapPath(string $path = null): string
+    {
+        return Valkyrja\Support\Directory::bootstrapPath($path);
+    }
+}
+
+if (! function_exists('cachePath')) {
+    /**
+     * Helper function to get cache path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function cachePath(string $path = null): string
+    {
+        return Valkyrja\Support\Directory::cachePath($path);
+    }
+}
+
 if (! function_exists('configPath')) {
     /**
      * Helper function to get config path.
@@ -459,6 +490,20 @@ if (! function_exists('resourcesPath')) {
     function resourcesPath(string $path = null): string
     {
         return Valkyrja\Support\Directory::resourcesPath($path);
+    }
+}
+
+if (! function_exists('routesPath')) {
+    /**
+     * Helper function to get routes path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function routesPath(string $path = null): string
+    {
+        return Valkyrja\Support\Directory::routesPath($path);
     }
 }
 

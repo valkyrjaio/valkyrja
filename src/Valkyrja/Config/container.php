@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Container Configuration
@@ -30,7 +28,8 @@ return [
      * //
      *
      */
-    'providers'                 => env()::CONTAINER_PROVIDERS ?? [
+    'providers'                 => env('CONTAINER_PROVIDERS',
+        [
             Valkyrja\Annotations\AnnotationsParserImpl::class,
             Valkyrja\Annotations\AnnotationsImpl::class,
             Valkyrja\Client\GuzzleClient::class,
@@ -56,7 +55,8 @@ return [
             Valkyrja\Routing\Annotations\RouteAnnotationsImpl::class,
             Valkyrja\Session\NativeSession::class,
             Valkyrja\View\PhpView::class,
-        ],
+        ]
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -66,7 +66,7 @@ return [
      * //
      *
      */
-    'devProviders'              => env()::CONTAINER_DEV_PROVIDERS ?? [],
+    'devProviders'              => env('CONTAINER_DEV_PROVIDERS', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -76,7 +76,7 @@ return [
      * //
      *
      */
-    'useAnnotations'            => env()::CONTAINER_USE_ANNOTATIONS ?? false,
+    'useAnnotations'            => env('CONTAINER_USE_ANNOTATIONS', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env()::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY ?? false,
+    'useAnnotationsExclusively' => env('CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -96,7 +96,7 @@ return [
      * //
      *
      */
-    'services'                  => env()::CONTAINER_SERVICES ?? [],
+    'services'                  => env('CONTAINER_SERVICES', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
      * //
      *
      */
-    'contextServices'           => env()::CONTAINER_CONTEXT_SERVICES ?? [],
+    'contextServices'           => env('CONTAINER_CONTEXT_SERVICES', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -116,7 +116,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::CONTAINER_FILE_PATH ?? Directory::bootstrapPath('container.php'),
+    'filePath'                  => env('CONTAINER_FILE_PATH', bootstrapPath('container.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -126,7 +126,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::CONTAINER_CACHE_FILE_PATH ?? Directory::cachePath('container.php'),
+    'cacheFilePath'             => env('CONTAINER_CACHE_FILE_PATH', cachePath('container.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -136,5 +136,5 @@ return [
      * //
      *
      */
-    'useCacheFile'              => env()::CONTAINER_USE_CACHE_FILE ?? false,
+    'useCacheFile'              => env('CONTAINER_USE_CACHE_FILE', false),
 ];

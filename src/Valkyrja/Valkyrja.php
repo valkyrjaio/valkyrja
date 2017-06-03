@@ -143,7 +143,7 @@ class Valkyrja implements Application
         // Set the app static
         self::$app = $this;
         // Ensure the env has been set
-        self::env();
+        self::setEnv();
 
         // If the VALKYRJA_START constant hasn't already been set
         if (! defined('VALKYRJA_START')) {
@@ -174,17 +174,22 @@ class Valkyrja implements Application
      */
     protected function bootstrapConfig(array $config = null): void
     {
-        $cacheFilePath = self::$env::CONFIG_CACHE_FILE_PATH ?? Directory::storagePath('framework/cache/config.php');
+        $cacheFilePath = Directory::cachePath('config.php');
 
         // If we should use the config cache file
-        if (self::$env::CONFIG_USE_CACHE_FILE || is_file($cacheFilePath)) {
+        if (is_file($cacheFilePath)) {
             // Get the config from the cache file's contents
             self::$config = require $cacheFilePath;
 
             return;
         }
 
-        self::$config = $config ?? require __DIR__ . '/Config/config.php';
+        $config         = $config ?? [];
+        $configFilePath = Directory::configPath('config.php');
+        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/Config/config.php';
+        $defaultConfigs = require $configFilePath;
+
+        self::$config = array_replace_recursive($defaultConfigs, $config);
 
         /* @var \Valkyrja\Support\Providers\Provider $provider */
         foreach (self::$config['providers'] as $provider) {
@@ -309,15 +314,64 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get environment variables.
+     * Get an environment variable.
      *
-     * @param string $env [optional] The env file to use
+     * @param string $variable [optional] The variable to get
+     * @param string $default  [optional] The default value to return
+     *
+     * @return mixed|\Valkyrja\Config\Env||config|Env
+     */
+    public static function env(string $variable = null, $default = null)
+    {
+        // Ensure the env has been set
+        static::setEnv();
+
+        // If there was no variable requested
+        if (null === $variable) {
+            // Return the env class
+            return static::getEnv();
+        }
+
+        // If the env has this variable defined and the variable isn't null
+        if (defined(static::getEnv() . '::' . $variable) && null !== $env = constant(static::getEnv() . '::' . $variable)) {
+            // Return the variable
+            return $env;
+        }
+
+        // Otherwise return the default
+        return $default;
+    }
+
+    /**
+     * Get the environment variables class.
      *
      * @return \Valkyrja\Config\Env||config|Env
      */
-    public static function env(string $env = null): string
+    public static function getEnv(): string
     {
-        return self::$env ?? self::$env = $env ?? Env::class;
+        // Ensure the env has been set
+        static::setEnv();
+
+        return self::$env;
+    }
+
+    /**
+     * Set the environment variables class.
+     *
+     * @param string $env [optional] The env file to use
+     *
+     * @return void
+     */
+    public static function setEnv(string $env = null): void
+    {
+        // If the env has been set
+        if (null !== self::$env) {
+            // No need to set it again
+            return;
+        }
+
+        // Set the env class to use
+        self::$env = $env ?? Env::class;
     }
 
     /**

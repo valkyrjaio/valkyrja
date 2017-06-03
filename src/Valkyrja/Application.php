@@ -65,13 +65,30 @@ interface Application
     public static function app(): self;
 
     /**
-     * Get environment variables.
+     * Get an environment variable.
      *
-     * @param string $env [optional] The env file to use
+     * @param string $variable [optional] The variable to get
+     * @param string $default  [optional] The default value to return
+     *
+     * @return mixed|\Valkyrja\Config\Env||config|Env
+     */
+    public static function env(string $variable = null, $default = null);
+
+    /**
+     * Get environment variables.
      *
      * @return \Valkyrja\Config\Env||config|Env
      */
-    public static function env(string $env = null): string;
+    public static function getEnv(): string;
+
+    /**
+     * Set the environment variables class.
+     *
+     * @param string $env [optional] The env file to use
+     *
+     * @return void
+     */
+    public static function setEnv(string $env = null): void;
 
     /**
      * Get the config class instance.

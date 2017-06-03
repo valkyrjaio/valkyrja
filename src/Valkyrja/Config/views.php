@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Views Configuration
@@ -30,5 +28,5 @@ return [
      * //
      *
      */
-    'dir' => env()::VIEWS_DIR ?? Directory::resourcesPath('views'),
+    'dir' => env('VIEWS_DIR', resourcesPath('views')),
 ];

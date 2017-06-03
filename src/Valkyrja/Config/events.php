@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Events Configuration
@@ -30,7 +28,7 @@ return [
      * //
      *
      */
-    'useAnnotations'            => env()::EVENTS_USE_ANNOTATIONS ?? false,
+    'useAnnotations'            => env('EVENTS_USE_ANNOTATIONS', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -40,7 +38,7 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env()::EVENTS_USE_ANNOTATIONS_EXCLUSIVELY ?? false,
+    'useAnnotationsExclusively' => env('EVENTS_USE_ANNOTATIONS_EXCLUSIVELY', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -50,7 +48,7 @@ return [
      * //
      *
      */
-    'classes'                   => env()::EVENTS_CLASSES ?? [],
+    'classes'                   => env('EVENTS_CLASSES', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -60,7 +58,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::EVENTS_FILE_PATH ?? Directory::bootstrapPath('events.php'),
+    'filePath'                  => env('EVENTS_FILE_PATH', bootstrapPath('events.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -70,7 +68,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::EVENTS_CACHE_FILE_PATH ?? Directory::cachePath('events.php'),
+    'cacheFilePath'             => env('EVENTS_CACHE_FILE_PATH', cachePath('events.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -80,5 +78,5 @@ return [
      * //
      *
      */
-    'useCacheFile'              => env()::EVENTS_USE_CACHE_FILE ?? false,
+    'useCacheFile'              => env('EVENTS_USE_CACHE_FILE', false),
 ];

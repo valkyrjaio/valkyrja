@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
-
 /*
  *-------------------------------------------------------------------------
  * Console Configuration
@@ -30,7 +28,8 @@ return [
      * //
      *
      */
-    'providers'                 => env()::CONSOLE_PROVIDERS ?? [
+    'providers'                 => env('CONSOLE_PROVIDERS',
+        [
             Valkyrja\Config\Commands\ConfigCache::class,
             Valkyrja\Console\Commands\CacheAllCommand::class,
             Valkyrja\Console\Commands\ConsoleCommands::class,
@@ -40,7 +39,8 @@ return [
             Valkyrja\Events\Commands\EventsCache::class,
             Valkyrja\Routing\Commands\RoutesCacheCommand::class,
             Valkyrja\Routing\Commands\RoutesListCommand::class,
-        ],
+        ]
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
      * //
      *
      */
-    'devProviders'              => env()::CONSOLE_DEV_PROVIDERS ?? [],
+    'devProviders'              => env('CONSOLE_DEV_PROVIDERS', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
      * //
      *
      */
-    'quiet'                     => env()::CONSOLE_QUIET ?? false,
+    'quiet'                     => env('CONSOLE_QUIET', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return [
      * //
      *
      */
-    'useAnnotations'            => env()::CONSOLE_USE_ANNOTATIONS ?? false,
+    'useAnnotations'            => env('CONSOLE_USE_ANNOTATIONS', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env()::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY ?? false,
+    'useAnnotationsExclusively' => env('CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY', false),
 
     /*
      *-------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
      * //
      *
      */
-    'handlers'                  => env()::CONSOLE_HANDLERS ?? [],
+    'handlers'                  => env('CONSOLE_HANDLERS', []),
 
     /*
      *-------------------------------------------------------------------------
@@ -100,7 +100,7 @@ return [
      * //
      *
      */
-    'filePath'                  => env()::CONSOLE_FILE_PATH ?? Directory::bootstrapPath('commands.php'),
+    'filePath'                  => env('CONSOLE_FILE_PATH', bootstrapPath('commands.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env()::CONSOLE_CACHE_FILE_PATH ?? Directory::cachePath('commands.php'),
+    'cacheFilePath'             => env('CONSOLE_CACHE_FILE_PATH', cachePath('commands.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -120,5 +120,5 @@ return [
      * //
      *
      */
-    'useCacheFile'              => env()::CONSOLE_USE_CACHE_FILE ?? false,
+    'useCacheFile'              => env('CONSOLE_USE_CACHE_FILE', false),
 ];
