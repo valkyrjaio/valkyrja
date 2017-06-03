@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
 

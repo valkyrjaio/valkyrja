@@ -11,9 +11,9 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Support\Cacheable;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Support\Cacheable;
 use Valkyrja\Support\Providers\AllowsProviders;
 
 /**

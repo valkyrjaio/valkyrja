@@ -11,10 +11,10 @@
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Support\Cacheable;
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Response;
+use Valkyrja\Support\Cacheable;
 
 /**
  * Interface Router.

@@ -11,12 +11,12 @@
 
 namespace Valkyrja\Container\Annotations;
 
+use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Application;
 use Valkyrja\Container\CoreComponent;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
-use Valkyrja\Annotations\Annotation;
-use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
 /**

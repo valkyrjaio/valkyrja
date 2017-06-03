@@ -13,8 +13,8 @@ namespace Valkyrja\Client;
 
 use GuzzleHttp\Client as Guzzle;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**

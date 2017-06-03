@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;

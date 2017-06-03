@@ -13,11 +13,11 @@ namespace Valkyrja\Routing;
 
 use Valkyrja\Application;
 use Valkyrja\Container\CoreComponent;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\RequestMethod;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
+use Valkyrja\Http\Request;
+use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Response;
+use Valkyrja\Http\StatusCode;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Support\Providers\Provides;

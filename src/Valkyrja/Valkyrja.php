@@ -11,35 +11,35 @@
 
 namespace Valkyrja;
 
+use Valkyrja\Annotations\Annotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Env;
-use Valkyrja\Container\CoreComponent;
-use Valkyrja\Annotations\Annotations;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\CoreComponent;
+use Valkyrja\Debug\Debug;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
+use Valkyrja\Exceptions\InvalidContainerImplementation;
+use Valkyrja\Exceptions\InvalidDispatcherImplementation;
+use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
-use Valkyrja\View\View;
-use Valkyrja\Debug\Debug;
-use Valkyrja\Exceptions\InvalidContainerImplementation;
-use Valkyrja\Exceptions\InvalidDispatcherImplementation;
-use Valkyrja\Exceptions\InvalidEventsImplementation;
-use Valkyrja\Http\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Support\Directory;
+use Valkyrja\View\View;
 
 /**
  * Class Application.

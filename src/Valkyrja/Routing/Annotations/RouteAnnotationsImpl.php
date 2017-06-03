@@ -12,8 +12,8 @@
 namespace Valkyrja\Routing\Annotations;
 
 use Valkyrja\Annotations\AnnotationsImpl;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
 use Valkyrja\Support\Providers\Provides;

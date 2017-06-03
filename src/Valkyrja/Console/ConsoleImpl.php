@@ -11,12 +11,12 @@
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Console\Exceptions\CommandNotFound;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
 use Valkyrja\Console\Annotations\CommandAnnotations;
+use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\AllowsProvidersTrait;
 use Valkyrja\Support\Providers\Provides;
 

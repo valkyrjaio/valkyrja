@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Container\ContainerImpl;
 use Valkyrja\Application;
+use Valkyrja\Container\ContainerImpl;
 use Valkyrja\Dispatcher\DispatcherImpl;
 use Valkyrja\Events\EventsImpl;
 

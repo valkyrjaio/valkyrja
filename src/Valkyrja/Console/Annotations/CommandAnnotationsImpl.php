@@ -11,11 +11,11 @@
 
 namespace Valkyrja\Console\Annotations;
 
+use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
 use Valkyrja\Container\CoreComponent;
-use Valkyrja\Annotations\Annotation;
-use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
 /**

@@ -12,8 +12,8 @@
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**

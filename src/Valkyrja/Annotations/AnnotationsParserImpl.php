@@ -12,8 +12,8 @@
 namespace Valkyrja\Annotations;
 
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**

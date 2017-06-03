@@ -11,14 +11,14 @@
 
 namespace Valkyrja\Dispatcher;
 
-use Valkyrja\Container\Service;
 use Valkyrja\Container\Container;
-use Valkyrja\Events\Events;
+use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Events\Events;
 use Valkyrja\Events\Listener;
 
 /**

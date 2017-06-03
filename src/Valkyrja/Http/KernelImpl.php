@@ -12,10 +12,10 @@
 namespace Valkyrja\Http;
 
 use Throwable;
-use Valkyrja\Container\CoreComponent;
 use Valkyrja\Application;
-use Valkyrja\Routing\Router;
+use Valkyrja\Container\CoreComponent;
 use Valkyrja\Debug\ExceptionHandler;
+use Valkyrja\Routing\Router;
 use Valkyrja\Support\Providers\Provides;
 
 /**

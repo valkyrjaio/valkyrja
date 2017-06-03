@@ -22,7 +22,7 @@ class Cookie
 {
     public const LAX    = 'lax';
     public const STRICT = 'strict';
-    
+
     /**
      * The cookie name.
      *
