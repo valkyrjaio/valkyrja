@@ -24,6 +24,7 @@ use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
@@ -504,6 +505,16 @@ class Valkyrja implements Application
     public function consoleKernel(): ConsoleKernel
     {
         return $this->container()->getSingleton(ConsoleKernel::class);
+    }
+
+    /**
+     * Return the filesystem instance from the container.
+     *
+     * @return \Valkyrja\Filesystem\Filesystem
+     */
+    public function filesystem(): Filesystem
+    {
+        return $this->container()->getSingleton(Filesystem::class);
     }
 
     /**

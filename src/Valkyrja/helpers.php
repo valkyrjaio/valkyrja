@@ -128,6 +128,18 @@ if (! function_exists('events')) {
     }
 }
 
+if (! function_exists('filesystem')) {
+    /**
+     * Get filesystem.
+     *
+     * @return \Valkyrja\Filesystem\Filesystem
+     */
+    function filesystem(): \Valkyrja\Filesystem\Filesystem
+    {
+        return app()->filesystem();
+    }
+}
+
 if (! function_exists('input')) {
     /**
      * Get input.

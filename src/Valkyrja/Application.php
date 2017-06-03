@@ -18,6 +18,7 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
+use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
@@ -44,7 +45,7 @@ interface Application
      *
      * @constant string
      */
-    public const VERSION = '0.6';
+    public const VERSION = '0.7';
 
     /**
      * Setup the application.
@@ -203,6 +204,13 @@ interface Application
      * @return \Valkyrja\Console\Kernel
      */
     public function consoleKernel(): ConsoleKernel;
+
+    /**
+     * Return the filesystem instance from the container.
+     *
+     * @return \Valkyrja\Filesystem\Filesystem
+     */
+    public function filesystem(): Filesystem;
 
     /**
      * Return the kernel instance from the container.
