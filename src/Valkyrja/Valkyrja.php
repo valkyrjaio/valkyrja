@@ -184,11 +184,7 @@ class Valkyrja implements Application
             return;
         }
 
-        $config     = $config ?? [];
-        $coreConfig = require __DIR__ . '/Config/config.php';
-
-        // Set the config within the application
-        self::$config = array_replace_recursive($coreConfig, $config);
+        self::$config = $config ?? require __DIR__ . '/Config/config.php';
 
         /* @var \Valkyrja\Support\Providers\Provider $provider */
         foreach (self::$config['providers'] as $provider) {

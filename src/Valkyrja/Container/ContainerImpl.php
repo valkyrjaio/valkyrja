@@ -538,11 +538,6 @@ class ContainerImpl implements Container
     protected function setupServiceProviders(): void
     {
         // Iterate through all the providers
-        foreach ($this->app->config()['container']['coreProviders'] as $provider) {
-            $this->register($provider);
-        }
-
-        // Iterate through all the providers
         foreach ($this->app->config()['container']['providers'] as $provider) {
             $this->register($provider);
         }

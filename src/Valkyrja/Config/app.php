@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Application;
-use Valkyrja\Container\ContainerImpl;
-use Valkyrja\Dispatcher\DispatcherImpl;
-use Valkyrja\Events\EventsImpl;
-
 /*
  *-------------------------------------------------------------------------
  * Application Configuration
@@ -72,7 +67,7 @@ return [
      * //
      *
      */
-    'version'      => env()::APP_VERSION ?? Application::VERSION,
+    'version'      => env()::APP_VERSION ?? Valkyrja\Application::VERSION,
 
     /*
      *-------------------------------------------------------------------------
@@ -82,7 +77,7 @@ return [
      * //
      *
      */
-    'container'    => env()::APP_CONTAINER ?? ContainerImpl::class,
+    'container'    => env()::APP_CONTAINER ?? Valkyrja\Container\ContainerImpl::class,
 
     /*
      *-------------------------------------------------------------------------
@@ -92,7 +87,7 @@ return [
      * //
      *
      */
-    'dispatcher'   => env()::APP_DISPATCHER ?? DispatcherImpl::class,
+    'dispatcher'   => env()::APP_DISPATCHER ?? Valkyrja\Dispatcher\DispatcherImpl::class,
 
     /*
      *-------------------------------------------------------------------------
@@ -102,7 +97,7 @@ return [
      * //
      *
      */
-    'events'       => env()::APP_EVENTS ?? EventsImpl::class,
+    'events'       => env()::APP_EVENTS ?? Valkyrja\Events\EventsImpl::class,
 
     /*
      *-------------------------------------------------------------------------

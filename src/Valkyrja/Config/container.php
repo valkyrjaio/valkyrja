@@ -30,17 +30,7 @@ return [
      * //
      *
      */
-    'providers'                 => env()::CONTAINER_PROVIDERS ?? [],
-
-    /*
-     *-------------------------------------------------------------------------
-     * Container Core Components Service Providers
-     *-------------------------------------------------------------------------
-     *
-     * //
-     *
-     */
-    'coreProviders'             => env()::CONTAINER_CORE_PROVIDERS ?? [
+    'providers'                 => env()::CONTAINER_PROVIDERS ?? [
             Valkyrja\Annotations\AnnotationsParserImpl::class,
             Valkyrja\Annotations\AnnotationsImpl::class,
             Valkyrja\Client\GuzzleClient::class,

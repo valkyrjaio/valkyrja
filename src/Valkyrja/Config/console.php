@@ -30,17 +30,7 @@ return [
      * //
      *
      */
-    'providers'                 => env()::CONSOLE_PROVIDERS ?? [],
-
-    /*
-     *-------------------------------------------------------------------------
-     * Console Core Command Providers
-     *-------------------------------------------------------------------------
-     *
-     * //
-     *
-     */
-    'coreProviders'             => env()::CONSOLE_CORE_PROVIDERS ?? [
+    'providers'                 => env()::CONSOLE_PROVIDERS ?? [
             Valkyrja\Config\Commands\ConfigCache::class,
             Valkyrja\Console\Commands\CacheAllCommand::class,
             Valkyrja\Console\Commands\ConsoleCommands::class,

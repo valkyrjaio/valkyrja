@@ -375,11 +375,6 @@ class ConsoleImpl implements Console
      */
     protected function setupCommandProviders(): void
     {
-        // Iterate through all the core providers
-        foreach ($this->app->config()['console']['coreProviders'] as $provider) {
-            $this->register($provider);
-        }
-
         // Iterate through all the providers
         foreach ($this->app->config()['console']['providers'] as $provider) {
             $this->register($provider);
