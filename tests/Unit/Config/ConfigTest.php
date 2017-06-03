@@ -128,16 +128,6 @@ class ConfigTest extends TestCase
     }
 
     /**
-     * Test to ensure the storage config is set in the default config instance.
-     *
-     * @return void
-     */
-    public function testStorageConfig(): void
-    {
-        $this->assertEquals(true, isset($this->getConfig()['storage']));
-    }
-
-    /**
      * Test to ensure the views config is set in the default config instance.
      *
      * @return void
