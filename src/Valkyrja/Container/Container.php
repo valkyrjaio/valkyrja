@@ -12,14 +12,14 @@
 namespace Valkyrja\Container;
 
 use Valkyrja\Support\Cacheable;
-use Valkyrja\Support\Providers\AllowsProviders;
+use Valkyrja\Support\Providers\ProvidersAware;
 
 /**
  * Interface Container.
  *
  * @author Melech Mizrachi
  */
-interface Container extends Cacheable, AllowsProviders
+interface Container extends Cacheable, ProvidersAware
 {
     /**
      * Set an alias to the container.

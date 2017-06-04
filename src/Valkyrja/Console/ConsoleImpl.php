@@ -16,7 +16,7 @@ use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
-use Valkyrja\Support\Providers\AllowsProvidersTrait;
+use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -26,7 +26,7 @@ use Valkyrja\Support\Providers\Provides;
  */
 class ConsoleImpl implements Console
 {
-    use AllowsProvidersTrait {
+    use ProvidersAwareTrait {
         register as traitRegister;
     }
     use Provides;

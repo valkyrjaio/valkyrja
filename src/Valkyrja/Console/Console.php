@@ -14,14 +14,14 @@ namespace Valkyrja\Console;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Support\Cacheable;
-use Valkyrja\Support\Providers\AllowsProviders;
+use Valkyrja\Support\Providers\ProvidersAware;
 
 /**
  * Interface Console.
  *
  * @author Melech Mizrachi
  */
-interface Console extends Cacheable, AllowsProviders
+interface Console extends Cacheable, ProvidersAware
 {
     /**
      * Add a new command.

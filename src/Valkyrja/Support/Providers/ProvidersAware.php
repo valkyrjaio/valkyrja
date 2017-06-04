@@ -16,7 +16,7 @@ namespace Valkyrja\Support\Providers;
  *
  * @author Melech Mizrachi
  */
-interface AllowsProviders
+interface ProvidersAware
 {
     /**
      * Register a provider.

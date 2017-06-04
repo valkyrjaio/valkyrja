@@ -18,7 +18,7 @@ use Valkyrja\Application;
  *
  * @author Melech Mizrachi
  */
-trait AllowsProvidersTrait
+trait ProvidersAwareTrait
 {
     /**
      * The items provided by providers that are deferred.

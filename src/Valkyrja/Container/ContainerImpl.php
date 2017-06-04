@@ -17,7 +17,7 @@ use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Events\Events;
-use Valkyrja\Support\Providers\AllowsProvidersTrait;
+use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 /**
  * Class Container.
@@ -26,7 +26,7 @@ use Valkyrja\Support\Providers\AllowsProvidersTrait;
  */
 class ContainerImpl implements Container
 {
-    use AllowsProvidersTrait;
+    use ProvidersAwareTrait;
 
     /**
      * The application.
