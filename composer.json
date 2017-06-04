@@ -15,7 +15,9 @@
     }
   ],
   "require"           : {
-    "php" : ">=7.1"
+    "php"              : ">=7.1",
+    "psr/http-message" : "1.0.1",
+    "psr/log"          : "1.0.2"
   },
   "require-dev"       : {
     "fzaninotto/faker"           : "1.6.0",
@@ -27,7 +29,7 @@
     "phpunit/phpunit"            : "6.1.4",
     "predis/predis"              : "1.1.1",
     "satooshi/php-coveralls"     : "0.7.0",
-    "valkyrja/valkyrja-app"      : "^0.7@dev"
+    "valkyrja/valkyrja-app"      : "0.7.*"
   },
   "autoload"          : {
     "psr-4" : {
