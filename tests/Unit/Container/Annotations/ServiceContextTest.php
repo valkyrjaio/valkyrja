@@ -108,7 +108,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextProperty(): void
     {
-        $this->assertEquals(true, $this->class->setContextProperty($this->value) ?? null);
+        $this->assertEquals(null, $this->class->setContextProperty($this->value) ?? null);
     }
 
     /**

@@ -192,7 +192,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegmentsNull(): void
     {
-        $this->assertEquals(true, $this->class->setSegments(null) ?? null);
+        $this->assertEquals(null, $this->class->setSegments(null) ?? null);
     }
 
     /**
