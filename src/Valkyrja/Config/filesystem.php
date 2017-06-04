@@ -49,7 +49,7 @@ return [
             'region'  => env('FILESYSTEM_S3_REGION'),
             'version' => env('FILESYSTEM_S3_VERSION'),
             'bucket'  => env('FILESYSTEM_S3_BUCKET'),
-            'dir'     => env('FILESYSTEM_S3_DIR', ''),
+            'dir'     => env('FILESYSTEM_S3_DIR', '/'),
             'options' => env('FILESYSTEM_S3_OPTIONS', []),
         ],
     ],
