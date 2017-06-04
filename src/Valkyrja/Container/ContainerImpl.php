@@ -19,7 +19,6 @@ use Valkyrja\Container\Events\ServiceMake;
 use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
-use Valkyrja\Events\Events;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 /**
@@ -37,13 +36,6 @@ class ContainerImpl implements Container
      * @var \Valkyrja\Application
      */
     protected $app;
-
-    /**
-     * The events.
-     *
-     * @var \Valkyrja\Events\Events
-     */
-    protected $events;
 
     /**
      * Whether the container has been setup.
@@ -76,13 +68,11 @@ class ContainerImpl implements Container
     /**
      * Container constructor.
      *
-     * @param \Valkyrja\Application   $application The application
-     * @param \Valkyrja\Events\Events $events      The events
+     * @param \Valkyrja\Application $application The application
      */
-    public function __construct(Application $application, Events $events)
+    public function __construct(Application $application)
     {
-        $this->app    = $application;
-        $this->events = $events;
+        $this->app = $application;
     }
 
     /**
@@ -329,17 +319,17 @@ class ContainerImpl implements Container
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        $this->events->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
+        $this->app->events()->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
 
         // Make the object by dispatching the service
         $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
-        $this->events->trigger(ServiceMade::class, [$serviceId, $made]);
+        $this->app->events()->trigger(ServiceMade::class, [$serviceId, $made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->events->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
+            $this->app->events()->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }

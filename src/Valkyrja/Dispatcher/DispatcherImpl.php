@@ -11,15 +11,13 @@
 
 namespace Valkyrja\Dispatcher;
 
-use Valkyrja\Container\Container;
+use Valkyrja\Application;
 use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Events\Events;
-use Valkyrja\Events\Listener;
 
 /**
  * Class Dispatcher.
@@ -39,29 +37,20 @@ class DispatcherImpl implements Dispatcher
     protected $DISPATCHED = 'dispatcher.dispatched';
 
     /**
-     * The container.
+     * The application.
      *
-     * @var \Valkyrja\Container\Container
+     * @var \Valkyrja\Application
      */
-    protected $container;
-
-    /**
-     * The events.
-     *
-     * @var \Valkyrja\Events\Events
-     */
-    protected $events;
+    protected $app;
 
     /**
      * Dispatcher constructor.
      *
-     * @param \Valkyrja\Container\Container $container The container
-     * @param \Valkyrja\Events\Events       $events    The events
+     * @param \Valkyrja\Application $application The application
      */
-    public function __construct(Container $container, Events $events)
+    public function __construct(Application $application)
     {
-        $this->container = $container;
-        $this->events    = $events;
+        $this->app = $application;
     }
 
     /**
@@ -233,7 +222,7 @@ class DispatcherImpl implements Dispatcher
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = $this->container->get($dependency, null, $context, $member);
+                $dependencies[] = $this->app->container()->get($dependency, null, $context, $member);
             }
         }
 
@@ -244,7 +233,7 @@ class DispatcherImpl implements Dispatcher
      * Get a dispatch's arguments.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return array
      */
@@ -269,7 +258,7 @@ class DispatcherImpl implements Dispatcher
             // If the argument is a service
             if ($argument instanceof Service) {
                 // Dispatch the argument and set the results to the argument
-                $argument = $this->container->get($argument->getId(), null, $context, $member);
+                $argument = $this->app->container()->get($argument->getId(), null, $context, $member);
             } // If the argument is a dispatch
             elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
@@ -287,7 +276,7 @@ class DispatcherImpl implements Dispatcher
      * Dispatch a class method.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -303,7 +292,7 @@ class DispatcherImpl implements Dispatcher
         // Set the class through the container if this isn't a static method
         $class    = $dispatch->isStatic()
             ? $dispatch->getClass()
-            : $this->container->get($dispatch->getClass());
+            : $this->app->container()->get($dispatch->getClass());
         $method   = $dispatch->getMethod();
         $response = null;
 
@@ -351,7 +340,7 @@ class DispatcherImpl implements Dispatcher
             $response = $class::$$property;
         } else {
             // Get the class from the container
-            $class    = $this->container->get($dispatch->getClass());
+            $class    = $this->app->container()->get($dispatch->getClass());
             $response = $class->{$property};
         }
 
@@ -362,7 +351,7 @@ class DispatcherImpl implements Dispatcher
      * Dispatch a class.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -390,7 +379,7 @@ class DispatcherImpl implements Dispatcher
             }
         } else {
             // Set the class through the container
-            $class = $this->container->get($dispatch->getClass(), $arguments);
+            $class = $this->app->container()->get($dispatch->getClass(), $arguments);
         }
 
         return $class ?? $this->DISPATCHED;
@@ -400,7 +389,7 @@ class DispatcherImpl implements Dispatcher
      * Dispatch a function.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -430,7 +419,7 @@ class DispatcherImpl implements Dispatcher
      * Dispatch a closure.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -460,7 +449,7 @@ class DispatcherImpl implements Dispatcher
      * Dispatch a callable.
      *
      * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments The arguments
+     * @param array                         $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -468,9 +457,6 @@ class DispatcherImpl implements Dispatcher
     {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
-
-        // Before dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.before', [$dispatch, $arguments]);
 
         // Attempt to dispatch the dispatch
         $response = $this->dispatchClassMethod($dispatch, $arguments)
@@ -487,27 +473,6 @@ class DispatcherImpl implements Dispatcher
             $response = null;
         }
 
-        // After dispatch event
-        $this->dispatcherEvent($dispatch, 'dispatch.after', [$dispatch, $response]);
-
         return $response;
-    }
-
-    /**
-     * Trigger a dispatcher event.
-     *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param string                        $event     The event
-     * @param array                         $arguments [optional] The arguments
-     *
-     * @return void
-     */
-    protected function dispatcherEvent(Dispatch $dispatch, string $event, array $arguments = null): void
-    {
-        // Avoid infinite recursion
-        if (! $dispatch instanceof Listener) {
-            // After dispatch event
-            $this->events->trigger($event, $arguments);
-        }
     }
 }

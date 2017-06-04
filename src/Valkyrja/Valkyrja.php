@@ -238,7 +238,7 @@ class Valkyrja implements Application
         }
 
         // Set the container to a new instance of the container implementation
-        self::$container = new $containerImpl($this, self::$events);
+        self::$container = new $containerImpl($this);
 
         // If the container implementation specified does not adhere to the container contract
         if (! self::$container instanceof Container) {
@@ -246,7 +246,7 @@ class Valkyrja implements Application
         }
 
         // Set the dispatcher to a new instance of the dispatcher implementation
-        self::$dispatcher = new $dispatcherImpl(self::$container, self::$events);
+        self::$dispatcher = new $dispatcherImpl($this);
 
         // If the dispatcher implementation specified does not adhere to the dispatcher contract
         if (! self::$dispatcher instanceof Dispatcher) {
