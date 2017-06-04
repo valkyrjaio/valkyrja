@@ -172,7 +172,7 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app::setEnv();
+        $this->app::setEnv(Env::class);
 
         $this->assertEquals(Env::class, $this->app::getEnv());
 
