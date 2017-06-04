@@ -162,7 +162,7 @@ class ApplicationTest extends TestCase
      */
     public function testGetEnv(): void
     {
-        $this->assertEquals(true, is_string($this->app::getEnv()));
+        $this->assertEquals(EnvTest::class, $this->app::getEnv());
     }
 
     /**

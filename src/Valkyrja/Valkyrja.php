@@ -345,12 +345,7 @@ class Valkyrja implements Application
      */
     public static function getEnv(): string
     {
-        // Ensure the env has been set
-        if (null === self::$env) {
-            static::setEnv();
-        }
-
-        return self::$env;
+        return self::$env ?? self::$env = Env::class;
     }
 
     /**
