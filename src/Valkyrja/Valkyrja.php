@@ -329,7 +329,10 @@ class Valkyrja implements Application
         }
 
         // If the env has this variable defined and the variable isn't null
-        if (defined(static::getEnv() . '::' . $variable) && null !== $env = constant(static::getEnv() . '::' . $variable)) {
+        if (
+            defined(static::getEnv() . '::' . $variable)
+            && null !== $env = constant(static::getEnv() . '::' . $variable)
+        ) {
             // Return the variable
             return $env;
         }
