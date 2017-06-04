@@ -18,6 +18,7 @@ use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\StatusCode;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
+use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
@@ -485,6 +486,11 @@ class RouterImpl implements Router
             // Throw the redirect to the secure path
             return $this->app->redirect()->secure($request->getPath());
         }
+
+        // Trigger an event for route matched
+        $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
+        // Set the found route in the service container
+        $this->app->container()->singleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->app->dispatcher()->dispatchCallable($route, $route->getMatches());
