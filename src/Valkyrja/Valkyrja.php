@@ -358,7 +358,7 @@ class Valkyrja implements Application
     public static function setEnv(string $env = null): void
     {
         // Set the env class to use
-        self::$env = self::$env ?? $env ?? Env::class;
+        self::$env = $env ?? self::$env ?? Env::class;
     }
 
     /**
