@@ -94,6 +94,30 @@ class DirectoryTest extends TestCase
     }
 
     /**
+     * Test the cachePath directory helper method.
+     *
+     * @return void
+     */
+    public function testCachePath(): void
+    {
+        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
+
+        $this->assertEquals($expected, Directory::cachePath());
+    }
+
+    /**
+     * Test the cachePath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testCachePathSubPath(): void
+    {
+        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
+
+        $this->assertEquals($expected, Directory::cachePath($this->subPath));
+    }
+
+    /**
      * Test the configPath directory helper method.
      *
      * @return void

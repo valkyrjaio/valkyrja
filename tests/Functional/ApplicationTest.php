@@ -13,6 +13,9 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Config\Env;
+use Valkyrja\Config\EnvTest;
+use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
@@ -143,6 +146,40 @@ class ApplicationTest extends TestCase
     }
 
     /**
+     * Test the env() helper method.
+     *
+     * @return void
+     */
+    public function testEnvValue(): void
+    {
+        $this->assertEquals(true, $this->app::env('CONSOLE_QUIET'));
+    }
+
+    /**
+     * Test the getEnv() helper method.
+     *
+     * @return void
+     */
+    public function testGetEnv(): void
+    {
+        $this->assertEquals(true, is_string($this->app::getEnv()));
+    }
+
+    /**
+     * Test the getEnv() helper method.
+     *
+     * @return void
+     */
+    public function testSetEnv(): void
+    {
+        $this->app::setEnv();
+
+        $this->assertEquals(Env::class, $this->app::getEnv());
+
+        $this->app::setEnv(EnvTest::class);
+    }
+
+    /**
      * Test the environment() helper method.
      *
      * @return void
@@ -248,6 +285,16 @@ class ApplicationTest extends TestCase
     public function testConsoleKernel(): void
     {
         $this->assertEquals(true, $this->app->consoleKernel() instanceof ConsoleKernel);
+    }
+
+    /**
+     * Test the filesystem() helper method.
+     *
+     * @return void
+     */
+    public function testFilesystem(): void
+    {
+        $this->assertEquals(true, $this->app->filesystem() instanceof FlyFilesystem);
     }
 
     /**

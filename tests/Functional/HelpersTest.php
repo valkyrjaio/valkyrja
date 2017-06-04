@@ -13,6 +13,9 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Filesystem\FlyFilesystem;
+use Valkyrja\Routing\Route;
+use Valkyrja\Support\Directory;
 use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\ConsoleImpl;
@@ -39,6 +42,13 @@ use Valkyrja\View\PhpView;
  */
 class HelpersTest extends TestCase
 {
+    /**
+     * The sub path.
+     *
+     * @var string
+     */
+    protected $subPath = '/sub/path';
+
     /**
      * Test the app() static helper method.
      *
@@ -158,6 +168,16 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * Test the filesystem() helper method.
+     *
+     * @return void
+     */
+    public function testFilesystem(): void
+    {
+        $this->assertEquals(true, filesystem() instanceof FlyFilesystem);
+    }
+
+    /**
      * Test the kernel() helper method.
      *
      * @return void
@@ -195,6 +215,26 @@ class HelpersTest extends TestCase
     public function testRouter(): void
     {
         $this->assertEquals(true, router() instanceof RouterImpl);
+    }
+
+    /**
+     * Test the route() helper method.
+     *
+     * @return void
+     */
+    public function testRoute(): void
+    {
+        $this->assertEquals(true, route('welcome') instanceof Route);
+    }
+
+    /**
+     * Test the routeUrl() helper method.
+     *
+     * @return void
+     */
+    public function testRouteUrl(): void
+    {
+        $this->assertEquals('/', routeUrl('welcome'));
     }
 
     /**
@@ -295,5 +335,219 @@ class HelpersTest extends TestCase
     public function testView(): void
     {
         $this->assertEquals(true, view() instanceof PhpView);
+    }
+
+    /**
+     * Test the basePath directory helper method.
+     *
+     * @return void
+     */
+    public function testBasePath(): void
+    {
+        $this->assertEquals(Directory::$BASE_PATH, basePath());
+    }
+
+    /**
+     * Test the basePath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testBasePathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . $this->subPath;
+
+        $this->assertEquals($expected, basePath($this->subPath));
+    }
+
+    /**
+     * Test the appPath directory helper method.
+     *
+     * @return void
+     */
+    public function testAppPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$APP_PATH;
+
+        $this->assertEquals($expected, appPath());
+    }
+
+    /**
+     * Test the appPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testAppPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$APP_PATH . $this->subPath;
+
+        $this->assertEquals($expected, appPath($this->subPath));
+    }
+
+    /**
+     * Test the cachePath directory helper method.
+     *
+     * @return void
+     */
+    public function testCachePath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
+
+        $this->assertEquals($expected, cachePath());
+    }
+
+    /**
+     * Test the cachePath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testCachePathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
+
+        $this->assertEquals($expected, cachePath($this->subPath));
+    }
+
+    /**
+     * Test the configPath directory helper method.
+     *
+     * @return void
+     */
+    public function testConfigPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
+
+        $this->assertEquals($expected, configPath());
+    }
+
+    /**
+     * Test the configPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testConfigPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
+
+        $this->assertEquals($expected, configPath($this->subPath));
+    }
+
+    /**
+     * Test the publicPath directory helper method.
+     *
+     * @return void
+     */
+    public function testPublicPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH;
+
+        $this->assertEquals($expected, publicPath());
+    }
+
+    /**
+     * Test the publicPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testPublicPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH . $this->subPath;
+
+        $this->assertEquals($expected, publicPath($this->subPath));
+    }
+
+    /**
+     * Test the resourcesPath directory helper method.
+     *
+     * @return void
+     */
+    public function testResourcesPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH;
+
+        $this->assertEquals($expected, resourcesPath());
+    }
+
+    /**
+     * Test the resourcesPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testResourcesPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH . $this->subPath;
+
+        $this->assertEquals($expected, resourcesPath($this->subPath));
+    }
+
+    /**
+     * Test the storagePath directory helper method.
+     *
+     * @return void
+     */
+    public function testStoragePath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH;
+
+        $this->assertEquals($expected, storagePath());
+    }
+
+    /**
+     * Test the storagePath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testStoragePathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . $this->subPath;
+
+        $this->assertEquals($expected, storagePath($this->subPath));
+    }
+
+    /**
+     * Test the testsPath directory helper method.
+     *
+     * @return void
+     */
+    public function testTestsPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH;
+
+        $this->assertEquals($expected, testsPath());
+    }
+
+    /**
+     * Test the testsPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testTestsPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH . $this->subPath;
+
+        $this->assertEquals($expected, testsPath($this->subPath));
+    }
+
+    /**
+     * Test the vendorPath directory helper method.
+     *
+     * @return void
+     */
+    public function testVendorPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH;
+
+        $this->assertEquals($expected, vendorPath());
+    }
+
+    /**
+     * Test the vendorPath directory helper method with a sub path.
+     *
+     * @return void
+     */
+    public function testVendorPathSubPath(): void
+    {
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH . $this->subPath;
+
+        $this->assertEquals($expected, vendorPath($this->subPath));
     }
 }
