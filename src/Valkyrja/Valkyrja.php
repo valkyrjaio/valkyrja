@@ -322,9 +322,6 @@ class Valkyrja implements Application
      */
     public static function env(string $variable = null, $default = null)
     {
-        // Ensure the env has been set
-        static::setEnv();
-
         // If there was no variable requested
         if (null === $variable) {
             // Return the env class
@@ -349,7 +346,9 @@ class Valkyrja implements Application
     public static function getEnv(): string
     {
         // Ensure the env has been set
-        static::setEnv();
+        if (null === self::$env) {
+            static::setEnv();
+        }
 
         return self::$env;
     }
@@ -363,12 +362,6 @@ class Valkyrja implements Application
      */
     public static function setEnv(string $env = null): void
     {
-        // If the env has been set
-        if (null !== self::$env) {
-            // No need to set it again
-            return;
-        }
-
         // Set the env class to use
         self::$env = $env ?? Env::class;
     }
