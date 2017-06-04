@@ -390,7 +390,7 @@ class HelpersTest extends TestCase
      */
     public function testCachePath(): void
     {
-        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH;
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH;
 
         $this->assertEquals($expected, cachePath());
     }
@@ -402,7 +402,7 @@ class HelpersTest extends TestCase
      */
     public function testCachePathSubPath(): void
     {
-        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH . $this->subPath;
+        $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH . $this->subPath;
 
         $this->assertEquals($expected, cachePath($this->subPath));
     }

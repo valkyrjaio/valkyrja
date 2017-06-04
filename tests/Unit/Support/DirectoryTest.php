@@ -100,7 +100,7 @@ class DirectoryTest extends TestCase
      */
     public function testCachePath(): void
     {
-        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH;
+        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH;
 
         $this->assertEquals($expected, Directory::cachePath());
     }
@@ -112,7 +112,7 @@ class DirectoryTest extends TestCase
      */
     public function testCachePathSubPath(): void
     {
-        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH . $this->subPath;
+        $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . DIRECTORY_SEPARATOR . Directory::$CACHE_PATH . $this->subPath;
 
         $this->assertEquals($expected, Directory::cachePath($this->subPath));
     }
