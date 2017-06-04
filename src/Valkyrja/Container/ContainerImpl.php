@@ -13,6 +13,9 @@ namespace Valkyrja\Container;
 
 use Valkyrja\Application;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
+use Valkyrja\Container\Events\ServiceMade;
+use Valkyrja\Container\Events\ServiceMadeSingleton;
+use Valkyrja\Container\Events\ServiceMake;
 use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
@@ -326,17 +329,17 @@ class ContainerImpl implements Container
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        $this->events->trigger('service.make', [$serviceId, $service, $arguments]);
+        $this->events->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
 
         // Make the object by dispatching the service
         $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
-        $this->events->trigger('service.made', [$serviceId, $made]);
+        $this->events->trigger(ServiceMade::class, [$serviceId, $made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->events->trigger('service.made.singleton', [$serviceId, $made]);
+            $this->events->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }
