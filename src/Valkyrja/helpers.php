@@ -30,17 +30,17 @@ if (! function_exists('abort')) {
      * @param array  $headers    [optional] The headers to send
      * @param int    $code       [optional] The Exception code
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @throws Valkyrja\Http\Exceptions\HttpException
      *
      * @return void
      */
     function abort(
-        int $statusCode = \Valkyrja\Http\StatusCode::NOT_FOUND,
+        int $statusCode = Valkyrja\Http\StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
         int $code = 0
     ): void {
-        app()->abort($statusCode, $message, $headers, $code);
+        throw new Valkyrja\Http\Exceptions\HttpException($statusCode, $message, null, $headers, $code);
     }
 }
 
@@ -50,7 +50,7 @@ if (! function_exists('annotations')) {
      *
      * @return \Valkyrja\Annotations\Annotations
      */
-    function annotations(): \Valkyrja\Annotations\Annotations
+    function annotations(): Valkyrja\Annotations\Annotations
     {
         return app()->annotations();
     }
@@ -62,7 +62,7 @@ if (! function_exists('client')) {
      *
      * @return \Valkyrja\Client\Client
      */
-    function client(): \Valkyrja\Client\Client
+    function client(): Valkyrja\Client\Client
     {
         return app()->client();
     }
@@ -86,7 +86,7 @@ if (! function_exists('console')) {
      *
      * @return \Valkyrja\Console\Console
      */
-    function console(): \Valkyrja\Console\Console
+    function console(): Valkyrja\Console\Console
     {
         return app()->console();
     }
@@ -98,7 +98,7 @@ if (! function_exists('container')) {
      *
      * @return \Valkyrja\Container\Container
      */
-    function container(): \Valkyrja\Container\Container
+    function container(): Valkyrja\Container\Container
     {
         return app()->container();
     }
@@ -111,10 +111,13 @@ if (! function_exists('env')) {
      * @param string $variable [optional] The variable to get
      * @param string $default  [optional] The default value to return
      *
-     * @return mixed|\Valkyrja\Config\Env||config|Env
+     * @return mixed|Valkyrja\Config\Env||config|Env
      */
     function env(string $variable = null, $default = null)
     {
+        // Does not use the app() helper due to the self::$instance property
+        // that Valkyrja::app() relies on has not been set yet when
+        // this helper may be used.
         return Valkyrja\Valkyrja::env($variable, $default);
     }
 }
@@ -125,7 +128,7 @@ if (! function_exists('events')) {
      *
      * @return \Valkyrja\Events\Events
      */
-    function events(): \Valkyrja\Events\Events
+    function events(): Valkyrja\Events\Events
     {
         return app()->events();
     }
@@ -137,7 +140,7 @@ if (! function_exists('filesystem')) {
      *
      * @return \Valkyrja\Filesystem\Filesystem
      */
-    function filesystem(): \Valkyrja\Filesystem\Filesystem
+    function filesystem(): Valkyrja\Filesystem\Filesystem
     {
         return app()->filesystem();
     }
@@ -149,9 +152,9 @@ if (! function_exists('input')) {
      *
      * @return \Valkyrja\Console\Input\Input
      */
-    function input(): \Valkyrja\Console\Input\Input
+    function input(): Valkyrja\Console\Input\Input
     {
-        return container()->get(\Valkyrja\Container\CoreComponent::INPUT);
+        return container()->get(Valkyrja\Container\CoreComponent::INPUT);
     }
 }
 
@@ -161,7 +164,7 @@ if (! function_exists('kernel')) {
      *
      * @return \Valkyrja\Http\Kernel
      */
-    function kernel(): \Valkyrja\Http\Kernel
+    function kernel(): Valkyrja\Http\Kernel
     {
         return app()->kernel();
     }
@@ -173,7 +176,7 @@ if (! function_exists('consoleKernel')) {
      *
      * @return \Valkyrja\Console\Kernel
      */
-    function consoleKernel(): \Valkyrja\Console\Kernel
+    function consoleKernel(): Valkyrja\Console\Kernel
     {
         return app()->consoleKernel();
     }
@@ -185,7 +188,7 @@ if (! function_exists('logger')) {
      *
      * @return \Valkyrja\Logger\Logger
      */
-    function logger(): \Valkyrja\Logger\Logger
+    function logger(): Valkyrja\Logger\Logger
     {
         return app()->logger();
     }
@@ -197,9 +200,9 @@ if (! function_exists('output')) {
      *
      * @return \Valkyrja\Console\Output\Output
      */
-    function output(): \Valkyrja\Console\Output\Output
+    function output(): Valkyrja\Console\Output\Output
     {
-        return container()->get(\Valkyrja\Container\CoreComponent::OUTPUT);
+        return container()->get(Valkyrja\Container\CoreComponent::OUTPUT);
     }
 }
 
@@ -209,7 +212,7 @@ if (! function_exists('request')) {
      *
      * @return \Valkyrja\Http\Request
      */
-    function request(): \Valkyrja\Http\Request
+    function request(): Valkyrja\Http\Request
     {
         return app()->request();
     }
@@ -221,7 +224,7 @@ if (! function_exists('router')) {
      *
      * @return \Valkyrja\Routing\Router
      */
-    function router(): \Valkyrja\Routing\Router
+    function router(): Valkyrja\Routing\Router
     {
         return app()->router();
     }
@@ -263,7 +266,7 @@ if (! function_exists('responseBuilder')) {
      *
      * @return \Valkyrja\Http\ResponseBuilder
      */
-    function responseBuilder(): \Valkyrja\Http\ResponseBuilder
+    function responseBuilder(): Valkyrja\Http\ResponseBuilder
     {
         return app()->responseBuilder();
     }
@@ -281,9 +284,9 @@ if (! function_exists('response')) {
      */
     function response(
         string $content = '',
-        int $statusCode = \Valkyrja\Http\StatusCode::OK,
+        int $statusCode = Valkyrja\Http\StatusCode::OK,
         array $headers = []
-    ): \Valkyrja\Http\Response {
+    ): Valkyrja\Http\Response {
         return app()->response($content, $statusCode, $headers);
     }
 }
@@ -300,9 +303,9 @@ if (! function_exists('json')) {
      */
     function json(
         array $data = [],
-        int $statusCode = \Valkyrja\Http\StatusCode::OK,
+        int $statusCode = Valkyrja\Http\StatusCode::OK,
         array $headers = []
-    ): \Valkyrja\Http\JsonResponse {
+    ): Valkyrja\Http\JsonResponse {
         return app()->json($data, $statusCode, $headers);
     }
 }
@@ -319,9 +322,9 @@ if (! function_exists('redirect')) {
      */
     function redirect(
         string $uri = null,
-        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
+        int $statusCode = Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
-    ): \Valkyrja\Http\RedirectResponse {
+    ): Valkyrja\Http\RedirectResponse {
         return app()->redirect($uri, $statusCode, $headers);
     }
 }
@@ -340,9 +343,9 @@ if (! function_exists('redirectRoute')) {
     function redirectRoute(
         string $route,
         array $parameters = [],
-        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
+        int $statusCode = Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
-    ): \Valkyrja\Http\RedirectResponse {
+    ): Valkyrja\Http\RedirectResponse {
         return app()->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 }
@@ -355,16 +358,16 @@ if (! function_exists('redirectTo')) {
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     * @throws Valkyrja\Http\Exceptions\HttpRedirectException
      *
      * @return void
      */
     function redirectTo(
         string $uri = null,
-        int $statusCode = \Valkyrja\Http\StatusCode::FOUND,
+        int $statusCode = Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
     ): void {
-        app()->redirectTo($uri, $statusCode, $headers);
+        throw new Valkyrja\Http\Exceptions\HttpRedirectException($statusCode, $uri, null, $headers, 0);
     }
 }
 
@@ -374,7 +377,7 @@ if (! function_exists('session')) {
      *
      * @return \Valkyrja\Session\Session
      */
-    function session(): \Valkyrja\Session\Session
+    function session(): Valkyrja\Session\Session
     {
         return app()->session();
     }
@@ -389,7 +392,7 @@ if (! function_exists('view')) {
      *
      * @return \Valkyrja\View\View
      */
-    function view(string $template = '', array $variables = []): \Valkyrja\View\View
+    function view(string $template = '', array $variables = []): Valkyrja\View\View
     {
         return app()->view($template, $variables);
     }

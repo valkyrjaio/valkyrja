@@ -13,6 +13,8 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Console\Input\InputImpl;
+use Valkyrja\Console\Output\OutputImpl;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Directory;
@@ -178,6 +180,16 @@ class HelpersTest extends TestCase
     }
 
     /**
+     * Test the input() helper method.
+     *
+     * @return void
+     */
+    public function testInput(): void
+    {
+        $this->assertEquals(true, input() instanceof InputImpl);
+    }
+
+    /**
      * Test the kernel() helper method.
      *
      * @return void
@@ -195,6 +207,16 @@ class HelpersTest extends TestCase
     public function testLogger(): void
     {
         $this->assertEquals(true, logger() instanceof MonologLogger);
+    }
+
+    /**
+     * Test the output() helper method.
+     *
+     * @return void
+     */
+    public function testOutput(): void
+    {
+        $this->assertEquals(true, output() instanceof OutputImpl);
     }
 
     /**
