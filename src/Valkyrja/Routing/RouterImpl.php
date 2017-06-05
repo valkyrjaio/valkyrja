@@ -100,23 +100,30 @@ class RouterImpl implements Router
      */
     public function addRoute(Route $route): void
     {
+        // Verify the dispatch
         $this->app->dispatcher()->verifyDispatch($route);
 
+        // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->validatePath($route->getPath()));
         // Ensure the request methods are set
         $route->getRequestMethods();
 
         // If this is a dynamic route
         if ($route->isDynamic()) {
+            // Set the dynamic route's properties through the path parser
             $this->setDynamicRoute($route);
+            // Set the route's regex and path in the dynamic routes list
             self::$dynamicRoutes[$route->getRegex()] = $route->getPath();
         } // Otherwise set it in the static routes array
         else {
+            // Set the route's path in the static routes list
             self::$staticRoutes[$route->getPath()] = true;
 
+            // Set the named route
             $this->setNamedRoute($route);
         }
 
+        // Set the route in the routes list
         self::$routes[$route->getPath()] = $route;
     }
 
@@ -141,6 +148,7 @@ class RouterImpl implements Router
      */
     protected function setDynamicRoute(Route $route): void
     {
+        // Parse the path
         $parsedRoute = $this->app->pathParser()->parse($route->getPath());
 
         // Set the properties
@@ -148,6 +156,7 @@ class RouterImpl implements Router
         $route->setParams($parsedRoute['params']);
         $route->setSegments($parsedRoute['segments']);
 
+        // Set the named route
         $this->setNamedRoute($route);
     }
 
@@ -160,7 +169,9 @@ class RouterImpl implements Router
      */
     protected function setNamedRoute(Route $route): void
     {
+        // If this route has a name set
         if ($route->getName()) {
+            // Set the route in the named routes list
             self::$namedRoutes[$route->getName()] = $route->getPath();
         }
     }
@@ -487,6 +498,9 @@ class RouterImpl implements Router
             return $this->app->redirect()->secure($request->getPath());
         }
 
+        // Dispatch the route's before request handled middleware
+        $this->routeRequestMiddleware($request, $route);
+
         // Trigger an event for route matched
         $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
         // Set the found route in the service container
@@ -495,7 +509,50 @@ class RouterImpl implements Router
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->app->dispatcher()->dispatchCallable($route, $route->getMatches());
 
-        return $this->getResponseFromDispatch($dispatch);
+        // Get the response from the dispatch
+        $response = $this->getResponseFromDispatch($dispatch);
+
+        // Dispatch the route's before request handled middleware and return the response
+        return $this->routeResponseMiddleware($request, $response, $route);
+    }
+
+    /**
+     * Dispatch a route's before request handled middleware.
+     *
+     * @param \Valkyrja\Http\Request  $request The request
+     * @param \Valkyrja\Routing\Route $route   The route
+     *
+     * @return \Valkyrja\Http\Request
+     */
+    protected function routeRequestMiddleware(Request $request, Route $route): Request
+    {
+        // If the route has no middleware
+        if (null === $route->getMiddleware()) {
+            // Return the request passed through
+            return $request;
+        }
+
+        return $this->app->kernel()->requestMiddleware($request, $route->getMiddleware());
+    }
+
+    /**
+     * Dispatch a route's after request handled middleware.
+     *
+     * @param \Valkyrja\Http\Request  $request  The request
+     * @param \Valkyrja\Http\Response $response The response
+     * @param \Valkyrja\Routing\Route $route    The route
+     *
+     * @return \Valkyrja\Http\Response
+     */
+    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
+    {
+        // If the route has no middleware
+        if (null === $route->getMiddleware()) {
+            // Return the response passed through
+            return $response;
+        }
+
+        return $this->app->kernel()->responseMiddleware($request, $response, $route->getMiddleware());
     }
 
     /**

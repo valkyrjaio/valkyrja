@@ -14,7 +14,9 @@ namespace Valkyrja\Http;
 use Throwable;
 use Valkyrja\Application;
 use Valkyrja\Debug\ExceptionHandler;
+use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
+use Valkyrja\Support\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -24,6 +26,7 @@ use Valkyrja\Support\Providers\Provides;
  */
 class KernelImpl implements Kernel
 {
+    use MiddlewareAwareTrait;
     use Provides;
 
     /**
@@ -50,6 +53,9 @@ class KernelImpl implements Kernel
     {
         $this->app    = $application;
         $this->router = $router;
+
+        self::$middleware       = $application->config()['routing']['middleware'];
+        self::$middlewareGroups = $application->config()['routing']['middlewareGroups'];
     }
 
     /**
@@ -63,23 +69,50 @@ class KernelImpl implements Kernel
      */
     public function handle(Request $request): Response
     {
-        $this->app->container()->singleton(Request::class, $request);
-
         try {
-            $response = $this->router->dispatch($request);
+            $response = $this->dispatchRouter($request);
         } catch (Throwable $exception) {
-            $handler  = new ExceptionHandler($this->app->debug());
-            $response = $handler->getResponse($exception);
+            $response = $this->getExceptionResponse($exception);
         }
 
-        $this->app->events()->trigger('Kernel.handled', [$request, $response]);
-
-        // Dispatch the request and return it
-        return $response;
+        // Dispatch the after request handled middleware and return the response
+        return $this->responseMiddleware($request, $response);
     }
 
     /**
-     * Terminate the kernel request.
+     * Dispatch the request via the router.
+     *
+     * @param \Valkyrja\Http\Request $request The request
+     *
+     * @return \Valkyrja\Http\Response
+     */
+    protected function dispatchRouter(Request $request): Response
+    {
+        // Set the request object in the container
+        $this->app->container()->singleton(Request::class, $request);
+
+        // Dispatch the before request handled middleware
+        $request = $this->requestMiddleware($request);
+
+        return $this->router->dispatch($request);
+    }
+
+    /**
+     * Get a response from an exception.
+     *
+     * @param \Throwable $exception The exception
+     *
+     * @return \Valkyrja\Http\Response
+     */
+    protected function getExceptionResponse(Throwable $exception): Response
+    {
+        $handler = new ExceptionHandler($this->app->debug());
+
+        return $handler->getResponse($exception);
+    }
+
+    /**
+     * Terminate the request.
      *
      * @param \Valkyrja\Http\Request  $request  The request
      * @param \Valkyrja\Http\Response $response The response
@@ -88,7 +121,17 @@ class KernelImpl implements Kernel
      */
     public function terminate(Request $request, Response $response): void
     {
-        $this->app->events()->trigger('Kernel.terminate', [$request, $response]);
+        // Dispatch the terminable middleware
+        $this->terminableMiddleware($request, $response);
+
+        /* @var Route $route */
+        $route = $this->app->container()->getSingleton(Route::class);
+
+        // If the dispatched route has middleware
+        if (null !== $route->getMiddleware()) {
+            // Terminate each middleware
+            $this->terminableMiddleware($request, $response, $route->getMiddleware());
+        }
     }
 
     /**
@@ -107,11 +150,21 @@ class KernelImpl implements Kernel
             $request = $this->app->container()->getSingleton(Request::class);
         }
 
-        // Handle the request and send the response
+        // Handle the request, dispatch the after request middleware, and send the response
         $response = $this->handle($request)->send();
 
         // Terminate the application
         $this->terminate($request, $response);
+    }
+
+    /**
+     * Get the application.
+     *
+     * @return \Valkyrja\Application
+     */
+    protected function getApplication(): Application
+    {
+        return $this->app;
     }
 
     /**

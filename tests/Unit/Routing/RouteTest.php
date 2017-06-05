@@ -276,6 +276,52 @@ class RouteTest extends TestCase
     }
 
     /**
+     * Test the getMiddleware getter method default value.
+     *
+     * @return void
+     */
+    public function testGetMiddlewareDefault(): void
+    {
+        $this->assertEquals(null, $this->getRoute()->getMiddleware());
+    }
+
+    /**
+     * Test the setMiddleware setter method.
+     *
+     * @return void
+     */
+    public function testSetMiddleware(): void
+    {
+        $set = $this->getRoute()->setMiddleware([$this->stringValue]);
+
+        $this->assertEquals(true, $set instanceof Route);
+    }
+
+    /**
+     * Test the setMiddleware setter method using null.
+     *
+     * @return void
+     */
+    public function testSetMiddlewareNull(): void
+    {
+        $set = $this->getRoute()->setMiddleware(null);
+
+        $this->assertEquals(true, $set instanceof Route);
+    }
+
+    /**
+     * Test the getMiddleware getter method.
+     *
+     * @return void
+     */
+    public function testGetMiddleware(): void
+    {
+        $this->getRoute()->setMiddleware([$this->stringValue]);
+
+        $this->assertEquals([$this->stringValue], $this->getRoute()->getMiddleware());
+    }
+
+    /**
      * Test the getDynamic getter method default value.
      *
      * @return void

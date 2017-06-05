@@ -11,12 +11,14 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Support\Middleware\MiddlewareAware;
+
 /**
  * Interface Kernel.
  *
  * @author Melech Mizrachi
  */
-interface Kernel
+interface Kernel extends MiddlewareAware
 {
     /**
      * Handle a request.

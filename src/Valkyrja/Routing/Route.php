@@ -57,6 +57,13 @@ class Route extends Dispatch
     protected $segments;
 
     /**
+     * The middleware for this route.
+     *
+     * @var array
+     */
+    protected $middleware;
+
+    /**
      * Whether the route is dynamic.
      *
      * @var bool
@@ -199,6 +206,30 @@ class Route extends Dispatch
     public function setSegments(array $segments = null): self
     {
         $this->segments = $segments;
+
+        return $this;
+    }
+
+    /**
+     * Get the middleware.
+     *
+     * @return array
+     */
+    public function getMiddleware():? array
+    {
+        return $this->middleware;
+    }
+
+    /**
+     * Set the middleware.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return $this
+     */
+    public function setMiddleware(array $middleware = null): self
+    {
+        $this->middleware = $middleware;
 
         return $this;
     }

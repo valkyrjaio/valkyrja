@@ -57,6 +57,13 @@ class Route extends Annotation
     protected $segments;
 
     /**
+     * The middleware for this route.
+     *
+     * @var array
+     */
+    protected $middleware;
+
+    /**
      * Whether the route is dynamic.
      *
      * @var bool
@@ -191,6 +198,28 @@ class Route extends Annotation
     public function setSegments(array $segments = null): void
     {
         $this->segments = $segments;
+    }
+
+    /**
+     * Get the middleware.
+     *
+     * @return array
+     */
+    public function getMiddleware():? array
+    {
+        return $this->middleware;
+    }
+
+    /**
+     * Set the middleware.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return void
+     */
+    public function setMiddleware(array $middleware = null): void
+    {
+        $this->middleware = $middleware;
     }
 
     /**
