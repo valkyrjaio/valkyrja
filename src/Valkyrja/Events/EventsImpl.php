@@ -327,7 +327,7 @@ class EventsImpl implements Events
             ?? require $this->app->config()['events']['cacheFilePath'];
 
         self::$events = unserialize(
-            base64_decode($cache, true),
+            base64_decode($cache['events'], true),
             [
                 'allowed_classes' => [
                     Listener::class,
@@ -379,6 +379,8 @@ class EventsImpl implements Events
     {
         $this->setup(true, false);
 
-        return self::$events;
+        return [
+            'events' => base64_encode(serialize(self::$events)),
+        ];
     }
 }

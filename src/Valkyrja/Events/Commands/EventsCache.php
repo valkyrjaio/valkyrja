@@ -43,7 +43,7 @@ class EventsCache extends CommandHandler
         config()['app']['debug'] = false;
         config()['app']['env']   = 'production';
 
-        $cache = base64_encode(serialize(events()->getCacheable()));
+        $cache = events()->getCacheable();
 
         config()['app']['debug'] = $originalDebug;
         config()['app']['env']   = $originalEnv;
