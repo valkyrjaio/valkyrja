@@ -107,8 +107,8 @@ trait MessageTrait
      * exact case in which headers were originally specified.
      *
      * @return string[][] Returns an associative array of the message's headers. Each
-     *     key MUST be a header name, and each value MUST be an array of strings
-     *     for that header.
+     *                    key MUST be a header name, and each value MUST be an array of strings
+     *                    for that header.
      */
     public function getHeaders(): array
     {
@@ -121,8 +121,8 @@ trait MessageTrait
      * @param string $name Case-insensitive header field name.
      *
      * @return bool Returns true if any header names match the given header
-     *     name using a case-insensitive string comparison. Returns false if
-     *     no matching header name is found in the message.
+     *              name using a case-insensitive string comparison. Returns false if
+     *              no matching header name is found in the message.
      */
     public function hasHeader(string $name): bool
     {
@@ -141,8 +141,8 @@ trait MessageTrait
      * @param string $name Case-insensitive header field name.
      *
      * @return string[] An array of string values as provided for the given
-     *    header. If the header does not appear in the message, this method MUST
-     *    return an empty array.
+     *                  header. If the header does not appear in the message, this method MUST
+     *                  return an empty array.
      */
     public function getHeader(string $name): array
     {
@@ -172,8 +172,8 @@ trait MessageTrait
      * @param string $name Case-insensitive header field name.
      *
      * @return string A string of values as provided for the given header
-     *    concatenated together using a comma. If the header does not appear in
-     *    the message, this method MUST return an empty string.
+     *                concatenated together using a comma. If the header does not appear in
+     *                the message, this method MUST return an empty string.
      */
     public function getHeaderLine(string $name): string
     {

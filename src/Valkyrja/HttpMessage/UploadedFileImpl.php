@@ -34,7 +34,7 @@ class UploadedFileImpl implements UploadedFile
      * an exception.
      *
      * @throws \RuntimeException in cases when no stream is available or can be
-     *     created.
+     *                           created.
      *
      * @return \Valkyrja\HttpMessage\Stream Stream representation of the uploaded file.
      */
@@ -73,8 +73,8 @@ class UploadedFileImpl implements UploadedFile
      * @param string $targetPath Path to which to move the uploaded file.
      *
      * @throws \InvalidArgumentException if the $targetPath specified is invalid.
-     * @throws \RuntimeException on any error during the move operation, or on
-     *     the second or subsequent call to the method.
+     * @throws \RuntimeException         on any error during the move operation, or on
+     *                                   the second or subsequent call to the method.
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class UploadedFileImpl implements UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The filename sent by the client or null if none
-     *     was provided.
+     *                     was provided.
      */
     public function getClientFilename():? string
     {
@@ -142,7 +142,7 @@ class UploadedFileImpl implements UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *     was provided.
+     *                     was provided.
      */
     public function getClientMediaType():? string
     {

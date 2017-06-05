@@ -61,7 +61,7 @@ interface Stream
     public function getSize():? int;
 
     /**
-     * Returns the current position of the file read/write pointer
+     * Returns the current position of the file read/write pointer.
      *
      * @throws \RuntimeException on error.
      *
@@ -151,12 +151,12 @@ interface Stream
      * @throws \RuntimeException if an error occurs.
      *
      * @return string Returns the data read from the stream, or an empty string
-     *     if no bytes are available.
+     *                if no bytes are available.
      */
     public function read(int $length): string;
 
     /**
-     * Returns the remaining contents in a string
+     * Returns the remaining contents in a string.
      *
      * @throws \RuntimeException if unable to read or an error occurs while reading.
      *
@@ -175,8 +175,8 @@ interface Stream
      * @param string $key Specific metadata to retrieve.
      *
      * @return array|mixed|null Returns an associative array if no key is
-     *     provided. Returns a specific key value if a key is provided and the
-     *     value is found, or null if the key is not found.
+     *                          provided. Returns a specific key value if a key is provided and the
+     *                          value is found, or null if the key is not found.
      */
     public function getMetadata(string $key = null);
 }
