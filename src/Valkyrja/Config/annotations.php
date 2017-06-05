@@ -47,7 +47,8 @@ return [
      * //
      *
      */
-    'map'      => env('ANNOTATIONS_MAP',
+    'map'      => env(
+        'ANNOTATIONS_MAP',
         [
             'Command'        => Valkyrja\Console\Annotations\Command::class,
             'Listener'       => Valkyrja\Events\Annotations\Listener::class,

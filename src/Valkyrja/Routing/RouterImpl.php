@@ -585,6 +585,9 @@ class RouterImpl implements Router
     /**
      * Setup routes.
      *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -594,35 +597,27 @@ class RouterImpl implements Router
      *
      * @return void
      */
-    public function setup(): void
+    public function setup(bool $force = false, bool $useCache = true): void
     {
         // If route's have already been setup, no need to do it again
-        if (self::$setup) {
+        if (self::$setup && ! $force) {
             return;
         }
 
         self::$setup = true;
 
         // If the application should use the routes cache file
-        if ($this->app->config()['routing']['useCacheFile']) {
-            // Set the application routes with said file
-            $cache = require $this->app->config()['routing']['cacheFilePath'];
+        if ($useCache && $this->app->config()['routing']['useCache']) {
+            $this->setupFromCache();
 
-            self::$routes        = unserialize(
-                base64_decode($cache['routes'], true),
-                [
-                    'allowed_classes' => [
-                        Route::class,
-                    ],
-                ]
-            );
-            self::$staticRoutes  = $cache['staticRoutes'];
-            self::$dynamicRoutes = $cache['dynamicRoutes'];
-            self::$namedRoutes   = $cache['namedRoutes'];
-
-            // Then return out of routes setup
+            // Then return out of setup
             return;
         }
+
+        self::$routes        = [];
+        self::$staticRoutes  = [];
+        self::$dynamicRoutes = [];
+        self::$namedRoutes   = [];
 
         // If annotations are enabled and routing should use annotations
         if ($this->app->config()['routing']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
@@ -640,6 +635,30 @@ class RouterImpl implements Router
         // NOTE: Included if annotations are set or not due to possibility of routes being defined
         // within the controllers as well as within the routes file
         require $this->app->config()['routing']['filePath'];
+    }
+
+    /**
+     * Setup the router from cache.
+     *
+     * @return void
+     */
+    protected function setupFromCache(): void
+    {
+        // Set the application routes with said file
+        $cache = $this->app->config()['cache']['routing']
+            ?? require $this->app->config()['routing']['cacheFilePath'];
+
+        self::$routes        = unserialize(
+            base64_decode($cache['routes'], true),
+            [
+                'allowed_classes' => [
+                    Route::class,
+                ],
+            ]
+        );
+        self::$staticRoutes  = $cache['staticRoutes'];
+        self::$dynamicRoutes = $cache['dynamicRoutes'];
+        self::$namedRoutes   = $cache['namedRoutes'];
     }
 
     /**
@@ -683,20 +702,7 @@ class RouterImpl implements Router
      */
     public function getCacheable(): array
     {
-        self::$routes        = [];
-        self::$staticRoutes  = [];
-        self::$dynamicRoutes = [];
-        self::$namedRoutes   = [];
-
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()['routing']['useCacheFile'];
-        // Avoid using the cache file we already have
-        $this->app->config()['routing']['useCacheFile'] = false;
-        self::$setup                                    = false;
-        $this->setup();
-
-        // Reset the use cache file value
-        $this->app->config()['routing']['useCacheFile'] = $originalUseCacheFile;
+        $this->setup(true, false);
 
         return [
             'routes'        => base64_encode(serialize(self::$routes)),

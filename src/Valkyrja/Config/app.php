@@ -107,7 +107,8 @@ return [
      * //
      *
      */
-    'pathRegexMap' => env('APP_PATH_REGEX_MAP',
+    'pathRegexMap' => env(
+        'APP_PATH_REGEX_MAP',
         [
             'num'                  => '(\d+)',
             'slug'                 => '([a-zA-Z0-9-]+)',

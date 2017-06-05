@@ -179,5 +179,5 @@ return [
      * //
      *
      */
-    'useCacheFile'  => env('CONFIG_USE_CACHE_FILE', false),
+    'useCache'      => env('CONFIG_USE_CACHE_FILE', false),
 ];

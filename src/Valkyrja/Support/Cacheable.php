@@ -21,9 +21,12 @@ interface Cacheable
     /**
      * Set the data from cache.
      *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
      * @return void
      */
-    public function setup(): void;
+    public function setup(bool $force = false, bool $useCache = true): void;
 
     /**
      * Get a cacheable representation of the data.

@@ -37,6 +37,18 @@ trait ProvidesCommand
     }
 
     /**
+     * Get the command names.
+     *
+     * @return array
+     */
+    public static function commands(): array
+    {
+        return [
+            static::COMMAND,
+        ];
+    }
+
+    /**
      * Publish the command.
      *
      * @param \Valkyrja\Application $app The application

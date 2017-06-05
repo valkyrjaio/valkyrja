@@ -414,6 +414,9 @@ class ContainerImpl implements Container
     /**
      * Setup the container.
      *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
@@ -425,33 +428,25 @@ class ContainerImpl implements Container
      *
      * @return void
      */
-    public function setup(): void
+    public function setup(bool $force = false, bool $useCache = true): void
     {
-        if (self::$setup) {
+        if (self::$setup && ! $force) {
             return;
         }
 
         self::$setup = true;
 
         // If the application should use the container cache files
-        if ($this->app->config()['container']['useCacheFile']) {
-            // Set the application routes with said file
-            $cache = require $this->app->config()['container']['cacheFilePath'];
+        if ($useCache && $this->app->config()['container']['useCache']) {
+            $this->setupFromCache();
 
-            self::$services = unserialize(
-                base64_decode($cache['services'], true),
-                [
-                    'allowed_classes' => [
-                        Service::class,
-                    ],
-                ]
-            );
-            self::$provided = $cache['provided'];
-            self::$aliases  = $cache['aliases'];
-
-            // Then return out of routes setup
+            // Then return out of setup
             return;
         }
+
+        self::$registered = [];
+        self::$services   = [];
+        self::$provided   = [];
 
         // Setup service providers
         $this->setupServiceProviders();
@@ -472,6 +467,29 @@ class ContainerImpl implements Container
         // NOTE: Included if annotations are set or not due to possibility of container items being defined
         // within the classes as well as within the container file
         require $this->app->config()['container']['filePath'];
+    }
+
+    /**
+     * Setup the container from cache.
+     *
+     * @return void
+     */
+    protected function setupFromCache(): void
+    {
+        // Set the application container with said file
+        $cache = $this->app->config()['cache']['container']
+            ?? require $this->app->config()['container']['cacheFilePath'];
+
+        self::$services = unserialize(
+            base64_decode($cache['services'], true),
+            [
+                'allowed_classes' => [
+                    Service::class,
+                ],
+            ]
+        );
+        self::$provided = $cache['provided'];
+        self::$aliases  = $cache['aliases'];
     }
 
     /**
@@ -562,18 +580,7 @@ class ContainerImpl implements Container
      */
     public function getCacheable(): array
     {
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()['container']['useCacheFile'];
-        // Avoid using the cache file we already have
-        $this->app->config()['container']['useCacheFile'] = false;
-        self::$registered                                 = [];
-        self::$services                                   = [];
-        self::$provided                                   = [];
-        self::$setup                                      = false;
-        $this->setup();
-
-        // Reset the use cache file value
-        $this->app->config()['container']['useCacheFile'] = $originalUseCacheFile;
+        $this->setup(true, false);
 
         return [
             'services' => base64_encode(serialize(self::$services)),

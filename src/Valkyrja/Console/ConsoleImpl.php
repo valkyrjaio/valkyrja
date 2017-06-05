@@ -306,7 +306,20 @@ class ConsoleImpl implements Console
     }
 
     /**
+     * Get the named commands list.
+     *
+     * @return array
+     */
+    public function getNamedCommands(): array
+    {
+        return self::$namedCommands;
+    }
+
+    /**
      * Setup the console.
+     *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -317,36 +330,27 @@ class ConsoleImpl implements Console
      *
      * @return void
      */
-    public function setup(): void
+    public function setup(bool $force = false, bool $useCache = true): void
     {
         // If the console was already setup no need to do it again
-        if (self::$setup) {
+        if (self::$setup && ! $force) {
             return;
         }
 
         // The console is setting up
         self::$setup = true;
 
-        // If the application should use the events cache files
-        if ($this->app->config()['console']['useCacheFile']) {
-            // Set the application routes with said file
-            $cache = require $this->app->config()['console']['cacheFilePath'];
+        // If the application should use the console cache files
+        if ($useCache && $this->app->config()['console']['useCache']) {
+            $this->setupFromCache();
 
-            self::$commands      = unserialize(
-                base64_decode($cache['commands'], true),
-                [
-                    'allowed_classes' => [
-                        Command::class,
-                    ],
-                ]
-            );
-            self::$paths         = $cache['paths'];
-            self::$namedCommands = $cache['namedCommands'];
-            self::$provided      = $cache['provided'];
-
-            // Then return out of routes setup
+            // Then return out of setup
             return;
         }
+
+        self::$paths         = [];
+        self::$commands      = [];
+        self::$namedCommands = [];
 
         // Setup command providers
         $this->setupCommandProviders();
@@ -365,6 +369,30 @@ class ConsoleImpl implements Console
 
         // Include the events file
         require $this->app->config()['console']['filePath'];
+    }
+
+    /**
+     * Setup the console from cache.
+     *
+     * @return void
+     */
+    protected function setupFromCache(): void
+    {
+        // Set the application console with said file
+        $cache = $this->app->config()['cache']['console']
+            ?? require $this->app->config()['console']['cacheFilePath'];
+
+        self::$commands      = unserialize(
+            base64_decode($cache['commands'], true),
+            [
+                'allowed_classes' => [
+                    Command::class,
+                ],
+            ]
+        );
+        self::$paths         = $cache['paths'];
+        self::$namedCommands = $cache['namedCommands'];
+        self::$provided      = $cache['provided'];
     }
 
     /**
@@ -404,12 +432,18 @@ class ConsoleImpl implements Console
         $this->traitRegister($provider, $force);
 
         /* @var \Valkyrja\Console\Support\CommandProvider $provider */
-        foreach ($provider::provides() as $provided) {
+        // Get the commands names provided
+        $commands = $provider::commands();
+
+        // Iterate through the provided commands
+        foreach ($provider::provides() as $key => $provided) {
             // Parse the provided path
             $parsedPath = $this->app->pathParser()->parse($provided);
 
             // Set the path and regex in the paths list
             self::$paths[$parsedPath['regex']] = $provided;
+            // Set the path and command in the named commands list
+            self::$namedCommands[$commands[$key]] = $provided;
         }
     }
 
@@ -441,19 +475,6 @@ class ConsoleImpl implements Console
     }
 
     /**
-     * Get the named commands list.
-     *
-     * @return array
-     */
-    public function getNamedCommands(): array
-    {
-        // Set all the commands
-        $this->all();
-
-        return self::$namedCommands;
-    }
-
-    /**
      * Get a cacheable representation of the commands.
      *
      * @throws \ReflectionException
@@ -467,18 +488,7 @@ class ConsoleImpl implements Console
      */
     public function getCacheable(): array
     {
-        self::$commands      = [];
-        self::$namedCommands = [];
-
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()['console']['useCacheFile'];
-        // Avoid using the cache file we already have
-        $this->app->config()['console']['useCacheFile'] = false;
-        self::$setup                                    = false;
-        $this->setup();
-
-        // Reset the use cache file value
-        $this->app->config()['console']['useCacheFile'] = $originalUseCacheFile;
+        $this->setup(true, false);
 
         return [
             'commands'      => base64_encode(serialize(self::$commands)),

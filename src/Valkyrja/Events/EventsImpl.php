@@ -269,6 +269,9 @@ class EventsImpl implements Events
     /**
      * Setup the events.
      *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
      * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -278,29 +281,23 @@ class EventsImpl implements Events
      *
      * @return void
      */
-    public function setup(): void
+    public function setup(bool $force = false, bool $useCache = true): void
     {
-        if (self::$setup) {
+        if (self::$setup && ! $force) {
             return;
         }
 
         self::$setup = true;
 
         // If the application should use the events cache files
-        if ($this->app->config()['events']['useCacheFile']) {
-            // Set the application routes with said file
-            self::$events = unserialize(
-                base64_decode(require $this->app->config()['events']['cacheFilePath'], true),
-                [
-                    'allowed_classes' => [
-                        Listener::class,
-                    ],
-                ]
-            );
+        if ($useCache && $this->app->config()['events']['useCache']) {
+            $this->setupFromCache();
 
-            // Then return out of routes setup
+            // Then return out of setup
             return;
         }
+
+        self::$events = [];
 
         // If annotations are enabled and the events should use annotations
         if ($this->app->config()['events']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
@@ -316,6 +313,27 @@ class EventsImpl implements Events
 
         // Include the events file
         require $this->app->config()['events']['filePath'];
+    }
+
+    /**
+     * Setup the events from cache.
+     *
+     * @return void
+     */
+    protected function setupFromCache(): void
+    {
+        // Set the application events with said file
+        $cache = $this->app->config()['cache']['events']
+            ?? require $this->app->config()['events']['cacheFilePath'];
+
+        self::$events = unserialize(
+            base64_decode($cache, true),
+            [
+                'allowed_classes' => [
+                    Listener::class,
+                ],
+            ]
+        );
     }
 
     /**
@@ -359,15 +377,7 @@ class EventsImpl implements Events
      */
     public function getCacheable(): array
     {
-        // The original use cache file value (may not be using cache to begin with)
-        $originalUseCacheFile = $this->app->config()['events']['useCacheFile'];
-        // Avoid using the cache file we already have
-        $this->app->config()['events']['useCacheFile'] = false;
-        self::$setup                                   = false;
-        $this->setup();
-
-        // Reset the use cache file value
-        $this->app->config()['events']['useCacheFile'] = $originalUseCacheFile;
+        $this->setup(true, false);
 
         return self::$events;
     }
