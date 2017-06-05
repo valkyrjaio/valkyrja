@@ -91,7 +91,7 @@ interface Request extends Message
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
      *
      * @return Uri Returns a Uri instance
-     *     representing the URI of the request.
+     *             representing the URI of the request.
      */
     public function getUri(): Uri;
 
@@ -221,7 +221,7 @@ interface Request extends Message
      * instantiation, or MAY be injected via withUploadedFiles().
      *
      * @return array An array tree of UploadedFileInterface instances; an empty
-     *     array MUST be returned if no data is present.
+     *               array MUST be returned if no data is present.
      */
     public function getUploadedFiles(): array;
 
@@ -234,8 +234,9 @@ interface Request extends Message
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
      *
-     * @return static
      * @throws \InvalidArgumentException if an invalid structure is provided.
+     *
+     * @return static
      */
     public function withUploadedFiles(array $uploadedFiles);
 
@@ -252,7 +253,7 @@ interface Request extends Message
      * the absence of body content.
      *
      * @return array The deserialized body parameters, if any.
-     *     These will typically be an array or object.
+     *               These will typically be an array or object.
      */
     public function getParsedBody(): array;
 
@@ -282,7 +283,7 @@ interface Request extends Message
      *                    typically be in an array or object.
      *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *     provided.
+     *                                   provided.
      *
      * @return static
      */
