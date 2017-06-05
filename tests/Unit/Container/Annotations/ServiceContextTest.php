@@ -207,9 +207,9 @@ class ServiceContextTest extends TestCase
     public function testSetContextClosure(): void
     {
         $set = $this->class->setContextClosure(
-            function () {
-            }
-        ) ?? null;
+                function () {
+                }
+            ) ?? null;
 
         $this->assertEquals(null, $set);
     }
