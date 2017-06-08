@@ -285,13 +285,12 @@ class NativeStream implements Stream
         // Get the stream's mode
         $mode = $this->getMetadata('mode');
 
-        return (
+        return
             false !== strpos($mode, 'x')
             || false !== strpos($mode, 'w')
             || false !== strpos($mode, 'c')
             || false !== strpos($mode, 'a')
-            || false !== strpos($mode, '+')
-        );
+            || false !== strpos($mode, '+');
     }
 
     /**
