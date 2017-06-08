@@ -17,7 +17,23 @@ use Valkyrja\HttpMessage\Exceptions\InvalidRequestTarget;
 use Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile;
 
 /**
- * Class RequestImpl.
+ * Representation of an outgoing, client-side request.
+ *
+ * Per the HTTP specification, this interface includes properties for
+ * each of the following:
+ *
+ * - Protocol version
+ * - HTTP method
+ * - URI
+ * - Headers
+ * - Message body
+ *
+ * During construction, implementations MUST attempt to set the Host header from
+ * a provided URI if no Host header is provided.
+ *
+ * Requests are considered immutable; all methods that might change state MUST
+ * be implemented such that they retain the internal state of the current
+ * message and return an instance that contains the changed state.
  *
  * @author Melech Mizrachi
  */
@@ -113,8 +129,14 @@ class RequestImpl implements Request
      * @param string                       $protocol   [optional] The protocol version
      *
      * @throws \ReflectionException
+     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile
      */
     public function __construct(
@@ -131,7 +153,7 @@ class RequestImpl implements Request
     ) {
         $this->uri        = $uri ?? new UriImpl();
         $this->method     = $method ?? RequestMethod::GET;
-        $this->body       = $body ?? new PhpInputStream();
+        $this->body       = $body ?? new NativeStream('php://input');
         $this->server     = $server ?? [];
         $this->headers    = $headers ?? [];
         $this->cookies    = $cookies ?? [];
@@ -148,27 +170,6 @@ class RequestImpl implements Request
             $this->headerNames[self::HOST_NAME_NORM] = self::HOST_NAME;
             $this->headers[self::HOST_NAME]          = [$this->uri->getHost()];
         }
-    }
-
-    /**
-     * Create a new request from PHP super globals.
-     *
-     * @param array $server  [optional] The server
-     * @param array $query   [optional] The query
-     * @param array $body    [optional] The body
-     * @param array $cookies [optional] The cookies
-     * @param array $files   [optional] The files
-     *
-     * @return \Valkyrja\HttpMessage\Request
-     */
-    public function fromGlobals(
-        array $server = null,
-        array $query = null,
-        array $body = null,
-        array $cookies = null,
-        array $files = null
-    ): Request {
-        return new static();
     }
 
     /**

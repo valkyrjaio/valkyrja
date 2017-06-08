@@ -18,6 +18,8 @@ namespace Valkyrja\HttpMessage;
  * might change state MUST be implemented such that they retain the internal
  * state of the current instance and return an instance that contains the
  * changed state.
+ *
+ * @author Melech Mizrachi
  */
 class UploadedFileImpl implements UploadedFile
 {

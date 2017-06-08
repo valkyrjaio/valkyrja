@@ -35,6 +35,8 @@ use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
  * server parameters.
  *
  * @link http://tools.ietf.org/html/rfc3986 (the URI specification)
+ *
+ * @author Melech Mizrachi
  */
 class UriImpl implements Uri
 {

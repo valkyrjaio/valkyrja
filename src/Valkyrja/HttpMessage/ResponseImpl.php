@@ -28,6 +28,8 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
  * Responses are considered immutable; all methods that might change state MUST
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
+ *
+ * @author Melech Mizrachi
  */
 class ResponseImpl implements Response
 {
@@ -56,10 +58,11 @@ class ResponseImpl implements Response
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
     public function __construct(Stream $body = null, int $status = null, array $headers = null)
     {
-        $this->stream     = $body ?? new PhpInputStream();
+        $this->stream     = $body ?? new NativeStream('php://input', 'rw');
         $this->statusCode = $this->validateStatusCode($status ?? StatusCode::OK);
         $this->headers    = $headers ?? [];
     }

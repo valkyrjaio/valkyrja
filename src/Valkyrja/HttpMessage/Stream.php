@@ -54,6 +54,16 @@ interface Stream
     public function detach();
 
     /**
+     * Attaches a new stream.
+     *
+     * @param string $stream The stream
+     * @param string $mode   [optional] The mode
+     *
+     * @return void
+     */
+    public function attach(string $stream, string $mode = null): void;
+
+    /**
      * Get the size of the stream if known.
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
