@@ -208,10 +208,7 @@ class NativeStream implements Stream
             return false;
         }
 
-        // Get the stream meta
-        $meta = stream_get_meta_data($this->stream);
-
-        return $meta['seekable'];
+        return $this->getMetadata('seekable');
     }
 
     /**
@@ -285,10 +282,8 @@ class NativeStream implements Stream
             return false;
         }
 
-        // Get the stream meta data
-        $meta = stream_get_meta_data($this->stream);
         // Get the stream's mode
-        $mode = $meta['mode'];
+        $mode = $this->getMetadata('mode');
 
         return (
             false !== strpos($mode, 'x')
@@ -342,15 +337,13 @@ class NativeStream implements Stream
     public function isReadable(): bool
     {
         // If there is no stream
-        if (null !== $this->stream) {
+        if (null === $this->stream) {
             // It's not readable
             return false;
         }
 
-        // Get the stream's meta data
-        $meta = stream_get_meta_data($this->stream);
         // Get the stream's mode
-        $mode = $meta['mode'];
+        $mode = $this->getMetadata('mode');
 
         return false !== strpos($mode, 'r') || false !== strpos($mode, '+');
     }
@@ -369,6 +362,28 @@ class NativeStream implements Stream
      */
     public function read(int $length): string
     {
+        // If there is no stream
+        if (null === $this->stream) {
+            // Throw a runtime exception
+            throw new RuntimeException('No resource available; cannot read');
+        }
+
+        // If the stream is not readable
+        if (! $this->isReadable()) {
+            // Throw a runtime exception
+            throw new RuntimeException('Stream is not readable');
+        }
+
+        // Read the stream
+        $result = fread($this->stream, $length);
+
+        // If there was a failure in reading the stream
+        if (false === $result) {
+            // Throw a runtime exception
+            throw new RuntimeException('Error reading stream');
+        }
+
+        return $result;
     }
 
     /**
@@ -380,6 +395,22 @@ class NativeStream implements Stream
      */
     public function getContents(): string
     {
+        // If the stream isn't readable
+        if (! $this->isReadable()) {
+            // Throw a runtime exception
+            throw new RuntimeException('Stream is not readable');
+        }
+
+        // Get the stream contents
+        $result = stream_get_contents($this->stream);
+
+        // If there was a failure in getting the stream contents
+        if (false === $result) {
+            // Throw a runtime exception
+            throw new RuntimeException('Error reading from stream');
+        }
+
+        return $result;
     }
 
     /**
@@ -398,6 +429,16 @@ class NativeStream implements Stream
      */
     public function getMetadata(string $key = null)
     {
+        // If no key was specified
+        if (null === $key) {
+            // Return all the meta data
+            return stream_get_meta_data($this->stream);
+        }
+
+        // Get the meta data
+        $metadata = stream_get_meta_data($this->stream);
+
+        return $metadata[$key] ?? null;
     }
 
     /**
@@ -412,16 +453,21 @@ class NativeStream implements Stream
      */
     protected function setStream(string $stream, string $mode = null): void
     {
+        // Set the mode
         $mode = $mode ?? 'r';
 
+        // Open a new resource stream
         $resource = fopen($stream, $mode);
 
+        // If the resource isn't a resource or a stream resource type
         if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
+            // Throw a new invalid stream exception
             throw new InvalidStream(
                 'Invalid stream provided; must be a string stream identifier or stream resource'
             );
         }
 
+        // Set the stream
         $this->stream = $resource;
     }
 }
