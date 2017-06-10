@@ -31,7 +31,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
  *
  * @author Melech Mizrachi
  */
-class ResponseImpl implements Response
+class NativeResponse implements Response
 {
     use MessageTrait;
 
@@ -50,7 +50,7 @@ class ResponseImpl implements Response
     protected $statusPhrase;
 
     /**
-     * ResponseImpl constructor.
+     * NativeResponse constructor.
      *
      * @param \Valkyrja\HttpMessage\Stream $body    [optional] The body
      * @param int                          $status  [optional] The status

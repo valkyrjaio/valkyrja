@@ -114,7 +114,6 @@ class NativeServerRequest implements ServerRequest
      * @param string                       $protocol   [optional] The protocol version
      *
      * @throws \ReflectionException
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
