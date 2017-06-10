@@ -145,7 +145,7 @@ class NativeResponse implements Response
      */
     protected function validateStatusCode(int $code): int
     {
-        if (! StatusCode::isValid($code)) {
+        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
             throw new InvalidStatusCode(
                 sprintf(
                     'Invalid status code "%d"; must adhere to values set in the %s enum class.',

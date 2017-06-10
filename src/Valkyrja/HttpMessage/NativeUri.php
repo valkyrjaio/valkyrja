@@ -34,12 +34,17 @@ use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
  * For server-side requests, the scheme will typically be discoverable in the
  * server parameters.
  *
- * @link http://tools.ietf.org/html/rfc3986 (the URI specification)
+ * @link   http://tools.ietf.org/html/rfc3986 (the URI specification)
  *
  * @author Melech Mizrachi
  */
 class NativeUri implements Uri
 {
+    protected const HTTP_PORT    = 80;
+    protected const HTTPS_PORT   = 443;
+    protected const HTTP_SCHEME  = 'http';
+    protected const HTTPS_SCHEME = 'https';
+
     /**
      * The scheme.
      *
@@ -724,8 +729,8 @@ class NativeUri implements Uri
             return true;
         }
 
-        return (Scheme::HTTP === $this->scheme && $this->port === DefaultPort::HTTP)
-            || (Scheme::HTTPS === $this->scheme && $this->port === DefaultPort::HTTPS);
+        return (static::HTTP_SCHEME === $this->scheme && $this->port === static::HTTP_PORT)
+            || (static::HTTPS_SCHEME === $this->scheme && $this->port === static::HTTPS_PORT);
     }
 
     /**
@@ -747,7 +752,7 @@ class NativeUri implements Uri
             return '';
         }
 
-        if (! Scheme::isValid($scheme)) {
+        if (static::HTTP_SCHEME !== $scheme || $scheme !== static::HTTPS_SCHEME) {
             throw new InvalidScheme(
                 sprintf(
                     'Invalid scheme "%s" specified; must be either "http" or "https"',
@@ -805,7 +810,7 @@ class NativeUri implements Uri
 
         // TODO: Filter path
 
-        return $path;
+        return '/' . ltrim($path, '/');
     }
 
     /**
