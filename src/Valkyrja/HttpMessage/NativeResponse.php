@@ -56,7 +56,6 @@ class NativeResponse implements Response
      * @param int                          $status  [optional] The status
      * @param array                        $headers [optional] The headers
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
@@ -99,17 +98,16 @@ class NativeResponse implements Response
      *                             provided status code; if none is provided, implementations MAY
      *                             use the defaults as suggested in the HTTP specification.
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode For invalid status code arguments.
      *
      * @return static
      */
-    public function withStatus(int $code, string $reasonPhrase = '')
+    public function withStatus(int $code, string $reasonPhrase = null)
     {
         $new = clone $this;
 
         $new->statusCode   = $new->validateStatusCode($code);
-        $new->statusPhrase = $reasonPhrase ?: StatusCode::TEXTS[$this->statusCode];
+        $new->statusPhrase = $reasonPhrase ?? StatusCode::TEXTS[$this->statusCode];
 
         return $new;
     }
@@ -138,7 +136,6 @@ class NativeResponse implements Response
      *
      * @param int $code The code
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      *
      * @return int

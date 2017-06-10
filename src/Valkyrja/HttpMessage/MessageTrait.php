@@ -352,4 +352,44 @@ trait MessageTrait
     {
         return $values;
     }
+
+    /**
+     * Inject a header in a headers array.
+     *
+     * @param string $header   The header to set
+     * @param string $value    The value to set
+     * @param array  $headers  [optional] The headers
+     * @param bool   $override [optional] Whether to override any existing value
+     *
+     * @return array
+     */
+    protected function injectHeader(string $header, string $value, array $headers = null, bool $override = false): array
+    {
+        // The headers
+        $headers = $headers ?? [];
+        // Normalize the content type header
+        $normalized = strtolower($header);
+        // The original value for the header (if it exists in the headers array)
+        // Defauls to the value passed in
+        $originalValue = $value;
+
+        // Iterate through all the headers
+        foreach ($headers as $headerIndex => $headerValue) {
+            // Normalize the header name and check if it matches the normalized
+            // passed in header
+            if (strtolower($headerIndex) === $normalized) {
+                // Set the original value as this header value
+                $originalValue = $headerValue;
+
+                // Unset the header as we want to use the header string that was
+                // passed in as the header
+                unset($headers[$headerIndex]);
+            }
+        }
+
+        // Set the header in the headers list
+        $headers[$header] = [$override ? $originalValue : $value];
+
+        return $headers;
+    }
 }

@@ -281,13 +281,7 @@ trait RequestTrait
 
         $new->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
 
-        foreach (array_keys($new->headers) as $header) {
-            if (strtolower($header) === static::$HOST_NAME_NORM) {
-                unset($new->headers[$header]);
-            }
-        }
-
-        $new->headers[static::$HOST_NAME] = [$host];
+        $new->headers = $this->injectHeader(static::$HOST_NAME, $host, $new->headerNames, true);
 
         return $new;
     }
