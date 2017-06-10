@@ -80,7 +80,7 @@ class NativeUploadedFile implements UploadedFile
      *
      * @return void
      */
-    public function moveTo($targetPath): void
+    public function moveTo(string $targetPath): void
     {
     }
 

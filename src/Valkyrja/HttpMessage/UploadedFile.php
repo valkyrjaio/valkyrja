@@ -18,6 +18,8 @@ namespace Valkyrja\HttpMessage;
  * might change state MUST be implemented such that they retain the internal
  * state of the current instance and return an instance that contains the
  * changed state.
+ *
+ * @author Melech Mizrachi
  */
 interface UploadedFile
 {
@@ -76,7 +78,7 @@ interface UploadedFile
      *
      * @return void
      */
-    public function moveTo($targetPath): void;
+    public function moveTo(string $targetPath): void;
 
     /**
      * Retrieve the file size.
