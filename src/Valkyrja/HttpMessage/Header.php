@@ -14,9 +14,7 @@ namespace Valkyrja\HttpMessage;
 use Valkyrja\Enum\Enum;
 
 /**
- *-------------------------------------------------------------------------
- * Header Field Definitions
- *-------------------------------------------------------------------------
+ * Header Field Definitions.
  *
  * This section defines the syntax and semantics of all standard HTTP/1.1
  * header fields. For entity-header fields, both sender and recipient refer
@@ -30,6 +28,8 @@ use Valkyrja\Enum\Enum;
 final class Header extends Enum
 {
     /**
+     * Accept Header.
+     *
      * The Accept request-header field can be used to specify certain
      * media types which are acceptable for the response. Accept
      * headers can be used to indicate that the request is
@@ -51,6 +51,8 @@ final class Header extends Enum
     public const ACCEPT = 'Accept';
 
     /**
+     * Accept-Charset Header.
+     *
      * The Accept-Charset request-header field can be used to indicate
      * what character sets are acceptable for the response. This field
      * allows clients capable of understanding more comprehensive or
@@ -66,6 +68,8 @@ final class Header extends Enum
     public const ACCEPT_CHARSET = 'Accept-Charset';
 
     /**
+     * Accept-Encoding Header.
+     *
      * The Accept-Encoding request-header field is similar to Accept, but
      * restricts the content-codings (section 3.5) that are acceptable
      * in the response documents in those character sets.
@@ -79,6 +83,8 @@ final class Header extends Enum
     public const ACCEPT_ENCODING = 'Accept-Encoding';
 
     /**
+     * Accept-Language Header.
+     *
      * The Accept-Language request-header field is similar to Accept, but
      * restricts the set of natural languages that are preferred as a
      * response to the request. Language tags are defined in
@@ -93,6 +99,8 @@ final class Header extends Enum
     public const ACCEPT_LANGUAGE = 'Accept-Language';
 
     /**
+     * Accept-Ranges Header.
+     *
      * The Accept-Ranges response-header field allows the server to
      * indicate its acceptance of range requests for a resource:
      *
@@ -104,6 +112,8 @@ final class Header extends Enum
     public const ACCEPT_RANGES = 'Accept-Ranges';
 
     /**
+     * Age Header.
+     *
      * The Age response-header field conveys the sender's estimate of the
      * amount of time since the response (or its revalidation) was
      * generated at the origin server. A cached response is "fresh" if
@@ -118,6 +128,8 @@ final class Header extends Enum
     public const AGE = 'Age';
 
     /**
+     * Allow Header.
+     *
      * The Allow entity-header field lists the set of methods supported
      * by the resource identified by the Request-URI. The purpose of this
      * field is strictly to inform the recipient of valid methods
@@ -131,6 +143,8 @@ final class Header extends Enum
     public const ALLOW = 'Allow';
 
     /**
+     * Authorization Header.
+     *
      * A user agent that wishes to authenticate itself with a server--
      * usually, but not necessarily, after receiving a 401 response--does
      * so by including an Authorization request-header field with the
@@ -145,6 +159,8 @@ final class Header extends Enum
     public const AUTHORIZATION = 'Authorization';
 
     /**
+     * Cache-Control Header.
+     *
      * The Cache-Control general-header field is used to specify directives
      * that MUST be obeyed by all caching mechanisms along the request/response
      * chain. The directives specify behavior intended to prevent caches
@@ -193,6 +209,8 @@ final class Header extends Enum
     public const CACHE_CONTROL = 'Cache-Control';
 
     /**
+     * Connection Header.
+     *
      * The Connection general-header field allows the sender to specify
      * options that are desired for that particular connection and
      * MUST NOT be communicated by proxies over further connections.
@@ -207,6 +225,8 @@ final class Header extends Enum
     public const CONNECTION = 'Connection';
 
     /**
+     * Content-Encoding Header.
+     *
      * The Content-Encoding entity-header field is used as a modifier to the
      * media-type. When present, its value indicates what additional content
      * codings have been applied to the entity-body, and thus what decoding
@@ -222,6 +242,8 @@ final class Header extends Enum
     public const CONTENT_ENCODING = 'Content-Encoding';
 
     /**
+     * Content-Language Header.
+     *
      * The Content-Language entity-header field describes the natural
      * language(s) of the intended audience for the enclosed entity.
      * Note that this might not be equivalent to all the languages used
@@ -234,6 +256,8 @@ final class Header extends Enum
     public const CONTENT_LANGUAGE = 'Content-Language';
 
     /**
+     * Content-Length Header.
+     *
      * The Content-Length entity-header field indicates the size of the
      * entity-body, in decimal number of OCTETs, sent to the recipient or,
      * in the case of the HEAD method, the size of the entity-body that
@@ -246,6 +270,8 @@ final class Header extends Enum
     public const CONTENT_LENGTH = 'Content-Length';
 
     /**
+     * Content-Location Header.
+     *
      * The Content-Location entity-header field MAY be used to supply the resource
      * location for the entity enclosed in the message when that entity is accessible
      * from a location separate from the requested resource's URI. A server SHOULD
@@ -263,6 +289,8 @@ final class Header extends Enum
     public const CONTENT_LOCATION = 'Content-Location';
 
     /**
+     * Content-MD5 Header.
+     *
      * The Content-MD5 entity-header field, as defined in RFC 1864 [23],
      * is an MD5 digest of the entity-body for the purpose of providing
      * an end-to-end message integrity check (MIC) of the entity-body.
@@ -277,6 +305,8 @@ final class Header extends Enum
     public const CONTENT_MD5 = 'Content-MD5';
 
     /**
+     * Content-Range Header.
+     *
      * The Content-Range entity-header is sent with a partial entity-body
      * to specify where in the full entity-body the partial body should be
      * applied. Range units are defined in section 3.12.
@@ -295,6 +325,8 @@ final class Header extends Enum
     public const CONTENT_RANGE = 'Content-Range';
 
     /**
+     * Content-Type Header.
+     *
      * The Content-Type entity-header field indicates the media type of the
      * entity-body sent to the recipient or, in the case of the HEAD method,
      * the media type that would have been sent had the request been a GET.
@@ -306,6 +338,8 @@ final class Header extends Enum
     public const CONTENT_TYPE = 'Content-Type';
 
     /**
+     * Date Header.
+     *
      * The Date general-header field represents the date and time at which
      * the message was originated, having the same semantics as orig-date
      * in RFC 822. The field value is an HTTP-date, as described in
@@ -318,6 +352,8 @@ final class Header extends Enum
     public const DATE = 'Date';
 
     /**
+     * ETag Header.
+     *
      * The ETag response-header field provides the current value of the entity
      * tag for the requested variant. The headers used with entity tags are
      * described in sections 14.24, 14.26 and 14.44. The entity tag MAY be used
@@ -331,6 +367,8 @@ final class Header extends Enum
     public const E_TAG = 'ETag';
 
     /**
+     * Expect Header.
+     *
      * The Expect request-header field is used to indicate that particular
      * server behaviors are required by the client.
      *
@@ -345,6 +383,8 @@ final class Header extends Enum
     public const EXPECT = 'Expect';
 
     /**
+     * Expires Header.
+     *
      * The Expires entity-header field gives the date/time after which the
      * response is considered stale. A stale cache entry may not normally
      * be returned by a cache (either a proxy cache or a user agent cache)
@@ -365,6 +405,8 @@ final class Header extends Enum
     public const EXPIRES = 'Expires';
 
     /**
+     * From Header.
+     *
      * The From request-header field, if given, SHOULD contain an Internet
      * e-mail address for the human user who controls the requesting user
      * agent. The address SHOULD be machine-usable, as defined by "mailbox"
@@ -377,6 +419,8 @@ final class Header extends Enum
     public const FROM = 'From';
 
     /**
+     * Host Header.
+     *
      * The Host request-header field specifies the Internet host and port
      * number of the resource being requested, as obtained from the original
      * URI given by the user or referring resource (generally an HTTP URL,
@@ -393,6 +437,8 @@ final class Header extends Enum
     public const HOST = 'Host';
 
     /**
+     * If-Match Header.
+     *
      * The If-Match request-header field is used with a method to make it
      * conditional. A client that has one or more entities previously
      * obtained from the resource can verify that one of those entities
@@ -411,6 +457,8 @@ final class Header extends Enum
     public const IF_MATCH = 'If-Match';
 
     /**
+     * If-Modified-Since Header.
+     *
      * The If-Modified-Since request-header field is used with a method to
      * make it conditional: if the requested variant has not been modified
      * since the time  specified in this field, an entity will not be
@@ -424,6 +472,8 @@ final class Header extends Enum
     public const IF_MODIFIED_SINCE = 'If-Modified-Since';
 
     /**
+     * If-None-Match Header.
+     *
      * The If-None-Match request-header field is used with a method to make
      * it conditional. A client that has one or more entities previously
      * obtained from the resource can verify that none of those entities
@@ -444,6 +494,8 @@ final class Header extends Enum
     public const IF_NONE_MATCH = 'If-None-Match';
 
     /**
+     * If-Range Header.
+     *
      * If a client has a partial copy of an entity in its cache, and wishes
      * to have an up-to-date copy of the entire entity in its cache, it
      * could use the Range request-header with a conditional GET (using
@@ -464,6 +516,8 @@ final class Header extends Enum
     public const IF_RANGE = 'If-Range';
 
     /**
+     * If-Unmodified-Since Header.
+     *
      * The If-Unmodified-Since request-header field is used with a method to
      * make it conditional. If the requested resource has not been modified
      * since the time specified in this field, the server SHOULD perform
@@ -481,6 +535,8 @@ final class Header extends Enum
     public const IF_UNMODIFIED_SINCE = 'If-Unmodified-Since';
 
     /**
+     * Last-Modified Header.
+     *
      * The Last-Modified entity-header field indicates the date and time
      * at which the origin server believes the variant was last modified.
      *
@@ -491,6 +547,8 @@ final class Header extends Enum
     public const LAST_MODIFIED = 'Last-Modified';
 
     /**
+     * Location Header.
+     *
      * The Location response-header field is used to redirect the recipient
      * to a location other than the Request-URI for completion of the
      * request or identification of a new resource. For 201 (Created)
@@ -506,6 +564,8 @@ final class Header extends Enum
     public const LOCATION = 'Location';
 
     /**
+     * Max-Forwards Header.
+     *
      * The Max-Forwards request-header field provides a mechanism with the
      * TRACE (section 9.8) and OPTIONS (section 9.2) methods to limit the
      * number of proxies or gateways that can forward the request to the
@@ -520,6 +580,8 @@ final class Header extends Enum
     public const MAX_FORWARDS = 'Max-Forwards';
 
     /**
+     * Pragma Header.
+     *
      * The Pragma general-header field is used to include implementation-
      * specific directives that might apply to any recipient along the
      * request/response chain. All pragma directives specify optional
@@ -535,6 +597,8 @@ final class Header extends Enum
     public const PRAGMA = 'Pragma';
 
     /**
+     * Proxy-Authenticate Header.
+     *
      * The Proxy-Authenticate response-header field MUST be included as
      * part of a 407 (Proxy Authentication Required) response. The field
      * value consists of a challenge that indicates the authentication
@@ -547,6 +611,8 @@ final class Header extends Enum
     public const PROXY_AUTHENTICATE = 'Proxy-Authenticate';
 
     /**
+     * Proxy-Authorization Header.
+     *
      * The Proxy-Authorization request-header field allows the client to
      * identify itself (or its user) to a proxy which requires
      * authentication. The Proxy-Authorization field value consists of
@@ -560,6 +626,8 @@ final class Header extends Enum
     public const PROXY_AUTHORIZATION = 'Proxy-Authorization';
 
     /**
+     * Range Header.
+     *
      * Since all HTTP entities are represented in HTTP messages as sequences
      * of bytes, the concept of a byte range is meaningful for any HTTP
      * entity. (However, not all clients and servers need to support
@@ -613,6 +681,8 @@ final class Header extends Enum
     public const RANGE = 'Range';
 
     /**
+     * Referer Header.
+     *
      * The Referer[sic] request-header field allows the client to specify,
      * for the server's benefit, the address (URI) of the resource from
      * which the Request-URI was obtained (the "referrer", although the
@@ -630,6 +700,8 @@ final class Header extends Enum
     public const REFERER = 'Referer';
 
     /**
+     * Retry-After Header.
+     *
      * The Retry-After response-header field can be used with a 503
      * (Service Unavailable) response to indicate how long the service is
      * expected to be unavailable to the requesting client. This field MAY
@@ -646,6 +718,8 @@ final class Header extends Enum
     public const RETRY_AFTER = 'Retry-After';
 
     /**
+     * Server Header.
+     *
      * The Server response-header field contains information about the
      * software used by the origin server to handle the request. The field
      * can contain multiple product tokens (section 3.8) and comments
@@ -660,6 +734,8 @@ final class Header extends Enum
     public const SERVER = 'Server';
 
     /**
+     * TE Header.
+     *
      * The TE request-header field indicates what extension transfer-codings
      * it is willing to accept in the response and whether or not it is
      * willing to accept trailer fields in a chunked transfer-coding. Its
@@ -675,6 +751,8 @@ final class Header extends Enum
     public const TE = 'TE';
 
     /**
+     * Trailer Header.
+     *
      * The Trailer general field value indicates that the given set of
      * header fields is present in the trailer of a message encoded with
      * chunked transfer-coding.
@@ -686,6 +764,8 @@ final class Header extends Enum
     public const TRAILER = 'Trailer';
 
     /**
+     * Transfer-Encoding Header.
+     *
      * The Transfer-Encoding general-header field indicates what (if any)
      * type of transformation has been applied to the message body in order
      * to safely transfer it between the sender and the recipient. This
@@ -699,6 +779,8 @@ final class Header extends Enum
     public const TRANSFER_ENCODING = 'Transfer-Encoding';
 
     /**
+     * Upgrade Header.
+     *
      * The Upgrade general-header allows the client to specify what
      * additional communication protocols it supports and would like
      * to use if the server finds it appropriate to switch protocols.
@@ -713,6 +795,8 @@ final class Header extends Enum
     public const UPGRADE = 'Upgrade';
 
     /**
+     * User-Agent Header.
+     *
      * The User-Agent request-header field contains information about the
      * user agent originating the request. This is for statistical purposes,
      * the tracing of protocol violations, and automated recognition of user
@@ -731,6 +815,8 @@ final class Header extends Enum
     public const USER_AGENT = 'User-Agent';
 
     /**
+     * Vary Header.
+     *
      * The Vary field value indicates the set of request-header fields that
      * fully determines, while the response is fresh, whether a cache is
      * permitted to use the response to reply to a subsequent request
@@ -749,6 +835,8 @@ final class Header extends Enum
     public const VARY = 'Vary';
 
     /**
+     * Via Header.
+     *
      * The Via general-header field MUST be used by gateways and proxies to
      * indicate the intermediate protocols and recipients between the user
      * agent and the server on requests, and between the origin server and
@@ -769,6 +857,8 @@ final class Header extends Enum
     public const VIA = 'Via';
 
     /**
+     * Warning Header.
+     *
      * The Warning general-header field is used to carry additional
      * information about the status or transformation of a message
      * which might not be reflected in the message. This information
@@ -793,6 +883,8 @@ final class Header extends Enum
     public const WARNING = 'Warning';
 
     /**
+     * WWW-Authenticate Header.
+     *
      * The WWW-Authenticate response-header field MUST be included in 401
      * (Unauthorized) response messages. The field value consists of at
      * least one challenge that indicates the authentication scheme(s)

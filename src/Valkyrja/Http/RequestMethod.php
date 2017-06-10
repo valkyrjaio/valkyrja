@@ -14,9 +14,7 @@ namespace Valkyrja\Http;
 use Valkyrja\Enum\Enum;
 
 /**
- *-------------------------------------------------------------------------
- * Method Definitions
- *-------------------------------------------------------------------------
+ * Method Definitions.
  *
  * The set of common methods for HTTP/1.1 is defined below. Although this
  * set can be expanded, additional methods cannot be assumed to share the
@@ -32,6 +30,8 @@ use Valkyrja\Enum\Enum;
 final class RequestMethod extends Enum
 {
     /**
+     * OPTIONS Method.
+     *
      * The OPTIONS method represents a request for information about the
      * communication options available on the request/response chain
      * identified by the Request-URI. This method allows the client to
@@ -89,6 +89,8 @@ final class RequestMethod extends Enum
     public const OPTIONS = 'OPTIONS';
 
     /**
+     * GET Method.
+     *
      * The GET method means retrieve whatever information (in the form of an
      * entity) is identified by the Request-URI. If the Request-URI refers
      * to a data-producing process, it is the produced data which shall be
@@ -121,6 +123,8 @@ final class RequestMethod extends Enum
     public const GET = 'GET';
 
     /**
+     * HEAD Method.
+     *
      * The HEAD method is identical to GET except that the server MUST NOT
      * return a message-body in the response. The metainformation contained
      * in the HTTP headers in response to a HEAD request SHOULD be identical
@@ -142,6 +146,8 @@ final class RequestMethod extends Enum
     public const HEAD = 'HEAD';
 
     /**
+     * POST Method.
+     *
      * The POST method is used to request that the origin server accept the
      * entity enclosed in the request as a new subordinate of the resource
      * identified by the Request-URI in the Request-Line. POST is designed
@@ -185,6 +191,8 @@ final class RequestMethod extends Enum
     public const POST = 'POST';
 
     /**
+     * PUT Method.
+     *
      * The PUT method requests that the enclosed entity be stored under the supplied
      * Request-URI. If the Request-URI refers to an already existing resource, the
      * enclosed entity SHOULD be considered as a modified version of the one residing
@@ -236,6 +244,8 @@ final class RequestMethod extends Enum
     public const PUT = 'PUT';
 
     /**
+     * DELETE Method.
+     *
      * The DELETE method requests that the origin server delete the resource identified
      * by the Request-URI. This method MAY be overridden by human intervention
      * (or other means) on the origin server. The client cannot be guaranteed that
@@ -258,6 +268,8 @@ final class RequestMethod extends Enum
     public const DELETE = 'DELETE';
 
     /**
+     * TRACE Method.
+     *
      * The TRACE method is used to invoke a remote, application-layer loop- back of
      * the request message. The final recipient of the request SHOULD reflect the
      * message received back to the client as the entity-body of a 200 (OK) response.
@@ -283,6 +295,8 @@ final class RequestMethod extends Enum
     public const TRACE = 'TRACE';
 
     /**
+     * CONNECT Method.
+     *
      * This specification reserves the method name CONNECT for use with a proxy that
      * can dynamically switch to being a tunnel (e.g. SSL tunneling [44]).
      *
@@ -291,6 +305,8 @@ final class RequestMethod extends Enum
     public const CONNECT = 'CONNECT';
 
     /**
+     * PATCH Method.
+     *
      * As defined in RFC-5789.
      *
      * The PATCH method requests that a set of changes described in the
@@ -305,6 +321,12 @@ final class RequestMethod extends Enum
      */
     public const PATCH = 'PATCH';
 
+    /**
+     * Valid request method values to avoid reflection class being created
+     * dynamically in the Enum::isValid() method.
+     *
+     * @constant array
+     */
     protected const VALUES = [
         self::GET     => self::GET,
         self::POST    => self::POST,
