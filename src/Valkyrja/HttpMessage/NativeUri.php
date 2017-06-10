@@ -38,7 +38,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
  *
  * @author Melech Mizrachi
  */
-class UriImpl implements Uri
+class NativeUri implements Uri
 {
     /**
      * The scheme.

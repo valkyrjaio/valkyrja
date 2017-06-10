@@ -151,7 +151,7 @@ class RequestImpl implements Request
         array $files = null,
         string $protocol = null
     ) {
-        $this->uri        = $uri ?? new UriImpl();
+        $this->uri        = $uri ?? new NativeUri();
         $this->method     = $method ?? RequestMethod::GET;
         $this->body       = $body ?? new NativeStream('php://input');
         $this->server     = $server ?? [];

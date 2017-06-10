@@ -21,7 +21,7 @@ namespace Valkyrja\HttpMessage;
  *
  * @author Melech Mizrachi
  */
-class UploadedFileImpl implements UploadedFile
+class NativeUploadedFile implements UploadedFile
 {
     /**
      * Retrieve a stream representing the uploaded file.
