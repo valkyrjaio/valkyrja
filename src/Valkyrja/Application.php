@@ -91,11 +91,14 @@ interface Application
     public static function setEnv(string $env = null): void;
 
     /**
-     * Get the config class instance.
+     * Get the config.
+     *
+     * @param string $key     [optional] The key to get
+     * @param string $default [optional] The default value if the key is not found
      *
      * @return array
      */
-    public function config(): array;
+    public function config(string $key = null, $default = null): array;
 
     /**
      * Add to the global config array.

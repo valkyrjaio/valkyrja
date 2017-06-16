@@ -70,13 +70,16 @@ if (! function_exists('client')) {
 
 if (! function_exists('config')) {
     /**
-     * Get config.
+     * Get the config.
+     *
+     * @param string $key     [optional] The key to get
+     * @param string $default [optional] The default value if the key is not found
      *
      * @return array
      */
-    function config(): array
+    function config(string $key = null, $default = null): array
     {
-        return app()->config();
+        return app()->config($key, $default);
     }
 }
 

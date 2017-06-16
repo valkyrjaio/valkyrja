@@ -365,13 +365,41 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the config class instance.
+     * Get the config.
+     *
+     * @param string $key     [optional] The key to get
+     * @param string $default [optional] The default value if the key is not found
      *
      * @return array
      */
-    public function config(): array
+    public function config(string $key = null, $default = null): array
     {
-        return self::$config;
+        // If no key was specified
+        if (null === $key) {
+            // Return all the entire config
+            return self::$config;
+        }
+
+        // Explode the keys on period
+        $keys = explode('.', $key);
+        // Set the config to return
+        $config = self::$config;
+
+        // Iterate through the keys
+        foreach ($keys as $configItem) {
+            // Trying to get the item from the config
+            // or load the default
+            $config = $config[$configItem] ?? $default;
+
+            // If the item was not found, might as well return out from here
+            // instead of continuing to iterate through the remaining keys
+            if ($default === $config) {
+                return $default;
+            }
+        }
+
+        // Return the found config
+        return $config;
     }
 
     /**
