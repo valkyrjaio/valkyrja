@@ -96,9 +96,9 @@ interface Application
      * @param string $key     [optional] The key to get
      * @param string $default [optional] The default value if the key is not found
      *
-     * @return array
+     * @return mixed
      */
-    public function config(string $key = null, $default = null): array;
+    public function config(string $key = null, $default = null);
 
     /**
      * Add to the global config array.

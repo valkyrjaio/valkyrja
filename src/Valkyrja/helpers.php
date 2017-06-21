@@ -75,9 +75,9 @@ if (! function_exists('config')) {
      * @param string $key     [optional] The key to get
      * @param string $default [optional] The default value if the key is not found
      *
-     * @return array
+     * @return mixed
      */
-    function config(string $key = null, $default = null): array
+    function config(string $key = null, $default = null)
     {
         return app()->config($key, $default);
     }
