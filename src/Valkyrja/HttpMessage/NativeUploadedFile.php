@@ -11,6 +11,9 @@
 
 namespace Valkyrja\HttpMessage;
 
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * Value object representing a file uploaded through an HTTP request.
  *
@@ -23,6 +26,101 @@ namespace Valkyrja\HttpMessage;
  */
 class NativeUploadedFile implements UploadedFile
 {
+    /**
+     * The uploaded file.
+     *
+     * @var string
+     */
+    protected $file;
+
+    /**
+     * The uploaded file as a stream.
+     *
+     * @var \Valkyrja\HttpMessage\Stream
+     */
+    protected $stream;
+
+    /**
+     * THe uploaded file size.
+     *
+     * @var int
+     */
+    protected $size;
+
+    /**
+     * The error status. One of UPLOAD_ERR_* constant.
+     *
+     * @var int
+     */
+    protected $errorStatus;
+
+    /**
+     * The uploaded file's name.
+     *
+     * @var string
+     */
+    protected $fileName;
+
+    /**
+     * The uploaded file's media type.
+     *
+     * @var string
+     */
+    protected $mediaType;
+
+    /**
+     * Whether the file has been moved yet.
+     *
+     * @var bool
+     */
+    protected $moved = false;
+
+    /**
+     * NativeUploadedFile constructor.
+     *
+     * @param int                          $size        The file size
+     * @param int                          $errorStatus The error status
+     * @param string                       $file        [optional] The file
+     * @param \Valkyrja\HttpMessage\Stream $stream      [optional] The stream
+     * @param string                       $fileName    [optional] The file name
+     * @param string                       $mediaType   [optional] The file media type
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct(
+        int $size,
+        int $errorStatus,
+        string $file = null,
+        Stream $stream = null,
+        string $fileName = null,
+        string $mediaType = null
+    ) {
+        // If the error code is less than the lowest valued UPLOAD_ERR_* constant
+        // Or the error code is greater than the highest valued UPLOAD_ERR_* constant
+        if (UPLOAD_ERR_OK > $errorStatus || $errorStatus > UPLOAD_ERR_EXTENSION) {
+            // Throw an invalid argument exception for the error status
+            throw new InvalidArgumentException(
+                'Invalid error status for UploadedFile; must be an UPLOAD_ERR_* constant value.'
+            );
+        }
+
+        // If the file is not set
+        // and the stream is not set
+        if (null === $file && null === $stream) {
+            // Throw an invalid argument exception as on or the other is required
+            throw new InvalidArgumentException(
+                'Either one of file or stream are required. Neither passed as arguments.'
+            );
+        }
+
+        $this->file        = $file;
+        $this->size        = $size;
+        $this->errorStatus = $errorStatus;
+        $this->stream      = $stream;
+        $this->fileName    = $fileName;
+        $this->mediaType   = $mediaType;
+    }
+
     /**
      * Retrieve a stream representing the uploaded file.
      *
@@ -37,11 +135,38 @@ class NativeUploadedFile implements UploadedFile
      *
      * @throws \RuntimeException in cases when no stream is available or can be
      *                           created.
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return \Valkyrja\HttpMessage\Stream Stream representation of the uploaded file.
      */
     public function getStream(): Stream
     {
+        // If the error status is not OK
+        if (UPLOAD_ERR_OK !== $this->errorStatus) {
+            // Throw a runtime exception as there's been an uploaded file error
+            throw new RuntimeException(
+                'Cannot retrieve stream due to upload error'
+            );
+        }
+
+        // If the file has already been moved
+        if ($this->moved) {
+            // Throw a runtime exception as subsequent moves are not allowed in PSR-7
+            throw new RuntimeException(
+                'Cannot retrieve stream after it has already been moved'
+            );
+        }
+
+        // If the stream has been set
+        if (null !== $this->stream) {
+            // Return the stream
+            return $this->stream;
+        }
+
+        // Set the stream as a new native stream
+        $this->stream = new NativeStream($this->file);
+
+        return $this->stream;
     }
 
     /**
@@ -77,11 +202,61 @@ class NativeUploadedFile implements UploadedFile
      * @throws \InvalidArgumentException if the $targetPath specified is invalid.
      * @throws \RuntimeException         on any error during the move operation, or on
      *                                   the second or subsequent call to the method.
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return void
      */
     public function moveTo(string $targetPath): void
     {
+        // If the error status is not OK
+        if (UPLOAD_ERR_OK !== $this->errorStatus) {
+            // Throw a runtime exception as there's been an uploaded file error
+            throw new RuntimeException(
+                'Cannot retrieve stream due to upload error'
+            );
+        }
+
+        // If the file has already been moved
+        if ($this->moved) {
+            // Throw a runtime exception as subsequent moves are not allowed in PSR-7
+            throw new RuntimeException(
+                'Cannot move file after it has already been moved'
+            );
+        }
+
+        $targetDirectory = dirname($targetPath);
+
+        // If the target directory is not a directory
+        // or the target directory is not writable
+        if (! is_dir($targetDirectory) || ! is_writable($targetDirectory)) {
+            // Throw a runtime exception
+            throw new RuntimeException(
+                sprintf(
+                    'The target directory `%s` does not exists or is not writable',
+                    $targetDirectory
+                )
+            );
+        }
+
+        $sapi = PHP_SAPI;
+
+        // If the PHP_SAPI value is empty
+        // or there is no file
+        // or the PHP_SAPI value is set to a CLI environment
+        if (empty($sapi) || ! $this->file || 0 === strpos($sapi, 'cli')) {
+            // Non-SAPI environment, or no filename present
+            $this->writeStream($targetPath);
+        }
+        // Otherwise try to use the move_uploaded_file function
+        // and if the move_uploaded_file function call failed
+        elseif (false === move_uploaded_file($this->file, $targetPath)) {
+            // Throw a runtime exception
+            throw new RuntimeException(
+                'Error occurred while moving uploaded file'
+            );
+        }
+
+        $this->moved = true;
     }
 
     /**
@@ -95,6 +270,7 @@ class NativeUploadedFile implements UploadedFile
      */
     public function getSize():? int
     {
+        return $this->size;
     }
 
     /**
@@ -114,6 +290,7 @@ class NativeUploadedFile implements UploadedFile
      */
     public function getError(): int
     {
+        return $this->errorStatus;
     }
 
     /**
@@ -131,6 +308,7 @@ class NativeUploadedFile implements UploadedFile
      */
     public function getClientFilename():? string
     {
+        return $this->fileName;
     }
 
     /**
@@ -148,5 +326,44 @@ class NativeUploadedFile implements UploadedFile
      */
     public function getClientMediaType():? string
     {
+        return $this->mediaType;
+    }
+
+    /**
+     * Write the stream to a path
+     *
+     * @param string $path The path to write the stream to
+     *
+     * @throws \RuntimeException
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     *
+     * @return void
+     */
+    protected function writeStream(string $path): void
+    {
+        // Attempt to open the path specified
+        $handle = fopen($path, 'wb+');
+
+        // If the handler failed to open
+        if (false === $handle) {
+            // Throw a runtime exception
+            throw new RuntimeException(
+                'Unable to write to designated path'
+            );
+        }
+
+        // Get the stream
+        $stream = $this->getStream();
+        // Rewind the stream
+        $stream->rewind();
+
+        // While the end of file hasn't been reached
+        while (! $stream->eof()) {
+            // Write the stream's contents to the handler
+            fwrite($handle, $stream->read(4096));
+        }
+
+        // Close the file path
+        fclose($handle);
     }
 }
