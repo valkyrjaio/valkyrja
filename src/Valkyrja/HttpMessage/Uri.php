@@ -121,8 +121,8 @@ interface Uri
      * Retrieve the port component of the URI.
      *
      * If a port is present, and it is non-standard for the current scheme,
-     * this method MUST return it as an integer. If the port is the standard port
-     * used with the current scheme, this method SHOULD return null.
+     * this method MUST return it as an integer. If the port is the standard
+     * port used with the current scheme, this method SHOULD return null.
      *
      * If no port is present, and no scheme is present, this method MUST return
      * a null value.
@@ -348,10 +348,10 @@ interface Uri
      * rootless (not starting with a slash). Implementations MUST support all
      * three syntaxes.
      *
-     * If the path is intended to be domain-relative rather than path relative then
-     * it must begin with a slash ("/"). Paths not starting with a slash ("/")
-     * are assumed to be relative to some base path known to the application or
-     * consumer.
+     * If the path is intended to be domain-relative rather than path relative
+     * then it must begin with a slash ("/"). Paths not starting with a slash
+     * ("/") are assumed to be relative to some base path known to the
+     * application or consumer.
      *
      * Users can provide both encoded and decoded path characters.
      * Implementations ensure the correct encoding as outlined in getPath().

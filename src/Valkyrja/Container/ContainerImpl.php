@@ -68,7 +68,7 @@ class ContainerImpl implements Container
     /**
      * Container constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -91,8 +91,8 @@ class ContainerImpl implements Container
     /**
      * Bind a service to the container.
      *
-     * @param \Valkyrja\Container\Service $service The service model
-     * @param bool                        $verify  [optional] Whether to verify the service
+     * @param Service $service The service model
+     * @param bool    $verify  [optional] Whether to verify the service
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -123,7 +123,7 @@ class ContainerImpl implements Container
     /**
      * Bind a context to the container.
      *
-     * @param \Valkyrja\Container\ServiceContext $contextService The context service
+     * @param ServiceContext $serviceContext The context service
      *
      * @throws \Valkyrja\Container\Exceptions\InvalidContextException
      * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
@@ -136,47 +136,85 @@ class ContainerImpl implements Container
      *
      * @return void
      */
-    public function context(ServiceContext $contextService): void
+    public function context(ServiceContext $serviceContext): void
     {
-        $context        = $contextService->getClass() ?? $contextService->getFunction();
-        $member         = $contextService->getMethod() ?? $contextService->getProperty();
-        $contextContext = $contextService->getContextClass() ?? $contextService->getContextFunction();
+        $context        = $serviceContext->getClass()
+            ?? $serviceContext->getFunction();
+        $member         = $serviceContext->getMethod()
+            ?? $serviceContext->getProperty();
+        $contextContext = $serviceContext->getContextClass()
+            ?? $serviceContext->getContextFunction();
 
         // If the context index is null then there's no context
-        if (null === $context || null === $contextService->getId()) {
+        if (null === $context || null === $serviceContext->getId()) {
             throw new InvalidContextException();
         }
 
-        // If the context is the same as the end service dispatch and the dispatch isn't static
-        // throw an error to disallow this kind of context as it will create
-        // an endless loop where the dispatcher will attempt to create the
-        // callable with the dependencies and the hasContext check in
-        // Container::get() will keep catching it
-        if ($context === $contextContext && ! $contextService->isStatic()) {
+        // If the context is the same as the end service dispatch and the
+        // dispatch isn't static throw an error to disallow this kind of
+        // context as it will create an endless loop where the dispatcher
+        // will attempt to create the callable with the dependencies and the
+        // hasContext check in Container::get() will keep catching it
+        if ($context === $contextContext && ! $serviceContext->isStatic()) {
             throw new EndlessContextLoopException(
                 'This kind of context will create'
                 . 'an endless loop where the dispatcher will attempt to create the '
                 . 'callable with the dependencies and the hasContext check in '
                 . 'Container::get() will keep catching it: '
-                . $this->contextServiceId($contextService->getId(), $context, $member)
+                . $this->contextServiceId(
+                    $serviceContext->getId(),
+                    $context,
+                    $member
+                )
             );
         }
 
-        $this->bind(
-            (new Service())
-                ->setId($this->contextServiceId($contextService->getId(), $context, $member))
-                ->setSingleton($contextService->isSingleton())
-                ->setDefaults($contextService->getDefaults())
-                ->setName($contextService->getName())
-                ->setClass($contextService->getContextClass())
-                ->setProperty($contextService->getContextProperty())
-                ->setMethod($contextService->getContextMethod())
-                ->setFunction($contextService->getContextFunction())
-                ->setClosure($contextService->getContextClosure())
-                ->setArguments($contextService->getArguments())
-                ->setDependencies($contextService->getDependencies())
-                ->setStatic($contextService->isStatic())
+        $service = $this->getServiceFromContext(
+            $serviceContext,
+            $context,
+            $member
         );
+
+        $this->bind($service);
+    }
+
+    /**
+     * Get a service model from a context model.
+     *
+     * @param ServiceContext $serviceContext The service context
+     * @param string         $context        [optional] The context
+     *                                       class or function
+     * @param string         $member         [optional] The member
+     *
+     * @return Service
+     */
+    protected function getServiceFromContext(
+        ServiceContext $serviceContext,
+        string $context = null,
+        string $member = null
+    ): Service {
+        $service   = new Service();
+        $serviceId = $this->contextServiceId(
+            $serviceContext->getId(),
+            $context,
+            $member
+        );
+
+        $service
+            ->setId($serviceId)
+            ->setSingleton($serviceContext->isSingleton())
+            ->setDefaults($serviceContext->getDefaults())
+            ->setName($serviceContext->getName())
+            ->setClass($serviceContext->getContextClass())
+            ->setProperty($serviceContext->getContextProperty())
+            ->setMethod($serviceContext->getContextMethod())
+            ->setFunction($serviceContext->getContextFunction())
+            ->setClosure($serviceContext->getContextClosure())
+            ->setArguments($serviceContext->getArguments())
+            ->setDependencies($serviceContext->getDependencies())
+            ->setStatic($serviceContext->isStatic());
+
+        return $service;
     }
 
     /**
@@ -213,12 +251,12 @@ class ContainerImpl implements Container
      *
      * @return bool
      */
-    public function hasContext(string $serviceId, string $context, string $member = null): bool
-    {
-        // If no class or method were passed then the index will be null so return false
-        if (null === $contextIndex = $this->contextServiceId($serviceId, $context, $member)) {
-            return false;
-        }
+    public function hasContext(
+        string $serviceId,
+        string $context,
+        string $member = null
+    ): bool {
+        $contextIndex = $this->contextServiceId($serviceId, $context, $member);
 
         return isset(self::$services[$contextIndex]);
     }
@@ -259,18 +297,35 @@ class ContainerImpl implements Container
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
-    {
+    public function get(
+        string $serviceId,
+        array $arguments = null,
+        string $context = null,
+        string $member = null
+    ) {
         // If there is a context set for this context and member combination
-        if (null !== $context && $this->hasContext($serviceId, $context, $member)) {
+        if (
+            null !== $context
+            && $this->hasContext(
+                $serviceId,
+                $context,
+                $member
+            )
+        ) {
             // Return that context
-            return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
+            return $this->get(
+                $this->contextServiceId($serviceId, $context, $member),
+                $arguments
+            );
         }
 
         // If there is a context set for this context only
         if (null !== $context && $this->hasContext($serviceId, $context)) {
             // Return that context
-            return $this->get($this->contextServiceId($serviceId, $context), $arguments);
+            return $this->get(
+                $this->contextServiceId($serviceId, $context),
+                $arguments
+            );
         }
 
         // If the service is a singleton
@@ -282,7 +337,12 @@ class ContainerImpl implements Container
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
             // Return the appropriate service
-            return $this->get(self::$aliases[$serviceId], $arguments, $context, $member);
+            return $this->get(
+                self::$aliases[$serviceId],
+                $arguments,
+                $context,
+                $member
+            );
         }
 
         // If the service is in the container
@@ -293,7 +353,12 @@ class ContainerImpl implements Container
 
         // Check if the service id is provided by a deferred service provider
         if ($this->isProvided($serviceId)) {
-            return $this->getProvided($serviceId, $arguments, $context, $member);
+            return $this->getProvided(
+                $serviceId,
+                $arguments,
+                $context,
+                $member
+            );
         }
 
         // If there are no argument return a new object
@@ -319,17 +384,24 @@ class ContainerImpl implements Container
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        $this->app->events()->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
+        $this->app->events()->trigger(
+            ServiceMake::class,
+            [$serviceId, $service, $arguments]
+        );
 
         // Make the object by dispatching the service
-        $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
+        $made =
+            $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
         $this->app->events()->trigger(ServiceMade::class, [$serviceId, $made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->app->events()->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
+            $this->app->events()->trigger(
+                ServiceMadeSingleton::class,
+                [$serviceId, $made]
+            );
             // Set singleton
             $this->singleton($serviceId, $made);
         }
@@ -389,8 +461,11 @@ class ContainerImpl implements Container
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null): string
-    {
+    public function contextServiceId(
+        string $serviceId,
+        string $context,
+        string $member = null
+    ): string {
         $index = $serviceId . '@' . ($context ?? '');
 
         // If there is a method
@@ -448,24 +523,38 @@ class ContainerImpl implements Container
         self::$services   = [];
         self::$provided   = [];
 
+        $useAnnotations     = $this->app->config(
+            'container.useAnnotations',
+            false
+        );
+        $annotationsEnabled = $this->app->config(
+            'annotations.enabled',
+            false
+        );
+        $onlyAnnotations    = $this->app->config(
+            'container.useAnnotationsExclusively',
+            false
+        );
+
         // Setup service providers
         $this->setupServiceProviders();
 
         // If annotations are enabled and the container should use annotations
-        if ($this->app->config()['container']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
+        if ($useAnnotations && $annotationsEnabled) {
             // Setup annotated services, contexts, and aliases
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()['container']['useAnnotationsExclusively']) {
+            if ($onlyAnnotations) {
                 // Return to avoid loading container file
                 return;
             }
         }
 
         // Include the container file
-        // NOTE: Included if annotations are set or not due to possibility of container items being defined
-        // within the classes as well as within the container file
+        // NOTE: Included if annotations are set or not due to possibility of
+        // container items being defined within the classes as well as within
+        // the container file
         require $this->app->config()['container']['filePath'];
     }
 
@@ -509,10 +598,14 @@ class ContainerImpl implements Container
     protected function setupAnnotations(): void
     {
         /** @var ContainerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(ContainerAnnotations::class);
+        $containerAnnotations = $this->getSingleton(
+            ContainerAnnotations::class
+        );
 
         // Get all the annotated services from the list of controllers
-        $services = $containerAnnotations->getServices(...$this->app->config()['container']['services']);
+        $services = $containerAnnotations->getServices(
+            ...$this->app->config()['container']['services']
+        );
 
         // Iterate through the services
         foreach ($services as $service) {
@@ -532,7 +625,9 @@ class ContainerImpl implements Container
         }
 
         // Get all the annotated services from the list of classes
-        $aliasServices = $containerAnnotations->getAliasServices(...$this->app->config()['container']['services']);
+        $aliasServices = $containerAnnotations->getAliasServices(
+            ...$this->app->config()['container']['services']
+        );
 
         // Iterate through the services
         foreach ($aliasServices as $alias) {
@@ -548,8 +643,10 @@ class ContainerImpl implements Container
      */
     protected function setupServiceProviders(): void
     {
+        $providers = $this->app->config()['container']['providers'];
+
         // Iterate through all the providers
-        foreach ($this->app->config()['container']['providers'] as $provider) {
+        foreach ($providers as $provider) {
             $this->register($provider);
         }
 
@@ -558,8 +655,10 @@ class ContainerImpl implements Container
             return;
         }
 
+        $devProviders = $this->app->config()['container']['devProviders'];
+
         // Iterate through all the providers
-        foreach ($this->app->config()['container']['devProviders'] as $provider) {
+        foreach ($devProviders as $provider) {
             $this->register($provider);
         }
     }

@@ -63,13 +63,15 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch middleware.
      *
-     * @param \Valkyrja\Http\Request $request    The request
-     * @param array                  $middleware [optional] The middleware to dispatch
+     * @param Request $request    The request
+     * @param array   $middleware [optional] The middleware to dispatch
      *
      * @return \Valkyrja\Http\Request
      */
-    public function requestMiddleware(Request $request, array $middleware = null): Request
-    {
+    public function requestMiddleware(
+        Request $request,
+        array $middleware = null
+    ): Request {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 
@@ -81,7 +83,10 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
+                $this->requestMiddleware(
+                    $request,
+                    $this->getMiddlewareGroup($item)
+                );
 
                 continue;
             }
@@ -99,14 +104,17 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch after request processed middleware.
      *
-     * @param \Valkyrja\Http\Request  $request    The request
-     * @param \Valkyrja\Http\Response $response   The response
-     * @param array                   $middleware [optional] The middleware to dispatch
+     * @param Request  $request    The request
+     * @param Response $response   The response
+     * @param array    $middleware [optional] The middleware to dispatch
      *
      * @return \Valkyrja\Http\Response
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response
-    {
+    public function responseMiddleware(
+        Request $request,
+        Response $response,
+        array $middleware = null
+    ): Response {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 
@@ -118,7 +126,11 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->responseMiddleware($request, $response, $this->getMiddlewareGroup($item));
+                $this->responseMiddleware(
+                    $request,
+                    $response,
+                    $this->getMiddlewareGroup($item)
+                );
 
                 continue;
             }
@@ -136,14 +148,17 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch terminable middleware.
      *
-     * @param \Valkyrja\Http\Request  $request    The request
-     * @param \Valkyrja\Http\Response $response   The response
-     * @param array                   $middleware [optional] The middleware to dispatch
+     * @param Request  $request    The request
+     * @param Response $response   The response
+     * @param array    $middleware [optional] The middleware to dispatch
      *
      * @return void
      */
-    public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void
-    {
+    public function terminableMiddleware(
+        Request $request,
+        Response $response,
+        array $middleware = null
+    ): void {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 
@@ -152,7 +167,11 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->terminableMiddleware($request, $response, $this->getMiddlewareGroup($item));
+                $this->terminableMiddleware(
+                    $request,
+                    $response,
+                    $this->getMiddlewareGroup($item)
+                );
 
                 continue;
             }

@@ -23,7 +23,7 @@ interface Kernel extends MiddlewareAware
     /**
      * Handle a request.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @return \Valkyrja\Http\Response
      */
@@ -32,8 +32,8 @@ interface Kernel extends MiddlewareAware
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Http\Request  $request  The request
-     * @param \Valkyrja\Http\Response $response The response
+     * @param Request  $request  The request
+     * @param Response $response The response
      *
      * @return void
      */
@@ -42,7 +42,7 @@ interface Kernel extends MiddlewareAware
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @return void
      */

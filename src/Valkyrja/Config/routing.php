@@ -79,7 +79,10 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env('ROUTING_USE_ANNOTATIONS_EXCLUSIVELY', false),
+    'useAnnotationsExclusively' => env(
+        'ROUTING_USE_ANNOTATIONS_EXCLUSIVELY',
+        false
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -99,7 +102,10 @@ return [
      * //
      *
      */
-    'filePath'                  => env('ROUTING_FILE_PATH', routesPath('routes.php')),
+    'filePath'                  => env(
+        'ROUTING_FILE_PATH',
+        routesPath('routes.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -109,7 +115,10 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env('ROUTING_CACHE_FILE_PATH', cachePath('routes.php')),
+    'cacheFilePath'             => env(
+        'ROUTING_CACHE_FILE_PATH',
+        cachePath('routes.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------

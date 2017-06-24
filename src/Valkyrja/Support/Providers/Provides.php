@@ -40,7 +40,7 @@ trait Provides
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

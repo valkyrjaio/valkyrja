@@ -41,17 +41,30 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(array $data, int $status = null, array $headers = null, int $encodingOptions = null)
-    {
+    public function __construct(
+        array $data,
+        int $status = null,
+        array $headers = null,
+        int $encodingOptions = null
+    ) {
         $body = new NativeStream('php://temp', 'wb+');
 
-        $body->write(json_encode($data, $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS));
+        $body->write(
+            json_encode(
+                $data,
+                $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS
+            )
+        );
         $body->rewind();
 
         parent::__construct(
             $body,
             $status,
-            $this->injectHeader(Header::CONTENT_TYPE, 'application/json', $headers)
+            $this->injectHeader(
+                Header::CONTENT_TYPE,
+                'application/json',
+                $headers
+            )
         );
     }
 }

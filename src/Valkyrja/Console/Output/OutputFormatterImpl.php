@@ -50,7 +50,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Set the foreground.
      *
-     * @param \Valkyrja\Console\Enums\FormatForeground $foreground The foreground color
+     * @param FormatForeground $foreground The foreground color
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Set the background.
      *
-     * @param \Valkyrja\Console\Enums\FormatBackground $background The background
+     * @param FormatBackground $background The background
      *
      * @return void
      */
@@ -92,7 +92,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function black(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
+        $this->setColor(
+            $background ? FormatBackground::BLACK : FormatForeground::BLACK,
+            $background
+        );
     }
 
     /**
@@ -104,7 +107,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function red(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
+        $this->setColor(
+            $background ? FormatBackground::RED : FormatForeground::RED,
+            $background
+        );
     }
 
     /**
@@ -116,7 +122,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function green(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
+        $this->setColor(
+            $background ? FormatBackground::GREEN : FormatForeground::GREEN,
+            $background
+        );
     }
 
     /**
@@ -128,7 +137,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function yellow(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
+        $this->setColor(
+            $background ? FormatBackground::YELLOW : FormatForeground::YELLOW,
+            $background
+        );
     }
 
     /**
@@ -140,7 +152,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function blue(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
+        $this->setColor(
+            $background ? FormatBackground::BLUE : FormatForeground::BLUE,
+            $background
+        );
     }
 
     /**
@@ -152,7 +167,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function magenta(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
+        $this->setColor(
+            $background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA,
+            $background
+        );
     }
 
     /**
@@ -164,7 +182,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function cyan(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
+        $this->setColor(
+            $background ? FormatBackground::CYAN : FormatForeground::CYAN,
+            $background
+        );
     }
 
     /**
@@ -176,7 +197,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function white(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
+        $this->setColor(
+            $background ? FormatBackground::WHITE : FormatForeground::WHITE,
+            $background
+        );
     }
 
     /**
@@ -188,7 +212,10 @@ class OutputFormatterImpl implements OutputFormatter
      */
     public function resetColor(bool $background = null): void
     {
-        $this->setColor($background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT, $background);
+        $this->setColor(
+            $background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT,
+            $background
+        );
     }
 
     /**
@@ -213,7 +240,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Set an option.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return void
      */
@@ -225,7 +252,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Determine whether an option has been set.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return bool
      */
@@ -237,7 +264,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Remove an option.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return void
      */
@@ -251,7 +278,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Set options.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption[] ...$options The options
+     * @param FormatOption[] ...$options The options
      *
      * @return void
      */
@@ -372,7 +399,12 @@ class OutputFormatterImpl implements OutputFormatter
             return $message;
         }
 
-        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
+        return sprintf(
+            "\033[%sm%s\033[%sm",
+            implode(';', $set),
+            $message,
+            implode(';', $unset)
+        );
     }
 
     /**
@@ -390,7 +422,7 @@ class OutputFormatterImpl implements OutputFormatter
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

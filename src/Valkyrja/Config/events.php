@@ -38,7 +38,10 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env('EVENTS_USE_ANNOTATIONS_EXCLUSIVELY', false),
+    'useAnnotationsExclusively' => env(
+        'EVENTS_USE_ANNOTATIONS_EXCLUSIVELY',
+        false
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -58,7 +61,10 @@ return [
      * //
      *
      */
-    'filePath'                  => env('EVENTS_FILE_PATH', bootstrapPath('events.php')),
+    'filePath'                  => env(
+        'EVENTS_FILE_PATH',
+        bootstrapPath('events.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -68,7 +74,10 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env('EVENTS_CACHE_FILE_PATH', cachePath('events.php')),
+    'cacheFilePath'             => env(
+        'EVENTS_CACHE_FILE_PATH',
+        cachePath('events.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------

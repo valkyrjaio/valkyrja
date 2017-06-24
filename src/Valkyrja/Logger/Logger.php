@@ -103,13 +103,17 @@ interface Logger
     /**
      * Log a message.
      *
-     * @param \Valkyrja\Logger\LogLevel $level   The log level
-     * @param string                    $message The message
-     * @param array                     $context [optional] The context
+     * @param LogLevel $level   The log level
+     * @param string   $message The message
+     * @param array    $context [optional] The context
      *
      * @return \Valkyrja\Logger\Logger
      */
-    public function log(LogLevel $level, string $message, array $context = []): self;
+    public function log(
+        LogLevel $level,
+        string $message,
+        array $context = []
+    ): self;
 
     /**
      * Get the logger.

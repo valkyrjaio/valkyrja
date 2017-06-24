@@ -34,7 +34,7 @@ class AnnotationsParserImpl implements AnnotationsParser
     /**
      * AnnotationsParser constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -57,7 +57,8 @@ class AnnotationsParserImpl implements AnnotationsParser
         // Get all matches of @ Annotations
         $matches = $this->getAnnotationMatches($docString);
 
-        // If there are any matches iterate through them and create new annotations
+        // If there are any matches iterate through them and create new
+        // annotations
         if ($matches && isset($matches[0], $matches[1])) {
             foreach ($matches[0] as $index => $match) {
                 $this->setAnnotation($matches, $index, $annotations);
@@ -85,7 +86,14 @@ class AnnotationsParserImpl implements AnnotationsParser
      * Set a matched annotation.
      *
      * @param array $matches     The matches
-     *                           [0 => matches, 1 => annotation, 2 => type, 3 => args, 4 => var, 5 => desc]
+     *                           [
+     *                           0 => matches,
+     *                           1 => annotation,
+     *                           2 => type,
+     *                           3 => args,
+     *                           4 => var,
+     *                           5 => desc
+     *                           ]
      * @param int   $index       The index
      * @param array $annotations The annotations list
      *
@@ -93,8 +101,11 @@ class AnnotationsParserImpl implements AnnotationsParser
      *
      * @return void
      */
-    protected function setAnnotation(array $matches, int $index, array &$annotations): void
-    {
+    protected function setAnnotation(
+        array $matches,
+        int $index,
+        array &$annotations
+    ): void {
         $properties = $this->getAnnotationProperties($matches, $index);
 
         // Get the annotation model from the annotations map
@@ -106,15 +117,19 @@ class AnnotationsParserImpl implements AnnotationsParser
         // If there are arguments
         if (null !== $properties['arguments'] && $properties['arguments']) {
             // Filter the arguments and set them in the annotation
-            $annotation->setAnnotationArguments($this->getArguments($properties['arguments']));
+            $annotation->setAnnotationArguments(
+                $this->getArguments($properties['arguments'])
+            );
 
-            // Having set the arguments there's no need to retain this key in the properties
+            // Having set the arguments there's no need to retain this key in
+            // the properties
             unset($properties['arguments']);
 
             // Set the annotation's arguments to setters if they exist
             $this->setAnnotationArguments($annotation);
 
-            // If all arguments have been set to their own properties in the annotation model
+            // If all arguments have been set to their own properties in the
+            // annotation model
             if (empty($annotation->getAnnotationArguments())) {
                 // Set the arguments to null
                 $annotation->setAnnotationArguments();
@@ -131,7 +146,7 @@ class AnnotationsParserImpl implements AnnotationsParser
     /**
      * Set the annotation's arguments.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation The annotation
+     * @param Annotation $annotation The annotation
      *
      * @return void
      */
@@ -164,8 +179,10 @@ class AnnotationsParserImpl implements AnnotationsParser
      *
      * @return array
      */
-    protected function getAnnotationProperties(array $matches, int $index): array
-    {
+    protected function getAnnotationProperties(
+        array $matches,
+        int $index
+    ): array {
         $properties = [];
 
         // Written like this to appease the code coverage gods
@@ -190,9 +207,14 @@ class AnnotationsParserImpl implements AnnotationsParser
         // If the type and description exist by the variable does not
         // then that means the variable regex group captured the
         // first word of the description
-        if ($properties['type'] && $properties['description'] && ! $properties['variable']) {
+        if (
+            $properties['type']
+            && $properties['description']
+            && ! $properties['variable']
+        ) {
             // Rectify this by concatenating the type and description
-            $properties['description'] = $properties['type'] . $properties['description'];
+            $properties['description'] =
+                $properties['type'] . $properties['description'];
 
             // Then unset the type
             unset($properties['type']);
@@ -259,7 +281,8 @@ class AnnotationsParserImpl implements AnnotationsParser
      *
      * @description The matches [0 => $matches, 1 => $keys, 2 => $values]
      *
-     * @param array $matches   The matches [0 => $matches, 1 => $keys, 2 => $values]
+     * @param array $matches   The matches [0 => $matches, 1 => $keys, 2 =>
+     *                         $values]
      * @param int   $index     The index
      * @param array $arguments The arguments list
      *
@@ -267,8 +290,11 @@ class AnnotationsParserImpl implements AnnotationsParser
      *
      * @return void
      */
-    protected function setArgument(array $matches, int $index, array &$arguments): void
-    {
+    protected function setArgument(
+        array $matches,
+        int $index,
+        array &$arguments
+    ): void {
         // Set the key
         $key = $this->determineValue($this->cleanMatch($matches[1][$index]));
         // Set the value
@@ -298,7 +324,10 @@ class AnnotationsParserImpl implements AnnotationsParser
 
         // If this value starts with [[ and has pipe deliminations within it
         // then it's an array of values to parse (ex: [[Test | Test2 | Test3]]
-        if (strpos($value, '[[') === 0 && strpos($value, ']]') === strlen($value) - 2) {
+        if (
+            strpos($value, '[[') === 0
+            && strpos($value, ']]') === strlen($value) - 2
+        ) {
             // Strip the value of the [[ ]] at the ends of the string
             $value = (string) substr($value, 2, -2);
             // Split the value into parts
@@ -364,11 +393,13 @@ class AnnotationsParserImpl implements AnnotationsParser
          * $matches[2] Parenthesis enclosed results
          *
          * @Annotation $matches[3] $matches[4] $matches[5]
-         * Matches: @method, @param $test, @description description, @param int $test Description, etc
+         * Matches: @method, @param $test, @description description,
+         *          @param int $test Description, etc
          * None of the below matches requires the previous one to exist
          *
          * $matches[3] Description or type part of a line annotation
-         * $matches[4] Variable part of line annotation (must be a variable beginning with $)
+         * $matches[4] Variable part of line annotation
+         *             (must be a variable beginning with $)
          * $matches[5] Description part of line annotation
          */
         return '/'
@@ -412,7 +443,11 @@ class AnnotationsParserImpl implements AnnotationsParser
         $annotationsMap = $this->getAnnotationsMap();
 
         // If an annotation is mapped to a class
-        if ($annotationType && array_key_exists($annotationType, $annotationsMap)) {
+        if ($annotationType && array_key_exists(
+                $annotationType,
+                $annotationsMap
+            )
+        ) {
             // Set a new class based on the match found
             $annotation = new $annotationsMap[$annotationType]();
         } else {
@@ -454,7 +489,7 @@ class AnnotationsParserImpl implements AnnotationsParser
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

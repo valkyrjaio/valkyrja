@@ -73,8 +73,8 @@ interface Response
      * @param int    $code HTTP status code
      * @param string $text [optional] HTTP status text
      *
-     * If the status text is null it will be automatically populated for the known
-     * status codes and left empty otherwise.
+     * If the status text is null it will be automatically populated for the
+     * known status codes and left empty otherwise.
      *
      * @return \Valkyrja\Http\Response
      */
@@ -195,17 +195,19 @@ interface Response
     /**
      * Returns true if the response is "fresh".
      *
-     * Fresh responses may be served from cache without any interaction with the
-     * origin. A response is considered fresh when it includes a Cache-Control/max-age
-     * indicator or Expires header and the calculated age is less than the freshness lifetime.
+     * Fresh responses may be served from cache without any interaction with
+     * the origin. A response is considered fresh when it includes a
+     * Cache-Control/max-age indicator or Expires header and the calculated age
+     * is less than the freshness lifetime.
      *
      * @return bool true if the response is fresh, false otherwise
      */
     public function isFresh(): bool;
 
     /**
-     * Returns true if the response includes headers that can be used to validate
-     * the response with the origin server using a conditional GET request.
+     * Returns true if the response includes headers that can be used to
+     * validate the response with the origin server using a conditional GET
+     * request.
      *
      * @return bool true if the response is validateable, false otherwise
      */
@@ -237,7 +239,8 @@ interface Response
     public function getAge(): int;
 
     /**
-     * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
+     * Marks the response stale by setting the Age header to be equal to the
+     * maximum age of the response.
      *
      * @return \Valkyrja\Http\Response
      */
@@ -246,7 +249,8 @@ interface Response
     /**
      * Returns the value of the Expires header as a DateTime instance.
      *
-     * @return \DateTime A DateTime instance or null if the header does not exist
+     * @return \DateTime A DateTime instance or null if the header does not
+     *                   exist
      */
     public function getExpires(): DateTime;
 
@@ -255,25 +259,28 @@ interface Response
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime $date [optional] A \DateTime instance or null to remove the header
+     * @param \DateTime $date [optional] A \DateTime instance or null to remove
+     *                        the header
      *
      * @return \Valkyrja\Http\Response
      */
     public function setExpires(DateTime $date = null): self;
 
     /**
-     * Returns the number of seconds after the time specified in the response's Date
-     * header when the response should no longer be considered fresh.
+     * Returns the number of seconds after the time specified in the response's
+     * Date header when the response should no longer be considered fresh.
      *
-     * First, it checks for a s-maxage directive, then a max-age directive, and then it falls
-     * back on an expires header. It returns null when no maximum age can be established.
+     * First, it checks for a s-maxage directive, then a max-age directive, and
+     * then it falls back on an expires header. It returns null when no maximum
+     * age can be established.
      *
      * @return int Number of seconds
      */
     public function getMaxAge(): int;
 
     /**
-     * Sets the number of seconds after which the response should no longer be considered fresh.
+     * Sets the number of seconds after which the response should no longer be
+     * considered fresh.
      *
      * This methods sets the Cache-Control max-age directive.
      *
@@ -284,7 +291,8 @@ interface Response
     public function setMaxAge(int $value): self;
 
     /**
-     * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
+     * Sets the number of seconds after which the response should no longer be
+     * considered fresh by shared caches.
      *
      * This methods sets the Cache-Control s-maxage directive.
      *
@@ -297,10 +305,11 @@ interface Response
     /**
      * Returns the response's time-to-live in seconds.
      *
-     * It returns null when no freshness information is present in the response.
+     * It returns null when no freshness information is present in the
+     * response.
      *
-     * When the responses TTL is <= 0, the response may not be served from cache without first
-     * revalidating with the origin.
+     * When the responses TTL is <= 0, the response may not be served from
+     * cache without first revalidating with the origin.
      *
      * @return int The TTL in seconds
      */
@@ -340,7 +349,8 @@ interface Response
      *
      * Passing null as value will remove the header.
      *
-     * @param \DateTime $date [optional] A \DateTime instance or null to remove the header
+     * @param \DateTime $date [optional] A \DateTime instance or null to remove
+     *                        the header
      *
      * @return \Valkyrja\Http\Response
      */
@@ -356,7 +366,8 @@ interface Response
     /**
      * Sets the ETag value.
      *
-     * @param string $etag [optional] The ETag unique identifier or null to remove the header
+     * @param string $etag [optional] The ETag unique identifier or null to
+     *                     remove the header
      * @param bool   $weak [optional] Whether you want a weak ETag or not
      *
      * @return \Valkyrja\Http\Response
@@ -366,7 +377,8 @@ interface Response
     /**
      * Sets the response's cache headers (validation and/or expiration).
      *
-     * Available options are: etag, last_modified, max_age, s_maxage, private, and public.
+     * Available options are: etag, last_modified, max_age, s_maxage, private,
+     * and public.
      *
      * @param array $options An array of cache options
      *
@@ -375,7 +387,8 @@ interface Response
     public function setCache(array $options): self;
 
     /**
-     * Modifies the response so that it conforms to the rules defined for a 304 status code.
+     * Modifies the response so that it conforms to the rules defined for a 304
+     * status code.
      *
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
@@ -491,14 +504,18 @@ interface Response
     /**
      * Cleans or flushes output buffers up to target level.
      *
-     * Resulting level can be greater than target level if a non-removable buffer has been encountered.
+     * Resulting level can be greater than target level if a non-removable
+     * buffer has been encountered.
      *
      * @param int  $targetLevel The target output buffering level
      * @param bool $flush       Whether to flush or clean the buffers
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush): void;
+    public static function closeOutputBuffers(
+        int $targetLevel,
+        bool $flush
+    ): void;
 
     /**
      * Returns the Response as an HTTP string.

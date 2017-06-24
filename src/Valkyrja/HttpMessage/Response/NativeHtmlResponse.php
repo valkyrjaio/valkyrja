@@ -33,8 +33,11 @@ class NativeHtmlResponse extends NativeResponse implements HtmlResponse
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(string $html, int $status = null, array $headers = [])
-    {
+    public function __construct(
+        string $html,
+        int $status = null,
+        array $headers = []
+    ) {
         $body = new NativeStream('php://temp', 'wb+');
 
         $body->write($html);
@@ -43,7 +46,11 @@ class NativeHtmlResponse extends NativeResponse implements HtmlResponse
         parent::__construct(
             $body,
             $status,
-            $this->injectHeader(Header::CONTENT_TYPE, 'text/html; charset=utf-8', $headers)
+            $this->injectHeader(
+                Header::CONTENT_TYPE,
+                'text/html; charset=utf-8',
+                $headers
+            )
         );
     }
 }

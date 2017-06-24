@@ -55,7 +55,9 @@ class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
         // If the status code set is not a redirect code
         if (! $this->isRedirect()) {
             // Throw an invalid status code exception
-            throw new InvalidStatusCodeException("Status code of \"{$status}\" is not allowed");
+            throw new InvalidStatusCodeException(
+                "Status code of \"{$status}\" is not allowed"
+            );
         }
 
         if (null !== $uri) {
@@ -179,7 +181,12 @@ class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
      */
     public function throw(): void
     {
-        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->headers->all());
+        throw new HttpRedirectException(
+            $this->statusCode,
+            $this->uri,
+            null,
+            $this->headers->all()
+        );
     }
 
     /**
@@ -197,7 +204,7 @@ class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \InvalidArgumentException
      *

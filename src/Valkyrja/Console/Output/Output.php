@@ -30,7 +30,7 @@ interface Output
     /**
      * Set the formatter.
      *
-     * @param \Valkyrja\Console\Output\OutputFormatter $formatter
+     * @param OutputFormatter $formatter
      *
      * @return void
      */
@@ -39,22 +39,32 @@ interface Output
     /**
      * Write messages to the console.
      *
-     * @param array                               $messages    The messages
-     * @param bool                                $newLine     [optional] Whether to use new lines between each message
-     * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
+     * @param array       $messages    The messages
+     * @param bool        $newLine     [optional] Whether to use new lines
+     *                                 between each message
+     * @param OutputStyle $outputStyle [optional] The output style to use
      *
      * @return void
      */
-    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void;
+    public function write(
+        array $messages,
+        bool $newLine = null,
+        OutputStyle $outputStyle = null
+    ): void;
 
     /**
      * Write a message to the console.
      *
-     * @param string                              $message     The message
-     * @param bool                                $newLine     [optional] Whether to use new lines between each message
-     * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
+     * @param string      $message     The message
+     * @param bool        $newLine     [optional] Whether to use new lines
+     *                                 between each message
+     * @param OutputStyle $outputStyle [optional] The output style to use
      *
      * @return void
      */
-    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void;
+    public function writeMessage(
+        string $message,
+        bool $newLine = null,
+        OutputStyle $outputStyle = null
+    ): void;
 }

@@ -41,9 +41,11 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
 
         // Iterate through all the classes
         foreach ($classes as $class) {
+            $listeners = $this->methodsAnnotationsType('Listener', $class);
+
             // Get all the annotations for each class and iterate through them
             /** @var \Valkyrja\Events\Annotations\Listener $annotation */
-            foreach ($this->methodsAnnotationsType('Listener', $class) as $annotation) {
+            foreach ($listeners as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getListenerFromAnnotation($annotation);
@@ -56,7 +58,7 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     /**
      * Set the properties for a listener annotation.
      *
-     * @param \Valkyrja\Events\Annotations\Listener $listener
+     * @param Listener $listener
      *
      * @throws \ReflectionException
      *
@@ -66,7 +68,10 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     {
         $classReflection = $this->getClassReflection($listener->getClass());
 
-        if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
+        if (
+            $listener->getMethod()
+            || $classReflection->hasMethod('__construct')
+        ) {
             $methodReflection = $this->getMethodReflection(
                 $listener->getClass(),
                 $listener->getMethod() ?? '__construct'
@@ -83,13 +88,16 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     /**
      * Get a listener from a listener annotation.
      *
-     * @param \Valkyrja\Events\Annotations\Listener $listener The listener annotation
+     * @param Listener $listener The listener annotation
      *
      * @return \Valkyrja\Events\Listener
      */
-    protected function getListenerFromAnnotation(Listener $listener): EventListener
-    {
-        return (new EventListener())
+    protected function getListenerFromAnnotation(
+        Listener $listener
+    ): EventListener {
+        $eventListener = new EventListener();
+
+        $eventListener
             ->setEvent($listener->getEvent())
             ->setId($listener->getId())
             ->setName($listener->getName())
@@ -101,6 +109,8 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
             ->setMatches($listener->getMatches())
             ->setDependencies($listener->getDependencies())
             ->setArguments($listener->getArguments());
+
+        return $eventListener;
     }
 
     /**
@@ -118,7 +128,7 @@ class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotat
     /**
      * Bind the listener annotations.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

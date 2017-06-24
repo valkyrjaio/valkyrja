@@ -94,7 +94,8 @@ interface Application
      * Get the config.
      *
      * @param string $key     [optional] The key to get
-     * @param string $default [optional] The default value if the key is not found
+     * @param string $default [optional] The default value if the key is not
+     *                        found
      *
      * @return mixed
      */
@@ -323,7 +324,8 @@ interface Application
      * Return a new redirect response from the application for a given route.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic
+     *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *

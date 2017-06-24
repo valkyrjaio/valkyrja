@@ -98,8 +98,11 @@ class ResponseImpl implements Response
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(string $content = '', int $status = StatusCode::OK, array $headers = [])
-    {
+    public function __construct(
+        string $content = '',
+        int $status = StatusCode::OK,
+        array $headers = []
+    ) {
         $this->setHeaders($headers);
         $this->setContent($content);
         $this->setStatusCode($status);
@@ -152,7 +155,16 @@ class ResponseImpl implements Response
         }
 
         // Set the status of the response
-        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
+        header(
+            sprintf(
+                'HTTP/%s %s %s',
+                $this->version,
+                $this->statusCode,
+                $this->statusText
+            ),
+            true,
+            $this->statusCode
+        );
 
         // Set the response cookies
         foreach ($this->cookies->all() as $cookie) {
@@ -246,7 +258,12 @@ class ResponseImpl implements Response
                 . "\r\n";
         }
 
-        return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText)
+        return sprintf(
+                'HTTP/%s %s %s',
+                $this->version,
+                $this->statusCode,
+                $this->statusText
+            )
             . "\r\n"
             . $cookies
             . $this->headers
@@ -308,8 +325,8 @@ class ResponseImpl implements Response
      * @param int    $code HTTP status code
      * @param string $text [optional] HTTP status text
      *
-     * If the status text is null it will be automatically populated for the known
-     * status codes and left empty otherwise.
+     * If the status text is null it will be automatically populated for the
+     * known status codes and left empty otherwise.
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
      *
@@ -321,7 +338,9 @@ class ResponseImpl implements Response
 
         // Check if the status code is valid
         if ($this->isInvalid()) {
-            throw new InvalidStatusCodeException(sprintf('The HTTP status code "%s" is not valid.', $code));
+            throw new InvalidStatusCodeException(
+                sprintf('The HTTP status code "%s" is not valid.', $code)
+            );
         }
 
         // If no text was supplied
@@ -457,8 +476,10 @@ class ResponseImpl implements Response
      *
      * @return \Valkyrja\Http\Response
      */
-    public function addCacheControl(string $name, string $value = null): Response
-    {
+    public function addCacheControl(
+        string $name,
+        string $value = null
+    ): Response {
         $this->cacheControl[$name] = $value;
 
         return $this;
@@ -540,7 +561,10 @@ class ResponseImpl implements Response
             return false;
         }
 
-        if ($this->hasCacheControl('no-store') || $this->hasCacheControl('private')) {
+        if (
+            $this->hasCacheControl('no-store')
+            || $this->hasCacheControl('private')
+        ) {
             return false;
         }
 
@@ -550,9 +574,11 @@ class ResponseImpl implements Response
     /**
      * Returns true if the response is "fresh".
      *
-     * Fresh responses may be served from cache without any interaction with the
-     * origin. A response is considered fresh when it includes a Cache-Control/max-age
-     * indicator or Expires header and the calculated age is less than the freshness lifetime.
+     * Fresh responses may be served from cache without any interaction with
+     * the
+     * origin. A response is considered fresh when it includes a
+     * Cache-Control/max-age indicator or Expires header and the calculated age
+     * is less than the freshness lifetime.
      *
      * @throws \RuntimeException
      *
@@ -564,14 +590,16 @@ class ResponseImpl implements Response
     }
 
     /**
-     * Returns true if the response includes headers that can be used to validate
-     * the response with the origin server using a conditional GET request.
+     * Returns true if the response includes headers that can be used to
+     * validate the response with the origin server using a conditional GET
+     * request.
      *
      * @return bool true if the response is validateable, false otherwise
      */
     public function isValidateable(): bool
     {
-        return $this->headers->has('Last-Modified') || $this->headers->has('ETag');
+        return $this->headers->has('Last-Modified')
+            || $this->headers->has('ETag');
     }
 
     /**
@@ -624,7 +652,8 @@ class ResponseImpl implements Response
     }
 
     /**
-     * Marks the response stale by setting the Age header to be equal to the maximum age of the response.
+     * Marks the response stale by setting the Age header to be equal to the
+     * maximum age of the response.
      *
      * @throws \RuntimeException
      *
@@ -649,8 +678,12 @@ class ResponseImpl implements Response
         try {
             return $this->headers->get('Expires');
         } catch (\RuntimeException $e) {
-            // according to RFC 2616 invalid date formats (e.g. "0" and "-1") must be treated as in the past
-            return DateTime::createFromFormat(DATE_RFC2822, 'Sat, 01 Jan 00 00:00:00 +0000');
+            // according to RFC 2616 invalid date formats (e.g. "0" and "-1")
+            // must be treated as in the past
+            return DateTime::createFromFormat(
+                DATE_RFC2822,
+                'Sat, 01 Jan 00 00:00:00 +0000'
+            );
         }
     }
 
@@ -659,7 +692,8 @@ class ResponseImpl implements Response
      *
      * Passing null as value will remove the header.
      *
-     * @param DateTime $date [optional] A DateTime instance or null to remove the header
+     * @param DateTime $date [optional] A DateTime instance or null to remove
+     *                       the header
      *
      * @return \Valkyrja\Http\Response
      */
@@ -670,18 +704,22 @@ class ResponseImpl implements Response
         } else {
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
-            $this->headers->set('Expires', $date->format('D, d M Y H:i:s') . ' GMT');
+            $this->headers->set(
+                'Expires',
+                $date->format('D, d M Y H:i:s') . ' GMT'
+            );
         }
 
         return $this;
     }
 
     /**
-     * Returns the number of seconds after the time specified in the response's Date
-     * header when the response should no longer be considered fresh.
+     * Returns the number of seconds after the time specified in the response's
+     * Date header when the response should no longer be considered fresh.
      *
-     * First, it checks for a s-maxage directive, then a max-age directive, and then it falls
-     * back on an expires header. It returns null when no maximum age can be established.
+     * First, it checks for a s-maxage directive, then a max-age directive, and
+     * then it falls back on an expires header. It returns null when no maximum
+     * age can be established.
      *
      * @throws \RuntimeException
      *
@@ -698,14 +736,20 @@ class ResponseImpl implements Response
         }
 
         if (null !== $this->getExpires()) {
-            return date('U', strtotime($this->getExpires())) - date('U', strtotime($this->getDateHeader()));
+            return date('U', strtotime($this->getExpires())) - date(
+                    'U',
+                    strtotime(
+                        $this->getDateHeader()
+                    )
+                );
         }
 
         return 0;
     }
 
     /**
-     * Sets the number of seconds after which the response should no longer be considered fresh.
+     * Sets the number of seconds after which the response should no longer be
+     * considered fresh.
      *
      * This methods sets the Cache-Control max-age directive.
      *
@@ -721,7 +765,8 @@ class ResponseImpl implements Response
     }
 
     /**
-     * Sets the number of seconds after which the response should no longer be considered fresh by shared caches.
+     * Sets the number of seconds after which the response should no longer be
+     * considered fresh by shared caches.
      *
      * This methods sets the Cache-Control s-maxage directive.
      *
@@ -740,10 +785,11 @@ class ResponseImpl implements Response
     /**
      * Returns the response's time-to-live in seconds.
      *
-     * It returns null when no freshness information is present in the response.
+     * It returns null when no freshness information is present in the
+     * response.
      *
-     * When the responses TTL is <= 0, the response may not be served from cache without first
-     * revalidating with the origin.
+     * When the responses TTL is <= 0, the response may not be served from
+     * cache without first revalidating with the origin.
      *
      * @throws \RuntimeException
      *
@@ -811,7 +857,8 @@ class ResponseImpl implements Response
      *
      * Passing null as value will remove the header.
      *
-     * @param DateTime $date [optional] A DateTime instance or null to remove the header
+     * @param DateTime $date [optional] A DateTime instance or null to remove
+     *                       the header
      *
      * @return \Valkyrja\Http\Response
      */
@@ -822,7 +869,10 @@ class ResponseImpl implements Response
         } else {
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
-            $this->headers->set('Last-Modified', $date->format('D, d M Y H:i:s') . ' GMT');
+            $this->headers->set(
+                'Last-Modified',
+                $date->format('D, d M Y H:i:s') . ' GMT'
+            );
         }
 
         return $this;
@@ -841,7 +891,8 @@ class ResponseImpl implements Response
     /**
      * Sets the ETag value.
      *
-     * @param string $etag [optional] The ETag unique identifier or null to remove the header
+     * @param string $etag [optional] The ETag unique identifier or null to
+     *                     remove the header
      * @param bool   $weak [optional] Whether you want a weak ETag or not
      *
      * @return \Valkyrja\Http\Response
@@ -856,9 +907,7 @@ class ResponseImpl implements Response
             }
             $this->headers->set(
                 'ETag',
-                (true === $weak
-                    ? 'W/'
-                    : '') . $etag
+                (true === $weak ? 'W/' : '') . $etag
             );
         }
 
@@ -868,7 +917,8 @@ class ResponseImpl implements Response
     /**
      * Sets the response's cache headers (validation and/or expiration).
      *
-     * Available options are: etag, last_modified, max_age, s_maxage, private, and public.
+     * Available options are: etag, last_modified, max_age, s_maxage, private,
+     * and public.
      *
      * @param array $options An array of cache options
      *
@@ -912,7 +962,8 @@ class ResponseImpl implements Response
     }
 
     /**
-     * Modifies the response so that it conforms to the rules defined for a 304 status code.
+     * Modifies the response so that it conforms to the rules defined for a 304
+     * status code.
      *
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
@@ -1082,15 +1133,18 @@ class ResponseImpl implements Response
     /**
      * Cleans or flushes output buffers up to target level.
      *
-     * Resulting level can be greater than target level if a non-removable buffer has been encountered.
+     * Resulting level can be greater than target level if a non-removable
+     * buffer has been encountered.
      *
      * @param int  $targetLevel The target output buffering level
      * @param bool $flush       Whether to flush or clean the buffers
      *
      * @return void
      */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush): void
-    {
+    public static function closeOutputBuffers(
+        int $targetLevel,
+        bool $flush
+    ): void {
         $status = ob_get_status(true);
         $level  = count($status);
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
@@ -1127,7 +1181,7 @@ class ResponseImpl implements Response
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \InvalidArgumentException
      *

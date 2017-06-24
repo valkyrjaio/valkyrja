@@ -52,17 +52,22 @@ class NativeResponse implements Response
     /**
      * NativeResponse constructor.
      *
-     * @param \Valkyrja\HttpMessage\Stream $body    [optional] The body
-     * @param int                          $status  [optional] The status
-     * @param array                        $headers [optional] The headers
+     * @param Stream $body    [optional] The body
+     * @param int    $status  [optional] The status
+     * @param array  $headers [optional] The headers
      *
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(Stream $body = null, int $status = null, array $headers = null)
-    {
+    public function __construct(
+        Stream $body = null,
+        int $status = null,
+        array $headers = null
+    ) {
         $this->stream     = $body ?? new NativeStream('php://input', 'rw');
-        $this->statusCode = $this->validateStatusCode($status ?? StatusCode::OK);
+        $this->statusCode = $this->validateStatusCode(
+            $status ?? StatusCode::OK
+        );
         $this->headers    = $headers ?? [];
     }
 
@@ -80,7 +85,8 @@ class NativeResponse implements Response
     }
 
     /**
-     * Return an instance with the specified status code and, optionally, reason phrase.
+     * Return an instance with the specified status code and, optionally,
+     * reason phrase.
      *
      * If no reason phrase is specified, implementations MAY choose to default
      * to the RFC 7231 or IANA recommended reason phrase for the response's
@@ -95,10 +101,12 @@ class NativeResponse implements Response
      *
      * @param int    $code         The 3-digit integer result code to set.
      * @param string $reasonPhrase The reason phrase to use with the
-     *                             provided status code; if none is provided, implementations MAY
-     *                             use the defaults as suggested in the HTTP specification.
+     *                             provided status code; if none is provided,
+     *                             implementations MAY use the defaults as
+     *                             suggested in the HTTP specification.
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode For invalid status code arguments.
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
+     *      For invalid status code arguments.
      *
      * @return static
      */
@@ -107,7 +115,8 @@ class NativeResponse implements Response
         $new = clone $this;
 
         $new->statusCode   = $new->validateStatusCode($code);
-        $new->statusPhrase = $reasonPhrase ?? StatusCode::TEXTS[$this->statusCode];
+        $new->statusPhrase = $reasonPhrase
+            ?? StatusCode::TEXTS[$this->statusCode];
 
         return $new;
     }
@@ -117,14 +126,15 @@ class NativeResponse implements Response
      *
      * Because a reason phrase is not a required element in a response
      * status line, the reason phrase value MAY be null. Implementations MAY
-     * choose to return the default RFC 7231 recommended reason phrase (or those
-     * listed in the IANA HTTP Status Code Registry) for the response's
+     * choose to return the default RFC 7231 recommended reason phrase (or
+     * those listed in the IANA HTTP Status Code Registry) for the response's
      * status code.
      *
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
      *
-     * @return string Reason phrase; must return an empty string if none present.
+     * @return string Reason phrase; must return an empty string if none
+     *                present.
      */
     public function getReasonPhrase(): string
     {

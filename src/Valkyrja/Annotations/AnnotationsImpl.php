@@ -66,7 +66,7 @@ class AnnotationsImpl implements Annotations
     /**
      * Annotations constructor.
      *
-     * @param \Valkyrja\Annotations\AnnotationsParser $parser The parser
+     * @param AnnotationsParser $parser The parser
      */
     public function __construct(AnnotationsParser $parser)
     {
@@ -86,7 +86,7 @@ class AnnotationsImpl implements Annotations
     /**
      * Set the parser.
      *
-     * @param \Valkyrja\Annotations\AnnotationsParser $parser The parser
+     * @param AnnotationsParser $parser The parser
      *
      * @return void
      */
@@ -131,7 +131,10 @@ class AnnotationsImpl implements Annotations
      */
     public function classAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->classAnnotations($class));
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->classAnnotations($class)
+        );
     }
 
     /**
@@ -167,9 +170,16 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function classMembersAnnotationsType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->classMembersAnnotations($class));
+    public function classMembersAnnotationsType(
+        string $type,
+        string $class
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->classMembersAnnotations(
+            $class
+        )
+        );
     }
 
     /**
@@ -205,9 +215,17 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function classAndMembersAnnotationsType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->classAndMembersAnnotations($class));
+    public function classAndMembersAnnotationsType(
+        string $type,
+        string $class
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...
+            $this->classAndMembersAnnotations(
+                $class
+            )
+        );
     }
 
     /**
@@ -247,9 +265,18 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertyAnnotationsType(string $type, string $class, string $property): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
+    public function propertyAnnotationsType(
+        string $type,
+        string $class,
+        string $property
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->propertyAnnotations(
+            $class,
+            $property
+        )
+        );
     }
 
     /**
@@ -280,7 +307,10 @@ class AnnotationsImpl implements Annotations
             self::$reflections[$index] = $property;
 
             // Iterate through all the property's annotations
-            foreach ($this->propertyAnnotations($class, $property->getName()) as $propertyAnnotation) {
+            foreach ($this->propertyAnnotations(
+                $class,
+                $property->getName()
+            ) as $propertyAnnotation) {
                 // Set the annotation in the list
                 $annotations[] = $propertyAnnotation;
             }
@@ -301,9 +331,16 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertiesAnnotationsType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->propertiesAnnotations($class));
+    public function propertiesAnnotationsType(
+        string $type,
+        string $class
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->propertiesAnnotations(
+            $class
+        )
+        );
     }
 
     /**
@@ -344,9 +381,18 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function methodAnnotationsType(string $type, string $class, string $method): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->methodAnnotations($class, $method));
+    public function methodAnnotationsType(
+        string $type,
+        string $class,
+        string $method
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->methodAnnotations(
+            $class,
+            $method
+        )
+        );
     }
 
     /**
@@ -377,7 +423,10 @@ class AnnotationsImpl implements Annotations
             self::$reflections[$index] = $method;
 
             // Iterate through all the method's annotations
-            foreach ($this->methodAnnotations($class, $method->getName()) as $methodAnnotation) {
+            foreach ($this->methodAnnotations(
+                $class,
+                $method->getName()
+            ) as $methodAnnotation) {
                 // Set the annotation in the list
                 $annotations[] = $methodAnnotation;
             }
@@ -400,7 +449,10 @@ class AnnotationsImpl implements Annotations
      */
     public function methodsAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->methodsAnnotations($class));
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->methodsAnnotations($class)
+        );
     }
 
     /**
@@ -437,21 +489,30 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function functionAnnotationsType(string $type, string $function): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->functionAnnotations($function));
+    public function functionAnnotationsType(
+        string $type,
+        string $function
+    ): array {
+        return $this->filterAnnotationsByType(
+            $type,
+            ...$this->functionAnnotations(
+            $function
+        )
+        );
     }
 
     /**
      * Filter annotations by type.
      *
-     * @param string                             $type           The type to match
-     * @param \Valkyrja\Annotations\Annotation[] ...$annotations The annotations
+     * @param string       $type           The type to match
+     * @param Annotation[] ...$annotations The annotations
      *
      * @return array
      */
-    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array
-    {
+    public function filterAnnotationsByType(
+        string $type,
+        Annotation ...$annotations
+    ): array {
         // Set a list of annotations to return
         $annotationsList = [];
 
@@ -474,21 +535,24 @@ class AnnotationsImpl implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
-    {
+    public function getReflectionFunctionAnnotations(
+        ReflectionFunctionAbstract $reflection
+    ): array {
         return $this->parser->getAnnotations($reflection->getDocComment());
     }
 
     /**
      * Set the base annotation model values.
      *
-     * @param array                              $properties  The properties
-     * @param \Valkyrja\Annotations\Annotation[] $annotations The annotations
+     * @param array        $properties  The properties
+     * @param Annotation[] $annotations The annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
-    {
+    protected function setAnnotationValues(
+        array $properties,
+        Annotation ...$annotations
+    ): array {
         foreach ($annotations as $annotation) {
             $annotation->setClass($properties['class'] ?? null);
             $annotation->setProperty($properties['property'] ?? null);
@@ -526,12 +590,15 @@ class AnnotationsImpl implements Annotations
      *
      * @return \ReflectionProperty
      */
-    public function getPropertyReflection(string $class, string $property): ReflectionProperty
-    {
+    public function getPropertyReflection(
+        string $class,
+        string $property
+    ): ReflectionProperty {
         $index = static::PROPERTY_CACHE . $class . $property;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionProperty($class, $property);
+            ?? self::$reflections[$index] =
+                new ReflectionProperty($class, $property);
     }
 
     /**
@@ -544,12 +611,15 @@ class AnnotationsImpl implements Annotations
      *
      * @return \ReflectionMethod
      */
-    public function getMethodReflection(string $class, string $method): ReflectionMethod
-    {
+    public function getMethodReflection(
+        string $class,
+        string $method
+    ): ReflectionMethod {
         $index = static::METHOD_CACHE . $class . $method;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionMethod($class, $method);
+            ?? self::$reflections[$index] =
+                new ReflectionMethod($class, $method);
     }
 
     /**
@@ -576,8 +646,8 @@ class AnnotationsImpl implements Annotations
      *
      * @return string[]
      */
-    protected function getDependencies(ReflectionParameter ...$parameters): array
-    {
+    protected function getDependencies(ReflectionParameter ...$parameters
+    ): array {
         // Setup to find any injectable objects through the service container
         $dependencies = [];
 
@@ -608,7 +678,7 @@ class AnnotationsImpl implements Annotations
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */
@@ -617,7 +687,9 @@ class AnnotationsImpl implements Annotations
         $app->container()->singleton(
             Annotations::class,
             new static(
-                $app->container()->getSingleton(CoreComponent::ANNOTATIONS_PARSER)
+                $app->container()->getSingleton(
+                    CoreComponent::ANNOTATIONS_PARSER
+                )
             )
         );
     }

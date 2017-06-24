@@ -167,7 +167,7 @@ abstract class CommandHandler
     /**
      * The arguments section.
      *
-     * @param \Valkyrja\Console\Input\Argument[] ...$arguments The argument
+     * @param Argument[] ...$arguments The argument
      *
      * @return void
      */
@@ -191,14 +191,18 @@ abstract class CommandHandler
         }
 
         foreach ($arguments as $argument) {
-            $this->sectionMessage(static::TAB . $argument->getName(), $argument->getDescription(), $longestLength);
+            $this->sectionMessage(
+                static::TAB . $argument->getName(),
+                $argument->getDescription(),
+                $longestLength
+            );
         }
     }
 
     /**
      * The options section.
      *
-     * @param \Valkyrja\Console\Input\Option[] ...$options The options
+     * @param Option[] ...$options The options
      *
      * @return void
      */
@@ -218,18 +222,23 @@ abstract class CommandHandler
         $this->sectionTitleMessage('Options');
 
         foreach ($options as $option) {
-            $longestLength = max(strlen($this->getOptionName($option)), $longestLength);
+            $longestLength =
+                max(strlen($this->getOptionName($option)), $longestLength);
         }
 
         foreach ($options as $option) {
-            $this->sectionMessage($this->getOptionName($option), $option->getDescription(), $longestLength);
+            $this->sectionMessage(
+                $this->getOptionName($option),
+                $option->getDescription(),
+                $longestLength
+            );
         }
     }
 
     /**
      * Get an options name for the options section.
      *
-     * @param \Valkyrja\Console\Input\Option $option The option
+     * @param Option $option The option
      *
      * @return string
      */
@@ -257,15 +266,20 @@ abstract class CommandHandler
      *
      * @return void
      */
-    protected function sectionMessage(string $name, string $description, int $longestLength = null): void
-    {
+    protected function sectionMessage(
+        string $name,
+        string $description,
+        int $longestLength = null
+    ): void {
         $longestLength = $longestLength ?? 0;
         $spacesToAdd   = $longestLength - strlen($name);
 
         output()->formatter()->green();
         output()->writeMessage(static::TAB . $name);
         output()->formatter()->resetColor();
-        output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
+        output()->writeMessage(
+            $spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : ''
+        );
         output()->writeMessage(str_repeat('.', 8));
         output()->writeMessage($description, true);
     }

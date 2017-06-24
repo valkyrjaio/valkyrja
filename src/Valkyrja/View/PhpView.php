@@ -67,12 +67,15 @@ class PhpView implements View
     /**
      * View constructor.
      *
-     * @param \Valkyrja\Application $app       The application
-     * @param string                $template  [optional] The template to set
-     * @param array                 $variables [optional] The variables to set
+     * @param Application $app       The application
+     * @param string      $template  [optional] The template to set
+     * @param array       $variables [optional] The variables to set
      */
-    public function __construct(Application $app, string $template = '', array $variables = [])
-    {
+    public function __construct(
+        Application $app,
+        string $template = '',
+        array $variables = []
+    ) {
         $this->app = $app;
         $this->setVariables($variables);
         $this->setTemplate($template);
@@ -220,7 +223,9 @@ class PhpView implements View
      */
     public function getTemplatePath(): string
     {
-        return $this->getTemplateDir($this->template . $this->getFileExtension());
+        return $this->getTemplateDir(
+            $this->template . $this->getFileExtension()
+        );
     }
 
     /**
@@ -285,7 +290,7 @@ class PhpView implements View
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

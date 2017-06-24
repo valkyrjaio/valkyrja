@@ -55,13 +55,21 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
             // Set the route's properties
             $this->setRouteProperties($route);
 
+            $classAnnotations = $this->classAnnotationsType(
+                $this->routeAnnotationType,
+                $route->getClass()
+            );
+
             // If this route's class has annotations
-            if ($classAnnotations = $this->classAnnotationsType($this->routeAnnotationType, $route->getClass())) {
+            if ($classAnnotations) {
                 /** @var Route $annotation */
                 // Iterate through all the annotations
                 foreach ($classAnnotations as $annotation) {
                     // And set a new route with the controller defined annotation additions
-                    $finalRoutes[] = $this->getRouteFromAnnotation($this->getControllerBuiltRoute($annotation, $route));
+                    $finalRoutes[] =
+                        $this->getRouteFromAnnotation(
+                            $this->getControllerBuiltRoute($annotation, $route)
+                        );
                 }
             } else {
                 // Validate the path before setting the route
@@ -78,7 +86,7 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     /**
      * Set the route properties from arguments.
      *
-     * @param \Valkyrja\Routing\Annotations\Route $route
+     * @param Route $route
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
@@ -88,11 +96,15 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     protected function setRouteProperties(Route $route): void
     {
         if (null === $route->getProperty()) {
-            $parameters = $this->getMethodReflection($route->getClass(), $route->getMethod() ?? '__construct')
-                               ->getParameters();
+            $methodReflection = $this->getMethodReflection(
+                $route->getClass(),
+                $route->getMethod() ?? '__construct'
+            );
 
             // Set the dependencies
-            $route->setDependencies($this->getDependencies(...$parameters));
+            $route->setDependencies(
+                $this->getDependencies(...$methodReflection->getParameters())
+            );
         }
 
         // Avoid having large arrays in cached routes file
@@ -123,8 +135,13 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
 
         // Iterate through all the classes
         foreach ($classes as $class) {
+            $annotations = $this->classMembersAnnotationsType(
+                $this->routeAnnotationType,
+                $class
+            );
+
             // Get all the routes for each class and iterate through them
-            foreach ($this->classMembersAnnotationsType($this->routeAnnotationType, $class) as $annotation) {
+            foreach ($annotations as $annotation) {
                 // Set the annotation in the routes list
                 $routes[] = $annotation;
             }
@@ -136,13 +153,15 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     /**
      * Get a new route with controller route additions.
      *
-     * @param \Valkyrja\Routing\Annotations\Route $controllerRoute
-     * @param \Valkyrja\Routing\Annotations\Route $route
+     * @param Route $controllerRoute
+     * @param Route $route
      *
      * @return \Valkyrja\Routing\Annotations\Route
      */
-    protected function getControllerBuiltRoute(Route $controllerRoute, Route $route): Route
-    {
+    protected function getControllerBuiltRoute(
+        Route $controllerRoute,
+        Route $route
+    ): Route {
         $newRoute = clone $route;
 
         // If there is a base path for this controller
@@ -158,7 +177,9 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
         // If there is a base name for this controller
         if (null !== $controllerRoute->getName()) {
             // Set the name to the base name and route name
-            $newRoute->setName($controllerRoute->getName() . '.' . $route->getName());
+            $newRoute->setName(
+                $controllerRoute->getName() . '.' . $route->getName()
+            );
         }
 
         // If the base is dynamic
@@ -219,13 +240,18 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     /**
      * Get a route from a route annotation.
      *
-     * @param \Valkyrja\Routing\Annotations\Route $route The route annotation
+     * @param Route $route The route annotation
+     *
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @return \Valkyrja\Routing\Route
      */
     protected function getRouteFromAnnotation(Route $route): RouterRoute
     {
-        return (new RouterRoute())
+        $routerRoute = new RouterRoute();
+
+        $routerRoute
             ->setPath($route->getPath())
             ->setRegex($route->getRegex())
             ->setParams($route->getParams())
@@ -243,6 +269,8 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
             ->setMatches($route->getMatches())
             ->setDependencies($route->getDependencies())
             ->setArguments($route->getArguments());
+
+        return $routerRoute;
     }
 
     /**
@@ -260,7 +288,7 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
     /**
      * Bind the route annotations.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

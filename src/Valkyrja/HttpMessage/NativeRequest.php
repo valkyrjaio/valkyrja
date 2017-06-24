@@ -39,10 +39,10 @@ class NativeRequest implements Request
     /**
      * NativeRequest constructor.
      *
-     * @param \Valkyrja\HttpMessage\Uri    $uri     [optional] The uri
-     * @param string                       $method  [optional] The method
-     * @param \Valkyrja\HttpMessage\Stream $body    [optional] The body stream
-     * @param array                        $headers [optional] The headers
+     * @param Uri    $uri     [optional] The uri
+     * @param string $method  [optional] The method
+     * @param Stream $body    [optional] The body stream
+     * @param array  $headers [optional] The headers
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod

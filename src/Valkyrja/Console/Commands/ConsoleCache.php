@@ -55,7 +55,10 @@ class ConsoleCache extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating console cache.', true);
+            output()->writeMessage(
+                'An error occurred while generating console cache.',
+                true
+            );
 
             return 0;
         }

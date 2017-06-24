@@ -24,7 +24,7 @@ abstract class Middleware
     /**
      * Middleware handler for before a request is dispatched.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @return \Valkyrja\Http\Request
      */
@@ -33,20 +33,26 @@ abstract class Middleware
     /**
      * Middleware handler for after a request is dispatched.
      *
-     * @param \Valkyrja\Http\Request  $request  The request
-     * @param \Valkyrja\Http\Response $response The response
+     * @param Request  $request  The request
+     * @param Response $response The response
      *
      * @return \Valkyrja\Http\Response
      */
-    abstract public static function after(Request $request, Response $response): Response;
+    abstract public static function after(
+        Request $request,
+        Response $response
+    ): Response;
 
     /**
      * Middleware handler run when the application is terminating.
      *
-     * @param \Valkyrja\Http\Request  $request  The request
-     * @param \Valkyrja\Http\Response $response The response
+     * @param Request  $request  The request
+     * @param Response $response The response
      *
      * @return void
      */
-    abstract public static function terminate(Request $request, Response $response): void;
+    abstract public static function terminate(
+        Request $request,
+        Response $response
+    ): void;
 }

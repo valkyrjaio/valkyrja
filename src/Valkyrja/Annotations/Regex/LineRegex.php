@@ -21,25 +21,27 @@ interface LineRegex
     /**
      * @description
      *
-     * \s*                                      Followed by any whitespace
-     * \*?                                      Optional asterisk (for multiline)
-     * \s*                                      Followed by an whitespace
-     * (                                        Begin capture
-     *      [a-zA-z0-9\s\*]*                        Any alpha numeric whitespace with asterisk (for multiline)
-     * )?                                       End capture (optional cature group)
-     * \s*                                      Followed by any whitespace
-     * \*?                                      Optional asterisk (for multiline)
-     * \s*                                      Followed by an whitespace
-     * (                                        Begin capture
-     *      ?:[\$]                                  Non-capture $ for variables
-     *      ([a-zA-Z]*)                             Any alpha numeric string
-     * )?                                       End capture (optional cature group)
-     * \s*                                      Followed by any whitespace
-     * \*?                                      Optional asterisk (for multiline)
-     * \s*                                      Followed by an whitespace
-     * (                                        Begin capture
-     *      [a-zA-z0-9\s\*]*                        Any alpha numeric whitespace with asterisk (for multiline)
-     * )?                                       End capture (optional cature group)
+     * \s*                  Followed by any whitespace
+     * \*?                  Optional asterisk (for multiline)
+     * \s*                  Followed by an whitespace
+     * (                    Begin capture
+     *      [a-zA-z0-9\s\*]*    Any alpha numeric whitespace with asterisk
+     *                              (for multiline)
+     * )?                   End capture (optional capture group)
+     * \s*                  Followed by any whitespace
+     * \*?                  Optional asterisk (for multiline)
+     * \s*                  Followed by an whitespace
+     * (                    Begin capture
+     *      ?:[\$]              Non-capture $ for variables
+     *      ([a-zA-Z]*)         Any alpha numeric string
+     * )?                   End capture (optional capture group)
+     * \s*                  Followed by any whitespace
+     * \*?                  Optional asterisk (for multiline)
+     * \s*                  Followed by an whitespace
+     * (                    Begin capture
+     *      [a-zA-z0-9\s\*]*    Any alpha numeric whitespace with asterisk
+     *                              (for multiline)
+     * )?                   End capture (optional capture group)
      */
     public const LINE_REGEX = <<<'REGEX'
     \s* \*? \s*

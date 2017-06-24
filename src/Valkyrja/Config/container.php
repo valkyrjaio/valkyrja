@@ -87,7 +87,10 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env('CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY', false),
+    'useAnnotationsExclusively' => env(
+        'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY',
+        false
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -117,7 +120,10 @@ return [
      * //
      *
      */
-    'filePath'                  => env('CONTAINER_FILE_PATH', bootstrapPath('container.php')),
+    'filePath'                  => env(
+        'CONTAINER_FILE_PATH',
+        bootstrapPath('container.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -127,7 +133,10 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env('CONTAINER_CACHE_FILE_PATH', cachePath('container.php')),
+    'cacheFilePath'             => env(
+        'CONTAINER_CACHE_FILE_PATH',
+        cachePath('container.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------

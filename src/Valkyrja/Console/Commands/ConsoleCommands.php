@@ -56,7 +56,10 @@ class ConsoleCommands extends CommandHandler
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
 
-        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"{$namespace}\" namespace" : ''));
+        $this->sectionTitleMessage(
+            'Commands'
+            . ($namespace ? " for the \"{$namespace}\" namespace" : '')
+        );
 
         /** @var \Valkyrja\Console\Command $command */
         foreach ($commands as $command) {
@@ -91,12 +94,16 @@ class ConsoleCommands extends CommandHandler
      *
      * @param array  $commands      The commands
      * @param int    $longestLength The longest length
-     * @param string $namespace     [optional] The namespace to show commands for
+     * @param string $namespace     [optional] The namespace to show commands
+     *                              for
      *
      * @return void
      */
-    protected function filterCommands(array &$commands, int &$longestLength, string $namespace = null): void
-    {
+    protected function filterCommands(
+        array &$commands,
+        int &$longestLength,
+        string $namespace = null
+    ): void {
         $globalCommands = [];
 
         /** @var \Valkyrja\Console\Command $command */
@@ -105,10 +112,10 @@ class ConsoleCommands extends CommandHandler
             $commandName      = $parts[1] ?? null;
             $commandNamespace = $commandName ? $parts[0] : 'global';
 
-            // If there was a namespace passed to the command (commands namespace)
-            // and the namespace for this command doesn't match what was passed
-            // then get rid of it so only commands in the namespace
-            // are shown.
+            // If there was a namespace passed to the command (commands
+            // namespace)  and the namespace for this command doesn't match
+            // what was passed then get rid of it so only commands in the
+            // namespace are shown.
             if ($commandNamespace !== $namespace && null !== $namespace) {
                 unset($commands[$key]);
 
@@ -119,8 +126,8 @@ class ConsoleCommands extends CommandHandler
 
             // If this is a global namespaced command
             if ('global' === $commandNamespace) {
-                // Set it in the global commands array so when we show the list of commands
-                // global commands will be at the top
+                // Set it in the global commands array so when we show the list
+                // of commands global commands will be at the top
                 $globalCommands[] = $command;
 
                 // Unset from the commands list to avoid duplicates
@@ -133,8 +140,8 @@ class ConsoleCommands extends CommandHandler
         // Sort the rest of the commands by name
         $this->sortCommands($commands);
 
-        // Set the commands as the merged results of the global and other commands
-        // with the global commands at the top of the list
+        // Set the commands as the merged results of the global and other
+        // commands with the global commands at the top of the list
         $commands = array_merge($globalCommands, $commands);
     }
 
@@ -158,13 +165,15 @@ class ConsoleCommands extends CommandHandler
     /**
      * The command section.
      *
-     * @param \Valkyrja\Console\Command $command         The current command
-     * @param string                    $previousSection The previous section
+     * @param Command $command         The current command
+     * @param string  $previousSection The previous section
      *
      * @return void
      */
-    protected function commandSection(Command $command, string &$previousSection): void
-    {
+    protected function commandSection(
+        Command $command,
+        string &$previousSection
+    ): void {
         $parts          = explode(':', $command->getName());
         $commandName    = $parts[1] ?? null;
         $currentSection = $commandName ? $parts[0] : 'global';

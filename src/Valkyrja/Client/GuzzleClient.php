@@ -51,8 +51,11 @@ class GuzzleClient implements Client
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function request(string $method, string $uri, array $options = []): ResponseInterface
-    {
+    public function request(
+        string $method,
+        string $uri,
+        array $options = []
+    ): ResponseInterface {
         return $this->guzzle->request($method, $uri, $options);
     }
 
@@ -149,7 +152,7 @@ class GuzzleClient implements Client
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

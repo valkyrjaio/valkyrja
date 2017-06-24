@@ -43,8 +43,8 @@ class KernelImpl implements Kernel
     /**
      * Kernel constructor.
      *
-     * @param \Valkyrja\Application     $application The application
-     * @param \Valkyrja\Console\Console $console     The console
+     * @param Application $application The application
+     * @param Console     $console     The console
      */
     public function __construct(Application $application, Console $console)
     {
@@ -55,8 +55,8 @@ class KernelImpl implements Kernel
     /**
      * Handle a console input.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *
@@ -74,7 +74,10 @@ class KernelImpl implements Kernel
             dd($exception);
         }
 
-        $this->app->events()->trigger('Console.Kernel.handled', [$input, $exitCode]);
+        $this->app->events()->trigger(
+            'Console.Kernel.handled',
+            [$input, $exitCode]
+        );
 
         return $exitCode;
     }
@@ -82,21 +85,24 @@ class KernelImpl implements Kernel
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Console\Input\Input $input    The input
-     * @param int                           $exitCode The response
+     * @param Input $input    The input
+     * @param int   $exitCode The response
      *
      * @return void
      */
     public function terminate(Input $input, int $exitCode): void
     {
-        $this->app->events()->trigger('Console.Kernel.terminate', [$input, $exitCode]);
+        $this->app->events()->trigger(
+            'Console.Kernel.terminate',
+            [$input, $exitCode]
+        );
     }
 
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *
@@ -142,7 +148,7 @@ class KernelImpl implements Kernel
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

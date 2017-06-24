@@ -29,7 +29,11 @@ interface Request
     public const FORMATS = [
         'html' => ['text/html', 'application/xhtml+xml'],
         'txt'  => ['text/plain'],
-        'js'   => ['application/javascript', 'application/x-javascript', 'text/javascript'],
+        'js'   => [
+            'application/javascript',
+            'application/x-javascript',
+            'text/javascript',
+        ],
         'css'  => ['text/css'],
         'json' => ['application/json', 'application/x-json'],
         'xml'  => ['text/xml', 'application/xml', 'application/x-xml'],
@@ -44,7 +48,8 @@ interface Request
      *
      * @param array           $query      The GET parameters
      * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array           $attributes The request attributes (parameters
+     *                                    parsed from the PATH_INFO, ...)
      * @param array           $cookies    The COOKIE parameters
      * @param array           $files      The FILES parameters
      * @param array           $server     The SERVER parameters
@@ -292,13 +297,16 @@ interface Request
      *
      * @return \Valkyrja\Http\Request
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
+    public function setAcceptableContentTypes(
+        array $acceptableContentTypes = []
+    ): self;
 
     /**
      * Gets a "parameter" value from any bag.
      *
      * @param string $key     the key
-     * @param mixed  $default the default value if the parameter key does not exist
+     * @param mixed  $default the default value if the parameter key does not
+     *                        exist
      *
      * @return mixed
      */
@@ -342,8 +350,9 @@ interface Request
      *
      * The "X-Forwarded-Port" header must contain the client port.
      *
-     * If your reverse proxy uses a different header name than "X-Forwarded-Port",
-     * configure it via "setTrustedHeaderName()" with the "client-port" key.
+     * If your reverse proxy uses a different header name than
+     * "X-Forwarded-Port", configure it via "setTrustedHeaderName()" with the
+     * "client-port" key.
      *
      * @return int
      */
@@ -396,14 +405,16 @@ interface Request
     /**
      * Checks whether the request is secure or not.
      *
-     * This method can read the client protocol from the "X-Forwarded-Proto" header
-     * when trusted proxies were set via "setTrustedProxies()".
+     * This method can read the client protocol from the "X-Forwarded-Proto"
+     * header when trusted proxies were set via "setTrustedProxies()".
      *
-     * The "X-Forwarded-Proto" header must contain the protocol: "https" or "http".
+     * The "X-Forwarded-Proto" header must contain the protocol: "https" or
+     * "http".
      *
-     * If your reverse proxy uses a different header name than "X-Forwarded-Proto"
-     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()" with
-     * the "client-proto" key.
+     * If your reverse proxy uses a different header name than
+     * "X-Forwarded-Proto"
+     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()"
+     * with the "client-proto" key.
      *
      * @return bool
      */

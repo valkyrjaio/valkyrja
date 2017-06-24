@@ -29,7 +29,11 @@ interface Client
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function request(string $method, string $uri, array $options = []): ResponseInterface;
+    public function request(
+        string $method,
+        string $uri,
+        array $options = []
+    ): ResponseInterface;
 
     /**
      * Make a get request.

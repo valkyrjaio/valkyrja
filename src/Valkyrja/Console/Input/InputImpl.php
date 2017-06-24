@@ -62,7 +62,7 @@ class InputImpl implements Input
     /**
      * Input constructor.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      */
     public function __construct(Request $request)
     {
@@ -334,7 +334,7 @@ class InputImpl implements Input
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

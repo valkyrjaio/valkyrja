@@ -26,7 +26,7 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Add a new command.
      *
-     * @param \Valkyrja\Console\Command $command The command
+     * @param Command $command The command
      *
      * @return void
      */
@@ -62,7 +62,7 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Get a command from an input.
      *
-     * @param \Valkyrja\Console\Input\Input $input The input
+     * @param Input $input The input
      *
      * @return null|\Valkyrja\Console\Command
      */
@@ -80,8 +80,8 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      *
@@ -92,7 +92,7 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Console\Command $command The command
+     * @param Command $command The command
      *
      * @return mixed
      */
@@ -108,7 +108,7 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Set the commands.
      *
-     * @param \Valkyrja\Console\Command[] $commands The commands
+     * @param Command[] $commands The commands
      *
      * @return void
      */

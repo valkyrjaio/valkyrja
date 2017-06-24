@@ -55,7 +55,10 @@ class ContainerCache extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating container cache.', true);
+            output()->writeMessage(
+                'An error occurred while generating container cache.',
+                true
+            );
 
             return 0;
         }

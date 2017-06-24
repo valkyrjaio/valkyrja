@@ -34,8 +34,8 @@ interface Container extends Cacheable, ProvidersAware
     /**
      * Bind a service to the container.
      *
-     * @param \Valkyrja\Container\Service $service The service model
-     * @param bool                        $verify  [optional] Whether to verify the service
+     * @param Service $service The service model
+     * @param bool    $verify  [optional] Whether to verify the service
      *
      * @return void
      */
@@ -44,11 +44,11 @@ interface Container extends Cacheable, ProvidersAware
     /**
      * Bind a context to the container.
      *
-     * @param \Valkyrja\Container\ServiceContext $contextService The context service
+     * @param ServiceContext $serviceContext The context service
      *
      * @return void
      */
-    public function context(ServiceContext $contextService): void;
+    public function context(ServiceContext $serviceContext): void;
 
     /**
      * Bind a singleton to the container.
@@ -78,7 +78,11 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return bool
      */
-    public function hasContext(string $serviceId, string $context, string $member = null): bool;
+    public function hasContext(
+        string $serviceId,
+        string $context,
+        string $member = null
+    ): bool;
 
     /**
      * Check whether a given service is an alias.
@@ -119,7 +123,12 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null);
+    public function get(
+        string $serviceId,
+        array $arguments = null,
+        string $context = null,
+        string $member = null
+    );
 
     /**
      * Make a service.
@@ -170,5 +179,9 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null): string;
+    public function contextServiceId(
+        string $serviceId,
+        string $context,
+        string $member = null
+    ): string;
 }

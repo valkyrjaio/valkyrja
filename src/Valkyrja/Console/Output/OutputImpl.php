@@ -34,7 +34,7 @@ class OutputImpl implements Output
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Console\Output\OutputFormatter $formatter The output formatter
+     * @param OutputFormatter $formatter The output formatter
      */
     public function __construct(OutputFormatter $formatter)
     {
@@ -54,7 +54,7 @@ class OutputImpl implements Output
     /**
      * Set the formatter.
      *
-     * @param \Valkyrja\Console\Output\OutputFormatter $formatter
+     * @param OutputFormatter $formatter
      *
      * @return void
      */
@@ -66,16 +66,20 @@ class OutputImpl implements Output
     /**
      * Write messages to the console.
      *
-     * @param array                               $messages    The messages
-     * @param bool                                $newLine     [optional] Whether to use new lines between each message
-     * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
+     * @param array       $messages    The messages
+     * @param bool        $newLine     [optional] Whether to use new lines
+     *                                 between each message
+     * @param OutputStyle $outputStyle [optional] The output style to use
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
-    {
+    public function write(
+        array $messages,
+        bool $newLine = null,
+        OutputStyle $outputStyle = null
+    ): void {
         foreach ($messages as $message) {
             $this->writeMessage($message, $newLine, $outputStyle);
         }
@@ -84,18 +88,23 @@ class OutputImpl implements Output
     /**
      * Write a message to the console.
      *
-     * @param string                              $message     The message
-     * @param bool                                $newLine     [optional] Whether to use new lines between each message
-     * @param \Valkyrja\Console\Enums\OutputStyle $outputStyle [optional] The output style to use
+     * @param string      $message     The message
+     * @param bool        $newLine     [optional] Whether to use new lines
+     *                                 between each message
+     * @param OutputStyle $outputStyle [optional] The output style to use
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
-    {
+    public function writeMessage(
+        string $message,
+        bool $newLine = null,
+        OutputStyle $outputStyle = null
+    ): void {
         $newLine         = $newLine ?? false;
-        $outputStyleType = $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
+        $outputStyleType =
+            $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
 
         switch ($outputStyleType) {
             case OutputStyle::NORMAL:
@@ -147,7 +156,7 @@ class OutputImpl implements Output
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */
