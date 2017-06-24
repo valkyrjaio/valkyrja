@@ -74,7 +74,7 @@ class ConsoleImpl implements Console
     /**
      * Console constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -84,7 +84,7 @@ class ConsoleImpl implements Console
     /**
      * Add a new command.
      *
-     * @param \Valkyrja\Console\Command $command The command
+     * @param Command $command The command
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -102,19 +102,26 @@ class ConsoleImpl implements Console
         $this->app->dispatcher()->verifyFunction($command);
         $this->app->dispatcher()->verifyClosure($command);
 
-        $this->addParsedCommand($command, $this->app->pathParser()->parse($command->getPath()));
+        $this->addParsedCommand(
+            $command,
+            $this->app->pathParser()->parse(
+                $command->getPath()
+            )
+        );
     }
 
     /**
      * Add a parsed command.
      *
-     * @param \Valkyrja\Console\Command $command       The command
-     * @param array                     $parsedCommand The parsed command
+     * @param Command $command       The command
+     * @param array   $parsedCommand The parsed command
      *
      * @return void
      */
-    protected function addParsedCommand(Command $command, array $parsedCommand): void
-    {
+    protected function addParsedCommand(
+        Command $command,
+        array $parsedCommand
+    ): void {
         // Set the properties
         $command->setRegex($parsedCommand['regex']);
         $command->setParams($parsedCommand['params']);
@@ -178,7 +185,7 @@ class ConsoleImpl implements Console
     /**
      * Get a command from an input.
      *
-     * @param \Valkyrja\Console\Input\Input $input The input
+     * @param Input $input The input
      *
      * @return null|\Valkyrja\Console\Command
      */
@@ -213,7 +220,8 @@ class ConsoleImpl implements Console
                     $this->initializeProvided($commandPath);
                 }
 
-                // Clone the command to avoid changing the one set in the master array
+                // Clone the command to avoid changing the one set in the master
+                // array
                 $command = clone self::$commands[$commandPath];
                 // The first match is the path itself
                 unset($matches[0]);
@@ -231,8 +239,8 @@ class ConsoleImpl implements Console
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Console\Exceptions\CommandNotFound
      *
@@ -259,7 +267,7 @@ class ConsoleImpl implements Console
     /**
      * Dispatch a command.
      *
-     * @param \Valkyrja\Console\Command $command The command
+     * @param Command $command The command
      *
      * @return mixed
      */
@@ -269,10 +277,16 @@ class ConsoleImpl implements Console
         $this->app->events()->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->app->dispatcher()->dispatchCallable($command, $command->getMatches());
+        $dispatch = $this->app->dispatcher()->dispatchCallable(
+            $command,
+            $command->getMatches()
+        );
 
         // Trigger an event after dispatching
-        $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);
+        $this->app->events()->trigger(
+            'Command.dispatched',
+            [$command, $dispatch]
+        );
 
         return $dispatch;
     }
@@ -284,7 +298,8 @@ class ConsoleImpl implements Console
      */
     public function all(): array
     {
-        // Iterate through all the command providers to set any deferred commands
+        // Iterate through all the command providers to set any deferred
+        // commands
         foreach (self::$provided as $provided => $provider) {
             // Initialize the provided command
             $this->initializeProvided($provided);
@@ -296,7 +311,7 @@ class ConsoleImpl implements Console
     /**
      * Set the commands.
      *
-     * @param \Valkyrja\Console\Command[] $commands The commands
+     * @param Command[] $commands The commands
      *
      * @return void
      */
@@ -356,7 +371,10 @@ class ConsoleImpl implements Console
         $this->setupCommandProviders();
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()['console']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
+        if (
+            $this->app->config()['console']['useAnnotations']
+            && $this->app->config()['annotations']['enabled']
+        ) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
@@ -422,7 +440,8 @@ class ConsoleImpl implements Console
      * Register a provider.
      *
      * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of deferred status
+     * @param bool   $force    [optional] Whether to force regardless of
+     *                         deferred status
      *
      * @return void
      */
@@ -461,11 +480,15 @@ class ConsoleImpl implements Console
      */
     protected function setupAnnotations(): void
     {
-        /** @var CommandAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
+        /** @var CommandAnnotations $commandAnnotations */
+        $commandAnnotations = $this->app->container()->getSingleton(
+            CommandAnnotations::class
+        );
 
         // Get all the annotated commands from the list of handlers
-        $commands = $containerAnnotations->getCommands(...$this->app->config()['console']['handlers']);
+        $commands = $commandAnnotations->getCommands(
+            ...$this->app->config()['console']['handlers']
+        );
 
         // Iterate through the commands
         foreach ($commands as $command) {
@@ -513,7 +536,7 @@ class ConsoleImpl implements Console
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

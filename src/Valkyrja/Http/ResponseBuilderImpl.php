@@ -33,7 +33,7 @@ class ResponseBuilderImpl implements ResponseBuilder
     /**
      * ResponseBuilder constructor.
      *
-     * @param \Valkyrja\Application $app
+     * @param Application $app
      */
     public function __construct(Application $app)
     {
@@ -49,8 +49,11 @@ class ResponseBuilderImpl implements ResponseBuilder
      *
      * @return \Valkyrja\Http\Response
      */
-    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
-    {
+    public function make(
+        string $content = '',
+        int $statusCode = StatusCode::OK,
+        array $headers = []
+    ): Response {
         return $this->app->response($content, $statusCode, $headers);
     }
 
@@ -110,7 +113,9 @@ class ResponseBuilderImpl implements ResponseBuilder
         int $statusCode = StatusCode::OK,
         array $headers = []
     ): JsonResponse {
-        return $this->json($data, $statusCode, $headers)->setCallback($callback);
+        return $this->json($data, $statusCode, $headers)->setCallback(
+            $callback
+        );
     }
 
     /**
@@ -134,7 +139,8 @@ class ResponseBuilderImpl implements ResponseBuilder
      * Redirect to a named route response builder.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic
+     *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
@@ -146,7 +152,12 @@ class ResponseBuilderImpl implements ResponseBuilder
         int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse {
-        return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
+        return $this->app->redirectRoute(
+            $route,
+            $parameters,
+            $statusCode,
+            $headers
+        );
     }
 
     /**
@@ -164,7 +175,7 @@ class ResponseBuilderImpl implements ResponseBuilder
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

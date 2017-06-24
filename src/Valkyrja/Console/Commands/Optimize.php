@@ -75,7 +75,10 @@ class Optimize extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while optimizing the application.', true);
+            output()->writeMessage(
+                'An error occurred while optimizing the application.',
+                true
+            );
 
             return 0;
         }

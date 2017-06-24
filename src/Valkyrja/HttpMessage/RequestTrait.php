@@ -74,10 +74,10 @@ trait RequestTrait
     /**
      * Initialize the Request.
      *
-     * @param \Valkyrja\HttpMessage\Uri    $uri     [optional] The uri
-     * @param string                       $method  [optional] The method
-     * @param \Valkyrja\HttpMessage\Stream $body    [optional] The body stream
-     * @param array                        $headers [optional] The headers
+     * @param Uri    $uri     [optional] The uri
+     * @param string $method  [optional] The method
+     * @param Stream $body    [optional] The body stream
+     * @param array  $headers [optional] The headers
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
@@ -106,7 +106,9 @@ trait RequestTrait
 
         if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
             $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
-            $this->headers[static::$HOST_NAME]          = [$this->uri->getHost()];
+            $this->headers[static::$HOST_NAME]          = [
+                $this->uri->getHost(),
+            ];
         }
     }
 
@@ -201,7 +203,8 @@ trait RequestTrait
      * @param string $method Case-sensitive method.
      *
      * @throws \ReflectionException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod for invalid HTTP methods.
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod for invalid HTTP
+     *          methods.
      *
      * @return static
      */
@@ -241,14 +244,15 @@ trait RequestTrait
      *
      * You can opt-in to preserving the original state of the Host header by
      * setting `$preserveHost` to `true`. When `$preserveHost` is set to
-     * `true`, this method interacts with the Host header in the following ways:
+     * `true`, this method interacts with the Host header in the following
+     * ways:
      *
      * - If the Host header is missing or empty, and the new URI contains
-     *   a host component, this method MUST update the Host header in the returned
-     *   request.
-     * - If the Host header is missing or empty, and the new URI does not contain a
-     *   host component, this method MUST NOT update the Host header in the returned
-     *   request.
+     *   a host component, this method MUST update the Host header in the
+     *   returned request.
+     * - If the Host header is missing or empty, and the new URI does not
+     * contain a host component, this method MUST NOT update the Host header in
+     * the returned request.
      * - If a Host header is present and non-empty, this method MUST NOT update
      *   the Host header in the returned request.
      *
@@ -259,7 +263,8 @@ trait RequestTrait
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
      *
      * @param Uri  $uri          New request URI to use.
-     * @param bool $preserveHost Preserve the original state of the Host header.
+     * @param bool $preserveHost Preserve the original state of the Host
+     *                           header.
      *
      * @return static
      */
@@ -281,7 +286,13 @@ trait RequestTrait
 
         $new->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
 
-        $new->headers = $this->injectHeader(static::$HOST_NAME, $host, $new->headerNames, true);
+        $new->headers =
+            $this->injectHeader(
+                static::$HOST_NAME,
+                $host,
+                $new->headerNames,
+                true
+            );
 
         return $new;
     }

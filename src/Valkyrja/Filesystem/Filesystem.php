@@ -166,15 +166,16 @@ interface Filesystem
      *
      * @param string $path The path
      *
-     * @return string|null The visibility ('public' or 'private') or null on failure
+     * @return string|null The visibility ('public' or 'private') or null on
+     *                     failure
      */
     public function visibility(string $path):? string;
 
     /**
      * Set a file's visibility.
      *
-     * @param string                          $path       The path
-     * @param \Valkyrja\Filesystem\Visibility $visibility The visibility
+     * @param string     $path       The path
+     * @param Visibility $visibility The visibility
      *
      * @return bool
      */
@@ -220,11 +221,15 @@ interface Filesystem
      * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the directory
+     * @param bool   $recursive [optional] Whether to recurse through the
+     *                          directory
      *
      * @return array
      */
-    public function listContents(string $directory = null, bool $recursive = false): array;
+    public function listContents(
+        string $directory = null,
+        bool $recursive = false
+    ): array;
 
     /**
      * Get a filesystem for an adapter.

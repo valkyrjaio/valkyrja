@@ -26,14 +26,15 @@ class NotFoundHttpException extends HttpException
      *
      * @param int        $statusCode [optional] The status code to use
      * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for the exception chaining
+     * @param \Exception $previous   [optional] The previous exception used for
+     *                               the exception chaining
      * @param array      $headers    [optional] The headers to send
      * @param int        $code       [optional] The Exception code
      */
     public function __construct(
         int $statusCode = StatusCode::NOT_FOUND,
         string $message = '',
-        ?Exception $previous = null,
+        Exception $previous = null,
         array $headers = [],
         int $code = 0
     ) {

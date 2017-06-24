@@ -44,7 +44,10 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var \Valkyrja\Console\Annotations\Command $annotation */
-            foreach ($this->classAnnotationsType('Command', $class) as $annotation) {
+            foreach ($this->classAnnotationsType(
+                'Command',
+                $class
+            ) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -52,7 +55,10 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
 
             // Get all the annotations for each class and iterate through them
             /** @var \Valkyrja\Console\Annotations\Command $annotation */
-            foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
+            foreach ($this->methodsAnnotationsType(
+                'Command',
+                $class
+            ) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -65,7 +71,7 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     /**
      * Set the properties for a command annotation.
      *
-     * @param \Valkyrja\Annotations\Annotation $annotation
+     * @param Annotation $annotation
      *
      * @throws \ReflectionException
      *
@@ -75,7 +81,10 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     {
         $classReflection = $this->getClassReflection($annotation->getClass());
 
-        if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
+        if ($annotation->getMethod() || $classReflection->hasMethod(
+                '__construct'
+            )
+        ) {
             $methodReflection = $this->getMethodReflection(
                 $annotation->getClass(),
                 $annotation->getMethod() ?? '__construct'
@@ -83,7 +92,9 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
             $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $annotation->setDependencies($this->getDependencies(...$parameters));
+            $annotation->setDependencies(
+                $this->getDependencies(...$parameters)
+            );
         }
 
         $annotation->setMatches();
@@ -92,13 +103,16 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     /**
      * Get a command from a command annotation.
      *
-     * @param \Valkyrja\Console\Annotations\Command $command The command annotation
+     * @param Command $command The command annotation
      *
      * @return \Valkyrja\Console\Command
      */
-    protected function getCommandFromAnnotation(Command $command): ConsoleCommand
-    {
-        return (new ConsoleCommand())
+    protected function getCommandFromAnnotation(
+        Command $command
+    ): ConsoleCommand {
+        $consoleCommand = new ConsoleCommand();
+
+        $consoleCommand
             ->setPath($command->getRegex())
             ->setRegex($command->getRegex())
             ->setParams($command->getParams())
@@ -114,6 +128,8 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
             ->setMatches($command->getMatches())
             ->setDependencies($command->getDependencies())
             ->setArguments($command->getArguments());
+
+        return $consoleCommand;
     }
 
     /**
@@ -131,7 +147,7 @@ class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotatio
     /**
      * Bind the command annotations.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

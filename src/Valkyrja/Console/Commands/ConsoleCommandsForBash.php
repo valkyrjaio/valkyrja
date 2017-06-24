@@ -48,8 +48,10 @@ class ConsoleCommandsForBash extends CommandHandler
             foreach ($allCommands as $command) {
                 // Return command in result if it starts with $commandTyped
                 if (strpos($command, $commandTyped) === 0) {
-                    // Colons acts as separators in bash, so return only second part if colon is in commandTyped.
-                    $possibleCommands[] = $colonAt ? substr($command, $colonAt + 1) : $command;
+                    // Colons acts as separators in bash, so return only second
+                    // part if colon is in commandTyped.
+                    $possibleCommands[] =
+                        $colonAt ? substr($command, $colonAt + 1) : $command;
                 }
             }
         } else {

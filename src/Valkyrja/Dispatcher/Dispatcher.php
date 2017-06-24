@@ -21,7 +21,7 @@ interface Dispatcher
     /**
      * Verify the class and method of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      *
@@ -32,7 +32,7 @@ interface Dispatcher
     /**
      * Verify the class and property of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      *
@@ -43,7 +43,7 @@ interface Dispatcher
     /**
      * Verify the function of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      *
@@ -54,7 +54,7 @@ interface Dispatcher
     /**
      * Verify the closure of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      *
@@ -65,7 +65,7 @@ interface Dispatcher
     /**
      * Verify the dispatch's dispatch capabilities.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -80,17 +80,20 @@ interface Dispatcher
     /**
      * Dispatch a class method.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
      *
      * @return mixed
      */
-    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null);
+    public function dispatchClassMethod(
+        Dispatch $dispatch,
+        array $arguments = null
+    );
 
     /**
      * Dispatch a class property.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @return mixed
      */
@@ -99,8 +102,8 @@ interface Dispatcher
     /**
      * Dispatch a class.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
      *
      * @return mixed
      */
@@ -109,30 +112,39 @@ interface Dispatcher
     /**
      * Dispatch a function.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
      *
      * @return mixed
      */
-    public function dispatchFunction(Dispatch $dispatch, array $arguments = null);
+    public function dispatchFunction(
+        Dispatch $dispatch,
+        array $arguments = null
+    );
 
     /**
      * Dispatch a closure.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
      *
      * @return mixed
      */
-    public function dispatchClosure(Dispatch $dispatch, array $arguments = null);
+    public function dispatchClosure(
+        Dispatch $dispatch,
+        array $arguments = null
+    );
 
     /**
      * Dispatch a callable.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array|null                    $arguments The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments The arguments
      *
      * @return mixed
      */
-    public function dispatchCallable(Dispatch $dispatch, array $arguments = null);
+    public function dispatchCallable(
+        Dispatch $dispatch,
+        array $arguments = null
+    );
 }

@@ -35,11 +35,16 @@ class PathGeneratorImpl implements PathGenerator
      *
      * @return string
      */
-    public function parse(array $segments, array $data = null, array $params = null): string
-    {
+    public function parse(
+        array $segments,
+        array $data = null,
+        array $params = null
+    ): string {
         // If data was passed but no params
         if (null === $params && null !== $data) {
-            throw new InvalidArgumentException('Route params are required when supplying data');
+            throw new InvalidArgumentException(
+                'Route params are required when supplying data'
+            );
         }
 
         $path         = '';
@@ -48,7 +53,13 @@ class PathGeneratorImpl implements PathGenerator
 
         // If there is data, parse the replacements
         if (null !== $data) {
-            $this->parseData($segments, $data, $params, $replace, $replacements);
+            $this->parseData(
+                $segments,
+                $data,
+                $params,
+                $replace,
+                $replacements
+            );
         }
 
         // Iterate through the segments
@@ -91,9 +102,12 @@ class PathGeneratorImpl implements PathGenerator
     ): void {
         // Iterate through all the data properties
         foreach ($data as $key => $datum) {
-            // If the data isn't found in the params array it is not a valid param
+            // If the data isn't found in the params array it is not a valid
+            // param
             if (! isset($params[$key])) {
-                throw new InvalidArgumentException("Invalid route param '{$key}'");
+                throw new InvalidArgumentException(
+                    "Invalid route param '{$key}'"
+                );
             }
 
             $regex = $params[$key]['regex'];
@@ -101,10 +115,17 @@ class PathGeneratorImpl implements PathGenerator
             $this->validateDatum($key, $datum, $regex);
 
             if (is_array($datum)) {
-                // Get the segment by the param key and replace the {key} within it
-                // to get the repeatable portion of the segment
-                $segment     = $this->findParamSegment($segments, $params[$key]['replace']);
-                $deliminator = str_replace($params[$key]['replace'] . '*', '', $segment);
+                // Get the segment by the param key and replace the {key}
+                // within it to get the repeatable portion of the segment
+                $segment     = $this->findParamSegment(
+                    $segments,
+                    $params[$key]['replace']
+                );
+                $deliminator = str_replace(
+                    $params[$key]['replace'] . '*',
+                    '',
+                    $segment
+                );
 
                 // Set what to replace
                 $replace[] = $params[$key]['replace'] . '*';
@@ -144,7 +165,9 @@ class PathGeneratorImpl implements PathGenerator
 
         // If the value of the data doesn't match what was specified when the route was made
         if (preg_match('/^' . $regex . '$/', $datum) === 0) {
-            throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
+            throw new InvalidArgumentException(
+                "Route param for {$key}, '{$datum}', does not match {$regex}"
+            );
         }
     }
 
@@ -184,7 +207,7 @@ class PathGeneratorImpl implements PathGenerator
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

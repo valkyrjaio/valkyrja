@@ -45,7 +45,10 @@ class Server extends Collection
         $specialHeaders = self::SPECIAL_HEADERS;
 
         foreach ($this->collection as $key => $value) {
-            if (in_array($key, $specialHeaders, true) || 0 === strpos($key, 'HTTP_')) {
+            if (
+                in_array($key, $specialHeaders, true)
+                || 0 === strpos($key, 'HTTP_')
+            ) {
                 $headers[$this->getHeaderName($key)] = $value;
             }
         }
@@ -66,7 +69,12 @@ class Server extends Collection
             $header = substr($header, 5);
         }
 
-        $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower($header))));
+        $header =
+            str_replace(
+                ' ',
+                '-',
+                ucwords(str_replace('_', ' ', strtolower($header)))
+            );
 
         return $header;
     }

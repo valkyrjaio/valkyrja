@@ -50,7 +50,7 @@ class LoggerServiceProvider extends Provider
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \Exception
      *
@@ -65,7 +65,7 @@ class LoggerServiceProvider extends Provider
     /**
      * Bind the logger interface.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \Exception
      *
@@ -73,15 +73,17 @@ class LoggerServiceProvider extends Provider
      */
     protected static function bindLoggerInterface(Application $app): void
     {
+        $handler = new StreamHandler(
+            $app->config()['logger']['filePath'],
+            LogLevel::DEBUG
+        );
+
         $app->container()->singleton(
             LoggerInterface::class,
             new Monolog(
                 $app->config()['logger']['name'],
                 [
-                    new StreamHandler(
-                        $app->config()['logger']['filePath'],
-                        LogLevel::DEBUG
-                    ),
+                    $handler,
                 ]
             )
         );
@@ -90,7 +92,7 @@ class LoggerServiceProvider extends Provider
     /**
      * Bind the logger.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

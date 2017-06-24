@@ -76,10 +76,18 @@ class RoutesListCommand extends CommandHandler
         output()->writeMessage($sepLine, true);
 
         foreach ($routes as $key => $route) {
-            $routeMessage = '| ' . $route[0] . str_repeat(' ', $lengths[0] - strlen($route[0]))
-                . ' | ' . $route[1] . str_repeat(' ', $lengths[1] - strlen($route[1]))
-                . ' | ' . $route[2] . str_repeat(' ', $lengths[2] - strlen($route[2]))
-                . ' | ' . $route[3] . str_repeat(' ', $lengths[3] - strlen($route[3]))
+            $routeMessage = '| '
+                . $route[0]
+                . str_repeat(' ', $lengths[0] - strlen($route[0]))
+                . ' | '
+                . $route[1]
+                . str_repeat(' ', $lengths[1] - strlen($route[1]))
+                . ' | '
+                . $route[2]
+                . str_repeat(' ', $lengths[2] - strlen($route[2]))
+                . ' | '
+                . $route[3]
+                . str_repeat(' ', $lengths[3] - strlen($route[3]))
                 . ' |';
 
             $odd          = $key % 2 > 0;
@@ -88,7 +96,10 @@ class RoutesListCommand extends CommandHandler
             output()->writeMessage($routeMessage . static::END_FORMAT, true);
         }
 
-        output()->writeMessage($this->oddFormat(! $odd) . $sepLine . static::END_FORMAT, true);
+        output()->writeMessage(
+            $this->oddFormat(! $odd) . $sepLine . static::END_FORMAT,
+            true
+        );
 
         return 1;
     }
@@ -96,16 +107,19 @@ class RoutesListCommand extends CommandHandler
     /**
      * Set a route as an array from a route object.
      *
-     * @param \Valkyrja\Routing\Route $route   The route object
-     * @param array                   $routes  The flat routes
-     * @param array                   $lengths The longest string lengths
+     * @param Route $route   The route object
+     * @param array $routes  The flat routes
+     * @param array $lengths The longest string lengths
      *
      * @throws \InvalidArgumentException
      *
      * @return void
      */
-    protected function setRoute(Route $route, array &$routes, array &$lengths): void
-    {
+    protected function setRoute(
+        Route $route,
+        array &$routes,
+        array &$lengths
+    ): void {
         $requestMethod = implode(' | ', $route->getRequestMethods());
         $dispatch      = 'Closure';
 
@@ -114,7 +128,9 @@ class RoutesListCommand extends CommandHandler
         } elseif (null !== $route->getClass()) {
             $dispatch = $route->getClass()
                 . ($route->isStatic() ? '::' : '->')
-                . ($route->getMethod() ? $route->getMethod() . '()' : $route->getProperty());
+                . ($route->getMethod()
+                    ? $route->getMethod() . '()'
+                    : $route->getProperty());
         }
 
         $lengths[0] = max($lengths[0], strlen($requestMethod));

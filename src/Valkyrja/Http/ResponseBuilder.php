@@ -27,7 +27,11 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Http\Response
      */
-    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
+    public function make(
+        string $content = '',
+        int $statusCode = StatusCode::OK,
+        array $headers = []
+    ): Response;
 
     /**
      * View response builder.
@@ -97,7 +101,8 @@ interface ResponseBuilder
      * Redirect to a named route response builder.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic
+     *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *

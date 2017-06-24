@@ -21,7 +21,8 @@ interface Message
     /**
      * Retrieves the HTTP protocol version as a string.
      *
-     * The string MUST contain only the HTTP version number (e.g., "1.1", "1.0").
+     * The string MUST contain only the HTTP version number (e.g., "1.1",
+     * "1.0").
      *
      * @return string HTTP protocol version.
      */
@@ -61,12 +62,12 @@ interface Message
      *         }
      *     }
      *
-     * While header names are not case-sensitive, getHeaders() will preserve the
-     * exact case in which headers were originally specified.
+     * While header names are not case-sensitive, getHeaders() will preserve
+     * the exact case in which headers were originally specified.
      *
-     * @return string[][] Returns an associative array of the message's headers. Each
-     *                    key MUST be a header name, and each value MUST be an array of strings
-     *                    for that header.
+     * @return string[][] Returns an associative array of the message's
+     *                    headers. Each key MUST be a header name, and each
+     *                    value MUST be an array of strings for that header.
      */
     public function getHeaders(): array;
 
@@ -76,8 +77,8 @@ interface Message
      * @param string $name Case-insensitive header field name.
      *
      * @return bool Returns true if any header names match the given header
-     *              name using a case-insensitive string comparison. Returns false if
-     *              no matching header name is found in the message.
+     *              name using a case-insensitive string comparison. Returns
+     *              false if no matching header name is found in the message.
      */
     public function hasHeader(string $name): bool;
 
@@ -93,8 +94,8 @@ interface Message
      * @param string $name Case-insensitive header field name.
      *
      * @return string[] An array of string values as provided for the given
-     *                  header. If the header does not appear in the message, this method MUST
-     *                  return an empty array.
+     *                  header. If the header does not appear in the message,
+     *                  this method MUST return an empty array.
      */
     public function getHeader(string $name): array;
 
@@ -115,13 +116,15 @@ interface Message
      * @param string $name Case-insensitive header field name.
      *
      * @return string A string of values as provided for the given header
-     *                concatenated together using a comma. If the header does not appear in
-     *                the message, this method MUST return an empty string.
+     *                concatenated together using a comma. If the header does
+     *                not appear in the message, this method MUST return an
+     *                empty string.
      */
     public function getHeaderLine(string $name): string;
 
     /**
-     * Return an instance with the provided value replacing the specified header.
+     * Return an instance with the provided value replacing the specified
+     * header.
      *
      * While header names are case-insensitive, the casing of the header will
      * be preserved by this function, and returned from getHeaders().
@@ -140,7 +143,8 @@ interface Message
     public function withHeader(string $name, string ...$value);
 
     /**
-     * Return an instance with the specified header appended with the given value.
+     * Return an instance with the specified header appended with the given
+     * value.
      *
      * Existing values for the specified header will be maintained. The new
      * value(s) will be appended to the existing list. If the header did not

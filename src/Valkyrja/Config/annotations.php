@@ -37,7 +37,10 @@ return [
      * //
      *
      */
-    'cacheDir' => env('ANNOTATIONS_CACHE_DIR', storagePath('vendor/annotations')),
+    'cacheDir' => env(
+        'ANNOTATIONS_CACHE_DIR',
+        storagePath('vendor/annotations')
+    ),
 
     /*
      *-------------------------------------------------------------------------

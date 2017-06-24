@@ -45,7 +45,7 @@ class EventsImpl implements Events
     /**
      * Events constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -55,8 +55,8 @@ class EventsImpl implements Events
     /**
      * Add an event listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string   $event    The event
+     * @param Listener $listener The event listener
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -86,8 +86,8 @@ class EventsImpl implements Events
     /**
      * Add a listener to many events.
      *
-     * @param \Valkyrja\Events\Listener $listener  The listener
-     * @param string[]                  ...$events The events
+     * @param Listener $listener  The listener
+     * @param string[] ...$events The events
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -221,8 +221,12 @@ class EventsImpl implements Events
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
-            // Attempt to dispatch the event listener using any one of the callable options
-            $dispatch = $this->app->dispatcher()->dispatchCallable($listener, $arguments);
+            // Attempt to dispatch the event listener using any one of the
+            // callable options
+            $dispatch = $this->app->dispatcher()->dispatchCallable(
+                $listener,
+                $arguments
+            );
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;
@@ -235,7 +239,7 @@ class EventsImpl implements Events
     /**
      * Trigger an event interface.
      *
-     * @param \Valkyrja\Events\Event $event The event
+     * @param Event $event The event
      *
      * @return array
      */
@@ -300,7 +304,10 @@ class EventsImpl implements Events
         self::$events = [];
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()['events']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
+        if (
+            $this->app->config()['events']['useAnnotations']
+            && $this->app->config()['annotations']['enabled']
+        ) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
@@ -351,10 +358,14 @@ class EventsImpl implements Events
     protected function setupAnnotations(): void
     {
         /** @var ListenerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
+        $containerAnnotations = $this->app->container()->getSingleton(
+            ListenerAnnotations::class
+        );
 
         // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(...$this->app->config()['events']['classes']);
+        $listeners = $containerAnnotations->getListeners(
+            ...$this->app->config()['events']['classes']
+        );
 
         // Iterate through the listeners
         foreach ($listeners as $listener) {

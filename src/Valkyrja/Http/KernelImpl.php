@@ -46,22 +46,24 @@ class KernelImpl implements Kernel
     /**
      * Kernel constructor.
      *
-     * @param \Valkyrja\Application    $application The application
-     * @param \Valkyrja\Routing\Router $router      The router
+     * @param Application $application The application
+     * @param Router      $router      The router
      */
     public function __construct(Application $application, Router $router)
     {
         $this->app    = $application;
         $this->router = $router;
 
-        self::$middleware       = $application->config()['routing']['middleware'];
-        self::$middlewareGroups = $application->config()['routing']['middlewareGroups'];
+        $config = $application->config()['routing'];
+
+        self::$middleware       = $config['middleware'];
+        self::$middlewareGroups = $config['middlewareGroups'];
     }
 
     /**
      * Handle a request.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *
@@ -82,7 +84,7 @@ class KernelImpl implements Kernel
     /**
      * Dispatch the request via the router.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @return \Valkyrja\Http\Response
      */
@@ -114,8 +116,8 @@ class KernelImpl implements Kernel
     /**
      * Terminate the request.
      *
-     * @param \Valkyrja\Http\Request  $request  The request
-     * @param \Valkyrja\Http\Response $response The response
+     * @param Request  $request  The request
+     * @param Response $response The response
      *
      * @return void
      */
@@ -130,14 +132,18 @@ class KernelImpl implements Kernel
         // If the dispatched route has middleware
         if (null !== $route->getMiddleware()) {
             // Terminate each middleware
-            $this->terminableMiddleware($request, $response, $route->getMiddleware());
+            $this->terminableMiddleware(
+                $request,
+                $response,
+                $route->getMiddleware()
+            );
         }
     }
 
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *
@@ -182,7 +188,7 @@ class KernelImpl implements Kernel
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

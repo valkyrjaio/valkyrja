@@ -78,12 +78,12 @@ class NativeUploadedFile implements UploadedFile
     /**
      * NativeUploadedFile constructor.
      *
-     * @param int                          $size        The file size
-     * @param int                          $errorStatus The error status
-     * @param string                       $file        [optional] The file
-     * @param \Valkyrja\HttpMessage\Stream $stream      [optional] The stream
-     * @param string                       $fileName    [optional] The file name
-     * @param string                       $mediaType   [optional] The file media type
+     * @param int    $size        The file size
+     * @param int    $errorStatus The error status
+     * @param string $file        [optional] The file
+     * @param Stream $stream      [optional] The stream
+     * @param string $fileName    [optional] The file name
+     * @param string $mediaType   [optional] The file media type
      *
      * @throws \InvalidArgumentException
      */
@@ -95,21 +95,27 @@ class NativeUploadedFile implements UploadedFile
         string $fileName = null,
         string $mediaType = null
     ) {
-        // If the error code is less than the lowest valued UPLOAD_ERR_* constant
-        // Or the error code is greater than the highest valued UPLOAD_ERR_* constant
-        if (UPLOAD_ERR_OK > $errorStatus || $errorStatus > UPLOAD_ERR_EXTENSION) {
+        // If the error is less than the lowest valued UPLOAD_ERR_* constant
+        // Or the error is greater than the highest valued UPLOAD_ERR_* constant
+        if (
+            UPLOAD_ERR_OK > $errorStatus
+            || $errorStatus > UPLOAD_ERR_EXTENSION
+        ) {
             // Throw an invalid argument exception for the error status
             throw new InvalidArgumentException(
-                'Invalid error status for UploadedFile; must be an UPLOAD_ERR_* constant value.'
+                'Invalid error status for UploadedFile;'
+                . ' must be an UPLOAD_ERR_* constant value.'
             );
         }
 
         // If the file is not set
         // and the stream is not set
         if (null === $file && null === $stream) {
-            // Throw an invalid argument exception as on or the other is required
+            // Throw an invalid argument exception as on or the other
+            // is required
             throw new InvalidArgumentException(
-                'Either one of file or stream are required. Neither passed as arguments.'
+                'Either one of file or stream are required.'
+                . ' Neither passed as arguments.'
             );
         }
 
@@ -125,19 +131,20 @@ class NativeUploadedFile implements UploadedFile
      * Retrieve a stream representing the uploaded file.
      *
      * This method MUST return a StreamInterface instance, representing the
-     * uploaded file. The purpose of this method is to allow utilizing native PHP
-     * stream functionality to manipulate the file upload, such as
-     * stream_copy_to_stream() (though the result will need to be decorated in a
-     * native PHP stream wrapper to work with such functions).
+     * uploaded file. The purpose of this method is to allow utilizing native
+     * PHP stream functionality to manipulate the file upload, such as
+     * stream_copy_to_stream() (though the result will need to be decorated in
+     * a native PHP stream wrapper to work with such functions).
      *
-     * If the moveTo() method has been called previously, this method MUST raise
-     * an exception.
+     * If the moveTo() method has been called previously, this method MUST
+     * raise an exception.
      *
-     * @throws \RuntimeException
-     *      in cases when no stream is available or can be created.
+     * @throws \RuntimeException in cases when no stream is available or can
+     *          be created.
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
-     * @return \Valkyrja\HttpMessage\Stream Stream representation of the uploaded file.
+     * @return \Valkyrja\HttpMessage\Stream Stream representation of the
+     *          uploaded file.
      */
     public function getStream(): Stream
     {
@@ -151,7 +158,8 @@ class NativeUploadedFile implements UploadedFile
 
         // If the file has already been moved
         if ($this->moved) {
-            // Throw a runtime exception as subsequent moves are not allowed in PSR-7
+            // Throw a runtime exception as subsequent moves are not allowed
+            // in PSR-7
             throw new RuntimeException(
                 'Cannot retrieve stream after it has already been moved'
             );
@@ -172,10 +180,11 @@ class NativeUploadedFile implements UploadedFile
     /**
      * Move the uploaded file to a new location.
      *
-     * Use this method as an alternative to move_uploaded_file(). This method is
+     * Use this method as an alternative to move_uploaded_file(). This method
+     * is
      * guaranteed to work in both SAPI and non-SAPI environments.
-     * Implementations must determine which environment they are in, and use the
-     * appropriate method (move_uploaded_file(), rename(), or a stream
+     * Implementations must determine which environment they are in, and use
+     * the appropriate method (move_uploaded_file(), rename(), or a stream
      * operation) to perform the operation.
      *
      * $targetPath may be an absolute path, or a relative path. If it is a
@@ -187,9 +196,10 @@ class NativeUploadedFile implements UploadedFile
      * If this method is called more than once, any subsequent calls MUST raise
      * an exception.
      *
-     * When used in an SAPI environment where $_FILES is populated, when writing
-     * files via moveTo(), is_uploaded_file() and move_uploaded_file() SHOULD be
-     * used to ensure permissions and upload status are verified correctly.
+     * When used in an SAPI environment where $_FILES is populated, when
+     * writing files via moveTo(), is_uploaded_file() and
+     * move_uploaded_file() SHOULD be used to ensure permissions and upload
+     * status are verified correctly.
      *
      * If you wish to move to a stream, use getStream(), as SAPI operations
      * cannot guarantee writing to stream destinations.
@@ -199,11 +209,10 @@ class NativeUploadedFile implements UploadedFile
      *
      * @param string $targetPath Path to which to move the uploaded file.
      *
-     * @throws \InvalidArgumentException
-     *      if the $targetPath specified is invalid.
-     * @throws \RuntimeException
-     *      on any error during the move operation, or on the second or
-     *      subsequent call to the method.
+     * @throws \InvalidArgumentException if the $targetPath specified is
+     *          invalid.
+     * @throws \RuntimeException on any error during the move operation, or
+     *          on the second or subsequent call to the method.
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return void
@@ -220,7 +229,8 @@ class NativeUploadedFile implements UploadedFile
 
         // If the file has already been moved
         if ($this->moved) {
-            // Throw a runtime exception as subsequent moves are not allowed in PSR-7
+            // Throw a runtime exception as subsequent moves are not allowed
+            // in PSR-7
             throw new RuntimeException(
                 'Cannot move file after it has already been moved'
             );
@@ -234,7 +244,8 @@ class NativeUploadedFile implements UploadedFile
             // Throw a runtime exception
             throw new RuntimeException(
                 sprintf(
-                    'The target directory `%s` does not exists or is not writable',
+                    'The target directory `%s` does not exists '
+                    . 'or is not writable',
                     $targetDirectory
                 )
             );
@@ -245,7 +256,11 @@ class NativeUploadedFile implements UploadedFile
         // If the PHP_SAPI value is empty
         // or there is no file
         // or the PHP_SAPI value is set to a CLI environment
-        if (empty($sapi) || ! $this->file || 0 === strpos($sapi, 'cli')) {
+        if (
+            empty($sapi)
+            || ! $this->file
+            || 0 === strpos($sapi, 'cli')
+        ) {
             // Non-SAPI environment, or no filename present
             $this->writeStream($targetPath);
         }
@@ -305,8 +320,8 @@ class NativeUploadedFile implements UploadedFile
      * Implementations SHOULD return the value stored in the "name" key of
      * the file in the $_FILES array.
      *
-     * @return string|null The filename sent by the client or null if none
-     *                     was provided.
+     * @return string|null The filename sent by the client or null if none was
+     *          provided.
      */
     public function getClientFilename():? string
     {
@@ -324,7 +339,7 @@ class NativeUploadedFile implements UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *                     was provided.
+     *          was provided.
      */
     public function getClientMediaType():? string
     {

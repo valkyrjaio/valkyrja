@@ -24,8 +24,8 @@ interface Kernel
     /**
      * Handle a console input.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *
@@ -36,8 +36,8 @@ interface Kernel
     /**
      * Terminate the kernel request.
      *
-     * @param \Valkyrja\Console\Input\Input $input    The input
-     * @param int                           $exitCode The response
+     * @param Input $input    The input
+     * @param int   $exitCode The response
      *
      * @return void
      */
@@ -46,8 +46,8 @@ interface Kernel
     /**
      * Run the kernel.
      *
-     * @param \Valkyrja\Console\Input\Input   $input  The input
-     * @param \Valkyrja\Console\Output\Output $output The output
+     * @param Input  $input  The input
+     * @param Output $output The output
      *
      * @throws \Valkyrja\Http\Exceptions\HttpException
      *

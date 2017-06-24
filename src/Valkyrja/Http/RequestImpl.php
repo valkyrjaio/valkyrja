@@ -150,7 +150,8 @@ class RequestImpl implements Request
      *
      * @param array           $query      The GET parameters
      * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array           $attributes The request attributes (parameters
+     *                                    parsed from the PATH_INFO, ...)
      * @param array           $cookies    The COOKIE parameters
      * @param array           $files      The FILES parameters
      * @param array           $server     The SERVER parameters
@@ -192,7 +193,8 @@ class RequestImpl implements Request
      *
      * @param array           $query      The GET parameters
      * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array           $attributes The request attributes (parameters
+     *                                    parsed from the PATH_INFO, ...)
      * @param array           $cookies    The COOKIE parameters
      * @param array           $files      The FILES parameters
      * @param array           $server     The SERVER parameters
@@ -209,7 +211,15 @@ class RequestImpl implements Request
         array $server = [],
         $content = null
     ): Request {
-        return new static($query, $request, $attributes, $cookies, $files, $server, $content);
+        return new static(
+            $query,
+            $request,
+            $attributes,
+            $cookies,
+            $files,
+            $server,
+            $content
+        );
     }
 
     /**
@@ -224,10 +234,18 @@ class RequestImpl implements Request
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
         if (
-            0 === strpos($request->headers()->get('Content-Type'), 'application/x-www-form-urlencoded')
+            0 === strpos(
+                $request->headers()->get('Content-Type'),
+                'application/x-www-form-urlencoded'
+            )
             &&
             in_array(
-                strtoupper($request->server()->get('REQUEST_METHOD', RequestMethod::GET)),
+                strtoupper(
+                    $request->server()->get(
+                        'REQUEST_METHOD',
+                        RequestMethod::GET
+                    )
+                ),
                 [
                     RequestMethod::PUT,
                     RequestMethod::DELETE,
@@ -309,7 +327,9 @@ class RequestImpl implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   = $server['HTTP_HOST'] . ':' . $components['port'];
+            $server['HTTP_HOST']   = $server['HTTP_HOST']
+                . ':'
+                . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -359,10 +379,19 @@ class RequestImpl implements Request
             $queryString = http_build_query($query, '', '&');
         }
 
-        $server['REQUEST_URI']  = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
+        $server['REQUEST_URI']  = $components['path']
+            . ('' !== $queryString ? '?' . $queryString : '');
         $server['QUERY_STRING'] = $queryString;
 
-        return self::factory($query, $request, [], $cookies, $files, $server, $content);
+        return self::factory(
+            $query,
+            $request,
+            [],
+            $cookies,
+            $files,
+            $server,
+            $content
+        );
     }
 
     /**
@@ -390,7 +419,12 @@ class RequestImpl implements Request
     public function __toString(): string
     {
         return
-            sprintf('%s %s %s', $this->getMethod(), $this->getRequestUri(), $this->server->get('SERVER_PROTOCOL'))
+            sprintf(
+                '%s %s %s',
+                $this->getMethod(),
+                $this->getRequestUri(),
+                $this->server->get('SERVER_PROTOCOL')
+            )
             . "\r\n"
             . $this->headers
             . "\r\n"
@@ -711,8 +745,9 @@ class RequestImpl implements Request
      *
      * @return \Valkyrja\Http\Request
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []): Request
-    {
+    public function setAcceptableContentTypes(
+        array $acceptableContentTypes = []
+    ): Request {
         $this->acceptableContentTypes = $acceptableContentTypes;
 
         return $this;
@@ -722,7 +757,8 @@ class RequestImpl implements Request
      * Gets a "parameter" value from any bag.
      *
      * @param string $key     the key
-     * @param mixed  $default the default value if the parameter key does not exist
+     * @param mixed  $default the default value if the parameter key does not
+     *                        exist
      *
      * @return mixed
      */
@@ -750,7 +786,10 @@ class RequestImpl implements Request
      */
     public function getScriptName(): string
     {
-        return $this->server->get('SCRIPT_NAME', $this->server->get('ORIG_SCRIPT_NAME', ''));
+        return $this->server->get(
+            'SCRIPT_NAME',
+            $this->server->get('ORIG_SCRIPT_NAME', '')
+        );
     }
 
     /**
@@ -805,8 +844,9 @@ class RequestImpl implements Request
      *
      * The "X-Forwarded-Port" header must contain the client port.
      *
-     * If your reverse proxy uses a different header name than "X-Forwarded-Port",
-     * configure it via "setTrustedHeaderName()" with the "client-port" key.
+     * If your reverse proxy uses a different header name than
+     * "X-Forwarded-Port", configure it via "setTrustedHeaderName()" with the
+     * "client-port" key.
      *
      * @return int
      */
@@ -864,7 +904,10 @@ class RequestImpl implements Request
         $scheme = $this->getScheme();
         $port   = $this->getPort();
 
-        if (('http' === $scheme && $port === 80) || ('https' === $scheme && $port === 443)) {
+        if (
+            ('http' === $scheme && $port === 80)
+            || ('https' === $scheme && $port === 443)
+        ) {
             return $this->getHost();
         }
 
@@ -898,14 +941,16 @@ class RequestImpl implements Request
     /**
      * Checks whether the request is secure or not.
      *
-     * This method can read the client protocol from the "X-Forwarded-Proto" header
-     * when trusted proxies were set via "setTrustedProxies()".
+     * This method can read the client protocol from the "X-Forwarded-Proto"
+     * header when trusted proxies were set via "setTrustedProxies()".
      *
-     * The "X-Forwarded-Proto" header must contain the protocol: "https" or "http".
+     * The "X-Forwarded-Proto" header must contain the protocol: "https" or
+     * "http".
      *
-     * If your reverse proxy uses a different header name than "X-Forwarded-Proto"
-     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()" with
-     * the "client-proto" key.
+     * If your reverse proxy uses a different header name than
+     * "X-Forwarded-Proto"
+     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()"
+     * with the "client-proto" key.
      *
      * @return bool
      */
@@ -951,14 +996,22 @@ class RequestImpl implements Request
     public function getMethod(): string
     {
         if (null === $this->method) {
-            $this->method = strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
+            $this->method = strtoupper(
+                $this->server->get('REQUEST_METHOD', RequestMethod::GET)
+            );
 
             if (RequestMethod::POST === $this->method) {
                 if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                     $this->method = strtoupper($method);
                 } elseif (self::$httpMethodParameterOverride) {
                     $this->method = strtoupper(
-                        $this->request->get('_method', $this->query->get('_method', RequestMethod::POST))
+                        $this->request->get(
+                            '_method',
+                            $this->query->get(
+                                '_method',
+                                RequestMethod::POST
+                            )
+                        )
                     );
                 }
             }
@@ -976,7 +1029,9 @@ class RequestImpl implements Request
      */
     public function getRealMethod(): string
     {
-        return strtoupper($this->server->get('REQUEST_METHOD', RequestMethod::GET));
+        return strtoupper(
+            $this->server->get('REQUEST_METHOD', RequestMethod::GET)
+        );
     }
 
     /**
@@ -1025,7 +1080,14 @@ class RequestImpl implements Request
                 return $format;
             }
 
-            if (null !== $canonicalMimeType && in_array($canonicalMimeType, $mimeTypes, true)) {
+            if (
+                null !== $canonicalMimeType
+                && in_array(
+                    $canonicalMimeType,
+                    $mimeTypes,
+                    true
+                )
+            ) {
                 return $format;
             }
         }
@@ -1102,7 +1164,12 @@ class RequestImpl implements Request
      */
     public function getETags(): array
     {
-        return preg_split('/\s*,\s*/', $this->headers->get('If-None-Match'), null, PREG_SPLIT_NO_EMPTY);
+        return preg_split(
+            '/\s*,\s*/',
+            $this->headers->get('If-None-Match'),
+            null,
+            PREG_SPLIT_NO_EMPTY
+        );
     }
 
     /**
@@ -1138,7 +1205,7 @@ class RequestImpl implements Request
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

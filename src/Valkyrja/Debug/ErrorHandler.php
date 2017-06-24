@@ -26,7 +26,8 @@ class ErrorHandler
      *
      * @param int    $level   The error level
      * @param string $message The error message
-     * @param string $file    [optional] The file within which the error occurred
+     * @param string $file    [optional] The file within which the error
+     *                        occurred
      * @param int    $line    [optional] The line which threw the error
      * @param array  $context [optional] The context for the exception
      *

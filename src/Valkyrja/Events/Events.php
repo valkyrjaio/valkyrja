@@ -23,8 +23,8 @@ interface Events extends Cacheable
     /**
      * Add an event listener.
      *
-     * @param string                    $event    The event
-     * @param \Valkyrja\Events\Listener $listener The event listener
+     * @param string   $event    The event
+     * @param Listener $listener The event listener
      *
      * @return void
      */
@@ -33,8 +33,8 @@ interface Events extends Cacheable
     /**
      * Add a listener to many events.
      *
-     * @param \Valkyrja\Events\Listener $listener  The listener
-     * @param string[]                  ...$events The events
+     * @param Listener $listener  The listener
+     * @param string[] ...$events The events
      *
      * @return void
      */

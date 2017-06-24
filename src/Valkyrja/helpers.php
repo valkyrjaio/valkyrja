@@ -40,7 +40,13 @@ if (! function_exists('abort')) {
         array $headers = [],
         int $code = 0
     ): void {
-        throw new Valkyrja\Http\Exceptions\HttpException($statusCode, $message, null, $headers, $code);
+        throw new Valkyrja\Http\Exceptions\HttpException(
+            $statusCode,
+            $message,
+            null,
+            $headers,
+            $code
+        );
     }
 }
 
@@ -257,8 +263,11 @@ if (! function_exists('routeUrl')) {
      *
      * @return string
      */
-    function routeUrl(string $name, array $data = null, bool $absolute = null): string
-    {
+    function routeUrl(
+        string $name,
+        array $data = null,
+        bool $absolute = null
+    ): string {
         return router()->routeUrl($name, $data, $absolute);
     }
 }
@@ -337,7 +346,8 @@ if (! function_exists('redirectRoute')) {
      * Return a new redirect response from the application for a given route.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic
+     *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
@@ -370,7 +380,13 @@ if (! function_exists('redirectTo')) {
         int $statusCode = Valkyrja\Http\StatusCode::FOUND,
         array $headers = []
     ): void {
-        throw new Valkyrja\Http\Exceptions\HttpRedirectException($statusCode, $uri, null, $headers, 0);
+        throw new Valkyrja\Http\Exceptions\HttpRedirectException(
+            $statusCode,
+            $uri,
+            null,
+            $headers,
+            0
+        );
     }
 }
 
@@ -395,8 +411,10 @@ if (! function_exists('view')) {
      *
      * @return \Valkyrja\View\View
      */
-    function view(string $template = '', array $variables = []): Valkyrja\View\View
-    {
+    function view(
+        string $template = '',
+        array $variables = []
+    ): Valkyrja\View\View {
         return app()->view($template, $variables);
     }
 }

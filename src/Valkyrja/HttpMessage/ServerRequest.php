@@ -103,8 +103,8 @@ interface ServerRequest extends Request
      *
      * Note: the query params might not be in sync with the URI or server
      * params. If you need to ensure you are only getting the original
-     * values, you may need to parse the query string from `getUri()->getQuery()`
-     * or from the `QUERY_STRING` server param.
+     * values, you may need to parse the query string from
+     * `getUri()->getQuery()` or from the `QUERY_STRING` server param.
      *
      * @return array
      */
@@ -156,7 +156,8 @@ interface ServerRequest extends Request
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles An array tree of UploadedFileInterface
+     *                             instances.
      *
      * @throws \InvalidArgumentException if an invalid structure is provided.
      *
@@ -177,7 +178,7 @@ interface ServerRequest extends Request
      * the absence of body content.
      *
      * @return array The deserialized body parameters, if any.
-     *               These will typically be an array or object.
+     *          These will typically be an array or object.
      */
     public function getParsedBody(): array;
 
@@ -192,8 +193,8 @@ interface ServerRequest extends Request
      *
      * The data IS NOT REQUIRED to come from $_POST, but MUST be the results of
      * deserializing the request body content. Deserialization/parsing returns
-     * structured data, and, as such, this method ONLY accepts arrays or objects,
-     * or a null value if nothing was available to parse.
+     * structured data, and, as such, this method ONLY accepts arrays or
+     * objects, or a null value if nothing was available to parse.
      *
      * As an example, if content negotiation determines that the request data
      * is a JSON payload, this method could be used to create a request
@@ -207,7 +208,7 @@ interface ServerRequest extends Request
      *                    typically be in an array or object.
      *
      * @throws \InvalidArgumentException if an unsupported argument type is
-     *                                   provided.
+     *          provided.
      *
      * @return static
      */
@@ -239,7 +240,8 @@ interface ServerRequest extends Request
      * @see getAttributes()
      *
      * @param string $name    The attribute name.
-     * @param mixed  $default Default value to return if the attribute does not exist.
+     * @param mixed  $default Default value to return if the attribute does not
+     *                        exist.
      *
      * @return mixed
      */

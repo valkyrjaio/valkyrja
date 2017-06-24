@@ -139,13 +139,17 @@ REGEX;
         // If the count of required opening and closing tags doesn't match
         if ($requiredGroupsOpen !== $requiredGroupsClose) {
             // Throw an error letting the develop know they made a bad path
-            throw new InvalidArgumentException('Mismatch of required groups for path: ' . $path);
+            throw new InvalidArgumentException(
+                'Mismatch of required groups for path: ' . $path
+            );
         }
 
         // If the count of optional opening and closing tags doesn't match
         if ($optionalGroupsOpen !== $optionalGroupsClose) {
             // Throw an error letting the develop know they made a bad path
-            throw new InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
+            throw new InvalidArgumentException(
+                'Mismatch of optional groups for path: ' . $path
+            );
         }
     }
 
@@ -172,8 +176,10 @@ REGEX;
      *
      * @return array
      */
-    protected function splitSegments(array $segments, string $deliminator): array
-    {
+    protected function splitSegments(
+        array $segments,
+        string $deliminator
+    ): array {
         // The final segments to return
         $returnSegments = [];
 
@@ -181,7 +187,11 @@ REGEX;
         foreach ($segments as $segment) {
             // If the segment has the deliminator
             if (strpos($segment, $deliminator) !== false) {
-                $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
+                $this->splitSegmentsDeliminator(
+                    $returnSegments,
+                    $segment,
+                    $deliminator
+                );
 
                 continue;
             }
@@ -202,8 +212,11 @@ REGEX;
      *
      * @return void
      */
-    protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
-    {
+    protected function splitSegmentsDeliminator(
+        array &$segments,
+        string $segment,
+        string $deliminator
+    ): void {
         // Split the segment on that bracket
         $parts = explode($deliminator, $segment);
 
@@ -271,7 +284,11 @@ REGEX;
                 // Replace this match with the replace text thus removing any regex
                 // in the segment this fixes any regexes with brackets from being
                 // messed up in the splitSegments() method
-                $segments[$segmentKey] = str_replace($params[0][$key], $replace, $segment);
+                $segments[$segmentKey] = str_replace(
+                    $params[0][$key],
+                    $replace,
+                    $segment
+                );
             }
         }
 
@@ -318,7 +335,7 @@ REGEX;
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

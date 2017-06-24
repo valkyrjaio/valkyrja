@@ -56,7 +56,8 @@ class ExceptionHandler
     public function __construct(bool $displayErrors = false)
     {
         $this->displayErrors  = $displayErrors;
-        $this->fileLinkFormat = ini_get('xdebug.file_link_format') ?? get_cfg_var('xdebug.file_link_format');
+        $this->fileLinkFormat = ini_get('xdebug.file_link_format')
+            ?? get_cfg_var('xdebug.file_link_format');
     }
 
     /**
@@ -134,7 +135,10 @@ class ExceptionHandler
 
         $headers    = [];
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
-        $content    = $this->html($this->getContent($exception), $this->getStylesheet());
+        $content    = $this->html(
+            $this->getContent($exception),
+            $this->getStylesheet()
+        );
 
         if ($exception instanceof HttpException) {
             foreach ($exception->getHeaders() as $name => $value) {
@@ -210,7 +214,10 @@ class ExceptionHandler
     {
         $title = 'Whoops, looks like something went wrong.';
 
-        if ($exception instanceof HttpException && $exception->getStatusCode() === 404) {
+        if (
+            $exception instanceof HttpException
+            && $exception->getStatusCode() === 404
+        ) {
             $title = 'Sorry, the page you are looking for could not be found.';
         }
 
@@ -279,7 +286,10 @@ EOF
                         }
 
                         if (isset($trace['file'], $trace['line'])) {
-                            $content .= $this->formatPath($trace['file'], $trace['line']);
+                            $content .= $this->formatPath(
+                                $trace['file'],
+                                $trace['line']
+                            );
                         }
 
                         $content .= "</li>\n";
@@ -448,7 +458,10 @@ EOF;
             : $path;
 
         if ($linkFormat = $this->fileLinkFormat) {
-            $link = strtr($this->escapeHtml($linkFormat), ['%f' => $path, '%l' => $line]);
+            $link = strtr(
+                $this->escapeHtml($linkFormat),
+                ['%f' => $path, '%l' => $line]
+            );
 
             return sprintf(
                 ' in <a href="%s" title="Go to source">%s line %d</a>',
@@ -479,19 +492,31 @@ EOF;
 
         foreach ($args as $key => $item) {
             if (is_object($item)) {
-                $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass(get_class($item)));
+                $formattedValue = sprintf(
+                    '<em>object</em>(%s)',
+                    $this->formatClass(get_class($item))
+                );
             } elseif (is_array($item)) {
-                $formattedValue = sprintf('<em>array</em>(%s)', $this->formatArgs($item));
+                $formattedValue = sprintf(
+                    '<em>array</em>(%s)',
+                    $this->formatArgs($item)
+                );
             } elseif (is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
             } elseif (null === $item) {
                 $formattedValue = '<em>null</em>';
             } elseif (is_bool($item)) {
-                $formattedValue = '<em>' . strtolower(var_export($item, true)) . '</em>';
+                $formattedValue = '<em>'
+                    . strtolower(var_export($item, true))
+                    . '</em>';
             } elseif (is_resource($item)) {
                 $formattedValue = '<em>resource</em>';
             } else {
-                $formattedValue = str_replace("\n", '', var_export($this->escapeHtml((string) $item), true));
+                $formattedValue = str_replace(
+                    "\n",
+                    '',
+                    var_export($this->escapeHtml((string) $item), true)
+                );
             }
 
             $result[] = is_int($key)
@@ -511,6 +536,10 @@ EOF;
      */
     protected function escapeHtml(string $str): string
     {
-        return htmlspecialchars($str, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
+        return htmlspecialchars(
+            $str,
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            $this->charset
+        );
     }
 }

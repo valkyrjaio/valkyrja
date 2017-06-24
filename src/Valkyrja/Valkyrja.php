@@ -185,14 +185,17 @@ class Valkyrja implements Application
 
         $config         = $config ?? [];
         $configFilePath = Directory::configPath('config.php');
-        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/Config/config.php';
+        $configFilePath = is_file($configFilePath)
+            ? $configFilePath
+            : __DIR__ . '/Config/config.php';
         $defaultConfigs = require $configFilePath;
 
         self::$config = array_replace_recursive($defaultConfigs, $config);
 
         /* @var \Valkyrja\Support\Providers\Provider $provider */
         foreach (self::$config['providers'] as $provider) {
-            // Config providers are NOT deferred and will not follow the deferred value
+            // Config providers are NOT deferred and will not follow the
+            // deferred value
             $provider::publish($this);
         }
     }
@@ -232,25 +235,34 @@ class Valkyrja implements Application
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
 
-        // If the events implementation specified does not adhere to the events contract
+        // If the events implementation specified does not adhere to the events
+        // contract
         if (! self::$events instanceof Events) {
-            throw new InvalidEventsImplementation('Invalid Events implementation');
+            throw new InvalidEventsImplementation(
+                'Invalid Events implementation'
+            );
         }
 
         // Set the container to a new instance of the container implementation
         self::$container = new $containerImpl($this);
 
-        // If the container implementation specified does not adhere to the container contract
+        // If the container implementation specified does not adhere to the
+        // container contract
         if (! self::$container instanceof Container) {
-            throw new InvalidContainerImplementation('Invalid Container implementation');
+            throw new InvalidContainerImplementation(
+                'Invalid Container implementation'
+            );
         }
 
         // Set the dispatcher to a new instance of the dispatcher implementation
         self::$dispatcher = new $dispatcherImpl($this);
 
-        // If the dispatcher implementation specified does not adhere to the dispatcher contract
+        // If the dispatcher implementation specified does not adhere to the
+        // dispatcher contract
         if (! self::$dispatcher instanceof Dispatcher) {
-            throw new InvalidDispatcherImplementation('Invalid Dispatcher implementation');
+            throw new InvalidDispatcherImplementation(
+                'Invalid Dispatcher implementation'
+            );
         }
     }
 
@@ -368,7 +380,8 @@ class Valkyrja implements Application
      * Get the config.
      *
      * @param string $key     [optional] The key to get
-     * @param string $default [optional] The default value if the key is not found
+     * @param string $default [optional] The default value if the key is not
+     *                        found
      *
      * @return mixed
      */
@@ -730,7 +743,8 @@ class Valkyrja implements Application
      * Return a new redirect response from the application for a given route.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic
+     *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *

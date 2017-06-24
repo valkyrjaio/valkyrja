@@ -94,10 +94,14 @@ class Cookie
      * @param int    $expire   [optional] The time the cookie should expire
      * @param string $path     [optional] The path the cookie is available to
      * @param string $domain   [optional] The domain the cookie is available to
-     * @param bool   $secure   [optional] Whether the cookie should only be transmitted over a secure HTTPS connection
-     * @param bool   $httpOnly [optional] Whether the cookie will be made accessible only through the HTTP protocol
-     * @param bool   $raw      [optional] Whether the cookie value should be sent with no url encoding
-     * @param string $sameSite [optional] Whether the cookie will be available for cross-site requests
+     * @param bool   $secure   [optional] Whether the cookie should only be
+     *                         transmitted over a secure HTTPS connection
+     * @param bool   $httpOnly [optional] Whether the cookie will be made
+     *                         accessible only through the HTTP protocol
+     * @param bool   $raw      [optional] Whether the cookie value should be
+     *                         sent with no url encoding
+     * @param string $sameSite [optional] Whether the cookie will be available
+     *                         for cross-site requests
      *
      * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
      */
@@ -121,7 +125,9 @@ class Cookie
         $this->raw    = $raw;
 
         if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
-            throw new InvalidSameSiteTypeException('The "sameSite" parameter value is not valid.');
+            throw new InvalidSameSiteTypeException(
+                'The "sameSite" parameter value is not valid.'
+            );
         }
 
         $this->sameSite = $sameSite;
@@ -137,12 +143,22 @@ class Cookie
         $str = urlencode($this->name) . '=';
 
         if ('' === $this->value) {
-            $str .= 'deleted; expires=' . gmdate('D, d-M-Y H:i:s T', time() - 31536001) . '; max-age=-31536001';
+            $str .= 'deleted; expires='
+                . gmdate(
+                    'D, d-M-Y H:i:s T',
+                    time() - 31536001
+                )
+                . '; max-age=-31536001';
         } else {
             $str .= urlencode($this->value);
 
             if ($this->expire !== 0) {
-                $str .= '; expires=' . gmdate('D, d-M-Y H:i:s T', $this->expire) . '; max-age=' . $this->getMaxAge();
+                $str .= '; expires='
+                    . gmdate(
+                        'D, d-M-Y H:i:s T',
+                        $this->expire
+                    )
+                    . '; max-age=' . $this->getMaxAge();
             }
         }
 
@@ -302,7 +318,8 @@ class Cookie
     }
 
     /**
-     * Whether the cookie should only be transmitted over a secure HTTPS connection.
+     * Whether the cookie should only be transmitted over a secure HTTPS
+     * connection.
      *
      * @return bool
      */
@@ -312,7 +329,8 @@ class Cookie
     }
 
     /**
-     * Set whether the cookie should only be transmitted over a secure HTTPS connection.
+     * Set whether the cookie should only be transmitted over a secure HTTPS
+     * connection.
      *
      * @param bool $secure
      *
@@ -326,7 +344,8 @@ class Cookie
     }
 
     /**
-     * Whether the cookie will be made accessible only through the HTTP protocol.
+     * Whether the cookie will be made accessible only through the HTTP
+     * protocol.
      *
      * @return bool
      */
@@ -336,7 +355,8 @@ class Cookie
     }
 
     /**
-     * Set whether the cookie will be made accessible only through the HTTP protocol.
+     * Set whether the cookie will be made accessible only through the HTTP
+     * protocol.
      *
      * @param bool $httpOnly
      *

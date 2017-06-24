@@ -77,7 +77,10 @@ return [
      * //
      *
      */
-    'container'    => env('APP_CONTAINER', Valkyrja\Container\ContainerImpl::class),
+    'container'    => env(
+        'APP_CONTAINER',
+        Valkyrja\Container\ContainerImpl::class
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -87,7 +90,10 @@ return [
      * //
      *
      */
-    'dispatcher'   => env('APP_DISPATCHER', Valkyrja\Dispatcher\DispatcherImpl::class),
+    'dispatcher'   => env(
+        'APP_DISPATCHER',
+        Valkyrja\Dispatcher\DispatcherImpl::class
+    ),
 
     /*
      *-------------------------------------------------------------------------

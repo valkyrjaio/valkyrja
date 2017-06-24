@@ -52,13 +52,17 @@ class FlyFilesystem implements Filesystem
     /**
      * FlyFilesystem constructor.
      *
-     * @param \Valkyrja\Application             $application The application
-     * @param \League\Flysystem\Filesystem|null $flySystem   [optional] The FlyFilesystem
+     * @param Application                       $application The application
+     * @param \League\Flysystem\Filesystem|null $flySystem   [optional] The
+     *                                                       FlyFilesystem
      */
-    public function __construct(Application $application, FlySystem $flySystem = null)
-    {
+    public function __construct(
+        Application $application,
+        FlySystem $flySystem = null
+    ) {
         $this->app       = $application;
-        $this->flySystem = $flySystem ?? new FlySystem(
+        $this->flySystem = $flySystem
+            ?? new FlySystem(
                 $this->flyAdapter($this->app->config()['filesystem']['default'])
             );
     }
@@ -296,7 +300,8 @@ class FlyFilesystem implements Filesystem
      *
      * @throws \League\Flysystem\FileNotFoundException
      *
-     * @return string|null The visibility ('public' or 'private') or null on failure
+     * @return string|null
+     *      The visibility ('public' or 'private') or null on failure
      */
     public function visibility(string $path):? string
     {
@@ -308,8 +313,8 @@ class FlyFilesystem implements Filesystem
     /**
      * Set a file's visibility.
      *
-     * @param string                          $path       The path
-     * @param \Valkyrja\Filesystem\Visibility $visibility The visibility
+     * @param string     $path       The path
+     * @param Visibility $visibility The visibility
      *
      * @return bool
      */
@@ -372,12 +377,15 @@ class FlyFilesystem implements Filesystem
      * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the directory
+     * @param bool   $recursive [optional] Whether to recurse through the
+     *                          directory
      *
      * @return array
      */
-    public function listContents(string $directory = null, bool $recursive = false): array
-    {
+    public function listContents(
+        string $directory = null,
+        bool $recursive = false
+    ): array {
         return $this->flySystem->listContents($directory ?? '', $recursive);
     }
 
@@ -428,7 +436,8 @@ class FlyFilesystem implements Filesystem
      */
     protected function localAdapter(): Local
     {
-        return self::$adapters['local'] ?? self::$adapters['local'] = new Local(
+        return self::$adapters['local']
+            ?? self::$adapters['local'] = new Local(
                 $this->app->config()['filesystem']['adapters']['s3']['dir']
             );
     }
@@ -454,20 +463,27 @@ class FlyFilesystem implements Filesystem
      */
     protected function s3Adapter(): AwsS3Adapter
     {
-        return self::$adapters['s3'] ?? self::$adapters['s3'] = new AwsS3Adapter(
-                new S3Client(
-                    [
-                        'credentials' => [
-                            'key'    => $this->app->config()['filesystem']['adapters']['s3']['key'],
-                            'secret' => $this->app->config()['filesystem']['adapters']['s3']['secret'],
-                        ],
-                        'region'      => $this->app->config()['filesystem']['adapters']['s3']['region'],
-                        'version'     => $this->app->config()['filesystem']['adapters']['s3']['version'],
-                    ]
-                ),
-                $this->app->config()['filesystem']['adapters']['s3']['bucket'],
-                $this->app->config()['filesystem']['adapters']['s3']['dir']
-            );
+        if (isset(self::$adapters['s3'])) {
+            return self::$adapters['s3'];
+        }
+
+        $config       = $this->app->config()['filesystem']['adapters']['s3'];
+        $clientConfig = [
+            'credentials' => [
+                'key'    => $config['key'],
+                'secret' => $config['secret'],
+            ],
+            'region'      => $config['region'],
+            'version'     => $config['version'],
+        ];
+
+        self::$adapters['s3'] = new AwsS3Adapter(
+            new S3Client($clientConfig),
+            $config['bucket'],
+            $config['dir']
+        );
+
+        return self::$adapters['s3'];
     }
 
     /**
@@ -485,7 +501,7 @@ class FlyFilesystem implements Filesystem
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

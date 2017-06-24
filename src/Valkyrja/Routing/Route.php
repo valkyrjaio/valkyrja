@@ -104,8 +104,6 @@ class Route extends Dispatch
     /**
      * Get the request methods.
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array
      */
     public function getRequestMethods(): array
@@ -124,6 +122,9 @@ class Route extends Dispatch
      * Set the request methods.
      *
      * @param array $requestMethods The request methods
+     *
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      *
      * @return $this
      */

@@ -82,7 +82,10 @@ return [
      * //
      *
      */
-    'useAnnotationsExclusively' => env('CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY', false),
+    'useAnnotationsExclusively' => env(
+        'CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY',
+        false
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -102,7 +105,10 @@ return [
      * //
      *
      */
-    'filePath'                  => env('CONSOLE_FILE_PATH', bootstrapPath('commands.php')),
+    'filePath'                  => env(
+        'CONSOLE_FILE_PATH',
+        bootstrapPath('commands.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -112,7 +118,10 @@ return [
      * //
      *
      */
-    'cacheFilePath'             => env('CONSOLE_CACHE_FILE_PATH', cachePath('commands.php')),
+    'cacheFilePath'             => env(
+        'CONSOLE_CACHE_FILE_PATH',
+        cachePath('commands.php')
+    ),
 
     /*
      *-------------------------------------------------------------------------

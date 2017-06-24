@@ -61,7 +61,7 @@ class Cookies
     /**
      * Set a response cookie.
      *
-     * @param \Valkyrja\Http\Cookie $cookie The cookie object
+     * @param Cookie $cookie The cookie object
      *
      * @return \Valkyrja\Http\Cookies
      */
@@ -81,8 +81,11 @@ class Cookies
      *
      * @return \Valkyrja\Http\Cookies
      */
-    public function remove(string $name, string $path = '/', string $domain = null): self
-    {
+    public function remove(
+        string $name,
+        string $path = '/',
+        string $domain = null
+    ): self {
         if (null === $path) {
             $path = '/';
         }

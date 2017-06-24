@@ -51,7 +51,7 @@ trait ProvidesCommand
     /**
      * Publish the command.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

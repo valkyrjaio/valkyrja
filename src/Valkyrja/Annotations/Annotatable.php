@@ -355,7 +355,7 @@ trait Annotatable
     /**
      * Set the annotation arguments (within parentheses).
      *
-     * @param array $annotationArguments The annotation arguments (within parentheses)
+     * @param array $annotationArguments The annotation arguments
      *
      * @return void
      */

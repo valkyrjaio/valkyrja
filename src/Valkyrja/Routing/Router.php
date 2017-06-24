@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Http\Request;
-use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\Response;
 use Valkyrja\Support\Cacheable;
 
@@ -26,7 +25,7 @@ interface Router extends Cacheable
     /**
      * Set a single route.
      *
-     * @param \Valkyrja\Routing\Route $route
+     * @param Route $route
      *
      * @return void
      */
@@ -35,7 +34,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -44,7 +43,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -53,7 +52,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -62,7 +61,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -71,7 +70,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -80,7 +79,7 @@ interface Router extends Cacheable
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -120,14 +119,20 @@ interface Router extends Cacheable
      *
      * @return string
      */
-    public function routeUrl(string $name, array $data = null, bool $absolute = null): string;
+    public function routeUrl(
+        string $name,
+        array $data = null,
+        bool $absolute = null
+    ): string;
 
     /**
      * Get a route from a request.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
-     * @return \Valkyrja\Routing\Route
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
      */
     public function requestRoute(Request $request):? Route;
 
@@ -137,9 +142,11 @@ interface Router extends Cacheable
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return \Valkyrja\Routing\Route
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = RequestMethod::GET):? Route;
+    public function matchRoute(string $path, string $method = null):? Route;
 
     /**
      * Determine if a uri is valid.
@@ -153,7 +160,7 @@ interface Router extends Cacheable
     /**
      * Dispatch the route and find a match.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @return \Valkyrja\Http\Response
      */

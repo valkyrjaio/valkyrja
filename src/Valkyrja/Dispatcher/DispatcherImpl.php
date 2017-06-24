@@ -46,7 +46,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatcher constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -56,7 +56,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Verify the class and method of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
      *
@@ -87,7 +87,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Verify the class and property of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
      *
@@ -99,7 +99,10 @@ class DispatcherImpl implements Dispatcher
         if (
             null !== $dispatch->getClass()
             && null !== $dispatch->getProperty()
-            && ! property_exists($dispatch->getClass(), $dispatch->getProperty())
+            && ! property_exists(
+                $dispatch->getClass(),
+                $dispatch->getProperty()
+            )
         ) {
             // Throw a new invalid property exception
             throw new InvalidPropertyException(
@@ -115,7 +118,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Verify the function of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
      *
@@ -124,7 +127,10 @@ class DispatcherImpl implements Dispatcher
     public function verifyFunction(Dispatch $dispatch): void
     {
         // If a function is set and is not callable
-        if (null !== $dispatch->getFunction() && ! is_callable($dispatch->getFunction())) {
+        if (
+            null !== $dispatch->getFunction()
+            && ! is_callable($dispatch->getFunction())
+        ) {
             // Throw a new invalid function exception
             throw new InvalidFunctionException(
                 'Function is not callable for : '
@@ -137,7 +143,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Verify the closure of a dispatch.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      *
@@ -164,7 +170,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Verify the dispatch's dispatch capabilities.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
@@ -201,7 +207,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Get a dispatch's dependencies.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @return array
      */
@@ -222,7 +228,12 @@ class DispatcherImpl implements Dispatcher
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = $this->app->container()->get($dependency, null, $context, $member);
+                $dependencies[] = $this->app->container()->get(
+                    $dependency,
+                    null,
+                    $context,
+                    $member
+                );
             }
         }
 
@@ -232,13 +243,15 @@ class DispatcherImpl implements Dispatcher
     /**
      * Get a dispatch's arguments.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return array
      */
-    protected function getArguments(Dispatch $dispatch, array $arguments = null):? array
-    {
+    protected function getArguments(
+        Dispatch $dispatch,
+        array $arguments = null
+    ):? array {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
         $context   = $dispatch->getClass() ?? $dispatch->getFunction();
@@ -258,7 +271,12 @@ class DispatcherImpl implements Dispatcher
             // If the argument is a service
             if ($argument instanceof Service) {
                 // Dispatch the argument and set the results to the argument
-                $argument = $this->app->container()->get($argument->getId(), null, $context, $member);
+                $argument = $this->app->container()->get(
+                    $argument->getId(),
+                    null,
+                    $context,
+                    $member
+                );
             } // If the argument is a dispatch
             elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
@@ -275,13 +293,15 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a class method.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return mixed
      */
-    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
-    {
+    public function dispatchClassMethod(
+        Dispatch $dispatch,
+        array $arguments = null
+    ) {
         $response = null;
 
         // Ensure a class and method exist before continuing
@@ -319,7 +339,7 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a class property.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch The dispatch
+     * @param Dispatch $dispatch The dispatch
      *
      * @return mixed
      */
@@ -328,7 +348,10 @@ class DispatcherImpl implements Dispatcher
         $response = null;
 
         // Ensure a class and property exist before continuing
-        if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
+        if (
+            null === $dispatch->getClass()
+            || null === $dispatch->getProperty()
+        ) {
             return $response;
         }
 
@@ -350,8 +373,8 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a class.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -379,7 +402,10 @@ class DispatcherImpl implements Dispatcher
             }
         } else {
             // Set the class through the container
-            $class = $this->app->container()->get($dispatch->getClass(), $arguments);
+            $class = $this->app->container()->get(
+                $dispatch->getClass(),
+                $arguments
+            );
         }
 
         return $class ?? $this->DISPATCHED;
@@ -388,13 +414,15 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a function.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return mixed
      */
-    public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
-    {
+    public function dispatchFunction(
+        Dispatch $dispatch,
+        array $arguments = null
+    ) {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
             return $dispatch->getFunction();
@@ -418,8 +446,8 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a closure.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -448,13 +476,15 @@ class DispatcherImpl implements Dispatcher
     /**
      * Dispatch a callable.
      *
-     * @param \Valkyrja\Dispatcher\Dispatch $dispatch  The dispatch
-     * @param array                         $arguments [optional] The arguments
+     * @param Dispatch $dispatch  The dispatch
+     * @param array    $arguments [optional] The arguments
      *
      * @return mixed
      */
-    public function dispatchCallable(Dispatch $dispatch, array $arguments = null)
-    {
+    public function dispatchCallable(
+        Dispatch $dispatch,
+        array $arguments = null
+    ) {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 

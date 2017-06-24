@@ -55,7 +55,10 @@ class EventsCache extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating events cache.', true);
+            output()->writeMessage(
+                'An error occurred while generating events cache.',
+                true
+            );
 
             return 0;
         }

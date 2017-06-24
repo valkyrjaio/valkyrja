@@ -25,7 +25,7 @@ interface OutputFormatter
     /**
      * Set the foreground.
      *
-     * @param \Valkyrja\Console\Enums\FormatForeground $foreground The foreground color
+     * @param FormatForeground $foreground The foreground color
      *
      * @return void
      */
@@ -34,7 +34,7 @@ interface OutputFormatter
     /**
      * Set the background.
      *
-     * @param \Valkyrja\Console\Enums\FormatBackground $background The background
+     * @param FormatBackground $background The background
      *
      * @return void
      */
@@ -124,7 +124,7 @@ interface OutputFormatter
     /**
      * Set an option.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return void
      */
@@ -133,7 +133,7 @@ interface OutputFormatter
     /**
      * Determine whether an option has been set.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return bool
      */
@@ -142,7 +142,7 @@ interface OutputFormatter
     /**
      * Remove an option.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption $option The option
+     * @param FormatOption $option The option
      *
      * @return void
      */
@@ -151,7 +151,7 @@ interface OutputFormatter
     /**
      * Set options.
      *
-     * @param \Valkyrja\Console\Enums\FormatOption[] ...$options The options
+     * @param FormatOption[] ...$options The options
      *
      * @return void
      */

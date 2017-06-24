@@ -38,7 +38,8 @@ trait ProvidersAwareTrait
      * Register a provider.
      *
      * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of deferred status
+     * @param bool   $force    [optional] Whether to force regardless of
+     *                         deferred status
      *
      * @return void
      */

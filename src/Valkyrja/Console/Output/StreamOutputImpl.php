@@ -31,8 +31,8 @@ class StreamOutputImpl extends OutputImpl implements StreamOutput
     /**
      * Output constructor.
      *
-     * @param \Valkyrja\Console\Output\OutputFormatter $formatter The output formatter
-     * @param resource                                 $stream    The resource to use as a stream
+     * @param OutputFormatter $formatter The output formatter
+     * @param resource        $stream    The resource to use as a stream
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -43,12 +43,16 @@ class StreamOutputImpl extends OutputImpl implements StreamOutput
 
         // If there is no stream and the stdout failed
         if (! $stream = $stream ?? fopen('php://stdout', 'wb')) {
-            throw new RuntimeException('Unable to create stdout.');
+            throw new RuntimeException(
+                'Unable to create stdout.'
+            );
         }
 
         // If the stream isn't a valid resource or not a stream resource
         if (! is_resource($stream) || 'stream' !== get_resource_type($stream)) {
-            throw new InvalidArgumentException('Stream is not a valid stream resource.');
+            throw new InvalidArgumentException(
+                'Stream is not a valid stream resource.'
+            );
         }
 
         // Set the stream
@@ -72,7 +76,9 @@ class StreamOutputImpl extends OutputImpl implements StreamOutput
             || ($newLine && (false === @fwrite($this->stream, PHP_EOL)))
         ) {
             // should never happen
-            throw new RuntimeException('Unable to write output.');
+            throw new RuntimeException(
+                'Unable to write output.'
+            );
         }
 
         fflush($this->stream);

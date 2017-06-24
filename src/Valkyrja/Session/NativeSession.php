@@ -49,15 +49,18 @@ class NativeSession implements Session
     /**
      * Session constructor.
      *
-     * @param \Valkyrja\Application $application The application
-     * @param string                $sessionId   [optional] The session id
-     * @param string                $sessionName [optional] The session name
+     * @param Application $application The application
+     * @param string      $sessionId   [optional] The session id
+     * @param string      $sessionName [optional] The session name
      *
      * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
      * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
      */
-    public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
-    {
+    public function __construct(
+        Application $application,
+        string $sessionId = null,
+        string $sessionName = null
+    ) {
         $this->app = $application;
 
         $sessionId   = $sessionId ?? $this->app->config()['session']['id'];
@@ -303,7 +306,7 @@ class NativeSession implements Session
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
      * @throws \Valkyrja\Session\Exceptions\SessionStartFailure

@@ -100,10 +100,12 @@ interface Stream
      *
      * @param int $offset Stream offset
      * @param int $whence Specifies how the cursor position will be calculated
-     *                    based on the seek offset. Valid values are identical to the built-in
-     *                    PHP $whence values for `fseek()`.  SEEK_SET: Set position equal to
-     *                    offset bytes SEEK_CUR: Set position to current location plus offset
-     *                    SEEK_END: Set position to end-of-stream plus offset.
+     *                    based on the seek offset. Valid values are identical
+     *                    to the built-in PHP $whence values for `fseek()`.
+     *                    SEEK_SET: Set position equal to offset bytes
+     *                    SEEK_CUR: Set position to current location plus
+     *                    offset SEEK_END: Set position to end-of-stream plus
+     *                    offset.
      *
      * @throws \RuntimeException on failure.
      *
@@ -155,20 +157,21 @@ interface Stream
      * Read data from the stream.
      *
      * @param int $length Read up to $length bytes from the object and return
-     *                    them. Fewer than $length bytes may be returned if underlying stream
-     *                    call returns fewer bytes.
+     *                    them. Fewer than $length bytes may be returned if
+     *                    underlying stream call returns fewer bytes.
      *
      * @throws \RuntimeException if an error occurs.
      *
      * @return string Returns the data read from the stream, or an empty string
-     *                if no bytes are available.
+     *          if no bytes are available.
      */
     public function read(int $length): string;
 
     /**
      * Returns the remaining contents in a string.
      *
-     * @throws \RuntimeException if unable to read or an error occurs while reading.
+     * @throws \RuntimeException if unable to read or an error occurs while
+     *                           reading.
      *
      * @return string
      */
@@ -185,8 +188,8 @@ interface Stream
      * @param string $key Specific metadata to retrieve.
      *
      * @return array|mixed|null Returns an associative array if no key is
-     *                          provided. Returns a specific key value if a key is provided and the
-     *                          value is found, or null if the key is not found.
+     *          provided. Returns a specific key value if a key is provided
+     *          and the value is found, or null if the key is not found.
      */
     public function getMetadata(string $key = null);
 }

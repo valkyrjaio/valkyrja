@@ -56,7 +56,10 @@ class RoutesCacheCommand extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage('An error occurred while generating routes cache.', true);
+            output()->writeMessage(
+                'An error occurred while generating routes cache.',
+                true
+            );
 
             return 0;
         }

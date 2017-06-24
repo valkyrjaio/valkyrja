@@ -26,7 +26,8 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
     /**
      * @constant
      *
-     * Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
+     * Encode <, >, ', &, and " characters in the JSON, making it also safe to
+     * be embedded into HTML.
      * 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
      */
     public const DEFAULT_ENCODING_OPTIONS = 15;
@@ -113,7 +114,9 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
 
             foreach ($parts as $part) {
                 if (! preg_match($pattern, $part)) {
-                    throw new \InvalidArgumentException('The callback name is not valid.');
+                    throw new \InvalidArgumentException(
+                        'The callback name is not valid.'
+                    );
                 }
             }
         }
@@ -196,14 +199,19 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->headers()->get('Content-Type', 'text/javascript');
 
-            $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->data));
+            $this->setContent(
+                sprintf('/**/%s(%s);', $this->callback, $this->data)
+            );
 
             return $this;
         }
 
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
-        if (! $this->headers()->has('Content-Type') || 'text/javascript' === $this->headers()->get('Content-Type')) {
+        if (
+            ! $this->headers()->has('Content-Type')
+            || 'text/javascript' === $this->headers()->get('Content-Type')
+        ) {
             $this->headers()->set('Content-Type', 'application/json');
         }
 
@@ -227,7 +235,7 @@ class JsonResponseImpl extends ResponseImpl implements JsonResponse
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @throws \InvalidArgumentException
      *

@@ -27,27 +27,31 @@ interface UploadedFile
      * Retrieve a stream representing the uploaded file.
      *
      * This method MUST return a StreamInterface instance, representing the
-     * uploaded file. The purpose of this method is to allow utilizing native PHP
-     * stream functionality to manipulate the file upload, such as
-     * stream_copy_to_stream() (though the result will need to be decorated in a
-     * native PHP stream wrapper to work with such functions).
+     * uploaded file. The purpose of this method is to allow utilizing native
+     * PHP stream functionality to manipulate the file upload, such as
+     * stream_copy_to_stream() (though the result will need to be decorated in
+     * a native PHP stream wrapper to work with such functions).
      *
-     * If the moveTo() method has been called previously, this method MUST raise
+     * If the moveTo() method has been called previously, this method MUST
+     * raise
      * an exception.
      *
      * @throws \RuntimeException in cases when no stream is available or can be
-     *                           created.
+     *          created.
      *
-     * @return \Valkyrja\HttpMessage\Stream Stream representation of the uploaded file.
+     * @return \Valkyrja\HttpMessage\Stream Stream representation of the
+     *          uploaded file.
      */
     public function getStream(): Stream;
 
     /**
      * Move the uploaded file to a new location.
      *
-     * Use this method as an alternative to move_uploaded_file(). This method is
+     * Use this method as an alternative to move_uploaded_file(). This method
+     * is
      * guaranteed to work in both SAPI and non-SAPI environments.
-     * Implementations must determine which environment they are in, and use the
+     * Implementations must determine which environment they are in, and use
+     * the
      * appropriate method (move_uploaded_file(), rename(), or a stream
      * operation) to perform the operation.
      *
@@ -60,8 +64,10 @@ interface UploadedFile
      * If this method is called more than once, any subsequent calls MUST raise
      * an exception.
      *
-     * When used in an SAPI environment where $_FILES is populated, when writing
-     * files via moveTo(), is_uploaded_file() and move_uploaded_file() SHOULD be
+     * When used in an SAPI environment where $_FILES is populated, when
+     * writing
+     * files via moveTo(), is_uploaded_file() and move_uploaded_file() SHOULD
+     * be
      * used to ensure permissions and upload status are verified correctly.
      *
      * If you wish to move to a stream, use getStream(), as SAPI operations
@@ -72,9 +78,11 @@ interface UploadedFile
      *
      * @param string $targetPath Path to which to move the uploaded file.
      *
-     * @throws \InvalidArgumentException if the $targetPath specified is invalid.
-     * @throws \RuntimeException         on any error during the move operation, or on
-     *                                   the second or subsequent call to the method.
+     * @throws \InvalidArgumentException if the $targetPath specified is
+     *          invalid.
+     * @throws \RuntimeException on any error during the move
+     *          operation, or on the second or
+     *          subsequent call to the method.
      *
      * @return void
      */
@@ -119,7 +127,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The filename sent by the client or null if none
-     *                     was provided.
+     *          was provided.
      */
     public function getClientFilename():? string;
 
@@ -134,7 +142,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @return string|null The media type sent by the client or null if none
-     *                     was provided.
+     *          was provided.
      */
     public function getClientMediaType():? string;
 }

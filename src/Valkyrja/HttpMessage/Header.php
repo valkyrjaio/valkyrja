@@ -272,14 +272,15 @@ final class Header extends Enum
     /**
      * Content-Location Header.
      *
-     * The Content-Location entity-header field MAY be used to supply the resource
-     * location for the entity enclosed in the message when that entity is accessible
-     * from a location separate from the requested resource's URI. A server SHOULD
-     * provide a Content-Location for the variant corresponding to the response
-     * entity; especially in the case where a resource has multiple entities
-     * associated with it, and those entities actually have separate locations
-     * by which they might be individually accessed, the server SHOULD provide
-     * a Content-Location for the particular variant which is returned.
+     * The Content-Location entity-header field MAY be used to supply the
+     * resource location for the entity enclosed in the message when that
+     * entity is accessible from a location separate from the requested
+     * resource's URI. A server SHOULD provide a Content-Location for the
+     * variant corresponding to the response entity; especially in the case
+     * where a resource has multiple entities associated with it, and those
+     * entities actually have separate locations by which they might be
+     * individually accessed, the server SHOULD provide a Content-Location for
+     * the particular variant which is returned.
      *
      *      Content-Location = "Content-Location" ":"
      *                         ( absoluteURI | relativeURI )
@@ -641,10 +642,10 @@ final class Header extends Enum
      *
      *      ranges-specifier      = byte-ranges-specifier
      *      byte-ranges-specifier = bytes-unit "=" byte-range-set
-     *      byte-range-set        = 1#( byte-range-spec | suffix-byte-range-spec )
-     *      byte-range-spec       = first-byte-pos "-" [last-byte-pos]
-     *      first-byte-pos        = 1*DIGIT
-     *      last-byte-pos         = 1*DIGIT
+     *      byte-range-set        = 1#( byte-range-spec |
+     *      suffix-byte-range-spec ) byte-range-spec       = first-byte-pos "-"
+     *      [last-byte-pos] first-byte-pos        = 1*DIGIT last-byte-pos
+     *        = 1*DIGIT
      *
      * The first-byte-pos value in a byte-range-spec gives the byte-offset
      * of the first byte in a range. The last-byte-pos value gives the
@@ -845,11 +846,10 @@ final class Header extends Enum
      * avoiding request loops, and identifying the protocol capabilities of
      * all senders along the request/response chain.
      *
-     *      Via               =  "Via" ":" 1#( received-protocol received-by [ comment ] )
-     *      received-protocol = [ protocol-name "/" ] protocol-version
-     *      protocol-name     = token
-     *      protocol-version  = token
-     *      received-by       = ( host [ ":" port ] ) | pseudonym
+     *      Via               =  "Via" ":" 1#( received-protocol received-by [
+     *      comment ] ) received-protocol = [ protocol-name "/" ]
+     *      protocol-version protocol-name     = token protocol-version  =
+     *      token received-by       = ( host [ ":" port ] ) | pseudonym
      *      pseudonym         = token
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45

@@ -102,16 +102,16 @@ class NativeServerRequest implements ServerRequest
     /**
      * NativeServerRequest constructor.
      *
-     * @param \Valkyrja\HttpMessage\Uri    $uri        [optional] The uri
-     * @param string                       $method     [optional] The method
-     * @param \Valkyrja\HttpMessage\Stream $body       [optional] The body stream
-     * @param array                        $headers    [optional] The headers
-     * @param array                        $server     [optional] The server
-     * @param array                        $cookies    [optional] The cookies
-     * @param array                        $query      [optional] The query string
-     * @param array                        $parsedBody [optional] The parsed body
-     * @param array                        $files      [optional] The files
-     * @param string                       $protocol   [optional] The protocol version
+     * @param Uri    $uri        [optional] The uri
+     * @param string $method     [optional] The method
+     * @param Stream $body       [optional] The body stream
+     * @param array  $headers    [optional] The headers
+     * @param array  $server     [optional] The server
+     * @param array  $cookies    [optional] The cookies
+     * @param array  $query      [optional] The query string
+     * @param array  $parsedBody [optional] The parsed body
+     * @param array  $files      [optional] The files
+     * @param string $protocol   [optional] The protocol version
      *
      * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
@@ -210,8 +210,8 @@ class NativeServerRequest implements ServerRequest
      *
      * Note: the query params might not be in sync with the URI or server
      * params. If you need to ensure you are only getting the original
-     * values, you may need to parse the query string from `getUri()->getQuery()`
-     * or from the `QUERY_STRING` server param.
+     * values, you may need to parse the query string from
+     * `getUri()->getQuery()` or from the `QUERY_STRING` server param.
      *
      * @return array
      */
@@ -276,7 +276,8 @@ class NativeServerRequest implements ServerRequest
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles An array tree of UploadedFileInterface
+     *                             instances.
      *
      * @throws \InvalidArgumentException if an invalid structure is provided.
      *
@@ -324,8 +325,8 @@ class NativeServerRequest implements ServerRequest
      *
      * The data IS NOT REQUIRED to come from $_POST, but MUST be the results of
      * deserializing the request body content. Deserialization/parsing returns
-     * structured data, and, as such, this method ONLY accepts arrays or objects,
-     * or a null value if nothing was available to parse.
+     * structured data, and, as such, this method ONLY accepts arrays or
+     * objects, or a null value if nothing was available to parse.
      *
      * As an example, if content negotiation determines that the request data
      * is a JSON payload, this method could be used to create a request
@@ -338,8 +339,8 @@ class NativeServerRequest implements ServerRequest
      * @param array $data The deserialized body data. This will
      *                    typically be in an array or object.
      *
-     * @throws \InvalidArgumentException if an unsupported argument type is
-     *                                   provided.
+     * @throws \InvalidArgumentException
+     *      if an unsupported argument type is provided.
      *
      * @return static
      */
@@ -381,7 +382,8 @@ class NativeServerRequest implements ServerRequest
      * @see getAttributes()
      *
      * @param string $name    The attribute name.
-     * @param mixed  $default Default value to return if the attribute does not exist.
+     * @param mixed  $default Default value to return if the attribute does not
+     *                        exist.
      *
      * @return mixed
      */
@@ -470,7 +472,9 @@ class NativeServerRequest implements ServerRequest
             }
 
             if (! $file instanceof UploadedFile) {
-                throw new InvalidUploadedFile('Invalid leaf in uploaded files structure');
+                throw new InvalidUploadedFile(
+                    'Invalid leaf in uploaded files structure'
+                );
             }
         }
     }
