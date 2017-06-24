@@ -173,6 +173,19 @@ class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
             $newRoute->setSecure(true);
         }
 
+        // If there is a base middleware collection for this controller
+        if (null !== $controllerRoute->getMiddleware()) {
+            // Merge the route's middleware and the controller's middleware
+            // keeping the controller's middleware first
+            $middleware = array_merge(
+                $controllerRoute->getMiddleware(),
+                $route->getMiddleware() ?? []
+            );
+
+            // Set the middleware in the route
+            $newRoute->setMiddleware($middleware);
+        }
+
         return $newRoute;
     }
 
