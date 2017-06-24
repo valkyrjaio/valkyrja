@@ -465,6 +465,16 @@ class RouterImpl implements Router
     {
         // Replace the scheme if it exists
         $uri = str_replace(['http://', 'https://'], '', $uri);
+
+        // Get the host of the uri
+        $host = (string) substr($uri, 0, strpos($uri, '/'));
+
+        // If the host does not match the current request uri's host
+        if ($host !== $this->app->request()->getHttpHost()) {
+            // Return false immediately
+            return false;
+        }
+
         // Get only the path (full string from the first slash to the end of the path)
         $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
 
