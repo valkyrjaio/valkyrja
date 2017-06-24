@@ -67,10 +67,7 @@ class Cookies
      */
     public function set(Cookie $cookie): self
     {
-        $this->cookies
-        [$cookie->getDomain()]
-        [$cookie->getPath()]
-        [$cookie->getName()] = $cookie;
+        $this->cookies[$cookie->getDomain()][$cookie->getPath()][$cookie->getName()] = $cookie;
 
         return $this;
     }

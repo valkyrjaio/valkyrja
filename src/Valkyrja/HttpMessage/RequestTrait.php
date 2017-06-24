@@ -107,7 +107,7 @@ trait RequestTrait
         if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
             $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
             $this->headers[static::$HOST_NAME]          = [
-                $this->uri->getHost()
+                $this->uri->getHost(),
             ];
         }
     }

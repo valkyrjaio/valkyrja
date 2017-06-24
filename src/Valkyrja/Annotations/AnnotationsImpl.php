@@ -221,8 +221,7 @@ class AnnotationsImpl implements Annotations
     ): array {
         return $this->filterAnnotationsByType(
             $type,
-            ...
-            $this->classAndMembersAnnotations(
+            ...$this->classAndMembersAnnotations(
                 $class
             )
         );

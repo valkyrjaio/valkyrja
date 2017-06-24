@@ -347,7 +347,7 @@ class NativeUploadedFile implements UploadedFile
     }
 
     /**
-     * Write the stream to a path
+     * Write the stream to a path.
      *
      * @param string $path The path to write the stream to
      *

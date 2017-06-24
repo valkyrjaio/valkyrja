@@ -251,8 +251,7 @@ class DispatcherImpl implements Dispatcher
     protected function getArguments(
         Dispatch $dispatch,
         array $arguments = null
-    ):? array
-    {
+    ):? array {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
         $context   = $dispatch->getClass() ?? $dispatch->getFunction();
