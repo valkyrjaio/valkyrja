@@ -133,8 +133,8 @@ class NativeUploadedFile implements UploadedFile
      * If the moveTo() method has been called previously, this method MUST raise
      * an exception.
      *
-     * @throws \RuntimeException in cases when no stream is available or can be
-     *                           created.
+     * @throws \RuntimeException
+     *      in cases when no stream is available or can be created.
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return \Valkyrja\HttpMessage\Stream Stream representation of the uploaded file.
@@ -199,9 +199,10 @@ class NativeUploadedFile implements UploadedFile
      *
      * @param string $targetPath Path to which to move the uploaded file.
      *
-     * @throws \InvalidArgumentException if the $targetPath specified is invalid.
-     * @throws \RuntimeException         on any error during the move operation, or on
-     *                                   the second or subsequent call to the method.
+     * @throws \InvalidArgumentException
+     *      if the $targetPath specified is invalid.
+     * @throws \RuntimeException
+     *      on any error during the move operation, or on the second or subsequent call to the method.
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return void
@@ -330,7 +331,7 @@ class NativeUploadedFile implements UploadedFile
     }
 
     /**
-     * Write the stream to a path
+     * Write the stream to a path.
      *
      * @param string $path The path to write the stream to
      *
