@@ -15,6 +15,7 @@ enabled:
 
 disabled:
   - concat_without_spaces
+  - phpdoc_align
   - unalign_equals
 
 finder:
