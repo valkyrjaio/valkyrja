@@ -201,8 +201,10 @@ class NativeUploadedFile implements UploadedFile
      *
      * @throws \InvalidArgumentException
      *      if the $targetPath specified is invalid.
+     *
      * @throws \RuntimeException
      *      on any error during the move operation, or on the second or subsequent call to the method.
+     *
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      *
      * @return void

@@ -9,14 +9,12 @@ enabled:
   - const_visibility_required
   - no_useless_else
   - not_operator_with_successor_space
-  - phpdoc_params
   - short_list_syntax
   - strict_comparison
   - strict_param
 
 disabled:
   - concat_without_spaces
-  - phpdoc_align
   - unalign_equals
 
 finder:
