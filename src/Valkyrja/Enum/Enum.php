@@ -48,7 +48,6 @@ abstract class Enum implements JsonSerializable
      * @param mixed $value The value to set
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function __construct($value)
     {
@@ -60,8 +59,6 @@ abstract class Enum implements JsonSerializable
      *
      * @param mixed $value The value to check
      *
-     * @throws \ReflectionException
-     *
      * @return bool
      */
     public static function isValid($value): bool
@@ -69,17 +66,20 @@ abstract class Enum implements JsonSerializable
         // Get the valid values to compare with
         $validValues = static::validValues();
 
-        // If the value isset in the valid values array and the value matches the value to check
+        // If the value isset in the valid values array and the value matches
+        // the value to check
         // ?? Why is this here ??
-        // As is known by all isset is faster than in_array. We want to capitalize on that with
-        // some enums by making the const VALUES array a key value pair of the value itself
-        // so that we've essentially got value => value for each item in the const VALUES
-        // array. This way we can take advantage of the quickness of isset over in_array.
-        // However, because not all enums may do this we need to ensure if the value
-        // isset as the key in the array that it also matches as the value of that
-        // item in the array, otherwise we'll get false positives where its a
-        // normal array of 0 => value, 1 => value and we check for 0 being
-        // a valid value where it may very well not be valid at all.
+        // As is known by all isset is faster than in_array. We want to
+        // capitalize on that with some enums by making the const VALUES
+        // array a key value pair of the value itself so that we've
+        // essentially got value => value for each item in the const VALUES
+        // array. This way we can take advantage of the quickness of isset over
+        // in_array. However, because not all enums may do this we need to
+        // ensure if the value isset as the key in the array that it also
+        // matches as the value of that item in the array, otherwise we'll
+        // get false positives where its a normal array of 0 => value, 1 =>
+        // value and we check for 0 being a valid value where it may very
+        // well not be valid at all.
         if (isset($validValues[$value]) && $validValues[$value] === $value) {
             return true;
         }
@@ -89,8 +89,6 @@ abstract class Enum implements JsonSerializable
 
     /**
      * Get the valid values for this enum.
-     *
-     * @throws \ReflectionException
      *
      * @return array
      */
@@ -108,30 +106,47 @@ abstract class Enum implements JsonSerializable
         // If the called enum isn't yet cached
         // and the values aren't already set (to avoid a reflection class)
         if (! array_key_exists($className, self::$cache)) {
-            // Get a reflection class of the enum
-            $reflectionClass = new ReflectionClass($className);
-            $values          = $reflectionClass->getConstants();
-            $validValues     = [];
-
-            // Iterate through the values
-            foreach ($values as $key => $value) {
-                // If this value is defined in this abstract Enum (self)
-                if (defined(self::class . '::' . $key)) {
-                    // Unset it from the list as its not a valid Enum value, but rather
-                    // a value the Enum class needs (like self::VALUES)
-                    unset($values[$key]);
-
-                    continue;
-                }
-
-                $validValues[$value] = $value;
-            }
-
-            // Set the cache to avoid a reflection class creation on each new instance of the enum
-            self::$cache[$className] = $validValues;
+            // Set the cache to avoid a reflection class creation on each new
+            // instance of the enum
+            self::$cache[$className] = static::reflectionValidValues();
         }
 
         return self::$cache[$className] ?? [];
+    }
+
+    /**
+     * Get the reflection valid values.
+     *
+     * @return array
+     */
+    protected static function reflectionValidValues(): array
+    {
+        try {
+            // Get a reflection class of the enum
+            $reflectionClass = new ReflectionClass(static::class);
+            $values          = $reflectionClass->getConstants();
+        } // Catch any exceptions
+        catch (\Exception $exception) {
+            $values = [];
+        }
+
+        $validValues = [];
+
+        // Iterate through the values
+        foreach ($values as $key => $value) {
+            // If this value is defined in this abstract Enum (self)
+            if (defined(self::class . '::' . $key)) {
+                // Unset it from the list as its not a valid Enum value, but
+                // rather a value the Enum class needs (like self::VALUES)
+                unset($values[$key]);
+
+                continue;
+            }
+
+            $validValues[$value] = $value;
+        }
+
+        return $validValues;
     }
 
     /**
@@ -160,7 +175,6 @@ abstract class Enum implements JsonSerializable
      * @param mixed $value The value to set
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @return void
      */
@@ -170,7 +184,11 @@ abstract class Enum implements JsonSerializable
         if (! static::isValid($value)) {
             // Throw an exception
             throw new InvalidArgumentException(
-                sprintf('Invalid enumeration %s for Enum %s', $value, get_class($this))
+                sprintf(
+                    'Invalid enumeration %s for Enum %s',
+                    $value,
+                    get_class($this)
+                )
             );
         }
 
