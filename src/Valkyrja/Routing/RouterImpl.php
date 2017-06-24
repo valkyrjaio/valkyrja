@@ -77,7 +77,7 @@ class RouterImpl implements Router
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -87,7 +87,7 @@ class RouterImpl implements Router
     /**
      * Set a single route.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
@@ -142,7 +142,7 @@ class RouterImpl implements Router
     /**
      * Set a dynamic route's properties.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -163,7 +163,7 @@ class RouterImpl implements Router
     /**
      * Set the named route.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return void
      */
@@ -179,7 +179,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a GET addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -195,7 +195,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a POST addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -211,7 +211,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a PUT addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -227,7 +227,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a PATCH addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -243,7 +243,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a DELETE addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -259,7 +259,7 @@ class RouterImpl implements Router
     /**
      * Helper function to set a HEAD addRoute.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @throws \Exception
      *
@@ -324,19 +324,28 @@ class RouterImpl implements Router
      *
      * @return string
      */
-    public function routeUrl(string $name, array $data = null, bool $absolute = null): string
-    {
+    public function routeUrl(
+        string $name,
+        array $data = null,
+        bool $absolute = null
+    ): string {
         // Get the matching route
         $route = $this->route($name);
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $this->app->config()['routing']['useAbsoluteUrls'] || $route->isSecure()
+        $host = $absolute
+        || $this->app->config()['routing']['useAbsoluteUrls']
+        || $route->isSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
         $path = $route->getSegments()
-            ? $this->app->pathGenerator()->parse($route->getSegments(), $data, $route->getParams())
+            ? $this->app->pathGenerator()->parse(
+                $route->getSegments(),
+                $data,
+                $route->getParams()
+            )
             : $route->getPath();
 
         return $host . $this->validateRouteUrl($path);
@@ -345,7 +354,7 @@ class RouterImpl implements Router
     /**
      * Get a route's host.
      *
-     * @param \Valkyrja\Routing\Route $route The route
+     * @param Route $route The route
      *
      * @return string
      */
@@ -366,8 +375,12 @@ class RouterImpl implements Router
      */
     protected function validateRouteUrl(string $path): string
     {
-        // If the last character is not a slash and the config is set to ensure trailing slash
-        if ($path[-1] !== '/' && $this->app->config()['routing']['trailingSlash']) {
+        // If the last character is not a slash and the config is set to
+        // ensure trailing slash
+        if (
+            $path[-1] !== '/'
+            && $this->app->config()['routing']['trailingSlash']
+        ) {
             // add a trailing slash
             $path .= '/';
         }
@@ -378,11 +391,13 @@ class RouterImpl implements Router
     /**
      * Get a route from a request.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Valkyrja\Routing\Route
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
      */
     public function requestRoute(Request $request):? Route
     {
@@ -403,53 +418,136 @@ class RouterImpl implements Router
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Valkyrja\Routing\Route
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = RequestMethod::GET):? Route
+    public function matchRoute(string $path, string $method = null):? Route
     {
         // Validate the path
-        $path  = $this->validatePath($path);
+        $path   = $this->validatePath($path);
+        $method = $method ?? RequestMethod::GET;
+
+        if (null !== $route = $this->matchStaticRoute($path, $method)) {
+            return $route;
+        }
+
+        return $this->matchDynamicRoute($path, $method);
+    }
+
+    /**
+     * Try to match a static route by path and method.
+     *
+     * @param string $path   The path
+     * @param string $method The method
+     *
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
+     */
+    protected function matchStaticRoute(string $path, string $method):? Route
+    {
         $route = null;
 
         // Let's check if the route is set in the static routes
         if (isset(self::$staticRoutes[$path])) {
-            $route = self::$routes[$path];
-
-            if (in_array($method, $route->getRequestMethods(), true)) {
-                return $route;
-            }
+            $route = $this->getMatchedStaticRoute($path);
         }
+
+        if (null !== $route && $this->isValidMethod($route, $method)) {
+            return $route;
+        }
+
+        return $route;
+    }
+
+    /**
+     * Try to match a dynamic route by path and method.
+     *
+     * @param string $path   The path
+     * @param string $method The method
+     *
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
+     */
+    protected function matchDynamicRoute(string $path, string $method):? Route
+    {
+        $route = null;
 
         // Attempt to find a match using dynamic routes that are set
         foreach (self::$dynamicRoutes as $regex => $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             /* @var array $matches */
             if (preg_match($regex, $path, $matches)) {
-                // Clone the route to avoid changing the one set in the master array
-                $dynamicRoute = clone self::$routes[$dynamicRoute];
-                // The first match is the path itself
-                unset($matches[0]);
+                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches);
 
-                // Iterate through the matches
-                foreach ($matches as $key => $match) {
-                    // If there is no match (middle of regex optional group)
-                    if (! $match) {
-                        // Set the value to null so the controller's action
-                        // can use the default it sets
-                        $matches[$key] = null;
-                    }
-                }
-
-                // Set the matches
-                $dynamicRoute->setMatches($matches);
-
-                if (in_array($method, $dynamicRoute->getRequestMethods(), false)) {
-                    return $dynamicRoute;
-                }
+                break;
             }
         }
 
+        if (null !== $route && $this->isValidMethod($route, $method)) {
+            return $route;
+        }
+
         return $route;
+    }
+
+    /**
+     * @param Route  $route  The route
+     * @param string $method The method
+     *
+     * @return bool
+     */
+    protected function isValidMethod(Route $route, string $method): bool
+    {
+        return in_array($method, $route->getRequestMethods(), true);
+    }
+
+    /**
+     * Get a matched static route.
+     *
+     * @param string $path The path
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    protected function getMatchedStaticRoute(string $path): Route
+    {
+        return clone self::$routes[$path];
+    }
+
+    /**
+     * Get a matched dynamic route.
+     *
+     * @param string $path    The path
+     * @param array  $matches The regex matches
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    protected function getMatchedDynamicRoute(
+        string $path,
+        array $matches
+    ):
+    Route {
+        // Clone the route to avoid changing the one set in the master array
+        $dynamicRoute = clone self::$routes[$path];
+        // The first match is the path itself
+        unset($matches[0]);
+
+        // Iterate through the matches
+        foreach ($matches as $key => $match) {
+            // If there is no match (middle of regex optional group)
+            if (! $match) {
+                // Set the value to null so the controller's action
+                // can use the default it sets
+                $matches[$key] = null;
+            }
+        }
+
+        // Set the matches
+        $dynamicRoute->setMatches($matches);
+
+        return $dynamicRoute;
     }
 
     /**
@@ -475,7 +573,8 @@ class RouterImpl implements Router
             return false;
         }
 
-        // Get only the path (full string from the first slash to the end of the path)
+        // Get only the path (full string from the first slash to the end
+        // of the path)
         $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
 
         // Try to match the route
@@ -487,7 +586,7 @@ class RouterImpl implements Router
     /**
      * Dispatch the route and find a match.
      *
-     * @param \Valkyrja\Http\Request $request The request
+     * @param Request $request The request
      *
      * @throws \InvalidArgumentException
      * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
@@ -517,52 +616,68 @@ class RouterImpl implements Router
         $this->app->container()->singleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->app->dispatcher()->dispatchCallable($route, $route->getMatches());
+        $dispatch = $this->app->dispatcher()->dispatchCallable(
+            $route,
+            $route->getMatches()
+        );
 
         // Get the response from the dispatch
         $response = $this->getResponseFromDispatch($dispatch);
 
-        // Dispatch the route's before request handled middleware and return the response
+        // Dispatch the route's before request handled middleware and return
+        // the response
         return $this->routeResponseMiddleware($request, $response, $route);
     }
 
     /**
      * Dispatch a route's before request handled middleware.
      *
-     * @param \Valkyrja\Http\Request  $request The request
-     * @param \Valkyrja\Routing\Route $route   The route
+     * @param Request $request The request
+     * @param Route   $route   The route
      *
      * @return \Valkyrja\Http\Request
      */
-    protected function routeRequestMiddleware(Request $request, Route $route): Request
-    {
+    protected function routeRequestMiddleware(
+        Request $request,
+        Route $route
+    ): Request {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
             // Return the request passed through
             return $request;
         }
 
-        return $this->app->kernel()->requestMiddleware($request, $route->getMiddleware());
+        return $this->app->kernel()->requestMiddleware(
+            $request,
+            $route->getMiddleware()
+        );
     }
 
     /**
      * Dispatch a route's after request handled middleware.
      *
-     * @param \Valkyrja\Http\Request  $request  The request
-     * @param \Valkyrja\Http\Response $response The response
-     * @param \Valkyrja\Routing\Route $route    The route
+     * @param Request  $request  The request
+     * @param Response $response The response
+     * @param Route    $route    The route
      *
      * @return \Valkyrja\Http\Response
      */
-    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
-    {
+    protected function routeResponseMiddleware(
+        Request $request,
+        Response $response,
+        Route $route
+    ): Response {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
             // Return the response passed through
             return $response;
         }
 
-        return $this->app->kernel()->responseMiddleware($request, $response, $route->getMiddleware());
+        return $this->app->kernel()->responseMiddleware(
+            $request,
+            $response,
+            $route->getMiddleware()
+        );
     }
 
     /**
@@ -583,7 +698,9 @@ class RouterImpl implements Router
         if ($dispatch instanceof Response) {
             return $dispatch;
         }
-        // If the dispatch is a View, render it then wrap it in a new response and return it
+
+        // If the dispatch is a View, render it then wrap it in a new response
+        // and return it
         if ($dispatch instanceof View) {
             return $this->app->response($dispatch->render());
         }
@@ -630,7 +747,10 @@ class RouterImpl implements Router
         self::$namedRoutes   = [];
 
         // If annotations are enabled and routing should use annotations
-        if ($this->app->config()['routing']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
+        if (
+            $this->app->config()['routing']['useAnnotations']
+            && $this->app->config()['annotations']['enabled']
+        ) {
             // Setup annotated routes
             $this->setupAnnotatedRoutes();
 
@@ -642,8 +762,9 @@ class RouterImpl implements Router
         }
 
         // Include the routes file
-        // NOTE: Included if annotations are set or not due to possibility of routes being defined
-        // within the controllers as well as within the routes file
+        // NOTE: Included if annotations are set or not due to possibility of
+        // routes being defined within the controllers as well as within the
+        // routes file
         require $this->app->config()['routing']['filePath'];
     }
 
@@ -686,10 +807,14 @@ class RouterImpl implements Router
     protected function setupAnnotatedRoutes(): void
     {
         /** @var RouteAnnotations $routeAnnotations */
-        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
+        $routeAnnotations = $this->app->container()->getSingleton(
+            RouteAnnotations::class
+        );
 
         // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config()['routing']['controllers']);
+        $routes = $routeAnnotations->getRoutes(
+            ...$this->app->config()['routing']['controllers']
+        );
 
         // Iterate through the routes
         foreach ($routes as $route) {
@@ -737,7 +862,7 @@ class RouterImpl implements Router
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */
