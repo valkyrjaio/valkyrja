@@ -527,8 +527,7 @@ class RouterImpl implements Router
     protected function getMatchedDynamicRoute(
         string $path,
         array $matches
-    ):
-    Route {
+    ): Route {
         // Clone the route to avoid changing the one set in the master array
         $dynamicRoute = clone self::$routes[$path];
         // The first match is the path itself
@@ -568,7 +567,7 @@ class RouterImpl implements Router
         $host = (string) substr($uri, 0, strpos($uri, '/'));
 
         // If the host does not match the current request uri's host
-        if ($host !== $this->app->request()->getHttpHost()) {
+        if ($host && $host !== $this->app->request()->getHttpHost()) {
             // Return false immediately
             return false;
         }
