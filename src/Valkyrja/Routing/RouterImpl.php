@@ -16,7 +16,6 @@ use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
@@ -40,39 +39,18 @@ class RouterImpl implements Router
     protected $app;
 
     /**
+     * The route collection.
+     *
+     * @var \Valkyrja\Routing\RouteCollection
+     */
+    protected static $collection;
+
+    /**
      * Whether route's have been setup yet.
      *
      * @var bool
      */
     protected static $setup = false;
-
-    /**
-     * The routes.
-     *
-     * @var \Valkyrja\Routing\Route[]
-     */
-    protected static $routes = [];
-
-    /**
-     * The static routes.
-     *
-     * @var string[]
-     */
-    protected static $staticRoutes = [];
-
-    /**
-     * The dynamic routes.
-     *
-     * @var string[]
-     */
-    protected static $dynamicRoutes = [];
-
-    /**
-     * The named routes.
-     *
-     * @var string[]
-     */
-    protected static $namedRoutes = [];
 
     /**
      * Router constructor.
@@ -112,68 +90,10 @@ class RouterImpl implements Router
         if ($route->isDynamic()) {
             // Set the dynamic route's properties through the path parser
             $this->setDynamicRoute($route);
-            // Set the route's regex and path in the dynamic routes list
-            self::$dynamicRoutes[$route->getRegex()] = $route->getPath();
-        } // Otherwise set it in the static routes array
-        else {
-            // Set the route's path in the static routes list
-            self::$staticRoutes[$route->getPath()] = true;
-
-            // Set the named route
-            $this->setNamedRoute($route);
         }
 
-        // Set the route in the routes list
-        self::$routes[$route->getPath()] = $route;
-    }
-
-    /**
-     * Validate a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validatePath(string $path): string
-    {
-        return '/' . trim($path, '/');
-    }
-
-    /**
-     * Set a dynamic route's properties.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setDynamicRoute(Route $route): void
-    {
-        // Parse the path
-        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
-
-        // Set the properties
-        $route->setRegex($parsedRoute['regex']);
-        $route->setParams($parsedRoute['params']);
-        $route->setSegments($parsedRoute['segments']);
-
-        // Set the named route
-        $this->setNamedRoute($route);
-    }
-
-    /**
-     * Set the named route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setNamedRoute(Route $route): void
-    {
-        // If this route has a name set
-        if ($route->getName()) {
-            // Set the route in the named routes list
-            self::$namedRoutes[$route->getName()] = $route->getPath();
-        }
+        // Set the route in the collection
+        self::$collection->addRoute($route);
     }
 
     /**
@@ -279,7 +199,7 @@ class RouterImpl implements Router
      */
     public function getRoutes(): array
     {
-        return self::$routes;
+        return self::$collection->getRoutes();
     }
 
     /**
@@ -298,7 +218,7 @@ class RouterImpl implements Router
             throw new InvalidRouteName($name);
         }
 
-        return self::$routes[self::$namedRoutes[$name]];
+        return self::$collection->getNamedRoute($name);
     }
 
     /**
@@ -310,7 +230,7 @@ class RouterImpl implements Router
      */
     public function routeIsset(string $name): bool
     {
-        return isset(self::$namedRoutes[$name]);
+        return self::$collection->issetNamedRoute($name);
     }
 
     /**
@@ -349,43 +269,6 @@ class RouterImpl implements Router
             : $route->getPath();
 
         return $host . $this->validateRouteUrl($path);
-    }
-
-    /**
-     * Get a route's host.
-     *
-     * @param Route $route The route
-     *
-     * @return string
-     */
-    protected function routeHost(Route $route): string
-    {
-        return 'http'
-            . ($route->isSecure() ? 's' : '')
-            . '://'
-            . request()->getHttpHost();
-    }
-
-    /**
-     * Validate the route url.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validateRouteUrl(string $path): string
-    {
-        // If the last character is not a slash and the config is set to
-        // ensure trailing slash
-        if (
-            $path[-1] !== '/'
-            && $this->app->config()['routing']['trailingSlash']
-        ) {
-            // add a trailing slash
-            $path .= '/';
-        }
-
-        return $path;
     }
 
     /**
@@ -433,120 +316,6 @@ class RouterImpl implements Router
         }
 
         return $this->matchDynamicRoute($path, $method);
-    }
-
-    /**
-     * Try to match a static route by path and method.
-     *
-     * @param string $path   The path
-     * @param string $method The method
-     *
-     * @return null|Route
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    protected function matchStaticRoute(string $path, string $method):? Route
-    {
-        $route = null;
-
-        // Let's check if the route is set in the static routes
-        if (isset(self::$staticRoutes[$path])) {
-            $route = $this->getMatchedStaticRoute($path);
-        }
-
-        if (null !== $route && $this->isValidMethod($route, $method)) {
-            return $route;
-        }
-
-        return $route;
-    }
-
-    /**
-     * Try to match a dynamic route by path and method.
-     *
-     * @param string $path   The path
-     * @param string $method The method
-     *
-     * @return null|Route
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    protected function matchDynamicRoute(string $path, string $method):? Route
-    {
-        $route = null;
-
-        // Attempt to find a match using dynamic routes that are set
-        foreach (self::$dynamicRoutes as $regex => $dynamicRoute) {
-            // If the preg match is successful, we've found our route!
-            /* @var array $matches */
-            if (preg_match($regex, $path, $matches)) {
-                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches);
-
-                break;
-            }
-        }
-
-        if (null !== $route && $this->isValidMethod($route, $method)) {
-            return $route;
-        }
-
-        return $route;
-    }
-
-    /**
-     * @param Route  $route  The route
-     * @param string $method The method
-     *
-     * @return bool
-     */
-    protected function isValidMethod(Route $route, string $method): bool
-    {
-        return in_array($method, $route->getRequestMethods(), true);
-    }
-
-    /**
-     * Get a matched static route.
-     *
-     * @param string $path The path
-     *
-     * @return \Valkyrja\Routing\Route
-     */
-    protected function getMatchedStaticRoute(string $path): Route
-    {
-        return clone self::$routes[$path];
-    }
-
-    /**
-     * Get a matched dynamic route.
-     *
-     * @param string $path    The path
-     * @param array  $matches The regex matches
-     *
-     * @return \Valkyrja\Routing\Route
-     */
-    protected function getMatchedDynamicRoute(
-        string $path,
-        array $matches
-    ): Route {
-        // Clone the route to avoid changing the one set in the master array
-        $dynamicRoute = clone self::$routes[$path];
-        // The first match is the path itself
-        unset($matches[0]);
-
-        // Iterate through the matches
-        foreach ($matches as $key => $match) {
-            // If there is no match (middle of regex optional group)
-            if (! $match) {
-                // Set the value to null so the controller's action
-                // can use the default it sets
-                $matches[$key] = null;
-            }
-        }
-
-        // Set the matches
-        $dynamicRoute->setMatches($matches);
-
-        return $dynamicRoute;
     }
 
     /**
@@ -629,6 +398,298 @@ class RouterImpl implements Router
     }
 
     /**
+     * Setup routes.
+     *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return void
+     */
+    public function setup(bool $force = false, bool $useCache = true): void
+    {
+        // If route's have already been setup, no need to do it again
+        if (self::$setup && ! $force) {
+            return;
+        }
+
+        self::$setup = true;
+
+        // If the application should use the routes cache file
+        if ($useCache && $this->app->config()['routing']['useCache']) {
+            $this->setupFromCache();
+
+            // Then return out of setup
+            return;
+        }
+
+        self::$collection = new RouteCollection();
+
+        // If annotations are enabled and routing should use annotations
+        if (
+            $this->app->config()['routing']['useAnnotations']
+            && $this->app->config()['annotations']['enabled']
+        ) {
+            // Setup annotated routes
+            $this->setupAnnotatedRoutes();
+
+            // If only annotations should be used for routing
+            if ($this->app->config()['routing']['useAnnotationsExclusively']) {
+                // Return to avoid loading routes file
+                return;
+            }
+        }
+
+        // Include the routes file
+        // NOTE: Included if annotations are set or not due to possibility of
+        // routes being defined within the controllers as well as within the
+        // routes file
+        require $this->app->config()['routing']['filePath'];
+    }
+
+    /**
+     * Get a cacheable representation of the data.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
+     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     *
+     * @return array
+     */
+    public function getCacheable(): array
+    {
+        $this->setup(true, false);
+
+        return [
+            'collection' => base64_encode(serialize(self::$collection)),
+        ];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Router::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Router::class,
+            new static($app)
+        );
+
+        $app->router()->setup();
+    }
+
+    /**
+     * Validate a path.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validatePath(string $path): string
+    {
+        return '/' . trim($path, '/');
+    }
+
+    /**
+     * Set a dynamic route's properties.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function setDynamicRoute(Route $route): void
+    {
+        // Parse the path
+        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
+
+        // Set the properties
+        $route->setRegex($parsedRoute['regex']);
+        $route->setParams($parsedRoute['params']);
+        $route->setSegments($parsedRoute['segments']);
+    }
+
+    /**
+     * Get a route's host.
+     *
+     * @param Route $route The route
+     *
+     * @return string
+     */
+    protected function routeHost(Route $route): string
+    {
+        return 'http'
+            . ($route->isSecure() ? 's' : '')
+            . '://'
+            . request()->getHttpHost();
+    }
+
+    /**
+     * Validate the route url.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validateRouteUrl(string $path): string
+    {
+        // If the last character is not a slash and the config is set to
+        // ensure trailing slash
+        if (
+            $path[-1] !== '/'
+            && $this->app->config()['routing']['trailingSlash']
+        ) {
+            // add a trailing slash
+            $path .= '/';
+        }
+
+        return $path;
+    }
+
+    /**
+     * Try to match a static route by path and method.
+     *
+     * @param string $path   The path
+     * @param string $method The method
+     *
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
+     */
+    protected function matchStaticRoute(string $path, string $method):? Route
+    {
+        $route = null;
+
+        // Let's check if the route is set in the static routes
+        if (self::$collection->issetStaticRoute($path)) {
+            $route = $this->getMatchedStaticRoute($path);
+        }
+
+        if (null !== $route && $this->isValidMethod($route, $method)) {
+            return $route;
+        }
+
+        return $route;
+    }
+
+    /**
+     * Try to match a dynamic route by path and method.
+     *
+     * @param string $path   The path
+     * @param string $method The method
+     *
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
+     */
+    protected function matchDynamicRoute(string $path, string $method):? Route
+    {
+        // The route to return (null by default)
+        $route = null;
+        // The dynamic routes
+        $dynamicRoutes = self::$collection->getDynamicRoutes();
+
+        // Attempt to find a match using dynamic routes that are set
+        foreach ($dynamicRoutes as $regex => $dynamicRoute) {
+            // If the preg match is successful, we've found our route!
+            /* @var array $matches */
+            if (preg_match($regex, $path, $matches)) {
+                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches);
+
+                break;
+            }
+        }
+
+        // If the route was found and the method is valid
+        if (null !== $route && $this->isValidMethod($route, $method)) {
+            // Return the route
+            return $route;
+        }
+
+        return $route;
+    }
+
+    /**
+     * @param Route  $route  The route
+     * @param string $method The method
+     *
+     * @return bool
+     */
+    protected function isValidMethod(Route $route, string $method): bool
+    {
+        return in_array($method, $route->getRequestMethods(), true);
+    }
+
+    /**
+     * Get a matched static route.
+     *
+     * @param string $path The path
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    protected function getMatchedStaticRoute(string $path): Route
+    {
+        return clone self::$collection->getRoute($path);
+    }
+
+    /**
+     * Get a matched dynamic route.
+     *
+     * @param string $path    The path
+     * @param array  $matches The regex matches
+     *
+     * @return \Valkyrja\Routing\Route
+     */
+    protected function getMatchedDynamicRoute(
+        string $path,
+        array $matches
+    ): Route {
+        // Clone the route to avoid changing the one set in the master array
+        $dynamicRoute = clone self::$collection->getRoute($path);
+        // The first match is the path itself
+        unset($matches[0]);
+
+        // Iterate through the matches
+        foreach ($matches as $key => $match) {
+            // If there is no match (middle of regex optional group)
+            if (! $match) {
+                // Set the value to null so the controller's action
+                // can use the default it sets
+                $matches[$key] = null;
+            }
+        }
+
+        // Set the matches
+        $dynamicRoute->setMatches($matches);
+
+        return $dynamicRoute;
+    }
+
+    /**
      * Dispatch a route's before request handled middleware.
      *
      * @param Request $request The request
@@ -690,7 +751,7 @@ class RouterImpl implements Router
     {
         // If the dispatch failed, 404
         if (! $dispatch) {
-            $this->app->abort(StatusCode::NOT_FOUND);
+            $this->app->abort();
         }
 
         // If the dispatch is a Response then simply return it
@@ -709,65 +770,6 @@ class RouterImpl implements Router
     }
 
     /**
-     * Setup routes.
-     *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
-     * @return void
-     */
-    public function setup(bool $force = false, bool $useCache = true): void
-    {
-        // If route's have already been setup, no need to do it again
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        self::$setup = true;
-
-        // If the application should use the routes cache file
-        if ($useCache && $this->app->config()['routing']['useCache']) {
-            $this->setupFromCache();
-
-            // Then return out of setup
-            return;
-        }
-
-        self::$routes        = [];
-        self::$staticRoutes  = [];
-        self::$dynamicRoutes = [];
-        self::$namedRoutes   = [];
-
-        // If annotations are enabled and routing should use annotations
-        if (
-            $this->app->config()['routing']['useAnnotations']
-            && $this->app->config()['annotations']['enabled']
-        ) {
-            // Setup annotated routes
-            $this->setupAnnotatedRoutes();
-
-            // If only annotations should be used for routing
-            if ($this->app->config()['routing']['useAnnotationsExclusively']) {
-                // Return to avoid loading routes file
-                return;
-            }
-        }
-
-        // Include the routes file
-        // NOTE: Included if annotations are set or not due to possibility of
-        // routes being defined within the controllers as well as within the
-        // routes file
-        require $this->app->config()['routing']['filePath'];
-    }
-
-    /**
      * Setup the router from cache.
      *
      * @return void
@@ -778,17 +780,15 @@ class RouterImpl implements Router
         $cache = $this->app->config()['cache']['routing']
             ?? require $this->app->config()['routing']['cacheFilePath'];
 
-        self::$routes        = unserialize(
-            base64_decode($cache['routes'], true),
+        self::$collection = unserialize(
+            base64_decode($cache['collection'], true),
             [
                 'allowed_classes' => [
+                    RouteCollection::class,
                     Route::class,
                 ],
             ]
         );
-        self::$staticRoutes  = $cache['staticRoutes'];
-        self::$dynamicRoutes = $cache['dynamicRoutes'];
-        self::$namedRoutes   = $cache['namedRoutes'];
     }
 
     /**
@@ -820,58 +820,5 @@ class RouterImpl implements Router
             // Set the route
             $this->addRoute($route);
         }
-    }
-
-    /**
-     * Get a cacheable representation of the data.
-     *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            'routes'        => base64_encode(serialize(self::$routes)),
-            'staticRoutes'  => self::$staticRoutes,
-            'dynamicRoutes' => self::$dynamicRoutes,
-            'namedRoutes'   => self::$namedRoutes,
-        ];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Router::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Router::class,
-            new static($app)
-        );
-
-        $app->router()->setup();
     }
 }
