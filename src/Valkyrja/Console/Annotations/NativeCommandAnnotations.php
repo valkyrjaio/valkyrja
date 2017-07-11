@@ -12,8 +12,8 @@
 namespace Valkyrja\Console\Annotations;
 
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
 use Valkyrja\Support\Providers\Provides;

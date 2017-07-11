@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Events\Annotations;
 
-use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Events\Listener as EventListener;
 use Valkyrja\Support\Providers\Provides;
