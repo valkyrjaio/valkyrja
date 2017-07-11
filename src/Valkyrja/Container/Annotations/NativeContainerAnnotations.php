@@ -12,8 +12,8 @@
 namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
