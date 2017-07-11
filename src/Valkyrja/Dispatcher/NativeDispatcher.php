@@ -24,7 +24,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
  *
  * @author Melech Mizrachi
  */
-class DispatcherImpl implements Dispatcher
+class NativeDispatcher implements Dispatcher
 {
     /**
      * The return value to use when a dispatch was successful

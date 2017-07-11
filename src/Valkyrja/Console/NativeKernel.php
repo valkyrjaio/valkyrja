@@ -22,7 +22,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class KernelImpl implements Kernel
+class NativeKernel implements Kernel
 {
     use Provides;
 

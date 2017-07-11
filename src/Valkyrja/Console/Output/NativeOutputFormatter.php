@@ -22,7 +22,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class OutputFormatterImpl implements OutputFormatter
+class NativeOutputFormatter implements OutputFormatter
 {
     use Provides;
 

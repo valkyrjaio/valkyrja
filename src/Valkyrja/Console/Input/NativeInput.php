@@ -20,7 +20,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class InputImpl implements Input
+class NativeInput implements Input
 {
     use Provides;
 

@@ -19,7 +19,7 @@ use RuntimeException;
  *
  * @author Melech Mizrachi
  */
-class StreamOutputImpl extends OutputImpl implements StreamOutput
+class NativeStreamOutput extends OutputImpl implements StreamOutput
 {
     /**
      * The stream.

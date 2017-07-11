@@ -19,7 +19,7 @@ use Valkyrja\Events\Annotations\ListenerAnnotations;
  *
  * @author Melech Mizrachi
  */
-class EventsImpl implements Events
+class NativeEvents implements Events
 {
     /**
      * The application.

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
@@ -23,7 +23,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class RouteAnnotationsImpl extends AnnotationsImpl implements RouteAnnotations
+class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotations
 {
     use Provides;
 

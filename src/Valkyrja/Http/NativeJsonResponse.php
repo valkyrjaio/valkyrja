@@ -19,7 +19,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class JsonResponseImpl extends ResponseImpl implements JsonResponse
+class NativeJsonResponse extends NativeResponse implements JsonResponse
 {
     use Provides;
 

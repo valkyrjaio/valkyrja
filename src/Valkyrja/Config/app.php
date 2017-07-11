@@ -79,7 +79,7 @@ return [
      */
     'container'    => env(
         'APP_CONTAINER',
-        Valkyrja\Container\ContainerImpl::class
+        Valkyrja\Container\NativeContainer::class
     ),
 
     /*
@@ -92,7 +92,7 @@ return [
      */
     'dispatcher'   => env(
         'APP_DISPATCHER',
-        Valkyrja\Dispatcher\DispatcherImpl::class
+        Valkyrja\Dispatcher\NativeDispatcher::class
     ),
 
     /*
@@ -103,7 +103,7 @@ return [
      * //
      *
      */
-    'events'       => env('APP_EVENTS', Valkyrja\Events\EventsImpl::class),
+    'events'       => env('APP_EVENTS', Valkyrja\Events\NativeEvents::class),
 
     /*
      *-------------------------------------------------------------------------

@@ -20,7 +20,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class PathGeneratorImpl implements PathGenerator
+class NativePathGenerator implements PathGenerator
 {
     use Provides;
 

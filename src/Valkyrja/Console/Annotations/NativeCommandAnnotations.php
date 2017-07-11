@@ -12,7 +12,7 @@
 namespace Valkyrja\Console\Annotations;
 
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
@@ -23,7 +23,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class CommandAnnotationsImpl extends AnnotationsImpl implements CommandAnnotations
+class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnotations
 {
     use Provides;
 

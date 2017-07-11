@@ -21,7 +21,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class RedirectResponseImpl extends ResponseImpl implements RedirectResponse
+class NativeRedirectResponse extends NativeResponse implements RedirectResponse
 {
     use Provides;
 

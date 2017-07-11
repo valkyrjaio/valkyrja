@@ -12,7 +12,7 @@
 namespace Valkyrja\Container\Annotations;
 
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Container\Service as ContainerService;
@@ -24,7 +24,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class ContainerAnnotationsImpl extends AnnotationsImpl implements ContainerAnnotations
+class NativeContainerAnnotations extends NativeAnnotations implements ContainerAnnotations
 {
     use Provides;
 

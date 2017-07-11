@@ -22,7 +22,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class ResponseImpl implements Response
+class NativeResponse implements Response
 {
     use Provides;
 

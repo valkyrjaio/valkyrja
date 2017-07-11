@@ -27,7 +27,7 @@ use Valkyrja\View\View;
  *
  * @author Melech Mizrachi
  */
-class RouterImpl implements Router
+class NativeRouter implements Router
 {
     use Provides;
 

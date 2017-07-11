@@ -12,28 +12,28 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotations\AnnotationsImpl;
-use Valkyrja\Console\Input\InputImpl;
+use Valkyrja\Annotations\NativeAnnotations;
+use Valkyrja\Console\Input\NativeInput;
 use Valkyrja\Console\Output\OutputImpl;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Directory;
 use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
-use Valkyrja\Console\ConsoleImpl;
-use Valkyrja\Console\KernelImpl as ConsoleKernel;
-use Valkyrja\Container\ContainerImpl;
-use Valkyrja\Events\EventsImpl;
+use Valkyrja\Console\NativeConsole;
+use Valkyrja\Console\NativeKernel as ConsoleKernel;
+use Valkyrja\Container\NativeContainer;
+use Valkyrja\Events\NativeEvents;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\JsonResponseImpl;
+use Valkyrja\Http\NativeJsonResponse;
 use Valkyrja\Http\KernelImpl;
-use Valkyrja\Http\RedirectResponseImpl;
-use Valkyrja\Http\RequestImpl;
-use Valkyrja\Http\ResponseImpl;
-use Valkyrja\Http\ResponseBuilderImpl;
+use Valkyrja\Http\NativeRedirectResponse;
+use Valkyrja\Http\NativeRequest;
+use Valkyrja\Http\NativeResponse;
+use Valkyrja\Http\NativeResponseBuilder;
 use Valkyrja\Logger\MonologLogger;
-use Valkyrja\Routing\RouterImpl;
+use Valkyrja\Routing\NativeRouter;
 use Valkyrja\Session\NativeSession;
 use Valkyrja\View\PhpView;
 
@@ -68,7 +68,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, container() instanceof ContainerImpl);
+        $this->assertEquals(true, container() instanceof NativeContainer);
     }
 
     /**
@@ -78,7 +78,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, events() instanceof EventsImpl);
+        $this->assertEquals(true, events() instanceof NativeEvents);
     }
 
     /**
@@ -136,7 +136,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotations() instanceof AnnotationsImpl);
+        $this->assertEquals(true, annotations() instanceof NativeAnnotations);
     }
 
     /**
@@ -156,7 +156,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, console() instanceof ConsoleImpl);
+        $this->assertEquals(true, console() instanceof NativeConsole);
     }
 
     /**
@@ -186,7 +186,7 @@ class HelpersTest extends TestCase
      */
     public function testInput(): void
     {
-        $this->assertEquals(true, input() instanceof InputImpl);
+        $this->assertEquals(true, input() instanceof NativeInput);
     }
 
     /**
@@ -226,7 +226,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, request() instanceof RequestImpl);
+        $this->assertEquals(true, request() instanceof NativeRequest);
     }
 
     /**
@@ -236,7 +236,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, router() instanceof RouterImpl);
+        $this->assertEquals(true, router() instanceof NativeRouter);
     }
 
     /**
@@ -266,7 +266,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, response() instanceof ResponseImpl);
+        $this->assertEquals(true, response() instanceof NativeResponse);
     }
 
     /**
@@ -276,7 +276,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, response('test') instanceof ResponseImpl);
+        $this->assertEquals(true, response('test') instanceof NativeResponse);
     }
 
     /**
@@ -286,7 +286,7 @@ class HelpersTest extends TestCase
      */
     public function testJson(): void
     {
-        $this->assertEquals(true, json() instanceof JsonResponseImpl);
+        $this->assertEquals(true, json() instanceof NativeJsonResponse);
     }
 
     /**
@@ -296,7 +296,7 @@ class HelpersTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        $this->assertEquals(true, json(['test' => 'value']) instanceof JsonResponseImpl);
+        $this->assertEquals(true, json(['test' => 'value']) instanceof NativeJsonResponse);
     }
 
     /**
@@ -306,7 +306,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirect(): void
     {
-        $this->assertEquals(true, redirect() instanceof RedirectResponseImpl);
+        $this->assertEquals(true, redirect() instanceof NativeRedirectResponse);
     }
 
     /**
@@ -316,7 +316,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        $this->assertEquals(true, redirect('/') instanceof RedirectResponseImpl);
+        $this->assertEquals(true, redirect('/') instanceof NativeRedirectResponse);
     }
 
     /**
@@ -326,7 +326,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponseImpl);
+        $this->assertEquals(true, redirectRoute('welcome') instanceof NativeRedirectResponse);
     }
 
     /**
@@ -336,7 +336,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, responseBuilder() instanceof ResponseBuilderImpl);
+        $this->assertEquals(true, responseBuilder() instanceof NativeResponseBuilder);
     }
 
     /**

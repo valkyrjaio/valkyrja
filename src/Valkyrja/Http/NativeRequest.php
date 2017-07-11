@@ -20,7 +20,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class RequestImpl implements Request
+class NativeRequest implements Request
 {
     use Provides;
 

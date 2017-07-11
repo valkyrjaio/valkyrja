@@ -19,7 +19,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class ResponseBuilderImpl implements ResponseBuilder
+class NativeResponseBuilder implements ResponseBuilder
 {
     use Provides;
 

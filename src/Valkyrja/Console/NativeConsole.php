@@ -24,7 +24,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class ConsoleImpl implements Console
+class NativeConsole implements Console
 {
     use ProvidersAwareTrait {
         register as traitRegister;

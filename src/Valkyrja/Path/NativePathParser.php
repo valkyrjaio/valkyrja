@@ -20,7 +20,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class PathParserImpl implements PathParser
+class NativePathParser implements PathParser
 {
     use Provides;
 

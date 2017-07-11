@@ -26,7 +26,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class AnnotationsImpl implements Annotations
+class NativeAnnotations implements Annotations
 {
     use Provides;
 

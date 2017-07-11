@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Container\Service;
 use Valkyrja\Application;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\DispatcherImpl;
+use Valkyrja\Dispatcher\NativeDispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -34,7 +34,7 @@ class DispatcherTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Dispatcher\DispatcherImpl
+     * @var \Valkyrja\Dispatcher\NativeDispatcher
      */
     protected $class;
 
@@ -75,7 +75,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new DispatcherImpl(new Valkyrja());
+        $this->class = new NativeDispatcher(new Valkyrja());
     }
 
     /**

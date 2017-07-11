@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Events\Annotations;
 
-use Valkyrja\Annotations\AnnotationsImpl;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Events\Listener as EventListener;
@@ -22,7 +22,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class ListenerAnnotationsImpl extends AnnotationsImpl implements ListenerAnnotations
+class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnnotations
 {
     use Provides;
 

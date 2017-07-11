@@ -26,7 +26,7 @@ use Valkyrja\Support\Providers\ProvidersAwareTrait;
  *
  * @author Melech Mizrachi
  */
-class ContainerImpl implements Container
+class NativeContainer implements Container
 {
     use ProvidersAwareTrait;
 

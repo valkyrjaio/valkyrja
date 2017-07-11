@@ -15,7 +15,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\AnnotationsParserImpl;
+use Valkyrja\Annotations\NativeAnnotationsParser;
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Valkyrja;
 use Valkyrja\Console\Annotations\Command;
@@ -56,7 +56,7 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Annotations\AnnotationsParserImpl
+     * @var \Valkyrja\Annotations\NativeAnnotationsParser
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new AnnotationsParserImpl(new Valkyrja());
+        $this->class = new NativeAnnotationsParser(new Valkyrja());
     }
 
     /**
@@ -158,10 +158,10 @@ class AnnotationsParserTest extends TestCase
     public function testGetRegex(): void
     {
         $regex = '/'
-            . AnnotationsParserImpl::ANNOTATION_SYMBOL
+            . NativeAnnotationsParser::ANNOTATION_SYMBOL
             . '([a-zA-Z]*)'
-            . '(?:' . AnnotationsParserImpl::CLASS_REGEX . ')?'
-            . AnnotationsParserImpl::LINE_REGEX
+            . '(?:' . NativeAnnotationsParser::CLASS_REGEX . ')?'
+            . NativeAnnotationsParser::LINE_REGEX
             . '/x';
 
         $this->assertEquals($regex, $this->class->getRegex());
@@ -174,7 +174,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsRegex(): void
     {
-        $regex = '/' . AnnotationsParserImpl::ARGUMENTS_REGEX . '/x';
+        $regex = '/' . NativeAnnotationsParser::ARGUMENTS_REGEX . '/x';
 
         $this->assertEquals($regex, $this->class->getArgumentsRegex());
     }

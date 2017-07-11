@@ -20,7 +20,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class AnnotationsParserImpl implements AnnotationsParser
+class NativeAnnotationsParser implements AnnotationsParser
 {
     use Provides;
 
