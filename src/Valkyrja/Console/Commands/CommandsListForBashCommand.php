@@ -19,7 +19,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
  *
  * @author Melech Mizrachi
  */
-class ConsoleCommandsForBash extends CommandHandler
+class CommandsListForBashCommand extends CommandHandler
 {
     use ProvidesCommand;
 

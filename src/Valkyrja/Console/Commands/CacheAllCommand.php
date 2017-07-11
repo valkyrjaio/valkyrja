@@ -11,12 +11,12 @@
 
 namespace Valkyrja\Console\Commands;
 
-use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\ProvidesCommand;
-use Valkyrja\Container\Commands\ContainerCache;
-use Valkyrja\Events\Commands\EventsCache;
+use Valkyrja\Container\Commands\ContainerCacheCommand;
+use Valkyrja\Events\Commands\EventsCacheCommand;
 use Valkyrja\Routing\Commands\RoutesCacheCommand;
 
 /**
@@ -44,9 +44,9 @@ class CacheAllCommand extends CommandHandler
      */
     public function run(string $sync = null): int
     {
-        $containerCache = console()->matchCommand(ContainerCache::COMMAND);
-        $consoleCache   = console()->matchCommand(ConsoleCache::COMMAND);
-        $eventsCache    = console()->matchCommand(EventsCache::COMMAND);
+        $containerCache = console()->matchCommand(ContainerCacheCommand::COMMAND);
+        $consoleCache   = console()->matchCommand(ConsoleCacheCommand::COMMAND);
+        $eventsCache    = console()->matchCommand(EventsCacheCommand::COMMAND);
         $routesCache    = console()->matchCommand(RoutesCacheCommand::COMMAND);
 
         console()->dispatchCommand($containerCache);
@@ -54,7 +54,7 @@ class CacheAllCommand extends CommandHandler
         console()->dispatchCommand($eventsCache);
         console()->dispatchCommand($routesCache);
 
-        $configCache = console()->matchCommand(ConfigCache::COMMAND);
+        $configCache = console()->matchCommand(ConfigCacheCommand::COMMAND);
         console()->dispatchCommand($configCache);
 
         if (null !== $sync && config()['app']['debug']) {

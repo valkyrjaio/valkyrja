@@ -21,7 +21,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
  *
  * @author Melech Mizrachi
  */
-class ConsoleCommands extends CommandHandler
+class CommandsListCommand extends CommandHandler
 {
     use ProvidesCommand;
 

@@ -9,26 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Commands;
+namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
- * Class EventsCache.
+ * Class ConsoleCache.
  *
  * @author Melech Mizrachi
  */
-class EventsCache extends CommandHandler
+class ConsoleCacheCommand extends CommandHandler
 {
     use ProvidesCommand;
 
     /**
      * The command.
      */
-    public const COMMAND           = 'events:cache';
+    public const COMMAND           = 'console:cache';
     public const PATH              = self::COMMAND;
-    public const SHORT_DESCRIPTION = 'Generate the events cache';
+    public const SHORT_DESCRIPTION = 'Generate the console cache';
 
     /**
      * Run the command.
@@ -43,27 +43,27 @@ class EventsCache extends CommandHandler
         config()['app']['debug'] = false;
         config()['app']['env']   = 'production';
 
-        $cache = events()->getCacheable();
+        $cache = console()->getCacheable();
 
         config()['app']['debug'] = $originalDebug;
         config()['app']['env']   = $originalEnv;
 
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()['events']['cacheFilePath'],
+            config()['console']['cacheFilePath'],
             '<?php return ' . var_export($cache, true) . ';'
         );
 
         if ($result === false) {
             output()->writeMessage(
-                'An error occurred while generating events cache.',
+                'An error occurred while generating console cache.',
                 true
             );
 
             return 0;
         }
 
-        output()->writeMessage('Events cache generated successfully', true);
+        output()->writeMessage('Console cache generated successfully', true);
 
         return 1;
     }

@@ -19,7 +19,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
  *
  * @author Melech Mizrachi
  */
-class Optimize extends CommandHandler
+class OptimizeCommand extends CommandHandler
 {
     use ProvidesCommand;
 

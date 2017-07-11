@@ -18,7 +18,7 @@ use Valkyrja\Config\EnvTest;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
-use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
 use Valkyrja\Container\NativeContainer;
@@ -585,7 +585,7 @@ class ApplicationTest extends TestCase
     public function testApplicationSetupWithCachedConfig(): void
     {
         // Get the config cache command
-        $configCacheCommand = $this->app->console()->matchCommand(ConfigCache::COMMAND);
+        $configCacheCommand = $this->app->console()->matchCommand(ConfigCacheCommand::COMMAND);
         // Run the config cache command
         $this->app->console()->dispatchCommand($configCacheCommand);
 

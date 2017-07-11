@@ -19,7 +19,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
  *
  * @author Melech Mizrachi
  */
-class ConfigCache extends CommandHandler
+class ConfigCacheCommand extends CommandHandler
 {
     use ProvidesCommand;
 
