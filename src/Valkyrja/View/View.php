@@ -26,32 +26,14 @@ interface View
      *
      * @return View
      */
-    public function make(string $template = '', array $variables = []): self;
+    public function make(string $template = null, array $variables = []): self;
 
     /**
-     * Set the layout template.
+     * Get the variables.
      *
-     * @param string $template The master template to set
-     *
-     * @return \Valkyrja\View\View
+     * @return array
      */
-    public function setLayout(string $template): self;
-
-    /**
-     * Set to use no layout.
-     *
-     * @return \Valkyrja\View\View
-     */
-    public function withoutLayout(): self;
-
-    /**
-     * Set the template.
-     *
-     * @param string $template The template to set
-     *
-     * @return \Valkyrja\View\View
-     */
-    public function setTemplate(string $template): self;
+    public function getVariables(): array;
 
     /**
      * Set the variables.
@@ -63,6 +45,15 @@ interface View
     public function setVariables(array $variables = []): self;
 
     /**
+     * Get a variable.
+     *
+     * @param string $key The variable key to set
+     *
+     * @return mixed
+     */
+    public function variable(string $key);
+
+    /**
      * Set a single variable.
      *
      * @param string $key   The variable key to set
@@ -70,7 +61,7 @@ interface View
      *
      * @return \Valkyrja\View\View
      */
-    public function variable(string $key, $value): self;
+    public function setVariable(string $key, $value): self;
 
     /**
      * Get the template directory.
@@ -107,6 +98,13 @@ interface View
     public function setFileExtension(string $extension): self;
 
     /**
+     * Get the layout template path.
+     *
+     * @return string
+     */
+    public function getLayoutPath(): string;
+
+    /**
      * Get the template path.
      *
      * @return string
@@ -114,11 +112,59 @@ interface View
     public function getTemplatePath(): string;
 
     /**
-     * Get the layout template path.
+     * Set the layout for the view template.
+     *
+     * @param string $layout [optional]
+     *
+     * @return \Valkyrja\View\View
+     */
+    public function layout(string $layout = null): self;
+
+    /**
+     * Set the template for the view.
+     *
+     * @param string $template The template
+     *
+     * @return \Valkyrja\View\View
+     */
+    public function template(string $template): self;
+
+    /**
+     * Output a partial.
+     *
+     * @param string $partial
+     * @param array  $variables [optional]
      *
      * @return string
      */
-    public function getLayoutPath(): string;
+    public function partial(string $partial, array $variables = []): string;
+
+    /**
+     * Output a block.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function block(string $name): string;
+
+    /**
+     * Start a block.
+     *
+     * @param string $name
+     *
+     * @return void
+     */
+    public function startBlock(string $name): void;
+
+    /**
+     * End a block.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function endBlock(string $name): string;
 
     /**
      * Render the templates and view.
