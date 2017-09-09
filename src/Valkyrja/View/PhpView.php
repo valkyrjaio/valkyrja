@@ -14,6 +14,7 @@ namespace Valkyrja\View;
 use Valkyrja\Application;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\View\Exceptions\InvalidConfigPath;
 
 /**
  * Class View.
@@ -112,6 +113,8 @@ class PhpView implements View
      * @param Application $app       The application
      * @param string      $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
+     *
+     * @throws InvalidConfigPath
      */
     public function __construct(
         Application $app,
@@ -129,6 +132,8 @@ class PhpView implements View
      *
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
+     *
+     * @throws InvalidConfigPath
      *
      * @return \Valkyrja\View\View
      */
@@ -265,6 +270,8 @@ class PhpView implements View
      *
      * @param string $layout [optional] The layout to set
      *
+     * @throws InvalidConfigPath
+     *
      * @return \Valkyrja\View\View
      */
     public function layout(string $layout = null): View
@@ -305,6 +312,8 @@ class PhpView implements View
      *
      * @param string $template The template
      *
+     * @throws InvalidConfigPath
+     *
      * @return \Valkyrja\View\View
      */
     public function template(string $template): View
@@ -320,6 +329,8 @@ class PhpView implements View
      *
      * @param string $partial   The partial
      * @param array  $variables [optional]
+     *
+     * @throws InvalidConfigPath
      *
      * @return string
      */
@@ -413,6 +424,8 @@ class PhpView implements View
      *
      * @param string $template The template
      *
+     * @throws InvalidConfigPath
+     *
      * @return string
      */
     protected function getFullPath(string $template): string
@@ -420,16 +433,23 @@ class PhpView implements View
         // If the first character of the template is an @ symbol
         // Then this is a template from a path in the config
         if (strpos($template, '@') === 0) {
-            $explodeOn = '/';
+            $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
             $path      = config('view.paths.' . $parts[0]);
 
-            // If there is no path then throw an exception
+            // If there is no path
             if ($path === null) {
-                // throw exception
+                // Then throw an exception
+                throw new InvalidConfigPath(
+                    'Invalid path '
+                    . $parts[0]
+                    .' specified for template '
+                    . $template
+                );
             }
 
-            $parts[0] = trim($path, $explodeOn);
+            // Remove any trailing slashes
+            $parts[0] = $explodeOn . trim($path, $explodeOn);
 
             $path = implode($explodeOn, $parts);
         } else {
@@ -500,6 +520,8 @@ class PhpView implements View
      * Publish the provider.
      *
      * @param Application $app The application
+     *
+     * @throws InvalidConfigPath
      *
      * @return void
      */
