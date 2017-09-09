@@ -108,6 +108,15 @@ interface ServerRequest extends Request
     public function getCookieParam(string $name):? string;
 
     /**
+     * Determine if a specific cookie exists.
+     *
+     * @param string $name The cookie name to check for
+     *
+     * @return bool
+     */
+    public function hasCookieParam(string $name): bool;
+
+    /**
      * Retrieve query string arguments.
      *
      * Retrieves the deserialized query string arguments, if any.

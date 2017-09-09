@@ -218,6 +218,18 @@ class NativeServerRequest implements ServerRequest
     }
 
     /**
+     * Determine if a specific cookie exists.
+     *
+     * @param string $name The cookie name to check for
+     *
+     * @return bool
+     */
+    public function hasCookieParam(string $name): bool
+    {
+        return isset($this->cookies[$name]);
+    }
+
+    /**
      * Retrieve query string arguments.
      *
      * Retrieves the deserialized query string arguments, if any.
