@@ -450,8 +450,7 @@ class PhpView implements View
     protected function renderTemplate(
         string $templatePath,
         array $variables = []
-    ): string
-    {
+    ): string {
         $variables = array_merge($this->variables, $variables);
 
         extract($variables, EXTR_OVERWRITE);
