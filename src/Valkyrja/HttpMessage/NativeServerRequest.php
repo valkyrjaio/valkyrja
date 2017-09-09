@@ -204,6 +204,20 @@ class NativeServerRequest implements ServerRequest
     }
 
     /**
+     * Retrieve a specific cookie value.
+     *
+     * Retrieves a cookie value sent by the client to the server.
+     *
+     * @param string $name The cookie name to retrieve
+     *
+     * @return string|null
+     */
+    public function getCookieParam(string $name):? string
+    {
+        return $this->cookies[$name] ?? null;
+    }
+
+    /**
      * Retrieve query string arguments.
      *
      * Retrieves the deserialized query string arguments, if any.
