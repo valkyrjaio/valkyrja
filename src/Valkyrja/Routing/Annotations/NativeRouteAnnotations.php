@@ -11,8 +11,8 @@
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Annotations\AnnotationsParser;
+use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
