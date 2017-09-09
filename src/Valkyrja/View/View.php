@@ -121,6 +121,13 @@ interface View
     public function layout(string $layout = null): self;
 
     /**
+     * Set no layout for this view.
+     *
+     * @return \Valkyrja\View\View
+     */
+    public function withoutLayout(): self;
+
+    /**
      * Set the template for the view.
      *
      * @param string $template The template

@@ -272,10 +272,7 @@ class PhpView implements View
         // If no layout has been set
         if (null === $layout) {
             // Set to null
-            $this->layout     = null;
-            $this->layoutPath = null;
-
-            return $this;
+            return $this->withoutLayout();
         }
 
         // If we should be tracking layout changes
@@ -286,6 +283,19 @@ class PhpView implements View
 
         $this->layout     = $layout;
         $this->layoutPath = $this->getFullPath($layout);
+
+        return $this;
+    }
+
+    /**
+     * Set no layout for this view.
+     *
+     * @return \Valkyrja\View\View
+     */
+    public function withoutLayout(): View
+    {
+        $this->layout     = null;
+        $this->layoutPath = null;
 
         return $this;
     }
