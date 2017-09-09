@@ -443,7 +443,7 @@ class PhpView implements View
                 throw new InvalidConfigPath(
                     'Invalid path '
                     . $parts[0]
-                    .' specified for template '
+                    . ' specified for template '
                     . $template
                 );
             }
