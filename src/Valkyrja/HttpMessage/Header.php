@@ -756,7 +756,7 @@ final class Header extends Enum
      *                            ; whitespace DQUOTE, comma, semicolon,
      *                            ; and backslash
      *      token             = <token, defined in [RFC2616], Section 2.2>
-
+     *
      *      cookie-av         = expires-av / max-age-av / domain-av /
      *      path-av / secure-av / httponly-av /
      *      extension-av
