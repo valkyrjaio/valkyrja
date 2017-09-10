@@ -221,7 +221,7 @@ trait MessageTrait
         $new->headerNames[$normalized] = $name;
         $new->headers[$name]           = $values;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -257,7 +257,7 @@ trait MessageTrait
 
         $new->headers[$name] = array_merge($this->headers[$name], $values);
 
-        return $this;
+        return $new;
     }
 
     /**
