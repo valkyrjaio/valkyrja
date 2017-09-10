@@ -197,6 +197,38 @@ class NativeResponse implements Response
     }
 
     /**
+     * Send the response.
+     *
+     * @return void
+     */
+    public function send(): void
+    {
+        $http_line = sprintf('HTTP/%s %s %s',
+            $this->getProtocolVersion(),
+            $this->getStatusCode(),
+            $this->getReasonPhrase()
+        );
+
+        header($http_line, true, $this->getStatusCode());
+
+        foreach ($this->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+
+        $stream = $this->getBody();
+
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        while (! $stream->eof()) {
+            echo $stream->read(1024 * 8);
+        }
+    }
+
+    /**
      * Validate a status code.
      *
      * @param int $code The code

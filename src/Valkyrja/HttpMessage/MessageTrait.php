@@ -23,7 +23,7 @@ trait MessageTrait
     /**
      * The headers with normalized header names.
      *
-     * @var array
+     * @var string[][]
      */
     protected $headers = [];
 

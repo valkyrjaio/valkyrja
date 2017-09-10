@@ -121,4 +121,11 @@ interface Response extends Message
      * @return static
      */
     public function withoutCookie(Cookie $cookie);
+
+    /**
+     * Send the response.
+     *
+     * @return void
+     */
+    public function send(): void;
 }
