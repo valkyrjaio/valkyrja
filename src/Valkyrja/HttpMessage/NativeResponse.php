@@ -142,6 +142,61 @@ class NativeResponse implements Response
     }
 
     /**
+     * Return an instance with the specified cookie appended with the given
+     * value.
+     *
+     * Existing values for the specified header will be maintained. The new
+     * value(s) will be appended to the existing list. If the cookie header
+     * did not exist previously, it will be added.
+     *
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * new cookie header and/or value.
+     *
+     * @param Cookie $cookie The cookie model
+     *
+     * @throws \InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
+     */
+    public function withCookie(Cookie $cookie)
+    {
+        return $this->withAddedHeader(
+            Header::SET_COOKIE,
+            (string) $cookie
+        );
+    }
+
+    /**
+     * Return an instance with the specified cookie appended to the
+     * Set-Cookie header as expired.
+     *
+     * Existing values for the specified header will be maintained. The new
+     * value(s) will be appended to the existing list. If the cookie header
+     * did not exist previously, it will be added.
+     *
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * new cookie header and/or value.
+     *
+     * @param Cookie $cookie The cookie model
+     *
+     * @throws \InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
+     */
+    public function withoutCookie(Cookie $cookie)
+    {
+        $cookie->setValue();
+        $cookie->setExpire();
+
+        return $this->withAddedHeader(
+            Header::SET_COOKIE,
+            (string) $cookie
+        );
+    }
+
+    /**
      * Validate a status code.
      *
      * @param int $code The code
