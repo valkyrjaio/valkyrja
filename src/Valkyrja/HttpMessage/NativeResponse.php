@@ -203,7 +203,8 @@ class NativeResponse implements Response
      */
     public function send(): void
     {
-        $http_line = sprintf('HTTP/%s %s %s',
+        $http_line = sprintf(
+            'HTTP/%s %s %s',
             $this->getProtocolVersion(),
             $this->getStatusCode(),
             $this->getReasonPhrase()
