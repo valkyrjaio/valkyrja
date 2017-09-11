@@ -30,7 +30,7 @@ final class HeaderSecurity
     }
 
     /**
-     * Filter a header value
+     * Filter a header value.
      *
      * Ensures CRLF header injection vectors are filtered.
      *
