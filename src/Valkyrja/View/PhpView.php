@@ -435,7 +435,8 @@ class PhpView implements View
         if (strpos($template, '@') === 0) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $path      = config('view.paths.' . $parts[0]);
+            $pathName  = str_replace('@', '', $parts[0]);
+            $path      = config('views.paths.' . $pathName);
 
             // If there is no path
             if ($path === null) {
