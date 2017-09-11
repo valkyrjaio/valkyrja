@@ -64,11 +64,13 @@ class NativeResponse implements Response
         int $status = null,
         array $headers = null
     ) {
-        $this->stream     = $body ?? new NativeStream('php://input', 'rw');
+        $this->stream     = $body
+            ?? new NativeStream('php://input', 'rw');
         $this->statusCode = $this->validateStatusCode(
             $status ?? StatusCode::OK
         );
-        $this->headers    = $headers ?? [];
+
+        $this->setHeaders($headers ?? []);
     }
 
     /**

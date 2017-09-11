@@ -208,6 +208,8 @@ trait MessageTrait
      */
     public function withHeader(string $name, string ...$values)
     {
+        HeaderSecurity::assertValidName($name);
+
         $normalized = strtolower($name);
 
         $new = clone $this;
@@ -216,7 +218,7 @@ trait MessageTrait
             unset($new->headers[$new->headerNames[$normalized]]);
         }
 
-        $values = $this->filterHeaderValues(...$values);
+        $values = $this->assertHeaderValues(...$values);
 
         $new->headerNames[$normalized] = $name;
         $new->headers[$name]           = $values;
@@ -245,6 +247,8 @@ trait MessageTrait
      */
     public function withAddedHeader(string $name, string ...$values)
     {
+        HeaderSecurity::assertValidName($name);
+
         if (! $this->hasHeader($name)) {
             return $this->withHeader($name);
         }
@@ -253,7 +257,7 @@ trait MessageTrait
 
         $new = clone $this;
 
-        $values = $this->filterHeaderValues(...$values);
+        $values = $this->assertHeaderValues(...$values);
 
         $new->headers[$name] = array_merge($this->headers[$name], $values);
 
@@ -346,14 +350,42 @@ trait MessageTrait
     }
 
     /**
+     * Set headers.
+     *
+     * @param array $originalHeaders
+     *
+     * @return void
+     */
+    protected function setHeaders(array $originalHeaders): void
+    {
+        $headerNames = $headers = [];
+
+        foreach ($originalHeaders as $header => $value) {
+            $value = $this->assertHeaderValues($value);
+
+            HeaderSecurity::assertValidName($header);
+
+            $headerNames[strtolower($header)] = $header;
+            $headers[$header]                 = $value;
+        }
+
+        $this->headerNames = $headerNames;
+        $this->headers     = $headers;
+    }
+
+    /**
      * Filter header values.
      *
      * @param string[] ...$values Header values
      *
      * @return string[]
      */
-    protected function filterHeaderValues(string ...$values): array
+    protected function assertHeaderValues(string ...$values): array
     {
+        foreach ($values as $value) {
+            HeaderSecurity::assertValid($value);
+        }
+
         return $values;
     }
 

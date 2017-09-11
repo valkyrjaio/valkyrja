@@ -101,6 +101,7 @@ trait RequestTrait
         $this->body    = $body ?? new NativeStream('php://input');
         $this->headers = $headers ?? [];
 
+        $this->setHeaders($headers);
         $this->validateMethod($this->method);
         $this->validateProtocolVersion($this->protocol);
 
