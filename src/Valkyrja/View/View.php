@@ -156,6 +156,28 @@ interface View
     public function block(string $name): string;
 
     /**
+     * Determine if a block exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     *  True if the block exists
+     *  False if the block doesn't exist
+     */
+    public function hasBlock(string $name): bool;
+
+    /**
+     * Determine if a block has been ended.
+     *
+     * @param string $name
+     *
+     * @return bool
+     *  True if the block has been ended
+     *  False if the block has not yet been ended
+     */
+    public function hasBlockBeenEnded(string $name): bool;
+
+    /**
      * Start a block.
      *
      * @param string $name

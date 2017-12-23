@@ -352,6 +352,34 @@ class PhpView implements View
     }
 
     /**
+     * Determine if a block exists.
+     *
+     * @param string $name
+     *
+     * @return bool
+     *  True if the block exists
+     *  False if the block doesn't exist
+     */
+    public function hasBlock(string $name): bool
+    {
+        return isset($this->blocks[$name]);
+    }
+
+    /**
+     * Determine if a block has been ended.
+     *
+     * @param string $name
+     *
+     * @return bool
+     *  True if the block has been ended
+     *  False if the block has not yet been ended
+     */
+    public function hasBlockBeenEnded(string $name): bool
+    {
+        return ! isset($this->blockStatus[$name]);
+    }
+
+    /**
      * Start a block.
      *
      * @param string $name The block's name
@@ -435,8 +463,7 @@ class PhpView implements View
         if (strpos($template, '@') === 0) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $pathName  = str_replace('@', '', $parts[0]);
-            $path      = config('views.paths.' . $pathName);
+            $path      = config('views.paths.' . $parts[0]);
 
             // If there is no path
             if ($path === null) {
