@@ -47,9 +47,9 @@ abstract class ServerRequestFactory
      * @param array $cookies $_COOKIE superglobal
      * @param array $files   $_FILES superglobal
      *
-     * @return ServerRequest
-     *
      * @throws InvalidArgumentException for invalid file values
+     *
+     * @return ServerRequest
      */
     public static function fromGlobals(
         array $server = null,
@@ -81,7 +81,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Access a value in an array, returning a default value if not found
+     * Access a value in an array, returning a default value if not found.
      *
      * Will also do a case-insensitive search if a case sensitive search fails.
      *
@@ -129,7 +129,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal the $_SERVER array
+     * Marshal the $_SERVER array.
      *
      * Pre-processes and returns the $_SERVER superglobal.
      *
@@ -166,16 +166,16 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Normalize uploaded files
+     * Normalize uploaded files.
      *
      * Transforms each value into an UploadedFileInterface instance, and ensures
      * that nested arrays are normalized.
      *
      * @param array $files
      *
-     * @return array
-     *
      * @throws InvalidArgumentException for unrecognized values
+     *
+     * @return array
      */
     public static function normalizeFiles(array $files): array
     {
@@ -203,7 +203,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal headers from $_SERVER
+     * Marshal headers from $_SERVER.
      *
      * @param array $server
      *
@@ -242,7 +242,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal the URI from the $_SERVER array and headers
+     * Marshal the URI from the $_SERVER array and headers.
      *
      * @param array $server
      * @param array $headers
@@ -308,7 +308,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal the host and port from HTTP headers and/or the PHP environment
+     * Marshal the host and port from HTTP headers and/or the PHP environment.
      *
      * @param stdClass $accumulator
      * @param array    $server
@@ -344,7 +344,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Detect the base URI for the request
+     * Detect the base URI for the request.
      *
      * Looks at a variety of criteria in order to attempt to autodetect a base
      * URI, including rewrite URIs, proxy URIs, etc.
@@ -365,7 +365,7 @@ abstract class ServerRequestFactory
         $iisUrlRewritten = self::get('IIS_WasUrlRewritten', $server);
         $unencodedUrl    = self::get('UNENCODED_URL', $server, '');
 
-        if ('1' == $iisUrlRewritten && ! empty($unencodedUrl)) {
+        if ('1' === $iisUrlRewritten && ! empty($unencodedUrl)) {
             return $unencodedUrl;
         }
 
@@ -399,7 +399,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Strip the query string from a path
+     * Strip the query string from a path.
      *
      * @param string $path
      *
@@ -415,7 +415,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal the host and port from the request header
+     * Marshal the host and port from the request header.
      *
      * @param stdClass     $accumulator
      * @param string|array $host
@@ -439,7 +439,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Marshal host/port from misinterpreted IPv6 address
+     * Marshal host/port from misinterpreted IPv6 address.
      *
      * @param stdClass $accumulator
      * @param array    $server
@@ -513,7 +513,7 @@ abstract class ServerRequestFactory
     }
 
     /**
-     * Return HTTP protocol version (X.Y)
+     * Return HTTP protocol version (X.Y).
      *
      * @param array $server
      *
