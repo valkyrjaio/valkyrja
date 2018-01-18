@@ -201,9 +201,9 @@ class NativeResponse implements Response
     /**
      * Send the response.
      *
-     * @return void
+     * @return \Valkyrja\HttpMessage\Response
      */
-    public function send(): void
+    public function send(): Response
     {
         $http_line = sprintf(
             'HTTP/%s %s %s',

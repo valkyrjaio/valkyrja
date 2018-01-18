@@ -125,7 +125,7 @@ interface Response extends Message
     /**
      * Send the response.
      *
-     * @return void
+     * @return \Valkyrja\HttpMessage\Response
      */
-    public function send(): void;
+    public function send(): self;
 }
