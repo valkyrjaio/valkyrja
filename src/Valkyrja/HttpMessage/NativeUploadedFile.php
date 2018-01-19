@@ -285,7 +285,7 @@ class NativeUploadedFile implements UploadedFile
      *
      * @return int|null The file size in bytes or null if unknown.
      */
-    public function getSize():? int
+    public function getSize(): ? int
     {
         return $this->size;
     }
@@ -323,7 +323,7 @@ class NativeUploadedFile implements UploadedFile
      * @return string|null The filename sent by the client or null if none was
      *          provided.
      */
-    public function getClientFilename():? string
+    public function getClientFilename(): ? string
     {
         return $this->fileName;
     }
@@ -341,7 +341,7 @@ class NativeUploadedFile implements UploadedFile
      * @return string|null The media type sent by the client or null if none
      *          was provided.
      */
-    public function getClientMediaType():? string
+    public function getClientMediaType(): ? string
     {
         return $this->mediaType;
     }

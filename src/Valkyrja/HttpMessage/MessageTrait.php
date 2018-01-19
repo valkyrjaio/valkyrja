@@ -399,12 +399,8 @@ trait MessageTrait
      *
      * @return array
      */
-    protected function injectHeader(
-        string $header,
-        string $value,
-        array $headers = null,
-        bool $override = false
-    ): array {
+    protected function injectHeader(string $header, string $value, array $headers = null, bool $override = false): array
+    {
         // The headers
         $headers = $headers ?? [];
         // Normalize the content type header

@@ -32,7 +32,7 @@ class Listener extends Dispatch
      *
      * @return string
      */
-    public function getEvent():? string
+    public function getEvent(): ? string
     {
         return $this->event;
     }

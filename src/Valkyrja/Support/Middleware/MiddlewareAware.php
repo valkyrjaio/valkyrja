@@ -47,10 +47,7 @@ interface MiddlewareAware
      *
      * @return \Valkyrja\Http\Request
      */
-    public function requestMiddleware(
-        Request $request,
-        array $middleware = null
-    ): Request;
+    public function requestMiddleware(Request $request, array $middleware = null): Request;
 
     /**
      * Dispatch after request processed middleware.
@@ -61,11 +58,7 @@ interface MiddlewareAware
      *
      * @return \Valkyrja\Http\Response
      */
-    public function responseMiddleware(
-        Request $request,
-        Response $response,
-        array $middleware = null
-    ): Response;
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response;
 
     /**
      * Dispatch terminable middleware.
@@ -76,9 +69,5 @@ interface MiddlewareAware
      *
      * @return void
      */
-    public function terminableMiddleware(
-        Request $request,
-        Response $response,
-        array $middleware = null
-    ): void;
+    public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void;
 }

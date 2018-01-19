@@ -75,7 +75,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return array[]
      */
-    protected function getAnnotationMatches(string $docString):? array
+    protected function getAnnotationMatches(string $docString): ? array
     {
         preg_match_all($this->getRegex(), $docString, $matches);
 
@@ -101,11 +101,8 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return void
      */
-    protected function setAnnotation(
-        array $matches,
-        int $index,
-        array &$annotations
-    ): void {
+    protected function setAnnotation(array $matches, int $index, array &$annotations): void
+    {
         $properties = $this->getAnnotationProperties($matches, $index);
 
         // Get the annotation model from the annotations map
@@ -179,10 +176,8 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return array
      */
-    protected function getAnnotationProperties(
-        array $matches,
-        int $index
-    ): array {
+    protected function getAnnotationProperties(array $matches, int $index): array
+    {
         $properties = [];
 
         // Written like this to appease the code coverage gods
@@ -238,7 +233,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return array
      */
-    public function getArguments(string $arguments = null):? array
+    public function getArguments(string $arguments = null): ? array
     {
         $argumentsList = null;
 
@@ -269,7 +264,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return array
      */
-    protected function getArgumentMatches(string $arguments):? array
+    protected function getArgumentMatches(string $arguments): ? array
     {
         preg_match_all($this->getArgumentsRegex(), $arguments, $matches);
 
@@ -290,11 +285,8 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return void
      */
-    protected function setArgument(
-        array $matches,
-        int $index,
-        array &$arguments
-    ): void {
+    protected function setArgument(array $matches, int $index, array &$arguments): void
+    {
         // Set the key
         $key = $this->determineValue($this->cleanMatch($matches[1][$index]));
         // Set the value
@@ -465,7 +457,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return string
      */
-    protected function cleanMatch(string $match = null):? string
+    protected function cleanMatch(string $match = null): ? string
     {
         if (! $match) {
             return $match;

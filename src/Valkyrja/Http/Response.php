@@ -29,11 +29,7 @@ interface Response
      *
      * @return \Valkyrja\Http\Response
      */
-    public static function create(
-        string $content = '',
-        int $status = StatusCode::OK,
-        array $headers = []
-    ): self;
+    public static function create(string $content = '', int $status = StatusCode::OK, array $headers = []): self;
 
     /**
      * Set the content for the response.
@@ -512,10 +508,7 @@ interface Response
      *
      * @return void
      */
-    public static function closeOutputBuffers(
-        int $targetLevel,
-        bool $flush
-    ): void;
+    public static function closeOutputBuffers(int $targetLevel, bool $flush): void;
 
     /**
      * Returns the Response as an HTTP string.

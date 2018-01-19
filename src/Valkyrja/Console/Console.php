@@ -39,7 +39,7 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @return \Valkyrja\Console\Command
      */
-    public function command(string $name):? Command;
+    public function command(string $name): ? Command;
 
     /**
      * Determine whether a command exists.
@@ -66,7 +66,7 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @return null|\Valkyrja\Console\Command
      */
-    public function inputCommand(Input $input):? Command;
+    public function inputCommand(Input $input): ? Command;
 
     /**
      * Match a command.
@@ -75,7 +75,7 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @return \Valkyrja\Console\Command
      */
-    public function matchCommand(string $path):? Command;
+    public function matchCommand(string $path): ? Command;
 
     /**
      * Dispatch a command.

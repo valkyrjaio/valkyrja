@@ -99,11 +99,8 @@ class CommandsListCommand extends CommandHandler
      *
      * @return void
      */
-    protected function filterCommands(
-        array &$commands,
-        int &$longestLength,
-        string $namespace = null
-    ): void {
+    protected function filterCommands(array &$commands, int &$longestLength, string $namespace = null): void
+    {
         $globalCommands = [];
 
         /** @var \Valkyrja\Console\Command $command */
@@ -170,10 +167,8 @@ class CommandsListCommand extends CommandHandler
      *
      * @return void
      */
-    protected function commandSection(
-        Command $command,
-        string &$previousSection
-    ): void {
+    protected function commandSection(Command $command, string &$previousSection): void
+    {
         $parts          = explode(':', $command->getName());
         $commandName    = $parts[1] ?? null;
         $currentSection = $commandName ? $parts[0] : 'global';

@@ -38,10 +38,7 @@ abstract class Middleware
      *
      * @return \Valkyrja\Http\Response
      */
-    abstract public static function after(
-        Request $request,
-        Response $response
-    ): Response;
+    abstract public static function after(Request $request, Response $response): Response;
 
     /**
      * Middleware handler run when the application is terminating.
@@ -51,8 +48,5 @@ abstract class Middleware
      *
      * @return void
      */
-    abstract public static function terminate(
-        Request $request,
-        Response $response
-    ): void;
+    abstract public static function terminate(Request $request, Response $response): void;
 }

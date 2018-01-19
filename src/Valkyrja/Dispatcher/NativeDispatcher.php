@@ -211,7 +211,7 @@ class NativeDispatcher implements Dispatcher
      *
      * @return array
      */
-    protected function getDependencies(Dispatch $dispatch):? array
+    protected function getDependencies(Dispatch $dispatch): ? array
     {
         $dependencies = null;
 
@@ -248,10 +248,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @return array
      */
-    protected function getArguments(
-        Dispatch $dispatch,
-        array $arguments = null
-    ):? array {
+    protected function getArguments(Dispatch $dispatch, array $arguments = null): ? array
+    {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
         $context   = $dispatch->getClass() ?? $dispatch->getFunction();
@@ -298,10 +296,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @return mixed
      */
-    public function dispatchClassMethod(
-        Dispatch $dispatch,
-        array $arguments = null
-    ) {
+    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
+    {
         $response = null;
 
         // Ensure a class and method exist before continuing
@@ -419,10 +415,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @return mixed
      */
-    public function dispatchFunction(
-        Dispatch $dispatch,
-        array $arguments = null
-    ) {
+    public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
+    {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
             return $dispatch->getFunction();
@@ -481,10 +475,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @return mixed
      */
-    public function dispatchCallable(
-        Dispatch $dispatch,
-        array $arguments = null
-    ) {
+    public function dispatchCallable(Dispatch $dispatch, array $arguments = null)
+    {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);
 

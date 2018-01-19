@@ -98,11 +98,8 @@ class NativeResponse implements Response
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(
-        string $content = '',
-        int $status = StatusCode::OK,
-        array $headers = []
-    ) {
+    public function __construct(string $content = '', int $status = StatusCode::OK, array $headers = [])
+    {
         $this->setHeaders($headers);
         $this->setContent($content);
         $this->setStatusCode($status);
@@ -122,11 +119,8 @@ class NativeResponse implements Response
      *
      * @return \Valkyrja\Http\Response
      */
-    public static function create(
-        string $content = '',
-        int $status = StatusCode::OK,
-        array $headers = []
-    ): Response {
+    public static function create(string $content = '', int $status = StatusCode::OK, array $headers = []): Response
+    {
         return new static($content, $status, $headers);
     }
 
@@ -476,10 +470,8 @@ class NativeResponse implements Response
      *
      * @return \Valkyrja\Http\Response
      */
-    public function addCacheControl(
-        string $name,
-        string $value = null
-    ): Response {
+    public function addCacheControl(string $name, string $value = null): Response
+    {
         $this->cacheControl[$name] = $value;
 
         return $this;
@@ -1141,10 +1133,8 @@ class NativeResponse implements Response
      *
      * @return void
      */
-    public static function closeOutputBuffers(
-        int $targetLevel,
-        bool $flush
-    ): void {
+    public static function closeOutputBuffers(int $targetLevel, bool $flush): void
+    {
         $status = ob_get_status(true);
         $level  = count($status);
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3

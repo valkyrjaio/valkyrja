@@ -170,10 +170,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function classMembersAnnotationsType(
-        string $type,
-        string $class
-    ): array {
+    public function classMembersAnnotationsType(string $type, string $class): array
+    {
         return $this->filterAnnotationsByType(
             $type,
             ...$this->classMembersAnnotations(
@@ -222,8 +220,8 @@ class NativeAnnotations implements Annotations
         return $this->filterAnnotationsByType(
             $type,
             ...$this->classAndMembersAnnotations(
-                $class
-            )
+            $class
+        )
         );
     }
 
@@ -264,11 +262,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertyAnnotationsType(
-        string $type,
-        string $class,
-        string $property
-    ): array {
+    public function propertyAnnotationsType(string $type, string $class, string $property): array
+    {
         return $this->filterAnnotationsByType(
             $type,
             ...$this->propertyAnnotations(
@@ -330,10 +325,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertiesAnnotationsType(
-        string $type,
-        string $class
-    ): array {
+    public function propertiesAnnotationsType(string $type, string $class): array
+    {
         return $this->filterAnnotationsByType(
             $type,
             ...$this->propertiesAnnotations(
@@ -380,11 +373,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function methodAnnotationsType(
-        string $type,
-        string $class,
-        string $method
-    ): array {
+    public function methodAnnotationsType(string $type, string $class, string $method): array
+    {
         return $this->filterAnnotationsByType(
             $type,
             ...$this->methodAnnotations(
@@ -488,10 +478,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function functionAnnotationsType(
-        string $type,
-        string $function
-    ): array {
+    public function functionAnnotationsType(string $type, string $function): array
+    {
         return $this->filterAnnotationsByType(
             $type,
             ...$this->functionAnnotations(
@@ -508,10 +496,8 @@ class NativeAnnotations implements Annotations
      *
      * @return array
      */
-    public function filterAnnotationsByType(
-        string $type,
-        Annotation ...$annotations
-    ): array {
+    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array
+    {
         // Set a list of annotations to return
         $annotationsList = [];
 
@@ -534,9 +520,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function getReflectionFunctionAnnotations(
-        ReflectionFunctionAbstract $reflection
-    ): array {
+    public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
+    {
         return $this->parser->getAnnotations($reflection->getDocComment());
     }
 
@@ -548,10 +533,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    protected function setAnnotationValues(
-        array $properties,
-        Annotation ...$annotations
-    ): array {
+    protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
+    {
         foreach ($annotations as $annotation) {
             $annotation->setClass($properties['class'] ?? null);
             $annotation->setProperty($properties['property'] ?? null);
@@ -589,10 +572,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \ReflectionProperty
      */
-    public function getPropertyReflection(
-        string $class,
-        string $property
-    ): ReflectionProperty {
+    public function getPropertyReflection(string $class, string $property): ReflectionProperty
+    {
         $index = static::PROPERTY_CACHE . $class . $property;
 
         return self::$reflections[$index]
@@ -610,10 +591,8 @@ class NativeAnnotations implements Annotations
      *
      * @return \ReflectionMethod
      */
-    public function getMethodReflection(
-        string $class,
-        string $method
-    ): ReflectionMethod {
+    public function getMethodReflection(string $class, string $method): ReflectionMethod
+    {
         $index = static::METHOD_CACHE . $class . $method;
 
         return self::$reflections[$index]
@@ -645,8 +624,8 @@ class NativeAnnotations implements Annotations
      *
      * @return string[]
      */
-    protected function getDependencies(ReflectionParameter ...$parameters
-    ): array {
+    protected function getDependencies(ReflectionParameter ...$parameters): array
+    {
         // Setup to find any injectable objects through the service container
         $dependencies = [];
 

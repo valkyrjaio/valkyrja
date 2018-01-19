@@ -63,7 +63,7 @@ class Service extends Dispatch
      *
      * @return array
      */
-    public function getDefaults():? array
+    public function getDefaults(): ? array
     {
         return $this->defaults;
     }

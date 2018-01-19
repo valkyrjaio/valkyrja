@@ -82,7 +82,7 @@ class Route extends Annotation
      *
      * @return string
      */
-    public function getPath():? string
+    public function getPath(): ? string
     {
         return $this->path;
     }
@@ -139,7 +139,7 @@ class Route extends Annotation
      *
      * @return string
      */
-    public function getRegex():? string
+    public function getRegex(): ? string
     {
         return $this->regex;
     }
@@ -161,7 +161,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getParams():? array
+    public function getParams(): ? array
     {
         return $this->params;
     }
@@ -183,7 +183,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getSegments():? array
+    public function getSegments(): ? array
     {
         return $this->segments;
     }
@@ -205,7 +205,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getMiddleware():? array
+    public function getMiddleware(): ? array
     {
         return $this->middleware;
     }

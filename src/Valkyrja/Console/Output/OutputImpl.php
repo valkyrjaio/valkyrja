@@ -75,11 +75,8 @@ class OutputImpl implements Output
      *
      * @return void
      */
-    public function write(
-        array $messages,
-        bool $newLine = null,
-        OutputStyle $outputStyle = null
-    ): void {
+    public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
+    {
         foreach ($messages as $message) {
             $this->writeMessage($message, $newLine, $outputStyle);
         }
@@ -97,11 +94,8 @@ class OutputImpl implements Output
      *
      * @return void
      */
-    public function writeMessage(
-        string $message,
-        bool $newLine = null,
-        OutputStyle $outputStyle = null
-    ): void {
+    public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
+    {
         $newLine         = $newLine ?? false;
         $outputStyleType =
             $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;

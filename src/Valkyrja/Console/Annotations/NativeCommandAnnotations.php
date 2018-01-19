@@ -107,9 +107,8 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
      *
      * @return \Valkyrja\Console\Command
      */
-    protected function getCommandFromAnnotation(
-        Command $command
-    ): ConsoleCommand {
+    protected function getCommandFromAnnotation(Command $command): ConsoleCommand
+    {
         $consoleCommand = new ConsoleCommand();
 
         $consoleCommand

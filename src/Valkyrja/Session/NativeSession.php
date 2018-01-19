@@ -56,11 +56,8 @@ class NativeSession implements Session
      * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
      * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
      */
-    public function __construct(
-        Application $application,
-        string $sessionId = null,
-        string $sessionName = null
-    ) {
+    public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
+    {
         $this->app = $application;
 
         $sessionId   = $sessionId ?? $this->app->config()['session']['id'];

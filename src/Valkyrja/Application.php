@@ -192,11 +192,7 @@ interface Application
      *
      * @return void
      */
-    public function redirectTo(
-        string $uri = null,
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): void;
+    public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void;
 
     /**
      * Return the annotations instance from the container.
@@ -284,11 +280,7 @@ interface Application
      *
      * @return \Valkyrja\Http\Response
      */
-    public function response(
-        string $content = '',
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response;
+    public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
 
     /**
      * Return a new json response from the application.
@@ -299,11 +291,7 @@ interface Application
      *
      * @return \Valkyrja\Http\JsonResponse
      */
-    public function json(
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): JsonResponse;
+    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
 
     /**
      * Return a new redirect response from the application.

@@ -297,9 +297,7 @@ interface Request
      *
      * @return \Valkyrja\Http\Request
      */
-    public function setAcceptableContentTypes(
-        array $acceptableContentTypes = []
-    ): self;
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
 
     /**
      * Gets a "parameter" value from any bag.

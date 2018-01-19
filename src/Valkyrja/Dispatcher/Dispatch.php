@@ -102,7 +102,7 @@ class Dispatch
      *
      * @return string
      */
-    public function getId():? string
+    public function getId(): ? string
     {
         return $this->id;
     }
@@ -126,7 +126,7 @@ class Dispatch
      *
      * @return string
      */
-    public function getName():? string
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -150,7 +150,7 @@ class Dispatch
      *
      * @return string
      */
-    public function getClass():? string
+    public function getClass(): ? string
     {
         return $this->class;
     }
@@ -174,7 +174,7 @@ class Dispatch
      *
      * @return string
      */
-    public function getProperty():? string
+    public function getProperty(): ? string
     {
         return $this->property;
     }
@@ -198,7 +198,7 @@ class Dispatch
      *
      * @return string
      */
-    public function getMethod():? string
+    public function getMethod(): ? string
     {
         return $this->method;
     }
@@ -244,7 +244,7 @@ class Dispatch
     /**
      * @return string
      */
-    public function getFunction():? string
+    public function getFunction(): ? string
     {
         return $this->function;
     }
@@ -268,7 +268,7 @@ class Dispatch
      *
      * @return \Closure
      */
-    public function getClosure():? Closure
+    public function getClosure(): ? Closure
     {
         return $this->closure;
     }
@@ -292,7 +292,7 @@ class Dispatch
      *
      * @return array
      */
-    public function getMatches():? array
+    public function getMatches(): ? array
     {
         return $this->matches;
     }
@@ -316,7 +316,7 @@ class Dispatch
      *
      * @return array
      */
-    public function getArguments():? array
+    public function getArguments(): ? array
     {
         return $this->arguments;
     }
@@ -340,7 +340,7 @@ class Dispatch
      *
      * @return array
      */
-    public function getDependencies():? array
+    public function getDependencies(): ? array
     {
         return $this->dependencies;
     }

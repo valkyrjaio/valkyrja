@@ -32,11 +32,8 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(
-        string $uri,
-        int $status = null,
-        array $headers = []
-    ) {
+    public function __construct(string $uri, int $status = null, array $headers = [])
+    {
         parent::__construct(
             null,
             $status ?? StatusCode::FOUND,

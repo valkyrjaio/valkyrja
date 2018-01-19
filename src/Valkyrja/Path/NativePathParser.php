@@ -176,10 +176,8 @@ REGEX;
      *
      * @return array
      */
-    protected function splitSegments(
-        array $segments,
-        string $deliminator
-    ): array {
+    protected function splitSegments(array $segments, string $deliminator): array
+    {
         // The final segments to return
         $returnSegments = [];
 
@@ -212,11 +210,8 @@ REGEX;
      *
      * @return void
      */
-    protected function splitSegmentsDeliminator(
-        array &$segments,
-        string $segment,
-        string $deliminator
-    ): void {
+    protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
+    {
         // Split the segment on that bracket
         $parts = explode($deliminator, $segment);
 

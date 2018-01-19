@@ -158,10 +158,8 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @return \Valkyrja\Routing\Annotations\Route
      */
-    protected function getControllerBuiltRoute(
-        Route $controllerRoute,
-        Route $route
-    ): Route {
+    protected function getControllerBuiltRoute(Route $controllerRoute, Route $route): Route
+    {
         $newRoute = clone $route;
 
         // If there is a base path for this controller

@@ -244,11 +244,8 @@ class NativeRouter implements Router
      *
      * @return string
      */
-    public function routeUrl(
-        string $name,
-        array $data = null,
-        bool $absolute = null
-    ): string {
+    public function routeUrl(string $name, array $data = null, bool $absolute = null): string
+    {
         // Get the matching route
         $route = $this->route($name);
         // Set the host to use if this is an absolute url
@@ -282,7 +279,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function requestRoute(Request $request):? Route
+    public function requestRoute(Request $request): ? Route
     {
         $requestMethod = $request->getMethod();
         $requestUri    = $request->getPathOnly();
@@ -305,7 +302,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = null):? Route
+    public function matchRoute(string $path, string $method = null): ? Route
     {
         // Validate the path
         $path   = $this->validatePath($path);
@@ -580,7 +577,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    protected function matchStaticRoute(string $path, string $method):? Route
+    protected function matchStaticRoute(string $path, string $method): ? Route
     {
         $route = null;
 
@@ -606,7 +603,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    protected function matchDynamicRoute(string $path, string $method):? Route
+    protected function matchDynamicRoute(string $path, string $method): ? Route
     {
         // The route to return (null by default)
         $route = null;
@@ -664,10 +661,8 @@ class NativeRouter implements Router
      *
      * @return \Valkyrja\Routing\Route
      */
-    protected function getMatchedDynamicRoute(
-        string $path,
-        array $matches
-    ): Route {
+    protected function getMatchedDynamicRoute(string $path, array $matches): Route
+    {
         // Clone the route to avoid changing the one set in the master array
         $dynamicRoute = clone self::$collection->getRoute($path);
         // The first match is the path itself
@@ -697,10 +692,8 @@ class NativeRouter implements Router
      *
      * @return \Valkyrja\Http\Request
      */
-    protected function routeRequestMiddleware(
-        Request $request,
-        Route $route
-    ): Request {
+    protected function routeRequestMiddleware(Request $request, Route $route): Request
+    {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
             // Return the request passed through
@@ -722,11 +715,8 @@ class NativeRouter implements Router
      *
      * @return \Valkyrja\Http\Response
      */
-    protected function routeResponseMiddleware(
-        Request $request,
-        Response $response,
-        Route $route
-    ): Response {
+    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
+    {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
             // Return the response passed through

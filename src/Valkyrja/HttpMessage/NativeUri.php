@@ -266,7 +266,7 @@ class NativeUri implements Uri
      *
      * @return null|int The URI port.
      */
-    public function getPort():? int
+    public function getPort(): ? int
     {
         return $this->isStandardPort() ? null : $this->port;
     }

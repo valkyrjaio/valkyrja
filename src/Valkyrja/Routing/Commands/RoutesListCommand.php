@@ -115,11 +115,8 @@ class RoutesListCommand extends CommandHandler
      *
      * @return void
      */
-    protected function setRoute(
-        Route $route,
-        array &$routes,
-        array &$lengths
-    ): void {
+    protected function setRoute(Route $route, array &$routes, array &$lengths): void
+    {
         $requestMethod = implode(' | ', $route->getRequestMethods());
         $dispatch      = 'Closure';
 

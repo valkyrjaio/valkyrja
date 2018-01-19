@@ -263,11 +263,8 @@ if (! function_exists('routeUrl')) {
      *
      * @return string
      */
-    function routeUrl(
-        string $name,
-        array $data = null,
-        bool $absolute = null
-    ): string {
+    function routeUrl(string $name, array $data = null, bool $absolute = null): string
+    {
         return router()->routeUrl($name, $data, $absolute);
     }
 }
@@ -411,10 +408,8 @@ if (! function_exists('view')) {
      *
      * @return \Valkyrja\View\View
      */
-    function view(
-        string $template = '',
-        array $variables = []
-    ): Valkyrja\View\View {
+    function view(string $template = '', array $variables = []): Valkyrja\View\View
+    {
         return app()->view($template, $variables);
     }
 }

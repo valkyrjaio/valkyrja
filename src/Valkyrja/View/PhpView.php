@@ -116,11 +116,8 @@ class PhpView implements View
      *
      * @throws InvalidConfigPath
      */
-    public function __construct(
-        Application $app,
-        string $template = null,
-        array $variables = []
-    ) {
+    public function __construct(Application $app, string $template = null, array $variables = [])
+    {
         $this->app = $app;
         $this->setVariables($variables);
         $this->setTemplateDir($this->app->config()['views']['dir']);
@@ -495,10 +492,8 @@ class PhpView implements View
      *
      * @return string
      */
-    protected function renderTemplate(
-        string $templatePath,
-        array $variables = []
-    ): string {
+    protected function renderTemplate(string $templatePath, array $variables = []): string
+    {
         $variables = array_merge($this->variables, $variables);
 
         extract($variables, EXTR_OVERWRITE);

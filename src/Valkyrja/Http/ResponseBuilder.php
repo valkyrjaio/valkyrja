@@ -27,11 +27,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Http\Response
      */
-    public function make(
-        string $content = '',
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response;
+    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
 
     /**
      * View response builder.
@@ -59,11 +55,7 @@ interface ResponseBuilder
      *
      * @return \Valkyrja\Http\JsonResponse
      */
-    public function json(
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): JsonResponse;
+    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
 
     /**
      * JsonP response builder.

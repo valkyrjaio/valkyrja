@@ -59,11 +59,8 @@ class NativeResponse implements Response
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(
-        Stream $body = null,
-        int $status = null,
-        array $headers = null
-    ) {
+    public function __construct(Stream $body = null, int $status = null, array $headers = null)
+    {
         $this->stream     = $body
             ?? new NativeStream('php://input', 'rw');
         $this->statusCode = $this->validateStatusCode(

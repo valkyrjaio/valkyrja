@@ -85,10 +85,7 @@ interface Dispatcher
      *
      * @return mixed
      */
-    public function dispatchClassMethod(
-        Dispatch $dispatch,
-        array $arguments = null
-    );
+    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null);
 
     /**
      * Dispatch a class property.
@@ -117,10 +114,7 @@ interface Dispatcher
      *
      * @return mixed
      */
-    public function dispatchFunction(
-        Dispatch $dispatch,
-        array $arguments = null
-    );
+    public function dispatchFunction(Dispatch $dispatch, array $arguments = null);
 
     /**
      * Dispatch a closure.
@@ -130,10 +124,7 @@ interface Dispatcher
      *
      * @return mixed
      */
-    public function dispatchClosure(
-        Dispatch $dispatch,
-        array $arguments = null
-    );
+    public function dispatchClosure(Dispatch $dispatch, array $arguments = null);
 
     /**
      * Dispatch a callable.
@@ -143,8 +134,5 @@ interface Dispatcher
      *
      * @return mixed
      */
-    public function dispatchCallable(
-        Dispatch $dispatch,
-        array $arguments = null
-    );
+    public function dispatchCallable(Dispatch $dispatch, array $arguments = null);
 }

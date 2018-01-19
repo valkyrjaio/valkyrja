@@ -46,11 +46,8 @@ class Argument
      * @param string       $description The description
      * @param ArgumentMode $mode        [optional] The mode
      */
-    public function __construct(
-        string $name,
-        string $description,
-        ArgumentMode $mode = null
-    ) {
+    public function __construct(string $name, string $description, ArgumentMode $mode = null)
+    {
         $this->name        = $name;
         $this->description = $description;
         $this->mode        = $mode ? $mode->getValue() : ArgumentMode::OPTIONAL;

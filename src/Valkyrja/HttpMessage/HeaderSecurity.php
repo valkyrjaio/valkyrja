@@ -135,10 +135,12 @@ final class HeaderSecurity
     public static function assertValid(string $value): void
     {
         if (! self::isValid($value)) {
-            throw new InvalidArgumentException(sprintf(
-                '"%s" is not valid header value',
-                $value
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    '"%s" is not valid header value',
+                    $value
+                )
+            );
         }
     }
 
@@ -156,10 +158,12 @@ final class HeaderSecurity
     public static function assertValidName(string $name): void
     {
         if (! preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
-            throw new InvalidArgumentException(sprintf(
-                '"%s" is not valid header name',
-                $name
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    '"%s" is not valid header name',
+                    $name
+                )
+            );
         }
     }
 }

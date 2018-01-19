@@ -109,11 +109,7 @@ interface Logger
      *
      * @return \Valkyrja\Logger\Logger
      */
-    public function log(
-        LogLevel $level,
-        string $message,
-        array $context = []
-    ): self;
+    public function log(LogLevel $level, string $message, array $context = []): self;
 
     /**
      * Get the logger.

@@ -110,10 +110,8 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @return array
      */
-    protected function getAllClassesAnnotationsByType(
-        string $type,
-        string ...$classes
-    ): array {
+    protected function getAllClassesAnnotationsByType(string $type, string ...$classes): array
+    {
         $annotations = [];
 
         // Iterate through all the classes
@@ -187,9 +185,8 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @return \Valkyrja\Container\Service
      */
-    protected function getServiceFromAnnotation(
-        Service $service
-    ): ContainerService {
+    protected function getServiceFromAnnotation(Service $service): ContainerService
+    {
         $containerService = new ContainerService();
 
         $containerService
@@ -216,9 +213,8 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @return \Valkyrja\Container\ServiceContext
      */
-    protected function getServiceContextFromAnnotation(
-        ServiceContext $service
-    ): ContainerContextService {
+    protected function getServiceContextFromAnnotation(ServiceContext $service): ContainerContextService
+    {
         $containerService = new ContainerContextService();
 
         $containerService

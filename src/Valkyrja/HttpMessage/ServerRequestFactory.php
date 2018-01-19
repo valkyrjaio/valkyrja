@@ -526,10 +526,12 @@ abstract class ServerRequestFactory
         }
 
         if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
-            throw new UnexpectedValueException(sprintf(
-                'Unrecognized protocol version (%s)',
-                $server['SERVER_PROTOCOL']
-            ));
+            throw new UnexpectedValueException(
+                sprintf(
+                    'Unrecognized protocol version (%s)',
+                    $server['SERVER_PROTOCOL']
+                )
+            );
         }
 
         return $matches['version'];
@@ -547,7 +549,8 @@ abstract class ServerRequestFactory
      */
     private static function parseCookieHeader(string $cookieHeader): array
     {
-        preg_match_all('(
+        preg_match_all(
+            '(
             (?:^\\n?[ \t]*|;[ ])
             (?P<name>[!#$%&\'*+-.0-9A-Z^_`a-z|~]+)
             =
@@ -555,7 +558,11 @@ abstract class ServerRequestFactory
                 (?P<value>[\x21\x23-\x2b\x2d-\x3a\x3c-\x5b\x5d-\x7e]*)
             (?P=DQUOTE)
             (?=\\n?[ \t]*$|;[ ])
-        )x', $cookieHeader, $matches, PREG_SET_ORDER);
+        )x',
+            $cookieHeader,
+            $matches,
+            PREG_SET_ORDER
+        );
 
         $cookies = [];
 

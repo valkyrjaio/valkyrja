@@ -68,10 +68,8 @@ trait MiddlewareAwareTrait
      *
      * @return \Valkyrja\Http\Request
      */
-    public function requestMiddleware(
-        Request $request,
-        array $middleware = null
-    ): Request {
+    public function requestMiddleware(Request $request, array $middleware = null): Request
+    {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 
@@ -110,11 +108,8 @@ trait MiddlewareAwareTrait
      *
      * @return \Valkyrja\Http\Response
      */
-    public function responseMiddleware(
-        Request $request,
-        Response $response,
-        array $middleware = null
-    ): Response {
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response
+    {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 
@@ -154,11 +149,8 @@ trait MiddlewareAwareTrait
      *
      * @return void
      */
-    public function terminableMiddleware(
-        Request $request,
-        Response $response,
-        array $middleware = null
-    ): void {
+    public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void
+    {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
 

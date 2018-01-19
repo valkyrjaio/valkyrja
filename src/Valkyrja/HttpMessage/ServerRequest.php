@@ -105,7 +105,7 @@ interface ServerRequest extends Request
      *
      * @return string|null
      */
-    public function getCookieParam(string $name):? string;
+    public function getCookieParam(string $name): ? string;
 
     /**
      * Determine if a specific cookie exists.

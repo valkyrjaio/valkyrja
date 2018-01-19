@@ -35,11 +35,8 @@ class NativePathGenerator implements PathGenerator
      *
      * @return string
      */
-    public function parse(
-        array $segments,
-        array $data = null,
-        array $params = null
-    ): string {
+    public function parse(array $segments, array $data = null, array $params = null): string
+    {
         // If data was passed but no params
         if (null === $params && null !== $data) {
             throw new InvalidArgumentException(
@@ -179,7 +176,7 @@ class NativePathGenerator implements PathGenerator
      *
      * @return string
      */
-    protected function findParamSegment(array $segments, string $param):? string
+    protected function findParamSegment(array $segments, string $param): ? string
     {
         $segment = null;
 

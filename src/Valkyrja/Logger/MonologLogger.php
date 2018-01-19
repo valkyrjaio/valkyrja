@@ -166,11 +166,8 @@ class MonologLogger implements Logger
      *
      * @return \Valkyrja\Logger\Logger
      */
-    public function log(
-        LogLevel $level,
-        string $message,
-        array $context = []
-    ): Logger {
+    public function log(LogLevel $level, string $message, array $context = []): Logger
+    {
         $this->logger->{$level->getValue()}($message, $context);
 
         return $this;

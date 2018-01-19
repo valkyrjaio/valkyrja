@@ -32,7 +32,7 @@ class Listener extends Annotation
      *
      * @return string
      */
-    public function getEvent():? string
+    public function getEvent(): ? string
     {
         return $this->event;
     }

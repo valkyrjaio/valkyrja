@@ -266,11 +266,8 @@ abstract class CommandHandler
      *
      * @return void
      */
-    protected function sectionMessage(
-        string $name,
-        string $description,
-        int $longestLength = null
-    ): void {
+    protected function sectionMessage(string $name, string $description, int $longestLength = null): void
+    {
         $longestLength = $longestLength ?? 0;
         $spacesToAdd   = $longestLength - strlen($name);
 

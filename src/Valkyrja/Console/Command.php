@@ -60,7 +60,7 @@ class Command extends Dispatch
      *
      * @return string
      */
-    public function getPath():? string
+    public function getPath(): ? string
     {
         return $this->path;
     }
@@ -84,7 +84,7 @@ class Command extends Dispatch
      *
      * @return string
      */
-    public function getRegex():? string
+    public function getRegex(): ? string
     {
         return $this->regex;
     }
@@ -108,7 +108,7 @@ class Command extends Dispatch
      *
      * @return array
      */
-    public function getParams():? array
+    public function getParams(): ? array
     {
         return $this->params;
     }
@@ -132,7 +132,7 @@ class Command extends Dispatch
      *
      * @return array
      */
-    public function getSegments():? array
+    public function getSegments(): ? array
     {
         return $this->segments;
     }
@@ -156,7 +156,7 @@ class Command extends Dispatch
      *
      * @return string
      */
-    public function getDescription():? string
+    public function getDescription(): ? string
     {
         return $this->description;
     }

@@ -56,10 +56,8 @@ class FlyFilesystem implements Filesystem
      * @param \League\Flysystem\Filesystem|null $flySystem   [optional] The
      *                                                       FlyFilesystem
      */
-    public function __construct(
-        Application $application,
-        FlySystem $flySystem = null
-    ) {
+    public function __construct(Application $application, FlySystem $flySystem = null)
+    {
         $this->app       = $application;
         $this->flySystem = $flySystem
             ?? new FlySystem(
@@ -88,7 +86,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return string|null The contents or null on failure
      */
-    public function read(string $path):? string
+    public function read(string $path): ? string
     {
         $read = $this->flySystem->read($path);
 
@@ -240,7 +238,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return array|null An array of meta data or null on failure
      */
-    public function metadata(string $path):? array
+    public function metadata(string $path): ? array
     {
         $metadata = $this->flySystem->getMetadata($path);
 
@@ -256,7 +254,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return string|null The mime type or null on failure
      */
-    public function mimetype(string $path):? string
+    public function mimetype(string $path): ? string
     {
         $mimetype = $this->flySystem->getMimetype($path);
 
@@ -270,7 +268,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path):? int
+    public function size(string $path): ? int
     {
         $size = $this->flySystem->getSize($path);
 
@@ -286,7 +284,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return int|null The timestamp or null on failure
      */
-    public function timestamp(string $path):? int
+    public function timestamp(string $path): ? int
     {
         $timestamp = $this->flySystem->getTimestamp($path);
 
@@ -303,7 +301,7 @@ class FlyFilesystem implements Filesystem
      * @return string|null
      *      The visibility ('public' or 'private') or null on failure
      */
-    public function visibility(string $path):? string
+    public function visibility(string $path): ? string
     {
         $visibility = $this->flySystem->getVisibility($path);
 
@@ -382,10 +380,8 @@ class FlyFilesystem implements Filesystem
      *
      * @return array
      */
-    public function listContents(
-        string $directory = null,
-        bool $recursive = false
-    ): array {
+    public function listContents(string $directory = null, bool $recursive = false): array
+    {
         return $this->flySystem->listContents($directory ?? '', $recursive);
     }
 

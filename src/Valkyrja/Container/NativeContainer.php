@@ -251,11 +251,8 @@ class NativeContainer implements Container
      *
      * @return bool
      */
-    public function hasContext(
-        string $serviceId,
-        string $context,
-        string $member = null
-    ): bool {
+    public function hasContext(string $serviceId, string $context, string $member = null): bool
+    {
         $contextIndex = $this->contextServiceId($serviceId, $context, $member);
 
         return isset(self::$services[$contextIndex]);
@@ -297,12 +294,8 @@ class NativeContainer implements Container
      *
      * @return mixed
      */
-    public function get(
-        string $serviceId,
-        array $arguments = null,
-        string $context = null,
-        string $member = null
-    ) {
+    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
+    {
         // If there is a context set for this context and member combination
         if (
             null !== $context
@@ -461,11 +454,8 @@ class NativeContainer implements Container
      *
      * @return string
      */
-    public function contextServiceId(
-        string $serviceId,
-        string $context,
-        string $member = null
-    ): string {
+    public function contextServiceId(string $serviceId, string $context, string $member = null): string
+    {
         $index = $serviceId . '@' . ($context ?? '');
 
         // If there is a method

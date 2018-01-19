@@ -53,12 +53,8 @@ class NativeRequest implements Request
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(
-        Uri $uri = null,
-        string $method = null,
-        Stream $body = null,
-        array $headers = null
-    ) {
+    public function __construct(Uri $uri = null, string $method = null, Stream $body = null, array $headers = null)
+    {
         $this->initialize($uri, $method, $body, $headers);
     }
 }

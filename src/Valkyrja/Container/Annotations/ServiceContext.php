@@ -60,7 +60,7 @@ class ServiceContext extends Service
      *
      * @return string
      */
-    public function getContextClass():? string
+    public function getContextClass(): ? string
     {
         return $this->contextClass;
     }
@@ -82,7 +82,7 @@ class ServiceContext extends Service
      *
      * @return string
      */
-    public function getContextProperty():? string
+    public function getContextProperty(): ? string
     {
         return $this->contextProperty;
     }
@@ -104,7 +104,7 @@ class ServiceContext extends Service
      *
      * @return string
      */
-    public function getContextMethod():? string
+    public function getContextMethod(): ? string
     {
         return $this->contextMethod;
     }
@@ -126,7 +126,7 @@ class ServiceContext extends Service
      *
      * @return string
      */
-    public function getContextFunction():? string
+    public function getContextFunction(): ? string
     {
         return $this->contextFunction;
     }
@@ -148,7 +148,7 @@ class ServiceContext extends Service
      *
      * @return \Closure
      */
-    public function getContextClosure():? Closure
+    public function getContextClosure(): ? Closure
     {
         return $this->contextClosure;
     }

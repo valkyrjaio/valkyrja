@@ -542,11 +542,8 @@ class Valkyrja implements Application
      *
      * @return void
      */
-    public function redirectTo(
-        string $uri = null,
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): void {
+    public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void
+    {
         throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
     }
 
@@ -671,11 +668,8 @@ class Valkyrja implements Application
      *
      * @return \Valkyrja\Http\Response
      */
-    public function response(
-        string $content = '',
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response {
+    public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
+    {
         /** @var Response $response */
         $response = $this->container()->getSingleton(Response::class);
 
@@ -697,11 +691,8 @@ class Valkyrja implements Application
      *
      * @return \Valkyrja\Http\JsonResponse
      */
-    public function json(
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): JsonResponse {
+    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
+    {
         /** @var JsonResponse $response */
         $response = $this->container()->getSingleton(JsonResponse::class);
 

@@ -187,7 +187,7 @@ class Directory
      *
      * @return string
      */
-    public static function path(string $path = null):? string
+    public static function path(string $path = null): ? string
     {
         return $path && $path[0] !== static::DIRECTORY_SEPARATOR
             ? static::DIRECTORY_SEPARATOR . $path

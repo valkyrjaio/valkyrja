@@ -76,10 +76,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function classMembersAnnotationsType(
-        string $type,
-        string $class
-    ): array;
+    public function classMembersAnnotationsType(string $type, string $class): array;
 
     /**
      * Get a class's and class's members' annotations.
@@ -98,10 +95,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function classAndMembersAnnotationsType(
-        string $type,
-        string $class
-    ): array;
+    public function classAndMembersAnnotationsType(string $type, string $class): array;
 
     /**
      * Get a property's annotations.
@@ -122,11 +116,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertyAnnotationsType(
-        string $type,
-        string $class,
-        string $property
-    ): array;
+    public function propertyAnnotationsType(string $type, string $class, string $property): array;
 
     /**
      * Get a class's properties' annotations.
@@ -145,10 +135,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function propertiesAnnotationsType(
-        string $type,
-        string $class
-    ): array;
+    public function propertiesAnnotationsType(string $type, string $class): array;
 
     /**
      * Get a method's annotations.
@@ -169,11 +156,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function methodAnnotationsType(
-        string $type,
-        string $class,
-        string $method
-    ): array;
+    public function methodAnnotationsType(string $type, string $class, string $method): array;
 
     /**
      * Get a class's methods' annotations.
@@ -211,10 +194,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function functionAnnotationsType(
-        string $type,
-        string $function
-    ): array;
+    public function functionAnnotationsType(string $type, string $function): array;
 
     /**
      * Filter annotations by type.
@@ -224,10 +204,7 @@ interface Annotations
      *
      * @return array
      */
-    public function filterAnnotationsByType(
-        string $type,
-        Annotation ...$annotations
-    ): array;
+    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array;
 
     /**
      * Get a reflection class's annotations.
@@ -236,9 +213,7 @@ interface Annotations
      *
      * @return \Valkyrja\Annotations\Annotation[]
      */
-    public function getReflectionFunctionAnnotations(
-        ReflectionFunctionAbstract $reflection
-    ): array;
+    public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array;
 
     /**
      * Get a class's reflection.
@@ -257,10 +232,7 @@ interface Annotations
      *
      * @return \ReflectionProperty
      */
-    public function getPropertyReflection(
-        string $class,
-        string $property
-    ): ReflectionProperty;
+    public function getPropertyReflection(string $class, string $property): ReflectionProperty;
 
     /**
      * Get a method's reflection.
@@ -270,10 +242,7 @@ interface Annotations
      *
      * @return \ReflectionMethod
      */
-    public function getMethodReflection(
-        string $class,
-        string $method
-    ): ReflectionMethod;
+    public function getMethodReflection(string $class, string $method): ReflectionMethod;
 
     /**
      * get a function's reflection.

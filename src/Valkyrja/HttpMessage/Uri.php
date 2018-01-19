@@ -132,7 +132,7 @@ interface Uri
      *
      * @return null|int The URI port.
      */
-    public function getPort():? int;
+    public function getPort(): ? int;
 
     /**
      * Retrieve the host and port components of the URI.

@@ -118,10 +118,8 @@ class NativeConsole implements Console
      *
      * @return void
      */
-    protected function addParsedCommand(
-        Command $command,
-        array $parsedCommand
-    ): void {
+    protected function addParsedCommand(Command $command, array $parsedCommand): void
+    {
         // Set the properties
         $command->setRegex($parsedCommand['regex']);
         $command->setParams($parsedCommand['params']);
@@ -146,7 +144,7 @@ class NativeConsole implements Console
      *
      * @return \Valkyrja\Console\Command
      */
-    public function command(string $name):? Command
+    public function command(string $name): ? Command
     {
         return $this->hasCommand($name)
             ? self::$commands[self::$namedCommands[$name]]
@@ -189,7 +187,7 @@ class NativeConsole implements Console
      *
      * @return null|\Valkyrja\Console\Command
      */
-    public function inputCommand(Input $input):? Command
+    public function inputCommand(Input $input): ? Command
     {
         return $this->matchCommand($input->getStringArguments());
     }
@@ -201,7 +199,7 @@ class NativeConsole implements Console
      *
      * @return \Valkyrja\Console\Command
      */
-    public function matchCommand(string $path):? Command
+    public function matchCommand(string $path): ? Command
     {
         // If the path matches a set command path
         if (isset(self::$commands[$path])) {

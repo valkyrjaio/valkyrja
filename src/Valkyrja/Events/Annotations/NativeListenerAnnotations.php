@@ -92,9 +92,8 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
      *
      * @return \Valkyrja\Events\Listener
      */
-    protected function getListenerFromAnnotation(
-        Listener $listener
-    ): EventListener {
+    protected function getListenerFromAnnotation(Listener $listener): EventListener
+    {
         $eventListener = new EventListener();
 
         $eventListener

@@ -119,11 +119,7 @@ interface Router extends Cacheable
      *
      * @return string
      */
-    public function routeUrl(
-        string $name,
-        array $data = null,
-        bool $absolute = null
-    ): string;
+    public function routeUrl(string $name, array $data = null, bool $absolute = null): string;
 
     /**
      * Get a route from a request.
@@ -134,7 +130,7 @@ interface Router extends Cacheable
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function requestRoute(Request $request):? Route;
+    public function requestRoute(Request $request): ? Route;
 
     /**
      * Get a route by path.
@@ -146,7 +142,7 @@ interface Router extends Cacheable
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = null):? Route;
+    public function matchRoute(string $path, string $method = null): ? Route;
 
     /**
      * Determine if a uri is valid.

@@ -83,7 +83,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function getRoute(string $path):? Route
+    public function getRoute(string $path): ? Route
     {
         return $this->routes[$path] ?? null;
     }
@@ -117,7 +117,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function getStaticRoute(string $path):? Route
+    public function getStaticRoute(string $path): ? Route
     {
         return $this->getRoute($this->staticRoutes[$path] ?? $path);
     }
@@ -151,7 +151,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function getDynamicRoute(string $regex):? Route
+    public function getDynamicRoute(string $regex): ? Route
     {
         return $this->getRoute($this->dynamicRoutes[$regex] ?? $regex);
     }
@@ -187,7 +187,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function getNamedRoute(string $name):? Route
+    public function getNamedRoute(string $name): ? Route
     {
         return $this->getRoute($this->namedRoutes[$name] ?? $name);
     }

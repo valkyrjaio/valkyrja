@@ -97,7 +97,7 @@ interface UploadedFile
      *
      * @return int|null The file size in bytes or null if unknown.
      */
-    public function getSize():? int;
+    public function getSize(): ? int;
 
     /**
      * Retrieve the error associated with the uploaded file.
@@ -129,7 +129,7 @@ interface UploadedFile
      * @return string|null The filename sent by the client or null if none
      *          was provided.
      */
-    public function getClientFilename():? string;
+    public function getClientFilename(): ? string;
 
     /**
      * Retrieve the media type sent by the client.
@@ -144,5 +144,5 @@ interface UploadedFile
      * @return string|null The media type sent by the client or null if none
      *          was provided.
      */
-    public function getClientMediaType():? string;
+    public function getClientMediaType(): ? string;
 }

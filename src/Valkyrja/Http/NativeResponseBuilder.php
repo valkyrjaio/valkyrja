@@ -49,11 +49,8 @@ class NativeResponseBuilder implements ResponseBuilder
      *
      * @return \Valkyrja\Http\Response
      */
-    public function make(
-        string $content = '',
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response {
+    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
+    {
         return $this->app->response($content, $statusCode, $headers);
     }
 
@@ -87,11 +84,8 @@ class NativeResponseBuilder implements ResponseBuilder
      *
      * @return \Valkyrja\Http\JsonResponse
      */
-    public function json(
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): JsonResponse {
+    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
+    {
         return $this->app->json($data, $statusCode, $headers);
     }
 

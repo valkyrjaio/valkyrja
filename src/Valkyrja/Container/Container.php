@@ -24,7 +24,7 @@ interface Container extends Cacheable, ProvidersAware
     /**
      * Set an alias to the container.
      *
-     * @param string $alias     The alias
+     * @param string $alias The alias
      * @param string $serviceId The service to return
      *
      * @return void
@@ -78,11 +78,7 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return bool
      */
-    public function hasContext(
-        string $serviceId,
-        string $context,
-        string $member = null
-    ): bool;
+    public function hasContext(string $serviceId, string $context, string $member = null): bool;
 
     /**
      * Check whether a given service is an alias.
@@ -123,12 +119,7 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return mixed
      */
-    public function get(
-        string $serviceId,
-        array $arguments = null,
-        string $context = null,
-        string $member = null
-    );
+    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null);
 
     /**
      * Make a service.
@@ -179,9 +170,5 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return string
      */
-    public function contextServiceId(
-        string $serviceId,
-        string $context,
-        string $member = null
-    ): string;
+    public function contextServiceId(string $serviceId, string $context, string $member = null): string;
 }

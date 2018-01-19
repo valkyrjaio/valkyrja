@@ -33,11 +33,8 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
-    public function __construct(
-        string $text,
-        int $status = null,
-        array $headers = []
-    ) {
+    public function __construct(string $text, int $status = null, array $headers = [])
+    {
         $body = new NativeStream('php://temp', 'wb+');
 
         $body->write($text);

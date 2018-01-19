@@ -745,9 +745,8 @@ class NativeRequest implements Request
      *
      * @return \Valkyrja\Http\Request
      */
-    public function setAcceptableContentTypes(
-        array $acceptableContentTypes = []
-    ): Request {
+    public function setAcceptableContentTypes(array $acceptableContentTypes = []): Request
+    {
         $this->acceptableContentTypes = $acceptableContentTypes;
 
         return $this;

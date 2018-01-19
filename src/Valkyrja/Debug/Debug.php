@@ -33,10 +33,8 @@ class Debug
      *
      * @return void
      */
-    public static function enable(
-        int $errorReportingLevel = E_ALL,
-        bool $displayErrors = false
-    ): void {
+    public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void
+    {
         // If debug is already enabled
         if (static::$enabled) {
             // Don't do things twice

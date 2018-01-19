@@ -212,7 +212,7 @@ class NativeServerRequest implements ServerRequest
      *
      * @return string|null
      */
-    public function getCookieParam(string $name):? string
+    public function getCookieParam(string $name): ? string
     {
         return $this->cookies[$name] ?? null;
     }

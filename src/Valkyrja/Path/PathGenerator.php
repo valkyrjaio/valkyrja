@@ -27,9 +27,5 @@ interface PathGenerator
      *
      * @return string
      */
-    public function parse(
-        array $segments,
-        array $data = null,
-        array $params = null
-    ): string;
+    public function parse(array $segments, array $data = null, array $params = null): string;
 }
