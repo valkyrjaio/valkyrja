@@ -16,11 +16,11 @@ use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class Output.
+ * Class NativeOutput.
  *
  * @author Melech Mizrachi
  */
-class OutputImpl implements Output
+class NativeOutput implements Output
 {
     use Provides;
 

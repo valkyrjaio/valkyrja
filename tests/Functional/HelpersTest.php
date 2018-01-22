@@ -14,7 +14,7 @@ namespace Valkyrja\Tests\Functional;
 use Exception;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Console\Input\NativeInput;
-use Valkyrja\Console\Output\OutputImpl;
+use Valkyrja\Console\Output\NativeOutput;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Directory;
@@ -27,7 +27,7 @@ use Valkyrja\Events\NativeEvents;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\NativeJsonResponse;
-use Valkyrja\Http\KernelImpl;
+use Valkyrja\Http\NativeKernel;
 use Valkyrja\Http\NativeRedirectResponse;
 use Valkyrja\Http\NativeRequest;
 use Valkyrja\Http\NativeResponse;
@@ -196,7 +196,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, kernel() instanceof KernelImpl);
+        $this->assertEquals(true, kernel() instanceof NativeKernel);
     }
 
     /**
@@ -216,7 +216,7 @@ class HelpersTest extends TestCase
      */
     public function testOutput(): void
     {
-        $this->assertEquals(true, output() instanceof OutputImpl);
+        $this->assertEquals(true, output() instanceof NativeOutput);
     }
 
     /**

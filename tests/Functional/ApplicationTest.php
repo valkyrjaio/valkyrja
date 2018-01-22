@@ -30,7 +30,7 @@ use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\NativeJsonResponse;
-use Valkyrja\Http\KernelImpl;
+use Valkyrja\Http\NativeKernel;
 use Valkyrja\Http\NativeRedirectResponse;
 use Valkyrja\Http\NativeRequest;
 use Valkyrja\Http\NativeResponse;
@@ -304,7 +304,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, $this->app->kernel() instanceof KernelImpl);
+        $this->assertEquals(true, $this->app->kernel() instanceof NativeKernel);
     }
 
     /**

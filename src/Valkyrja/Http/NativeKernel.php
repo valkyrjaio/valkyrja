@@ -20,11 +20,11 @@ use Valkyrja\Support\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class Kernel.
+ * Class NativeKernel.
  *
  * @author Melech Mizrachi
  */
-class KernelImpl implements Kernel
+class NativeKernel implements Kernel
 {
     use MiddlewareAwareTrait;
     use Provides;
