@@ -122,7 +122,7 @@ class NativeInput implements Input
         $globalArguments = $this->getGlobalOptionsFlat();
 
         foreach ($arguments as $key => $argument) {
-            if (in_array($argument, $globalArguments, true)) {
+            if (\in_array($argument, $globalArguments, true)) {
                 unset($arguments[$key]);
             }
         }
@@ -176,7 +176,7 @@ class NativeInput implements Input
             // If the key is already set
             if (isset($this->{$type}[$key])) {
                 // If the key isn't already an array
-                if (! is_array($this->{$type}[$key])) {
+                if (! \is_array($this->{$type}[$key])) {
                     // Make it an array with the current value
                     $this->{$type}[$key] = [$this->{$type}[$key]];
                 }

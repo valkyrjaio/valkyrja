@@ -294,7 +294,7 @@ class NativeAnnotationsParser implements AnnotationsParser
 
         // Constants can be bool, int, string, or arrays
         // If the key is an array throw an exception
-        if (! is_int($key) && ! is_string($key) && ! is_bool($key)) {
+        if (! \is_int($key) && ! \is_string($key) && ! \is_bool($key)) {
             throw new InvalidAnnotationKeyArgument();
         }
 
@@ -318,7 +318,7 @@ class NativeAnnotationsParser implements AnnotationsParser
         // then it's an array of values to parse (ex: [[Test | Test2 | Test3]]
         if (
             strpos($value, '[[') === 0
-            && strpos($value, ']]') === strlen($value) - 2
+            && strpos($value, ']]') === \strlen($value) - 2
         ) {
             // Strip the value of the [[ ]] at the ends of the string
             $value = (string) substr($value, 2, -2);
@@ -346,9 +346,9 @@ class NativeAnnotationsParser implements AnnotationsParser
         }
 
         // Determine if the value is a constant
-        if (defined($value)) {
+        if (\defined($value)) {
             // Set the value as the constant's value
-            return constant($value);
+            return \constant($value);
         }
 
         [$class, $member] = explode('::', $value);

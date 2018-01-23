@@ -120,7 +120,7 @@ abstract class ServerRequestFactory
         $header  = strtolower($header);
         $headers = array_change_key_case($headers, CASE_LOWER);
         if (array_key_exists($header, $headers)) {
-            $value = is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
+            $value = \is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
 
             return $value;
         }
@@ -143,7 +143,7 @@ abstract class ServerRequestFactory
         $apacheRequestHeaders = self::$apacheRequestHeaders;
 
         if (isset($server['HTTP_AUTHORIZATION'])
-            || ! is_callable($apacheRequestHeaders)
+            || ! \is_callable($apacheRequestHeaders)
         ) {
             return $server;
         }
@@ -186,12 +186,12 @@ abstract class ServerRequestFactory
                 continue;
             }
 
-            if (is_array($value) && isset($value['tmp_name'])) {
+            if (\is_array($value) && isset($value['tmp_name'])) {
                 $normalized[$key] = self::createUploadedFileFromSpec($value);
                 continue;
             }
 
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $normalized[$key] = self::normalizeFiles($value);
                 continue;
             }
@@ -226,7 +226,7 @@ abstract class ServerRequestFactory
             }
 
             if ($value && strpos($key, 'HTTP_') === 0) {
-                $name           = strtr(strtolower(substr($key, 5)), '_', '-');
+                $name           = str_replace('_', '-', strtolower(substr($key, 5)));
                 $headers[$name] = $value;
                 continue;
             }
@@ -433,7 +433,7 @@ abstract class ServerRequestFactory
 
         // works for regname, IPv4 & IPv6
         if (preg_match('|\:(\d+)$|', $accumulator->host, $matches)) {
-            $accumulator->host = substr($accumulator->host, 0, -1 * (strlen($matches[1]) + 1));
+            $accumulator->host = substr($accumulator->host, 0, -1 * (\strlen($matches[1]) + 1));
             $accumulator->port = (int) $matches[1];
         }
     }
@@ -470,7 +470,7 @@ abstract class ServerRequestFactory
      */
     private static function createUploadedFileFromSpec(array $value)
     {
-        if (is_array($value['tmp_name'])) {
+        if (\is_array($value['tmp_name'])) {
             return self::normalizeNestedFileSpec($value);
         }
 

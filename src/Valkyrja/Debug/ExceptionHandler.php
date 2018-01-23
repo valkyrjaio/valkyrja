@@ -91,7 +91,7 @@ class ExceptionHandler
 
         if (
             null !== $error &&
-            in_array(
+            \in_array(
                 $error['type'],
                 [
                     E_ERROR,
@@ -234,7 +234,7 @@ class ExceptionHandler
                     $exceptions[] = $e;
                 }
 
-                $count = count($exceptions);
+                $count = \count($exceptions);
                 $total = $count;
 
                 /**
@@ -243,7 +243,7 @@ class ExceptionHandler
                  */
                 foreach ($exceptions as $position => $e) {
                     $ind     = $count - $position;
-                    $class   = $this->formatClass(get_class($e));
+                    $class   = $this->formatClass(\get_class($e));
                     $message = nl2br($this->escapeHtml($e->getMessage()));
                     $content .= sprintf(
                         <<<'EOF'
@@ -301,7 +301,7 @@ EOF
                 // Something nasty happened and we cannot throw an exception anymore
                 $title = sprintf(
                     'Exception thrown when handling an exception (%s: %s)',
-                    get_class($e),
+                    \get_class($e),
                     $this->escapeHtml($e->getMessage())
                 );
             }
@@ -491,25 +491,25 @@ EOF;
         $result = [];
 
         foreach ($args as $key => $item) {
-            if (is_object($item)) {
+            if (\is_object($item)) {
                 $formattedValue = sprintf(
                     '<em>object</em>(%s)',
-                    $this->formatClass(get_class($item))
+                    $this->formatClass(\get_class($item))
                 );
-            } elseif (is_array($item)) {
+            } elseif (\is_array($item)) {
                 $formattedValue = sprintf(
                     '<em>array</em>(%s)',
                     $this->formatArgs($item)
                 );
-            } elseif (is_string($item)) {
+            } elseif (\is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
             } elseif (null === $item) {
                 $formattedValue = '<em>null</em>';
-            } elseif (is_bool($item)) {
+            } elseif (\is_bool($item)) {
                 $formattedValue = '<em>'
                     . strtolower(var_export($item, true))
                     . '</em>';
-            } elseif (is_resource($item)) {
+            } elseif (\is_resource($item)) {
                 $formattedValue = '<em>resource</em>';
             } else {
                 $formattedValue = str_replace(
@@ -519,7 +519,7 @@ EOF;
                 );
             }
 
-            $result[] = is_int($key)
+            $result[] = \is_int($key)
                 ? $formattedValue
                 : sprintf("'%s' => %s", $key, $formattedValue);
         }

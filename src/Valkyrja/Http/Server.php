@@ -46,7 +46,7 @@ class Server extends Collection
 
         foreach ($this->collection as $key => $value) {
             if (
-                in_array($key, $specialHeaders, true)
+                \in_array($key, $specialHeaders, true)
                 || 0 === strpos($key, 'HTTP_')
             ) {
                 $headers[$this->getHeaderName($key)] = $value;

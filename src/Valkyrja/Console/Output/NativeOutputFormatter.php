@@ -386,7 +386,7 @@ class NativeOutputFormatter implements OutputFormatter
         }
 
         // Check if options were specified
-        if (count($this->options)) {
+        if (\count($this->options)) {
             // Iterate through all the options
             foreach ($this->options as $option) {
                 $set[]   = $option;
@@ -395,7 +395,7 @@ class NativeOutputFormatter implements OutputFormatter
         }
 
         // No need to format if there's nothing to set
-        if (0 === count($set)) {
+        if (0 === \count($set)) {
             return $message;
         }
 

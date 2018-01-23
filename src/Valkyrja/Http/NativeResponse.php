@@ -103,7 +103,7 @@ class NativeResponse implements Response
         $this->setHeaders($headers);
         $this->setContent($content);
         $this->setStatusCode($status);
-        $this->setProtocolVersion('1.0');
+        $this->setProtocolVersion();
 
         $this->cookies = new Cookies();
     }
@@ -217,7 +217,7 @@ class NativeResponse implements Response
              ->sendContent();
 
         // If fastcgi is enabled
-        if (function_exists('fastcgi_finish_request')) {
+        if (\function_exists('fastcgi_finish_request')) {
             // Use it to finish the request
             fastcgi_finish_request();
         } // Otherwise if this isn't a cli request
@@ -536,7 +536,7 @@ class NativeResponse implements Response
      */
     public function isCacheable(): bool
     {
-        if (! in_array(
+        if (! \in_array(
             $this->statusCode,
             [
                 StatusCode::OK,
@@ -1089,7 +1089,7 @@ class NativeResponse implements Response
      */
     public function isRedirect(string $location = null): bool
     {
-        return in_array(
+        return \in_array(
                 $this->statusCode,
                 [
                     StatusCode::CREATED,
@@ -1112,7 +1112,7 @@ class NativeResponse implements Response
      */
     public function isEmpty(): bool
     {
-        return in_array(
+        return \in_array(
             $this->statusCode,
             [
                 StatusCode::NO_CONTENT,
@@ -1136,9 +1136,9 @@ class NativeResponse implements Response
     public static function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
         $status = ob_get_status(true);
-        $level  = count($status);
+        $level  = \count($status);
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
-        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE')
+        $flags = \defined('PHP_OUTPUT_HANDLER_REMOVABLE')
             ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush
                 ? PHP_OUTPUT_HANDLER_FLUSHABLE
                 : PHP_OUTPUT_HANDLER_CLEANABLE)

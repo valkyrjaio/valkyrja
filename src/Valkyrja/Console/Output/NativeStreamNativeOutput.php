@@ -49,7 +49,7 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
         }
 
         // If the stream isn't a valid resource or not a stream resource
-        if (! is_resource($stream) || 'stream' !== get_resource_type($stream)) {
+        if (! \is_resource($stream) || 'stream' !== get_resource_type($stream)) {
             throw new InvalidArgumentException(
                 'Stream is not a valid stream resource.'
             );

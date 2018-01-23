@@ -173,7 +173,7 @@ class NativeStream implements Stream
         $result = ftell($this->stream);
 
         // If the tell is not an int
-        if (! is_int($result)) {
+        if (! \is_int($result)) {
             // Throw a runtime exception
             throw new RuntimeException(
                 'Error occurred during tell operation'
@@ -484,7 +484,7 @@ class NativeStream implements Stream
         $resource = fopen($stream, $mode);
 
         // If the resource isn't a resource or a stream resource type
-        if (! is_resource($resource) || 'stream' !== get_resource_type(
+        if (! \is_resource($resource) || 'stream' !== get_resource_type(
                 $resource
             )
         ) {

@@ -129,7 +129,7 @@ class NativeDispatcher implements Dispatcher
         // If a function is set and is not callable
         if (
             null !== $dispatch->getFunction()
-            && ! is_callable($dispatch->getFunction())
+            && ! \is_callable($dispatch->getFunction())
         ) {
             // Throw a new invalid function exception
             throw new InvalidFunctionException(

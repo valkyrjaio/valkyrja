@@ -491,7 +491,7 @@ class NativeServerRequest implements ServerRequest
     protected function validateUploadedFiles(array $uploadedFiles): void
     {
         foreach ($uploadedFiles as $file) {
-            if (is_array($file)) {
+            if (\is_array($file)) {
                 $this->validateUploadedFiles($file);
 
                 continue;

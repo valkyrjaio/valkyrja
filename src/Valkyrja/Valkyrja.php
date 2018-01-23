@@ -145,9 +145,9 @@ class Valkyrja implements Application
         self::setEnv();
 
         // If the VALKYRJA_START constant hasn't already been set
-        if (! defined('VALKYRJA_START')) {
+        if (! \defined('VALKYRJA_START')) {
             // Set a global constant for when the framework started
-            define('VALKYRJA_START', microtime(true));
+            \define('VALKYRJA_START', microtime(true));
         }
 
         // Bootstrap debug capabilities
@@ -342,8 +342,8 @@ class Valkyrja implements Application
 
         // If the env has this variable defined and the variable isn't null
         if (
-            defined(static::getEnv() . '::' . $variable)
-            && null !== $env = constant(static::getEnv() . '::' . $variable)
+            \defined(static::getEnv() . '::' . $variable)
+            && null !== $env = \constant(static::getEnv() . '::' . $variable)
         ) {
             // Return the variable
             return $env;
@@ -673,7 +673,7 @@ class Valkyrja implements Application
         /** @var Response $response */
         $response = $this->container()->getSingleton(Response::class);
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $response;
         }
 
@@ -696,7 +696,7 @@ class Valkyrja implements Application
         /** @var JsonResponse $response */
         $response = $this->container()->getSingleton(JsonResponse::class);
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $response;
         }
 
@@ -723,7 +723,7 @@ class Valkyrja implements Application
         /** @var RedirectResponse $response */
         $response = $this->container()->getSingleton(RedirectResponse::class);
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $response;
         }
 
@@ -789,7 +789,7 @@ class Valkyrja implements Application
         /** @var \Valkyrja\View\View $view */
         $view = $this->container()->getSingleton(View::class);
 
-        if (func_num_args() === 0) {
+        if (\func_num_args() === 0) {
             return $view;
         }
 

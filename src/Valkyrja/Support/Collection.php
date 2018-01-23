@@ -71,7 +71,7 @@ class Collection
      */
     public function exists($value): bool
     {
-        return in_array($value, $this->collection, true);
+        return \in_array($value, $this->collection, true);
     }
 
     /**
@@ -148,7 +148,7 @@ class Collection
      */
     public function count(): int
     {
-        return count($this->collection);
+        return \count($this->collection);
     }
 
     /**

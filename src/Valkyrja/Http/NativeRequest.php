@@ -239,7 +239,7 @@ class NativeRequest implements Request
                 'application/x-www-form-urlencoded'
             )
             &&
-            in_array(
+            \in_array(
                 strtoupper(
                     $request->server()->get(
                         'REQUEST_METHOD',
@@ -1075,13 +1075,13 @@ class NativeRequest implements Request
         }
 
         foreach (static::FORMATS as $format => $mimeTypes) {
-            if (in_array($mimeType, $mimeTypes, true)) {
+            if (\in_array($mimeType, $mimeTypes, true)) {
                 return $format;
             }
 
             if (
                 null !== $canonicalMimeType
-                && in_array(
+                && \in_array(
                     $canonicalMimeType,
                     $mimeTypes,
                     true

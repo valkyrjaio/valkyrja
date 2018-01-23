@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Routing;
 
+use InvalidArgumentException;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Http\RequestMethod;
 
@@ -124,14 +125,13 @@ class Route extends Dispatch
      * @param array $requestMethods The request methods
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @return $this
      */
     public function setRequestMethods(array $requestMethods): self
     {
         if (array_diff($requestMethods, RequestMethod::validValues())) {
-            throw new \InvalidArgumentException('Invalid request methods set');
+            throw new InvalidArgumentException('Invalid request methods set');
         }
 
         $this->requestMethods = $requestMethods;

@@ -39,6 +39,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param string[] $classes The classes
      *
+     * @throws \InvalidArgumentException
      * @throws \ReflectionException
      * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
      *

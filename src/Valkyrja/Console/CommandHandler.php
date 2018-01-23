@@ -187,7 +187,7 @@ abstract class CommandHandler
         $this->sectionTitleMessage('Arguments');
 
         foreach ($arguments as $argument) {
-            $longestLength = max(strlen($argument->getName()), $longestLength);
+            $longestLength = max(\strlen($argument->getName()), $longestLength);
         }
 
         foreach ($arguments as $argument) {
@@ -223,7 +223,7 @@ abstract class CommandHandler
 
         foreach ($options as $option) {
             $longestLength =
-                max(strlen($this->getOptionName($option)), $longestLength);
+                max(\strlen($this->getOptionName($option)), $longestLength);
         }
 
         foreach ($options as $option) {
@@ -269,7 +269,7 @@ abstract class CommandHandler
     protected function sectionMessage(string $name, string $description, int $longestLength = null): void
     {
         $longestLength = $longestLength ?? 0;
-        $spacesToAdd   = $longestLength - strlen($name);
+        $spacesToAdd   = $longestLength - \strlen($name);
 
         output()->formatter()->green();
         output()->writeMessage(static::TAB . $name);

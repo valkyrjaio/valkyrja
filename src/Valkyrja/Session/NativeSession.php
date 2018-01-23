@@ -228,6 +228,8 @@ class NativeSession implements Session
      *
      * @param string $id The csrf unique token id
      *
+     * @throws \Exception
+     *
      * @return string
      */
     public function csrf(string $id): string
@@ -255,7 +257,7 @@ class NativeSession implements Session
 
         $sessionToken = $this->get($id);
 
-        if (! is_string($sessionToken)) {
+        if (! \is_string($sessionToken)) {
             return false;
         }
 

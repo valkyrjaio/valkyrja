@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Routing\Annotations;
 
+use InvalidArgumentException;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Http\RequestMethod;
 
@@ -123,12 +124,14 @@ class Route extends Annotation
      *
      * @param array $requestMethods The request methods
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     public function setRequestMethods(array $requestMethods): void
     {
         if (array_diff($requestMethods, RequestMethod::validValues())) {
-            throw new \InvalidArgumentException('Invalid request methods set');
+            throw new InvalidArgumentException('Invalid request methods set');
         }
 
         $this->requestMethods = $requestMethods;

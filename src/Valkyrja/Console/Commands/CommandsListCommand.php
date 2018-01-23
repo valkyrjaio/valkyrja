@@ -119,7 +119,7 @@ class CommandsListCommand extends CommandHandler
                 continue;
             }
 
-            $longestLength = max(strlen($command->getName()), $longestLength);
+            $longestLength = max(\strlen($command->getName()), $longestLength);
 
             // If this is a global namespaced command
             if ('global' === $commandNamespace) {

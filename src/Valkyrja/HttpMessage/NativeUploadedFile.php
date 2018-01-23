@@ -236,7 +236,7 @@ class NativeUploadedFile implements UploadedFile
             );
         }
 
-        $targetDirectory = dirname($targetPath);
+        $targetDirectory = \dirname($targetPath);
 
         // If the target directory is not a directory
         // or the target directory is not writable

@@ -124,7 +124,7 @@ class Cookie
         $this->secure = $secure;
         $this->raw    = $raw;
 
-        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+        if (! \in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(
                 'The "sameSite" parameter value is not valid.'
             );

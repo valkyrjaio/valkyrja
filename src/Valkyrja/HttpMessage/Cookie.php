@@ -410,7 +410,7 @@ class Cookie
      */
     public function setSameSite(string $sameSite = null): self
     {
-        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+        if (! \in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(
                 'The "sameSite" parameter value is not valid.'
             );

@@ -84,7 +84,7 @@ abstract class Enum implements JsonSerializable
             return true;
         }
 
-        return in_array($value, $validValues, true);
+        return \in_array($value, $validValues, true);
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Enum implements JsonSerializable
         // Iterate through the values
         foreach ($values as $key => $value) {
             // If this value is defined in this abstract Enum (self)
-            if (defined(self::class . '::' . $key)) {
+            if (\defined(self::class . '::' . $key)) {
                 // Unset it from the list as its not a valid Enum value, but
                 // rather a value the Enum class needs (like self::VALUES)
                 unset($values[$key]);
@@ -187,7 +187,7 @@ abstract class Enum implements JsonSerializable
                 sprintf(
                     'Invalid enumeration %s for Enum %s',
                     $value,
-                    get_class($this)
+                    \get_class($this)
                 )
             );
         }

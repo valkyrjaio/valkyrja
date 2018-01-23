@@ -245,7 +245,7 @@ class NativeEvents implements Events
      */
     public function event(Event $event): array
     {
-        return $this->trigger(get_class($event), [$event]);
+        return $this->trigger(\get_class($event), [$event]);
     }
 
     /**

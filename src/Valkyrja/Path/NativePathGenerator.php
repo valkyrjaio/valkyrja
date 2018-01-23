@@ -111,7 +111,7 @@ class NativePathGenerator implements PathGenerator
 
             $this->validateDatum($key, $datum, $regex);
 
-            if (is_array($datum)) {
+            if (\is_array($datum)) {
                 // Get the segment by the param key and replace the {key}
                 // within it to get the repeatable portion of the segment
                 $segment     = $this->findParamSegment(
@@ -152,7 +152,7 @@ class NativePathGenerator implements PathGenerator
      */
     protected function validateDatum(string $key, $datum, string $regex): void
     {
-        if (is_array($datum)) {
+        if (\is_array($datum)) {
             foreach ($datum as $datumItem) {
                 $this->validateDatum($key, $datumItem, $regex);
             }

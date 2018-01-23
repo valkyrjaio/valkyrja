@@ -58,10 +58,10 @@ class RoutesListCommand extends CommandHandler
             'Dispatch',
         ];
         $lengths      = [
-            strlen($headerTexts[0]),
-            strlen($headerTexts[1]),
-            strlen($headerTexts[2]),
-            strlen($headerTexts[3]),
+            \strlen($headerTexts[0]),
+            \strlen($headerTexts[1]),
+            \strlen($headerTexts[2]),
+            \strlen($headerTexts[3]),
         ];
 
         foreach ($routerRoutes as $route) {
@@ -78,16 +78,16 @@ class RoutesListCommand extends CommandHandler
         foreach ($routes as $key => $route) {
             $routeMessage = '| '
                 . $route[0]
-                . str_repeat(' ', $lengths[0] - strlen($route[0]))
+                . str_repeat(' ', $lengths[0] - \strlen($route[0]))
                 . ' | '
                 . $route[1]
-                . str_repeat(' ', $lengths[1] - strlen($route[1]))
+                . str_repeat(' ', $lengths[1] - \strlen($route[1]))
                 . ' | '
                 . $route[2]
-                . str_repeat(' ', $lengths[2] - strlen($route[2]))
+                . str_repeat(' ', $lengths[2] - \strlen($route[2]))
                 . ' | '
                 . $route[3]
-                . str_repeat(' ', $lengths[3] - strlen($route[3]))
+                . str_repeat(' ', $lengths[3] - \strlen($route[3]))
                 . ' |';
 
             $odd          = $key % 2 > 0;
@@ -130,10 +130,10 @@ class RoutesListCommand extends CommandHandler
                     : $route->getProperty());
         }
 
-        $lengths[0] = max($lengths[0], strlen($requestMethod));
-        $lengths[1] = max($lengths[1], strlen($route->getPath()));
-        $lengths[2] = max($lengths[2], strlen($route->getName()));
-        $lengths[3] = max($lengths[3], strlen($dispatch));
+        $lengths[0] = max($lengths[0], \strlen($requestMethod));
+        $lengths[1] = max($lengths[1], \strlen($route->getPath()));
+        $lengths[2] = max($lengths[2], \strlen($route->getName()));
+        $lengths[3] = max($lengths[3], \strlen($dispatch));
 
         $routes[] = [
             $requestMethod,
@@ -170,13 +170,13 @@ class RoutesListCommand extends CommandHandler
     protected function headerMessage(array $headerTexts, array $lengths): void
     {
         $headerMessage = '| ' . $headerTexts[0]
-            . str_repeat(' ', $lengths[0] - strlen($headerTexts[0]))
+            . str_repeat(' ', $lengths[0] - \strlen($headerTexts[0]))
             . ' | ' . $headerTexts[1]
-            . str_repeat(' ', $lengths[1] - strlen($headerTexts[1]))
+            . str_repeat(' ', $lengths[1] - \strlen($headerTexts[1]))
             . ' | ' . $headerTexts[2]
-            . str_repeat(' ', $lengths[2] - strlen($headerTexts[2]))
+            . str_repeat(' ', $lengths[2] - \strlen($headerTexts[2]))
             . ' | ' . $headerTexts[3]
-            . str_repeat(' ', $lengths[3] - strlen($headerTexts[3]))
+            . str_repeat(' ', $lengths[3] - \strlen($headerTexts[3]))
             . ' |';
 
         output()->writeMessage($headerMessage, true);
