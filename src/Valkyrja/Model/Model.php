@@ -78,6 +78,24 @@ abstract class Model implements JsonSerializable
     }
 
     /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties
+     *
+     * @return void
+     */
+    public function fromArray(array $properties): void
+    {
+        foreach (get_object_vars($this) as $attrName => $attrValue) {
+            if (!isset($properties[$attrName])) {
+                continue;
+            }
+
+            $this->{$attrName} = $properties[$attrName];
+        }
+    }
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array
