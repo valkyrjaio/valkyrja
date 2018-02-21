@@ -21,14 +21,25 @@ use JsonSerializable;
 abstract class Model implements JsonSerializable
 {
     /**
-     * @var array
+     * The table name.
+     *
+     * @var string
      */
-    protected static $attributes = [];
+    public static $table = self::class;
 
     /**
+     * Valid types allowed to be mass set.
+     *
      * @var array
      */
-    protected static $attributeTypes = [];
+    public static $attributes = [];
+
+    /**
+     * Types for attributes that differs from what they were saved into the database as.
+     *
+     * @var array
+     */
+    public static $attributeTypes = [];
 
     /**
      * Get a property.
