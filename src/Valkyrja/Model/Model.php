@@ -21,6 +21,16 @@ use JsonSerializable;
 abstract class Model implements JsonSerializable
 {
     /**
+     * @var array
+     */
+    protected static $attributes = [];
+
+    /**
+     * @var array
+     */
+    protected static $attributeTypes = [];
+
+    /**
      * Get a property.
      *
      * @param string $name The property to get
@@ -89,12 +99,30 @@ abstract class Model implements JsonSerializable
      */
     public function fromArray(array $properties): void
     {
+        // Iterate through the public/protected vars of this model
         foreach (get_object_vars($this) as $attrName => $attrValue) {
-            if (!isset($properties[$attrName])) {
+            // Get the attribute from the properties
+            $property = $properties[$attrName] ?? null;
+
+            // If no property exists
+            if (null === $property) {
+                // Continue onward
                 continue;
             }
 
-            $this->__set($attrName, $properties[$attrName]);
+            // Check if a type was set for this attribute
+            $type = static::$attributeTypes[$attrName] ?? null;
+
+            // If the type is object and the property isn't already an object
+            if ($type === 'object' && ! \is_object($property)) {
+                // Unserialize the object
+                $property = unserialize($property, true);
+            } // If the type is array and the property isn't already an array
+            elseif ($type === 'array' && ! \is_array($property)) {
+                $property = json_decode($property);
+            }
+
+            $this->__set($attrName, $property);
         }
     }
 
