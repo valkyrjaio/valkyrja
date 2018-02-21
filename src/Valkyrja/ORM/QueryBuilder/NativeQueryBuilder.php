@@ -434,16 +434,16 @@ class NativeQueryBuilder implements QueryBuilder
         }
 
         switch ($this->type) {
-            case Statement::SELECT :
+            case Statement::SELECT:
                 $this->query = $this->getSelectQuery();
                 break;
-            case Statement::UPDATE :
+            case Statement::UPDATE:
                 $this->query = $this->getUpdateQuery();
                 break;
-            case Statement::INSERT :
+            case Statement::INSERT:
                 $this->query = $this->getInsertQuery();
                 break;
-            case Statement::DELETE :
+            case Statement::DELETE:
                 $this->query = $this->getDeleteQuery();
                 break;
         }
@@ -516,8 +516,7 @@ class NativeQueryBuilder implements QueryBuilder
             . ' ' . $this->table
             . ' (' . implode(', ', array_keys($this->values)) . ')'
             . ' ' . Statement::VALUE
-            . ' (' . implode(', ', $this->values) . ')'
-            ;
+            . ' (' . implode(', ', $this->values) . ')';
     }
 
     /**

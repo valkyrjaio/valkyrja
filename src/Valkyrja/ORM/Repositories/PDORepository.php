@@ -366,16 +366,16 @@ class PDORepository implements Repository
                 // Switch through the order (value) set
                 switch ($order) {
                     // If the order is ascending
-                    case OrderBy::ASC :
+                    case OrderBy::ASC:
                         // Set the column via the orderByAsc method
                         $query->orderByAsc($column);
                         break;
                     // If the order is descending
-                    case OrderBy::DESC :
+                    case OrderBy::DESC:
                         // Set the column via the orderByDesc method
                         $query->orderByDesc($column);
                         break;
-                    default :
+                    default:
                         // Otherwise set the order (which is the column)
                         $query->orderBy($order);
                         break;
@@ -425,7 +425,7 @@ class PDORepository implements Repository
             ->table($this->table)
             ->{$type}();
 
-        /** @var QueryBuilder $query */
+        /* @var QueryBuilder $query */
 
         // Iterate through the properties
         foreach ($properties as $column => $property) {
