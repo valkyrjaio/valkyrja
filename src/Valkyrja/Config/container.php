@@ -50,6 +50,7 @@ return [
             Valkyrja\Http\NativeResponse::class,
             Valkyrja\Http\NativeResponseBuilder::class,
             Valkyrja\Logger\Providers\LoggerServiceProvider::class,
+            Valkyrja\ORM\NativeEntityManager::class,
             Valkyrja\Path\NativePathGenerator::class,
             Valkyrja\Path\NativePathParser::class,
             Valkyrja\Routing\NativeRouter::class,
