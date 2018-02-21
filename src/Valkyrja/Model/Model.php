@@ -29,7 +29,8 @@ abstract class Model implements JsonSerializable
      */
     public function __get(string $name)
     {
-        $methodName = 'get' . ucfirst($name);
+        $methodName = str_replace('_', '', ucwords($name, '_'));
+        $methodName = 'get' . $methodName;
 
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -48,7 +49,8 @@ abstract class Model implements JsonSerializable
      */
     public function __set(string $name, $value): self
     {
-        $methodName = 'set' . ucfirst($name);
+        $methodName = str_replace('_', '', ucwords($name, '_'));
+        $methodName = 'set' . $methodName;
 
         if (method_exists($this, $methodName)) {
             return $this->$methodName($value);
@@ -68,7 +70,8 @@ abstract class Model implements JsonSerializable
      */
     public function __isset(string $name): bool
     {
-        $methodName = 'isset' . ucfirst($name);
+        $methodName = str_replace('_', '', ucwords($name, '_'));
+        $methodName = 'isset' . $methodName;
 
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -91,7 +94,7 @@ abstract class Model implements JsonSerializable
                 continue;
             }
 
-            $this->{$attrName} = $properties[$attrName];
+            $this->__set($attrName, $properties[$attrName]);
         }
     }
 
