@@ -42,6 +42,13 @@ abstract class Model implements JsonSerializable
     protected static $attributeTypes = [];
 
     /**
+     * The ORM repository to use.
+     *
+     * @var string|null
+     */
+    protected static $repository;
+
+    /**
      * Get the table.
      *
      * @return string
@@ -49,18 +56,6 @@ abstract class Model implements JsonSerializable
     public static function getTable(): string
     {
         return self::$table;
-    }
-
-    /**
-     * Set the table. Only added to avoid auto completion for setters for model attributes/properties.
-     *
-     * @param string $table
-     *
-     * @return void
-     */
-    protected static function setTable(string $table): void
-    {
-        self::$table = $table;
     }
 
     /**
@@ -74,18 +69,6 @@ abstract class Model implements JsonSerializable
     }
 
     /**
-     * Set the attributes. Only added to avoid auto completion for setters for model attributes/properties.
-     *
-     * @param array $attributes
-     *
-     * @return void
-     */
-    protected static function setAttributes(array $attributes): void
-    {
-        self::$attributes = $attributes;
-    }
-
-    /**
      * Get the attribute types.
      *
      * @return array
@@ -96,15 +79,13 @@ abstract class Model implements JsonSerializable
     }
 
     /**
-     * Set the attribute types. Only added to avoid auto completion for setters for model attributes/properties.
+     * Get the ORM repository.
      *
-     * @param array $attributeTypes
-     *
-     * @return void
+     * @return null|string
      */
-    protected static function setAttributeTypes(array $attributeTypes): void
+    public static function getRepository(): ? string
     {
-        self::$attributeTypes = $attributeTypes;
+        return self::$repository;
     }
 
     /**
