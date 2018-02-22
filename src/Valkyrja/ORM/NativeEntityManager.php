@@ -11,6 +11,7 @@
 
 namespace Valkyrja\ORM;
 
+use InvalidArgumentException;
 use PDO;
 use Valkyrja\Application;
 use Valkyrja\Model\Model;
@@ -26,18 +27,11 @@ class NativeEntityManager implements EntityManager
     use Provides;
 
     /**
-     * The PDO.
+     * The application.
      *
-     * @var PDO
+     * @var Application
      */
-    protected $pdo;
-
-    /**
-     * The query builder.
-     *
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
+    protected $app;
 
     /**
      * Repositories.
@@ -45,6 +39,13 @@ class NativeEntityManager implements EntityManager
      * @var Repository[]
      */
     protected $repositories = [];
+
+    /**
+     * Stores.
+     *
+     * @var PDO[]
+     */
+    protected $stores = [];
 
     /**
      * The models awaiting to be committed for creation.
@@ -75,25 +76,29 @@ class NativeEntityManager implements EntityManager
     /**
      * NativeEntityManager constructor.
      *
-     * @param PDO          $pdo
-     * @param QueryBuilder $queryBuilder
+     * @param Application $app
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct(PDO $pdo, QueryBuilder $queryBuilder)
+    public function __construct(Application $app)
     {
-        $this->pdo          = $pdo;
-        $this->queryBuilder = $queryBuilder;
+        $this->app = $app;
 
-        $this->beginTransaction();
+        $this->store()->beginTransaction();
     }
 
     /**
-     * Get the PDO instance.
+     * Get a store by the connection name.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException If the name doesn't exist
      *
      * @return PDO
      */
-    public function getPDO(): PDO
+    public function store(string $name = null): PDO
     {
-        return $this->pdo;
+        return $this->getStore($name);
     }
 
     /**
@@ -103,7 +108,7 @@ class NativeEntityManager implements EntityManager
      */
     public function getQueryBuilder(): QueryBuilder
     {
-        return new $this->queryBuilder();
+        return new NativeQueryBuilder();
     }
 
     /**
@@ -128,11 +133,13 @@ class NativeEntityManager implements EntityManager
     /**
      * Initiate a transaction.
      *
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function beginTransaction(): bool
     {
-        return $this->pdo->beginTransaction();
+        return $this->store()->beginTransaction();
     }
 
     /**
@@ -198,6 +205,8 @@ class NativeEntityManager implements EntityManager
     /**
      * Commit all items in the transaction.
      *
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function commit(): bool
@@ -218,17 +227,84 @@ class NativeEntityManager implements EntityManager
             unset($this->saveModels[$sid]);
         }
 
-        return $this->pdo->commit();
+        return $this->store()->commit();
     }
 
     /**
      * Rollback the previous transaction.
      *
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function rollback(): bool
     {
-        return $this->pdo->rollBack();
+        return $this->store()->rollBack();
+    }
+
+    /**
+     * Get a pdo store by name.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PDO
+     */
+    protected function getStore(string $name = null): PDO
+    {
+        $name = $name ?? $this->app->config()['database']['default'];
+
+        if (isset($this->stores[$name])) {
+            return $this->stores[$name];
+        }
+
+        $config = $this->getStoreConfig($name);
+
+        return $this->getStoreFromConfig($config);
+    }
+
+    /**
+     * Get the store config.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array
+     */
+    protected function getStoreConfig(string $name): array
+    {
+        $config = $this->app->config('database.connections.' . $name);
+
+        if (null === $config) {
+            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Get the store from the config.
+     *
+     * @param array $config
+     *
+     * @return PDO
+     */
+    protected function getStoreFromConfig(array $config): PDO
+    {
+        $dsn = $config['driver']
+            . ':host=' . $config['host']
+            . ';port=' . $config['port']
+            . ';dbname=' . $config['database']
+            . ';charset=' . $config['charset'];
+
+        return new PDO(
+            $dsn,
+            $config['username'],
+            $config['password'],
+            []
+        );
     }
 
     /**
@@ -248,29 +324,15 @@ class NativeEntityManager implements EntityManager
      *
      * @param Application $app The application
      *
+     * @throws InvalidArgumentException
+     *
      * @return void
      */
     public static function publish(Application $app): void
     {
-        $default  = config()['database']['default'];
-        $database = config()['database']['connections'][$default];
-
-        $dsn = $database['driver']
-            . ':host=' . $database['host']
-            . ';port=' . $database['port']
-            . ';dbname=' . $database['database']
-            . ';charset=' . $database['charset'];
-
-        $pdo = new PDO(
-            $dsn,
-            $database['username'],
-            $database['password'],
-            []
-        );
-
         $app->container()->singleton(
             EntityManager::class,
-            new static($pdo, new NativeQueryBuilder())
+            new static($app)
         );
     }
 }

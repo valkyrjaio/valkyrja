@@ -12,6 +12,7 @@
 namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
+use PDO;
 use Valkyrja\Model\Model;
 
 /**
@@ -19,6 +20,15 @@ use Valkyrja\Model\Model;
  */
 interface Repository
 {
+    /**
+     * Get the store.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PDO
+     */
+    public function store(): PDO;
+
     /**
      * Find a single entity given its id.
      *

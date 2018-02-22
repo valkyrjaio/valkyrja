@@ -50,13 +50,24 @@ class PDORepository implements Repository
      *
      * @param EntityManager $entityManager
      * @param string        $entity
-     * @param string        $table
      */
-    public function __construct(EntityManager $entityManager, string $entity, string $table)
+    public function __construct(EntityManager $entityManager, string $entity)
     {
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
-        $this->table         = $table;
+        $this->table         = $this->entity::getRepository();
+    }
+
+    /**
+     * Get the store.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PDO
+     */
+    public function store(): PDO
+    {
+        return $this->entityManager->store();
     }
 
     /**
@@ -102,6 +113,8 @@ class PDORepository implements Repository
      * @param int|null   $limit
      * @param int|null   $offset
      *
+     * @throws InvalidArgumentException
+     *
      * @return Model[]
      */
     public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array
@@ -125,6 +138,8 @@ class PDORepository implements Repository
      *
      * @param array $orderBy
      *
+     * @throws InvalidArgumentException
+     *
      * @return Model[]
      */
     public function findAll(array $orderBy = null): array
@@ -147,6 +162,8 @@ class PDORepository implements Repository
      *
      * @param array $criteria
      *
+     * @throws InvalidArgumentException
+     *
      * @return int
      */
     public function count(array $criteria): int
@@ -162,6 +179,8 @@ class PDORepository implements Repository
      * </code>
      *
      * @param Model $model
+     *
+     * @throws InvalidArgumentException
      *
      * @return bool
      */
@@ -186,6 +205,8 @@ class PDORepository implements Repository
      * @param Model      $model
      * @param array|null $criteria
      *
+     * @throws InvalidArgumentException
+     *
      * @return bool
      */
     public function save(Model $model, array $criteria = null): bool
@@ -208,6 +229,8 @@ class PDORepository implements Repository
      *
      * @param Model      $model
      * @param array|null $criteria
+     *
+     * @throws InvalidArgumentException
      *
      * @return bool
      */
@@ -257,6 +280,8 @@ class PDORepository implements Repository
      * @param int|null   $limit
      * @param int|null   $offset
      *
+     * @throws InvalidArgumentException
+     *
      * @return Model[]|int
      */
     protected function select(
@@ -270,7 +295,7 @@ class PDORepository implements Repository
         $query = $this->selectQueryBuilder($columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new PDO statement from the query builder
-        $stmt = $this->entityManager->getPDO()->prepare($query->getQuery());
+        $stmt = $this->store()->prepare($query->getQuery());
 
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
@@ -366,16 +391,16 @@ class PDORepository implements Repository
                 // Switch through the order (value) set
                 switch ($order) {
                     // If the order is ascending
-                    case OrderBy::ASC:
+                    case OrderBy::ASC :
                         // Set the column via the orderByAsc method
                         $query->orderByAsc($column);
                         break;
                     // If the order is descending
-                    case OrderBy::DESC:
+                    case OrderBy::DESC :
                         // Set the column via the orderByDesc method
                         $query->orderByDesc($column);
                         break;
-                    default:
+                    default :
                         // Otherwise set the order (which is the column)
                         $query->orderBy($order);
                         break;
@@ -415,6 +440,8 @@ class PDORepository implements Repository
      * @param string $type
      * @param array  $properties
      *
+     * @throws InvalidArgumentException
+     *
      * @return int
      */
     protected function saveCreateDelete(string $type, array $properties): int
@@ -425,7 +452,7 @@ class PDORepository implements Repository
             ->table($this->table)
             ->{$type}();
 
-        /* @var QueryBuilder $query */
+        /** @var QueryBuilder $query */
 
         // Iterate through the properties
         foreach ($properties as $column => $property) {
@@ -434,7 +461,7 @@ class PDORepository implements Repository
         }
 
         // Prepare a PDO statement with the query
-        $stmt = $this->entityManager->getPDO()->prepare($query->getQuery());
+        $stmt = $this->store()->prepare($query->getQuery());
 
         // Iterate through the properties
         foreach ($properties as $column => $property) {

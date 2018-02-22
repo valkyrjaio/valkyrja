@@ -11,6 +11,7 @@
 
 namespace Valkyrja\ORM;
 
+use InvalidArgumentException;
 use PDO;
 use Valkyrja\Model\Model;
 
@@ -20,11 +21,15 @@ use Valkyrja\Model\Model;
 interface EntityManager
 {
     /**
-     * Get the PDO instance.
+     * Get a store by the connection name.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException If the name doesn't exist
      *
      * @return PDO
      */
-    public function getPDO(): PDO;
+    public function store(string $name = null): PDO;
 
     /**
      * Get a new query builder instance.
