@@ -32,14 +32,14 @@ abstract class Model implements JsonSerializable
      *
      * @var array
      */
-    protected static $attributes = [];
+    protected static $properties = [];
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
      *
      * @var array
      */
-    protected static $attributeTypes = [];
+    protected static $propertyTypes = [];
 
     /**
      * The ORM repository to use.
@@ -63,9 +63,9 @@ abstract class Model implements JsonSerializable
      *
      * @return array
      */
-    public static function getAttributes(): array
+    public static function getProperties(): array
     {
-        return self::$attributes;
+        return self::$properties;
     }
 
     /**
@@ -73,9 +73,9 @@ abstract class Model implements JsonSerializable
      *
      * @return array
      */
-    public static function getAttributeTypes(): array
+    public static function getPropertyTypes(): array
     {
-        return self::$attributeTypes;
+        return self::$propertyTypes;
     }
 
     /**
@@ -169,7 +169,7 @@ abstract class Model implements JsonSerializable
             }
 
             // Check if a type was set for this attribute
-            $type = static::$attributeTypes[$attrName] ?? null;
+            $type = static::$propertyTypes[$attrName] ?? null;
 
             // If the type is object and the property isn't already an object
             if ($type === 'object' && ! \is_object($property)) {
