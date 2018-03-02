@@ -14,9 +14,9 @@ namespace Valkyrja\ORM\Repositories;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
-use Valkyrja\ORM\Model\Model;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
+use Valkyrja\ORM\Model\Model;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
