@@ -186,6 +186,32 @@ abstract class Model implements JsonSerializable
     }
 
     /**
+     * Get model as an array.
+     *
+     * @param bool $all Whether to include all properties or only those defined in the static properties array
+     *
+     * @return array
+     */
+    public function asArray(bool $all = false): array
+    {
+        // If all is true
+        if ($all) {
+            // Get all the object vars
+            return get_object_vars($this);
+        }
+
+        $properties = [];
+
+        // Otherwise iterate through the properties array
+        foreach (static::$properties as $property) {
+            // And set each property to its value
+            $properties[$property] = $this->$$property;
+        }
+
+        return $properties;
+    }
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array

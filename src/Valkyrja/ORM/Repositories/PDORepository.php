@@ -13,6 +13,7 @@ namespace Valkyrja\ORM\Repositories;
 
 use InvalidArgumentException;
 use PDO;
+use PDOStatement;
 use Valkyrja\Model\Model;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
@@ -186,7 +187,7 @@ class PDORepository implements Repository
      */
     public function create(Model $model): bool
     {
-        return $this->saveCreateDelete('insert', $model->jsonSerialize());
+        return $this->saveCreateDelete('insert', $model->asArray(), []);
     }
 
     /**
@@ -211,7 +212,7 @@ class PDORepository implements Repository
      */
     public function save(Model $model, array $criteria = null): bool
     {
-        return $this->saveCreateDelete('update', $criteria ?? $model->jsonSerialize());
+        return $this->saveCreateDelete('update', $model->asArray(), $criteria);
     }
 
     /**
@@ -236,7 +237,7 @@ class PDORepository implements Repository
      */
     public function delete(Model $model, array $criteria = null): bool
     {
-        return $this->saveCreateDelete('delete', $criteria ?? $model->jsonSerialize());
+        return $this->saveCreateDelete('delete', $model->asArray(), $criteria);
     }
 
     /**
@@ -249,6 +250,18 @@ class PDORepository implements Repository
     protected function columnParam(string $column): string
     {
         return ':' . $column;
+    }
+
+    /**
+     * Get a criterion param from a criterion name.
+     *
+     * @param string $criterion
+     *
+     * @return string
+     */
+    protected function criterionParam(string $criterion): string
+    {
+        return ':criterion_' . $criterion;
     }
 
     /**
@@ -439,12 +452,13 @@ class PDORepository implements Repository
      *
      * @param string $type
      * @param array  $properties
+     * @param array  $criteria [optional]
      *
      * @throws InvalidArgumentException
      *
      * @return int
      */
-    protected function saveCreateDelete(string $type, array $properties): int
+    protected function saveCreateDelete(string $type, array $properties, array $criteria = []): int
     {
         // Create a new query
         $query = $this->entityManager
@@ -454,15 +468,110 @@ class PDORepository implements Repository
 
         /* @var QueryBuilder $query */
 
+        // If this type isn't an insert
+        if ($type !== 'insert') {
+            // Set the criteria
+            $this->setCriteriaForSaveDeleteQuery($query, $properties, $criteria);
+        }
+
+        // Set the properties
+        $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
+
+        // Prepare a PDO statement with the query
+        $stmt = $this->store()->prepare($query->getQuery());
+
+        // If this type isn't an insert
+        if ($type !== 'insert') {
+            // Set the criteria
+            $this->setCriteriaForSaveDeleteStatement($stmt, $properties, $criteria);
+        }
+
+        // Set the properties.
+        $this->setPropertiesForSaveCreateDeleteStatement($stmt, $properties);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Set any criteria for save or delete queries.
+     *
+     * @param QueryBuilder $query
+     * @param array        $properties
+     * @param array        $criteria
+     *
+     * @return void
+     */
+    protected function setCriteriaForSaveDeleteQuery(QueryBuilder $query, array $properties, array $criteria = []): void
+    {
+        // If there are custom criteria to search on
+        if (! empty($criteria)) {
+            // Iterate through the criteria
+            foreach ($criteria as $key => $criterion) {
+                // And build out a where chain
+                $query->andWhere($key . ' = ' . $this->criterionParam($key));
+            }
+            // Otherwise if an id property is exists
+        } elseif (isset($properties['id'])) {
+            // Set the id as the where condition
+            $query->where('id = :criteria_id');
+        }
+    }
+
+    /**
+     * Set properties for save, delete, or create queries.
+     *
+     * @param QueryBuilder $query
+     * @param array        $properties
+     *
+     * @return void
+     */
+    protected function setPropertiesForSaveCreateDeleteQuery(QueryBuilder $query, array $properties): void
+    {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
             // Set the column and param name
             $query->set($column, $this->columnParam($column));
         }
+    }
 
-        // Prepare a PDO statement with the query
-        $stmt = $this->store()->prepare($query->getQuery());
+    /**
+     * Set any criteria for save or delete statements.
+     *
+     * @param PDOStatement $statement
+     * @param array        $properties
+     * @param array        $criteria
+     *
+     * @return void
+     */
+    protected function setCriteriaForSaveDeleteStatement(
+        PDOStatement $statement,
+        array $properties,
+        array $criteria = []
+    ): void {
+        // If there are custom criteria to search on
+        if (! empty($criteria)) {
+            // Iterate through the criteria
+            foreach ($criteria as $key => $criterion) {
+                // Bind the criterion to the param set in the query before hand
+                $statement->bindParam($this->criterionParam($key), $criterion);
+            }
+            // Otherwise if an id property is exists
+        } elseif (isset($properties['id'])) {
+            // Set the id to the id param set before hand
+            $statement->bindParam($this->criterionParam('id'), $properties['id']);
+        }
+    }
 
+    /**
+     * Set properties for save, create, or delete statements.
+     *
+     * @param PDOStatement $statement
+     * @param array        $properties
+     *
+     * @return void
+     */
+    protected function setPropertiesForSaveCreateDeleteStatement(PDOStatement $statement, array $properties): void
+    {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
             // If the property is an object, then serialize it
@@ -474,9 +583,7 @@ class PDORepository implements Repository
             }
 
             // Bind each column's value to the statement
-            $stmt->bindParam($this->columnParam($column), $property);
+            $statement->bindParam($this->columnParam($column), $property);
         }
-
-        return $stmt->execute();
     }
 }

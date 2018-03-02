@@ -13,7 +13,6 @@ namespace Valkyrja\ORM\QueryBuilder;
 
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\Statement;
-use Valkyrja\ORM\Exceptions\WhereException;
 use Valkyrja\ORM\QueryBuilder;
 
 /**
@@ -269,14 +268,12 @@ class NativeQueryBuilder implements QueryBuilder
      *
      * @param string $where
      *
-     * @throws WhereException If used without a where method before it
-     *
      * @return static
      */
     public function andWhere(string $where): QueryBuilder
     {
         if (empty($this->where)) {
-            throw new WhereException('Must use where method for first where condition.');
+            return $this->where($where);
         }
 
         $this->setWhere($where, Statement::WHERE_AND);
@@ -297,14 +294,12 @@ class NativeQueryBuilder implements QueryBuilder
      *
      * @param string $where
      *
-     * @throws WhereException If used without a where method before it
-     *
      * @return static
      */
     public function orWhere(string $where): QueryBuilder
     {
         if (empty($this->where)) {
-            throw new WhereException('Must use where method for first where condition.');
+            return $this->where($where);
         }
 
         $this->setWhere($where, Statement::WHERE_OR);

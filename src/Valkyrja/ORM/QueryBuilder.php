@@ -11,8 +11,6 @@
 
 namespace Valkyrja\ORM;
 
-use Valkyrja\ORM\Exceptions\WhereException;
-
 /**
  * Interface QueryBuilder.
  */
@@ -149,8 +147,6 @@ interface QueryBuilder
      *
      * @param string $where
      *
-     * @throws WhereException If used without a where method before it
-     *
      * @return static
      */
     public function andWhere(string $where): self;
@@ -167,8 +163,6 @@ interface QueryBuilder
      * </code>
      *
      * @param string $where
-     *
-     * @throws WhereException If used without a where method before it
      *
      * @return static
      */
