@@ -13,7 +13,7 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
-use Valkyrja\Model\Model;
+use Valkyrja\ORM\Model\Model;
 
 /**
  * Interface EntityManager.

@@ -13,7 +13,7 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
-use Valkyrja\Model\Model;
+use Valkyrja\ORM\Model\Model;
 
 /**
  * Interface Repository.
@@ -36,7 +36,7 @@ interface Repository
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
-     * @return Model|null
+     * @return \Valkyrja\ORM\Model\Model|null
      */
     public function find($id): ? Model;
 
@@ -65,7 +65,7 @@ interface Repository
      * @param int|null   $limit
      * @param int|null   $offset
      *
-     * @return Model[]
+     * @return \Valkyrja\ORM\Model\Model[]
      */
     public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array;
 
@@ -85,7 +85,7 @@ interface Repository
      *
      * @param array $orderBy
      *
-     * @return Model[]
+     * @return \Valkyrja\ORM\Model\Model[]
      */
     public function findAll(array $orderBy = null): array;
 
@@ -115,7 +115,7 @@ interface Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param Model $model
+     * @param \Valkyrja\ORM\Model\Model $model
      *
      * @return bool
      */

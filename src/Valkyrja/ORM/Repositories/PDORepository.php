@@ -14,7 +14,7 @@ namespace Valkyrja\ORM\Repositories;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
-use Valkyrja\Model\Model;
+use Valkyrja\ORM\Model\Model;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\QueryBuilder;
@@ -35,7 +35,7 @@ class PDORepository implements Repository
     /**
      * The entity to use.
      *
-     * @var string|Model
+     * @var string|\Valkyrja\ORM\Model\Model
      */
     protected $entity;
 
@@ -78,7 +78,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
-     * @return Model|null
+     * @return \Valkyrja\ORM\Model\Model|null
      */
     public function find($id): ? Model
     {
@@ -141,7 +141,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException
      *
-     * @return Model[]
+     * @return \Valkyrja\ORM\Model\Model[]
      */
     public function findAll(array $orderBy = null): array
     {
@@ -179,7 +179,7 @@ class PDORepository implements Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param Model $model
+     * @param \Valkyrja\ORM\Model\Model $model
      *
      * @throws InvalidArgumentException
      *
@@ -203,8 +203,8 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param Model      $model
-     * @param array|null $criteria
+     * @param \Valkyrja\ORM\Model\Model $model
+     * @param array|null                $criteria
      *
      * @throws InvalidArgumentException
      *
@@ -228,8 +228,8 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param Model      $model
-     * @param array|null $criteria
+     * @param \Valkyrja\ORM\Model\Model $model
+     * @param array|null                $criteria
      *
      * @throws InvalidArgumentException
      *
@@ -295,7 +295,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException
      *
-     * @return Model[]|int
+     * @return \Valkyrja\ORM\Model\Model[]|int
      */
     protected function select(
         array $columns = null,
@@ -331,7 +331,7 @@ class PDORepository implements Repository
         // Iterate through the rows found
         foreach ($rows as $row) {
             // Create a new model
-            /** @var Model $model */
+            /** @var \Valkyrja\ORM\Model\Model $model */
             $model = new $this->entity();
             // Apply the model's contents given the row
             $model->fromArray($row);

@@ -11,14 +11,14 @@
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use Valkyrja\Model\Model;
+use Valkyrja\ORM\Model\Model;
 
 /**
  * Model class to use to test abstract model.
  *
  * @author Melech Mizrachi
  */
-class ModelClass extends Model
+class ModelClass extends \Valkyrja\ORM\Model\Model
 {
     /**
      * A property to test with.

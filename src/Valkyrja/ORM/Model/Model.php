@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model;
+namespace Valkyrja\ORM\Model;
 
 use JsonSerializable;
 use Valkyrja\ORM\Enums\PropertyType;

@@ -14,7 +14,7 @@ namespace Valkyrja\ORM;
 use InvalidArgumentException;
 use PDO;
 use Valkyrja\Application;
-use Valkyrja\Model\Model;
+use Valkyrja\ORM\Model\Model;
 use Valkyrja\ORM\QueryBuilder\NativeQueryBuilder;
 use Valkyrja\ORM\Repositories\PDORepository;
 use Valkyrja\Support\Providers\Provides;
@@ -69,7 +69,7 @@ class NativeEntityManager implements EntityManager
      *      ]
      * </code>
      *
-     * @var Model[]
+     * @var \Valkyrja\ORM\Model\Model[]
      */
     protected $saveModels = [];
 
@@ -145,7 +145,7 @@ class NativeEntityManager implements EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param Model $model
+     * @param \Valkyrja\ORM\Model\Model $model
      *
      * @return void
      */
@@ -173,7 +173,7 @@ class NativeEntityManager implements EntityManager
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param Model $model The entity instance to remove.
+     * @param \Valkyrja\ORM\Model\Model $model The entity instance to remove.
      *
      * @return bool
      */
