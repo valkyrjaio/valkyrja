@@ -13,7 +13,6 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
-use Valkyrja\ORM\Model;
 
 /**
  * Interface Repository.
