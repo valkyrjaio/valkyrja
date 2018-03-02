@@ -12,6 +12,7 @@
 namespace Valkyrja\Model;
 
 use JsonSerializable;
+use Valkyrja\ORM\Enums\PropertyType;
 
 /**
  * Class Model.
@@ -172,11 +173,11 @@ abstract class Model implements JsonSerializable
             $type = static::$propertyTypes[$attrName] ?? null;
 
             // If the type is object and the property isn't already an object
-            if ($type === 'object' && ! \is_object($property)) {
+            if ($type === PropertyType::OBJECT && ! \is_object($property)) {
                 // Unserialize the object
                 $property = unserialize($property, true);
             } // If the type is array and the property isn't already an array
-            elseif ($type === 'array' && ! \is_array($property)) {
+            elseif ($type === PropertyType::ARRAY && ! \is_array($property)) {
                 $property = json_decode($property);
             }
 
