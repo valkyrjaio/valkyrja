@@ -56,7 +56,7 @@ abstract class Model implements JsonSerializable
      */
     public static function getTable(): string
     {
-        return self::$table;
+        return static::$table;
     }
 
     /**
@@ -66,7 +66,7 @@ abstract class Model implements JsonSerializable
      */
     public static function getProperties(): array
     {
-        return self::$properties;
+        return static::$properties;
     }
 
     /**
@@ -76,7 +76,7 @@ abstract class Model implements JsonSerializable
      */
     public static function getPropertyTypes(): array
     {
-        return self::$propertyTypes;
+        return static::$propertyTypes;
     }
 
     /**
@@ -86,7 +86,7 @@ abstract class Model implements JsonSerializable
      */
     public static function getRepository(): ? string
     {
-        return self::$repository;
+        return static::$repository;
     }
 
     /**
@@ -114,20 +114,18 @@ abstract class Model implements JsonSerializable
      * @param string $name  The property to set
      * @param mixed  $value The value to set
      *
-     * @return \Valkyrja\Model\Model
+     * @return void
      */
-    public function __set(string $name, $value): self
+    public function __set(string $name, $value): void
     {
         $methodName = str_replace('_', '', ucwords($name, '_'));
         $methodName = 'set' . $methodName;
 
         if (method_exists($this, $methodName)) {
-            return $this->$methodName($value);
+            $this->$methodName($value);
         }
 
         $this->{$name} = $value;
-
-        return $this;
     }
 
     /**
@@ -158,54 +156,65 @@ abstract class Model implements JsonSerializable
      */
     public function fromArray(array $properties): void
     {
-        // Iterate through the public/protected vars of this model
-        foreach (get_object_vars($this) as $attrName => $attrValue) {
-            // Get the attribute from the properties
-            $property = $properties[$attrName] ?? null;
-
-            // If no property exists
-            if (null === $property) {
-                // Continue onward
+        // Iterate through the properties
+        foreach ($properties as $property => $value) {
+            // If the value is null or the property doesn't exist in this model
+            if (null === $value || ! property_exists($this, $property)) {
+                // Continue to the next property
                 continue;
             }
 
             // Check if a type was set for this attribute
-            $type = static::$propertyTypes[$attrName] ?? null;
+            $type = static::$propertyTypes[$property] ?? null;
 
             // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && ! \is_object($property)) {
+            if ($type === PropertyType::OBJECT && ! \is_object($value)) {
                 // Unserialize the object
-                $property = unserialize($property, true);
+                $value = unserialize($value, true);
             } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && ! \is_array($property)) {
-                $property = json_decode($property);
+            elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
+                $value = json_decode($value);
             }
 
-            $this->__set($attrName, $property);
+            // Set the property
+            $this->__set($property, $value);
         }
     }
 
     /**
      * Get model as an array.
      *
-     * @param bool $all Whether to include all properties or only those defined in the static properties array
+     * @param bool $all  [optional] Whether to include all properties or only those defined in the static properties
+     *                   array
+     * @param bool $safe [optional] True only includes public/protected while false will include private when using
+     *                   false for $all
      *
      * @return array
      */
-    public function asArray(bool $all = false): array
+    public function asArray(bool $all = true, bool $safe = true): array
     {
+        // All the public and protected properties
+        $safeProperties = get_object_vars($this);
+
         // If all is true
         if ($all) {
             // Get all the object vars
-            return get_object_vars($this);
+            return $safeProperties;
         }
 
         $properties = [];
 
         // Otherwise iterate through the properties array
         foreach (static::$properties as $property) {
+            // If only public and protected properties should be included and this property doesn't exist in the full
+            // list then it is private
+            if ($safe && empty($safeProperties[$property])) {
+                // So continue to the next property
+                continue;
+            }
+
             // And set each property to its value
-            $properties[$property] = $this->$$property;
+            $properties[$property] = $this->{$property};
         }
 
         return $properties;

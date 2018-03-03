@@ -11,6 +11,7 @@
 
 namespace Valkyrja\ORM\Repositories;
 
+use Exception;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
@@ -56,7 +57,7 @@ class PDORepository implements Repository
     {
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
-        $this->table         = $this->entity::getRepository();
+        $this->table         = $this->entity::getTable();
     }
 
     /**
@@ -82,7 +83,7 @@ class PDORepository implements Repository
      */
     public function find($id): ? Model
     {
-        if (! \is_string($id) || ! \is_int($id)) {
+        if (! \is_string($id) && ! \is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
         }
 
@@ -181,13 +182,14 @@ class PDORepository implements Repository
      *
      * @param \Valkyrja\ORM\Model $model
      *
+     * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
     public function create(Model $model): bool
     {
-        return $this->saveCreateDelete('insert', $model->asArray(), []);
+        return $this->saveCreateDelete('insert', $model->asArray(false, false), []);
     }
 
     /**
@@ -206,13 +208,14 @@ class PDORepository implements Repository
      * @param \Valkyrja\ORM\Model $model
      * @param array|null          $criteria
      *
+     * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
     public function save(Model $model, array $criteria = null): bool
     {
-        return $this->saveCreateDelete('update', $model->asArray(), $criteria);
+        return $this->saveCreateDelete('update', $model->asArray(false, false), $criteria);
     }
 
     /**
@@ -231,13 +234,14 @@ class PDORepository implements Repository
      * @param \Valkyrja\ORM\Model $model
      * @param array|null          $criteria
      *
+     * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
     public function delete(Model $model, array $criteria = null): bool
     {
-        return $this->saveCreateDelete('delete', $model->asArray(), $criteria);
+        return $this->saveCreateDelete('delete', $model->asArray(false, false), $criteria);
     }
 
     /**
@@ -454,6 +458,7 @@ class PDORepository implements Repository
      * @param array  $properties
      * @param array  $criteria [optional]
      *
+     * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return int
@@ -489,7 +494,13 @@ class PDORepository implements Repository
         // Set the properties.
         $this->setPropertiesForSaveCreateDeleteStatement($stmt, $properties);
 
-        return $stmt->execute();
+        // If the execute failed
+        if (! $executeResult = $stmt->execute()) {
+            // Throw a fail exception
+            throw new Exception($stmt->errorInfo()[2]);
+        }
+
+        return $executeResult;
     }
 
     /**
@@ -529,6 +540,10 @@ class PDORepository implements Repository
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
+            if ($property === null) {
+                continue;
+            }
+
             // Set the column and param name
             $query->set($column, $this->columnParam($column));
         }
@@ -553,12 +568,12 @@ class PDORepository implements Repository
             // Iterate through the criteria
             foreach ($criteria as $key => $criterion) {
                 // Bind the criterion to the param set in the query before hand
-                $statement->bindParam($this->criterionParam($key), $criterion);
+                $statement->bindValue($this->criterionParam($key), $criterion);
             }
             // Otherwise if an id property is exists
         } elseif (isset($properties['id'])) {
             // Set the id to the id param set before hand
-            $statement->bindParam($this->criterionParam('id'), $properties['id']);
+            $statement->bindValue($this->criterionParam('id'), $properties['id']);
         }
     }
 
@@ -574,6 +589,10 @@ class PDORepository implements Repository
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
+            if ($property === null) {
+                continue;
+            }
+
             // If the property is an object, then serialize it
             if (\is_object($property)) {
                 $property = \serialize($property);
@@ -583,7 +602,7 @@ class PDORepository implements Repository
             }
 
             // Bind each column's value to the statement
-            $statement->bindParam($this->columnParam($column), $property);
+            $statement->bindValue($this->columnParam($column), $property);
         }
     }
 }

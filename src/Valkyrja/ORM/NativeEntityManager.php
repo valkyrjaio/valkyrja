@@ -14,7 +14,6 @@ namespace Valkyrja\ORM;
 use InvalidArgumentException;
 use PDO;
 use Valkyrja\Application;
-use Valkyrja\ORM\Model;
 use Valkyrja\ORM\QueryBuilder\NativeQueryBuilder;
 use Valkyrja\ORM\Repositories\PDORepository;
 use Valkyrja\Support\Providers\Provides;
@@ -261,7 +260,7 @@ class NativeEntityManager implements EntityManager
 
         $config = $this->getStoreConfig($name);
 
-        return $this->getStoreFromConfig($config);
+        return $this->stores[$name] = $this->getStoreFromConfig($config);
     }
 
     /**
