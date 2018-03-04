@@ -16,7 +16,7 @@ use Valkyrja\Annotations\Annotations;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Application;
 use Valkyrja\Client\Client;
-use Valkyrja\Config\Env;
+use Valkyrja\Env\Env;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input\Input;

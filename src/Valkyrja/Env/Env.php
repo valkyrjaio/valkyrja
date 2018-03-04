@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Config;
+namespace Valkyrja\Env;
 
 /**
  * Class Env.

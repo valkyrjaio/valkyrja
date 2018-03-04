@@ -13,8 +13,8 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\NativeAnnotations;
-use Valkyrja\Config\Env;
-use Valkyrja\Config\EnvTest;
+use Valkyrja\Env\Env;
+use Valkyrja\Env\EnvTest;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;

@@ -70,14 +70,14 @@ interface Application
      * @param string $variable [optional] The variable to get
      * @param string $default  [optional] The default value to return
      *
-     * @return mixed|\Valkyrja\Config\Env||config|Env
+     * @return mixed|\Valkyrja\Env\Env||config|Env
      */
     public static function env(string $variable = null, $default = null);
 
     /**
      * Get environment variables.
      *
-     * @return \Valkyrja\Config\Env||config|Env
+     * @return \Valkyrja\Env\Env||config|Env
      */
     public static function getEnv(): string;
 
