@@ -131,7 +131,8 @@ class Env
     // /**
     //  * Views env variables.
     //  */
-    // public const VIEWS_DIR = null;
+    // public const VIEWS_DIR   = null;
+    // public const VIEWS_PATHS = null;
     //
     // /**
     //  * Twig views env variables.
