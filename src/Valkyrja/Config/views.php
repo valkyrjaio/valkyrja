@@ -38,5 +38,5 @@ return [
      * //
      *
      */
-    'paths' => [],
+    'paths' => env('VIEWS_PATHS', []),
 ];
