@@ -66,9 +66,9 @@ trait MiddlewareAwareTrait
      * @param Request $request    The request
      * @param array   $middleware [optional] The middleware to dispatch
      *
-     * @return \Valkyrja\Http\Request
+     * @return mixed
      */
-    public function requestMiddleware(Request $request, array $middleware = null): Request
+    public function requestMiddleware(Request $request, array $middleware = null)
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;
@@ -90,10 +90,14 @@ trait MiddlewareAwareTrait
             }
 
             /* @var \Valkyrja\Support\Middleware\Middleware $item */
-            $request = $item::before($request);
+            $return = $item::before($request);
+
+            if ($return instanceof Response) {
+                return $return;
+            }
 
             // Set the returned request in the container
-            $app->container()->singleton(Request::class, $request);
+            $app->container()->singleton(Request::class, $request = $return);
         }
 
         return $request;
@@ -106,9 +110,9 @@ trait MiddlewareAwareTrait
      * @param Response $response   The response
      * @param array    $middleware [optional] The middleware to dispatch
      *
-     * @return \Valkyrja\Http\Response
+     * @return mixed
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null)
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? self::$middleware;

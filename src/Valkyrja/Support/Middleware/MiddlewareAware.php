@@ -45,9 +45,9 @@ interface MiddlewareAware
      * @param Request $request    The request
      * @param array   $middleware [optional] The middleware to dispatch
      *
-     * @return \Valkyrja\Http\Request
+     * @return mixed
      */
-    public function requestMiddleware(Request $request, array $middleware = null): Request;
+    public function requestMiddleware(Request $request, array $middleware = null);
 
     /**
      * Dispatch after request processed middleware.
@@ -56,9 +56,9 @@ interface MiddlewareAware
      * @param Response $response   The response
      * @param array    $middleware [optional] The middleware to dispatch
      *
-     * @return \Valkyrja\Http\Response
+     * @return mixed
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response;
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null);
 
     /**
      * Dispatch terminable middleware.

@@ -373,7 +373,13 @@ class NativeRouter implements Router
         }
 
         // Dispatch the route's before request handled middleware
-        $this->routeRequestMiddleware($request, $route);
+        $middlewareReturn = $this->routeRequestMiddleware($request, $route);
+
+        // If the middleware returned a response
+        if ($middlewareReturn instanceof Response) {
+            // Return the response
+            return $middlewareReturn;
+        }
 
         // Trigger an event for route matched
         $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
@@ -391,7 +397,9 @@ class NativeRouter implements Router
 
         // Dispatch the route's before request handled middleware and return
         // the response
-        return $this->routeResponseMiddleware($request, $response, $route);
+        $this->routeResponseMiddleware($request, $response, $route);
+
+        return $response;
     }
 
     /**
@@ -638,7 +646,7 @@ class NativeRouter implements Router
      */
     protected function isValidMethod(Route $route, string $method): bool
     {
-        return in_array($method, $route->getRequestMethods(), true);
+        return \in_array($method, $route->getRequestMethods(), true);
     }
 
     /**
@@ -690,9 +698,9 @@ class NativeRouter implements Router
      * @param Request $request The request
      * @param Route   $route   The route
      *
-     * @return \Valkyrja\Http\Request
+     * @return mixed
      */
-    protected function routeRequestMiddleware(Request $request, Route $route): Request
+    protected function routeRequestMiddleware(Request $request, Route $route)
     {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
@@ -713,17 +721,17 @@ class NativeRouter implements Router
      * @param Response $response The response
      * @param Route    $route    The route
      *
-     * @return \Valkyrja\Http\Response
+     * @return void
      */
-    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
+    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): void
     {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
             // Return the response passed through
-            return $response;
+            return;
         }
 
-        return $this->app->kernel()->responseMiddleware(
+        $this->app->kernel()->responseMiddleware(
             $request,
             $response,
             $route->getMiddleware()

@@ -26,9 +26,9 @@ abstract class Middleware
      *
      * @param Request $request The request
      *
-     * @return \Valkyrja\Http\Request
+     * @return \Valkyrja\Http\Request|\Valkyrja\Http\Response
      */
-    abstract public static function before(Request $request): Request;
+    abstract public static function before(Request $request);
 
     /**
      * Middleware handler for after a request is dispatched.

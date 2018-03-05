@@ -78,7 +78,9 @@ class NativeKernel implements Kernel
         }
 
         // Dispatch the after request handled middleware and return the response
-        return $this->responseMiddleware($request, $response);
+        $this->responseMiddleware($request, $response);
+
+        return $response;
     }
 
     /**
@@ -94,7 +96,13 @@ class NativeKernel implements Kernel
         $this->app->container()->singleton(Request::class, $request);
 
         // Dispatch the before request handled middleware
-        $request = $this->requestMiddleware($request);
+        $middlewareReturn = $this->requestMiddleware($request);
+
+        // If the middleware returned a response
+        if ($middlewareReturn instanceof Response) {
+            // Return the response
+            return $middlewareReturn;
+        }
 
         return $this->router->dispatch($request);
     }
