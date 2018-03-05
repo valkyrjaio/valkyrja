@@ -13,12 +13,12 @@ namespace Valkyrja;
 
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Client\Client;
-use Valkyrja\Env\Env;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Env\Env;
 use Valkyrja\Events\Events;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
