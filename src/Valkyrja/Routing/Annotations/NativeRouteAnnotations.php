@@ -267,6 +267,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
             ->setFunction($route->getFunction())
             ->setMatches($route->getMatches())
             ->setDependencies($route->getDependencies())
+            ->setMiddleware($route->getMiddleware())
             ->setArguments($route->getArguments());
 
         return $routerRoute;
