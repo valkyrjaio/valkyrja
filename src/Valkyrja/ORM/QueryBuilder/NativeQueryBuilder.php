@@ -555,10 +555,10 @@ class NativeQueryBuilder implements QueryBuilder
 
         foreach ($this->values as $column => $value) {
             if (! empty($query)) {
-                $query .= ',';
+                $query .= ', ';
             }
 
-            $query .= ', ' . $column . ' = ' . $value;
+            $query .= $column . ' = ' . $value;
         }
 
         return Statement::SET . ' ' . $query;

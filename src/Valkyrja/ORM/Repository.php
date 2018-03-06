@@ -133,12 +133,12 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Model      $model
-     * @param array|null $criteria
+     * @param Model $model
+     * @param array $criteria
      *
      * @return bool
      */
-    public function save(Model $model, array $criteria = null): bool;
+    public function save(Model $model, array $criteria = []): bool;
 
     /**
      * Delete an existing model.
@@ -153,10 +153,10 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Model      $model
-     * @param array|null $criteria
+     * @param Model $model
+     * @param array $criteria
      *
      * @return bool
      */
-    public function delete(Model $model, array $criteria = null): bool;
+    public function delete(Model $model, array $criteria = []): bool;
 }

@@ -33,7 +33,7 @@ final class Statement extends Enum
     public const ON        = 'ON';
     public const AS        = 'AS';
     public const FROM      = 'FROM';
-    public const SET       = 'WHERE';
+    public const SET       = 'SET';
     public const VALUE     = 'VALUES';
     public const WHERE     = 'WHERE';
     public const WHERE_AND = 'AND';

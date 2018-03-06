@@ -213,7 +213,7 @@ class PDORepository implements Repository
      *
      * @return bool
      */
-    public function save(Model $model, array $criteria = null): bool
+    public function save(Model $model, array $criteria = []): bool
     {
         return $this->saveCreateDelete('update', $model->asArray(false, false), $criteria);
     }
@@ -239,7 +239,7 @@ class PDORepository implements Repository
      *
      * @return bool
      */
-    public function delete(Model $model, array $criteria = null): bool
+    public function delete(Model $model, array $criteria = []): bool
     {
         return $this->saveCreateDelete('delete', $model->asArray(false, false), $criteria);
     }
@@ -317,7 +317,7 @@ class PDORepository implements Repository
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
             // And bind each value to the column
-            $stmt->bindParam($this->columnParam($column), $criterion);
+            $stmt->bindValue($this->columnParam($column), $criterion);
         }
 
         // Execute the PDO statement
@@ -524,7 +524,7 @@ class PDORepository implements Repository
             // Otherwise if an id property is exists
         } elseif (isset($properties['id'])) {
             // Set the id as the where condition
-            $query->where('id = :criteria_id');
+            $query->where('id = ' . $this->criterionParam('id'));
         }
     }
 
