@@ -15,9 +15,9 @@ use Exception;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
+use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
-use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
