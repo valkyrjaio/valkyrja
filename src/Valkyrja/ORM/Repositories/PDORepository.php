@@ -180,16 +180,16 @@ class PDORepository implements Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $model
+     * @param \Valkyrja\ORM\Entity $entity
      *
      * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function create(Entity $model): bool
+    public function create(Entity $entity): bool
     {
-        return $this->saveCreateDelete('insert', $model->asArray(false, false), []);
+        return $this->saveCreateDelete('insert', $entity->asArray(false, false), []);
     }
 
     /**
@@ -205,7 +205,7 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $model
+     * @param \Valkyrja\ORM\Entity $entity
      * @param array|null           $criteria
      *
      * @throws Exception
@@ -213,9 +213,9 @@ class PDORepository implements Repository
      *
      * @return bool
      */
-    public function save(Entity $model, array $criteria = []): bool
+    public function save(Entity $entity, array $criteria = []): bool
     {
-        return $this->saveCreateDelete('update', $model->asArray(false, false), $criteria);
+        return $this->saveCreateDelete('update', $entity->asArray(false, false), $criteria);
     }
 
     /**
@@ -231,7 +231,7 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $model
+     * @param \Valkyrja\ORM\Entity $entity
      * @param array|null           $criteria
      *
      * @throws Exception
@@ -239,9 +239,9 @@ class PDORepository implements Repository
      *
      * @return bool
      */
-    public function delete(Entity $model, array $criteria = []): bool
+    public function delete(Entity $entity, array $criteria = []): bool
     {
-        return $this->saveCreateDelete('delete', $model->asArray(false, false), $criteria);
+        return $this->saveCreateDelete('delete', $entity->asArray(false, false), $criteria);
     }
 
     /**

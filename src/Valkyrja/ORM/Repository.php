@@ -114,11 +114,11 @@ interface Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $model
+     * @param \Valkyrja\ORM\Entity $entity
      *
      * @return bool
      */
-    public function create(Entity $model): bool;
+    public function create(Entity $entity): bool;
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
@@ -133,12 +133,12 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Entity $model
+     * @param Entity $entity
      * @param array  $criteria
      *
      * @return bool
      */
-    public function save(Entity $model, array $criteria = []): bool;
+    public function save(Entity $entity, array $criteria = []): bool;
 
     /**
      * Delete an existing model.
@@ -153,10 +153,10 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Entity $model
+     * @param Entity $entity
      * @param array  $criteria
      *
      * @return bool
      */
-    public function delete(Entity $model, array $criteria = []): bool;
+    public function delete(Entity $entity, array $criteria = []): bool;
 }

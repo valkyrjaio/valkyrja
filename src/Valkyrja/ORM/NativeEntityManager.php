@@ -113,20 +113,20 @@ class NativeEntityManager implements EntityManager
     /**
      * Get a repository instance.
      *
-     * @param string $model
+     * @param string $entity
      *
      * @return Repository
      */
-    public function getRepository(string $model): Repository
+    public function getRepository(string $entity): Repository
     {
-        if (isset($this->repositories[$model])) {
-            return $this->repositories[$model];
+        if (isset($this->repositories[$entity])) {
+            return $this->repositories[$entity];
         }
 
-        /** @var Entity|string $model */
-        $repository = $model::getRepository() ?? PDORepository::class;
+        /** @var Entity|string $entity */
+        $repository = $entity::getRepository() ?? PDORepository::class;
 
-        return $this->repositories[$model] = new $repository($this, $model, $model::getTable());
+        return $this->repositories[$entity] = new $repository($this, $entity, $entity::getTable());
     }
 
     /**
@@ -144,42 +144,42 @@ class NativeEntityManager implements EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param \Valkyrja\ORM\Entity $model
+     * @param \Valkyrja\ORM\Entity $entity
      *
      * @return void
      */
-    public function create(Entity $model): void
+    public function create(Entity $entity): void
     {
-        $id = spl_object_id($model);
+        $id = spl_object_id($entity);
 
-        $this->createModels[$id] = $model;
+        $this->createModels[$id] = $entity;
     }
 
     /**
      * Set a model for saving on transaction commit.
      *
-     * @param Entity $model
+     * @param Entity $entity
      *
      * @return void
      */
-    public function save(Entity $model): void
+    public function save(Entity $entity): void
     {
-        $id = spl_object_id($model);
+        $id = spl_object_id($entity);
 
-        $this->saveModels[$id] = $model;
+        $this->saveModels[$id] = $entity;
     }
 
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param \Valkyrja\ORM\Entity $model The entity instance to remove.
+     * @param \Valkyrja\ORM\Entity $entity The entity instance to remove.
      *
      * @return bool
      */
-    public function remove(Entity $model): bool
+    public function remove(Entity $entity): bool
     {
         // Get the id of the object
-        $id = spl_object_id($model);
+        $id = spl_object_id($entity);
 
         // If the model is set to be created
         if (isset($this->createModels[$id])) {

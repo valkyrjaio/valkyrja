@@ -40,11 +40,11 @@ interface EntityManager
     /**
      * Get a repository instance.
      *
-     * @param string $model
+     * @param string $entity
      *
      * @return Repository
      */
-    public function getRepository(string $model): Repository;
+    public function getRepository(string $entity): Repository;
 
     /**
      * Initiate a transaction.
@@ -56,29 +56,29 @@ interface EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param Entity $model
+     * @param Entity $entity
      *
      * @return void
      */
-    public function create(Entity $model): void;
+    public function create(Entity $entity): void;
 
     /**
      * Set a model for saving on transaction commit.
      *
-     * @param Entity $model
+     * @param Entity $entity
      *
      * @return void
      */
-    public function save(Entity $model): void;
+    public function save(Entity $entity): void;
 
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param Entity $model The entity instance to remove.
+     * @param Entity $entity The entity instance to remove.
      *
      * @return bool
      */
-    public function remove(Entity $model): bool;
+    public function remove(Entity $entity): bool;
 
     /**
      * Commit all items in the transaction.
