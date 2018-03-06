@@ -55,7 +55,7 @@ class NativeEntityManager implements EntityManager
      *      ]
      * </code>
      *
-     * @var Model[]
+     * @var Entity[]
      */
     protected $createModels = [];
 
@@ -68,7 +68,7 @@ class NativeEntityManager implements EntityManager
      *      ]
      * </code>
      *
-     * @var \Valkyrja\ORM\Model[]
+     * @var \Valkyrja\ORM\Entity[]
      */
     protected $saveModels = [];
 
@@ -123,7 +123,7 @@ class NativeEntityManager implements EntityManager
             return $this->repositories[$model];
         }
 
-        /** @var Model|string $model */
+        /** @var Entity|string $model */
         $repository = $model::getRepository() ?? PDORepository::class;
 
         return $this->repositories[$model] = new $repository($this, $model, $model::getTable());
@@ -144,11 +144,11 @@ class NativeEntityManager implements EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param \Valkyrja\ORM\Model $model
+     * @param \Valkyrja\ORM\Entity $model
      *
      * @return void
      */
-    public function create(Model $model): void
+    public function create(Entity $model): void
     {
         $id = spl_object_id($model);
 
@@ -158,11 +158,11 @@ class NativeEntityManager implements EntityManager
     /**
      * Set a model for saving on transaction commit.
      *
-     * @param Model $model
+     * @param Entity $model
      *
      * @return void
      */
-    public function save(Model $model): void
+    public function save(Entity $model): void
     {
         $id = spl_object_id($model);
 
@@ -172,11 +172,11 @@ class NativeEntityManager implements EntityManager
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param \Valkyrja\ORM\Model $model The entity instance to remove.
+     * @param \Valkyrja\ORM\Entity $model The entity instance to remove.
      *
      * @return bool
      */
-    public function remove(Model $model): bool
+    public function remove(Entity $model): bool
     {
         // Get the id of the object
         $id = spl_object_id($model);

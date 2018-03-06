@@ -17,7 +17,7 @@ use PDO;
 use PDOStatement;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
-use Valkyrja\ORM\Model;
+use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
@@ -36,7 +36,7 @@ class PDORepository implements Repository
     /**
      * The entity to use.
      *
-     * @var string|\Valkyrja\ORM\Model
+     * @var string|\Valkyrja\ORM\Entity
      */
     protected $entity;
 
@@ -79,9 +79,9 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
-     * @return \Valkyrja\ORM\Model|null
+     * @return \Valkyrja\ORM\Entity|null
      */
-    public function find($id): ? Model
+    public function find($id): ? Entity
     {
         if (! \is_string($id) && ! \is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
@@ -117,7 +117,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Model[]
+     * @return \Valkyrja\ORM\Entity[]
      */
     public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array
     {
@@ -142,7 +142,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Model[]
+     * @return \Valkyrja\ORM\Entity[]
      */
     public function findAll(array $orderBy = null): array
     {
@@ -180,14 +180,14 @@ class PDORepository implements Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Model $model
+     * @param \Valkyrja\ORM\Entity $model
      *
      * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function create(Model $model): bool
+    public function create(Entity $model): bool
     {
         return $this->saveCreateDelete('insert', $model->asArray(false, false), []);
     }
@@ -205,15 +205,15 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param \Valkyrja\ORM\Model $model
-     * @param array|null          $criteria
+     * @param \Valkyrja\ORM\Entity $model
+     * @param array|null           $criteria
      *
      * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function save(Model $model, array $criteria = []): bool
+    public function save(Entity $model, array $criteria = []): bool
     {
         return $this->saveCreateDelete('update', $model->asArray(false, false), $criteria);
     }
@@ -231,15 +231,15 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param \Valkyrja\ORM\Model $model
-     * @param array|null          $criteria
+     * @param \Valkyrja\ORM\Entity $model
+     * @param array|null           $criteria
      *
      * @throws Exception
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function delete(Model $model, array $criteria = []): bool
+    public function delete(Entity $model, array $criteria = []): bool
     {
         return $this->saveCreateDelete('delete', $model->asArray(false, false), $criteria);
     }
@@ -299,7 +299,7 @@ class PDORepository implements Repository
      *
      * @throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Model[]|int
+     * @return \Valkyrja\ORM\Entity[]|int
      */
     protected function select(
         array $columns = null,
@@ -335,7 +335,7 @@ class PDORepository implements Repository
         // Iterate through the rows found
         foreach ($rows as $row) {
             // Create a new model
-            /** @var \Valkyrja\ORM\Model $model */
+            /** @var \Valkyrja\ORM\Entity $model */
             $model = new $this->entity();
             // Apply the model's contents given the row
             $model->fromArray($row);

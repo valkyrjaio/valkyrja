@@ -35,9 +35,9 @@ interface Repository
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
-     * @return \Valkyrja\ORM\Model|null
+     * @return \Valkyrja\ORM\Entity|null
      */
-    public function find($id): ? Model;
+    public function find($id): ? Entity;
 
     /**
      * Find entities by given criteria.
@@ -64,7 +64,7 @@ interface Repository
      * @param int|null   $limit
      * @param int|null   $offset
      *
-     * @return \Valkyrja\ORM\Model[]
+     * @return \Valkyrja\ORM\Entity[]
      */
     public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array;
 
@@ -84,7 +84,7 @@ interface Repository
      *
      * @param array $orderBy
      *
-     * @return \Valkyrja\ORM\Model[]
+     * @return \Valkyrja\ORM\Entity[]
      */
     public function findAll(array $orderBy = null): array;
 
@@ -114,11 +114,11 @@ interface Repository
      *      $this->create(Model::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Model $model
+     * @param \Valkyrja\ORM\Entity $model
      *
      * @return bool
      */
-    public function create(Model $model): bool;
+    public function create(Entity $model): bool;
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
@@ -133,12 +133,12 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Model $model
-     * @param array $criteria
+     * @param Entity $model
+     * @param array  $criteria
      *
      * @return bool
      */
-    public function save(Model $model, array $criteria = []): bool;
+    public function save(Entity $model, array $criteria = []): bool;
 
     /**
      * Delete an existing model.
@@ -153,10 +153,10 @@ interface Repository
      *          )
      * </code>
      *
-     * @param Model $model
-     * @param array $criteria
+     * @param Entity $model
+     * @param array  $criteria
      *
      * @return bool
      */
-    public function delete(Model $model, array $criteria = []): bool;
+    public function delete(Entity $model, array $criteria = []): bool;
 }

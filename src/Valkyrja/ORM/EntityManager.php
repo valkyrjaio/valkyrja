@@ -56,29 +56,29 @@ interface EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param Model $model
+     * @param Entity $model
      *
      * @return void
      */
-    public function create(Model $model): void;
+    public function create(Entity $model): void;
 
     /**
      * Set a model for saving on transaction commit.
      *
-     * @param Model $model
+     * @param Entity $model
      *
      * @return void
      */
-    public function save(Model $model): void;
+    public function save(Entity $model): void;
 
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param Model $model The entity instance to remove.
+     * @param Entity $model The entity instance to remove.
      *
      * @return bool
      */
-    public function remove(Model $model): bool;
+    public function remove(Entity $model): bool;
 
     /**
      * Commit all items in the transaction.

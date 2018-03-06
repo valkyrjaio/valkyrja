@@ -11,14 +11,14 @@
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use Valkyrja\ORM\Model;
+use Valkyrja\ORM\Entity;
 
 /**
  * Model class to use to test abstract model.
  *
  * @author Melech Mizrachi
  */
-class ModelClass extends \Valkyrja\ORM\Model
+class EntityClass extends \Valkyrja\ORM\Entity
 {
     /**
      * A property to test with.
@@ -59,9 +59,9 @@ class ModelClass extends \Valkyrja\ORM\Model
      *
      * @param string $prop The prop
      *
-     * @return \Valkyrja\Tests\Unit\Model\ModelClass
+     * @return \Valkyrja\Tests\Unit\Model\EntityClass
      */
-    public function setProp(string $prop): ModelClass
+    public function setProp(string $prop): EntityClass
     {
         $this->prop = $prop;
 

@@ -11,15 +11,15 @@
 
 namespace Valkyrja\ORM;
 
-use JsonSerializable;
+use Valkyrja\Model\Model;
 use Valkyrja\ORM\Enums\PropertyType;
 
 /**
- * Class Model.
+ * Class Entity.
  *
  * @author Melech Mizrachi
  */
-abstract class Model implements JsonSerializable
+abstract class Entity extends Model
 {
     /**
      * The table name.
@@ -87,64 +87,6 @@ abstract class Model implements JsonSerializable
     public static function getRepository(): ? string
     {
         return static::$repository;
-    }
-
-    /**
-     * Get a property.
-     *
-     * @param string $name The property to get
-     *
-     * @return mixed
-     */
-    public function __get(string $name)
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'get' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName();
-        }
-
-        return $this->{$name};
-    }
-
-    /**
-     * Set a property.
-     *
-     * @param string $name  The property to set
-     * @param mixed  $value The value to set
-     *
-     * @return void
-     */
-    public function __set(string $name, $value): void
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'set' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            $this->$methodName($value);
-        }
-
-        $this->{$name} = $value;
-    }
-
-    /**
-     * Check if a property is set.
-     *
-     * @param string $name The property to check
-     *
-     * @return bool
-     */
-    public function __isset(string $name): bool
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'isset' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName();
-        }
-
-        return property_exists($this, $name);
     }
 
     /**
@@ -218,15 +160,5 @@ abstract class Model implements JsonSerializable
         }
 
         return $properties;
-    }
-
-    /**
-     * Serialize properties for json_encode.
-     *
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return get_object_vars($this);
     }
 }
