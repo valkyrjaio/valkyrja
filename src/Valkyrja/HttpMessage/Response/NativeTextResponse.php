@@ -29,6 +29,7 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream

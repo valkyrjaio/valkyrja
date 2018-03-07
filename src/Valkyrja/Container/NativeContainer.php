@@ -108,7 +108,7 @@ class NativeContainer implements Container
         // If there is no id
         if (null === $service->getId()) {
             // Throw a new exception
-            throw new InvalidServiceIdException();
+            throw new InvalidServiceIdException('Invalid service id provided.');
         }
 
         // If we should verify the dispatch
@@ -147,7 +147,7 @@ class NativeContainer implements Container
 
         // If the context index is null then there's no context
         if (null === $context || null === $serviceContext->getId()) {
-            throw new InvalidContextException();
+            throw new InvalidContextException('Invalid context.');
         }
 
         // If the context is the same as the end service dispatch and the
@@ -447,14 +447,14 @@ class NativeContainer implements Container
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $context   The context
+     * @param string $context   [optional] The context
      *                          class name || function name || variable name
      * @param string $member    [optional] The context member
      *                          method name || property name
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null): string
+    public function contextServiceId(string $serviceId, string $context = null, string $member = null): string
     {
         $index = $serviceId . '@' . ($context ?? '');
 
@@ -633,6 +633,7 @@ class NativeContainer implements Container
      */
     protected function setupServiceProviders(): void
     {
+        /** @var array $providers */
         $providers = $this->app->config()['container']['providers'];
 
         // Iterate through all the providers
@@ -645,6 +646,7 @@ class NativeContainer implements Container
             return;
         }
 
+        /** @var array $devProviders */
         $devProviders = $this->app->config()['container']['devProviders'];
 
         // Iterate through all the providers

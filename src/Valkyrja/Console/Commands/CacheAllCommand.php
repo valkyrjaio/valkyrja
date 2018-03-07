@@ -13,6 +13,7 @@ namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Container\Commands\ContainerCacheCommand;
@@ -39,6 +40,8 @@ class CacheAllCommand extends CommandHandler
      * Generate all cache files.
      *
      * @param string $sync [optional] Whether to sync the cached files
+     *
+     * @throws CommandNotFound
      *
      * @return int
      */

@@ -47,7 +47,16 @@ abstract class ServerRequestFactory
      * @param array $cookies $_COOKIE superglobal
      * @param array $files   $_FILES superglobal
      *
-     * @throws InvalidArgumentException for invalid file values
+     * @throws \InvalidArgumentException
+     * @throws \UnexpectedValueException
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
      *
      * @return ServerRequest
      */
@@ -234,7 +243,6 @@ abstract class ServerRequestFactory
             if ($value && strpos($key, 'CONTENT_') === 0) {
                 $name           = 'content-' . strtolower(substr($key, 8));
                 $headers[$name] = $value;
-                continue;
             }
         }
 
@@ -246,6 +254,11 @@ abstract class ServerRequestFactory
      *
      * @param array $server
      * @param array $headers
+     *
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
+     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
      *
      * @return Uri
      */
@@ -407,8 +420,8 @@ abstract class ServerRequestFactory
      */
     public static function stripQueryString(string $path): string
     {
-        if (($qpos = strpos($path, '?')) !== false) {
-            return substr($path, 0, $qpos);
+        if (($queryPos = strpos($path, '?')) !== false) {
+            return substr($path, 0, $queryPos);
         }
 
         return $path;
@@ -424,14 +437,14 @@ abstract class ServerRequestFactory
      */
     private static function marshalHostAndPortFromHeader(stdClass $accumulator, $host): void
     {
-        if (is_array($host)) {
+        if (\is_array($host)) {
             $host = implode(', ', $host);
         }
 
         $accumulator->host = $host;
         $accumulator->port = null;
 
-        // works for regname, IPv4 & IPv6
+        // Works for regname, IPv4 & IPv6
         if (preg_match('|\:(\d+)$|', $accumulator->host, $matches)) {
             $accumulator->host = substr($accumulator->host, 0, -1 * (\strlen($matches[1]) + 1));
             $accumulator->port = (int) $matches[1];
@@ -466,6 +479,8 @@ abstract class ServerRequestFactory
      *
      * @param array $value $_FILES struct
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array|UploadedFile
      */
     private static function createUploadedFileFromSpec(array $value)
@@ -491,6 +506,8 @@ abstract class ServerRequestFactory
      * UploadedFileInterface instances.
      *
      * @param array $files
+     *
+     * @throws \InvalidArgumentException
      *
      * @return UploadedFile[]
      */
@@ -518,6 +535,7 @@ abstract class ServerRequestFactory
      * @param array $server
      *
      * @return string
+     * @throws \UnexpectedValueException
      */
     private static function marshalProtocolVersion(array $server): string
     {
@@ -566,6 +584,7 @@ abstract class ServerRequestFactory
 
         $cookies = [];
 
+        /** @var array $matches */
         foreach ($matches as $match) {
             $cookies[$match['name']] = urldecode($match['value']);
         }

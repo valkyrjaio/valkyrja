@@ -44,10 +44,10 @@ class ConfigCacheCommand extends CommandHandler
 
         // If the config file exists
         if (file_exists(config()['filePath'])) {
-            // Resetup the application with it
+            // Re-setup the application with it
             app()->setup(require config()['filePath'], true);
         } else {
-            // Otherwise just resetup the application with default configs
+            // Otherwise just re-setup the application with default configs
             app()->setup(null, true);
         }
 
@@ -56,7 +56,8 @@ class ConfigCacheCommand extends CommandHandler
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()['cacheFilePath'],
-            '<?php return ' . var_export($cache, true) . ';'
+            '<?php return ' . var_export($cache, true) . ';',
+            LOCK_EX
         );
 
         if ($result === false) {

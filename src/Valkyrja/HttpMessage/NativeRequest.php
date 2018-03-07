@@ -44,7 +44,7 @@ class NativeRequest implements Request
      * @param Stream $body    [optional] The body stream
      * @param array  $headers [optional] The headers
      *
-     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort

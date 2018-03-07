@@ -305,7 +305,7 @@ interface Response
      * response.
      *
      * When the responses TTL is <= 0, the response may not be served from
-     * cache without first revalidating with the origin.
+     * cache without first re-validating with the origin.
      *
      * @return int The TTL in seconds
      */

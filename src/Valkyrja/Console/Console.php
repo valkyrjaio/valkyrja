@@ -64,18 +64,22 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param Input $input The input
      *
-     * @return null|\Valkyrja\Console\Command
+     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
+     * @return \Valkyrja\Console\Command
      */
-    public function inputCommand(Input $input): ? Command;
+    public function inputCommand(Input $input): Command;
 
     /**
      * Match a command.
      *
      * @param string $path The command name
      *
+     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
      * @return \Valkyrja\Console\Command
      */
-    public function matchCommand(string $path): ? Command;
+    public function matchCommand(string $path): Command;
 
     /**
      * Dispatch a command.

@@ -83,9 +83,7 @@ class Cookies
      */
     public function remove(string $name, string $path = '/', string $domain = null): self
     {
-        if (null === $path) {
-            $path = '/';
-        }
+        $path = $path ?? '/';
 
         unset($this->cookies[$domain][$path][$name]);
 

@@ -97,10 +97,11 @@ class NativeConsole implements Console
     public function addCommand(Command $command): void
     {
         $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
+        $dispatcher = $this->app->dispatcher();
 
-        $this->app->dispatcher()->verifyClassMethod($command);
-        $this->app->dispatcher()->verifyFunction($command);
-        $this->app->dispatcher()->verifyClosure($command);
+        $dispatcher->verifyClassMethod($command);
+        $dispatcher->verifyFunction($command);
+        $dispatcher->verifyClosure($command);
 
         $this->addParsedCommand(
             $command,
@@ -185,9 +186,11 @@ class NativeConsole implements Console
      *
      * @param Input $input The input
      *
-     * @return null|\Valkyrja\Console\Command
+     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
+     * @return \Valkyrja\Console\Command
      */
-    public function inputCommand(Input $input): ? Command
+    public function inputCommand(Input $input): Command
     {
         return $this->matchCommand($input->getStringArguments());
     }
@@ -197,9 +200,11 @@ class NativeConsole implements Console
      *
      * @param string $path The path
      *
+     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
+     *
      * @return \Valkyrja\Console\Command
      */
-    public function matchCommand(string $path): ? Command
+    public function matchCommand(string $path): Command
     {
         // If the path matches a set command path
         if (isset(self::$commands[$path])) {
@@ -230,6 +235,12 @@ class NativeConsole implements Console
                 return $command;
             }
         }
+        
+        // If a command was not found
+        if (null === $command) {
+            // Throw a not found exception
+            throw new CommandNotFound('The command ' . $path . ' not found.');
+        }
 
         return $command;
     }
@@ -248,7 +259,7 @@ class NativeConsole implements Console
     {
         // Verify the command exists
         if (null === $command = $this->inputCommand($input)) {
-            throw new CommandNotFound();
+            throw new CommandNotFound('Specified command does not exists.');
         }
 
         if ($input->hasOption('-h') || $input->hasOption('--help')) {
@@ -418,8 +429,11 @@ class NativeConsole implements Console
      */
     protected function setupCommandProviders(): void
     {
+        /** @var string[] $providers */
+        $providers = $this->app->config()['console']['providers'];
+
         // Iterate through all the providers
-        foreach ($this->app->config()['console']['providers'] as $provider) {
+        foreach ($providers as $provider) {
             $this->register($provider);
         }
 
@@ -428,8 +442,11 @@ class NativeConsole implements Console
             return;
         }
 
+        /** @var string[] $devProviders */
+        $devProviders = $this->app->config()['console']['devProviders'];
+
         // Iterate through all the providers
-        foreach ($this->app->config()['console']['devProviders'] as $provider) {
+        foreach ($devProviders as $provider) {
             $this->register($provider);
         }
     }

@@ -73,10 +73,6 @@ class ExceptionHandler
      */
     public function handleException(Throwable $exception): void
     {
-        if (! $exception instanceof Throwable) {
-            $exception = new Exception($exception);
-        }
-
         $this->sendExceptionResponse($exception);
     }
 
@@ -472,7 +468,7 @@ EOF;
         }
 
         return sprintf(
-            ' in <a title="%s line %3$d" ondblclick="var f=this.innerHTML;this.innerHTML=this.title;this.title=f;">%s line %d</a>',
+            ' in <a title="%s line %3$d" ondblclick="let f=this.innerHTML;this.innerHTML=this.title;this.title=f;">%s line %d</a>',
             $path,
             $file,
             $line

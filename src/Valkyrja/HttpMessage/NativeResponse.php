@@ -56,6 +56,7 @@ class NativeResponse implements Response
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */
@@ -198,7 +199,9 @@ class NativeResponse implements Response
     /**
      * Send the response.
      *
-     * @return \Valkyrja\HttpMessage\Response
+     * @throws \RuntimeException
+     *
+     * @return Response
      */
     public function send(): Response
     {
@@ -212,6 +215,7 @@ class NativeResponse implements Response
         header($http_line, true, $this->getStatusCode());
 
         foreach ($this->getHeaders() as $name => $values) {
+            /** @var array $values */
             foreach ($values as $value) {
                 header("$name: $value", false);
             }
@@ -226,6 +230,8 @@ class NativeResponse implements Response
         while (! $stream->eof()) {
             echo $stream->read(1024 * 8);
         }
+        
+        return $this;
     }
 
     /**

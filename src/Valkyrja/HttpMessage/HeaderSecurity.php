@@ -49,18 +49,18 @@ final class HeaderSecurity
      */
     public static function filter(string $value): string
     {
-        $length = strlen($value);
+        $length = \strlen($value);
         $string = '';
 
-        for ($i = 0; $i < $length; $i += 1) {
-            $ascii = ord($value[$i]);
+        for ($i = 0; $i < $length; ++$i) {
+            $ascii = \ord($value[$i]);
 
             // Detect continuation sequences
             if ($ascii === 13) {
-                $lf = ord($value[$i + 1]);
-                $ws = ord($value[$i + 2]);
+                $lf = \ord($value[$i + 1]);
+                $ws = \ord($value[$i + 2]);
 
-                if ($lf === 10 && in_array($ws, [9, 32], true)) {
+                if ($lf === 10 && \in_array($ws, [9, 32], true)) {
                     $string .= $value[$i] . $value[$i + 1];
                     $i++;
                 }

@@ -282,10 +282,8 @@ class NativeRouter implements Router
     public function requestRoute(Request $request): ? Route
     {
         $requestMethod = $request->getMethod();
-        $requestUri    = $request->getPathOnly();
-
         // Decode the request uri
-        $requestUri = rawurldecode($requestUri);
+        $requestUri = rawurldecode($request->getPathOnly());
 
         return $this->matchRoute($requestUri, $requestMethod);
     }
@@ -340,7 +338,7 @@ class NativeRouter implements Router
 
         // Get only the path (full string from the first slash to the end
         // of the path)
-        $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
+        $uri = (string) substr($uri, strpos($uri, '/'), \count($uri));
 
         // Try to match the route
         $route = $this->matchRoute($uri);

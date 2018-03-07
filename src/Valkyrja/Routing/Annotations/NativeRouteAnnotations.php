@@ -242,7 +242,6 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      * @param Route $route The route annotation
      *
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      *
      * @return \Valkyrja\Routing\Route
      */

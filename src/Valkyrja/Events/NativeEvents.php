@@ -276,7 +276,6 @@ class NativeEvents implements Events
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -346,7 +345,6 @@ class NativeEvents implements Events
     /**
      * Setup annotations.
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
@@ -377,7 +375,6 @@ class NativeEvents implements Events
     /**
      * Get a cacheable representation of the events.
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
      * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException

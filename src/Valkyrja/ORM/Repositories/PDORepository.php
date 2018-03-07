@@ -11,13 +11,13 @@
 
 namespace Valkyrja\ORM\Repositories;
 
-use Exception;
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
+use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
@@ -182,7 +182,7 @@ class PDORepository implements Repository
      *
      * @param \Valkyrja\ORM\Entity $entity
      *
-     * @throws Exception
+     * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return bool
@@ -208,7 +208,7 @@ class PDORepository implements Repository
      * @param \Valkyrja\ORM\Entity $entity
      * @param array|null           $criteria
      *
-     * @throws Exception
+     * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return bool
@@ -234,7 +234,7 @@ class PDORepository implements Repository
      * @param \Valkyrja\ORM\Entity $entity
      * @param array|null           $criteria
      *
-     * @throws Exception
+     * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return bool
@@ -458,7 +458,7 @@ class PDORepository implements Repository
      * @param array  $properties
      * @param array  $criteria [optional]
      *
-     * @throws Exception
+     * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return int
@@ -497,7 +497,7 @@ class PDORepository implements Repository
         // If the execute failed
         if (! $executeResult = $stmt->execute()) {
             // Throw a fail exception
-            throw new Exception($stmt->errorInfo()[2]);
+            throw new ExecuteException($stmt->errorInfo()[2]);
         }
 
         return $executeResult;

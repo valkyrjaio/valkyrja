@@ -16,7 +16,7 @@ use Valkyrja\Application;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Support\Middleware\MiddlewareAwareTrait;
+use Valkyrja\HttpMessage\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**

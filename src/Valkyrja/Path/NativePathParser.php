@@ -277,7 +277,7 @@ REGEX;
             // Iterate through the segments
             foreach ($segments as $segmentKey => $segment) {
                 // Replace this match with the replace text thus removing any regex
-                // in the segment this fixes any regexes with brackets from being
+                // in the segment this fixes any regex with brackets from being
                 // messed up in the splitSegments() method
                 $segments[$segmentKey] = str_replace(
                     $params[0][$key],

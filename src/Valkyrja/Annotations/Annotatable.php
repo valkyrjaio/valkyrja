@@ -119,7 +119,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setAnnotationType(string $annotationType = null)
+    public function setAnnotationType(string $annotationType = null): void
     {
         $this->annotationType = $annotationType;
     }
@@ -141,7 +141,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setId(string $id = null)
+    public function setId(string $id = null): void
     {
         $this->id = $id;
     }
@@ -163,7 +163,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setName(string $name = null)
+    public function setName(string $name = null): void
     {
         $this->name = $name;
     }
@@ -185,7 +185,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setClass(string $class = null)
+    public function setClass(string $class = null): void
     {
         $this->class = $class;
     }
@@ -207,7 +207,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setProperty(string $property = null)
+    public function setProperty(string $property = null): void
     {
         $this->property = $property;
     }
@@ -229,7 +229,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setMethod(string $method = null)
+    public function setMethod(string $method = null): void
     {
         $this->method = $method;
     }
@@ -251,7 +251,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setStatic(bool $static = true)
+    public function setStatic(bool $static = true): void
     {
         $this->static = $static;
     }
@@ -271,7 +271,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setFunction(string $function = null)
+    public function setFunction(string $function = null): void
     {
         $this->function = $function;
     }
@@ -293,7 +293,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setMatches(array $matches = null)
+    public function setMatches(array $matches = null): void
     {
         $this->matches = $matches;
     }
@@ -315,7 +315,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setArguments(array $arguments = null)
+    public function setArguments(array $arguments = null): void
     {
         $this->arguments = $arguments;
     }
@@ -337,7 +337,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setDependencies(array $dependencies = null)
+    public function setDependencies(array $dependencies = null): void
     {
         $this->dependencies = $dependencies;
     }
@@ -359,7 +359,7 @@ trait Annotatable
      *
      * @return void
      */
-    public function setAnnotationArguments(array $annotationArguments = null)
+    public function setAnnotationArguments(array $annotationArguments = null): void
     {
         $this->annotationArguments = $annotationArguments;
     }

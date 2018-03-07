@@ -37,6 +37,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @param array $headers         [optional] The headers
      * @param int   $encodingOptions [optional] The encoding options
      *
+     * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream

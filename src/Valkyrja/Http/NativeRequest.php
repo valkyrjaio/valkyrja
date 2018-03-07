@@ -223,7 +223,7 @@ class NativeRequest implements Request
     }
 
     /**
-     * Creates a new request with values from PHP's super globals.
+     * Creates a new request with values from PHP super globals.
      *
      * @return \Valkyrja\Http\Request
      */
@@ -278,13 +278,13 @@ class NativeRequest implements Request
      * @return \Valkyrja\Http\Request
      */
     public static function create(
-        $uri,
-        $method = RequestMethod::GET,
-        $parameters = [],
-        $cookies = [],
-        $files = [],
-        $server = [],
-        $content = null
+        string $uri,
+        string $method = RequestMethod::GET,
+        array $parameters = [],
+        array $cookies = [],
+        array $files = [],
+        array $server = [],
+        string $content = null
     ): Request {
         $server = array_replace(
             [

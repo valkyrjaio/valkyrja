@@ -112,7 +112,6 @@ class NativeUri implements Uri
      * @param string $query    [optional] The query
      * @param string $fragment [optional] The fragment
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
@@ -439,7 +438,6 @@ class NativeUri implements Uri
      *
      * @param string $scheme The scheme to use with the new instance.
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme for invalid or
      *          unsupported schemes.
      *
@@ -740,7 +738,6 @@ class NativeUri implements Uri
      *
      * @param string $scheme The scheme
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
      *
      * @return string
@@ -748,7 +745,7 @@ class NativeUri implements Uri
     protected function validateScheme(string $scheme): string
     {
         $scheme = strtolower($scheme);
-        $scheme = preg_replace('#:(//)?$#', '', $scheme);
+        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
 
         if (! $scheme) {
             return '';

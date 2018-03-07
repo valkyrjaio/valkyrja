@@ -193,9 +193,10 @@ class Valkyrja implements Application
         $defaultConfigs = require $configFilePath;
 
         self::$config = array_replace_recursive($defaultConfigs, $config);
+        /** @var \Valkyrja\Support\Providers\Provider[] $providers */
+        $providers = self::$config['providers'];
 
-        /* @var \Valkyrja\Support\Providers\Provider $provider */
-        foreach (self::$config['providers'] as $provider) {
+        foreach ($providers as $provider) {
             // Config providers are NOT deferred and will not follow the
             // deferred value
             $provider::publish($this);

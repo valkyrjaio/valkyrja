@@ -29,6 +29,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */

@@ -41,22 +41,22 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
     {
         parent::__construct($formatter);
 
+        // Set the stream
+        $this->stream = $stream;
+
         // If there is no stream and the stdout failed
-        if (! $stream = $stream ?? fopen('php://stdout', 'wb')) {
+        if (! $this->stream = $this->stream ?? fopen('php://stdout', 'wb')) {
             throw new RuntimeException(
                 'Unable to create stdout.'
             );
         }
 
         // If the stream isn't a valid resource or not a stream resource
-        if (! \is_resource($stream) || 'stream' !== get_resource_type($stream)) {
+        if (! \is_resource($this->stream) || 'stream' !== get_resource_type($this->stream)) {
             throw new InvalidArgumentException(
                 'Stream is not a valid stream resource.'
             );
         }
-
-        // Set the stream
-        $this->stream = $stream;
     }
 
     /**

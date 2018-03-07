@@ -13,6 +13,8 @@ namespace Valkyrja\Console;
 
 use Throwable;
 use Valkyrja\Application;
+use Valkyrja\Console\Events\ConsoleKernelHandled;
+use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Support\Providers\Provides;
@@ -75,8 +77,8 @@ class NativeKernel implements Kernel
         }
 
         $this->app->events()->trigger(
-            'Console.Kernel.handled',
-            [$input, $exitCode]
+            ConsoleKernelHandled::class,
+            [new ConsoleKernelHandled($input, $exitCode)]
         );
 
         return $exitCode;
@@ -93,8 +95,8 @@ class NativeKernel implements Kernel
     public function terminate(Input $input, int $exitCode): void
     {
         $this->app->events()->trigger(
-            'Console.Kernel.terminate',
-            [$input, $exitCode]
+            ConsoleKernelTerminate::class,
+            [new ConsoleKernelTerminate($input, $exitCode)]
         );
     }
 

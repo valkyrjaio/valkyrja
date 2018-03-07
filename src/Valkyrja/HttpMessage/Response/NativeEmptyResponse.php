@@ -26,6 +26,7 @@ class NativeEmptyResponse extends NativeResponse implements RedirectResponse
      *
      * @param array $headers [optional] The headers
      *
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
      */

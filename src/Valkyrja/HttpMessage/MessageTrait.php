@@ -354,6 +354,8 @@ trait MessageTrait
      *
      * @param array $originalHeaders
      *
+     * @throws \InvalidArgumentException
+     *
      * @return void
      */
     protected function setHeaders(array $originalHeaders): void
@@ -377,6 +379,8 @@ trait MessageTrait
      * Filter header values.
      *
      * @param string[] ...$values Header values
+     *
+     * @throws \InvalidArgumentException
      *
      * @return string[]
      */
@@ -406,7 +410,7 @@ trait MessageTrait
         // Normalize the content type header
         $normalized = strtolower($header);
         // The original value for the header (if it exists in the headers array)
-        // Defauls to the value passed in
+        // Defaults to the value passed in
         $originalValue = $value;
 
         // Iterate through all the headers

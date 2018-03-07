@@ -220,8 +220,9 @@ class NativeDispatcher implements Dispatcher
             return $dependencies;
         }
 
-        $context = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member  = $dispatch->getProperty() ?? $dispatch->getMethod();
+        $dependencies = [];
+        $context      = $dispatch->getClass() ?? $dispatch->getFunction();
+        $member       = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {

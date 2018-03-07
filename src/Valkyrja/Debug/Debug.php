@@ -47,7 +47,7 @@ class Debug
         // The exception handler
         $exceptionHandler = new ExceptionHandler($displayErrors);
         // The error handler
-        $errorHandler = new ErrorHandler($displayErrors);
+        $errorHandler = new ErrorHandler();
 
         // Set the error reporting level
         error_reporting($errorReportingLevel);

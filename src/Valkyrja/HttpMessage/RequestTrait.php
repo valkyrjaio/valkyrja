@@ -79,7 +79,7 @@ trait RequestTrait
      * @param Stream $body    [optional] The body stream
      * @param array  $headers [optional] The headers
      *
-     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
@@ -203,7 +203,6 @@ trait RequestTrait
      *
      * @param string $method Case-sensitive method.
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod for invalid HTTP
      *          methods.
      *
@@ -321,7 +320,6 @@ trait RequestTrait
      *
      * @param string $method The method
      *
-     * @throws \ReflectionException
      * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
      *
      * @return void

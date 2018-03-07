@@ -51,7 +51,8 @@ class EventsCacheCommand extends CommandHandler
         // Get the results of the cache attempt
         $result = file_put_contents(
             config()['events']['cacheFilePath'],
-            '<?php return ' . var_export($cache, true) . ';'
+            '<?php return ' . var_export($cache, true) . ';',
+            LOCK_EX
         );
 
         if ($result === false) {

@@ -295,7 +295,7 @@ class NativeAnnotationsParser implements AnnotationsParser
         // Constants can be bool, int, string, or arrays
         // If the key is an array throw an exception
         if (! \is_int($key) && ! \is_string($key) && ! \is_bool($key)) {
-            throw new InvalidAnnotationKeyArgument();
+            throw new InvalidAnnotationKeyArgument('Invalid key specified.');
         }
 
         // Set the key value pair in the list
