@@ -11,7 +11,7 @@
 
 namespace Valkyrja\HttpMessage;
 
-use Valkyrja\Support\Middleware\MiddlewareAware;
+use Valkyrja\HttpMessage\Middleware\MiddlewareAware;
 
 /**
  * Interface Kernel.
