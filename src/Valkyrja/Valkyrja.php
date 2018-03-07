@@ -16,6 +16,7 @@ use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Crypt;
 use Valkyrja\Debug\Debug;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
@@ -34,6 +35,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
+use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
@@ -585,6 +587,26 @@ class Valkyrja implements Application
     public function consoleKernel(): ConsoleKernel
     {
         return $this->container()->getSingleton(ConsoleKernel::class);
+    }
+
+    /**
+     * Return the crypt instance from the container.
+     *
+     * @return \Valkyrja\Crypt\Crypt
+     */
+    public function crypt(): Crypt
+    {
+        return $this->container()->getSingleton(Crypt::class);
+    }
+
+    /**
+     * Return the entity manager instance from the container.
+     *
+     * @return \Valkyrja\ORM\EntityManager
+     */
+    public function entityManager(): EntityManager
+    {
+        return $this->container()->getSingleton(EntityManager::class);
     }
 
     /**

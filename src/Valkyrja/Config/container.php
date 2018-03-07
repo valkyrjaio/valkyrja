@@ -41,6 +41,7 @@ return [
             Valkyrja\Console\Output\NativeOutputFormatter::class,
             Valkyrja\Console\Annotations\NativeCommandAnnotations::class,
             Valkyrja\Container\Annotations\NativeContainerAnnotations::class,
+            Valkyrja\Crypt\SodiumCrypt::class,
             Valkyrja\Events\Annotations\NativeListenerAnnotations::class,
             Valkyrja\Filesystem\FlyFilesystem::class,
             Valkyrja\Http\NativeKernel::class,

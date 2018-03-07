@@ -191,6 +191,30 @@ if (! function_exists('consoleKernel')) {
     }
 }
 
+if (! function_exists('vcrypt')) {
+    /**
+     * Get the crypt.
+     *
+     * @return \Valkyrja\Crypt\Crypt
+     */
+    function vcrypt(): Valkyrja\Crypt\Crypt
+    {
+        return app()->crypt();
+    }
+}
+
+if (! function_exists('entityManager')) {
+    /**
+     * Get the entity manager.
+     *
+     * @return \Valkyrja\ORM\EntityManager
+     */
+    function entityManager(): Valkyrja\ORM\EntityManager
+    {
+        return app()->entityManager();
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Get request.
@@ -467,6 +491,20 @@ if (! function_exists('cachePath')) {
     function cachePath(string $path = null): string
     {
         return Valkyrja\Support\Directory::cachePath($path);
+    }
+}
+
+if (! function_exists('envPath')) {
+    /**
+     * Helper function to get env path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function envPath(string $path = null): string
+    {
+        return Valkyrja\Support\Directory::envPath($path);
     }
 }
 

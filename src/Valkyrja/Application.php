@@ -16,6 +16,7 @@ use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Events\Events;
 use Valkyrja\Filesystem\Filesystem;
@@ -27,6 +28,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
+use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
@@ -221,6 +223,20 @@ interface Application
      * @return \Valkyrja\Console\Kernel
      */
     public function consoleKernel(): ConsoleKernel;
+
+    /**
+     * Return the crypt instance from the container.
+     *
+     * @return \Valkyrja\Crypt\Crypt
+     */
+    public function crypt(): Crypt;
+
+    /**
+     * Return the entity manager instance from the container.
+     *
+     * @return \Valkyrja\ORM\EntityManager
+     */
+    public function entityManager(): EntityManager;
 
     /**
      * Return the filesystem instance from the container.

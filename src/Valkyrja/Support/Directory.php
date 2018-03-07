@@ -40,6 +40,7 @@ class Directory
     public static $APP_PATH       = 'app';
     public static $BOOTSTRAP_PATH = 'bootstrap';
     public static $CONFIG_PATH    = 'config';
+    public static $ENV_PATH       = 'env';
     public static $PUBLIC_PATH    = 'public';
     public static $RESOURCES_PATH = 'resources';
     public static $ROUTES_PATH    = 'routes';
@@ -94,6 +95,18 @@ class Directory
     public static function configPath(string $path = null): string
     {
         return static::basePath(static::$CONFIG_PATH . static::path($path));
+    }
+
+    /**
+     * Get the env directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function envPath(string $path = null): string
+    {
+        return static::basePath(static::$ENV_PATH . static::path($path));
     }
 
     /**
