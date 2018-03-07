@@ -97,7 +97,7 @@ class SodiumCrypt implements Crypt
     public function decrypt(string $encrypted, string $key = null): string
     {
         $key     = $key ?? $this->getKey();
-        $decoded = base64_decode($encrypted);
+        $decoded = base64_decode($encrypted, true);
 
         if ($decoded === false) {
             throw new CryptException('The encoding failed');
