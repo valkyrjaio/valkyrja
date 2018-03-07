@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Events;
+namespace Valkyrja\HttpMessage\Events;
 
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
+use Valkyrja\HttpMessage\Request;
+use Valkyrja\HttpMessage\Response;
 use Valkyrja\Model\Model;
 
 /**

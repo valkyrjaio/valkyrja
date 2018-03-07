@@ -14,6 +14,8 @@ namespace Valkyrja\Http;
 use Throwable;
 use Valkyrja\Application;
 use Valkyrja\Debug\ExceptionHandler;
+use Valkyrja\Http\Events\HttpKernelHandled;
+use Valkyrja\Http\Events\HttpKernelTerminate;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Support\Middleware\MiddlewareAwareTrait;
@@ -79,6 +81,14 @@ class NativeKernel implements Kernel
 
         // Dispatch the after request handled middleware and return the response
         $this->responseMiddleware($request, $response);
+
+        // Trigger an event for kernel handled
+        $this->app->events()->trigger(
+            HttpKernelHandled::class,
+            [
+                new HttpKernelHandled($request, $response)
+            ]
+        );
 
         return $response;
     }
@@ -146,6 +156,14 @@ class NativeKernel implements Kernel
                 $route->getMiddleware()
             );
         }
+
+        // Trigger an event for kernel terminate
+        $this->app->events()->trigger(
+            HttpKernelTerminate::class,
+            [
+                new HttpKernelTerminate($request, $response)
+            ]
+        );
     }
 
     /**
