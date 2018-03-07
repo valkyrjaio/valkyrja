@@ -86,7 +86,7 @@ class NativeKernel implements Kernel
         $this->app->events()->trigger(
             HttpKernelHandled::class,
             [
-                new HttpKernelHandled($request, $response)
+                new HttpKernelHandled($request, $response),
             ]
         );
 
@@ -161,7 +161,7 @@ class NativeKernel implements Kernel
         $this->app->events()->trigger(
             HttpKernelTerminate::class,
             [
-                new HttpKernelTerminate($request, $response)
+                new HttpKernelTerminate($request, $response),
             ]
         );
     }

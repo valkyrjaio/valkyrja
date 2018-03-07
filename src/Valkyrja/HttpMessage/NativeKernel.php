@@ -16,9 +16,9 @@ use Valkyrja\Application;
 use Valkyrja\Debug\ExceptionHandler;
 use Valkyrja\HttpMessage\Events\HttpKernelHandled;
 use Valkyrja\HttpMessage\Events\HttpKernelTerminate;
+use Valkyrja\HttpMessage\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\HttpMessage\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -86,7 +86,7 @@ class NativeKernel implements Kernel
         $this->app->events()->trigger(
             HttpKernelHandled::class,
             [
-                new HttpKernelHandled($request, $response)
+                new HttpKernelHandled($request, $response),
             ]
         );
 
@@ -155,7 +155,7 @@ class NativeKernel implements Kernel
         $this->app->events()->trigger(
             HttpKernelTerminate::class,
             [
-                new HttpKernelTerminate($request, $response)
+                new HttpKernelTerminate($request, $response),
             ]
         );
     }

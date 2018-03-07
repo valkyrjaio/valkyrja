@@ -534,8 +534,9 @@ abstract class ServerRequestFactory
      *
      * @param array $server
      *
-     * @return string
      * @throws \UnexpectedValueException
+     *
+     * @return string
      */
     private static function marshalProtocolVersion(array $server): string
     {
