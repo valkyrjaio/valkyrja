@@ -52,7 +52,7 @@ final class HeaderSecurity
         $length = \strlen($value);
         $string = '';
 
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
             $ascii = \ord($value[$i]);
 
             // Detect continuation sequences

@@ -235,7 +235,7 @@ class NativeConsole implements Console
                 return $command;
             }
         }
-        
+
         // If a command was not found
         if (null === $command) {
             // Throw a not found exception

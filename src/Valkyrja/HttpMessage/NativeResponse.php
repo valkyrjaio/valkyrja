@@ -230,7 +230,7 @@ class NativeResponse implements Response
         while (! $stream->eof()) {
             echo $stream->read(1024 * 8);
         }
-        
+
         return $this;
     }
 
