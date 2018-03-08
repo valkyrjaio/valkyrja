@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Middleware;
+namespace Valkyrja\Http\Middleware;
 
 use Valkyrja\Application;
 use Valkyrja\Http\Request;
@@ -91,7 +91,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var \Valkyrja\Support\Middleware\Middleware $item */
+            /* @var \Valkyrja\Http\Middleware\Middleware $item */
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
@@ -136,7 +136,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var \Valkyrja\Support\Middleware\Middleware $item */
+            /* @var \Valkyrja\Http\Middleware\Middleware $item */
             $response = $item::after($request, $response);
 
             // Set the returned response in the container
@@ -174,7 +174,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var \Valkyrja\Support\Middleware\Middleware $item */
+            /* @var \Valkyrja\Http\Middleware\Middleware $item */
             $item::terminate($request, $response);
         }
     }

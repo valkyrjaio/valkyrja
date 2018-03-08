@@ -18,7 +18,7 @@ use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Support\Middleware\MiddlewareAwareTrait;
+use Valkyrja\Http\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
