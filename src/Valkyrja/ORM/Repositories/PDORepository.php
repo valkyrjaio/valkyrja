@@ -22,7 +22,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
 /**
- * Class MySQLRepository.
+ * Class PDORepository.
  */
 class PDORepository implements Repository
 {
@@ -177,7 +177,7 @@ class PDORepository implements Repository
      * Create a new model.
      *
      * <code>
-     *      $this->create(Model::class)
+     *      $this->create(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
@@ -189,59 +189,45 @@ class PDORepository implements Repository
      */
     public function create(Entity $entity): bool
     {
-        return $this->saveCreateDelete('insert', $entity->asArray(false, false), []);
+        return $this->saveCreateDelete('insert', $entity);
     }
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      *
      * <code>
-     *      $this
-     *          ->save(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->save(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
-     * @param array|null           $criteria
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function save(Entity $entity, array $criteria = []): bool
+    public function save(Entity $entity): bool
     {
-        return $this->saveCreateDelete('update', $entity->asArray(false, false), $criteria);
+        return $this->saveCreateDelete('update', $entity);
     }
 
     /**
      * Delete an existing model.
      *
      * <code>
-     *      $this
-     *          ->delete(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->delete(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
-     * @param array|null           $criteria
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return bool
      */
-    public function delete(Entity $entity, array $criteria = []): bool
+    public function delete(Entity $entity): bool
     {
-        return $this->saveCreateDelete('delete', $entity->asArray(false, false), $criteria);
+        return $this->saveCreateDelete('delete', $entity);
     }
 
     /**
@@ -447,36 +433,34 @@ class PDORepository implements Repository
      *      $this
      *          ->saveOrCreate(
      *             'update' | 'insert' | 'delete',
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value',
-     *              ]
+     *              Entity::class
      *          )
      * </code>
      *
      * @param string $type
-     * @param array  $properties
-     * @param array  $criteria [optional]
+     * @param Entity  $entity
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return int
      */
-    protected function saveCreateDelete(string $type, array $properties, array $criteria = []): int
+    protected function saveCreateDelete(string $type, Entity $entity): int
     {
         // Create a new query
         $query = $this->entityManager
             ->getQueryBuilder()
             ->table($this->table)
             ->{$type}();
+        $idField = $entity::getIdField();
+        $properties = $entity->asArray(false, false);
 
         /* @var QueryBuilder $query */
 
         // If this type isn't an insert
         if ($type !== 'insert') {
-            // Set the criteria
-            $this->setCriteriaForSaveDeleteQuery($query, $properties, $criteria);
+            // Set the id for the where clause
+            $query->where($idField . ' = ' . $this->criterionParam($idField));
         }
 
         // Set the properties
@@ -487,8 +471,8 @@ class PDORepository implements Repository
 
         // If this type isn't an insert
         if ($type !== 'insert') {
-            // Set the criteria
-            $this->setCriteriaForSaveDeleteStatement($stmt, $properties, $criteria);
+            // Set the id value for the where clause
+            $stmt->bindValue($this->criterionParam($idField), $properties[$idField]);
         }
 
         // Set the properties.
@@ -501,31 +485,6 @@ class PDORepository implements Repository
         }
 
         return $executeResult;
-    }
-
-    /**
-     * Set any criteria for save or delete queries.
-     *
-     * @param QueryBuilder $query
-     * @param array        $properties
-     * @param array        $criteria
-     *
-     * @return void
-     */
-    protected function setCriteriaForSaveDeleteQuery(QueryBuilder $query, array $properties, array $criteria = []): void
-    {
-        // If there are custom criteria to search on
-        if (! empty($criteria)) {
-            // Iterate through the criteria
-            foreach ($criteria as $key => $criterion) {
-                // And build out a where chain
-                $query->andWhere($key . ' = ' . $this->criterionParam($key));
-            }
-            // Otherwise if an id property is exists
-        } elseif (isset($properties['id'])) {
-            // Set the id as the where condition
-            $query->where('id = ' . $this->criterionParam('id'));
-        }
     }
 
     /**
@@ -546,34 +505,6 @@ class PDORepository implements Repository
 
             // Set the column and param name
             $query->set($column, $this->columnParam($column));
-        }
-    }
-
-    /**
-     * Set any criteria for save or delete statements.
-     *
-     * @param PDOStatement $statement
-     * @param array        $properties
-     * @param array        $criteria
-     *
-     * @return void
-     */
-    protected function setCriteriaForSaveDeleteStatement(
-        PDOStatement $statement,
-        array $properties,
-        array $criteria = []
-    ): void {
-        // If there are custom criteria to search on
-        if (! empty($criteria)) {
-            // Iterate through the criteria
-            foreach ($criteria as $key => $criterion) {
-                // Bind the criterion to the param set in the query before hand
-                $statement->bindValue($this->criterionParam($key), $criterion);
-            }
-            // Otherwise if an id property is exists
-        } elseif (isset($properties['id'])) {
-            // Set the id to the id param set before hand
-            $statement->bindValue($this->criterionParam('id'), $properties['id']);
         }
     }
 

@@ -29,6 +29,13 @@ abstract class Entity extends Model
     protected static $table = self::class;
 
     /**
+     * The id field.
+     *
+     * @var string
+     */
+    protected static $idField = 'id';
+
+    /**
      * Valid types allowed to be mass set.
      *
      * @var array
@@ -67,6 +74,16 @@ abstract class Entity extends Model
     public static function getTable(): string
     {
         return static::$table;
+    }
+
+    /**
+     * Get the id field.
+     * 
+     * @return string
+     */
+    public static function getIdField(): string
+    {
+        return self::$idField;
     }
 
     /**

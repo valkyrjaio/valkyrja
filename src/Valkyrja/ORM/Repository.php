@@ -111,7 +111,7 @@ interface Repository
      * Create a new model.
      *
      * <code>
-     *      $this->create(Model::class)
+     *      $this->create(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
@@ -124,39 +124,25 @@ interface Repository
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      *
      * <code>
-     *      $this
-     *          ->save(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->save(Entity::class)
      * </code>
      *
      * @param Entity $entity
-     * @param array  $criteria
      *
      * @return bool
      */
-    public function save(Entity $entity, array $criteria = []): bool;
+    public function save(Entity $entity): bool;
 
     /**
      * Delete an existing model.
      *
      * <code>
-     *      $this
-     *          ->delete(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->delete(Entity::class)
      * </code>
      *
      * @param Entity $entity
-     * @param array  $criteria
      *
      * @return bool
      */
-    public function delete(Entity $entity, array $criteria = []): bool;
+    public function delete(Entity $entity): bool;
 }
