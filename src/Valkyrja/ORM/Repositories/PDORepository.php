@@ -497,6 +497,10 @@ class PDORepository implements Repository
      */
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
+        if (! $this->store->inTransaction()) {
+            $this->store->beginTransaction();
+        }
+
         // Create a new query
         $query      = $this->entityManager
             ->getQueryBuilder()
