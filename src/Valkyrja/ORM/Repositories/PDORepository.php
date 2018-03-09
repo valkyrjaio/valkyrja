@@ -18,6 +18,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Exceptions\ExecuteException;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
@@ -48,28 +49,36 @@ class PDORepository implements Repository
     protected $table;
 
     /**
+     * The PDO Store.
+     *
+     * @var PDO
+     */
+    protected $store;
+
+    /**
      * MySQLRepository constructor.
      *
      * @param EntityManager $entityManager
      * @param string        $entity
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct(EntityManager $entityManager, string $entity)
     {
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
         $this->table         = $this->entity::getTable();
+        $this->store         = $this->entityManager->store();
     }
 
     /**
      * Get the store.
      *
-     * @throws InvalidArgumentException
-     *
      * @return PDO
      */
     public function store(): PDO
     {
-        return $this->entityManager->store();
+        return $this->store;
     }
 
     /**
@@ -184,11 +193,14 @@ class PDORepository implements Repository
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
     public function create(Entity $entity): bool
     {
+        $this->validateEntity($entity);
+
         return $this->saveCreateDelete('insert', $entity);
     }
 
@@ -203,11 +215,14 @@ class PDORepository implements Repository
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
     public function save(Entity $entity): bool
     {
+        $this->validateEntity($entity);
+
         return $this->saveCreateDelete('update', $entity);
     }
 
@@ -222,12 +237,47 @@ class PDORepository implements Repository
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
     public function delete(Entity $entity): bool
     {
+        $this->validateEntity($entity);
+
         return $this->saveCreateDelete('delete', $entity);
+    }
+
+    /**
+     * Get the last inserted id.
+     *
+     * @return string
+     */
+    public function lastInsertId(): string
+    {
+        return $this->store->lastInsertId();
+    }
+
+    /**
+     * Validate the passed entity.
+     *
+     * @param Entity $entity
+     *
+     * @throws InvalidEntityException
+     *
+     * @return void
+     */
+    protected function validateEntity(Entity $entity): void
+    {
+        if (! ($entity instanceof $this->entity)) {
+            throw new InvalidEntityException(
+                'This repository expects entities to be instances of '
+                . $this->entity
+                . '. Entity instanced from '
+                . \get_class($entity)
+                . ' provided instead.'
+            );
+        }
     }
 
     /**
@@ -298,7 +348,7 @@ class PDORepository implements Repository
         $query = $this->selectQueryBuilder($columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new PDO statement from the query builder
-        $stmt = $this->store()->prepare($query->getQuery());
+        $stmt = $this->store->prepare($query->getQuery());
 
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
@@ -438,7 +488,7 @@ class PDORepository implements Repository
      * </code>
      *
      * @param string $type
-     * @param Entity  $entity
+     * @param Entity $entity
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
@@ -448,11 +498,11 @@ class PDORepository implements Repository
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
         // Create a new query
-        $query = $this->entityManager
+        $query      = $this->entityManager
             ->getQueryBuilder()
             ->table($this->table)
             ->{$type}();
-        $idField = $entity::getIdField();
+        $idField    = $entity::getIdField();
         $properties = $entity->asArray(false, false);
 
         /* @var QueryBuilder $query */
@@ -467,7 +517,7 @@ class PDORepository implements Repository
         $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
 
         // Prepare a PDO statement with the query
-        $stmt = $this->store()->prepare($query->getQuery());
+        $stmt = $this->store->prepare($query->getQuery());
 
         // If this type isn't an insert
         if ($type !== 'insert') {

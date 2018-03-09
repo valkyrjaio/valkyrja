@@ -14,6 +14,7 @@ namespace Valkyrja\ORM;
 use InvalidArgumentException;
 use PDO;
 use Valkyrja\Application;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder\NativeQueryBuilder;
 use Valkyrja\ORM\Repositories\PDORepository;
 use Valkyrja\Support\Providers\Provides;
@@ -205,6 +206,7 @@ class NativeEntityManager implements EntityManager
      * Commit all items in the transaction.
      *
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */

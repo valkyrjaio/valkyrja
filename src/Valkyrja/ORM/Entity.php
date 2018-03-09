@@ -181,9 +181,25 @@ abstract class Entity extends Model
                 // So continue to the next property
                 continue;
             }
+            
+            $value = $this->{$property};
+            // Check if a type was set for this attribute
+            $type = static::$propertyTypes[$property] ?? null;
+
+            // If the type is object and the property isn't already an object
+            if ($type === PropertyType::OBJECT && \is_object($value)) {
+                // Unserialize the object
+                $value = unserialize($value, true);
+            } // If the type is array and the property isn't already an array
+            elseif ($type === PropertyType::ARRAY && \is_array($value)) {
+                $value = json_decode($value);
+            } // If the value is another entity
+            elseif ($value instanceof self) {
+                $value = $value->asArray();
+            }
 
             // And set each property to its value
-            $properties[$property] = $this->{$property};
+            $properties[$property] = $value;
         }
 
         return $properties;

@@ -13,6 +13,7 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
 
 /**
  * Interface Repository.
@@ -116,6 +117,8 @@ interface Repository
      *
      * @param \Valkyrja\ORM\Entity $entity
      *
+     * @throws InvalidEntityException
+     *
      * @return bool
      */
     public function create(Entity $entity): bool;
@@ -128,6 +131,8 @@ interface Repository
      * </code>
      *
      * @param Entity $entity
+     *
+     * @throws InvalidEntityException
      *
      * @return bool
      */
@@ -142,7 +147,16 @@ interface Repository
      *
      * @param Entity $entity
      *
+     * @throws InvalidEntityException
+     *
      * @return bool
      */
     public function delete(Entity $entity): bool;
+
+    /**
+     * Get the last inserted id.
+     *
+     * @return string
+     */
+    public function lastInsertId(): string;
 }
