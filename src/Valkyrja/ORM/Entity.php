@@ -143,6 +143,10 @@ abstract class Entity extends Model
             } // If the type is array and the property isn't already an array
             elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
                 $value = json_decode($value);
+            } // Otherwise if a type was set and the value isn't already of that type
+            elseif ($type !== null && ! ($value instanceof $type)) {
+                // Create it
+                $value = new $type($value);
             }
 
             // Set the property
