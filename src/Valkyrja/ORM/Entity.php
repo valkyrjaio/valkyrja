@@ -78,7 +78,7 @@ abstract class Entity extends Model
 
     /**
      * Get the id field.
-     * 
+     *
      * @return string
      */
     public static function getIdField(): string
@@ -181,7 +181,7 @@ abstract class Entity extends Model
                 // So continue to the next property
                 continue;
             }
-            
+
             $value = $this->{$property};
             // Check if a type was set for this attribute
             $type = static::$propertyTypes[$property] ?? null;
