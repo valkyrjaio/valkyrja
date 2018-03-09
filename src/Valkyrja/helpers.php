@@ -25,10 +25,11 @@ if (! function_exists('abort')) {
     /**
      * Abort the application due to error.
      *
-     * @param int    $statusCode The status code to use
-     * @param string $message    [optional] The Exception message to throw
-     * @param array  $headers    [optional] The headers to send
-     * @param int    $code       [optional] The Exception code
+     * @param int                    $statusCode The status code to use
+     * @param string                 $message    [optional] The Exception message to throw
+     * @param array                  $headers    [optional] The headers to send
+     * @param int                    $code       [optional] The Exception code
+     * @param Valkyrja\Http\Response $response   [optional] The Response to send
      *
      * @throws Valkyrja\Http\Exceptions\HttpException
      *
@@ -38,14 +39,39 @@ if (! function_exists('abort')) {
         int $statusCode = Valkyrja\Http\StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
-        int $code = 0
+        int $code = 0,
+        Valkyrja\Http\Response $response = null
     ): void {
         throw new Valkyrja\Http\Exceptions\HttpException(
             $statusCode,
             $message,
             null,
             $headers,
-            $code
+            $code,
+            $response
+        );
+    }
+}
+
+if (! function_exists('abortResponse')) {
+    /**
+     * Abort the application due to error with a given response to send.
+     *
+     * @param Valkyrja\Http\Response $response The Response to send
+     *
+     * @throws Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
+     */
+    function abortResponse(Valkyrja\Http\Response $response): void
+    {
+        throw new Valkyrja\Http\Exceptions\HttpException(
+            0,
+            '',
+            null,
+            [],
+            0,
+            $response
         );
     }
 }
