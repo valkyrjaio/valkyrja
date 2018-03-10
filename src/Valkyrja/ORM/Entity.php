@@ -191,11 +191,11 @@ abstract class Entity extends Model
             $type = static::$propertyTypes[$property] ?? null;
 
             // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && \is_object($value)) {
+            if ($type === PropertyType::OBJECT && ! \is_object($value)) {
                 // Unserialize the object
                 $value = unserialize($value, true);
             } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && \is_array($value)) {
+            elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
                 $value = json_decode($value);
             } // If the value is another entity
             elseif ($value instanceof self) {

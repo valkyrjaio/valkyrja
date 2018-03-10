@@ -586,8 +586,15 @@ class PDORepository implements Repository
                 $property = \json_encode($property);
             }
 
+            $type = PDO::PARAM_STR;
+
+            if (\is_int($property) || \is_bool($property)) {
+                $type = PDO::PARAM_INT;
+                $property = (int) $property;
+            }
+
             // Bind each column's value to the statement
-            $statement->bindValue($this->columnParam($column), $property);
+            $statement->bindValue($this->columnParam($column), $property, $type);
         }
     }
 }
