@@ -138,21 +138,21 @@ abstract class Entity extends Model
 
             switch ($type) {
                 // If the type is object and the property isn't already an object
-                case PropertyType::OBJECT :
+                case PropertyType::OBJECT:
                     if (! \is_object($value)) {
                         $value = unserialize($value, true);
                     }
 
                     break;
                 // If the type is array and the property isn't already an array
-                case PropertyType::ARRAY :
+                case PropertyType::ARRAY:
                     if (! \is_array($value)) {
                         $value = json_decode($value);
                     }
 
                     break;
                 // Otherwise if a type was set and the value isn't already of that type
-                default :
+                default:
                     if ($type !== null && ! ($value instanceof $type)) {
                         $value = new $type($value);
                     }

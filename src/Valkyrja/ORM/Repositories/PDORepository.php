@@ -589,7 +589,7 @@ class PDORepository implements Repository
             $type = PDO::PARAM_STR;
 
             if (\is_int($property) || \is_bool($property)) {
-                $type = PDO::PARAM_INT;
+                $type     = PDO::PARAM_INT;
                 $property = (int) $property;
             }
 
