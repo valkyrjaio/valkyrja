@@ -40,7 +40,7 @@ class HttpException extends RuntimeException
     /**
      * The response to send for this exception.
      *
-     * @var Response
+     * @var null|Response
      */
     protected $response;
 
@@ -95,9 +95,9 @@ class HttpException extends RuntimeException
     /**
      * Get the response for this exception.
      *
-     * @return Response
+     * @return null|Response
      */
-    public function getResponse(): Response
+    public function getResponse(): ? Response
     {
         return $this->response;
     }
