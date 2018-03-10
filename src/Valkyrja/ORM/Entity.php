@@ -136,17 +136,26 @@ abstract class Entity extends Model
             // Check if a type was set for this attribute
             $type = static::$propertyTypes[$property] ?? null;
 
-            // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && ! \is_object($value)) {
-                // Unserialize the object
-                $value = unserialize($value, true);
-            } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
-                $value = json_decode($value);
-            } // Otherwise if a type was set and the value isn't already of that type
-            elseif ($type !== null && ! ($value instanceof $type)) {
-                // Create it
-                $value = new $type($value);
+            switch ($type) {
+                // If the type is object and the property isn't already an object
+                case PropertyType::OBJECT :
+                    if (! \is_object($value)) {
+                        $value = unserialize($value, true);
+                    }
+
+                    break;
+                // If the type is array and the property isn't already an array
+                case PropertyType::ARRAY :
+                    if (! \is_array($value)) {
+                        $value = json_decode($value);
+                    }
+
+                    break;
+                // Otherwise if a type was set and the value isn't already of that type
+                default :
+                    if ($type !== null && ! ($value instanceof $type)) {
+                        $value = new $type($value);
+                    }
             }
 
             // Set the property
