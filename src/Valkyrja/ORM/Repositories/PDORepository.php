@@ -507,7 +507,7 @@ class PDORepository implements Repository
             ->table($this->table)
             ->{$type}();
         $idField    = $entity::getIdField();
-        $properties = $entity->asArray(false, false);
+        $properties = $entity->forDataStore();
 
         /* @var QueryBuilder $query */
 

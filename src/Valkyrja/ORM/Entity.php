@@ -164,37 +164,26 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get model as an array.
-     *
-     * @param bool $all  [optional] Whether to include all properties or only those defined in the static properties
-     *                   array
-     * @param bool $safe [optional] True only includes public/protected while false will include private when using
-     *                   false for $all
+     * Get entity as an array.
      *
      * @return array
      */
-    public function asArray(bool $all = true, bool $safe = true): array
+    public function asArray(): array
     {
-        // All the public and protected properties
-        $safeProperties = get_object_vars($this);
+        return $this->jsonSerialize();
+    }
 
-        // If all is true
-        if ($all) {
-            // Get all the object vars
-            return $safeProperties;
-        }
-
+    /**
+     * Get the entity as an array for saving to the data store.
+     *
+     * @return array
+     */
+    public function forDataStore(): array
+    {
         $properties = [];
 
         // Otherwise iterate through the properties array
         foreach (static::$properties as $property) {
-            // If only public and protected properties should be included and this property doesn't exist in the full
-            // list then it is private
-            if ($safe && empty($safeProperties[$property])) {
-                // So continue to the next property
-                continue;
-            }
-
             $value = $this->{$property};
             // Check if a type was set for this attribute
             $type = static::$propertyTypes[$property] ?? null;
