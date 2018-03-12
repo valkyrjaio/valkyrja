@@ -151,8 +151,27 @@ abstract class Entity extends Model
                     }
 
                     break;
-                // Otherwise if a type was set and the value isn't already of that type
                 default:
+                    // Otherwise if a type was set and type is an array and the value is an array
+                    // Then this should be an array of entities
+                    if ($type !== null && \is_array($type) && \is_array($value)) {
+                        if (empty($value)) {
+                            continue 2;
+                        }
+
+                        foreach ($value as &$item) {
+                            $item = new $type[0]($item);
+                        }
+
+                        unset($item);
+
+                        // Set the property
+                        $this->__set($property, ...$value);
+
+                        continue 2;
+                    }
+
+                    // Otherwise if a type was set and the value isn't already of that type
                     if ($type !== null && ! ($value instanceof $type)) {
                         $value = new $type($value);
                     }
@@ -189,15 +208,12 @@ abstract class Entity extends Model
             $type = static::$propertyTypes[$property] ?? null;
 
             // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && ! \is_object($value)) {
+            if ($type === PropertyType::OBJECT && \is_object($value)) {
                 // Unserialize the object
-                $value = unserialize($value, true);
+                $value = serialize($value);
             } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
-                $value = json_decode($value);
-            } // If the value is another entity
-            elseif ($value instanceof self) {
-                $value = $value->asArray();
+            elseif ($type === PropertyType::ARRAY && \is_array($value)) {
+                $value = \json_encode($value);
             }
 
             // And set each property to its value
