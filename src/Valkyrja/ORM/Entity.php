@@ -45,6 +45,19 @@ abstract class Entity extends Model
     /**
      * Types for attributes that differs from what they were saved into the database as.
      *
+     * <code>
+     *      [
+     *          // An array to be json_encoded/decoded to/from the db
+     *          'property_name' => 'array',
+     *          // An object to be serialized and unserialized to/from the db
+     *          'property_name' => 'object',
+     *          // A related entity
+     *          'property_name' => Entity::class,
+     *          // An array of related entities
+     *          'property_name' => [Entity::class],
+     *      ]
+     * </code>
+     *
      * @var array
      */
     protected static $propertyTypes = [];
@@ -87,7 +100,7 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get the attributes.
+     * Get the properties.
      *
      * @return array
      */
@@ -97,7 +110,7 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get the attribute types.
+     * Get the property types.
      *
      * @return array
      */
@@ -114,6 +127,29 @@ abstract class Entity extends Model
     public static function getRepository(): ? string
     {
         return static::$repository;
+    }
+
+    /**
+     * A mapper of property types to properties for generating a full entity with relations.
+     * NOTE: Used in conjunction with Entity::$propertyTypes. If a property type is defined
+     * but a property mapper is not, then the property type is NOT automatically filled in
+     * via the EntityManager and Repository. If a mapper is specified and a type is not
+     * then nothing happens.
+     *
+     * <code>
+     *      [
+     *          'property_name' => [
+     *              'field'         => 'fieldNameOfThisEntity',
+     *              'relationField' => 'fieldNameOfTheRelationEntityToMapTo',
+     *          ]
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    public function getPropertyMapper(): array
+    {
+        return [];
     }
 
     /**
@@ -155,24 +191,16 @@ abstract class Entity extends Model
                     // Otherwise if a type was set and type is an array and the value is an array
                     // Then this should be an array of entities
                     if ($type !== null && \is_array($type) && \is_array($value)) {
-                        if (empty($value)) {
-                            continue 2;
-                        }
-
+                        // Iterate through the items
                         foreach ($value as &$item) {
+                            // Create a new entity for each item
                             $item = new $type[0]($item);
                         }
 
+                        // Unset the reference loop item
                         unset($item);
-
-                        // Set the property
-                        $this->__set($property, ...$value);
-
-                        continue 2;
-                    }
-
-                    // Otherwise if a type was set and the value isn't already of that type
-                    if ($type !== null && ! ($value instanceof $type)) {
+                    } // Otherwise if a type was set and the value isn't already of that type
+                    elseif ($type !== null && ! ($value instanceof $type)) {
                         $value = new $type($value);
                     }
             }

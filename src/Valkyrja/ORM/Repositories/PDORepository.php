@@ -17,6 +17,7 @@ use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
+use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder;
@@ -371,13 +372,13 @@ class PDORepository implements Repository
         // Iterate through the rows found
         foreach ($rows as $row) {
             // Create a new model
-            /** @var \Valkyrja\ORM\Entity $model */
-            $model = new $this->entity();
+            /** @var \Valkyrja\ORM\Entity $entity */
+            $entity = new $this->entity();
             // Apply the model's contents given the row
-            $model->fromArray($row);
+            $entity->fromArray($row);
 
             // Add the model to the final results
-            $results[] = $model;
+            $results[] = $this->getEntityRelations($entity);
         }
 
         return $results;
@@ -596,5 +597,42 @@ class PDORepository implements Repository
             // Bind each column's value to the statement
             $statement->bindValue($this->columnParam($column), $property, $type);
         }
+    }
+
+    /**
+     * Get an entity with all its relations.
+     *
+     * @param Entity $entity
+     *
+     * @return Entity
+     */
+    protected function getEntityRelations(Entity $entity): Entity
+    {
+        $propertyTypes  = $entity::getPropertyTypes();
+        $propertyMapper = $entity->getPropertyMapper();
+
+        // Iterate through the property types
+        foreach ($propertyTypes as $property => $type) {
+            $entityName  = \is_array($type) ? $type[0] : $type;
+            $propertyMap = $propertyMapper[$property] ?? null;
+
+            if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
+                $entities = $this->entityManager->getRepository($entityName)->findBy($propertyMap);
+
+                if (\is_array($type)) {
+                    $entity->{$property} = $entities;
+
+                    continue;
+                }
+
+                if (empty($entities)) {
+                    continue;
+                }
+
+                $entity->{$property} = $entities[0];
+            }
+        }
+
+        return $entity;
     }
 }
