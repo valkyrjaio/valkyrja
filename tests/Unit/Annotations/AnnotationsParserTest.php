@@ -33,9 +33,9 @@ use Valkyrja\Routing\Annotations\Route;
  *
  * @param string $param A description test
  *
- * @Route(path = '/', name = 'noAClass::Property')
+ * @Route("path" = "/", "name" = "noAClass::Property")
  *
- * @author      Melech Mizrachi
+ * @author Melech Mizrachi
  */
 class AnnotationsParserTest extends TestCase
 {
@@ -92,6 +92,8 @@ class AnnotationsParserTest extends TestCase
     /**
      * Test the getAnnotations method.
      *
+     * @throws \ReflectionException
+     *
      * @return void
      */
     public function testGetAnnotations(): void
@@ -109,15 +111,14 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArguments(): void
     {
-        $arguments = 'path = \'/\', '
-            . 'name = \'test\', '
+        $arguments = '"path" = "", '
+            . '"name" = "test", '
             // Test for line 413
-            . 'empty = \'\', '
-            // Empty | at the end to test for line 288
-            . 'requestMethods = [[POST | GET | HEAD | ]], '
-            . 'constant = Valkyrja\\Application::VERSION, '
-            . 'property = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::property, '
-            . 'method = Valkyrja\Tests\Unit\Annotations\AnnotationsParserTest::staticMethod';
+            . '"empty" = "", '
+            . '"requestMethods" = ["POST", "GET", "HEAD"], '
+            . '"constant" = "Valkyrja\\Application::VERSION", '
+            . '"property" = Valkyrja\\Tests\\Unit\\Annotations\\AnnotationsParserTest::property", '
+            . '"method" = "Valkyrja\\Tests\\Unit\\Annotations\\AnnotationsParserTest::staticMethod"';
 
         $this->assertCount(7, $this->class->getArguments($arguments));
     }
@@ -129,9 +130,9 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsInvalidKey(): void
     {
-        $arguments = static::class . '::invalidKeyArray'
-            . ' = \'value\', '
-            . 'name = \'test\'';
+        $arguments = '"' . static::class . '::invalidKeyArray"'
+            . ' = "value", '
+            . '"name" = "test"';
 
         try {
             $this->class->getArguments($arguments);
