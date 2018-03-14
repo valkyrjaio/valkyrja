@@ -633,7 +633,7 @@ class NativeRouter implements Router
             return $route;
         }
 
-        return $route;
+        return null;
     }
 
     /**

@@ -17,12 +17,14 @@ use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
+use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
 /**
- * Class MySQLRepository.
+ * Class PDORepository.
  */
 class PDORepository implements Repository
 {
@@ -48,28 +50,36 @@ class PDORepository implements Repository
     protected $table;
 
     /**
+     * The PDO Store.
+     *
+     * @var PDO
+     */
+    protected $store;
+
+    /**
      * MySQLRepository constructor.
      *
      * @param EntityManager $entityManager
      * @param string        $entity
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct(EntityManager $entityManager, string $entity)
     {
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
         $this->table         = $this->entity::getTable();
+        $this->store         = $this->entityManager->store();
     }
 
     /**
      * Get the store.
      *
-     * @throws InvalidArgumentException
-     *
      * @return PDO
      */
     public function store(): PDO
     {
-        return $this->entityManager->store();
+        return $this->store;
     }
 
     /**
@@ -177,71 +187,98 @@ class PDORepository implements Repository
      * Create a new model.
      *
      * <code>
-     *      $this->create(Model::class)
+     *      $this->create(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
     public function create(Entity $entity): bool
     {
-        return $this->saveCreateDelete('insert', $entity->asArray(false, false), []);
+        $this->validateEntity($entity);
+
+        return $this->saveCreateDelete('insert', $entity);
     }
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      *
      * <code>
-     *      $this
-     *          ->save(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->save(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
-     * @param array|null           $criteria
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
-    public function save(Entity $entity, array $criteria = []): bool
+    public function save(Entity $entity): bool
     {
-        return $this->saveCreateDelete('update', $entity->asArray(false, false), $criteria);
+        $this->validateEntity($entity);
+
+        return $this->saveCreateDelete('update', $entity);
     }
 
     /**
      * Delete an existing model.
      *
      * <code>
-     *      $this
-     *          ->delete(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->delete(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
-     * @param array|null           $criteria
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
+     * @throws InvalidEntityException
      *
      * @return bool
      */
-    public function delete(Entity $entity, array $criteria = []): bool
+    public function delete(Entity $entity): bool
     {
-        return $this->saveCreateDelete('delete', $entity->asArray(false, false), $criteria);
+        $this->validateEntity($entity);
+
+        return $this->saveCreateDelete('delete', $entity);
+    }
+
+    /**
+     * Get the last inserted id.
+     *
+     * @return string
+     */
+    public function lastInsertId(): string
+    {
+        return $this->store->lastInsertId();
+    }
+
+    /**
+     * Validate the passed entity.
+     *
+     * @param Entity $entity
+     *
+     * @throws InvalidEntityException
+     *
+     * @return void
+     */
+    protected function validateEntity(Entity $entity): void
+    {
+        if (! ($entity instanceof $this->entity)) {
+            throw new InvalidEntityException(
+                'This repository expects entities to be instances of '
+                . $this->entity
+                . '. Entity instanced from '
+                . \get_class($entity)
+                . ' provided instead.'
+            );
+        }
     }
 
     /**
@@ -312,7 +349,7 @@ class PDORepository implements Repository
         $query = $this->selectQueryBuilder($columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new PDO statement from the query builder
-        $stmt = $this->store()->prepare($query->getQuery());
+        $stmt = $this->store->prepare($query->getQuery());
 
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
@@ -335,13 +372,13 @@ class PDORepository implements Repository
         // Iterate through the rows found
         foreach ($rows as $row) {
             // Create a new model
-            /** @var \Valkyrja\ORM\Entity $model */
-            $model = new $this->entity();
+            /** @var \Valkyrja\ORM\Entity $entity */
+            $entity = new $this->entity();
             // Apply the model's contents given the row
-            $model->fromArray($row);
+            $entity->fromArray($row);
 
             // Add the model to the final results
-            $results[] = $model;
+            $results[] = $this->getEntityRelations($entity);
         }
 
         return $results;
@@ -447,48 +484,50 @@ class PDORepository implements Repository
      *      $this
      *          ->saveOrCreate(
      *             'update' | 'insert' | 'delete',
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value',
-     *              ]
+     *              Entity::class
      *          )
      * </code>
      *
      * @param string $type
-     * @param array  $properties
-     * @param array  $criteria [optional]
+     * @param Entity $entity
      *
      * @throws ExecuteException
      * @throws InvalidArgumentException
      *
      * @return int
      */
-    protected function saveCreateDelete(string $type, array $properties, array $criteria = []): int
+    protected function saveCreateDelete(string $type, Entity $entity): int
     {
+        if (! $this->store->inTransaction()) {
+            $this->store->beginTransaction();
+        }
+
         // Create a new query
-        $query = $this->entityManager
+        $query      = $this->entityManager
             ->getQueryBuilder()
             ->table($this->table)
             ->{$type}();
+        $idField    = $entity::getIdField();
+        $properties = $entity->forDataStore();
 
         /* @var QueryBuilder $query */
 
         // If this type isn't an insert
         if ($type !== 'insert') {
-            // Set the criteria
-            $this->setCriteriaForSaveDeleteQuery($query, $properties, $criteria);
+            // Set the id for the where clause
+            $query->where($idField . ' = ' . $this->criterionParam($idField));
         }
 
         // Set the properties
         $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
 
         // Prepare a PDO statement with the query
-        $stmt = $this->store()->prepare($query->getQuery());
+        $stmt = $this->store->prepare($query->getQuery());
 
         // If this type isn't an insert
         if ($type !== 'insert') {
-            // Set the criteria
-            $this->setCriteriaForSaveDeleteStatement($stmt, $properties, $criteria);
+            // Set the id value for the where clause
+            $stmt->bindValue($this->criterionParam($idField), $properties[$idField]);
         }
 
         // Set the properties.
@@ -501,31 +540,6 @@ class PDORepository implements Repository
         }
 
         return $executeResult;
-    }
-
-    /**
-     * Set any criteria for save or delete queries.
-     *
-     * @param QueryBuilder $query
-     * @param array        $properties
-     * @param array        $criteria
-     *
-     * @return void
-     */
-    protected function setCriteriaForSaveDeleteQuery(QueryBuilder $query, array $properties, array $criteria = []): void
-    {
-        // If there are custom criteria to search on
-        if (! empty($criteria)) {
-            // Iterate through the criteria
-            foreach ($criteria as $key => $criterion) {
-                // And build out a where chain
-                $query->andWhere($key . ' = ' . $this->criterionParam($key));
-            }
-            // Otherwise if an id property is exists
-        } elseif (isset($properties['id'])) {
-            // Set the id as the where condition
-            $query->where('id = ' . $this->criterionParam('id'));
-        }
     }
 
     /**
@@ -546,34 +560,6 @@ class PDORepository implements Repository
 
             // Set the column and param name
             $query->set($column, $this->columnParam($column));
-        }
-    }
-
-    /**
-     * Set any criteria for save or delete statements.
-     *
-     * @param PDOStatement $statement
-     * @param array        $properties
-     * @param array        $criteria
-     *
-     * @return void
-     */
-    protected function setCriteriaForSaveDeleteStatement(
-        PDOStatement $statement,
-        array $properties,
-        array $criteria = []
-    ): void {
-        // If there are custom criteria to search on
-        if (! empty($criteria)) {
-            // Iterate through the criteria
-            foreach ($criteria as $key => $criterion) {
-                // Bind the criterion to the param set in the query before hand
-                $statement->bindValue($this->criterionParam($key), $criterion);
-            }
-            // Otherwise if an id property is exists
-        } elseif (isset($properties['id'])) {
-            // Set the id to the id param set before hand
-            $statement->bindValue($this->criterionParam('id'), $properties['id']);
         }
     }
 
@@ -601,8 +587,52 @@ class PDORepository implements Repository
                 $property = \json_encode($property);
             }
 
+            $type = PDO::PARAM_STR;
+
+            if (\is_int($property) || \is_bool($property)) {
+                $type     = PDO::PARAM_INT;
+                $property = (int) $property;
+            }
+
             // Bind each column's value to the statement
-            $statement->bindValue($this->columnParam($column), $property);
+            $statement->bindValue($this->columnParam($column), $property, $type);
         }
+    }
+
+    /**
+     * Get an entity with all its relations.
+     *
+     * @param Entity $entity
+     *
+     * @return Entity
+     */
+    protected function getEntityRelations(Entity $entity): Entity
+    {
+        $propertyTypes  = $entity::getPropertyTypes();
+        $propertyMapper = $entity->getPropertyMapper();
+
+        // Iterate through the property types
+        foreach ($propertyTypes as $property => $type) {
+            $entityName  = \is_array($type) ? $type[0] : $type;
+            $propertyMap = $propertyMapper[$property] ?? null;
+
+            if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
+                $entities = $this->entityManager->getRepository($entityName)->findBy($propertyMap);
+
+                if (\is_array($type)) {
+                    $entity->{$property} = $entities;
+
+                    continue;
+                }
+
+                if (empty($entities)) {
+                    continue;
+                }
+
+                $entity->{$property} = $entities[0];
+            }
+        }
+
+        return $entity;
     }
 }

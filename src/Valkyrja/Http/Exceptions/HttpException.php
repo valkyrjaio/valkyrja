@@ -13,6 +13,7 @@ namespace Valkyrja\Http\Exceptions;
 
 use Exception;
 use RuntimeException;
+use Valkyrja\Http\Response;
 use Valkyrja\Http\StatusCode;
 
 /**
@@ -37,11 +38,11 @@ class HttpException extends RuntimeException
     protected $headers;
 
     /**
-     * The view for this exception.
+     * The response to send for this exception.
      *
-     * @var string
+     * @var null|Response
      */
-    protected $view;
+    protected $response;
 
     /**
      * HttpException constructor.
@@ -54,16 +55,19 @@ class HttpException extends RuntimeException
      *                               the exception chaining
      * @param array      $headers    [optional] The headers to send
      * @param int        $code       [optional] The Exception code
+     * @param Response   $response   [optional] The Response to send
      */
     public function __construct(
         int $statusCode = StatusCode::INTERNAL_SERVER_ERROR,
         string $message = '',
         Exception $previous = null,
         array $headers = [],
-        int $code = 0
+        int $code = 0,
+        Response $response = null
     ) {
         $this->statusCode = $statusCode;
         $this->headers    = $headers;
+        $this->response   = $response;
 
         parent::__construct($message, $code, $previous);
     }
@@ -86,5 +90,15 @@ class HttpException extends RuntimeException
     public function getHeaders(): array
     {
         return $this->headers;
+    }
+
+    /**
+     * Get the response for this exception.
+     *
+     * @return null|Response
+     */
+    public function getResponse(): ? Response
+    {
+        return $this->response;
     }
 }

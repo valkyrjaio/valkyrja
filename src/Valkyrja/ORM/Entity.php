@@ -29,6 +29,13 @@ abstract class Entity extends Model
     protected static $table = self::class;
 
     /**
+     * The id field.
+     *
+     * @var string
+     */
+    protected static $idField = 'id';
+
+    /**
      * Valid types allowed to be mass set.
      *
      * @var array
@@ -37,6 +44,19 @@ abstract class Entity extends Model
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
+     *
+     * <code>
+     *      [
+     *          // An array to be json_encoded/decoded to/from the db
+     *          'property_name' => 'array',
+     *          // An object to be serialized and unserialized to/from the db
+     *          'property_name' => 'object',
+     *          // A related entity
+     *          'property_name' => Entity::class,
+     *          // An array of related entities
+     *          'property_name' => [Entity::class],
+     *      ]
+     * </code>
      *
      * @var array
      */
@@ -70,7 +90,17 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get the attributes.
+     * Get the id field.
+     *
+     * @return string
+     */
+    public static function getIdField(): string
+    {
+        return self::$idField;
+    }
+
+    /**
+     * Get the properties.
      *
      * @return array
      */
@@ -80,7 +110,7 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get the attribute types.
+     * Get the property types.
      *
      * @return array
      */
@@ -97,6 +127,29 @@ abstract class Entity extends Model
     public static function getRepository(): ? string
     {
         return static::$repository;
+    }
+
+    /**
+     * A mapper of property types to properties for generating a full entity with relations.
+     * NOTE: Used in conjunction with Entity::$propertyTypes. If a property type is defined
+     * but a property mapper is not, then the property type is NOT automatically filled in
+     * via the EntityManager and Repository. If a mapper is specified and a type is not
+     * then nothing happens.
+     *
+     * <code>
+     *      [
+     *          'property_name' => [
+     *              'field'         => 'fieldNameOfThisEntity',
+     *              'relationField' => 'fieldNameOfTheRelationEntityToMapTo',
+     *          ]
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    public function getPropertyMapper(): array
+    {
+        return [];
     }
 
     /**
@@ -119,13 +172,37 @@ abstract class Entity extends Model
             // Check if a type was set for this attribute
             $type = static::$propertyTypes[$property] ?? null;
 
-            // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && ! \is_object($value)) {
-                // Unserialize the object
-                $value = unserialize($value, true);
-            } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && ! \is_array($value)) {
-                $value = json_decode($value);
+            switch ($type) {
+                // If the type is object and the property isn't already an object
+                case PropertyType::OBJECT:
+                    if (! \is_object($value)) {
+                        $value = unserialize($value, true);
+                    }
+
+                    break;
+                // If the type is array and the property isn't already an array
+                case PropertyType::ARRAY:
+                    if (! \is_array($value)) {
+                        $value = json_decode($value);
+                    }
+
+                    break;
+                default:
+                    // Otherwise if a type was set and type is an array and the value is an array
+                    // Then this should be an array of entities
+                    if ($type !== null && \is_array($type) && \is_array($value)) {
+                        // Iterate through the items
+                        foreach ($value as &$item) {
+                            // Create a new entity for each item
+                            $item = new $type[0]($item);
+                        }
+
+                        // Unset the reference loop item
+                        unset($item);
+                    } // Otherwise if a type was set and the value isn't already of that type
+                    elseif ($type !== null && ! ($value instanceof $type)) {
+                        $value = new $type($value);
+                    }
             }
 
             // Set the property
@@ -134,39 +211,41 @@ abstract class Entity extends Model
     }
 
     /**
-     * Get model as an array.
-     *
-     * @param bool $all  [optional] Whether to include all properties or only those defined in the static properties
-     *                   array
-     * @param bool $safe [optional] True only includes public/protected while false will include private when using
-     *                   false for $all
+     * Get entity as an array.
      *
      * @return array
      */
-    public function asArray(bool $all = true, bool $safe = true): array
+    public function asArray(): array
     {
-        // All the public and protected properties
-        $safeProperties = get_object_vars($this);
+        return $this->jsonSerialize();
+    }
 
-        // If all is true
-        if ($all) {
-            // Get all the object vars
-            return $safeProperties;
-        }
-
+    /**
+     * Get the entity as an array for saving to the data store.
+     *
+     * @return array
+     */
+    public function forDataStore(): array
+    {
         $properties = [];
 
         // Otherwise iterate through the properties array
         foreach (static::$properties as $property) {
-            // If only public and protected properties should be included and this property doesn't exist in the full
-            // list then it is private
-            if ($safe && empty($safeProperties[$property])) {
-                // So continue to the next property
-                continue;
+            $value = $this->{$property};
+            // Check if a type was set for this attribute
+            $type = static::$propertyTypes[$property] ?? null;
+
+            // If the type is object and the property isn't already an object
+            if ($type === PropertyType::OBJECT && \is_object($value)) {
+                // Unserialize the object
+                $value = serialize($value);
+            } // If the type is array and the property isn't already an array
+            elseif ($type === PropertyType::ARRAY && \is_array($value)) {
+                $value = \json_encode($value);
             }
 
             // And set each property to its value
-            $properties[$property] = $this->{$property};
+            $properties[$property] = $value;
         }
 
         return $properties;

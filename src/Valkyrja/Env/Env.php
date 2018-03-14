@@ -18,7 +18,7 @@ namespace Valkyrja\Env;
  */
 class Env
 {
-    /**
+    /*
      * Config env variables.
      */
     // public const CONFIG_PROVIDERS       = null;
@@ -26,7 +26,7 @@ class Env
     // public const CONFIG_CACHE_FILE_PATH = null;
     // public const CONFIG_USE_CACHE_FILE  = null;
 
-    /**
+    /*
      * Application env variables.
      */
     // public const APP_ENV            = null;
@@ -41,14 +41,14 @@ class Env
     // public const APP_DISPATCHER = null;
     // public const APP_EVENTS     = null;
 
-    /**
+    /*
      * Annotation env variables.
      */
     // public const ANNOTATIONS_ENABLED   = null;
     // public const ANNOTATIONS_CACHE_DIR = null;
     // public const ANNOTATIONS_MAP       = null;
 
-    /**
+    /*
      * Console env variables.
      */
     // public const CONSOLE_PROVIDERS                   = null;
@@ -62,7 +62,7 @@ class Env
     // public const CONSOLE_CACHE_FILE_PATH             = null;
     // public const CONSOLE_USE_CACHE_FILE              = null;
 
-    /**
+    /*
      * Container env variables.
      */
     // public const CONTAINER_PROVIDERS                   = null;
@@ -76,13 +76,13 @@ class Env
     // public const CONTAINER_CACHE_FILE_PATH             = null;
     // public const CONTAINER_USE_CACHE_FILE              = null;
 
-    /**
+    /*
      * Crypt env variables.
      */
     // public const CRYPT_KEY      = null;
     // public const CRYPT_KEY_PATH = null;
 
-    /**
+    /*
      * Database env variables.
      */
     // public const DB_CONNECTION = null;
@@ -100,7 +100,7 @@ class Env
     // public const DB_SCHEME     = null;
     // public const DB_SSL_MODE   = null;
 
-    /**
+    /*
      * Events env variables.
      */
     // public const EVENTS_USE_ANNOTATIONS             = null;
@@ -110,7 +110,7 @@ class Env
     // public const EVENTS_CACHE_FILE_PATH             = null;
     // public const EVENTS_USE_CACHE_FILE              = null;
 
-    /**
+    /*
      * Filesystem env variables.
      */
     // public const FILESYSTEM_DEFAULT    = null;
@@ -123,13 +123,13 @@ class Env
     // public const FILESYSTEM_S3_DIR     = null;
     // public const FILESYSTEM_S3_OPTIONS = null;
 
-    /**
+    /*
      * Logger env variables.
      */
     // public const LOGGER_NAME      = null;
     // public const LOGGER_FILE_PATH = null;
 
-    /**
+    /*
      * Routing env variables.
      */
     // public const ROUTING_TRAILING_SLASH              = null;
@@ -141,25 +141,25 @@ class Env
     // public const ROUTING_CACHE_FILE_PATH             = null;
     // public const ROUTING_USE_CACHE_FILE              = null;
 
-    /**
+    /*
      * Session env variables.
      */
     // public const SESSION_ID   = null;
     // public const SESSION_NAME = null;
 
-    /**
+    /*
      * Storage env variables.
      */
     // public const STORAGE_UPLOADS_DIR = null;
     // public const STORAGE_LOGS_DIR    = null;
 
-    /**
+    /*
      * Views env variables.
      */
     // public const VIEWS_DIR   = null;
     // public const VIEWS_PATHS = null;
 
-    /**
+    /*
      * Twig views env variables.
      */
     // public const TWIG_FILE_EXTENSION = null;

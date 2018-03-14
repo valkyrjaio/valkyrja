@@ -11,7 +11,6 @@
 
 namespace Valkyrja\Annotations;
 
-use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
@@ -239,16 +238,15 @@ class NativeAnnotationsParser implements AnnotationsParser
 
         // If a valid arguments list was passed in
         if (null !== $arguments && $arguments) {
-            // Set an arguments list to return
-            $argumentsList = [];
+            $testArgs      = str_replace('=', ':', $arguments);
+            $argumentsList = json_decode('{' . $testArgs . '}', true);
 
-            // Get all arguments from the arguments string
-            /** @var array[] $matches */
-            $matches = $this->getArgumentMatches($arguments);
+            if (\is_array($argumentsList)) {
+                foreach ($argumentsList as &$value) {
+                    $value = $this->determineValue($value);
+                }
 
-            // Iterate through the matches
-            foreach ($matches[0] as $index => $match) {
-                $this->setArgument($matches, $index, $argumentsList);
+                unset($value);
             }
 
             return $argumentsList;
@@ -258,87 +256,26 @@ class NativeAnnotationsParser implements AnnotationsParser
     }
 
     /**
-     * Get the argument matches.
-     *
-     * @param string $arguments The arguments
-     *
-     * @return array
-     */
-    protected function getArgumentMatches(string $arguments): ? array
-    {
-        preg_match_all($this->getArgumentsRegex(), $arguments, $matches);
-
-        return $matches ?? null;
-    }
-
-    /**
-     * Set a matched argument.
-     *
-     * @description The matches [0 => $matches, 1 => $keys, 2 => $values]
-     *
-     * @param array $matches   The matches [0 => $matches, 1 => $keys, 2 =>
-     *                         $values]
-     * @param int   $index     The index
-     * @param array $arguments The arguments list
-     *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
-     *
-     * @return void
-     */
-    protected function setArgument(array $matches, int $index, array &$arguments): void
-    {
-        // Set the key
-        $key = $this->determineValue($this->cleanMatch($matches[1][$index]));
-        // Set the value
-        $value = $this->determineValue($this->cleanMatch($matches[2][$index]));
-
-        // Constants can be bool, int, string, or arrays
-        // If the key is an array throw an exception
-        if (! \is_int($key) && ! \is_string($key) && ! \is_bool($key)) {
-            throw new InvalidAnnotationKeyArgument('Invalid key specified.');
-        }
-
-        // Set the key value pair in the list
-        $arguments[$key] = $value;
-    }
-
-    /**
      * Determine if a value is a defined constant.
      *
-     * @param string $value The value to check
+     * @param mixed $value The value to check
      *
      * @return mixed
      */
-    protected function determineValue(string $value)
+    protected function determineValue($value)
     {
-        // Trim the value of spaces
-        $value = trim($value);
-
-        // If this value starts with [[ and has pipe deliminations within it
-        // then it's an array of values to parse (ex: [[Test | Test2 | Test3]]
-        if (
-            strpos($value, '[[') === 0
-            && strpos($value, ']]') === \strlen($value) - 2
-        ) {
-            // Strip the value of the [[ ]] at the ends of the string
-            $value = (string) substr($value, 2, -2);
-            // Split the value into parts
-            $parts = explode(' | ', $value);
-
-            // Iterate through the parts
-            foreach ($parts as &$part) {
-                // Ensure the part is valid
-                if (! $part) {
-                    continue;
-                }
-
-                // Set the part as a recurse of the part in case special cases were
-                // used within the array such as another array, constant, etc
-                $part = $this->determineValue($part);
+        if (\is_array($value)) {
+            foreach ($value as &$item) {
+                $item = $this->determineValue($item);
             }
 
-            return $parts;
+            unset($item);
+
+            return $value;
         }
+
+        // Trim the value of spaces
+        $value = trim($value);
 
         // If there was no double colon found there's no need to go further
         if (strpos($value, '::') === false) {

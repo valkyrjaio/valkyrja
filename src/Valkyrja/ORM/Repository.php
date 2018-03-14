@@ -13,6 +13,7 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
 
 /**
  * Interface Repository.
@@ -111,10 +112,12 @@ interface Repository
      * Create a new model.
      *
      * <code>
-     *      $this->create(Model::class)
+     *      $this->create(Entity::class)
      * </code>
      *
      * @param \Valkyrja\ORM\Entity $entity
+     *
+     * @throws InvalidEntityException
      *
      * @return bool
      */
@@ -124,39 +127,36 @@ interface Repository
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      *
      * <code>
-     *      $this
-     *          ->save(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->save(Entity::class)
      * </code>
      *
      * @param Entity $entity
-     * @param array  $criteria
+     *
+     * @throws InvalidEntityException
      *
      * @return bool
      */
-    public function save(Entity $entity, array $criteria = []): bool;
+    public function save(Entity $entity): bool;
 
     /**
      * Delete an existing model.
      *
      * <code>
-     *      $this
-     *          ->delete(
-     *              Model::class,
-     *              [
-     *                  'column' => 'value',
-     *              ]
-     *          )
+     *      $this->delete(Entity::class)
      * </code>
      *
      * @param Entity $entity
-     * @param array  $criteria
+     *
+     * @throws InvalidEntityException
      *
      * @return bool
      */
-    public function delete(Entity $entity, array $criteria = []): bool;
+    public function delete(Entity $entity): bool;
+
+    /**
+     * Get the last inserted id.
+     *
+     * @return string
+     */
+    public function lastInsertId(): string;
 }
