@@ -116,29 +116,11 @@ class AnnotationsParserTest extends TestCase
             // Test for line 413
             . '"empty" = "", '
             . '"requestMethods" = ["POST", "GET", "HEAD"], '
-            . '"constant" = "Valkyrja\\Application::VERSION", '
-            . '"property" = Valkyrja\\Tests\\Unit\\Annotations\\AnnotationsParserTest::property", '
-            . '"method" = "Valkyrja\\Tests\\Unit\\Annotations\\AnnotationsParserTest::staticMethod"';
+            . '"constant" = "Valkyrja\\\\Application::VERSION", '
+            . '"property" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::property", '
+            . '"method" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::staticMethod"';
 
         $this->assertCount(7, $this->class->getArguments($arguments));
-    }
-
-    /**
-     * Test the getArguments method with an array for a key from a constant/static property/method.
-     *
-     * @return void
-     */
-    public function testGetArgumentsInvalidKey(): void
-    {
-        $arguments = '"' . static::class . '::invalidKeyArray"'
-            . ' = "value", '
-            . '"name" = "test"';
-
-        try {
-            $this->class->getArguments($arguments);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(InvalidAnnotationKeyArgument::class, $exception);
-        }
     }
 
     /**
