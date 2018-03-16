@@ -28,6 +28,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
@@ -258,6 +259,13 @@ interface Application
      * @return \Valkyrja\Logger\Logger
      */
     public function logger(): Logger;
+
+    /**
+     * Return the mail instance from the container.
+     *
+     * @return \Valkyrja\Mail\Mail
+     */
+    public function mail(): Mail;
 
     /**
      * Return the path generator instance from the container.

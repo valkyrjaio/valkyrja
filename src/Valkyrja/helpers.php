@@ -243,13 +243,25 @@ if (! function_exists('entityManager')) {
 
 if (! function_exists('logger')) {
     /**
-     * Get request.
+     * Get logger.
      *
      * @return \Valkyrja\Logger\Logger
      */
     function logger(): Valkyrja\Logger\Logger
     {
         return app()->logger();
+    }
+}
+
+if (! function_exists('mail')) {
+    /**
+     * Get mail.
+     *
+     * @return \Valkyrja\Mail\Mail
+     */
+    function mail(): Valkyrja\Mail\Mail
+    {
+        return app()->mail();
     }
 }
 

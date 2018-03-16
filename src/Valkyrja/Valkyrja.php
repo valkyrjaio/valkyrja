@@ -35,6 +35,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
@@ -640,6 +641,16 @@ class Valkyrja implements Application
     public function logger(): Logger
     {
         return $this->container()->getSingleton(Logger::class);
+    }
+
+    /**
+     * Return the mail instance from the container.
+     *
+     * @return \Valkyrja\Mail\Mail
+     */
+    public function mail(): Mail
+    {
+        return $this->container()->getSingleton(Mail::class);
     }
 
     /**
