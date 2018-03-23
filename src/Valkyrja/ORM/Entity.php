@@ -70,16 +70,6 @@ abstract class Entity extends Model
     protected static $repository;
 
     /**
-     * Entity constructor.
-     *
-     * @param array $properties [optional] The properties
-     */
-    public function __construct(array $properties = [])
-    {
-        $this->fromArray($properties);
-    }
-
-    /**
      * Get the table.
      *
      * @return string

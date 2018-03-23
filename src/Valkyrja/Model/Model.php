@@ -21,6 +21,16 @@ use JsonSerializable;
 abstract class Model implements JsonSerializable
 {
     /**
+     * Model constructor.
+     *
+     * @param array $properties [optional] The properties
+     */
+    public function __construct(array $properties = [])
+    {
+        $this->fromArray($properties);
+    }
+
+    /**
      * Get a property.
      *
      * @param string $name The property to get
