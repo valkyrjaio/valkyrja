@@ -149,18 +149,8 @@ class NativeKernel implements Kernel
         // Dispatch the terminable middleware
         $this->terminableMiddleware($request, $response);
 
-        /* @var Route $route */
-        $route = $this->app->container()->getSingleton(Route::class);
-
-        // If the dispatched route has middleware
-        if (null !== $route->getMiddleware()) {
-            // Terminate each middleware
-            $this->terminableMiddleware(
-                $request,
-                $response,
-                $route->getMiddleware()
-            );
-        }
+        // Terminate route middleware
+        $this->terminateRouteMiddleware($request, $response);
 
         // Trigger an event for kernel terminate
         $this->app->events()->trigger(
@@ -202,6 +192,35 @@ class NativeKernel implements Kernel
     protected function getApplication(): Application
     {
         return $this->app;
+    }
+
+    /**
+     * Terminate the found route's middleware.
+     *
+     * @param Request  $request  The request
+     * @param Response $response The response
+     *
+     * @return void
+     */
+    protected function terminateRouteMiddleware(Request $request, Response $response): void
+    {
+        // Ensure a route exists
+        if (! $this->app->container()->isSingleton(Route::class)) {
+            return;
+        }
+
+        /* @var Route $route */
+        $route = $this->app->container()->getSingleton(Route::class);
+
+        // If the dispatched route has middleware
+        if (null !== $route->getMiddleware()) {
+            // Terminate each middleware
+            $this->terminableMiddleware(
+                $request,
+                $response,
+                $route->getMiddleware()
+            );
+        }
     }
 
     /**
