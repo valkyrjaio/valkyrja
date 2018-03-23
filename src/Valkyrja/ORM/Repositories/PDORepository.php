@@ -365,8 +365,8 @@ class PDORepository implements Repository
         $results = [];
 
         // If the result of the query was a count
-        if (isset($rows[0]) && \is_int($rows[0])) {
-            return $rows[0];
+        if (isset($rows[0]['COUNT(*)'])) {
+            return (int) $rows[0]['COUNT(*)'];
         }
 
         // Iterate through the rows found
