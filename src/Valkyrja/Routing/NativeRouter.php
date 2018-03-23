@@ -218,7 +218,7 @@ class NativeRouter implements Router
             throw new InvalidRouteName($name);
         }
 
-        return self::$collection->getNamedRoute($name);
+        return self::$collection->namedRoute($name);
     }
 
     /**
@@ -588,15 +588,15 @@ class NativeRouter implements Router
         $route = null;
 
         // Let's check if the route is set in the static routes
-        if (self::$collection->issetStaticRoute($path)) {
-            $route = $this->getMatchedStaticRoute($path);
+        if (self::$collection->issetStaticRoute($method, $path)) {
+            $route = $this->getMatchedStaticRoute($path, $method);
         }
 
         if (null !== $route && $this->isValidMethod($route, $method)) {
             return $route;
         }
 
-        return $route;
+        return null;
     }
 
     /**
@@ -614,14 +614,14 @@ class NativeRouter implements Router
         // The route to return (null by default)
         $route = null;
         // The dynamic routes
-        $dynamicRoutes = self::$collection->getDynamicRoutes();
+        $dynamicRoutes = self::$collection->getDynamicRoutes($method);
 
         // Attempt to find a match using dynamic routes that are set
         foreach ($dynamicRoutes as $regex => $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             /* @var array $matches */
             if (preg_match($regex, $path, $matches)) {
-                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches);
+                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches, $method);
 
                 break;
             }
@@ -650,13 +650,14 @@ class NativeRouter implements Router
     /**
      * Get a matched static route.
      *
-     * @param string $path The path
+     * @param string $path   The path
+     * @param string $method The method
      *
      * @return \Valkyrja\Routing\Route
      */
-    protected function getMatchedStaticRoute(string $path): Route
+    protected function getMatchedStaticRoute(string $path, string $method): Route
     {
-        return clone self::$collection->getRoute($path);
+        return clone self::$collection->staticRoute($method, $path);
     }
 
     /**
@@ -664,13 +665,14 @@ class NativeRouter implements Router
      *
      * @param string $path    The path
      * @param array  $matches The regex matches
+     * @param string $method  The request method
      *
      * @return \Valkyrja\Routing\Route
      */
-    protected function getMatchedDynamicRoute(string $path, array $matches): Route
+    protected function getMatchedDynamicRoute(string $path, array $matches, string $method): Route
     {
         // Clone the route to avoid changing the one set in the master array
-        $dynamicRoute = clone self::$collection->getRoute($path);
+        $dynamicRoute = clone self::$collection->dynamicRoute($method, $path);
         // The first match is the path itself
         unset($matches[0]);
 
