@@ -63,6 +63,10 @@ abstract class Enum implements JsonSerializable
      */
     public static function isValid($value): bool
     {
+        if (\is_array($value) || \is_object($value)) {
+            return false;
+        }
+
         // Get the valid values to compare with
         $validValues = static::validValues();
 
