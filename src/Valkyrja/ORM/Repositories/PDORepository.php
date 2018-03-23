@@ -518,8 +518,10 @@ class PDORepository implements Repository
             $query->where($idField . ' = ' . $this->criterionParam($idField));
         }
 
-        // Set the properties
-        $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
+        if ($type !== 'delete') {
+            // Set the properties
+            $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
+        }
 
         // Prepare a PDO statement with the query
         $stmt = $this->store->prepare($query->getQuery());
@@ -530,8 +532,10 @@ class PDORepository implements Repository
             $stmt->bindValue($this->criterionParam($idField), $properties[$idField]);
         }
 
-        // Set the properties.
-        $this->setPropertiesForSaveCreateDeleteStatement($stmt, $properties);
+        if ($type !== 'delete') {
+            // Set the properties.
+            $this->setPropertiesForSaveCreateDeleteStatement($stmt, $properties);
+        }
 
         // If the execute failed
         if (! $executeResult = $stmt->execute()) {
