@@ -86,12 +86,13 @@ class PDORepository implements Repository
      * Find a single entity given its id.
      *
      * @param string|int $id
+     * @param bool|null  $getRelations
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
      * @return \Valkyrja\ORM\Entity|null
      */
-    public function find($id): ? Entity
+    public function find($id, bool $getRelations = null): ? Entity
     {
         if (! \is_string($id) && ! \is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
@@ -124,14 +125,22 @@ class PDORepository implements Repository
      * @param array|null $orderBy
      * @param int|null   $limit
      * @param int|null   $offset
+     * @param array|null $columns
+     * @param bool|null  $getRelations
      *
      * @throws InvalidArgumentException
      *
      * @return \Valkyrja\ORM\Entity[]
      */
-    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array
-    {
-        return $this->select(null, $criteria, $orderBy, $limit, $offset);
+    public function findBy(
+        array $criteria,
+        array $orderBy = null,
+        int $limit = null,
+        int $offset = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array {
+        return $this->select($columns, $criteria, $orderBy, $limit, $offset);
     }
 
     /**
@@ -148,15 +157,17 @@ class PDORepository implements Repository
      *          )
      * </code>
      *
-     * @param array $orderBy
+     * @param array      $orderBy
+     * @param array|null $columns
+     * @param bool|null  $getRelations
      *
      * @throws InvalidArgumentException
      *
      * @return \Valkyrja\ORM\Entity[]
      */
-    public function findAll(array $orderBy = null): array
+    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
-        return $this->findBy([], $orderBy);
+        return $this->findBy([], $orderBy, null, null, $columns);
     }
 
     /**
@@ -333,6 +344,7 @@ class PDORepository implements Repository
      * @param array|null $orderBy
      * @param int|null   $limit
      * @param int|null   $offset
+     * @param bool|null  $getRelations
      *
      * @throws InvalidArgumentException
      *
@@ -343,7 +355,8 @@ class PDORepository implements Repository
         array $criteria = null,
         array $orderBy = null,
         int $limit = null,
-        int $offset = null
+        int $offset = null,
+        bool $getRelations = null
     ) {
         // Build the query
         $query = $this->selectQueryBuilder($columns, $criteria, $orderBy, $limit, $offset);
@@ -377,8 +390,14 @@ class PDORepository implements Repository
             // Apply the model's contents given the row
             $entity->fromArray($row);
 
-            // Add the model to the final results
-            $results[] = $this->getEntityRelations($entity);
+            // If no columns were specified then we can safely get all the relations
+            if (null === $columns && $getRelations === true) {
+                // Add the model to the final results
+                $results[] = $this->getEntityRelations($entity);
+            } else {
+                // Add the model to the final results
+                $results[] = $entity;
+            }
         }
 
         return $results;

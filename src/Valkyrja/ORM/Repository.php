@@ -33,12 +33,13 @@ interface Repository
      * Find a single entity given its id.
      *
      * @param string|int $id
+     * @param bool|null  $getRelations
      *
      * @throws InvalidArgumentException If id is not a string or int
      *
      * @return \Valkyrja\ORM\Entity|null
      */
-    public function find($id): ? Entity;
+    public function find($id, bool $getRelations = null): ? Entity;
 
     /**
      * Find entities by given criteria.
@@ -64,10 +65,19 @@ interface Repository
      * @param array|null $orderBy
      * @param int|null   $limit
      * @param int|null   $offset
+     * @param array|null $columns
+     * @param bool|null  $getRelations
      *
      * @return \Valkyrja\ORM\Entity[]
      */
-    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null): array;
+    public function findBy(
+        array $criteria,
+        array $orderBy = null,
+        int $limit = null,
+        int $offset = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array;
 
     /**
      * Find entities by given criteria.
@@ -83,11 +93,13 @@ interface Repository
      *          )
      * </code>
      *
-     * @param array $orderBy
+     * @param array      $orderBy
+     * @param array|null $columns
+     * @param bool|null  $getRelations
      *
      * @return \Valkyrja\ORM\Entity[]
      */
-    public function findAll(array $orderBy = null): array;
+    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array;
 
     /**
      * Count all the results of given criteria.
