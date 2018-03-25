@@ -98,7 +98,15 @@ class PDORepository implements Repository
             throw new InvalidArgumentException('ID should be an int or string only.');
         }
 
-        return $this->findBy([$this->entity::getIdField() => $id])[0] ?? null;
+        return $this->findBy(
+                [$this->entity::getIdField() => $id],
+                null,
+                null,
+                null,
+                null,
+                $getRelations
+            )[0]
+            ?? null;
     }
 
     /**
