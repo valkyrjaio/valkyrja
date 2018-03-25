@@ -148,7 +148,7 @@ class PDORepository implements Repository
         array $columns = null,
         bool $getRelations = null
     ): array {
-        return $this->select($columns, $criteria, $orderBy, $limit, $offset);
+        return $this->select($columns, $criteria, $orderBy, $limit, $offset, $getRelations);
     }
 
     /**
@@ -175,7 +175,7 @@ class PDORepository implements Repository
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
-        return $this->findBy([], $orderBy, null, null, $columns);
+        return $this->findBy([], $orderBy, null, null, $columns, $getRelations);
     }
 
     /**
@@ -648,7 +648,8 @@ class PDORepository implements Repository
             $propertyMap = $propertyMapper[$property] ?? null;
 
             if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
-                $entities = $this->entityManager->getRepository($entityName)->findBy($propertyMap);
+                $repository = $this->entityManager->getRepository($entityName);
+                $entities   = $repository->findBy($propertyMap, null, null, null, null, true);
 
                 if (\is_array($type)) {
                     $entity->{$property} = $entities;
