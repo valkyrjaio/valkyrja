@@ -374,6 +374,12 @@ class PDORepository implements Repository
 
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
+            // If the criterion is null
+            if ($criterion === null) {
+                // Skip as we've already set the where to IS NULL
+                continue;
+            }
+
             // And bind each value to the column
             $stmt->bindValue($this->columnParam($column), $criterion);
         }
@@ -460,6 +466,14 @@ class PDORepository implements Repository
             // Iterate through each criteria and set the column = :column
             // so we can use bindColumn() in PDO later
             foreach ($criteria as $column => $criterion) {
+                // If the criterion is null
+                if ($criterion === null) {
+                    // Set the where statement as such
+                    $query->where($column . ' IS NULL');
+
+                    continue;
+                }
+
                 // Set the where condition
                 $query->where($column . ' = ' . $this->columnParam($column));
             }
