@@ -553,6 +553,12 @@ class PDORepository implements Repository
 
         /* @var QueryBuilder $query */
 
+        // If this is an insert
+        if ($type === 'insert') {
+            // Ensure all the required properties are set
+            $this->ensureRequiredProperties($entity, $properties);
+        }
+
         // If this type isn't an insert
         if ($type !== 'insert') {
             // Set the id for the where clause
@@ -680,5 +686,27 @@ class PDORepository implements Repository
         }
 
         return $entity;
+    }
+
+    /**
+     * Ensure all required properties have been passed.
+     *
+     * @param Entity $entity
+     * @param array  $properties
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    protected function ensureRequiredProperties(Entity $entity, array $properties): void
+    {
+        // Iterate through the required properties
+        foreach ($entity::getRequiredProperties() as $requiredProperty) {
+            // If the required property is not set
+            if (! isset($properties[$requiredProperty])) {
+                // Throw an exception
+                throw new InvalidArgumentException('Missing required property: ' . $requiredProperty);
+            }
+        }
     }
 }

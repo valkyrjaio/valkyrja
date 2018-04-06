@@ -43,6 +43,13 @@ abstract class Entity extends Model
     protected static $properties = [];
 
     /**
+     * Required properties.
+     *
+     * @var array
+     */
+    protected static $required = [];
+
+    /**
      * Types for attributes that differs from what they were saved into the database as.
      *
      * <code>
@@ -117,6 +124,16 @@ abstract class Entity extends Model
     public static function getRepository(): ? string
     {
         return static::$repository;
+    }
+
+    /**
+     * Get required properties.
+     *
+     * @return array
+     */
+    public static function getRequiredProperties(): array
+    {
+        return static::$required;
     }
 
     /**
