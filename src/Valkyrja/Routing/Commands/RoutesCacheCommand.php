@@ -62,11 +62,11 @@ class RoutesCacheCommand extends CommandHandler
                 true
             );
 
-            return 0;
+            return 1;
         }
 
         output()->writeMessage('Routes cache generated successfully', true);
 
-        return 1;
+        return 0;
     }
 }

@@ -61,11 +61,11 @@ class EventsCacheCommand extends CommandHandler
                 true
             );
 
-            return 0;
+            return 1;
         }
 
         output()->writeMessage('Events cache generated successfully', true);
 
-        return 1;
+        return 0;
     }
 }

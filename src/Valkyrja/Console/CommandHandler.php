@@ -48,7 +48,7 @@ abstract class CommandHandler
         $this->argumentsSection();
         $this->optionsSection();
 
-        return 1;
+        return 0;
     }
 
     /**
@@ -60,7 +60,7 @@ abstract class CommandHandler
     {
         $this->applicationMessage();
 
-        return 1;
+        return 0;
     }
 
     /**

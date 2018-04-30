@@ -101,7 +101,7 @@ class RoutesListCommand extends CommandHandler
             true
         );
 
-        return 1;
+        return 0;
     }
 
     /**

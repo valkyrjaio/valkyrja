@@ -61,6 +61,6 @@ class CommandsListForBashCommand extends CommandHandler
 
         output()->writeMessage(implode(' ', $possibleCommands));
 
-        return 1;
+        return 0;
     }
 }

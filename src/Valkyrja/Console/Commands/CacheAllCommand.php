@@ -75,7 +75,7 @@ class CacheAllCommand extends CommandHandler
             }
         }
 
-        return 1;
+        return 0;
     }
 
     /**
