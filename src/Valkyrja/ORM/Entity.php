@@ -190,7 +190,7 @@ abstract class Entity extends Model
                 // If the type is array and the property isn't already an array
                 case PropertyType::ARRAY:
                     if (! \is_array($value)) {
-                        $value = json_decode($value);
+                        $value = json_decode($value, true);
                     }
 
                     break;
