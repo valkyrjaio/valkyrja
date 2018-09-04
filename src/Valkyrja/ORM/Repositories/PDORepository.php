@@ -380,6 +380,16 @@ class PDORepository implements Repository
                 continue;
             }
 
+            // If the criterion is an array
+            if (\is_array($criterion)) {
+                // Iterate through the criterion and bind each value individually
+                foreach ($criterion as $index => $criterionItem) {
+                    $stmt->bindValue($this->columnParam($column . $index), $criterionItem);
+                }
+
+                continue;
+            }
+
             // And bind each value to the column
             $stmt->bindValue($this->columnParam($column), $criterion);
         }
@@ -470,6 +480,27 @@ class PDORepository implements Repository
                 if ($criterion === null) {
                     // Set the where statement as such
                     $query->where($column . ' IS NULL');
+
+                    continue;
+                }
+
+                // If the criterion is an array
+                if (\is_array($criterion)) {
+                    $criterionConcat = '';
+                    $lastIndex       = \count($criterion) - 1;
+
+                    // Iterate through the criterion and set each item individually to be bound later
+                    foreach ($criterion as $index => $criterionItem) {
+                        $criterionConcat .= $this->columnParam($column . $index);
+
+                        // If this is not the last index, add a comma
+                        if ($index < $lastIndex) {
+                            $criterionConcat .= ',';
+                        }
+                    }
+
+                    // Set the where statement as an in
+                    $query->where($column . ' IN (' . $criterionConcat . ')');
 
                     continue;
                 }
