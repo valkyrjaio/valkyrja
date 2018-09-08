@@ -699,8 +699,22 @@ class PDORepository implements Repository
             $propertyMap = $propertyMapper[$property] ?? null;
 
             if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
-                $repository = $this->entityManager->getRepository($entityName);
-                $entities   = $repository->findBy($propertyMap, null, null, null, null, true);
+                $repository   = $this->entityManager->getRepository($entityName);
+                $orderBy      = $propertyMap['orderBy'] ?? null;
+                $limit        = $propertyMap['limit'] ?? null;
+                $offset       = $propertyMap['offset'] ?? null;
+                $columns      = $propertyMap['columns'] ?? null;
+                $getRelations = $propertyMap['getRelations'] ?? true;
+
+                unset(
+                    $propertyMap['orderBy'],
+                    $propertyMap['limit'],
+                    $propertyMap['offset'],
+                    $propertyMap['columns'],
+                    $propertyMap['getRelations']
+                );
+
+                $entities = $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
 
                 if (\is_array($type)) {
                     $entity->{$property} = $entities;
