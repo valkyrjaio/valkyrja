@@ -473,80 +473,190 @@ class PDORepository implements Repository
 
         // If criteria has been passed
         if (null !== $criteria) {
-            // Iterate through each criteria and set the column = :column
-            // so we can use bindColumn() in PDO later
-            foreach ($criteria as $column => $criterion) {
-                // If the criterion is null
-                if ($criterion === null) {
-                    // Set the where statement as such
-                    $query->where($column . ' IS NULL');
-
-                    continue;
-                }
-
-                // If the criterion is an array
-                if (\is_array($criterion)) {
-                    $criterionConcat = '';
-                    $lastIndex       = \count($criterion) - 1;
-
-                    // Iterate through the criterion and set each item individually to be bound later
-                    foreach ($criterion as $index => $criterionItem) {
-                        $criterionConcat .= $this->columnParam($column . $index);
-
-                        // If this is not the last index, add a comma
-                        if ($index < $lastIndex) {
-                            $criterionConcat .= ',';
-                        }
-                    }
-
-                    // Set the where statement as an in
-                    $query->where($column . ' IN (' . $criterionConcat . ')');
-
-                    continue;
-                }
-
-                // Set the where condition
-                $query->where($column . ' = ' . $this->columnParam($column));
-            }
+            $this->setCriteriaInQuery($query, $criteria);
         }
 
         // If order by has been passed
         if (null !== $orderBy) {
-            // Iterate through each order by
-            foreach ($orderBy as $column => $order) {
-                // Switch through the order (value) set
-                switch ($order) {
-                    // If the order is ascending
-                    case OrderBy::ASC:
-                        // Set the column via the orderByAsc method
-                        $query->orderByAsc($column);
-                        break;
-                    // If the order is descending
-                    case OrderBy::DESC:
-                        // Set the column via the orderByDesc method
-                        $query->orderByDesc($column);
-                        break;
-                    default:
-                        // Otherwise set the order (which is the column)
-                        $query->orderBy($order);
-                        break;
-                }
-            }
+            $this->setOrderByInQuery($query, $orderBy);
         }
 
         // If a limit is passed
         if (null !== $limit) {
-            // Set it in the query
-            $query->limit($limit);
+            $this->setLimitInQuery($query, $limit);
         }
 
         // If an offset is passed
         if (null !== $offset) {
-            // Set it in the query
-            $query->offset($offset);
+            $this->setOffsetInQuery($query, $offset);
         }
 
         return $query;
+    }
+
+    /**
+     * Set the criteria in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param array        $criteria
+     *
+     * @return void
+     */
+    protected function setCriteriaInQuery(QueryBuilder $query, array $criteria): void
+    {
+        // Iterate through each criteria and set the column = :column
+        // so we can use bindColumn() in PDO later
+        foreach ($criteria as $column => $criterion) {
+            // If the criterion is null
+            if ($criterion === null) {
+                $this->setNullCriterionInQuery($query, $column);
+
+                continue;
+            }
+
+            // If the criterion is an array
+            if (\is_array($criterion)) {
+                $this->setArrayCriterionInQuery($query, $column, $criterion);
+
+                continue;
+            }
+
+            // If the criterion has a percent at the start or the end
+            if ($criterion[0] === '%' || $criterion[\strlen($criterion) - 1] === '%') {
+                $this->setLikeCriterionInQuery($query, $column);
+
+                continue;
+            }
+
+            $this->setEqualCriterionInQuery($query, $column);
+        }
+    }
+
+    /**
+     * Set a null criterion in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param string       $column
+     *
+     * @return void
+     */
+    protected function setNullCriterionInQuery(QueryBuilder $query, string $column): void
+    {
+        $query->where($column . ' IS NULL');
+    }
+
+    /**
+     * Set an array criterion in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param string       $column
+     * @param array        $criterion
+     *
+     * @return void
+     */
+    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $criterion): void
+    {
+        $criterionConcat = '';
+        $lastIndex       = \count($criterion) - 1;
+
+        // Iterate through the criterion and set each item individually to be bound later
+        foreach ($criterion as $index => $criterionItem) {
+            $criterionConcat .= $this->columnParam($column . $index);
+
+            // If this is not the last index, add a comma
+            if ($index < $lastIndex) {
+                $criterionConcat .= ',';
+            }
+        }
+
+        // Set the where statement as an in
+        $query->where($column . ' IN (' . $criterionConcat . ')');
+    }
+
+    /**
+     * Set a like where statement for a criterion/column in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param string       $column
+     *
+     * @return void
+     */
+    protected function setLikeCriterionInQuery(QueryBuilder $query, string $column): void
+    {
+        $query->where($column . ' LIKE ' . $this->columnParam($column));
+    }
+
+    /**
+     * Set an equal where statement for a criterion/column in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param string       $column
+     *
+     * @return void
+     */
+    protected function setEqualCriterionInQuery(QueryBuilder $query, string $column): void
+    {
+        $query->where($column . ' = ' . $this->columnParam($column));
+    }
+
+    /**
+     * Set the order by options in a query builder.
+     *
+     * @param QueryBuilder $query
+     * @param array        $orderBy
+     *
+     * @return void
+     */
+    protected function setOrderByInQuery(QueryBuilder $query, array $orderBy): void
+    {
+        // Iterate through each order by
+        foreach ($orderBy as $column => $order) {
+            // Switch through the order (value) set
+            switch ($order) {
+                // If the order is ascending
+                case OrderBy::ASC:
+                    // Set the column via the orderByAsc method
+                    $query->orderByAsc($column);
+                    break;
+                // If the order is descending
+                case OrderBy::DESC:
+                    // Set the column via the orderByDesc method
+                    $query->orderByDesc($column);
+                    break;
+                default:
+                    // Otherwise set the order (which is the column)
+                    $query->orderBy($order);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Set the limit in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param int          $limit
+     *
+     * @return void
+     */
+    protected function setLimitInQuery(QueryBuilder $query, int $limit): void
+    {
+        // Set it in the query
+        $query->limit($limit);
+    }
+
+    /**
+     * Set the offset in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param int          $offset
+     *
+     * @return void
+     */
+    protected function setOffsetInQuery(QueryBuilder $query, int $offset): void
+    {
+        // Set it in the query
+        $query->offset($offset);
     }
 
     /**
