@@ -17,6 +17,7 @@ use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
+use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
@@ -810,18 +811,18 @@ class PDORepository implements Repository
 
             if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
                 $repository   = $this->entityManager->getRepository($entityName);
-                $orderBy      = $propertyMap['orderBy'] ?? null;
-                $limit        = $propertyMap['limit'] ?? null;
-                $offset       = $propertyMap['offset'] ?? null;
-                $columns      = $propertyMap['columns'] ?? null;
-                $getRelations = $propertyMap['getRelations'] ?? true;
+                $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
+                $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
+                $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;
+                $columns      = $propertyMap[PropertyMap::COLUMNS] ?? null;
+                $getRelations = $propertyMap[PropertyMap::GET_RELATIONS] ?? true;
 
                 unset(
-                    $propertyMap['orderBy'],
-                    $propertyMap['limit'],
-                    $propertyMap['offset'],
-                    $propertyMap['columns'],
-                    $propertyMap['getRelations']
+                    $propertyMap[PropertyMap::ORDER_BY],
+                    $propertyMap[PropertyMap::LIMIT],
+                    $propertyMap[PropertyMap::OFFSET],
+                    $propertyMap[PropertyMap::COLUMNS],
+                    $propertyMap[PropertyMap::GET_RELATIONS]
                 );
 
                 $entities = $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
