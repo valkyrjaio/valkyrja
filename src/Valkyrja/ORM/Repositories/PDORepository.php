@@ -200,7 +200,7 @@ class PDORepository implements Repository
      */
     public function count(array $criteria): int
     {
-        return $this->select(['COUNT(*)'], $criteria);
+        return (int) $this->select(['COUNT(*)'], $criteria);
     }
 
     /**
