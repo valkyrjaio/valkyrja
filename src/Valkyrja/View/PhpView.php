@@ -191,6 +191,21 @@ class PhpView implements View
     }
 
     /**
+     * Escape a value for output.
+     *
+     * @param string $value The value to escape
+     *
+     * @return string
+     */
+    public function escape(string $value): string
+    {
+        $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+        $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
+
+        return $value;
+    }
+
+    /**
      * Get the template directory.
      *
      * @param string $path [optional] The path to append

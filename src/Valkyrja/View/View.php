@@ -64,6 +64,15 @@ interface View
     public function setVariable(string $key, $value): self;
 
     /**
+     * Escape a value for output.
+     *
+     * @param string $value The value to escape
+     *
+     * @return string
+     */
+    public function escape(string $value): string;
+
+    /**
      * Get the template directory.
      *
      * @param string $path [optional] The path to append
