@@ -251,12 +251,15 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
 
         $routerRoute
             ->setPath($route->getPath())
+            ->setRedirectPath($route->getRedirectPath())
+            ->setRedirectCode($route->getRedirectCode())
             ->setRegex($route->getRegex())
             ->setParams($route->getParams())
             ->setSegments($route->getSegments())
             ->setRequestMethods($route->getRequestMethods())
             ->setSecure($route->isSecure())
             ->setDynamic($route->isDynamic())
+            ->setRedirect($route->isRedirect())
             ->setId($route->getId())
             ->setName($route->getName())
             ->setClass($route->getClass())

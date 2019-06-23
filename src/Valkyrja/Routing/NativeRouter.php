@@ -279,7 +279,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function requestRoute(Request $request): ? Route
+    public function requestRoute(Request $request): ?Route
     {
         $requestMethod = $request->getMethod();
         // Decode the request uri
@@ -300,7 +300,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = null): ? Route
+    public function matchRoute(string $path, string $method = null): ?Route
     {
         // Validate the path
         $path   = $this->validatePath($path);
@@ -362,6 +362,12 @@ class NativeRouter implements Router
         if (null === $route = $this->requestRoute($request)) {
             // If it was null throw a not found exception
             throw new NotFoundHttpException();
+        }
+
+        // If the route is a redirect and a redirect route is set
+        if ($route->isRedirect() && $route->getRedirectPath()) {
+            // Throw the redirect to the redirect path
+            return $this->app->redirect($route->getRedirectPath(), (int) $route->getRedirectCode());
         }
 
         // If the route is secure and the current request is not secure
@@ -583,7 +589,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    protected function matchStaticRoute(string $path, string $method): ? Route
+    protected function matchStaticRoute(string $path, string $method): ?Route
     {
         $route = null;
 
@@ -609,7 +615,7 @@ class NativeRouter implements Router
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    protected function matchDynamicRoute(string $path, string $method): ? Route
+    protected function matchDynamicRoute(string $path, string $method): ?Route
     {
         // The route to return (null by default)
         $route = null;

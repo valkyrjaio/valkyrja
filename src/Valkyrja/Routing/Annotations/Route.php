@@ -14,6 +14,7 @@ namespace Valkyrja\Routing\Annotations;
 use InvalidArgumentException;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\StatusCode;
 
 /**
  * Class Route.
@@ -28,6 +29,20 @@ class Route extends Annotation
      * @var string
      */
     protected $path;
+
+    /**
+     * The redirect path for this route.
+     *
+     * @var string|null
+     */
+    protected $redirectPath;
+
+    /**
+     * The redirect status code for this route.
+     *
+     * @var int
+     */
+    protected $redirectCode = StatusCode::FOUND;
 
     /**
      * The request methods for this route.
@@ -79,11 +94,18 @@ class Route extends Annotation
     protected $secure = false;
 
     /**
+     * Whether the route is a redirect.
+     *
+     * @var bool
+     */
+    protected $redirect = false;
+
+    /**
      * Get the route's path.
      *
      * @return string
      */
-    public function getPath(): ? string
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -98,6 +120,50 @@ class Route extends Annotation
     public function setPath(string $path): void
     {
         $this->path = $path;
+    }
+
+    /**
+     * Get the redirect path.
+     *
+     * @return string
+     */
+    public function getRedirectPath(): ?string
+    {
+        return $this->redirectPath;
+    }
+
+    /**
+     * Set the redirect path.
+     *
+     * @param string $redirectPath
+     *
+     * @return void
+     */
+    public function setRedirectPath(?string $redirectPath): void
+    {
+        $this->redirectPath = $redirectPath;
+    }
+
+    /**
+     * Get the redirect status code.
+     *
+     * @return int
+     */
+    public function getRedirectCode(): int
+    {
+        return $this->redirectCode;
+    }
+
+    /**
+     * Set the redirect status code.
+     *
+     * @param int $redirectCode
+     *
+     * @return void
+     */
+    public function setRedirectCode(int $redirectCode): void
+    {
+        $this->redirectCode = $redirectCode;
     }
 
     /**
@@ -142,7 +208,7 @@ class Route extends Annotation
      *
      * @return string
      */
-    public function getRegex(): ? string
+    public function getRegex(): ?string
     {
         return $this->regex;
     }
@@ -164,7 +230,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getParams(): ? array
+    public function getParams(): ?array
     {
         return $this->params;
     }
@@ -186,7 +252,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getSegments(): ? array
+    public function getSegments(): ?array
     {
         return $this->segments;
     }
@@ -208,7 +274,7 @@ class Route extends Annotation
      *
      * @return array
      */
-    public function getMiddleware(): ? array
+    public function getMiddleware(): ?array
     {
         return $this->middleware;
     }
@@ -267,5 +333,27 @@ class Route extends Annotation
     public function setSecure(bool $secure): void
     {
         $this->secure = $secure;
+    }
+
+    /**
+     * Get whether the route is a redirect.
+     *
+     * @return bool
+     */
+    public function isRedirect(): bool
+    {
+        return $this->redirect;
+    }
+
+    /**
+     * Set whether the route is a redirect.
+     *
+     * @param bool $redirect
+     *
+     * @return void
+     */
+    public function setRedirect(bool $redirect): void
+    {
+        $this->redirect = $redirect;
     }
 }
