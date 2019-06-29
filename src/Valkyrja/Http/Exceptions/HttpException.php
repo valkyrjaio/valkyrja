@@ -15,6 +15,7 @@ use Exception;
 use RuntimeException;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\StatusCode;
+use Valkyrja\View\View;
 
 /**
  * Class HttpException.
@@ -69,7 +70,39 @@ class HttpException extends RuntimeException
         $this->headers    = $headers;
         $this->response   = $response;
 
+        $this->setDefaultResponse();
+
         parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * Set the default response.
+     */
+    protected function setDefaultResponse(): void
+    {
+        $view     = view();
+        $template = 'errors/' . $this->statusCode;
+
+        // If no response has been set and there is a template with the error code
+        if (null === $this->response && file_exists($view->getTemplateDir($template . $view->getFileExtension()))) {
+            try {
+                // Set the response as the error template
+                $this->response = response($this->getDefaultView($template));
+            } catch (\Exception $exception) {
+            }
+        }
+    }
+
+    /**
+     * Get the default view from a given template.
+     *
+     * @param string $template The template to use
+     *
+     * @return View
+     */
+    protected function getDefaultView(string $template): View
+    {
+        return view($template);
     }
 
     /**
@@ -97,7 +130,7 @@ class HttpException extends RuntimeException
      *
      * @return null|Response
      */
-    public function getResponse(): ? Response
+    public function getResponse(): ?Response
     {
         return $this->response;
     }

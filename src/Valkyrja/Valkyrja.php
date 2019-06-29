@@ -534,7 +534,7 @@ class Valkyrja implements Application
         int $code = 0,
         Response $response = null
     ): void {
-        throw new HttpException($statusCode, $message, null, $headers, $code, $response);
+        throw new self::$config['app']['httpExceptionClass']($statusCode, $message, null, $headers, $code, $response);
     }
 
     /**

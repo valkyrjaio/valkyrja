@@ -360,8 +360,7 @@ class NativeRouter implements Router
     {
         // Check the returned route
         if (null === $route = $this->requestRoute($request)) {
-            // If it was null throw a not found exception
-            throw new NotFoundHttpException();
+            $this->app->abort();
         }
 
         // If the route is a redirect and a redirect route is set
