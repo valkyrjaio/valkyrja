@@ -12,7 +12,6 @@
 namespace Valkyrja\Routing;
 
 use Valkyrja\Application;
-use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\RequestMethod;
 use Valkyrja\Http\Response;
