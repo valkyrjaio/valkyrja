@@ -23,6 +23,16 @@ use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
+use function count;
+use function get_class;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_object;
+use function is_string;
+use function json_encode;
+use function serialize;
+use function strlen;
 
 /**
  * Class PDORepository.
@@ -39,7 +49,7 @@ class PDORepository implements Repository
     /**
      * The entity to use.
      *
-     * @var string|\Valkyrja\ORM\Entity
+     * @var string|Entity
      */
     protected $entity;
 
@@ -89,13 +99,13 @@ class PDORepository implements Repository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException If id is not a string or int
+     * @return Entity|null
+     *@throws InvalidArgumentException If id is not a string or int
      *
-     * @return \Valkyrja\ORM\Entity|null
      */
     public function find($id, bool $getRelations = null): ? Entity
     {
-        if (! \is_string($id) && ! \is_int($id)) {
+        if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
         }
 
@@ -137,9 +147,9 @@ class PDORepository implements Repository
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException
+     * @return Entity[]
+     *@throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Entity[]
      */
     public function findBy(
         array $criteria,
@@ -170,9 +180,9 @@ class PDORepository implements Repository
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException
+     * @return Entity[]
+     *@throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Entity[]
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
@@ -210,13 +220,13 @@ class PDORepository implements Repository
      *      $this->create(Entity::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $entity
-     *
-     * @throws ExecuteException
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
+     * @param Entity $entity
      *
      * @return bool
+     *@throws InvalidArgumentException
+     * @throws InvalidEntityException
+     *
+     * @throws ExecuteException
      */
     public function create(Entity $entity): bool
     {
@@ -232,13 +242,13 @@ class PDORepository implements Repository
      *      $this->save(Entity::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $entity
-     *
-     * @throws ExecuteException
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
+     * @param Entity $entity
      *
      * @return bool
+     *@throws InvalidArgumentException
+     * @throws InvalidEntityException
+     *
+     * @throws ExecuteException
      */
     public function save(Entity $entity): bool
     {
@@ -254,13 +264,13 @@ class PDORepository implements Repository
      *      $this->delete(Entity::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $entity
-     *
-     * @throws ExecuteException
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
+     * @param Entity $entity
      *
      * @return bool
+     *@throws InvalidArgumentException
+     * @throws InvalidEntityException
+     *
+     * @throws ExecuteException
      */
     public function delete(Entity $entity): bool
     {
@@ -295,7 +305,7 @@ class PDORepository implements Repository
                 'This repository expects entities to be instances of '
                 . $this->entity
                 . '. Entity instanced from '
-                . \get_class($entity)
+                . get_class($entity)
                 . ' provided instead.'
             );
         }
@@ -355,9 +365,9 @@ class PDORepository implements Repository
      * @param int|null   $offset
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException
+     * @return Entity[]|int
+     *@throws InvalidArgumentException
      *
-     * @return \Valkyrja\ORM\Entity[]|int
      */
     protected function select(
         array $columns = null,
@@ -373,6 +383,33 @@ class PDORepository implements Repository
         // Create a new PDO statement from the query builder
         $stmt = $this->store->prepare($query->getQuery());
 
+        // Bind criteria
+        $this->bindValuesForSelect($stmt, $criteria);
+
+        // Execute the PDO statement
+        $stmt->execute();
+
+        // Get all the results from the PDO statement
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // If the result of the query was a count
+        if (isset($rows[0]['COUNT(*)'])) {
+            return (int) $rows[0]['COUNT(*)'];
+        }
+
+        return $this->getSelectResultsAsEntities($rows, $columns, $getRelations);
+    }
+
+    /**
+     * Bind criteria for a select statement.
+     *
+     * @param PDOStatement $statement
+     * @param array|null   $criteria
+     *
+     * @return void
+     */
+    protected function bindValuesForSelect(PDOStatement $statement, array $criteria = null): void
+    {
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
             // If the criterion is null
@@ -382,35 +419,77 @@ class PDORepository implements Repository
             }
 
             // If the criterion is an array
-            if (\is_array($criterion)) {
+            if (is_array($criterion)) {
                 // Iterate through the criterion and bind each value individually
                 foreach ($criterion as $index => $criterionItem) {
-                    $stmt->bindValue($this->columnParam($column . $index), $criterionItem);
+                    $this->bindValue($statement, $column . $index, $criterionItem);
                 }
 
                 continue;
             }
 
             // And bind each value to the column
-            $stmt->bindValue($this->columnParam($column), $criterion);
+            $this->bindValue($statement, $column, $criterion);
+        }
+    }
+
+    /**
+     * Bind a value to a statement.
+     *
+     * @param PDOStatement $statement
+     * @param string       $column
+     * @param mixed        $property
+     *
+     * @return void
+     */
+    protected function bindValue(PDOStatement $statement, string $column, $property): void
+    {
+        // And bind each value to the column
+        $statement->bindValue(
+            $this->columnParam($column),
+            $property,
+            $this->getBindValueType($property)
+        );
+    }
+
+    /**
+     * Get value type to bind with.
+     *
+     * @param mixed $property
+     *
+     * @return int
+     */
+    protected function getBindValueType($property): int
+    {
+        $type = PDO::PARAM_STR;
+
+        if (is_int($property)) {
+            $type = PDO::PARAM_INT;
+        }
+        else if (is_bool($property)) {
+            $type = PDO::PARAM_BOOL;
         }
 
-        // Execute the PDO statement
-        $stmt->execute();
+        return $type;
+    }
 
-        // Get all the results from the PDO statement
-        $rows    = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    /**
+     * Get select results as an array of Entities.
+     *
+     * @param array|null $rows
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return Entity[]
+     */
+    protected function getSelectResultsAsEntities(array $rows = null, array $columns = null, bool $getRelations = null): array
+    {
         $results = [];
-
-        // If the result of the query was a count
-        if (isset($rows[0]['COUNT(*)'])) {
-            return (int) $rows[0]['COUNT(*)'];
-        }
 
         // Iterate through the rows found
         foreach ($rows as $row) {
             // Create a new model
-            /** @var \Valkyrja\ORM\Entity $entity */
+            /** @var Entity $entity */
             $entity = new $this->entity();
             // Apply the model's contents given the row
             $entity->fromArray($row);
@@ -516,14 +595,14 @@ class PDORepository implements Repository
             }
 
             // If the criterion is an array
-            if (\is_array($criterion)) {
+            if (is_array($criterion)) {
                 $this->setArrayCriterionInQuery($query, $column, $criterion);
 
                 continue;
             }
 
             // If the criterion has a percent at the start or the end
-            if ($criterion[0] === '%' || $criterion[\strlen($criterion) - 1] === '%') {
+            if ($criterion[0] === '%' || $criterion[strlen($criterion) - 1] === '%') {
                 $this->setLikeCriterionInQuery($query, $column);
 
                 continue;
@@ -558,7 +637,7 @@ class PDORepository implements Repository
     protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $criterion): void
     {
         $criterionConcat = '';
-        $lastIndex       = \count($criterion) - 1;
+        $lastIndex       = count($criterion) - 1;
 
         // Iterate through the criterion and set each item individually to be bound later
         foreach ($criterion as $index => $criterionItem) {
@@ -773,22 +852,15 @@ class PDORepository implements Repository
             }
 
             // If the property is an object, then serialize it
-            if (\is_object($property)) {
-                $property = \serialize($property);
+            if (is_object($property)) {
+                $property = serialize($property);
             } // Otherwise json encode if its an array
-            elseif (\is_array($property)) {
-                $property = \json_encode($property);
+            elseif (is_array($property)) {
+                $property = json_encode($property);
             }
 
-            $type = PDO::PARAM_STR;
-
-            if (\is_int($property) || \is_bool($property)) {
-                $type     = PDO::PARAM_INT;
-                $property = (int) $property;
-            }
-
-            // Bind each column's value to the statement
-            $statement->bindValue($this->columnParam($column), $property, $type);
+            // Bind property
+            $this->bindValue($statement, $column, $property);
         }
     }
 
@@ -806,10 +878,10 @@ class PDORepository implements Repository
 
         // Iterate through the property types
         foreach ($propertyTypes as $property => $type) {
-            $entityName  = \is_array($type) ? $type[0] : $type;
+            $entityName  = is_array($type) ? $type[0] : $type;
             $propertyMap = $propertyMapper[$property] ?? null;
 
-            if (null !== $propertyMap && (\is_array($type) || ! PropertyType::isValid($type))) {
+            if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
                 $repository   = $this->entityManager->getRepository($entityName);
                 $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
                 $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
@@ -827,7 +899,7 @@ class PDORepository implements Repository
 
                 $entities = $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
 
-                if (\is_array($type)) {
+                if (is_array($type)) {
                     $entity->{$property} = $entities;
 
                     continue;
