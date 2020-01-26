@@ -38,10 +38,11 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param string ...$classes The classes
      *
-     * @return RouterRoute[]
      * @throws ReflectionException
      * @throws InvalidRoutePath
      * @throws InvalidArgumentException
+     *
+     * @return RouterRoute[]
      */
     public function getRoutes(string ...$classes): array
     {
@@ -81,9 +82,10 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param Route $route
      *
-     * @return void
      * @throws InvalidRoutePath
      * @throws ReflectionException
+     *
+     * @return void
      */
     protected function setRouteProperties(Route $route): void
     {
@@ -114,8 +116,9 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param array $classes The classes
      *
-     * @return RouterRoute[]
      * @throws ReflectionException
+     *
+     * @return RouterRoute[]
      */
     protected function getClassRoutes(array $classes): array
     {
@@ -221,8 +224,9 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param Route $route The route annotation
      *
-     * @return RouterRoute
      * @throws InvalidArgumentException
+     *
+     * @return RouterRoute
      */
     protected function getRouteFromAnnotation(Route $route): RouterRoute
     {

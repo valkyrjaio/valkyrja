@@ -71,8 +71,9 @@ trait MessageTrait
      *
      * @param string $version HTTP protocol version
      *
-     * @return static
      * @throws InvalidProtocolVersion
+     *
+     * @return static
      */
     public function withProtocolVersion(string $version)
     {
@@ -188,8 +189,9 @@ trait MessageTrait
      * @param string $name      Case-insensitive header field name.
      * @param string ...$values Header values.
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withHeader(string $name, string ...$values)
     {
@@ -224,8 +226,9 @@ trait MessageTrait
      * @param string $name      Case-insensitive header field name to add.
      * @param string ...$values Header values.
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withAddedHeader(string $name, string ...$values)
     {
@@ -291,8 +294,9 @@ trait MessageTrait
      *
      * @param Stream $body Body.
      *
-     * @return static
      * @throws InvalidArgumentException When the body is not valid.
+     *
+     * @return static
      */
     public function withBody(Stream $body)
     {
@@ -308,8 +312,9 @@ trait MessageTrait
      *
      * @param string $version
      *
-     * @return void
      * @throws InvalidProtocolVersion
+     *
+     * @return void
      */
     protected function validateProtocolVersion(string $version): void
     {
@@ -330,8 +335,9 @@ trait MessageTrait
      *
      * @param array $originalHeaders
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function setHeaders(array $originalHeaders): void
     {
@@ -355,8 +361,9 @@ trait MessageTrait
      *
      * @param string[] ...$values Header values
      *
-     * @return string[]
      * @throws InvalidArgumentException
+     *
+     * @return string[]
      */
     protected function assertHeaderValues(string ...$values): array
     {

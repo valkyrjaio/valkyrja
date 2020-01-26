@@ -30,8 +30,9 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
      *
      * @param string ...$classes The classes
      *
-     * @return ConsoleCommand[]
      * @throws ReflectionException
+     *
+     * @return ConsoleCommand[]
      */
     public function getCommands(string ...$classes): array
     {
@@ -64,8 +65,9 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
      *
      * @param Annotation $annotation
      *
-     * @return void
      * @throws ReflectionException
+     *
+     * @return void
      */
     protected function setCommandProperties(Annotation $annotation): void
     {

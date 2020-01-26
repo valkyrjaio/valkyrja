@@ -33,6 +33,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
  * server parameters.
  *
  * @link   http://tools.ietf.org/html/rfc3986 (the URI specification)
+ *
  * @author Melech Mizrachi
  */
 class NativeUri implements Uri
@@ -143,6 +144,7 @@ class NativeUri implements Uri
      * added.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
+     *
      * @return string The URI scheme.
      */
     public function getScheme(): string
@@ -177,6 +179,7 @@ class NativeUri implements Uri
      * scheme, it SHOULD NOT be included.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
+     *
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
     public function getAuthority(): string
@@ -222,6 +225,7 @@ class NativeUri implements Uri
      * Section 3.2.2.
      *
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
+     *
      * @return string The URI host.
      */
     public function getHost(): string
@@ -328,6 +332,7 @@ class NativeUri implements Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
+     *
      * @return string The URI path.
      */
     public function getPath(): string
@@ -349,6 +354,7 @@ class NativeUri implements Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
+     *
      * @return string The URI query string.
      */
     public function getQuery(): string
@@ -367,6 +373,7 @@ class NativeUri implements Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
+     *
      * @return string The URI fragment.
      */
     public function getFragment(): string
@@ -384,9 +391,10 @@ class NativeUri implements Uri
      *
      * @param string $scheme The scheme to use with the new instance.
      *
-     * @return static A new instance with the specified scheme.
      * @throws InvalidScheme for invalid or
      *          unsupported schemes.
+     *
+     * @return static A new instance with the specified scheme.
      */
     public function withScheme(string $scheme): Uri
     {
@@ -443,8 +451,9 @@ class NativeUri implements Uri
      *
      * @param string $host The hostname to use with the new instance.
      *
-     * @return static A new instance with the specified host.
      * @throws InvalidArgumentException for invalid hostnames.
+     *
+     * @return static A new instance with the specified host.
      */
     public function withHost(string $host): Uri
     {
@@ -471,8 +480,9 @@ class NativeUri implements Uri
      * @param null|int $port The port to use with the new instance; a null value
      *                       removes the port information.
      *
-     * @return static A new instance with the specified port.
      * @throws InvalidPort for invalid ports.
+     *
+     * @return static A new instance with the specified port.
      */
     public function withPort(int $port = null): Uri
     {
@@ -505,8 +515,9 @@ class NativeUri implements Uri
      *
      * @param string $path The path to use with the new instance.
      *
-     * @return static A new instance with the specified path.
      * @throws InvalidPath for invalid paths.
+     *
+     * @return static A new instance with the specified path.
      */
     public function withPath(string $path): Uri
     {
@@ -533,9 +544,10 @@ class NativeUri implements Uri
      *
      * @param string $query The query string to use with the new instance.
      *
-     * @return static A new instance with the specified query string.
      * @throws InvalidQuery for invalid query
      *          strings.
+     *
+     * @return static A new instance with the specified query string.
      */
     public function withQuery(string $query): Uri
     {
@@ -598,6 +610,7 @@ class NativeUri implements Uri
      * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
+     *
      * @return string
      */
     public function __toString()
@@ -659,8 +672,9 @@ class NativeUri implements Uri
      *
      * @param string $scheme The scheme
      *
-     * @return string
      * @throws InvalidScheme
+     *
+     * @return string
      */
     protected function validateScheme(string $scheme): string
     {
@@ -685,8 +699,9 @@ class NativeUri implements Uri
      *
      * @param int $port The port
      *
-     * @return void
      * @throws InvalidPort
+     *
+     * @return void
      */
     protected function validatePort(int $port = null): void
     {
@@ -702,8 +717,9 @@ class NativeUri implements Uri
      *
      * @param string $path The path
      *
-     * @return string
      * @throws InvalidPath
+     *
+     * @return string
      */
     protected function validatePath(string $path): string
     {
@@ -725,8 +741,9 @@ class NativeUri implements Uri
      *
      * @param string $query The query
      *
-     * @return string
      * @throws InvalidQuery
+     *
+     * @return string
      */
     protected function validateQuery(string $query): string
     {

@@ -29,8 +29,9 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
      *
      * @param string ...$classes The classes
      *
-     * @return Listener[]
      * @throws ReflectionException
+     *
+     * @return Listener[]
      */
     public function getListeners(string ...$classes): array
     {
@@ -55,8 +56,9 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
      *
      * @param Listener $listener
      *
-     * @return void
      * @throws ReflectionException
+     *
+     * @return void
      */
     protected function setListenerProperties(Listener $listener): void
     {

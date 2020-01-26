@@ -24,8 +24,9 @@ interface EntityManager
      *
      * @param string|null $name
      *
-     * @return PDO
      * @throws InvalidArgumentException If the name doesn't exist
+     *
+     * @return PDO
      */
     public function store(string $name = null): PDO;
 

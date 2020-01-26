@@ -101,7 +101,7 @@ class NativeQueryBuilder implements QueryBuilder
      *              ...
      *          ]
      *      );
-     * </code>
+     * </code>.
      *
      * @param array|null $columns
      *
@@ -124,7 +124,7 @@ class NativeQueryBuilder implements QueryBuilder
      * Create an INSERT query statement.
      * <code>
      *      $queryBuilder->insert();
-     * </code>
+     * </code>.
      *
      * @return static
      */
@@ -139,7 +139,7 @@ class NativeQueryBuilder implements QueryBuilder
      * Create an UPDATE query statement.
      * <code>
      *      $queryBuilder->update();
-     * </code>
+     * </code>.
      *
      * @return static
      */
@@ -154,7 +154,7 @@ class NativeQueryBuilder implements QueryBuilder
      * Create an DELETE query statement.
      * <code>
      *      $queryBuilder->delete();
-     * </code>
+     * </code>.
      *
      * @return static
      */
@@ -174,7 +174,7 @@ class NativeQueryBuilder implements QueryBuilder
      *      $queryBuilder
      *          ->select()
      *          ->table('table', 't');
-     * </code>
+     * </code>.
      *
      * @param string      $table
      * @param string|null $alias
@@ -199,7 +199,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->update()
      *          ->table('table')
      *          ->set('column', ':column');
-     * </code>
+     * </code>.
      *
      * @param string $column
      * @param string $value
@@ -226,7 +226,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->where('column2 = :column2');
-     * </code>
+     * </code>.
      *
      * @param string $where
      *
@@ -253,7 +253,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->andWhere('column2 = :column2');
-     * </code>
+     * </code>.
      *
      * @param string $where
      *
@@ -278,7 +278,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->andWhere('column2 = :column2');
-     * </code>
+     * </code>.
      *
      * @param string $where
      *
@@ -303,7 +303,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->orderBy('column');
-     * </code>
+     * </code>.
      *
      * @param string $column
      *
@@ -324,7 +324,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->orderByAsc('column');
-     * </code>
+     * </code>.
      *
      * @param string $column
      *
@@ -345,7 +345,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->orderByDesc('column');
-     * </code>
+     * </code>.
      *
      * @param string $column
      *
@@ -366,7 +366,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->limit(1);
-     * </code>
+     * </code>.
      *
      * @param int $limit
      *
@@ -387,7 +387,7 @@ class NativeQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column = :column')
      *          ->offset(1);
-     * </code>
+     * </code>.
      *
      * @param int $offset
      *

@@ -19,9 +19,9 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Events\RouteMatched;
@@ -74,13 +74,14 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function addRoute(Route $route): void
     {
@@ -107,8 +108,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function get(Route $route): void
     {
@@ -122,8 +124,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function post(Route $route): void
     {
@@ -137,8 +140,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function put(Route $route): void
     {
@@ -152,8 +156,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function patch(Route $route): void
     {
@@ -167,8 +172,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function delete(Route $route): void
     {
@@ -182,8 +188,9 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function head(Route $route): void
     {
@@ -207,8 +214,9 @@ class NativeRouter implements Router
      *
      * @param string $name The name of the route to get
      *
-     * @return Route
      * @throws InvalidRouteName
+     *
+     * @return Route
      */
     public function route(string $name): Route
     {
@@ -239,8 +247,9 @@ class NativeRouter implements Router
      * @param array  $data     [optional] The route data if dynamic
      * @param bool   $absolute [optional] Whether this url should be absolute
      *
-     * @return string
      * @throws InvalidRouteName
+     *
+     * @return string
      */
     public function routeUrl(string $name, array $data = null, bool $absolute = null): string
     {
@@ -271,10 +280,11 @@ class NativeRouter implements Router
      *
      * @param Request $request The request
      *
+     * @throws InvalidArgumentException
+     *
      * @return null|Route
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
-     * @throws InvalidArgumentException
      */
     public function requestRoute(Request $request): ?Route
     {
@@ -291,10 +301,11 @@ class NativeRouter implements Router
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
+     * @throws InvalidArgumentException
+     *
      * @return null|Route
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
-     * @throws InvalidArgumentException
      */
     public function matchRoute(string $path, string $method = null): ?Route
     {
@@ -314,8 +325,9 @@ class NativeRouter implements Router
      *
      * @param string $uri The uri to check
      *
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function isInternalUri(string $uri): bool
     {
@@ -346,9 +358,10 @@ class NativeRouter implements Router
      *
      * @param Request $request The request
      *
-     * @return Response
      * @throws NotFoundHttpException
      * @throws InvalidArgumentException
+     *
+     * @return Response
      */
     public function dispatch(Request $request): Response
     {
@@ -405,13 +418,14 @@ class NativeRouter implements Router
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -457,13 +471,14 @@ class NativeRouter implements Router
     /**
      * Get a cacheable representation of the data.
      *
-     * @return array
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidArgumentException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {
@@ -787,13 +802,14 @@ class NativeRouter implements Router
     /**
      * Setup annotated routes.
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function setupAnnotatedRoutes(): void
     {

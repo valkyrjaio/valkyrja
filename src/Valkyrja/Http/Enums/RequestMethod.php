@@ -22,6 +22,7 @@ use Valkyrja\Enum\Enum;
  * HTTP/1.1 requests.
  *
  * @author Melech Mizrachi
+ *
  * @link   https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
  */
 final class RequestMethod extends Enum

@@ -15,7 +15,9 @@ namespace Valkyrja\Http;
  * Class Cookies.
  *
  * @author Melech Mizrachi
+ *
  * @property Cookie[] $collection
+ *
  * @method get(string $key, $default = false): Cookie
  */
 class Cookies

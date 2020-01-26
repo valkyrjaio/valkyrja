@@ -89,8 +89,9 @@ class PDORepository implements Repository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
      * @throws InvalidArgumentException If id is not a string or int
+     *
+     * @return Entity|null
      */
     public function find($id, bool $getRelations = null): ?Entity
     {
@@ -126,7 +127,7 @@ class PDORepository implements Repository
      *              1,
      *              1
      *          )
-     * </code>
+     * </code>.
      *
      * @param array      $criteria
      * @param array|null $orderBy
@@ -135,8 +136,9 @@ class PDORepository implements Repository
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return Entity[]
      * @throws InvalidArgumentException
+     *
+     * @return Entity[]
      */
     public function findBy(
         array $criteria,
@@ -160,14 +162,15 @@ class PDORepository implements Repository
      *                  'column3' => OrderBy::DESC,
      *              ]
      *          )
-     * </code>
+     * </code>.
      *
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return Entity[]
      * @throws InvalidArgumentException
+     *
+     * @return Entity[]
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
@@ -184,12 +187,13 @@ class PDORepository implements Repository
      *                  'column2' => 'value2',
      *              ]
      *          )
-     * </code>
+     * </code>.
      *
      * @param array $criteria
      *
-     * @return int
      * @throws InvalidArgumentException
+     *
+     * @return int
      */
     public function count(array $criteria): int
     {
@@ -200,14 +204,15 @@ class PDORepository implements Repository
      * Create a new model.
      * <code>
      *      $this->create(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidArgumentException
      * @throws InvalidEntityException
      * @throws ExecuteException
+     *
+     * @return bool
      */
     public function create(Entity $entity): bool
     {
@@ -220,14 +225,15 @@ class PDORepository implements Repository
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      * <code>
      *      $this->save(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidArgumentException
      * @throws InvalidEntityException
      * @throws ExecuteException
+     *
+     * @return bool
      */
     public function save(Entity $entity): bool
     {
@@ -240,14 +246,15 @@ class PDORepository implements Repository
      * Delete an existing model.
      * <code>
      *      $this->delete(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidArgumentException
      * @throws InvalidEntityException
      * @throws ExecuteException
+     *
+     * @return bool
      */
     public function delete(Entity $entity): bool
     {
@@ -271,8 +278,9 @@ class PDORepository implements Repository
      *
      * @param Entity $entity
      *
-     * @return void
      * @throws InvalidEntityException
+     *
+     * @return void
      */
     protected function validateEntity(Entity $entity): void
     {
@@ -331,7 +339,7 @@ class PDORepository implements Repository
      *              1,
      *              1
      *          )
-     * </code>
+     * </code>.
      *
      * @param array|null $columns
      * @param array|null $criteria
@@ -340,8 +348,9 @@ class PDORepository implements Repository
      * @param int|null   $offset
      * @param bool|null  $getRelations
      *
-     * @return Entity[]|int
      * @throws InvalidArgumentException
+     *
+     * @return Entity[]|int
      */
     protected function select(
         array $columns = null,
@@ -503,7 +512,7 @@ class PDORepository implements Repository
      *              1,
      *              1
      *          )
-     * </code>
+     * </code>.
      *
      * @param array|null $columns
      * @param array|null $criteria
@@ -725,14 +734,15 @@ class PDORepository implements Repository
      *             'update' | 'insert' | 'delete',
      *              Entity::class
      *          )
-     * </code>
+     * </code>.
      *
      * @param string $type
      * @param Entity $entity
      *
-     * @return int
      * @throws InvalidArgumentException
      * @throws ExecuteException
+     *
+     * @return int
      */
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
@@ -898,8 +908,9 @@ class PDORepository implements Repository
      * @param Entity $entity
      * @param array  $properties
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function ensureRequiredProperties(Entity $entity, array $properties): void
     {

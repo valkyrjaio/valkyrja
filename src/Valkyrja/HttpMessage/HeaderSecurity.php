@@ -124,8 +124,9 @@ final class HeaderSecurity
      *
      * @param string $value
      *
-     * @return void
      * @throws InvalidArgumentException for invalid values
+     *
+     * @return void
      */
     public static function assertValid(string $value): void
     {
@@ -142,6 +143,7 @@ final class HeaderSecurity
      * @param mixed $name
      *
      * @throws InvalidArgumentException
+     *
      * @return void
      */
     public static function assertValidName(string $name): void

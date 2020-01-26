@@ -57,8 +57,9 @@ if (! function_exists('abort')) {
      * @param int                    $code       [optional] The Exception code
      * @param Valkyrja\Http\Response $response   [optional] The Response to send
      *
-     * @return void
      * @throws Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     function abort(
         int $statusCode = StatusCode::NOT_FOUND,
@@ -84,8 +85,9 @@ if (! function_exists('abortResponse')) {
      *
      * @param Valkyrja\Http\Response $response The Response to send
      *
-     * @return void
      * @throws \Valkyrja\Http\Exceptions\HttpException
+     *
+     * @return void
      */
     function abortResponse(Valkyrja\Http\Response $response): void
     {
@@ -444,8 +446,9 @@ if (! function_exists('redirectTo')) {
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return void
      * @throws Valkyrja\Http\Exceptions\HttpRedirectException
+     *
+     * @return void
      */
     function redirectTo(
         string $uri = null,

@@ -71,8 +71,9 @@ class NativeOutput implements Output
      * @param bool        $newLine     [optional] Whether to use new lines between each message
      * @param OutputStyle $outputStyle [optional] The output style to use
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
@@ -88,8 +89,9 @@ class NativeOutput implements Output
      * @param bool        $newLine     [optional] Whether to use new lines between each message
      * @param OutputStyle $outputStyle [optional] The output style to use
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {

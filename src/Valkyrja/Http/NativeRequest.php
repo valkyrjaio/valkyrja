@@ -317,7 +317,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   .= ':' . $components['port'];
+            $server['HTTP_HOST'] .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -969,6 +969,7 @@ class NativeRequest implements Request
      * Gets the request "intended" method.
      *
      * @return string The request method
+     *
      * @see getRealMethod()
      */
     public function getMethod(): string
@@ -1002,6 +1003,7 @@ class NativeRequest implements Request
      * Gets the "real" request method.
      *
      * @return string The request method
+     *
      * @see getMethod()
      */
     public function getRealMethod(): string

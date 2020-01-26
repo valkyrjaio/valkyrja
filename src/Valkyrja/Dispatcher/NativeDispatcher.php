@@ -58,8 +58,9 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return void
      * @throws InvalidMethodException
+     *
+     * @return void
      */
     public function verifyClassMethod(Dispatch $dispatch): void
     {
@@ -85,8 +86,9 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return void
      * @throws InvalidPropertyException
+     *
+     * @return void
      */
     public function verifyClassProperty(Dispatch $dispatch): void
     {
@@ -115,8 +117,9 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return void
      * @throws InvalidFunctionException
+     *
+     * @return void
      */
     public function verifyFunction(Dispatch $dispatch): void
     {
@@ -139,8 +142,9 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return void
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function verifyClosure(Dispatch $dispatch): void
     {
@@ -165,12 +169,13 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function verifyDispatch(Dispatch $dispatch): void
     {

@@ -70,8 +70,9 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

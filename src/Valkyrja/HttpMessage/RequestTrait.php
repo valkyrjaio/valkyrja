@@ -82,7 +82,6 @@ trait RequestTrait
      * @param Stream $body    [optional] The body stream
      * @param array  $headers [optional] The headers
      *
-     * @return void
      * @throws InvalidArgumentException
      * @throws InvalidMethod
      * @throws InvalidPath
@@ -91,6 +90,8 @@ trait RequestTrait
      * @throws InvalidQuery
      * @throws InvalidScheme
      * @throws InvalidStream
+     *
+     * @return void
      */
     protected function initialize(
         Uri $uri = null,
@@ -163,6 +164,7 @@ trait RequestTrait
      * @param string $requestTarget The request target
      *
      * @throws InvalidRequestTarget
+     *
      * @return static
      */
     public function withRequestTarget(string $requestTarget)
@@ -197,8 +199,9 @@ trait RequestTrait
      *
      * @param string $method Case-sensitive method.
      *
-     * @return static
      * @throws InvalidMethod for invalid HTTP methods.
+     *
+     * @return static
      */
     public function withMethod(string $method)
     {
@@ -216,6 +219,7 @@ trait RequestTrait
      * This method MUST return a Uri instance.
      *
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     *
      * @return Uri Returns a Uri instance representing the URI of the request.
      */
     public function getUri(): Uri
@@ -281,8 +285,9 @@ trait RequestTrait
      *
      * @param string $requestTarget The request target
      *
-     * @return void
      * @throws InvalidRequestTarget
+     *
+     * @return void
      */
     protected function validateRequestTarget(string $requestTarget): void
     {
@@ -296,8 +301,9 @@ trait RequestTrait
      *
      * @param string $method The method
      *
-     * @return void
      * @throws InvalidMethod
+     *
+     * @return void
      */
     protected function validateMethod(string $method): void
     {

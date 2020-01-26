@@ -52,8 +52,9 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param string ...$classes The classes
      *
-     * @return Service[]
      * @throws ReflectionException
+     *
+     * @return Service[]
      */
     public function getServices(string ...$classes): array
     {
@@ -65,8 +66,9 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param string ...$classes The classes
      *
-     * @return ServiceContext[]
      * @throws ReflectionException
+     *
+     * @return ServiceContext[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -78,8 +80,9 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param string ...$classes The classes
      *
-     * @return ContainerContextService[]
      * @throws ReflectionException
+     *
+     * @return ContainerContextService[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -92,8 +95,9 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      * @param string $type       The type
      * @param string ...$classes The classes
      *
-     * @return array
      * @throws ReflectionException
+     *
+     * @return array
      */
     protected function getAllClassesAnnotationsByType(string $type, string ...$classes): array
     {
@@ -135,8 +139,9 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param Annotation $annotation
      *
-     * @return void
      * @throws ReflectionException
+     *
+     * @return void
      */
     protected function setServiceProperties(Annotation $annotation): void
     {

@@ -29,8 +29,9 @@ class ErrorHandler
      * @param string $file    [optional] The file within which the error occurred
      * @param int    $line    [optional] The line which threw the error
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public function handleError(int $level, string $message, string $file = '', int $line = 0): void
     {

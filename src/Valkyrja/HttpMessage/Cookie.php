@@ -405,8 +405,9 @@ class Cookie
      *
      * @param string $sameSite
      *
-     * @return Cookie
      * @throws InvalidSameSiteTypeException
+     *
+     * @return Cookie
      */
     public function setSameSite(string $sameSite = null): self
     {

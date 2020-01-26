@@ -82,8 +82,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

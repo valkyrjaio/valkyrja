@@ -93,12 +93,13 @@ class NativeConsole implements Console
      *
      * @param Command $command The command
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function addCommand(Command $command): void
     {
@@ -184,8 +185,9 @@ class NativeConsole implements Console
      *
      * @param Input $input The input
      *
-     * @return Command
      * @throws CommandNotFound
+     *
+     * @return Command
      */
     public function inputCommand(Input $input): Command
     {
@@ -197,8 +199,9 @@ class NativeConsole implements Console
      *
      * @param string $path The path
      *
-     * @return Command
      * @throws CommandNotFound
+     *
+     * @return Command
      */
     public function matchCommand(string $path): Command
     {
@@ -245,8 +248,9 @@ class NativeConsole implements Console
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @return mixed
      * @throws CommandNotFound
+     *
+     * @return mixed
      */
     public function dispatch(Input $input, Output $output)
     {
@@ -331,13 +335,14 @@ class NativeConsole implements Console
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws ReflectionException
+     *
+     * @return void
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -465,13 +470,14 @@ class NativeConsole implements Console
     /**
      * Setup annotations.
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws ReflectionException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -491,13 +497,14 @@ class NativeConsole implements Console
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return array
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws ReflectionException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {

@@ -30,6 +30,7 @@ interface Stream
      * string casting operations.
      *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
+     *
      * @return string
      */
     public function __toString();
@@ -69,8 +70,9 @@ interface Stream
     /**
      * Returns the current position of the file read/write pointer.
      *
-     * @return int Position of the file pointer
      * @throws RuntimeException on error.
+     *
+     * @return int Position of the file pointer
      */
     public function tell(): int;
 
@@ -103,6 +105,7 @@ interface Stream
      *                    offset.
      *
      * @throws RuntimeException on failure.
+     *
      * @return void
      */
     public function seek(int $offset, int $whence = SEEK_SET): void;
@@ -113,8 +116,11 @@ interface Stream
      * otherwise, it will perform a seek(0).
      *
      * @link http://www.php.net/manual/en/function.fseek.php
-     * @return void
+     *
      * @throws RuntimeException on failure.
+     *
+     * @return void
+     *
      * @see  seek()
      */
     public function rewind(): void;
@@ -131,8 +137,9 @@ interface Stream
      *
      * @param string $string The string that is to be written.
      *
-     * @return int Returns the number of bytes written to the stream.
      * @throws RuntimeException on failure.
+     *
+     * @return int Returns the number of bytes written to the stream.
      */
     public function write(string $string): int;
 
@@ -150,18 +157,20 @@ interface Stream
      *                    them. Fewer than $length bytes may be returned if
      *                    underlying stream call returns fewer bytes.
      *
+     * @throws RuntimeException if an error occurs.
+     *
      * @return string Returns the data read from the stream, or an empty string
      *          if no bytes are available.
-     * @throws RuntimeException if an error occurs.
      */
     public function read(int $length): string;
 
     /**
      * Returns the remaining contents in a string.
      *
-     * @return string
      * @throws RuntimeException if unable to read or an error occurs while
      *                           reading.
+     *
+     * @return string
      */
     public function getContents(): string;
 

@@ -62,7 +62,7 @@ abstract class Entity extends Model
      *          // An array of related entities
      *          'property_name' => [Entity::class],
      *      ]
-     * </code>
+     * </code>.
      *
      * @var array
      */
@@ -148,7 +148,7 @@ abstract class Entity extends Model
      *              'relationField' => 'fieldNameOfTheRelationEntityToMapTo',
      *          ]
      *      ]
-     * </code>
+     * </code>.
      *
      * @return array
      */

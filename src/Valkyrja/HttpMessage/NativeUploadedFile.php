@@ -135,9 +135,10 @@ class NativeUploadedFile implements UploadedFile
      * If the moveTo() method has been called previously, this method MUST
      * raise an exception.
      *
-     * @return Stream Stream representation of the uploaded file.
      * @throws InvalidStream
      * @throws RuntimeException in cases when no stream is available or can be created.
+     *
+     * @return Stream Stream representation of the uploaded file.
      */
     public function getStream(): Stream
     {
@@ -196,6 +197,7 @@ class NativeUploadedFile implements UploadedFile
      * @throws RuntimeException on any error during the move operation, or
      *          on the second or subsequent call to the method.
      * @throws InvalidStream
+     *
      * @return void
      */
     public function moveTo(string $targetPath): void
@@ -265,6 +267,7 @@ class NativeUploadedFile implements UploadedFile
      * the file in the $_FILES array.
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
+     *
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
     public function getError(): int
@@ -309,9 +312,10 @@ class NativeUploadedFile implements UploadedFile
      *
      * @param string $path The path to write the stream to
      *
-     * @return void
      * @throws InvalidStream
      * @throws RuntimeException
+     *
+     * @return void
      */
     protected function writeStream(string $path): void
     {

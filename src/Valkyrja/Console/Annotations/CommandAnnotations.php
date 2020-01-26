@@ -26,8 +26,9 @@ interface CommandAnnotations extends Annotations
      *
      * @param string ...$classes The classes
      *
-     * @return \Valkyrja\Console\Command[]
      * @throws ReflectionException
+     *
+     * @return \Valkyrja\Console\Command[]
      */
     public function getCommands(string ...$classes): array;
 }

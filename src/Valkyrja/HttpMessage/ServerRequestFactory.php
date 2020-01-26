@@ -51,7 +51,6 @@ abstract class ServerRequestFactory
      * @param array $cookies $_COOKIE superglobal
      * @param array $files   $_FILES superglobal
      *
-     * @return ServerRequest
      * @throws InvalidArgumentException
      * @throws UnexpectedValueException
      * @throws InvalidUploadedFile
@@ -62,6 +61,9 @@ abstract class ServerRequestFactory
      * @throws InvalidPort
      * @throws InvalidPath
      * @throws InvalidMethod
+     *
+     * @return ServerRequest
+     *
      * @see fromServer()
      */
     public static function fromGlobals(
@@ -177,8 +179,9 @@ abstract class ServerRequestFactory
      *
      * @param array $files
      *
-     * @return array
      * @throws InvalidArgumentException for unrecognized values
+     *
+     * @return array
      */
     public static function normalizeFiles(array $files): array
     {
@@ -252,11 +255,12 @@ abstract class ServerRequestFactory
      * @param array $server
      * @param array $headers
      *
-     * @return Uri
      * @throws InvalidQuery
      * @throws InvalidPort
      * @throws InvalidPath
      * @throws InvalidScheme
+     *
+     * @return Uri
      */
     public static function marshalUriFromServer(array $server, array $headers): Uri
     {
@@ -353,7 +357,7 @@ abstract class ServerRequestFactory
      * Detect the base URI for the request.
      * Looks at a variety of criteria in order to attempt to autodetect a base
      * URI, including rewrite URIs, proxy URIs, etc.
-     * From ZF2's Zend\Http\PhpEnvironment\Request class
+     * From ZF2's Zend\Http\PhpEnvironment\Request class.
      *
      * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
      * @license   http://framework.zend.com/license/new-bsd New BSD License
@@ -469,8 +473,9 @@ abstract class ServerRequestFactory
      *
      * @param array $value $_FILES struct
      *
-     * @return array|UploadedFile
      * @throws InvalidArgumentException
+     *
+     * @return array|UploadedFile
      */
     private static function createUploadedFileFromSpec(array $value)
     {
@@ -495,8 +500,9 @@ abstract class ServerRequestFactory
      *
      * @param array $files
      *
-     * @return UploadedFile[]
      * @throws InvalidArgumentException
+     *
+     * @return UploadedFile[]
      */
     private static function normalizeNestedFileSpec(array $files = []): array
     {
@@ -521,8 +527,9 @@ abstract class ServerRequestFactory
      *
      * @param array $server
      *
-     * @return string
      * @throws UnexpectedValueException
+     *
+     * @return string
      */
     protected static function marshalProtocolVersion(array $server): string
     {

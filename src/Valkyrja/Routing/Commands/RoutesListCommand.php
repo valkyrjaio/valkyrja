@@ -44,8 +44,9 @@ class RoutesListCommand extends CommandHandler
     /**
      * Run the command.
      *
-     * @return int
      * @throws InvalidArgumentException
+     *
+     * @return int
      */
     public function run(): int
     {
@@ -108,8 +109,9 @@ class RoutesListCommand extends CommandHandler
      * @param array $routes  The flat routes
      * @param array $lengths The longest string lengths
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function setRoute(Route $route, array &$routes, array &$lengths): void
     {

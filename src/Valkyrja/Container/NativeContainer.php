@@ -99,13 +99,14 @@ class NativeContainer implements Container
      * @param Service $service The service model
      * @param bool    $verify  [optional] Whether to verify the service
      *
-     * @return void
      * @throws InvalidClosureException
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidServiceIdException
+     *
+     * @return void
      */
     public function bind(Service $service, bool $verify = true): void
     {
@@ -129,7 +130,6 @@ class NativeContainer implements Container
      *
      * @param ServiceContext $serviceContext The context service
      *
-     * @return void
      * @throws InvalidContextException
      * @throws EndlessContextLoopException
      * @throws InvalidServiceIdException
@@ -138,6 +138,8 @@ class NativeContainer implements Container
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
+     *
+     * @return void
      */
     public function context(ServiceContext $serviceContext): void
     {
@@ -435,7 +437,6 @@ class NativeContainer implements Container
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @return void
      * @throws InvalidContextException
      * @throws EndlessContextLoopException
      * @throws InvalidServiceIdException
@@ -444,6 +445,8 @@ class NativeContainer implements Container
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
+     *
+     * @return void
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -517,7 +520,6 @@ class NativeContainer implements Container
     /**
      * Setup annotations.
      *
-     * @return void
      * @throws EndlessContextLoopException
      * @throws InvalidServiceIdException
      * @throws InvalidClosureException
@@ -526,6 +528,8 @@ class NativeContainer implements Container
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidContextException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -600,7 +604,6 @@ class NativeContainer implements Container
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return array
      * @throws EndlessContextLoopException
      * @throws InvalidServiceIdException
      * @throws InvalidClosureException
@@ -609,6 +612,8 @@ class NativeContainer implements Container
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidContextException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {

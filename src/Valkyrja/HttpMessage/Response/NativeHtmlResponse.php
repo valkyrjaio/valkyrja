@@ -70,8 +70,9 @@ class NativeHtmlResponse extends NativeResponse implements HtmlResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

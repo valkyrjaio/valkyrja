@@ -68,8 +68,9 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @return Response
      * @throws HttpException
+     *
+     * @return Response
      */
     public function handle(Request $request): Response
     {
@@ -163,8 +164,9 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @return void
      * @throws HttpException
+     *
+     * @return void
      */
     public function run(Request $request = null): void
     {

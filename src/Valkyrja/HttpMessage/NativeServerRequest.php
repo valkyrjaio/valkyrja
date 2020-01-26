@@ -292,8 +292,9 @@ class NativeServerRequest implements ServerRequest
      * @param array $uploadedFiles An array tree of UploadedFileInterface
      *                             instances.
      *
-     * @return static
      * @throws InvalidArgumentException if an invalid structure is provided.
+     *
+     * @return static
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
@@ -344,9 +345,10 @@ class NativeServerRequest implements ServerRequest
      * @param array $data The deserialized body data. This will
      *                    typically be in an array or object.
      *
-     * @return static
      * @throws InvalidArgumentException
      *      if an unsupported argument type is provided.
+     *
+     * @return static
      */
     public function withParsedBody(array $data)
     {
@@ -385,6 +387,7 @@ class NativeServerRequest implements ServerRequest
      *                        exist.
      *
      * @return mixed
+     *
      * @see getAttributes()
      */
     public function getAttribute(string $name, $default = null)
@@ -404,6 +407,7 @@ class NativeServerRequest implements ServerRequest
      * @param mixed  $value The value of the attribute.
      *
      * @return static
+     *
      * @see getAttributes()
      */
     public function withAttribute(string $name, $value)
@@ -426,6 +430,7 @@ class NativeServerRequest implements ServerRequest
      * @param string $name The attribute name.
      *
      * @return static
+     *
      * @see getAttributes()
      */
     public function withoutAttribute(string $name)
@@ -452,8 +457,9 @@ class NativeServerRequest implements ServerRequest
      *
      * @param array $uploadedFiles The uploaded files
      *
-     * @return void
      * @throws InvalidUploadedFile
+     *
+     * @return void
      */
     protected function validateUploadedFiles(array $uploadedFiles): void
     {
