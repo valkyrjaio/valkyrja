@@ -66,7 +66,7 @@ abstract class CommandHandler
     /**
      * Get the valid arguments.
      *
-     * @return \Valkyrja\Console\Input\Argument[]
+     * @return Argument[]
      */
     protected function getArguments(): array
     {
@@ -76,7 +76,7 @@ abstract class CommandHandler
     /**
      * Get the valid options.
      *
-     * @return \Valkyrja\Console\Input\Option[]
+     * @return Option[]
      */
     protected function getOptions(): array
     {
@@ -167,7 +167,7 @@ abstract class CommandHandler
     /**
      * The arguments section.
      *
-     * @param Argument[] ...$arguments The argument
+     * @param Argument ...$arguments The argument
      *
      * @return void
      */
@@ -187,22 +187,18 @@ abstract class CommandHandler
         $this->sectionTitleMessage('Arguments');
 
         foreach ($arguments as $argument) {
-            $longestLength = max(\strlen($argument->getName()), $longestLength);
+            $longestLength = max(strlen($argument->getName()), $longestLength);
         }
 
         foreach ($arguments as $argument) {
-            $this->sectionMessage(
-                static::TAB . $argument->getName(),
-                $argument->getDescription(),
-                $longestLength
-            );
+            $this->sectionMessage(static::TAB . $argument->getName(), $argument->getDescription(), $longestLength);
         }
     }
 
     /**
      * The options section.
      *
-     * @param Option[] ...$options The options
+     * @param Option ...$options The options
      *
      * @return void
      */
@@ -222,16 +218,11 @@ abstract class CommandHandler
         $this->sectionTitleMessage('Options');
 
         foreach ($options as $option) {
-            $longestLength =
-                max(\strlen($this->getOptionName($option)), $longestLength);
+            $longestLength = max(strlen($this->getOptionName($option)), $longestLength);
         }
 
         foreach ($options as $option) {
-            $this->sectionMessage(
-                $this->getOptionName($option),
-                $option->getDescription(),
-                $longestLength
-            );
+            $this->sectionMessage($this->getOptionName($option), $option->getDescription(), $longestLength);
         }
     }
 
@@ -269,14 +260,14 @@ abstract class CommandHandler
     protected function sectionMessage(string $name, string $description, int $longestLength = null): void
     {
         $longestLength = $longestLength ?? 0;
-        $spacesToAdd   = $longestLength - \strlen($name);
+        $spacesToAdd   = $longestLength - strlen($name);
 
         output()->formatter()->green();
         output()->writeMessage(static::TAB . $name);
+
         output()->formatter()->resetColor();
-        output()->writeMessage(
-            $spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : ''
-        );
+
+        output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
         output()->writeMessage(str_repeat('.', 8));
         output()->writeMessage($description, true);
     }

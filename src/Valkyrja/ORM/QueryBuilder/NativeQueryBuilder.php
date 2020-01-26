@@ -92,7 +92,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Create a SELECT query statement.
-     *
      * <code>
      *      $queryBuilder->select();
      *      $queryBuilder->select(
@@ -123,7 +122,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Create an INSERT query statement.
-     *
      * <code>
      *      $queryBuilder->insert();
      * </code>
@@ -139,7 +137,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Create an UPDATE query statement.
-     *
      * <code>
      *      $queryBuilder->update();
      * </code>
@@ -155,7 +152,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Create an DELETE query statement.
-     *
      * <code>
      *      $queryBuilder->delete();
      * </code>
@@ -171,12 +167,10 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Set the table on which to perform the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table');
-     *
      *      $queryBuilder
      *          ->select()
      *          ->table('table', 't');
@@ -196,13 +190,11 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add a value for a column to set.
-     *
      * <code>
      *      $queryBuilder
      *          ->insert()
      *          ->table('table')
      *          ->set('column', ':column');
-     *
      *      $queryBuilder
      *          ->update()
      *          ->table('table')
@@ -224,13 +216,11 @@ class NativeQueryBuilder implements QueryBuilder
     /**
      * Add a where condition to the query statement.
      * - Each additional use will add an `AND` where condition.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
      *          ->where('column = :column');
-     *
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
@@ -257,7 +247,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add an additional `AND` where condition to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -283,7 +272,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add an additional `OR` where condition to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -309,7 +297,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by without specifying the order to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -331,7 +318,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by ascending to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -353,7 +339,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by descending to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -375,7 +360,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add limit to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -397,7 +381,6 @@ class NativeQueryBuilder implements QueryBuilder
 
     /**
      * Add offset to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -431,15 +414,19 @@ class NativeQueryBuilder implements QueryBuilder
         switch ($this->type) {
             case Statement::SELECT:
                 $this->query = $this->getSelectQuery();
+
                 break;
             case Statement::UPDATE:
                 $this->query = $this->getUpdateQuery();
+
                 break;
             case Statement::INSERT:
                 $this->query = $this->getInsertQuery();
+
                 break;
             case Statement::DELETE:
                 $this->query = $this->getDeleteQuery();
+
                 break;
         }
 

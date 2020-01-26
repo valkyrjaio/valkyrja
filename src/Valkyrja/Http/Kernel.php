@@ -25,7 +25,7 @@ interface Kernel extends MiddlewareAware
      *
      * @param Request $request The request
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function handle(Request $request): Response;
 

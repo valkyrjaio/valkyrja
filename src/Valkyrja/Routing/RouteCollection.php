@@ -21,7 +21,7 @@ class RouteCollection
     /**
      * The routes.
      *
-     * @var \Valkyrja\Routing\Route[]
+     * @var Route[]
      */
     protected $routes = [];
 
@@ -42,7 +42,7 @@ class RouteCollection
     /**
      * The named routes.
      *
-     * @var array[]
+     * @var string[]
      */
     protected $namedRoutes = [];
 
@@ -55,7 +55,7 @@ class RouteCollection
      */
     public function addRoute(Route $route): void
     {
-        $key                = md5(\json_encode((array) $route));
+        $key                = md5(json_encode((array) $route));
         $this->routes[$key] = $route;
 
         foreach ($route->getRequestMethods() as $requestMethod) {
@@ -95,7 +95,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function staticRoute(string $method, string $path): ? Route
+    public function staticRoute(string $method, string $path): ?Route
     {
         return $this->route($this->staticRoutes[$method][$path] ?? $path);
     }
@@ -118,7 +118,7 @@ class RouteCollection
      *
      * @param string $method The request method
      *
-     * @return \string[]
+     * @return string[]
      */
     public function getStaticRoutes(string $method): array
     {
@@ -135,7 +135,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function dynamicRoute(string $method, string $regex): ? Route
+    public function dynamicRoute(string $method, string $regex): ?Route
     {
         return $this->route($this->dynamicRoutes[$method][$regex] ?? $regex);
     }
@@ -174,7 +174,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function namedRoute(string $name): ? Route
+    public function namedRoute(string $name): ?Route
     {
         return $this->route($this->namedRoutes[$name] ?? $name);
     }
@@ -210,7 +210,7 @@ class RouteCollection
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    protected function route(string $path): ? Route
+    protected function route(string $path): ?Route
     {
         return $this->routes[$path] ?? null;
     }

@@ -31,13 +31,10 @@ final class HeaderSecurity
 
     /**
      * Filter a header value.
-     *
      * Ensures CRLF header injection vectors are filtered.
-     *
      * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
      * tabs are allowed in values; header continuations MUST consist of
      * a single CRLF sequence followed by a space or horizontal tab.
-     *
      * This method filters any values not allowed from the string, and is
      * lossy.
      *
@@ -49,18 +46,18 @@ final class HeaderSecurity
      */
     public static function filter(string $value): string
     {
-        $length = \strlen($value);
+        $length = strlen($value);
         $string = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $ascii = \ord($value[$i]);
+            $ascii = ord($value[$i]);
 
             // Detect continuation sequences
             if ($ascii === 13) {
-                $lf = \ord($value[$i + 1]);
-                $ws = \ord($value[$i + 2]);
+                $lf = ord($value[$i + 1]);
+                $ws = ord($value[$i + 2]);
 
-                if ($lf === 10 && \in_array($ws, [9, 32], true)) {
+                if ($lf === 10 && in_array($ws, [9, 32], true)) {
                     $string .= $value[$i] . $value[$i + 1];
                     $i++;
                 }
@@ -88,7 +85,6 @@ final class HeaderSecurity
 
     /**
      * Validate a header value.
-     *
      * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
      * tabs are allowed in values; header continuations MUST consist of
      * a single CRLF sequence followed by a space or horizontal tab.
@@ -128,19 +124,13 @@ final class HeaderSecurity
      *
      * @param string $value
      *
-     * @throws InvalidArgumentException for invalid values
-     *
      * @return void
+     * @throws InvalidArgumentException for invalid values
      */
     public static function assertValid(string $value): void
     {
         if (! self::isValid($value)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '"%s" is not valid header value',
-                    $value
-                )
-            );
+            throw new InvalidArgumentException(sprintf('"%s" is not valid header value', $value));
         }
     }
 
@@ -152,18 +142,12 @@ final class HeaderSecurity
      * @param mixed $name
      *
      * @throws InvalidArgumentException
-     *
      * @return void
      */
     public static function assertValidName(string $name): void
     {
         if (! preg_match('/^[a-zA-Z0-9\'`#$%&*+.^_|~!-]+$/', $name)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '"%s" is not valid header name',
-                    $name
-                )
-            );
+            throw new InvalidArgumentException(sprintf('"%s" is not valid header name', $name));
         }
     }
 }

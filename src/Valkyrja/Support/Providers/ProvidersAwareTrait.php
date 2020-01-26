@@ -50,7 +50,7 @@ trait ProvidersAwareTrait
             return;
         }
 
-        /** @var \Valkyrja\Support\Providers\Provides $provider */
+        /** @var Provides $provider */
 
         // If the service provider is deferred
         // and its defined what services it provides
@@ -102,7 +102,7 @@ trait ProvidersAwareTrait
      */
     public function initializeProvided(string $itemId): void
     {
-        /** @var \Valkyrja\Support\Providers\Provides $provider */
+        /** @var Provides $provider */
         $provider = self::$provided[$itemId];
 
         // Register the provider
@@ -112,7 +112,7 @@ trait ProvidersAwareTrait
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     abstract protected function getApplication(): Application;
 }

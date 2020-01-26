@@ -23,16 +23,6 @@ use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
-use function count;
-use function get_class;
-use function is_array;
-use function is_bool;
-use function is_int;
-use function is_object;
-use function is_string;
-use function json_encode;
-use function serialize;
-use function strlen;
 
 /**
  * Class PDORepository.
@@ -100,10 +90,9 @@ class PDORepository implements Repository
      * @param bool|null  $getRelations
      *
      * @return Entity|null
-     *@throws InvalidArgumentException If id is not a string or int
-     *
+     * @throws InvalidArgumentException If id is not a string or int
      */
-    public function find($id, bool $getRelations = null): ? Entity
+    public function find($id, bool $getRelations = null): ?Entity
     {
         if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
@@ -122,7 +111,6 @@ class PDORepository implements Repository
 
     /**
      * Find entities by given criteria.
-     *
      * <code>
      *      $repository
      *          ->findBy(
@@ -148,8 +136,7 @@ class PDORepository implements Repository
      * @param bool|null  $getRelations
      *
      * @return Entity[]
-     *@throws InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      */
     public function findBy(
         array $criteria,
@@ -164,7 +151,6 @@ class PDORepository implements Repository
 
     /**
      * Find entities by given criteria.
-     *
      * <code>
      *      $repository
      *          ->findBy(
@@ -181,8 +167,7 @@ class PDORepository implements Repository
      * @param bool|null  $getRelations
      *
      * @return Entity[]
-     *@throws InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
@@ -191,7 +176,6 @@ class PDORepository implements Repository
 
     /**
      * Count all the results of given criteria.
-     *
      * <code>
      *      $repository
      *          ->count(
@@ -204,9 +188,8 @@ class PDORepository implements Repository
      *
      * @param array $criteria
      *
-     * @throws InvalidArgumentException
-     *
      * @return int
+     * @throws InvalidArgumentException
      */
     public function count(array $criteria): int
     {
@@ -215,7 +198,6 @@ class PDORepository implements Repository
 
     /**
      * Create a new model.
-     *
      * <code>
      *      $this->create(Entity::class)
      * </code>
@@ -223,9 +205,8 @@ class PDORepository implements Repository
      * @param Entity $entity
      *
      * @return bool
-     *@throws InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws InvalidEntityException
-     *
      * @throws ExecuteException
      */
     public function create(Entity $entity): bool
@@ -237,7 +218,6 @@ class PDORepository implements Repository
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
-     *
      * <code>
      *      $this->save(Entity::class)
      * </code>
@@ -245,9 +225,8 @@ class PDORepository implements Repository
      * @param Entity $entity
      *
      * @return bool
-     *@throws InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws InvalidEntityException
-     *
      * @throws ExecuteException
      */
     public function save(Entity $entity): bool
@@ -259,7 +238,6 @@ class PDORepository implements Repository
 
     /**
      * Delete an existing model.
-     *
      * <code>
      *      $this->delete(Entity::class)
      * </code>
@@ -267,9 +245,8 @@ class PDORepository implements Repository
      * @param Entity $entity
      *
      * @return bool
-     *@throws InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws InvalidEntityException
-     *
      * @throws ExecuteException
      */
     public function delete(Entity $entity): bool
@@ -294,9 +271,8 @@ class PDORepository implements Repository
      *
      * @param Entity $entity
      *
-     * @throws InvalidEntityException
-     *
      * @return void
+     * @throws InvalidEntityException
      */
     protected function validateEntity(Entity $entity): void
     {
@@ -337,7 +313,6 @@ class PDORepository implements Repository
 
     /**
      * Select entities by given criteria.
-     *
      * <code>
      *      $this->select(
      *              [
@@ -366,8 +341,7 @@ class PDORepository implements Repository
      * @param bool|null  $getRelations
      *
      * @return Entity[]|int
-     *@throws InvalidArgumentException
-     *
+     * @throws InvalidArgumentException
      */
     protected function select(
         array $columns = null,
@@ -465,8 +439,7 @@ class PDORepository implements Repository
 
         if (is_int($property)) {
             $type = PDO::PARAM_INT;
-        }
-        else if (is_bool($property)) {
+        } elseif (is_bool($property)) {
             $type = PDO::PARAM_BOOL;
         }
 
@@ -482,8 +455,11 @@ class PDORepository implements Repository
      *
      * @return Entity[]
      */
-    protected function getSelectResultsAsEntities(array $rows = null, array $columns = null, bool $getRelations = null): array
-    {
+    protected function getSelectResultsAsEntities(
+        array $rows = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array {
         $results = [];
 
         // Iterate through the rows found
@@ -509,7 +485,6 @@ class PDORepository implements Repository
 
     /**
      * Build a select query statement by given criteria.
-     *
      * <code>
      *      $this->queryBuilder(
      *              [
@@ -697,15 +672,18 @@ class PDORepository implements Repository
                 case OrderBy::ASC:
                     // Set the column via the orderByAsc method
                     $query->orderByAsc($column);
+
                     break;
                 // If the order is descending
                 case OrderBy::DESC:
                     // Set the column via the orderByDesc method
                     $query->orderByDesc($column);
+
                     break;
                 default:
                     // Otherwise set the order (which is the column)
                     $query->orderBy($order);
+
                     break;
             }
         }
@@ -741,7 +719,6 @@ class PDORepository implements Repository
 
     /**
      * Save or create or delete a row.
-     *
      * <code>
      *      $this
      *          ->saveOrCreate(
@@ -753,10 +730,9 @@ class PDORepository implements Repository
      * @param string $type
      * @param Entity $entity
      *
-     * @throws ExecuteException
-     * @throws InvalidArgumentException
-     *
      * @return int
+     * @throws InvalidArgumentException
+     * @throws ExecuteException
      */
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
@@ -922,9 +898,8 @@ class PDORepository implements Repository
      * @param Entity $entity
      * @param array  $properties
      *
-     * @throws InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function ensureRequiredProperties(Entity $entity, array $properties): void
     {

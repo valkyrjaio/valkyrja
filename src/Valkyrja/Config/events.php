@@ -17,8 +17,7 @@
  * Events are a nifty way to tie into certain happenings throughout the
  * application. Found here are all the configurations required to make
  * events work without a hitch.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +25,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotations'            => env('EVENTS_USE_ANNOTATIONS', false),
 
@@ -36,7 +34,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotationsExclusively' => env(
         'EVENTS_USE_ANNOTATIONS_EXCLUSIVELY',
@@ -49,7 +46,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'classes'                   => env('EVENTS_CLASSES', []),
 
@@ -59,7 +55,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'filePath'                  => env(
         'EVENTS_FILE_PATH',
@@ -72,7 +67,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'cacheFilePath'             => env(
         'EVENTS_CACHE_FILE_PATH',
@@ -85,7 +79,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useCache'                  => env('EVENTS_USE_CACHE_FILE', false),
 ];

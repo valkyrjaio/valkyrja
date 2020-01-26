@@ -14,7 +14,15 @@ namespace Valkyrja\HttpMessage;
 use InvalidArgumentException;
 use stdClass;
 use UnexpectedValueException;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
+use Valkyrja\HttpMessage\Exceptions\InvalidPath;
+use Valkyrja\HttpMessage\Exceptions\InvalidPort;
+use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
+use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
+use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile;
 
 /**
  * Class ServerRequestFactory.
@@ -32,14 +40,10 @@ abstract class ServerRequestFactory
 
     /**
      * Create a request from the supplied superglobal values.
-     *
      * If any argument is not supplied, the corresponding superglobal value will
      * be used.
-     *
      * The ServerRequest created is then passed to the fromServer() method in
      * order to marshal the request URI and headers.
-     *
-     * @see fromServer()
      *
      * @param array $server  $_SERVER superglobal
      * @param array $query   $_GET superglobal
@@ -47,18 +51,18 @@ abstract class ServerRequestFactory
      * @param array $cookies $_COOKIE superglobal
      * @param array $files   $_FILES superglobal
      *
-     * @throws \InvalidArgumentException
-     * @throws \UnexpectedValueException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
-     *
      * @return ServerRequest
+     * @throws InvalidArgumentException
+     * @throws UnexpectedValueException
+     * @throws InvalidUploadedFile
+     * @throws InvalidStream
+     * @throws InvalidScheme
+     * @throws InvalidQuery
+     * @throws InvalidProtocolVersion
+     * @throws InvalidPort
+     * @throws InvalidPath
+     * @throws InvalidMethod
+     * @see fromServer()
      */
     public static function fromGlobals(
         array $server = null,
@@ -91,7 +95,6 @@ abstract class ServerRequestFactory
 
     /**
      * Access a value in an array, returning a default value if not found.
-     *
      * Will also do a case-insensitive search if a case sensitive search fails.
      *
      * @param string $key
@@ -111,11 +114,8 @@ abstract class ServerRequestFactory
 
     /**
      * Search for a header value.
-     *
      * Does a case-insensitive search for a matching header.
-     *
      * If found, it is returned as a string, using comma concatenation.
-     *
      * If not, the $default is returned.
      *
      * @param string $header
@@ -128,10 +128,9 @@ abstract class ServerRequestFactory
     {
         $header  = strtolower($header);
         $headers = array_change_key_case($headers, CASE_LOWER);
-        if (array_key_exists($header, $headers)) {
-            $value = \is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
 
-            return $value;
+        if (array_key_exists($header, $headers)) {
+            return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
         }
 
         return $default;
@@ -139,7 +138,6 @@ abstract class ServerRequestFactory
 
     /**
      * Marshal the $_SERVER array.
-     *
      * Pre-processes and returns the $_SERVER superglobal.
      *
      * @param array $server
@@ -151,9 +149,7 @@ abstract class ServerRequestFactory
         // This seems to be the only way to get the Authorization header on Apache
         $apacheRequestHeaders = self::$apacheRequestHeaders;
 
-        if (isset($server['HTTP_AUTHORIZATION'])
-            || ! \is_callable($apacheRequestHeaders)
-        ) {
+        if (isset($server['HTTP_AUTHORIZATION']) || ! is_callable($apacheRequestHeaders)) {
             return $server;
         }
 
@@ -176,31 +172,30 @@ abstract class ServerRequestFactory
 
     /**
      * Normalize uploaded files.
-     *
      * Transforms each value into an UploadedFileInterface instance, and ensures
      * that nested arrays are normalized.
      *
      * @param array $files
      *
-     * @throws InvalidArgumentException for unrecognized values
-     *
      * @return array
+     * @throws InvalidArgumentException for unrecognized values
      */
     public static function normalizeFiles(array $files): array
     {
         $normalized = [];
+
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFile) {
                 $normalized[$key] = $value;
                 continue;
             }
 
-            if (\is_array($value) && isset($value['tmp_name'])) {
+            if (is_array($value) && isset($value['tmp_name'])) {
                 $normalized[$key] = self::createUploadedFileFromSpec($value);
                 continue;
             }
 
-            if (\is_array($value)) {
+            if (is_array($value)) {
                 $normalized[$key] = self::normalizeFiles($value);
                 continue;
             }
@@ -221,6 +216,7 @@ abstract class ServerRequestFactory
     public static function marshalHeaders(array $server): array
     {
         $headers = [];
+
         foreach ($server as $key => $value) {
             // Apache prefixes environment variables with REDIRECT_
             // if they are added by rewrite rules
@@ -237,6 +233,7 @@ abstract class ServerRequestFactory
             if ($value && strpos($key, 'HTTP_') === 0) {
                 $name           = str_replace('_', '-', strtolower(substr($key, 5)));
                 $headers[$name] = $value;
+
                 continue;
             }
 
@@ -255,12 +252,11 @@ abstract class ServerRequestFactory
      * @param array $server
      * @param array $headers
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
-     *
      * @return Uri
+     * @throws InvalidQuery
+     * @throws InvalidPort
+     * @throws InvalidPath
+     * @throws InvalidScheme
      */
     public static function marshalUriFromServer(array $server, array $headers): Uri
     {
@@ -314,10 +310,7 @@ abstract class ServerRequestFactory
             [$path, $fragment] = explode('#', $path, 2);
         }
 
-        return $uri
-            ->withPath($path)
-            ->withFragment($fragment)
-            ->withQuery($query);
+        return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
     }
 
     /**
@@ -358,10 +351,8 @@ abstract class ServerRequestFactory
 
     /**
      * Detect the base URI for the request.
-     *
      * Looks at a variety of criteria in order to attempt to autodetect a base
      * URI, including rewrite URIs, proxy URIs, etc.
-     *
      * From ZF2's Zend\Http\PhpEnvironment\Request class
      *
      * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
@@ -437,7 +428,7 @@ abstract class ServerRequestFactory
      */
     private static function marshalHostAndPortFromHeader(stdClass $accumulator, $host): void
     {
-        if (\is_array($host)) {
+        if (is_array($host)) {
             $host = implode(', ', $host);
         }
 
@@ -446,7 +437,7 @@ abstract class ServerRequestFactory
 
         // Works for regname, IPv4 & IPv6
         if (preg_match('|\:(\d+)$|', $accumulator->host, $matches)) {
-            $accumulator->host = substr($accumulator->host, 0, -1 * (\strlen($matches[1]) + 1));
+            $accumulator->host = substr($accumulator->host, 0, -1 * (strlen($matches[1]) + 1));
             $accumulator->port = (int) $matches[1];
         }
     }
@@ -473,19 +464,17 @@ abstract class ServerRequestFactory
 
     /**
      * Create and return an UploadedFile instance from a $_FILES specification.
-     *
      * If the specification represents an array of values, this method will
      * delegate to normalizeNestedFileSpec() and return that return value.
      *
      * @param array $value $_FILES struct
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array|UploadedFile
+     * @throws InvalidArgumentException
      */
     private static function createUploadedFileFromSpec(array $value)
     {
-        if (\is_array($value['tmp_name'])) {
+        if (is_array($value['tmp_name'])) {
             return self::normalizeNestedFileSpec($value);
         }
 
@@ -501,15 +490,13 @@ abstract class ServerRequestFactory
 
     /**
      * Normalize an array of file specifications.
-     *
      * Loops through all nested files and returns a normalized array of
      * UploadedFileInterface instances.
      *
      * @param array $files
      *
-     * @throws \InvalidArgumentException
-     *
      * @return UploadedFile[]
+     * @throws InvalidArgumentException
      */
     private static function normalizeNestedFileSpec(array $files = []): array
     {
@@ -534,11 +521,10 @@ abstract class ServerRequestFactory
      *
      * @param array $server
      *
-     * @throws \UnexpectedValueException
-     *
      * @return string
+     * @throws UnexpectedValueException
      */
-    private static function marshalProtocolVersion(array $server): string
+    protected static function marshalProtocolVersion(array $server): string
     {
         if (! isset($server['SERVER_PROTOCOL'])) {
             return '1.1';
@@ -558,7 +544,6 @@ abstract class ServerRequestFactory
 
     /**
      * Parse a cookie header according to RFC 6265.
-     *
      * PHP will replace special characters in cookie names, which results in other cookies not being available due to
      * overwriting. Thus, the server request should take the cookies from the request header instead.
      *
@@ -571,7 +556,7 @@ abstract class ServerRequestFactory
         preg_match_all(
             '(
             (?:^\\n?[ \t]*|;[ ])
-            (?P<name>[!#$%&\'*+-.0-9A-Z^_`a-z|~]+)
+            (?P<name>[!#$%&\'*+\-.0-9A-Z^_`a-z|~]+)
             =
             (?P<DQUOTE>"?)
                 (?P<value>[\x21\x23-\x2b\x2d-\x3a\x3c-\x5b\x5d-\x7e]*)

@@ -18,7 +18,6 @@ interface QueryBuilder
 {
     /**
      * Create a SELECT query statement.
-     *
      * <code>
      *      $queryBuilder->select();
      *      $queryBuilder->select(
@@ -38,7 +37,6 @@ interface QueryBuilder
 
     /**
      * Create an INSERT query statement.
-     *
      * <code>
      *      $queryBuilder->insert();
      * </code>
@@ -49,7 +47,6 @@ interface QueryBuilder
 
     /**
      * Create an UPDATE query statement.
-     *
      * <code>
      *      $queryBuilder->update();
      * </code>
@@ -60,7 +57,6 @@ interface QueryBuilder
 
     /**
      * Create an DELETE query statement.
-     *
      * <code>
      *      $queryBuilder->delete();
      * </code>
@@ -71,12 +67,10 @@ interface QueryBuilder
 
     /**
      * Set the table on which to perform the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table');
-     *
      *      $queryBuilder
      *          ->select()
      *          ->table('table', 't');
@@ -91,13 +85,11 @@ interface QueryBuilder
 
     /**
      * Add a value for a column to set.
-     *
      * <code>
      *      $queryBuilder
      *          ->insert()
      *          ->table('table')
      *          ->set('column', ':column');
-     *
      *      $queryBuilder
      *          ->update()
      *          ->table('table')
@@ -114,13 +106,11 @@ interface QueryBuilder
     /**
      * Add a where condition to the query statement.
      * - Each additional use will add an `AND` where condition.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
      *          ->where('column = :column');
-     *
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
@@ -136,7 +126,6 @@ interface QueryBuilder
 
     /**
      * Add an additional `AND` where condition to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -153,7 +142,6 @@ interface QueryBuilder
 
     /**
      * Add an additional `OR` where condition to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -170,7 +158,6 @@ interface QueryBuilder
 
     /**
      * Add an order by without specifying the order to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -187,7 +174,6 @@ interface QueryBuilder
 
     /**
      * Add an order by ascending to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -204,7 +190,6 @@ interface QueryBuilder
 
     /**
      * Add an order by descending to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -221,7 +206,6 @@ interface QueryBuilder
 
     /**
      * Add limit to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -238,7 +222,6 @@ interface QueryBuilder
 
     /**
      * Add offset to the query statement.
-     *
      * <code>
      *      $queryBuilder
      *          ->select()

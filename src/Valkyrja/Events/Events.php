@@ -34,7 +34,7 @@ interface Events extends Cacheable
      * Add a listener to many events.
      *
      * @param Listener $listener  The listener
-     * @param string[] ...$events The events
+     * @param string   ...$events The events
      *
      * @return void
      */
@@ -65,7 +65,7 @@ interface Events extends Cacheable
      *
      * @param string $event The event
      *
-     * @return \Valkyrja\Events\Listener[]
+     * @return Listener[]
      */
     public function getListeners(string $event): array;
 

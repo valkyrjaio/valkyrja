@@ -16,5 +16,4 @@ namespace Valkyrja\HttpMessage\Events;
  */
 class HttpKernelTerminate extends HttpKernelHandled
 {
-    //
 }

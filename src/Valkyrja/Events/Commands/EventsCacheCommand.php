@@ -12,6 +12,7 @@
 namespace Valkyrja\Events\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
@@ -61,11 +62,11 @@ class EventsCacheCommand extends CommandHandler
                 true
             );
 
-            return 1;
+            return ExitCode::FAILURE;
         }
 
         output()->writeMessage('Events cache generated successfully', true);
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 }

@@ -24,7 +24,7 @@ interface Container extends Cacheable, ProvidersAware
     /**
      * Set an alias to the container.
      *
-     * @param string $alias The alias
+     * @param string $alias     The alias
      * @param string $serviceId The service to return
      *
      * @return void
@@ -71,10 +71,8 @@ interface Container extends Cacheable, ProvidersAware
      * Check whether a given service has context.
      *
      * @param string $serviceId The service
-     * @param string $context   The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return bool
      */
@@ -112,10 +110,8 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   [optional] The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
@@ -145,10 +141,8 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   [optional] The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
@@ -163,10 +157,8 @@ interface Container extends Cacheable, ProvidersAware
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $context   The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return string
      */

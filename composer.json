@@ -15,9 +15,12 @@
     }
   ],
   "require"           : {
-    "php"              : ">=7.1",
+    "php"              : ">=7.2",
     "psr/http-message" : "1.0.1",
-    "psr/log"          : "1.0.2"
+    "psr/log"          : "1.0.2",
+    "ext-json"         : "*",
+    "ext-sodium"       : "*",
+    "ext-pdo"          : "*"
   },
   "require-dev"       : {
     "fzaninotto/faker"           : "1.6.0",
@@ -29,7 +32,7 @@
     "phpunit/phpunit"            : "6.1.4",
     "predis/predis"              : "1.1.1",
     "satooshi/php-coveralls"     : "0.7.0",
-    "valkyrja/valkyrja-app"      : "0.8.*"
+    "valkyrja/valkyrja-app"      : "0.9.*"
   },
   "autoload"          : {
     "psr-4" : {
@@ -45,17 +48,18 @@
     }
   },
   "suggest"           : {
-    "guzzlehttp/guzzle"      : "Required for use with Valkyrja Client (^6.2).",
-    "league/flysystem"       : "Required for use with Valkyrja FileSystem (^1.0).",
-    "monolog/monolog"        : "Required for use with Valkyrja Logger (^1.22).",
-    "predis/predis"          : "Required for use with Redis Valkyrja Cache (^1.1).",
-    "valkyrja/valkyrja-twig" : "Optional Valkyrja component for using Twig Templating (^1.0)."
+    "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (^6.2).",
+    "league/flysystem"           : "Required for use with Valkyrja FileSystem (^1.0).",
+    "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (^1.0)",
+    "monolog/monolog"            : "Required for use with Valkyrja Logger (^1.22).",
+    "predis/predis"              : "Required for use with Redis Valkyrja Cache (^1.1).",
+    "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0)."
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
   "extra"             : {
     "branch-alias" : {
-      "dev-master" : "0.8-dev"
+      "dev-master" : "0.9-dev"
     }
   }
 }

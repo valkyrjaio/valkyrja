@@ -11,6 +11,7 @@
 
 namespace Valkyrja;
 
+use InvalidArgumentException;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
@@ -25,14 +26,16 @@ use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
@@ -41,6 +44,7 @@ use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
+use Valkyrja\Support\Providers\Provider;
 use Valkyrja\View\View;
 
 /**
@@ -53,7 +57,7 @@ class Valkyrja implements Application
     /**
      * Get the instance of the application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected static $app;
 
@@ -67,7 +71,7 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var \Valkyrja\Env\Env|\env\Env
+     * @var Env|\env\Env
      */
     protected static $env;
 
@@ -81,21 +85,21 @@ class Valkyrja implements Application
     /**
      * Get the instance of the container.
      *
-     * @var \Valkyrja\Container\Container
+     * @var Container
      */
     protected static $container;
 
     /**
      * Get the instance of the dispatcher.
      *
-     * @var \Valkyrja\Dispatcher\Dispatcher
+     * @var Dispatcher
      */
     protected static $dispatcher;
 
     /**
      * Get the instance of the events.
      *
-     * @var \Valkyrja\Events\Events
+     * @var Events
      */
     protected static $events;
 
@@ -111,9 +115,9 @@ class Valkyrja implements Application
      *
      * @param array $config [optional] The config to use
      *
-     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
-     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
-     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
+     * @throws InvalidContainerImplementation
+     * @throws InvalidDispatcherImplementation
+     * @throws InvalidEventsImplementation
      */
     public function __construct(array $config = null)
     {
@@ -126,11 +130,10 @@ class Valkyrja implements Application
      * @param array $config [optional] The config to use
      * @param bool  $force  [optional] Whether to force a setup
      *
-     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
-     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
-     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
-     *
      * @return void
+     * @throws InvalidDispatcherImplementation
+     * @throws InvalidEventsImplementation
+     * @throws InvalidContainerImplementation
      */
     public function setup(array $config = null, bool $force = false): void
     {
@@ -147,9 +150,9 @@ class Valkyrja implements Application
         self::setEnv();
 
         // If the VALKYRJA_START constant hasn't already been set
-        if (! \defined('VALKYRJA_START')) {
+        if (! defined('VALKYRJA_START')) {
             // Set a global constant for when the framework started
-            \define('VALKYRJA_START', microtime(true));
+            define('VALKYRJA_START', microtime(true));
         }
 
         // Bootstrap debug capabilities
@@ -187,13 +190,11 @@ class Valkyrja implements Application
 
         $config         = $config ?? [];
         $configFilePath = Directory::configPath('config.php');
-        $configFilePath = is_file($configFilePath)
-            ? $configFilePath
-            : __DIR__ . '/Config/config.php';
+        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/Config/config.php';
         $defaultConfigs = require $configFilePath;
 
         self::$config = array_replace_recursive($defaultConfigs, $config);
-        /** @var \Valkyrja\Support\Providers\Provider[] $providers */
+        /** @var Provider[] $providers */
         $providers = self::$config['providers'];
 
         foreach ($providers as $provider) {
@@ -220,11 +221,10 @@ class Valkyrja implements Application
     /**
      * Bootstrap core functionality.
      *
-     * @throws \Valkyrja\Exceptions\InvalidContainerImplementation
-     * @throws \Valkyrja\Exceptions\InvalidDispatcherImplementation
-     * @throws \Valkyrja\Exceptions\InvalidEventsImplementation
-     *
      * @return void
+     * @throws InvalidDispatcherImplementation
+     * @throws InvalidEventsImplementation
+     * @throws InvalidContainerImplementation
      */
     protected function bootstrapCore(): void
     {
@@ -241,9 +241,7 @@ class Valkyrja implements Application
         // If the events implementation specified does not adhere to the events
         // contract
         if (! self::$events instanceof Events) {
-            throw new InvalidEventsImplementation(
-                'Invalid Events implementation'
-            );
+            throw new InvalidEventsImplementation('Invalid Events implementation');
         }
 
         // Set the container to a new instance of the container implementation
@@ -252,9 +250,7 @@ class Valkyrja implements Application
         // If the container implementation specified does not adhere to the
         // container contract
         if (! self::$container instanceof Container) {
-            throw new InvalidContainerImplementation(
-                'Invalid Container implementation'
-            );
+            throw new InvalidContainerImplementation('Invalid Container implementation');
         }
 
         // Set the dispatcher to a new instance of the dispatcher implementation
@@ -263,9 +259,7 @@ class Valkyrja implements Application
         // If the dispatcher implementation specified does not adhere to the
         // dispatcher contract
         if (! self::$dispatcher instanceof Dispatcher) {
-            throw new InvalidDispatcherImplementation(
-                'Invalid Dispatcher implementation'
-            );
+            throw new InvalidDispatcherImplementation('Invalid Dispatcher implementation');
         }
     }
 
@@ -320,7 +314,7 @@ class Valkyrja implements Application
     /**
      * Get the application instance.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     public static function app(): Application
     {
@@ -333,7 +327,7 @@ class Valkyrja implements Application
      * @param string $variable [optional] The variable to get
      * @param string $default  [optional] The default value to return
      *
-     * @return mixed|\Valkyrja\Env\Env||config|Env
+     * @return mixed|Env||config|Env
      */
     public static function env(string $variable = null, $default = null)
     {
@@ -345,8 +339,8 @@ class Valkyrja implements Application
 
         // If the env has this variable defined and the variable isn't null
         if (
-            \defined(static::getEnv() . '::' . $variable)
-            && null !== $env = \constant(static::getEnv() . '::' . $variable)
+            defined(static::getEnv() . '::' . $variable)
+            && null !== $env = constant(static::getEnv() . '::' . $variable)
         ) {
             // Return the variable
             return $env;
@@ -359,7 +353,7 @@ class Valkyrja implements Application
     /**
      * Get the environment variables class.
      *
-     * @return \Valkyrja\Env\Env||config|Env
+     * @return Env||config|Env
      */
     public static function getEnv(): string
     {
@@ -436,7 +430,7 @@ class Valkyrja implements Application
     /**
      * Get the container instance.
      *
-     * @return \Valkyrja\Container\Container
+     * @return Container
      */
     public function container(): Container
     {
@@ -446,7 +440,7 @@ class Valkyrja implements Application
     /**
      * Get the dispatcher instance.
      *
-     * @return \Valkyrja\Dispatcher\Dispatcher
+     * @return Dispatcher
      */
     public function dispatcher(): Dispatcher
     {
@@ -456,7 +450,7 @@ class Valkyrja implements Application
     /**
      * Get the events instance.
      *
-     * @return \Valkyrja\Events\Events
+     * @return Events
      */
     public function events(): Events
     {
@@ -522,9 +516,8 @@ class Valkyrja implements Application
      * @param int      $code       [optional] The Exception code
      * @param Response $response   [optional] The Response to send
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return void
+     * @throws HttpException
      */
     public function abort(
         int $statusCode = StatusCode::NOT_FOUND,
@@ -543,9 +536,8 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
-     *
      * @return void
+     * @throws HttpRedirectException
      */
     public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void
     {
@@ -555,141 +547,141 @@ class Valkyrja implements Application
     /**
      * Return the annotations instance from the container.
      *
-     * @return \Valkyrja\Annotations\Annotations
+     * @return Annotations
      */
     public function annotations(): Annotations
     {
-        return $this->container()->getSingleton(Annotations::class);
+        return self::$container->getSingleton(Annotations::class);
     }
 
     /**
      * Return the client instance from the container.
      *
-     * @return \Valkyrja\Client\Client
+     * @return Client
      */
     public function client(): Client
     {
-        return $this->container()->getSingleton(Client::class);
+        return self::$container->getSingleton(Client::class);
     }
 
     /**
      * Return the console instance from the container.
      *
-     * @return \Valkyrja\Console\Console
+     * @return Console
      */
     public function console(): Console
     {
-        return $this->container()->getSingleton(Console::class);
+        return self::$container->getSingleton(Console::class);
     }
 
     /**
      * Return the console kernel instance from the container.
      *
-     * @return \Valkyrja\Console\Kernel
+     * @return ConsoleKernel
      */
     public function consoleKernel(): ConsoleKernel
     {
-        return $this->container()->getSingleton(ConsoleKernel::class);
+        return self::$container->getSingleton(ConsoleKernel::class);
     }
 
     /**
      * Return the crypt instance from the container.
      *
-     * @return \Valkyrja\Crypt\Crypt
+     * @return Crypt
      */
     public function crypt(): Crypt
     {
-        return $this->container()->getSingleton(Crypt::class);
+        return self::$container->getSingleton(Crypt::class);
     }
 
     /**
      * Return the entity manager instance from the container.
      *
-     * @return \Valkyrja\ORM\EntityManager
+     * @return EntityManager
      */
     public function entityManager(): EntityManager
     {
-        return $this->container()->getSingleton(EntityManager::class);
+        return self::$container->getSingleton(EntityManager::class);
     }
 
     /**
      * Return the filesystem instance from the container.
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function filesystem(): Filesystem
     {
-        return $this->container()->getSingleton(Filesystem::class);
+        return self::$container->getSingleton(Filesystem::class);
     }
 
     /**
      * Return the kernel instance from the container.
      *
-     * @return \Valkyrja\Http\Kernel
+     * @return Kernel
      */
     public function kernel(): Kernel
     {
-        return $this->container()->getSingleton(Kernel::class);
+        return self::$container->getSingleton(Kernel::class);
     }
 
     /**
      * Return the logger instance from the container.
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function logger(): Logger
     {
-        return $this->container()->getSingleton(Logger::class);
+        return self::$container->getSingleton(Logger::class);
     }
 
     /**
      * Return the mail instance from the container.
      *
-     * @return \Valkyrja\Mail\Mail
+     * @return Mail
      */
     public function mail(): Mail
     {
-        return $this->container()->getSingleton(Mail::class);
+        return self::$container->getSingleton(Mail::class);
     }
 
     /**
      * Return the path generator instance from the container.
      *
-     * @return \Valkyrja\Path\PathGenerator
+     * @return PathGenerator
      */
     public function pathGenerator(): PathGenerator
     {
-        return $this->container()->getSingleton(PathGenerator::class);
+        return self::$container->getSingleton(PathGenerator::class);
     }
 
     /**
      * Return the path parser instance from the container.
      *
-     * @return \Valkyrja\Path\PathParser
+     * @return PathParser
      */
     public function pathParser(): PathParser
     {
-        return $this->container()->getSingleton(PathParser::class);
+        return self::$container->getSingleton(PathParser::class);
     }
 
     /**
      * Return the request instance from the container.
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function request(): Request
     {
-        return $this->container()->getSingleton(Request::class);
+        return self::$container->getSingleton(Request::class);
     }
 
     /**
      * Return the router instance from the container.
      *
-     * @return \Valkyrja\Routing\Router
+     * @return Router
      */
     public function router(): Router
     {
-        return $this->container()->getSingleton(Router::class);
+        return self::$container->getSingleton(Router::class);
     }
 
     /**
@@ -699,20 +691,19 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws InvalidArgumentException
      */
     public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
     {
         /** @var Response $response */
-        $response = $this->container()->getSingleton(Response::class);
+        $response = self::$container->getSingleton(Response::class);
 
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             return $response;
         }
 
-        return $response->create($content, $statusCode, $headers);
+        return $response::create($content, $statusCode, $headers);
     }
 
     /**
@@ -722,20 +713,19 @@ class Valkyrja implements Application
      * @param int   $statusCode [optional] The status code to set
      * @param array $headers    [optional] The headers to set
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
     {
         /** @var JsonResponse $response */
-        $response = $this->container()->getSingleton(JsonResponse::class);
+        $response = self::$container->getSingleton(JsonResponse::class);
 
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             return $response;
         }
 
-        return $response->createJson('', $statusCode, $headers, $data);
+        return $response::createJson('', $statusCode, $headers, $data);
     }
 
     /**
@@ -745,10 +735,9 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
-     *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws InvalidStatusCodeException
+     * @throws InvalidArgumentException
      */
     public function redirect(
         string $uri = null,
@@ -756,13 +745,13 @@ class Valkyrja implements Application
         array $headers = []
     ): RedirectResponse {
         /** @var RedirectResponse $response */
-        $response = $this->container()->getSingleton(RedirectResponse::class);
+        $response = self::$container->getSingleton(RedirectResponse::class);
 
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             return $response;
         }
 
-        return $response->createRedirect($uri, $statusCode, $headers);
+        return $response::createRedirect($uri, $statusCode, $headers);
     }
 
     /**
@@ -774,10 +763,9 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
-     *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws InvalidStatusCodeException
+     * @throws InvalidArgumentException
      */
     public function redirectRoute(
         string $route,
@@ -794,21 +782,21 @@ class Valkyrja implements Application
     /**
      * Return a new response from the application.
      *
-     * @return \Valkyrja\Http\ResponseBuilder
+     * @return ResponseBuilder
      */
     public function responseBuilder(): ResponseBuilder
     {
-        return $this->container()->getSingleton(ResponseBuilder::class);
+        return self::$container->getSingleton(ResponseBuilder::class);
     }
 
     /**
      * Return the session.
      *
-     * @return \Valkyrja\Session\Session
+     * @return Session
      */
     public function session(): Session
     {
-        return $this->container()->getSingleton(Session::class);
+        return self::$container->getSingleton(Session::class);
     }
 
     /**
@@ -817,14 +805,14 @@ class Valkyrja implements Application
      * @param string $template  [optional] The template to use
      * @param array  $variables [optional] The variables to use
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function view(string $template = '', array $variables = []): View
     {
-        /** @var \Valkyrja\View\View $view */
-        $view = $this->container()->getSingleton(View::class);
+        /** @var View $view */
+        $view = self::$container->getSingleton(View::class);
 
-        if (\func_num_args() === 0) {
+        if (func_num_args() === 0) {
             return $view;
         }
 

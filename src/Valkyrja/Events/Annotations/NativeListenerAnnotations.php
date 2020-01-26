@@ -11,11 +11,11 @@
 
 namespace Valkyrja\Events\Annotations;
 
+use ReflectionException;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Events\Listener as EventListener;
-use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class ListenerAnnotations.
@@ -24,16 +24,13 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnnotations
 {
-    use Provides;
-
     /**
      * Get the events.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Events\Listener[]
+     * @return Listener[]
+     * @throws ReflectionException
      */
     public function getListeners(string ...$classes): array
     {
@@ -41,11 +38,9 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
 
         // Iterate through all the classes
         foreach ($classes as $class) {
-            $listeners = $this->methodsAnnotationsType('Listener', $class);
-
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Events\Annotations\Listener $annotation */
-            foreach ($listeners as $annotation) {
+            /** @var Listener $annotation */
+            foreach ($this->methodsAnnotationsType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getListenerFromAnnotation($annotation);
@@ -60,18 +55,14 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
      *
      * @param Listener $listener
      *
-     * @throws \ReflectionException
-     *
      * @return void
+     * @throws ReflectionException
      */
     protected function setListenerProperties(Listener $listener): void
     {
         $classReflection = $this->getClassReflection($listener->getClass());
 
-        if (
-            $listener->getMethod()
-            || $classReflection->hasMethod('__construct')
-        ) {
+        if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->getMethodReflection(
                 $listener->getClass(),
                 $listener->getMethod() ?? '__construct'
@@ -90,7 +81,7 @@ class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnn
      *
      * @param Listener $listener The listener annotation
      *
-     * @return \Valkyrja\Events\Listener
+     * @return EventListener
      */
     protected function getListenerFromAnnotation(Listener $listener): EventListener
     {

@@ -40,7 +40,7 @@ interface View
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setVariables(array $variables = []): self;
 
@@ -59,7 +59,7 @@ interface View
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setVariable(string $key, $value): self;
 
@@ -86,7 +86,7 @@ interface View
      *
      * @param string $templateDir The path to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setTemplateDir(string $templateDir): self;
 
@@ -102,7 +102,7 @@ interface View
      *
      * @param string $extension The extension to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setFileExtension(string $extension): self;
 
@@ -125,14 +125,14 @@ interface View
      *
      * @param string $layout [optional]
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function layout(string $layout = null): self;
 
     /**
      * Set no layout for this view.
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function withoutLayout(): self;
 
@@ -141,7 +141,7 @@ interface View
      *
      * @param string $template The template
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function template(string $template): self;
 

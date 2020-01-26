@@ -11,10 +11,11 @@
 
 namespace Valkyrja\Http;
 
+use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
-use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class RedirectResponse.
@@ -23,8 +24,6 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeRedirectResponse extends NativeResponse implements RedirectResponse
 {
-    use Provides;
-
     /**
      * The uri to redirect to.
      *
@@ -40,8 +39,8 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @param array  $headers [optional] An array of response headers
      * @param string $uri     [optional] The URI to redirect to
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
+     * @throws InvalidArgumentException
+     * @throws InvalidStatusCodeException
      */
     public function __construct(
         string $content = '',
@@ -55,9 +54,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
         // If the status code set is not a redirect code
         if (! $this->isRedirect()) {
             // Throw an invalid status code exception
-            throw new InvalidStatusCodeException(
-                "Status code of \"{$status}\" is not allowed"
-            );
+            throw new InvalidStatusCodeException("Status code of \"{$status}\" is not allowed");
         }
 
         if (null !== $uri) {
@@ -73,10 +70,9 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
-     *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
+     * @throws InvalidStatusCodeException
+     * @throws InvalidArgumentException
      */
     public static function createRedirect(
         string $uri = null,
@@ -105,7 +101,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      *
      * @param string $uri The uri
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function setUri(string $uri): RedirectResponse
     {
@@ -123,20 +119,14 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      *
      * @param string $path The path
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function secure(string $path = null): RedirectResponse
     {
         // If not path was set
         if (null === $path) {
             // If the uri is already set
-            if (null !== $this->uri) {
-                // Set the path to it
-                $path = $this->uri;
-            } else {
-                // Otherwise set the path to the current path w/ query string
-                $path = request()->getPath();
-            }
+            $path = $this->uri ?? request()->getPath();
         }
 
         // If the path doesn't start with a /
@@ -157,7 +147,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     /**
      * Redirect back to the referer.
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function back(): RedirectResponse
     {
@@ -177,16 +167,11 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     /**
      * Throw this redirect.
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
+     * @throws HttpRedirectException
      */
     public function throw(): void
     {
-        throw new HttpRedirectException(
-            $this->statusCode,
-            $this->uri,
-            null,
-            $this->headers->all()
-        );
+        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->headers->all());
     }
 
     /**
@@ -206,15 +191,11 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      *
      * @param Application $app The application
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            RedirectResponse::class,
-            new static()
-        );
+        $app->container()->singleton(RedirectResponse::class, new static());
     }
 }

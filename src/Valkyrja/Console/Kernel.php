@@ -13,6 +13,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Http\Exceptions\HttpException;
 
 /**
  * Interface ConsoleKernel.
@@ -27,9 +28,8 @@ interface Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return int
+     * @throws HttpException
      */
     public function handle(Input $input, Output $output): int;
 
@@ -49,9 +49,8 @@ interface Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return void
+     * @throws HttpException
      */
     public function run(Input $input = null, Output $output = null): void;
 }

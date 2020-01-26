@@ -13,6 +13,7 @@ namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\Command;
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Input\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
 
@@ -56,12 +57,9 @@ class CommandsListCommand extends CommandHandler
         $this->optionsSection(...input()->getGlobalOptions());
         $this->sectionDivider();
 
-        $this->sectionTitleMessage(
-            'Commands'
-            . ($namespace ? " for the \"{$namespace}\" namespace" : '')
-        );
+        $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"{$namespace}\" namespace" : ''));
 
-        /** @var \Valkyrja\Console\Command $command */
+        /** @var Command $command */
         foreach ($commands as $command) {
             if (null === $namespace) {
                 $this->commandSection($command, $previousSection);
@@ -74,7 +72,7 @@ class CommandsListCommand extends CommandHandler
             );
         }
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 
     /**
@@ -103,7 +101,7 @@ class CommandsListCommand extends CommandHandler
     {
         $globalCommands = [];
 
-        /** @var \Valkyrja\Console\Command $command */
+        /** @var Command $command */
         foreach ($commands as $key => $command) {
             $parts            = explode(':', $command->getName());
             $commandName      = $parts[1] ?? null;
@@ -119,7 +117,7 @@ class CommandsListCommand extends CommandHandler
                 continue;
             }
 
-            $longestLength = max(\strlen($command->getName()), $longestLength);
+            $longestLength = max(strlen($command->getName()), $longestLength);
 
             // If this is a global namespaced command
             if ('global' === $commandNamespace) {
@@ -153,7 +151,7 @@ class CommandsListCommand extends CommandHandler
     {
         usort(
             $commands,
-            function (Command $item1, Command $item2) {
+            static function (Command $item1, Command $item2) {
                 return $item1->getName() <=> $item2->getName();
             }
         );

@@ -151,7 +151,7 @@ interface OutputFormatter
     /**
      * Set options.
      *
-     * @param FormatOption[] ...$options The options
+     * @param FormatOption ...$options The options
      *
      * @return void
      */

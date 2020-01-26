@@ -20,7 +20,6 @@ interface LineRegex
 {
     /**
      * @description
-     *
      * \s*                  Followed by any whitespace
      * \*?                  Optional asterisk (for multiline)
      * \s*                  Followed by an whitespace

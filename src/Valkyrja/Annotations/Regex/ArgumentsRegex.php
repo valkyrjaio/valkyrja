@@ -22,9 +22,7 @@ interface ArgumentsRegex
      * Route argument regex.
      *
      * @constant string
-     *
      * @description
-     *
      * ([a-zA-Z0-9_\\\:]*)      Match any lowercase,uppercase, numerical, and
      *                              underscored word
      * \s*                      Followed by any whitespace

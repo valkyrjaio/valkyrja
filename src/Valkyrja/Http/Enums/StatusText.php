@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\Http\Enums;
 
 use Valkyrja\Enum\Enum;
 
 /**
  * Status text constants.
  *
+ * @author Melech Mizrachi
  * @link   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
- *
- * @author Melech Mizrachi
  */
 final class StatusText extends Enum
 {

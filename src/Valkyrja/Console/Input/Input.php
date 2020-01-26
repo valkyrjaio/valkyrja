@@ -67,7 +67,7 @@ interface Input
      *
      * @return string
      */
-    public function getArgument(string $argument): ? string;
+    public function getArgument(string $argument): ?string;
 
     /**
      * Determine if an argument exists.
@@ -85,7 +85,7 @@ interface Input
      *
      * @return string
      */
-    public function getShortOption(string $option): ? string;
+    public function getShortOption(string $option): ?string;
 
     /**
      * Determine if a short option exists.
@@ -103,7 +103,7 @@ interface Input
      *
      * @return string
      */
-    public function getLongOption(string $option): ? string;
+    public function getLongOption(string $option): ?string;
 
     /**
      * Determine if a long option exists.
@@ -121,7 +121,7 @@ interface Input
      *
      * @return string
      */
-    public function getOption(string $option): ? string;
+    public function getOption(string $option): ?string;
 
     /**
      * Check if an option exists (long or short).
@@ -135,7 +135,7 @@ interface Input
     /**
      * Get the global options.
      *
-     * @return \Valkyrja\Console\Input\Option[]
+     * @return Option[]
      */
     public function getGlobalOptions(): array;
 

@@ -15,10 +15,8 @@ namespace Valkyrja\Http;
  * Class Cookies.
  *
  * @author Melech Mizrachi
- *
- * @property \Valkyrja\Http\Cookie[] $collection
- *
- * @method get(string $key, $default = false): \Valkyrja\Http\Cookie
+ * @property Cookie[] $collection
+ * @method get(string $key, $default = false): Cookie
  */
 class Cookies
 {
@@ -34,7 +32,7 @@ class Cookies
      *
      * @param bool $asString [optional] Get the cookies as a string?
      *
-     * @return \Valkyrja\Http\Cookie[]
+     * @return Cookie[]
      */
     public function all(bool $asString = true): array
     {
@@ -48,7 +46,7 @@ class Cookies
         foreach ($this->cookies as $path) {
             /** @var array $cookies */
             foreach ($path as $cookies) {
-                /** @var \Valkyrja\Http\Cookie $cookie */
+                /** @var Cookie $cookie */
                 foreach ($cookies as $cookie) {
                     $flattenedCookies[] = $cookie;
                 }
@@ -63,7 +61,7 @@ class Cookies
      *
      * @param Cookie $cookie The cookie object
      *
-     * @return \Valkyrja\Http\Cookies
+     * @return Cookies
      */
     public function set(Cookie $cookie): self
     {
@@ -79,7 +77,7 @@ class Cookies
      * @param string $path   [optional] Cookie path
      * @param string $domain [optional] Cookie domain
      *
-     * @return \Valkyrja\Http\Cookies
+     * @return Cookies
      */
     public function remove(string $name, string $path = '/', string $domain = null): self
     {

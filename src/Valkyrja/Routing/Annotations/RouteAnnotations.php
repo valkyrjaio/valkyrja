@@ -23,7 +23,7 @@ interface RouteAnnotations extends Annotations
     /**
      * Get routes.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
      * @return array
      */

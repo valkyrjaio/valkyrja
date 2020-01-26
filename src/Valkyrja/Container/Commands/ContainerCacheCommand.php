@@ -12,6 +12,7 @@
 namespace Valkyrja\Container\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
@@ -56,16 +57,13 @@ class ContainerCacheCommand extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage(
-                'An error occurred while generating container cache.',
-                true
-            );
+            output()->writeMessage('An error occurred while generating container cache.', true);
 
-            return 1;
+            return ExitCode::FAILURE;
         }
 
         output()->writeMessage('Container cache generated successfully', true);
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 }

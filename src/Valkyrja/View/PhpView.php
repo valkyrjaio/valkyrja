@@ -130,9 +130,8 @@ class PhpView implements View
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      *
+     * @return View
      * @throws InvalidConfigPath
-     *
-     * @return \Valkyrja\View\View
      */
     public function make(string $template = null, array $variables = []): View
     {
@@ -154,7 +153,7 @@ class PhpView implements View
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setVariables(array $variables = []): View
     {
@@ -181,7 +180,7 @@ class PhpView implements View
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setVariable(string $key, $value): View
     {
@@ -224,7 +223,7 @@ class PhpView implements View
      *
      * @param string $templateDir The path to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setTemplateDir(string $templateDir): View
     {
@@ -248,7 +247,7 @@ class PhpView implements View
      *
      * @param string $extension The extension to set
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function setFileExtension(string $extension): View
     {
@@ -282,9 +281,8 @@ class PhpView implements View
      *
      * @param string $layout [optional] The layout to set
      *
+     * @return View
      * @throws InvalidConfigPath
-     *
-     * @return \Valkyrja\View\View
      */
     public function layout(string $layout = null): View
     {
@@ -309,7 +307,7 @@ class PhpView implements View
     /**
      * Set no layout for this view.
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function withoutLayout(): View
     {
@@ -324,9 +322,8 @@ class PhpView implements View
      *
      * @param string $template The template
      *
+     * @return View
      * @throws InvalidConfigPath
-     *
-     * @return \Valkyrja\View\View
      */
     public function template(string $template): View
     {
@@ -342,9 +339,8 @@ class PhpView implements View
      * @param string $partial   The partial
      * @param array  $variables [optional]
      *
-     * @throws InvalidConfigPath
-     *
      * @return string
+     * @throws InvalidConfigPath
      */
     public function partial(string $partial, array $variables = []): string
     {
@@ -429,11 +425,7 @@ class PhpView implements View
     public function render(array $variables = []): string
     {
         // Set the variables with the new variables and this view instance
-        $this->variables = array_merge(
-            $this->variables,
-            $variables,
-            ['view' => $this]
-        );
+        $this->variables = array_merge($this->variables, $variables, ['view' => $this]);
 
         // Render the template
         $template = $this->renderTemplate($this->templatePath);
@@ -464,9 +456,8 @@ class PhpView implements View
      *
      * @param string $template The template
      *
-     * @throws InvalidConfigPath
-     *
      * @return string
+     * @throws InvalidConfigPath
      */
     protected function getFullPath(string $template): string
     {
@@ -559,15 +550,11 @@ class PhpView implements View
      *
      * @param Application $app The application
      *
-     * @throws InvalidConfigPath
-     *
      * @return void
+     * @throws InvalidConfigPath
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            View::class,
-            new static($app)
-        );
+        $app->container()->singleton(View::class, new static($app));
     }
 }

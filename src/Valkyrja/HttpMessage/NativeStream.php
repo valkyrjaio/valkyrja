@@ -16,7 +16,6 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 
 /**
  * Describes a data stream.
- *
  * Typically, an instance will wrap a PHP stream; this interface provides
  * a wrapper around the most common operations, including serialization of
  * the entire stream to a string.
@@ -38,7 +37,7 @@ class NativeStream implements Stream
      * @param string $stream The stream
      * @param string $mode   [optional] The mode
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidStream
      */
     public function __construct(string $stream, string $mode = null)
     {
@@ -47,17 +46,13 @@ class NativeStream implements Stream
 
     /**
      * Reads all data from the stream into a string, from the beginning to end.
-     *
      * This method MUST attempt to seek to the beginning of the stream before
      * reading data and read the stream until the end is reached.
-     *
      * Warning: This could attempt to load a large amount of data into memory.
-     *
      * This method MUST NOT raise an exception in order to conform with PHP's
      * string casting operations.
      *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
-     *
      * @return string
      */
     public function __toString()
@@ -103,7 +98,6 @@ class NativeStream implements Stream
 
     /**
      * Separates any underlying resources from the stream.
-     *
      * After the stream has been detached, the stream is in an unusable state.
      *
      * @return resource|null Underlying PHP stream, if any
@@ -122,9 +116,8 @@ class NativeStream implements Stream
      * @param string $stream The stream
      * @param string $mode   [optional] The mode
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
-     *
      * @return void
+     * @throws InvalidStream
      */
     public function attach(string $stream, string $mode = null): void
     {
@@ -136,7 +129,7 @@ class NativeStream implements Stream
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
-    public function getSize(): ? int
+    public function getSize(): ?int
     {
         $fstat = null;
 
@@ -155,29 +148,24 @@ class NativeStream implements Stream
     /**
      * Returns the current position of the file read/write pointer.
      *
-     * @throws \RuntimeException on error.
-     *
      * @return int Position of the file pointer
+     * @throws RuntimeException on error.
      */
     public function tell(): int
     {
         // If there is no stream available
         if (null === $this->stream) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'No resource available; cannot tell position'
-            );
+            throw new RuntimeException('No resource available; cannot tell position');
         }
 
         // Get the tell for the stream
         $result = ftell($this->stream);
 
         // If the tell is not an int
-        if (! \is_int($result)) {
+        if (! is_int($result)) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'Error occurred during tell operation'
-            );
+            throw new RuntimeException('Error occurred during tell operation');
         }
 
         return $result;
@@ -229,26 +217,21 @@ class NativeStream implements Stream
      *                    offset SEEK_END: Set position to end-of-stream plus
      *                    offset.
      *
-     * @throws \RuntimeException on failure.
-     *
      * @return void
+     * @throws RuntimeException on failure.
      */
     public function seek(int $offset, int $whence = SEEK_SET): void
     {
         // If there is no stream
         if (null === $this->stream) {
             // Throw a new runtime exception
-            throw new RuntimeException(
-                'No resource available; cannot seek position'
-            );
+            throw new RuntimeException('No resource available; cannot seek position');
         }
 
         // If the stream isn't seekable
         if (! $this->isSeekable()) {
             // Throw a new runtime exception
-            throw new RuntimeException(
-                'Stream is not seekable'
-            );
+            throw new RuntimeException('Stream is not seekable');
         }
 
         // Get the results of the seek attempt
@@ -257,24 +240,19 @@ class NativeStream implements Stream
         // If the result was not a 0, denoting an error occurred
         if (0 !== $result) {
             // Throw a new runtime exception
-            throw new RuntimeException(
-                'Error seeking within stream'
-            );
+            throw new RuntimeException('Error seeking within stream');
         }
     }
 
     /**
      * Seek to the beginning of the stream.
-     *
      * If the stream is not seekable, this method will raise an exception;
      * otherwise, it will perform a seek(0).
      *
-     * @see  seek()
      * @link http://www.php.net/manual/en/function.fseek.php
-     *
-     * @throws \RuntimeException on failure.
-     *
      * @return void
+     * @throws RuntimeException on failure.
+     * @see  seek()
      */
     public function rewind(): void
     {
@@ -310,26 +288,21 @@ class NativeStream implements Stream
      *
      * @param string $string The string that is to be written.
      *
-     * @throws \RuntimeException on failure.
-     *
      * @return int Returns the number of bytes written to the stream.
+     * @throws RuntimeException on failure.
      */
     public function write(string $string): int
     {
         // If there is no stream
         if (null === $this->stream) {
             // Throw a new runtime exception
-            throw new RuntimeException(
-                'No resource available; cannot write'
-            );
+            throw new RuntimeException('No resource available; cannot write');
         }
 
         // If the stream isn't seekable
         if (! $this->isSeekable()) {
             // Throw a new runtime exception
-            throw new RuntimeException(
-                'Stream is not writable'
-            );
+            throw new RuntimeException('Stream is not writable');
         }
 
         // Attempt to write to the stream
@@ -338,9 +311,7 @@ class NativeStream implements Stream
         // If the write was not successful
         if (false === $result) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'Error writing to stream'
-            );
+            throw new RuntimeException('Error writing to stream');
         }
 
         return $result;
@@ -372,27 +343,22 @@ class NativeStream implements Stream
      *                    them. Fewer than $length bytes may be returned if
      *                    underlying stream call returns fewer bytes.
      *
-     * @throws \RuntimeException if an error occurs.
-     *
      * @return string Returns the data read from the stream, or an empty string
      *          if no bytes are available.
+     * @throws RuntimeException if an error occurs.
      */
     public function read(int $length): string
     {
         // If there is no stream
         if (null === $this->stream) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'No resource available; cannot read'
-            );
+            throw new RuntimeException('No resource available; cannot read');
         }
 
         // If the stream is not readable
         if (! $this->isReadable()) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'Stream is not readable'
-            );
+            throw new RuntimeException('Stream is not readable');
         }
 
         // Read the stream
@@ -401,9 +367,7 @@ class NativeStream implements Stream
         // If there was a failure in reading the stream
         if (false === $result) {
             // Throw a runtime exception
-            throw new RuntimeException(
-                'Error reading stream'
-            );
+            throw new RuntimeException('Error reading stream');
         }
 
         return $result;
@@ -412,10 +376,9 @@ class NativeStream implements Stream
     /**
      * Returns the remaining contents in a string.
      *
-     * @throws \RuntimeException
-     *          if unable to read or an error occurs while reading.
-     *
      * @return string
+     * @throws RuntimeException
+     *          if unable to read or an error occurs while reading.
      */
     public function getContents(): string
     {
@@ -439,7 +402,6 @@ class NativeStream implements Stream
 
     /**
      * Get stream metadata as an associative array or retrieve a specific key.
-     *
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *
@@ -471,23 +433,19 @@ class NativeStream implements Stream
      * @param string $stream The stream
      * @param string $mode   [optional] The mode
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
-     *
      * @return void
+     * @throws InvalidStream
      */
     protected function setStream(string $stream, string $mode = null): void
     {
         // Set the mode
-        $mode = $mode ?? 'r';
+        $mode = $mode ?? 'rb';
 
         // Open a new resource stream
         $resource = fopen($stream, $mode);
 
         // If the resource isn't a resource or a stream resource type
-        if (! \is_resource($resource) || 'stream' !== get_resource_type(
-                $resource
-            )
-        ) {
+        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
             // Throw a new invalid stream exception
             throw new InvalidStream(
                 'Invalid stream provided; must be a string stream identifier or stream resource'

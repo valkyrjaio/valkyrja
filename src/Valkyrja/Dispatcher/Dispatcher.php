@@ -11,6 +11,12 @@
 
 namespace Valkyrja\Dispatcher;
 
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+
 /**
  * Interface Dispatcher.
  *
@@ -23,9 +29,8 @@ interface Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     *
      * @return void
+     * @throws InvalidMethodException
      */
     public function verifyClassMethod(Dispatch $dispatch): void;
 
@@ -34,9 +39,8 @@ interface Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidPropertyException
      */
     public function verifyClassProperty(Dispatch $dispatch): void;
 
@@ -45,9 +49,8 @@ interface Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     *
      * @return void
+     * @throws InvalidFunctionException
      */
     public function verifyFunction(Dispatch $dispatch): void;
 
@@ -56,9 +59,8 @@ interface Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     *
      * @return void
+     * @throws InvalidClosureException
      */
     public function verifyClosure(Dispatch $dispatch): void;
 
@@ -67,13 +69,12 @@ interface Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function verifyDispatch(Dispatch $dispatch): void;
 

@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Enum;
 
+use Exception;
 use InvalidArgumentException;
 use JsonSerializable;
 use ReflectionClass;
@@ -47,7 +48,7 @@ abstract class Enum implements JsonSerializable
      *
      * @param mixed $value The value to set
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct($value)
     {
@@ -63,7 +64,7 @@ abstract class Enum implements JsonSerializable
      */
     public static function isValid($value): bool
     {
-        if (\is_array($value) || \is_object($value)) {
+        if (is_array($value) || is_object($value)) {
             return false;
         }
 
@@ -88,7 +89,7 @@ abstract class Enum implements JsonSerializable
             return true;
         }
 
-        return \in_array($value, $validValues, true);
+        return in_array($value, $validValues, true);
     }
 
     /**
@@ -127,10 +128,9 @@ abstract class Enum implements JsonSerializable
     {
         try {
             // Get a reflection class of the enum
-            $reflectionClass = new ReflectionClass(static::class);
-            $values          = $reflectionClass->getConstants();
+            $values = (new ReflectionClass(static::class))->getConstants();
         } // Catch any exceptions
-        catch (\Exception $exception) {
+        catch (Exception $exception) {
             $values = [];
         }
 
@@ -139,7 +139,7 @@ abstract class Enum implements JsonSerializable
         // Iterate through the values
         foreach ($values as $key => $value) {
             // If this value is defined in this abstract Enum (self)
-            if (\defined(self::class . '::' . $key)) {
+            if (defined(self::class . '::' . $key)) {
                 // Unset it from the list as its not a valid Enum value, but
                 // rather a value the Enum class needs (like self::VALUES)
                 unset($values[$key]);
@@ -178,22 +178,15 @@ abstract class Enum implements JsonSerializable
      *
      * @param mixed $value The value to set
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public function setValue($value): void
     {
         // If the value is not valid
         if (! static::isValid($value)) {
             // Throw an exception
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Invalid enumeration %s for Enum %s',
-                    $value,
-                    \get_class($this)
-                )
-            );
+            throw new InvalidArgumentException(sprintf('Invalid enumeration %s for Enum %s', $value, get_class($this)));
         }
 
         $this->value = $value;

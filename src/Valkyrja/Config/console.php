@@ -17,8 +17,7 @@
  * The console is Valkyrja's module for working with the application
  * through the CLI. All the configurations necessary to make that
  * work can be found here.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +25,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'providers'                 => env(
         'CONSOLE_PROVIDERS',
@@ -50,7 +48,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'devProviders'              => env('CONSOLE_DEV_PROVIDERS', []),
 
@@ -60,7 +57,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'quiet'                     => env('CONSOLE_QUIET', false),
 
@@ -70,7 +66,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotations'            => env('CONSOLE_USE_ANNOTATIONS', false),
 
@@ -80,7 +75,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotationsExclusively' => env(
         'CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY',
@@ -93,7 +87,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'handlers'                  => env('CONSOLE_HANDLERS', []),
 
@@ -103,7 +96,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'filePath'                  => env(
         'CONSOLE_FILE_PATH',
@@ -116,7 +108,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'cacheFilePath'             => env(
         'CONSOLE_CACHE_FILE_PATH',
@@ -129,7 +120,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useCache'                  => env('CONSOLE_USE_CACHE_FILE', false),
 ];

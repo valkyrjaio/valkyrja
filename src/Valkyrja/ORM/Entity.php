@@ -51,7 +51,6 @@ abstract class Entity extends Model
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
-     *
      * <code>
      *      [
      *          // An array to be json_encoded/decoded to/from the db
@@ -121,7 +120,7 @@ abstract class Entity extends Model
      *
      * @return null|string
      */
-    public static function getRepository(): ? string
+    public static function getRepository(): ?string
     {
         return static::$repository;
     }
@@ -142,7 +141,6 @@ abstract class Entity extends Model
      * but a property mapper is not, then the property type is NOT automatically filled in
      * via the EntityManager and Repository. If a mapper is specified and a type is not
      * then nothing happens.
-     *
      * <code>
      *      [
      *          'property_name' => [
@@ -182,14 +180,14 @@ abstract class Entity extends Model
             switch ($type) {
                 // If the type is object and the property isn't already an object
                 case PropertyType::OBJECT:
-                    if (! \is_object($value)) {
+                    if (! is_object($value)) {
                         $value = unserialize($value, true);
                     }
 
                     break;
                 // If the type is array and the property isn't already an array
                 case PropertyType::ARRAY:
-                    if (! \is_array($value)) {
+                    if (! is_array($value)) {
                         $value = json_decode($value, true);
                     }
 
@@ -197,7 +195,7 @@ abstract class Entity extends Model
                 default:
                     // Otherwise if a type was set and type is an array and the value is an array
                     // Then this should be an array of entities
-                    if ($type !== null && \is_array($type) && \is_array($value)) {
+                    if ($type !== null && is_array($type) && is_array($value)) {
                         // Iterate through the items
                         foreach ($value as &$item) {
                             // Create a new entity for each item
@@ -243,12 +241,12 @@ abstract class Entity extends Model
             $type = static::$propertyTypes[$property] ?? null;
 
             // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && \is_object($value)) {
+            if ($type === PropertyType::OBJECT && is_object($value)) {
                 // Unserialize the object
                 $value = serialize($value);
             } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && \is_array($value)) {
-                $value = \json_encode($value);
+            elseif ($type === PropertyType::ARRAY && is_array($value)) {
+                $value = json_encode($value);
             }
 
             // And set each property to its value

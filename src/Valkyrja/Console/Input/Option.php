@@ -93,7 +93,7 @@ class Option
      *
      * @return string
      */
-    public function getShortcut(): ? string
+    public function getShortcut(): ?string
     {
         return $this->shortcut;
     }
@@ -113,7 +113,7 @@ class Option
      *
      * @return string
      */
-    public function getDefault(): ? string
+    public function getDefault(): ?string
     {
         return $this->default;
     }

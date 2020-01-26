@@ -16,8 +16,7 @@
  *
  * Anything and everything to do with annotations and how they are
  * configured to work within the application can be found here.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -25,7 +24,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'enabled'  => env('ANNOTATIONS_ENABLED', false),
 
@@ -35,7 +33,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'cacheDir' => env(
         'ANNOTATIONS_CACHE_DIR',
@@ -48,7 +45,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'map'      => env(
         'ANNOTATIONS_MAP',

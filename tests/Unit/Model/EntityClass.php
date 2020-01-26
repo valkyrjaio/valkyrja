@@ -11,8 +11,6 @@
 
 namespace Valkyrja\Tests\Unit\Model;
 
-use Valkyrja\ORM\Entity;
-
 /**
  * Model class to use to test abstract model.
  *
@@ -39,7 +37,7 @@ class EntityClass extends \Valkyrja\ORM\Entity
      *
      * @return string
      */
-    public function getProp():? string
+    public function getProp(): ?string
     {
         return $this->prop;
     }

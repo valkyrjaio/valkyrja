@@ -11,8 +11,12 @@
 
 namespace Valkyrja\HttpMessage\Response;
 
-use Valkyrja\Http\StatusCode;
-use Valkyrja\HttpMessage\Header;
+use InvalidArgumentException;
+use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\HttpMessage\Enums\Header;
+use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\NativeResponse;
 
 /**
@@ -29,16 +33,41 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws InvalidStatusCode
+     * @throws InvalidStream
      */
-    public function __construct(string $uri, int $status = null, array $headers = [])
+    public function __construct(string $uri = '/', int $status = null, array $headers = [])
     {
         parent::__construct(
             null,
             $status ?? StatusCode::FOUND,
             $this->injectHeader(Header::LOCATION, $uri, $headers, true)
         );
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RedirectResponse::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(RedirectResponse::class, new static());
     }
 }

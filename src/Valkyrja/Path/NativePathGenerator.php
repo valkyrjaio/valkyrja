@@ -31,17 +31,14 @@ class NativePathGenerator implements PathGenerator
      * @param array $data     [optional] The data
      * @param array $params   [optional] The params
      *
-     * @throws \InvalidArgumentException
-     *
      * @return string
+     * @throws InvalidArgumentException
      */
     public function parse(array $segments, array $data = null, array $params = null): string
     {
         // If data was passed but no params
         if (null === $params && null !== $data) {
-            throw new InvalidArgumentException(
-                'Route params are required when supplying data'
-            );
+            throw new InvalidArgumentException('Route params are required when supplying data');
         }
 
         $path         = '';
@@ -50,13 +47,7 @@ class NativePathGenerator implements PathGenerator
 
         // If there is data, parse the replacements
         if (null !== $data) {
-            $this->parseData(
-                $segments,
-                $data,
-                $params,
-                $replace,
-                $replacements
-            );
+            $this->parseData($segments, $data, $params, $replace, $replacements);
         }
 
         // Iterate through the segments
@@ -86,9 +77,8 @@ class NativePathGenerator implements PathGenerator
      * @param array $replace      The replace array
      * @param array $replacements The replacements array
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function parseData(
         array $segments,
@@ -102,27 +92,18 @@ class NativePathGenerator implements PathGenerator
             // If the data isn't found in the params array it is not a valid
             // param
             if (! isset($params[$key])) {
-                throw new InvalidArgumentException(
-                    "Invalid route param '{$key}'"
-                );
+                throw new InvalidArgumentException("Invalid route param '{$key}'");
             }
 
             $regex = $params[$key]['regex'];
 
             $this->validateDatum($key, $datum, $regex);
 
-            if (\is_array($datum)) {
+            if (is_array($datum)) {
                 // Get the segment by the param key and replace the {key}
                 // within it to get the repeatable portion of the segment
-                $segment     = $this->findParamSegment(
-                    $segments,
-                    $params[$key]['replace']
-                );
-                $deliminator = str_replace(
-                    $params[$key]['replace'] . '*',
-                    '',
-                    $segment
-                );
+                $segment     = $this->findParamSegment($segments, $params[$key]['replace']);
+                $deliminator = str_replace($params[$key]['replace'] . '*', '', $segment);
 
                 // Set what to replace
                 $replace[] = $params[$key]['replace'] . '*';
@@ -146,13 +127,12 @@ class NativePathGenerator implements PathGenerator
      * @param mixed  $datum The datum
      * @param string $regex The regex
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function validateDatum(string $key, $datum, string $regex): void
     {
-        if (\is_array($datum)) {
+        if (is_array($datum)) {
             foreach ($datum as $datumItem) {
                 $this->validateDatum($key, $datumItem, $regex);
             }
@@ -162,9 +142,7 @@ class NativePathGenerator implements PathGenerator
 
         // If the value of the data doesn't match what was specified when the route was made
         if (preg_match('/^' . $regex . '$/', $datum) === 0) {
-            throw new InvalidArgumentException(
-                "Route param for {$key}, '{$datum}', does not match {$regex}"
-            );
+            throw new InvalidArgumentException("Route param for {$key}, '{$datum}', does not match {$regex}");
         }
     }
 
@@ -176,7 +154,7 @@ class NativePathGenerator implements PathGenerator
      *
      * @return string
      */
-    protected function findParamSegment(array $segments, string $param): ? string
+    protected function findParamSegment(array $segments, string $param): ?string
     {
         $segment = null;
 
@@ -210,9 +188,6 @@ class NativePathGenerator implements PathGenerator
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            PathGenerator::class,
-            new static()
-        );
+        $app->container()->singleton(PathGenerator::class, new static());
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Http\Enums\StatusCode;
+
 /**
  * Interface JsonResponse.
  *
@@ -26,7 +28,7 @@ interface JsonResponse extends Response
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public static function createJson(
         string $content = '',
@@ -40,7 +42,7 @@ interface JsonResponse extends Response
      *
      * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function setCallback(string $callback = null): self;
 
@@ -49,7 +51,7 @@ interface JsonResponse extends Response
      *
      * @param string $json The json to set
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function setJson(string $json): self;
 
@@ -58,7 +60,7 @@ interface JsonResponse extends Response
      *
      * @param mixed $data [optional] The data to set
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function setData(array $data = []): self;
 
@@ -74,7 +76,7 @@ interface JsonResponse extends Response
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function setEncodingOptions(int $encodingOptions): self;
 }

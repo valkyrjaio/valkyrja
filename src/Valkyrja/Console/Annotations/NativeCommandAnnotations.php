@@ -11,12 +11,12 @@
 
 namespace Valkyrja\Console\Annotations;
 
+use ReflectionException;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
-use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class CommandAnnotations.
@@ -25,16 +25,13 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnotations
 {
-    use Provides;
-
     /**
      * Get the commands.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Console\Command[]
+     * @return ConsoleCommand[]
+     * @throws ReflectionException
      */
     public function getCommands(string ...$classes): array
     {
@@ -43,22 +40,16 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Console\Annotations\Command $annotation */
-            foreach ($this->classAnnotationsType(
-                'Command',
-                $class
-            ) as $annotation) {
+            /** @var Command $annotation */
+            foreach ($this->classAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
             }
 
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Console\Annotations\Command $annotation */
-            foreach ($this->methodsAnnotationsType(
-                'Command',
-                $class
-            ) as $annotation) {
+            /** @var Command $annotation */
+            foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -73,18 +64,14 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
      *
      * @param Annotation $annotation
      *
-     * @throws \ReflectionException
-     *
      * @return void
+     * @throws ReflectionException
      */
     protected function setCommandProperties(Annotation $annotation): void
     {
         $classReflection = $this->getClassReflection($annotation->getClass());
 
-        if ($annotation->getMethod() || $classReflection->hasMethod(
-                '__construct'
-            )
-        ) {
+        if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
             $methodReflection = $this->getMethodReflection(
                 $annotation->getClass(),
                 $annotation->getMethod() ?? '__construct'
@@ -92,9 +79,7 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
             $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $annotation->setDependencies(
-                $this->getDependencies(...$parameters)
-            );
+            $annotation->setDependencies($this->getDependencies(...$parameters));
         }
 
         $annotation->setMatches();
@@ -105,7 +90,7 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
      *
      * @param Command $command The command annotation
      *
-     * @return \Valkyrja\Console\Command
+     * @return ConsoleCommand
      */
     protected function getCommandFromAnnotation(Command $command): ConsoleCommand
     {

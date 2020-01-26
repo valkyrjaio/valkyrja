@@ -11,9 +11,10 @@
 
 namespace Valkyrja\HttpMessage;
 
+use RuntimeException;
+
 /**
  * Describes a data stream.
- *
  * Typically, an instance will wrap a PHP stream; this interface provides
  * a wrapper around the most common operations, including serialization of
  * the entire stream to a string.
@@ -22,17 +23,13 @@ interface Stream
 {
     /**
      * Reads all data from the stream into a string, from the beginning to end.
-     *
      * This method MUST attempt to seek to the beginning of the stream before
      * reading data and read the stream until the end is reached.
-     *
      * Warning: This could attempt to load a large amount of data into memory.
-     *
      * This method MUST NOT raise an exception in order to conform with PHP's
      * string casting operations.
      *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
-     *
      * @return string
      */
     public function __toString();
@@ -46,7 +43,6 @@ interface Stream
 
     /**
      * Separates any underlying resources from the stream.
-     *
      * After the stream has been detached, the stream is in an unusable state.
      *
      * @return resource|null Underlying PHP stream, if any
@@ -68,14 +64,13 @@ interface Stream
      *
      * @return int|null Returns the size in bytes if known, or null if unknown.
      */
-    public function getSize(): ? int;
+    public function getSize(): ?int;
 
     /**
      * Returns the current position of the file read/write pointer.
      *
-     * @throws \RuntimeException on error.
-     *
      * @return int Position of the file pointer
+     * @throws RuntimeException on error.
      */
     public function tell(): int;
 
@@ -107,24 +102,20 @@ interface Stream
      *                    offset SEEK_END: Set position to end-of-stream plus
      *                    offset.
      *
-     * @throws \RuntimeException on failure.
-     *
+     * @throws RuntimeException on failure.
      * @return void
      */
     public function seek(int $offset, int $whence = SEEK_SET): void;
 
     /**
      * Seek to the beginning of the stream.
-     *
      * If the stream is not seekable, this method will raise an exception;
      * otherwise, it will perform a seek(0).
      *
-     * @see  seek()
      * @link http://www.php.net/manual/en/function.fseek.php
-     *
-     * @throws \RuntimeException on failure.
-     *
      * @return void
+     * @throws RuntimeException on failure.
+     * @see  seek()
      */
     public function rewind(): void;
 
@@ -140,9 +131,8 @@ interface Stream
      *
      * @param string $string The string that is to be written.
      *
-     * @throws \RuntimeException on failure.
-     *
      * @return int Returns the number of bytes written to the stream.
+     * @throws RuntimeException on failure.
      */
     public function write(string $string): int;
 
@@ -160,26 +150,23 @@ interface Stream
      *                    them. Fewer than $length bytes may be returned if
      *                    underlying stream call returns fewer bytes.
      *
-     * @throws \RuntimeException if an error occurs.
-     *
      * @return string Returns the data read from the stream, or an empty string
      *          if no bytes are available.
+     * @throws RuntimeException if an error occurs.
      */
     public function read(int $length): string;
 
     /**
      * Returns the remaining contents in a string.
      *
-     * @throws \RuntimeException if unable to read or an error occurs while
-     *                           reading.
-     *
      * @return string
+     * @throws RuntimeException if unable to read or an error occurs while
+     *                           reading.
      */
     public function getContents(): string;
 
     /**
      * Get stream metadata as an associative array or retrieve a specific key.
-     *
      * The keys returned are identical to the keys returned from PHP's
      * stream_get_meta_data() function.
      *

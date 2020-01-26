@@ -94,16 +94,12 @@ class Cookie
      * @param int    $expire   [optional] The time the cookie should expire
      * @param string $path     [optional] The path the cookie is available to
      * @param string $domain   [optional] The domain the cookie is available to
-     * @param bool   $secure   [optional] Whether the cookie should only be
-     *                         transmitted over a secure HTTPS connection
-     * @param bool   $httpOnly [optional] Whether the cookie will be made
-     *                         accessible only through the HTTP protocol
-     * @param bool   $raw      [optional] Whether the cookie value should be
-     *                         sent with no url encoding
-     * @param string $sameSite [optional] Whether the cookie will be available
-     *                         for cross-site requests
+     * @param bool   $secure   [optional] Whether the cookie should only be transmitted over a secure HTTPS connection
+     * @param bool   $httpOnly [optional] Whether the cookie will be made accessible only through the HTTP protocol
+     * @param bool   $raw      [optional] Whether the cookie value should be sent with no url encoding
+     * @param string $sameSite [optional] Whether the cookie will be available for cross-site requests
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
+     * @throws InvalidSameSiteTypeException
      */
     public function __construct(
         string $name,
@@ -116,18 +112,17 @@ class Cookie
         bool $raw = false,
         string $sameSite = null
     ) {
-        $this->name   = $name;
-        $this->value  = $value;
-        $this->expire = $expire;
-        $this->path   = $path;
-        $this->domain = $domain;
-        $this->secure = $secure;
-        $this->raw    = $raw;
+        $this->name     = $name;
+        $this->value    = $value;
+        $this->expire   = $expire;
+        $this->path     = $path;
+        $this->domain   = $domain;
+        $this->secure   = $secure;
+        $this->raw      = $raw;
+        $this->httpOnly = $httpOnly;
 
-        if (! \in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
-            throw new InvalidSameSiteTypeException(
-                'The "sameSite" parameter value is not valid.'
-            );
+        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+            throw new InvalidSameSiteTypeException('The "sameSite" parameter value is not valid.');
         }
 
         $this->sameSite = $sameSite;
@@ -200,7 +195,7 @@ class Cookie
      *
      * @param string $name The name
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setName(string $name): self
     {
@@ -224,7 +219,7 @@ class Cookie
      *
      * @param string $value The value
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setValue(string $value): self
     {
@@ -250,9 +245,7 @@ class Cookie
      */
     public function getMaxAge(): int
     {
-        return 0 !== $this->expire
-            ? $this->expire - time()
-            : 0;
+        return 0 !== $this->expire ? $this->expire - time() : 0;
     }
 
     /**
@@ -260,7 +253,7 @@ class Cookie
      *
      * @param int $expire The expire time
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setExpire(int $expire): self
     {
@@ -284,7 +277,7 @@ class Cookie
      *
      * @param string $path The path
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setPath(string $path): self
     {
@@ -308,7 +301,7 @@ class Cookie
      *
      * @param string $domain The domain
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setDomain(string $domain): self
     {
@@ -318,8 +311,7 @@ class Cookie
     }
 
     /**
-     * Whether the cookie should only be transmitted over a secure HTTPS
-     * connection.
+     * Whether the cookie should only be transmitted over a secure HTTPS connection.
      *
      * @return bool
      */
@@ -329,12 +321,11 @@ class Cookie
     }
 
     /**
-     * Set whether the cookie should only be transmitted over a secure HTTPS
-     * connection.
+     * Set whether the cookie should only be transmitted over a secure HTTPS connection.
      *
      * @param bool $secure
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setSecure(bool $secure): self
     {
@@ -344,8 +335,7 @@ class Cookie
     }
 
     /**
-     * Whether the cookie will be made accessible only through the HTTP
-     * protocol.
+     * Whether the cookie will be made accessible only through the HTTP protocol.
      *
      * @return bool
      */
@@ -355,12 +345,11 @@ class Cookie
     }
 
     /**
-     * Set whether the cookie will be made accessible only through the HTTP
-     * protocol.
+     * Set whether the cookie will be made accessible only through the HTTP protocol.
      *
      * @param bool $httpOnly
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setHttpOnly(bool $httpOnly): self
     {
@@ -384,7 +373,7 @@ class Cookie
      *
      * @param bool $raw
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setRaw(bool $raw): self
     {
@@ -408,7 +397,7 @@ class Cookie
      *
      * @param string $sameSite
      *
-     * @return \Valkyrja\Http\Cookie
+     * @return Cookie
      */
     public function setSameSite(string $sameSite): self
     {

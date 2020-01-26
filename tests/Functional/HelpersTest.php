@@ -13,17 +13,14 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\NativeAnnotations;
-use Valkyrja\Console\Input\NativeInput;
-use Valkyrja\Console\Output\NativeOutput;
-use Valkyrja\Filesystem\FlyFilesystem;
-use Valkyrja\Routing\Route;
-use Valkyrja\Support\Directory;
-use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
+use Valkyrja\Console\Input\NativeInput;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
+use Valkyrja\Console\Output\NativeOutput;
 use Valkyrja\Container\NativeContainer;
 use Valkyrja\Events\NativeEvents;
+use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\NativeJsonResponse;
@@ -34,7 +31,10 @@ use Valkyrja\Http\NativeResponse;
 use Valkyrja\Http\NativeResponseBuilder;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Routing\NativeRouter;
+use Valkyrja\Routing\Route;
 use Valkyrja\Session\NativeSession;
+use Valkyrja\Support\Directory;
+use Valkyrja\Valkyrja;
 use Valkyrja\View\PhpView;
 
 /**

@@ -13,8 +13,8 @@ namespace Valkyrja\Routing;
 
 use InvalidArgumentException;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Http\RequestMethod;
-use Valkyrja\Http\StatusCode;
+use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class Route.
@@ -194,9 +194,8 @@ class Route extends Dispatch
      *
      * @param array $requestMethods The request methods
      *
-     * @throws \InvalidArgumentException
-     *
      * @return $this
+     * @throws InvalidArgumentException
      */
     public function setRequestMethods(array $requestMethods): self
     {

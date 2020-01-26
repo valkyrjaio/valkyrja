@@ -12,6 +12,11 @@
 namespace Valkyrja\Events;
 
 use Valkyrja\Application;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Events\Annotations\ListenerAnnotations;
 
 /**
@@ -24,7 +29,7 @@ class NativeEvents implements Events
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
@@ -58,13 +63,12 @@ class NativeEvents implements Events
      * @param string   $event    The event
      * @param Listener $listener The event listener
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function listen(string $event, Listener $listener): void
     {
@@ -87,15 +91,14 @@ class NativeEvents implements Events
      * Add a listener to many events.
      *
      * @param Listener $listener  The listener
-     * @param string[] ...$events The events
-     *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
+     * @param string   ...$events The events
      *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function listenMany(Listener $listener, string ...$events): void
     {
@@ -141,7 +144,7 @@ class NativeEvents implements Events
      *
      * @param string $event The event
      *
-     * @return \Valkyrja\Events\Listener[]
+     * @return Listener[]
      */
     public function getListeners(string $event): array
     {
@@ -223,10 +226,7 @@ class NativeEvents implements Events
         foreach ($this->getListeners($event) as $listener) {
             // Attempt to dispatch the event listener using any one of the
             // callable options
-            $dispatch = $this->app->dispatcher()->dispatchCallable(
-                $listener,
-                $arguments
-            );
+            $dispatch = $this->app->dispatcher()->dispatchCallable($listener, $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;
@@ -245,7 +245,7 @@ class NativeEvents implements Events
      */
     public function event(Event $event): array
     {
-        return $this->trigger(\get_class($event), [$event]);
+        return $this->trigger(get_class($event), [$event]);
     }
 
     /**
@@ -276,13 +276,12 @@ class NativeEvents implements Events
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -329,8 +328,7 @@ class NativeEvents implements Events
     protected function setupFromCache(): void
     {
         // Set the application events with said file
-        $cache = $this->app->config()['cache']['events']
-            ?? require $this->app->config()['events']['cacheFilePath'];
+        $cache = $this->app->config()['cache']['events'] ?? require $this->app->config()['events']['cacheFilePath'];
 
         self::$events = unserialize(
             base64_decode($cache['events'], true),
@@ -345,25 +343,20 @@ class NativeEvents implements Events
     /**
      * Setup annotations.
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     protected function setupAnnotations(): void
     {
         /** @var ListenerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(
-            ListenerAnnotations::class
-        );
+        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
 
         // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(
-            ...$this->app->config()['events']['classes']
-        );
+        $listeners = $containerAnnotations->getListeners(...$this->app->config()['events']['classes']);
 
         // Iterate through the listeners
         foreach ($listeners as $listener) {
@@ -375,13 +368,12 @@ class NativeEvents implements Events
     /**
      * Get a cacheable representation of the events.
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return array
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function getCacheable(): array
     {

@@ -106,7 +106,7 @@ class Cookie
      * @param string $sameSite [optional] Whether the cookie will be available
      *                         for cross-site requests
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
+     * @throws InvalidSameSiteTypeException
      */
     public function __construct(
         string $name,
@@ -119,13 +119,14 @@ class Cookie
         bool $raw = false,
         string $sameSite = null
     ) {
-        $this->name   = $name;
-        $this->value  = $value;
-        $this->expire = $expire;
-        $this->path   = $path;
-        $this->domain = $domain;
-        $this->secure = $secure;
-        $this->raw    = $raw;
+        $this->name     = $name;
+        $this->value    = $value;
+        $this->expire   = $expire;
+        $this->path     = $path;
+        $this->domain   = $domain;
+        $this->secure   = $secure;
+        $this->raw      = $raw;
+        $this->httpOnly = $httpOnly;
 
         $this->setSameSite($sameSite);
     }
@@ -196,7 +197,7 @@ class Cookie
      *
      * @param string $name The name
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setName(string $name): self
     {
@@ -220,7 +221,7 @@ class Cookie
      *
      * @param string $value The value
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setValue(string $value = null): self
     {
@@ -256,7 +257,7 @@ class Cookie
      *
      * @param int $expire The expire time
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setExpire(int $expire = null): self
     {
@@ -280,7 +281,7 @@ class Cookie
      *
      * @param string $path The path
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setPath(string $path = null): self
     {
@@ -304,7 +305,7 @@ class Cookie
      *
      * @param string $domain The domain
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setDomain(string $domain = null): self
     {
@@ -330,7 +331,7 @@ class Cookie
      *
      * @param bool $secure
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setSecure(bool $secure = null): self
     {
@@ -356,7 +357,7 @@ class Cookie
      *
      * @param bool $httpOnly
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setHttpOnly(bool $httpOnly = null): self
     {
@@ -380,7 +381,7 @@ class Cookie
      *
      * @param bool $raw
      *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
      */
     public function setRaw(bool $raw = null): self
     {
@@ -404,13 +405,12 @@ class Cookie
      *
      * @param string $sameSite
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
-     *
-     * @return \Valkyrja\HttpMessage\Cookie
+     * @return Cookie
+     * @throws InvalidSameSiteTypeException
      */
     public function setSameSite(string $sameSite = null): self
     {
-        if (! \in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(
                 'The "sameSite" parameter value is not valid.'
             );

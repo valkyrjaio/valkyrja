@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Filesystem;
 
+use Valkyrja\Filesystem\Enums\Visibility;
+
 /**
  * Interface Filesystem.
  *
@@ -34,7 +36,7 @@ interface Filesystem
      *
      * @return string|null The contents or null on failure
      */
-    public function read(string $path): ? string;
+    public function read(string $path): ?string;
 
     /**
      * Write a file.
@@ -132,7 +134,7 @@ interface Filesystem
      *
      * @return array|null An array of meta data or null on failure
      */
-    public function metadata(string $path): ? array;
+    public function metadata(string $path): ?array;
 
     /**
      * Get a file's mime type.
@@ -141,7 +143,7 @@ interface Filesystem
      *
      * @return string|null The mime type or null on failure
      */
-    public function mimetype(string $path): ? string;
+    public function mimetype(string $path): ?string;
 
     /**
      * Get a file's size.
@@ -150,7 +152,7 @@ interface Filesystem
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path): ? int;
+    public function size(string $path): ?int;
 
     /**
      * Get a file's timestamp.
@@ -159,7 +161,7 @@ interface Filesystem
      *
      * @return int|null The timestamp or null on failure
      */
-    public function timestamp(string $path): ? int;
+    public function timestamp(string $path): ?int;
 
     /**
      * Get a file's visibility.
@@ -169,7 +171,7 @@ interface Filesystem
      * @return string|null The visibility ('public' or 'private') or null on
      *                     failure
      */
-    public function visibility(string $path): ? string;
+    public function visibility(string $path): ?string;
 
     /**
      * Set a file's visibility.
@@ -221,8 +223,7 @@ interface Filesystem
      * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the
-     *                          directory
+     * @param bool   $recursive [optional] Whether to recurse through the directory
      *
      * @return array
      */
@@ -233,21 +234,21 @@ interface Filesystem
      *
      * @param string $adapter The adapter
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function adapter(string $adapter): self;
 
     /**
      * Get the local filesystem.
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function local(): self;
 
     /**
      * Get the s3 filesystem.
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function s3(): self;
 }

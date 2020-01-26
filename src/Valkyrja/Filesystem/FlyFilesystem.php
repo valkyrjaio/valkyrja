@@ -12,11 +12,18 @@
 namespace Valkyrja\Filesystem;
 
 use Aws\S3\S3Client;
+use InvalidArgumentException;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\FileExistsException;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem as FlySystem;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\RootViolationException;
+use LogicException;
 use Valkyrja\Application;
+use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -31,14 +38,14 @@ class FlyFilesystem implements Filesystem
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The Fly Filesystem.
      *
-     * @var \League\Flysystem\Filesystem
+     * @var FlySystem
      */
     protected $flySystem;
 
@@ -52,17 +59,14 @@ class FlyFilesystem implements Filesystem
     /**
      * FlyFilesystem constructor.
      *
-     * @param Application                       $application The application
-     * @param \League\Flysystem\Filesystem|null $flySystem   [optional] The
-     *                                                       FlyFilesystem
+     * @param Application              $application The application
+     * @param FilesystemInterface|null $flySystem   [optional] The FlyFilesystem
      */
-    public function __construct(Application $application, FlySystem $flySystem = null)
+    public function __construct(Application $application, FilesystemInterface $flySystem = null)
     {
         $this->app       = $application;
         $this->flySystem = $flySystem
-            ?? new FlySystem(
-                $this->flyAdapter($this->app->config()['filesystem']['default'])
-            );
+            ?? new FlySystem($this->flyAdapter($this->app->config()['filesystem']['default']));
     }
 
     /**
@@ -82,11 +86,10 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return string|null The contents or null on failure
+     * @throws FileNotFoundException
      */
-    public function read(string $path): ? string
+    public function read(string $path): ?string
     {
         $read = $this->flySystem->read($path);
 
@@ -99,9 +102,8 @@ class FlyFilesystem implements Filesystem
      * @param string $path     The path
      * @param string $contents The contents
      *
-     * @throws \League\Flysystem\FileExistsException
-     *
      * @return bool
+     * @throws FileExistsException
      */
     public function write(string $path, string $contents): bool
     {
@@ -114,10 +116,9 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @throws \InvalidArgumentException
-     * @throws \League\Flysystem\FileExistsException
-     *
      * @return bool
+     * @throws FileExistsException
+     * @throws InvalidArgumentException
      */
     public function writeStream(string $path, $resource): bool
     {
@@ -130,9 +131,8 @@ class FlyFilesystem implements Filesystem
      * @param string $path     The path
      * @param string $contents The contents
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return bool
+     * @throws FileNotFoundException
      */
     public function update(string $path, string $contents): bool
     {
@@ -145,10 +145,9 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @throws \InvalidArgumentException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return bool
+     * @throws FileNotFoundException
+     * @throws InvalidArgumentException
      */
     public function updateStream(string $path, $resource): bool
     {
@@ -174,9 +173,8 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @throws \InvalidArgumentException
-     *
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function putStream(string $path, $resource): bool
     {
@@ -189,10 +187,9 @@ class FlyFilesystem implements Filesystem
      * @param string $path    The existing path
      * @param string $newPath The new path
      *
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return bool
+     * @throws FileNotFoundException
+     * @throws FileExistsException
      */
     public function rename(string $path, string $newPath): bool
     {
@@ -205,10 +202,9 @@ class FlyFilesystem implements Filesystem
      * @param string $path    The existing path
      * @param string $newPath The new path
      *
-     * @throws \League\Flysystem\FileExistsException
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return bool
+     * @throws FileNotFoundException
+     * @throws FileExistsException
      */
     public function copy(string $path, string $newPath): bool
     {
@@ -220,9 +216,8 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return bool
+     * @throws FileNotFoundException
      */
     public function delete(string $path): bool
     {
@@ -234,11 +229,10 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return array|null An array of meta data or null on failure
+     * @throws FileNotFoundException
      */
-    public function metadata(string $path): ? array
+    public function metadata(string $path): ?array
     {
         $metadata = $this->flySystem->getMetadata($path);
 
@@ -250,11 +244,10 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return string|null The mime type or null on failure
+     * @throws FileNotFoundException
      */
-    public function mimetype(string $path): ? string
+    public function mimetype(string $path): ?string
     {
         $mimetype = $this->flySystem->getMimetype($path);
 
@@ -268,7 +261,7 @@ class FlyFilesystem implements Filesystem
      *
      * @return int|null The size in bytes or null on failure
      */
-    public function size(string $path): ? int
+    public function size(string $path): ?int
     {
         $size = $this->flySystem->getSize($path);
 
@@ -280,11 +273,10 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
      * @return int|null The timestamp or null on failure
+     * @throws FileNotFoundException
      */
-    public function timestamp(string $path): ? int
+    public function timestamp(string $path): ?int
     {
         $timestamp = $this->flySystem->getTimestamp($path);
 
@@ -296,12 +288,10 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\FileNotFoundException
-     *
-     * @return string|null
-     *      The visibility ('public' or 'private') or null on failure
+     * @return string|null The visibility ('public' or 'private') or null on failure
+     * @throws FileNotFoundException
      */
-    public function visibility(string $path): ? string
+    public function visibility(string $path): ?string
     {
         $visibility = $this->flySystem->getVisibility($path);
 
@@ -362,9 +352,8 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @throws \League\Flysystem\RootViolationException
-     *
      * @return bool
+     * @throws RootViolationException
      */
     public function deleteDir(string $path): bool
     {
@@ -375,8 +364,7 @@ class FlyFilesystem implements Filesystem
      * List the contents of a directory.
      *
      * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the
-     *                          directory
+     * @param bool   $recursive [optional] Whether to recurse through the directory
      *
      * @return array
      */
@@ -390,7 +378,7 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $adapter The adapter
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function adapter(string $adapter): Filesystem
     {
@@ -404,7 +392,7 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $adapter The adapter
      *
-     * @return \League\Flysystem\Adapter\AbstractAdapter
+     * @return AbstractAdapter
      */
     protected function flyAdapter(string $adapter): AbstractAdapter
     {
@@ -414,48 +402,42 @@ class FlyFilesystem implements Filesystem
     /**
      * Get the local filesystem.
      *
-     * @throws \LogicException
-     *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
+     * @throws LogicException
      */
     public function local(): Filesystem
     {
-        return new static($this->app, $this->localAdapter());
+        return new static($this->app, new FlySystem($this->localAdapter()));
     }
 
     /**
      * Get the local flysystem adapter.
      *
-     * @throws \LogicException
-     *
-     * @return \League\Flysystem\Adapter\Local
+     * @return Local
+     * @throws LogicException
      */
     protected function localAdapter(): Local
     {
         return self::$adapters['local']
-            ?? self::$adapters['local'] = new Local(
-                $this->app->config()['filesystem']['adapters']['s3']['dir']
-            );
+            ?? self::$adapters['local'] = new Local($this->app->config()['filesystem']['adapters']['s3']['dir']);
     }
 
     /**
      * Get the s3 filesystem.
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
+     * @throws InvalidArgumentException
      */
     public function s3(): Filesystem
     {
-        return new static($this->app, $this->s3Adapter());
+        return new static($this->app, new FlySystem($this->s3Adapter()));
     }
 
     /**
      * Get the s3 flysystem adapter.
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \League\Flysystem\AwsS3v3\AwsS3Adapter
+     * @return AwsS3Adapter
+     * @throws InvalidArgumentException
      */
     protected function s3Adapter(): AwsS3Adapter
     {
@@ -473,11 +455,7 @@ class FlyFilesystem implements Filesystem
             'version'     => $config['version'],
         ];
 
-        self::$adapters['s3'] = new AwsS3Adapter(
-            new S3Client($clientConfig),
-            $config['bucket'],
-            $config['dir']
-        );
+        self::$adapters['s3'] = new AwsS3Adapter(new S3Client($clientConfig), $config['bucket'], $config['dir']);
 
         return self::$adapters['s3'];
     }

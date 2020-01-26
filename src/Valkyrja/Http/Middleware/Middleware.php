@@ -26,7 +26,7 @@ abstract class Middleware
      *
      * @param Request $request The request
      *
-     * @return \Valkyrja\Http\Request|\Valkyrja\Http\Response
+     * @return Request|Response
      */
     abstract public static function before(Request $request);
 
@@ -36,7 +36,7 @@ abstract class Middleware
      * @param Request  $request  The request
      * @param Response $response The response
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     abstract public static function after(Request $request, Response $response): Response;
 

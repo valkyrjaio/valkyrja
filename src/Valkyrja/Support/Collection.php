@@ -45,9 +45,7 @@ class Collection
      */
     public function get(string $key, $default = null) // : mixed
     {
-        return $this->has($key)
-            ? $this->collection[$key]
-            : $default;
+        return $this->has($key) ? $this->collection[$key] : $default;
     }
 
     /**
@@ -71,7 +69,7 @@ class Collection
      */
     public function exists($value): bool
     {
-        return \in_array($value, $this->collection, true);
+        return in_array($value, $this->collection, true);
     }
 
     /**
@@ -148,7 +146,7 @@ class Collection
      */
     public function count(): int
     {
-        return \count($this->collection);
+        return count($this->collection);
     }
 
     /**
@@ -217,6 +215,6 @@ class Collection
      */
     public function __toString(): string
     {
-        return json_encode($this->collection);
+        return (string) json_encode($this->collection);
     }
 }

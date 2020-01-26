@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
@@ -50,8 +51,7 @@ class CommandsListForBashCommand extends CommandHandler
                 if (strpos($command, $commandTyped) === 0) {
                     // Colons acts as separators in bash, so return only second
                     // part if colon is in commandTyped.
-                    $possibleCommands[] =
-                        $colonAt ? substr($command, $colonAt + 1) : $command;
+                    $possibleCommands[] = $colonAt ? substr($command, $colonAt + 1) : $command;
                 }
             }
         } else {
@@ -61,6 +61,6 @@ class CommandsListForBashCommand extends CommandHandler
 
         output()->writeMessage(implode(' ', $possibleCommands));
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 }

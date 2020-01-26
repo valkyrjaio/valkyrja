@@ -35,14 +35,14 @@ class NativeKernel implements Kernel
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The router.
      *
-     * @var \Valkyrja\Routing\Router
+     * @var Router
      */
     protected $router;
 
@@ -68,9 +68,8 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws HttpException
      */
     public function handle(Request $request): Response
     {
@@ -99,7 +98,7 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     protected function dispatchRouter(Request $request): Response
     {
@@ -121,9 +120,9 @@ class NativeKernel implements Kernel
     /**
      * Get a response from an exception.
      *
-     * @param \Throwable $exception The exception
+     * @param Throwable $exception The exception
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     protected function getExceptionResponse(Throwable $exception): Response
     {
@@ -131,9 +130,7 @@ class NativeKernel implements Kernel
             return $exception->getResponse();
         }
 
-        $handler = new ExceptionHandler($this->app->debug());
-
-        return $handler->getResponse($exception);
+        return (new ExceptionHandler($this->app->debug()))->getResponse($exception);
     }
 
     /**
@@ -166,9 +163,8 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return void
+     * @throws HttpException
      */
     public function run(Request $request = null): void
     {
@@ -187,7 +183,7 @@ class NativeKernel implements Kernel
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     protected function getApplication(): Application
     {
@@ -215,11 +211,7 @@ class NativeKernel implements Kernel
         // If the dispatched route has middleware
         if (null !== $route->getMiddleware()) {
             // Terminate each middleware
-            $this->terminableMiddleware(
-                $request,
-                $response,
-                $route->getMiddleware()
-            );
+            $this->terminableMiddleware($request, $response, $route->getMiddleware());
         }
     }
 
@@ -244,9 +236,6 @@ class NativeKernel implements Kernel
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            Kernel::class,
-            new static($app, $app->router())
-        );
+        $app->container()->singleton(Kernel::class, new static($app, $app->router()));
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Http\Enums\StatusCode;
+
 /**
  * Interface ResponseBuilder.
  *
@@ -25,7 +27,7 @@ interface ResponseBuilder
      * @param int   $statusCode [optional] The response status code
      * @param array $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
 
@@ -37,7 +39,7 @@ interface ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function view(
         string $template,
@@ -53,7 +55,7 @@ interface ResponseBuilder
      * @param int   $statusCode [optional] The response status code
      * @param array $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
 
@@ -65,7 +67,7 @@ interface ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function jsonp(
         string $callback,
@@ -81,7 +83,7 @@ interface ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function redirect(
         string $uri = '/',
@@ -98,7 +100,7 @@ interface ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function route(
         string $route,

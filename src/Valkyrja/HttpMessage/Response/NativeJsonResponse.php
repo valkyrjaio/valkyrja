@@ -11,7 +11,12 @@
 
 namespace Valkyrja\HttpMessage\Response;
 
-use Valkyrja\HttpMessage\Header;
+use InvalidArgumentException;
+use RuntimeException;
+use Valkyrja\Application;
+use Valkyrja\HttpMessage\Enums\Header;
+use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\NativeResponse;
 use Valkyrja\HttpMessage\NativeStream;
 
@@ -37,31 +42,51 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @param array $headers         [optional] The headers
      * @param int   $encodingOptions [optional] The encoding options
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws InvalidStatusCode
+     * @throws InvalidStream
      */
-    public function __construct(array $data, int $status = null, array $headers = null, int $encodingOptions = null)
-    {
+    public function __construct(
+        array $data = [],
+        int $status = null,
+        array $headers = null,
+        int $encodingOptions = null
+    ) {
         $body = new NativeStream('php://temp', 'wb+');
 
-        $body->write(
-            json_encode(
-                $data,
-                $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS
-            )
-        );
+        $body->write(json_encode($data, $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS));
         $body->rewind();
 
         parent::__construct(
             $body,
             $status,
-            $this->injectHeader(
-                Header::CONTENT_TYPE,
-                'application/json',
-                $headers
-            )
+            $this->injectHeader(Header::CONTENT_TYPE, 'application/json', $headers)
         );
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            JsonResponse::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(JsonResponse::class, new static());
     }
 }

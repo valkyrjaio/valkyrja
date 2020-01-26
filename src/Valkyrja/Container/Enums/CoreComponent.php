@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container;
+namespace Valkyrja\Container\Enums;
 
 use Psr\Log\LoggerInterface;
 use Valkyrja\Annotations\Annotations;
@@ -23,6 +23,7 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Output\OutputFormatter;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
+use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Enum\Enum;
 use Valkyrja\Env\Env;
@@ -82,4 +83,39 @@ final class CoreComponent extends Enum
     public const CLIENT                = Client::class;
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
+
+    protected const VALUES = [
+        self::APP                   => self::APP,
+        self::ANNOTATIONS           => self::ANNOTATIONS,
+        self::ANNOTATIONS_PARSER    => self::ANNOTATIONS_PARSER,
+        self::COMMAND_ANNOTATIONS   => self::COMMAND_ANNOTATIONS,
+        self::CONFIG                => self::CONFIG,
+        self::CONSOLE               => self::CONSOLE,
+        self::CONSOLE_KERNEL        => self::CONSOLE_KERNEL,
+        self::CONTAINER             => self::CONTAINER,
+        self::CONTAINER_ANNOTATIONS => self::CONTAINER_ANNOTATIONS,
+        self::DISPATCHER            => self::DISPATCHER,
+        self::ENV                   => self::ENV,
+        self::EVENTS                => self::EVENTS,
+        self::FILESYSTEM            => self::FILESYSTEM,
+        self::INPUT                 => self::INPUT,
+        self::OUTPUT                => self::OUTPUT,
+        self::OUTPUT_FORMATTER      => self::OUTPUT_FORMATTER,
+        self::KERNEL                => self::KERNEL,
+        self::LISTENER_ANNOTATIONS  => self::LISTENER_ANNOTATIONS,
+        self::PATH_GENERATOR        => self::PATH_GENERATOR,
+        self::PATH_PARSER           => self::PATH_PARSER,
+        self::REQUEST               => self::REQUEST,
+        self::RESPONSE              => self::RESPONSE,
+        self::JSON_RESPONSE         => self::JSON_RESPONSE,
+        self::REDIRECT_RESPONSE     => self::REDIRECT_RESPONSE,
+        self::RESPONSE_BUILDER      => self::RESPONSE_BUILDER,
+        self::ROUTER                => self::ROUTER,
+        self::ROUTE_ANNOTATIONS     => self::ROUTE_ANNOTATIONS,
+        self::SESSION               => self::SESSION,
+        self::VIEW                  => self::VIEW,
+        self::CLIENT                => self::CLIENT,
+        self::LOGGER_INTERFACE      => self::LOGGER_INTERFACE,
+        self::LOGGER                => self::LOGGER,
+    ];
 }

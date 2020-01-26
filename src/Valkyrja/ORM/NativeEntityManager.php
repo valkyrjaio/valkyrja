@@ -49,7 +49,6 @@ class NativeEntityManager implements EntityManager
 
     /**
      * The models awaiting to be committed for creation.
-     *
      * <code>
      *      [
      *          Model::class
@@ -62,14 +61,13 @@ class NativeEntityManager implements EntityManager
 
     /**
      * The models awaiting to be committed for saving.
-     *
      * <code>
      *      [
      *          Model::class
      *      ]
      * </code>
      *
-     * @var \Valkyrja\ORM\Entity[]
+     * @var Entity[]
      */
     protected $saveModels = [];
 
@@ -92,9 +90,8 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @throws InvalidArgumentException If the name doesn't exist
-     *
      * @return PDO
+     * @throws InvalidArgumentException If the name doesn't exist
      */
     public function store(string $name = null): PDO
     {
@@ -133,9 +130,8 @@ class NativeEntityManager implements EntityManager
     /**
      * Initiate a transaction.
      *
-     * @throws InvalidArgumentException
-     *
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function beginTransaction(): bool
     {
@@ -145,7 +141,7 @@ class NativeEntityManager implements EntityManager
     /**
      * Set a model for creation on transaction commit.
      *
-     * @param \Valkyrja\ORM\Entity $entity
+     * @param Entity $entity
      *
      * @return void
      */
@@ -173,7 +169,7 @@ class NativeEntityManager implements EntityManager
     /**
      * Remove a model previously set for creation or save.
      *
-     * @param \Valkyrja\ORM\Entity $entity The entity instance to remove.
+     * @param Entity $entity The entity instance to remove.
      *
      * @return bool
      */
@@ -205,17 +201,16 @@ class NativeEntityManager implements EntityManager
     /**
      * Commit all items in the transaction.
      *
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
-     *
      * @return bool
+     * @throws InvalidEntityException
+     * @throws InvalidArgumentException
      */
     public function commit(): bool
     {
         // Iterate through the models awaiting creation
         foreach ($this->createModels as $cid => $createModel) {
             // Create the model
-            $this->getRepository(\get_class($createModel))->create($createModel);
+            $this->getRepository(get_class($createModel))->create($createModel);
             // Unset the model
             unset($this->createModels[$cid]);
         }
@@ -223,7 +218,7 @@ class NativeEntityManager implements EntityManager
         // Iterate through the models awaiting save
         foreach ($this->saveModels as $sid => $saveModel) {
             // Save the model
-            $this->getRepository(\get_class($saveModel))->save($saveModel);
+            $this->getRepository(get_class($saveModel))->save($saveModel);
             // Unset the model
             unset($this->saveModels[$sid]);
         }
@@ -234,9 +229,8 @@ class NativeEntityManager implements EntityManager
     /**
      * Rollback the previous transaction.
      *
-     * @throws InvalidArgumentException
-     *
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function rollback(): bool
     {
@@ -248,9 +242,8 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @throws InvalidArgumentException
-     *
      * @return PDO
+     * @throws InvalidArgumentException
      */
     protected function getStore(string $name = null): PDO
     {
@@ -270,9 +263,8 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @throws InvalidArgumentException
-     *
      * @return array
+     * @throws InvalidArgumentException
      */
     protected function getStoreConfig(string $name): array
     {
@@ -325,15 +317,11 @@ class NativeEntityManager implements EntityManager
      *
      * @param Application $app The application
      *
-     * @throws InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            EntityManager::class,
-            new static($app)
-        );
+        $app->container()->singleton(EntityManager::class, new static($app));
     }
 }

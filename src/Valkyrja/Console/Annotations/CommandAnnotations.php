@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Annotations;
 
+use ReflectionException;
 use Valkyrja\Annotations\Annotations;
 
 /**
@@ -23,11 +24,10 @@ interface CommandAnnotations extends Annotations
     /**
      * Get the commands.
      *
-     * @param string[] $classes The classes
-     *
-     * @throws \ReflectionException
+     * @param string ...$classes The classes
      *
      * @return \Valkyrja\Console\Command[]
+     * @throws ReflectionException
      */
     public function getCommands(string ...$classes): array;
 }

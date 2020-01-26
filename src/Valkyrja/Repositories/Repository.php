@@ -18,5 +18,4 @@ namespace Valkyrja\Repositories;
  */
 abstract class Repository
 {
-    //
 }

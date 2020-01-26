@@ -11,20 +11,23 @@
 
 namespace Valkyrja\HttpMessage;
 
-use Valkyrja\Http\StatusCode;
+use InvalidArgumentException;
+use RuntimeException;
+use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Representation of an outgoing, server-side response.
- *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
- *
  * - Protocol version
  * - Status code and reason phrase
  * - Headers
  * - Message body
- *
  * Responses are considered immutable; all methods that might change state MUST
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
@@ -34,6 +37,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 class NativeResponse implements Response
 {
     use MessageTrait;
+    use Provides;
 
     /**
      * The status code.
@@ -56,24 +60,20 @@ class NativeResponse implements Response
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws InvalidStatusCode
+     * @throws InvalidStream
      */
     public function __construct(Stream $body = null, int $status = null, array $headers = null)
     {
-        $this->stream     = $body
-            ?? new NativeStream('php://input', 'rw');
-        $this->statusCode = $this->validateStatusCode(
-            $status ?? StatusCode::OK
-        );
+        $this->stream     = $body ?? new NativeStream('php://input', 'rw');
+        $this->statusCode = $this->validateStatusCode($status ?? StatusCode::OK);
 
         $this->setHeaders($headers ?? []);
     }
 
     /**
      * Gets the response status code.
-     *
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
      *
@@ -87,11 +87,9 @@ class NativeResponse implements Response
     /**
      * Return an instance with the specified status code and, optionally,
      * reason phrase.
-     *
      * If no reason phrase is specified, implementations MAY choose to default
      * to the RFC 7231 or IANA recommended reason phrase for the response's
      * status code.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * updated status and reason phrase.
@@ -105,25 +103,21 @@ class NativeResponse implements Response
      *                             implementations MAY use the defaults as
      *                             suggested in the HTTP specification.
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     *      For invalid status code arguments.
-     *
      * @return static
+     * @throws InvalidStatusCode For invalid status code arguments.
      */
     public function withStatus(int $code, string $reasonPhrase = null)
     {
         $new = clone $this;
 
         $new->statusCode   = $new->validateStatusCode($code);
-        $new->statusPhrase = $reasonPhrase
-            ?? StatusCode::TEXTS[$this->statusCode];
+        $new->statusPhrase = $reasonPhrase ?? StatusCode::TEXTS[$this->statusCode];
 
         return $new;
     }
 
     /**
      * Gets the response reason phrase associated with the status code.
-     *
      * Because a reason phrase is not a required element in a response
      * status line, the reason phrase value MAY be null. Implementations MAY
      * choose to return the default RFC 7231 recommended reason phrase (or
@@ -132,7 +126,6 @@ class NativeResponse implements Response
      *
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-     *
      * @return string Reason phrase; must return an empty string if none
      *                present.
      */
@@ -144,75 +137,62 @@ class NativeResponse implements Response
     /**
      * Return an instance with the specified cookie appended with the given
      * value.
-     *
      * Existing values for the specified header will be maintained. The new
      * value(s) will be appended to the existing list. If the cookie header
      * did not exist previously, it will be added.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
      * @param Cookie $cookie The cookie model
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
-     *
      * @return static
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withCookie(Cookie $cookie)
     {
-        return $this->withAddedHeader(
-            Header::SET_COOKIE,
-            (string) $cookie
-        );
+        return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
     }
 
     /**
      * Return an instance with the specified cookie appended to the
      * Set-Cookie header as expired.
-     *
      * Existing values for the specified header will be maintained. The new
      * value(s) will be appended to the existing list. If the cookie header
      * did not exist previously, it will be added.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
      * @param Cookie $cookie The cookie model
      *
-     * @throws \InvalidArgumentException for invalid header names or values.
-     *
      * @return static
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withoutCookie(Cookie $cookie)
     {
         $cookie->setValue();
         $cookie->setExpire();
 
-        return $this->withAddedHeader(
-            Header::SET_COOKIE,
-            (string) $cookie
-        );
+        return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
     }
 
     /**
      * Send the response.
      *
-     * @throws \RuntimeException
-     *
      * @return Response
+     * @throws RuntimeException
      */
     public function send(): Response
     {
-        $http_line = sprintf(
+        $httpLine = sprintf(
             'HTTP/%s %s %s',
             $this->getProtocolVersion(),
             $this->getStatusCode(),
             $this->getReasonPhrase()
         );
 
-        header($http_line, true, $this->getStatusCode());
+        header($httpLine, true, $this->getStatusCode());
 
         foreach ($this->getHeaders() as $name => $values) {
             /** @var array $values */
@@ -239,9 +219,8 @@ class NativeResponse implements Response
      *
      * @param int $code The code
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     *
      * @return int
+     * @throws InvalidStatusCode
      */
     protected function validateStatusCode(int $code): int
     {
@@ -256,5 +235,30 @@ class NativeResponse implements Response
         }
 
         return $code;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Response::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Response::class, new static());
     }
 }

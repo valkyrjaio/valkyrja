@@ -23,9 +23,9 @@ interface ListenerAnnotations extends Annotations
     /**
      * Get the events.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @return \Valkyrja\Events\Listener[]
+     * @return Listener[]
      */
     public function getListeners(string ...$classes): array;
 }

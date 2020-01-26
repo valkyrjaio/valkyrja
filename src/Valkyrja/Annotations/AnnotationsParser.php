@@ -34,7 +34,7 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
      *
      * @param string $docString The doc string
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function getAnnotations(string $docString): array;
 
@@ -45,7 +45,7 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
      *
      * @return array
      */
-    public function getArguments(string $arguments = null): ? array;
+    public function getArguments(string $arguments = null): ?array;
 
     /**
      * Get the annotations regex.
@@ -73,7 +73,7 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
      *
      * @param string $annotationType The annotation type
      *
-     * @return \Valkyrja\Annotations\Annotation
+     * @return Annotation
      */
     public function getAnnotationFromMap(string $annotationType): Annotation;
 }

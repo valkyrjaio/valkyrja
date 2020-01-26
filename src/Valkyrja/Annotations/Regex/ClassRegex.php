@@ -22,9 +22,7 @@ interface ClassRegex
      * Class regex.
      *
      * @constant string
-     *
      * @description
-     *
      * \(                    Match an opening parenthesis
      *      \s*                 Followed by any whitespace
      *      (                       Begin capture

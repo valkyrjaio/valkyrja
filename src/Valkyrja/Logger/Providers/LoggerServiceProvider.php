@@ -11,12 +11,13 @@
 
 namespace Valkyrja\Logger\Providers;
 
+use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application;
+use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
-use Valkyrja\Logger\LogLevel;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Support\Providers\Provider;
 
@@ -52,9 +53,8 @@ class LoggerServiceProvider extends Provider
      *
      * @param Application $app The application
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public static function publish(Application $app): void
     {
@@ -67,9 +67,8 @@ class LoggerServiceProvider extends Provider
      *
      * @param Application $app The application
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     protected static function bindLoggerInterface(Application $app): void
     {

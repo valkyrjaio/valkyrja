@@ -17,8 +17,7 @@
  * You'll need to keep track of some stuff across requests, and that's
  * where the session comes in handy. Here you'll find all necessary
  * configurations to make the session work properly.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +25,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'id'   => env('SESSION_ID'),
 
@@ -36,7 +34,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'name' => env('SESSION_NAME'),
 ];

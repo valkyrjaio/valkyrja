@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Output;
 
+use InvalidArgumentException;
 use Valkyrja\Application;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Support\Providers\Provides;
@@ -27,7 +28,7 @@ class NativeOutput implements Output
     /**
      * The formatter.
      *
-     * @var \Valkyrja\Console\Output\OutputFormatter
+     * @var OutputFormatter
      */
     protected $formatter;
 
@@ -44,7 +45,7 @@ class NativeOutput implements Output
     /**
      * Get the formatter.
      *
-     * @return \Valkyrja\Console\Output\OutputFormatter
+     * @return OutputFormatter
      */
     public function formatter(): OutputFormatter
     {
@@ -67,13 +68,11 @@ class NativeOutput implements Output
      * Write messages to the console.
      *
      * @param array       $messages    The messages
-     * @param bool        $newLine     [optional] Whether to use new lines
-     *                                 between each message
+     * @param bool        $newLine     [optional] Whether to use new lines between each message
      * @param OutputStyle $outputStyle [optional] The output style to use
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public function write(array $messages, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
@@ -86,28 +85,28 @@ class NativeOutput implements Output
      * Write a message to the console.
      *
      * @param string      $message     The message
-     * @param bool        $newLine     [optional] Whether to use new lines
-     *                                 between each message
+     * @param bool        $newLine     [optional] Whether to use new lines between each message
      * @param OutputStyle $outputStyle [optional] The output style to use
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public function writeMessage(string $message, bool $newLine = null, OutputStyle $outputStyle = null): void
     {
         $newLine         = $newLine ?? false;
-        $outputStyleType =
-            $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
+        $outputStyleType = $outputStyle ? $outputStyle->getValue() : OutputStyle::NORMAL;
 
         switch ($outputStyleType) {
             case OutputStyle::NORMAL:
                 $message = $this->formatter->format($message);
+
                 break;
             case OutputStyle::RAW:
+
                 break;
             case OutputStyle::PLAIN:
                 $message = strip_tags($this->formatter->format($message));
+
                 break;
         }
 

@@ -11,8 +11,9 @@
 
 namespace Valkyrja\Http;
 
+use InvalidArgumentException;
 use Valkyrja\Application;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class JsonResponse.
@@ -21,11 +22,8 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeJsonResponse extends NativeResponse implements JsonResponse
 {
-    use Provides;
-
     /**
      * @constant
-     *
      * Encode <, >, ', &, and " characters in the JSON, making it also safe to
      * be embedded into HTML.
      * 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
@@ -61,7 +59,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(
         string $content = '',
@@ -83,9 +81,8 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public static function createJson(
         string $content = '',
@@ -101,20 +98,18 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @throws \InvalidArgumentException When the callback name is not valid
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException When the callback name is not valid
      */
     public function setCallback(string $callback = null): JsonResponse
     {
         if (null !== $callback) {
             // taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
             $pattern = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*+$/u';
-            $parts   = explode('.', $callback);
 
-            foreach ($parts as $part) {
+            foreach (explode('.', $callback) as $part) {
                 if (! preg_match($pattern, $part)) {
-                    throw new \InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         'The callback name is not valid.'
                     );
                 }
@@ -131,9 +126,8 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param string $json The json to set
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public function setJson(string $json): JsonResponse
     {
@@ -147,16 +141,15 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param array $data [optional] The data to set
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public function setData(array $data = []): JsonResponse
     {
         $content = json_encode($data, $this->encodingOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(json_last_error_msg());
+            throw new InvalidArgumentException(json_last_error_msg());
         }
 
         return $this->setJson($content);
@@ -177,21 +170,20 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public function setEncodingOptions(int $encodingOptions): JsonResponse
     {
         $this->encodingOptions = $encodingOptions;
 
-        return $this->setData(json_decode($this->data));
+        return $this->setData(json_decode($this->data, true));
     }
 
     /**
      * Updates the content and headers according to the JSON data and callback.
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     protected function update(): JsonResponse
     {
@@ -199,9 +191,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->headers()->get('Content-Type', 'text/javascript');
 
-            $this->setContent(
-                sprintf('/**/%s(%s);', $this->callback, $this->data)
-            );
+            $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->data));
 
             return $this;
         }
@@ -237,15 +227,11 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param Application $app The application
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            JsonResponse::class,
-            new static()
-        );
+        $app->container()->singleton(JsonResponse::class, new static());
     }
 }

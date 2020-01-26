@@ -34,8 +34,8 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
      * @param OutputFormatter $formatter The output formatter
      * @param resource        $stream    The resource to use as a stream
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function __construct(OutputFormatter $formatter, $stream = null)
     {
@@ -46,16 +46,12 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
 
         // If there is no stream and the stdout failed
         if (! $this->stream = $this->stream ?? fopen('php://stdout', 'wb')) {
-            throw new RuntimeException(
-                'Unable to create stdout.'
-            );
+            throw new RuntimeException('Unable to create stdout.');
         }
 
         // If the stream isn't a valid resource or not a stream resource
-        if (! \is_resource($this->stream) || 'stream' !== get_resource_type($this->stream)) {
-            throw new InvalidArgumentException(
-                'Stream is not a valid stream resource.'
-            );
+        if (! is_resource($this->stream) || 'stream' !== get_resource_type($this->stream)) {
+            throw new InvalidArgumentException('Stream is not a valid stream resource.');
         }
     }
 
@@ -65,20 +61,14 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
      * @param string $message
      * @param bool   $newLine
      *
-     * @throws \RuntimeException
-     *
      * @return void
+     * @throws RuntimeException
      */
     protected function writeOut(string $message, bool $newLine): void
     {
-        if (
-            false === @fwrite($this->stream, $message)
-            || ($newLine && (false === @fwrite($this->stream, PHP_EOL)))
-        ) {
+        if (false === @fwrite($this->stream, $message) || ($newLine && (false === @fwrite($this->stream, PHP_EOL)))) {
             // should never happen
-            throw new RuntimeException(
-                'Unable to write output.'
-            );
+            throw new RuntimeException('Unable to write output.');
         }
 
         fflush($this->stream);

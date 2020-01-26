@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Logger;
 
-use Psr\Log\LoggerInterface;
+use Valkyrja\Logger\Enums\LogLevel;
 
 /**
  * Interface Logger.
@@ -26,7 +26,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function debug(string $message, array $context = []): self;
 
@@ -36,7 +36,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function info(string $message, array $context = []): self;
 
@@ -46,7 +46,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function notice(string $message, array $context = []): self;
 
@@ -56,7 +56,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function warning(string $message, array $context = []): self;
 
@@ -66,7 +66,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function error(string $message, array $context = []): self;
 
@@ -76,7 +76,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function critical(string $message, array $context = []): self;
 
@@ -86,7 +86,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function alert(string $message, array $context = []): self;
 
@@ -96,7 +96,7 @@ interface Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function emergency(string $message, array $context = []): self;
 
@@ -107,23 +107,7 @@ interface Logger
      * @param string   $message The message
      * @param array    $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function log(LogLevel $level, string $message, array $context = []): self;
-
-    /**
-     * Get the logger.
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function getLogger(): LoggerInterface;
-
-    /**
-     * Set the logger.
-     *
-     * @param \Psr\Log\LoggerInterface $logger The logger
-     *
-     * @return \Valkyrja\Logger\Logger
-     */
-    public function setLogger(LoggerInterface $logger): self;
 }

@@ -12,6 +12,7 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
 
@@ -29,49 +30,49 @@ class NativeRequest implements Request
     /**
      * Custom parameters.
      *
-     * @var \Valkyrja\Support\Collection
+     * @var Collection
      */
     protected $attributes;
 
     /**
      * Request body parameters ($_POST).
      *
-     * @var \Valkyrja\Support\Collection
+     * @var Collection
      */
     protected $request;
 
     /**
      * Query string parameters ($_GET).
      *
-     * @var \Valkyrja\Http\Query
+     * @var Query
      */
     protected $query;
 
     /**
      * Server and execution environment parameters ($_SERVER).
      *
-     * @var \Valkyrja\Http\Server
+     * @var Server
      */
     protected $server;
 
     /**
      * Uploaded files ($_FILES).
      *
-     * @var \Valkyrja\Http\Files
+     * @var Files
      */
     protected $files;
 
     /**
      * Cookies ($_COOKIE).
      *
-     * @var \Valkyrja\Support\Collection
+     * @var Collection
      */
     protected $cookies;
 
     /**
      * Headers (taken from the $_SERVER).
      *
-     * @var \Valkyrja\Http\Headers
+     * @var Headers
      */
     protected $headers;
 
@@ -150,8 +151,7 @@ class NativeRequest implements Request
      *
      * @param array           $query      The GET parameters
      * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters
-     *                                    parsed from the PATH_INFO, ...)
+     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
      * @param array           $cookies    The COOKIE parameters
      * @param array           $files      The FILES parameters
      * @param array           $server     The SERVER parameters
@@ -193,14 +193,13 @@ class NativeRequest implements Request
      *
      * @param array           $query      The GET parameters
      * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters
-     *                                    parsed from the PATH_INFO, ...)
+     * @param array           $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
      * @param array           $cookies    The COOKIE parameters
      * @param array           $files      The FILES parameters
      * @param array           $server     The SERVER parameters
      * @param string|resource $content    The raw body data
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function factory(
         array $query = [],
@@ -211,21 +210,13 @@ class NativeRequest implements Request
         array $server = [],
         $content = null
     ): Request {
-        return new static(
-            $query,
-            $request,
-            $attributes,
-            $cookies,
-            $files,
-            $server,
-            $content
-        );
+        return new static($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
     /**
      * Creates a new request with values from PHP super globals.
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function createFromGlobals(): Request
     {
@@ -239,7 +230,7 @@ class NativeRequest implements Request
                 'application/x-www-form-urlencoded'
             )
             &&
-            \in_array(
+            in_array(
                 strtoupper(
                     $request->server()->get(
                         'REQUEST_METHOD',
@@ -263,7 +254,6 @@ class NativeRequest implements Request
 
     /**
      * Creates a Request based on a given URI and configuration.
-     *
      * The information contained in the URI always take precedence
      * over the other information (server and parameters).
      *
@@ -275,7 +265,7 @@ class NativeRequest implements Request
      * @param array  $server     The server parameters ($_SERVER)
      * @param string $content    The raw body data
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function create(
         string $uri,
@@ -327,9 +317,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   = $server['HTTP_HOST']
-                . ':'
-                . $components['port'];
+            $server['HTTP_HOST']   .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -396,7 +384,6 @@ class NativeRequest implements Request
 
     /**
      * Clones the current request.
-     *
      * Note that the session is not cloned as duplicated requests
      * are most of the time sub-requests of the main one.
      */
@@ -434,7 +421,7 @@ class NativeRequest implements Request
     /**
      * Return the GET Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function query(): Collection
     {
@@ -450,7 +437,7 @@ class NativeRequest implements Request
      *
      * @param array $query
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setQuery(array $query = []): Request
     {
@@ -462,7 +449,7 @@ class NativeRequest implements Request
     /**
      * Return the POST Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function request(): Collection
     {
@@ -478,7 +465,7 @@ class NativeRequest implements Request
      *
      * @param array $request
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setRequest(array $request = []): Request
     {
@@ -490,7 +477,7 @@ class NativeRequest implements Request
     /**
      * Return the attributes Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function attributes(): Collection
     {
@@ -506,7 +493,7 @@ class NativeRequest implements Request
      *
      * @param array $attributes
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setAttributes(array $attributes = []): Request
     {
@@ -518,7 +505,7 @@ class NativeRequest implements Request
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function cookies(): Collection
     {
@@ -534,7 +521,7 @@ class NativeRequest implements Request
      *
      * @param array $cookies
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setCookies(array $cookies = []): Request
     {
@@ -546,7 +533,7 @@ class NativeRequest implements Request
     /**
      * Return the FILES Collection.
      *
-     * @return \Valkyrja\Http\Files
+     * @return Files
      */
     public function files(): Files
     {
@@ -562,7 +549,7 @@ class NativeRequest implements Request
      *
      * @param array $files
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setFiles(array $files = []): Request
     {
@@ -574,7 +561,7 @@ class NativeRequest implements Request
     /**
      * Return the SERVER Collection.
      *
-     * @return \Valkyrja\Http\Server
+     * @return Server
      */
     public function server(): Server
     {
@@ -590,7 +577,7 @@ class NativeRequest implements Request
      *
      * @param array $server
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setServer(array $server = []): Request
     {
@@ -605,7 +592,7 @@ class NativeRequest implements Request
     /**
      * Return the headers Collection.
      *
-     * @return \Valkyrja\Http\Headers
+     * @return Headers
      */
     public function headers(): Headers
     {
@@ -621,7 +608,7 @@ class NativeRequest implements Request
      *
      * @param array $headers
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setHeaders(array $headers = []): Request
     {
@@ -647,7 +634,7 @@ class NativeRequest implements Request
      *
      * @param string $content
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setContent(string $content = null): Request
     {
@@ -671,7 +658,7 @@ class NativeRequest implements Request
      *
      * @param array $languages
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setLanguages(array $languages = []): Request
     {
@@ -695,7 +682,7 @@ class NativeRequest implements Request
      *
      * @param array $charsets
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setCharsets(array $charsets = []): Request
     {
@@ -719,7 +706,7 @@ class NativeRequest implements Request
      *
      * @param array $encodings
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setEncodings(array $encodings = []): Request
     {
@@ -743,7 +730,7 @@ class NativeRequest implements Request
      *
      * @param array $acceptableContentTypes
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setAcceptableContentTypes(array $acceptableContentTypes = []): Request
     {
@@ -837,12 +824,9 @@ class NativeRequest implements Request
 
     /**
      * Returns the port on which the request is made.
-     *
      * This method can read the client port from the "X-Forwarded-Port" header
      * when trusted proxies were set via "setTrustedProxies()".
-     *
      * The "X-Forwarded-Port" header must contain the client port.
-     *
      * If your reverse proxy uses a different header name than
      * "X-Forwarded-Port", configure it via "setTrustedHeaderName()" with the
      * "client-port" key.
@@ -893,7 +877,6 @@ class NativeRequest implements Request
 
     /**
      * Returns the HTTP host being requested.
-     *
      * The port name will be appended to the host if it's non-standard.
      *
      * @return string
@@ -939,13 +922,10 @@ class NativeRequest implements Request
 
     /**
      * Checks whether the request is secure or not.
-     *
      * This method can read the client protocol from the "X-Forwarded-Proto"
      * header when trusted proxies were set via "setTrustedProxies()".
-     *
      * The "X-Forwarded-Proto" header must contain the protocol: "https" or
      * "http".
-     *
      * If your reverse proxy uses a different header name than
      * "X-Forwarded-Proto"
      * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()"
@@ -975,7 +955,7 @@ class NativeRequest implements Request
      *
      * @param string $method
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setMethod(string $method): Request
     {
@@ -989,7 +969,6 @@ class NativeRequest implements Request
      * Gets the request "intended" method.
      *
      * @return string The request method
-     *
      * @see getRealMethod()
      */
     public function getMethod(): string
@@ -1023,7 +1002,6 @@ class NativeRequest implements Request
      * Gets the "real" request method.
      *
      * @return string The request method
-     *
      * @see getMethod()
      */
     public function getRealMethod(): string
@@ -1075,13 +1053,13 @@ class NativeRequest implements Request
         }
 
         foreach (static::FORMATS as $format => $mimeTypes) {
-            if (\in_array($mimeType, $mimeTypes, true)) {
+            if (in_array($mimeType, $mimeTypes, true)) {
                 return $format;
             }
 
             if (
                 null !== $canonicalMimeType
-                && \in_array(
+                && in_array(
                     $canonicalMimeType,
                     $mimeTypes,
                     true
@@ -1115,7 +1093,7 @@ class NativeRequest implements Request
      *
      * @param string $format The request format
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setRequestFormat(string $format): Request
     {

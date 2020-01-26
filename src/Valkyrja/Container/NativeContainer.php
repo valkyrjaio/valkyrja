@@ -19,6 +19,11 @@ use Valkyrja\Container\Events\ServiceMake;
 use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 /**
@@ -33,7 +38,7 @@ class NativeContainer implements Container
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
@@ -54,7 +59,7 @@ class NativeContainer implements Container
     /**
      * The services.
      *
-     * @var \Valkyrja\Container\Service[]
+     * @var Service[]
      */
     protected static $services = [];
 
@@ -94,14 +99,13 @@ class NativeContainer implements Container
      * @param Service $service The service model
      * @param bool    $verify  [optional] Whether to verify the service
      *
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidServiceIdException
      */
     public function bind(Service $service, bool $verify = true): void
     {
@@ -125,25 +129,21 @@ class NativeContainer implements Container
      *
      * @param ServiceContext $serviceContext The context service
      *
-     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
-     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidContextException
+     * @throws EndlessContextLoopException
+     * @throws InvalidServiceIdException
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
      */
     public function context(ServiceContext $serviceContext): void
     {
-        $context        = $serviceContext->getClass()
-            ?? $serviceContext->getFunction();
-        $member         = $serviceContext->getMethod()
-            ?? $serviceContext->getProperty();
-        $contextContext = $serviceContext->getContextClass()
-            ?? $serviceContext->getContextFunction();
+        $context        = $serviceContext->getClass() ?? $serviceContext->getFunction();
+        $member         = $serviceContext->getMethod() ?? $serviceContext->getProperty();
+        $contextContext = $serviceContext->getContextClass() ?? $serviceContext->getContextFunction();
 
         // If the context index is null then there's no context
         if (null === $context || null === $serviceContext->getId()) {
@@ -169,11 +169,7 @@ class NativeContainer implements Container
             );
         }
 
-        $service = $this->getServiceFromContext(
-            $serviceContext,
-            $context,
-            $member
-        );
+        $service = $this->getServiceFromContext($serviceContext, $context, $member);
 
         $this->bind($service);
     }
@@ -182,8 +178,7 @@ class NativeContainer implements Container
      * Get a service model from a context model.
      *
      * @param ServiceContext $serviceContext The service context
-     * @param string         $context        [optional] The context
-     *                                       class or function
+     * @param string         $context        [optional] The context class or function
      * @param string         $member         [optional] The member
      *
      * @return Service
@@ -194,11 +189,7 @@ class NativeContainer implements Container
         string $member = null
     ): Service {
         $service   = new Service();
-        $serviceId = $this->contextServiceId(
-            $serviceContext->getId(),
-            $context,
-            $member
-        );
+        $serviceId = $this->contextServiceId($serviceContext->getId(), $context, $member);
 
         $service
             ->setId($serviceId)
@@ -244,10 +235,8 @@ class NativeContainer implements Container
      * Check whether a given service has context.
      *
      * @param string $serviceId The service
-     * @param string $context   The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return bool
      */
@@ -287,38 +276,23 @@ class NativeContainer implements Container
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   [optional] The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
     public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
     {
         // If there is a context set for this context and member combination
-        if (
-            null !== $context
-            && $this->hasContext(
-                $serviceId,
-                $context,
-                $member
-            )
-        ) {
+        if (null !== $context && $this->hasContext($serviceId, $context, $member)) {
             // Return that context
-            return $this->get(
-                $this->contextServiceId($serviceId, $context, $member),
-                $arguments
-            );
+            return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
         }
 
         // If there is a context set for this context only
         if (null !== $context && $this->hasContext($serviceId, $context)) {
             // Return that context
-            return $this->get(
-                $this->contextServiceId($serviceId, $context),
-                $arguments
-            );
+            return $this->get($this->contextServiceId($serviceId, $context), $arguments);
         }
 
         // If the service is a singleton
@@ -330,12 +304,7 @@ class NativeContainer implements Container
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
             // Return the appropriate service
-            return $this->get(
-                self::$aliases[$serviceId],
-                $arguments,
-                $context,
-                $member
-            );
+            return $this->get(self::$aliases[$serviceId], $arguments, $context, $member);
         }
 
         // If the service is in the container
@@ -346,12 +315,7 @@ class NativeContainer implements Container
 
         // Check if the service id is provided by a deferred service provider
         if ($this->isProvided($serviceId)) {
-            return $this->getProvided(
-                $serviceId,
-                $arguments,
-                $context,
-                $member
-            );
+            return $this->getProvided($serviceId, $arguments, $context, $member);
         }
 
         // If there are no argument return a new object
@@ -377,24 +341,17 @@ class NativeContainer implements Container
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
-        $this->app->events()->trigger(
-            ServiceMake::class,
-            [$serviceId, $service, $arguments]
-        );
+        $this->app->events()->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
 
         // Make the object by dispatching the service
-        $made =
-            $this->app->dispatcher()->dispatchCallable($service, $arguments);
+        $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
 
         // Dispatch after make event
         $this->app->events()->trigger(ServiceMade::class, [$serviceId, $made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->app->events()->trigger(
-                ServiceMadeSingleton::class,
-                [$serviceId, $made]
-            );
+            $this->app->events()->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
             $this->singleton($serviceId, $made);
         }
@@ -425,10 +382,8 @@ class NativeContainer implements Container
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   [optional] The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
@@ -447,10 +402,8 @@ class NativeContainer implements Container
      * Get the context service id.
      *
      * @param string $serviceId The service
-     * @param string $context   [optional] The context
-     *                          class name || function name || variable name
-     * @param string $member    [optional] The context member
-     *                          method name || property name
+     * @param string $context   [optional] The context class name || function name || variable name
+     * @param string $member    [optional] The context member method name || property name
      *
      * @return string
      */
@@ -482,16 +435,15 @@ class NativeContainer implements Container
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
-     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidContextException
+     * @throws EndlessContextLoopException
+     * @throws InvalidServiceIdException
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -513,18 +465,9 @@ class NativeContainer implements Container
         self::$services   = [];
         self::$provided   = [];
 
-        $useAnnotations     = $this->app->config(
-            'container.useAnnotations',
-            false
-        );
-        $annotationsEnabled = $this->app->config(
-            'annotations.enabled',
-            false
-        );
-        $onlyAnnotations    = $this->app->config(
-            'container.useAnnotationsExclusively',
-            false
-        );
+        $useAnnotations     = $this->app->config('container.useAnnotations', false);
+        $annotationsEnabled = $this->app->config('annotations.enabled', false);
+        $onlyAnnotations    = $this->app->config('container.useAnnotationsExclusively', false);
 
         // Setup service providers
         $this->setupServiceProviders();
@@ -574,16 +517,15 @@ class NativeContainer implements Container
     /**
      * Setup annotations.
      *
-     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
-     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws EndlessContextLoopException
+     * @throws InvalidServiceIdException
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidContextException
      */
     protected function setupAnnotations(): void
     {
@@ -658,16 +600,15 @@ class NativeContainer implements Container
     /**
      * Get a cacheable representation of the service container.
      *
-     * @throws \Valkyrja\Container\Exceptions\InvalidContextException
-     * @throws \Valkyrja\Container\Exceptions\EndlessContextLoopException
-     * @throws \Valkyrja\Container\Exceptions\InvalidServiceIdException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return array
+     * @throws EndlessContextLoopException
+     * @throws InvalidServiceIdException
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidContextException
      */
     public function getCacheable(): array
     {
@@ -683,7 +624,7 @@ class NativeContainer implements Container
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     protected function getApplication(): Application
     {

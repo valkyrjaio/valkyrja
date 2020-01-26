@@ -43,9 +43,8 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array
+     * @throws InvalidArgumentException
      */
     public function parse(string $path): array
     {
@@ -121,9 +120,8 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function validatePath(string $path): void
     {
@@ -139,17 +137,13 @@ REGEX;
         // If the count of required opening and closing tags doesn't match
         if ($requiredGroupsOpen !== $requiredGroupsClose) {
             // Throw an error letting the develop know they made a bad path
-            throw new InvalidArgumentException(
-                'Mismatch of required groups for path: ' . $path
-            );
+            throw new InvalidArgumentException('Mismatch of required groups for path: ' . $path);
         }
 
         // If the count of optional opening and closing tags doesn't match
         if ($optionalGroupsOpen !== $optionalGroupsClose) {
             // Throw an error letting the develop know they made a bad path
-            throw new InvalidArgumentException(
-                'Mismatch of optional groups for path: ' . $path
-            );
+            throw new InvalidArgumentException('Mismatch of optional groups for path: ' . $path);
         }
     }
 
@@ -162,10 +156,7 @@ REGEX;
      */
     protected function getSegments(string $path): array
     {
-        return preg_split(
-            '~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x',
-            $path
-        );
+        return preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path);
     }
 
     /**
@@ -185,11 +176,7 @@ REGEX;
         foreach ($segments as $segment) {
             // If the segment has the deliminator
             if (strpos($segment, $deliminator) !== false) {
-                $this->splitSegmentsDeliminator(
-                    $returnSegments,
-                    $segment,
-                    $deliminator
-                );
+                $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
 
                 continue;
             }
@@ -213,10 +200,8 @@ REGEX;
     protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
     {
         // Split the segment on that bracket
-        $parts = explode($deliminator, $segment);
-
         // Iterate through the parts
-        foreach ($parts as $part) {
+        foreach (explode($deliminator, $segment) as $part) {
             if (! $part) {
                 continue;
             }
@@ -245,11 +230,8 @@ REGEX;
     {
         /* @var array[] $params */
         // Get all matches for {paramName} and {paramName:regex} in the path
-        preg_match_all(
-            '/' . static::VARIABLE_REGEX . '/x',
-            $path,
-            $params
-        );
+        preg_match_all('/' . static::VARIABLE_REGEX . '/x', $path, $params);
+
         $regex        = $path;
         $paramsReturn = [];
 
@@ -279,11 +261,7 @@ REGEX;
                 // Replace this match with the replace text thus removing any regex
                 // in the segment this fixes any regex with brackets from being
                 // messed up in the splitSegments() method
-                $segments[$segmentKey] = str_replace(
-                    $params[0][$key],
-                    $replace,
-                    $segment
-                );
+                $segments[$segmentKey] = str_replace($params[0][$key], $replace, $segment);
             }
         }
 
@@ -311,8 +289,7 @@ REGEX;
      */
     protected function getParamReplacement(string $key, array $params): string
     {
-        return config()['app']['pathRegexMap'][$params[2][$key]]
-            ?? '(' . ($params[2][$key] ?: $params[1][$key]) . ')';
+        return config()['app']['pathRegexMap'][$params[2][$key]] ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 
     /**
@@ -336,9 +313,6 @@ REGEX;
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            PathParser::class,
-            new static()
-        );
+        $app->container()->singleton(PathParser::class, new static());
     }
 }

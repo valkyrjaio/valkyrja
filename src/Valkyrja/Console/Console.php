@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console;
 
+use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Support\Cacheable;
@@ -37,9 +38,9 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param string $name The command name
      *
-     * @return \Valkyrja\Console\Command
+     * @return Command
      */
-    public function command(string $name): ? Command;
+    public function command(string $name): ?Command;
 
     /**
      * Determine whether a command exists.
@@ -64,9 +65,8 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param Input $input The input
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
-     * @return \Valkyrja\Console\Command
+     * @return Command
+     * @throws CommandNotFound
      */
     public function inputCommand(Input $input): Command;
 
@@ -75,9 +75,8 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param string $path The command name
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
-     * @return \Valkyrja\Console\Command
+     * @return Command
+     * @throws CommandNotFound
      */
     public function matchCommand(string $path): Command;
 
@@ -87,9 +86,8 @@ interface Console extends Cacheable, ProvidersAware
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
      * @return mixed
+     * @throws CommandNotFound
      */
     public function dispatch(Input $input, Output $output);
 
@@ -105,14 +103,14 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Get all commands.
      *
-     * @return \Valkyrja\Console\Command[]
+     * @return Command[]
      */
     public function all(): array;
 
     /**
      * Set the commands.
      *
-     * @param Command[] $commands The commands
+     * @param Command ...$commands The commands
      *
      * @return void
      */

@@ -12,6 +12,7 @@
 namespace Valkyrja\Logger;
 
 use Psr\Log\LoggerInterface;
+use Valkyrja\Logger\Enums\LogLevel;
 
 /**
  * Class Logger.
@@ -23,14 +24,14 @@ class MonologLogger implements Logger
     /**
      * The logger.
      *
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     protected $logger;
 
     /**
      * Logger constructor.
      *
-     * @param \Psr\Log\LoggerInterface $logger The logger
+     * @param LoggerInterface $logger The logger
      */
     public function __construct(LoggerInterface $logger)
     {
@@ -43,7 +44,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function debug(string $message, array $context = []): Logger
     {
@@ -58,7 +59,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function info(string $message, array $context = []): Logger
     {
@@ -73,7 +74,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function notice(string $message, array $context = []): Logger
     {
@@ -88,7 +89,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function warning(string $message, array $context = []): Logger
     {
@@ -103,7 +104,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function error(string $message, array $context = []): Logger
     {
@@ -118,7 +119,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function critical(string $message, array $context = []): Logger
     {
@@ -133,7 +134,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function alert(string $message, array $context = []): Logger
     {
@@ -148,7 +149,7 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function emergency(string $message, array $context = []): Logger
     {
@@ -164,35 +165,11 @@ class MonologLogger implements Logger
      * @param string   $message The message
      * @param array    $context [optional] The context
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function log(LogLevel $level, string $message, array $context = []): Logger
     {
         $this->logger->{$level->getValue()}($message, $context);
-
-        return $this;
-    }
-
-    /**
-     * Get the logger.
-     *
-     * @return \Psr\Log\LoggerInterface
-     */
-    public function getLogger(): LoggerInterface
-    {
-        return $this->logger;
-    }
-
-    /**
-     * Set the logger.
-     *
-     * @param \Psr\Log\LoggerInterface $logger The logger
-     *
-     * @return \Valkyrja\Logger\Logger
-     */
-    public function setLogger(LoggerInterface $logger): Logger
-    {
-        $this->logger = $logger;
 
         return $this;
     }

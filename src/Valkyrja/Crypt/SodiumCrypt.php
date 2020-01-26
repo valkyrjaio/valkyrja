@@ -57,26 +57,15 @@ class SodiumCrypt implements Crypt
      * @param string $message The message to encrypt
      * @param string $key     The encryption key
      *
-     * @throws Exception Random Bytes Failure
-     *
      * @return string
+     * @throws Exception Random Bytes Failure
      */
     public function encrypt(string $message, string $key = null): string
     {
         $key = $key ?? $this->getKey();
 
-        $nonce = random_bytes(
-            SODIUM_CRYPTO_SECRETBOX_NONCEBYTES
-        );
-
-        $cipher = base64_encode(
-            $nonce .
-            sodium_crypto_secretbox(
-                $message,
-                $nonce,
-                $key
-            )
-        );
+        $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
 
         sodium_memzero($message);
         sodium_memzero($key);
@@ -90,9 +79,8 @@ class SodiumCrypt implements Crypt
      * @param string $encrypted The encrypted message to decrypt
      * @param string $key       The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return string
+     * @throws CryptException On any failure
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
@@ -110,11 +98,7 @@ class SodiumCrypt implements Crypt
         $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 
-        $plain = sodium_crypto_secretbox_open(
-            $cipherText,
-            $nonce,
-            $key
-        );
+        $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
 
         if ($plain === false) {
             throw new CryptException('The message was tampered with in transit');
@@ -132,13 +116,12 @@ class SodiumCrypt implements Crypt
      * @param array  $array The array to encrypt
      * @param string $key   The encryption key
      *
-     * @throws Exception Random Bytes Failure
-     *
      * @return string
+     * @throws Exception Random Bytes Failure
      */
     public function encryptArray(array $array, string $key = null): string
     {
-        return $this->encrypt(\json_encode($array), $key);
+        return $this->encrypt(json_encode($array), $key);
     }
 
     /**
@@ -147,13 +130,12 @@ class SodiumCrypt implements Crypt
      * @param string $encrypted The encrypted message
      * @param string $key       The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return array
+     * @throws CryptException On any failure
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
-        return \json_decode($this->decrypt($encrypted, $key), true);
+        return json_decode($this->decrypt($encrypted, $key), true);
     }
 
     /**
@@ -162,13 +144,12 @@ class SodiumCrypt implements Crypt
      * @param object $object The object to encrypt
      * @param string $key    The encryption key
      *
-     * @throws Exception Random Bytes Failure
-     *
      * @return string
+     * @throws Exception Random Bytes Failure
      */
     public function encryptObject(object $object, string $key = null): string
     {
-        return $this->encrypt(\json_encode($object), $key);
+        return $this->encrypt(json_encode($object), $key);
     }
 
     /**
@@ -177,13 +158,12 @@ class SodiumCrypt implements Crypt
      * @param string $encrypted The encrypted message
      * @param string $key       The encryption key
      *
-     * @throws CryptException On any failure
-     *
      * @return object
+     * @throws CryptException On any failure
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return \json_decode($this->decrypt($encrypted, $key), true);
+        return json_decode($this->decrypt($encrypted, $key), true);
     }
 
     /**
@@ -207,9 +187,6 @@ class SodiumCrypt implements Crypt
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            Crypt::class,
-            new static($app->filesystem())
-        );
+        $app->container()->singleton(Crypt::class, new static($app->filesystem()));
     }
 }

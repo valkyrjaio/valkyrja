@@ -11,11 +11,18 @@
 
 namespace Valkyrja\Console;
 
+use ReflectionException;
 use Valkyrja\Application;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Console\Support\CommandProvider;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
@@ -39,14 +46,14 @@ class NativeConsole implements Console
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The commands.
      *
-     * @var \Valkyrja\Console\Command[]
+     * @var Command[]
      */
     protected static $commands = [];
 
@@ -86,13 +93,12 @@ class NativeConsole implements Console
      *
      * @param Command $command The command
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function addCommand(Command $command): void
     {
@@ -103,12 +109,7 @@ class NativeConsole implements Console
         $dispatcher->verifyFunction($command);
         $dispatcher->verifyClosure($command);
 
-        $this->addParsedCommand(
-            $command,
-            $this->app->pathParser()->parse(
-                $command->getPath()
-            )
-        );
+        $this->addParsedCommand($command, $this->app->pathParser()->parse($command->getPath()));
     }
 
     /**
@@ -143,9 +144,9 @@ class NativeConsole implements Console
      *
      * @param string $name The command name
      *
-     * @return \Valkyrja\Console\Command
+     * @return Command
      */
-    public function command(string $name): ? Command
+    public function command(string $name): ?Command
     {
         return $this->hasCommand($name)
             ? self::$commands[self::$namedCommands[$name]]
@@ -174,10 +175,7 @@ class NativeConsole implements Console
     public function removeCommand(string $name): void
     {
         if ($this->hasCommand($name)) {
-            unset(
-                self::$commands[self::$namedCommands[$name]],
-                self::$namedCommands[$name]
-            );
+            unset(self::$commands[self::$namedCommands[$name]], self::$namedCommands[$name]);
         }
     }
 
@@ -186,9 +184,8 @@ class NativeConsole implements Console
      *
      * @param Input $input The input
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
-     * @return \Valkyrja\Console\Command
+     * @return Command
+     * @throws CommandNotFound
      */
     public function inputCommand(Input $input): Command
     {
@@ -200,9 +197,8 @@ class NativeConsole implements Console
      *
      * @param string $path The path
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
-     * @return \Valkyrja\Console\Command
+     * @return Command
+     * @throws CommandNotFound
      */
     public function matchCommand(string $path): Command
     {
@@ -230,9 +226,7 @@ class NativeConsole implements Console
                 unset($matches[0]);
 
                 // Set the matches
-                $command->setMatches($matches);
-
-                return $command;
+                return $command->setMatches($matches);
             }
         }
 
@@ -251,9 +245,8 @@ class NativeConsole implements Console
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Console\Exceptions\CommandNotFound
-     *
      * @return mixed
+     * @throws CommandNotFound
      */
     public function dispatch(Input $input, Output $output)
     {
@@ -286,16 +279,10 @@ class NativeConsole implements Console
         $this->app->events()->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->app->dispatcher()->dispatchCallable(
-            $command,
-            $command->getMatches()
-        );
+        $dispatch = $this->app->dispatcher()->dispatchCallable($command, $command->getMatches());
 
         // Trigger an event after dispatching
-        $this->app->events()->trigger(
-            'Command.dispatched',
-            [$command, $dispatch]
-        );
+        $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);
 
         return $dispatch;
     }
@@ -303,12 +290,11 @@ class NativeConsole implements Console
     /**
      * Get all commands.
      *
-     * @return \Valkyrja\Console\Command[]
+     * @return Command[]
      */
     public function all(): array
     {
-        // Iterate through all the command providers to set any deferred
-        // commands
+        // Iterate through all the command providers to set any deferred commands
         foreach (self::$provided as $provided => $provider) {
             // Initialize the provided command
             $this->initializeProvided($provided);
@@ -320,7 +306,7 @@ class NativeConsole implements Console
     /**
      * Set the commands.
      *
-     * @param Command[] $commands The commands
+     * @param Command ...$commands The commands
      *
      * @return void
      */
@@ -345,14 +331,13 @@ class NativeConsole implements Console
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @throws \ReflectionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws ReflectionException
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -380,10 +365,7 @@ class NativeConsole implements Console
         $this->setupCommandProviders();
 
         // If annotations are enabled and the events should use annotations
-        if (
-            $this->app->config()['console']['useAnnotations']
-            && $this->app->config()['annotations']['enabled']
-        ) {
+        if ($this->app->config()['console']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
@@ -406,8 +388,7 @@ class NativeConsole implements Console
     protected function setupFromCache(): void
     {
         // Set the application console with said file
-        $cache = $this->app->config()['cache']['console']
-            ?? require $this->app->config()['console']['cacheFilePath'];
+        $cache = $this->app->config()['cache']['console'] ?? require $this->app->config()['console']['cacheFilePath'];
 
         self::$commands      = unserialize(
             base64_decode($cache['commands'], true),
@@ -465,7 +446,7 @@ class NativeConsole implements Console
         // Do the default registration of the service provider
         $this->traitRegister($provider, $force);
 
-        /* @var \Valkyrja\Console\Support\CommandProvider $provider */
+        /* @var CommandProvider $provider */
         // Get the commands names provided
         $commands = $provider::commands();
 
@@ -484,26 +465,21 @@ class NativeConsole implements Console
     /**
      * Setup annotations.
      *
-     * @throws \ReflectionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws ReflectionException
      */
     protected function setupAnnotations(): void
     {
         /** @var CommandAnnotations $commandAnnotations */
-        $commandAnnotations = $this->app->container()->getSingleton(
-            CommandAnnotations::class
-        );
+        $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
 
         // Get all the annotated commands from the list of handlers
-        $commands = $commandAnnotations->getCommands(
-            ...$this->app->config()['console']['handlers']
-        );
+        $commands = $commandAnnotations->getCommands(...$this->app->config()['console']['handlers']);
 
         // Iterate through the commands
         foreach ($commands as $command) {
@@ -515,14 +491,13 @@ class NativeConsole implements Console
     /**
      * Get a cacheable representation of the commands.
      *
-     * @throws \ReflectionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return array
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws ReflectionException
      */
     public function getCacheable(): array
     {
@@ -568,7 +543,7 @@ class NativeConsole implements Console
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     protected function getApplication(): Application
     {

@@ -13,8 +13,8 @@ namespace Valkyrja\Routing\Annotations;
 
 use InvalidArgumentException;
 use Valkyrja\Annotations\Annotation;
-use Valkyrja\Http\RequestMethod;
-use Valkyrja\Http\StatusCode;
+use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class Route.
@@ -169,9 +169,8 @@ class Route extends Annotation
     /**
      * Get the request methods.
      *
-     * @throws \InvalidArgumentException
-     *
      * @return array
+     * @throws InvalidArgumentException
      */
     public function getRequestMethods(): array
     {
@@ -190,9 +189,8 @@ class Route extends Annotation
      *
      * @param array $requestMethods The request methods
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public function setRequestMethods(array $requestMethods): void
     {

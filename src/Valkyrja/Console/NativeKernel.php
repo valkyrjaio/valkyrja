@@ -17,6 +17,7 @@ use Valkyrja\Console\Events\ConsoleKernelHandled;
 use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -31,14 +32,14 @@ class NativeKernel implements Kernel
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The console.
      *
-     * @var \Valkyrja\Console\Console
+     * @var Console
      */
     protected $console;
 
@@ -60,9 +61,8 @@ class NativeKernel implements Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return int
+     * @throws HttpException
      */
     public function handle(Input $input, Output $output): int
     {
@@ -76,10 +76,7 @@ class NativeKernel implements Kernel
             dd($exception);
         }
 
-        $this->app->events()->trigger(
-            ConsoleKernelHandled::class,
-            [new ConsoleKernelHandled($input, $exitCode)]
-        );
+        $this->app->events()->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);
 
         return $exitCode;
     }
@@ -94,10 +91,7 @@ class NativeKernel implements Kernel
      */
     public function terminate(Input $input, int $exitCode): void
     {
-        $this->app->events()->trigger(
-            ConsoleKernelTerminate::class,
-            [new ConsoleKernelTerminate($input, $exitCode)]
-        );
+        $this->app->events()->trigger(ConsoleKernelTerminate::class, [new ConsoleKernelTerminate($input, $exitCode)]);
     }
 
     /**
@@ -106,9 +100,8 @@ class NativeKernel implements Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
-     *
      * @return void
+     * @throws HttpException
      */
     public function run(Input $input = null, Output $output = null): void
     {

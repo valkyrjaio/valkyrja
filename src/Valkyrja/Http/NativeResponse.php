@@ -13,9 +13,13 @@ namespace Valkyrja\Http;
 
 use DateTime;
 use DateTimeZone;
+use InvalidArgumentException;
+use RuntimeException;
 use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\View\View;
 
 /**
  * Class Response.
@@ -29,7 +33,7 @@ class NativeResponse implements Response
     /**
      * Response headers.
      *
-     * @var \Valkyrja\Http\Headers
+     * @var Headers
      */
     protected $headers;
 
@@ -43,7 +47,7 @@ class NativeResponse implements Response
     /**
      * Response cookies.
      *
-     * @var \Valkyrja\Http\Cookies
+     * @var Cookies
      */
     protected $cookies;
 
@@ -85,7 +89,7 @@ class NativeResponse implements Response
     /**
      * The view to use.
      *
-     * @var \Valkyrja\View\View
+     * @var View
      */
     protected $view;
 
@@ -96,7 +100,7 @@ class NativeResponse implements Response
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $content = '', int $status = StatusCode::OK, array $headers = [])
     {
@@ -115,9 +119,8 @@ class NativeResponse implements Response
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws InvalidArgumentException
      */
     public static function create(string $content = '', int $status = StatusCode::OK, array $headers = []): Response
     {
@@ -127,7 +130,7 @@ class NativeResponse implements Response
     /**
      * Sends HTTP headers.
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function sendHeaders(): Response
     {
@@ -195,7 +198,7 @@ class NativeResponse implements Response
     /**
      * Sends content for the current web response.
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function sendContent(): Response
     {
@@ -207,7 +210,7 @@ class NativeResponse implements Response
     /**
      * Sends HTTP headers and content.
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function send(): Response
     {
@@ -217,7 +220,7 @@ class NativeResponse implements Response
              ->sendContent();
 
         // If fastcgi is enabled
-        if (\function_exists('fastcgi_finish_request')) {
+        if (function_exists('fastcgi_finish_request')) {
             // Use it to finish the request
             fastcgi_finish_request();
         } // Otherwise if this isn't a cli request
@@ -231,13 +234,11 @@ class NativeResponse implements Response
 
     /**
      * Returns the Response as an HTTP string.
-     *
      * The string representation of the Response is the same as the
      * one that will be sent to the client only if the prepare() method
      * has been called before.
      *
      * @return string The Response as an HTTP string
-     *
      * @see prepare()
      */
     public function __toString(): string
@@ -270,7 +271,7 @@ class NativeResponse implements Response
      *
      * @param string $content The response content to set
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setContent(string $content): Response
     {
@@ -294,7 +295,7 @@ class NativeResponse implements Response
      *
      * @param string $version [optional] The protocol version to set
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setProtocolVersion(string $version = '1.0'): Response
     {
@@ -318,13 +319,11 @@ class NativeResponse implements Response
      *
      * @param int    $code HTTP status code
      * @param string $text [optional] HTTP status text
+     *                     If the status text is null it will be automatically populated for the
+     *                     known status codes and left empty otherwise.
      *
-     * If the status text is null it will be automatically populated for the
-     * known status codes and left empty otherwise.
-     *
-     * @throws \Valkyrja\Http\Exceptions\InvalidStatusCodeException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws InvalidStatusCodeException
      */
     public function setStatusCode(int $code, string $text = null): Response
     {
@@ -332,9 +331,7 @@ class NativeResponse implements Response
 
         // Check if the status code is valid
         if ($this->isInvalid()) {
-            throw new InvalidStatusCodeException(
-                sprintf('The HTTP status code "%s" is not valid.', $code)
-            );
+            throw new InvalidStatusCodeException(sprintf('The HTTP status code "%s" is not valid.', $code));
         }
 
         // If no text was supplied
@@ -365,7 +362,7 @@ class NativeResponse implements Response
      *
      * @param string $charset Character set
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setCharset(string $charset): Response
     {
@@ -389,7 +386,7 @@ class NativeResponse implements Response
      *
      * @param array $headers [optional] The headers to set
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setHeaders(array $headers = []): Response
     {
@@ -414,7 +411,7 @@ class NativeResponse implements Response
     /**
      * Get response headers collection.
      *
-     * @return \Valkyrja\Http\Headers
+     * @return Headers
      */
     public function headers(): Headers
     {
@@ -424,9 +421,8 @@ class NativeResponse implements Response
     /**
      * Returns the Date header as a DateTime instance.
      *
-     * @throws \RuntimeException When the header is not parseable
-     *
      * @return DateTime A DateTime instance
+     * @throws RuntimeException When the header is not parseable
      */
     public function getDateHeader(): DateTime
     {
@@ -442,7 +438,7 @@ class NativeResponse implements Response
      *
      * @param DateTime $date A DateTime instance
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setDateHeader(DateTime $date): Response
     {
@@ -455,7 +451,7 @@ class NativeResponse implements Response
     /**
      * Get response cookies collection.
      *
-     * @return \Valkyrja\Http\Cookies
+     * @return Cookies
      */
     public function cookies(): Cookies
     {
@@ -468,7 +464,7 @@ class NativeResponse implements Response
      * @param string $name  Cache control name
      * @param string $value [optional] Cache control value
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function addCacheControl(string $name, string $value = null): Response
     {
@@ -508,7 +504,7 @@ class NativeResponse implements Response
      *
      * @param string $name Cache control name
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function removeCacheControl(string $name): Response
     {
@@ -523,20 +519,17 @@ class NativeResponse implements Response
 
     /**
      * Returns true if the response is worth caching under any circumstance.
-     *
      * Responses marked "private" with an explicit Cache-Control directive are
      * considered uncacheable.
-     *
      * Responses with neither a freshness lifetime (Expires, max-age) nor cache
      * validator (Last-Modified, ETag) are considered uncacheable.
      *
-     * @throws \RuntimeException
-     *
      * @return bool true if the response is worth caching, false otherwise
+     * @throws RuntimeException
      */
     public function isCacheable(): bool
     {
-        if (! \in_array(
+        if (! in_array(
             $this->statusCode,
             [
                 StatusCode::OK,
@@ -565,16 +558,14 @@ class NativeResponse implements Response
 
     /**
      * Returns true if the response is "fresh".
-     *
      * Fresh responses may be served from cache without any interaction with
      * the
      * origin. A response is considered fresh when it includes a
      * Cache-Control/max-age indicator or Expires header and the calculated age
      * is less than the freshness lifetime.
      *
-     * @throws \RuntimeException
-     *
      * @return bool true if the response is fresh, false otherwise
+     * @throws RuntimeException
      */
     public function isFresh(): bool
     {
@@ -596,10 +587,9 @@ class NativeResponse implements Response
 
     /**
      * Marks the response as "private".
-     *
      * It makes the response ineligible for serving other clients.
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setPrivate(): Response
     {
@@ -611,10 +601,9 @@ class NativeResponse implements Response
 
     /**
      * Marks the response as "public".
-     *
      * It makes the response eligible for serving other clients.
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setPublic(): Response
     {
@@ -627,9 +616,8 @@ class NativeResponse implements Response
     /**
      * Returns the age of the response.
      *
-     * @throws \RuntimeException
-     *
      * @return int The age of the response in seconds
+     * @throws RuntimeException
      */
     public function getAge(): int
     {
@@ -647,9 +635,8 @@ class NativeResponse implements Response
      * Marks the response stale by setting the Age header to be equal to the
      * maximum age of the response.
      *
-     * @throws \RuntimeException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws RuntimeException
      */
     public function expire(): Response
     {
@@ -665,11 +652,11 @@ class NativeResponse implements Response
      *
      * @return DateTime A DateTime instance or null if the header does not exist
      */
-    public function getExpires(): DateTime
+    public function getExpires(): ?DateTime
     {
         try {
             return $this->headers->get('Expires');
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             // according to RFC 2616 invalid date formats (e.g. "0" and "-1")
             // must be treated as in the past
             return DateTime::createFromFormat(
@@ -681,13 +668,12 @@ class NativeResponse implements Response
 
     /**
      * Sets the Expires HTTP header with a DateTime instance.
-     *
      * Passing null as value will remove the header.
      *
      * @param DateTime $date [optional] A DateTime instance or null to remove
      *                       the header
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setExpires(DateTime $date = null): Response
     {
@@ -708,14 +694,12 @@ class NativeResponse implements Response
     /**
      * Returns the number of seconds after the time specified in the response's
      * Date header when the response should no longer be considered fresh.
-     *
      * First, it checks for a s-maxage directive, then a max-age directive, and
      * then it falls back on an expires header. It returns null when no maximum
      * age can be established.
      *
-     * @throws \RuntimeException
-     *
      * @return int Number of seconds
+     * @throws RuntimeException
      */
     public function getMaxAge(): int
     {
@@ -742,12 +726,11 @@ class NativeResponse implements Response
     /**
      * Sets the number of seconds after which the response should no longer be
      * considered fresh.
-     *
      * This methods sets the Cache-Control max-age directive.
      *
      * @param int $value Number of seconds
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setMaxAge(int $value): Response
     {
@@ -759,12 +742,11 @@ class NativeResponse implements Response
     /**
      * Sets the number of seconds after which the response should no longer be
      * considered fresh by shared caches.
-     *
      * This methods sets the Cache-Control s-maxage directive.
      *
      * @param int $value Number of seconds
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setSharedMaxAge(int $value): Response
     {
@@ -776,16 +758,13 @@ class NativeResponse implements Response
 
     /**
      * Returns the response's time-to-live in seconds.
-     *
      * It returns null when no freshness information is present in the
      * response.
-     *
      * When the responses TTL is <= 0, the response may not be served from
      * cache without first re-validating with the origin.
      *
-     * @throws \RuntimeException
-     *
      * @return int The TTL in seconds
+     * @throws RuntimeException
      */
     public function getTtl(): int
     {
@@ -798,14 +777,12 @@ class NativeResponse implements Response
 
     /**
      * Sets the response's time-to-live for shared caches.
-     *
      * This method adjusts the Cache-Control/s-maxage directive.
      *
      * @param int $seconds Number of seconds
      *
-     * @throws \RuntimeException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws RuntimeException
      */
     public function setTtl(int $seconds): Response
     {
@@ -816,14 +793,12 @@ class NativeResponse implements Response
 
     /**
      * Sets the response's time-to-live for private/client caches.
-     *
      * This method adjusts the Cache-Control/max-age directive.
      *
      * @param int $seconds Number of seconds
      *
-     * @throws \RuntimeException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws RuntimeException
      */
     public function setClientTtl(int $seconds): Response
     {
@@ -835,9 +810,8 @@ class NativeResponse implements Response
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
      *
-     * @throws \RuntimeException When the HTTP header is not parseable
-     *
      * @return string A date string
+     * @throws RuntimeException When the HTTP header is not parseable
      */
     public function getLastModified(): string
     {
@@ -846,13 +820,12 @@ class NativeResponse implements Response
 
     /**
      * Sets the Last-Modified HTTP header with a DateTime instance.
-     *
      * Passing null as value will remove the header.
      *
      * @param DateTime $date [optional] A DateTime instance or null to remove
      *                       the header
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setLastModified(DateTime $date = null): Response
     {
@@ -887,7 +860,7 @@ class NativeResponse implements Response
      *                     remove the header
      * @param bool   $weak [optional] Whether you want a weak ETag or not
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setEtag(string $etag = null, bool $weak = false): Response
     {
@@ -908,13 +881,12 @@ class NativeResponse implements Response
 
     /**
      * Sets the response's cache headers (validation and/or expiration).
-     *
      * Available options are: etag, last_modified, max_age, s_maxage, private,
      * and public.
      *
      * @param array $options An array of cache options
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function setCache(array $options): Response
     {
@@ -956,14 +928,11 @@ class NativeResponse implements Response
     /**
      * Modifies the response so that it conforms to the rules defined for a 304
      * status code.
-     *
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\Response
-     *
+     * @return Response
+     * @throws InvalidArgumentException
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
     public function setNotModified(): Response
@@ -986,7 +955,6 @@ class NativeResponse implements Response
      * Is response invalid?
      *
      * @return bool
-     *
      * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      */
     public function isInvalid(): bool
@@ -1089,7 +1057,7 @@ class NativeResponse implements Response
      */
     public function isRedirect(string $location = null): bool
     {
-        return \in_array(
+        return in_array(
                 $this->statusCode,
                 [
                     StatusCode::CREATED,
@@ -1112,7 +1080,7 @@ class NativeResponse implements Response
      */
     public function isEmpty(): bool
     {
-        return \in_array(
+        return in_array(
             $this->statusCode,
             [
                 StatusCode::NO_CONTENT,
@@ -1124,7 +1092,6 @@ class NativeResponse implements Response
 
     /**
      * Cleans or flushes output buffers up to target level.
-     *
      * Resulting level can be greater than target level if a non-removable
      * buffer has been encountered.
      *
@@ -1136,17 +1103,18 @@ class NativeResponse implements Response
     public static function closeOutputBuffers(int $targetLevel, bool $flush): void
     {
         $status = ob_get_status(true);
-        $level  = \count($status);
+        $level  = count($status);
         // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
-        $flags = \defined('PHP_OUTPUT_HANDLER_REMOVABLE')
+        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE')
             ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush
                 ? PHP_OUTPUT_HANDLER_FLUSHABLE
                 : PHP_OUTPUT_HANDLER_CLEANABLE)
             : -1;
 
         while (
-            $level-- > $targetLevel && ($s = $status[$level]) &&
-            ($s['del'] ?? ! isset($s['flags']) || $flags === ($s['flags'] & $flags))
+            $level-- > $targetLevel
+            && ($s = $status[$level])
+            && ($s['del'] ?? ! isset($s['flags']) || $flags === ($s['flags'] & $flags))
         ) {
             if ($flush) {
                 ob_end_flush();
@@ -1173,9 +1141,8 @@ class NativeResponse implements Response
      *
      * @param Application $app The application
      *
-     * @throws \InvalidArgumentException
-     *
      * @return void
+     * @throws InvalidArgumentException
      */
     public static function publish(Application $app): void
     {

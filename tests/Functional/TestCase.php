@@ -12,9 +12,9 @@
 namespace Valkyrja\Tests\Functional;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Valkyrja\Valkyrja;
 use Valkyrja\Env\EnvTest;
 use Valkyrja\Support\Directory;
+use Valkyrja\Valkyrja;
 
 /**
  * Test case for functional tests.

@@ -107,7 +107,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getAnnotationType(): ? string
+    public function getAnnotationType(): ?string
     {
         return $this->annotationType;
     }
@@ -129,7 +129,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getId(): ? string
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -151,7 +151,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getName(): ? string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -173,7 +173,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getClass(): ? string
+    public function getClass(): ?string
     {
         return $this->class;
     }
@@ -195,7 +195,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getProperty(): ? string
+    public function getProperty(): ?string
     {
         return $this->property;
     }
@@ -217,7 +217,7 @@ trait Annotatable
      *
      * @return string
      */
-    public function getMethod(): ? string
+    public function getMethod(): ?string
     {
         return $this->method;
     }
@@ -259,7 +259,7 @@ trait Annotatable
     /**
      * @return string
      */
-    public function getFunction(): ? string
+    public function getFunction(): ?string
     {
         return $this->function;
     }
@@ -281,7 +281,7 @@ trait Annotatable
      *
      * @return array
      */
-    public function getMatches(): ? array
+    public function getMatches(): ?array
     {
         return $this->matches;
     }
@@ -303,7 +303,7 @@ trait Annotatable
      *
      * @return array
      */
-    public function getArguments(): ? array
+    public function getArguments(): ?array
     {
         return $this->arguments;
     }
@@ -325,7 +325,7 @@ trait Annotatable
      *
      * @return array
      */
-    public function getDependencies(): ? array
+    public function getDependencies(): ?array
     {
         return $this->dependencies;
     }
@@ -347,7 +347,7 @@ trait Annotatable
      *
      * @return array
      */
-    public function getAnnotationArguments(): ? array
+    public function getAnnotationArguments(): ?array
     {
         return $this->annotationArguments;
     }

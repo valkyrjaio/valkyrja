@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
@@ -76,16 +77,13 @@ class OptimizeCommand extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage(
-                'An error occurred while optimizing the application.',
-                true
-            );
+            output()->writeMessage('An error occurred while optimizing the application.', true);
 
-            return 1;
+            return ExitCode::FAILURE;
         }
 
         output()->writeMessage('Application optimized successfully', true);
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 }

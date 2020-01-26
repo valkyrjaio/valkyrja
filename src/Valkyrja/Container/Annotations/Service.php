@@ -39,7 +39,7 @@ class Service extends Annotation
      *
      * @return bool
      */
-    public function isSingleton(): ? bool
+    public function isSingleton(): ?bool
     {
         return $this->singleton;
     }
@@ -61,7 +61,7 @@ class Service extends Annotation
      *
      * @return array
      */
-    public function getDefaults(): ? array
+    public function getDefaults(): ?array
     {
         return $this->defaults;
     }

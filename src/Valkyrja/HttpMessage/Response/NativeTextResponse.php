@@ -11,7 +11,12 @@
 
 namespace Valkyrja\HttpMessage\Response;
 
-use Valkyrja\HttpMessage\Header;
+use InvalidArgumentException;
+use RuntimeException;
+use Valkyrja\Application;
+use Valkyrja\HttpMessage\Enums\Header;
+use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\NativeResponse;
 use Valkyrja\HttpMessage\NativeStream;
 
@@ -29,12 +34,12 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws InvalidStatusCode
+     * @throws InvalidStream
      */
-    public function __construct(string $text, int $status = null, array $headers = [])
+    public function __construct(string $text = '', int $status = null, array $headers = [])
     {
         $body = new NativeStream('php://temp', 'wb+');
 
@@ -44,11 +49,32 @@ class NativeTextResponse extends NativeResponse implements TextResponse
         parent::__construct(
             $body,
             $status,
-            $this->injectHeader(
-                Header::CONTENT_TYPE,
-                'text/plain; charset=utf-8',
-                $headers
-            )
+            $this->injectHeader(Header::CONTENT_TYPE, 'text/plain; charset=utf-8', $headers)
         );
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            TextResponse::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(TextResponse::class, new static());
     }
 }

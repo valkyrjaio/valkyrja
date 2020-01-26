@@ -13,20 +13,19 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotations\NativeAnnotations;
-use Valkyrja\Env\Env;
-use Valkyrja\Env\EnvTest;
-use Valkyrja\Filesystem\FlyFilesystem;
-use Valkyrja\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
 use Valkyrja\Container\NativeContainer;
 use Valkyrja\Dispatcher\NativeDispatcher;
+use Valkyrja\Env\Env;
+use Valkyrja\Env\EnvTest;
 use Valkyrja\Events\NativeEvents;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\NativeJsonResponse;
@@ -44,6 +43,7 @@ use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
+use Valkyrja\Valkyrja;
 use Valkyrja\View\PhpView;
 
 /**

@@ -18,8 +18,7 @@
  * able to properly route a request through your application. In
  * order to do that you'll need to configure it. Lucky for you
  * all the configurations for routing can be found here.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -27,7 +26,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'trailingSlash'             => env('ROUTING_TRAILING_SLASH', false),
 
@@ -37,7 +35,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAbsoluteUrls'           => env('ROUTING_USE_ABSOLUTE_URLS', false),
 
@@ -47,7 +44,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'middleware'                => env('ROUTING_MIDDLEWARE', []),
 
@@ -57,7 +53,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'middlewareGroups'          => env('ROUTING_MIDDLEWARE_GROUPS', []),
 
@@ -67,7 +62,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotations'            => env('ROUTING_USE_ANNOTATIONS', false),
 
@@ -77,7 +71,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotationsExclusively' => env(
         'ROUTING_USE_ANNOTATIONS_EXCLUSIVELY',
@@ -90,7 +83,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'controllers'               => env('ROUTING_CONTROLLERS', []),
 
@@ -100,7 +92,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'filePath'                  => env(
         'ROUTING_FILE_PATH',
@@ -113,7 +104,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'cacheFilePath'             => env(
         'ROUTING_CACHE_FILE_PATH',
@@ -126,7 +116,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useCache'                  => env('ROUTING_USE_CACHE_FILE', false),
 ];

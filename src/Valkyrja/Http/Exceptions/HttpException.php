@@ -13,8 +13,8 @@ namespace Valkyrja\Http\Exceptions;
 
 use Exception;
 use RuntimeException;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\View\View;
 
 /**
@@ -50,13 +50,13 @@ class HttpException extends RuntimeException
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int        $statusCode [optional] The status code to use
-     * @param string     $message    [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for
+     * @param int       $statusCode  [optional] The status code to use
+     * @param string    $message     [optional] The Exception message to throw
+     * @param Exception $previous    [optional] The previous exception used for
      *                               the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param int        $code       [optional] The Exception code
-     * @param Response   $response   [optional] The Response to send
+     * @param array     $headers     [optional] The headers to send
+     * @param int       $code        [optional] The Exception code
+     * @param Response  $response    [optional] The Response to send
      */
     public function __construct(
         int $statusCode = StatusCode::INTERNAL_SERVER_ERROR,
@@ -88,7 +88,7 @@ class HttpException extends RuntimeException
             try {
                 // Set the response as the error template
                 $this->response = response($this->getDefaultView($template));
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
             }
         }
     }

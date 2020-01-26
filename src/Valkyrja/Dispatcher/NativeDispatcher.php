@@ -39,7 +39,7 @@ class NativeDispatcher implements Dispatcher
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
@@ -58,9 +58,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     *
      * @return void
+     * @throws InvalidMethodException
      */
     public function verifyClassMethod(Dispatch $dispatch): void
     {
@@ -68,10 +67,7 @@ class NativeDispatcher implements Dispatcher
         if (
             null !== $dispatch->getClass()
             && null !== $dispatch->getMethod()
-            && ! method_exists(
-                $dispatch->getClass(),
-                $dispatch->getMethod()
-            )
+            && ! method_exists($dispatch->getClass(), $dispatch->getMethod())
         ) {
             // Throw a new invalid method exception
             throw new InvalidMethodException(
@@ -89,9 +85,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidPropertyException
      */
     public function verifyClassProperty(Dispatch $dispatch): void
     {
@@ -120,16 +115,15 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     *
      * @return void
+     * @throws InvalidFunctionException
      */
     public function verifyFunction(Dispatch $dispatch): void
     {
         // If a function is set and is not callable
         if (
             null !== $dispatch->getFunction()
-            && ! \is_callable($dispatch->getFunction())
+            && ! is_callable($dispatch->getFunction())
         ) {
             // Throw a new invalid function exception
             throw new InvalidFunctionException(
@@ -145,9 +139,8 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     *
      * @return void
+     * @throws InvalidClosureException
      */
     public function verifyClosure(Dispatch $dispatch): void
     {
@@ -172,13 +165,12 @@ class NativeDispatcher implements Dispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
      */
     public function verifyDispatch(Dispatch $dispatch): void
     {
@@ -211,7 +203,7 @@ class NativeDispatcher implements Dispatcher
      *
      * @return array
      */
-    protected function getDependencies(Dispatch $dispatch): ? array
+    protected function getDependencies(Dispatch $dispatch): ?array
     {
         $dependencies = null;
 
@@ -249,7 +241,7 @@ class NativeDispatcher implements Dispatcher
      *
      * @return array
      */
-    protected function getArguments(Dispatch $dispatch, array $arguments = null): ? array
+    protected function getArguments(Dispatch $dispatch, array $arguments = null): ?array
     {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
@@ -307,9 +299,7 @@ class NativeDispatcher implements Dispatcher
         }
 
         // Set the class through the container if this isn't a static method
-        $class    = $dispatch->isStatic()
-            ? $dispatch->getClass()
-            : $this->app->container()->get($dispatch->getClass());
+        $class    = $dispatch->isStatic() ? $dispatch->getClass() : $this->app->container()->get($dispatch->getClass());
         $method   = $dispatch->getMethod();
         $response = null;
 
@@ -321,13 +311,15 @@ class NativeDispatcher implements Dispatcher
             } else {
                 $response = $class->$method(...$arguments);
             }
+
+            return $response ?? $this->DISPATCHED;
+        }
+
+        // Dispatch without unpacking
+        if ($dispatch->isStatic()) {
+            $response = $class::$method();
         } else {
-            // Dispatch without unpacking
-            if ($dispatch->isStatic()) {
-                $response = $class::$method();
-            } else {
-                $response = $class->$method();
-            }
+            $response = $class->$method();
         }
 
         return $response ?? $this->DISPATCHED;
@@ -345,10 +337,7 @@ class NativeDispatcher implements Dispatcher
         $response = null;
 
         // Ensure a class and property exist before continuing
-        if (
-            null === $dispatch->getClass()
-            || null === $dispatch->getProperty()
-        ) {
+        if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
             return $response;
         }
 
@@ -399,10 +388,7 @@ class NativeDispatcher implements Dispatcher
             }
         } else {
             // Set the class through the container
-            $class = $this->app->container()->get(
-                $dispatch->getClass(),
-                $arguments
-            );
+            $class = $this->app->container()->get($dispatch->getClass(), $arguments);
         }
 
         return $class ?? $this->DISPATCHED;

@@ -12,7 +12,7 @@
 namespace Valkyrja\Http\Exceptions;
 
 use Exception;
-use Valkyrja\Http\StatusCode;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class HttpRedirectException.
@@ -33,12 +33,11 @@ class HttpRedirectException extends HttpException
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int        $statusCode [optional] The status code to use
-     * @param string     $uri        [optional] The Exception message to throw
-     * @param \Exception $previous   [optional] The previous exception used for
-     *                               the exception chaining
-     * @param array      $headers    [optional] The headers to send
-     * @param int        $code       [optional] The Exception code
+     * @param int       $statusCode [optional] The status code to use
+     * @param string    $uri        [optional] The Exception message to throw
+     * @param Exception $previous   [optional] The previous exception used for the exception chaining
+     * @param array     $headers    [optional] The headers to send
+     * @param int       $code       [optional] The Exception code
      */
     public function __construct(
         int $statusCode = StatusCode::FOUND,
@@ -49,13 +48,7 @@ class HttpRedirectException extends HttpException
     ) {
         $this->uri = $uri ?? '/';
 
-        parent::__construct(
-            $statusCode,
-            'Redirect',
-            $previous,
-            $headers,
-            $code
-        );
+        parent::__construct($statusCode, 'Redirect', $previous, $headers, $code);
     }
 
     /**

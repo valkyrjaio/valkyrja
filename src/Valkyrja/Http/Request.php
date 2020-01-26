@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Http;
 
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 
 /**
@@ -55,7 +56,7 @@ interface Request
      * @param array           $server     The SERVER parameters
      * @param string|resource $content    The raw body data
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function factory(
         array $query = [],
@@ -70,13 +71,12 @@ interface Request
     /**
      * Creates a new request with values from PHP super globals.
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function createFromGlobals(): self;
 
     /**
      * Creates a Request based on a given URI and configuration.
-     *
      * The information contained in the URI always take precedence
      * over the other information (server and parameters).
      *
@@ -88,7 +88,7 @@ interface Request
      * @param array  $server     The server parameters ($_SERVER)
      * @param string $content    The raw body data
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public static function create(
         string $uri,
@@ -110,7 +110,7 @@ interface Request
     /**
      * Return the GET Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function query(): Collection;
 
@@ -119,14 +119,14 @@ interface Request
      *
      * @param array $query
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setQuery(array $query = []): self;
 
     /**
      * Return the POST Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function request(): Collection;
 
@@ -135,14 +135,14 @@ interface Request
      *
      * @param array $request
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setRequest(array $request = []): self;
 
     /**
      * Return the attributes Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function attributes(): Collection;
 
@@ -151,14 +151,14 @@ interface Request
      *
      * @param array $attributes
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setAttributes(array $attributes = []): self;
 
     /**
      * Return the COOKIES Collection.
      *
-     * @return \Valkyrja\Support\Collection
+     * @return Collection
      */
     public function cookies(): Collection;
 
@@ -167,14 +167,14 @@ interface Request
      *
      * @param array $cookies
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setCookies(array $cookies = []): self;
 
     /**
      * Return the FILES Collection.
      *
-     * @return \Valkyrja\Http\Files
+     * @return Files
      */
     public function files(): Files;
 
@@ -183,14 +183,14 @@ interface Request
      *
      * @param array $files
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setFiles(array $files = []): self;
 
     /**
      * Return the SERVER Collection.
      *
-     * @return \Valkyrja\Http\Server
+     * @return Server
      */
     public function server(): Server;
 
@@ -199,14 +199,14 @@ interface Request
      *
      * @param array $server
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setServer(array $server = []): self;
 
     /**
      * Return the headers Collection.
      *
-     * @return \Valkyrja\Http\Headers
+     * @return Headers
      */
     public function headers(): Headers;
 
@@ -215,7 +215,7 @@ interface Request
      *
      * @param array $headers
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setHeaders(array $headers = []): self;
 
@@ -231,7 +231,7 @@ interface Request
      *
      * @param string $content
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setContent(string $content = null): self;
 
@@ -247,7 +247,7 @@ interface Request
      *
      * @param array $languages
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setLanguages(array $languages = []): self;
 
@@ -263,7 +263,7 @@ interface Request
      *
      * @param array $charsets
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setCharsets(array $charsets = []): self;
 
@@ -279,7 +279,7 @@ interface Request
      *
      * @param array $encodings
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setEncodings(array $encodings = []): self;
 
@@ -295,7 +295,7 @@ interface Request
      *
      * @param array $acceptableContentTypes
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
 
@@ -342,12 +342,9 @@ interface Request
 
     /**
      * Returns the port on which the request is made.
-     *
      * This method can read the client port from the "X-Forwarded-Port" header
      * when trusted proxies were set via "setTrustedProxies()".
-     *
      * The "X-Forwarded-Port" header must contain the client port.
-     *
      * If your reverse proxy uses a different header name than
      * "X-Forwarded-Port", configure it via "setTrustedHeaderName()" with the
      * "client-port" key.
@@ -379,7 +376,6 @@ interface Request
 
     /**
      * Returns the HTTP host being requested.
-     *
      * The port name will be appended to the host if it's non-standard.
      *
      * @return string
@@ -402,13 +398,10 @@ interface Request
 
     /**
      * Checks whether the request is secure or not.
-     *
      * This method can read the client protocol from the "X-Forwarded-Proto"
      * header when trusted proxies were set via "setTrustedProxies()".
-     *
      * The "X-Forwarded-Proto" header must contain the protocol: "https" or
      * "http".
-     *
      * If your reverse proxy uses a different header name than
      * "X-Forwarded-Proto"
      * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()"
@@ -430,7 +423,7 @@ interface Request
      *
      * @param string $method
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setMethod(string $method): self;
 
@@ -438,7 +431,6 @@ interface Request
      * Gets the request "intended" method.
      *
      * @return string The request method
-     *
      * @see getRealMethod()
      */
     public function getMethod(): string;
@@ -447,7 +439,6 @@ interface Request
      * Gets the "real" request method.
      *
      * @return string The request method
-     *
      * @see getMethod()
      */
     public function getRealMethod(): string;
@@ -493,7 +484,7 @@ interface Request
      *
      * @param string $format The request format
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function setRequestFormat(string $format): self;
 

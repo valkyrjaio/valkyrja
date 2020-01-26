@@ -14,7 +14,7 @@ namespace Valkyrja\Tests\Unit\Routing\Annotations;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Annotations\Route;
 
 /**

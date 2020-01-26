@@ -13,15 +13,15 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Service;
 use Valkyrja\Application;
+use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\NativeDispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Dispatcher\NativeDispatcher;
 use Valkyrja\Valkyrja;
 
 /**

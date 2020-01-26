@@ -11,7 +11,11 @@
 
 namespace Valkyrja\HttpMessage\Response;
 
-use Valkyrja\Http\StatusCode;
+use InvalidArgumentException;
+use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\NativeResponse;
 
 /**
@@ -19,23 +23,44 @@ use Valkyrja\HttpMessage\NativeResponse;
  *
  * @author Melech Mizrachi
  */
-class NativeEmptyResponse extends NativeResponse implements RedirectResponse
+class NativeEmptyResponse extends NativeResponse implements EmptyResponse
 {
     /**
      * NativeEmptyResponse constructor.
      *
      * @param array $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStatusCode
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws InvalidStatusCode
+     * @throws InvalidStream
      */
     public function __construct(array $headers = [])
     {
-        parent::__construct(
-            null,
-            StatusCode::NO_CONTENT,
-            $headers
-        );
+        parent::__construct(null, StatusCode::NO_CONTENT, $headers);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            EmptyResponse::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(EmptyResponse::class, new static());
     }
 }

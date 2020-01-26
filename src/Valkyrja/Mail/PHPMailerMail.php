@@ -57,9 +57,8 @@ class PHPMailerMail implements Mail
      * @param string $address
      * @param string $name
      *
-     * @throws Exception
-     *
      * @return bool
+     * @throws Exception
      */
     public function setFrom(string $address, string $name = ''): bool
     {
@@ -124,9 +123,8 @@ class PHPMailerMail implements Mail
      * @param string $path
      * @param string $name
      *
-     * @throws Exception
-     *
      * @return bool
+     * @throws Exception
      */
     public function addAttachment(string $path, string $name = ''): bool
     {
@@ -184,9 +182,8 @@ class PHPMailerMail implements Mail
     /**
      * Send the mail.
      *
-     * @throws Exception
-     *
      * @return bool
+     * @throws Exception
      */
     public function send(): bool
     {

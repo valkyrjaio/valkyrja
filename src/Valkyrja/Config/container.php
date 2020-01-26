@@ -17,8 +17,7 @@
  * The container is the go to place for any type of service the
  * application may need when it is running. All configurations
  * necessary to make it run correctly can be found here.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +25,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'providers'                 => env(
         'CONTAINER_PROVIDERS',
@@ -68,7 +66,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'devProviders'              => env('CONTAINER_DEV_PROVIDERS', []),
 
@@ -78,7 +75,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotations'            => env('CONTAINER_USE_ANNOTATIONS', false),
 
@@ -88,7 +84,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useAnnotationsExclusively' => env(
         'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY',
@@ -101,7 +96,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'services'                  => env('CONTAINER_SERVICES', []),
 
@@ -111,7 +105,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'contextServices'           => env('CONTAINER_CONTEXT_SERVICES', []),
 
@@ -121,7 +114,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'filePath'                  => env(
         'CONTAINER_FILE_PATH',
@@ -134,7 +126,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'cacheFilePath'             => env(
         'CONTAINER_CACHE_FILE_PATH',
@@ -147,7 +138,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'useCache'                  => env('CONTAINER_USE_CACHE_FILE', false),
 ];

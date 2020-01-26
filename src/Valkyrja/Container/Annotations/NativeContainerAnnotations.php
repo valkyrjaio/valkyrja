@@ -11,13 +11,13 @@
 
 namespace Valkyrja\Container\Annotations;
 
+use ReflectionException;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
-use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class ContainerAnnotations.
@@ -26,8 +26,6 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeContainerAnnotations extends NativeAnnotations implements ContainerAnnotations
 {
-    use Provides;
-
     /**
      * THe services annotation type.
      *
@@ -52,63 +50,50 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
     /**
      * Get the services.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Container\Service[]
+     * @return Service[]
+     * @throws ReflectionException
      */
     public function getServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(
-            $this->servicesAnnotationType,
-            ...$classes
-        );
+        return $this->getAllClassesAnnotationsByType($this->servicesAnnotationType, ...$classes);
     }
 
     /**
      * Get the alias services.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Container\Annotations\ServiceContext[]
+     * @return ServiceContext[]
+     * @throws ReflectionException
      */
     public function getAliasServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(
-            $this->aliasServicesAnnotationType,
-            ...$classes
-        );
+        return $this->getAllClassesAnnotationsByType($this->aliasServicesAnnotationType, ...$classes);
     }
 
     /**
      * Get the context services.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Container\ServiceContext[]
+     * @return ContainerContextService[]
+     * @throws ReflectionException
      */
     public function getContextServices(string ...$classes): array
     {
-        return $this->getAllClassesAnnotationsByType(
-            $this->contextServicesAnnotationType,
-            ...$classes
-        );
+        return $this->getAllClassesAnnotationsByType($this->contextServicesAnnotationType, ...$classes);
     }
 
     /**
      * Get all annotations for a class and its members by type.
      *
-     * @param string   $type       The type
-     * @param string[] ...$classes The classes
-     *
-     * @throws \ReflectionException
+     * @param string $type       The type
+     * @param string ...$classes The classes
      *
      * @return array
+     * @throws ReflectionException
      */
     protected function getAllClassesAnnotationsByType(string $type, string ...$classes): array
     {
@@ -117,27 +102,22 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Annotations\Annotation $annotation */
-            foreach ($this->classAndMembersAnnotationsType(
-                $type,
-                $class
-            ) as $annotation) {
+            /** @var Annotation $annotation */
+            foreach ($this->classAndMembersAnnotationsType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
 
                 // If this annotation is a service
                 if ($type === $this->servicesAnnotationType) {
-                    /* @var \Valkyrja\Container\Annotations\Service $annotation */
-                    $annotations[] =
-                        $this->getServiceFromAnnotation($annotation);
+                    /* @var Service $annotation */
+                    $annotations[] = $this->getServiceFromAnnotation($annotation);
 
                     continue;
                 }
 
                 // If this annotation is a context service
                 if ($type === $this->contextServicesAnnotationType) {
-                    /* @var \Valkyrja\Container\Annotations\ServiceContext $annotation */
-                    $annotations[] =
-                        $this->getServiceContextFromAnnotation($annotation);
+                    /* @var ServiceContext $annotation */
+                    $annotations[] = $this->getServiceContextFromAnnotation($annotation);
 
                     continue;
                 }
@@ -155,24 +135,18 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param Annotation $annotation
      *
-     * @throws \ReflectionException
-     *
      * @return void
+     * @throws ReflectionException
      */
     protected function setServiceProperties(Annotation $annotation): void
     {
         if (null === $annotation->getProperty()) {
             $parameters =
-                $this->getMethodReflection(
-                    $annotation->getClass(),
-                    $annotation->getMethod() ?? '__construct'
-                )
+                $this->getMethodReflection($annotation->getClass(), $annotation->getMethod() ?? '__construct')
                      ->getParameters();
 
             // Set the dependencies
-            $annotation->setDependencies(
-                $this->getDependencies(...$parameters)
-            );
+            $annotation->setDependencies($this->getDependencies(...$parameters));
         }
 
         $annotation->setMatches();
@@ -183,7 +157,7 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param Service $service The service annotation
      *
-     * @return \Valkyrja\Container\Service
+     * @return ContainerService
      */
     protected function getServiceFromAnnotation(Service $service): ContainerService
     {
@@ -211,7 +185,7 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
      *
      * @param ServiceContext $service The service context annotation
      *
-     * @return \Valkyrja\Container\ServiceContext
+     * @return ContainerContextService
      */
     protected function getServiceContextFromAnnotation(ServiceContext $service): ContainerContextService
     {
@@ -225,8 +199,8 @@ class NativeContainerAnnotations extends NativeAnnotations implements ContainerA
             ->setDefaults($service->getDefaults())
             ->setSingleton($service->isSingleton())
             ->setId($service->getId())
-            ->setName($service->getName())
             ->setClass($service->getClass())
+            ->setName($service->getName())
             ->setProperty($service->getProperty())
             ->setMethod($service->getMethod())
             ->setStatic($service->isStatic())

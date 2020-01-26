@@ -11,7 +11,9 @@
 
 namespace Valkyrja\Http;
 
+use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -47,7 +49,7 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
     {
@@ -62,7 +64,7 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function view(
         string $template,
@@ -82,7 +84,7 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int   $statusCode [optional] The response status code
      * @param array $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
     {
@@ -97,9 +99,8 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
+     * @throws InvalidArgumentException
      */
     public function jsonp(
         string $callback,
@@ -107,9 +108,7 @@ class NativeResponseBuilder implements ResponseBuilder
         int $statusCode = StatusCode::OK,
         array $headers = []
     ): JsonResponse {
-        return $this->json($data, $statusCode, $headers)->setCallback(
-            $callback
-        );
+        return $this->json($data, $statusCode, $headers)->setCallback($callback);
     }
 
     /**
@@ -119,7 +118,7 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function redirect(
         string $uri = '/',
@@ -133,12 +132,11 @@ class NativeResponseBuilder implements ResponseBuilder
      * Redirect to a named route response builder.
      *
      * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic
-     *                           routes
+     * @param array  $parameters [optional] Any parameters to set for dynamic routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function route(
         string $route,
@@ -146,12 +144,7 @@ class NativeResponseBuilder implements ResponseBuilder
         int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): RedirectResponse {
-        return $this->app->redirectRoute(
-            $route,
-            $parameters,
-            $statusCode,
-            $headers
-        );
+        return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
     }
 
     /**
@@ -175,9 +168,6 @@ class NativeResponseBuilder implements ResponseBuilder
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            ResponseBuilder::class,
-            new static($app)
-        );
+        $app->container()->singleton(ResponseBuilder::class, new static($app));
     }
 }

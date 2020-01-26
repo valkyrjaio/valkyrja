@@ -61,10 +61,7 @@ class ConfigCacheCommand extends CommandHandler
         );
 
         if ($result === false) {
-            output()->writeMessage(
-                'An error occurred while generating config cache.',
-                true
-            );
+            output()->writeMessage('An error occurred while generating config cache.', true);
 
             return 1;
         }

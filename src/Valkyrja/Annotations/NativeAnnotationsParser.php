@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Annotations;
 
+use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
 
@@ -26,7 +27,7 @@ class NativeAnnotationsParser implements AnnotationsParser
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
@@ -45,9 +46,8 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @param string $docString The doc string
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws InvalidAnnotationKeyArgument
      */
     public function getAnnotations(string $docString): array
     {
@@ -74,7 +74,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return array[]
      */
-    protected function getAnnotationMatches(string $docString): ? array
+    protected function getAnnotationMatches(string $docString): ?array
     {
         preg_match_all($this->getRegex(), $docString, $matches);
 
@@ -84,21 +84,20 @@ class NativeAnnotationsParser implements AnnotationsParser
     /**
      * Set a matched annotation.
      *
-     * @param array $matches     The matches
-     *                           [
-     *                           0 => matches,
-     *                           1 => annotation,
-     *                           2 => type,
-     *                           3 => args,
-     *                           4 => var,
-     *                           5 => desc
-     *                           ]
-     * @param int   $index       The index
-     * @param array $annotations The annotations list
-     *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
+     * @param array $matches        The matches
+     *                              [
+     *                              0 => matches,
+     *                              1 => annotation,
+     *                              2 => type,
+     *                              3 => args,
+     *                              4 => var,
+     *                              5 => desc
+     *                              ]
+     * @param int   $index          The index
+     * @param array $annotations    The annotations list
      *
      * @return void
+     * @throws InvalidAnnotationKeyArgument
      */
     protected function setAnnotation(array $matches, int $index, array &$annotations): void
     {
@@ -113,9 +112,7 @@ class NativeAnnotationsParser implements AnnotationsParser
         // If there are arguments
         if (null !== $properties['arguments'] && $properties['arguments']) {
             // Filter the arguments and set them in the annotation
-            $annotation->setAnnotationArguments(
-                $this->getArguments($properties['arguments'])
-            );
+            $annotation->setAnnotationArguments($this->getArguments($properties['arguments']));
 
             // Having set the arguments there's no need to retain this key in
             // the properties
@@ -201,14 +198,9 @@ class NativeAnnotationsParser implements AnnotationsParser
         // If the type and description exist by the variable does not
         // then that means the variable regex group captured the
         // first word of the description
-        if (
-            $properties['type']
-            && $properties['description']
-            && ! $properties['variable']
-        ) {
+        if ($properties['type'] && $properties['description'] && ! $properties['variable']) {
             // Rectify this by concatenating the type and description
-            $properties['description'] =
-                $properties['type'] . $properties['description'];
+            $properties['description'] = $properties['type'] . $properties['description'];
 
             // Then unset the type
             unset($properties['type']);
@@ -228,11 +220,10 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @param string $arguments The arguments
      *
-     * @throws \Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument
-     *
      * @return array
+     * @throws InvalidAnnotationKeyArgument
      */
-    public function getArguments(string $arguments = null): ? array
+    public function getArguments(string $arguments = null): ?array
     {
         $argumentsList = null;
 
@@ -241,7 +232,7 @@ class NativeAnnotationsParser implements AnnotationsParser
             $testArgs      = str_replace('=', ':', $arguments);
             $argumentsList = json_decode('{' . $testArgs . '}', true);
 
-            if (\is_array($argumentsList)) {
+            if (is_array($argumentsList)) {
                 foreach ($argumentsList as &$value) {
                     $value = $this->determineValue($value);
                 }
@@ -264,7 +255,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      */
     protected function determineValue($value)
     {
-        if (\is_array($value)) {
+        if (is_array($value)) {
             foreach ($value as &$item) {
                 $item = $this->determineValue($item);
             }
@@ -283,12 +274,12 @@ class NativeAnnotationsParser implements AnnotationsParser
         }
 
         // Determine if the value is a constant
-        if (\defined($value)) {
+        if (defined($value)) {
             // Set the value as the constant's value
-            return \constant($value);
+            return constant($value);
         }
 
-        [$class, $member] = explode('::', $value);
+        [$class, $member] = explode('::', $value, 2);
 
         // Check for static property
         if (property_exists($class, $member)) {
@@ -364,7 +355,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @param string $annotationType The annotation type
      *
-     * @return \Valkyrja\Annotations\Annotation
+     * @return Annotation
      */
     public function getAnnotationFromMap(string $annotationType): Annotation
     {
@@ -372,11 +363,7 @@ class NativeAnnotationsParser implements AnnotationsParser
         $annotationsMap = $this->getAnnotationsMap();
 
         // If an annotation is mapped to a class
-        if ($annotationType && array_key_exists(
-                $annotationType,
-                $annotationsMap
-            )
-        ) {
+        if ($annotationType && array_key_exists($annotationType, $annotationsMap)) {
             // Set a new class based on the match found
             $annotation = new $annotationsMap[$annotationType]();
         } else {
@@ -394,7 +381,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @return string
      */
-    protected function cleanMatch(string $match = null): ? string
+    protected function cleanMatch(string $match = null): ?string
     {
         if (! $match) {
             return $match;

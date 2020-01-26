@@ -27,7 +27,7 @@ class NativeInput implements Input
     /**
      * The request.
      *
-     * @var \Valkyrja\Http\Request
+     * @var Request
      */
     protected $request;
 
@@ -122,7 +122,7 @@ class NativeInput implements Input
         $globalArguments = $this->getGlobalOptionsFlat();
 
         foreach ($arguments as $key => $argument) {
-            if (\in_array($argument, $globalArguments, true)) {
+            if (in_array($argument, $globalArguments, true)) {
                 unset($arguments[$key]);
             }
         }
@@ -176,7 +176,7 @@ class NativeInput implements Input
             // If the key is already set
             if (isset($this->{$type}[$key])) {
                 // If the key isn't already an array
-                if (! \is_array($this->{$type}[$key])) {
+                if (! is_array($this->{$type}[$key])) {
                     // Make it an array with the current value
                     $this->{$type}[$key] = [$this->{$type}[$key]];
                 }
@@ -199,7 +199,7 @@ class NativeInput implements Input
      *
      * @return string
      */
-    public function getArgument(string $argument): ? string
+    public function getArgument(string $argument): ?string
     {
         return $this->arguments[$argument] ?? null;
     }
@@ -223,7 +223,7 @@ class NativeInput implements Input
      *
      * @return string
      */
-    public function getShortOption(string $option): ? string
+    public function getShortOption(string $option): ?string
     {
         return $this->shortOptions[$option] ?? null;
     }
@@ -247,7 +247,7 @@ class NativeInput implements Input
      *
      * @return string
      */
-    public function getLongOption(string $option): ? string
+    public function getLongOption(string $option): ?string
     {
         return $this->longOptions[$option] ?? null;
     }
@@ -271,7 +271,7 @@ class NativeInput implements Input
      *
      * @return string
      */
-    public function getOption(string $option): ? string
+    public function getOption(string $option): ?string
     {
         return $this->shortOptions[$option] ?? $this->longOptions[$option] ?? null;
     }
@@ -291,7 +291,7 @@ class NativeInput implements Input
     /**
      * Get the global options.
      *
-     * @return \Valkyrja\Console\Input\Option[]
+     * @return Option[]
      */
     public function getGlobalOptions(): array
     {

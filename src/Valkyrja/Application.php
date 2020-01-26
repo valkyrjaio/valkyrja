@@ -18,15 +18,16 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Env\Env;
 use Valkyrja\Events\Events;
 use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
@@ -63,7 +64,7 @@ interface Application
     /**
      * Get the application instance.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     public static function app(): self;
 
@@ -73,14 +74,14 @@ interface Application
      * @param string $variable [optional] The variable to get
      * @param string $default  [optional] The default value to return
      *
-     * @return mixed|\Valkyrja\Env\Env||config|Env
+     * @return mixed|Env||config|Env
      */
     public static function env(string $variable = null, $default = null);
 
     /**
      * Get environment variables.
      *
-     * @return \Valkyrja\Env\Env||config|Env
+     * @return Env||config|Env
      */
     public static function getEnv(): string;
 
@@ -116,21 +117,21 @@ interface Application
     /**
      * Get the container instance.
      *
-     * @return \Valkyrja\Container\Container
+     * @return Container
      */
     public function container(): Container;
 
     /**
      * Get the dispatcher instance.
      *
-     * @return \Valkyrja\Dispatcher\Dispatcher
+     * @return Dispatcher
      */
     public function dispatcher(): Dispatcher;
 
     /**
      * Get the events instance.
      *
-     * @return \Valkyrja\Events\Events
+     * @return Events
      */
     public function events(): Events;
 
@@ -200,98 +201,98 @@ interface Application
     /**
      * Return the annotations instance from the container.
      *
-     * @return \Valkyrja\Annotations\Annotations
+     * @return Annotations
      */
     public function annotations(): Annotations;
 
     /**
      * Return the client instance from the container.
      *
-     * @return \Valkyrja\Client\Client
+     * @return Client
      */
     public function client(): Client;
 
     /**
      * Return the console instance from the container.
      *
-     * @return \Valkyrja\Console\Console
+     * @return Console
      */
     public function console(): Console;
 
     /**
      * Return the console kernel instance from the container.
      *
-     * @return \Valkyrja\Console\Kernel
+     * @return ConsoleKernel
      */
     public function consoleKernel(): ConsoleKernel;
 
     /**
      * Return the crypt instance from the container.
      *
-     * @return \Valkyrja\Crypt\Crypt
+     * @return Crypt
      */
     public function crypt(): Crypt;
 
     /**
      * Return the entity manager instance from the container.
      *
-     * @return \Valkyrja\ORM\EntityManager
+     * @return EntityManager
      */
     public function entityManager(): EntityManager;
 
     /**
      * Return the filesystem instance from the container.
      *
-     * @return \Valkyrja\Filesystem\Filesystem
+     * @return Filesystem
      */
     public function filesystem(): Filesystem;
 
     /**
      * Return the kernel instance from the container.
      *
-     * @return \Valkyrja\Http\Kernel
+     * @return Kernel
      */
     public function kernel(): Kernel;
 
     /**
      * Return the logger instance from the container.
      *
-     * @return \Valkyrja\Logger\Logger
+     * @return Logger
      */
     public function logger(): Logger;
 
     /**
      * Return the mail instance from the container.
      *
-     * @return \Valkyrja\Mail\Mail
+     * @return Mail
      */
     public function mail(): Mail;
 
     /**
      * Return the path generator instance from the container.
      *
-     * @return \Valkyrja\Path\PathGenerator
+     * @return PathGenerator
      */
     public function pathGenerator(): PathGenerator;
 
     /**
      * Return the path parser instance from the container.
      *
-     * @return \Valkyrja\Path\PathParser
+     * @return PathParser
      */
     public function pathParser(): PathParser;
 
     /**
      * Return the request instance from the container.
      *
-     * @return \Valkyrja\Http\Request
+     * @return Request
      */
     public function request(): Request;
 
     /**
      * Return the router instance from the container.
      *
-     * @return \Valkyrja\Routing\Router
+     * @return Router
      */
     public function router(): Router;
 
@@ -302,7 +303,7 @@ interface Application
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
 
@@ -313,7 +314,7 @@ interface Application
      * @param int   $statusCode [optional] The status code to set
      * @param array $headers    [optional] The headers to set
      *
-     * @return \Valkyrja\Http\JsonResponse
+     * @return JsonResponse
      */
     public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
 
@@ -324,7 +325,7 @@ interface Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function redirect(
         string $uri = null,
@@ -341,7 +342,7 @@ interface Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return \Valkyrja\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function redirectRoute(
         string $route,
@@ -353,14 +354,14 @@ interface Application
     /**
      * Return a new response from the application.
      *
-     * @return \Valkyrja\Http\ResponseBuilder
+     * @return ResponseBuilder
      */
     public function responseBuilder(): ResponseBuilder;
 
     /**
      * Return the session.
      *
-     * @return \Valkyrja\Session\Session
+     * @return Session
      */
     public function session(): Session;
 
@@ -370,7 +371,7 @@ interface Application
      * @param string $template  [optional] The template to use
      * @param array  $variables [optional] The variables to use
      *
-     * @return \Valkyrja\View\View
+     * @return View
      */
     public function view(string $template = '', array $variables = []): View;
 }

@@ -27,7 +27,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface;
 
@@ -37,7 +37,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function get(string $uri, array $options = []): ResponseInterface;
 
@@ -47,7 +47,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function post(string $uri, array $options = []): ResponseInterface;
 
@@ -57,7 +57,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function head(string $uri, array $options = []): ResponseInterface;
 
@@ -67,7 +67,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function put(string $uri, array $options = []): ResponseInterface;
 
@@ -77,7 +77,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function patch(string $uri, array $options = []): ResponseInterface;
 
@@ -87,7 +87,7 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function delete(string $uri, array $options = []): ResponseInterface;
 }

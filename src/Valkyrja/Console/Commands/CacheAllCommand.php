@@ -13,6 +13,7 @@ namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Console\CommandHandler;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\ProvidesCommand;
@@ -41,9 +42,8 @@ class CacheAllCommand extends CommandHandler
      *
      * @param string $sync [optional] Whether to sync the cached files
      *
-     * @throws CommandNotFound
-     *
      * @return int
+     * @throws CommandNotFound
      */
     public function run(string $sync = null): int
     {
@@ -75,7 +75,7 @@ class CacheAllCommand extends CommandHandler
             }
         }
 
-        return 0;
+        return ExitCode::SUCCESS;
     }
 
     /**

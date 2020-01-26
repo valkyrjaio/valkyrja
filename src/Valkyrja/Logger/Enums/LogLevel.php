@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logger;
+namespace Valkyrja\Logger\Enums;
 
 use Valkyrja\Enum\Enum;
 

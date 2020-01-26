@@ -11,12 +11,13 @@
 
 namespace Valkyrja\Routing\Annotations;
 
+use InvalidArgumentException;
+use ReflectionException;
 use Valkyrja\Annotations\AnnotationsParser;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
-use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class RouteAnnotations.
@@ -25,8 +26,6 @@ use Valkyrja\Support\Providers\Provides;
  */
 class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotations
 {
-    use Provides;
-
     /**
      * The route annotation type.
      *
@@ -37,18 +36,17 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
     /**
      * Get routes.
      *
-     * @param string[] $classes The classes
+     * @param string ...$classes The classes
      *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
-     *
-     * @return \Valkyrja\Routing\Route[]
+     * @return RouterRoute[]
+     * @throws ReflectionException
+     * @throws InvalidRoutePath
+     * @throws InvalidArgumentException
      */
     public function getRoutes(string ...$classes): array
     {
         $routes = $this->getClassRoutes($classes);
-        /** @var \Valkyrja\Routing\Route[] $finalRoutes */
+        /** @var RouterRoute[] $finalRoutes */
         $finalRoutes = [];
 
         // Iterate through all the routes
@@ -56,10 +54,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
             // Set the route's properties
             $this->setRouteProperties($route);
 
-            $classAnnotations = $this->classAnnotationsType(
-                $this->routeAnnotationType,
-                $route->getClass()
-            );
+            $classAnnotations = $this->classAnnotationsType($this->routeAnnotationType, $route->getClass());
 
             // If this route's class has annotations
             if ($classAnnotations) {
@@ -67,10 +62,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
                 // Iterate through all the annotations
                 foreach ($classAnnotations as $annotation) {
                     // And set a new route with the controller defined annotation additions
-                    $finalRoutes[] =
-                        $this->getRouteFromAnnotation(
-                            $this->getControllerBuiltRoute($annotation, $route)
-                        );
+                    $finalRoutes[] = $this->getRouteFromAnnotation($this->getControllerBuiltRoute($annotation, $route));
                 }
             } else {
                 // Validate the path before setting the route
@@ -89,10 +81,9 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param Route $route
      *
-     * @throws \ReflectionException
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRoutePath
-     *
      * @return void
+     * @throws InvalidRoutePath
+     * @throws ReflectionException
      */
     protected function setRouteProperties(Route $route): void
     {
@@ -103,9 +94,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
             );
 
             // Set the dependencies
-            $route->setDependencies(
-                $this->getDependencies(...$methodReflection->getParameters())
-            );
+            $route->setDependencies($this->getDependencies(...$methodReflection->getParameters()));
         }
 
         // Avoid having large arrays in cached routes file
@@ -125,21 +114,17 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param array $classes The classes
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Routing\Route[]
+     * @return RouterRoute[]
+     * @throws ReflectionException
      */
     protected function getClassRoutes(array $classes): array
     {
-        /** @var \Valkyrja\Routing\Route[] $routes */
+        /** @var RouterRoute[] $routes */
         $routes = [];
 
         // Iterate through all the classes
         foreach ($classes as $class) {
-            $annotations = $this->classMembersAnnotationsType(
-                $this->routeAnnotationType,
-                $class
-            );
+            $annotations = $this->classMembersAnnotationsType($this->routeAnnotationType, $class);
 
             // Get all the routes for each class and iterate through them
             foreach ($annotations as $annotation) {
@@ -157,7 +142,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      * @param Route $controllerRoute
      * @param Route $route
      *
-     * @return \Valkyrja\Routing\Annotations\Route
+     * @return Route
      */
     protected function getControllerBuiltRoute(Route $controllerRoute, Route $route): Route
     {
@@ -176,9 +161,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
         // If there is a base name for this controller
         if (null !== $controllerRoute->getName()) {
             // Set the name to the base name and route name
-            $newRoute->setName(
-                $controllerRoute->getName() . '.' . $route->getName()
-            );
+            $newRoute->setName($controllerRoute->getName() . '.' . $route->getName());
         }
 
         // If the base is dynamic
@@ -197,10 +180,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
         if (null !== $controllerRoute->getMiddleware()) {
             // Merge the route's middleware and the controller's middleware
             // keeping the controller's middleware first
-            $middleware = array_merge(
-                $controllerRoute->getMiddleware(),
-                $route->getMiddleware() ?? []
-            );
+            $middleware = array_merge($controllerRoute->getMiddleware(), $route->getMiddleware() ?? []);
 
             // Set the middleware in the route
             $newRoute->setMiddleware($middleware);
@@ -241,9 +221,8 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @param Route $route The route annotation
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Valkyrja\Routing\Route
+     * @return RouterRoute
+     * @throws InvalidArgumentException
      */
     protected function getRouteFromAnnotation(Route $route): RouterRoute
     {
@@ -251,11 +230,11 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
 
         $routerRoute
             ->setPath($route->getPath())
+            ->setSegments($route->getSegments())
             ->setRedirectPath($route->getRedirectPath())
             ->setRedirectCode($route->getRedirectCode())
             ->setRegex($route->getRegex())
             ->setParams($route->getParams())
-            ->setSegments($route->getSegments())
             ->setRequestMethods($route->getRequestMethods())
             ->setSecure($route->isSecure())
             ->setDynamic($route->isDynamic())

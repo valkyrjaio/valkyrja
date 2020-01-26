@@ -27,7 +27,7 @@ interface Annotations
     /**
      * Get the parser.
      *
-     * @return \Valkyrja\Annotations\AnnotationsParser
+     * @return AnnotationsParser
      */
     public function getParser(): AnnotationsParser;
 
@@ -45,7 +45,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function classAnnotations(string $class): array;
 
@@ -64,7 +64,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function classMembersAnnotations(string $class): array;
 
@@ -74,7 +74,7 @@ interface Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function classMembersAnnotationsType(string $type, string $class): array;
 
@@ -83,7 +83,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function classAndMembersAnnotations(string $class): array;
 
@@ -93,7 +93,7 @@ interface Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function classAndMembersAnnotationsType(string $type, string $class): array;
 
@@ -103,7 +103,7 @@ interface Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array;
 
@@ -114,7 +114,7 @@ interface Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function propertyAnnotationsType(string $type, string $class, string $property): array;
 
@@ -123,7 +123,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function propertiesAnnotations(string $class): array;
 
@@ -133,7 +133,7 @@ interface Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function propertiesAnnotationsType(string $type, string $class): array;
 
@@ -143,7 +143,7 @@ interface Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array;
 
@@ -154,7 +154,7 @@ interface Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function methodAnnotationsType(string $type, string $class, string $method): array;
 
@@ -163,7 +163,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function methodsAnnotations(string $class): array;
 
@@ -173,7 +173,7 @@ interface Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function methodsAnnotationsType(string $type, string $class): array;
 
@@ -182,7 +182,7 @@ interface Annotations
      *
      * @param string $function The function
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function functionAnnotations(string $function): array;
 
@@ -192,15 +192,15 @@ interface Annotations
      * @param string $type     The type
      * @param string $function The function
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function functionAnnotationsType(string $type, string $function): array;
 
     /**
      * Filter annotations by type.
      *
-     * @param string       $type           The type to match
-     * @param Annotation[] ...$annotations The annotations
+     * @param string     $type           The type to match
+     * @param Annotation ...$annotations The annotations
      *
      * @return array
      */
@@ -209,9 +209,9 @@ interface Annotations
     /**
      * Get a reflection class's annotations.
      *
-     * @param \ReflectionFunctionAbstract $reflection The reflection class
+     * @param ReflectionFunctionAbstract $reflection The reflection class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array;
 
@@ -220,7 +220,7 @@ interface Annotations
      *
      * @param string $class The class
      *
-     * @return \ReflectionClass
+     * @return ReflectionClass
      */
     public function getClassReflection(string $class): ReflectionClass;
 
@@ -230,7 +230,7 @@ interface Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return \ReflectionProperty
+     * @return ReflectionProperty
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty;
 
@@ -240,7 +240,7 @@ interface Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return \ReflectionMethod
+     * @return ReflectionMethod
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod;
 
@@ -249,7 +249,7 @@ interface Annotations
      *
      * @param string $function The function
      *
-     * @return \ReflectionFunction
+     * @return ReflectionFunction
      */
     public function getFunctionReflection(string $function): ReflectionFunction;
 }

@@ -92,10 +92,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function black(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::BLACK : FormatForeground::BLACK,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
     }
 
     /**
@@ -107,10 +104,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function red(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::RED : FormatForeground::RED,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
     }
 
     /**
@@ -122,10 +116,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function green(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::GREEN : FormatForeground::GREEN,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
     }
 
     /**
@@ -137,10 +128,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function yellow(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::YELLOW : FormatForeground::YELLOW,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
     }
 
     /**
@@ -152,10 +140,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function blue(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::BLUE : FormatForeground::BLUE,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
     }
 
     /**
@@ -167,10 +152,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function magenta(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
     }
 
     /**
@@ -182,10 +164,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function cyan(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::CYAN : FormatForeground::CYAN,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
     }
 
     /**
@@ -197,10 +176,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function white(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::WHITE : FormatForeground::WHITE,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
     }
 
     /**
@@ -212,10 +188,7 @@ class NativeOutputFormatter implements OutputFormatter
      */
     public function resetColor(bool $background = null): void
     {
-        $this->setColor(
-            $background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT,
-            $background
-        );
+        $this->setColor($background ? FormatBackground::DEFAULT : FormatForeground::DEFAULT, $background);
     }
 
     /**
@@ -278,7 +251,7 @@ class NativeOutputFormatter implements OutputFormatter
     /**
      * Set options.
      *
-     * @param FormatOption[] ...$options The options
+     * @param FormatOption ...$options The options
      *
      * @return void
      */
@@ -386,7 +359,7 @@ class NativeOutputFormatter implements OutputFormatter
         }
 
         // Check if options were specified
-        if (\count($this->options)) {
+        if (count($this->options)) {
             // Iterate through all the options
             foreach ($this->options as $option) {
                 $set[]   = $option;
@@ -395,16 +368,11 @@ class NativeOutputFormatter implements OutputFormatter
         }
 
         // No need to format if there's nothing to set
-        if (0 === \count($set)) {
+        if (0 === count($set)) {
             return $message;
         }
 
-        return sprintf(
-            "\033[%sm%s\033[%sm",
-            implode(';', $set),
-            $message,
-            implode(';', $unset)
-        );
+        return sprintf("\033[%sm%s\033[%sm", implode(';', $set), $message, implode(';', $unset));
     }
 
     /**

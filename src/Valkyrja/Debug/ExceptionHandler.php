@@ -14,10 +14,10 @@ namespace Valkyrja\Debug;
 use ErrorException;
 use Exception;
 use Throwable;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\StatusCode;
 use Valkyrja\Valkyrja;
 
 /**
@@ -56,18 +56,16 @@ class ExceptionHandler
     public function __construct(bool $displayErrors = false)
     {
         $this->displayErrors  = $displayErrors;
-        $this->fileLinkFormat = ini_get('xdebug.file_link_format')
-            ?? get_cfg_var('xdebug.file_link_format');
+        $this->fileLinkFormat = ini_get('xdebug.file_link_format') ?? get_cfg_var('xdebug.file_link_format');
     }
 
     /**
      * Handle an uncaught exception from the application.
-     *
      * Note: Most exceptions can be handled via the try / catch block in
      * the HTTP and Console kernels. But, fatal error exceptions must
      * be handled differently since they are not normal exceptions.
      *
-     * @param \Throwable $exception The exception that was captured
+     * @param Throwable $exception The exception that was captured
      *
      * @return void
      */
@@ -85,19 +83,11 @@ class ExceptionHandler
     {
         $error = error_get_last();
 
-        if (
-            null !== $error &&
-            \in_array(
-                $error['type'],
-                [
-                    E_ERROR,
-                    E_CORE_ERROR,
-                    E_COMPILE_ERROR,
-                    E_PARSE,
-                ],
-                true
-            )
-        ) {
+        if (null === $error) {
+            return;
+        }
+
+        if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE,], true)) {
             $this->handleException($this->fatalExceptionFromError($error));
         }
     }
@@ -107,21 +97,19 @@ class ExceptionHandler
      *
      * @param array $error The error array to use
      *
-     * @return \Exception
+     * @return Exception
      */
     protected function fatalExceptionFromError(array $error): Exception
     {
-        return new ErrorException(
-            $error['message'], 0, $error['type'], $error['file'], $error['line']
-        );
+        return new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
     }
 
     /**
      * Get a response from an exception.
      *
-     * @param \Throwable $exception The exception
+     * @param Throwable $exception The exception
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function getResponse($exception): Response
     {
@@ -131,10 +119,8 @@ class ExceptionHandler
 
         $headers    = [];
         $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
-        $content    = $this->html(
-            $this->getContent($exception),
-            $this->getStylesheet()
-        );
+        $content    = $this->html($this->getContent($exception), $this->getStylesheet());
+        $app        = Valkyrja::app();
 
         if ($exception instanceof HttpException) {
             foreach ($exception->getHeaders() as $name => $value) {
@@ -145,17 +131,9 @@ class ExceptionHandler
         }
 
         if ($exception instanceof HttpRedirectException) {
-            $response = Valkyrja::app()->redirect(
-                $exception->getUri(),
-                $statusCode,
-                $headers
-            );
+            $response = $app->redirect($exception->getUri(), $statusCode, $headers);
         } else {
-            $response = Valkyrja::app()->response(
-                $content,
-                $statusCode,
-                $headers
-            );
+            $response = $app->response($content, $statusCode, $headers);
         }
 
         $response->setCharset($this->charset);
@@ -166,7 +144,7 @@ class ExceptionHandler
     /**
      * Send response.
      *
-     * @param \Throwable $exception The exception
+     * @param Throwable $exception The exception
      *
      * @return void
      */
@@ -178,7 +156,7 @@ class ExceptionHandler
     /**
      * Send response.
      *
-     * @param \Throwable $exception
+     * @param Throwable $exception
      *
      * @return void
      */
@@ -202,7 +180,7 @@ class ExceptionHandler
     /**
      * Gets the HTML content associated with the given exception.
      *
-     * @param \Throwable $exception A FlattenException instance
+     * @param Throwable $exception A FlattenException instance
      *
      * @return string The content as a string
      */
@@ -210,10 +188,7 @@ class ExceptionHandler
     {
         $title = 'Whoops, looks like something went wrong.';
 
-        if (
-            $exception instanceof HttpException
-            && $exception->getStatusCode() === 404
-        ) {
+        if ($exception instanceof HttpException && $exception->getStatusCode() === 404) {
             $title = 'Sorry, the page you are looking for could not be found.';
         }
 
@@ -221,25 +196,23 @@ class ExceptionHandler
 
         if ($this->displayErrors) {
             try {
-                $exceptions = [
-                    $exception,
-                ];
+                $exceptions = [$exception];
                 $e          = $exception;
 
                 while ($e = $e->getPrevious()) {
                     $exceptions[] = $e;
                 }
 
-                $count = \count($exceptions);
+                $count = count($exceptions);
                 $total = $count;
 
                 /**
                  * @var int
-                 * @var \Throwable $e
+                 * @var Throwable $e
                  */
                 foreach ($exceptions as $position => $e) {
                     $ind     = $count - $position;
-                    $class   = $this->formatClass(\get_class($e));
+                    $class   = $this->formatClass(get_class($e));
                     $message = nl2br($this->escapeHtml($e->getMessage()));
                     $content .= sprintf(
                         <<<'EOF'
@@ -297,7 +270,7 @@ EOF
                 // Something nasty happened and we cannot throw an exception anymore
                 $title = sprintf(
                     'Exception thrown when handling an exception (%s: %s)',
-                    \get_class($e),
+                    get_class($e),
                     $this->escapeHtml($e->getMessage())
                 );
             }
@@ -386,7 +359,7 @@ EOF;
     {
         return <<<EOF
             <!DOCTYPE html>
-            <html>
+            <html lang="en">
                 <head>
                     <meta charset="{$this->charset}" />
                     <meta name="robots" content="noindex,nofollow" />
@@ -415,7 +388,7 @@ EOF;
                         img { border: 0; }
                         #sf-resetcontent { width:970px; margin:0 auto; }
                         $css
-                    </style>
+                    </style><title></title>
                 </head>
                 <body>
                     $content
@@ -449,22 +422,12 @@ EOF;
     protected function formatPath(string $path, int $line): string
     {
         $path = $this->escapeHtml($path);
-        $file = preg_match('#[^/\\\\]*$#', $path, $file)
-            ? $file[0]
-            : $path;
+        $file = preg_match('#[^/\\\\]*$#', $path, $file) ? $file[0] : $path;
 
         if ($linkFormat = $this->fileLinkFormat) {
-            $link = strtr(
-                $this->escapeHtml($linkFormat),
-                ['%f' => $path, '%l' => $line]
-            );
+            $link = strtr($this->escapeHtml($linkFormat), ['%f' => $path, '%l' => $line]);
 
-            return sprintf(
-                ' in <a href="%s" title="Go to source">%s line %d</a>',
-                $link,
-                $file,
-                $line
-            );
+            return sprintf(' in <a href="%s" title="Go to source">%s line %d</a>', $link, $file, $line);
         }
 
         return sprintf(
@@ -487,25 +450,17 @@ EOF;
         $result = [];
 
         foreach ($args as $key => $item) {
-            if (\is_object($item)) {
-                $formattedValue = sprintf(
-                    '<em>object</em>(%s)',
-                    $this->formatClass(\get_class($item))
-                );
-            } elseif (\is_array($item)) {
-                $formattedValue = sprintf(
-                    '<em>array</em>(%s)',
-                    $this->formatArgs($item)
-                );
-            } elseif (\is_string($item)) {
+            if (is_object($item)) {
+                $formattedValue = sprintf('<em>object</em>(%s)', $this->formatClass(get_class($item)));
+            } elseif (is_array($item)) {
+                $formattedValue = sprintf('<em>array</em>(%s)', $this->formatArgs($item));
+            } elseif (is_string($item)) {
                 $formattedValue = sprintf("'%s'", $this->escapeHtml($item));
             } elseif (null === $item) {
                 $formattedValue = '<em>null</em>';
-            } elseif (\is_bool($item)) {
-                $formattedValue = '<em>'
-                    . strtolower(var_export($item, true))
-                    . '</em>';
-            } elseif (\is_resource($item)) {
+            } elseif (is_bool($item)) {
+                $formattedValue = '<em>' . strtolower(var_export($item, true)) . '</em>';
+            } elseif (is_resource($item)) {
                 $formattedValue = '<em>resource</em>';
             } else {
                 $formattedValue = str_replace(
@@ -515,9 +470,7 @@ EOF;
                 );
             }
 
-            $result[] = \is_int($key)
-                ? $formattedValue
-                : sprintf("'%s' => %s", $key, $formattedValue);
+            $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $key, $formattedValue);
         }
 
         return implode(', ', $result);
@@ -532,10 +485,6 @@ EOF;
      */
     protected function escapeHtml(string $str): string
     {
-        return htmlspecialchars(
-            $str,
-            ENT_QUOTES | ENT_SUBSTITUTE,
-            $this->charset
-        );
+        return htmlspecialchars($str, ENT_QUOTES | ENT_SUBSTITUTE, $this->charset);
     }
 }

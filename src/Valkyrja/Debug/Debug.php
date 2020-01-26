@@ -51,29 +51,11 @@ class Debug
 
         // Set the error reporting level
         error_reporting($errorReportingLevel);
-
         // Set the error handler
-        set_error_handler(
-            [
-                $errorHandler,
-                'handleError',
-            ]
-        );
-
+        set_error_handler([$errorHandler, 'handleError',]);
         // Set the exception handler
-        set_exception_handler(
-            [
-                $exceptionHandler,
-                'handleException',
-            ]
-        );
-
+        set_exception_handler([$exceptionHandler, 'handleException',]);
         // Register a shutdown function
-        register_shutdown_function(
-            [
-                $exceptionHandler,
-                'handleShutdown',
-            ]
-        );
+        register_shutdown_function([$exceptionHandler, 'handleShutdown',]);
     }
 }

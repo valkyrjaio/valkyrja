@@ -11,25 +11,28 @@
 
 namespace Valkyrja\HttpMessage;
 
-use Valkyrja\Http\RequestMethod;
+use InvalidArgumentException;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
+use Valkyrja\HttpMessage\Exceptions\InvalidPath;
+use Valkyrja\HttpMessage\Exceptions\InvalidPort;
+use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
+use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidRequestTarget;
+use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 
 /**
  * Representation of an outgoing, client-side request.
- *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
- *
  * - Protocol version
  * - HTTP method
  * - URI
  * - Headers
  * - Message body
- *
  * During construction, implementations MUST attempt to set the Host header from
  * a provided URI if no Host header is provided.
- *
  * Requests are considered immutable; all methods that might change state MUST
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
@@ -46,7 +49,7 @@ trait RequestTrait
     /**
      * The uri.
      *
-     * @var \Valkyrja\HttpMessage\Uri
+     * @var Uri
      */
     protected $uri;
 
@@ -79,16 +82,15 @@ trait RequestTrait
      * @param Stream $body    [optional] The body stream
      * @param array  $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
-     *
      * @return void
+     * @throws InvalidArgumentException
+     * @throws InvalidMethod
+     * @throws InvalidPath
+     * @throws InvalidPort
+     * @throws InvalidProtocolVersion
+     * @throws InvalidQuery
+     * @throws InvalidScheme
+     * @throws InvalidStream
      */
     protected function initialize(
         Uri $uri = null,
@@ -115,15 +117,12 @@ trait RequestTrait
 
     /**
      * Retrieves the message's request target.
-     *
      * Retrieves the message's request-target either as it will appear (for
      * clients), as it appeared at request (for servers), or as it was
      * specified for the instance (see withRequestTarget()).
-     *
      * In most cases, this will be the origin-form of the composed URI,
      * unless a value was provided to the concrete implementation (see
      * withRequestTarget() below).
-     *
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
      *
@@ -150,12 +149,10 @@ trait RequestTrait
 
     /**
      * Return an instance with the specific request-target.
-     *
      * If the request needs a non-origin-form request-target — e.g., for
      * specifying an absolute-form, authority-form, or asterisk-form —
      * this method may be used to create an instance with the specified
      * request-target, verbatim.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * changed request target.
@@ -165,8 +162,7 @@ trait RequestTrait
      *
      * @param string $requestTarget The request target
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidRequestTarget
-     *
+     * @throws InvalidRequestTarget
      * @return static
      */
     public function withRequestTarget(string $requestTarget)
@@ -192,21 +188,17 @@ trait RequestTrait
 
     /**
      * Return an instance with the provided HTTP method.
-     *
      * While HTTP method names are typically all uppercase characters, HTTP
      * method names are case-sensitive and thus implementations SHOULD NOT
      * modify the given string.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * changed request method.
      *
      * @param string $method Case-sensitive method.
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod for invalid HTTP
-     *          methods.
-     *
      * @return static
+     * @throws InvalidMethod for invalid HTTP methods.
      */
     public function withMethod(string $method)
     {
@@ -221,13 +213,10 @@ trait RequestTrait
 
     /**
      * Retrieves the URI instance.
-     *
      * This method MUST return a Uri instance.
      *
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
-     *
-     * @return Uri Returns a Uri instance
-     *             representing the URI of the request.
+     * @return Uri Returns a Uri instance representing the URI of the request.
      */
     public function getUri(): Uri
     {
@@ -236,17 +225,14 @@ trait RequestTrait
 
     /**
      * Returns an instance with the provided URI.
-     *
      * This method MUST update the Host header of the returned request by
      * default if the URI contains a host component. If the URI does not
      * contain a host component, any pre-existing Host header MUST be carried
      * over to the returned request.
-     *
      * You can opt-in to preserving the original state of the Host header by
      * setting `$preserveHost` to `true`. When `$preserveHost` is set to
      * `true`, this method interacts with the Host header in the following
      * ways:
-     *
      * - If the Host header is missing or empty, and the new URI contains
      *   a host component, this method MUST update the Host header in the
      *   returned request.
@@ -255,7 +241,6 @@ trait RequestTrait
      * the returned request.
      * - If a Host header is present and non-empty, this method MUST NOT update
      *   the Host header in the returned request.
-     *
      * This method MUST be implemented in such a way as to retain the
      * immutability of the message, and MUST return an instance that has the
      * new Uri instance.
@@ -286,13 +271,7 @@ trait RequestTrait
 
         $new->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
 
-        $new->headers =
-            $this->injectHeader(
-                static::$HOST_NAME,
-                $host,
-                $new->headerNames,
-                true
-            );
+        $new->headers = $this->injectHeader(static::$HOST_NAME, $host, $new->headerNames, true);
 
         return $new;
     }
@@ -302,16 +281,13 @@ trait RequestTrait
      *
      * @param string $requestTarget The request target
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidRequestTarget
-     *
      * @return void
+     * @throws InvalidRequestTarget
      */
     protected function validateRequestTarget(string $requestTarget): void
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidRequestTarget(
-                'Invalid request target provided; cannot contain whitespace'
-            );
+            throw new InvalidRequestTarget('Invalid request target provided; cannot contain whitespace');
         }
     }
 
@@ -320,19 +296,13 @@ trait RequestTrait
      *
      * @param string $method The method
      *
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
-     *
      * @return void
+     * @throws InvalidMethod
      */
     protected function validateMethod(string $method): void
     {
         if (! RequestMethod::isValid($method)) {
-            throw new InvalidMethod(
-                sprintf(
-                    'Unsupported HTTP method "%s" provided',
-                    $method
-                )
-            );
+            throw new InvalidMethod(sprintf('Unsupported HTTP method "%s" provided', $method));
         }
     }
 }

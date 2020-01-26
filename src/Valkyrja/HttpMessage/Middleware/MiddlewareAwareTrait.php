@@ -83,15 +83,12 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->requestMiddleware(
-                    $request,
-                    $this->getMiddlewareGroup($item)
-                );
+                $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
 
                 continue;
             }
 
-            /* @var \Valkyrja\HttpMessage\Middleware\Middleware $item */
+            /* @var Middleware $item */
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
@@ -127,16 +124,12 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->responseMiddleware(
-                    $request,
-                    $response,
-                    $this->getMiddlewareGroup($item)
-                );
+                $this->responseMiddleware($request, $response, $this->getMiddlewareGroup($item));
 
                 continue;
             }
 
-            /* @var \Valkyrja\HttpMessage\Middleware\Middleware $item */
+            /* @var Middleware $item */
             $response = $item::after($request, $response);
 
             // Set the returned response in the container
@@ -165,16 +158,12 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->terminableMiddleware(
-                    $request,
-                    $response,
-                    $this->getMiddlewareGroup($item)
-                );
+                $this->terminableMiddleware($request, $response, $this->getMiddlewareGroup($item));
 
                 continue;
             }
 
-            /* @var \Valkyrja\HttpMessage\Middleware\Middleware $item */
+            /* @var Middleware $item */
             $item::terminate($request, $response);
         }
     }
@@ -182,7 +171,7 @@ trait MiddlewareAwareTrait
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application
+     * @return Application
      */
     abstract protected function getApplication(): Application;
 }

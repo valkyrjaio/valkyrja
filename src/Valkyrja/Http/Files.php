@@ -20,5 +20,4 @@ use Valkyrja\Support\Collection;
  */
 class Files extends Collection
 {
-    //
 }

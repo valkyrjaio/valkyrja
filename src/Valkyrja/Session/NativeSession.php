@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Session;
 
+use Exception;
 use Valkyrja\Application;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
@@ -28,7 +29,7 @@ class NativeSession implements Session
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
@@ -53,8 +54,8 @@ class NativeSession implements Session
      * @param string      $sessionId   [optional] The session id
      * @param string      $sessionName [optional] The session name
      *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
+     * @throws InvalidSessionId
+     * @throws SessionStartFailure
      */
     public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
     {
@@ -82,9 +83,8 @@ class NativeSession implements Session
     /**
      * Start the session.
      *
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
-     *
      * @return void
+     * @throws SessionStartFailure
      */
     public function start(): void
     {
@@ -119,9 +119,8 @@ class NativeSession implements Session
      *
      * @param string $id The session id
      *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     *
      * @return void
+     * @throws InvalidSessionId
      */
     public function setId(string $id): void
     {
@@ -228,9 +227,8 @@ class NativeSession implements Session
      *
      * @param string $id The csrf unique token id
      *
-     * @throws \Exception
-     *
      * @return string
+     * @throws Exception
      */
     public function csrf(string $id): string
     {
@@ -257,7 +255,7 @@ class NativeSession implements Session
 
         $sessionToken = $this->get($id);
 
-        if (! \is_string($sessionToken)) {
+        if (! is_string($sessionToken)) {
             return false;
         }
 
@@ -307,16 +305,12 @@ class NativeSession implements Session
      *
      * @param Application $app The application
      *
-     * @throws \Valkyrja\Session\Exceptions\InvalidSessionId
-     * @throws \Valkyrja\Session\Exceptions\SessionStartFailure
-     *
      * @return void
+     * @throws SessionStartFailure
+     * @throws InvalidSessionId
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
-            Session::class,
-            new static($app)
-        );
+        $app->container()->singleton(Session::class, new static($app));
     }
 }

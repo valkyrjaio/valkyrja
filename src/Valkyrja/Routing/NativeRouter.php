@@ -11,9 +11,17 @@
 
 namespace Valkyrja\Routing;
 
+use Exception;
+use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
+use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
+use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
+use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
-use Valkyrja\Http\RequestMethod;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Events\RouteMatched;
@@ -33,14 +41,14 @@ class NativeRouter implements Router
     /**
      * Application.
      *
-     * @var \Valkyrja\Application
+     * @var Application
      */
     protected $app;
 
     /**
      * The route collection.
      *
-     * @var \Valkyrja\Routing\RouteCollection
+     * @var RouteCollection
      */
     protected static $collection;
 
@@ -66,14 +74,13 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidArgumentException
      */
     public function addRoute(Route $route): void
     {
@@ -100,9 +107,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function get(Route $route): void
     {
@@ -116,9 +122,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function post(Route $route): void
     {
@@ -132,9 +137,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function put(Route $route): void
     {
@@ -148,9 +152,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function patch(Route $route): void
     {
@@ -164,9 +167,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function delete(Route $route): void
     {
@@ -180,9 +182,8 @@ class NativeRouter implements Router
      *
      * @param Route $route The route
      *
-     * @throws \Exception
-     *
      * @return void
+     * @throws Exception
      */
     public function head(Route $route): void
     {
@@ -206,9 +207,8 @@ class NativeRouter implements Router
      *
      * @param string $name The name of the route to get
      *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
-     *
-     * @return \Valkyrja\Routing\Route
+     * @return Route
+     * @throws InvalidRouteName
      */
     public function route(string $name): Route
     {
@@ -239,9 +239,8 @@ class NativeRouter implements Router
      * @param array  $data     [optional] The route data if dynamic
      * @param bool   $absolute [optional] Whether this url should be absolute
      *
-     * @throws \Valkyrja\Routing\Exceptions\InvalidRouteName
-     *
      * @return string
+     * @throws InvalidRouteName
      */
     public function routeUrl(string $name, array $data = null, bool $absolute = null): string
     {
@@ -272,11 +271,10 @@ class NativeRouter implements Router
      *
      * @param Request $request The request
      *
-     * @throws \InvalidArgumentException
-     *
      * @return null|Route
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
+     * @throws InvalidArgumentException
      */
     public function requestRoute(Request $request): ?Route
     {
@@ -293,11 +291,10 @@ class NativeRouter implements Router
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @throws \InvalidArgumentException
-     *
      * @return null|Route
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
+     * @throws InvalidArgumentException
      */
     public function matchRoute(string $path, string $method = null): ?Route
     {
@@ -317,9 +314,8 @@ class NativeRouter implements Router
      *
      * @param string $uri The uri to check
      *
-     * @throws \InvalidArgumentException
-     *
      * @return bool
+     * @throws InvalidArgumentException
      */
     public function isInternalUri(string $uri): bool
     {
@@ -337,7 +333,7 @@ class NativeRouter implements Router
 
         // Get only the path (full string from the first slash to the end
         // of the path)
-        $uri = (string) substr($uri, strpos($uri, '/'), \count($uri));
+        $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
 
         // Try to match the route
         $route = $this->matchRoute($uri);
@@ -350,10 +346,9 @@ class NativeRouter implements Router
      *
      * @param Request $request The request
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
-     *
-     * @return \Valkyrja\Http\Response
+     * @return Response
+     * @throws NotFoundHttpException
+     * @throws InvalidArgumentException
      */
     public function dispatch(Request $request): Response
     {
@@ -365,7 +360,7 @@ class NativeRouter implements Router
         // If the route is a redirect and a redirect route is set
         if ($route->isRedirect() && $route->getRedirectPath()) {
             // Throw the redirect to the redirect path
-            return $this->app->redirect($route->getRedirectPath(), (int) $route->getRedirectCode());
+            return $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode());
         }
 
         // If the route is secure and the current request is not secure
@@ -410,14 +405,13 @@ class NativeRouter implements Router
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidArgumentException
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -463,14 +457,13 @@ class NativeRouter implements Router
     /**
      * Get a cacheable representation of the data.
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return array
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidArgumentException
      */
     public function getCacheable(): array
     {
@@ -617,11 +610,10 @@ class NativeRouter implements Router
     {
         // The route to return (null by default)
         $route = null;
-        // The dynamic routes
-        $dynamicRoutes = self::$collection->getDynamicRoutes($method);
 
+        // The dynamic routes
         // Attempt to find a match using dynamic routes that are set
-        foreach ($dynamicRoutes as $regex => $dynamicRoute) {
+        foreach (self::$collection->getDynamicRoutes($method) as $regex => $dynamicRoute) {
             // If the preg match is successful, we've found our route!
             /* @var array $matches */
             if (preg_match($regex, $path, $matches)) {
@@ -648,7 +640,7 @@ class NativeRouter implements Router
      */
     protected function isValidMethod(Route $route, string $method): bool
     {
-        return \in_array($method, $route->getRequestMethods(), true);
+        return in_array($method, $route->getRequestMethods(), true);
     }
 
     /**
@@ -657,7 +649,7 @@ class NativeRouter implements Router
      * @param string $path   The path
      * @param string $method The method
      *
-     * @return \Valkyrja\Routing\Route
+     * @return Route
      */
     protected function getMatchedStaticRoute(string $path, string $method): Route
     {
@@ -671,7 +663,7 @@ class NativeRouter implements Router
      * @param array  $matches The regex matches
      * @param string $method  The request method
      *
-     * @return \Valkyrja\Routing\Route
+     * @return Route
      */
     protected function getMatchedDynamicRoute(string $path, array $matches, string $method): Route
     {
@@ -747,7 +739,7 @@ class NativeRouter implements Router
      *
      * @param mixed $dispatch The dispatch
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     protected function getResponseFromDispatch($dispatch): Response
     {
@@ -779,8 +771,7 @@ class NativeRouter implements Router
     protected function setupFromCache(): void
     {
         // Set the application routes with said file
-        $cache = $this->app->config()['cache']['routing']
-            ?? require $this->app->config()['routing']['cacheFilePath'];
+        $cache = $this->app->config()['cache']['routing'] ?? require $this->app->config()['routing']['cacheFilePath'];
 
         self::$collection = unserialize(
             base64_decode($cache['collection'], true),
@@ -796,26 +787,21 @@ class NativeRouter implements Router
     /**
      * Setup annotated routes.
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidClosureException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidFunctionException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidMethodException
-     * @throws \Valkyrja\Dispatcher\Exceptions\InvalidPropertyException
-     *
      * @return void
+     * @throws InvalidClosureException
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidArgumentException
      */
     protected function setupAnnotatedRoutes(): void
     {
         /** @var RouteAnnotations $routeAnnotations */
-        $routeAnnotations = $this->app->container()->getSingleton(
-            RouteAnnotations::class
-        );
+        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
 
         // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(
-            ...$this->app->config()['routing']['controllers']
-        );
+        $routes = $routeAnnotations->getRoutes(...$this->app->config()['routing']['controllers']);
 
         // Iterate through the routes
         foreach ($routes as $route) {

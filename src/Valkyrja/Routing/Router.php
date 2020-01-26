@@ -88,7 +88,7 @@ interface Router extends Cacheable
     /**
      * Get all routes set by the application.
      *
-     * @return \Valkyrja\Routing\Route[]
+     * @return Route[]
      */
     public function getRoutes(): array;
 
@@ -97,7 +97,7 @@ interface Router extends Cacheable
      *
      * @param string $name The name of the route to get
      *
-     * @return \Valkyrja\Routing\Route
+     * @return Route
      */
     public function route(string $name): Route;
 
@@ -130,7 +130,7 @@ interface Router extends Cacheable
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function requestRoute(Request $request): ? Route;
+    public function requestRoute(Request $request): ?Route;
 
     /**
      * Get a route by path.
@@ -142,7 +142,7 @@ interface Router extends Cacheable
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = null): ? Route;
+    public function matchRoute(string $path, string $method = null): ?Route;
 
     /**
      * Determine if a uri is valid.
@@ -158,7 +158,7 @@ interface Router extends Cacheable
      *
      * @param Request $request The request
      *
-     * @return \Valkyrja\Http\Response
+     * @return Response
      */
     public function dispatch(Request $request): Response;
 }

@@ -12,13 +12,14 @@
 namespace Valkyrja\Annotations;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Valkyrja\Application;
-use Valkyrja\Container\CoreComponent;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -33,7 +34,7 @@ class NativeAnnotations implements Annotations
     /**
      * The parser.
      *
-     * @var \Valkyrja\Annotations\AnnotationsParser
+     * @var AnnotationsParser
      */
     protected $parser;
 
@@ -76,7 +77,7 @@ class NativeAnnotations implements Annotations
     /**
      * Get the parser.
      *
-     * @return \Valkyrja\Annotations\AnnotationsParser
+     * @return AnnotationsParser
      */
     public function getParser(): AnnotationsParser
     {
@@ -100,9 +101,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function classAnnotations(string $class): array
     {
@@ -113,9 +113,7 @@ class NativeAnnotations implements Annotations
                 [
                     'class' => $class,
                 ],
-                ...$this->parser->getAnnotations(
-                $this->getClassReflection($class)->getDocComment()
-            )
+                ...$this->parser->getAnnotations($this->getClassReflection($class)->getDocComment())
             );
     }
 
@@ -125,16 +123,12 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
      * @return array
+     * @throws ReflectionException
      */
     public function classAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->classAnnotations($class)
-        );
+        return $this->filterAnnotationsByType($type, ...$this->classAnnotations($class));
     }
 
     /**
@@ -142,22 +136,18 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function classMembersAnnotations(string $class): array
     {
         $index = static::CLASS_MEMBERS_CACHE . $class;
 
-        if (isset(self::$annotations[$index])) {
-            return self::$annotations[$index];
-        }
-
-        return self::$annotations[$index] = array_merge(
-            $this->propertiesAnnotations($class),
-            $this->methodsAnnotations($class)
-        );
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = array_merge(
+                $this->propertiesAnnotations($class),
+                $this->methodsAnnotations($class)
+            );
     }
 
     /**
@@ -166,18 +156,12 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function classMembersAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->classMembersAnnotations(
-            $class
-        )
-        );
+        return $this->filterAnnotationsByType($type, ...$this->classMembersAnnotations($class));
     }
 
     /**
@@ -185,22 +169,18 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function classAndMembersAnnotations(string $class): array
     {
         $index = static::CLASS_AND_MEMBERS_CACHE . $class;
 
-        if (isset(self::$annotations[$index])) {
-            return self::$annotations[$index];
-        }
-
-        return self::$annotations[$index] = array_merge(
-            $this->classAnnotations($class),
-            $this->classMembersAnnotations($class)
-        );
+        return self::$annotations[$index]
+            ?? self::$annotations[$index] = array_merge(
+                $this->classAnnotations($class),
+                $this->classMembersAnnotations($class)
+            );
     }
 
     /**
@@ -209,20 +189,12 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
-    public function classAndMembersAnnotationsType(
-        string $type,
-        string $class
-    ): array {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->classAndMembersAnnotations(
-            $class
-        )
-        );
+    public function classAndMembersAnnotationsType(string $type, string $class): array
+    {
+        return $this->filterAnnotationsByType($type, ...$this->classAndMembersAnnotations($class));
     }
 
     /**
@@ -231,9 +203,8 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function propertyAnnotations(string $class, string $property): array
     {
@@ -245,9 +216,7 @@ class NativeAnnotations implements Annotations
                     'class'    => $class,
                     'property' => $property,
                 ],
-                ...$this->parser->getAnnotations(
-                $this->getPropertyReflection($class, $property)->getDocComment()
-            )
+                ...$this->parser->getAnnotations($this->getPropertyReflection($class, $property)->getDocComment())
             );
     }
 
@@ -258,19 +227,12 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function propertyAnnotationsType(string $type, string $class, string $property): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->propertyAnnotations(
-            $class,
-            $property
-        )
-        );
+        return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
     }
 
     /**
@@ -278,9 +240,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function propertiesAnnotations(string $class): array
     {
@@ -291,28 +252,22 @@ class NativeAnnotations implements Annotations
         }
 
         $annotations = [];
-        // Get the class's reflection
-        $reflection = $this->getClassReflection($class);
 
+        // Get the class's reflection
         // Iterate through the properties
-        foreach ($reflection->getProperties() as $property) {
+        foreach ($this->getClassReflection($class)->getProperties() as $property) {
             $index = static::METHOD_CACHE . $class . $property->getName();
             // Set the property's reflection class in the cache
             self::$reflections[$index] = $property;
 
             // Iterate through all the property's annotations
-            foreach ($this->propertyAnnotations(
-                $class,
-                $property->getName()
-            ) as $propertyAnnotation) {
+            foreach ($this->propertyAnnotations($class, $property->getName()) as $propertyAnnotation) {
                 // Set the annotation in the list
                 $annotations[] = $propertyAnnotation;
             }
         }
 
-        self::$annotations[$index] = $annotations;
-
-        return $annotations;
+        return self::$annotations[$index] = $annotations;
     }
 
     /**
@@ -321,18 +276,12 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function propertiesAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->propertiesAnnotations(
-            $class
-        )
-        );
+        return $this->filterAnnotationsByType($type, ...$this->propertiesAnnotations($class));
     }
 
     /**
@@ -341,9 +290,8 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function methodAnnotations(string $class, string $method): array
     {
@@ -356,9 +304,7 @@ class NativeAnnotations implements Annotations
                     'class'  => $class,
                     'method' => $method,
                 ],
-                ...$this->getReflectionFunctionAnnotations(
-                $reflection
-            )
+                ...$this->getReflectionFunctionAnnotations($reflection)
             );
     }
 
@@ -369,19 +315,12 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function methodAnnotationsType(string $type, string $class, string $method): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->methodAnnotations(
-            $class,
-            $method
-        )
-        );
+        return $this->filterAnnotationsByType($type, ...$this->methodAnnotations($class, $method));
     }
 
     /**
@@ -389,9 +328,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function methodsAnnotations(string $class): array
     {
@@ -402,28 +340,22 @@ class NativeAnnotations implements Annotations
         }
 
         $annotations = [];
-        // Get the class's reflection
-        $reflection = $this->getClassReflection($class);
 
+        // Get the class's reflection
         // Iterate through the methods
-        foreach ($reflection->getMethods() as $method) {
+        foreach ($this->getClassReflection($class)->getMethods() as $method) {
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
 
             // Iterate through all the method's annotations
-            foreach ($this->methodAnnotations(
-                $class,
-                $method->getName()
-            ) as $methodAnnotation) {
+            foreach ($this->methodAnnotations($class, $method->getName()) as $methodAnnotation) {
                 // Set the annotation in the list
                 $annotations[] = $methodAnnotation;
             }
         }
 
-        self::$annotations[$index] = $annotations;
-
-        return $annotations;
+        return self::$annotations[$index] = $annotations;
     }
 
     /**
@@ -432,16 +364,12 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function methodsAnnotationsType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->methodsAnnotations($class)
-        );
+        return $this->filterAnnotationsByType($type, ...$this->methodsAnnotations($class));
     }
 
     /**
@@ -449,9 +377,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $function The function
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function functionAnnotations(string $function): array
     {
@@ -462,9 +389,7 @@ class NativeAnnotations implements Annotations
                 [
                     'function' => $function,
                 ],
-                ...$this->getReflectionFunctionAnnotations(
-                $this->getFunctionReflection($function)
-            )
+                ...$this->getReflectionFunctionAnnotations($this->getFunctionReflection($function))
             );
     }
 
@@ -474,25 +399,19 @@ class NativeAnnotations implements Annotations
      * @param string $type     The type
      * @param string $function The function
      *
-     * @throws \ReflectionException
-     *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
+     * @throws ReflectionException
      */
     public function functionAnnotationsType(string $type, string $function): array
     {
-        return $this->filterAnnotationsByType(
-            $type,
-            ...$this->functionAnnotations(
-            $function
-        )
-        );
+        return $this->filterAnnotationsByType($type, ...$this->functionAnnotations($function));
     }
 
     /**
      * Filter annotations by type.
      *
-     * @param string       $type           The type to match
-     * @param Annotation[] ...$annotations The annotations
+     * @param string     $type           The type to match
+     * @param Annotation ...$annotations The annotations
      *
      * @return array
      */
@@ -516,9 +435,9 @@ class NativeAnnotations implements Annotations
     /**
      * Get a reflection class's annotations.
      *
-     * @param \ReflectionFunctionAbstract $reflection The reflection class
+     * @param ReflectionFunctionAbstract $reflection The reflection class
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
     {
@@ -528,10 +447,10 @@ class NativeAnnotations implements Annotations
     /**
      * Set the base annotation model values.
      *
-     * @param array        $properties  The properties
-     * @param Annotation[] $annotations The annotations
+     * @param array      $properties     The properties
+     * @param Annotation ...$annotations The annotations
      *
-     * @return \Valkyrja\Annotations\Annotation[]
+     * @return Annotation[]
      */
     protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
     {
@@ -550,9 +469,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @throws \ReflectionException
-     *
-     * @return \ReflectionClass
+     * @return ReflectionClass
+     * @throws ReflectionException
      */
     public function getClassReflection(string $class): ReflectionClass
     {
@@ -568,17 +486,15 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @throws \ReflectionException
-     *
-     * @return \ReflectionProperty
+     * @return ReflectionProperty
+     * @throws ReflectionException
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
         $index = static::PROPERTY_CACHE . $class . $property;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] =
-                new ReflectionProperty($class, $property);
+            ?? self::$reflections[$index] = new ReflectionProperty($class, $property);
     }
 
     /**
@@ -587,17 +503,15 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @throws \ReflectionException
-     *
-     * @return \ReflectionMethod
+     * @return ReflectionMethod
+     * @throws ReflectionException
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod
     {
         $index = static::METHOD_CACHE . $class . $method;
 
         return self::$reflections[$index]
-            ?? self::$reflections[$index] =
-                new ReflectionMethod($class, $method);
+            ?? self::$reflections[$index] = new ReflectionMethod($class, $method);
     }
 
     /**
@@ -605,9 +519,8 @@ class NativeAnnotations implements Annotations
      *
      * @param string $function The function
      *
-     * @throws \ReflectionException
-     *
-     * @return \ReflectionFunction
+     * @return ReflectionFunction
+     * @throws ReflectionException
      */
     public function getFunctionReflection(string $function): ReflectionFunction
     {
@@ -620,7 +533,7 @@ class NativeAnnotations implements Annotations
     /**
      * Get dependencies from parameters.
      *
-     * @param \ReflectionParameter[] $parameters The parameters
+     * @param ReflectionParameter[] $parameters The parameters
      *
      * @return string[]
      */

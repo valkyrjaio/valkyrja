@@ -11,21 +11,26 @@
 
 namespace Valkyrja\HttpMessage;
 
+use InvalidArgumentException;
+use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
+use Valkyrja\HttpMessage\Exceptions\InvalidPath;
+use Valkyrja\HttpMessage\Exceptions\InvalidPort;
+use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
+use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
+use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+
 /**
  * Representation of an outgoing, client-side request.
- *
  * Per the HTTP specification, this interface includes properties for
  * each of the following:
- *
  * - Protocol version
  * - HTTP method
  * - URI
  * - Headers
  * - Message body
- *
  * During construction, implementations MUST attempt to set the Host header from
  * a provided URI if no Host header is provided.
- *
  * Requests are considered immutable; all methods that might change state MUST
  * be implemented such that they retain the internal state of the current
  * message and return an instance that contains the changed state.
@@ -44,14 +49,14 @@ class NativeRequest implements Request
      * @param Stream $body    [optional] The body stream
      * @param array  $headers [optional] The headers
      *
-     * @throws \InvalidArgumentException
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidMethod
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPath
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidPort
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidQuery
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidScheme
-     * @throws \Valkyrja\HttpMessage\Exceptions\InvalidStream
+     * @throws InvalidArgumentException
+     * @throws InvalidMethod
+     * @throws InvalidPath
+     * @throws InvalidPort
+     * @throws InvalidProtocolVersion
+     * @throws InvalidQuery
+     * @throws InvalidScheme
+     * @throws InvalidStream
      */
     public function __construct(Uri $uri = null, string $method = null, Stream $body = null, array $headers = null)
     {

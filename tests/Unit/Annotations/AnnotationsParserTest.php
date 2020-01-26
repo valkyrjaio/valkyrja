@@ -11,31 +11,27 @@
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotations\Annotation;
 use Valkyrja\Annotations\NativeAnnotationsParser;
-use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Valkyrja;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
-use Valkyrja\Container\CoreComponent;
+use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Events\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Valkyrja;
 
 /**
  * Test the AnnotationsParser class.
  *
  * @description A description to test with
+ * @author      Melech Mizrachi
  *
  * @param string $param A description test
- *
  * @Route("path" = "/", "name" = "noAClass::Property")
- *
- * @author Melech Mizrachi
  */
 class AnnotationsParserTest extends TestCase
 {
@@ -92,9 +88,8 @@ class AnnotationsParserTest extends TestCase
     /**
      * Test the getAnnotations method.
      *
-     * @throws \ReflectionException
-     *
      * @return void
+     * @throws \ReflectionException
      */
     public function testGetAnnotations(): void
     {

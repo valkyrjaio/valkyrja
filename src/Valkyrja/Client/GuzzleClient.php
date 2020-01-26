@@ -12,6 +12,8 @@
 namespace Valkyrja\Client;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Application;
 use Valkyrja\Support\Providers\Provides;
@@ -28,16 +30,16 @@ class GuzzleClient implements Client
     /**
      * The guzzle client.
      *
-     * @var \GuzzleHttp\Client
+     * @var Guzzle
      */
     protected $guzzle;
 
     /**
      * Client constructor.
      *
-     * @param \GuzzleHttp\Client $guzzle The guzzle client
+     * @param ClientInterface $guzzle The guzzle client
      */
-    public function __construct(Guzzle $guzzle)
+    public function __construct(ClientInterface $guzzle)
     {
         $this->guzzle = $guzzle;
     }
@@ -49,7 +51,8 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
@@ -62,7 +65,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function get(string $uri, array $options = []): ResponseInterface
     {
@@ -75,7 +78,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function post(string $uri, array $options = []): ResponseInterface
     {
@@ -88,7 +91,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function head(string $uri, array $options = []): ResponseInterface
     {
@@ -101,7 +104,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function put(string $uri, array $options = []): ResponseInterface
     {
@@ -114,7 +117,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function patch(string $uri, array $options = []): ResponseInterface
     {
@@ -127,7 +130,7 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function delete(string $uri, array $options = []): ResponseInterface
     {

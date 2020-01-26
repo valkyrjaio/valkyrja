@@ -17,8 +17,7 @@
  * Logging is very helpful in understanding what occurs within your
  * application when its deployed and used by multiple users aside
  * from you and your developers. Configure that helpfulness here.
- *
- */
+     */
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +25,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'name'     => env('LOGGER_NAME', 'ApplicationLog'),
 
@@ -36,7 +34,6 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
-     *
      */
     'filePath' => env('LOGGER_FILE_PATH', storagePath('logs/valkyrja.log')),
 ];

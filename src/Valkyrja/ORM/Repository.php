@@ -23,9 +23,8 @@ interface Repository
     /**
      * Get the store.
      *
-     * @throws InvalidArgumentException
-     *
      * @return PDO
+     * @throws InvalidArgumentException
      */
     public function store(): PDO;
 
@@ -35,15 +34,13 @@ interface Repository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
+     * @return Entity|null
      * @throws InvalidArgumentException If id is not a string or int
-     *
-     * @return \Valkyrja\ORM\Entity|null
      */
-    public function find($id, bool $getRelations = null): ? Entity;
+    public function find($id, bool $getRelations = null): ?Entity;
 
     /**
      * Find entities by given criteria.
-     *
      * <code>
      *      $repository
      *          ->findBy(
@@ -68,7 +65,7 @@ interface Repository
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return \Valkyrja\ORM\Entity[]
+     * @return Entity[]
      */
     public function findBy(
         array $criteria,
@@ -81,7 +78,6 @@ interface Repository
 
     /**
      * Find entities by given criteria.
-     *
      * <code>
      *      $repository
      *          ->findBy(
@@ -97,13 +93,12 @@ interface Repository
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return \Valkyrja\ORM\Entity[]
+     * @return Entity[]
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array;
 
     /**
      * Count all the results of given criteria.
-     *
      * <code>
      *      $repository
      *          ->count(
@@ -122,46 +117,40 @@ interface Repository
 
     /**
      * Create a new model.
-     *
      * <code>
      *      $this->create(Entity::class)
      * </code>
      *
-     * @param \Valkyrja\ORM\Entity $entity
-     *
-     * @throws InvalidEntityException
+     * @param Entity $entity
      *
      * @return bool
+     * @throws InvalidEntityException
      */
     public function create(Entity $entity): bool;
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
-     *
      * <code>
      *      $this->save(Entity::class)
      * </code>
      *
      * @param Entity $entity
      *
-     * @throws InvalidEntityException
-     *
      * @return bool
+     * @throws InvalidEntityException
      */
     public function save(Entity $entity): bool;
 
     /**
      * Delete an existing model.
-     *
      * <code>
      *      $this->delete(Entity::class)
      * </code>
      *
      * @param Entity $entity
      *
-     * @throws InvalidEntityException
-     *
      * @return bool
+     * @throws InvalidEntityException
      */
     public function delete(Entity $entity): bool;
 
