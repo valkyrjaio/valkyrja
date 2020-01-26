@@ -31,8 +31,9 @@ interface Crypt
      * @param string $message The message to encrypt
      * @param string $key     The encryption key
      *
-     * @return string
      * @throws CryptException On any failure
+     *
+     * @return string
      */
     public function encrypt(string $message, string $key = null): string;
 
@@ -42,8 +43,9 @@ interface Crypt
      * @param string $encrypted The encrypted message to decrypt
      * @param string $key       The encryption key
      *
-     * @return string
      * @throws CryptException On any failure
+     *
+     * @return string
      */
     public function decrypt(string $encrypted, string $key = null): string;
 
@@ -53,8 +55,9 @@ interface Crypt
      * @param array  $array The array to encrypt
      * @param string $key   The encryption key
      *
-     * @return string
      * @throws CryptException On any failure
+     *
+     * @return string
      */
     public function encryptArray(array $array, string $key = null): string;
 
@@ -64,8 +67,9 @@ interface Crypt
      * @param string $encrypted The encrypted message
      * @param string $key       The encryption key
      *
-     * @return array
      * @throws CryptException On any failure
+     *
+     * @return array
      */
     public function decryptArray(string $encrypted, string $key = null): array;
 
@@ -75,8 +79,9 @@ interface Crypt
      * @param object $object The object to encrypt
      * @param string $key    The encryption key
      *
-     * @return string
      * @throws CryptException On any failure
+     *
+     * @return string
      */
     public function encryptObject(object $object, string $key = null): string;
 
@@ -86,8 +91,9 @@ interface Crypt
      * @param string $encrypted The encrypted message
      * @param string $key       The encryption key
      *
-     * @return object
      * @throws CryptException On any failure
+     *
+     * @return object
      */
     public function decryptObject(string $encrypted, string $key = null): object;
 }

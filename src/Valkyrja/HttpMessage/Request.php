@@ -84,8 +84,9 @@ interface Request extends Message
      *
      * @param string $method Case-sensitive method.
      *
-     * @return static
      * @throws InvalidArgumentException for invalid HTTP methods.
+     *
+     * @return static
      */
     public function withMethod(string $method);
 
@@ -94,6 +95,7 @@ interface Request extends Message
      * This method MUST return a Uri instance.
      *
      * @link http://tools.ietf.org/html/rfc3986#section-4.3
+     *
      * @return Uri Returns a Uri instance
      *             representing the URI of the request.
      */

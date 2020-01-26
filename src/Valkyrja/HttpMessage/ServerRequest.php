@@ -159,8 +159,9 @@ interface ServerRequest extends Request
      * @param array $uploadedFiles An array tree of UploadedFileInterface
      *                             instances.
      *
-     * @return static
      * @throws InvalidArgumentException if an invalid structure is provided.
+     *
+     * @return static
      */
     public function withUploadedFiles(array $uploadedFiles);
 
@@ -199,9 +200,10 @@ interface ServerRequest extends Request
      * @param array $data The deserialized body data. This will
      *                    typically be in an array or object.
      *
-     * @return static
      * @throws InvalidArgumentException if an unsupported argument type is
      *          provided.
+     *
+     * @return static
      */
     public function withParsedBody(array $data);
 
@@ -230,6 +232,7 @@ interface ServerRequest extends Request
      *                        exist.
      *
      * @return mixed
+     *
      * @see getAttributes()
      */
     public function getAttribute(string $name, $default = null);
@@ -246,6 +249,7 @@ interface ServerRequest extends Request
      * @param mixed  $value The value of the attribute.
      *
      * @return static
+     *
      * @see getAttributes()
      */
     public function withAttribute(string $name, $value);
@@ -261,6 +265,7 @@ interface ServerRequest extends Request
      * @param string $name The attribute name.
      *
      * @return static
+     *
      * @see getAttributes()
      */
     public function withoutAttribute(string $name);

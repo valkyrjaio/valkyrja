@@ -124,8 +124,9 @@ interface Message
      * @param string $name     Case-insensitive header field name.
      * @param string ...$value Header value(s).
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withHeader(string $name, string ...$value);
 
@@ -142,8 +143,9 @@ interface Message
      * @param string $name     Case-insensitive header field name to add.
      * @param string ...$value Header value(s).
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withAddedHeader(string $name, string ...$value);
 
@@ -176,8 +178,9 @@ interface Message
      *
      * @param Stream $body Body.
      *
-     * @return static
      * @throws InvalidArgumentException When the body is not valid.
+     *
+     * @return static
      */
     public function withBody(Stream $body);
 }

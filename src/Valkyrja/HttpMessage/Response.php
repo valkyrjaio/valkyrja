@@ -55,8 +55,9 @@ interface Response extends Message
      *                             implementations MAY use the defaults as
      *                             suggested in the HTTP specification.
      *
-     * @return static
      * @throws InvalidArgumentException For invalid status code arguments.
+     *
+     * @return static
      */
     public function withStatus(int $code, string $reasonPhrase = null);
 
@@ -70,6 +71,7 @@ interface Response extends Message
      *
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     *
      * @return string Reason phrase; must return an empty string if none
      *          present.
      */
@@ -87,8 +89,9 @@ interface Response extends Message
      *
      * @param Cookie $cookie The cookie model
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withCookie(Cookie $cookie);
 
@@ -104,8 +107,9 @@ interface Response extends Message
      *
      * @param Cookie $cookie The cookie model
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withoutCookie(Cookie $cookie);
 

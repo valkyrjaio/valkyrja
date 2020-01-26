@@ -169,8 +169,9 @@ class Route extends Annotation
     /**
      * Get the request methods.
      *
-     * @return array
      * @throws InvalidArgumentException
+     *
+     * @return array
      */
     public function getRequestMethods(): array
     {
@@ -189,8 +190,9 @@ class Route extends Annotation
      *
      * @param array $requestMethods The request methods
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function setRequestMethods(array $requestMethods): void
     {

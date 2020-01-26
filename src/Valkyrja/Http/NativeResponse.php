@@ -119,8 +119,9 @@ class NativeResponse implements Response
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @return Response
      * @throws InvalidArgumentException
+     *
+     * @return Response
      */
     public static function create(string $content = '', int $status = StatusCode::OK, array $headers = []): Response
     {
@@ -239,6 +240,7 @@ class NativeResponse implements Response
      * has been called before.
      *
      * @return string The Response as an HTTP string
+     *
      * @see prepare()
      */
     public function __toString(): string
@@ -322,8 +324,9 @@ class NativeResponse implements Response
      *                     If the status text is null it will be automatically populated for the
      *                     known status codes and left empty otherwise.
      *
-     * @return Response
      * @throws InvalidStatusCodeException
+     *
+     * @return Response
      */
     public function setStatusCode(int $code, string $text = null): Response
     {
@@ -421,8 +424,9 @@ class NativeResponse implements Response
     /**
      * Returns the Date header as a DateTime instance.
      *
-     * @return DateTime A DateTime instance
      * @throws RuntimeException When the header is not parseable
+     *
+     * @return DateTime A DateTime instance
      */
     public function getDateHeader(): DateTime
     {
@@ -524,8 +528,9 @@ class NativeResponse implements Response
      * Responses with neither a freshness lifetime (Expires, max-age) nor cache
      * validator (Last-Modified, ETag) are considered uncacheable.
      *
-     * @return bool true if the response is worth caching, false otherwise
      * @throws RuntimeException
+     *
+     * @return bool true if the response is worth caching, false otherwise
      */
     public function isCacheable(): bool
     {
@@ -564,8 +569,9 @@ class NativeResponse implements Response
      * Cache-Control/max-age indicator or Expires header and the calculated age
      * is less than the freshness lifetime.
      *
-     * @return bool true if the response is fresh, false otherwise
      * @throws RuntimeException
+     *
+     * @return bool true if the response is fresh, false otherwise
      */
     public function isFresh(): bool
     {
@@ -616,8 +622,9 @@ class NativeResponse implements Response
     /**
      * Returns the age of the response.
      *
-     * @return int The age of the response in seconds
      * @throws RuntimeException
+     *
+     * @return int The age of the response in seconds
      */
     public function getAge(): int
     {
@@ -635,8 +642,9 @@ class NativeResponse implements Response
      * Marks the response stale by setting the Age header to be equal to the
      * maximum age of the response.
      *
-     * @return Response
      * @throws RuntimeException
+     *
+     * @return Response
      */
     public function expire(): Response
     {
@@ -698,8 +706,9 @@ class NativeResponse implements Response
      * then it falls back on an expires header. It returns null when no maximum
      * age can be established.
      *
-     * @return int Number of seconds
      * @throws RuntimeException
+     *
+     * @return int Number of seconds
      */
     public function getMaxAge(): int
     {
@@ -763,8 +772,9 @@ class NativeResponse implements Response
      * When the responses TTL is <= 0, the response may not be served from
      * cache without first re-validating with the origin.
      *
-     * @return int The TTL in seconds
      * @throws RuntimeException
+     *
+     * @return int The TTL in seconds
      */
     public function getTtl(): int
     {
@@ -781,8 +791,9 @@ class NativeResponse implements Response
      *
      * @param int $seconds Number of seconds
      *
-     * @return Response
      * @throws RuntimeException
+     *
+     * @return Response
      */
     public function setTtl(int $seconds): Response
     {
@@ -797,8 +808,9 @@ class NativeResponse implements Response
      *
      * @param int $seconds Number of seconds
      *
-     * @return Response
      * @throws RuntimeException
+     *
+     * @return Response
      */
     public function setClientTtl(int $seconds): Response
     {
@@ -810,8 +822,9 @@ class NativeResponse implements Response
     /**
      * Returns the Last-Modified HTTP header as a DateTime instance.
      *
-     * @return string A date string
      * @throws RuntimeException When the HTTP header is not parseable
+     *
+     * @return string A date string
      */
     public function getLastModified(): string
     {
@@ -931,8 +944,10 @@ class NativeResponse implements Response
      * This sets the status, removes the body, and discards any headers
      * that MUST NOT be included in 304 responses.
      *
-     * @return Response
      * @throws InvalidArgumentException
+     *
+     * @return Response
+     *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
     public function setNotModified(): Response
@@ -955,6 +970,7 @@ class NativeResponse implements Response
      * Is response invalid?
      *
      * @return bool
+     *
      * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      */
     public function isInvalid(): bool
@@ -1141,8 +1157,9 @@ class NativeResponse implements Response
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

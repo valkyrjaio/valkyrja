@@ -103,8 +103,9 @@ class NativeResponse implements Response
      *                             implementations MAY use the defaults as
      *                             suggested in the HTTP specification.
      *
-     * @return static
      * @throws InvalidStatusCode For invalid status code arguments.
+     *
+     * @return static
      */
     public function withStatus(int $code, string $reasonPhrase = null)
     {
@@ -126,6 +127,7 @@ class NativeResponse implements Response
      *
      * @link http://tools.ietf.org/html/rfc7231#section-6
      * @link http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+     *
      * @return string Reason phrase; must return an empty string if none
      *                present.
      */
@@ -146,8 +148,9 @@ class NativeResponse implements Response
      *
      * @param Cookie $cookie The cookie model
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withCookie(Cookie $cookie)
     {
@@ -166,8 +169,9 @@ class NativeResponse implements Response
      *
      * @param Cookie $cookie The cookie model
      *
-     * @return static
      * @throws InvalidArgumentException for invalid header names or values.
+     *
+     * @return static
      */
     public function withoutCookie(Cookie $cookie)
     {
@@ -180,8 +184,9 @@ class NativeResponse implements Response
     /**
      * Send the response.
      *
-     * @return Response
      * @throws RuntimeException
+     *
+     * @return Response
      */
     public function send(): Response
     {
@@ -219,8 +224,9 @@ class NativeResponse implements Response
      *
      * @param int $code The code
      *
-     * @return int
      * @throws InvalidStatusCode
+     *
+     * @return int
      */
     protected function validateStatusCode(int $code): int
     {
@@ -254,8 +260,9 @@ class NativeResponse implements Response
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

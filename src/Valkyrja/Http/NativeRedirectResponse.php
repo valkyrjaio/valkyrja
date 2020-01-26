@@ -70,9 +70,10 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      * @param int    $status  [optional] The response status code
      * @param array  $headers [optional] An array of response headers
      *
-     * @return RedirectResponse
      * @throws InvalidStatusCodeException
      * @throws InvalidArgumentException
+     *
+     * @return RedirectResponse
      */
     public static function createRedirect(
         string $uri = null,
@@ -191,8 +192,9 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

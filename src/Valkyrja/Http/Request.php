@@ -431,6 +431,7 @@ interface Request
      * Gets the request "intended" method.
      *
      * @return string The request method
+     *
      * @see getRealMethod()
      */
     public function getMethod(): string;
@@ -439,6 +440,7 @@ interface Request
      * Gets the "real" request method.
      *
      * @return string The request method
+     *
      * @see getMethod()
      */
     public function getRealMethod(): string;

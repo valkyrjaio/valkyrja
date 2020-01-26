@@ -17,6 +17,7 @@ use Valkyrja\Enum\Enum;
  * Status text constants.
  *
  * @author Melech Mizrachi
+ *
  * @link   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */

@@ -61,8 +61,9 @@ class NativeStreamNativeOutput extends NativeOutput implements StreamOutput
      * @param string $message
      * @param bool   $newLine
      *
-     * @return void
      * @throws RuntimeException
+     *
+     * @return void
      */
     protected function writeOut(string $message, bool $newLine): void
     {

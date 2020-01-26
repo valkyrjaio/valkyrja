@@ -194,8 +194,9 @@ class Route extends Dispatch
      *
      * @param array $requestMethods The request methods
      *
-     * @return $this
      * @throws InvalidArgumentException
+     *
+     * @return $this
      */
     public function setRequestMethods(array $requestMethods): self
     {

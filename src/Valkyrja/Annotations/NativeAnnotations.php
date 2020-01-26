@@ -101,8 +101,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function classAnnotations(string $class): array
     {
@@ -123,8 +124,9 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return array
      * @throws ReflectionException
+     *
+     * @return array
      */
     public function classAnnotationsType(string $type, string $class): array
     {
@@ -136,8 +138,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function classMembersAnnotations(string $class): array
     {
@@ -156,8 +159,9 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function classMembersAnnotationsType(string $type, string $class): array
     {
@@ -169,8 +173,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function classAndMembersAnnotations(string $class): array
     {
@@ -189,8 +194,9 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function classAndMembersAnnotationsType(string $type, string $class): array
     {
@@ -203,8 +209,9 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function propertyAnnotations(string $class, string $property): array
     {
@@ -227,8 +234,9 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function propertyAnnotationsType(string $type, string $class, string $property): array
     {
@@ -240,8 +248,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function propertiesAnnotations(string $class): array
     {
@@ -276,8 +285,9 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function propertiesAnnotationsType(string $type, string $class): array
     {
@@ -290,8 +300,9 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function methodAnnotations(string $class, string $method): array
     {
@@ -315,8 +326,9 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function methodAnnotationsType(string $type, string $class, string $method): array
     {
@@ -328,8 +340,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function methodsAnnotations(string $class): array
     {
@@ -364,8 +377,9 @@ class NativeAnnotations implements Annotations
      * @param string $type  The type
      * @param string $class The class
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function methodsAnnotationsType(string $type, string $class): array
     {
@@ -377,8 +391,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $function The function
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function functionAnnotations(string $function): array
     {
@@ -399,8 +414,9 @@ class NativeAnnotations implements Annotations
      * @param string $type     The type
      * @param string $function The function
      *
-     * @return Annotation[]
      * @throws ReflectionException
+     *
+     * @return Annotation[]
      */
     public function functionAnnotationsType(string $type, string $function): array
     {
@@ -469,8 +485,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $class The class
      *
-     * @return ReflectionClass
      * @throws ReflectionException
+     *
+     * @return ReflectionClass
      */
     public function getClassReflection(string $class): ReflectionClass
     {
@@ -486,8 +503,9 @@ class NativeAnnotations implements Annotations
      * @param string $class    The class
      * @param string $property The property
      *
-     * @return ReflectionProperty
      * @throws ReflectionException
+     *
+     * @return ReflectionProperty
      */
     public function getPropertyReflection(string $class, string $property): ReflectionProperty
     {
@@ -503,8 +521,9 @@ class NativeAnnotations implements Annotations
      * @param string $class  The class
      * @param string $method The method
      *
-     * @return ReflectionMethod
      * @throws ReflectionException
+     *
+     * @return ReflectionMethod
      */
     public function getMethodReflection(string $class, string $method): ReflectionMethod
     {
@@ -519,8 +538,9 @@ class NativeAnnotations implements Annotations
      *
      * @param string $function The function
      *
-     * @return ReflectionFunction
      * @throws ReflectionException
+     *
+     * @return ReflectionFunction
      */
     public function getFunctionReflection(string $function): ReflectionFunction
     {

@@ -36,10 +36,11 @@ interface UploadedFile
      * raise
      * an exception.
      *
-     * @return Stream Stream representation of the
-     *          uploaded file.
      * @throws RuntimeException in cases when no stream is available or can be
      *          created.
+     *
+     * @return Stream Stream representation of the
+     *          uploaded file.
      */
     public function getStream(): Stream;
 
@@ -76,6 +77,7 @@ interface UploadedFile
      * @throws RuntimeException on any error during the move
      *          operation, or on the second or
      *          subsequent call to the method.
+     *
      * @return void
      */
     public function moveTo(string $targetPath): void;
@@ -99,6 +101,7 @@ interface UploadedFile
      * the file in the $_FILES array.
      *
      * @see http://php.net/manual/en/features.file-upload.errors.php
+     *
      * @return int One of PHP's UPLOAD_ERR_XXX constants.
      */
     public function getError(): int;

@@ -51,8 +51,9 @@ class GuzzleClient implements Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
      * @throws GuzzleException
+     *
+     * @return ResponseInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {

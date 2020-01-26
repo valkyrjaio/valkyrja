@@ -86,8 +86,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return string|null The contents or null on failure
      * @throws FileNotFoundException
+     *
+     * @return string|null The contents or null on failure
      */
     public function read(string $path): ?string
     {
@@ -102,8 +103,9 @@ class FlyFilesystem implements Filesystem
      * @param string $path     The path
      * @param string $contents The contents
      *
-     * @return bool
      * @throws FileExistsException
+     *
+     * @return bool
      */
     public function write(string $path, string $contents): bool
     {
@@ -116,9 +118,10 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @return bool
      * @throws FileExistsException
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function writeStream(string $path, $resource): bool
     {
@@ -131,8 +134,9 @@ class FlyFilesystem implements Filesystem
      * @param string $path     The path
      * @param string $contents The contents
      *
-     * @return bool
      * @throws FileNotFoundException
+     *
+     * @return bool
      */
     public function update(string $path, string $contents): bool
     {
@@ -145,9 +149,10 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @return bool
      * @throws FileNotFoundException
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function updateStream(string $path, $resource): bool
     {
@@ -173,8 +178,9 @@ class FlyFilesystem implements Filesystem
      * @param string   $path     The path
      * @param resource $resource The resource
      *
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function putStream(string $path, $resource): bool
     {
@@ -187,9 +193,10 @@ class FlyFilesystem implements Filesystem
      * @param string $path    The existing path
      * @param string $newPath The new path
      *
-     * @return bool
      * @throws FileNotFoundException
      * @throws FileExistsException
+     *
+     * @return bool
      */
     public function rename(string $path, string $newPath): bool
     {
@@ -202,9 +209,10 @@ class FlyFilesystem implements Filesystem
      * @param string $path    The existing path
      * @param string $newPath The new path
      *
-     * @return bool
      * @throws FileNotFoundException
      * @throws FileExistsException
+     *
+     * @return bool
      */
     public function copy(string $path, string $newPath): bool
     {
@@ -216,8 +224,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return bool
      * @throws FileNotFoundException
+     *
+     * @return bool
      */
     public function delete(string $path): bool
     {
@@ -229,8 +238,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return array|null An array of meta data or null on failure
      * @throws FileNotFoundException
+     *
+     * @return array|null An array of meta data or null on failure
      */
     public function metadata(string $path): ?array
     {
@@ -244,8 +254,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return string|null The mime type or null on failure
      * @throws FileNotFoundException
+     *
+     * @return string|null The mime type or null on failure
      */
     public function mimetype(string $path): ?string
     {
@@ -273,8 +284,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return int|null The timestamp or null on failure
      * @throws FileNotFoundException
+     *
+     * @return int|null The timestamp or null on failure
      */
     public function timestamp(string $path): ?int
     {
@@ -288,8 +300,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return string|null The visibility ('public' or 'private') or null on failure
      * @throws FileNotFoundException
+     *
+     * @return string|null The visibility ('public' or 'private') or null on failure
      */
     public function visibility(string $path): ?string
     {
@@ -352,8 +365,9 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
-     * @return bool
      * @throws RootViolationException
+     *
+     * @return bool
      */
     public function deleteDir(string $path): bool
     {
@@ -402,8 +416,9 @@ class FlyFilesystem implements Filesystem
     /**
      * Get the local filesystem.
      *
-     * @return Filesystem
      * @throws LogicException
+     *
+     * @return Filesystem
      */
     public function local(): Filesystem
     {
@@ -413,8 +428,9 @@ class FlyFilesystem implements Filesystem
     /**
      * Get the local flysystem adapter.
      *
-     * @return Local
      * @throws LogicException
+     *
+     * @return Local
      */
     protected function localAdapter(): Local
     {
@@ -425,8 +441,9 @@ class FlyFilesystem implements Filesystem
     /**
      * Get the s3 filesystem.
      *
-     * @return Filesystem
      * @throws InvalidArgumentException
+     *
+     * @return Filesystem
      */
     public function s3(): Filesystem
     {
@@ -436,8 +453,9 @@ class FlyFilesystem implements Filesystem
     /**
      * Get the s3 flysystem adapter.
      *
-     * @return AwsS3Adapter
      * @throws InvalidArgumentException
+     *
+     * @return AwsS3Adapter
      */
     protected function s3Adapter(): AwsS3Adapter
     {

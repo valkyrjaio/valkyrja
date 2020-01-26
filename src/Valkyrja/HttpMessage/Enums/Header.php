@@ -21,6 +21,7 @@ use Valkyrja\Enum\Enum;
  * receives the entity.
  *
  * @author Melech Mizrachi
+ *
  * @link   https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
 final class Header extends Enum
@@ -40,7 +41,7 @@ final class Header extends Enum
      *                         | ( type "/" subtype )
      *                         ) *( ";" parameter )
      *      accept-params    = ";" "q" "=" qvalue *( accept-extension )
-     *      accept-extension = ";" token [ "=" ( token | quoted-string ) ]
+     *      accept-extension = ";" token [ "=" ( token | quoted-string ) ].
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
      */
@@ -55,7 +56,7 @@ final class Header extends Enum
      * a server which is capable of representing documents in those
      * character sets.
      *      Accept-Charset = "Accept-Charset" ":"
-     *                       1#( ( charset | "*" )[ ";" "q" "=" qvalue ] )
+     *                       1#( ( charset | "*" )[ ";" "q" "=" qvalue ] ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2
      */
@@ -68,7 +69,7 @@ final class Header extends Enum
      * in the response documents in those character sets.
      *      Accept-Encoding = "Accept-Encoding" ":"
      *                        1#( codings [ ";" "q" "=" qvalue ] )
-     *      codings         = ( content-coding | "*" )
+     *      codings         = ( content-coding | "*" ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
      */
@@ -82,7 +83,7 @@ final class Header extends Enum
      * section 3.10.
      *      Accept-Language = "Accept-Language" ":"
      *                        1#( language-range [ ";" "q" "=" qvalue ] )
-     *      language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" )
+     *      language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
      */
@@ -93,7 +94,7 @@ final class Header extends Enum
      * The Accept-Ranges response-header field allows the server to
      * indicate its acceptance of range requests for a resource:
      *      Accept-Ranges     = "Accept-Ranges" ":" acceptable-ranges
-     *      acceptable-ranges = 1#range-unit | "none"
+     *      acceptable-ranges = 1#range-unit | "none".
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.5
      */
@@ -107,7 +108,7 @@ final class Header extends Enum
      * its age does not exceed its freshness lifetime. Age values are
      * calculated as specified in section 13.2.3.
      *      Age       = "Age" ":" age-value
-     *      age-value = delta-seconds
+     *      age-value = delta-seconds.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.6
      */
@@ -120,7 +121,7 @@ final class Header extends Enum
      * field is strictly to inform the recipient of valid methods
      * associated with the resource. An Allow header field MUST be
      * present in a 405 (Method Not Allowed) response.
-     *      Allow = "Allow" ":" #Method
+     *      Allow = "Allow" ":" #Method.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7
      */
@@ -134,7 +135,7 @@ final class Header extends Enum
      * request.  The Authorization field value consists of credentials
      * containing the authentication information of the user agent for
      * the realm of the resource being requested.
-     *      Authorization = "Authorization" ":" credentials
+     *      Authorization = "Authorization" ":" credentials.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8
      */
@@ -181,7 +182,7 @@ final class Header extends Enum
      *          | "max-age" "=" delta-seconds            ; Section 14.9.3
      *          | "s-maxage" "=" delta-seconds           ; Section 14.9.3
      *          | cache-extension                        ; Section 14.9.6
-     *      cache-extension = token [ "=" ( token | quoted-string ) ]
+     *      cache-extension = token [ "=" ( token | quoted-string ) ].
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
      */
@@ -194,7 +195,7 @@ final class Header extends Enum
      * MUST NOT be communicated by proxies over further connections.
      * The Connection header has the following grammar:
      *      Connection       = "Connection" ":" 1#(connection-token)
-     *      connection-token = token
+     *      connection-token = token.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.10
      */
@@ -209,7 +210,7 @@ final class Header extends Enum
      * by the Content-Type header field. Content-Encoding is primarily used
      * to allow a document to be compressed without losing the identity of
      * its underlying media type.
-     *      Content-Encoding = "Content-Encoding" ":" 1#content-coding
+     *      Content-Encoding = "Content-Encoding" ":" 1#content-coding.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11
      */
@@ -221,7 +222,7 @@ final class Header extends Enum
      * language(s) of the intended audience for the enclosed entity.
      * Note that this might not be equivalent to all the languages used
      * within the entity-body.
-     *      Content-Language = "Content-Language" ":" 1#language-tag
+     *      Content-Language = "Content-Language" ":" 1#language-tag.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.12
      */
@@ -233,7 +234,7 @@ final class Header extends Enum
      * entity-body, in decimal number of OCTETs, sent to the recipient or,
      * in the case of the HEAD method, the size of the entity-body that
      * would have been sent had the request been a GET.
-     *      Content-Length = "Content-Length" ":" 1*DIGIT
+     *      Content-Length = "Content-Length" ":" 1*DIGIT.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.13
      */
@@ -251,7 +252,7 @@ final class Header extends Enum
      * individually accessed, the server SHOULD provide a Content-Location for
      * the particular variant which is returned.
      *      Content-Location = "Content-Location" ":"
-     *                         ( absoluteURI | relativeURI )
+     *                         ( absoluteURI | relativeURI ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.14
      */
@@ -265,7 +266,7 @@ final class Header extends Enum
      * (Note: a MIC is good for detecting accidental modification of the
      * entity-body in transit, but is not proof against malicious attacks.)
      *      Content-MD5 = "Content-MD5" ":" md5-digest
-     *      md5-digest  = <base64 of 128 bit MD5 digest as per RFC 1864>
+     *      md5-digest  = <base64 of 128 bit MD5 digest as per RFC 1864>.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.15
      */
@@ -283,7 +284,7 @@ final class Header extends Enum
      *                                ( instance-length | "*" )
      *      byte-range-resp-spec    = (first-byte-pos "-" last-byte-pos)
      *                                | "*"
-     *      instance-length         = 1*DIGIT
+     *      instance-length         = 1*DIGIT.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.16
      */
@@ -294,7 +295,7 @@ final class Header extends Enum
      * The Content-Type entity-header field indicates the media type of the
      * entity-body sent to the recipient or, in the case of the HEAD method,
      * the media type that would have been sent had the request been a GET.
-     *      Content-Type   = "Content-Type" ":" media-type
+     *      Content-Type   = "Content-Type" ":" media-type.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
      */
@@ -306,7 +307,7 @@ final class Header extends Enum
      * the message was originated, having the same semantics as orig-date
      * in RFC 822. The field value is an HTTP-date, as described in
      * section 3.3.1; it MUST be sent in RFC 1123 [8]-date format.
-     *      Date = "Date" ":" HTTP-date
+     *      Date = "Date" ":" HTTP-date.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.18
      */
@@ -319,7 +320,7 @@ final class Header extends Enum
      * described in sections 14.24, 14.26 and 14.44. The entity tag MAY be used
      * for comparison with other entities from the same resource
      * (see section 13.3.3).
-     *      ETag = "ETag" ":" entity-tag
+     *      ETag = "ETag" ":" entity-tag.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.19
      */
@@ -333,7 +334,7 @@ final class Header extends Enum
      *      expectation           = "100-continue" | expectation-extension
      *      expectation-extension = token [ "=" ( token | quoted-string )
      *                              expect-params ]
-     *      expect-params         = ";" token [ "=" ( token | quoted-string ) ]
+     *      expect-params         = ";" token [ "=" ( token | quoted-string ) ].
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.20
      */
@@ -351,7 +352,7 @@ final class Header extends Enum
      * resource will change or cease to exist at, before, or after that time.
      * The format is an absolute date and time as defined by HTTP-date
      * in section 3.3.1; it MUST be in RFC 1123 date format:
-     *      Expires = "Expires" ":" HTTP-date
+     *      Expires = "Expires" ":" HTTP-date.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21
      */
@@ -363,7 +364,7 @@ final class Header extends Enum
      * e-mail address for the human user who controls the requesting user
      * agent. The address SHOULD be machine-usable, as defined by "mailbox"
      * in RFC 822 [9] as updated by RFC 1123 [8]:
-     *      From = "From" ":" mailbox
+     *      From = "From" ":" mailbox.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.22
      */
@@ -379,7 +380,7 @@ final class Header extends Enum
      * original URL. This allows the origin server or gateway to
      * differentiate between internally-ambiguous URLs, such as the root
      * "/" URL of a server for multiple host names on a single IP address.
-     *      Host = "Host" ":" host [ ":" port ] ; Section 3.2.2
+     *      Host = "Host" ":" host [ ":" port ] ; Section 3.2.2.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23
      */
@@ -397,7 +398,7 @@ final class Header extends Enum
      * also used, on updating requests, to prevent inadvertent modification
      * of the wrong version of a resource. As a special case, the value
      * "*" matches any current entity of the resource.
-     *      If-Match = "If-Match" ":" ( "*" | 1#entity-tag )
+     *      If-Match = "If-Match" ":" ( "*" | 1#entity-tag ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.24
      */
@@ -410,7 +411,7 @@ final class Header extends Enum
      * since the time  specified in this field, an entity will not be
      * returned from the server; instead, a 304 (not modified) response
      * will be returned without any message-body.
-     *      If-Modified-Since = "If-Modified-Since" ":" HTTP-date
+     *      If-Modified-Since = "If-Modified-Since" ":" HTTP-date.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.25
      */
@@ -429,7 +430,7 @@ final class Header extends Enum
      * the client believes that the resource does not exist.
      * As a special case, the value "*" matches any current entity of
      * the resource.
-     *      If-None-Match = "If-None-Match" ":" ( "*" | 1#entity-tag )
+     *      If-None-Match = "If-None-Match" ":" ( "*" | 1#entity-tag ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
      */
@@ -448,7 +449,7 @@ final class Header extends Enum
      * request. Informally, its meaning is `if the entity is unchanged,
      * send me the part(s) that I am missing; otherwise, send me the
      * entire new entity'.
-     *      If-Range = "If-Range" ":" ( entity-tag | HTTP-date )
+     *      If-Range = "If-Range" ":" ( entity-tag | HTTP-date ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.27
      */
@@ -464,7 +465,7 @@ final class Header extends Enum
      * If the requested variant has been modified since the specified time,
      * the server MUST NOT perform the requested operation, and MUST return
      * a 412 (Precondition Failed).
-     *      If-Unmodified-Since = "If-Unmodified-Since" ":" HTTP-date
+     *      If-Unmodified-Since = "If-Unmodified-Since" ":" HTTP-date.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.28
      */
@@ -474,7 +475,7 @@ final class Header extends Enum
      * Last-Modified Header.
      * The Last-Modified entity-header field indicates the date and time
      * at which the origin server believes the variant was last modified.
-     *      Last-Modified = "Last-Modified" ":" HTTP-date
+     *      Last-Modified = "Last-Modified" ":" HTTP-date.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.29
      */
@@ -489,7 +490,7 @@ final class Header extends Enum
      * created by the request. For 3xx responses, the location SHOULD
      * indicate the server's preferred URI for automatic redirection
      * to the resource. The field value consists of a single absolute URI.
-     *      Location = "Location" ":" absoluteURI
+     *      Location = "Location" ":" absoluteURI.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
      */
@@ -503,7 +504,7 @@ final class Header extends Enum
      * next inbound server. This can be useful when the client is attempting
      * to trace a request chain which appears to be failing or looping
      * in mid-chain.
-     *      Max-Forwards = "Max-Forwards" ":" 1*DIGIT
+     *      Max-Forwards = "Max-Forwards" ":" 1*DIGIT.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.31
      */
@@ -518,7 +519,7 @@ final class Header extends Enum
      * MAY require that behavior be consistent with the directives.
      *      Pragma           = "Pragma" ":" 1#pragma-directive
      *      pragma-directive = "no-cache" | extension-pragma
-     *      extension-pragma = token [ "=" ( token | quoted-string ) ]
+     *      extension-pragma = token [ "=" ( token | quoted-string ) ].
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32
      */
@@ -530,7 +531,7 @@ final class Header extends Enum
      * part of a 407 (Proxy Authentication Required) response. The field
      * value consists of a challenge that indicates the authentication
      * scheme and parameters applicable to the proxy for this Request-URI.
-     *      Proxy-Authenticate = "Proxy-Authenticate" ":" 1#challenge
+     *      Proxy-Authenticate = "Proxy-Authenticate" ":" 1#challenge.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.33
      */
@@ -543,7 +544,7 @@ final class Header extends Enum
      * authentication. The Proxy-Authorization field value consists of
      * credentials containing the authentication information of he user
      * agent for the proxy and/or realm of the resource being requested.
-     *      Proxy-Authorization = "Proxy-Authorization" ":" credentials
+     *      Proxy-Authorization = "Proxy-Authorization" ":" credentials.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.34
      */
@@ -587,7 +588,7 @@ final class Header extends Enum
      * methods MAY request one or more sub-ranges of the entity,
      * instead of the entire entity, using the Range request header,
      * which applies to the entity returned as the result of the request:
-     *      Range = "Range" ":" ranges-specifier
+     *      Range = "Range" ":" ranges-specifier.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35
      */
@@ -604,7 +605,7 @@ final class Header extends Enum
      * links to be traced for maintenance. The Referer field MUST NOT be
      * sent if the Request-URI was obtained from a source that does not
      * have its own URI, such as input from the user keyboard.
-     *      Referer = "Referer" ":" ( absoluteURI | relativeURI )
+     *      Referer = "Referer" ":" ( absoluteURI | relativeURI ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.36
      */
@@ -620,7 +621,7 @@ final class Header extends Enum
      * redirected request. The value of this field can be either an HTTP-date
      * or an integer number of seconds (in decimal) after the time of the
      * response.
-     *      Retry-After = "Retry-After" ":" ( HTTP-date | delta-seconds )
+     *      Retry-After = "Retry-After" ":" ( HTTP-date | delta-seconds ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.37
      */
@@ -634,7 +635,7 @@ final class Header extends Enum
      * identifying the server and any significant subproducts. The product
      * tokens are listed in order of their significance for identifying
      * the application.
-     *      Server = "Server" ":" 1*( product | comment )
+     *      Server = "Server" ":" 1*( product | comment ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.38
      */
@@ -678,7 +679,7 @@ final class Header extends Enum
      *      path-value        = <any CHAR except CTLs or ";">
      *      secure-av         = "Secure"
      *      httponly-av       = "HttpOnly"
-     *      extension-av      = <any CHAR except CTLs or ";">
+     *      extension-av      = <any CHAR except CTLs or ";">.
      *
      * @link https://tools.ietf.org/html/rfc6265#section-4.1
      */
@@ -693,7 +694,7 @@ final class Header extends Enum
      * list of extension transfer-coding names with optional accept
      * parameters (as described in section 3.6).
      *      TE        = "TE" ":" #( t-codings )
-     *      t-codings = "trailers" | ( transfer-extension [ accept-params ] )
+     *      t-codings = "trailers" | ( transfer-extension [ accept-params ] ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.39
      */
@@ -704,7 +705,7 @@ final class Header extends Enum
      * The Trailer general field value indicates that the given set of
      * header fields is present in the trailer of a message encoded with
      * chunked transfer-coding.
-     *      Trailer = "Trailer" ":" 1#field-name
+     *      Trailer = "Trailer" ":" 1#field-name.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.40
      */
@@ -717,7 +718,7 @@ final class Header extends Enum
      * to safely transfer it between the sender and the recipient. This
      * differs from the content-coding in that the transfer-coding is a
      * property of the message, not of the entity.
-     *      Transfer-Encoding = "Transfer-Encoding" ":" 1#transfer-coding
+     *      Transfer-Encoding = "Transfer-Encoding" ":" 1#transfer-coding.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41
      */
@@ -731,7 +732,7 @@ final class Header extends Enum
      * The server MUST use the Upgrade header field within a 101
      * (Switching Protocols) response to indicate which protocol(s)
      * are being switched.
-     *      Upgrade = "Upgrade" ":" 1#product
+     *      Upgrade = "Upgrade" ":" 1#product.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.42
      */
@@ -749,7 +750,7 @@ final class Header extends Enum
      * a significant part of the user agent. By convention, the product
      * tokens are listed in order of their significance for identifying
      * the application.
-     *      User-Agent = "User-Agent" ":" 1*( product | comment )
+     *      User-Agent = "User-Agent" ":" 1*( product | comment ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
      */
@@ -767,7 +768,7 @@ final class Header extends Enum
      * subsequent request whether this response is the appropriate
      * representation. See section 13.6 for use of the Vary header
      * field by caches.
-     *      Vary = "Vary" ":" ( "*" | 1#field-name )
+     *      Vary = "Vary" ":" ( "*" | 1#field-name ).
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44
      */
@@ -786,7 +787,7 @@ final class Header extends Enum
      *      comment ] ) received-protocol = [ protocol-name "/" ]
      *      protocol-version protocol-name     = token protocol-version  =
      *      token received-by       = ( host [ ":" port ] ) | pseudonym
-     *      pseudonym         = token
+     *      pseudonym         = token.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.45
      */
@@ -809,7 +810,7 @@ final class Header extends Enum
      *                      ; the name or pseudonym of the server adding
      *                      ; the Warning header, for use in debugging
      *      warn-text     = quoted-string
-     *      warn-date     = <"> HTTP-date <">
+     *      warn-date     = <"> HTTP-date <">.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46
      */
@@ -821,7 +822,7 @@ final class Header extends Enum
      * (Unauthorized) response messages. The field value consists of at
      * least one challenge that indicates the authentication scheme(s)
      * and parameters applicable to the Request-URI.
-     *      WWW-Authenticate = "WWW-Authenticate" ":" 1#challenge
+     *      WWW-Authenticate = "WWW-Authenticate" ":" 1#challenge.
      *
      * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.47
      */

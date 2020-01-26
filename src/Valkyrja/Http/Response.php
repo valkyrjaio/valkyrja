@@ -364,6 +364,7 @@ interface Response
      * that MUST NOT be included in 304 responses.
      *
      * @return Response
+     *
      * @see http://tools.ietf.org/html/rfc2616#section-10.3.5
      */
     public function setNotModified(): self;
@@ -372,6 +373,7 @@ interface Response
      * Is response invalid?
      *
      * @return bool
+     *
      * @see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
      */
     public function isInvalid(): bool;
@@ -487,6 +489,7 @@ interface Response
      * has been called before.
      *
      * @return string The Response as an HTTP string
+     *
      * @see prepare()
      */
     public function __toString(): string;

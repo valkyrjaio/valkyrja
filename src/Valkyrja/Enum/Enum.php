@@ -178,8 +178,9 @@ abstract class Enum implements JsonSerializable
      *
      * @param mixed $value The value to set
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function setValue($value): void
     {

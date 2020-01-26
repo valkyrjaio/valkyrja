@@ -23,8 +23,9 @@ interface Repository
     /**
      * Get the store.
      *
-     * @return PDO
      * @throws InvalidArgumentException
+     *
+     * @return PDO
      */
     public function store(): PDO;
 
@@ -34,8 +35,9 @@ interface Repository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
      * @throws InvalidArgumentException If id is not a string or int
+     *
+     * @return Entity|null
      */
     public function find($id, bool $getRelations = null): ?Entity;
 
@@ -56,7 +58,7 @@ interface Repository
      *              1,
      *              1
      *          )
-     * </code>
+     * </code>.
      *
      * @param array      $criteria
      * @param array|null $orderBy
@@ -87,7 +89,7 @@ interface Repository
      *                  'column3' => OrderBy::DESC,
      *              ]
      *          )
-     * </code>
+     * </code>.
      *
      * @param array      $orderBy
      * @param array|null $columns
@@ -107,7 +109,7 @@ interface Repository
      *                  'column2' => 'value2',
      *              ]
      *          )
-     * </code>
+     * </code>.
      *
      * @param array $criteria
      *
@@ -119,12 +121,13 @@ interface Repository
      * Create a new model.
      * <code>
      *      $this->create(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidEntityException
+     *
+     * @return bool
      */
     public function create(Entity $entity): bool;
 
@@ -132,12 +135,13 @@ interface Repository
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      * <code>
      *      $this->save(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidEntityException
+     *
+     * @return bool
      */
     public function save(Entity $entity): bool;
 
@@ -145,12 +149,13 @@ interface Repository
      * Delete an existing model.
      * <code>
      *      $this->delete(Entity::class)
-     * </code>
+     * </code>.
      *
      * @param Entity $entity
      *
-     * @return bool
      * @throws InvalidEntityException
+     *
+     * @return bool
      */
     public function delete(Entity $entity): bool;
 

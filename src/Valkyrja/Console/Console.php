@@ -65,8 +65,9 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param Input $input The input
      *
-     * @return Command
      * @throws CommandNotFound
+     *
+     * @return Command
      */
     public function inputCommand(Input $input): Command;
 
@@ -75,8 +76,9 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param string $path The command name
      *
-     * @return Command
      * @throws CommandNotFound
+     *
+     * @return Command
      */
     public function matchCommand(string $path): Command;
 
@@ -86,8 +88,9 @@ interface Console extends Cacheable, ProvidersAware
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @return mixed
      * @throws CommandNotFound
+     *
+     * @return mixed
      */
     public function dispatch(Input $input, Output $output);
 

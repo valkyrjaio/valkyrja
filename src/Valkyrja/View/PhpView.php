@@ -130,8 +130,9 @@ class PhpView implements View
      * @param string $template  [optional] The template to set
      * @param array  $variables [optional] The variables to set
      *
-     * @return View
      * @throws InvalidConfigPath
+     *
+     * @return View
      */
     public function make(string $template = null, array $variables = []): View
     {
@@ -281,8 +282,9 @@ class PhpView implements View
      *
      * @param string $layout [optional] The layout to set
      *
-     * @return View
      * @throws InvalidConfigPath
+     *
+     * @return View
      */
     public function layout(string $layout = null): View
     {
@@ -322,8 +324,9 @@ class PhpView implements View
      *
      * @param string $template The template
      *
-     * @return View
      * @throws InvalidConfigPath
+     *
+     * @return View
      */
     public function template(string $template): View
     {
@@ -339,8 +342,9 @@ class PhpView implements View
      * @param string $partial   The partial
      * @param array  $variables [optional]
      *
-     * @return string
      * @throws InvalidConfigPath
+     *
+     * @return string
      */
     public function partial(string $partial, array $variables = []): string
     {
@@ -456,8 +460,9 @@ class PhpView implements View
      *
      * @param string $template The template
      *
-     * @return string
      * @throws InvalidConfigPath
+     *
+     * @return string
      */
     protected function getFullPath(string $template): string
     {
@@ -550,8 +555,9 @@ class PhpView implements View
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidConfigPath
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

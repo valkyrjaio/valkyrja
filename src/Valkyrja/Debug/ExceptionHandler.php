@@ -87,7 +87,7 @@ class ExceptionHandler
             return;
         }
 
-        if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE,], true)) {
+        if (in_array($error['type'], [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE], true)) {
             $this->handleException($this->fatalExceptionFromError($error));
         }
     }

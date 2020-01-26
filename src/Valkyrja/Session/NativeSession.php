@@ -83,8 +83,9 @@ class NativeSession implements Session
     /**
      * Start the session.
      *
-     * @return void
      * @throws SessionStartFailure
+     *
+     * @return void
      */
     public function start(): void
     {
@@ -119,8 +120,9 @@ class NativeSession implements Session
      *
      * @param string $id The session id
      *
-     * @return void
      * @throws InvalidSessionId
+     *
+     * @return void
      */
     public function setId(string $id): void
     {
@@ -227,8 +229,9 @@ class NativeSession implements Session
      *
      * @param string $id The csrf unique token id
      *
-     * @return string
      * @throws Exception
+     *
+     * @return string
      */
     public function csrf(string $id): string
     {
@@ -305,9 +308,10 @@ class NativeSession implements Session
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws SessionStartFailure
      * @throws InvalidSessionId
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

@@ -43,8 +43,9 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @return array
      * @throws InvalidArgumentException
+     *
+     * @return array
      */
     public function parse(string $path): array
     {
@@ -120,8 +121,9 @@ REGEX;
      *
      * @param string $path The path
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function validatePath(string $path): void
     {

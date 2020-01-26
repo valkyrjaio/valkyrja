@@ -46,8 +46,9 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @param string $docString The doc string
      *
-     * @return Annotation[]
      * @throws InvalidAnnotationKeyArgument
+     *
+     * @return Annotation[]
      */
     public function getAnnotations(string $docString): array
     {
@@ -96,8 +97,9 @@ class NativeAnnotationsParser implements AnnotationsParser
      * @param int   $index          The index
      * @param array $annotations    The annotations list
      *
-     * @return void
      * @throws InvalidAnnotationKeyArgument
+     *
+     * @return void
      */
     protected function setAnnotation(array $matches, int $index, array &$annotations): void
     {
@@ -220,8 +222,9 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @param string $arguments The arguments
      *
-     * @return array
      * @throws InvalidAnnotationKeyArgument
+     *
+     * @return array
      */
     public function getArguments(string $arguments = null): ?array
     {

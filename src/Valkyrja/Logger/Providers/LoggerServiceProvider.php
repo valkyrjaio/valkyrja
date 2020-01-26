@@ -53,8 +53,9 @@ class LoggerServiceProvider extends Provider
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {
@@ -67,8 +68,9 @@ class LoggerServiceProvider extends Provider
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws Exception
+     *
+     * @return void
      */
     protected static function bindLoggerInterface(Application $app): void
     {

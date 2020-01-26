@@ -61,8 +61,9 @@ class NativeKernel implements Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @return int
      * @throws HttpException
+     *
+     * @return int
      */
     public function handle(Input $input, Output $output): int
     {
@@ -100,8 +101,9 @@ class NativeKernel implements Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @return void
      * @throws HttpException
+     *
+     * @return void
      */
     public function run(Input $input = null, Output $output = null): void
     {

@@ -42,8 +42,9 @@ class CacheAllCommand extends CommandHandler
      *
      * @param string $sync [optional] Whether to sync the cached files
      *
-     * @return int
      * @throws CommandNotFound
+     *
+     * @return int
      */
     public function run(string $sync = null): int
     {

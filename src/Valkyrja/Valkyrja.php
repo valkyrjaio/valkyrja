@@ -130,10 +130,11 @@ class Valkyrja implements Application
      * @param array $config [optional] The config to use
      * @param bool  $force  [optional] Whether to force a setup
      *
-     * @return void
      * @throws InvalidDispatcherImplementation
      * @throws InvalidEventsImplementation
      * @throws InvalidContainerImplementation
+     *
+     * @return void
      */
     public function setup(array $config = null, bool $force = false): void
     {
@@ -221,10 +222,11 @@ class Valkyrja implements Application
     /**
      * Bootstrap core functionality.
      *
-     * @return void
      * @throws InvalidDispatcherImplementation
      * @throws InvalidEventsImplementation
      * @throws InvalidContainerImplementation
+     *
+     * @return void
      */
     protected function bootstrapCore(): void
     {
@@ -516,8 +518,9 @@ class Valkyrja implements Application
      * @param int      $code       [optional] The Exception code
      * @param Response $response   [optional] The Response to send
      *
-     * @return void
      * @throws HttpException
+     *
+     * @return void
      */
     public function abort(
         int $statusCode = StatusCode::NOT_FOUND,
@@ -536,8 +539,9 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return void
      * @throws HttpRedirectException
+     *
+     * @return void
      */
     public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void
     {
@@ -691,8 +695,9 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The status code to set
      * @param array  $headers    [optional] The headers to set
      *
-     * @return Response
      * @throws InvalidArgumentException
+     *
+     * @return Response
      */
     public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
     {
@@ -713,8 +718,9 @@ class Valkyrja implements Application
      * @param int   $statusCode [optional] The status code to set
      * @param array $headers    [optional] The headers to set
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
     {
@@ -735,9 +741,10 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return RedirectResponse
      * @throws InvalidStatusCodeException
      * @throws InvalidArgumentException
+     *
+     * @return RedirectResponse
      */
     public function redirect(
         string $uri = null,
@@ -763,9 +770,10 @@ class Valkyrja implements Application
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return RedirectResponse
      * @throws InvalidStatusCodeException
      * @throws InvalidArgumentException
+     *
+     * @return RedirectResponse
      */
     public function redirectRoute(
         string $route,

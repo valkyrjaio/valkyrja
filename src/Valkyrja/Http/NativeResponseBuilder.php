@@ -99,8 +99,9 @@ class NativeResponseBuilder implements ResponseBuilder
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public function jsonp(
         string $callback,

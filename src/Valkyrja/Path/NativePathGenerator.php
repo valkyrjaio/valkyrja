@@ -31,8 +31,9 @@ class NativePathGenerator implements PathGenerator
      * @param array $data     [optional] The data
      * @param array $params   [optional] The params
      *
-     * @return string
      * @throws InvalidArgumentException
+     *
+     * @return string
      */
     public function parse(array $segments, array $data = null, array $params = null): string
     {
@@ -77,8 +78,9 @@ class NativePathGenerator implements PathGenerator
      * @param array $replace      The replace array
      * @param array $replacements The replacements array
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function parseData(
         array $segments,
@@ -127,8 +129,9 @@ class NativePathGenerator implements PathGenerator
      * @param mixed  $datum The datum
      * @param string $regex The regex
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     protected function validateDatum(string $key, $datum, string $regex): void
     {

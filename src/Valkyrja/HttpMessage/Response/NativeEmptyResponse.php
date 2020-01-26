@@ -56,8 +56,9 @@ class NativeEmptyResponse extends NativeResponse implements EmptyResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

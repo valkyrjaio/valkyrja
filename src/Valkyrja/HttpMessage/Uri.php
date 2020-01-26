@@ -41,6 +41,7 @@ interface Uri
      * added.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.1
+     *
      * @return string The URI scheme.
      */
     public function getScheme(): string;
@@ -69,6 +70,7 @@ interface Uri
      * scheme, it SHOULD NOT be included.
      *
      * @see https://tools.ietf.org/html/rfc3986#section-3.2
+     *
      * @return string The URI authority, in "[user-info@]host[:port]" format.
      */
     public function getAuthority(): string;
@@ -94,6 +96,7 @@ interface Uri
      * Section 3.2.2.
      *
      * @see http://tools.ietf.org/html/rfc3986#section-3.2.2
+     *
      * @return string The URI host.
      */
     public function getHost(): string;
@@ -179,6 +182,7 @@ interface Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.3
+     *
      * @return string The URI path.
      */
     public function getPath(): string;
@@ -197,6 +201,7 @@ interface Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.4
+     *
      * @return string The URI query string.
      */
     public function getQuery(): string;
@@ -212,6 +217,7 @@ interface Uri
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2
      * @see https://tools.ietf.org/html/rfc3986#section-3.5
+     *
      * @return string The URI fragment.
      */
     public function getFragment(): string;
@@ -226,8 +232,9 @@ interface Uri
      *
      * @param string $scheme The scheme to use with the new instance.
      *
-     * @return static A new instance with the specified scheme.
      * @throws InvalidArgumentException for invalid or unsupported schemes.
+     *
+     * @return static A new instance with the specified scheme.
      */
     public function withScheme(string $scheme): self;
 
@@ -254,8 +261,9 @@ interface Uri
      *
      * @param string $host The hostname to use with the new instance.
      *
-     * @return static A new instance with the specified host.
      * @throws InvalidArgumentException for invalid hostnames.
+     *
+     * @return static A new instance with the specified host.
      */
     public function withHost(string $host): self;
 
@@ -271,8 +279,9 @@ interface Uri
      * @param null|int $port The port to use with the new instance; a null value
      *                       removes the port information.
      *
-     * @return static A new instance with the specified port.
      * @throws InvalidArgumentException for invalid ports.
+     *
+     * @return static A new instance with the specified port.
      */
     public function withPort(int $port = null): self;
 
@@ -292,8 +301,9 @@ interface Uri
      *
      * @param string $path The path to use with the new instance.
      *
-     * @return static A new instance with the specified path.
      * @throws InvalidArgumentException for invalid paths.
+     *
+     * @return static A new instance with the specified path.
      */
     public function withPath(string $path): self;
 
@@ -307,8 +317,9 @@ interface Uri
      *
      * @param string $query The query string to use with the new instance.
      *
-     * @return static A new instance with the specified query string.
      * @throws InvalidArgumentException for invalid query strings.
+     *
+     * @return static A new instance with the specified query string.
      */
     public function withQuery(string $query): self;
 
@@ -345,6 +356,7 @@ interface Uri
      * - If a fragment is present, it MUST be prefixed by "#".
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.1
+     *
      * @return string
      */
     public function __toString();

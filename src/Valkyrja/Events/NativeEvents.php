@@ -63,12 +63,13 @@ class NativeEvents implements Events
      * @param string   $event    The event
      * @param Listener $listener The event listener
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function listen(string $event, Listener $listener): void
     {
@@ -93,12 +94,13 @@ class NativeEvents implements Events
      * @param Listener $listener  The listener
      * @param string   ...$events The events
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function listenMany(Listener $listener, string ...$events): void
     {
@@ -276,12 +278,13 @@ class NativeEvents implements Events
      * @param bool $force    [optional] Whether to force setup
      * @param bool $useCache [optional] Whether to use cache
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     public function setup(bool $force = false, bool $useCache = true): void
     {
@@ -343,12 +346,13 @@ class NativeEvents implements Events
     /**
      * Setup annotations.
      *
-     * @return void
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return void
      */
     protected function setupAnnotations(): void
     {
@@ -368,12 +372,13 @@ class NativeEvents implements Events
     /**
      * Get a cacheable representation of the events.
      *
-     * @return array
      * @throws InvalidDispatchCapabilityException
      * @throws InvalidFunctionException
      * @throws InvalidMethodException
      * @throws InvalidPropertyException
      * @throws InvalidClosureException
+     *
+     * @return array
      */
     public function getCacheable(): array
     {

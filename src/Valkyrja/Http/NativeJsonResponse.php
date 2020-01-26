@@ -81,8 +81,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      * @param array  $headers [optional] An array of response headers
      * @param array  $data    [optional] An array of data
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public static function createJson(
         string $content = '',
@@ -98,8 +99,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param string $callback [optional] The JSONP callback or null to use none
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException When the callback name is not valid
+     *
+     * @return JsonResponse
      */
     public function setCallback(string $callback = null): JsonResponse
     {
@@ -126,8 +128,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param string $json The json to set
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public function setJson(string $json): JsonResponse
     {
@@ -141,8 +144,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param array $data [optional] The data to set
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public function setData(array $data = []): JsonResponse
     {
@@ -170,8 +174,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param int $encodingOptions The encoding options to set
      *
-     * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @return JsonResponse
      */
     public function setEncodingOptions(int $encodingOptions): JsonResponse
     {
@@ -227,8 +232,9 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {

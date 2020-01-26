@@ -53,7 +53,7 @@ class NativeEntityManager implements EntityManager
      *      [
      *          Model::class
      *      ]
-     * </code>
+     * </code>.
      *
      * @var Entity[]
      */
@@ -65,7 +65,7 @@ class NativeEntityManager implements EntityManager
      *      [
      *          Model::class
      *      ]
-     * </code>
+     * </code>.
      *
      * @var Entity[]
      */
@@ -90,8 +90,9 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @return PDO
      * @throws InvalidArgumentException If the name doesn't exist
+     *
+     * @return PDO
      */
     public function store(string $name = null): PDO
     {
@@ -130,8 +131,9 @@ class NativeEntityManager implements EntityManager
     /**
      * Initiate a transaction.
      *
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function beginTransaction(): bool
     {
@@ -201,9 +203,10 @@ class NativeEntityManager implements EntityManager
     /**
      * Commit all items in the transaction.
      *
-     * @return bool
      * @throws InvalidEntityException
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function commit(): bool
     {
@@ -229,8 +232,9 @@ class NativeEntityManager implements EntityManager
     /**
      * Rollback the previous transaction.
      *
-     * @return bool
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
     public function rollback(): bool
     {
@@ -242,8 +246,9 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @return PDO
      * @throws InvalidArgumentException
+     *
+     * @return PDO
      */
     protected function getStore(string $name = null): PDO
     {
@@ -263,8 +268,9 @@ class NativeEntityManager implements EntityManager
      *
      * @param string|null $name
      *
-     * @return array
      * @throws InvalidArgumentException
+     *
+     * @return array
      */
     protected function getStoreConfig(string $name): array
     {
@@ -317,8 +323,9 @@ class NativeEntityManager implements EntityManager
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public static function publish(Application $app): void
     {
