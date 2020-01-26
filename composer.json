@@ -18,9 +18,7 @@
     "php"              : ">=7.2",
     "psr/http-message" : "1.0.1",
     "psr/log"          : "1.0.2",
-    "ext-json"         : "*",
-    "ext-sodium"       : "*",
-    "ext-pdo"          : "*"
+    "ext-json"         : "*"
   },
   "require-dev"       : {
     "fzaninotto/faker"           : "1.6.0",
@@ -53,7 +51,9 @@
     "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (^1.0)",
     "monolog/monolog"            : "Required for use with Valkyrja Logger (^1.22).",
     "predis/predis"              : "Required for use with Redis Valkyrja Cache (^1.1).",
-    "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0)."
+    "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0).",
+    "ext-sodium"                 : "For Crypt functionality (*)",
+    "ext-pdo"                    : "For ORM functionality (*)"
   },
   "minimum-stability" : "dev",
   "prefer-stable"     : true,
