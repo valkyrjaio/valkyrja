@@ -15,7 +15,6 @@ php:
     - strict_comparison
     - strict_param
     - phpdoc_scalar
-    - phpdoc_types_order
     - phpdoc_trim
     - phpdoc_types
 
@@ -23,7 +22,6 @@ php:
     - concat_without_spaces
     - phpdoc_align
     - unalign_equals
-    - phpdoc_order
 
   finder:
     exclude:
