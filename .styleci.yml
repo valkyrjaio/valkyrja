@@ -1,23 +1,30 @@
-preset: recommended
+php:
+  preset: recommended
 
-risky: true
+  risky: true
 
-enabled:
-  - align_equals
-  - combine_consecutive_unsets
-  - concat_with_spaces
-  - const_visibility_required
-  - no_useless_else
-  - not_operator_with_successor_space
-  - short_list_syntax
-  - strict_comparison
-  - strict_param
+  enabled:
+    - align_equals
+    - blank_line_before_break
+    - combine_consecutive_unsets
+    - concat_with_spaces
+    - const_visibility_required
+    - no_useless_else
+    - not_operator_with_successor_space
+    - short_list_syntax
+    - strict_comparison
+    - strict_param
+    - phpdoc_scalar
+    - phpdoc_types_order
+    - phpdoc_trim
+    - phpdoc_types
 
-disabled:
-  - concat_without_spaces
-  - phpdoc_align
-  - unalign_equals
+  disabled:
+    - concat_without_spaces
+    - phpdoc_align
+    - unalign_equals
+    - phpdoc_order
 
-finder:
-  exclude:
-    - "tests"
+  finder:
+    exclude:
+      - "tests"
