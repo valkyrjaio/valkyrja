@@ -17,11 +17,13 @@ php:
     - phpdoc_scalar
     - phpdoc_trim
     - phpdoc_types
+    - phpdoc_add_missing_param_annotation
 
   disabled:
     - concat_without_spaces
     - phpdoc_align
     - unalign_equals
+    - phpdoc_summary
 
   finder:
     exclude:
