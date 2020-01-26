@@ -24,6 +24,7 @@ php:
     - phpdoc_align
     - unalign_equals
     - phpdoc_summary
+    - phpdoc_annotation_without_dot
 
   finder:
     exclude:
