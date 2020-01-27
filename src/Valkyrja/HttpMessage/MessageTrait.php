@@ -359,7 +359,7 @@ trait MessageTrait
     /**
      * Filter header values.
      *
-     * @param string[] ...$values Header values
+     * @param string ...$values Header values
      *
      * @throws InvalidArgumentException
      *
