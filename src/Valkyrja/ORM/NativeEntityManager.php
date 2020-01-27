@@ -31,21 +31,21 @@ class NativeEntityManager implements EntityManager
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * Repositories.
      *
      * @var Repository[]
      */
-    protected $repositories = [];
+    protected array $repositories = [];
 
     /**
      * Stores.
      *
      * @var PDO[]
      */
-    protected $stores = [];
+    protected array $stores = [];
 
     /**
      * The models awaiting to be committed for creation.
@@ -57,7 +57,7 @@ class NativeEntityManager implements EntityManager
      *
      * @var Entity[]
      */
-    protected $createModels = [];
+    protected array $createModels = [];
 
     /**
      * The models awaiting to be committed for saving.
@@ -69,7 +69,7 @@ class NativeEntityManager implements EntityManager
      *
      * @var Entity[]
      */
-    protected $saveModels = [];
+    protected array $saveModels = [];
 
     /**
      * NativeEntityManager constructor.

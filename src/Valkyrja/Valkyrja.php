@@ -59,14 +59,14 @@ class Valkyrja implements Application
      *
      * @var Application
      */
-    protected static $app;
+    protected static Application $app;
 
     /**
      * Whether the application was setup.
      *
      * @var bool
      */
-    protected static $setup = false;
+    protected static bool $setup = false;
 
     /**
      * Application env.
@@ -80,35 +80,35 @@ class Valkyrja implements Application
      *
      * @var array
      */
-    protected static $config;
+    protected static array $config;
 
     /**
      * Get the instance of the container.
      *
      * @var Container
      */
-    protected static $container;
+    protected static Container $container;
 
     /**
      * Get the instance of the dispatcher.
      *
      * @var Dispatcher
      */
-    protected static $dispatcher;
+    protected static Dispatcher $dispatcher;
 
     /**
      * Get the instance of the events.
      *
      * @var Events
      */
-    protected static $events;
+    protected static Events $events;
 
     /**
      * Is the app using a compiled version?
      *
      * @var bool
      */
-    protected $isCompiled = false;
+    protected bool $isCompiled = false;
 
     /**
      * Application constructor.

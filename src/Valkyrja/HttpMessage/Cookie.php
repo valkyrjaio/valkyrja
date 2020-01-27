@@ -31,63 +31,63 @@ class Cookie
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * The cookie value.
      *
-     * @var string
+     * @var string|null
      */
-    protected $value;
+    protected ?string $value;
 
     /**
      * The cookie expire time.
      *
      * @var int
      */
-    protected $expire;
+    protected int $expire;
 
     /**
      * The cookie path.
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * The cookie domain.
      *
-     * @var string
+     * @var string|null
      */
-    protected $domain;
+    protected ?string $domain;
 
     /**
      * Whether the cookie is secure.
      *
      * @var bool
      */
-    protected $secure;
+    protected bool $secure;
 
     /**
      * Whether the cookie is http only.
      *
      * @var bool
      */
-    protected $httpOnly;
+    protected bool $httpOnly;
 
     /**
      * Whether the cookie is raw.
      *
      * @var bool
      */
-    protected $raw;
+    protected bool $raw;
 
     /**
      * Whether the cookie will be available for cross-site requests.
      *
-     * @var string
+     * @var string|null
      */
-    protected $sameSite;
+    protected ?string $sameSite;
 
     /**
      * Cookie constructor.

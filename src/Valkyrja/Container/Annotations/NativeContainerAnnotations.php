@@ -27,25 +27,25 @@ use Valkyrja\Container\ServiceContext as ContainerContextService;
 class NativeContainerAnnotations extends NativeAnnotations implements ContainerAnnotations
 {
     /**
-     * THe services annotation type.
+     * The services annotation type.
      *
      * @var string
      */
-    protected $servicesAnnotationType = 'Service';
+    protected string $servicesAnnotationType = 'Service';
 
     /**
      * The service alias annotation type.
      *
      * @var string
      */
-    protected $aliasServicesAnnotationType = 'ServiceAlias';
+    protected string $aliasServicesAnnotationType = 'ServiceAlias';
 
     /**
      * The service context annotation type.
      *
      * @var string
      */
-    protected $contextServicesAnnotationType = 'ServiceContext';
+    protected string $contextServicesAnnotationType = 'ServiceContext';
 
     /**
      * Get the services.

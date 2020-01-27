@@ -48,35 +48,35 @@ class NativeConsole implements Console
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The commands.
      *
      * @var Command[]
      */
-    protected static $commands = [];
+    protected static array $commands = [];
 
     /**
      * The command paths.
      *
      * @var string[]
      */
-    protected static $paths = [];
+    protected static array $paths = [];
 
     /**
      * The commands by name.
      *
      * @var string[]
      */
-    protected static $namedCommands = [];
+    protected static array $namedCommands = [];
 
     /**
      * Whether the console has been setup.
      *
      * @var bool
      */
-    protected static $setup = false;
+    protected static bool $setup = false;
 
     /**
      * Console constructor.

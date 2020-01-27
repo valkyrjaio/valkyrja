@@ -63,42 +63,42 @@ class NativeServerRequest implements ServerRequest
      *
      * @var array
      */
-    protected $server = [];
+    protected array $server = [];
 
     /**
      * The attributes.
      *
      * @var array
      */
-    protected $attributes = [];
+    protected array $attributes = [];
 
     /**
      * The query params.
      *
      * @var array
      */
-    protected $query = [];
+    protected array $query = [];
 
     /**
      * The cookies.
      *
      * @var array
      */
-    protected $cookies = [];
+    protected array $cookies = [];
 
     /**
      * The parsed body.
      *
      * @var array[]
      */
-    protected $parsedBody = [];
+    protected array $parsedBody = [];
 
     /**
      * The files.
      *
      * @var array
      */
-    protected $files = [];
+    protected array $files = [];
 
     /**
      * NativeServerRequest constructor.

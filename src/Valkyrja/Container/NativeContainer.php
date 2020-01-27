@@ -40,35 +40,35 @@ class NativeContainer implements Container
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * Whether the container has been setup.
      *
      * @var bool
      */
-    protected static $setup = false;
+    protected static bool $setup = false;
 
     /**
      * The aliases.
      *
      * @var string[]
      */
-    protected static $aliases = [];
+    protected static array $aliases = [];
 
     /**
      * The services.
      *
      * @var Service[]
      */
-    protected static $services = [];
+    protected static array $services = [];
 
     /**
      * The singletons.
      *
      * @var array
      */
-    protected static $singletons = [];
+    protected static array $singletons = [];
 
     /**
      * Container constructor.

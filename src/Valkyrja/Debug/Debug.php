@@ -23,7 +23,7 @@ class Debug
      *
      * @var bool
      */
-    public static $enabled = false;
+    public static bool $enabled = false;
 
     /**
      * Enable debug mode.

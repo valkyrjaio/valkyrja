@@ -25,28 +25,28 @@ class Option
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * The shortcut.
      *
-     * @var string
+     * @var string|null
      */
-    protected $shortcut;
+    protected ?string $shortcut;
 
     /**
      * The description.
      *
      * @var string
      */
-    protected $description;
+    protected string $description;
 
     /**
      * The default value.
      *
-     * @var string
+     * @var string|null
      */
-    protected $default;
+    protected ?string $default;
 
     /**
      * The mode.

@@ -30,7 +30,7 @@ class NativeOutput implements Output
      *
      * @var OutputFormatter
      */
-    protected $formatter;
+    protected OutputFormatter $formatter;
 
     /**
      * Output constructor.

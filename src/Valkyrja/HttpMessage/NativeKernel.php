@@ -37,14 +37,14 @@ class NativeKernel implements Kernel
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The router.
      *
      * @var Router
      */
-    protected $router;
+    protected Router $router;
 
     /**
      * Kernel constructor.

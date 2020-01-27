@@ -25,14 +25,14 @@ trait ProvidersAwareTrait
      *
      * @var string[]
      */
-    protected static $provided = [];
+    protected static array $provided = [];
 
     /**
      * The registered providers.
      *
      * @var array
      */
-    protected static $registered = [];
+    protected static array $registered = [];
 
     /**
      * Register a provider.

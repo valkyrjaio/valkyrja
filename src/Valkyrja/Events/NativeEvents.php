@@ -31,21 +31,21 @@ class NativeEvents implements Events
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The event listeners.
      *
      * @var array
      */
-    protected static $events = [];
+    protected static array $events = [];
 
     /**
      * Whether the container has been setup.
      *
      * @var bool
      */
-    protected static $setup = false;
+    protected static bool $setup = false;
 
     /**
      * Events constructor.

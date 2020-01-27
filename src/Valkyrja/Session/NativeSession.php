@@ -31,21 +31,21 @@ class NativeSession implements Session
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The session data.
      *
      * @var array
      */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Whether the session has been started.
      *
      * @var bool
      */
-    protected $started;
+    protected bool $started;
 
     /**
      * Session constructor.

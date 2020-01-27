@@ -25,12 +25,12 @@ class Argument
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @var string
      */
-    protected $description;
+    protected string $description;
 
     /**
      * The mode.

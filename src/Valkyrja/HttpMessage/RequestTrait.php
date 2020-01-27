@@ -43,34 +43,34 @@ trait RequestTrait
 {
     use MessageTrait;
 
-    public static $HOST_NAME      = 'Host';
-    public static $HOST_NAME_NORM = 'host';
+    public static string $HOST_NAME      = 'Host';
+    public static string $HOST_NAME_NORM = 'host';
 
     /**
      * The uri.
      *
-     * @var Uri
+     * @var Uri|null
      */
-    protected $uri;
+    protected ?Uri $uri;
 
     /**
      * The method.
      *
-     * @var string
+     * @var string|null
      */
-    protected $method;
+    protected ?string $method;
 
     /**
      * The request target.
      *
-     * @var string
+     * @var string|null
      */
-    protected $requestTarget;
+    protected ?string $requestTarget;
 
     /**
      * The body.
      *
-     * @var resource
+     * @var resource|null
      */
     protected $body;
 

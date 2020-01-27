@@ -30,24 +30,24 @@ class Directory
      *
      * @constant string
      */
-    public static $BASE_PATH;
+    public static string $BASE_PATH = '';
 
     /**
      * Various paths for the application.
      *
      * @var string
      */
-    public static $APP_PATH       = 'app';
-    public static $BOOTSTRAP_PATH = 'bootstrap';
-    public static $CONFIG_PATH    = 'config';
-    public static $ENV_PATH       = 'env';
-    public static $PUBLIC_PATH    = 'public';
-    public static $RESOURCES_PATH = 'resources';
-    public static $ROUTES_PATH    = 'routes';
-    public static $STORAGE_PATH   = 'storage';
-    public static $CACHE_PATH     = 'framework/cache';
-    public static $TESTS_PATH     = 'tests';
-    public static $VENDOR_PATH    = 'vendor';
+    public static string $APP_PATH       = 'app';
+    public static string $BOOTSTRAP_PATH = 'bootstrap';
+    public static string $CONFIG_PATH    = 'config';
+    public static string $ENV_PATH       = 'env';
+    public static string $PUBLIC_PATH    = 'public';
+    public static string $RESOURCES_PATH = 'resources';
+    public static string $ROUTES_PATH    = 'routes';
+    public static string $STORAGE_PATH   = 'storage';
+    public static string $CACHE_PATH     = 'framework/cache';
+    public static string $TESTS_PATH     = 'tests';
+    public static string $VENDOR_PATH    = 'vendor';
 
     /**
      * Get the base directory for the application.

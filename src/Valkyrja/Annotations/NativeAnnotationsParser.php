@@ -29,7 +29,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * AnnotationsParser constructor.

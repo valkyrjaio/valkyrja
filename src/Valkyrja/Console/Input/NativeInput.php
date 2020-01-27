@@ -29,35 +29,35 @@ class NativeInput implements Input
      *
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * The request arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected $requestArguments;
+    protected ?array $requestArguments;
 
     /**
      * The arguments.
      *
      * @var array
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
      * The short options.
      *
      * @var array
      */
-    protected $shortOptions = [];
+    protected array $shortOptions = [];
 
     /**
      * The long options.
      *
      * @var array
      */
-    protected $longOptions = [];
+    protected array $longOptions = [];
 
     /**
      * Input constructor.

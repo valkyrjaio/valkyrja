@@ -25,14 +25,14 @@ class HttpKernelHandled extends Model
      *
      * @var Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * The response.
      *
      * @var Response
      */
-    protected $response;
+    protected Response $response;
 
     /**
      * HttpKernelHandled constructor.

@@ -25,21 +25,21 @@ class Service extends Annotation
      *
      * @var bool
      */
-    protected $singleton;
+    protected bool $singleton = false;
 
     /**
      * Default arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected $defaults;
+    protected ?array $defaults;
 
     /**
      * Get whether this is a singleton.
      *
      * @return bool
      */
-    public function isSingleton(): ?bool
+    public function isSingleton(): bool
     {
         return $this->singleton;
     }
@@ -51,7 +51,7 @@ class Service extends Annotation
      *
      * @return void
      */
-    public function setSingleton(bool $singleton = null): void
+    public function setSingleton(bool $singleton = true): void
     {
         $this->singleton = $singleton;
     }
@@ -59,7 +59,7 @@ class Service extends Annotation
     /**
      * Get defaults.
      *
-     * @return array
+     * @return array|null
      */
     public function getDefaults(): ?array
     {

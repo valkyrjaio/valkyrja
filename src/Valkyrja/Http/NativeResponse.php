@@ -35,63 +35,63 @@ class NativeResponse implements Response
      *
      * @var Headers
      */
-    protected $headers;
+    protected Headers $headers;
 
     /**
      * Cache control.
      *
      * @var array
      */
-    protected $cacheControl = [];
+    protected array $cacheControl = [];
 
     /**
      * Response cookies.
      *
      * @var Cookies
      */
-    protected $cookies;
+    protected Cookies $cookies;
 
     /**
      * Response content.
      *
      * @var string
      */
-    protected $content;
+    protected string $content;
 
     /**
      * Response protocol version.
      *
      * @var string
      */
-    protected $version;
+    protected string $version;
 
     /**
      * Response status code.
      *
      * @var int
      */
-    protected $statusCode;
+    protected int $statusCode;
 
     /**
      * Response status text.
      *
      * @var string
      */
-    protected $statusText;
+    protected string $statusText;
 
     /**
      * Response charset.
      *
      * @var string
      */
-    protected $charset;
+    protected string $charset;
 
     /**
      * The view to use.
      *
      * @var View
      */
-    protected $view;
+    protected View $view;
 
     /**
      * Response constructor.

@@ -28,77 +28,80 @@ class Route extends Annotation
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * The redirect path for this route.
      *
      * @var string|null
      */
-    protected $redirectPath;
+    protected ?string $redirectPath;
 
     /**
      * The redirect status code for this route.
      *
      * @var int
      */
-    protected $redirectCode = StatusCode::FOUND;
+    protected int $redirectCode = StatusCode::FOUND;
 
     /**
      * The request methods for this route.
      *
      * @var array
      */
-    protected $requestMethods;
+    protected array $requestMethods = [
+        RequestMethod::GET,
+        RequestMethod::HEAD,
+    ];
 
     /**
      * The regex for dynamic routes.
      *
-     * @var string
+     * @var string|null
      */
-    protected $regex;
+    protected ?string $regex;
 
     /**
      * Any params for dynamic routes.
      *
-     * @var array
+     * @var array|null
      */
-    protected $params;
+    protected ?array $params;
 
     /**
      * Any segments for optional parts of path.
      *
-     * @var array
+     * @var array|null
      */
-    protected $segments;
+    protected ?array $segments;
 
     /**
      * The middleware for this route.
      *
-     * @var array
+     * @var array|null
      */
-    protected $middleware;
+    protected ?array $middleware;
 
     /**
      * Whether the route is dynamic.
      *
      * @var bool
      */
-    protected $dynamic = false;
+    protected bool $dynamic = false;
 
     /**
      * Whether the route is secure.
      *
      * @var bool
      */
-    protected $secure = false;
+    protected bool $secure = false;
 
     /**
      * Whether the route is a redirect.
      *
      * @var bool
      */
-    protected $redirect = false;
+    protected bool $redirect = false;
 
     /**
      * Get the route's path.
@@ -135,11 +138,11 @@ class Route extends Annotation
     /**
      * Set the redirect path.
      *
-     * @param string $redirectPath
+     * @param string|null $redirectPath
      *
      * @return void
      */
-    public function setRedirectPath(?string $redirectPath): void
+    public function setRedirectPath(string $redirectPath = null): void
     {
         $this->redirectPath = $redirectPath;
     }
@@ -175,13 +178,6 @@ class Route extends Annotation
      */
     public function getRequestMethods(): array
     {
-        if (null === $this->requestMethods) {
-            $this->requestMethods = [
-                RequestMethod::GET,
-                RequestMethod::HEAD,
-            ];
-        }
-
         return $this->requestMethods;
     }
 

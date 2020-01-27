@@ -24,15 +24,21 @@ class ConsoleKernelHandled extends Model
      *
      * @var Input
      */
-    protected $input;
+    protected Input $input;
 
     /**
      * The exit code.
      *
      * @var int
      */
-    protected $exitCode;
+    protected int $exitCode;
 
+    /**
+     * ConsoleKernelHandled constructor.
+     *
+     * @param Input $input
+     * @param int   $exitCode
+     */
     public function __construct(Input $input, int $exitCode)
     {
         $this->input    = $input;

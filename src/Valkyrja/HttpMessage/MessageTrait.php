@@ -26,28 +26,28 @@ trait MessageTrait
      *
      * @var string[][]
      */
-    protected $headers = [];
+    protected array $headers = [];
 
     /**
      * Original header names.
      *
      * @var array
      */
-    protected $headerNames = [];
+    protected array $headerNames = [];
 
     /**
      * The protocol.
      *
      * @var string
      */
-    protected $protocol = '1.1';
+    protected string $protocol = '1.1';
 
     /**
      * The stream.
      *
      * @var Stream
      */
-    protected $stream;
+    protected Stream $stream;
 
     /**
      * Retrieves the HTTP protocol version as a string.

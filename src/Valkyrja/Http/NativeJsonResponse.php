@@ -35,21 +35,21 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @var string
      */
-    protected $data;
+    protected string $data;
 
     /**
      * JsonP callback.
      *
-     * @var string
+     * @var string|null
      */
-    protected $callback;
+    protected ?string $callback;
 
     /**
      * Json encoding options.
      *
      * @var int
      */
-    protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
+    protected int $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
      * JsonResponse constructor.

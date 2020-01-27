@@ -26,7 +26,7 @@ class MonologLogger implements Logger
      *
      * @var LoggerInterface
      */
-    protected $logger;
+    protected LoggerInterface $logger;
 
     /**
      * Logger constructor.

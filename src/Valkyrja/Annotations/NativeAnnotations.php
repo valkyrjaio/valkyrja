@@ -36,21 +36,21 @@ class NativeAnnotations implements Annotations
      *
      * @var AnnotationsParser
      */
-    protected $parser;
+    protected AnnotationsParser $parser;
 
     /**
      * Cached reflection classes.
      *
      * @var array
      */
-    protected static $reflections = [];
+    protected static array $reflections = [];
 
     /**
      * Cached annotations.
      *
      * @var array
      */
-    protected static $annotations = [];
+    protected static array $annotations = [];
 
     /**
      * Cache index constants.

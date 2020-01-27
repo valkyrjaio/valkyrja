@@ -29,7 +29,7 @@ class SodiumCrypt implements Crypt
      *
      * @var Filesystem
      */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     /**
      * SodiumCrypt constructor.

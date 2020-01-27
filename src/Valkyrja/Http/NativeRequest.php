@@ -25,126 +25,126 @@ class NativeRequest implements Request
 {
     use Provides;
 
-    protected static $httpMethodParameterOverride = false;
+    protected static bool $httpMethodParameterOverride = false;
 
     /**
      * Custom parameters.
      *
      * @var Collection
      */
-    protected $attributes;
+    protected Collection $attributes;
 
     /**
      * Request body parameters ($_POST).
      *
      * @var Collection
      */
-    protected $request;
+    protected Collection $request;
 
     /**
      * Query string parameters ($_GET).
      *
      * @var Query
      */
-    protected $query;
+    protected Query $query;
 
     /**
      * Server and execution environment parameters ($_SERVER).
      *
      * @var Server
      */
-    protected $server;
+    protected Server $server;
 
     /**
      * Uploaded files ($_FILES).
      *
      * @var Files
      */
-    protected $files;
+    protected Files $files;
 
     /**
      * Cookies ($_COOKIE).
      *
      * @var Collection
      */
-    protected $cookies;
+    protected Collection $cookies;
 
     /**
      * Headers (taken from the $_SERVER).
      *
      * @var Headers
      */
-    protected $headers;
+    protected Headers $headers;
 
     /**
      * @var string
      */
-    protected $content;
+    protected string $content;
 
     /**
      * @var array
      */
-    protected $languages;
+    protected array $languages;
 
     /**
      * @var array
      */
-    protected $charsets;
+    protected array $charsets;
 
     /**
      * @var array
      */
-    protected $encodings;
+    protected array $encodings;
 
     /**
      * @var array
      */
-    protected $acceptableContentTypes;
+    protected array $acceptableContentTypes;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $path;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $requestUri;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $baseUrl;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $basePath;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $method;
+
+    /**
+     * @var string|null
+     */
+    protected ?string $format;
 
     /**
      * @var string
      */
-    protected $path;
+    protected string $locale;
 
     /**
      * @var string
      */
-    protected $requestUri;
-
-    /**
-     * @var string
-     */
-    protected $baseUrl;
-
-    /**
-     * @var string
-     */
-    protected $basePath;
-
-    /**
-     * @var string
-     */
-    protected $method;
-
-    /**
-     * @var string
-     */
-    protected $format;
-
-    /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * @var string
-     */
-    protected $defaultLocale = 'en';
+    protected string $defaultLocale = 'en';
 
     /**
      * @var array
      */
-    protected static $formats;
+    protected static array $formats;
 
     /**
      * Request Constructor.

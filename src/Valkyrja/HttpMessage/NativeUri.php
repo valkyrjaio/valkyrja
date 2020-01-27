@@ -46,58 +46,58 @@ class NativeUri implements Uri
     /**
      * The scheme.
      *
-     * @var string
+     * @var string|null
      */
-    protected $scheme;
+    protected ?string $scheme;
 
     /**
      * The user info.
      *
-     * @var string
+     * @var string|null
      */
-    protected $userInfo;
+    protected ?string $userInfo;
 
     /**
      * The host.
      *
-     * @var string
+     * @var string|null
      */
-    protected $host;
+    protected ?string $host;
 
     /**
      * The port.
      *
-     * @var int
+     * @var int|null
      */
-    protected $port;
+    protected ?int $port;
 
     /**
      * The path.
      *
-     * @var string
+     * @var string|null
      */
-    protected $path;
+    protected ?string $path;
 
     /**
      * The query string.
      *
      * @var string
      */
-    protected $query;
+    protected ?string $query;
 
     /**
      * The fragment.
      *
-     * @var string
+     * @var string|null
      */
-    protected $fragment;
+    protected ?string $fragment;
 
     /**
      * The URI as a string.
      *
-     * @var string
+     * @var string|null
      */
-    protected $uriString;
+    protected ?string $uriString;
 
     /**
      * UriImpl constructor.
@@ -105,7 +105,7 @@ class NativeUri implements Uri
      * @param string $scheme   [optional] The scheme
      * @param string $userInfo [optional] The user info
      * @param string $host     [optional] The host
-     * @param string $port     [optional] The port
+     * @param int $port     [optional] The port
      * @param string $path     [optional] The path
      * @param string $query    [optional] The query
      * @param string $fragment [optional] The fragment
@@ -119,7 +119,7 @@ class NativeUri implements Uri
         string $scheme = null,
         string $userInfo = null,
         string $host = null,
-        string $port = null,
+        int $port = null,
         string $path = null,
         string $query = null,
         string $fragment = null

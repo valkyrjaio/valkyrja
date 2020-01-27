@@ -35,13 +35,13 @@ abstract class Enum implements JsonSerializable
      *
      * @var array
      */
-    protected static $cache = [];
+    protected static array $cache = [];
     /**
      * The value of this enum.
      *
      * @var string
      */
-    protected $value;
+    protected string $value;
 
     /**
      * Enum constructor.

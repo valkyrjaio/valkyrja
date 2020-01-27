@@ -33,7 +33,7 @@ class LoggerServiceProvider extends Provider
      *
      * @var array
      */
-    public static $provides = [
+    public static array $provides = [
         LoggerInterface::class,
         Logger::class,
     ];

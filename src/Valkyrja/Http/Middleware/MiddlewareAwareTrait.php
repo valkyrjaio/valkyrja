@@ -27,14 +27,14 @@ trait MiddlewareAwareTrait
      *
      * @var string[]
      */
-    protected static $middleware = [];
+    protected static array $middleware = [];
 
     /**
      * The collection of middleware groups.
      *
      * @var array[]
      */
-    protected static $middlewareGroups = [];
+    protected static array $middlewareGroups = [];
 
     /**
      * Determine if a middleware is a group of middleware.

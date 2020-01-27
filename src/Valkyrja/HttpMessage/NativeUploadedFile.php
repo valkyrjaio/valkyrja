@@ -29,51 +29,51 @@ class NativeUploadedFile implements UploadedFile
     /**
      * The uploaded file.
      *
-     * @var string
+     * @var string|null
      */
-    protected $file;
+    protected ?string $file;
 
     /**
      * The uploaded file as a stream.
      *
-     * @var Stream
+     * @var Stream|null
      */
-    protected $stream;
+    protected ?Stream $stream;
 
     /**
      * THe uploaded file size.
      *
      * @var int
      */
-    protected $size;
+    protected int $size;
 
     /**
      * The error status. One of UPLOAD_ERR_* constant.
      *
      * @var int
      */
-    protected $errorStatus;
+    protected int $errorStatus;
 
     /**
      * The uploaded file's name.
      *
-     * @var string
+     * @var string|null
      */
-    protected $fileName;
+    protected ?string $fileName;
 
     /**
      * The uploaded file's media type.
      *
-     * @var string
+     * @var string|null
      */
-    protected $mediaType;
+    protected ?string $mediaType;
 
     /**
      * Whether the file has been moved yet.
      *
      * @var bool
      */
-    protected $moved = false;
+    protected bool $moved = false;
 
     /**
      * NativeUploadedFile constructor.

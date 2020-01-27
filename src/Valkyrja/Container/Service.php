@@ -25,14 +25,14 @@ class Service extends Dispatch
      *
      * @var bool
      */
-    protected $singleton = false;
+    protected bool $singleton = false;
 
     /**
      * Default arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected $defaults;
+    protected ?array $defaults;
 
     /**
      * Get whether this is a singleton.
@@ -61,7 +61,7 @@ class Service extends Dispatch
     /**
      * Get defaults.
      *
-     * @return array
+     * @return array|null
      */
     public function getDefaults(): ?array
     {

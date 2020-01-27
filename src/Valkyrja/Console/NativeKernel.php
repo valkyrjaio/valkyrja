@@ -34,14 +34,14 @@ class NativeKernel implements Kernel
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The console.
      *
      * @var Console
      */
-    protected $console;
+    protected Console $console;
 
     /**
      * Kernel constructor.

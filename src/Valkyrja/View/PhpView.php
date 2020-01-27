@@ -30,82 +30,82 @@ class PhpView implements View
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The layout template.
      *
-     * @var string
+     * @var string|null
      */
-    protected $layout;
+    protected ?string $layout;
 
     /**
      * The fully qualified layout path.
      *
-     * @var string
+     * @var string|null
      */
-    protected $layoutPath;
+    protected ?string $layoutPath;
 
     /**
      * The body content template.
      *
      * @var string
      */
-    protected $template = 'index';
+    protected string $template = 'index';
 
     /**
      * The fully qualified template path.
      *
      * @var string
      */
-    protected $templatePath;
+    protected string $templatePath;
 
     /**
      * The template directory.
      *
      * @var string
      */
-    protected $templateDir;
+    protected string $templateDir;
 
     /**
      * @var string
      */
-    protected $fileExtension = '.phtml';
+    protected string $fileExtension = '.phtml';
 
     /**
      * The view variables.
      *
      * @var array
      */
-    protected $variables = [];
+    protected array $variables = [];
 
     /**
      * The block status.
      *
      * @var array
      */
-    protected $blockStatus = [];
+    protected array $blockStatus = [];
 
     /**
      * The view blocks.
      *
      * @var array
      */
-    protected $blocks = [];
+    protected array $blocks = [];
 
     /**
      * Whether to track layout changes.
      *
      * @var bool
      */
-    protected $trackLayoutChanges = false;
+    protected bool $trackLayoutChanges = false;
 
     /**
      * Whether a layout change has occurred.
      *
      * @var bool
      */
-    protected $hasLayoutChanged = false;
+    protected bool $hasLayoutChanged = false;
 
     /**
      * View constructor.

@@ -25,35 +25,35 @@ class Command extends Dispatch
      *
      * @var string
      */
-    protected $path;
+    protected string $path;
 
     /**
      * The regex for dynamic routes.
      *
-     * @var string
+     * @var string|null
      */
-    protected $regex;
+    protected ?string $regex;
 
     /**
      * Any params for dynamic routes.
      *
-     * @var array
+     * @var array|null
      */
-    protected $params;
+    protected ?array $params;
 
     /**
      * Any segments for optional parts of path.
      *
-     * @var array
+     * @var array|null
      */
-    protected $segments;
+    protected ?array $segments;
 
     /**
      * The description.
      *
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected ?string $description;
 
     /**
      * Get the path.

@@ -26,7 +26,7 @@ class HttpRedirectException extends HttpException
      *
      * @var string
      */
-    protected $uri;
+    protected string $uri = '/';
 
     /**
      * HttpException constructor.

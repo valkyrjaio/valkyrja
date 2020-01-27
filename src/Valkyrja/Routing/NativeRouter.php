@@ -43,21 +43,21 @@ class NativeRouter implements Router
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The route collection.
      *
      * @var RouteCollection
      */
-    protected static $collection;
+    protected static RouteCollection $collection;
 
     /**
      * Whether route's have been setup yet.
      *
      * @var bool
      */
-    protected static $setup = false;
+    protected static bool $setup = false;
 
     /**
      * Router constructor.

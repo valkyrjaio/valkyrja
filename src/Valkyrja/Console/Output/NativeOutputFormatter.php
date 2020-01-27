@@ -29,23 +29,23 @@ class NativeOutputFormatter implements OutputFormatter
     /**
      * The foreground color.
      *
-     * @var int
+     * @var int|null
      */
-    protected $foreground;
+    protected ?int $foreground;
 
     /**
      * The background color.
      *
-     * @var int
+     * @var int|null
      */
-    protected $background;
+    protected ?int $background;
 
     /**
      * The options.
      *
      * @var int[]
      */
-    protected $options = [];
+    protected array $options = [];
 
     /**
      * Set the foreground.

@@ -30,7 +30,7 @@ class NativeResponseBuilder implements ResponseBuilder
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * ResponseBuilder constructor.

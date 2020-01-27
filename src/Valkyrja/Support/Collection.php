@@ -23,7 +23,7 @@ class Collection
      *
      * @var array
      */
-    protected $collection;
+    protected array $collection = [];
 
     /**
      * Collection constructor.

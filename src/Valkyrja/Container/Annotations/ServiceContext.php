@@ -25,40 +25,40 @@ class ServiceContext extends Service
      *
      * @var string
      */
-    protected $contextClass;
+    protected string $contextClass;
 
     /**
      * The context property.
      *
      * @var string
      */
-    protected $contextProperty;
+    protected string $contextProperty;
 
     /**
      * The context method.
      *
      * @var string
      */
-    protected $contextMethod;
+    protected string $contextMethod;
 
     /**
      * The context function.
      *
      * @var string
      */
-    protected $contextFunction;
+    protected string $contextFunction;
 
     /**
      * The context closure.
      *
      * @var Closure
      */
-    protected $contextClosure;
+    protected Closure $contextClosure;
 
     /**
      * Get the context class.
      *
-     * @return string
+     * @return string|null
      */
     public function getContextClass(): ?string
     {
@@ -102,7 +102,7 @@ class ServiceContext extends Service
     /**
      * Get the context method.
      *
-     * @return string
+     * @return string|null
      */
     public function getContextMethod(): ?string
     {
@@ -124,7 +124,7 @@ class ServiceContext extends Service
     /**
      * Get the context function.
      *
-     * @return string
+     * @return string|null
      */
     public function getContextFunction(): ?string
     {
@@ -146,7 +146,7 @@ class ServiceContext extends Service
     /**
      * Get the context closure.
      *
-     * @return Closure
+     * @return Closure|null
      */
     public function getContextClosure(): ?Closure
     {

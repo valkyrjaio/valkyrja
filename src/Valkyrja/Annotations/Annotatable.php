@@ -21,86 +21,86 @@ trait Annotatable
     /**
      * The type.
      *
-     * @var string
+     * @var string|null
      */
-    protected $annotationType;
+    protected ?string $annotationType;
 
     /**
      * The id.
      *
-     * @var string
+     * @var string|null
      */
-    protected $id;
+    protected ?string $id;
 
     /**
      * The name.
      *
-     * @var string
+     * @var string|null
      */
-    protected $name;
+    protected ?string $name;
 
     /**
      * The class.
      *
-     * @var string
+     * @var string|null
      */
-    protected $class;
+    protected ?string $class;
 
     /**
      * The property.
      *
      * @var string
      */
-    protected $property;
+    protected string $property;
 
     /**
      * The method.
      *
-     * @var string
+     * @var string|null
      */
-    protected $method;
+    protected ?string $method;
 
     /**
      * Whether the property or method is static.
      *
      * @var bool
      */
-    protected $static = false;
+    protected bool $static = false;
 
     /**
      * The function.
      *
-     * @var string
+     * @var string|null
      */
-    protected $function;
+    protected ?string $function;
 
     /**
      * The matches.
      *
-     * @var array
+     * @var array|null
      */
-    protected $matches;
+    protected ?array $matches;
 
     /**
      * The dependencies.
      *
-     * @var array
+     * @var array|null
      */
-    protected $dependencies;
+    protected ?array $dependencies;
 
     /**
      * The arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected $arguments;
+    protected ?array $arguments;
 
     /**
      * The arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected $annotationArguments;
+    protected ?array $annotationArguments;
 
     /**
      * Get the type.

@@ -34,14 +34,14 @@ class NativeDispatcher implements Dispatcher
      *
      * @var string
      */
-    protected $DISPATCHED = 'dispatcher.dispatched';
+    protected string $DISPATCHED = 'dispatcher.dispatched';
 
     /**
      * The application.
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * Dispatcher constructor.

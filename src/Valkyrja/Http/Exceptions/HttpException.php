@@ -29,21 +29,21 @@ class HttpException extends RuntimeException
      *
      * @var int
      */
-    protected $statusCode;
+    protected int $statusCode = StatusCode::INTERNAL_SERVER_ERROR;
 
     /**
      * The headers for this exception.
      *
      * @var array
      */
-    protected $headers;
+    protected array $headers = [];
 
     /**
      * The response to send for this exception.
      *
-     * @var null|Response
+     * @var Response|null
      */
-    protected $response;
+    protected ?Response $response;
 
     /**
      * HttpException constructor.

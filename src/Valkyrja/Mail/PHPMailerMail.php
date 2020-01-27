@@ -30,14 +30,14 @@ class PHPMailerMail implements Mail
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The PHP Mailer.
      *
      * @var PHPMailer
      */
-    protected $PHPMailer;
+    protected PHPMailer $PHPMailer;
 
     /**
      * NativeMail constructor.

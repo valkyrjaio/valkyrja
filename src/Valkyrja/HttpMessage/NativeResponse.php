@@ -44,14 +44,14 @@ class NativeResponse implements Response
      *
      * @var int
      */
-    protected $statusCode;
+    protected int $statusCode;
 
     /**
      * The status phrase.
      *
      * @var string
      */
-    protected $statusPhrase;
+    protected string $statusPhrase;
 
     /**
      * NativeResponse constructor.

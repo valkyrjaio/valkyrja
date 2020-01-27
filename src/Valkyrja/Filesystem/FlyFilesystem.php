@@ -15,6 +15,7 @@ use Aws\S3\S3Client;
 use InvalidArgumentException;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
+use League\Flysystem\AdapterInterface;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
@@ -40,21 +41,21 @@ class FlyFilesystem implements Filesystem
      *
      * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * The Fly Filesystem.
      *
      * @var FlySystem
      */
-    protected $flySystem;
+    protected FlySystem $flySystem;
 
     /**
      * The adapters.
      *
-     * @var array
+     * @var AdapterInterface[]
      */
-    protected static $adapters = [];
+    protected static array $adapters = [];
 
     /**
      * FlyFilesystem constructor.

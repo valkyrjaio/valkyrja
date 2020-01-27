@@ -25,70 +25,70 @@ class NativeQueryBuilder implements QueryBuilder
      *
      * @var string
      */
-    protected $type;
+    protected string $type;
 
     /**
      * The columns for use in a select statement.
      *
      * @var array
      */
-    protected $columns = [];
+    protected array $columns = [];
 
     /**
      * The table upon which the statement executes.
      *
      * @var string
      */
-    protected $table;
+    protected string $table;
 
     /**
      * Where conditions for the query statement.
      *
      * @var array
      */
-    protected $where = [];
+    protected array $where = [];
 
     /**
      * Values to use for update/insert statements.
      *
      * @var array
      */
-    protected $values = [];
+    protected array $values = [];
 
     /**
      * Order by conditions for the query statement.
      *
      * @var array
      */
-    protected $orderBy = [];
+    protected array $orderBy = [];
 
     /**
      * Group by conditions for the query statement.
      *
      * @var array
      */
-    protected $groupBy = [];
+    protected array $groupBy = [];
 
     /**
      * Limit condition for the query statement.
      *
-     * @var int
+     * @var int|null
      */
-    protected $limit;
+    protected int $limit;
 
     /**
      * Offset condition for the query statement.
      *
-     * @var int
+     * @var int|null
      */
-    protected $offset;
+    protected int $offset;
 
     /**
      * The built query.
      *
-     * @var string
+     * @var string|null
      */
-    protected $query;
+    protected string $query;
 
     /**
      * Create a SELECT query statement.

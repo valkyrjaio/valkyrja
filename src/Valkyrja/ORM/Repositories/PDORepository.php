@@ -34,28 +34,28 @@ class PDORepository implements Repository
      *
      * @var EntityManager
      */
-    protected $entityManager;
+    protected EntityManager $entityManager;
 
     /**
      * The entity to use.
      *
      * @var string|Entity
      */
-    protected $entity;
+    protected string $entity;
 
     /**
      * The table to use.
      *
      * @var string
      */
-    protected $table;
+    protected string $table;
 
     /**
      * The PDO Store.
      *
      * @var PDO
      */
-    protected $store;
+    protected PDO $store;
 
     /**
      * MySQLRepository constructor.

@@ -23,28 +23,28 @@ class RouteCollection
      *
      * @var Route[]
      */
-    protected $routes = [];
+    protected array $routes = [];
 
     /**
      * The static routes.
      *
      * @var string[][]
      */
-    protected $staticRoutes = [];
+    protected array $staticRoutes = [];
 
     /**
      * The dynamic routes.
      *
      * @var string[][]
      */
-    protected $dynamicRoutes = [];
+    protected array $dynamicRoutes = [];
 
     /**
      * The named routes.
      *
      * @var string[]
      */
-    protected $namedRoutes = [];
+    protected array $namedRoutes = [];
 
     /**
      * Add a route.

@@ -32,21 +32,21 @@ class ExceptionHandler
      *
      * @var string
      */
-    protected $charset = 'UTF-8';
+    protected string $charset = 'UTF-8';
 
     /**
      * File link format.
      *
      * @var string
      */
-    protected $fileLinkFormat;
+    protected string $fileLinkFormat;
 
     /**
      * Whether to display errors.
      *
      * @var bool
      */
-    protected $displayErrors;
+    protected bool $displayErrors = false;
 
     /**
      * ExceptionHandler constructor.

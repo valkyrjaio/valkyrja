@@ -27,9 +27,9 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     /**
      * The uri to redirect to.
      *
-     * @var string
+     * @var string|null
      */
-    protected $uri;
+    protected ?string $uri;
 
     /**
      * RedirectResponse constructor.

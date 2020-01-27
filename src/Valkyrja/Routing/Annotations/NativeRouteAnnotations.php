@@ -31,7 +31,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
      *
      * @var string
      */
-    protected $routeAnnotationType = 'Route';
+    protected string $routeAnnotationType = 'Route';
 
     /**
      * Get routes.

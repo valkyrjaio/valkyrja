@@ -26,28 +26,28 @@ abstract class Entity extends Model
      *
      * @var string
      */
-    protected static $table = self::class;
+    protected static string $table = self::class;
 
     /**
      * The id field.
      *
      * @var string
      */
-    protected static $idField = 'id';
+    protected static string $idField = 'id';
 
     /**
      * Valid types allowed to be mass set.
      *
      * @var array
      */
-    protected static $properties = [];
+    protected static array $properties = [];
 
     /**
      * Required properties.
      *
      * @var array
      */
-    protected static $required = [];
+    protected static array $required = [];
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
@@ -66,14 +66,14 @@ abstract class Entity extends Model
      *
      * @var array
      */
-    protected static $propertyTypes = [];
+    protected static array $propertyTypes = [];
 
     /**
      * The ORM repository to use.
      *
      * @var string|null
      */
-    protected static $repository;
+    protected static ?string $repository;
 
     /**
      * Get the table.
