@@ -20,8 +20,8 @@ use Valkyrja\Enum\Enum;
  */
 final class ExitCode extends Enum
 {
-    public const SUCCESS   = 1;
-    public const FAILURE   = 0;
+    public const SUCCESS   = 0;
+    public const FAILURE   = 1;
     public const AUTO_EXIT = 255;
 
     protected const VALUES = [
