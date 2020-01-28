@@ -13,8 +13,6 @@ namespace Valkyrja\HttpMessage;
 
 use Throwable;
 use Valkyrja\Application;
-use Valkyrja\Debug\ExceptionHandler;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\HttpMessage\Events\HttpKernelHandled;
 use Valkyrja\HttpMessage\Events\HttpKernelTerminate;
 use Valkyrja\HttpMessage\Middleware\MiddlewareAwareTrait;
@@ -68,7 +66,7 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @throws HttpException
+     * @throws Throwable
      *
      * @return Response
      */
@@ -117,11 +115,17 @@ class NativeKernel implements Kernel
      *
      * @param Throwable $exception The exception
      *
+     * @throws Throwable
+     *
      * @return Response
      */
     protected function getExceptionResponse(Throwable $exception): Response
     {
-        return (new ExceptionHandler($this->app->debug()))->getResponse($exception);
+        if ($this->app->debug()) {
+            throw $exception;
+        }
+
+        return $this->app->exceptionHandler()->response($exception);
     }
 
     /**
@@ -160,7 +164,7 @@ class NativeKernel implements Kernel
      *
      * @param Request $request The request
      *
-     * @throws HttpException
+     * @throws Throwable
      *
      * @return void
      */

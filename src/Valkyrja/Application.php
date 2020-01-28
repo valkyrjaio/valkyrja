@@ -20,6 +20,7 @@ use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Events\Events;
+use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\JsonResponse;
@@ -136,6 +137,13 @@ interface Application
     public function events(): Events;
 
     /**
+     * Get the exception handler instance.
+     *
+     * @return ExceptionHandler
+     */
+    public function exceptionHandler(): ExceptionHandler;
+
+    /**
      * Get the application version.
      *
      * @return string
@@ -152,9 +160,9 @@ interface Application
     /**
      * Whether the application is running in debug mode or not.
      *
-     * @return string
+     * @return bool
      */
-    public function debug(): string;
+    public function debug(): bool;
 
     /**
      * Get whether the application is using a compiled version.

@@ -89,10 +89,7 @@ return [
      *
      * //
      */
-    'container'          => env(
-        'APP_CONTAINER',
-        Valkyrja\Container\NativeContainer::class
-    ),
+    'container'          => env('APP_CONTAINER', Valkyrja\Container\NativeContainer::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -101,10 +98,7 @@ return [
      *
      * //
      */
-    'dispatcher'         => env(
-        'APP_DISPATCHER',
-        Valkyrja\Dispatcher\NativeDispatcher::class
-    ),
+    'dispatcher'         => env('APP_DISPATCHER', Valkyrja\Dispatcher\NativeDispatcher::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -114,6 +108,15 @@ return [
      * //
      */
     'events'             => env('APP_EVENTS', Valkyrja\Events\NativeEvents::class),
+
+    /*
+     *-------------------------------------------------------------------------
+     * Application ExceptionHandler Class
+     *-------------------------------------------------------------------------
+     *
+     * //
+     */
+    'exceptionHandler'             => env('APP_EXCEPTION_HANDLER', Valkyrja\Exceptions\NativeExceptionHandler::class),
 
     /*
      *-------------------------------------------------------------------------

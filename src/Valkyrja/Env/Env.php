@@ -37,9 +37,10 @@ class Env
     // public const APP_KEY            = null;
     // public const APP_PATH_REGEX_MAP = null;
     //
-    // public const APP_CONTAINER  = null;
-    // public const APP_DISPATCHER = null;
-    // public const APP_EVENTS     = null;
+    // public const APP_CONTAINER         = null;
+    // public const APP_DISPATCHER        = null;
+    // public const APP_EVENTS            = null;
+    // public const APP_EXCEPTION_HANDLER = null;
 
     /*
      * Annotation env variables.

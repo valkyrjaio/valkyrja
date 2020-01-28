@@ -18,13 +18,14 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Debug\Debug;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Events\Events;
+use Valkyrja\Exceptions\ExceptionHandler;
 use Valkyrja\Exceptions\InvalidContainerImplementation;
 use Valkyrja\Exceptions\InvalidDispatcherImplementation;
 use Valkyrja\Exceptions\InvalidEventsImplementation;
+use Valkyrja\Exceptions\InvalidExceptionHandlerImplementation;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
@@ -104,6 +105,13 @@ class Valkyrja implements Application
     protected static Events $events;
 
     /**
+     * Get the instance of the exception handler.
+     *
+     * @var ExceptionHandler
+     */
+    protected static ExceptionHandler $exceptionHandler;
+
+    /**
      * Is the app using a compiled version?
      *
      * @var bool
@@ -118,6 +126,7 @@ class Valkyrja implements Application
      * @throws InvalidContainerImplementation
      * @throws InvalidDispatcherImplementation
      * @throws InvalidEventsImplementation
+     * @throws InvalidExceptionHandlerImplementation
      */
     public function __construct(array $config = null)
     {
@@ -133,6 +142,7 @@ class Valkyrja implements Application
      * @throws InvalidDispatcherImplementation
      * @throws InvalidEventsImplementation
      * @throws InvalidContainerImplementation
+     * @throws InvalidExceptionHandlerImplementation
      *
      * @return void
      */
@@ -214,8 +224,19 @@ class Valkyrja implements Application
     {
         // If debug is on, enable debug handling
         if (self::$config['app']['debug']) {
-            // Debug to output exceptions
-            Debug::enable(E_ALL, true);
+            // The exception handler class to use from the config
+            $exceptionHandlerImpl = self::$config['app']['exceptionHandler'];
+
+            // Set the exception handler to a new instance of the exception handler implementation
+            self::$exceptionHandler = new $exceptionHandlerImpl($this);
+
+            // If the dispatcher implementation specified does not adhere to the dispatcher contract
+            if (! self::$exceptionHandler instanceof ExceptionHandler) {
+                throw new InvalidExceptionHandlerImplementation('Invalid ExceptionHandler implementation');
+            }
+
+            // Enable exception handling
+            self::$exceptionHandler::enable(E_ALL, true);
         }
     }
 
@@ -225,6 +246,7 @@ class Valkyrja implements Application
      * @throws InvalidDispatcherImplementation
      * @throws InvalidEventsImplementation
      * @throws InvalidContainerImplementation
+     * @throws InvalidExceptionHandlerImplementation
      *
      * @return void
      */
@@ -240,8 +262,7 @@ class Valkyrja implements Application
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
 
-        // If the events implementation specified does not adhere to the events
-        // contract
+        // If the events implementation specified does not adhere to the events contract
         if (! self::$events instanceof Events) {
             throw new InvalidEventsImplementation('Invalid Events implementation');
         }
@@ -249,8 +270,7 @@ class Valkyrja implements Application
         // Set the container to a new instance of the container implementation
         self::$container = new $containerImpl($this);
 
-        // If the container implementation specified does not adhere to the
-        // container contract
+        // If the container implementation specified does not adhere to the container contract
         if (! self::$container instanceof Container) {
             throw new InvalidContainerImplementation('Invalid Container implementation');
         }
@@ -258,8 +278,7 @@ class Valkyrja implements Application
         // Set the dispatcher to a new instance of the dispatcher implementation
         self::$dispatcher = new $dispatcherImpl($this);
 
-        // If the dispatcher implementation specified does not adhere to the
-        // dispatcher contract
+        // If the dispatcher implementation specified does not adhere to the dispatcher contract
         if (! self::$dispatcher instanceof Dispatcher) {
             throw new InvalidDispatcherImplementation('Invalid Dispatcher implementation');
         }
@@ -284,6 +303,8 @@ class Valkyrja implements Application
         self::$container->singleton(Dispatcher::class, self::$dispatcher);
         // Set the events instance in the container
         self::$container->singleton(Events::class, self::$events);
+        // Set the exception handler instance in the container
+        self::$container->singleton(ExceptionHandler::class, self::$exceptionHandler);
     }
 
     /**
@@ -460,6 +481,16 @@ class Valkyrja implements Application
     }
 
     /**
+     * Get the exception handler instance.
+     *
+     * @return ExceptionHandler
+     */
+    public function exceptionHandler(): ExceptionHandler
+    {
+        return self::$exceptionHandler;
+    }
+
+    /**
      * Get the application version.
      *
      * @return string
@@ -482,9 +513,9 @@ class Valkyrja implements Application
     /**
      * Whether the application is running in debug mode or not.
      *
-     * @return string
+     * @return bool
      */
-    public function debug(): string
+    public function debug(): bool
     {
         return self::$config['app']['debug'];
     }
