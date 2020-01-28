@@ -15,7 +15,7 @@ use Throwable;
 use Valkyrja\Http\Response;
 
 /**
- * Interface ExceptionHandler
+ * Interface ExceptionHandler.
  *
  * @author Melech Mizrachi
  */

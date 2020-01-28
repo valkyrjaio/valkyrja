@@ -448,7 +448,7 @@ class NativeRouter implements Router
         }
 
         self::$useAbsoluteUrls = $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS);
-        self::$trailingSlash = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH);
+        self::$trailingSlash   = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH);
 
         self::$setup = true;
 

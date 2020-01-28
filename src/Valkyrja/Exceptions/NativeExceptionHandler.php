@@ -22,7 +22,7 @@ use Whoops\Run;
 use Whoops\Util\Misc;
 
 /**
- * Class NativeExceptionHandler
+ * Class NativeExceptionHandler.
  *
  * @author Melech Mizrachi
  */
