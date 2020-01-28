@@ -17,7 +17,11 @@
  * The container is the go to place for any type of service the
  * application may need when it is running. All configurations
  * necessary to make it run correctly can be found here.
-     */
+ */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,8 +30,8 @@ return [
      *
      * //
      */
-    'providers'                 => env(
-        'CONTAINER_PROVIDERS',
+    CKP::PROVIDERS                   => env(
+        EnvKey::CONTAINER_PROVIDERS,
         [
             Valkyrja\Annotations\NativeAnnotationsParser::class,
             Valkyrja\Annotations\NativeAnnotations::class,
@@ -67,7 +71,7 @@ return [
      *
      * //
      */
-    'devProviders'              => env('CONTAINER_DEV_PROVIDERS', []),
+    CKP::DEV_PROVIDERS               => env(EnvKey::CONTAINER_DEV_PROVIDERS, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -76,7 +80,7 @@ return [
      *
      * //
      */
-    'useAnnotations'            => env('CONTAINER_USE_ANNOTATIONS', false),
+    CKP::USE_ANNOTATIONS             => env(EnvKey::CONTAINER_USE_ANNOTATIONS, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -85,10 +89,7 @@ return [
      *
      * //
      */
-    'useAnnotationsExclusively' => env(
-        'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY',
-        false
-    ),
+    CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -97,7 +98,7 @@ return [
      *
      * //
      */
-    'services'                  => env('CONTAINER_SERVICES', []),
+    CKP::SERVICES                    => env(EnvKey::CONTAINER_SERVICES, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -106,7 +107,7 @@ return [
      *
      * //
      */
-    'contextServices'           => env('CONTAINER_CONTEXT_SERVICES', []),
+    CKP::CONTEXT_SERVICES            => env(EnvKey::CONTAINER_CONTEXT_SERVICES, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -115,10 +116,7 @@ return [
      *
      * //
      */
-    'filePath'                  => env(
-        'CONTAINER_FILE_PATH',
-        bootstrapPath('container.php')
-    ),
+    CKP::FILE_PATH                   => env(EnvKey::CONTAINER_FILE_PATH, bootstrapPath('container.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -127,10 +125,7 @@ return [
      *
      * //
      */
-    'cacheFilePath'             => env(
-        'CONTAINER_CACHE_FILE_PATH',
-        cachePath('container.php')
-    ),
+    CKP::CACHE_FILE_PATH             => env(EnvKey::CONTAINER_CACHE_FILE_PATH, cachePath('container.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -139,5 +134,5 @@ return [
      *
      * //
      */
-    'useCache'                  => env('CONTAINER_USE_CACHE_FILE', false),
+    CKP::USE_CACHE                   => env(EnvKey::CONTAINER_USE_CACHE_FILE, false),
 ];

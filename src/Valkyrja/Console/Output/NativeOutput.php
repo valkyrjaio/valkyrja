@@ -13,6 +13,7 @@ namespace Valkyrja\Console\Output;
 
 use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Support\Providers\Provides;
 
@@ -24,6 +25,13 @@ use Valkyrja\Support\Providers\Provides;
 class NativeOutput implements Output
 {
     use Provides;
+
+    /**
+     * Whether to use quiet console.
+     *
+     * @var bool
+     */
+    private static $quiet;
 
     /**
      * The formatter.
@@ -40,6 +48,8 @@ class NativeOutput implements Output
     public function __construct(OutputFormatter $formatter)
     {
         $this->formatter = $formatter;
+
+        self::$quiet = config(ConfigKey::CONSOLE_QUIET) || input()->hasOption('--quiet');
     }
 
     /**
@@ -125,7 +135,7 @@ class NativeOutput implements Output
      */
     protected function writeOut(string $message, bool $newLine): void
     {
-        if (config()['console']['quiet'] || input()->hasOption('--quiet')) {
+        if (self::$quiet) {
             return;
         }
 

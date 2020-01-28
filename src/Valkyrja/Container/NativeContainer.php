@@ -12,6 +12,7 @@
 namespace Valkyrja\Container;
 
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Events\ServiceMade;
 use Valkyrja\Container\Events\ServiceMadeSingleton;
@@ -457,7 +458,7 @@ class NativeContainer implements Container
         self::$setup = true;
 
         // If the application should use the container cache files
-        if ($useCache && $this->app->config()['container']['useCache']) {
+        if ($useCache && $this->app->config(ConfigKey::CONTAINER_USE_CACHE_FILE)) {
             $this->setupFromCache();
 
             // Then return out of setup
@@ -468,9 +469,9 @@ class NativeContainer implements Container
         self::$services   = [];
         self::$provided   = [];
 
-        $useAnnotations     = $this->app->config('container.useAnnotations', false);
-        $annotationsEnabled = $this->app->config('annotations.enabled', false);
-        $onlyAnnotations    = $this->app->config('container.useAnnotationsExclusively', false);
+        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
+        $useAnnotations     = $this->app->config(ConfigKey::CONTAINER_USE_ANNOTATIONS, false);
+        $onlyAnnotations    = $this->app->config(ConfigKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY, false);
 
         // Setup service providers
         $this->setupServiceProviders();
@@ -491,7 +492,7 @@ class NativeContainer implements Container
         // NOTE: Included if annotations are set or not due to possibility of
         // container items being defined within the classes as well as within
         // the container file
-        require $this->app->config()['container']['filePath'];
+        require $this->app->config(ConfigKey::CONTAINER_FILE_PATH);
     }
 
     /**
@@ -502,8 +503,8 @@ class NativeContainer implements Container
     protected function setupFromCache(): void
     {
         // Set the application container with said file
-        $cache = $this->app->config()['cache']['container']
-            ?? require $this->app->config()['container']['cacheFilePath'];
+        $cache = $this->app->config(ConfigKey::CACHE_CONTAINER)
+            ?? require $this->app->config(ConfigKey::CONTAINER_CACHE_FILE_PATH);
 
         self::$services = unserialize(
             base64_decode($cache['services'], true),
@@ -534,13 +535,11 @@ class NativeContainer implements Container
     protected function setupAnnotations(): void
     {
         /** @var ContainerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(
-            ContainerAnnotations::class
-        );
+        $containerAnnotations = $this->getSingleton(ContainerAnnotations::class);
 
         // Get all the annotated services from the list of controllers
         $services = $containerAnnotations->getServices(
-            ...$this->app->config()['container']['services']
+            ...$this->app->config(ConfigKey::CONTAINER_SERVICES)
         );
 
         // Iterate through the services
@@ -551,7 +550,7 @@ class NativeContainer implements Container
 
         // Get all the annotated services from the list of controllers
         $contextServices = $containerAnnotations->getContextServices(
-            ...$this->app->config()['container']['contextServices']
+            ...$this->app->config(ConfigKey::CONTAINER_CONTEXT_SERVICES)
         );
 
         // Iterate through the services
@@ -562,7 +561,7 @@ class NativeContainer implements Container
 
         // Get all the annotated services from the list of classes
         $aliasServices = $containerAnnotations->getAliasServices(
-            ...$this->app->config()['container']['services']
+            ...$this->app->config(ConfigKey::CONTAINER_SERVICES)
         );
 
         // Iterate through the services
@@ -580,7 +579,7 @@ class NativeContainer implements Container
     protected function setupServiceProviders(): void
     {
         /** @var array $providers */
-        $providers = $this->app->config()['container']['providers'];
+        $providers = $this->app->config(ConfigKey::CONTAINER_PROVIDERS);
 
         // Iterate through all the providers
         foreach ($providers as $provider) {
@@ -593,7 +592,7 @@ class NativeContainer implements Container
         }
 
         /** @var array $devProviders */
-        $devProviders = $this->app->config()['container']['devProviders'];
+        $devProviders = $this->app->config(ConfigKey::CONTAINER_DEV_PROVIDERS);
 
         // Iterate through all the providers
         foreach ($devProviders as $provider) {

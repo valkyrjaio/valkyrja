@@ -15,7 +15,11 @@
  *-------------------------------------------------------------------------
  *
  * Cryptography configurations for securing data.
-     */
+ */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
      *-------------------------------------------------------------------------
@@ -24,7 +28,7 @@ return [
      *
      * //
      */
-    'key'     => env('CRYPT_KEY', 'default_key_phrase'),
+    CKP::KEY      => env(EnvKey::CRYPT_KEY, 'default_key_phrase'),
 
     /*
      *-------------------------------------------------------------------------
@@ -33,5 +37,5 @@ return [
      *
      * //
      */
-    'keyPath' => env('CRYPT_KEY_PATH', envPath('key')),
+    CKP::KEY_PATH => env(EnvKey::CRYPT_KEY_PATH, envPath('key')),
 ];

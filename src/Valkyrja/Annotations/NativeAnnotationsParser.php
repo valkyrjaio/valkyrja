@@ -13,6 +13,7 @@ namespace Valkyrja\Annotations;
 
 use Valkyrja\Annotations\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -350,7 +351,7 @@ class NativeAnnotationsParser implements AnnotationsParser
      */
     public function getAnnotationsMap(): array
     {
-        return $this->app->config()['annotations']['map'];
+        return $this->app->config(ConfigKey::ANNOTATIONS_MAP);
     }
 
     /**

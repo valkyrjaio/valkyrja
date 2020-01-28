@@ -19,7 +19,11 @@
  * and appropriately. Here we have all the configurations for
  * the application, including configurations for each module
  * included in the framework.
-     */
+ */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
      *-------------------------------------------------------------------------
@@ -29,7 +33,7 @@ return [
      * This part of the configuration has to do with the base configuration
      * settings for the application as a whole.
      */
-    'app'           => require __DIR__ . '/app.php',
+    CKP::APP             => require __DIR__ . '/app.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -39,7 +43,7 @@ return [
      * Anything and everything to do with annotations and how they are
      * configured to work within the application can be found here.
      */
-    'annotations'   => require __DIR__ . '/annotations.php',
+    CKP::ANNOTATIONS     => require __DIR__ . '/annotations.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -50,7 +54,7 @@ return [
      * through the CLI. All the configurations necessary to make that
      * work can be found here.
      */
-    'console'       => require __DIR__ . '/console.php',
+    CKP::CONSOLE         => require __DIR__ . '/console.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -61,7 +65,7 @@ return [
      * application may need when it is running. All configurations
      * necessary to make it run correctly can be found here.
      */
-    'container'     => require __DIR__ . '/container.php',
+    CKP::CONTAINER       => require __DIR__ . '/container.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -70,7 +74,7 @@ return [
      *
      * Cryptography configurations for securing data.
      */
-    'crypt'         => require __DIR__ . '/crypt.php',
+    CKP::CRYPT           => require __DIR__ . '/crypt.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -81,7 +85,7 @@ return [
      * connection method. All configurations for getting you going with
      * a few different data stores is available here.
      */
-    'database'      => require __DIR__ . '/database.php',
+    CKP::DB              => require __DIR__ . '/database.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -92,7 +96,7 @@ return [
      * application. Found here are all the configurations required to make
      * events work without a hitch.
      */
-    'events'        => require __DIR__ . '/events.php',
+    CKP::EVENTS          => require __DIR__ . '/events.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -103,7 +107,7 @@ return [
      * across the filesystem it is located within is a necessity in most
      * applications. Configure that manipulative module here.
      */
-    'filesystem'    => require __DIR__ . '/filesystem.php',
+    CKP::FILESYSTEM      => require __DIR__ . '/filesystem.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -114,7 +118,7 @@ return [
      * application when its deployed and used by multiple users aside
      * from you and your developers. Configure that helpfulness here.
      */
-    'logger'        => require __DIR__ . '/logger.php',
+    CKP::LOGGER          => require __DIR__ . '/logger.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -124,7 +128,7 @@ return [
      * //
      *
      */
-    'mail'          => require __DIR__ . '/mail.php',
+    CKP::MAIL            => require __DIR__ . '/mail.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -136,7 +140,7 @@ return [
      * order to do that you'll need to configure it. Lucky for you
      * all the configurations for routing can be found here.
      */
-    'routing'       => require __DIR__ . '/routing.php',
+    CKP::ROUTING         => require __DIR__ . '/routing.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -147,7 +151,7 @@ return [
      * where the session comes in handy. Here you'll find all necessary
      * configurations to make the session work properly.
      */
-    'session'       => require __DIR__ . '/session.php',
+    CKP::SESSION         => require __DIR__ . '/session.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -158,7 +162,7 @@ return [
      * the hard work you've put into the application. Here you'll find
      * all the configurations necessary to make that work properly.
      */
-    'views'         => require __DIR__ . '/views.php',
+    CKP::VIEWS           => require __DIR__ . '/views.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -167,7 +171,7 @@ return [
      *
      * //
      */
-    'providers'     => env('CONFIG_PROVIDERS', []),
+    CKP::PROVIDERS       => env(EnvKey::CONFIG_PROVIDERS, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -176,7 +180,7 @@ return [
      *
      * //
      */
-    'filePath'      => env('CONFIG_FILE_PATH', configPath('config.php')),
+    CKP::FILE_PATH       => env(EnvKey::CONFIG_FILE_PATH, configPath('config.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -185,7 +189,7 @@ return [
      *
      * //
      */
-    'cacheFilePath' => env('CONFIG_CACHE_FILE_PATH', cachePath('config.php')),
+    CKP::CACHE_FILE_PATH => env(EnvKey::CONFIG_CACHE_FILE_PATH, cachePath('config.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -194,5 +198,5 @@ return [
      *
      * //
      */
-    'useCache'      => env('CONFIG_USE_CACHE_FILE', false),
+    CKP::USE_CACHE       => env(EnvKey::CONFIG_USE_CACHE_FILE, false),
 ];

@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Config\Commands;
 
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
@@ -38,14 +39,14 @@ class ConfigCacheCommand extends CommandHandler
     public function run(): int
     {
         // If the cache file already exists, delete it
-        if (file_exists(config()['cacheFilePath'])) {
-            unlink(config()['cacheFilePath']);
+        if (file_exists(config(ConfigKey::CONFIG_CACHE_FILE_PATH))) {
+            unlink(config(ConfigKey::CONFIG_CACHE_FILE_PATH));
         }
 
         // If the config file exists
-        if (file_exists(config()['filePath'])) {
+        if (file_exists(config(ConfigKey::CONFIG_FILE_PATH))) {
             // Re-setup the application with it
-            app()->setup(require config()['filePath'], true);
+            app()->setup(require config(ConfigKey::CONFIG_FILE_PATH), true);
         } else {
             // Otherwise just re-setup the application with default configs
             app()->setup(null, true);
@@ -55,7 +56,7 @@ class ConfigCacheCommand extends CommandHandler
 
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()['cacheFilePath'],
+            config(ConfigKey::CONFIG_CACHE_FILE_PATH),
             '<?php return ' . var_export($cache, true) . ';',
             LOCK_EX
         );

@@ -14,6 +14,7 @@ namespace Valkyrja;
 use InvalidArgumentException;
 use Valkyrja\Annotations\Annotations;
 use Valkyrja\Client\Client;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -206,7 +207,7 @@ class Valkyrja implements Application
 
         self::$config = array_replace_recursive($defaultConfigs, $config);
         /** @var Provider[] $providers */
-        $providers = self::$config['providers'];
+        $providers = self::$config[ConfigKeyPart::PROVIDERS];
 
         foreach ($providers as $provider) {
             // Config providers are NOT deferred and will not follow the
@@ -223,9 +224,9 @@ class Valkyrja implements Application
     protected function bootstrapDebug(): void
     {
         // If debug is on, enable debug handling
-        if (self::$config['app']['debug']) {
+        if ($this->debug()) {
             // The exception handler class to use from the config
-            $exceptionHandlerImpl = self::$config['app']['exceptionHandler'];
+            $exceptionHandlerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EXCEPTION_HANDLER];
 
             // Set the exception handler to a new instance of the exception handler implementation
             self::$exceptionHandler = new $exceptionHandlerImpl($this);
@@ -253,11 +254,11 @@ class Valkyrja implements Application
     protected function bootstrapCore(): void
     {
         // The events class to use from the config
-        $eventsImpl = self::$config['app']['events'];
+        $eventsImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EVENTS];
         // The container class to use from the config
-        $containerImpl = self::$config['app']['container'];
+        $containerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::CONTAINER];
         // The dispatcher class to use from the config
-        $dispatcherImpl = self::$config['app']['dispatcher'];
+        $dispatcherImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::DISPATCHER];
 
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
@@ -331,7 +332,7 @@ class Valkyrja implements Application
      */
     protected function bootstrapTimezone(): void
     {
-        date_default_timezone_set(self::$config['app']['timezone']);
+        date_default_timezone_set(self::$config[ConfigKeyPart::APP][ConfigKeyPart::TIMEZONE]);
     }
 
     /**
@@ -347,23 +348,23 @@ class Valkyrja implements Application
     /**
      * Get an environment variable.
      *
-     * @param string $variable [optional] The variable to get
-     * @param string $default  [optional] The default value to return
+     * @param string $key     [optional] The variable to get
+     * @param string $default [optional] The default value to return
      *
      * @return mixed|Env||config|Env
      */
-    public static function env(string $variable = null, $default = null)
+    public static function env(string $key = null, $default = null)
     {
         // If there was no variable requested
-        if (null === $variable) {
+        if (null === $key) {
             // Return the env class
             return static::getEnv();
         }
 
         // If the env has this variable defined and the variable isn't null
         if (
-            defined(static::getEnv() . '::' . $variable)
-            && null !== $env = constant(static::getEnv() . '::' . $variable)
+            defined(static::getEnv() . '::' . $key)
+            && null !== $env = constant(static::getEnv() . '::' . $key)
         ) {
             // Return the variable
             return $env;
@@ -414,7 +415,7 @@ class Valkyrja implements Application
         }
 
         // Explode the keys on period
-        $keys = explode('.', $key);
+        $keys = explode(ConfigKeyPart::SEP, $key);
         // Set the config to return
         $config = self::$config;
 
@@ -507,7 +508,7 @@ class Valkyrja implements Application
      */
     public function environment(): string
     {
-        return self::$config['app']['env'];
+        return self::$config[ConfigKeyPart::APP][ConfigKeyPart::ENV];
     }
 
     /**
@@ -517,7 +518,7 @@ class Valkyrja implements Application
      */
     public function debug(): bool
     {
-        return self::$config['app']['debug'];
+        return self::$config[ConfigKeyPart::APP][ConfigKeyPart::DEBUG];
     }
 
     /**
@@ -560,7 +561,14 @@ class Valkyrja implements Application
         int $code = 0,
         Response $response = null
     ): void {
-        throw new self::$config['app']['httpExceptionClass']($statusCode, $message, null, $headers, $code, $response);
+        throw new self::$config[ConfigKeyPart::APP][ConfigKeyPart::HTTP_EXCEPTION_CLASS](
+            $statusCode,
+            $message,
+            null,
+            $headers,
+            $code,
+            $response
+        );
     }
 
     /**

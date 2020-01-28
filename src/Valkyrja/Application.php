@@ -72,12 +72,12 @@ interface Application
     /**
      * Get an environment variable.
      *
-     * @param string $variable [optional] The variable to get
-     * @param string $default  [optional] The default value to return
+     * @param string $key     [optional] The variable to get
+     * @param string $default [optional] The default value to return
      *
      * @return mixed|Env||config|Env
      */
-    public static function env(string $variable = null, $default = null);
+    public static function env(string $key = null, $default = null);
 
     /**
      * Get environment variables.

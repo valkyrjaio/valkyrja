@@ -17,7 +17,11 @@
  * Logging is very helpful in understanding what occurs within your
  * application when its deployed and used by multiple users aside
  * from you and your developers. Configure that helpfulness here.
-     */
+ */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,7 +30,7 @@ return [
      *
      * //
      */
-    'name'     => env('LOGGER_NAME', 'ApplicationLog'),
+    CKP::NAME      => env(EnvKey::LOGGER_NAME, 'ApplicationLog'),
 
     /*
      *-------------------------------------------------------------------------
@@ -35,5 +39,5 @@ return [
      *
      * //
      */
-    'filePath' => env('LOGGER_FILE_PATH', storagePath('logs/valkyrja.log')),
+    CKP::FILE_PATH => env(EnvKey::LOGGER_FILE_PATH, storagePath('logs/valkyrja.log')),
 ];

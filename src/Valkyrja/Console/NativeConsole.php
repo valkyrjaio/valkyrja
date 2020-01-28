@@ -13,6 +13,7 @@ namespace Valkyrja\Console;
 
 use ReflectionException;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
@@ -355,7 +356,7 @@ class NativeConsole implements Console
         self::$setup = true;
 
         // If the application should use the console cache files
-        if ($useCache && $this->app->config()['console']['useCache']) {
+        if ($useCache && $this->app->config(ConfigKey::CONSOLE_USE_CACHE_FILE)) {
             $this->setupFromCache();
 
             // Then return out of setup
@@ -366,23 +367,27 @@ class NativeConsole implements Console
         self::$commands      = [];
         self::$namedCommands = [];
 
+        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
+        $useAnnotations     = $this->app->config(ConfigKey::CONSOLE_USE_ANNOTATIONS, false);
+        $onlyAnnotations    = $this->app->config(ConfigKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY, false);
+
         // Setup command providers
         $this->setupCommandProviders();
 
         // If annotations are enabled and the events should use annotations
-        if ($this->app->config()['console']['useAnnotations'] && $this->app->config()['annotations']['enabled']) {
+        if ($annotationsEnabled && $useAnnotations) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()['console']['useAnnotationsExclusively']) {
+            if ($onlyAnnotations) {
                 // Return to avoid loading events file
                 return;
             }
         }
 
         // Include the events file
-        require $this->app->config()['console']['filePath'];
+        require $this->app->config(ConfigKey::CONSOLE_FILE_PATH);
     }
 
     /**
@@ -393,7 +398,8 @@ class NativeConsole implements Console
     protected function setupFromCache(): void
     {
         // Set the application console with said file
-        $cache = $this->app->config()['cache']['console'] ?? require $this->app->config()['console']['cacheFilePath'];
+        $cache = $this->app->config(ConfigKey::CACHE_CONSOLE)
+            ?? require $this->app->config(ConfigKey::CONSOLE_CACHE_FILE_PATH);
 
         self::$commands      = unserialize(
             base64_decode($cache['commands'], true),
@@ -416,7 +422,7 @@ class NativeConsole implements Console
     protected function setupCommandProviders(): void
     {
         /** @var string[] $providers */
-        $providers = $this->app->config()['console']['providers'];
+        $providers = $this->app->config(ConfigKey::CONTAINER_PROVIDERS);
 
         // Iterate through all the providers
         foreach ($providers as $provider) {
@@ -429,7 +435,7 @@ class NativeConsole implements Console
         }
 
         /** @var string[] $devProviders */
-        $devProviders = $this->app->config()['console']['devProviders'];
+        $devProviders = $this->app->config(ConfigKey::CONSOLE_DEV_PROVIDERS);
 
         // Iterate through all the providers
         foreach ($devProviders as $provider) {
@@ -485,7 +491,7 @@ class NativeConsole implements Console
         $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
 
         // Get all the annotated commands from the list of handlers
-        $commands = $commandAnnotations->getCommands(...$this->app->config()['console']['handlers']);
+        $commands = $commandAnnotations->getCommands(...$this->app->config(ConfigKey::CONSOLE_HANDLERS));
 
         // Iterate through the commands
         foreach ($commands as $command) {

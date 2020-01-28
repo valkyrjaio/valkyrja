@@ -14,6 +14,7 @@ namespace Valkyrja\Routing;
 use Exception;
 use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -58,6 +59,20 @@ class NativeRouter implements Router
      * @var bool
      */
     protected static bool $setup = false;
+
+    /**
+     * Whether to use absolute urls.
+     *
+     * @var bool
+     */
+    private static $useAbsoluteUrls;
+
+    /**
+     * Whether to use trailing slashes.
+     *
+     * @var bool
+     */
+    private static $trailingSlash;
 
     /**
      * Router constructor.
@@ -258,9 +273,7 @@ class NativeRouter implements Router
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute
-        || $this->app->config()['routing']['useAbsoluteUrls']
-        || $route->isSecure()
+        $host = $absolute || self::$useAbsoluteUrls || $route->isSecure()
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -434,10 +447,13 @@ class NativeRouter implements Router
             return;
         }
 
+        self::$useAbsoluteUrls = $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS);
+        self::$trailingSlash = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH);
+
         self::$setup = true;
 
         // If the application should use the routes cache file
-        if ($useCache && $this->app->config()['routing']['useCache']) {
+        if ($useCache && $this->app->config(ConfigKey::ROUTING_USE_CACHE_FILE)) {
             $this->setupFromCache();
 
             // Then return out of setup
@@ -446,16 +462,17 @@ class NativeRouter implements Router
 
         self::$collection = new RouteCollection();
 
+        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
+        $useAnnotations     = $this->app->config(ConfigKey::ROUTING_USE_ANNOTATIONS, false);
+        $onlyAnnotations    = $this->app->config(ConfigKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY, false);
+
         // If annotations are enabled and routing should use annotations
-        if (
-            $this->app->config()['routing']['useAnnotations']
-            && $this->app->config()['annotations']['enabled']
-        ) {
+        if ($annotationsEnabled && $useAnnotations) {
             // Setup annotated routes
             $this->setupAnnotatedRoutes();
 
             // If only annotations should be used for routing
-            if ($this->app->config()['routing']['useAnnotationsExclusively']) {
+            if ($onlyAnnotations) {
                 // Return to avoid loading routes file
                 return;
             }
@@ -465,7 +482,7 @@ class NativeRouter implements Router
         // NOTE: Included if annotations are set or not due to possibility of
         // routes being defined within the controllers as well as within the
         // routes file
-        require $this->app->config()['routing']['filePath'];
+        require $this->app->config(ConfigKey::ROUTING_FILE_PATH);
     }
 
     /**
@@ -574,10 +591,7 @@ class NativeRouter implements Router
     {
         // If the last character is not a slash and the config is set to
         // ensure trailing slash
-        if (
-            $path[-1] !== '/'
-            && $this->app->config()['routing']['trailingSlash']
-        ) {
+        if ($path[-1] !== '/' && self::$trailingSlash) {
             // add a trailing slash
             $path .= '/';
         }
@@ -786,7 +800,8 @@ class NativeRouter implements Router
     protected function setupFromCache(): void
     {
         // Set the application routes with said file
-        $cache = $this->app->config()['cache']['routing'] ?? require $this->app->config()['routing']['cacheFilePath'];
+        $cache = $this->app->config(ConfigKey::CACHE_ROUTING)
+            ?? require $this->app->config(ConfigKey::ROUTING_CACHE_FILE_PATH);
 
         self::$collection = unserialize(
             base64_decode($cache['collection'], true),
@@ -817,7 +832,7 @@ class NativeRouter implements Router
         $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
 
         // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config()['routing']['controllers']);
+        $routes = $routeAnnotations->getRoutes(...$this->app->config(ConfigKey::ROUTING_CONTROLLERS));
 
         // Iterate through the routes
         foreach ($routes as $route) {

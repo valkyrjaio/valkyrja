@@ -29,13 +29,14 @@ class Env
     /*
      * Application env variables.
      */
-    // public const APP_ENV            = null;
-    // public const APP_DEBUG          = null;
-    // public const APP_URL            = null;
-    // public const APP_TIMEZONE       = null;
-    // public const APP_VERSION        = null;
-    // public const APP_KEY            = null;
-    // public const APP_PATH_REGEX_MAP = null;
+    // public const APP_ENV                  = null;
+    // public const APP_DEBUG                = null;
+    // public const APP_URL                  = null;
+    // public const APP_TIMEZONE             = null;
+    // public const APP_VERSION              = null;
+    // public const APP_KEY                  = null;
+    // public const APP_HTTP_EXCEPTION_CLASS = null;
+    // public const APP_PATH_REGEX_MAP       = null;
     //
     // public const APP_CONTAINER         = null;
     // public const APP_DISPATCHER        = null;
@@ -53,7 +54,6 @@ class Env
      * Console env variables.
      */
     // public const CONSOLE_PROVIDERS                   = null;
-    // public const CONSOLE_CORE_PROVIDERS              = null;
     // public const CONSOLE_DEV_PROVIDERS               = null;
     // public const CONSOLE_QUIET                       = null;
     // public const CONSOLE_USE_ANNOTATIONS             = null;
@@ -67,7 +67,6 @@ class Env
      * Container env variables.
      */
     // public const CONTAINER_PROVIDERS                   = null;
-    // public const CONTAINER_CORE_PROVIDERS              = null;
     // public const CONTAINER_DEV_PROVIDERS               = null;
     // public const CONTAINER_USE_ANNOTATIONS             = null;
     // public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = null;
@@ -131,10 +130,23 @@ class Env
     // public const LOGGER_FILE_PATH = null;
 
     /*
+     * Mail env variables.
+     */
+    // public const MAIL_HOST         = null;
+    // public const MAIL_PORT         = null;
+    // public const MAIL_FROM_ADDRESS = null;
+    // public const MAIL_FROM_NAME    = null;
+    // public const MAIL_ENCRYPTION   = null;
+    // public const MAIL_USERNAME     = null;
+    // public const MAIL_PASSWORD     = null;
+
+    /*
      * Routing env variables.
      */
     // public const ROUTING_TRAILING_SLASH              = null;
     // public const ROUTING_USE_ABSOLUTE_URLS           = null;
+    // public const ROUTING_MIDDLEWARE                  = null;
+    // public const ROUTING_MIDDLEWARE_GROUPS           = null;
     // public const ROUTING_USE_ANNOTATIONS             = null;
     // public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = null;
     // public const ROUTING_CONTROLLERS                 = null;

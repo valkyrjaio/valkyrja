@@ -15,6 +15,7 @@ use Exception;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
 use Valkyrja\Container\NativeContainer;
@@ -473,7 +474,7 @@ class ApplicationTest extends TestCase
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
-        $this->assertEquals(false, $this->app->config()['app']['debug']);
+        $this->assertEquals(false, $this->app->debug());
     }
 
     /**
@@ -488,7 +489,7 @@ class ApplicationTest extends TestCase
         $config['app']['debug'] = true;
         $this->app->setup($config, true);
 
-        $this->assertEquals(true, $this->app->config()['app']['debug']);
+        $this->assertEquals(true, $this->app->debug());
     }
 
     /**
@@ -598,10 +599,10 @@ class ApplicationTest extends TestCase
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         //take effect and the value for app.debug should still be false.
-        $this->assertEquals(false, $this->app->config()['app']['debug']);
+        $this->assertEquals(false, $this->app->debug());
 
         // Delete the config cache file to avoid headaches later
-        unlink($this->app->config()['cacheFilePath']);
+        unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));
 
         // Reset the application to normal operations
         $this->app->setup(null, true);

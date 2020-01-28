@@ -17,6 +17,10 @@
  * //
  *
  */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +31,7 @@ return [
     | applications.
     |
     */
-    'host'       => env('MAIL_HOST', 'smtp1.example.com;smtp2.example.com'),
+    CKP::HOST       => env(EnvKey::MAIL_HOST, 'smtp1.example.com;smtp2.example.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +42,7 @@ return [
     | users of the application.
     |
     */
-    'port'       => env('MAIL_PORT', 587),
+    CKP::PORT       => env(EnvKey::MAIL_PORT, 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,9 +54,9 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-    'from'       => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name'    => env('MAIL_FROM_NAME', 'Example'),
+    CKP::FROM       => [
+        CKP::ADDRESS => env(EnvKey::MAIL_FROM_ADDRESS, 'hello@example.com'),
+        CKP::NAME    => env(EnvKey::MAIL_FROM_NAME, 'Example'),
     ],
 
     /*
@@ -65,7 +69,7 @@ return [
     | transport layer security protocol should provide great security.
     |
     */
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    CKP::ENCRYPTION => env(EnvKey::MAIL_ENCRYPTION, 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -77,7 +81,7 @@ return [
     | connection. You may also set the "password" value below this one.
     |
     */
-    'username'   => env('MAIL_USERNAME'),
-    'password'   => env('MAIL_PASSWORD'),
+    CKP::USERNAME   => env(EnvKey::MAIL_USERNAME),
+    CKP::PASSWORD   => env(EnvKey::MAIL_PASSWORD),
 
 ];

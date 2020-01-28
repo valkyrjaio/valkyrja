@@ -169,17 +169,17 @@ if (! function_exists('env')) {
     /**
      * Get an environment variable.
      *
-     * @param string $variable [optional] The variable to get
-     * @param string $default  [optional] The default value to return
+     * @param string $key     [optional] The variable to get
+     * @param string $default [optional] The default value to return
      *
      * @return mixed|Valkyrja\Env\Env||config|Env
      */
-    function env(string $variable = null, $default = null)
+    function env(string $key = null, $default = null)
     {
         // Does not use the app() helper due to the self::$instance property
         // that Valkyrja::app() relies on has not been set yet when
         // this helper may be used.
-        return Valkyrja\Valkyrja::env($variable, $default);
+        return Valkyrja\Valkyrja::env($key, $default);
     }
 }
 

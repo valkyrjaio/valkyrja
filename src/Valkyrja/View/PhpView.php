@@ -12,6 +12,7 @@
 namespace Valkyrja\View;
 
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
@@ -120,7 +121,7 @@ class PhpView implements View
     {
         $this->app = $app;
         $this->setVariables($variables);
-        $this->setTemplateDir($this->app->config()['views']['dir']);
+        $this->setTemplateDir($this->app->config(ConfigKey::VIEWS_DIR));
         $this->template($template ?? $this->template);
     }
 

@@ -12,6 +12,7 @@
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Config\Commands\ConfigCacheCommand;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Exceptions\CommandNotFound;
@@ -61,13 +62,13 @@ class CacheAllCommand extends CommandHandler
         $configCache = console()->matchCommand(ConfigCacheCommand::COMMAND);
         console()->dispatchCommand($configCache);
 
-        if (null !== $sync && config()['app']['debug']) {
+        if (null !== $sync && app()->debug()) {
             $files = [
-                config()['console']['cacheFilePath'],
-                config()['container']['cacheFilePath'],
-                config()['events']['cacheFilePath'],
-                config()['routing']['cacheFilePath'],
-                config()['cacheFilePath'],
+                config(ConfigKey::CONSOLE_CACHE_FILE_PATH),
+                config(ConfigKey::CONTAINER_CACHE_FILE_PATH),
+                config(ConfigKey::EVENTS_CACHE_FILE_PATH),
+                config(ConfigKey::ROUTING_CACHE_FILE_PATH),
+                config(ConfigKey::CONFIG_CACHE_FILE_PATH),
             ];
 
             foreach ($files as $file) {

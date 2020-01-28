@@ -17,7 +17,11 @@
  * The console is Valkyrja's module for working with the application
  * through the CLI. All the configurations necessary to make that
  * work can be found here.
-     */
+ */
+
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
+
 return [
     /*
      *-------------------------------------------------------------------------
@@ -26,8 +30,8 @@ return [
      *
      * //
      */
-    'providers'                 => env(
-        'CONSOLE_PROVIDERS',
+    CKP::PROVIDERS                   => env(
+        EnvKey::CONSOLE_PROVIDERS,
         [
             Valkyrja\Config\Commands\ConfigCacheCommand::class,
             Valkyrja\Console\Commands\CacheAllCommand::class,
@@ -49,7 +53,7 @@ return [
      *
      * //
      */
-    'devProviders'              => env('CONSOLE_DEV_PROVIDERS', []),
+    CKP::DEV_PROVIDERS               => env(EnvKey::CONSOLE_DEV_PROVIDERS, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -58,7 +62,7 @@ return [
      *
      * //
      */
-    'quiet'                     => env('CONSOLE_QUIET', false),
+    CKP::QUIET                       => env(EnvKey::CONSOLE_QUIET, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -67,7 +71,7 @@ return [
      *
      * //
      */
-    'useAnnotations'            => env('CONSOLE_USE_ANNOTATIONS', false),
+    CKP::USE_ANNOTATIONS             => env(EnvKey::CONSOLE_USE_ANNOTATIONS, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -76,10 +80,7 @@ return [
      *
      * //
      */
-    'useAnnotationsExclusively' => env(
-        'CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY',
-        false
-    ),
+    CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -88,7 +89,7 @@ return [
      *
      * //
      */
-    'handlers'                  => env('CONSOLE_HANDLERS', []),
+    CKP::HANDLERS                    => env(EnvKey::CONSOLE_HANDLERS, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -97,10 +98,7 @@ return [
      *
      * //
      */
-    'filePath'                  => env(
-        'CONSOLE_FILE_PATH',
-        bootstrapPath('commands.php')
-    ),
+    CKP::FILE_PATH                   => env(EnvKey::CONSOLE_FILE_PATH, bootstrapPath('commands.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -109,10 +107,7 @@ return [
      *
      * //
      */
-    'cacheFilePath'             => env(
-        'CONSOLE_CACHE_FILE_PATH',
-        cachePath('commands.php')
-    ),
+    CKP::CACHE_FILE_PATH             => env(EnvKey::CONSOLE_CACHE_FILE_PATH, cachePath('commands.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -121,5 +116,5 @@ return [
      *
      * //
      */
-    'useCache'                  => env('CONSOLE_USE_CACHE_FILE', false),
+    CKP::USE_CACHE                   => env(EnvKey::CONSOLE_USE_CACHE_FILE, false),
 ];

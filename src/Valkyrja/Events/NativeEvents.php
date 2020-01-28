@@ -12,6 +12,7 @@
 namespace Valkyrja\Events;
 
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -295,7 +296,7 @@ class NativeEvents implements Events
         self::$setup = true;
 
         // If the application should use the events cache files
-        if ($useCache && $this->app->config()['events']['useCache']) {
+        if ($useCache && $this->app->config(ConfigKey::EVENTS_USE_CACHE_FILE)) {
             $this->setupFromCache();
 
             // Then return out of setup
@@ -304,23 +305,24 @@ class NativeEvents implements Events
 
         self::$events = [];
 
+        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
+        $useAnnotations     = $this->app->config(ConfigKey::EVENTS_USE_ANNOTATIONS, false);
+        $onlyAnnotations    = $this->app->config(ConfigKey::EVENTS_USE_ANNOTATIONS_EXCLUSIVELY, false);
+
         // If annotations are enabled and the events should use annotations
-        if (
-            $this->app->config()['events']['useAnnotations']
-            && $this->app->config()['annotations']['enabled']
-        ) {
+        if ($annotationsEnabled && $useAnnotations) {
             // Setup annotated event listeners
             $this->setupAnnotations();
 
             // If only annotations should be used
-            if ($this->app->config()['events']['useAnnotationsExclusively']) {
+            if ($onlyAnnotations) {
                 // Return to avoid loading events file
                 return;
             }
         }
 
         // Include the events file
-        require $this->app->config()['events']['filePath'];
+        require $this->app->config(ConfigKey::EVENTS_FILE_PATH);
     }
 
     /**
@@ -331,7 +333,8 @@ class NativeEvents implements Events
     protected function setupFromCache(): void
     {
         // Set the application events with said file
-        $cache = $this->app->config()['cache']['events'] ?? require $this->app->config()['events']['cacheFilePath'];
+        $cache = $this->app->config(ConfigKey::CACHE_EVENTS)
+            ?? require $this->app->config(ConfigKey::EVENTS_CACHE_FILE_PATH);
 
         self::$events = unserialize(
             base64_decode($cache['events'], true),
@@ -360,7 +363,7 @@ class NativeEvents implements Events
         $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
 
         // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(...$this->app->config()['events']['classes']);
+        $listeners = $containerAnnotations->getListeners(...$this->app->config(ConfigKey::EVENTS_CLASSES));
 
         // Iterate through the listeners
         foreach ($listeners as $listener) {

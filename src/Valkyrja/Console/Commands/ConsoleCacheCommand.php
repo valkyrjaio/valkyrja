@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Commands;
 
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
@@ -38,20 +39,21 @@ class ConsoleCacheCommand extends CommandHandler
      */
     public function run(): int
     {
-        $originalDebug = config()['app']['debug'];
-        $originalEnv   = config()['app']['env'];
-
-        config()['app']['debug'] = false;
-        config()['app']['env']   = 'production';
+        app()->setup(
+            [
+                'app' => [
+                    'debug' => false,
+                    'env'   => 'production',
+                ],
+            ],
+            true
+        );
 
         $cache = console()->getCacheable();
 
-        config()['app']['debug'] = $originalDebug;
-        config()['app']['env']   = $originalEnv;
-
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()['console']['cacheFilePath'],
+            config(ConfigKey::CONSOLE_CACHE_FILE_PATH),
             '<?php return ' . var_export($cache, true) . ';',
             LOCK_EX
         );

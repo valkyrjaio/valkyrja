@@ -11,6 +11,7 @@
 
 namespace Valkyrja\Console\Commands;
 
+use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\CommandHandler;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
@@ -39,8 +40,8 @@ class OptimizeCommand extends CommandHandler
     public function run(): int
     {
         // If the cache file already exists, delete it
-        if (file_exists(config()['cacheFilePath'])) {
-            unlink(config()['cacheFilePath']);
+        if (file_exists(config(ConfigKey::CONFIG_CACHE_FILE_PATH))) {
+            unlink(config(ConfigKey::CONFIG_CACHE_FILE_PATH));
         }
 
         app()->setup(
@@ -71,7 +72,7 @@ class OptimizeCommand extends CommandHandler
 
         // Get the results of the cache attempt
         $result = file_put_contents(
-            config()['cacheFilePath'],
+            config(ConfigKey::CONFIG_CACHE_FILE_PATH),
             '<?php return ' . var_export($configCache, true) . ';',
             LOCK_EX
         );
