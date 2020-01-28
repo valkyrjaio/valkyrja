@@ -116,7 +116,7 @@ return [
      *
      * //
      */
-    'exceptionHandler'             => env('APP_EXCEPTION_HANDLER', Valkyrja\Exceptions\NativeExceptionHandler::class),
+    'exceptionHandler'   => env('APP_EXCEPTION_HANDLER', Valkyrja\Exceptions\NativeExceptionHandler::class),
 
     /*
      *-------------------------------------------------------------------------
