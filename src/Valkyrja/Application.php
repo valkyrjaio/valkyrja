@@ -50,7 +50,7 @@ interface Application
      *
      * @constant string
      */
-    public const VERSION = '0.7.1';
+    public const VERSION = '1.0';
 
     /**
      * Setup the application.
