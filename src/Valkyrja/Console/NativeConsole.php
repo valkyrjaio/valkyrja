@@ -422,7 +422,7 @@ class NativeConsole implements Console
     protected function setupCommandProviders(): void
     {
         /** @var string[] $providers */
-        $providers = $this->app->config(ConfigKey::CONTAINER_PROVIDERS);
+        $providers = $this->app->config(ConfigKey::CONSOLE_PROVIDERS);
 
         // Iterate through all the providers
         foreach ($providers as $provider) {

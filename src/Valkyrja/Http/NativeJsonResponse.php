@@ -42,7 +42,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      *
      * @var string|null
      */
-    protected ?string $callback;
+    protected ?string $callback = null;
 
     /**
      * Json encoding options.

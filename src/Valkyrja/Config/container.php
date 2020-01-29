@@ -17,6 +17,7 @@
  * The container is the go to place for any type of service the
  * application may need when it is running. All configurations
  * necessary to make it run correctly can be found here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -29,6 +30,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::PROVIDERS                   => env(
         EnvKey::CONTAINER_PROVIDERS,
@@ -70,6 +72,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DEV_PROVIDERS               => env(EnvKey::CONTAINER_DEV_PROVIDERS, []),
 
@@ -79,6 +82,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS             => env(EnvKey::CONTAINER_USE_ANNOTATIONS, false),
 
@@ -88,6 +92,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
@@ -97,6 +102,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::SERVICES                    => env(EnvKey::CONTAINER_SERVICES, []),
 
@@ -106,6 +112,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CONTEXT_SERVICES            => env(EnvKey::CONTAINER_CONTEXT_SERVICES, []),
 
@@ -115,6 +122,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::FILE_PATH                   => env(EnvKey::CONTAINER_FILE_PATH, bootstrapPath('container.php')),
 
@@ -124,6 +132,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CACHE_FILE_PATH             => env(EnvKey::CONTAINER_CACHE_FILE_PATH, cachePath('container.php')),
 
@@ -133,6 +142,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_CACHE                   => env(EnvKey::CONTAINER_USE_CACHE_FILE, false),
 ];

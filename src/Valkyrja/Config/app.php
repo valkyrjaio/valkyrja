@@ -16,6 +16,7 @@
  *
  * This part of the configuration has to do with the base configuration
  * settings for the application as a whole.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -28,6 +29,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::ENV                  => env(EnvKey::APP_ENV, 'production'),
 
@@ -37,6 +39,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DEBUG                => env(EnvKey::APP_DEBUG, false),
 
@@ -46,6 +49,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::URL                  => env(EnvKey::APP_URL, 'localhost'),
 
@@ -55,6 +59,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::TIMEZONE             => env(EnvKey::APP_TIMEZONE, 'UTC'),
 
@@ -64,6 +69,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::VERSION              => env(EnvKey::APP_VERSION, Valkyrja\Application::VERSION),
 
@@ -73,6 +79,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::KEY                  => env(EnvKey::APP_KEY, 'some_secret_app_key'),
 
@@ -92,6 +99,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CONTAINER            => env(EnvKey::APP_CONTAINER, Valkyrja\Container\NativeContainer::class),
 
@@ -101,6 +109,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DISPATCHER           => env(EnvKey::APP_DISPATCHER, Valkyrja\Dispatcher\NativeDispatcher::class),
 
@@ -110,6 +119,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::EVENTS               => env(EnvKey::APP_EVENTS, Valkyrja\Events\NativeEvents::class),
 
@@ -119,6 +129,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::EXCEPTION_HANDLER    => env(EnvKey::APP_EXCEPTION_HANDLER, Valkyrja\Exceptions\NativeExceptionHandler::class),
 
@@ -128,6 +139,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::PATH_REGEX_MAP       => env(
         EnvKey::APP_PATH_REGEX_MAP,

@@ -36,7 +36,7 @@ class NativeInput implements Input
      *
      * @var array|null
      */
-    protected ?array $requestArguments;
+    protected ?array $requestArguments = null;
 
     /**
      * The arguments.

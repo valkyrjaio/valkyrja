@@ -68,14 +68,7 @@ if (! function_exists('abort')) {
         int $code = 0,
         Valkyrja\Http\Response $response = null
     ): void {
-        throw new Valkyrja\Http\Exceptions\HttpException(
-            $statusCode,
-            $message,
-            null,
-            $headers,
-            $code,
-            $response
-        );
+        app()->abort($statusCode, $message, $headers, $code, $response);
     }
 }
 
@@ -91,14 +84,7 @@ if (! function_exists('abortResponse')) {
      */
     function abortResponse(Valkyrja\Http\Response $response): void
     {
-        throw new Valkyrja\Http\Exceptions\HttpException(
-            0,
-            '',
-            null,
-            [],
-            0,
-            $response
-        );
+        app()->abort(0, '', [], 0, $response);
     }
 }
 

@@ -51,21 +51,21 @@ trait RequestTrait
      *
      * @var Uri|null
      */
-    protected ?Uri $uri;
+    protected ?Uri $uri = null;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    protected ?string $method;
+    protected ?string $method = null;
 
     /**
      * The request target.
      *
      * @var string|null
      */
-    protected ?string $requestTarget;
+    protected ?string $requestTarget = null;
 
     /**
      * The body.

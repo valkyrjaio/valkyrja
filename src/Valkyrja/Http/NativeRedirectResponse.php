@@ -29,7 +29,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      *
      * @var string|null
      */
-    protected ?string $uri;
+    protected ?string $uri = null;
 
     /**
      * RedirectResponse constructor.

@@ -32,7 +32,7 @@ class Service extends Dispatch
      *
      * @var array|null
      */
-    protected ?array $defaults;
+    protected ?array $defaults = null;
 
     /**
      * Get whether this is a singleton.

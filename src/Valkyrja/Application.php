@@ -181,10 +181,11 @@ interface Application
     /**
      * Abort the application due to error.
      *
-     * @param int    $statusCode The status code to use
-     * @param string $message    [optional] The Exception message to throw
-     * @param array  $headers    [optional] The headers to send
-     * @param int    $code       [optional] The Exception code
+     * @param int      $statusCode The status code to use
+     * @param string   $message    [optional] The Exception message to throw
+     * @param array    $headers    [optional] The headers to send
+     * @param int      $code       [optional] The Exception code
+     * @param Response $response   [optional] The Response to send
      *
      * @return void
      */
@@ -192,7 +193,8 @@ interface Application
         int $statusCode = StatusCode::NOT_FOUND,
         string $message = '',
         array $headers = [],
-        int $code = 0
+        int $code = 0,
+        Response $response = null
     ): void;
 
     /**

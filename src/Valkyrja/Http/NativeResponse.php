@@ -33,9 +33,9 @@ class NativeResponse implements Response
     /**
      * Response headers.
      *
-     * @var Headers
+     * @var Headers|null
      */
-    protected Headers $headers;
+    protected ?Headers $headers = null;
 
     /**
      * Cache control.

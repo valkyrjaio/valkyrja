@@ -38,14 +38,14 @@ class PhpView implements View
      *
      * @var string|null
      */
-    protected ?string $layout;
+    protected ?string $layout = null;
 
     /**
      * The fully qualified layout path.
      *
      * @var string|null
      */
-    protected ?string $layoutPath;
+    protected ?string $layoutPath = null;
 
     /**
      * The body content template.

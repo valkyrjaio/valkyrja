@@ -16,6 +16,7 @@
  *
  * Anything and everything to do with annotations and how they are
  * configured to work within the application can be found here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -28,6 +29,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::ENABLED   => env(EnvKey::ANNOTATIONS_ENABLED, false),
 
@@ -37,6 +39,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CACHE_DIR => env(EnvKey::ANNOTATIONS_CACHE_DIR, storagePath('vendor/annotations')),
 
@@ -46,6 +49,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::MAP       => env(
         EnvKey::ANNOTATIONS_MAP,

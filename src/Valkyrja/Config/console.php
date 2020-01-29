@@ -17,6 +17,7 @@
  * The console is Valkyrja's module for working with the application
  * through the CLI. All the configurations necessary to make that
  * work can be found here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -29,6 +30,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::PROVIDERS                   => env(
         EnvKey::CONSOLE_PROVIDERS,
@@ -52,6 +54,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DEV_PROVIDERS               => env(EnvKey::CONSOLE_DEV_PROVIDERS, []),
 
@@ -61,6 +64,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::QUIET                       => env(EnvKey::CONSOLE_QUIET, false),
 
@@ -70,6 +74,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS             => env(EnvKey::CONSOLE_USE_ANNOTATIONS, false),
 
@@ -79,6 +84,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
@@ -88,6 +94,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::HANDLERS                    => env(EnvKey::CONSOLE_HANDLERS, []),
 
@@ -97,6 +104,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::FILE_PATH                   => env(EnvKey::CONSOLE_FILE_PATH, bootstrapPath('commands.php')),
 
@@ -106,6 +114,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CACHE_FILE_PATH             => env(EnvKey::CONSOLE_CACHE_FILE_PATH, cachePath('commands.php')),
 
@@ -115,6 +124,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_CACHE                   => env(EnvKey::CONSOLE_USE_CACHE_FILE, false),
 ];

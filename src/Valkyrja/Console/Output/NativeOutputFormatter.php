@@ -31,14 +31,14 @@ class NativeOutputFormatter implements OutputFormatter
      *
      * @var int|null
      */
-    protected ?int $foreground;
+    protected ?int $foreground = null;
 
     /**
      * The background color.
      *
      * @var int|null
      */
-    protected ?int $background;
+    protected ?int $background = null;
 
     /**
      * The options.

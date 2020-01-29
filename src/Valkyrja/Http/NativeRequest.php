@@ -77,59 +77,59 @@ class NativeRequest implements Request
     protected Headers $headers;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected string $content;
+    protected ?string $content = null;
 
     /**
      * @var array
      */
-    protected array $languages;
+    protected array $languages = [];
 
     /**
      * @var array
      */
-    protected array $charsets;
+    protected array $charsets = [];
 
     /**
      * @var array
      */
-    protected array $encodings;
+    protected array $encodings = [];
 
     /**
      * @var array
      */
-    protected array $acceptableContentTypes;
+    protected array $acceptableContentTypes = [];
 
     /**
      * @var string|null
      */
-    protected ?string $path;
+    protected ?string $path = null;
 
     /**
      * @var string|null
      */
-    protected ?string $requestUri;
+    protected ?string $requestUri = null;
 
     /**
      * @var string|null
      */
-    protected ?string $baseUrl;
+    protected ?string $baseUrl = null;
 
     /**
      * @var string|null
      */
-    protected ?string $basePath;
+    protected ?string $basePath = null;
 
     /**
      * @var string|null
      */
-    protected ?string $method;
+    protected ?string $method = null;
 
     /**
      * @var string|null
      */
-    protected ?string $format;
+    protected ?string $format = null;
 
     /**
      * @var string
@@ -144,7 +144,7 @@ class NativeRequest implements Request
     /**
      * @var array
      */
-    protected static array $formats;
+    protected static array $formats = [];
 
     /**
      * Request Constructor.

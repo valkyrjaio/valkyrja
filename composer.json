@@ -17,18 +17,18 @@
   "require"           : {
     "php"              : ">=7.4",
     "psr/http-message" : "1.0.1",
-    "psr/log"          : "1.0.2",
+    "psr/log"          : "1.1.2",
     "filp/whoops"      : "2.7.1",
     "ext-json"         : "*"
   },
   "require-dev"       : {
-    "fzaninotto/faker"           : "1.6.0",
-    "guzzlehttp/guzzle"          : "6.2.3",
-    "league/flysystem"           : "1.0.40",
-    "league/flysystem-aws-s3-v3" : "1.0.15",
-    "mockery/mockery"            : "0.9.9",
-    "monolog/monolog"            : "1.22.1",
-    "phpunit/phpunit"            : "6.1.4",
+    "fzaninotto/faker"           : "1.9.1",
+    "guzzlehttp/guzzle"          : "6.5.2",
+    "league/flysystem"           : "1.0.63",
+    "league/flysystem-aws-s3-v3" : "1.0.23",
+    "mockery/mockery"            : "1.3.1",
+    "monolog/monolog"            : "2.0.2",
+    "phpunit/phpunit"            : "8.5.2",
     "predis/predis"              : "1.1.1",
     "satooshi/php-coveralls"     : "0.7.0",
     "valkyrja/valkyrja-app"      : "1.0.*"
@@ -47,11 +47,11 @@
     }
   },
   "suggest"           : {
-    "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (^6.2).",
-    "league/flysystem"           : "Required for use with Valkyrja FileSystem (^1.0).",
-    "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (^1.0)",
-    "monolog/monolog"            : "Required for use with Valkyrja Logger (^1.22).",
-    "predis/predis"              : "Required for use with Redis Valkyrja Cache (^1.1).",
+    "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (6.5.2).",
+    "league/flysystem"           : "Required for use with Valkyrja FileSystem (1.0.63).",
+    "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (1.0.23)",
+    "monolog/monolog"            : "Required for use with Valkyrja Logger (1.3.1).",
+    "predis/predis"              : "Required for use with Redis Valkyrja Cache (1.1.1).",
     "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0).",
     "ext-sodium"                 : "For Crypt functionality (*)",
     "ext-pdo"                    : "For ORM functionality (*)"

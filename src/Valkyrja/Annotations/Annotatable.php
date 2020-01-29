@@ -23,42 +23,42 @@ trait Annotatable
      *
      * @var string|null
      */
-    protected ?string $annotationType;
+    protected ?string $annotationType = null;
 
     /**
      * The id.
      *
      * @var string|null
      */
-    protected ?string $id;
+    protected ?string $id = null;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    protected ?string $name;
+    protected ?string $name = null;
 
     /**
      * The class.
      *
      * @var string|null
      */
-    protected ?string $class;
+    protected ?string $class = null;
 
     /**
      * The property.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $property;
+    protected ?string $property = null;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    protected ?string $method;
+    protected ?string $method = null;
 
     /**
      * Whether the property or method is static.
@@ -72,35 +72,35 @@ trait Annotatable
      *
      * @var string|null
      */
-    protected ?string $function;
+    protected ?string $function = null;
 
     /**
      * The matches.
      *
      * @var array|null
      */
-    protected ?array $matches;
+    protected ?array $matches = null;
 
     /**
      * The dependencies.
      *
      * @var array|null
      */
-    protected ?array $dependencies;
+    protected ?array $dependencies = null;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    protected ?array $arguments;
+    protected ?array $arguments = null;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    protected ?array $annotationArguments;
+    protected ?array $annotationArguments = null;
 
     /**
      * Get the type.

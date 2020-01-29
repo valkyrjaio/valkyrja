@@ -12,6 +12,7 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
+use TypeError;
 use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
@@ -23,9 +24,6 @@ use Valkyrja\Dispatcher\NativeDispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Env\EnvTest;
 use Valkyrja\Events\NativeEvents;
-use Valkyrja\Exceptions\InvalidContainerImplementation;
-use Valkyrja\Exceptions\InvalidDispatcherImplementation;
-use Valkyrja\Exceptions\InvalidEventsImplementation;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -504,8 +502,8 @@ class ApplicationTest extends TestCase
 
             $config['app']['dispatcher'] = InvalidDispatcherClass::class;
             $this->app->setup($config, true);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(InvalidDispatcherImplementation::class, $exception);
+        } catch (TypeError $exception) {
+            $this->assertInstanceOf(TypeError::class, $exception);
         }
 
         $this->app->setup(null, true);
@@ -523,8 +521,8 @@ class ApplicationTest extends TestCase
 
             $config['app']['container'] = InvalidContainerClass::class;
             $this->app->setup($config, true);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(InvalidContainerImplementation::class, $exception);
+        } catch (TypeError $exception) {
+            $this->assertInstanceOf(TypeError::class, $exception);
         }
 
         $this->app->setup(null, true);
@@ -542,8 +540,8 @@ class ApplicationTest extends TestCase
 
             $config['app']['events'] = InvalidEventsClass::class;
             $this->app->setup($config, true);
-        } catch (Exception $exception) {
-            $this->assertInstanceOf(InvalidEventsImplementation::class, $exception);
+        } catch (TypeError $exception) {
+            $this->assertInstanceOf(TypeError::class, $exception);
         }
 
         $this->app->setup(null, true);

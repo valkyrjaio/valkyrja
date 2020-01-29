@@ -170,7 +170,7 @@ class Valkyrja implements Application
         // Bootstrap debug capabilities
         $this->bootstrapConfig($config);
         // Bootstrap debug capabilities
-        $this->bootstrapDebug();
+        $this->bootstrapExceptionHandler();
         // Bootstrap core functionality
         $this->bootstrapCore();
         // Bootstrap the container
@@ -221,21 +221,21 @@ class Valkyrja implements Application
      *
      * @return void
      */
-    protected function bootstrapDebug(): void
+    protected function bootstrapExceptionHandler(): void
     {
+        // The exception handler class to use from the config
+        $exceptionHandlerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EXCEPTION_HANDLER];
+
+        // Set the exception handler to a new instance of the exception handler implementation
+        self::$exceptionHandler = new $exceptionHandlerImpl($this);
+
+        // If the dispatcher implementation specified does not adhere to the dispatcher contract
+        if (! self::$exceptionHandler instanceof ExceptionHandler) {
+            throw new InvalidExceptionHandlerImplementation('Invalid ExceptionHandler implementation');
+        }
+
         // If debug is on, enable debug handling
         if ($this->debug()) {
-            // The exception handler class to use from the config
-            $exceptionHandlerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EXCEPTION_HANDLER];
-
-            // Set the exception handler to a new instance of the exception handler implementation
-            self::$exceptionHandler = new $exceptionHandlerImpl($this);
-
-            // If the dispatcher implementation specified does not adhere to the dispatcher contract
-            if (! self::$exceptionHandler instanceof ExceptionHandler) {
-                throw new InvalidExceptionHandlerImplementation('Invalid ExceptionHandler implementation');
-            }
-
             // Enable exception handling
             self::$exceptionHandler::enable(E_ALL, true);
         }

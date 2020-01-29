@@ -32,7 +32,7 @@ class Option
      *
      * @var string|null
      */
-    protected ?string $shortcut;
+    protected ?string $shortcut = null;
 
     /**
      * The description.
@@ -46,7 +46,7 @@ class Option
      *
      * @var string|null
      */
-    protected ?string $default;
+    protected ?string $default = null;
 
     /**
      * The mode.

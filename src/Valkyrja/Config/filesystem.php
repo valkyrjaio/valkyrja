@@ -17,6 +17,7 @@
  * How the application stores, retrieves, copies, and manipulates files
  * across the filesystem it is located within is a necessity in most
  * applications. Configure that manipulative module here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -29,6 +30,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DEFAULT  => env(EnvKey::FILESYSTEM_DEFAULT, 'local'),
 
@@ -38,6 +40,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::ADAPTERS => [
         CKP::LOCAL => [

@@ -23,37 +23,37 @@ class ServiceContext extends Service
     /**
      * The context class.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $contextClass;
+    protected ?string $contextClass = null;
 
     /**
      * The context property.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $contextProperty;
+    protected ?string $contextProperty = null;
 
     /**
      * The context method.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $contextMethod;
+    protected ?string $contextMethod = null;
 
     /**
      * The context function.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $contextFunction;
+    protected ?string $contextFunction = null;
 
     /**
      * The context closure.
      *
-     * @var Closure
+     * @var Closure|null
      */
-    protected Closure $contextClosure;
+    protected ?Closure $contextClosure = null;
 
     /**
      * Get the context class.

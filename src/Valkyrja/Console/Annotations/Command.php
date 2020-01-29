@@ -23,37 +23,37 @@ class Command extends Annotation
     /**
      * The path.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $path;
+    protected ?string $path = null;
 
     /**
      * The regex for dynamic routes.
      *
      * @var string|null
      */
-    protected ?string $regex;
+    protected ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    protected ?array $params;
+    protected ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    protected ?array $segments;
+    protected ?array $segments = null;
 
     /**
      * The description.
      *
      * @var string|null
      */
-    protected ?string $description;
+    protected ?string $description = null;
 
     /**
      * Get the path.

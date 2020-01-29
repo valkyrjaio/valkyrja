@@ -18,6 +18,7 @@
  * able to properly route a request through your application. In
  * order to do that you'll need to configure it. Lucky for you
  * all the configurations for routing can be found here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -30,6 +31,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::TRAILING_SLASH              => env(EnvKey::ROUTING_TRAILING_SLASH, false),
 
@@ -39,6 +41,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ABSOLUTE_URLS           => env(EnvKey::ROUTING_USE_ABSOLUTE_URLS, false),
 
@@ -48,6 +51,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::MIDDLEWARE                  => env(EnvKey::ROUTING_MIDDLEWARE, []),
 
@@ -57,6 +61,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::MIDDLEWARE_GROUPS           => env(EnvKey::ROUTING_MIDDLEWARE_GROUPS, []),
 
@@ -66,6 +71,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS             => env(EnvKey::ROUTING_USE_ANNOTATIONS, false),
 
@@ -75,6 +81,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
@@ -84,6 +91,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CONTROLLERS                 => env(EnvKey::ROUTING_CONTROLLERS, []),
 
@@ -93,6 +101,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::FILE_PATH                   => env(EnvKey::ROUTING_FILE_PATH, routesPath('routes.php')),
 
@@ -102,6 +111,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CACHE_FILE_PATH             => env(EnvKey::ROUTING_CACHE_FILE_PATH, cachePath('routes.php')),
 
@@ -111,6 +121,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::USE_CACHE                   => env(EnvKey::ROUTING_USE_CACHE_FILE, false),
 ];

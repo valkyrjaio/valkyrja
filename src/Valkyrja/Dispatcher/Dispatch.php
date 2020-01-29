@@ -25,35 +25,35 @@ class Dispatch
      *
      * @var string|null
      */
-    protected ?string $id;
+    protected ?string $id = null;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    protected ?string $name;
+    protected ?string $name = null;
 
     /**
      * The class.
      *
      * @var string|null
      */
-    protected ?string $class;
+    protected ?string $class = null;
 
     /**
      * The property.
      *
      * @var string|null
      */
-    protected ?string $property;
+    protected ?string $property = null;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    protected ?string $method;
+    protected ?string $method = null;
 
     /**
      * Whether the property or method is static.
@@ -67,35 +67,35 @@ class Dispatch
      *
      * @var string|null
      */
-    protected ?string $function;
+    protected ?string $function = null;
 
     /**
      * The matches.
      *
      * @var array|null
      */
-    protected ?array $matches;
+    protected ?array $matches = null;
 
     /**
      * The closure.
      *
      * @var Closure|null
      */
-    protected ?Closure $closure;
+    protected ?Closure $closure = null;
 
     /**
      * The dependencies.
      *
-     * @var array
+     * @var array|null
      */
-    protected array $dependencies;
+    protected ?array $dependencies = null;
 
     /**
      * The arguments.
      *
-     * @var array
+     * @var array|null
      */
-    protected array $arguments;
+    protected ?array $arguments = null;
 
     /**
      * Get the id.

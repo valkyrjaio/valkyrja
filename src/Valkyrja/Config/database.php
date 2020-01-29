@@ -17,6 +17,7 @@
  * Persist your application's data through a data store using a database
  * connection method. All configurations for getting you going with
  * a few different data stores is available here.
+ *
  */
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
@@ -29,6 +30,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::DEFAULT     => env(EnvKey::DB_CONNECTION, CKP::MYSQL),
 
@@ -38,6 +40,7 @@ return [
      *-------------------------------------------------------------------------
      *
      * //
+     *
      */
     CKP::CONNECTIONS => [
 

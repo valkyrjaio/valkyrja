@@ -38,7 +38,7 @@ class Cookie
      *
      * @var string|null
      */
-    protected ?string $value;
+    protected ?string $value = null;
 
     /**
      * The cookie expire time.
@@ -59,7 +59,7 @@ class Cookie
      *
      * @var string|null
      */
-    protected ?string $domain;
+    protected ?string $domain = null;
 
     /**
      * Whether the cookie is secure.
@@ -87,7 +87,7 @@ class Cookie
      *
      * @var string|null
      */
-    protected ?string $sameSite;
+    protected ?string $sameSite = null;
 
     /**
      * Cookie constructor.

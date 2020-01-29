@@ -88,8 +88,8 @@ class AnnotationsParserTest extends TestCase
     /**
      * Test the getAnnotations method.
      *
-     * @return void
      * @throws \ReflectionException
+     * @return void
      */
     public function testGetAnnotations(): void
     {

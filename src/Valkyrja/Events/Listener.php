@@ -25,7 +25,7 @@ class Listener extends Dispatch
      *
      * @var string|null
      */
-    protected ?string $event;
+    protected ?string $event = null;
 
     /**
      * Get the event.

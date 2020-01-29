@@ -48,56 +48,56 @@ class NativeUri implements Uri
      *
      * @var string|null
      */
-    protected ?string $scheme;
+    protected ?string $scheme = null;
 
     /**
      * The user info.
      *
      * @var string|null
      */
-    protected ?string $userInfo;
+    protected ?string $userInfo = null;
 
     /**
      * The host.
      *
      * @var string|null
      */
-    protected ?string $host;
+    protected ?string $host = null;
 
     /**
      * The port.
      *
      * @var int|null
      */
-    protected ?int $port;
+    protected ?int $port = null;
 
     /**
      * The path.
      *
      * @var string|null
      */
-    protected ?string $path;
+    protected ?string $path = null;
 
     /**
      * The query string.
      *
      * @var string
      */
-    protected ?string $query;
+    protected ?string $query = null;
 
     /**
      * The fragment.
      *
      * @var string|null
      */
-    protected ?string $fragment;
+    protected ?string $fragment = null;
 
     /**
      * The URI as a string.
      *
      * @var string|null
      */
-    protected ?string $uriString;
+    protected ?string $uriString = null;
 
     /**
      * UriImpl constructor.

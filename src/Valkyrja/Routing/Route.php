@@ -26,16 +26,16 @@ class Route extends Dispatch
     /**
      * The path for this route.
      *
-     * @var string
+     * @var string|null
      */
-    protected string $path;
+    protected ?string $path = null;
 
     /**
      * The redirect path for this route.
      *
      * @var string|null
      */
-    protected ?string $redirectPath;
+    protected ?string $redirectPath = null;
 
     /**
      * The redirect status code for this route.
@@ -59,28 +59,28 @@ class Route extends Dispatch
      *
      * @var string|null
      */
-    protected ?string $regex;
+    protected ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    protected ?array $params;
+    protected ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    protected ?array $segments;
+    protected ?array $segments = null;
 
     /**
      * The middleware for this route.
      *
      * @var array|null
      */
-    protected ?array $middleware;
+    protected ?array $middleware = null;
 
     /**
      * Whether the route is dynamic.

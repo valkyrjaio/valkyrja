@@ -31,14 +31,14 @@ class NativeUploadedFile implements UploadedFile
      *
      * @var string|null
      */
-    protected ?string $file;
+    protected ?string $file = null;
 
     /**
      * The uploaded file as a stream.
      *
      * @var Stream|null
      */
-    protected ?Stream $stream;
+    protected ?Stream $stream = null;
 
     /**
      * THe uploaded file size.
@@ -59,14 +59,14 @@ class NativeUploadedFile implements UploadedFile
      *
      * @var string|null
      */
-    protected ?string $fileName;
+    protected ?string $fileName = null;
 
     /**
      * The uploaded file's media type.
      *
      * @var string|null
      */
-    protected ?string $mediaType;
+    protected ?string $mediaType = null;
 
     /**
      * Whether the file has been moved yet.
