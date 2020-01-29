@@ -89,19 +89,31 @@ abstract class Model implements JsonSerializable
     {
         $model = new static();
 
+        $model->setProperties($properties);
+
+        return $model;
+    }
+
+    /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties
+     *
+     * @return void
+     */
+    public function setProperties(array $properties): void
+    {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($model, $property)) {
+            if (null === $value || ! property_exists($this, $property)) {
                 // Continue to the next property
                 continue;
             }
 
             // Set the property
-            $model->{$property} = $value;
+            $this->{$property} = $value;
         }
-
-        return $model;
     }
 
     /**
