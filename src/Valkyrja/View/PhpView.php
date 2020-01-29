@@ -443,12 +443,12 @@ class PhpView implements View
         // Begin tracking layout changes for recursive layout
         $this->trackLayoutChanges = true;
 
-        return $this->renderTemplate($this->layoutPath);
+        return $this->renderLayout($this->layoutPath);
     }
 
     /**
      * Get the view as a string.
-     *
+     *./up
      * @return string
      */
     public function __toString(): string
