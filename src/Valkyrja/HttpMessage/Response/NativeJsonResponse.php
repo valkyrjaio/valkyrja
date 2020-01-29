@@ -55,7 +55,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
     ) {
         $body = new NativeStream('php://temp', 'wb+');
 
-        $body->write(json_encode($data, $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS));
+        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS));
         $body->rewind();
 
         parent::__construct(

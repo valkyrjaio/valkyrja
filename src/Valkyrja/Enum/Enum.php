@@ -26,7 +26,7 @@ abstract class Enum implements JsonSerializable
     /**
      * The allowable enum values.
      *
-     * @var array
+     * @var array|null
      */
     protected const VALUES = null;
 

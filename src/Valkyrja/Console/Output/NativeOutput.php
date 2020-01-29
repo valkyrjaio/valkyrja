@@ -31,7 +31,7 @@ class NativeOutput implements Output
      *
      * @var bool
      */
-    private static $quiet;
+    private static bool $quiet = false;
 
     /**
      * The formatter.

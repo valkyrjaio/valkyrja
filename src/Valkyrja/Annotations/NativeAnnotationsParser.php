@@ -234,7 +234,7 @@ class NativeAnnotationsParser implements AnnotationsParser
         // If a valid arguments list was passed in
         if (null !== $arguments && $arguments) {
             $testArgs      = str_replace('=', ':', $arguments);
-            $argumentsList = json_decode('{' . $testArgs . '}', true);
+            $argumentsList = json_decode('{' . $testArgs . '}', true, 512, JSON_THROW_ON_ERROR);
 
             if (is_array($argumentsList)) {
                 foreach ($argumentsList as &$value) {

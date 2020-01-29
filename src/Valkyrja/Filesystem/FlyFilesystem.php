@@ -271,6 +271,8 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
+     * @throws FileNotFoundException
+     *
      * @return int|null The size in bytes or null on failure
      */
     public function size(string $path): ?int
@@ -318,6 +320,8 @@ class FlyFilesystem implements Filesystem
      * @param string     $path       The path
      * @param Visibility $visibility The visibility
      *
+     * @throws FileNotFoundException
+     *
      * @return bool
      */
     public function setVisibility(string $path, Visibility $visibility): bool
@@ -330,6 +334,8 @@ class FlyFilesystem implements Filesystem
      *
      * @param string $path The path
      *
+     * @throws FileNotFoundException
+     *
      * @return bool
      */
     public function setVisibilityPublic(string $path): bool
@@ -341,6 +347,8 @@ class FlyFilesystem implements Filesystem
      * Set a file's visibility to private.
      *
      * @param string $path The path
+     *
+     * @throws FileNotFoundException
      *
      * @return bool
      */
