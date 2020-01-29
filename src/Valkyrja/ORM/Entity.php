@@ -73,7 +73,7 @@ abstract class Entity extends Model
      *
      * @var string|null
      */
-    protected static ?string $repository;
+    protected static ?string $repository = null;
 
     /**
      * Get the table.
