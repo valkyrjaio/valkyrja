@@ -162,14 +162,16 @@ abstract class Entity extends Model
      *
      * @param array $properties
      *
-     * @return void
+     * @return static
      */
-    public function fromArray(array $properties): void
+    public static function fromArray(array $properties): self
     {
+        $entity = new static();
+
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($this, $property)) {
+            if (null === $value || ! property_exists($entity, $property)) {
                 // Continue to the next property
                 continue;
             }
@@ -188,7 +190,7 @@ abstract class Entity extends Model
                 // If the type is array and the property isn't already an array
                 case PropertyType::ARRAY:
                     if (! is_array($value)) {
-                        $value = json_decode($value, true);
+                        $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
                     }
 
                     break;
@@ -211,18 +213,10 @@ abstract class Entity extends Model
             }
 
             // Set the property
-            $this->__set($property, $value);
+            $entity->{$property} = $value;
         }
-    }
 
-    /**
-     * Get entity as an array.
-     *
-     * @return array
-     */
-    public function asArray(): array
-    {
-        return $this->jsonSerialize();
+        return $entity;
     }
 
     /**
@@ -246,7 +240,7 @@ abstract class Entity extends Model
                 $value = serialize($value);
             } // If the type is array and the property isn't already an array
             elseif ($type === PropertyType::ARRAY && is_array($value)) {
-                $value = json_encode($value);
+                $value = json_encode($value, JSON_THROW_ON_ERROR);
             }
 
             // And set each property to its value

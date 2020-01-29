@@ -21,16 +21,6 @@ use JsonSerializable;
 abstract class Model implements JsonSerializable
 {
     /**
-     * Model constructor.
-     *
-     * @param array $properties [optional] The properties
-     */
-    public function __construct(array $properties = [])
-    {
-        $this->fromArray($properties);
-    }
-
-    /**
      * Get a property.
      *
      * @param string $name The property to get
@@ -93,21 +83,35 @@ abstract class Model implements JsonSerializable
      *
      * @param array $properties
      *
-     * @return void
+     * @return static
      */
-    public function fromArray(array $properties): void
+    public static function fromArray(array $properties): self
     {
+        $model = new static();
+
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($this, $property)) {
+            if (null === $value || ! property_exists($model, $property)) {
                 // Continue to the next property
                 continue;
             }
 
             // Set the property
-            $this->__set($property, $value);
+            $model->{$property} = $value;
         }
+
+        return $model;
+    }
+
+    /**
+     * Get model as an array.
+     *
+     * @return array
+     */
+    public function asArray(): array
+    {
+        return $this->jsonSerialize();
     }
 
     /**

@@ -475,9 +475,7 @@ class PDORepository implements Repository
         foreach ($rows as $row) {
             // Create a new model
             /** @var Entity $entity */
-            $entity = new $this->entity();
-            // Apply the model's contents given the row
-            $entity->fromArray($row);
+            $entity = $this->entity::fromArray($row);
 
             // If no columns were specified then we can safely get all the relations
             if (null === $columns && $getRelations === true) {
@@ -842,7 +840,7 @@ class PDORepository implements Repository
                 $property = serialize($property);
             } // Otherwise json encode if its an array
             elseif (is_array($property)) {
-                $property = json_encode($property);
+                $property = json_encode($property, JSON_THROW_ON_ERROR);
             }
 
             // Bind property
