@@ -124,7 +124,7 @@ class SodiumCrypt implements Crypt
      */
     public function encryptArray(array $array, string $key = null): string
     {
-        return $this->encrypt(json_encode($array), $key);
+        return $this->encrypt(json_encode($array, JSON_THROW_ON_ERROR), $key);
     }
 
     /**
@@ -139,7 +139,7 @@ class SodiumCrypt implements Crypt
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
-        return json_decode($this->decrypt($encrypted, $key), true);
+        return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -154,7 +154,7 @@ class SodiumCrypt implements Crypt
      */
     public function encryptObject(object $object, string $key = null): string
     {
-        return $this->encrypt(json_encode($object), $key);
+        return $this->encrypt(json_encode($object, JSON_THROW_ON_ERROR), $key);
     }
 
     /**
@@ -169,7 +169,7 @@ class SodiumCrypt implements Crypt
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return json_decode($this->decrypt($encrypted, $key), true);
+        return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

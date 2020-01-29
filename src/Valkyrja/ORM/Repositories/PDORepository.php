@@ -840,7 +840,7 @@ class PDORepository implements Repository
                 $property = serialize($property);
             } // Otherwise json encode if its an array
             elseif (is_array($property)) {
-                $property = json_encode($property);
+                $property = json_encode($property, JSON_THROW_ON_ERROR);
             }
 
             // Bind property

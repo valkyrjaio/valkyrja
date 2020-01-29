@@ -215,6 +215,6 @@ class Collection
      */
     public function __toString(): string
     {
-        return (string) json_encode($this->collection);
+        return (string) json_encode($this->collection, JSON_THROW_ON_ERROR);
     }
 }

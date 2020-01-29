@@ -188,7 +188,7 @@ abstract class Entity extends Model
                 // If the type is array and the property isn't already an array
                 case PropertyType::ARRAY:
                     if (! is_array($value)) {
-                        $value = json_decode($value, true);
+                        $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
                     }
 
                     break;
@@ -236,7 +236,7 @@ abstract class Entity extends Model
                 $value = serialize($value);
             } // If the type is array and the property isn't already an array
             elseif ($type === PropertyType::ARRAY && is_array($value)) {
-                $value = json_encode($value);
+                $value = json_encode($value, JSON_THROW_ON_ERROR);
             }
 
             // And set each property to its value

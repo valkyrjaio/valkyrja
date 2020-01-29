@@ -150,7 +150,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      */
     public function setData(array $data = []): JsonResponse
     {
-        $content = json_encode($data, $this->encodingOptions);
+        $content = json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidArgumentException(json_last_error_msg());
@@ -182,7 +182,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
     {
         $this->encodingOptions = $encodingOptions;
 
-        return $this->setData(json_decode($this->data, true));
+        return $this->setData(json_decode($this->data, true, 512, JSON_THROW_ON_ERROR));
     }
 
     /**

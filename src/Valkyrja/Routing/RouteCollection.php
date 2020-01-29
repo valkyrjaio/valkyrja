@@ -55,7 +55,7 @@ class RouteCollection
      */
     public function addRoute(Route $route): void
     {
-        $key                = md5(json_encode((array) $route));
+        $key                = md5(json_encode((array) $route, JSON_THROW_ON_ERROR));
         $this->routes[$key] = $route;
 
         foreach ($route->getRequestMethods() as $requestMethod) {

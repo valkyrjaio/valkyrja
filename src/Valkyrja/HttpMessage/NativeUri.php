@@ -97,7 +97,7 @@ class NativeUri implements Uri
      *
      * @var string|null
      */
-    protected ?string $uriString = null;
+    private ?string $uriString = null;
 
     /**
      * UriImpl constructor.
@@ -105,7 +105,7 @@ class NativeUri implements Uri
      * @param string $scheme   [optional] The scheme
      * @param string $userInfo [optional] The user info
      * @param string $host     [optional] The host
-     * @param int $port     [optional] The port
+     * @param int    $port     [optional] The port
      * @param string $path     [optional] The path
      * @param string $query    [optional] The query
      * @param string $fragment [optional] The fragment
@@ -616,7 +616,7 @@ class NativeUri implements Uri
     public function __toString()
     {
         if (null !== $this->uriString) {
-            return $this->uriString;
+            return (string) $this->uriString;
         }
 
         $uri = '';
