@@ -74,21 +74,21 @@ class NativeQueryBuilder implements QueryBuilder
      *
      * @var int|null
      */
-    protected int $limit;
+    protected ?int $limit = null;
 
     /**
      * Offset condition for the query statement.
      *
      * @var int|null
      */
-    protected int $offset;
+    protected ?int $offset = null;
 
     /**
      * The built query.
      *
      * @var string|null
      */
-    protected string $query;
+    protected ?string $query = null;
 
     /**
      * Create a SELECT query statement.
