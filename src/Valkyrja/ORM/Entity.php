@@ -69,6 +69,19 @@ abstract class Entity extends Model
     protected static array $propertyTypes = [];
 
     /**
+     * Allowed classes for serialization of object type properties.
+     * <code>
+     *      [
+     *          // An array of allowed classes for serialization for object types
+     *          'property_name' => [ClassName::class],
+     *      ]
+     * </code>.
+     *
+     * @var array
+     */
+    protected static array $propertyAllowedClasses = [];
+
+    /**
      * The ORM repository to use.
      *
      * @var string|null
@@ -181,7 +194,7 @@ abstract class Entity extends Model
                 // If the type is object and the property isn't already an object
                 case PropertyType::OBJECT:
                     if (! is_object($value)) {
-                        $value = unserialize($value, true);
+                        $value = unserialize($value, static::$propertyAllowedClasses[$property] ?? false);
                     }
 
                     break;
