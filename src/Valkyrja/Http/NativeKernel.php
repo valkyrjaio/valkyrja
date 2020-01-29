@@ -15,7 +15,6 @@ use Throwable;
 use Valkyrja\Application;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
@@ -128,14 +127,6 @@ class NativeKernel implements Kernel
      */
     protected function getExceptionResponse(Throwable $exception): Response
     {
-        if ($exception instanceof HttpException && $exception->getResponse() !== null) {
-            return $exception->getResponse();
-        }
-
-        if ($this->app->debug()) {
-            throw $exception;
-        }
-
         return $this->app->exceptionHandler()->response($exception);
     }
 

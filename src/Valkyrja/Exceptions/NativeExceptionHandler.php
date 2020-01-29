@@ -102,6 +102,8 @@ class NativeExceptionHandler implements ExceptionHandler
      *
      * @param Throwable $exception
      *
+     * @throws Throwable
+     *
      * @return Response
      */
     public function response(Throwable $exception): Response
@@ -111,6 +113,10 @@ class NativeExceptionHandler implements ExceptionHandler
                 return $exception->getResponse();
             }
 
+            if ($this->app->debug()) {
+                throw $exception;
+            }
+
             try {
                 $statusCode = $exception->getStatusCode();
 
@@ -118,6 +124,10 @@ class NativeExceptionHandler implements ExceptionHandler
             } catch (Throwable $exception) {
                 return $this->getDefaultResponse();
             }
+        }
+
+        if ($this->app->debug()) {
+            throw $exception;
         }
 
         return $this->getDefaultResponse();
