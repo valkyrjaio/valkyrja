@@ -448,7 +448,7 @@ class PhpView implements View
 
     /**
      * Get the view as a string.
-     *./up
+     *
      * @return string
      */
     public function __toString(): string
