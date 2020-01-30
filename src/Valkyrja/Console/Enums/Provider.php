@@ -42,17 +42,4 @@ final class Provider extends Enum
     public const EVENTS_CACHE_COMMAND           = EventsCacheCommand::class;
     public const ROUTES_CACHE_COMMAND           = RoutesCacheCommand::class;
     public const ROUTES_LIST_COMMAND            = RoutesListCommand::class;
-
-    protected const VALUES = [
-        self::CONFIG_CACHE_COMMAND,
-        self::CONFIG_ALL_COMMAND,
-        self::COMMANDS_LIST_COMMAND,
-        self::CONSOLE_CACHE_COMMAND,
-        self::COMMANDS_LIST_FOR_BASH_COMMAND,
-        self::OPTIMIZE_COMMAND,
-        self::CONTAINER_CACHE_COMMAND,
-        self::EVENTS_CACHE_COMMAND,
-        self::ROUTES_CACHE_COMMAND,
-        self::ROUTES_LIST_COMMAND,
-    ];
 }

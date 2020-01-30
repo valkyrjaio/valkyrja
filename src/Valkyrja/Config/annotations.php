@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -21,6 +21,7 @@ declare(strict_types=1);
  *
  */
 
+use Valkyrja\Annotation\Enums\Annotation;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
 
@@ -56,12 +57,12 @@ return [
     CKP::MAP       => env(
         EnvKey::ANNOTATIONS_MAP,
         [
-            'Command'        => Valkyrja\Console\Annotations\Command::class,
-            'Listener'       => Valkyrja\Event\Annotations\Listener::class,
-            'Route'          => Valkyrja\Routing\Annotations\Route::class,
-            'Service'        => Valkyrja\Container\Annotations\Service::class,
-            'ServiceAlias'   => Valkyrja\Container\Annotations\ServiceAlias::class,
-            'ServiceContext' => Valkyrja\Container\Annotations\ServiceContext::class,
+            CKP::COMMAND         => Annotation::COMMAND,
+            CKP::LISTENER        => Annotation::LISTENER,
+            CKP::ROUTE           => Annotation::ROUTE,
+            CKP::SERVICE         => Annotation::SERVICE,
+            CKP::SERVICE_ALIAS   => Annotation::SERVICE_ALIAS,
+            CKP::SERVICE_CONTEXT => Annotation::SERVICE_CONTEXT,
         ]
     ),
 ];
