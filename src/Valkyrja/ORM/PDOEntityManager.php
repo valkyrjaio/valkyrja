@@ -13,12 +13,13 @@ namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
-use PDOStatement;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
+use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\NativeRepository;
 use Valkyrja\Support\Providers\Provides;
@@ -44,6 +45,13 @@ class PDOEntityManager implements EntityManager
     protected Application $app;
 
     /**
+     * The connection to use.
+     *
+     * @var string
+     */
+    protected string $connection;
+
+    /**
      * Repositories.
      *
      * @var Repository[]
@@ -51,19 +59,14 @@ class PDOEntityManager implements EntityManager
     protected array $repositories = [];
 
     /**
-     * Stores.
+     * Connections.
      *
      * @var PDO[]
      */
-    protected array $stores = [];
+    protected static array $connections = [];
 
     /**
      * The entities awaiting to be committed for creation.
-     * <code>
-     *      [
-     *          Entity::class
-     *      ]
-     * </code>.
      *
      * @var Entity[]
      */
@@ -71,11 +74,6 @@ class PDOEntityManager implements EntityManager
 
     /**
      * The entities awaiting to be committed for saving.
-     * <code>
-     *      [
-     *          Entity::class
-     *      ]
-     * </code>.
      *
      * @var Entity[]
      */
@@ -83,38 +81,60 @@ class PDOEntityManager implements EntityManager
 
     /**
      * The entities awaiting to be committed for deletion.
-     * <code>
-     *      [
-     *          Entity::class
-     *      ]
-     * </code>.
      *
      * @var Entity[]
      */
     protected array $deleteEntities = [];
 
     /**
-     * PDOEntityManager' constructor.
+     * PDOEntityManager constructor.
      *
      * @param Application $app
-     *
-     * @throws InvalidArgumentException
+     * @param string|null $connection
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, string $connection = null)
     {
-        $this->app = $app;
+        $this->app        = $app;
+        $this->connection = $connection ?? $app->config()[ConfigKeyPart::DB][ConfigKeyPart::DEFAULT];
 
-        $this->store()->beginTransaction();
+        $this->connection()->beginTransaction();
     }
 
     /**
      * Get a new query builder instance.
      *
+     * @param string|null $entity
+     *
      * @return QueryBuilder
      */
-    public function getQueryBuilder(): QueryBuilder
+    public function queryBuilder(string $entity = null): QueryBuilder
     {
-        return new SqlQueryBuilder();
+        $queryBuilder = new SqlQueryBuilder($this->connection());
+
+        if (null !== $entity) {
+            $queryBuilder->entity($entity);
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Start a query.
+     *
+     * @param string      $query
+     * @param string|null $entity
+     *
+     * @return Query
+     */
+    public function query(string $query, string $entity = null): Query
+    {
+        $pdoQuery = new PDOQuery($this->connection());
+
+        if (null !== $entity) {
+            $pdoQuery->entity($entity);
+        }
+
+        return $pdoQuery->prepare($query);
     }
 
     /**
@@ -124,7 +144,7 @@ class PDOEntityManager implements EntityManager
      *
      * @return Repository
      */
-    public function getRepository(string $entity): Repository
+    public function repository(string $entity): Repository
     {
         if (isset($this->repositories[$entity])) {
             return $this->repositories[$entity];
@@ -145,7 +165,7 @@ class PDOEntityManager implements EntityManager
      */
     public function beginTransaction(): bool
     {
-        return $this->store()->beginTransaction();
+        return $this->connection()->beginTransaction();
     }
 
     /**
@@ -182,7 +202,7 @@ class PDOEntityManager implements EntityManager
             unset($this->deleteEntities[$sid]);
         }
 
-        return $this->store()->commit();
+        return $this->connection()->commit();
     }
 
     /**
@@ -194,7 +214,7 @@ class PDOEntityManager implements EntityManager
      */
     public function rollback(): bool
     {
-        return $this->store()->rollBack();
+        return $this->connection()->rollBack();
     }
 
     /**
@@ -204,7 +224,7 @@ class PDOEntityManager implements EntityManager
      */
     public function lastInsertId(): string
     {
-        return $this->store()->lastInsertId();
+        return $this->connection()->lastInsertId();
     }
 
     /**
@@ -421,23 +441,17 @@ class PDOEntityManager implements EntityManager
     /**
      * Get a pdo store by name.
      *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
      * @return PDO
      */
-    protected function store(string $name = null): PDO
+    protected function connection(): PDO
     {
-        $name = $name ?? $this->app->config()['database']['default'];
-
-        if (isset($this->stores[$name])) {
-            return $this->stores[$name];
+        if (isset(self::$connections[$this->connection])) {
+            return self::$connections[$this->connection];
         }
 
-        $config = $this->getStoreConfig($name);
+        $config = $this->getConnectionConfig($this->connection);
 
-        return $this->stores[$name] = $this->getStoreFromConfig($config);
+        return self::$connections[$this->connection] = $this->getConnectionFromConfig($config);
     }
 
     /**
@@ -449,7 +463,7 @@ class PDOEntityManager implements EntityManager
      *
      * @return array
      */
-    protected function getStoreConfig(string $name): array
+    protected function getConnectionConfig(string $name): array
     {
         $config = $this->app->config('database.connections.' . $name);
 
@@ -467,7 +481,7 @@ class PDOEntityManager implements EntityManager
      *
      * @return PDO
      */
-    protected function getStoreFromConfig(array $config): PDO
+    protected function getConnectionFromConfig(array $config): PDO
     {
         $dsn = $config['driver']
             . ':host=' . $config['host']
@@ -496,21 +510,10 @@ class PDOEntityManager implements EntityManager
     }
 
     /**
-     * Get a criterion param from a criterion name.
-     *
-     * @param string $criterion
-     *
-     * @return string
-     */
-    protected function criterionParam(string $criterion): string
-    {
-        return ':criterion_' . $criterion;
-    }
-
-    /**
      * Select entities by given criteria.
      * <code>
-     *      $this->select(
+     *      $this
+     *          ->select(
      *              [
      *                  'column',
      *                  'column2',
@@ -550,38 +553,39 @@ class PDOEntityManager implements EntityManager
         int $offset = null,
         bool $getRelations = null
     ) {
-        // Build the query
-        $query = $this->selectQueryBuilder($entity, $columns, $criteria, $orderBy, $limit, $offset);
+        // Get the query builders
+        $queryBuilder = $this->getQueryBuilderForSelect($entity, $columns, $criteria, $orderBy, $limit, $offset);
 
-        // Create a new PDO statement from the query builder
-        $stmt = $this->store()->prepare($query->getQuery());
+        // Create a new query with the query builder
+        $query = $this->query($queryBuilder->getQueryString(), $entity);
 
         // Bind criteria
-        $this->bindValuesForSelect($stmt, $criteria);
+        $this->bindValuesForSelect($query, $criteria);
 
-        // Execute the PDO statement
-        $stmt->execute();
+        // Execute the query
+        $query->execute();
 
-        // Get all the results from the PDO statement
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Get all the results from the query
+        $result = $query->getResult();
 
-        // If the result of the query was a count
-        if (isset($rows[0]['COUNT(*)'])) {
-            return (int) $rows[0]['COUNT(*)'];
+        // If the results are an array (not a count result [int])
+        if (is_array($result)) {
+            // Try to get the entity relations
+            $this->selectResultsRelations($result, $columns, $getRelations);
         }
 
-        return $this->getSelectResultsAsEntities($entity, $rows, $columns, $getRelations);
+        return $result;
     }
 
     /**
      * Bind criteria for a select statement.
      *
-     * @param PDOStatement $statement
-     * @param array|null   $criteria
+     * @param Query      $query
+     * @param array|null $criteria
      *
      * @return void
      */
-    protected function bindValuesForSelect(PDOStatement $statement, array $criteria = null): void
+    protected function bindValuesForSelect(Query $query, array $criteria = null): void
     {
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
@@ -595,93 +599,36 @@ class PDOEntityManager implements EntityManager
             if (is_array($criterion)) {
                 // Iterate through the criterion and bind each value individually
                 foreach ($criterion as $index => $criterionItem) {
-                    $this->bindValue($statement, $column . $index, $criterionItem);
+                    $query->bindValue($column . $index, $criterionItem);
                 }
 
                 continue;
             }
 
             // And bind each value to the column
-            $this->bindValue($statement, $column, $criterion);
+            $query->bindValue($column, $criterion);
         }
-    }
-
-    /**
-     * Bind a value to a statement.
-     *
-     * @param PDOStatement $statement
-     * @param string       $column
-     * @param mixed        $property
-     *
-     * @return void
-     */
-    protected function bindValue(PDOStatement $statement, string $column, $property): void
-    {
-        // And bind each value to the column
-        $statement->bindValue(
-            $this->columnParam($column),
-            $property,
-            $this->getBindValueType($property)
-        );
-    }
-
-    /**
-     * Get value type to bind with.
-     *
-     * @param mixed $property
-     *
-     * @return int
-     */
-    protected function getBindValueType($property): int
-    {
-        $type = PDO::PARAM_STR;
-
-        if (is_int($property)) {
-            $type = PDO::PARAM_INT;
-        } elseif (is_bool($property)) {
-            $type = PDO::PARAM_BOOL;
-        }
-
-        return $type;
     }
 
     /**
      * Get select results as an array of Entities.
      *
-     * @param string     $entity
-     * @param array|null $rows
+     * @param Entity[]   $entities
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return Entity[]
+     * @return void
      */
-    protected function getSelectResultsAsEntities(
-        string $entity,
-        array $rows = null,
-        array $columns = null,
-        bool $getRelations = null
-    ): array {
-        /** @var Entity|string $entity */
-
-        $results = [];
-
+    protected function selectResultsRelations(array $entities, array $columns = null, bool $getRelations = null): void
+    {
         // Iterate through the rows found
-        foreach ($rows as $row) {
-            // Create a new entity
-            /** @var Entity $entity */
-            $rowEntity = $entity::fromArray($row);
-
+        foreach ($entities as $entity) {
             // If no columns were specified then we can safely get all the relations
             if (null === $columns && $getRelations === true) {
                 // Add the model to the final results
-                $results[] = $this->getEntityRelations($rowEntity);
-            } else {
-                // Add the model to the final results
-                $results[] = $rowEntity;
+                $this->getEntityRelations($entity);
             }
         }
-
-        return $results;
     }
 
     /**
@@ -715,7 +662,7 @@ class PDOEntityManager implements EntityManager
      *
      * @return QueryBuilder
      */
-    protected function selectQueryBuilder(
+    protected function getQueryBuilderForSelect(
         string $entity,
         array $columns = null,
         array $criteria = null,
@@ -726,10 +673,7 @@ class PDOEntityManager implements EntityManager
         /** @var Entity|string $entity */
 
         // Create a new query
-        $query = $this
-            ->getQueryBuilder()
-            ->select($columns)
-            ->table($entity::getTable());
+        $query = $this->queryBuilder($entity)->select($columns);
 
         // If criteria has been passed
         if (null !== $criteria) {
@@ -926,7 +870,7 @@ class PDOEntityManager implements EntityManager
      * Save or create or delete a row.
      * <code>
      *      $this
-     *          ->saveOrCreate(
+     *          ->saveCreateDelete(
      *             'update' | 'insert' | 'delete',
      *              Entity::class
      *          )
@@ -942,52 +886,92 @@ class PDOEntityManager implements EntityManager
      */
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
-        if (! $this->store()->inTransaction()) {
-            $this->store()->beginTransaction();
+        if (! $this->connection()->inTransaction()) {
+            $this->connection()->beginTransaction();
         }
 
-        // Create a new query
-        $query      = $this
-            ->getQueryBuilder()
-            ->table($entity::getTable())
-            ->{$type}();
         $idField    = $entity::getIdField();
         $properties = $entity->forDataStore();
 
-        /* @var QueryBuilder $query */
+        // Get the query builder
+        $queryBuilder = $this->getQueryBuilderForSaveCreateDelete($type, $entity, $idField, $properties);
+
+        // Create a new query with the query builder
+        $query = $this->query($queryBuilder->getQueryString(), $entity);
+
+        // Bind values
+        $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
+
+        // If the execute failed
+        if (! $results = $query->execute()) {
+            // Throw a fail exception
+            throw new ExecuteException($query->getError());
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get the query builder for a save, create, or delete.
+     *
+     * @param string $type
+     * @param Entity $entity
+     * @param string $idField
+     * @param array  $properties
+     *
+     * @return QueryBuilder
+     */
+    protected function getQueryBuilderForSaveCreateDelete(
+        string $type,
+        Entity $entity,
+        string $idField,
+        array $properties
+    ): QueryBuilder {
+        // Create a new query
+        $queryBuilder = $this->queryBuilder($entity)->{$type}();
+
+        /* @var QueryBuilder $queryBuilder */
 
         // If this type isn't an insert
         if ($type !== self::INSERT) {
             // Set the id for the where clause
-            $query->where($idField . ' = ' . $this->criterionParam($idField));
+            $queryBuilder->where($idField . ' = ' . $this->columnParam($idField));
         }
 
         if ($type !== self::DELETE) {
             // Set the properties
-            $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
+            $this->setPropertiesForSaveCreateDeleteQuery($queryBuilder, $properties);
         }
 
-        // Prepare a PDO statement with the query
-        $statement = $this->store()->prepare($query->getQuery());
+        return $queryBuilder;
+    }
 
+    /**
+     * Bind values for save, create, or delete.
+     *
+     * @param Query  $query
+     * @param string $type
+     * @param string $idField
+     * @param array  $properties
+     *
+     * @return void
+     */
+    protected function bindValuesForSaveCreateDelete(
+        Query $query,
+        string $type,
+        string $idField,
+        array $properties
+    ): void {
         // If this type isn't an insert
         if ($type !== self::INSERT) {
             // Set the id value for the where clause
-            $this->bindValue($statement, $this->criterionParam($idField), $properties[$idField]);
+            $query->bindValue($idField, $properties[$idField]);
         }
 
         if ($type !== self::DELETE) {
             // Set the properties.
-            $this->setPropertiesForSaveCreateDeleteStatement($statement, $properties);
+            $this->setPropertiesForSaveCreateDeleteStatement($query, $properties);
         }
-
-        // If the execute failed
-        if (! $results = $statement->execute()) {
-            // Throw a fail exception
-            throw new ExecuteException($statement->errorInfo()[2]);
-        }
-
-        return $results;
     }
 
     /**
@@ -1014,12 +998,12 @@ class PDOEntityManager implements EntityManager
     /**
      * Set properties for save, create, or delete statements.
      *
-     * @param PDOStatement $statement
-     * @param array        $properties
+     * @param Query $query
+     * @param array $properties
      *
      * @return void
      */
-    protected function setPropertiesForSaveCreateDeleteStatement(PDOStatement $statement, array $properties): void
+    protected function setPropertiesForSaveCreateDeleteStatement(Query $query, array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
@@ -1036,7 +1020,7 @@ class PDOEntityManager implements EntityManager
             }
 
             // Bind property
-            $this->bindValue($statement, $column, $property);
+            $query->bindValue($column, $property);
         }
     }
 
@@ -1058,7 +1042,7 @@ class PDOEntityManager implements EntityManager
             $propertyMap = $propertyMapper[$property] ?? null;
 
             if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
-                $repository   = $this->getRepository($entityName);
+                $repository   = $this->repository($entityName);
                 $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
                 $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
                 $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;

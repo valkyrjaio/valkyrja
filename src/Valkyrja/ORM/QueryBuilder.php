@@ -86,6 +86,19 @@ interface QueryBuilder
     public function table(string $table, string $alias = null): self;
 
     /**
+     * Set the entity to query with.
+     * <code>
+     *      $queryBuilder
+     *          ->entity(Entity::class);
+     * </code>.
+     *
+     * @param string $entity
+     *
+     * @return static
+     */
+    public function entity(string $entity): self;
+
+    /**
      * Add a value for a column to set.
      * <code>
      *      $queryBuilder
@@ -243,5 +256,12 @@ interface QueryBuilder
      *
      * @return string
      */
-    public function getQuery(): string;
+    public function getQueryString(): string;
+
+    /**
+     * Get a query.
+     *
+     * @return Query
+     */
+    public function getQuery(): Query;
 }

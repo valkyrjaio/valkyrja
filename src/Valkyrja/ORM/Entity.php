@@ -14,7 +14,7 @@ namespace Valkyrja\ORM;
 use Valkyrja\Model\Model;
 
 /**
- * Interface EntityContract.
+ * Interface Entity.
  *
  * @author Melech Mizrachi
  */

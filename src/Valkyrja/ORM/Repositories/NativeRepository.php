@@ -15,6 +15,8 @@ use InvalidArgumentException;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
+use Valkyrja\ORM\Query;
+use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 
 /**
@@ -222,6 +224,28 @@ class NativeRepository implements Repository
     public function lastInsertId(): string
     {
         return $this->entityManager->lastInsertId();
+    }
+
+    /**
+     * Get a new query builder instance.
+     *
+     * @return QueryBuilder
+     */
+    public function queryBuilder(): QueryBuilder
+    {
+        return $this->entityManager->queryBuilder($this->entity);
+    }
+
+    /**
+     * Start a query.
+     *
+     * @param string $query
+     *
+     * @return Query
+     */
+    public function query(string $query): Query
+    {
+        return $this->entityManager->query($query, $this->entity);
     }
 
     /**

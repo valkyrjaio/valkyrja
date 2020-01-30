@@ -21,9 +21,21 @@ interface EntityManager
     /**
      * Get a new query builder instance.
      *
+     * @param string|null $entity
+     *
      * @return QueryBuilder
      */
-    public function getQueryBuilder(): QueryBuilder;
+    public function queryBuilder(string $entity = null): QueryBuilder;
+
+    /**
+     * Start a query.
+     *
+     * @param string      $query
+     * @param string|null $entity
+     *
+     * @return Query
+     */
+    public function query(string $query, string $entity = null): Query;
 
     /**
      * Get a repository instance.
@@ -32,7 +44,7 @@ interface EntityManager
      *
      * @return Repository
      */
-    public function getRepository(string $entity): Repository;
+    public function repository(string $entity): Repository;
 
     /**
      * Initiate a transaction.

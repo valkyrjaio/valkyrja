@@ -146,4 +146,20 @@ interface Repository
      * @return string
      */
     public function lastInsertId(): string;
+
+    /**
+     * Get a new query builder instance.
+     *
+     * @return QueryBuilder
+     */
+    public function queryBuilder(): QueryBuilder;
+
+    /**
+     * Start a query.
+     *
+     * @param string $query
+     *
+     * @return Query
+     */
+    public function query(string $query): Query;
 }

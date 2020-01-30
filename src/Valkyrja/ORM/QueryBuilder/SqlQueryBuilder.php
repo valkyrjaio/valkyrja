@@ -11,8 +11,12 @@
 
 namespace Valkyrja\ORM\QueryBuilder;
 
+use PDO;
+use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\Statement;
+use Valkyrja\ORM\Queries\PDOQuery;
+use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 
 /**
@@ -22,6 +26,13 @@ use Valkyrja\ORM\QueryBuilder;
  */
 class SqlQueryBuilder implements QueryBuilder
 {
+    /**
+     * The connection.
+     *
+     * @var PDO
+     */
+    protected PDO $connection;
+
     /**
      * The type of statement to build.
      *
@@ -90,7 +101,24 @@ class SqlQueryBuilder implements QueryBuilder
      *
      * @var string|null
      */
-    protected ?string $query = null;
+    protected ?string $queryString = null;
+
+    /**
+     * The entity to query with.
+     *
+     * @var Entity|string|null
+     */
+    protected ?string $entity = null;
+
+    /**
+     * PDOQuery constructor.
+     *
+     * @param PDO $connection
+     */
+    public function __construct(PDO $connection)
+    {
+        $this->connection = $connection;
+    }
 
     /**
      * Create a SELECT query statement.
@@ -186,6 +214,26 @@ class SqlQueryBuilder implements QueryBuilder
     public function table(string $table, string $alias = null): QueryBuilder
     {
         $this->table = $table . ($alias !== null ? ' ' . $alias : '');
+
+        return $this;
+    }
+
+    /**
+     * Set the entity to query with.
+     * <code>
+     *      $queryBuilder
+     *          ->entity(Entity::class);
+     * </code>.
+     *
+     * @param string $entity
+     *
+     * @return static
+     */
+    public function entity(string $entity): self
+    {
+        $this->entity = $entity;
+        /** @var Entity|string $entity */
+        $this->table = ':' . $entity;
 
         return $this;
     }
@@ -407,32 +455,48 @@ class SqlQueryBuilder implements QueryBuilder
      *
      * @return string
      */
-    public function getQuery(): string
+    public function getQueryString(): string
     {
-        if (null !== $this->query) {
-            return $this->query;
+        if (null !== $this->queryString) {
+            return $this->queryString;
         }
 
         switch ($this->type) {
             case Statement::SELECT:
-                $this->query = $this->getSelectQuery();
+                $this->queryString = $this->getSelectQuery();
 
                 break;
             case Statement::UPDATE:
-                $this->query = $this->getUpdateQuery();
+                $this->queryString = $this->getUpdateQuery();
 
                 break;
             case Statement::INSERT:
-                $this->query = $this->getInsertQuery();
+                $this->queryString = $this->getInsertQuery();
 
                 break;
             case Statement::DELETE:
-                $this->query = $this->getDeleteQuery();
+                $this->queryString = $this->getDeleteQuery();
 
                 break;
         }
 
-        return $this->query;
+        return $this->queryString;
+    }
+
+    /**
+     * Get a query.
+     *
+     * @return Query
+     */
+    public function getQuery(): Query
+    {
+        $query = new PDOQuery($this->connection);
+
+        if ($this->entity) {
+            $query->entity($this->entity);
+        }
+
+        return $query->prepare($this->getQueryString());
     }
 
     /**
