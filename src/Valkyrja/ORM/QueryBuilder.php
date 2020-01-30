@@ -13,6 +13,8 @@ namespace Valkyrja\ORM;
 
 /**
  * Interface QueryBuilder.
+ *
+ * @author Melech Mizrachi
  */
 interface QueryBuilder
 {

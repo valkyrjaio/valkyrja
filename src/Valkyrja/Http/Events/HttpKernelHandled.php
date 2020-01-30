@@ -13,26 +13,27 @@ namespace Valkyrja\Http\Events;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Model\Model;
 
 /**
  * Class HttpKernelHandled.
+ *
+ * @author Melech Mizrachi
  */
-class HttpKernelHandled extends Model
+class HttpKernelHandled
 {
     /**
      * The request.
      *
      * @var Request
      */
-    protected Request $request;
+    public Request $request;
 
     /**
      * The response.
      *
      * @var Response
      */
-    protected Response $response;
+    public Response $response;
 
     /**
      * HttpKernelHandled constructor.
@@ -43,50 +44,6 @@ class HttpKernelHandled extends Model
     public function __construct(Request $request, Response $response)
     {
         $this->request  = $request;
-        $this->response = $response;
-    }
-
-    /**
-     * Get the request.
-     *
-     * @return Request
-     */
-    public function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    /**
-     * Set the request.
-     *
-     * @param Request $request
-     *
-     * @return void
-     */
-    public function setRequest(Request $request): void
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * Get the response.
-     *
-     * @return Response
-     */
-    public function getResponse(): Response
-    {
-        return $this->response;
-    }
-
-    /**
-     * Set the response.
-     *
-     * @param Response $response
-     *
-     * @return void
-     */
-    public function setResponse(Response $response): void
-    {
         $this->response = $response;
     }
 }

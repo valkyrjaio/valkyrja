@@ -9,83 +9,208 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Repositories;
+namespace Valkyrja\ORM;
 
 use InvalidArgumentException;
 use PDO;
 use PDOStatement;
-use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\Application;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
-use Valkyrja\ORM\Exceptions\InvalidEntityException;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
+use Valkyrja\ORM\Repositories\NativeRepository;
+use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class PDORepository.
+ * Class PDOEntityManager.
+ *
+ * @author Melech Mizrachi
  */
-class PDORepository implements Repository
+class PDOEntityManager implements EntityManager
 {
-    /**
-     * The entity manager.
-     *
-     * @var EntityManager
-     */
-    protected EntityManager $entityManager;
+    use Provides;
+
+    protected const INSERT = 'insert';
+    protected const UPDATE = 'update';
+    protected const DELETE = 'delete';
 
     /**
-     * The entity to use.
+     * The application.
      *
-     * @var string|Entity
+     * @var Application
      */
-    protected string $entity;
+    protected Application $app;
 
     /**
-     * The table to use.
+     * Repositories.
      *
-     * @var string
+     * @var Repository[]
      */
-    protected string $table;
+    protected array $repositories = [];
 
     /**
-     * The PDO Store.
+     * Stores.
      *
-     * @var PDO
+     * @var PDO[]
      */
-    protected PDO $store;
+    protected array $stores = [];
 
     /**
-     * MySQLRepository constructor.
+     * The entities awaiting to be committed for creation.
+     * <code>
+     *      [
+     *          Entity::class
+     *      ]
+     * </code>.
      *
-     * @param EntityManager $entityManager
-     * @param string        $entity
+     * @var Entity[]
+     */
+    protected array $createEntities = [];
+
+    /**
+     * The entities awaiting to be committed for saving.
+     * <code>
+     *      [
+     *          Entity::class
+     *      ]
+     * </code>.
+     *
+     * @var Entity[]
+     */
+    protected array $saveEntities = [];
+
+    /**
+     * The entities awaiting to be committed for deletion.
+     * <code>
+     *      [
+     *          Entity::class
+     *      ]
+     * </code>.
+     *
+     * @var Entity[]
+     */
+    protected array $deleteEntities = [];
+
+    /**
+     * PDOEntityManager' constructor.
+     *
+     * @param Application $app
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(EntityManager $entityManager, string $entity)
+    public function __construct(Application $app)
     {
-        $this->entityManager = $entityManager;
-        $this->entity        = $entity;
-        $this->table         = $this->entity::getTable();
-        $this->store         = $this->entityManager->store();
+        $this->app = $app;
+
+        $this->store()->beginTransaction();
     }
 
     /**
-     * Get the store.
+     * Get a new query builder instance.
      *
-     * @return PDO
+     * @return QueryBuilder
      */
-    public function store(): PDO
+    public function getQueryBuilder(): QueryBuilder
     {
-        return $this->store;
+        return new SqlQueryBuilder();
+    }
+
+    /**
+     * Get a repository instance.
+     *
+     * @param string $entity
+     *
+     * @return Repository
+     */
+    public function getRepository(string $entity): Repository
+    {
+        if (isset($this->repositories[$entity])) {
+            return $this->repositories[$entity];
+        }
+
+        /** @var Entity|string $entity */
+        $repository = $entity::getRepository() ?? NativeRepository::class;
+
+        return $this->repositories[$entity] = new $repository($this, $entity, $entity::getTable());
+    }
+
+    /**
+     * Initiate a transaction.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function beginTransaction(): bool
+    {
+        return $this->store()->beginTransaction();
+    }
+
+    /**
+     * Commit all items in the transaction.
+     *
+     * @throws InvalidArgumentException
+     * @throws ExecuteException
+     *
+     * @return bool
+     */
+    public function commit(): bool
+    {
+        // Iterate through the models awaiting creation
+        foreach ($this->createEntities as $cid => $createEntity) {
+            // Create the model
+            $this->saveCreateDelete(self::UPDATE, $createEntity);
+            // Unset the model
+            unset($this->createEntities[$cid]);
+        }
+
+        // Iterate through the models awaiting save
+        foreach ($this->saveEntities as $sid => $saveEntity) {
+            // Save the model
+            $this->saveCreateDelete(self::INSERT, $saveEntity);
+            // Unset the model
+            unset($this->saveEntities[$sid]);
+        }
+
+        // Iterate through the models awaiting deletion
+        foreach ($this->deleteEntities as $sid => $deleteEntity) {
+            // Save the model
+            $this->saveCreateDelete(self::DELETE, $deleteEntity);
+            // Unset the model
+            unset($this->deleteEntities[$sid]);
+        }
+
+        return $this->store()->commit();
+    }
+
+    /**
+     * Rollback the previous transaction.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function rollback(): bool
+    {
+        return $this->store()->rollBack();
+    }
+
+    /**
+     * Get the last inserted id.
+     *
+     * @return string
+     */
+    public function lastInsertId(): string
+    {
+        return $this->store()->lastInsertId();
     }
 
     /**
      * Find a single entity given its id.
      *
+     * @param string     $entity
      * @param string|int $id
      * @param bool|null  $getRelations
      *
@@ -93,14 +218,17 @@ class PDORepository implements Repository
      *
      * @return Entity|null
      */
-    public function find($id, bool $getRelations = null): ?Entity
+    public function find(string $entity, $id, bool $getRelations = null): ?Entity
     {
         if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
         }
 
+        /** @var Entity|string $entity */
+
         return $this->findBy(
-                [$this->entity::getIdField() => $id],
+                $entity,
+                [$entity::getIdField() => $id],
                 null,
                 null,
                 null,
@@ -129,6 +257,7 @@ class PDORepository implements Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -141,6 +270,7 @@ class PDORepository implements Repository
      * @return Entity[]
      */
     public function findBy(
+        string $entity,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
@@ -148,7 +278,7 @@ class PDORepository implements Repository
         array $columns = null,
         bool $getRelations = null
     ): array {
-        return $this->select($columns, $criteria, $orderBy, $limit, $offset, $getRelations);
+        return $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
     }
 
     /**
@@ -164,6 +294,7 @@ class PDORepository implements Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
@@ -172,9 +303,13 @@ class PDORepository implements Repository
      *
      * @return Entity[]
      */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
-    {
-        return $this->findBy([], $orderBy, null, null, $columns, $getRelations);
+    public function findAll(
+        string $entity,
+        array $orderBy = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array {
+        return $this->findBy($entity, [], $orderBy, null, null, $columns, $getRelations);
     }
 
     /**
@@ -189,110 +324,163 @@ class PDORepository implements Repository
      *          )
      * </code>.
      *
-     * @param array $criteria
+     * @param string $entity
+     * @param array  $criteria
      *
      * @throws InvalidArgumentException
      *
      * @return int
      */
-    public function count(array $criteria): int
+    public function count($entity, array $criteria): int
     {
-        return (int) $this->select(['COUNT(*)'], $criteria);
+        return (int) $this->select($entity, ['COUNT(*)'], $criteria);
     }
 
     /**
-     * Create a new model.
-     * <code>
-     *      $this->create(Entity::class)
-     * </code>.
+     * Set a model for creation on transaction commit.
      *
      * @param Entity $entity
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
-     * @throws ExecuteException
-     *
-     * @return bool
-     */
-    public function create(Entity $entity): bool
-    {
-        $this->validateEntity($entity);
-
-        return $this->saveCreateDelete('insert', $entity);
-    }
-
-    /**
-     * Save an existing model given criteria to find. If no criteria specified uses all model properties.
-     * <code>
-     *      $this->save(Entity::class)
-     * </code>.
-     *
-     * @param Entity $entity
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
-     * @throws ExecuteException
-     *
-     * @return bool
-     */
-    public function save(Entity $entity): bool
-    {
-        $this->validateEntity($entity);
-
-        return $this->saveCreateDelete('update', $entity);
-    }
-
-    /**
-     * Delete an existing model.
-     * <code>
-     *      $this->delete(Entity::class)
-     * </code>.
-     *
-     * @param Entity $entity
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidEntityException
-     * @throws ExecuteException
-     *
-     * @return bool
-     */
-    public function delete(Entity $entity): bool
-    {
-        $this->validateEntity($entity);
-
-        return $this->saveCreateDelete('delete', $entity);
-    }
-
-    /**
-     * Get the last inserted id.
-     *
-     * @return string
-     */
-    public function lastInsertId(): string
-    {
-        return $this->store->lastInsertId();
-    }
-
-    /**
-     * Validate the passed entity.
-     *
-     * @param Entity $entity
-     *
-     * @throws InvalidEntityException
      *
      * @return void
      */
-    protected function validateEntity(Entity $entity): void
+    public function create(Entity $entity): void
     {
-        if (! ($entity instanceof $this->entity)) {
-            throw new InvalidEntityException(
-                'This repository expects entities to be instances of '
-                . $this->entity
-                . '. Entity instanced from '
-                . get_class($entity)
-                . ' provided instead.'
-            );
+        $id = spl_object_id($entity);
+
+        $this->createEntities[$id] = $entity;
+    }
+
+    /**
+     * Set a model for saving on transaction commit.
+     *
+     * @param Entity $entity
+     *
+     * @return void
+     */
+    public function save(Entity $entity): void
+    {
+        $id = spl_object_id($entity);
+
+        $this->saveEntities[$id] = $entity;
+    }
+
+    /**
+     * Set a model for deletion on transaction commit.
+     *
+     * @param Entity $entity
+     *
+     * @return void
+     */
+    public function delete(Entity $entity): void
+    {
+        $id = spl_object_id($entity);
+
+        $this->deleteEntities[$id] = $entity;
+    }
+
+    /**
+     * Remove a model previously set for creation, save, or deletion.
+     *
+     * @param Entity $entity The entity instance to remove.
+     *
+     * @return bool
+     */
+    public function remove(Entity $entity): bool
+    {
+        // Get the id of the object
+        $id = spl_object_id($entity);
+
+        // If the model is set to be created
+        if (isset($this->createEntities[$id])) {
+            // Unset it
+            unset($this->createEntities[$id]);
+
+            return true;
         }
+
+        // If the model is set to be saved
+        if (isset($this->saveEntities[$id])) {
+            // Unset it
+            unset($this->saveEntities[$id]);
+
+            return true;
+        }
+
+        // If the model is set to be deleted
+        if (isset($this->deleteEntities[$id])) {
+            // Unset it
+            unset($this->deleteEntities[$id]);
+
+            return true;
+        }
+
+        // The model wasn't set for creation or saving
+        return false;
+    }
+
+    /**
+     * Get a pdo store by name.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return PDO
+     */
+    protected function store(string $name = null): PDO
+    {
+        $name = $name ?? $this->app->config()['database']['default'];
+
+        if (isset($this->stores[$name])) {
+            return $this->stores[$name];
+        }
+
+        $config = $this->getStoreConfig($name);
+
+        return $this->stores[$name] = $this->getStoreFromConfig($config);
+    }
+
+    /**
+     * Get the store config.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array
+     */
+    protected function getStoreConfig(string $name): array
+    {
+        $config = $this->app->config('database.connections.' . $name);
+
+        if (null === $config) {
+            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Get the store from the config.
+     *
+     * @param array $config
+     *
+     * @return PDO
+     */
+    protected function getStoreFromConfig(array $config): PDO
+    {
+        $dsn = $config['driver']
+            . ':host=' . $config['host']
+            . ';port=' . $config['port']
+            . ';dbname=' . $config['database']
+            . ';charset=' . $config['charset'];
+
+        return new PDO(
+            $dsn,
+            $config['username'],
+            $config['password'],
+            []
+        );
     }
 
     /**
@@ -341,6 +529,7 @@ class PDORepository implements Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array|null $columns
      * @param array|null $criteria
      * @param array|null $orderBy
@@ -353,6 +542,7 @@ class PDORepository implements Repository
      * @return Entity[]|int
      */
     protected function select(
+        string $entity,
         array $columns = null,
         array $criteria = null,
         array $orderBy = null,
@@ -361,10 +551,10 @@ class PDORepository implements Repository
         bool $getRelations = null
     ) {
         // Build the query
-        $query = $this->selectQueryBuilder($columns, $criteria, $orderBy, $limit, $offset);
+        $query = $this->selectQueryBuilder($entity, $columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new PDO statement from the query builder
-        $stmt = $this->store->prepare($query->getQuery());
+        $stmt = $this->store()->prepare($query->getQuery());
 
         // Bind criteria
         $this->bindValuesForSelect($stmt, $criteria);
@@ -380,7 +570,7 @@ class PDORepository implements Repository
             return (int) $rows[0]['COUNT(*)'];
         }
 
-        return $this->getSelectResultsAsEntities($rows, $columns, $getRelations);
+        return $this->getSelectResultsAsEntities($entity, $rows, $columns, $getRelations);
     }
 
     /**
@@ -458,6 +648,7 @@ class PDORepository implements Repository
     /**
      * Get select results as an array of Entities.
      *
+     * @param string     $entity
      * @param array|null $rows
      * @param array|null $columns
      * @param bool|null  $getRelations
@@ -465,25 +656,28 @@ class PDORepository implements Repository
      * @return Entity[]
      */
     protected function getSelectResultsAsEntities(
+        string $entity,
         array $rows = null,
         array $columns = null,
         bool $getRelations = null
     ): array {
+        /** @var Entity|string $entity */
+
         $results = [];
 
         // Iterate through the rows found
         foreach ($rows as $row) {
-            // Create a new model
+            // Create a new entity
             /** @var Entity $entity */
-            $entity = $this->entity::fromArray($row);
+            $rowEntity = $entity::fromArray($row);
 
             // If no columns were specified then we can safely get all the relations
             if (null === $columns && $getRelations === true) {
                 // Add the model to the final results
-                $results[] = $this->getEntityRelations($entity);
+                $results[] = $this->getEntityRelations($rowEntity);
             } else {
                 // Add the model to the final results
-                $results[] = $entity;
+                $results[] = $rowEntity;
             }
         }
 
@@ -512,6 +706,7 @@ class PDORepository implements Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array|null $columns
      * @param array|null $criteria
      * @param array|null $orderBy
@@ -521,17 +716,20 @@ class PDORepository implements Repository
      * @return QueryBuilder
      */
     protected function selectQueryBuilder(
+        string $entity,
         array $columns = null,
         array $criteria = null,
         array $orderBy = null,
         int $limit = null,
         int $offset = null
     ): QueryBuilder {
+        /** @var Entity|string $entity */
+
         // Create a new query
-        $query = $this->entityManager
+        $query = $this
             ->getQueryBuilder()
             ->select($columns)
-            ->table($this->table);
+            ->table($entity::getTable());
 
         // If criteria has been passed
         if (null !== $criteria) {
@@ -744,58 +942,52 @@ class PDORepository implements Repository
      */
     protected function saveCreateDelete(string $type, Entity $entity): int
     {
-        if (! $this->store->inTransaction()) {
-            $this->store->beginTransaction();
+        if (! $this->store()->inTransaction()) {
+            $this->store()->beginTransaction();
         }
 
         // Create a new query
-        $query      = $this->entityManager
+        $query      = $this
             ->getQueryBuilder()
-            ->table($this->table)
+            ->table($entity::getTable())
             ->{$type}();
         $idField    = $entity::getIdField();
         $properties = $entity->forDataStore();
 
         /* @var QueryBuilder $query */
 
-        // If this is an insert
-        if ($type === 'insert') {
-            // Ensure all the required properties are set
-            $this->ensureRequiredProperties($entity, $properties);
-        }
-
         // If this type isn't an insert
-        if ($type !== 'insert') {
+        if ($type !== self::INSERT) {
             // Set the id for the where clause
             $query->where($idField . ' = ' . $this->criterionParam($idField));
         }
 
-        if ($type !== 'delete') {
+        if ($type !== self::DELETE) {
             // Set the properties
             $this->setPropertiesForSaveCreateDeleteQuery($query, $properties);
         }
 
         // Prepare a PDO statement with the query
-        $stmt = $this->store->prepare($query->getQuery());
+        $statement = $this->store()->prepare($query->getQuery());
 
         // If this type isn't an insert
-        if ($type !== 'insert') {
+        if ($type !== self::INSERT) {
             // Set the id value for the where clause
-            $stmt->bindValue($this->criterionParam($idField), $properties[$idField]);
+            $this->bindValue($statement, $this->criterionParam($idField), $properties[$idField]);
         }
 
-        if ($type !== 'delete') {
+        if ($type !== self::DELETE) {
             // Set the properties.
-            $this->setPropertiesForSaveCreateDeleteStatement($stmt, $properties);
+            $this->setPropertiesForSaveCreateDeleteStatement($statement, $properties);
         }
 
         // If the execute failed
-        if (! $executeResult = $stmt->execute()) {
+        if (! $results = $statement->execute()) {
             // Throw a fail exception
-            throw new ExecuteException($stmt->errorInfo()[2]);
+            throw new ExecuteException($statement->errorInfo()[2]);
         }
 
-        return $executeResult;
+        return $results;
     }
 
     /**
@@ -866,7 +1058,7 @@ class PDORepository implements Repository
             $propertyMap = $propertyMapper[$property] ?? null;
 
             if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
-                $repository   = $this->entityManager->getRepository($entityName);
+                $repository   = $this->getRepository($entityName);
                 $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
                 $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
                 $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;
@@ -901,24 +1093,28 @@ class PDORepository implements Repository
     }
 
     /**
-     * Ensure all required properties have been passed.
+     * The items provided by this provider.
      *
-     * @param Entity $entity
-     * @param array  $properties
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            EntityManager::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
      *
      * @throws InvalidArgumentException
      *
      * @return void
      */
-    protected function ensureRequiredProperties(Entity $entity, array $properties): void
+    public static function publish(Application $app): void
     {
-        // Iterate through the required properties
-        foreach ($entity::getRequiredProperties() as $requiredProperty) {
-            // If the required property is not set
-            if (! isset($properties[$requiredProperty])) {
-                // Throw an exception
-                throw new InvalidArgumentException('Missing required property: ' . $requiredProperty);
-            }
-        }
+        $app->container()->singleton(EntityManager::class, new static($app));
     }
 }

@@ -18,7 +18,9 @@ use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Support\Providers\Provides;
 
 /**
- * Interface Crypt.
+ * Class SodiumCrypt.
+ *
+ * @author Melech Mizrachi
  */
 class SodiumCrypt implements Crypt
 {

@@ -9,15 +9,57 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\ORM\Repositories;
+
+use InvalidArgumentException;
+use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Exceptions\InvalidEntityException;
+use Valkyrja\ORM\Repository;
 
 /**
- * Interface Repository.
+ * Class NativeRepository.
  *
  * @author Melech Mizrachi
  */
-interface Repository
+class NativeRepository implements Repository
 {
+    /**
+     * The entity manager.
+     *
+     * @var EntityManager
+     */
+    protected EntityManager $entityManager;
+
+    /**
+     * The entity to use.
+     *
+     * @var string|Entity
+     */
+    protected string $entity;
+
+    /**
+     * The table to use.
+     *
+     * @var string
+     */
+    protected string $table;
+
+    /**
+     * MySQLRepository constructor.
+     *
+     * @param EntityManager $entityManager
+     * @param string        $entity
+     *
+     * @throws InvalidArgumentException
+     */
+    public function __construct(EntityManager $entityManager, string $entity)
+    {
+        $this->entityManager = $entityManager;
+        $this->entity        = $entity;
+        $this->table         = $this->entity::getTable();
+    }
+
     /**
      * Find a single entity given its id.
      *
@@ -26,7 +68,10 @@ interface Repository
      *
      * @return Entity|null
      */
-    public function find($id, bool $getRelations = null): ?Entity;
+    public function find($id, bool $getRelations = null): ?Entity
+    {
+        return $this->entityManager->find($this->entity, $id, $getRelations);
+    }
 
     /**
      * Find entities by given criteria.
@@ -63,7 +108,9 @@ interface Repository
         int $offset = null,
         array $columns = null,
         bool $getRelations = null
-    ): array;
+    ): array {
+        return $this->entityManager->findBy($this->entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations);
+    }
 
     /**
      * Find entities by given criteria.
@@ -84,7 +131,10 @@ interface Repository
      *
      * @return Entity[]
      */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array;
+    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
+    {
+        return $this->entityManager->findAll($this->entity, $orderBy, $columns, $getRelations);
+    }
 
     /**
      * Count all the results of given criteria.
@@ -102,7 +152,10 @@ interface Repository
      *
      * @return int
      */
-    public function count(array $criteria): int;
+    public function count(array $criteria): int
+    {
+        return $this->entityManager->count($this->entity, $criteria);
+    }
 
     /**
      * Create a new model.
@@ -112,9 +165,16 @@ interface Repository
      *
      * @param Entity $entity
      *
+     * @throws InvalidEntityException
+     *
      * @return void
      */
-    public function create(Entity $entity): void;
+    public function create(Entity $entity): void
+    {
+        $this->validateEntity($entity);
+
+        $this->entityManager->create($entity);
+    }
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
@@ -124,9 +184,16 @@ interface Repository
      *
      * @param Entity $entity
      *
+     * @throws InvalidEntityException
+     *
      * @return void
      */
-    public function save(Entity $entity): void;
+    public function save(Entity $entity): void
+    {
+        $this->validateEntity($entity);
+
+        $this->entityManager->save($entity);
+    }
 
     /**
      * Delete an existing model.
@@ -136,14 +203,46 @@ interface Repository
      *
      * @param Entity $entity
      *
+     * @throws InvalidEntityException
+     *
      * @return void
      */
-    public function delete(Entity $entity): void;
+    public function delete(Entity $entity): void
+    {
+        $this->validateEntity($entity);
+
+        $this->entityManager->delete($entity);
+    }
 
     /**
      * Get the last inserted id.
      *
      * @return string
      */
-    public function lastInsertId(): string;
+    public function lastInsertId(): string
+    {
+        return $this->entityManager->lastInsertId();
+    }
+
+    /**
+     * Validate the passed entity.
+     *
+     * @param Entity $entity
+     *
+     * @throws InvalidEntityException
+     *
+     * @return void
+     */
+    protected function validateEntity(Entity $entity): void
+    {
+        if (! ($entity instanceof $this->entity)) {
+            throw new InvalidEntityException(
+                'This repository expects entities to be instances of '
+                . $this->entity
+                . '. Entity instanced from '
+                . get_class($entity)
+                . ' provided instead.'
+            );
+        }
+    }
 }

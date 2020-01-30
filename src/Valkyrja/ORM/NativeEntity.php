@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Exceptions;
-
-use Exception;
+namespace Valkyrja\ORM;
 
 /**
- * Exception InvalidEntityException.
+ * Class NativeModel
  *
  * @author Melech Mizrachi
  */
-class InvalidEntityException extends Exception
+class NativeEntity implements Entity
 {
+    use EntityTrait;
 }

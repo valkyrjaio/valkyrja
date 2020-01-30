@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\Model;
 
 /**
- * Class Controller.
+ * Class NativeModel
  *
  * @author Melech Mizrachi
  */
-abstract class Controller
+class NativeModel implements Model
 {
+    use ModelTrait;
 }

@@ -12,26 +12,27 @@
 namespace Valkyrja\Console\Events;
 
 use Valkyrja\Console\Input\Input;
-use Valkyrja\Model\Model;
 
 /**
  * Class ConsoleKernelHandled.
+ *
+ * @author Melech Mizrachi
  */
-class ConsoleKernelHandled extends Model
+class ConsoleKernelHandled
 {
     /**
      * The input request.
      *
      * @var Input
      */
-    protected Input $input;
+    public Input $input;
 
     /**
      * The exit code.
      *
      * @var int
      */
-    protected int $exitCode;
+    public int $exitCode;
 
     /**
      * ConsoleKernelHandled constructor.
@@ -42,50 +43,6 @@ class ConsoleKernelHandled extends Model
     public function __construct(Input $input, int $exitCode)
     {
         $this->input    = $input;
-        $this->exitCode = $exitCode;
-    }
-
-    /**
-     * Get the input request.
-     *
-     * @return Input
-     */
-    public function getInput(): Input
-    {
-        return $this->input;
-    }
-
-    /**
-     * Set the input request.
-     *
-     * @param Input $input
-     *
-     * @return void
-     */
-    public function setInput(Input $input): void
-    {
-        $this->input = $input;
-    }
-
-    /**
-     * Get the exit code.
-     *
-     * @return int
-     */
-    public function getExitCode(): int
-    {
-        return $this->exitCode;
-    }
-
-    /**
-     * Set the exit code.
-     *
-     * @param int $exitCode
-     *
-     * @return void
-     */
-    public function setExitCode(int $exitCode): void
-    {
         $this->exitCode = $exitCode;
     }
 }

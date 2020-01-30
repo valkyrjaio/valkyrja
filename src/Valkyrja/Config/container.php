@@ -56,7 +56,7 @@ return [
             Valkyrja\Http\NativeResponseBuilder::class,
             Valkyrja\Logger\Providers\LoggerServiceProvider::class,
             Valkyrja\Mail\PHPMailerMail::class,
-            Valkyrja\ORM\NativeEntityManager::class,
+            Valkyrja\ORM\PDOEntityManager::class,
             Valkyrja\Path\NativePathGenerator::class,
             Valkyrja\Path\NativePathParser::class,
             Valkyrja\Routing\NativeRouter::class,

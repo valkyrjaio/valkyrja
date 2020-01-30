@@ -15,6 +15,8 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
  * Interface Crypt.
+ *
+ * @author Melech Mizrachi
  */
 interface Crypt
 {

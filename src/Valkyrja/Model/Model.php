@@ -14,12 +14,21 @@ namespace Valkyrja\Model;
 use JsonSerializable;
 
 /**
- * Class Model.
+ * Interface Model.
  *
  * @author Melech Mizrachi
  */
-abstract class Model implements JsonSerializable
+interface Model extends JsonSerializable
 {
+    /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties
+     *
+     * @return static
+     */
+    public static function fromArray(array $properties): self;
+
     /**
      * Get a property.
      *
@@ -27,17 +36,7 @@ abstract class Model implements JsonSerializable
      *
      * @return mixed
      */
-    public function __get(string $name)
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'get' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName();
-        }
-
-        return $this->{$name};
-    }
+    public function __get(string $name);
 
     /**
      * Set a property.
@@ -47,17 +46,7 @@ abstract class Model implements JsonSerializable
      *
      * @return void
      */
-    public function __set(string $name, $value): void
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'set' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            $this->$methodName($value);
-        }
-
-        $this->{$name} = $value;
-    }
+    public function __set(string $name, $value): void;
 
     /**
      * Check if a property is set.
@@ -66,33 +55,7 @@ abstract class Model implements JsonSerializable
      *
      * @return bool
      */
-    public function __isset(string $name): bool
-    {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'isset' . $methodName;
-
-        if (method_exists($this, $methodName)) {
-            return $this->$methodName();
-        }
-
-        return property_exists($this, $name);
-    }
-
-    /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
-     *
-     * @return static
-     */
-    public static function fromArray(array $properties): self
-    {
-        $model = new static();
-
-        $model->setProperties($properties);
-
-        return $model;
-    }
+    public function __isset(string $name): bool;
 
     /**
      * Set properties from an array of properties.
@@ -101,38 +64,19 @@ abstract class Model implements JsonSerializable
      *
      * @return void
      */
-    public function setProperties(array $properties): void
-    {
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($this, $property)) {
-                // Continue to the next property
-                continue;
-            }
-
-            // Set the property
-            $this->{$property} = $value;
-        }
-    }
+    public function setProperties(array $properties): void;
 
     /**
      * Get model as an array.
      *
      * @return array
      */
-    public function asArray(): array
-    {
-        return $this->jsonSerialize();
-    }
+    public function asArray(): array;
 
     /**
      * Serialize properties for json_encode.
      *
      * @return array
      */
-    public function jsonSerialize(): array
-    {
-        return get_object_vars($this);
-    }
+    public function jsonSerialize(): array;
 }

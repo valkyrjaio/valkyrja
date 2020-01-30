@@ -15,6 +15,8 @@ use Exception;
 
 /**
  * Exception ExecuteException.
+ *
+ * @author Melech Mizrachi
  */
 class ExecuteException extends Exception
 {

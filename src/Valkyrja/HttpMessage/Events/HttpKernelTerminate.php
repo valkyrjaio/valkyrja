@@ -13,6 +13,8 @@ namespace Valkyrja\HttpMessage\Events;
 
 /**
  * Class HttpKernelTerminate.
+ *
+ * @author Melech Mizrachi
  */
 class HttpKernelTerminate extends HttpKernelHandled
 {

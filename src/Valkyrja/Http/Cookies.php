@@ -25,7 +25,7 @@ class Cookies
     /**
      * Array of cookies.
      *
-     * @var array
+     * @var Cookie[]
      */
     protected array $cookies = [];
 

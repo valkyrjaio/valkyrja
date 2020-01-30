@@ -16,9 +16,11 @@ use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\QueryBuilder;
 
 /**
- * Class QueryBuilder.
+ * Class SqlQueryBuilder.
+ *
+ * @author Melech Mizrachi
  */
-class NativeQueryBuilder implements QueryBuilder
+class SqlQueryBuilder implements QueryBuilder
 {
     /**
      * The type of statement to build.

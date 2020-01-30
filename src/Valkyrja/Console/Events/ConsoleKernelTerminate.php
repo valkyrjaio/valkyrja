@@ -13,6 +13,8 @@ namespace Valkyrja\Console\Events;
 
 /**
  * Class ConsoleKernelTerminate.
+ *
+ * @author Melech Mizrachi
  */
 class ConsoleKernelTerminate extends ConsoleKernelHandled
 {

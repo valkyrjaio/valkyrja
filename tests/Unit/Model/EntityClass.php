@@ -11,13 +11,18 @@
 
 namespace Valkyrja\Tests\Unit\Model;
 
+use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\EntityTrait;
+
 /**
  * Model class to use to test abstract model.
  *
  * @author Melech Mizrachi
  */
-class EntityClass extends \Valkyrja\ORM\Entity
+class EntityClass implements Entity
 {
+    use EntityTrait;
+
     /**
      * A property to test with.
      *

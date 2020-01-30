@@ -14,7 +14,9 @@ namespace Valkyrja\Crypt\Exceptions;
 use Exception;
 
 /**
- * Interface Crypt.
+ * Class CryptException.
+ *
+ * @author Melech Mizrachi
  */
 class CryptException extends Exception
 {

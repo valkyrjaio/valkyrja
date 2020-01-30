@@ -15,6 +15,8 @@ use Valkyrja\Enum\Enum;
 
 /**
  * Enum PropertyMap.
+ *
+ * @author Melech Mizrachi
  */
 final class PropertyMap extends Enum
 {

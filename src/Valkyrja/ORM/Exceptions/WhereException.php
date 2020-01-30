@@ -15,6 +15,8 @@ use Exception;
 
 /**
  * Exception WhereException.
+ *
+ * @author Melech Mizrachi
  */
 class WhereException extends Exception
 {
