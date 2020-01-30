@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -34,7 +34,7 @@ return [
      * //
      *
      */
-    CKP::DIR => env(EnvKey::VIEWS_DIR, resourcesPath('views')),
+    CKP::DIR   => env(EnvKey::VIEWS_DIR, resourcesPath('views')),
 
     /*
      *-------------------------------------------------------------------------
@@ -44,5 +44,5 @@ return [
      * //
      *
      */
-    CKP::PATHS  => env(EnvKey::VIEWS_PATHS, []),
+    CKP::PATHS => env(EnvKey::VIEWS_PATHS, []),
 ];

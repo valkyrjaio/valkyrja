@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -295,9 +295,9 @@ interface EntityManager
      *          )
      * </code>.
      *
-     * @param Entity $entity The entity instance to remove.
+     * @param Entity|null $entity The entity instance to remove.
      *
-     * @return bool
+     * @return void
      */
-    public function remove(Entity $entity): bool;
+    public function clear(Entity $entity = null): void;
 }

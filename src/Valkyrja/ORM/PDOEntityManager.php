@@ -521,12 +521,20 @@ class PDOEntityManager implements EntityManager
      *          )
      * </code>.
      *
-     * @param Entity $entity The entity instance to remove.
+     * @param Entity|null $entity The entity instance to remove.
      *
-     * @return bool
+     * @return void
      */
-    public function remove(Entity $entity): bool
+    public function clear(Entity $entity = null): void
     {
+        if ($entity === null) {
+            $this->createEntities = [];
+            $this->saveEntities   = [];
+            $this->deleteEntities = [];
+
+            return;
+        }
+
         // Get the id of the object
         $id = spl_object_id($entity);
 
@@ -535,7 +543,7 @@ class PDOEntityManager implements EntityManager
             // Unset it
             unset($this->createEntities[$id]);
 
-            return true;
+            return;
         }
 
         // If the model is set to be saved
@@ -543,7 +551,7 @@ class PDOEntityManager implements EntityManager
             // Unset it
             unset($this->saveEntities[$id]);
 
-            return true;
+            return;
         }
 
         // If the model is set to be deleted
@@ -551,11 +559,8 @@ class PDOEntityManager implements EntityManager
             // Unset it
             unset($this->deleteEntities[$id]);
 
-            return true;
+            return;
         }
-
-        // The model wasn't set for creation or saving
-        return false;
     }
 
     /**
@@ -1027,6 +1032,8 @@ class PDOEntityManager implements EntityManager
             // Throw a fail exception
             throw new ExecuteException($query->getError());
         }
+
+        $entity->{$idField} = $this->lastInsertId();
     }
 
     /**

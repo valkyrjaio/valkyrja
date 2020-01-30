@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -450,7 +450,8 @@ class FlyFilesystem implements Filesystem
     {
         return self::$adapters[ConfigKeyPart::LOCAL]
             ?? self::$adapters[ConfigKeyPart::LOCAL] = new Local(
-                $this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::LOCAL][ConfigKeyPart::DIR]
+                $this->app->config(
+                )[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::LOCAL][ConfigKeyPart::DIR]
             );
     }
 

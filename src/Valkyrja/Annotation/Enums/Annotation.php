@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -28,10 +28,10 @@ use Valkyrja\Routing\Annotations\Route;
  */
 final class Annotation extends Enum
 {
-    public const COMMAND = Command::class;
-    public const LISTENER = Listener::class;
-    public const ROUTE = Route::class;
-    public const SERVICE = Service::class;
-    public const SERVICE_ALIAS = ServiceAlias::class;
+    public const COMMAND         = Command::class;
+    public const LISTENER        = Listener::class;
+    public const ROUTE           = Route::class;
+    public const SERVICE         = Service::class;
+    public const SERVICE_ALIAS   = ServiceAlias::class;
     public const SERVICE_CONTEXT = ServiceContext::class;
 }
