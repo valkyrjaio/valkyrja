@@ -64,6 +64,13 @@ class NativeRepository implements Repository
 
     /**
      * Find a single entity given its id.
+     * <code>
+     *      $repository
+     *          ->find(
+     *              1,
+     *              true | false | null
+     *          )
+     * </code>.
      *
      * @param string|int $id
      * @param bool|null  $getRelations
@@ -111,7 +118,9 @@ class NativeRepository implements Repository
         array $columns = null,
         bool $getRelations = null
     ): array {
-        return $this->entityManager->findBy($this->entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations);
+        return $this->entityManager->findBy(
+            $this->entity, false, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
+        );
     }
 
     /**
@@ -148,7 +157,9 @@ class NativeRepository implements Repository
         array $columns = null,
         bool $getRelations = null
     ): Entity {
-        return $this->entityManager->findOneBy($this->entity, $criteria, $orderBy, $offset, $columns, $getRelations);
+        return $this->entityManager->findOneBy(
+            $this->entity, false, $criteria, $orderBy, $offset, $columns, $getRelations
+        );
     }
 
     /**
@@ -172,7 +183,7 @@ class NativeRepository implements Repository
      */
     public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
     {
-        return $this->entityManager->findAll($this->entity, $orderBy, $columns, $getRelations);
+        return $this->entityManager->findAll($this->entity, false, $orderBy, $columns, $getRelations);
     }
 
     /**
@@ -193,7 +204,7 @@ class NativeRepository implements Repository
      */
     public function count(array $criteria): int
     {
-        return $this->entityManager->count($this->entity, $criteria);
+        return $this->entityManager->count($this->entity, false, $criteria);
     }
 
     /**
@@ -212,7 +223,7 @@ class NativeRepository implements Repository
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->create($entity);
+        $this->entityManager->create($entity, false);
     }
 
     /**
@@ -231,7 +242,7 @@ class NativeRepository implements Repository
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->save($entity);
+        $this->entityManager->save($entity, false);
     }
 
     /**
@@ -250,7 +261,7 @@ class NativeRepository implements Repository
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->delete($entity);
+        $this->entityManager->delete($entity, false);
     }
 
     /**

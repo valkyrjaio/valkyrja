@@ -230,8 +230,18 @@ class PDOEntityManager implements EntityManager
 
     /**
      * Find a single entity given its id.
+     * <code>
+     *      $repository
+     *          ->find(
+     *              Entity::class,
+     *              true | false,
+     *              1,
+     *              true | false | null
+     *          )
+     * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
@@ -239,7 +249,7 @@ class PDOEntityManager implements EntityManager
      *
      * @return Entity|null
      */
-    public function find(string $entity, $id, bool $getRelations = null): ?Entity
+    public function find(string $entity, bool $useRepository, $id, bool $getRelations = null): ?Entity
     {
         if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
@@ -249,6 +259,7 @@ class PDOEntityManager implements EntityManager
 
         return $this->findBy(
                 $entity,
+                $useRepository,
                 [$entity::getIdField() => $id],
                 null,
                 null,
@@ -264,6 +275,8 @@ class PDOEntityManager implements EntityManager
      * <code>
      *      $repository
      *          ->findBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -279,6 +292,7 @@ class PDOEntityManager implements EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -286,12 +300,11 @@ class PDOEntityManager implements EntityManager
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException
-     *
      * @return Entity[]
      */
     public function findBy(
         string $entity,
+        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
@@ -299,6 +312,10 @@ class PDOEntityManager implements EntityManager
         array $columns = null,
         bool $getRelations = null
     ): array {
+        if ($useRepository) {
+            return $this->repository($entity)->findBy($criteria, $orderBy, $limit, $offset, $columns, $getRelations);
+        }
+
         return $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
     }
 
@@ -307,6 +324,8 @@ class PDOEntityManager implements EntityManager
      * <code>
      *      $repository
      *          ->findOneBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -322,24 +341,28 @@ class PDOEntityManager implements EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $offset
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException
-     *
      * @return Entity
      */
     public function findOneBy(
         string $entity,
+        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
         bool $getRelations = null
     ): Entity {
+        if ($useRepository) {
+            return $this->repository($entity)->findOneBy($criteria, $orderBy, $offset, $columns, $getRelations);
+        }
+
         return $this->select($entity, $columns, $criteria, $orderBy, 1, $offset, $getRelations)[0];
     }
 
@@ -348,6 +371,8 @@ class PDOEntityManager implements EntityManager
      * <code>
      *      $repository
      *          ->findBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'
      *                  'column2' => OrderBy::ASC,
@@ -357,21 +382,21 @@ class PDOEntityManager implements EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
-     *
-     * @throws InvalidArgumentException
      *
      * @return Entity[]
      */
     public function findAll(
         string $entity,
+        bool $useRepository,
         array $orderBy = null,
         array $columns = null,
         bool $getRelations = null
     ): array {
-        return $this->findBy($entity, [], $orderBy, null, null, $columns, $getRelations);
+        return $this->findBy($entity, $useRepository, [], $orderBy, null, null, $columns, $getRelations);
     }
 
     /**
@@ -379,6 +404,8 @@ class PDOEntityManager implements EntityManager
      * <code>
      *      $repository
      *          ->count(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -387,26 +414,43 @@ class PDOEntityManager implements EntityManager
      * </code>.
      *
      * @param string $entity
+     * @param bool   $useRepository
      * @param array  $criteria
-     *
-     * @throws InvalidArgumentException
      *
      * @return int
      */
-    public function count($entity, array $criteria): int
+    public function count($entity, bool $useRepository, array $criteria): int
     {
+        if ($useRepository) {
+            return $this->repository($entity)->count($criteria);
+        }
+
         return (int) $this->select($entity, ['COUNT(*)'], $criteria);
     }
 
     /**
      * Set a model for creation on transaction commit.
+     * <code>
+     *      $repository
+     *          ->create(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function create(Entity $entity): void
+    public function create(Entity $entity, bool $useRepository): void
     {
+        if ($useRepository) {
+            $this->repository($entity)->create($entity);
+
+            return;
+        }
+
         $id = spl_object_id($entity);
 
         $this->createEntities[$id] = $entity;
@@ -414,13 +458,27 @@ class PDOEntityManager implements EntityManager
 
     /**
      * Set a model for saving on transaction commit.
+     * <code>
+     *      $repository
+     *          ->save(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function save(Entity $entity): void
+    public function save(Entity $entity, bool $useRepository): void
     {
+        if ($useRepository) {
+            $this->repository($entity)->create($entity);
+
+            return;
+        }
+
         $id = spl_object_id($entity);
 
         $this->saveEntities[$id] = $entity;
@@ -428,13 +486,27 @@ class PDOEntityManager implements EntityManager
 
     /**
      * Set a model for deletion on transaction commit.
+     * <code>
+     *      $repository
+     *          ->delete(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function delete(Entity $entity): void
+    public function delete(Entity $entity, bool $useRepository): void
     {
+        if ($useRepository) {
+            $this->repository($entity)->create($entity);
+
+            return;
+        }
+
         $id = spl_object_id($entity);
 
         $this->deleteEntities[$id] = $entity;
@@ -442,6 +514,12 @@ class PDOEntityManager implements EntityManager
 
     /**
      * Remove a model previously set for creation, save, or deletion.
+     * <code>
+     *      $repository
+     *          ->remove(
+     *              new Entity()
+     *          )
+     * </code>.
      *
      * @param Entity $entity The entity instance to remove.
      *

@@ -20,6 +20,13 @@ interface Repository
 {
     /**
      * Find a single entity given its id.
+     * <code>
+     *      $repository
+     *          ->find(
+     *              1,
+     *              true | false | null
+     *          )
+     * </code>.
      *
      * @param string|int $id
      * @param bool|null  $getRelations

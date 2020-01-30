@@ -77,20 +77,32 @@ interface EntityManager
 
     /**
      * Find a single entity given its id.
+     * <code>
+     *      $repository
+     *          ->find(
+     *              Entity::class,
+     *              true | false,
+     *              1,
+     *              true | false | null
+     *          )
+     * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
      * @return Entity|null
      */
-    public function find(string $entity, $id, bool $getRelations = null): ?Entity;
+    public function find(string $entity, bool $useRepository, $id, bool $getRelations = null): ?Entity;
 
     /**
      * Find entities by given criteria.
      * <code>
      *      $entityManager
      *          ->findBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -106,6 +118,7 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -117,6 +130,7 @@ interface EntityManager
      */
     public function findBy(
         string $entity,
+        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
@@ -130,6 +144,8 @@ interface EntityManager
      * <code>
      *      $repository
      *          ->findOneBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -145,6 +161,7 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $offset
@@ -155,6 +172,7 @@ interface EntityManager
      */
     public function findOneBy(
         string $entity,
+        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $offset = null,
@@ -167,6 +185,8 @@ interface EntityManager
      * <code>
      *      $entityManager
      *          ->findBy(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'
      *                  'column2' => OrderBy::ASC,
@@ -176,6 +196,7 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
+     * @param bool       $useRepository
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
@@ -184,6 +205,7 @@ interface EntityManager
      */
     public function findAll(
         string $entity,
+        bool $useRepository,
         array $orderBy = null,
         array $columns = null,
         bool $getRelations = null
@@ -194,6 +216,8 @@ interface EntityManager
      * <code>
      *      $entityManager
      *          ->count(
+     *              Entity::class,
+     *              true | false,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -202,41 +226,72 @@ interface EntityManager
      * </code>.
      *
      * @param string $entity
+     * @param bool   $useRepository
      * @param array  $criteria
      *
      * @return int
      */
-    public function count(string $entity, array $criteria): int;
+    public function count(string $entity, bool $useRepository, array $criteria): int;
 
     /**
      * Set a model for creation on transaction commit.
+     * <code>
+     *      $repository
+     *          ->create(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function create(Entity $entity): void;
+    public function create(Entity $entity, bool $useRepository): void;
 
     /**
      * Set a model for saving on transaction commit.
+     * <code>
+     *      $repository
+     *          ->save(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function save(Entity $entity): void;
+    public function save(Entity $entity, bool $useRepository): void;
 
     /**
      * Set a model for deletion on transaction commit.
+     * <code>
+     *      $repository
+     *          ->delete(
+     *              new Entity(),
+     *              true | false
+     *          )
+     * </code>.
      *
      * @param Entity $entity
+     * @param bool   $useRepository
      *
      * @return void
      */
-    public function delete(Entity $entity): void;
+    public function delete(Entity $entity, bool $useRepository): void;
 
     /**
      * Remove a model previously set for creation, save, or deletion.
+     * <code>
+     *      $repository
+     *          ->remove(
+     *              new Entity()
+     *          )
+     * </code>.
      *
      * @param Entity $entity The entity instance to remove.
      *
