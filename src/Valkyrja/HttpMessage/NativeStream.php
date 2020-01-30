@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -203,7 +205,7 @@ class NativeStream implements Stream
             return false;
         }
 
-        return $this->getMetadata('seekable');
+        return (bool) $this->getMetadata('seekable');
     }
 
     /**

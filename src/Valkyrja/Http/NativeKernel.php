@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -79,7 +81,7 @@ class NativeKernel implements Kernel
             $response = $this->getExceptionResponse($exception);
 
             // Log the error
-            $this->app->logger()->error($exception);
+            $this->app->logger()->error((string) $exception);
         }
 
         // Dispatch the after request handled middleware and return the response

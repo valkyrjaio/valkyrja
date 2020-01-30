@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -79,7 +81,7 @@ class NativeRepository implements Repository
      */
     public function find($id, bool $getRelations = null): ?Entity
     {
-        return $this->entityManager->find($this->entity, $id, $getRelations);
+        return $this->entityManager->find($this->entity, false, $id, $getRelations);
     }
 
     /**

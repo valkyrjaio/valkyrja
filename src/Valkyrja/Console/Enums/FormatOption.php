@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -20,11 +22,11 @@ use Valkyrja\Enum\Enum;
  */
 final class FormatOption extends Enum
 {
-    public const BOLD       = '1';
-    public const UNDERSCORE = '4';
-    public const BLINK      = '5';
-    public const INVERSE    = '7';
-    public const CONCEAL    = '8';
+    public const BOLD       = 1;
+    public const UNDERSCORE = 4;
+    public const BLINK      = 5;
+    public const INVERSE    = 7;
+    public const CONCEAL    = 8;
     public const DEFAULT    = [
         self::BOLD       => 22,
         self::UNDERSCORE => 24,

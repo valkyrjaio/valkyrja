@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -102,11 +104,8 @@ trait ProvidersAwareTrait
      */
     public function initializeProvided(string $itemId): void
     {
-        /** @var Provides $provider */
-        $provider = self::$provided[$itemId];
-
         // Register the provider
-        $this->register($provider, true);
+        $this->register(self::$provided[$itemId], true);
     }
 
     /**

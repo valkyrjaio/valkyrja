@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -73,7 +75,7 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var Env|\env\Env
+     * @var string|Env|\env\Env
      */
     protected static $env;
 
@@ -377,11 +379,11 @@ class Valkyrja implements Application
     /**
      * Get the environment variables class.
      *
-     * @return Env||config|Env
+     * @return string|Env||config|Env
      */
     public static function getEnv(): string
     {
-        return self::$env ?? self::$env = Env::class;
+        return self::$env ?? (self::$env = Env::class);
     }
 
     /**
@@ -394,7 +396,7 @@ class Valkyrja implements Application
     public static function setEnv(string $env = null): void
     {
         // Set the env class to use
-        self::$env = $env ?? self::$env ?? Env::class;
+        self::$env = ($env ?? self::$env ?? Env::class);
     }
 
     /**

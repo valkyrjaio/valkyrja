@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -446,7 +448,7 @@ class PDOEntityManager implements EntityManager
     public function create(Entity $entity, bool $useRepository): void
     {
         if ($useRepository) {
-            $this->repository($entity)->create($entity);
+            $this->repository(get_class($entity))->create($entity);
 
             return;
         }
@@ -474,7 +476,7 @@ class PDOEntityManager implements EntityManager
     public function save(Entity $entity, bool $useRepository): void
     {
         if ($useRepository) {
-            $this->repository($entity)->create($entity);
+            $this->repository(get_class($entity))->save($entity);
 
             return;
         }
@@ -502,7 +504,7 @@ class PDOEntityManager implements EntityManager
     public function delete(Entity $entity, bool $useRepository): void
     {
         if ($useRepository) {
-            $this->repository($entity)->create($entity);
+            $this->repository(get_class($entity))->delete($entity);
 
             return;
         }
@@ -1002,9 +1004,9 @@ class PDOEntityManager implements EntityManager
      * @throws InvalidArgumentException
      * @throws ExecuteException
      *
-     * @return int
+     * @return void
      */
-    protected function saveCreateDelete(string $type, Entity $entity): int
+    protected function saveCreateDelete(string $type, Entity $entity): void
     {
         if (! $this->connection()->inTransaction()) {
             $this->connection()->beginTransaction();
@@ -1017,7 +1019,7 @@ class PDOEntityManager implements EntityManager
         $queryBuilder = $this->getQueryBuilderForSaveCreateDelete($type, $entity, $idField, $properties);
 
         // Create a new query with the query builder
-        $query = $this->query($queryBuilder->getQueryString(), $entity);
+        $query = $this->query($queryBuilder->getQueryString(), get_class($entity));
 
         // Bind values
         $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
@@ -1027,8 +1029,6 @@ class PDOEntityManager implements EntityManager
             // Throw a fail exception
             throw new ExecuteException($query->getError());
         }
-
-        return $results;
     }
 
     /**
@@ -1048,7 +1048,7 @@ class PDOEntityManager implements EntityManager
         array $properties
     ): QueryBuilder {
         // Create a new query
-        $queryBuilder = $this->queryBuilder($entity)->{$type}();
+        $queryBuilder = $this->queryBuilder(get_class($entity))->{$type}();
 
         /* @var QueryBuilder $queryBuilder */
 

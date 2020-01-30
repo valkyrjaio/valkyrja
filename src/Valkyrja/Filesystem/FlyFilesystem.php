@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -298,7 +300,7 @@ class FlyFilesystem implements Filesystem
     {
         $timestamp = $this->flySystem->getTimestamp($path);
 
-        return false !== $timestamp ? $timestamp : null;
+        return false !== $timestamp ? (int) $timestamp : null;
     }
 
     /**

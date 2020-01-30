@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -227,7 +229,7 @@ class NativeRequest implements Request
 
         if (
             0 === strpos(
-                $request->headers()->get('Content-Type'),
+                (string) $request->headers()->get('Content-Type'),
                 'application/x-www-form-urlencoded'
             )
             &&
@@ -1025,7 +1027,7 @@ class NativeRequest implements Request
     {
         return isset(static::$formats[$format])
             ? static::$formats[$format][0]
-            : null;
+            : '';
     }
 
     /**

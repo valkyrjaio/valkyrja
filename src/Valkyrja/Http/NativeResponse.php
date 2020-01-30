@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -143,7 +145,7 @@ class NativeResponse implements Response
         // If there is no date header
         if (! $this->headers->has('Date')) {
             // Set it with the current time
-            $this->setDateHeader(DateTime::createFromFormat('U', time()));
+            $this->setDateHeader(DateTime::createFromFormat('U', (string) time()));
         }
 
         // Iterate through all the headers
@@ -488,7 +490,7 @@ class NativeResponse implements Response
     {
         return $this->hasCacheControl($name)
             ? $this->cacheControl[$name]
-            : false;
+            : 'false';
     }
 
     /**
@@ -713,15 +715,15 @@ class NativeResponse implements Response
     public function getMaxAge(): int
     {
         if ($this->hasCacheControl('s-maxage')) {
-            return $this->getCacheControl('s-maxage');
+            return (int) $this->getCacheControl('s-maxage');
         }
 
         if ($this->hasCacheControl('max-age')) {
-            return $this->getCacheControl('max-age');
+            return (int) $this->getCacheControl('max-age');
         }
 
         if (null !== $this->getExpires()) {
-            return date('U', strtotime($this->getExpires())) - date(
+            return (int) date('U', strtotime($this->getExpires())) - date(
                     'U',
                     strtotime(
                         $this->getDateHeader()
@@ -743,7 +745,7 @@ class NativeResponse implements Response
      */
     public function setMaxAge(int $value): Response
     {
-        $this->addCacheControl('max-age', $value);
+        $this->addCacheControl('max-age', (string) $value);
 
         return $this;
     }
@@ -760,7 +762,7 @@ class NativeResponse implements Response
     public function setSharedMaxAge(int $value): Response
     {
         $this->setPublic();
-        $this->addCacheControl('s-maxage', $value);
+        $this->addCacheControl('s-maxage', (string) $value);
 
         return $this;
     }
@@ -953,7 +955,7 @@ class NativeResponse implements Response
     public function setNotModified(): Response
     {
         $this->setStatusCode(StatusCode::NOT_MODIFIED);
-        $this->setContent(null);
+        $this->setContent('');
         $this->headers
             ->remove('Allow')
             ->remove('Content-Encoding')

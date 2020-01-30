@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -90,7 +92,7 @@ abstract class CommandHandler
      */
     protected function sectionDivider(): void
     {
-        output()->writeMessage('', PHP_EOL);
+        output()->writeMessage('', true);
     }
 
     /**

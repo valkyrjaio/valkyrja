@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -120,7 +122,7 @@ class NativeExceptionHandler implements ExceptionHandler
             try {
                 $statusCode = $exception->getStatusCode();
 
-                return $this->app->response($this->app->view("errors/$statusCode"), $statusCode);
+                return $this->app->response($this->app->view("errors/$statusCode")->render(), $statusCode);
             } catch (Throwable $exception) {
                 return $this->getDefaultResponse();
             }
@@ -140,6 +142,6 @@ class NativeExceptionHandler implements ExceptionHandler
      */
     protected function getDefaultResponse(): Response
     {
-        return $this->app->response($this->app->view('errors/500'), StatusCode::INTERNAL_SERVER_ERROR);
+        return $this->app->response($this->app->view('errors/500')->render(), StatusCode::INTERNAL_SERVER_ERROR);
     }
 }

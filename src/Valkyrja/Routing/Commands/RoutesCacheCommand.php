@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -55,7 +57,9 @@ class RoutesCacheCommand extends CommandHandler
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::ROUTING_CACHE_FILE_PATH),
-            '<?php return ' . var_export($cache, true) . ';',
+            '<?php
+
+declare(strict_types=1); return ' . var_export($cache, true) . ';',
             LOCK_EX
         );
 

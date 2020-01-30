@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -285,12 +287,12 @@ REGEX;
     /**
      * Get a param's replacement.
      *
-     * @param string $key    The key
-     * @param array  $params The params
+     * @param int   $key    The key
+     * @param array $params The params
      *
      * @return string
      */
-    protected function getParamReplacement(string $key, array $params): string
+    protected function getParamReplacement(int $key, array $params): string
     {
         return config()[ConfigKeyPart::APP][ConfigKeyPart::PATH_REGEX_MAP][$params[2][$key]]
             ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -75,6 +77,9 @@ class NativeKernel implements Kernel
             // Show the exception
             // TODO: Implement
             dd($exception);
+
+            // Log the error
+            $this->app->logger()->error((string) $exception);
         }
 
         $this->app->events()->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Valkyrja framework.
  *
@@ -87,7 +89,7 @@ class HttpException extends RuntimeException
         if (null === $this->response && file_exists($view->getTemplateDir($template . $view->getFileExtension()))) {
             try {
                 // Set the response as the error template
-                $this->response = response($this->getDefaultView($template));
+                $this->response = response($this->getDefaultView($template)->render());
             } catch (Exception $exception) {
             }
         }
