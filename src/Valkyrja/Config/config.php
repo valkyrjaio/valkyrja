@@ -122,7 +122,7 @@ return [
 
     /*
      *-------------------------------------------------------------------------
-     * Logger Configuration
+     * Logging Configuration
      *-------------------------------------------------------------------------
      *
      * Logging is very helpful in understanding what occurs within your
@@ -130,7 +130,7 @@ return [
      * from you and your developers. Configure that helpfulness here.
      *
      */
-    CKP::LOGGER          => require __DIR__ . '/logger.php',
+    CKP::LOGGER          => require __DIR__ . '/logging.php',
 
     /*
      *-------------------------------------------------------------------------
@@ -169,7 +169,7 @@ return [
 
     /*
      *-------------------------------------------------------------------------
-     * Views Configuration
+     * View Configuration
      *-------------------------------------------------------------------------
      *
      * Views are what provide users with something to look at and enjoy all
@@ -177,7 +177,7 @@ return [
      * all the configurations necessary to make that work properly.
      *
      */
-    CKP::VIEWS           => require __DIR__ . '/views.php',
+    CKP::VIEWS           => require __DIR__ . '/view.php',
 
     /*
      *-------------------------------------------------------------------------
