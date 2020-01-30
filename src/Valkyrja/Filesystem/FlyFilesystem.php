@@ -450,10 +450,7 @@ class FlyFilesystem implements Filesystem
     {
         return self::$adapters[ConfigKeyPart::LOCAL]
             ?? self::$adapters[ConfigKeyPart::LOCAL] = new Local(
-                $this->app->config()[ConfigKeyPart::FILESYSTEM]
-                [ConfigKeyPart::ADAPTERS]
-                [ConfigKeyPart::LOCAL]
-                [ConfigKeyPart::DIR]
+                $this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::LOCAL][ConfigKeyPart::DIR]
             );
     }
 

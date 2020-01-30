@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Model;
 
 /**
- * Class NativeModel
+ * Class NativeModel.
  *
  * @author Melech Mizrachi
  */
