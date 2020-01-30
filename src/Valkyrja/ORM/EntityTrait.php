@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM;
 
 use Valkyrja\Model\ModelTrait;
+use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 
 /**
@@ -265,5 +266,87 @@ trait EntityTrait
             // Set the property
             $this->{$property} = $value;
         }
+    }
+
+    /**
+     * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
+     *
+     * @param array|null $columns
+     *
+     * @return void
+     */
+    public function setRelations(array $columns = null): void
+    {
+        $propertyTypes  = $this::getPropertyTypes();
+        $propertyMapper = $this->getPropertyMapper();
+
+        // Iterate through the property types
+        foreach ($propertyTypes as $property => $type) {
+            if (null !== $columns && ! in_array($property, $columns, true)) {
+                continue;
+            }
+
+            $this->setRelation($propertyMapper, $property, $type);
+        }
+    }
+
+    /**
+     * Set a relation.
+     *
+     * @param array  $propertyMapper
+     * @param string $property
+     * @param        $type
+     *
+     * @return void
+     */
+    protected function setRelation(array $propertyMapper, string $property, $type): void
+    {
+        $entityName  = is_array($type) ? $type[0] : $type;
+        $propertyMap = $propertyMapper[$property] ?? null;
+
+        if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
+            $entities = $this->getRelationEntities($entityName, $propertyMap);
+
+            if (is_array($type)) {
+                $this->{$property} = $entities;
+                $this->__set($property, $entities);
+
+                return;
+            }
+
+            if (empty($entities)) {
+                return;
+            }
+
+            $this->__set($property, $entities[0]);
+        }
+    }
+
+    /**
+     * Get relationship's entities.
+     *
+     * @param string $entityName
+     * @param array  $propertyMap
+     *
+     * @return array
+     */
+    protected function getRelationEntities(string $entityName, array $propertyMap): array
+    {
+        $repository   = entityManager()->repository($entityName);
+        $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
+        $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
+        $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;
+        $columns      = $propertyMap[PropertyMap::COLUMNS] ?? null;
+        $getRelations = $propertyMap[PropertyMap::GET_RELATIONS] ?? true;
+
+        unset(
+            $propertyMap[PropertyMap::ORDER_BY],
+            $propertyMap[PropertyMap::LIMIT],
+            $propertyMap[PropertyMap::OFFSET],
+            $propertyMap[PropertyMap::COLUMNS],
+            $propertyMap[PropertyMap::GET_RELATIONS]
+        );
+
+        return $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
     }
 }

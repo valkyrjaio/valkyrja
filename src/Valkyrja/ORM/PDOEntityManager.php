@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -18,8 +18,6 @@ use PDO;
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Enums\OrderBy;
-use Valkyrja\ORM\Enums\PropertyMap;
-use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
@@ -748,7 +746,7 @@ class PDOEntityManager implements EntityManager
             // If no columns were specified then we can safely get all the relations
             if (null === $columns && $getRelations === true) {
                 // Add the model to the final results
-                $this->getEntityRelations($entity);
+                $entity->setRelations();
             }
         }
     }
@@ -1142,58 +1140,6 @@ class PDOEntityManager implements EntityManager
             // Bind property
             $query->bindValue($column, $property);
         }
-    }
-
-    /**
-     * Get an entity with all its relations.
-     *
-     * @param Entity $entity
-     *
-     * @return Entity
-     */
-    protected function getEntityRelations(Entity $entity): Entity
-    {
-        $propertyTypes  = $entity::getPropertyTypes();
-        $propertyMapper = $entity->getPropertyMapper();
-
-        // Iterate through the property types
-        foreach ($propertyTypes as $property => $type) {
-            $entityName  = is_array($type) ? $type[0] : $type;
-            $propertyMap = $propertyMapper[$property] ?? null;
-
-            if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
-                $repository   = $this->repository($entityName);
-                $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
-                $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
-                $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;
-                $columns      = $propertyMap[PropertyMap::COLUMNS] ?? null;
-                $getRelations = $propertyMap[PropertyMap::GET_RELATIONS] ?? true;
-
-                unset(
-                    $propertyMap[PropertyMap::ORDER_BY],
-                    $propertyMap[PropertyMap::LIMIT],
-                    $propertyMap[PropertyMap::OFFSET],
-                    $propertyMap[PropertyMap::COLUMNS],
-                    $propertyMap[PropertyMap::GET_RELATIONS]
-                );
-
-                $entities = $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
-
-                if (is_array($type)) {
-                    $entity->{$property} = $entities;
-
-                    continue;
-                }
-
-                if (empty($entities)) {
-                    continue;
-                }
-
-                $entity->{$property} = $entities[0];
-            }
-        }
-
-        return $entity;
     }
 
     /**

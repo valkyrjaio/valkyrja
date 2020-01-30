@@ -98,4 +98,13 @@ interface Entity extends Model
      * @return array
      */
     public function forDataStore(): array;
+
+    /**
+     * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
+     *
+     * @param array|null $columns
+     *
+     * @return void
+     */
+    public function setRelations(array $columns = null): void;
 }
