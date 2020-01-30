@@ -36,19 +36,19 @@ final class WhereType extends Enum
     public const NOT_REGEXP         = 'NOT REGEXP';
 
     protected const VALUES = [
-        self::EQUALS,
-        self::NOT_EQUAL,
-        self::IN,
-        self::NOT_IN,
-        self::LIKE,
-        self::NOT_LIKE,
-        self::IS,
-        self::IS_NOT,
-        self::GREATER_THAN,
-        self::GREATER_THAN_EQUAL,
-        self::LESS_THAN,
-        self::LESS_THAN_EQUAL,
-        self::REGEXP,
-        self::NOT_REGEXP,
+        self::EQUALS => self::EQUALS,
+        self::NOT_EQUAL => self::NOT_EQUAL,
+        self::IN => self::IN,
+        self::NOT_IN => self::NOT_IN,
+        self::LIKE => self::LIKE,
+        self::NOT_LIKE => self::NOT_LIKE,
+        self::IS => self::IS,
+        self::IS_NOT => self::IS_NOT,
+        self::GREATER_THAN => self::GREATER_THAN,
+        self::GREATER_THAN_EQUAL => self::GREATER_THAN_EQUAL,
+        self::LESS_THAN => self::LESS_THAN,
+        self::LESS_THAN_EQUAL => self::LESS_THAN_EQUAL,
+        self::REGEXP => self::REGEXP,
+        self::NOT_REGEXP => self::NOT_REGEXP,
     ];
 }
