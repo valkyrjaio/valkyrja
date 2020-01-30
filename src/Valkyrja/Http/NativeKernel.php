@@ -76,6 +76,9 @@ class NativeKernel implements Kernel
             $response = $this->dispatchRouter($request);
         } catch (Throwable $exception) {
             $response = $this->getExceptionResponse($exception);
+
+            // Log the error
+            $this->app->logger()->error($exception);
         }
 
         // Dispatch the after request handled middleware and return the response
