@@ -13,6 +13,7 @@ namespace Valkyrja\Path;
 
 use InvalidArgumentException;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -291,7 +292,8 @@ REGEX;
      */
     protected function getParamReplacement(string $key, array $params): string
     {
-        return config()['app']['pathRegexMap'][$params[2][$key]] ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
+        return config()[ConfigKeyPart::APP][ConfigKeyPart::PATH_REGEX_MAP][$params[2][$key]]
+            ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 
     /**

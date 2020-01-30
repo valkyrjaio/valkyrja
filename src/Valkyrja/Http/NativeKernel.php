@@ -13,6 +13,7 @@ namespace Valkyrja\Http;
 
 use Throwable;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
 use Valkyrja\Http\Middleware\MiddlewareAwareTrait;
@@ -55,10 +56,10 @@ class NativeKernel implements Kernel
         $this->app    = $application;
         $this->router = $router;
 
-        $config = $application->config()['routing'];
+        $config = $application->config()[ConfigKeyPart::ROUTING];
 
-        self::$middleware       = $config['middleware'];
-        self::$middlewareGroups = $config['middlewareGroups'];
+        self::$middleware       = $config[ConfigKeyPart::MIDDLEWARE];
+        self::$middlewareGroups = $config[ConfigKeyPart::MIDDLEWARE_GROUPS];
     }
 
     /**

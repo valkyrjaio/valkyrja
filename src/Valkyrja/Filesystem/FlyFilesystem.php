@@ -24,6 +24,7 @@ use League\Flysystem\FilesystemInterface;
 use League\Flysystem\RootViolationException;
 use LogicException;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Support\Providers\Provides;
 
@@ -67,7 +68,9 @@ class FlyFilesystem implements Filesystem
     {
         $this->app       = $application;
         $this->flySystem = $flySystem
-            ?? new FlySystem($this->flyAdapter($this->app->config()['filesystem']['default']));
+            ?? new FlySystem(
+                $this->flyAdapter($this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::DEFAULT])
+            );
     }
 
     /**
@@ -443,8 +446,13 @@ class FlyFilesystem implements Filesystem
      */
     protected function localAdapter(): Local
     {
-        return self::$adapters['local']
-            ?? self::$adapters['local'] = new Local($this->app->config()['filesystem']['adapters']['s3']['dir']);
+        return self::$adapters[ConfigKeyPart::LOCAL]
+            ?? self::$adapters[ConfigKeyPart::LOCAL] = new Local(
+                $this->app->config()[ConfigKeyPart::FILESYSTEM]
+                [ConfigKeyPart::ADAPTERS]
+                [ConfigKeyPart::LOCAL]
+                [ConfigKeyPart::DIR]
+            );
     }
 
     /**
@@ -468,23 +476,25 @@ class FlyFilesystem implements Filesystem
      */
     protected function s3Adapter(): AwsS3Adapter
     {
-        if (isset(self::$adapters['s3'])) {
-            return self::$adapters['s3'];
+        if (isset(self::$adapters[ConfigKeyPart::S3])) {
+            return self::$adapters[ConfigKeyPart::S3];
         }
 
-        $config       = $this->app->config()['filesystem']['adapters']['s3'];
+        $config       = $this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::S3];
         $clientConfig = [
             'credentials' => [
-                'key'    => $config['key'],
-                'secret' => $config['secret'],
+                'key'    => $config[ConfigKeyPart::KEY],
+                'secret' => $config[ConfigKeyPart::SECRET],
             ],
-            'region'      => $config['region'],
-            'version'     => $config['version'],
+            'region'      => $config[ConfigKeyPart::REGION],
+            'version'     => $config[ConfigKeyPart::VERSION],
         ];
 
-        self::$adapters['s3'] = new AwsS3Adapter(new S3Client($clientConfig), $config['bucket'], $config['dir']);
+        self::$adapters['s3'] = new AwsS3Adapter(
+            new S3Client($clientConfig), $config[ConfigKeyPart::BUCKET], $config[ConfigKeyPart::DIR]
+        );
 
-        return self::$adapters['s3'];
+        return self::$adapters[ConfigKeyPart::S3];
     }
 
     /**

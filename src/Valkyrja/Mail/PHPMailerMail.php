@@ -14,6 +14,7 @@ namespace Valkyrja\Mail;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -222,17 +223,17 @@ class PHPMailerMail implements Mail
         // Set mailer to use SMTP
         $PHPMailer->isSMTP();
         // Specify main and backup SMTP servers
-        $PHPMailer->Host = $app->config()['mail']['host'];
+        $PHPMailer->Host = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::HOST];
         // SMTP Port
-        $PHPMailer->Port = $app->config()['mail']['port'];
+        $PHPMailer->Port = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PORT];
         // Enable SMTP authentication
         $PHPMailer->SMTPAuth = true;
         // SMTP username
-        $PHPMailer->Username = $app->config()['mail']['username'];
+        $PHPMailer->Username = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::USERNAME];
         // SMTP password
-        $PHPMailer->Password = $app->config()['mail']['password'];
+        $PHPMailer->Password = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PASSWORD];
         // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $app->config()['mail']['encryption'];
+        $PHPMailer->SMTPSecure = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::ENCRYPTION];
 
         $app->container()->singleton(
             Mail::class,

@@ -17,6 +17,7 @@ use Valkyrja\Annotations\NativeAnnotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
 use Valkyrja\Container\NativeContainer;
@@ -185,7 +186,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $this->assertEquals($this->app->config()['app']['env'], $this->app->environment());
+        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::ENV], $this->app->environment());
     }
 
     /**
@@ -195,7 +196,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        $this->assertEquals($this->app->config()['app']['debug'], $this->app->debug());
+        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::DEBUG], $this->app->debug());
     }
 
     /**
@@ -571,7 +572,7 @@ class ApplicationTest extends TestCase
 
         $this->app->setup($config, true);
 
-        $this->assertEquals(ProviderClass::class, $this->app->config()['providers'][0]);
+        $this->assertEquals(ProviderClass::class, $this->app->config()[ConfigKeyPart::PROVIDERS][0]);
 
         $this->app->setup(null, true);
     }

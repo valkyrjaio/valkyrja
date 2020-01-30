@@ -13,6 +13,7 @@ namespace Valkyrja\Session;
 
 use Exception;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Providers\Provides;
@@ -61,8 +62,8 @@ class NativeSession implements Session
     {
         $this->app = $application;
 
-        $sessionId   = $sessionId ?? $this->app->config()['session']['id'];
-        $sessionName = $sessionName ?? $this->app->config()['session']['name'];
+        $sessionId   = $sessionId ?? $this->app->config()[ConfigKeyPart::SESSION][ConfigKeyPart::ID];
+        $sessionName = $sessionName ?? $this->app->config()[ConfigKeyPart::SESSION][ConfigKeyPart::NAME];
 
         // If a session id is provided
         if (null !== $sessionId) {

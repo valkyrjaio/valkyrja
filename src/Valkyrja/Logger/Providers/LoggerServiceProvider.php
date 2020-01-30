@@ -16,6 +16,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Logger\MonologLogger;
@@ -75,14 +76,14 @@ class LoggerServiceProvider extends Provider
     protected static function bindLoggerInterface(Application $app): void
     {
         $handler = new StreamHandler(
-            $app->config()['logger']['filePath'],
+            $app->config()[ConfigKeyPart::LOGGER][ConfigKeyPart::FILE_PATH],
             LogLevel::DEBUG
         );
 
         $app->container()->singleton(
             LoggerInterface::class,
             new Monolog(
-                $app->config()['logger']['name'],
+                $app->config()[ConfigKeyPart::LOGGER][ConfigKeyPart::NAME],
                 [
                     $handler,
                 ]

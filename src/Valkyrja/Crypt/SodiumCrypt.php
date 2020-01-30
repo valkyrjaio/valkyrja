@@ -13,6 +13,7 @@ namespace Valkyrja\Crypt;
 
 use Exception;
 use Valkyrja\Application;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Support\Providers\Provides;
@@ -50,7 +51,7 @@ class SodiumCrypt implements Crypt
      */
     public function getKey(): string
     {
-        return $this->filesystem->read(config()['crypt']['keyPath'] ?? envPath('key'));
+        return $this->filesystem->read(config()[ConfigKeyPart::CRYPT][ConfigKeyPart::KEY_PATH] ?? envPath('key'));
     }
 
     /**
