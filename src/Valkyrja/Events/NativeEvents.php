@@ -13,6 +13,7 @@ namespace Valkyrja\Events;
 
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -337,7 +338,7 @@ class NativeEvents implements Events
             ?? require $this->app->config(ConfigKey::EVENTS_CACHE_FILE_PATH);
 
         self::$events = unserialize(
-            base64_decode($cache['events'], true),
+            base64_decode($cache[ConfigKeyPart::EVENTS], true),
             [
                 'allowed_classes' => [
                     Listener::class,
@@ -388,7 +389,7 @@ class NativeEvents implements Events
         $this->setup(true, false);
 
         return [
-            'events' => base64_encode(serialize(self::$events)),
+            ConfigKeyPart::EVENTS => base64_encode(serialize(self::$events)),
         ];
     }
 }

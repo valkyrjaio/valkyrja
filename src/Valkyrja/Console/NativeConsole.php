@@ -14,6 +14,7 @@ namespace Valkyrja\Console;
 use ReflectionException;
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Input;
@@ -402,16 +403,16 @@ class NativeConsole implements Console
             ?? require $this->app->config(ConfigKey::CONSOLE_CACHE_FILE_PATH);
 
         self::$commands      = unserialize(
-            base64_decode($cache['commands'], true),
+            base64_decode($cache[ConfigKeyPart::COMMANDS], true),
             [
                 'allowed_classes' => [
                     Command::class,
                 ],
             ]
         );
-        self::$paths         = $cache['paths'];
-        self::$namedCommands = $cache['namedCommands'];
-        self::$provided      = $cache['provided'];
+        self::$paths         = $cache[ConfigKeyPart::PATHS];
+        self::$namedCommands = $cache[ConfigKeyPart::NAMED_COMMANDS];
+        self::$provided      = $cache[ConfigKeyPart::PROVIDED];
     }
 
     /**
@@ -467,7 +468,7 @@ class NativeConsole implements Console
             $parsedPath = $this->app->pathParser()->parse($provided);
 
             // Set the path and regex in the paths list
-            self::$paths[$parsedPath['regex']] = $provided;
+            self::$paths[$parsedPath[ConfigKeyPart::REGEX]] = $provided;
             // Set the path and command in the named commands list
             self::$namedCommands[$commands[$key]] = $provided;
         }
@@ -517,10 +518,10 @@ class NativeConsole implements Console
         $this->setup(true, false);
 
         return [
-            'commands'      => base64_encode(serialize(self::$commands)),
-            'paths'         => self::$paths,
-            'namedCommands' => self::$namedCommands,
-            'provided'      => self::$provided,
+            ConfigKeyPart::COMMANDS       => base64_encode(serialize(self::$commands)),
+            ConfigKeyPart::PATHS          => self::$paths,
+            ConfigKeyPart::NAMED_COMMANDS => self::$namedCommands,
+            ConfigKeyPart::PROVIDED       => self::$provided,
         ];
     }
 

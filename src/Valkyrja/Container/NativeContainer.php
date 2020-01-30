@@ -13,6 +13,7 @@ namespace Valkyrja\Container;
 
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Events\ServiceMade;
 use Valkyrja\Container\Events\ServiceMadeSingleton;
@@ -507,15 +508,15 @@ class NativeContainer implements Container
             ?? require $this->app->config(ConfigKey::CONTAINER_CACHE_FILE_PATH);
 
         self::$services = unserialize(
-            base64_decode($cache['services'], true),
+            base64_decode($cache[ConfigKeyPart::SERVICES], true),
             [
                 'allowed_classes' => [
                     Service::class,
                 ],
             ]
         );
-        self::$provided = $cache['provided'];
-        self::$aliases  = $cache['aliases'];
+        self::$provided = $cache[ConfigKeyPart::PROVIDED];
+        self::$aliases  = $cache[ConfigKeyPart::ALIASES];
     }
 
     /**
@@ -619,9 +620,9 @@ class NativeContainer implements Container
         $this->setup(true, false);
 
         return [
-            'services' => base64_encode(serialize(self::$services)),
-            'aliases'  => self::$aliases,
-            'provided' => self::$provided,
+            ConfigKeyPart::SERVICES => base64_encode(serialize(self::$services)),
+            ConfigKeyPart::ALIASES  => self::$aliases,
+            ConfigKeyPart::PROVIDED => self::$provided,
         ];
     }
 

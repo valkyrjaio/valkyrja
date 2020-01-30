@@ -57,6 +57,9 @@ final class ConfigKeyPart extends Enum
     public const FROM                        = 'from';
     public const DEFAULT                     = 'default';
     public const PROVIDERS                   = 'providers';
+    public const PROVIDED                    = 'provided';
+    public const COLLECTION                  = 'collection';
+    public const ALIASES                     = 'aliases';
     public const DEV_PROVIDERS               = 'devProviders';
     public const FILE_PATH                   = 'filePath';
     public const CACHE_DIR                   = 'cacheDir';
@@ -103,4 +106,7 @@ final class ConfigKeyPart extends Enum
     public const MIDDLEWARE_GROUPS           = 'middlewareGroups';
     public const ID                          = 'id';
     public const PATHS                       = 'paths';
+    public const REGEX                       = 'regex';
+    public const COMMANDS                    = 'commands';
+    public const NAMED_COMMANDS              = 'namedCommands';
 }

@@ -15,6 +15,7 @@ use Exception;
 use InvalidArgumentException;
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -502,7 +503,7 @@ class NativeRouter implements Router
         $this->setup(true, false);
 
         return [
-            'collection' => base64_encode(serialize(self::$collection)),
+            ConfigKeyPart::COLLECTION => base64_encode(serialize(self::$collection)),
         ];
     }
 
@@ -804,7 +805,7 @@ class NativeRouter implements Router
             ?? require $this->app->config(ConfigKey::ROUTING_CACHE_FILE_PATH);
 
         self::$collection = unserialize(
-            base64_decode($cache['collection'], true),
+            base64_decode($cache[ConfigKeyPart::COLLECTION], true),
             [
                 'allowed_classes' => [
                     RouteCollection::class,
