@@ -11,14 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations;
+namespace Valkyrja\Exception;
+
+use InvalidArgumentException;
 
 /**
- * Class Annotation.
+ * Class InvalidEventsImplementation.
  *
  * @author Melech Mizrachi
  */
-class Annotation
+class InvalidEventsImplementation extends InvalidArgumentException
 {
-    use Annotatable;
 }

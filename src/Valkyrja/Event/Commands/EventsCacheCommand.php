@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Commands;
+namespace Valkyrja\Event\Commands;
 
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\CommandHandler;

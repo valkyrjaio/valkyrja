@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Annotations;
+namespace Valkyrja\Event\Annotations;
 
 use ReflectionException;
-use Valkyrja\Annotations\AnnotationsParser;
-use Valkyrja\Annotations\NativeAnnotations;
+use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application;
-use Valkyrja\Events\Listener as EventListener;
+use Valkyrja\Event\Listener as EventListener;
 
 /**
  * Class ListenerAnnotations.

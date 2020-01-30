@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Annotations;
+namespace Valkyrja\Event\Annotations;
 
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 
 /**
  * Interface ListenerAnnotations.

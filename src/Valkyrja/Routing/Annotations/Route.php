@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotations;
 
 use InvalidArgumentException;
-use Valkyrja\Annotations\Annotation;
+use Valkyrja\Annotation\Annotation;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Enums\StatusCode;
 

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations;
+namespace Valkyrja\Annotation;
 
-use Valkyrja\Annotations\Regex\ArgumentsRegex;
-use Valkyrja\Annotations\Regex\ClassRegex;
-use Valkyrja\Annotations\Regex\LineRegex;
+use Valkyrja\Annotation\Regex\ArgumentsRegex;
+use Valkyrja\Annotation\Regex\ClassRegex;
+use Valkyrja\Annotation\Regex\LineRegex;
 
 /**
  * Interface AnnotationsParser.

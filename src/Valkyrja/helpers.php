@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 use Valkyrja\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
@@ -20,7 +20,7 @@ use Valkyrja\Console\Output\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\CoreComponent;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Events\Events;
+use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\JsonResponse;

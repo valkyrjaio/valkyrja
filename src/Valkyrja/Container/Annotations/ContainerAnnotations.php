@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotations;
 
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 
 /**
  * Interface ContainerAnnotations.

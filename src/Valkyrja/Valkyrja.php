@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja;
 
 use InvalidArgumentException;
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Console;
@@ -23,12 +23,12 @@ use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
-use Valkyrja\Events\Events;
-use Valkyrja\Exceptions\ExceptionHandler;
-use Valkyrja\Exceptions\InvalidContainerImplementation;
-use Valkyrja\Exceptions\InvalidDispatcherImplementation;
-use Valkyrja\Exceptions\InvalidEventsImplementation;
-use Valkyrja\Exceptions\InvalidExceptionHandlerImplementation;
+use Valkyrja\Event\Events;
+use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Exception\InvalidContainerImplementation;
+use Valkyrja\Exception\InvalidDispatcherImplementation;
+use Valkyrja\Exception\InvalidEventsImplementation;
+use Valkyrja\Exception\InvalidExceptionHandlerImplementation;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;

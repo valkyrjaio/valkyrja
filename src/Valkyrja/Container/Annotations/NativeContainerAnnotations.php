@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Annotations;
 
 use ReflectionException;
-use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\AnnotationsParser;
-use Valkyrja\Annotations\NativeAnnotations;
+use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;

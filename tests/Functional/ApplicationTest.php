@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use TypeError;
-use Valkyrja\Annotations\NativeAnnotations;
+use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Config\Enums\ConfigKey;
@@ -24,7 +24,7 @@ use Valkyrja\Container\NativeContainer;
 use Valkyrja\Dispatcher\NativeDispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Env\EnvTest;
-use Valkyrja\Events\NativeEvents;
+use Valkyrja\Event\NativeEvents;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;

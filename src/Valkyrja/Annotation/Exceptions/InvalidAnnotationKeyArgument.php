@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotations\Exceptions;
+namespace Valkyrja\Annotation\Exceptions;
 
 use InvalidArgumentException;
 

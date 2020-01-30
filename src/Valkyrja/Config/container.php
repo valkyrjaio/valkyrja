@@ -37,8 +37,8 @@ return [
     CKP::PROVIDERS                   => env(
         EnvKey::CONTAINER_PROVIDERS,
         [
-            Valkyrja\Annotations\NativeAnnotationsParser::class,
-            Valkyrja\Annotations\NativeAnnotations::class,
+            Valkyrja\Annotation\NativeAnnotationsParser::class,
+            Valkyrja\Annotation\NativeAnnotations::class,
             Valkyrja\Client\GuzzleClient::class,
             Valkyrja\Console\NativeConsole::class,
             Valkyrja\Console\NativeKernel::class,
@@ -48,7 +48,7 @@ return [
             Valkyrja\Console\Annotations\NativeCommandAnnotations::class,
             Valkyrja\Container\Annotations\NativeContainerAnnotations::class,
             Valkyrja\Crypt\SodiumCrypt::class,
-            Valkyrja\Events\Annotations\NativeListenerAnnotations::class,
+            Valkyrja\Event\Annotations\NativeListenerAnnotations::class,
             Valkyrja\Filesystem\FlyFilesystem::class,
             Valkyrja\Http\NativeKernel::class,
             Valkyrja\Http\NativeRequest::class,

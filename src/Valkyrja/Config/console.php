@@ -44,7 +44,7 @@ return [
             Valkyrja\Console\Commands\CommandsListForBashCommand::class,
             Valkyrja\Console\Commands\OptimizeCommand::class,
             Valkyrja\Container\Commands\ContainerCacheCommand::class,
-            Valkyrja\Events\Commands\EventsCacheCommand::class,
+            Valkyrja\Event\Commands\EventsCacheCommand::class,
             Valkyrja\Routing\Commands\RoutesCacheCommand::class,
             Valkyrja\Routing\Commands\RoutesListCommand::class,
         ]

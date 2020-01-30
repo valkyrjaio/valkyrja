@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Exceptions;
+namespace Valkyrja\Exception;
 
 use InvalidArgumentException;
 
 /**
- * Class InvalidEventsImplementation.
+ * Class InvalidContainerImplementation.
  *
  * @author Melech Mizrachi
  */
-class InvalidEventsImplementation extends InvalidArgumentException
+class InvalidContainerImplementation extends InvalidArgumentException
 {
 }

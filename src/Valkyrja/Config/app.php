@@ -123,7 +123,7 @@ return [
      * //
      *
      */
-    CKP::EVENTS               => env(EnvKey::APP_EVENTS, Valkyrja\Events\NativeEvents::class),
+    CKP::EVENTS               => env(EnvKey::APP_EVENTS, Valkyrja\Event\NativeEvents::class),
 
     /*
      *-------------------------------------------------------------------------
@@ -133,7 +133,7 @@ return [
      * //
      *
      */
-    CKP::EXCEPTION_HANDLER    => env(EnvKey::APP_EXCEPTION_HANDLER, Valkyrja\Exceptions\NativeExceptionHandler::class),
+    CKP::EXCEPTION_HANDLER    => env(EnvKey::APP_EXCEPTION_HANDLER, Valkyrja\Exception\NativeExceptionHandler::class),
 
     /*
      *-------------------------------------------------------------------------

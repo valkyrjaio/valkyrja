@@ -21,7 +21,7 @@ use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input\Option;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Container\Commands\ContainerCacheCommand;
-use Valkyrja\Events\Commands\EventsCacheCommand;
+use Valkyrja\Event\Commands\EventsCacheCommand;
 use Valkyrja\Routing\Commands\RoutesCacheCommand;
 
 /**

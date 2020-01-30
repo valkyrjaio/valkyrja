@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotations;
 
 use ReflectionException;
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 
 /**
  * Class CommandAnnotations.

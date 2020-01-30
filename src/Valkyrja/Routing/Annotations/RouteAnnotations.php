@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotations;
 
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 
 /**
  * Interface RouteAnnotations.

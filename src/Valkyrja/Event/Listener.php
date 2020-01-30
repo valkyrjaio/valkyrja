@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events\Annotations;
+namespace Valkyrja\Event;
 
-use Valkyrja\Annotations\Annotation;
+use Valkyrja\Dispatcher\Dispatch;
 
 /**
  * Class Event.
  *
  * @author Melech Mizrachi
  */
-class Listener extends Annotation
+class Listener extends Dispatch
 {
     /**
      * The event to listen to.
@@ -44,10 +44,12 @@ class Listener extends Annotation
      *
      * @param string $event The event
      *
-     * @return void
+     * @return Listener
      */
-    public function setEvent(string $event = null): void
+    public function setEvent(string $event = null): self
     {
         $this->event = $event;
+
+        return $this;
     }
 }

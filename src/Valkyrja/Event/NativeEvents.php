@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events;
+namespace Valkyrja\Event;
 
 use Valkyrja\Application;
 use Valkyrja\Config\Enums\ConfigKey;
@@ -21,7 +21,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Events\Annotations\ListenerAnnotations;
+use Valkyrja\Event\Annotations\ListenerAnnotations;
 
 /**
  * Class Events.

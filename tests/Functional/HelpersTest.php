@@ -12,14 +12,14 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotations\NativeAnnotations;
+use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Input\NativeInput;
 use Valkyrja\Console\NativeConsole;
 use Valkyrja\Console\NativeKernel as ConsoleKernel;
 use Valkyrja\Console\Output\NativeOutput;
 use Valkyrja\Container\NativeContainer;
-use Valkyrja\Events\NativeEvents;
+use Valkyrja\Event\NativeEvents;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;

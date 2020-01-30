@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja;
 
-use Valkyrja\Annotations\Annotations;
+use Valkyrja\Annotation\Annotations;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -21,8 +21,8 @@ use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
-use Valkyrja\Events\Events;
-use Valkyrja\Exceptions\ExceptionHandler;
+use Valkyrja\Event\Events;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\JsonResponse;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotations;
 
-use Valkyrja\Annotations\Annotation;
+use Valkyrja\Annotation\Annotation;
 
 /**
  * Class Service.

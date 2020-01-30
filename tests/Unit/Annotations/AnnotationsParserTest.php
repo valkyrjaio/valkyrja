@@ -13,14 +13,14 @@ namespace Valkyrja\Tests\Unit\Annotations;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Valkyrja\Annotations\Annotation;
-use Valkyrja\Annotations\NativeAnnotationsParser;
+use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\NativeAnnotationsParser;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
 use Valkyrja\Container\Enums\CoreComponent;
-use Valkyrja\Events\Annotations\Listener;
+use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Valkyrja;
 
@@ -52,7 +52,7 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Annotations\NativeAnnotationsParser
+     * @var \Valkyrja\Annotation\NativeAnnotationsParser
      */
     protected $class;
 

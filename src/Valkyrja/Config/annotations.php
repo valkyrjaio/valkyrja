@@ -57,7 +57,7 @@ return [
         EnvKey::ANNOTATIONS_MAP,
         [
             'Command'        => Valkyrja\Console\Annotations\Command::class,
-            'Listener'       => Valkyrja\Events\Annotations\Listener::class,
+            'Listener'       => Valkyrja\Event\Annotations\Listener::class,
             'Route'          => Valkyrja\Routing\Annotations\Route::class,
             'Service'        => Valkyrja\Container\Annotations\Service::class,
             'ServiceAlias'   => Valkyrja\Container\Annotations\ServiceAlias::class,

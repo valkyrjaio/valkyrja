@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Events;
+namespace Valkyrja\Exception;
+
+use InvalidArgumentException;
 
 /**
- * Interface Event.
+ * Class InvalidDispatcherImplementation.
  *
  * @author Melech Mizrachi
  */
-interface Event
+class InvalidDispatcherImplementation extends InvalidArgumentException
 {
 }

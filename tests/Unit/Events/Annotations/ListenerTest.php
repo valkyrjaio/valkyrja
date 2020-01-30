@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Events\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Events\Annotations\Listener;
+use Valkyrja\Event\Annotations\Listener;
 
 /**
  * Test the listener model.
@@ -24,7 +24,7 @@ class ListenerTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Events\Annotations\Listener
+     * @var \Valkyrja\Event\Annotations\Listener
      */
     protected $class;
 
