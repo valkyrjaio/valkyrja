@@ -12,7 +12,6 @@
 namespace Valkyrja\Http;
 
 use Valkyrja\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
