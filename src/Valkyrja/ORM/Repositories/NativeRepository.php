@@ -115,6 +115,43 @@ class NativeRepository implements Repository
     }
 
     /**
+     * Find one entity by given criteria.
+     * <code>
+     *      $repository
+     *          ->findOneBy(
+     *              [
+     *                  'column'  => 'value',
+     *                  'column2' => 'value2',
+     *              ],
+     *              [
+     *                  'column'
+     *                  'column2' => OrderBy::ASC,
+     *                  'column3' => OrderBy::DESC,
+     *              ],
+     *              1,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param int|null   $offset
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return Entity
+     */
+    public function findOneBy(
+        array $criteria,
+        array $orderBy = null,
+        int $offset = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): Entity {
+        return $this->entityManager->findOneBy($this->entity, $criteria, $orderBy, $offset, $columns, $getRelations);
+    }
+
+    /**
      * Find entities by given criteria.
      * <code>
      *      $repository
