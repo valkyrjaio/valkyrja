@@ -12,7 +12,7 @@
 namespace Valkyrja\Model;
 
 /**
- * Class NativeModel
+ * Class NativeModel.
  *
  * @author Melech Mizrachi
  */
