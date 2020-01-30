@@ -19,7 +19,7 @@ use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
-use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
 use Valkyrja\Valkyrja;
@@ -254,7 +254,7 @@ class AnnotationsParserTest extends TestCase
     public function testProvides(): void
     {
         $expected = [
-            CoreComponent::ANNOTATIONS_PARSER,
+            Contract::ANNOTATIONS_PARSER,
         ];
 
         $this->assertEquals($expected, $this->class::provides());

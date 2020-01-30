@@ -32,7 +32,9 @@ use Valkyrja\Enum\Enum;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotations\ListenerAnnotations;
 use Valkyrja\Event\Events;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
@@ -55,11 +57,11 @@ use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
 /**
- * Enum CoreComponent.
+ * Enum Contract.
  *
  * @author Melech Mizrachi
  */
-final class CoreComponent extends Enum
+final class Contract extends Enum
 {
     public const APP                   = Application::class;
     public const ANNOTATIONS           = Annotations::class;
@@ -101,6 +103,8 @@ final class CoreComponent extends Enum
     public const QUERY                 = Query::class;
     public const QUERY_BUILDER         = QueryBuilder::class;
     public const REPOSITORY            = Repository::class;
+    public const EXCEPTION_HANDLER     = ExceptionHandler::class;
+    public const HTTP_EXCEPTION        = HttpException::class;
 
     protected const VALUES = [
         self::APP,
@@ -143,5 +147,7 @@ final class CoreComponent extends Enum
         self::QUERY,
         self::QUERY_BUILDER,
         self::REPOSITORY,
+        self::EXCEPTION_HANDLER,
+        self::HTTP_EXCEPTION,
     ];
 }

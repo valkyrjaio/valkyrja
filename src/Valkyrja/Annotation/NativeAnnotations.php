@@ -21,7 +21,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Valkyrja\Application;
-use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -601,7 +601,7 @@ class NativeAnnotations implements Annotations
             Annotations::class,
             new static(
                 $app->container()->getSingleton(
-                    CoreComponent::ANNOTATIONS_PARSER
+                    Contract::ANNOTATIONS_PARSER
                 )
             )
         );

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Console\Enums\Provider;
 
 return [
     /*
@@ -37,16 +38,16 @@ return [
     CKP::PROVIDERS                   => env(
         EnvKey::CONSOLE_PROVIDERS,
         [
-            Valkyrja\Config\Commands\ConfigCacheCommand::class,
-            Valkyrja\Console\Commands\CacheAllCommand::class,
-            Valkyrja\Console\Commands\CommandsListCommand::class,
-            Valkyrja\Console\Commands\ConsoleCacheCommand::class,
-            Valkyrja\Console\Commands\CommandsListForBashCommand::class,
-            Valkyrja\Console\Commands\OptimizeCommand::class,
-            Valkyrja\Container\Commands\ContainerCacheCommand::class,
-            Valkyrja\Event\Commands\EventsCacheCommand::class,
-            Valkyrja\Routing\Commands\RoutesCacheCommand::class,
-            Valkyrja\Routing\Commands\RoutesListCommand::class,
+            Provider::CONFIG_CACHE_COMMAND,
+            Provider::CONFIG_ALL_COMMAND,
+            Provider::COMMANDS_LIST_COMMAND,
+            Provider::CONSOLE_CACHE_COMMAND,
+            Provider::COMMANDS_LIST_FOR_BASH_COMMAND,
+            Provider::OPTIMIZE_COMMAND,
+            Provider::CONTAINER_CACHE_COMMAND,
+            Provider::EVENTS_CACHE_COMMAND,
+            Provider::ROUTES_CACHE_COMMAND,
+            Provider::ROUTES_LIST_COMMAND,
         ]
     ),
 

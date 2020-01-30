@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Container\Enums\Provider;
 
 return [
     /*
@@ -93,7 +94,7 @@ return [
      * //
      *
      */
-    CKP::HTTP_EXCEPTION_CLASS => env(EnvKey::APP_HTTP_EXCEPTION_CLASS, \Valkyrja\Http\Exceptions\HttpException::class),
+    CKP::HTTP_EXCEPTION_CLASS => env(EnvKey::APP_HTTP_EXCEPTION_CLASS, Provider::HTTP_EXCEPTION),
 
     /*
      *-------------------------------------------------------------------------
@@ -103,7 +104,7 @@ return [
      * //
      *
      */
-    CKP::CONTAINER            => env(EnvKey::APP_CONTAINER, Valkyrja\Container\NativeContainer::class),
+    CKP::CONTAINER            => env(EnvKey::APP_CONTAINER, Provider::CONTAINER),
 
     /*
      *-------------------------------------------------------------------------
@@ -113,7 +114,7 @@ return [
      * //
      *
      */
-    CKP::DISPATCHER           => env(EnvKey::APP_DISPATCHER, Valkyrja\Dispatcher\NativeDispatcher::class),
+    CKP::DISPATCHER           => env(EnvKey::APP_DISPATCHER, Provider::DISPATCHER),
 
     /*
      *-------------------------------------------------------------------------
@@ -123,7 +124,7 @@ return [
      * //
      *
      */
-    CKP::EVENTS               => env(EnvKey::APP_EVENTS, Valkyrja\Event\NativeEvents::class),
+    CKP::EVENTS               => env(EnvKey::APP_EVENTS, Provider::EVENTS),
 
     /*
      *-------------------------------------------------------------------------
@@ -133,7 +134,7 @@ return [
      * //
      *
      */
-    CKP::EXCEPTION_HANDLER    => env(EnvKey::APP_EXCEPTION_HANDLER, Valkyrja\Exception\NativeExceptionHandler::class),
+    CKP::EXCEPTION_HANDLER    => env(EnvKey::APP_EXCEPTION_HANDLER, Provider::EXCEPTION_HANDLER),
 
     /*
      *-------------------------------------------------------------------------

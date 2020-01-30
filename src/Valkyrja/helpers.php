@@ -18,7 +18,7 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Input\Input;
 use Valkyrja\Console\Output\Output;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Enums\CoreComponent;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
@@ -203,7 +203,7 @@ if (! function_exists('input')) {
      */
     function input(): Input
     {
-        return container()->get(CoreComponent::INPUT);
+        return container()->get(Contract::INPUT);
     }
 }
 
@@ -287,7 +287,7 @@ if (! function_exists('output')) {
      */
     function output(): Output
     {
-        return container()->get(CoreComponent::OUTPUT);
+        return container()->get(Contract::OUTPUT);
     }
 }
 
