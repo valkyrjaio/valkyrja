@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -26,6 +26,7 @@ use Valkyrja\Console\Output\Output;
 use Valkyrja\Console\Output\OutputFormatter;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Enum\Enum;
 use Valkyrja\Env\Env;
@@ -39,6 +40,13 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseBuilder;
 use Valkyrja\Logger\Logger;
+use Valkyrja\Mail\Mail;
+use Valkyrja\Model\Model;
+use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Query;
+use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\Repository;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
@@ -85,39 +93,55 @@ final class CoreComponent extends Enum
     public const CLIENT                = Client::class;
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
+    public const MAIL                  = Mail::class;
+    public const CRYPT                 = Crypt::class;
+    public const MODEL                 = Model::class;
+    public const ENTITY                = Entity::class;
+    public const ENTITY_MANAGER        = EntityManager::class;
+    public const QUERY                 = Query::class;
+    public const QUERY_BUILDER         = QueryBuilder::class;
+    public const REPOSITORY            = Repository::class;
 
     protected const VALUES = [
-        self::APP                   => self::APP,
-        self::ANNOTATIONS           => self::ANNOTATIONS,
-        self::ANNOTATIONS_PARSER    => self::ANNOTATIONS_PARSER,
-        self::COMMAND_ANNOTATIONS   => self::COMMAND_ANNOTATIONS,
-        self::CONFIG                => self::CONFIG,
-        self::CONSOLE               => self::CONSOLE,
-        self::CONSOLE_KERNEL        => self::CONSOLE_KERNEL,
-        self::CONTAINER             => self::CONTAINER,
-        self::CONTAINER_ANNOTATIONS => self::CONTAINER_ANNOTATIONS,
-        self::DISPATCHER            => self::DISPATCHER,
-        self::ENV                   => self::ENV,
-        self::EVENTS                => self::EVENTS,
-        self::FILESYSTEM            => self::FILESYSTEM,
-        self::INPUT                 => self::INPUT,
-        self::OUTPUT                => self::OUTPUT,
-        self::OUTPUT_FORMATTER      => self::OUTPUT_FORMATTER,
-        self::KERNEL                => self::KERNEL,
-        self::LISTENER_ANNOTATIONS  => self::LISTENER_ANNOTATIONS,
-        self::PATH_GENERATOR        => self::PATH_GENERATOR,
-        self::PATH_PARSER           => self::PATH_PARSER,
-        self::REQUEST               => self::REQUEST,
-        self::RESPONSE              => self::RESPONSE,
-        self::JSON_RESPONSE         => self::JSON_RESPONSE,
-        self::REDIRECT_RESPONSE     => self::REDIRECT_RESPONSE,
-        self::RESPONSE_BUILDER      => self::RESPONSE_BUILDER,
-        self::ROUTER                => self::ROUTER,
-        self::ROUTE_ANNOTATIONS     => self::ROUTE_ANNOTATIONS,
-        self::SESSION               => self::SESSION,
-        self::VIEW                  => self::VIEW,
-        self::CLIENT                => self::CLIENT,
-        self::LOGGER_INTERFACE      => self::LOGGER_INTERFACE,
-        self::LOGGER                => self::LOGGER,
+        self::APP,
+        self::ANNOTATIONS,
+        self::ANNOTATIONS_PARSER,
+        self::COMMAND_ANNOTATIONS,
+        self::CONFIG,
+        self::CONSOLE,
+        self::CONSOLE_KERNEL,
+        self::CONTAINER,
+        self::CONTAINER_ANNOTATIONS,
+        self::DISPATCHER,
+        self::ENV,
+        self::EVENTS,
+        self::FILESYSTEM,
+        self::INPUT,
+        self::OUTPUT,
+        self::OUTPUT_FORMATTER,
+        self::KERNEL,
+        self::LISTENER_ANNOTATIONS,
+        self::PATH_GENERATOR,
+        self::PATH_PARSER,
+        self::REQUEST,
+        self::RESPONSE,
+        self::JSON_RESPONSE,
+        self::REDIRECT_RESPONSE,
+        self::RESPONSE_BUILDER,
+        self::ROUTER,
+        self::ROUTE_ANNOTATIONS,
+        self::SESSION,
+        self::VIEW,
+        self::CLIENT,
+        self::LOGGER_INTERFACE,
+        self::LOGGER,
+        self::MAIL,
+        self::CRYPT,
+        self::MODEL,
+        self::ENTITY,
+        self::ENTITY_MANAGER,
+        self::QUERY,
+        self::QUERY_BUILDER,
+        self::REPOSITORY,
     ];
 }
