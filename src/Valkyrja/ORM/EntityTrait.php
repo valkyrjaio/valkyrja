@@ -46,6 +46,7 @@ trait EntityTrait
 
     /**
      * Valid types allowed to be mass set.
+     *  NOTE: Set this if you'd like to save a array_keys(get_object_vars()) call later.
      *
      * @var array
      */

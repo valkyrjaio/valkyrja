@@ -104,15 +104,16 @@ class PDOEntityManager implements EntityManager
      * Get a new query builder instance.
      *
      * @param string|null $entity
+     * @param string|null $alias
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $entity = null): QueryBuilder
+    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
         $queryBuilder = new SqlQueryBuilder($this->connection());
 
         if (null !== $entity) {
-            $queryBuilder->entity($entity);
+            $queryBuilder->entity($entity, $alias);
         }
 
         return $queryBuilder;

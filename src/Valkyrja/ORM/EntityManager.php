@@ -22,10 +22,11 @@ interface EntityManager
      * Get a new query builder instance.
      *
      * @param string|null $entity
+     * @param string|null $alias
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $entity = null): QueryBuilder;
+    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 
     /**
      * Start a query.

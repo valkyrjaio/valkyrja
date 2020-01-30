@@ -92,11 +92,12 @@ interface QueryBuilder
      *          ->entity(Entity::class);
      * </code>.
      *
-     * @param string $entity
+     * @param string      $entity
+     * @param string|null $alias
      *
      * @return static
      */
-    public function entity(string $entity): self;
+    public function entity(string $entity, string $alias = null): self;
 
     /**
      * Add a value for a column to set.

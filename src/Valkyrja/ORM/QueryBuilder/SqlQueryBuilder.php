@@ -225,15 +225,16 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->entity(Entity::class);
      * </code>.
      *
-     * @param string $entity
+     * @param string      $entity
+     * @param string|null $alias
      *
      * @return static
      */
-    public function entity(string $entity): self
+    public function entity(string $entity, string $alias = null): self
     {
         $this->entity = $entity;
-        /** @var Entity|string $entity */
-        $this->table = ':' . $entity;
+
+        $this->table(':' . $entity, $alias);
 
         return $this;
     }

@@ -229,11 +229,13 @@ class NativeRepository implements Repository
     /**
      * Get a new query builder instance.
      *
+     * @param string|null $alias
+     *
      * @return QueryBuilder
      */
-    public function queryBuilder(): QueryBuilder
+    public function queryBuilder(string $alias = null): QueryBuilder
     {
-        return $this->entityManager->queryBuilder($this->entity);
+        return $this->entityManager->queryBuilder($this->entity, $alias);
     }
 
     /**
