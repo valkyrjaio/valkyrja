@@ -13,7 +13,6 @@
     <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
 </p>
 
-
 About Valkyrja
 ------------
 

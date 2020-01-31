@@ -1,68 +1,68 @@
 {
-  "name"              : "valkyrja/valkyrja",
-  "type"              : "project",
-  "description"       : "The Valkyrja Framework.",
-  "homepage"          : "http://www.valkyrja.io",
-  "keywords"          : [
-    "framework",
-    "valkyrja"
-  ],
-  "license"           : "MIT",
-  "authors"           : [
-    {
-      "name"  : "Melech Mizrachi",
-      "email" : "melechmizrachi@valkyrja.io"
-    }
-  ],
-  "require"           : {
-    "php"              : ">=7.4",
-    "psr/http-message" : "1.0.1",
-    "psr/log"          : "1.1.2",
-    "ext-json"         : "*",
-    "ext-pdo"          : "*",
-    "ext-sodium"       : "*"
-  },
-  "require-dev"       : {
-    "filp/whoops"                 : "2.7.1",
-    "fzaninotto/faker"            : "1.9.1",
-    "guzzlehttp/guzzle"           : "6.5.2",
-    "league/flysystem"            : "1.0.63",
-    "league/flysystem-aws-s3-v3"  : "1.0.23",
-    "mockery/mockery"             : "1.3.1",
-    "monolog/monolog"             : "2.0.2",
-    "phpunit/phpunit"             : "8.5.2",
-    "predis/predis"               : "1.1.1",
-    "php-coveralls/php-coveralls" : "2.2.0",
-    "valkyrja/valkyrja-app"       : "1.0.*"
-  },
-  "autoload"          : {
-    "psr-4" : {
-      "Valkyrja\\" : "src/Valkyrja"
+    "name"              : "valkyrja/valkyrja",
+    "type"              : "project",
+    "description"       : "The Valkyrja Framework.",
+    "homepage"          : "http://www.valkyrja.io",
+    "keywords"          : [
+        "framework",
+        "valkyrja"
+    ],
+    "license"           : "MIT",
+    "authors"           : [
+        {
+            "name"  : "Melech Mizrachi",
+            "email" : "melechmizrachi@valkyrja.io"
+        }
+    ],
+    "require"           : {
+        "php"              : ">=7.4",
+        "psr/http-message" : "1.0.1",
+        "psr/log"          : "1.1.2",
+        "ext-json"         : "*",
+        "ext-pdo"          : "*",
+        "ext-sodium"       : "*"
     },
-    "files" : [
-      "src/functions/helpers.php"
-    ]
-  },
-  "autoload-dev"      : {
-    "psr-4" : {
-      "Valkyrja\\Tests\\" : "tests"
+    "require-dev"       : {
+        "filp/whoops"                 : "2.7.1",
+        "fzaninotto/faker"            : "1.9.1",
+        "guzzlehttp/guzzle"           : "6.5.2",
+        "league/flysystem"            : "1.0.63",
+        "league/flysystem-aws-s3-v3"  : "1.0.23",
+        "mockery/mockery"             : "1.3.1",
+        "monolog/monolog"             : "2.0.2",
+        "phpunit/phpunit"             : "8.5.2",
+        "predis/predis"               : "1.1.1",
+        "php-coveralls/php-coveralls" : "2.2.0",
+        "valkyrja/application"        : "1.0.*"
+    },
+    "autoload"          : {
+        "psr-4" : {
+            "Valkyrja\\" : "src/Valkyrja"
+        },
+        "files" : [
+            "src/functions/helpers.php"
+        ]
+    },
+    "autoload-dev"      : {
+        "psr-4" : {
+            "Valkyrja\\Tests\\" : "tests"
+        }
+    },
+    "suggest"           : {
+        "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (6.5.2).",
+        "league/flysystem"           : "Required for use with Valkyrja FileSystem (1.0.63).",
+        "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (1.0.23)",
+        "monolog/monolog"            : "Required for use with Valkyrja Logger (1.3.1).",
+        "predis/predis"              : "Required for use with Redis Valkyrja Cache (1.1.1).",
+        "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0).",
+        "ext-sodium"                 : "For Crypt functionality (*)",
+        "ext-pdo"                    : "For ORM functionality (*)"
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable"     : true,
+    "extra"             : {
+        "branch-alias" : {
+            "dev-master" : "1.0-dev"
+        }
     }
-  },
-  "suggest"           : {
-    "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (6.5.2).",
-    "league/flysystem"           : "Required for use with Valkyrja FileSystem (1.0.63).",
-    "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (1.0.23)",
-    "monolog/monolog"            : "Required for use with Valkyrja Logger (1.3.1).",
-    "predis/predis"              : "Required for use with Redis Valkyrja Cache (1.1.1).",
-    "valkyrja/valkyrja-twig"     : "Optional Valkyrja component for using Twig Templating (^1.0).",
-    "ext-sodium"                 : "For Crypt functionality (*)",
-    "ext-pdo"                    : "For ORM functionality (*)"
-  },
-  "minimum-stability" : "dev",
-  "prefer-stable"     : true,
-  "extra"             : {
-    "branch-alias" : {
-      "dev-master" : "1.0-dev"
-    }
-  }
 }
