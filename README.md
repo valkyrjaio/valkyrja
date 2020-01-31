@@ -16,7 +16,8 @@
 About Valkyrja
 ------------
 
-> **Note:** This repository contains the core code of the Valkyrja framework. If you want to build an application using Valkyrja, visit the [Valkyrja App repository](https://github.com/valkyrjaio/application).
+> **Note:** This repository contains the core code of the Valkyrja framework.
+> If you want to build an application using Valkyrja, visit the [Valkyrja App repository][Valkyrja App repository].
 
 [Valkyrja][1] is a PHP framework for web and console applications
 
@@ -62,6 +63,11 @@ Security Issues
 If you discover a security vulnerability within Valkyrja, please follow our
 [disclosure procedure][16].
 
+License
+---------------
+
+The Valkyrja framework is open-sourced software licensed under the [MIT license][MIT license].
+
 [1]: https://valkyrja.io
 [2]: https://valkyrja.io
 [3]: https://valkyrja.io
@@ -78,3 +84,5 @@ If you discover a security vulnerability within Valkyrja, please follow our
 [14]: https://valkyrja.io
 [15]: https://valkyrja.io
 [16]: https://valkyrja.io
+[MIT license]: https://opensource.org/licenses/MIT
+[Valkyrja App repository]: https://github.com/valkyrjaio/application
