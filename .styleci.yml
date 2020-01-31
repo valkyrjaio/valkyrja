@@ -1,40 +1,31 @@
-php:
-  preset: recommended
+preset: recommended
 
-  risky: true
+risky: true
 
-  enabled:
-    - align_equals
-    - blank_line_before_break
-    - combine_consecutive_unsets
-    - concat_with_spaces
-    - const_visibility_required
-    - no_useless_else
-    - not_operator_with_successor_space
-    - short_list_syntax
-    - strict_comparison
-    - strict_param
-    - phpdoc_scalar
-    - phpdoc_trim
-    - phpdoc_types
-    - phpdoc_add_missing_param_annotation
-    - declare_strict_types
-    - const_visibility_required
-    - dir_constant
-    - final_static_access
-    - lowercase_cast
-    - lowercase_constants
-    - lowercase_keywords
-    - lowercase_static_reference
+enabled:
+  - align_equals
+  - blank_line_before_break
+  - combine_consecutive_unsets
+  - concat_with_spaces
+  - const_visibility_required
+  - no_useless_else
+  - not_operator_with_successor_space
+  - short_list_syntax
+  - strict_comparison
+  - strict_param
+  - phpdoc_add_missing_param_annotation
+  - declare_strict_types
+  - dir_constant
+  - final_static_access
+  - blank_line_before_declare
 
-  disabled:
-    - concat_without_spaces
-    - phpdoc_align
-    - unalign_equals
-    - phpdoc_summary
-    - phpdoc_annotation_without_dot
-    - declare_equal_normalize
+disabled:
+  - concat_without_spaces
+  - phpdoc_align
+  - unalign_equals
+  - phpdoc_summary
+  - declare_equal_normalize
 
-  finder:
-    exclude:
-      - "tests"
+finder:
+  exclude:
+    - "tests"
