@@ -204,7 +204,7 @@ class Valkyrja implements Application
 
         $config         = $config ?? [];
         $configFilePath = Directory::configPath('config.php');
-        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/Config/config.php';
+        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/../config/config.php';
         $defaultConfigs = require $configFilePath;
 
         self::$config = array_replace_recursive($defaultConfigs, $config);

@@ -40,7 +40,7 @@
       "Valkyrja\\" : "src/Valkyrja"
     },
     "files" : [
-      "src/Valkyrja/helpers.php"
+      "src/functions/helpers.php"
     ]
   },
   "autoload-dev"      : {
