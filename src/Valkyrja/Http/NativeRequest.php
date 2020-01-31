@@ -319,7 +319,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   .= ':' . $components['port'];
+            $server['HTTP_HOST'] .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -347,9 +347,11 @@ class NativeRequest implements Request
                 break;
             case RequestMethod::PATCH:
                 $request = $parameters;
+
                 break;
             default:
                 $query = $parameters;
+
                 break;
         }
 
