@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Http;
 
 use Throwable;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;

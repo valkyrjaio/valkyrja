@@ -14,6 +14,7 @@ namespace Valkyrja\Tests\Functional;
 use Exception;
 use TypeError;
 use Valkyrja\Annotation\NativeAnnotations;
+use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
 use Valkyrja\Config\Enums\ConfigKey;
@@ -43,7 +44,6 @@ use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
-use Valkyrja\Valkyrja;
 use Valkyrja\View\PhpView;
 
 /**

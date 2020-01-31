@@ -17,7 +17,7 @@ use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Logger\Enums\LogLevel;
 use Valkyrja\Logger\Logger;

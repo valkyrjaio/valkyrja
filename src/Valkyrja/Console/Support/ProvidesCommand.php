@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Support;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Console\Command;
 use Valkyrja\Support\Providers\Provides;
 

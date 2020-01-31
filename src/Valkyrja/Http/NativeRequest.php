@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
@@ -1188,7 +1188,7 @@ class NativeRequest implements Request
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

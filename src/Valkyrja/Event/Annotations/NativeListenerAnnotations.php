@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Annotations;
 use ReflectionException;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Annotation\NativeAnnotations;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Event\Listener as EventListener;
 
 /**

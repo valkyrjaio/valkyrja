@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Annotation\NativeAnnotations;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
 
 /**
@@ -135,7 +135,7 @@ class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnot
     /**
      * Bind the command annotations.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

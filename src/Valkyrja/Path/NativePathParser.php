@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Support\Providers\Provides;
 
@@ -313,7 +313,7 @@ REGEX;
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

@@ -15,7 +15,7 @@ namespace Valkyrja\Routing;
 
 use Exception;
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -45,7 +45,7 @@ class NativeRouter implements Router
     /**
      * Application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
@@ -80,7 +80,7 @@ class NativeRouter implements Router
     /**
      * Router constructor.
      *
-     * @param Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {

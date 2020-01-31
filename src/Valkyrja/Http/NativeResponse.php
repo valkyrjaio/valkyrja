@@ -17,7 +17,7 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
@@ -1157,7 +1157,7 @@ class NativeResponse implements Response
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @throws InvalidArgumentException
      *

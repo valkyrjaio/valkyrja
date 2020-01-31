@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Event;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -33,7 +33,7 @@ class NativeEvents implements Events
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 

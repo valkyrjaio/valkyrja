@@ -15,7 +15,7 @@ namespace Valkyrja\ORM\EntityManagers;
 
 use InvalidArgumentException;
 use PDO;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;

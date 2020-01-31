@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Annotation;
 
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Providers\Provides;
 

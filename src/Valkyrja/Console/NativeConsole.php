@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Console;
 
 use ReflectionException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Annotations\CommandAnnotations;
@@ -50,7 +50,7 @@ class NativeConsole implements Console
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
@@ -542,7 +542,7 @@ class NativeConsole implements Console
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */
@@ -559,7 +559,7 @@ class NativeConsole implements Console
     /**
      * Get the application.
      *
-     * @return Application
+     * @return \Valkyrja\Application\Application
      */
     protected function getApplication(): Application
     {

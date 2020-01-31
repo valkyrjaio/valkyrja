@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Dispatcher;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -41,14 +41,14 @@ class NativeDispatcher implements Dispatcher
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
     /**
      * Dispatcher constructor.
      *
-     * @param Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {

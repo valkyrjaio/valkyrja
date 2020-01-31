@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\NativeAnnotationsParser;
+use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
 use Valkyrja\Container\Annotations\ServiceAlias;
@@ -22,7 +23,6 @@ use Valkyrja\Container\Annotations\ServiceContext;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotations\Listener;
 use Valkyrja\Routing\Annotations\Route;
-use Valkyrja\Valkyrja;
 
 /**
  * Test the AnnotationsParser class.
@@ -267,8 +267,8 @@ class AnnotationsParserTest extends TestCase
      */
     public function testPublish(): void
     {
-        /* @var \Valkyrja\Application $app */
-        $app = $this->createMock(\Valkyrja\Application::class);
+        /* @var \Valkyrja\Application\Application $app */
+        $app = $this->createMock(\Valkyrja\Application\Application::class);
 
         $this->assertEquals(null, $this->class::publish($app) ?? null);
     }

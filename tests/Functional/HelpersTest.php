@@ -13,6 +13,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use Valkyrja\Annotation\NativeAnnotations;
+use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Input\NativeInput;
 use Valkyrja\Console\NativeConsole;
@@ -34,7 +35,6 @@ use Valkyrja\Routing\NativeRouter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\NativeSession;
 use Valkyrja\Support\Directory;
-use Valkyrja\Valkyrja;
 use Valkyrja\View\PhpView;
 
 /**

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Events;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 
 /**
  * Invalid events class to test with.
@@ -23,14 +23,14 @@ class InvalidEventsClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var \Valkyrja\Application\Application
      */
     protected $app;
 
     /**
      * InvalidEventsClass constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {

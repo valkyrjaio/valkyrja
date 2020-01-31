@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\HttpMessage\Response;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;

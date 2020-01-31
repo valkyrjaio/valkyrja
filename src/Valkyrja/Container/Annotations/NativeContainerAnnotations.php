@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Annotation\NativeAnnotations;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
 

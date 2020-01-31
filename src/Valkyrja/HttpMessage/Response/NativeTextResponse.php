@@ -15,7 +15,7 @@ namespace Valkyrja\HttpMessage\Response;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
@@ -70,7 +70,7 @@ class NativeTextResponse extends NativeResponse implements TextResponse
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @throws InvalidArgumentException
      *

@@ -17,7 +17,7 @@ use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -155,7 +155,7 @@ class GuzzleClient implements Client
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

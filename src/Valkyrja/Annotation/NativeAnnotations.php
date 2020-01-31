@@ -20,7 +20,7 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 

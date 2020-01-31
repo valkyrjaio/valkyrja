@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Console\Output;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Support\Providers\Provides;
@@ -163,7 +163,7 @@ class NativeOutput implements Output
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

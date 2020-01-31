@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\HttpMessage\Middleware;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Request;
 use Valkyrja\HttpMessage\Response;
 
@@ -173,7 +173,7 @@ trait MiddlewareAwareTrait
     /**
      * Get the application.
      *
-     * @return Application
+     * @return \Valkyrja\Application\Application
      */
     abstract protected function getApplication(): Application;
 }

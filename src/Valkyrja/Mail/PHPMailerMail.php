@@ -15,7 +15,7 @@ namespace Valkyrja\Mail;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Support\Providers\Provides;
 
@@ -45,8 +45,8 @@ class PHPMailerMail implements Mail
     /**
      * NativeMail constructor.
      *
-     * @param Application $app
-     * @param PHPMailer   $PHPMailer
+     * @param \Valkyrja\Application\Application $app
+     * @param PHPMailer                         $PHPMailer
      */
     public function __construct(Application $app, PHPMailer $PHPMailer)
     {
@@ -211,7 +211,7 @@ class PHPMailerMail implements Mail
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

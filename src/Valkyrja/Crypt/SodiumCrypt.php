@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Crypt;
 
 use Exception;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Filesystem\Filesystem;
@@ -192,7 +192,7 @@ class SodiumCrypt implements Crypt
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

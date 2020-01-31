@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Session;
 
 use Exception;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
@@ -53,9 +53,9 @@ class NativeSession implements Session
     /**
      * Session constructor.
      *
-     * @param Application $application The application
-     * @param string      $sessionId   [optional] The session id
-     * @param string      $sessionName [optional] The session name
+     * @param \Valkyrja\Application\Application $application The application
+     * @param string                            $sessionId   [optional] The session id
+     * @param string                            $sessionName [optional] The session name
      *
      * @throws InvalidSessionId
      * @throws SessionStartFailure

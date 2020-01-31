@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Input;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
 

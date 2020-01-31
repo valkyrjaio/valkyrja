@@ -25,7 +25,7 @@ use League\Flysystem\Filesystem as FlySystem;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\RootViolationException;
 use LogicException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Support\Providers\Provides;
@@ -42,7 +42,7 @@ class FlyFilesystem implements Filesystem
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
@@ -63,8 +63,8 @@ class FlyFilesystem implements Filesystem
     /**
      * FlyFilesystem constructor.
      *
-     * @param Application              $application The application
-     * @param FilesystemInterface|null $flySystem   [optional] The FlyFilesystem
+     * @param \Valkyrja\Application\Application $application The application
+     * @param FilesystemInterface|null          $flySystem   [optional] The FlyFilesystem
      */
     public function __construct(Application $application, FilesystemInterface $flySystem = null)
     {
@@ -512,7 +512,7 @@ class FlyFilesystem implements Filesystem
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

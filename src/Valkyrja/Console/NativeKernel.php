@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Console;
 
 use Throwable;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Console\Events\ConsoleKernelHandled;
 use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input\Input;
@@ -34,7 +34,7 @@ class NativeKernel implements Kernel
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
@@ -48,8 +48,8 @@ class NativeKernel implements Kernel
     /**
      * Kernel constructor.
      *
-     * @param Application $application The application
-     * @param Console     $console     The console
+     * @param \Valkyrja\Application\Application $application The application
+     * @param Console                           $console     The console
      */
     public function __construct(Application $application, Console $console)
     {
@@ -150,7 +150,7 @@ class NativeKernel implements Kernel
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

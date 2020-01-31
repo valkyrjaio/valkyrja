@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 
 /**
  * Invalid dispatcher class to test with.
@@ -23,14 +23,14 @@ class InvalidDispatcherClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var \Valkyrja\Application\Application
      */
     protected $app;
 
     /**
      * InvalidContainerClass constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {

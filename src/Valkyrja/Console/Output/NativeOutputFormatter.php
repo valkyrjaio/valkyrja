@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Output;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
@@ -392,7 +392,7 @@ class NativeOutputFormatter implements OutputFormatter
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

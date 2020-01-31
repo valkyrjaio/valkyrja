@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Container;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 
 /**
  * Invalid container class to test with.
@@ -23,14 +23,14 @@ class InvalidContainerClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Application
+     * @var \Valkyrja\Application\Application
      */
     protected $app;
 
     /**
      * InvalidContainerClass constructor.
      *
-     * @param \Valkyrja\Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {

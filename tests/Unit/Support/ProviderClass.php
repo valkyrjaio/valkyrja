@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Support;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Support\Providers\Provider;
 
 /**
@@ -34,7 +34,7 @@ class ProviderClass extends Provider
     /**
      * Publish the service provider.
      *
-     * @param \Valkyrja\Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

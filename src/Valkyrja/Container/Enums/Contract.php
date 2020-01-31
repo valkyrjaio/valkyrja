@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Enums;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Annotation\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Annotations\CommandAnnotations;
 use Valkyrja\Console\Console;

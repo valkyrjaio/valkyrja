@@ -11,10 +11,11 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja;
+namespace Valkyrja\Application\Applications;
 
 use InvalidArgumentException;
 use Valkyrja\Annotation\Annotations;
+use Valkyrja\Application\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Console;

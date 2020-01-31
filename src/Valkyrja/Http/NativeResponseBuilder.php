@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Http;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Support\Providers\Provides;
 
@@ -30,14 +30,14 @@ class NativeResponseBuilder implements ResponseBuilder
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
     /**
      * ResponseBuilder constructor.
      *
-     * @param Application $app
+     * @param \Valkyrja\Application\Application $app
      */
     public function __construct(Application $app)
     {
@@ -165,7 +165,7 @@ class NativeResponseBuilder implements ResponseBuilder
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

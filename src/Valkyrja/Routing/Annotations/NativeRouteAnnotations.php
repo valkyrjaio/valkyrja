@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Annotation\NativeAnnotations;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
 
@@ -275,7 +275,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
     /**
      * Bind the route annotations.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @return void
      */

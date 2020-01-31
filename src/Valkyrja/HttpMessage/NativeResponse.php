@@ -15,7 +15,7 @@ namespace Valkyrja\HttpMessage;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;

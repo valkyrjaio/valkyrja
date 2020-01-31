@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
@@ -42,7 +42,7 @@ class NativeContainer implements Container
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
@@ -77,7 +77,7 @@ class NativeContainer implements Container
     /**
      * Container constructor.
      *
-     * @param Application $application The application
+     * @param \Valkyrja\Application\Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -631,7 +631,7 @@ class NativeContainer implements Container
     /**
      * Get the application.
      *
-     * @return Application
+     * @return \Valkyrja\Application\Application
      */
     protected function getApplication(): Application
     {

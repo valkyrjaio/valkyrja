@@ -15,6 +15,7 @@ namespace Valkyrja\Container\Enums;
 
 use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Annotation\NativeAnnotationsParser;
+use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\GuzzleClient;
 use Valkyrja\Console\Annotations\NativeCommandAnnotations;
 use Valkyrja\Console\Input\NativeInput;
@@ -52,7 +53,6 @@ use Valkyrja\Path\NativePathParser;
 use Valkyrja\Routing\Annotations\NativeRouteAnnotations;
 use Valkyrja\Routing\NativeRouter;
 use Valkyrja\Session\NativeSession;
-use Valkyrja\Valkyrja;
 use Valkyrja\View\PhpView;
 
 /**

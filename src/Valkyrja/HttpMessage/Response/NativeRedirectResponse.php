@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\HttpMessage\Response;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
@@ -63,7 +63,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @throws InvalidArgumentException
      *

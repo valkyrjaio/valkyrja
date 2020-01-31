@@ -74,7 +74,7 @@ return [
      * //
      *
      */
-    CKP::VERSION              => env(EnvKey::APP_VERSION, Valkyrja\Application::VERSION),
+    CKP::VERSION              => env(EnvKey::APP_VERSION, \Valkyrja\Application\Application::VERSION),
 
     /*
      *-------------------------------------------------------------------------

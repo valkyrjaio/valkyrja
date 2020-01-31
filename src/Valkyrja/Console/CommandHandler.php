@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Input\Argument;
 use Valkyrja\Console\Input\Option;

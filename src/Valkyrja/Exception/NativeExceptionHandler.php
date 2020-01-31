@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Exception;
 
 use Throwable;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Response;
@@ -38,14 +38,14 @@ class NativeExceptionHandler implements ExceptionHandler
     public static bool $enabled = false;
 
     /**
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
     /**
      * NativeExceptionHandler constructor.
      *
-     * @param Application $application
+     * @param \Valkyrja\Application\Application $application
      */
     public function __construct(Application $application)
     {

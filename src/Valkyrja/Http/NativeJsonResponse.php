@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Http;
 
 use InvalidArgumentException;
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 
 /**
@@ -232,7 +232,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param \Valkyrja\Application\Application $app The application
      *
      * @throws InvalidArgumentException
      *

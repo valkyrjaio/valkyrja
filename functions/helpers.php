@@ -12,7 +12,6 @@ declare(strict_types = 1);
  */
 
 use Valkyrja\Annotation\Annotations;
-use Valkyrja\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input\Input;
@@ -41,11 +40,11 @@ if (! function_exists('app')) {
     /**
      * Return the global $app variable.
      *
-     * @return Application
+     * @return \Valkyrja\Application\Application
      */
-    function app(): Valkyrja\Application
+    function app(): \Valkyrja\Application\Application
     {
-        return Valkyrja\Valkyrja::app();
+        return \Valkyrja\Application\Applications\Valkyrja::app();
     }
 }
 
@@ -167,7 +166,7 @@ if (! function_exists('env')) {
         // Does not use the app() helper due to the self::$instance property
         // that Valkyrja::app() relies on has not been set yet when
         // this helper may be used.
-        return Valkyrja\Valkyrja::env($key, $default);
+        return \Valkyrja\Application\Applications\Valkyrja::env($key, $default);
     }
 }
 

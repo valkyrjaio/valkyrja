@@ -13,7 +13,7 @@ declare(strict_types = 1);
 
 namespace Valkyrja\View;
 
-use Valkyrja\Application;
+use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
@@ -31,7 +31,7 @@ class PhpView implements View
     /**
      * The application.
      *
-     * @var Application
+     * @var \Valkyrja\Application\Application
      */
     protected Application $app;
 
