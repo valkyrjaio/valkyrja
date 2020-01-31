@@ -28,8 +28,9 @@ use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\ORM\Repository;
+use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
+use Valkyrja\Support\Helpers;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -142,6 +143,8 @@ class PDOEntityManager implements EntityManager
      *
      * @param string $entity
      *
+     * @throws InvalidClassProvidedException
+     *
      * @return Repository
      */
     public function repository(string $entity): Repository
@@ -150,8 +153,10 @@ class PDOEntityManager implements EntityManager
             return $this->repositories[$entity];
         }
 
+        Helpers::validateClass($entity, Entity::class);
+
         /** @var Entity|string $entity */
-        $repository = $entity::getRepository() ?? Repository::class;
+        $repository = $entity::getRepository();
 
         return $this->repositories[$entity] = new $repository($this, $entity, $entity::getTable());
     }
@@ -225,6 +230,8 @@ class PDOEntityManager implements EntityManager
             return $this->repository($entity)->find($id, $getRelations);
         }
 
+        Helpers::validateClass($entity, Entity::class);
+
         return $this->entityRetriever->find($entity, $id, $getRelations);
     }
 
@@ -274,6 +281,8 @@ class PDOEntityManager implements EntityManager
             return $this->repository($entity)->findBy($criteria, $orderBy, $limit, $offset, $columns, $getRelations);
         }
 
+        Helpers::validateClass($entity, Entity::class);
+
         return $this->entityRetriever->findBy($entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations);
     }
 
@@ -321,6 +330,8 @@ class PDOEntityManager implements EntityManager
             return $this->repository($entity)->findOneBy($criteria, $orderBy, $offset, $columns, $getRelations);
         }
 
+        Helpers::validateClass($entity, Entity::class);
+
         return $this->entityRetriever->findOneBy($entity, $criteria, $orderBy, $offset, $columns, $getRelations);
     }
 
@@ -358,6 +369,8 @@ class PDOEntityManager implements EntityManager
             return $this->repository($entity)->findAll($orderBy, $columns, $getRelations);
         }
 
+        Helpers::validateClass($entity, Entity::class);
+
         return $this->entityRetriever->findAll($entity, $orderBy, $columns, $getRelations);
     }
 
@@ -386,6 +399,8 @@ class PDOEntityManager implements EntityManager
         if ($useRepository) {
             return $this->repository($entity)->count($criteria);
         }
+
+        Helpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->count($entity, $criteria);
     }

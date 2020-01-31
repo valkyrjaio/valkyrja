@@ -39,9 +39,9 @@ interface Entity extends Model
     /**
      * Get the ORM repository.
      *
-     * @return string|null
+     * @return string
      */
-    public static function getRepository(): ?string;
+    public static function getRepository(): string;
 
     /**
      * Get the properties.

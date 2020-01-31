@@ -16,6 +16,7 @@ namespace Valkyrja\ORM\Entities;
 use Valkyrja\Model\ModelTrait;
 use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
+use Valkyrja\ORM\Repositories\Repository;
 
 /**
  * Trait EntityTrait.
@@ -43,9 +44,9 @@ trait EntityTrait
     /**
      * The ORM repository to use.
      *
-     * @var string|null
+     * @var string
      */
-    protected static ?string $repository = null;
+    protected static string $repository = Repository::class;
 
     /**
      * Valid types allowed to be mass set.
@@ -110,9 +111,9 @@ trait EntityTrait
     /**
      * Get the ORM repository.
      *
-     * @return string|null
+     * @return string
      */
-    public static function getRepository(): ?string
+    public static function getRepository(): string
     {
         return static::$repository;
     }

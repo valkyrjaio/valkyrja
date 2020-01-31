@@ -21,6 +21,7 @@ use Valkyrja\ORM\EntityRetriever;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\Support\Helpers;
 
 /**
  * Class PDOEntityRetriever
@@ -271,6 +272,8 @@ class PDOEntityRetriever implements EntityRetriever
         int $offset = null,
         bool $getRelations = null
     ) {
+        Helpers::validateClass($entity, Entity::class);
+
         // Get the query builders
         $queryBuilder = $this->getQueryBuilderForSelect($entity, $columns, $criteria, $orderBy, $limit, $offset);
 

@@ -14,6 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Support\Providers;
 
 use Valkyrja\Application;
+use Valkyrja\Support\Helpers;
 
 /**
  * Trait AllowsProviders.
@@ -40,8 +41,7 @@ trait ProvidersAwareTrait
      * Register a provider.
      *
      * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of
-     *                         deferred status
+     * @param bool   $force    [optional] Whether to force regardless of deferred status
      *
      * @return void
      */
@@ -51,6 +51,8 @@ trait ProvidersAwareTrait
         if ($this->isRegistered($provider)) {
             return;
         }
+
+        Helpers::validateClass($provider, Provides::class);
 
         /** @var Provides $provider */
 
