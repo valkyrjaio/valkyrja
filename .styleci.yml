@@ -18,6 +18,14 @@ php:
     - phpdoc_trim
     - phpdoc_types
     - phpdoc_add_missing_param_annotation
+    - declare_strict_types
+    - const_visibility_required
+    - dir_constant
+    - final_static_access
+    - lowercase_cast
+    - lowercase_constants
+    - lowercase_keywords
+    - lowercase_static_reference
 
   disabled:
     - concat_without_spaces
@@ -25,6 +33,7 @@ php:
     - unalign_equals
     - phpdoc_summary
     - phpdoc_annotation_without_dot
+    - declare_equal_normalize
 
   finder:
     exclude:
