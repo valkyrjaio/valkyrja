@@ -14,34 +14,37 @@ declare(strict_types = 1);
 namespace Valkyrja\ORM;
 
 /**
- * Interface Repository.
+ * Interface EntityRetriever
  *
  * @author Melech Mizrachi
  */
-interface Repository
+interface EntityRetriever
 {
     /**
      * Find a single entity given its id.
      * <code>
-     *      $repository
+     *      $entityRetriever
      *          ->find(
+     *              Entity::class,
      *              1,
      *              true | false | null
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param string|int $id
      * @param bool|null  $getRelations
      *
      * @return Entity|null
      */
-    public function find($id, bool $getRelations = null): ?Entity;
+    public function find(string $entity, $id, bool $getRelations = null): ?Entity;
 
     /**
      * Find entities by given criteria.
      * <code>
-     *      $repository
+     *      $entityRetriever
      *          ->findBy(
+     *              Entity::class,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -56,6 +59,7 @@ interface Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -66,6 +70,7 @@ interface Repository
      * @return Entity[]
      */
     public function findBy(
+        string $entity,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
@@ -77,8 +82,9 @@ interface Repository
     /**
      * Find one entity by given criteria.
      * <code>
-     *      $repository
+     *      $entityRetriever
      *          ->findOneBy(
+     *              Entity::class,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -93,6 +99,7 @@ interface Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $offset
@@ -102,6 +109,7 @@ interface Repository
      * @return Entity
      */
     public function findOneBy(
+        string $entity,
         array $criteria,
         array $orderBy = null,
         int $offset = null,
@@ -112,8 +120,9 @@ interface Repository
     /**
      * Find entities by given criteria.
      * <code>
-     *      $repository
+     *      $entityRetriever
      *          ->findBy(
+     *              Entity::class,
      *              [
      *                  'column'
      *                  'column2' => OrderBy::ASC,
@@ -122,19 +131,26 @@ interface Repository
      *          )
      * </code>.
      *
+     * @param string     $entity
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
      * @return Entity[]
      */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array;
+    public function findAll(
+        string $entity,
+        array $orderBy = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array;
 
     /**
      * Count all the results of given criteria.
      * <code>
-     *      $repository
+     *      $entityRetriever
      *          ->count(
+     *              Entity::class,
      *              [
      *                  'column'  => 'value',
      *                  'column2' => 'value2',
@@ -142,85 +158,10 @@ interface Repository
      *          )
      * </code>.
      *
-     * @param array $criteria
+     * @param string $entity
+     * @param array  $criteria
      *
      * @return int
      */
-    public function count(array $criteria): int;
-
-    /**
-     * Create a new model.
-     * <code>
-     *      $repository->create(Entity::class)
-     * </code>.
-     *
-     * @param Entity $entity
-     *
-     * @return void
-     */
-    public function create(Entity $entity): void;
-
-    /**
-     * Save an existing model given criteria to find. If no criteria specified uses all model properties.
-     * <code>
-     *      $repository->save(Entity::class)
-     * </code>.
-     *
-     * @param Entity $entity
-     *
-     * @return void
-     */
-    public function save(Entity $entity): void;
-
-    /**
-     * Delete an existing model.
-     * <code>
-     *      $repository->delete(Entity::class)
-     * </code>.
-     *
-     * @param Entity $entity
-     *
-     * @return void
-     */
-    public function delete(Entity $entity): void;
-
-    /**
-     * Clear a model previously set for creation, save, or deletion.
-     * <code>
-     *      $repository
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
-     *
-     * @param Entity|null $entity The entity instance to remove.
-     *
-     * @return void
-     */
-    public function clear(Entity $entity = null): void;
-
-    /**
-     * Get the last inserted id.
-     *
-     * @return string
-     */
-    public function lastInsertId(): string;
-
-    /**
-     * Get a new query builder instance.
-     *
-     * @param string|null $alias
-     *
-     * @return QueryBuilder
-     */
-    public function queryBuilder(string $alias = null): QueryBuilder;
-
-    /**
-     * Start a query.
-     *
-     * @param string $query
-     *
-     * @return Query
-     */
-    public function query(string $query): Query;
+    public function count(string $entity, array $criteria): int;
 }

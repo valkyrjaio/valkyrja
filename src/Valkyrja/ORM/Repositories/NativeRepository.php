@@ -212,7 +212,7 @@ class NativeRepository implements Repository
     /**
      * Create a new model.
      * <code>
-     *      $this->create(Entity::class)
+     *      $repository->create(Entity::class)
      * </code>.
      *
      * @param Entity $entity
@@ -231,7 +231,7 @@ class NativeRepository implements Repository
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
      * <code>
-     *      $this->save(Entity::class)
+     *      $repository->save(Entity::class)
      * </code>.
      *
      * @param Entity $entity
@@ -250,7 +250,7 @@ class NativeRepository implements Repository
     /**
      * Delete an existing model.
      * <code>
-     *      $this->delete(Entity::class)
+     *      $repository->delete(Entity::class)
      * </code>.
      *
      * @param Entity $entity
@@ -264,6 +264,27 @@ class NativeRepository implements Repository
         $this->validateEntity($entity);
 
         $this->entityManager->delete($entity, false);
+    }
+
+    /**
+     * Clear a model previously set for creation, save, or deletion.
+     * <code>
+     *      $repository->clear(Entity::class)
+     * </code>.
+     *
+     * @param Entity $entity
+     *
+     * @throws InvalidEntityException
+     *
+     * @return void
+     */
+    public function clear(Entity $entity = null): void
+    {
+        if ($entity !== null) {
+            $this->validateEntity($entity);
+        }
+
+        $this->entityManager->clear($entity);
     }
 
     /**

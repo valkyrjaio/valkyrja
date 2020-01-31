@@ -11,14 +11,16 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\ORM\Entities;
+
+use Valkyrja\ORM\Entity as EntityContract;
 
 /**
  * Class NativeModel.
  *
  * @author Melech Mizrachi
  */
-class NativeEntity implements Entity
+class Entity implements EntityContract
 {
     use EntityTrait;
 }

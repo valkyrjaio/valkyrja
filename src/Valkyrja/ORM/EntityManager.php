@@ -238,7 +238,7 @@ interface EntityManager
     /**
      * Set a model for creation on transaction commit.
      * <code>
-     *      $repository
+     *      $entityManager
      *          ->create(
      *              new Entity(),
      *              true | false
@@ -255,7 +255,7 @@ interface EntityManager
     /**
      * Set a model for saving on transaction commit.
      * <code>
-     *      $repository
+     *      $entityManager
      *          ->save(
      *              new Entity(),
      *              true | false
@@ -272,7 +272,7 @@ interface EntityManager
     /**
      * Set a model for deletion on transaction commit.
      * <code>
-     *      $repository
+     *      $entityManager
      *          ->delete(
      *              new Entity(),
      *              true | false
@@ -287,10 +287,10 @@ interface EntityManager
     public function delete(Entity $entity, bool $useRepository): void;
 
     /**
-     * Remove a model previously set for creation, save, or deletion.
+     * Clear a model previously set for creation, save, or deletion.
      * <code>
-     *      $repository
-     *          ->remove(
+     *      $entityManager
+     *          ->clear(
      *              new Entity()
      *          )
      * </code>.
