@@ -19,14 +19,14 @@ use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\Repository as RepositoryContract;
 
 /**
- * Class NativeRepository.
+ * Class Repository.
  *
  * @author Melech Mizrachi
  */
-class NativeRepository implements Repository
+class Repository implements RepositoryContract
 {
     /**
      * The entity manager.
@@ -50,7 +50,7 @@ class NativeRepository implements Repository
     protected string $table;
 
     /**
-     * MySQLRepository constructor.
+     * Repository constructor.
      *
      * @param EntityManager $entityManager
      * @param string        $entity

@@ -28,7 +28,7 @@ use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\NativeRepository;
+use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\ORM\Repository;
 use Valkyrja\Support\Providers\Provides;
 
@@ -151,7 +151,7 @@ class PDOEntityManager implements EntityManager
         }
 
         /** @var Entity|string $entity */
-        $repository = $entity::getRepository() ?? NativeRepository::class;
+        $repository = $entity::getRepository() ?? Repository::class;
 
         return $this->repositories[$entity] = new $repository($this, $entity, $entity::getTable());
     }

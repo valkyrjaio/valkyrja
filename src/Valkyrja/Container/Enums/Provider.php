@@ -46,7 +46,7 @@ use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\PDOEntityManager;
 use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\NativeRepository;
+use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\Path\NativePathGenerator;
 use Valkyrja\Path\NativePathParser;
 use Valkyrja\Routing\Annotations\NativeRouteAnnotations;
@@ -99,7 +99,7 @@ final class Provider extends Enum
     public const ENTITY_MANAGER        = PDOEntityManager::class;
     public const QUERY                 = PDOQuery::class;
     public const QUERY_BUILDER         = SqlQueryBuilder::class;
-    public const REPOSITORY            = NativeRepository::class;
+    public const REPOSITORY            = Repository::class;
     public const EXCEPTION_HANDLER     = NativeExceptionHandler::class;
     public const HTTP_EXCEPTION        = HttpException::class;
 }
