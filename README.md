@@ -1,5 +1,5 @@
 <p align="center"><a href="https://valkyrja.io" target="_blank">
-    <img src="https://i.imgur.com/dt0M3Ix.png" width="400">
+    <img src="https://i.imgur.com/bnZA2RT.png" width="400">
 </a></p>
 <p align="center">
     <a href="https://travis-ci.org/valkyrjaio/valkyrja"><img src="https://travis-ci.org/valkyrjaio/valkyrja.svg" alt="Build Status"></a>
