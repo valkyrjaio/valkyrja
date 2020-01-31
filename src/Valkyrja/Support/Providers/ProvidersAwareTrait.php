@@ -14,7 +14,6 @@ declare(strict_types = 1);
 namespace Valkyrja\Support\Providers;
 
 use Valkyrja\Application;
-use Valkyrja\Support\Helpers;
 
 /**
  * Trait AllowsProviders.
@@ -52,7 +51,7 @@ trait ProvidersAwareTrait
             return;
         }
 
-        Helpers::validateClass($provider, Provides::class);
+        // Helpers::validateClass($provider, Provides::class);
 
         /** @var Provides $provider */
 
