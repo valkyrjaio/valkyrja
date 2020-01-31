@@ -1,3 +1,6 @@
+<p align="center"><a href="https://valkyrja.io" target="_blank">
+    <img src="https://i.imgur.com/dt0M3Ix.png">
+</a></p>
 <p align="center">
     <a href="https://travis-ci.org/valkyrjaio/valkyrja"><img src="https://travis-ci.org/valkyrjaio/valkyrja.svg" alt="Build Status"></a>
     <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/stable.svg" alt="Latest Stable Version"></a>
