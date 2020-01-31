@@ -531,16 +531,16 @@ class PDOEntityManager implements EntityManager
      */
     protected function getConnectionFromConfig(array $config): PDO
     {
-        $dsn = $config['driver']
-            . ':host=' . $config['host']
-            . ';port=' . $config['port']
-            . ';dbname=' . $config['database']
-            . ';charset=' . $config['charset'];
+        $dsn = $config[ConfigKeyPart::DRIVER]
+            . ':host=' . $config[ConfigKeyPart::HOST]
+            . ';port=' . $config[ConfigKeyPart::PORT]
+            . ';dbname=' . $config[ConfigKeyPart::DB]
+            . ';charset=' . $config[ConfigKeyPart::CHARSET];
 
         return new PDO(
             $dsn,
-            $config['username'],
-            $config['password'],
+            $config[ConfigKeyPart::USERNAME],
+            $config[ConfigKeyPart::PASSWORD],
             []
         );
     }
