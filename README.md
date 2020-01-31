@@ -55,13 +55,27 @@ Contributing
 ------------
 
 Valkyrja is an Open Source, community-driven project with thousands of
-[contributors][13]. Join them [contributing code][14] or [contributing documentation][18].
+[contributors][13]. Join them [contributing code][14] or [contributing documentation][15].
 
 Security Issues
 ---------------
 
 If you discover a security vulnerability within Valkyrja, please follow our
-[disclosure procedure][15].
+[disclosure procedure][16].
 
 [1]: https://valkyrja.io
 [2]: https://valkyrja.io
+[3]: https://valkyrja.io
+[4]: https://valkyrja.io
+[5]: https://valkyrja.io
+[6]: https://valkyrja.io
+[7]: https://valkyrja.io
+[8]: https://valkyrja.io
+[9]: https://valkyrja.io
+[10]: https://valkyrja.io
+[11]: https://valkyrja.io
+[12]: https://valkyrja.io
+[13]: https://valkyrja.io
+[14]: https://valkyrja.io
+[15]: https://valkyrja.io
+[16]: https://valkyrja.io
