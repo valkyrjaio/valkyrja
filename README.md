@@ -9,6 +9,7 @@
 </p>
 <p align="center">
     <!-- <a href="https://packagist.org/packages/valkyrja/valkyrja"><img src="https://poser.pugx.org/valkyrja/valkyrja/v/unstable" alt="Unstable Version"></a> -->
+    <a href="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/"><img src="https://scrutinizer-ci.com/g/valkyrjaio/valkyrja/badges/quality-score.png?b=master" alt="Scrutinizer"></a>
     <a href="https://styleci.io/repos/89089332"><img src="https://styleci.io/repos/89089332/shield?branch=master&style=flat" alt="StyleCI"></a>
     <a href="https://coveralls.io/github/valkyrjaio/valkyrja?branch=master"><img src="https://coveralls.io/repos/github/valkyrjaio/valkyrja/badge.svg?branch=master" alt="Coverage Status" /></a>
 </p>
