@@ -208,7 +208,7 @@ trait EntityTrait
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            $this->setProperty($property, $value);
+            $this->setEntityProperty($property, $value);
         }
     }
 
@@ -267,7 +267,7 @@ trait EntityTrait
      *
      * @return void
      */
-    protected function setProperty(string $property, $value): void
+    protected function setEntityProperty(string $property, $value): void
     {
         // If the value is null or the property doesn't exist in this model
         if (null === $value || ! property_exists($this, $property)) {
