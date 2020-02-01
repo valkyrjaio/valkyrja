@@ -230,7 +230,7 @@ trait EntityTrait
                 continue;
             }
 
-            $this->setRelation($propertyMapper, $property, $type);
+            $this->setEntityRelation($propertyMapper, $property, $type);
         }
     }
 
@@ -337,7 +337,7 @@ trait EntityTrait
      *
      * @return void
      */
-    protected function setRelation(array $propertyMapper, string $property, $type): void
+    protected function setEntityRelation(array $propertyMapper, string $property, $type): void
     {
         $entityName  = is_array($type) ? $type[0] : $type;
         $propertyMap = $propertyMapper[$property] ?? null;
