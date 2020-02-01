@@ -597,7 +597,7 @@ class ApplicationTest extends TestCase
         $this->app->setup($config, true);
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
-        //take effect and the value for app.debug should still be false.
+        // take effect and the value for app.debug should still be false.
         $this->assertEquals(false, $this->app->debug());
 
         // Delete the config cache file to avoid headaches later

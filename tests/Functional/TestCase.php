@@ -37,7 +37,7 @@ class TestCase extends PHPUnitTestCase
      */
     public function setUp(): void
     {
-        Directory::$BASE_PATH = __DIR__ . '/../../vendor/valkyrja/application/';
+        Directory::$BASE_PATH = __DIR__ . '/../../';
 
         Valkyrja::setEnv(EnvTest::class);
 

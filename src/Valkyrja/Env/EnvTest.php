@@ -23,5 +23,14 @@ class EnvTest
     /**
      * Console env variables.
      */
-    public const CONSOLE_QUIET = true;
+    public const CONSOLE_QUIET             = true;
+    public const CONFIG_CACHE_FILE_PATH    = './tests/bootstrap/cache.php';
+    public const CONSOLE_FILE_PATH         = './tests/bootstrap/commands.php';
+    public const CONSOLE_CACHE_FILE_PATH   = './tests/bootstrap/commands-cache.php';
+    public const CONTAINER_FILE_PATH       = './tests/bootstrap/container.php';
+    public const CONTAINER_CACHE_FILE_PATH = './tests/bootstrap/container-cache.php';
+    public const EVENTS_FILE_PATH          = './tests/bootstrap/events.php';
+    public const EVENTS_CACHE_FILE_PATH    = './tests/bootstrap/events-cache.php';
+    public const ROUTING_FILE_PATH         = './tests/bootstrap/routes.php';
+    public const ROUTING_CACHE_FILE_PATH   = './tests/bootstrap/routing-cache.php';
 }

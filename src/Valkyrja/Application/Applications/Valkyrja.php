@@ -18,6 +18,7 @@ use Valkyrja\Annotation\Annotations;
 use Valkyrja\Application\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -76,9 +77,9 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var string|Env|\env\Env
+     * @var string
      */
-    protected static $env;
+    protected static string $env;
 
     /**
      * Application config.
@@ -193,7 +194,8 @@ class Valkyrja implements Application
      */
     protected function bootstrapConfig(array $config = null): void
     {
-        $cacheFilePath = Directory::cachePath('config.php');
+        $envCacheFile  = Directory::basePath((string) self::env(EnvKey::CONFIG_CACHE_FILE_PATH));
+        $cacheFilePath = is_file($envCacheFile) ? $envCacheFile : Directory::cachePath('config.php');
 
         // If we should use the config cache file
         if (is_file($cacheFilePath)) {
@@ -204,8 +206,8 @@ class Valkyrja implements Application
         }
 
         $config         = $config ?? [];
-        $configFilePath = Directory::configPath('config.php');
-        $configFilePath = is_file($configFilePath) ? $configFilePath : __DIR__ . '/../../config/config.php';
+        $envConfigFile  = Directory::basePath((string) self::env(EnvKey::CONFIG_FILE_PATH));
+        $configFilePath = is_file($envConfigFile) ? $envConfigFile : Directory::configPath('config.php');
         $defaultConfigs = require $configFilePath;
 
         self::$config = array_replace_recursive($defaultConfigs, $config);
@@ -354,7 +356,7 @@ class Valkyrja implements Application
      * @param string $key     [optional] The variable to get
      * @param string $default [optional] The default value to return
      *
-     * @return mixed|Env||config|Env
+     * @return mixed
      */
     public static function env(string $key = null, $default = null)
     {
@@ -380,7 +382,7 @@ class Valkyrja implements Application
     /**
      * Get the environment variables class.
      *
-     * @return string|Env||config|Env
+     * @return string
      */
     public static function getEnv(): string
     {
