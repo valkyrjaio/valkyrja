@@ -48,23 +48,23 @@ class NativeUri implements Uri
     /**
      * The scheme.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $scheme = null;
+    protected string $scheme;
 
     /**
      * The user info.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $userInfo = null;
+    protected string $userInfo;
 
     /**
      * The host.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $host = null;
+    protected string $host;
 
     /**
      * The port.
@@ -76,23 +76,23 @@ class NativeUri implements Uri
     /**
      * The path.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $path = null;
+    protected string $path;
 
     /**
      * The query string.
      *
      * @var string
      */
-    protected ?string $query = null;
+    protected string $query;
 
     /**
      * The fragment.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $fragment = null;
+    protected string $fragment;
 
     /**
      * The URI as a string.
@@ -658,10 +658,10 @@ class NativeUri implements Uri
     protected function isStandardPort(): bool
     {
         if (! $this->scheme) {
-            return $this->host && ! $this->port;
+            return $this->host && $this->port === null;
         }
 
-        if (! $this->host || ! $this->port) {
+        if (! $this->host || $this->port === null) {
             return true;
         }
 
