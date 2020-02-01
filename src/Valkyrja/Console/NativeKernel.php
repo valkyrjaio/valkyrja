@@ -108,23 +108,21 @@ class NativeKernel implements Kernel
      *
      * @throws HttpException
      *
-     * @return void
+     * @return int
      */
-    public function run(Input $input = null, Output $output = null): void
+    public function run(Input $input = null, Output $output = null): int
     {
-        // If no input was passed get the bootstrapped definition
-        if (null === $input) {
-            $input = $this->app->container()->get(Input::class);
-        } else {
-            $this->app->container()->singleton(Input::class, $input);
-        }
+        $container = $this->app->container();
 
-        // If no output was passed get the bootstrapped definition
-        if (null === $output) {
-            $output = $this->app->container()->get(Output::class);
-        } else {
-            $this->app->container()->singleton(Output::class, $output);
-        }
+        $container->singleton(
+            Input::class,
+            $input ?? $input = $container->get(Input::class)
+        );
+
+        $container->singleton(
+            Output::class,
+            $output ?? $output = $container->get(Output::class)
+        );
 
         // Handle the request and get the response
         $exitCode = $this->handle($input, $output);
@@ -132,7 +130,7 @@ class NativeKernel implements Kernel
         // Terminate the application
         $this->terminate($input, $exitCode);
 
-        exit($exitCode);
+        return $exitCode;
     }
 
     /**

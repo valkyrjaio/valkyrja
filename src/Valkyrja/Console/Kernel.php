@@ -54,7 +54,7 @@ interface Kernel
      *
      * @throws HttpException
      *
-     * @return void
+     * @return int
      */
-    public function run(Input $input = null, Output $output = null): void;
+    public function run(Input $input = null, Output $output = null): int;
 }
