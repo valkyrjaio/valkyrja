@@ -191,21 +191,7 @@ trait EntityTrait
 
         // Otherwise iterate through the properties array
         foreach ($this->getProperties() as $property) {
-            $value = $this->{$property};
-            // Check if a type was set for this attribute
-            $type = static::$propertyTypes[$property] ?? null;
-
-            // If the type is object and the property isn't already an object
-            if ($type === PropertyType::OBJECT && is_object($value)) {
-                // Unserialize the object
-                $value = serialize($value);
-            } // If the type is array and the property isn't already an array
-            elseif ($type === PropertyType::ARRAY && is_array($value)) {
-                $value = json_encode($value, JSON_THROW_ON_ERROR);
-            }
-
-            // And set each property to its value
-            $properties[$property] = $value;
+            $this->getPropertyValueForDataStore($property);
         }
 
         return $properties;
@@ -222,50 +208,7 @@ trait EntityTrait
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($this, $property)) {
-                // Continue to the next property
-                continue;
-            }
-
-            // Check if a type was set for this attribute
-            $type = static::$propertyTypes[$property] ?? null;
-
-            switch ($type) {
-                // If the type is object and the property isn't already an object
-                case PropertyType::OBJECT:
-                    if (! is_object($value)) {
-                        $value = unserialize($value, static::$propertyAllowedClasses[$property] ?? false);
-                    }
-
-                    break;
-                // If the type is array and the property isn't already an array
-                case PropertyType::ARRAY:
-                    if (! is_array($value)) {
-                        $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-                    }
-
-                    break;
-                default:
-                    // Otherwise if a type was set and type is an array and the value is an array
-                    // Then this should be an array of entities
-                    if ($type !== null && is_array($type) && is_array($value)) {
-                        // Iterate through the items
-                        foreach ($value as &$item) {
-                            // Create a new entity for each item
-                            $item = new $type[0]($item);
-                        }
-
-                        // Unset the reference loop item
-                        unset($item);
-                    } // Otherwise if a type was set and the value isn't already of that type
-                    elseif ($type !== null && ! ($value instanceof $type)) {
-                        $value = new $type($value);
-                    }
-            }
-
-            // Set the property
-            $this->{$property} = $value;
+            $this->setProperty($property, $value);
         }
     }
 
@@ -289,6 +232,100 @@ trait EntityTrait
 
             $this->setRelation($propertyMapper, $property, $type);
         }
+    }
+
+    /**
+     * Get a property's value for data store.
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    protected function getPropertyValueForDataStore(string $property)
+    {
+        $value = $this->{$property};
+        // Check if a type was set for this attribute
+        $type = static::$propertyTypes[$property] ?? null;
+
+        // If the type is object and the property isn't already an object
+        if ($type === PropertyType::OBJECT && is_object($value)) {
+            // Unserialize the object
+            $value = serialize($value);
+        } // If the type is array and the property isn't already an array
+        elseif ($type === PropertyType::ARRAY && is_array($value)) {
+            $value = json_encode($value, JSON_THROW_ON_ERROR);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Set a property.
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @return void
+     */
+    protected function setProperty(string $property, $value): void
+    {
+        // If the value is null or the property doesn't exist in this model
+        if (null === $value || ! property_exists($this, $property)) {
+            // Continue to the next property
+            return;
+        }
+
+        // Set the property
+        $this->{$property} = $this->getPropertyValueByType($property, $value);
+    }
+
+    /**
+     * Get a property's value by the type (if type is set).
+     *
+     * @param string $property
+     * @param mixed  $value
+     *
+     * @return mixed
+     */
+    protected function getPropertyValueByType(string $property, $value)
+    {
+        // Check if a type was set for this attribute
+        $type = static::$propertyTypes[$property] ?? null;
+
+        switch ($type) {
+            // If the type is object and the property isn't already an object
+            case PropertyType::OBJECT:
+                if (! is_object($value)) {
+                    $value = unserialize($value, static::$propertyAllowedClasses[$property] ?? null);
+                }
+
+                break;
+            // If the type is array and the property isn't already an array
+            case PropertyType::ARRAY:
+                if (! is_array($value)) {
+                    $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+                }
+
+                break;
+            default:
+                // Otherwise if a type was set and type is an array and the value is an array
+                // Then this should be an array of entities
+                if ($type !== null && is_array($type) && is_array($value)) {
+                    // Iterate through the items
+                    foreach ($value as &$item) {
+                        // Create a new entity for each item
+                        $item = new $type[0]($item);
+                    }
+
+                    // Unset the reference loop item
+                    unset($item);
+                } // Otherwise if a type was set and the value isn't already of that type
+                elseif ($type !== null && ! ($value instanceof $type)) {
+                    $value = new $type($value);
+                }
+        }
+
+        return $value;
     }
 
     /**
