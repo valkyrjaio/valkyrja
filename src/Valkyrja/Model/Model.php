@@ -64,6 +64,8 @@ abstract class Model implements JsonSerializable
 
         if (method_exists($this, $methodName)) {
             $this->$methodName($value);
+
+            return;
         }
 
         $this->{$name} = $value;
