@@ -70,6 +70,8 @@ trait ModelTrait
 
         if (method_exists($this, $methodName)) {
             $this->$methodName($value);
+
+            return;
         }
 
         $this->{$name} = $value;
