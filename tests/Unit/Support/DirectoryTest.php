@@ -104,6 +104,8 @@ class DirectoryTest extends TestCase
             . DIRECTORY_SEPARATOR
             . Directory::$STORAGE_PATH
             . DIRECTORY_SEPARATOR
+            . Directory::$FRAMEWORK_STORAGE_PATH
+            . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
         $this->assertEquals($expected, Directory::cachePath());
@@ -119,6 +121,8 @@ class DirectoryTest extends TestCase
         $expected = $this->basePath
             . DIRECTORY_SEPARATOR
             . Directory::$STORAGE_PATH
+            . DIRECTORY_SEPARATOR
+            . Directory::$FRAMEWORK_STORAGE_PATH
             . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH
             . $this->subPath;

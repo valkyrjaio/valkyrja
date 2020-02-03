@@ -127,7 +127,7 @@ return [
      * //
      *
      */
-    CKP::FILE_PATH                   => env(EnvKey::CONTAINER_FILE_PATH, bootstrapPath('container.php')),
+    CKP::FILE_PATH                   => env(EnvKey::CONTAINER_FILE_PATH, servicesPath('default.php')),
 
     /*
      *-------------------------------------------------------------------------

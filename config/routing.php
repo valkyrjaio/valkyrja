@@ -105,7 +105,7 @@ return [
      * //
      *
      */
-    CKP::FILE_PATH                   => env(EnvKey::ROUTING_FILE_PATH, routesPath('routes.php')),
+    CKP::FILE_PATH                   => env(EnvKey::ROUTING_FILE_PATH, routesPath('default.php')),
 
     /*
      *-------------------------------------------------------------------------

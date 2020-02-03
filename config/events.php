@@ -64,7 +64,7 @@ return [
      * //
      *
      */
-    CKP::FILE_PATH                   => env(EnvKey::EVENTS_FILE_PATH, bootstrapPath('events.php')),
+    CKP::FILE_PATH                   => env(EnvKey::EVENTS_FILE_PATH, eventsPath('default.php')),
 
     /*
      *-------------------------------------------------------------------------

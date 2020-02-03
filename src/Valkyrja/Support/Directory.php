@@ -39,17 +39,20 @@ class Directory
      *
      * @var string
      */
-    public static string $APP_PATH       = 'app';
-    public static string $BOOTSTRAP_PATH = 'bootstrap';
-    public static string $CONFIG_PATH    = 'config';
-    public static string $ENV_PATH       = 'env';
-    public static string $PUBLIC_PATH    = 'public';
-    public static string $RESOURCES_PATH = 'resources';
-    public static string $ROUTES_PATH    = 'routes';
-    public static string $STORAGE_PATH   = 'storage';
-    public static string $CACHE_PATH     = 'framework/cache';
-    public static string $TESTS_PATH     = 'tests';
-    public static string $VENDOR_PATH    = 'vendor';
+    public static string $APP_PATH               = 'app';
+    public static string $CONFIG_PATH            = 'config';
+    public static string $COMMANDS_PATH          = 'commands';
+    public static string $EVENTS_PATH            = 'events';
+    public static string $ROUTES_PATH            = 'routes';
+    public static string $SERVICES_PATH          = 'services';
+    public static string $ENV_PATH               = 'env';
+    public static string $PUBLIC_PATH            = 'public';
+    public static string $RESOURCES_PATH         = 'resources';
+    public static string $STORAGE_PATH           = 'storage';
+    public static string $FRAMEWORK_STORAGE_PATH = 'framework';
+    public static string $CACHE_PATH             = 'cache';
+    public static string $TESTS_PATH             = 'tests';
+    public static string $VENDOR_PATH            = 'vendor';
 
     /**
      * Get the base directory for the application.
@@ -76,18 +79,6 @@ class Directory
     }
 
     /**
-     * Get the bootstrap directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function bootstrapPath(string $path = null): string
-    {
-        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
-    }
-
-    /**
      * Get the config directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -97,6 +88,54 @@ class Directory
     public static function configPath(string $path = null): string
     {
         return static::basePath(static::$CONFIG_PATH . static::path($path));
+    }
+
+    /**
+     * Get the commands config directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function commandsPath(string $path = null): string
+    {
+        return static::configPath(static::$COMMANDS_PATH . static::path($path));
+    }
+
+    /**
+     * Get the events config directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function eventsPath(string $path = null): string
+    {
+        return static::configPath(static::$EVENTS_PATH . static::path($path));
+    }
+
+    /**
+     * Get the routes config directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function routesPath(string $path = null): string
+    {
+        return static::configPath(static::$ROUTES_PATH . static::path($path));
+    }
+
+    /**
+     * Get the services config directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function servicesPath(string $path = null): string
+    {
+        return static::configPath(static::$SERVICES_PATH . static::path($path));
     }
 
     /**
@@ -136,18 +175,6 @@ class Directory
     }
 
     /**
-     * Get the routes directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function routesPath(string $path = null): string
-    {
-        return static::basePath(static::$ROUTES_PATH . static::path($path));
-    }
-
-    /**
      * Get the storage directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -160,6 +187,18 @@ class Directory
     }
 
     /**
+     * Get the framework storage directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function frameworkStoragePath(string $path = null): string
+    {
+        return static::storagePath(static::$FRAMEWORK_STORAGE_PATH . static::path($path));
+    }
+
+    /**
      * Get the cache directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -168,7 +207,7 @@ class Directory
      */
     public static function cachePath(string $path = null): string
     {
-        return static::storagePath(static::$CACHE_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**

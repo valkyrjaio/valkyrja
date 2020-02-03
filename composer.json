@@ -18,6 +18,7 @@
         "php"              : ">=7.4",
         "psr/http-message" : "1.0.1",
         "psr/log"          : "1.1.2",
+        "monolog/monolog"  : "2.0.2",
         "ext-json"         : "*",
         "ext-pdo"          : "*",
         "ext-sodium"       : "*"
@@ -29,7 +30,6 @@
         "league/flysystem"            : "1.0.63",
         "league/flysystem-aws-s3-v3"  : "1.0.23",
         "mockery/mockery"             : "1.3.1",
-        "monolog/monolog"             : "2.0.2",
         "phpunit/phpunit"             : "8.5.2",
         "predis/predis"               : "1.1.1",
         "php-coveralls/php-coveralls" : "2.2.0"
@@ -39,7 +39,9 @@
             "Valkyrja\\" : "src/Valkyrja"
         },
         "files" : [
-            "functions/helpers.php"
+            "functions/helpers.php",
+            "functions/path-helpers.php",
+            "functions/routing-helpers.php"
         ]
     },
     "autoload-dev"      : {

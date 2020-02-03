@@ -109,7 +109,7 @@ return [
      * //
      *
      */
-    CKP::FILE_PATH                   => env(EnvKey::CONSOLE_FILE_PATH, bootstrapPath('commands.php')),
+    CKP::FILE_PATH                   => env(EnvKey::CONSOLE_FILE_PATH, commandsPath('default.php')),
 
     /*
      *-------------------------------------------------------------------------

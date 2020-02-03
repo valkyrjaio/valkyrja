@@ -416,6 +416,8 @@ class HelpersTest extends TestCase
             . DIRECTORY_SEPARATOR
             . Directory::$STORAGE_PATH
             . DIRECTORY_SEPARATOR
+            . Directory::$FRAMEWORK_STORAGE_PATH
+            . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
         $this->assertEquals($expected, cachePath());
@@ -431,6 +433,8 @@ class HelpersTest extends TestCase
         $expected = Directory::$BASE_PATH
             . DIRECTORY_SEPARATOR
             . Directory::$STORAGE_PATH
+            . DIRECTORY_SEPARATOR
+            . Directory::$FRAMEWORK_STORAGE_PATH
             . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH
             . $this->subPath;
