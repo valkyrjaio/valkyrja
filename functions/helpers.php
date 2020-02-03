@@ -21,7 +21,6 @@ use Valkyrja\Console\Output\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
@@ -156,7 +155,7 @@ if (! function_exists('env')) {
      * @param string $key     [optional] The variable to get
      * @param mixed  $default [optional] The default value to return
      *
-     * @return mixed|Env|\config|Env
+     * @return mixed
      */
     function env(string $key = null, $default = null)
     {
