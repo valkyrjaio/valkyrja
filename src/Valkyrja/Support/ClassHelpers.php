@@ -16,11 +16,11 @@ namespace Valkyrja\Support;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 
 /**
- * Class Helpers.
+ * Class ClassHelpers.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+class ClassHelpers
 {
     /**
      * Validate a class::name inherits from another class::name.
