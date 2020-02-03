@@ -413,7 +413,7 @@ class NativeRouter implements Router
         $this->app->container()->singleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->app->dispatcher()->dispatchCallable(
+        $dispatch = $this->app->dispatcher()->dispatch(
             $route,
             $route->getMatches()
         );

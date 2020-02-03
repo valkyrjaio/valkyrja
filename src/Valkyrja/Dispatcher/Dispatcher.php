@@ -142,5 +142,5 @@ interface Dispatcher
      *
      * @return mixed
      */
-    public function dispatchCallable(Dispatch $dispatch, array $arguments = null);
+    public function dispatch(Dispatch $dispatch, array $arguments = null);
 }

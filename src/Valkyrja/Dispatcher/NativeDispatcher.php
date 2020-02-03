@@ -278,7 +278,7 @@ class NativeDispatcher implements Dispatcher
             } // If the argument is a dispatch
             elseif ($argument instanceof Dispatch) {
                 // Dispatch the argument and set the results to the argument
-                $argument = $this->dispatchCallable($argument);
+                $argument = $this->dispatch($argument);
             }
 
             // Append the argument to the arguments list
@@ -469,7 +469,7 @@ class NativeDispatcher implements Dispatcher
      *
      * @return mixed
      */
-    public function dispatchCallable(Dispatch $dispatch, array $arguments = null)
+    public function dispatch(Dispatch $dispatch, array $arguments = null)
     {
         // Get the arguments with dependencies
         $arguments = $this->getArguments($dispatch, $arguments);

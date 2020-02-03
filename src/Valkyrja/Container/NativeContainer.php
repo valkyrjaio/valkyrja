@@ -350,7 +350,7 @@ class NativeContainer implements Container
         $this->app->events()->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
 
         // Make the object by dispatching the service
-        $made = $this->app->dispatcher()->dispatchCallable($service, $arguments);
+        $made = $this->app->dispatcher()->dispatch($service, $arguments);
 
         // Dispatch after make event
         $this->app->events()->trigger(ServiceMade::class, [$serviceId, $made]);

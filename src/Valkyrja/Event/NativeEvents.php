@@ -232,7 +232,7 @@ class NativeEvents implements Events
         foreach ($this->getListeners($event) as $listener) {
             // Attempt to dispatch the event listener using any one of the
             // callable options
-            $dispatch = $this->app->dispatcher()->dispatchCallable($listener, $arguments);
+            $dispatch = $this->app->dispatcher()->dispatch($listener, $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;

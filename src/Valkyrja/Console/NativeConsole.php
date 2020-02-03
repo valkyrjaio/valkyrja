@@ -287,7 +287,7 @@ class NativeConsole implements Console
         $this->app->events()->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->app->dispatcher()->dispatchCallable($command, $command->getMatches());
+        $dispatch = $this->app->dispatcher()->dispatch($command, $command->getMatches());
 
         // Trigger an event after dispatching
         $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);

@@ -479,7 +479,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = new Dispatch();
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+        $this->assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -493,7 +493,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setProperty('validPropertyNull');
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+        $this->assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -506,7 +506,7 @@ class DispatcherTest extends TestCase
         $array    = ['foo', 'bar'];
         $dispatch = new Dispatch();
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch, [$array]));
+        $this->assertEquals(null, $this->class->dispatch($dispatch, [$array]));
     }
 
     /**
@@ -522,7 +522,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setArguments(['test', $dispatch, $service]);
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+        $this->assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -535,7 +535,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setDependencies([static::class]);
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+        $this->assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -549,6 +549,6 @@ class DispatcherTest extends TestCase
             ->setStatic(true)
             ->setDependencies([static::class]);
 
-        $this->assertEquals(null, $this->class->dispatchCallable($dispatch));
+        $this->assertEquals(null, $this->class->dispatch($dispatch));
     }
 }
