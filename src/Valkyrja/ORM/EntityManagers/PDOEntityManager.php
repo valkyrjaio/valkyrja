@@ -29,8 +29,8 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
 use Valkyrja\ORM\Repository;
-use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\ClassHelpers;
+use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
 /**
