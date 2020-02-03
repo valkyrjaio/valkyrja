@@ -246,7 +246,7 @@ class SodiumCrypt implements Crypt
      */
     protected function validateDecodedStrLen($decoded): void
     {
-        if ($this->isValidDecodedStrLen($decoded)) {
+        if (! $this->isValidDecodedStrLen($decoded)) {
             throw new CryptException('The message was truncated');
         }
     }
@@ -298,7 +298,7 @@ class SodiumCrypt implements Crypt
      */
     protected function validatePlainDecoded($plain): void
     {
-        if ($this->isValidPlainDecoded($plain)) {
+        if (! $this->isValidPlainDecoded($plain)) {
             throw new CryptException('The message was tampered with in transit');
         }
     }
