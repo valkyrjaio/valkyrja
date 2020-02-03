@@ -27,6 +27,8 @@ use Valkyrja\Console\Output\OutputFormatter;
 use Valkyrja\Container\Annotations\ContainerAnnotations;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
+use Valkyrja\Crypt\Decrypter;
+use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Enum\Enum;
 use Valkyrja\Env\Env;
@@ -97,6 +99,8 @@ final class Contract extends Enum
     public const LOGGER                = Logger::class;
     public const MAIL                  = Mail::class;
     public const CRYPT                 = Crypt::class;
+    public const CRYPT_ENCRYPTER       = Encrypter::class;
+    public const CRYPT_DECRYPTER       = Decrypter::class;
     public const MODEL                 = Model::class;
     public const ENTITY                = Entity::class;
     public const ENTITY_MANAGER        = EntityManager::class;

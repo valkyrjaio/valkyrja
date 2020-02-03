@@ -11,80 +11,18 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Crypts;
 
-use Exception;
-use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class SodiumCrypt.
+ * Class SodiumDecrypter.
  *
  * @author Melech Mizrachi
  */
-class SodiumCrypt implements Crypt
+class SodiumDecrypter implements Decrypter
 {
-    use Provides;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The key
-     *
-     * @var string|null
-     */
-    protected ?string $key = null;
-
-    /**
-     * SodiumCrypt constructor.
-     *
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->config = $app->config()[ConfigKeyPart::CRYPT];
-    }
-
-    /**
-     * Get the key.
-     *
-     * @return string
-     */
-    public function getKey(): string
-    {
-        return $this->key ?? ($this->key = $this->getKeyFromFilesystem() ?? $this->getKeyFromConfig());
-    }
-
-    /**
-     * Encrypt a message.
-     *
-     * @param string $message The message to encrypt
-     * @param string $key     The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
-     */
-    public function encrypt(string $message, string $key = null): string
-    {
-        $key = $key ?? $this->getKey();
-
-        $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
-
-        sodium_memzero($message);
-        sodium_memzero($key);
-
-        return $cipher;
-    }
-
     /**
      * Decrypt a message.
      *
@@ -95,30 +33,13 @@ class SodiumCrypt implements Crypt
      *
      * @return string
      */
-    public function decrypt(string $encrypted, string $key = null): string
+    public function decrypt(string $encrypted, string $key): string
     {
-        $key = $key ?? $this->getKey();
-
         $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
 
         sodium_memzero($key);
 
         return $plain;
-    }
-
-    /**
-     * Encrypt an array.
-     *
-     * @param array  $array The array to encrypt
-     * @param string $key   The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
-     */
-    public function encryptArray(array $array, string $key = null): string
-    {
-        return $this->encrypt(json_encode($array, JSON_THROW_ON_ERROR), $key);
     }
 
     /**
@@ -131,24 +52,9 @@ class SodiumCrypt implements Crypt
      *
      * @return array
      */
-    public function decryptArray(string $encrypted, string $key = null): array
+    public function decryptArray(string $encrypted, string $key): array
     {
         return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Encrypt a json array.
-     *
-     * @param object $object The object to encrypt
-     * @param string $key    The encryption key
-     *
-     * @throws Exception Random Bytes Failure
-     *
-     * @return string
-     */
-    public function encryptObject(object $object, string $key = null): string
-    {
-        return $this->encrypt(json_encode($object, JSON_THROW_ON_ERROR), $key);
     }
 
     /**
@@ -161,59 +67,9 @@ class SodiumCrypt implements Crypt
      *
      * @return object
      */
-    public function decryptObject(string $encrypted, string $key = null): object
+    public function decryptObject(string $encrypted, string $key): object
     {
         return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Get the key from config.
-     *
-     * @return string
-     */
-    protected function getKeyFromConfig(): string
-    {
-        return $this->config[ConfigKeyPart::KEY];
-    }
-
-    /**
-     * Get the key path from config.
-     *
-     * @return string|null
-     */
-    protected function getKeyPathFromConfig(): ?string
-    {
-        return $this->config[ConfigKeyPart::KEY_PATH];
-    }
-
-    /**
-     * Get the key from a key path config.
-     *
-     * @return string|null
-     */
-    protected function getKeyFromFilesystem(): ?string
-    {
-        return $this->hasValidKeyPath() ? $this->getFileContentsFromKeyPath() : null;
-    }
-
-    /**
-     * Check if a valid key path exists in config.
-     *
-     * @return bool
-     */
-    protected function hasValidKeyPath(): bool
-    {
-        return null !== $this->getKeyPathFromConfig() && file_exists($this->getKeyPathFromConfig());
-    }
-
-    /**
-     * Get file contents from key path.
-     *
-     * @return string|null
-     */
-    protected function getFileContentsFromKeyPath(): ?string
-    {
-        return file_get_contents($this->getKeyPathFromConfig()) ?: null;
     }
 
     /**
@@ -355,29 +211,5 @@ class SodiumCrypt implements Crypt
     protected function isValidPlainDecoded($plain): bool
     {
         return $plain !== false;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Crypt::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(Crypt::class, new static($app));
     }
 }

@@ -49,6 +49,8 @@ return [
             Provider::COMMAND_ANNOTATIONS,
             Provider::CONTAINER_ANNOTATIONS,
             Provider::CRYPT,
+            Provider::CRYPT_ENCRYPTER,
+            Provider::CRYPT_DECRYPTER,
             Provider::LISTENER_ANNOTATIONS,
             Provider::FILESYSTEM,
             Provider::KERNEL,
