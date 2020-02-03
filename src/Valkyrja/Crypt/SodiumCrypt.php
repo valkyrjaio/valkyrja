@@ -59,15 +59,7 @@ class SodiumCrypt implements Crypt
      */
     public function getKey(): string
     {
-        if (null !== $this->key) {
-            return $this->key;
-        }
-
-        if (null !== $keyPath = $this->config[ConfigKeyPart::KEY_PATH]) {
-            return $this->key = file_get_contents($keyPath);
-        }
-
-        return $this->key = $this->config[ConfigKeyPart::KEY];
+        return $this->key ?? ($this->key = $this->getKeyFromPath() ?? $this->getKeyFromConfig());
     }
 
     /**
@@ -172,6 +164,56 @@ class SodiumCrypt implements Crypt
     public function decryptObject(string $encrypted, string $key = null): object
     {
         return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Get the key from config.
+     *
+     * @return string
+     */
+    protected function getKeyFromConfig(): string
+    {
+        return $this->config[ConfigKeyPart::KEY];
+    }
+
+    /**
+     * Get the key path from config.
+     *
+     * @return string|null
+     */
+    protected function getKeyPathFromConfig(): ?string
+    {
+        return $this->config[ConfigKeyPart::KEY_PATH];
+    }
+
+    /**
+     * Get the key from a key path config.
+     *
+     * @return string|null
+     */
+    protected function getKeyFromPath(): ?string
+    {
+        return $this->hasValidKeyPath() ? $this->getFileContentsFromKeyPath() : null;
+    }
+
+    /**
+     * Check if a valid key path exists in config.
+     *
+     * @return bool
+     */
+    protected function hasValidKeyPath(): bool
+    {
+        return null !== $this->getKeyPathFromConfig() && file_exists($this->getKeyPathFromConfig());
+    }
+
+    /**
+     * Get file contents from key path.
+     *
+     * @return string|null
+     */
+    protected function getFileContentsFromKeyPath(): ?string
+    {
+        return file_get_contents($this->getKeyPathFromConfig()) ?: null;
     }
 
     /**
