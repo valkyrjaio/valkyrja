@@ -75,7 +75,7 @@ interface Application
      * Get an environment variable.
      *
      * @param string $key     [optional] The variable to get
-     * @param string $default [optional] The default value to return
+     * @param mixed  $default [optional] The default value to return
      *
      * @return mixed|Env||config|Env
      */
@@ -101,8 +101,7 @@ interface Application
      * Get the config.
      *
      * @param string $key     [optional] The key to get
-     * @param string $default [optional] The default value if the key is not
-     *                        found
+     * @param mixed  $default [optional] The default value if the key is not found
      *
      * @return mixed
      */
