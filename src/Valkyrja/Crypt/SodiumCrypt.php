@@ -203,7 +203,7 @@ class SodiumCrypt implements Crypt
      */
     protected function validateDecoded($decoded): void
     {
-        if ($decoded === false) {
+        if ($decoded === false || ! is_string($decoded)) {
             throw new CryptException('The encoding failed');
         }
 
