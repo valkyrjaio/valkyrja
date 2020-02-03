@@ -156,7 +156,7 @@ if (! function_exists('env')) {
      * @param string $key     [optional] The variable to get
      * @param string $default [optional] The default value to return
      *
-     * @return mixed|Env||config|Env
+     * @return mixed|Env|\config|Env
      */
     function env(string $key = null, $default = null)
     {
