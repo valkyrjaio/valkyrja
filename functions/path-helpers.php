@@ -41,6 +41,20 @@ if (! function_exists('appPath')) {
     }
 }
 
+if (! function_exists('bootstrapPath')) {
+    /**
+     * Helper function to get bootstrap path.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    function bootstrapPath(string $path = null): string
+    {
+        return Directory::bootstrapPath($path);
+    }
+}
+
 if (! function_exists('envPath')) {
     /**
      * Helper function to get env path.

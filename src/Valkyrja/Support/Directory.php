@@ -40,11 +40,12 @@ class Directory
      * @var string
      */
     public static string $APP_PATH               = 'app';
-    public static string $CONFIG_PATH            = 'config';
+    public static string $BOOTSTRAP_PATH         = 'bootstrap';
     public static string $COMMANDS_PATH          = 'commands';
     public static string $EVENTS_PATH            = 'events';
     public static string $ROUTES_PATH            = 'routes';
     public static string $SERVICES_PATH          = 'services';
+    public static string $CONFIG_PATH            = 'config';
     public static string $ENV_PATH               = 'env';
     public static string $PUBLIC_PATH            = 'public';
     public static string $RESOURCES_PATH         = 'resources';
@@ -79,15 +80,15 @@ class Directory
     }
 
     /**
-     * Get the config directory for the application.
+     * Get the bootstrap directory for the application.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public static function configPath(string $path = null): string
+    public static function bootstrapPath(string $path = null): string
     {
-        return static::basePath(static::$CONFIG_PATH . static::path($path));
+        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
 
     /**
@@ -99,7 +100,7 @@ class Directory
      */
     public static function commandsPath(string $path = null): string
     {
-        return static::configPath(static::$COMMANDS_PATH . static::path($path));
+        return static::bootstrapPath(static::$COMMANDS_PATH . static::path($path));
     }
 
     /**
@@ -111,7 +112,7 @@ class Directory
      */
     public static function eventsPath(string $path = null): string
     {
-        return static::configPath(static::$EVENTS_PATH . static::path($path));
+        return static::bootstrapPath(static::$EVENTS_PATH . static::path($path));
     }
 
     /**
@@ -123,7 +124,7 @@ class Directory
      */
     public static function routesPath(string $path = null): string
     {
-        return static::configPath(static::$ROUTES_PATH . static::path($path));
+        return static::bootstrapPath(static::$ROUTES_PATH . static::path($path));
     }
 
     /**
@@ -135,7 +136,19 @@ class Directory
      */
     public static function servicesPath(string $path = null): string
     {
-        return static::configPath(static::$SERVICES_PATH . static::path($path));
+        return static::bootstrapPath(static::$SERVICES_PATH . static::path($path));
+    }
+
+    /**
+     * Get the config directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function configPath(string $path = null): string
+    {
+        return static::basePath(static::$CONFIG_PATH . static::path($path));
     }
 
     /**
