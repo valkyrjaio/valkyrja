@@ -41,14 +41,14 @@ class NativeDispatcher implements Dispatcher
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
     /**
      * Dispatcher constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -375,7 +375,7 @@ class NativeDispatcher implements Dispatcher
     {
         // Ensure a class exists before continuing
         if (null === $dispatch->getClass()) {
-            return $dispatch->getClass();
+            return null;
         }
 
         // If the class is the id then this item is not yet set
@@ -413,7 +413,7 @@ class NativeDispatcher implements Dispatcher
     {
         // Ensure a function exists before continuing
         if (null === $dispatch->getFunction()) {
-            return $dispatch->getFunction();
+            return null;
         }
 
         $function = $dispatch->getFunction();
@@ -443,7 +443,7 @@ class NativeDispatcher implements Dispatcher
     {
         // Ensure a closure exists before continuing
         if (null === $dispatch->getClosure()) {
-            return $dispatch->getClosure();
+            return null;
         }
 
         $closure  = $dispatch->getClosure();
