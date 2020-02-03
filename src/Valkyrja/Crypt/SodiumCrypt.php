@@ -203,13 +203,64 @@ class SodiumCrypt implements Crypt
      */
     protected function validateDecoded($decoded): void
     {
-        if ($decoded === false || ! is_string($decoded)) {
+        $this->validateDecodedType($decoded);
+        $this->validateDecodedStrLen($decoded);
+    }
+
+    /**
+     * Validate a decoded encrypted message type.
+     *
+     * @param bool|string $decoded
+     *
+     * @throws CryptException
+     *
+     * @return void
+     */
+    protected function validateDecodedType($decoded): void
+    {
+        if (! $this->isValidDecodedType($decoded)) {
             throw new CryptException('The encoding failed');
         }
+    }
 
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
+    /**
+     * Check if a decoded encrypted message is a valid type.
+     *
+     * @param bool|string $decoded
+     *
+     * @return bool
+     */
+    protected function isValidDecodedType($decoded): bool
+    {
+        return $decoded !== false && is_string($decoded);
+    }
+
+    /**
+     * Validate a decoded encrypted message string length.
+     *
+     * @param bool|string $decoded
+     *
+     * @throws CryptException
+     *
+     * @return void
+     */
+    protected function validateDecodedStrLen($decoded): void
+    {
+        if ($this->isValidDecodedStrLen($decoded)) {
             throw new CryptException('The message was truncated');
         }
+    }
+
+    /**
+     * Validate a decoded encrypted message string length.
+     *
+     * @param bool|string $decoded
+     *
+     * @return bool
+     */
+    protected function isValidDecodedStrLen($decoded): bool
+    {
+        return mb_strlen($decoded, '8bit') > (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES);
     }
 
     /**
@@ -247,9 +298,21 @@ class SodiumCrypt implements Crypt
      */
     protected function validatePlainDecoded($plain): void
     {
-        if ($plain === false) {
+        if ($this->isValidPlainDecoded($plain)) {
             throw new CryptException('The message was tampered with in transit');
         }
+    }
+
+    /**
+     * Validate a plain text encrypted message.
+     *
+     * @param bool|string $plain
+     *
+     * @return bool
+     */
+    protected function isValidPlainDecoded($plain): bool
+    {
+        return $plain !== false;
     }
 
     /**
