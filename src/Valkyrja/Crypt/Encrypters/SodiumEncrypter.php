@@ -11,10 +11,13 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Crypts;
+namespace Valkyrja\Crypt\Encrypters;
 
 use Exception;
+use Valkyrja\Application\Application;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Encrypter;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class SodiumEncrypter.
@@ -23,6 +26,8 @@ use Valkyrja\Crypt\Encrypter;
  */
 class SodiumEncrypter implements Encrypter
 {
+    use Provides;
+
     /**
      * Encrypt a message.
      *
@@ -72,5 +77,29 @@ class SodiumEncrypter implements Encrypter
     public function encryptObject(object $object, string $key): string
     {
         return $this->encrypt(json_encode($object, JSON_THROW_ON_ERROR), $key);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::ENCRYPTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Contract::ENCRYPTER, new static());
     }
 }

@@ -98,10 +98,10 @@ final class Contract extends Enum
     public const LOGGER_INTERFACE      = LoggerInterface::class;
     public const LOGGER                = Logger::class;
     public const MAIL                  = Mail::class;
-    public const CRYPT                 = Crypt::class;
-    public const CRYPT_ENCRYPTER       = Encrypter::class;
-    public const CRYPT_DECRYPTER       = Decrypter::class;
-    public const MODEL                 = Model::class;
+    public const CRYPT     = Crypt::class;
+    public const ENCRYPTER = Encrypter::class;
+    public const DECRYPTER = Decrypter::class;
+    public const MODEL           = Model::class;
     public const ENTITY                = Entity::class;
     public const ENTITY_MANAGER        = EntityManager::class;
     public const QUERY                 = Query::class;

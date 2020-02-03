@@ -251,8 +251,8 @@ class Crypt implements CryptContract
             Contract::CRYPT,
             new static(
                 $app,
-                $container->get(Contract::CRYPT_ENCRYPTER),
-                $container->get(Contract::CRYPT_DECRYPTER)
+                $container->get(Contract::ENCRYPTER),
+                $container->get(Contract::DECRYPTER)
             )
         );
     }

@@ -11,10 +11,13 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Crypts;
+namespace Valkyrja\Crypt\Decrypters;
 
+use Valkyrja\Application\Application;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class SodiumDecrypter.
@@ -23,6 +26,8 @@ use Valkyrja\Crypt\Exceptions\CryptException;
  */
 class SodiumDecrypter implements Decrypter
 {
+    use Provides;
+
     /**
      * Decrypt a message.
      *
@@ -211,5 +216,29 @@ class SodiumDecrypter implements Decrypter
     protected function isValidPlainDecoded($plain): bool
     {
         return $plain !== false;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::DECRYPTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Contract::DECRYPTER, new static());
     }
 }
