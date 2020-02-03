@@ -42,5 +42,5 @@ return [
      * //
      *
      */
-    CKP::KEY_PATH => env(EnvKey::CRYPT_KEY_PATH, envPath('key')),
+    CKP::KEY_PATH => env(EnvKey::CRYPT_KEY_PATH, null),
 ];

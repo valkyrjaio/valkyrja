@@ -17,7 +17,6 @@ use Exception;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -30,20 +29,27 @@ class SodiumCrypt implements Crypt
     use Provides;
 
     /**
-     * The filesystem.
+     * The config.
      *
-     * @var Filesystem
+     * @var array
      */
-    protected Filesystem $filesystem;
+    protected array $config;
+
+    /**
+     * The key
+     *
+     * @var string|null
+     */
+    protected ?string $key = null;
 
     /**
      * SodiumCrypt constructor.
      *
-     * @param Filesystem $filesystem
+     * @param Application $app
      */
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Application $app)
     {
-        $this->filesystem = $filesystem;
+        $this->config = $app->config()[ConfigKeyPart::CRYPT];
     }
 
     /**
@@ -53,7 +59,15 @@ class SodiumCrypt implements Crypt
      */
     public function getKey(): string
     {
-        return $this->filesystem->read(config()[ConfigKeyPart::CRYPT][ConfigKeyPart::KEY_PATH] ?? envPath('key'));
+        if (null !== $this->key) {
+            return $this->key;
+        }
+
+        if (null !== $keyPath = $this->config[ConfigKeyPart::KEY_PATH]) {
+            return $this->key = file_get_contents($keyPath);
+        }
+
+        return $this->key = $this->config[ConfigKeyPart::KEY];
     }
 
     /**
@@ -91,27 +105,10 @@ class SodiumCrypt implements Crypt
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
-        $key     = $key ?? $this->getKey();
-        $decoded = base64_decode($encrypted, true);
+        $key = $key ?? $this->getKey();
 
-        if ($decoded === false) {
-            throw new CryptException('The encoding failed');
-        }
+        $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
 
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new CryptException('The message was truncated');
-        }
-
-        $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
-        $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
-
-        $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
-
-        if ($plain === false) {
-            throw new CryptException('The message was tampered with in transit');
-        }
-
-        sodium_memzero($cipherText);
         sodium_memzero($key);
 
         return $plain;
@@ -174,7 +171,85 @@ class SodiumCrypt implements Crypt
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Get a decoded encrypted message.
+     *
+     * @param string $encrypted The encrypted message
+     *
+     * @throws CryptException
+     *
+     * @return string
+     */
+    protected function getDecoded(string $encrypted): string
+    {
+        $decoded = base64_decode($encrypted, true);
+
+        $this->validateDecoded($decoded);
+
+        return $decoded;
+    }
+
+    /**
+     * Validate a decoded encrypted message.
+     *
+     * @param bool|string $decoded
+     *
+     * @throws CryptException
+     *
+     * @return void
+     */
+    protected function validateDecoded($decoded): void
+    {
+        if ($decoded === false) {
+            throw new CryptException('The encoding failed');
+        }
+
+        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
+            throw new CryptException('The message was truncated');
+        }
+    }
+
+    /**
+     * Get plain text from decoded encrypted string.
+     *
+     * @param string $decoded The decoded encrypted message
+     * @param string $key     The encryption key
+     *
+     * @throws CryptException
+     *
+     * @return string
+     */
+    protected function getDecodedPlain(string $decoded, string $key): string
+    {
+        $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+        $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+
+        $plain = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
+
+        $this->validatePlainDecoded($plain);
+
+        sodium_memzero($cipherText);
+
+        return $plain;
+    }
+
+    /**
+     * Validate a plain text encrypted message.
+     *
+     * @param bool|string $plain
+     *
+     * @throws CryptException
+     *
+     * @return void
+     */
+    protected function validatePlainDecoded($plain): void
+    {
+        if ($plain === false) {
+            throw new CryptException('The message was tampered with in transit');
+        }
     }
 
     /**
@@ -192,12 +267,12 @@ class SodiumCrypt implements Crypt
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(Crypt::class, new static($app->filesystem()));
+        $app->container()->singleton(Crypt::class, new static($app));
     }
 }
