@@ -259,16 +259,6 @@ trait Helpers
     }
 
     /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string
-    {
-        return static::VERSION;
-    }
-
-    /**
      * Get the environment with which the application is running in.
      *
      * @return string
