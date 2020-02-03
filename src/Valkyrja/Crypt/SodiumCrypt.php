@@ -59,7 +59,7 @@ class SodiumCrypt implements Crypt
      */
     public function getKey(): string
     {
-        return $this->key ?? ($this->key = $this->getKeyFromPath() ?? $this->getKeyFromConfig());
+        return $this->key ?? ($this->key = $this->getKeyFromFilesystem() ?? $this->getKeyFromConfig());
     }
 
     /**
@@ -191,7 +191,7 @@ class SodiumCrypt implements Crypt
      *
      * @return string|null
      */
-    protected function getKeyFromPath(): ?string
+    protected function getKeyFromFilesystem(): ?string
     {
         return $this->hasValidKeyPath() ? $this->getFileContentsFromKeyPath() : null;
     }
