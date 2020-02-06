@@ -134,7 +134,7 @@ class PDOEntityRetriever implements EntityRetriever
         array $columns = null,
         bool $getRelations = null
     ): array {
-        return $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
+        return (array) $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
     }
 
     /**
@@ -391,8 +391,6 @@ class PDOEntityRetriever implements EntityRetriever
         int $limit = null,
         int $offset = null
     ): QueryBuilder {
-        /** @var Entity|string $entity */
-
         // Create a new query
         $query = $this->entityManager->queryBuilder($entity)->select($columns);
 

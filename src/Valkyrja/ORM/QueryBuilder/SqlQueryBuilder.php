@@ -482,7 +482,7 @@ class SqlQueryBuilder implements QueryBuilder
                 break;
         }
 
-        return $this->queryString;
+        return (string) $this->queryString;
     }
 
     /**
