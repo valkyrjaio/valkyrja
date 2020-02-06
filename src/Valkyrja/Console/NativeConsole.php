@@ -114,7 +114,7 @@ class NativeConsole implements Console
         $dispatcher->verifyFunction($command);
         $dispatcher->verifyClosure($command);
 
-        $this->addParsedCommand($command, $this->app->pathParser()->parse($command->getPath()));
+        $this->addParsedCommand($command, $this->app->pathParser()->parse((string) $command->getPath()));
     }
 
     /**
@@ -233,7 +233,9 @@ class NativeConsole implements Console
                 unset($matches[0]);
 
                 // Set the matches
-                return $command->setMatches($matches);
+                $command->setMatches($matches);
+
+                break;
             }
         }
 
