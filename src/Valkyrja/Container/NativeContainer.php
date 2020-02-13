@@ -28,6 +28,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 /**
@@ -37,21 +38,15 @@ use Valkyrja\Support\Providers\ProvidersAwareTrait;
  */
 class NativeContainer implements Container
 {
+    use Cacheable;
     use ProvidersAwareTrait;
 
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
-
-    /**
-     * Whether the container has been setup.
-     *
-     * @var bool
-     */
-    protected static bool $setup = false;
 
     /**
      * The aliases.
@@ -77,7 +72,7 @@ class NativeContainer implements Container
     /**
      * Container constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -436,66 +431,38 @@ class NativeContainer implements Container
     }
 
     /**
-     * Setup the container.
+     * Get the application.
      *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
+     * @return Application
+     */
+    protected function getApplication(): Application
+    {
+        return $this->app;
+    }
+
+    /**
+     * Get the config.
      *
-     * @throws InvalidContextException
-     * @throws EndlessContextLoopException
-     * @throws InvalidServiceIdException
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return $this->app->config(ConfigKeyPart::CONTAINER);
+    }
+
+    /**
+     * Set not cached.
      *
      * @return void
      */
-    public function setup(bool $force = false, bool $useCache = true): void
+    protected function setupNotCached(): void
     {
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        self::$setup = true;
-
-        // If the application should use the container cache files
-        if ($useCache && $this->app->config(ConfigKey::CONTAINER_USE_CACHE_FILE)) {
-            $this->setupFromCache();
-
-            // Then return out of setup
-            return;
-        }
-
         self::$registered = [];
         self::$services   = [];
         self::$provided   = [];
 
-        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
-        $useAnnotations     = $this->app->config(ConfigKey::CONTAINER_USE_ANNOTATIONS, false);
-        $onlyAnnotations    = $this->app->config(ConfigKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY, false);
-
         // Setup service providers
         $this->setupServiceProviders();
-
-        // If annotations are enabled and the container should use annotations
-        if ($useAnnotations && $annotationsEnabled) {
-            // Setup annotated services, contexts, and aliases
-            $this->setupAnnotations();
-
-            // If only annotations should be used
-            if ($onlyAnnotations) {
-                // Return to avoid loading container file
-                return;
-            }
-        }
-
-        // Include the container file
-        // NOTE: Included if annotations are set or not due to possibility of
-        // container items being defined within the classes as well as within
-        // the container file
-        require $this->app->config(ConfigKey::CONTAINER_FILE_PATH);
     }
 
     /**
@@ -606,15 +573,6 @@ class NativeContainer implements Container
     /**
      * Get a cacheable representation of the service container.
      *
-     * @throws EndlessContextLoopException
-     * @throws InvalidServiceIdException
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidContextException
-     *
      * @return array
      */
     public function getCacheable(): array
@@ -626,15 +584,5 @@ class NativeContainer implements Container
             ConfigKeyPart::ALIASES  => self::$aliases,
             ConfigKeyPart::PROVIDED => self::$provided,
         ];
-    }
-
-    /**
-     * Get the application.
-     *
-     * @return \Valkyrja\Application\Application
-     */
-    protected function getApplication(): Application
-    {
-        return $this->app;
     }
 }

@@ -27,6 +27,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
@@ -41,6 +42,7 @@ class NativeConsole implements Console
         register as traitRegister;
     }
     use Provides;
+    use Cacheable;
 
     /**
      * The run method to call within command handlers.
@@ -50,7 +52,7 @@ class NativeConsole implements Console
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
@@ -74,13 +76,6 @@ class NativeConsole implements Console
      * @var string[]
      */
     protected static array $namedCommands = [];
-
-    /**
-     * Whether the console has been setup.
-     *
-     * @var bool
-     */
-    protected static bool $setup = false;
 
     /**
      * Console constructor.
@@ -336,63 +331,68 @@ class NativeConsole implements Console
     }
 
     /**
-     * Setup the console.
+     * Register a provider.
      *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws ReflectionException
+     * @param string $provider The provider
+     * @param bool   $force    [optional] Whether to force regardless of
+     *                         deferred status
      *
      * @return void
      */
-    public function setup(bool $force = false, bool $useCache = true): void
+    public function register(string $provider, bool $force = false): void
     {
-        // If the console was already setup no need to do it again
-        if (self::$setup && ! $force) {
-            return;
+        // Do the default registration of the service provider
+        $this->traitRegister($provider, $force);
+
+        /* @var CommandProvider $provider */
+        // Get the commands names provided
+        $commands = $provider::commands();
+
+        // Iterate through the provided commands
+        foreach ($provider::provides() as $key => $provided) {
+            // Parse the provided path
+            $parsedPath = $this->app->pathParser()->parse($provided);
+
+            // Set the path and regex in the paths list
+            self::$paths[$parsedPath[ConfigKeyPart::REGEX]] = $provided;
+            // Set the path and command in the named commands list
+            self::$namedCommands[$commands[$key]] = $provided;
         }
+    }
 
-        // The console is setting up
-        self::$setup = true;
+    /**
+     * Get the application.
+     *
+     * @return Application
+     */
+    protected function getApplication(): Application
+    {
+        return $this->app;
+    }
 
-        // If the application should use the console cache files
-        if ($useCache && $this->app->config(ConfigKey::CONSOLE_USE_CACHE_FILE)) {
-            $this->setupFromCache();
+    /**
+     * Get the config.
+     *
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return $this->app->config(ConfigKeyPart::CONSOLE);
+    }
 
-            // Then return out of setup
-            return;
-        }
-
+    /**
+     * Set not cached.
+     *
+     * @return void
+     */
+    protected function setupNotCached(): void
+    {
         self::$paths         = [];
         self::$commands      = [];
         self::$namedCommands = [];
 
-        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
-        $useAnnotations     = $this->app->config(ConfigKey::CONSOLE_USE_ANNOTATIONS, false);
-        $onlyAnnotations    = $this->app->config(ConfigKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY, false);
-
         // Setup command providers
         $this->setupCommandProviders();
-
-        // If annotations are enabled and the events should use annotations
-        if ($annotationsEnabled && $useAnnotations) {
-            // Setup annotated event listeners
-            $this->setupAnnotations();
-
-            // If only annotations should be used
-            if ($onlyAnnotations) {
-                // Return to avoid loading events file
-                return;
-            }
-        }
-
-        // Include the events file
-        require $this->app->config(ConfigKey::CONSOLE_FILE_PATH);
     }
 
     /**
@@ -449,36 +449,6 @@ class NativeConsole implements Console
     }
 
     /**
-     * Register a provider.
-     *
-     * @param string $provider The provider
-     * @param bool   $force    [optional] Whether to force regardless of
-     *                         deferred status
-     *
-     * @return void
-     */
-    public function register(string $provider, bool $force = false): void
-    {
-        // Do the default registration of the service provider
-        $this->traitRegister($provider, $force);
-
-        /* @var CommandProvider $provider */
-        // Get the commands names provided
-        $commands = $provider::commands();
-
-        // Iterate through the provided commands
-        foreach ($provider::provides() as $key => $provided) {
-            // Parse the provided path
-            $parsedPath = $this->app->pathParser()->parse($provided);
-
-            // Set the path and regex in the paths list
-            self::$paths[$parsedPath[ConfigKeyPart::REGEX]] = $provided;
-            // Set the path and command in the named commands list
-            self::$namedCommands[$commands[$key]] = $provided;
-        }
-    }
-
-    /**
      * Setup annotations.
      *
      * @throws InvalidClosureException
@@ -507,13 +477,6 @@ class NativeConsole implements Console
 
     /**
      * Get a cacheable representation of the commands.
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws ReflectionException
      *
      * @return array
      */
@@ -544,7 +507,7 @@ class NativeConsole implements Console
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */
@@ -556,15 +519,5 @@ class NativeConsole implements Console
         );
 
         $app->console()->setup();
-    }
-
-    /**
-     * Get the application.
-     *
-     * @return \Valkyrja\Application\Application
-     */
-    protected function getApplication(): Application
-    {
-        return $this->app;
     }
 }

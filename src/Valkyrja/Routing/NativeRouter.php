@@ -30,6 +30,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
+use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
@@ -41,11 +42,12 @@ use Valkyrja\View\View;
 class NativeRouter implements Router
 {
     use Provides;
+    use Cacheable;
 
     /**
      * Application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
@@ -57,30 +59,23 @@ class NativeRouter implements Router
     protected static RouteCollection $collection;
 
     /**
-     * Whether route's have been setup yet.
-     *
-     * @var bool
-     */
-    protected static bool $setup = false;
-
-    /**
      * Whether to use absolute urls.
      *
      * @var bool
      */
-    private static $useAbsoluteUrls;
+    private static bool $useAbsoluteUrls;
 
     /**
      * Whether to use trailing slashes.
      *
      * @var bool
      */
-    private static $trailingSlash;
+    private static bool $trailingSlash;
 
     /**
      * Router constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {
@@ -429,116 +424,6 @@ class NativeRouter implements Router
     }
 
     /**
-     * Setup routes.
-     *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public function setup(bool $force = false, bool $useCache = true): void
-    {
-        // If route's have already been setup, no need to do it again
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        self::$useAbsoluteUrls = $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS);
-        self::$trailingSlash   = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH);
-
-        self::$setup = true;
-
-        // If the application should use the routes cache file
-        if ($useCache && $this->app->config(ConfigKey::ROUTING_USE_CACHE_FILE)) {
-            $this->setupFromCache();
-
-            // Then return out of setup
-            return;
-        }
-
-        self::$collection = new RouteCollection();
-
-        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
-        $useAnnotations     = $this->app->config(ConfigKey::ROUTING_USE_ANNOTATIONS, false);
-        $onlyAnnotations    = $this->app->config(ConfigKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY, false);
-
-        // If annotations are enabled and routing should use annotations
-        if ($annotationsEnabled && $useAnnotations) {
-            // Setup annotated routes
-            $this->setupAnnotatedRoutes();
-
-            // If only annotations should be used for routing
-            if ($onlyAnnotations) {
-                // Return to avoid loading routes file
-                return;
-            }
-        }
-
-        // Include the routes file
-        // NOTE: Included if annotations are set or not due to possibility of
-        // routes being defined within the controllers as well as within the
-        // routes file
-        require $this->app->config(ConfigKey::ROUTING_FILE_PATH);
-    }
-
-    /**
-     * Get a cacheable representation of the data.
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            ConfigKeyPart::COLLECTION => base64_encode(serialize(self::$collection)),
-        ];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Router::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Router::class,
-            new static($app)
-        );
-
-        $app->router()->setup();
-    }
-
-    /**
      * Validate a path.
      *
      * @param string $path The path
@@ -796,6 +681,37 @@ class NativeRouter implements Router
     }
 
     /**
+     * Get the config.
+     *
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return $this->app->config(ConfigKeyPart::ROUTING);
+    }
+
+    /**
+     * Before setup.
+     *
+     * @return void
+     */
+    protected function beforeSetup(): void
+    {
+        self::$useAbsoluteUrls = $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS, false);
+        self::$trailingSlash   = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false);
+    }
+
+    /**
+     * Set not cached.
+     *
+     * @return void
+     */
+    protected function setupNotCached(): void
+    {
+        self::$collection = new RouteCollection();
+    }
+
+    /**
      * Setup the router from cache.
      *
      * @return void
@@ -829,7 +745,7 @@ class NativeRouter implements Router
      *
      * @return void
      */
-    protected function setupAnnotatedRoutes(): void
+    protected function setupAnnotations(): void
     {
         /** @var RouteAnnotations $routeAnnotations */
         $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
@@ -842,5 +758,48 @@ class NativeRouter implements Router
             // Set the route
             $this->addRoute($route);
         }
+    }
+
+    /**
+     * Get a cacheable representation of the data.
+     *
+     * @return array
+     */
+    public function getCacheable(): array
+    {
+        $this->setup(true, false);
+
+        return [
+            ConfigKeyPart::COLLECTION => base64_encode(serialize(self::$collection)),
+        ];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Router::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Router::class,
+            new static($app)
+        );
+
+        $app->router()->setup();
     }
 }

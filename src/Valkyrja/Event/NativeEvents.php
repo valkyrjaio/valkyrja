@@ -22,6 +22,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Event\Annotations\ListenerAnnotations;
+use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
  * Class Events.
@@ -30,10 +31,12 @@ use Valkyrja\Event\Annotations\ListenerAnnotations;
  */
 class NativeEvents implements Events
 {
+    use Cacheable;
+
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
@@ -43,13 +46,6 @@ class NativeEvents implements Events
      * @var array
      */
     protected static array $events = [];
-
-    /**
-     * Whether the container has been setup.
-     *
-     * @var bool
-     */
-    protected static bool $setup = false;
 
     /**
      * Events constructor.
@@ -277,55 +273,23 @@ class NativeEvents implements Events
     }
 
     /**
-     * Setup the events.
+     * Get the config.
      *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return $this->app->config(ConfigKeyPart::EVENTS);
+    }
+
+    /**
+     * Set not cached.
      *
      * @return void
      */
-    public function setup(bool $force = false, bool $useCache = true): void
+    protected function setupNotCached(): void
     {
-        if (self::$setup && ! $force) {
-            return;
-        }
-
-        self::$setup = true;
-
-        // If the application should use the events cache files
-        if ($useCache && $this->app->config(ConfigKey::EVENTS_USE_CACHE_FILE)) {
-            $this->setupFromCache();
-
-            // Then return out of setup
-            return;
-        }
-
         self::$events = [];
-
-        $annotationsEnabled = $this->app->config(ConfigKey::ANNOTATIONS_ENABLED, false);
-        $useAnnotations     = $this->app->config(ConfigKey::EVENTS_USE_ANNOTATIONS, false);
-        $onlyAnnotations    = $this->app->config(ConfigKey::EVENTS_USE_ANNOTATIONS_EXCLUSIVELY, false);
-
-        // If annotations are enabled and the events should use annotations
-        if ($annotationsEnabled && $useAnnotations) {
-            // Setup annotated event listeners
-            $this->setupAnnotations();
-
-            // If only annotations should be used
-            if ($onlyAnnotations) {
-                // Return to avoid loading events file
-                return;
-            }
-        }
-
-        // Include the events file
-        require $this->app->config(ConfigKey::EVENTS_FILE_PATH);
     }
 
     /**
@@ -377,12 +341,6 @@ class NativeEvents implements Events
 
     /**
      * Get a cacheable representation of the events.
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
      *
      * @return array
      */
