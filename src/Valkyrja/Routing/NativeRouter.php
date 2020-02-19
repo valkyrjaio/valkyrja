@@ -17,7 +17,6 @@ use Exception;
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -27,10 +26,8 @@ use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Annotations\RouteAnnotations;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
-use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
@@ -42,35 +39,7 @@ use Valkyrja\View\View;
 class NativeRouter implements Router
 {
     use Provides;
-    use Cacheable;
-
-    /**
-     * Application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
-     * The route collection.
-     *
-     * @var RouteCollection
-     */
-    protected static RouteCollection $collection;
-
-    /**
-     * Whether to use absolute urls.
-     *
-     * @var bool
-     */
-    private static bool $useAbsoluteUrls;
-
-    /**
-     * Whether to use trailing slashes.
-     *
-     * @var bool
-     */
-    private static bool $trailingSlash;
+    use CacheableRouter;
 
     /**
      * Router constructor.
@@ -103,8 +72,6 @@ class NativeRouter implements Router
 
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->validatePath($route->getPath()));
-        // Ensure the request methods are set
-        $route->getRequestMethods();
 
         // If this is a dynamic route
         if ($route->isDynamic()) {
@@ -213,6 +180,31 @@ class NativeRouter implements Router
     }
 
     /**
+     * Helper function to set any request method addRoute.
+     *
+     * @param Route $route The route
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    public function any(Route $route): void
+    {
+        $route->setRequestMethods(
+            [
+                RequestMethod::HEAD,
+                RequestMethod::GET,
+                RequestMethod::POST,
+                RequestMethod::PUT,
+                RequestMethod::PATCH,
+                RequestMethod::DELETE,
+            ]
+        );
+
+        $this->addRoute($route);
+    }
+
+    /**
      * Get all routes set by the application.
      *
      * @return array
@@ -271,7 +263,7 @@ class NativeRouter implements Router
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || self::$useAbsoluteUrls || $route->isSecure()
+        $host = $absolute || $route->isSecure() || $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS, false)
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
@@ -479,7 +471,7 @@ class NativeRouter implements Router
     {
         // If the last character is not a slash and the config is set to
         // ensure trailing slash
-        if ($path[-1] !== '/' && self::$trailingSlash) {
+        if ($path[-1] !== '/' && $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false)) {
             // add a trailing slash
             $path .= '/';
         }
@@ -670,108 +662,18 @@ class NativeRouter implements Router
             return $dispatch;
         }
 
-        // If the dispatch is a View, render it then wrap it in a new response
-        // and return it
+        // If the dispatch is a View, render it then wrap it in a new response and return it
         if ($dispatch instanceof View) {
             return $this->app->response($dispatch->render());
         }
 
+        // If the dispatch is an array, return it as JSON
+        if (is_array($dispatch)) {
+            return $this->app->json($dispatch);
+        }
+
         // Otherwise its a string so wrap it in a new response and return it
         return $this->app->response((string) $dispatch);
-    }
-
-    /**
-     * Get the config.
-     *
-     * @return array
-     */
-    protected function getConfig(): array
-    {
-        return $this->app->config(ConfigKeyPart::ROUTING);
-    }
-
-    /**
-     * Before setup.
-     *
-     * @return void
-     */
-    protected function beforeSetup(): void
-    {
-        self::$useAbsoluteUrls = $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS, false);
-        self::$trailingSlash   = $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false);
-    }
-
-    /**
-     * Set not cached.
-     *
-     * @return void
-     */
-    protected function setupNotCached(): void
-    {
-        self::$collection = new RouteCollection();
-    }
-
-    /**
-     * Setup the router from cache.
-     *
-     * @return void
-     */
-    protected function setupFromCache(): void
-    {
-        // Set the application routes with said file
-        $cache = $this->app->config(ConfigKey::CACHE_ROUTING)
-            ?? require $this->app->config(ConfigKey::ROUTING_CACHE_FILE_PATH);
-
-        self::$collection = unserialize(
-            base64_decode($cache[ConfigKeyPart::COLLECTION], true),
-            [
-                'allowed_classes' => [
-                    RouteCollection::class,
-                    Route::class,
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Setup annotated routes.
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    protected function setupAnnotations(): void
-    {
-        /** @var RouteAnnotations $routeAnnotations */
-        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
-
-        // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config(ConfigKey::ROUTING_CONTROLLERS));
-
-        // Iterate through the routes
-        foreach ($routes as $route) {
-            // Set the route
-            $this->addRoute($route);
-        }
-    }
-
-    /**
-     * Get a cacheable representation of the data.
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            ConfigKeyPart::COLLECTION => base64_encode(serialize(self::$collection)),
-        ];
     }
 
     /**
