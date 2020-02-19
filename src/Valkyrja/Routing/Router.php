@@ -88,6 +88,15 @@ interface Router extends Cacheable
     public function head(Route $route): void;
 
     /**
+     * Helper function to set any request method addRoute.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    public function any(Route $route): void;
+
+    /**
      * Get all routes set by the application.
      *
      * @return Route[]
