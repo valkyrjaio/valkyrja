@@ -74,7 +74,7 @@ trait CacheableRouter
      */
     protected function setupNotCached(): void
     {
-        self::$collection = new RouteCollection();
+        self::$collection = new RouteCollection($this->app);
     }
 
     /**
@@ -122,7 +122,7 @@ trait CacheableRouter
         // Iterate through the routes
         foreach ($routes as $route) {
             // Set the route
-            $this->addRoute($route);
+            self::$collection->add($route);
         }
     }
 

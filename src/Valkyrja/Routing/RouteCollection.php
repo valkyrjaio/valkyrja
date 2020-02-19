@@ -13,6 +13,8 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Routing;
 
+use Valkyrja\Application\Application;
+
 /**
  * Class RouteCollection.
  *
@@ -20,6 +22,13 @@ namespace Valkyrja\Routing;
  */
 class RouteCollection
 {
+    /**
+     * Application.
+     *
+     * @var Application
+     */
+    protected Application $app;
+
     /**
      * The routes.
      *
@@ -49,20 +58,38 @@ class RouteCollection
     protected array $namedRoutes = [];
 
     /**
+     * RouteCollection constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * Add a route.
      *
      * @param Route $route The route
      *
      * @return void
      */
-    public function addRoute(Route $route): void
+    public function add(Route $route): void
     {
         $key                = md5(json_encode((array) $route, JSON_THROW_ON_ERROR));
         $this->routes[$key] = $route;
 
+        // Verify the dispatch
+        $this->app->dispatcher()->verifyDispatch($route);
+
+        // Set the path to the validated cleaned path (/some/path)
+        $route->setPath($this->validatePath($route->getPath()));
+
         foreach ($route->getRequestMethods() as $requestMethod) {
             // If this is a dynamic route
             if ($route->isDynamic()) {
+                // Set the dynamic route's properties through the path parser
+                $this->parseDynamicRoute($route);
                 // Set the route's regex and path in the dynamic routes list
                 $this->dynamicRoutes[$requestMethod][$route->getRegex()] = $key;
             } // Otherwise set it in the static routes array
@@ -80,9 +107,35 @@ class RouteCollection
     }
 
     /**
+     * Get a route.
+     *
+     * @param string $path The path
+     *
+     * @return null|Route
+     *      The route if found or null when no static route is
+     *      found for the path and method combination specified
+     */
+    public function route(string $path): ?Route
+    {
+        return $this->routes[$path] ?? null;
+    }
+
+    /**
+     * Determine if a route exists.
+     *
+     * @param string $path The path
+     *
+     * @return bool
+     */
+    public function isset(string $path): bool
+    {
+        return isset($this->routes[$path]);
+    }
+
+    /**
      * @return Route[]
      */
-    public function getRoutes(): array
+    public function all(): array
     {
         return $this->routes;
     }
@@ -204,28 +257,32 @@ class RouteCollection
     }
 
     /**
-     * Get a route.
+     * Validate a path.
      *
      * @param string $path The path
      *
-     * @return null|Route
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     * @return string
      */
-    protected function route(string $path): ?Route
+    protected function validatePath(string $path): string
     {
-        return $this->routes[$path] ?? null;
+        return '/' . trim($path, '/');
     }
 
     /**
-     * Determine if a route exists.
+     * Parse a dynamic route and set its properties.
      *
-     * @param string $path The path
+     * @param Route $route The route
      *
-     * @return bool
+     * @return void
      */
-    protected function issetRoute(string $path): bool
+    protected function parseDynamicRoute(Route $route): void
     {
-        return isset($this->routes[$path]);
+        // Parse the path
+        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
+
+        // Set the properties
+        $route->setRegex($parsedRoute['regex']);
+        $route->setParams($parsedRoute['params']);
+        $route->setSegments($parsedRoute['segments']);
     }
 }

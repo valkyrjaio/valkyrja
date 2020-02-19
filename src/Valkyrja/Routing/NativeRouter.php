@@ -67,20 +67,8 @@ class NativeRouter implements Router
      */
     public function addRoute(Route $route): void
     {
-        // Verify the dispatch
-        $this->app->dispatcher()->verifyDispatch($route);
-
-        // Set the path to the validated cleaned path (/some/path)
-        $route->setPath($this->validatePath($route->getPath()));
-
-        // If this is a dynamic route
-        if ($route->isDynamic()) {
-            // Set the dynamic route's properties through the path parser
-            $this->setDynamicRoute($route);
-        }
-
         // Set the route in the collection
-        self::$collection->addRoute($route);
+        self::$collection->add($route);
     }
 
     /**
@@ -211,7 +199,7 @@ class NativeRouter implements Router
      */
     public function getRoutes(): array
     {
-        return self::$collection->getRoutes();
+        return self::$collection->all();
     }
 
     /**
@@ -425,24 +413,6 @@ class NativeRouter implements Router
     protected function validatePath(string $path): string
     {
         return '/' . trim($path, '/');
-    }
-
-    /**
-     * Set a dynamic route's properties.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setDynamicRoute(Route $route): void
-    {
-        // Parse the path
-        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
-
-        // Set the properties
-        $route->setRegex($parsedRoute['regex']);
-        $route->setParams($parsedRoute['params']);
-        $route->setSegments($parsedRoute['segments']);
     }
 
     /**
