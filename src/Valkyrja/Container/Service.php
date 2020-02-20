@@ -19,6 +19,8 @@ use Valkyrja\Dispatcher\Dispatch;
  * Interface Service.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Service extends Dispatch
 {

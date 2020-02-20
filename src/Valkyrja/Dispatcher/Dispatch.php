@@ -20,6 +20,8 @@ use Valkyrja\Model\Model;
  * Interface Dispatch.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Dispatch extends Model
 {

@@ -20,6 +20,8 @@ use Valkyrja\Routing\Route as RouteModel;
  * Interface Route.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Route extends Annotation, RouteModel
 {

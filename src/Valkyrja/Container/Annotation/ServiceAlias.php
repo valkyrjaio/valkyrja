@@ -19,6 +19,8 @@ use Valkyrja\Annotation\Annotation;
  * Interface ServiceAlias.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface ServiceAlias extends Annotation
 {

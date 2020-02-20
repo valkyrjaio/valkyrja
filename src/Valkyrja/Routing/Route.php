@@ -19,6 +19,8 @@ use Valkyrja\Dispatcher\Dispatch;
  * Interface Route.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Route extends Dispatch
 {

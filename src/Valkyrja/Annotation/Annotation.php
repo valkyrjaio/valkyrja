@@ -19,6 +19,8 @@ use Valkyrja\Dispatcher\Dispatch;
  * Interface Annotation.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Annotation extends Dispatch
 {

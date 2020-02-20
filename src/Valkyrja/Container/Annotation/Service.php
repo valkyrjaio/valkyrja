@@ -20,6 +20,8 @@ use Valkyrja\Container\Service as ServiceModel;
  * Interface Service.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 interface Service extends Annotation, ServiceModel
 {
