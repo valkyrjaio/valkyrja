@@ -14,9 +14,9 @@ declare(strict_types = 1);
 namespace Valkyrja\Annotation\Parsers;
 
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
+use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Providers\Provides;

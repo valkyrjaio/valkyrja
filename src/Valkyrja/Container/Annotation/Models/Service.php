@@ -14,8 +14,8 @@ declare(strict_types = 1);
 namespace Valkyrja\Container\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Container\Models\Serviceable;
 use Valkyrja\Container\Annotation\Service as ServiceContract;
+use Valkyrja\Container\Models\Serviceable;
 
 /**
  * Class Service.

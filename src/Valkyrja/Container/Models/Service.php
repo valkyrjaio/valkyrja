@@ -13,8 +13,8 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Container\Models;
 
-use Valkyrja\Dispatcher\Models\Dispatchable;
 use Valkyrja\Container\Service as ServiceContract;
+use Valkyrja\Dispatcher\Models\Dispatchable;
 
 /**
  * Class Service.

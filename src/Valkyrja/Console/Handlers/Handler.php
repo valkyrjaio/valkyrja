@@ -16,9 +16,9 @@ namespace Valkyrja\Console\Handlers;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Enums\ExitCode;
+use Valkyrja\Console\Handler as HandlerContract;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
-use Valkyrja\Console\Handler as HandlerContract;
 
 /**
  * Abstract Class Handler.
