@@ -18,7 +18,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Output as OutputContract;
-use Valkyrja\Console\OutputFormatter;
+use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
+use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -40,16 +41,16 @@ class Output implements OutputContract
     /**
      * The formatter.
      *
-     * @var OutputFormatter
+     * @var OutputFormatterContract
      */
-    protected OutputFormatter $formatter;
+    protected OutputFormatterContract $formatter;
 
     /**
      * Output constructor.
      *
-     * @param OutputFormatter $formatter The output formatter
+     * @param OutputFormatterContract $formatter The output formatter
      */
-    public function __construct(OutputFormatter $formatter)
+    public function __construct(OutputFormatterContract $formatter)
     {
         $this->formatter = $formatter;
 
@@ -59,9 +60,9 @@ class Output implements OutputContract
     /**
      * Get the formatter.
      *
-     * @return OutputFormatter
+     * @return OutputFormatterContract
      */
-    public function formatter(): OutputFormatter
+    public function formatter(): OutputFormatterContract
     {
         return $this->formatter;
     }
@@ -69,11 +70,11 @@ class Output implements OutputContract
     /**
      * Set the formatter.
      *
-     * @param OutputFormatter $formatter
+     * @param OutputFormatterContract $formatter
      *
      * @return void
      */
-    public function setFormatter(OutputFormatter $formatter): void
+    public function setFormatter(OutputFormatterContract $formatter): void
     {
         $this->formatter = $formatter;
     }
@@ -174,7 +175,7 @@ class Output implements OutputContract
         $app->container()->singleton(
             OutputContract::class,
             new static(
-                $app->container()->getSingleton(OutputFormatter::class)
+                $app->container()->getSingleton(Contract::OUTPUT_FORMATTER)
             )
         );
     }
