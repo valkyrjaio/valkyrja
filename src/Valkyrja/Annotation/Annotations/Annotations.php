@@ -119,7 +119,7 @@ class Annotations implements AnnotationsContract
                 [
                     'class' => $class,
                 ],
-                ...$this->parser->getAnnotations($this->getClassReflection($class)->getDocComment() ?: '')
+                ...$this->parser->getAnnotations((string) $this->getClassReflection($class)->getDocComment())
             );
     }
 
@@ -228,7 +228,7 @@ class Annotations implements AnnotationsContract
                     'class'    => $class,
                     'property' => $property,
                 ],
-                ...$this->parser->getAnnotations($this->getPropertyReflection($class, $property)->getDocComment() ?: '')
+                ...$this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
             );
     }
 
@@ -462,7 +462,7 @@ class Annotations implements AnnotationsContract
      */
     public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
     {
-        return $this->parser->getAnnotations($reflection->getDocComment() ?: '');
+        return $this->parser->getAnnotations((string) $reflection->getDocComment());
     }
 
     /**
