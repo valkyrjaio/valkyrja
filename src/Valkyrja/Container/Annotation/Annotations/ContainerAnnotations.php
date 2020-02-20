@@ -152,7 +152,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      */
     protected function setServiceProperties(Annotation $annotation): void
     {
-        if (null === $annotation->getProperty()) {
+        if (null === $annotation->getProperty() && $annotation->getClass() !== null) {
             $parameters =
                 $this->getMethodReflection($annotation->getClass(), $annotation->getMethod() ?? '__construct')
                      ->getParameters();
