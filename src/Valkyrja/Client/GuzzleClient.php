@@ -32,9 +32,9 @@ class GuzzleClient implements Client
     /**
      * The guzzle client.
      *
-     * @var Guzzle
+     * @var ClientInterface
      */
-    protected $guzzle;
+    protected ClientInterface $guzzle;
 
     /**
      * Client constructor.
