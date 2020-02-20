@@ -34,7 +34,7 @@ interface Annotation extends Dispatch
      *
      * @param string $annotationType The type
      *
-     * @return $this
+     * @return static
      */
     public function setAnnotationType(string $annotationType = null): self;
 
@@ -50,7 +50,7 @@ interface Annotation extends Dispatch
      *
      * @param array $annotationProperties The annotation arguments
      *
-     * @return $this
+     * @return static
      */
     public function setAnnotationProperties(array $annotationProperties = null): self;
 }

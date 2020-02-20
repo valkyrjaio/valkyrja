@@ -70,7 +70,7 @@ trait Commandable
      *
      * @param string $path The path
      *
-     * @return $this
+     * @return static
      */
     public function setPath(string $path): self
     {
@@ -94,7 +94,7 @@ trait Commandable
      *
      * @param string $regex The regex
      *
-     * @return $this
+     * @return static
      */
     public function setRegex(string $regex = null): self
     {
@@ -118,7 +118,7 @@ trait Commandable
      *
      * @param array $params The params
      *
-     * @return $this
+     * @return static
      */
     public function setParams(array $params = null): self
     {
@@ -142,7 +142,7 @@ trait Commandable
      *
      * @param array $segments The segments
      *
-     * @return $this
+     * @return static
      */
     public function setSegments(array $segments = null): self
     {
@@ -166,7 +166,7 @@ trait Commandable
      *
      * @param string $description The description
      *
-     * @return $this
+     * @return static
      */
     public function setDescription(string $description = null): self
     {

@@ -49,7 +49,7 @@ trait Serviceable
      *
      * @param bool $singleton Whether this is a singleton
      *
-     * @return $this
+     * @return static
      */
     public function setSingleton(bool $singleton = true): self
     {
@@ -73,7 +73,7 @@ trait Serviceable
      *
      * @param array $defaults The defaults.
      *
-     * @return $this
+     * @return static
      */
     public function setDefaults(array $defaults = null): self
     {

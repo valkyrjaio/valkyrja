@@ -34,7 +34,7 @@ interface Route extends Dispatch
      *
      * @param string $path The route path
      *
-     * @return $this
+     * @return static
      */
     public function setPath(string $path): self;
 
@@ -50,7 +50,7 @@ interface Route extends Dispatch
      *
      * @param string|null $redirectPath
      *
-     * @return $this
+     * @return static
      */
     public function setRedirectPath(string $redirectPath = null): self;
 
@@ -66,7 +66,7 @@ interface Route extends Dispatch
      *
      * @param int $redirectCode
      *
-     * @return $this
+     * @return static
      */
     public function setRedirectCode(int $redirectCode): self;
 
@@ -82,7 +82,7 @@ interface Route extends Dispatch
      *
      * @param array $requestMethods The request methods
      *
-     * @return $this
+     * @return static
      */
     public function setRequestMethods(array $requestMethods): self;
 
@@ -98,7 +98,7 @@ interface Route extends Dispatch
      *
      * @param string $regex The regex
      *
-     * @return $this
+     * @return static
      */
     public function setRegex(string $regex = null): self;
 
@@ -114,7 +114,7 @@ interface Route extends Dispatch
      *
      * @param array $params The params
      *
-     * @return $this
+     * @return static
      */
     public function setParams(array $params = null): self;
 
@@ -130,7 +130,7 @@ interface Route extends Dispatch
      *
      * @param array $segments The segments
      *
-     * @return $this
+     * @return static
      */
     public function setSegments(array $segments = null): self;
 
@@ -146,7 +146,7 @@ interface Route extends Dispatch
      *
      * @param array $middleware The middleware
      *
-     * @return $this
+     * @return static
      */
     public function setMiddleware(array $middleware = null): self;
 
@@ -162,7 +162,7 @@ interface Route extends Dispatch
      *
      * @param bool $dynamic Whether the route it dynamic
      *
-     * @return $this
+     * @return static
      */
     public function setDynamic(bool $dynamic = true): self;
 
@@ -178,7 +178,7 @@ interface Route extends Dispatch
      *
      * @param bool $secure Whether the route is secure
      *
-     * @return $this
+     * @return static
      */
     public function setSecure(bool $secure = true): self;
 
@@ -194,7 +194,7 @@ interface Route extends Dispatch
      *
      * @param bool $redirect
      *
-     * @return $this
+     * @return static
      */
     public function setRedirect(bool $redirect): self;
 }

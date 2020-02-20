@@ -72,7 +72,7 @@ trait ServiceContextable
      *
      * @param string $contextClass The context class
      *
-     * @return $this
+     * @return static
      */
     public function setContextClass(string $contextClass): self
     {
@@ -96,7 +96,7 @@ trait ServiceContextable
      *
      * @param string $contextProperty The context property
      *
-     * @return $this
+     * @return static
      */
     public function setContextProperty(string $contextProperty): self
     {
@@ -120,7 +120,7 @@ trait ServiceContextable
      *
      * @param string $contextMethod The context method
      *
-     * @return $this
+     * @return static
      */
     public function setContextMethod(string $contextMethod): self
     {
@@ -144,7 +144,7 @@ trait ServiceContextable
      *
      * @param string $contextFunction The context function
      *
-     * @return $this
+     * @return static
      */
     public function setContextFunction(string $contextFunction): self
     {
@@ -168,7 +168,7 @@ trait ServiceContextable
      *
      * @param Closure $contextClosure The context closure.
      *
-     * @return $this
+     * @return static
      */
     public function setContextClosure(Closure $contextClosure): self
     {

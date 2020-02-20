@@ -119,7 +119,7 @@ trait Routable
      *
      * @param string $path The route path
      *
-     * @return $this
+     * @return static
      */
     public function setPath(string $path): self
     {
@@ -143,7 +143,7 @@ trait Routable
      *
      * @param string|null $redirectPath
      *
-     * @return $this
+     * @return static
      */
     public function setRedirectPath(string $redirectPath = null): self
     {
@@ -167,7 +167,7 @@ trait Routable
      *
      * @param int $redirectCode
      *
-     * @return $this
+     * @return static
      */
     public function setRedirectCode(int $redirectCode): self
     {
@@ -193,7 +193,7 @@ trait Routable
      *
      * @throws InvalidArgumentException
      *
-     * @return $this
+     * @return static
      */
     public function setRequestMethods(array $requestMethods): self
     {
@@ -221,7 +221,7 @@ trait Routable
      *
      * @param string $regex The regex
      *
-     * @return $this
+     * @return static
      */
     public function setRegex(string $regex = null): self
     {
@@ -245,7 +245,7 @@ trait Routable
      *
      * @param array $params The params
      *
-     * @return $this
+     * @return static
      */
     public function setParams(array $params = null): self
     {
@@ -269,7 +269,7 @@ trait Routable
      *
      * @param array $segments The segments
      *
-     * @return $this
+     * @return static
      */
     public function setSegments(array $segments = null): self
     {
@@ -293,7 +293,7 @@ trait Routable
      *
      * @param array $middleware The middleware
      *
-     * @return $this
+     * @return static
      */
     public function setMiddleware(array $middleware = null): self
     {
@@ -317,7 +317,7 @@ trait Routable
      *
      * @param bool $dynamic Whether the route it dynamic
      *
-     * @return $this
+     * @return static
      */
     public function setDynamic(bool $dynamic = true): self
     {
@@ -341,7 +341,7 @@ trait Routable
      *
      * @param bool $secure Whether the route is secure
      *
-     * @return $this
+     * @return static
      */
     public function setSecure(bool $secure = true): self
     {
@@ -365,7 +365,7 @@ trait Routable
      *
      * @param bool $redirect
      *
-     * @return $this
+     * @return static
      */
     public function setRedirect(bool $redirect): self
     {

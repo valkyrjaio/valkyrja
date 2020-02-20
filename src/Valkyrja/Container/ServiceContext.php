@@ -34,7 +34,7 @@ interface ServiceContext extends Service
      *
      * @param string $contextClass The context class
      *
-     * @return $this
+     * @return static
      */
     public function setContextClass(string $contextClass): self;
 
@@ -50,7 +50,7 @@ interface ServiceContext extends Service
      *
      * @param string $contextProperty The context property
      *
-     * @return $this
+     * @return static
      */
     public function setContextProperty(string $contextProperty): self;
 
@@ -66,7 +66,7 @@ interface ServiceContext extends Service
      *
      * @param string $contextMethod The context method
      *
-     * @return $this
+     * @return static
      */
     public function setContextMethod(string $contextMethod): self;
 
@@ -82,7 +82,7 @@ interface ServiceContext extends Service
      *
      * @param string $contextFunction The context function
      *
-     * @return $this
+     * @return static
      */
     public function setContextFunction(string $contextFunction): self;
 
@@ -98,7 +98,7 @@ interface ServiceContext extends Service
      *
      * @param Closure $contextClosure The context closure.
      *
-     * @return $this
+     * @return static
      */
     public function setContextClosure(Closure $contextClosure): self;
 }

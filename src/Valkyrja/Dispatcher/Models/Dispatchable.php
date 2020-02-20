@@ -117,7 +117,7 @@ trait Dispatchable
      *
      * @param string $id The id
      *
-     * @return $this
+     * @return static
      */
     public function setId(string $id = null): self
     {
@@ -141,7 +141,7 @@ trait Dispatchable
      *
      * @param string $name The name
      *
-     * @return $this
+     * @return static
      */
     public function setName(string $name = null): self
     {
@@ -165,7 +165,7 @@ trait Dispatchable
      *
      * @param string $class The class
      *
-     * @return $this
+     * @return static
      */
     public function setClass(string $class = null): self
     {
@@ -189,7 +189,7 @@ trait Dispatchable
      *
      * @param string $property The property
      *
-     * @return $this
+     * @return static
      */
     public function setProperty(string $property = null): self
     {
@@ -213,7 +213,7 @@ trait Dispatchable
      *
      * @param string $method The method
      *
-     * @return $this
+     * @return static
      */
     public function setMethod(string $method = null): self
     {
@@ -237,7 +237,7 @@ trait Dispatchable
      *
      * @param bool $static Whether the member is static
      *
-     * @return $this
+     * @return static
      */
     public function setStatic(bool $static = true): self
     {
@@ -259,7 +259,7 @@ trait Dispatchable
      *
      * @param string $function The function
      *
-     * @return $this
+     * @return static
      */
     public function setFunction(string $function = null): self
     {
@@ -283,7 +283,7 @@ trait Dispatchable
      *
      * @param Closure $closure The closure
      *
-     * @return $this
+     * @return static
      */
     public function setClosure(Closure $closure = null): self
     {
@@ -307,7 +307,7 @@ trait Dispatchable
      *
      * @param array $matches The matches
      *
-     * @return $this
+     * @return static
      */
     public function setMatches(array $matches = null): self
     {
@@ -331,7 +331,7 @@ trait Dispatchable
      *
      * @param array $arguments The arguments
      *
-     * @return $this
+     * @return static
      */
     public function setArguments(array $arguments = null): self
     {
@@ -355,7 +355,7 @@ trait Dispatchable
      *
      * @param array $dependencies The dependencies
      *
-     * @return $this
+     * @return static
      */
     public function setDependencies(array $dependencies = null): self
     {

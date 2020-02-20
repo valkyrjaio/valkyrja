@@ -35,7 +35,7 @@ interface Dispatch extends Model
      *
      * @param string $id The id
      *
-     * @return $this
+     * @return static
      */
     public function setId(string $id = null): self;
 
@@ -51,7 +51,7 @@ interface Dispatch extends Model
      *
      * @param string $name The name
      *
-     * @return $this
+     * @return static
      */
     public function setName(string $name = null): self;
 
@@ -67,7 +67,7 @@ interface Dispatch extends Model
      *
      * @param string $class The class
      *
-     * @return $this
+     * @return static
      */
     public function setClass(string $class = null): self;
 
@@ -83,7 +83,7 @@ interface Dispatch extends Model
      *
      * @param string $property The property
      *
-     * @return $this
+     * @return static
      */
     public function setProperty(string $property = null): self;
 
@@ -99,7 +99,7 @@ interface Dispatch extends Model
      *
      * @param string $method The method
      *
-     * @return $this
+     * @return static
      */
     public function setMethod(string $method = null): self;
 
@@ -115,7 +115,7 @@ interface Dispatch extends Model
      *
      * @param bool $static Whether the member is static
      *
-     * @return $this
+     * @return static
      */
     public function setStatic(bool $static = true): self;
 
@@ -129,7 +129,7 @@ interface Dispatch extends Model
      *
      * @param string $function The function
      *
-     * @return $this
+     * @return static
      */
     public function setFunction(string $function = null): self;
 
@@ -145,7 +145,7 @@ interface Dispatch extends Model
      *
      * @param Closure $closure The closure
      *
-     * @return $this
+     * @return static
      */
     public function setClosure(Closure $closure = null): self;
 
@@ -161,7 +161,7 @@ interface Dispatch extends Model
      *
      * @param array $matches The matches
      *
-     * @return $this
+     * @return static
      */
     public function setMatches(array $matches = null): self;
 
@@ -177,7 +177,7 @@ interface Dispatch extends Model
      *
      * @param array $arguments The arguments
      *
-     * @return $this
+     * @return static
      */
     public function setArguments(array $arguments = null): self;
 
@@ -193,7 +193,7 @@ interface Dispatch extends Model
      *
      * @param array $dependencies The dependencies
      *
-     * @return $this
+     * @return static
      */
     public function setDependencies(array $dependencies = null): self;
 }

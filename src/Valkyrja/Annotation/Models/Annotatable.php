@@ -49,7 +49,7 @@ trait Annotatable
      *
      * @param string $annotationType The type
      *
-     * @return $this
+     * @return static
      */
     public function setAnnotationType(string $annotationType = null): self
     {
@@ -73,7 +73,7 @@ trait Annotatable
      *
      * @param array $annotationProperties The annotation arguments
      *
-     * @return $this
+     * @return static
      */
     public function setAnnotationProperties(array $annotationProperties = null): self
     {

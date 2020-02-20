@@ -34,7 +34,7 @@ interface Command extends Dispatch
      *
      * @param string $path The path
      *
-     * @return $this
+     * @return static
      */
     public function setPath(string $path): self;
 
@@ -50,7 +50,7 @@ interface Command extends Dispatch
      *
      * @param string $regex The regex
      *
-     * @return $this
+     * @return static
      */
     public function setRegex(string $regex = null): self;
 
@@ -66,7 +66,7 @@ interface Command extends Dispatch
      *
      * @param array $params The params
      *
-     * @return $this
+     * @return static
      */
     public function setParams(array $params = null): self;
 
@@ -82,7 +82,7 @@ interface Command extends Dispatch
      *
      * @param array $segments The segments
      *
-     * @return $this
+     * @return static
      */
     public function setSegments(array $segments = null): self;
 
@@ -98,7 +98,7 @@ interface Command extends Dispatch
      *
      * @param string $description The description
      *
-     * @return $this
+     * @return static
      */
     public function setDescription(string $description = null): self;
 }
