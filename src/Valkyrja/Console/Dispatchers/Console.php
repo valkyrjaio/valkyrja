@@ -13,11 +13,9 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Dispatchers;
 
-use ReflectionException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Console\Annotation\CommandAnnotations;
+use Valkyrja\Console\Cacheables\CacheableConsole;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Console as ConsoleContract;
 use Valkyrja\Console\Exceptions\CommandNotFound;
@@ -30,8 +28,6 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Support\Cacheables\Cacheable;
-use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -41,44 +37,15 @@ use Valkyrja\Support\Providers\Provides;
  */
 class Console implements ConsoleContract
 {
-    use ProvidersAwareTrait {
+    use CacheableConsole {
         register as traitRegister;
     }
     use Provides;
-    use Cacheable;
 
     /**
      * The run method to call within command handlers.
      */
     public const RUN_METHOD = 'run';
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
-     * The commands.
-     *
-     * @var Command[]
-     */
-    protected static array $commands = [];
-
-    /**
-     * The command paths.
-     *
-     * @var string[]
-     */
-    protected static array $paths = [];
-
-    /**
-     * The commands by name.
-     *
-     * @var string[]
-     */
-    protected static array $namedCommands = [];
 
     /**
      * Console constructor.
@@ -113,33 +80,6 @@ class Console implements ConsoleContract
         $dispatcher->verifyClosure($command);
 
         $this->addParsedCommand($command, $this->app->pathParser()->parse((string) $command->getPath()));
-    }
-
-    /**
-     * Add a parsed command.
-     *
-     * @param Command $command       The command
-     * @param array   $parsedCommand The parsed command
-     *
-     * @return void
-     */
-    protected function addParsedCommand(Command $command, array $parsedCommand): void
-    {
-        // Set the properties
-        $command->setRegex($parsedCommand['regex']);
-        $command->setParams($parsedCommand['params']);
-        $command->setSegments($parsedCommand['segments']);
-
-        // Set the command in the commands list
-        self::$commands[$command->getPath()] = $command;
-        // Set the command in the commands paths list
-        self::$paths[$command->getRegex()] = $command->getPath();
-
-        // If the command has a name
-        if (null !== $command->getName()) {
-            // Set in the named commands list to find it more easily later
-            self::$namedCommands[$command->getName()] = $command->getPath();
-        }
     }
 
     /**
@@ -364,135 +304,30 @@ class Console implements ConsoleContract
     }
 
     /**
-     * Get the application.
+     * Add a parsed command.
      *
-     * @return Application
-     */
-    protected function getApplication(): Application
-    {
-        return $this->app;
-    }
-
-    /**
-     * Get the config.
-     *
-     * @return array
-     */
-    protected function getConfig(): array
-    {
-        return $this->app->config(ConfigKeyPart::CONSOLE);
-    }
-
-    /**
-     * Set not cached.
+     * @param Command $command       The command
+     * @param array   $parsedCommand The parsed command
      *
      * @return void
      */
-    protected function setupNotCached(): void
+    protected function addParsedCommand(Command $command, array $parsedCommand): void
     {
-        self::$paths         = [];
-        self::$commands      = [];
-        self::$namedCommands = [];
+        // Set the properties
+        $command->setRegex($parsedCommand['regex']);
+        $command->setParams($parsedCommand['params']);
+        $command->setSegments($parsedCommand['segments']);
 
-        // Setup command providers
-        $this->setupCommandProviders();
-    }
+        // Set the command in the commands list
+        self::$commands[$command->getPath()] = $command;
+        // Set the command in the commands paths list
+        self::$paths[$command->getRegex()] = $command->getPath();
 
-    /**
-     * Setup the console from cache.
-     *
-     * @return void
-     */
-    protected function setupFromCache(): void
-    {
-        // Set the application console with said file
-        $cache = $this->app->config(ConfigKey::CACHE_CONSOLE)
-            ?? require $this->app->config(ConfigKey::CONSOLE_CACHE_FILE_PATH);
-
-        self::$commands      = unserialize(
-            base64_decode($cache[ConfigKeyPart::COMMANDS], true),
-            [
-                'allowed_classes' => [
-                    Command::class,
-                ],
-            ]
-        );
-        self::$paths         = $cache[ConfigKeyPart::PATHS];
-        self::$namedCommands = $cache[ConfigKeyPart::NAMED_COMMANDS];
-        self::$provided      = $cache[ConfigKeyPart::PROVIDED];
-    }
-
-    /**
-     * Setup command providers.
-     *
-     * @return void
-     */
-    protected function setupCommandProviders(): void
-    {
-        /** @var string[] $providers */
-        $providers = $this->app->config(ConfigKey::CONSOLE_PROVIDERS);
-
-        // Iterate through all the providers
-        foreach ($providers as $provider) {
-            $this->register($provider);
+        // If the command has a name
+        if (null !== $command->getName()) {
+            // Set in the named commands list to find it more easily later
+            self::$namedCommands[$command->getName()] = $command->getPath();
         }
-
-        // If this is not a dev environment
-        if (! $this->app->debug()) {
-            return;
-        }
-
-        /** @var string[] $devProviders */
-        $devProviders = $this->app->config(ConfigKey::CONSOLE_DEV_PROVIDERS);
-
-        // Iterate through all the providers
-        foreach ($devProviders as $provider) {
-            $this->register($provider);
-        }
-    }
-
-    /**
-     * Setup annotations.
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws ReflectionException
-     *
-     * @return void
-     */
-    protected function setupAnnotations(): void
-    {
-        /** @var CommandAnnotations $commandAnnotations */
-        $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
-
-        // Get all the annotated commands from the list of handlers
-        $commands = $commandAnnotations->getCommands(...$this->app->config(ConfigKey::CONSOLE_HANDLERS));
-
-        // Iterate through the commands
-        foreach ($commands as $command) {
-            // Set the service
-            $this->addCommand($command);
-        }
-    }
-
-    /**
-     * Get a cacheable representation of the commands.
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            ConfigKeyPart::COMMANDS       => base64_encode(serialize(self::$commands)),
-            ConfigKeyPart::PATHS          => self::$paths,
-            ConfigKeyPart::NAMED_COMMANDS => self::$namedCommands,
-            ConfigKeyPart::PROVIDED       => self::$provided,
-        ];
     }
 
     /**
