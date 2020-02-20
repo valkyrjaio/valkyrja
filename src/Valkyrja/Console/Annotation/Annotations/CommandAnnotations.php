@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
-use Valkyrja\Console\Annotation\CommandAnnotations;
+use Valkyrja\Console\Annotation\CommandAnnotations as CommandAnnotationsContract;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Console\Command as ConsoleCommand;
 
@@ -27,7 +27,7 @@ use Valkyrja\Console\Command as ConsoleCommand;
  *
  * @author Melech Mizrachi
  */
-class NativeCommandAnnotations extends Annotations implements CommandAnnotations
+class CommandAnnotations extends Annotations implements CommandAnnotationsContract
 {
     /**
      * Get the commands.
@@ -111,7 +111,7 @@ class NativeCommandAnnotations extends Annotations implements CommandAnnotations
     public static function provides(): array
     {
         return [
-            CommandAnnotations::class,
+            CommandAnnotationsContract::class,
         ];
     }
 
@@ -125,7 +125,7 @@ class NativeCommandAnnotations extends Annotations implements CommandAnnotations
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CommandAnnotations::class,
+            CommandAnnotationsContract::class,
             new static(
                 $app->container()->getSingleton(AnnotationsParser::class)
             )

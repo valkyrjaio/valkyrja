@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
-use Valkyrja\Event\Annotation\ListenerAnnotations;
+use Valkyrja\Event\Annotation\ListenerAnnotations as ListenerAnnotationsContract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Event\Listener as EventListener;
 
@@ -26,7 +26,7 @@ use Valkyrja\Event\Listener as EventListener;
  *
  * @author Melech Mizrachi
  */
-class NativeListenerAnnotations extends Annotations implements ListenerAnnotations
+class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
 {
     /**
      * Get the events.
@@ -102,7 +102,7 @@ class NativeListenerAnnotations extends Annotations implements ListenerAnnotatio
     public static function provides(): array
     {
         return [
-            ListenerAnnotations::class,
+            ListenerAnnotationsContract::class,
         ];
     }
 
@@ -116,7 +116,7 @@ class NativeListenerAnnotations extends Annotations implements ListenerAnnotatio
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            ListenerAnnotations::class,
+            ListenerAnnotationsContract::class,
             new static(
                 $app->container()->getSingleton(AnnotationsParser::class)
             )
