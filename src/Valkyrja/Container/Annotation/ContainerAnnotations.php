@@ -14,9 +14,6 @@ declare(strict_types = 1);
 namespace Valkyrja\Container\Annotation;
 
 use Valkyrja\Annotation\Annotations;
-use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Container\Annotation\Models\ServiceAlias;
-use Valkyrja\Container\Annotation\Models\ServiceContext;
 
 /**
  * Interface ContainerAnnotations.

@@ -19,8 +19,9 @@ use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\ContainerAnnotations as ContainerAnnotationsContract;
-use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Container\Annotation\Models\ServiceContext;
+use Valkyrja\Container\Annotation\Service;
+use Valkyrja\Container\Annotation\ServiceAlias;
+use Valkyrja\Container\Annotation\ServiceContext;
 use Valkyrja\Container\Models\Service as ServiceModel;
 use Valkyrja\Container\Models\ServiceContext as ContextServiceModel;
 use Valkyrja\Container\Service as ServiceContract;
@@ -75,7 +76,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws ReflectionException
      *
-     * @return ServiceContext[]
+     * @return ServiceAlias[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -89,7 +90,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws ReflectionException
      *
-     * @return ContextServiceContract[]
+     * @return ServiceContext[]
      */
     public function getContextServices(string ...$classes): array
     {
