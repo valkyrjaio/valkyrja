@@ -27,7 +27,7 @@ interface Model extends JsonSerializable
      *
      * @param array $properties
      *
-     * @return static
+     * @return $this
      */
     public static function fromArray(array $properties): self;
 
