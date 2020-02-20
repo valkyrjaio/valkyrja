@@ -15,8 +15,8 @@ namespace Valkyrja\Container\Annotations;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
-use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Service as ContainerService;
 use Valkyrja\Container\ServiceContext as ContainerContextService;
@@ -26,7 +26,7 @@ use Valkyrja\Container\ServiceContext as ContainerContextService;
  *
  * @author Melech Mizrachi
  */
-class NativeContainerAnnotations extends NativeAnnotations implements ContainerAnnotations
+class NativeContainerAnnotations extends Annotations implements ContainerAnnotations
 {
     /**
      * The services annotation type.

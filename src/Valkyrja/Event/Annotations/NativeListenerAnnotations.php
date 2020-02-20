@@ -14,8 +14,8 @@ declare(strict_types = 1);
 namespace Valkyrja\Event\Annotations;
 
 use ReflectionException;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
-use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application\Application;
 use Valkyrja\Event\Listener as EventListener;
 
@@ -24,7 +24,7 @@ use Valkyrja\Event\Listener as EventListener;
  *
  * @author Melech Mizrachi
  */
-class NativeListenerAnnotations extends NativeAnnotations implements ListenerAnnotations
+class NativeListenerAnnotations extends Annotations implements ListenerAnnotations
 {
     /**
      * Get the events.

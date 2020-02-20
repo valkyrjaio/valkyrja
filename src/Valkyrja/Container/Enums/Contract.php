@@ -53,7 +53,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Routing\Annotations\RouteAnnotations;
+use Valkyrja\Routing\Annotation\RouteAnnotations;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;

@@ -104,6 +104,20 @@ interface Router extends Cacheable
     public function getRoutes(): array;
 
     /**
+     * Get the route collection.
+     *
+     * @return RouteCollection
+     */
+    public function collection(): RouteCollection;
+
+    /**
+     * Get the route matcher.
+     *
+     * @return RouteMatcher
+     */
+    public function matcher(): RouteMatcher;
+
+    /**
      * Get a route by name.
      *
      * @param string $name The name of the route to get
@@ -137,7 +151,7 @@ interface Router extends Cacheable
      *
      * @param Request $request The request
      *
-     * @return null|Route
+     * @return Route|null
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
@@ -149,7 +163,7 @@ interface Router extends Cacheable
      * @param string $path   The path
      * @param string $method [optional] The method type of get
      *
-     * @return null|Route
+     * @return Route|null
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */

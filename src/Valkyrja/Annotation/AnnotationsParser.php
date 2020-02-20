@@ -47,7 +47,7 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
      *
      * @return array
      */
-    public function getArguments(string $arguments = null): ?array;
+    public function getPropertiesAsArray(string $arguments = null): ?array;
 
     /**
      * Get the annotations regex.

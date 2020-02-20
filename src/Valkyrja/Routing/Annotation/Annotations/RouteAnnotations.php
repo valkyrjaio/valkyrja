@@ -11,13 +11,15 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotations;
+namespace Valkyrja\Routing\Annotation\Annotations;
 
 use InvalidArgumentException;
 use ReflectionException;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
-use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application\Application;
+use Valkyrja\Routing\Annotation\Models\Route;
+use Valkyrja\Routing\Annotation\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Route as RouterRoute;
 
@@ -26,7 +28,7 @@ use Valkyrja\Routing\Route as RouterRoute;
  *
  * @author Melech Mizrachi
  */
-class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotations
+class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {
     /**
      * The route annotation type.
@@ -268,7 +270,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
     public static function provides(): array
     {
         return [
-            RouteAnnotations::class,
+            RouteAnnotationsContract::class,
         ];
     }
 
@@ -282,7 +284,7 @@ class NativeRouteAnnotations extends NativeAnnotations implements RouteAnnotatio
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            RouteAnnotations::class,
+            RouteAnnotationsContract::class,
             new static(
                 $app->container()->getSingleton(AnnotationsParser::class)
             )

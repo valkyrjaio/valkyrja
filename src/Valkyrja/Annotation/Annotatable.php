@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Annotation;
 
 /**
- * Class Annotatable.
+ * Trait Annotatable.
  *
  * @author Melech Mizrachi
  */
@@ -98,11 +98,11 @@ trait Annotatable
     protected ?array $arguments = null;
 
     /**
-     * The arguments.
+     * The annotation properties (within parenthesis).
      *
      * @var array|null
      */
-    protected ?array $annotationArguments = null;
+    protected ?array $annotationProperties = null;
 
     /**
      * Get the type.
@@ -345,24 +345,24 @@ trait Annotatable
     }
 
     /**
-     * Get the annotation arguments (within parentheses).
+     * Get the annotation properties (within parentheses).
      *
      * @return array
      */
-    public function getAnnotationArguments(): ?array
+    public function getAnnotationProperties(): ?array
     {
-        return $this->annotationArguments;
+        return $this->annotationProperties;
     }
 
     /**
-     * Set the annotation arguments (within parentheses).
+     * Set the annotation properties (within parentheses).
      *
-     * @param array $annotationArguments The annotation arguments
+     * @param array $annotationProperties The annotation arguments
      *
      * @return void
      */
-    public function setAnnotationArguments(array $annotationArguments = null): void
+    public function setAnnotationProperties(array $annotationProperties = null): void
     {
-        $this->annotationArguments = $annotationArguments;
+        $this->annotationProperties = $annotationProperties;
     }
 }

@@ -15,8 +15,8 @@ namespace Valkyrja\Console\Annotations;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
-use Valkyrja\Annotation\NativeAnnotations;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Command as ConsoleCommand;
 
@@ -25,7 +25,7 @@ use Valkyrja\Console\Command as ConsoleCommand;
  *
  * @author Melech Mizrachi
  */
-class NativeCommandAnnotations extends NativeAnnotations implements CommandAnnotations
+class NativeCommandAnnotations extends Annotations implements CommandAnnotations
 {
     /**
      * Get the commands.

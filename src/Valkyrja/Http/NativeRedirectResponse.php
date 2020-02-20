@@ -192,7 +192,7 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @throws InvalidArgumentException
      *

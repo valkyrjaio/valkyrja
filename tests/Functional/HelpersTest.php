@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotation\NativeAnnotations;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Input\NativeInput;
@@ -31,7 +31,7 @@ use Valkyrja\Http\NativeRequest;
 use Valkyrja\Http\NativeResponse;
 use Valkyrja\Http\NativeResponseBuilder;
 use Valkyrja\Logger\MonologLogger;
-use Valkyrja\Routing\NativeRouter;
+use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\NativeSession;
 use Valkyrja\Support\Directory;
@@ -136,7 +136,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotations() instanceof NativeAnnotations);
+        $this->assertEquals(true, annotations() instanceof Annotations);
     }
 
     /**
@@ -236,7 +236,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, router() instanceof NativeRouter);
+        $this->assertEquals(true, router() instanceof Router);
     }
 
     /**

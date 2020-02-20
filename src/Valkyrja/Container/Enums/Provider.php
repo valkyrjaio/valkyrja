@@ -13,8 +13,8 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Container\Enums;
 
-use Valkyrja\Annotation\NativeAnnotations;
-use Valkyrja\Annotation\NativeAnnotationsParser;
+use Valkyrja\Annotation\Annotations\Annotations;
+use Valkyrja\Annotation\Parsers\AnnotationsParser;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\GuzzleClient;
 use Valkyrja\Console\Annotations\NativeCommandAnnotations;
@@ -52,8 +52,8 @@ use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\Path\NativePathGenerator;
 use Valkyrja\Path\NativePathParser;
-use Valkyrja\Routing\Annotations\NativeRouteAnnotations;
-use Valkyrja\Routing\NativeRouter;
+use Valkyrja\Routing\Annotation\Annotations\RouteAnnotations;
+use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Session\NativeSession;
 use Valkyrja\View\PhpView;
 
@@ -65,8 +65,8 @@ use Valkyrja\View\PhpView;
 final class Provider extends Enum
 {
     public const APP                   = Valkyrja::class;
-    public const ANNOTATIONS           = NativeAnnotations::class;
-    public const ANNOTATIONS_PARSER    = NativeAnnotationsParser::class;
+    public const ANNOTATIONS           = Annotations::class;
+    public const ANNOTATIONS_PARSER    = AnnotationsParser::class;
     public const COMMAND_ANNOTATIONS   = NativeCommandAnnotations::class;
     public const CONSOLE               = NativeConsole::class;
     public const CONSOLE_KERNEL        = NativeConsoleKernel::class;
@@ -88,8 +88,8 @@ final class Provider extends Enum
     public const JSON_RESPONSE         = NativeJsonResponse::class;
     public const REDIRECT_RESPONSE     = NativeRedirectResponse::class;
     public const RESPONSE_BUILDER      = NativeResponseBuilder::class;
-    public const ROUTER                = NativeRouter::class;
-    public const ROUTE_ANNOTATIONS     = NativeRouteAnnotations::class;
+    public const ROUTER                = Router::class;
+    public const ROUTE_ANNOTATIONS     = RouteAnnotations::class;
     public const SESSION               = NativeSession::class;
     public const VIEW                  = PhpView::class;
     public const CLIENT                = GuzzleClient::class;

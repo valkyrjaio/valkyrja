@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use TypeError;
-use Valkyrja\Annotation\NativeAnnotations;
+use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCacheCommand;
@@ -38,7 +38,7 @@ use Valkyrja\Http\NativeResponseBuilder;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Path\NativePathGenerator;
 use Valkyrja\Path\NativePathParser;
-use Valkyrja\Routing\NativeRouter;
+use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Session\NativeSession;
 use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
@@ -254,7 +254,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, $this->app->annotations() instanceof NativeAnnotations);
+        $this->assertEquals(true, $this->app->annotations() instanceof Annotations);
     }
 
     /**
@@ -354,7 +354,7 @@ class ApplicationTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, $this->app->router() instanceof NativeRouter);
+        $this->assertEquals(true, $this->app->router() instanceof Router);
     }
 
     /**

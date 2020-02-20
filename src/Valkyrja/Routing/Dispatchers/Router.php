@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing;
+namespace Valkyrja\Routing\Dispatchers;
 
 use Exception;
 use InvalidArgumentException;
@@ -26,8 +26,13 @@ use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Cacheables\CacheableRouter;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
+use Valkyrja\Routing\Route;
+use Valkyrja\Routing\RouteCollection;
+use Valkyrja\Routing\RouteMatcher;
+use Valkyrja\Routing\Router as RouterContract;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
@@ -36,7 +41,7 @@ use Valkyrja\View\View;
  *
  * @author Melech Mizrachi
  */
-class NativeRouter implements Router
+class Router implements RouterContract
 {
     use Provides;
     use CacheableRouter;
@@ -203,6 +208,26 @@ class NativeRouter implements Router
     }
 
     /**
+     * Get the route collection.
+     *
+     * @return RouteCollection
+     */
+    public function collection(): RouteCollection
+    {
+        return self::$collection;
+    }
+
+    /**
+     * Get the route matcher.
+     *
+     * @return RouteMatcher
+     */
+    public function matcher(): RouteMatcher
+    {
+        return self::$collection->matcher();
+    }
+
+    /**
      * Get a route by name.
      *
      * @param string $name The name of the route to get
@@ -218,7 +243,7 @@ class NativeRouter implements Router
             throw new InvalidRouteName($name);
         }
 
-        return self::$collection->namedRoute($name);
+        return self::$collection->getNamed($name);
     }
 
     /**
@@ -230,7 +255,7 @@ class NativeRouter implements Router
      */
     public function routeIsset(string $name): bool
     {
-        return self::$collection->issetNamedRoute($name);
+        return self::$collection->issetNamed($name);
     }
 
     /**
@@ -273,7 +298,7 @@ class NativeRouter implements Router
      *
      * @throws InvalidArgumentException
      *
-     * @return null|Route
+     * @return Route|null
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
@@ -294,21 +319,13 @@ class NativeRouter implements Router
      *
      * @throws InvalidArgumentException
      *
-     * @return null|Route
+     * @return Route|null
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
     public function matchRoute(string $path, string $method = null): ?Route
     {
-        // Validate the path
-        $path   = $this->validatePath($path);
-        $method = $method ?? RequestMethod::GET;
-
-        if (null !== $route = $this->matchStaticRoute($path, $method)) {
-            return $route;
-        }
-
-        return $this->matchDynamicRoute($path, $method);
+        return self::$collection->matcher()->match($path, $method);
     }
 
     /**
@@ -364,13 +381,13 @@ class NativeRouter implements Router
         // If the route is a redirect and a redirect route is set
         if ($route->isRedirect() && $route->getRedirectPath()) {
             // Throw the redirect to the redirect path
-            return $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode());
+            $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode())->throw();
         }
 
         // If the route is secure and the current request is not secure
         if ($route->isSecure() && ! $request->isSecure()) {
             // Throw the redirect to the secure path
-            return $this->app->redirect()->secure($request->getPath());
+            $this->app->redirect()->secure($request->getPath())->throw();
         }
 
         // Dispatch the route's before request handled middleware
@@ -401,18 +418,6 @@ class NativeRouter implements Router
         $this->routeResponseMiddleware($request, $response, $route);
 
         return $response;
-    }
-
-    /**
-     * Validate a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validatePath(string $path): string
-    {
-        return '/' . trim($path, '/');
     }
 
     /**
@@ -447,124 +452,6 @@ class NativeRouter implements Router
         }
 
         return $path;
-    }
-
-    /**
-     * Try to match a static route by path and method.
-     *
-     * @param string $path   The path
-     * @param string $method The method
-     *
-     * @return null|Route
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    protected function matchStaticRoute(string $path, string $method): ?Route
-    {
-        $route = null;
-
-        // Let's check if the route is set in the static routes
-        if (self::$collection->issetStaticRoute($method, $path)) {
-            $route = $this->getMatchedStaticRoute($path, $method);
-        }
-
-        if (null !== $route && $this->isValidMethod($route, $method)) {
-            return $route;
-        }
-
-        return null;
-    }
-
-    /**
-     * Try to match a dynamic route by path and method.
-     *
-     * @param string $path   The path
-     * @param string $method The method
-     *
-     * @return null|Route
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    protected function matchDynamicRoute(string $path, string $method): ?Route
-    {
-        // The route to return (null by default)
-        $route = null;
-
-        // The dynamic routes
-        // Attempt to find a match using dynamic routes that are set
-        foreach (self::$collection->getDynamicRoutes($method) as $regex => $dynamicRoute) {
-            // If the preg match is successful, we've found our route!
-            /* @var array $matches */
-            if (preg_match($regex, $path, $matches)) {
-                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches, $method);
-
-                break;
-            }
-        }
-
-        // If the route was found and the method is valid
-        if (null !== $route && $this->isValidMethod($route, $method)) {
-            // Return the route
-            return $route;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param Route  $route  The route
-     * @param string $method The method
-     *
-     * @return bool
-     */
-    protected function isValidMethod(Route $route, string $method): bool
-    {
-        return in_array($method, $route->getRequestMethods(), true);
-    }
-
-    /**
-     * Get a matched static route.
-     *
-     * @param string $path   The path
-     * @param string $method The method
-     *
-     * @return Route
-     */
-    protected function getMatchedStaticRoute(string $path, string $method): Route
-    {
-        return clone self::$collection->staticRoute($method, $path);
-    }
-
-    /**
-     * Get a matched dynamic route.
-     *
-     * @param string $path    The path
-     * @param array  $matches The regex matches
-     * @param string $method  The request method
-     *
-     * @return Route
-     */
-    protected function getMatchedDynamicRoute(string $path, array $matches, string $method): Route
-    {
-        // Clone the route to avoid changing the one set in the master array
-        $dynamicRoute = clone self::$collection->dynamicRoute($method, $path);
-        // The first match is the path itself
-        unset($matches[0]);
-
-        // Iterate through the matches
-        foreach ($matches as $key => $match) {
-            // If there is no match (middle of regex optional group)
-            if (! $match) {
-                // Set the value to null so the controller's action
-                // can use the default it sets
-                $matches[$key] = null;
-            }
-        }
-
-        // Set the matches
-        $dynamicRoute->setMatches($matches);
-
-        return $dynamicRoute;
     }
 
     /**
@@ -654,7 +541,7 @@ class NativeRouter implements Router
     public static function provides(): array
     {
         return [
-            Router::class,
+            RouterContract::class,
         ];
     }
 
@@ -668,7 +555,7 @@ class NativeRouter implements Router
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            Router::class,
+            RouterContract::class,
             new static($app)
         );
 

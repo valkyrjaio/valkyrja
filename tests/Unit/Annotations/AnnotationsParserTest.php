@@ -14,7 +14,7 @@ namespace Valkyrja\Tests\Unit\Annotations;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\NativeAnnotationsParser;
+use Valkyrja\Annotation\Parsers\AnnotationsParser;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotations\Command;
 use Valkyrja\Container\Annotations\Service;
@@ -22,7 +22,7 @@ use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotations\Listener;
-use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Routing\Annotation\Models\Route;
 
 /**
  * Test the AnnotationsParser class.
@@ -52,7 +52,7 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Annotation\NativeAnnotationsParser
+     * @var \Valkyrja\Annotation\Parsers\AnnotationsParser
      */
     protected $class;
 
@@ -72,7 +72,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new NativeAnnotationsParser(new Valkyrja());
+        $this->class = new AnnotationsParser(new Valkyrja());
     }
 
     /**
@@ -115,7 +115,7 @@ class AnnotationsParserTest extends TestCase
             . '"property" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::property", '
             . '"method" = "Valkyrja\\\\Tests\\\\Unit\\\\Annotations\\\\AnnotationsParserTest::staticMethod"';
 
-        $this->assertCount(7, $this->class->getArguments($arguments));
+        $this->assertCount(7, $this->class->getPropertiesAsArray($arguments));
     }
 
     /**
@@ -125,7 +125,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsNull(): void
     {
-        $this->assertEquals(null, $this->class->getArguments(null));
+        $this->assertEquals(null, $this->class->getPropertiesAsArray(null));
     }
 
     /**
@@ -136,10 +136,10 @@ class AnnotationsParserTest extends TestCase
     public function testGetRegex(): void
     {
         $regex = '/'
-            . NativeAnnotationsParser::ANNOTATION_SYMBOL
+            . AnnotationsParser::ANNOTATION_SYMBOL
             . '([a-zA-Z]*)'
-            . '(?:' . NativeAnnotationsParser::CLASS_REGEX . ')?'
-            . NativeAnnotationsParser::LINE_REGEX
+            . '(?:' . AnnotationsParser::CLASS_REGEX . ')?'
+            . AnnotationsParser::LINE_REGEX
             . '/x';
 
         $this->assertEquals($regex, $this->class->getRegex());
@@ -152,7 +152,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetArgumentsRegex(): void
     {
-        $regex = '/' . NativeAnnotationsParser::ARGUMENTS_REGEX . '/x';
+        $regex = '/' . AnnotationsParser::ARGUMENTS_REGEX . '/x';
 
         $this->assertEquals($regex, $this->class->getArgumentsRegex());
     }

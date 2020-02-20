@@ -130,7 +130,7 @@ class HttpException extends RuntimeException
     /**
      * Get the response for this exception.
      *
-     * @return null|Response
+     * @return Response|null
      */
     public function getResponse(): ?Response
     {

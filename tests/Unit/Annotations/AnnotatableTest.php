@@ -505,7 +505,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetAnnotationArgumentsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getAnnotationArguments());
+        $this->assertEquals(null, $this->class->getAnnotationProperties());
     }
 
     /**
@@ -515,9 +515,9 @@ class AnnotatableTest extends TestCase
      */
     public function testGetAnnotationArguments(): void
     {
-        $this->class->setAnnotationArguments([$this->value]);
+        $this->class->setAnnotationProperties([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getAnnotationArguments());
+        $this->assertEquals([$this->value], $this->class->getAnnotationProperties());
     }
 
     /**
@@ -527,7 +527,7 @@ class AnnotatableTest extends TestCase
      */
     public function testSetAnnotationArgumentsNull(): void
     {
-        $this->assertEquals(null, $this->class->setAnnotationArguments(null) ?? null);
+        $this->assertEquals(null, $this->class->setAnnotationProperties(null) ?? null);
     }
 
     /**
@@ -537,6 +537,6 @@ class AnnotatableTest extends TestCase
      */
     public function testSetAnnotationArguments(): void
     {
-        $this->assertEquals(null, $this->class->setAnnotationArguments([$this->value]) ?? null);
+        $this->assertEquals(null, $this->class->setAnnotationProperties([$this->value]) ?? null);
     }
 }

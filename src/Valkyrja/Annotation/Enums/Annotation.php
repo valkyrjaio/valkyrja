@@ -19,7 +19,7 @@ use Valkyrja\Container\Annotations\ServiceAlias;
 use Valkyrja\Container\Annotations\ServiceContext;
 use Valkyrja\Enum\Enum;
 use Valkyrja\Event\Annotations\Listener;
-use Valkyrja\Routing\Annotations\Route;
+use Valkyrja\Routing\Annotation\Models\Route;
 
 /**
  * Enum Annotation.

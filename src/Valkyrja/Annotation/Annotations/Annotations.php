@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation;
+namespace Valkyrja\Annotation\Annotations;
 
 use ReflectionClass;
 use ReflectionException;
@@ -20,6 +20,9 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
+use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Annotations as AnnotationsContract;
+use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
@@ -29,7 +32,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class NativeAnnotations implements Annotations
+class Annotations implements AnnotationsContract
 {
     use Provides;
 
@@ -584,7 +587,7 @@ class NativeAnnotations implements Annotations
     public static function provides(): array
     {
         return [
-            Annotations::class,
+            AnnotationsContract::class,
         ];
     }
 
@@ -598,7 +601,7 @@ class NativeAnnotations implements Annotations
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            Annotations::class,
+            AnnotationsContract::class,
             new static(
                 $app->container()->getSingleton(
                     Contract::ANNOTATIONS_PARSER
