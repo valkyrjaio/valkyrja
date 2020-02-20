@@ -48,7 +48,7 @@ use Valkyrja\Model\NativeModel;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\PDOEntityManager;
 use Valkyrja\ORM\Queries\PDOQuery;
-use Valkyrja\ORM\QueryBuilder\SqlQueryBuilder;
+use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\Path\NativePathGenerator;
 use Valkyrja\Path\NativePathParser;

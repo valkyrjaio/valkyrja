@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\QueryBuilder;
+namespace Valkyrja\ORM\QueryBuilders;
 
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
