@@ -59,13 +59,7 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function setForeground(FormatForeground $foreground = null): void
     {
-        if (null === $foreground) {
-            $this->foreground = null;
-
-            return;
-        }
-
-        $this->foreground = $foreground->getValue();
+        $this->foreground = $foreground ? (int) $foreground->getValue() : null;
     }
 
     /**
@@ -77,13 +71,7 @@ class OutputFormatter implements OutputFormatterContract
      */
     public function setBackground(FormatBackground $background = null): void
     {
-        if (null === $background) {
-            $this->background = null;
-
-            return;
-        }
-
-        $this->background = $background->getValue();
+        $this->background = $background ? (int) $background->getValue() : null;
     }
 
     /**
