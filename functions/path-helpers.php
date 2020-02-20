@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Support\Directory;
+use Valkyrja\Support\Directory as ValkyrjaDirectory;
 
 if (! function_exists('basePath')) {
     /**
@@ -23,7 +23,7 @@ if (! function_exists('basePath')) {
      */
     function basePath(string $path = null): string
     {
-        return Directory::basePath($path);
+        return ValkyrjaDirectory::basePath($path);
     }
 }
 
@@ -37,7 +37,7 @@ if (! function_exists('appPath')) {
      */
     function appPath(string $path = null): string
     {
-        return Directory::appPath($path);
+        return ValkyrjaDirectory::appPath($path);
     }
 }
 
@@ -51,7 +51,7 @@ if (! function_exists('bootstrapPath')) {
      */
     function bootstrapPath(string $path = null): string
     {
-        return Directory::bootstrapPath($path);
+        return ValkyrjaDirectory::bootstrapPath($path);
     }
 }
 
@@ -65,7 +65,7 @@ if (! function_exists('envPath')) {
      */
     function envPath(string $path = null): string
     {
-        return Directory::envPath($path);
+        return ValkyrjaDirectory::envPath($path);
     }
 }
 
@@ -79,7 +79,7 @@ if (! function_exists('configPath')) {
      */
     function configPath(string $path = null): string
     {
-        return Directory::configPath($path);
+        return ValkyrjaDirectory::configPath($path);
     }
 }
 
@@ -93,7 +93,7 @@ if (! function_exists('commandsPath')) {
      */
     function commandsPath(string $path = null): string
     {
-        return Directory::commandsPath($path);
+        return ValkyrjaDirectory::commandsPath($path);
     }
 }
 
@@ -107,7 +107,7 @@ if (! function_exists('eventsPath')) {
      */
     function eventsPath(string $path = null): string
     {
-        return Directory::eventsPath($path);
+        return ValkyrjaDirectory::eventsPath($path);
     }
 }
 
@@ -121,7 +121,7 @@ if (! function_exists('routesPath')) {
      */
     function routesPath(string $path = null): string
     {
-        return Directory::routesPath($path);
+        return ValkyrjaDirectory::routesPath($path);
     }
 }
 
@@ -135,7 +135,7 @@ if (! function_exists('servicesPath')) {
      */
     function servicesPath(string $path = null): string
     {
-        return Directory::servicesPath($path);
+        return ValkyrjaDirectory::servicesPath($path);
     }
 }
 
@@ -149,7 +149,7 @@ if (! function_exists('publicPath')) {
      */
     function publicPath(string $path = null): string
     {
-        return Directory::publicPath($path);
+        return ValkyrjaDirectory::publicPath($path);
     }
 }
 
@@ -163,7 +163,7 @@ if (! function_exists('resourcesPath')) {
      */
     function resourcesPath(string $path = null): string
     {
-        return Directory::resourcesPath($path);
+        return ValkyrjaDirectory::resourcesPath($path);
     }
 }
 
@@ -177,7 +177,7 @@ if (! function_exists('storagePath')) {
      */
     function storagePath(string $path = null): string
     {
-        return Directory::storagePath($path);
+        return ValkyrjaDirectory::storagePath($path);
     }
 }
 
@@ -191,7 +191,7 @@ if (! function_exists('frameworkStoragePath')) {
      */
     function frameworkStoragePath(string $path = null): string
     {
-        return Directory::frameworkStoragePath($path);
+        return ValkyrjaDirectory::frameworkStoragePath($path);
     }
 }
 
@@ -205,7 +205,7 @@ if (! function_exists('cachePath')) {
      */
     function cachePath(string $path = null): string
     {
-        return Directory::cachePath($path);
+        return ValkyrjaDirectory::cachePath($path);
     }
 }
 
@@ -219,7 +219,7 @@ if (! function_exists('testsPath')) {
      */
     function testsPath(string $path = null): string
     {
-        return Directory::testsPath($path);
+        return ValkyrjaDirectory::testsPath($path);
     }
 }
 
@@ -233,6 +233,6 @@ if (! function_exists('vendorPath')) {
      */
     function vendorPath(string $path = null): string
     {
-        return Directory::vendorPath($path);
+        return ValkyrjaDirectory::vendorPath($path);
     }
 }
