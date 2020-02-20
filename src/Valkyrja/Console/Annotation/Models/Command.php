@@ -21,6 +21,8 @@ use Valkyrja\Console\Models\Commandable;
  * Class Command.
  *
  * @author Melech Mizrachi
+ *
+ * @method static fromArray(array $properties)
  */
 class Command extends Annotation implements CommandContract
 {
