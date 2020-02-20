@@ -15,7 +15,7 @@ namespace Valkyrja\Console\Outputs;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Console\OutputFormatter;
+use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Console\StreamOutput as StreamOutputContract;
 
 /**
@@ -35,28 +35,30 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * Output constructor.
      *
-     * @param OutputFormatter $formatter The output formatter
-     * @param resource        $stream    The resource to use as a stream
+     * @param OutputFormatterContract $formatter The output formatter
+     * @param resource                $stream    The resource to use as a stream
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function __construct(OutputFormatter $formatter, $stream = null)
+    public function __construct(OutputFormatterContract $formatter, $stream = null)
     {
         parent::__construct($formatter);
 
-        // Set the stream
-        $this->stream = $stream;
+        // Set the resource
+        $resource = $stream ?? fopen('php://stdout', 'wb');
 
-        // If there is no stream and the stdout failed
-        if (! $this->stream = $this->stream ?? fopen('php://stdout', 'wb')) {
+        // If there is no stream or the stdout failed
+        if (! $resource) {
             throw new RuntimeException('Unable to create stdout.');
         }
 
-        // If the stream isn't a valid resource or not a stream resource
-        if (! is_resource($this->stream) || 'stream' !== get_resource_type($this->stream)) {
+        // If the resource isn't a valid resource or not a stream
+        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
             throw new InvalidArgumentException('Stream is not a valid stream resource.');
         }
+
+        $this->stream = $resource;
     }
 
     /**
