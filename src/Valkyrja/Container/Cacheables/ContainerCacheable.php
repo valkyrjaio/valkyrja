@@ -11,7 +11,7 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Dispatchers;
+namespace Valkyrja\Container\Cacheables;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;

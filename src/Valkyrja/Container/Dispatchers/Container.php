@@ -14,6 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Container\Dispatchers;
 
 use Valkyrja\Application\Application;
+use Valkyrja\Container\Cacheables\ContainerCacheable;
 use Valkyrja\Container\Container as ContainerContract;
 use Valkyrja\Container\Events\ServiceMade;
 use Valkyrja\Container\Events\ServiceMadeSingleton;
