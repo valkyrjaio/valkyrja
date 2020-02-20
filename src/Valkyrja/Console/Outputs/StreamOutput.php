@@ -48,11 +48,6 @@ class StreamOutput extends Output implements StreamOutputContract
         // Set the resource
         $resource = $stream ?? fopen('php://stdout', 'wb');
 
-        // If there is no stream or the stdout failed
-        if (! $resource) {
-            throw new RuntimeException('Unable to create stdout.');
-        }
-
         // If the resource isn't a valid resource or not a stream
         if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
             throw new InvalidArgumentException('Stream is not a valid stream resource.');
