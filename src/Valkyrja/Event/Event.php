@@ -17,8 +17,6 @@ namespace Valkyrja\Event;
  * Interface Event.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface Event
 {

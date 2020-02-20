@@ -19,8 +19,6 @@ use Valkyrja\ORM\Entity as EntityContract;
  * Class NativeModel.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 class Entity implements EntityContract
 {

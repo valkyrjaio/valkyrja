@@ -20,8 +20,6 @@ use Valkyrja\Container\ServiceContext as ServiceContextModel;
  * Interface ServiceContext.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface ServiceContext extends Annotation, ServiceContextModel
 {

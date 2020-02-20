@@ -20,8 +20,6 @@ use Valkyrja\Event\Listener as ListenerModel;
  * Interface Listener.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface Listener extends Annotation, ListenerModel
 {

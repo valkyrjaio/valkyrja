@@ -20,8 +20,6 @@ use Valkyrja\Console\Command as CommandModel;
  * Interface Command.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface Command extends Annotation, CommandModel
 {

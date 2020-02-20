@@ -21,8 +21,10 @@ use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\ContainerAnnotations as ContainerAnnotationsContract;
 use Valkyrja\Container\Annotation\Models\Service;
 use Valkyrja\Container\Annotation\Models\ServiceContext;
-use Valkyrja\Container\Service as ContainerService;
-use Valkyrja\Container\ServiceContext as ContainerContextService;
+use Valkyrja\Container\Models\Service as ServiceModel;
+use Valkyrja\Container\Models\ServiceContext as ContextServiceModel;
+use Valkyrja\Container\Service as ServiceContract;
+use Valkyrja\Container\ServiceContext as ContextServiceContract;
 
 /**
  * Class ContainerAnnotations.
@@ -87,7 +89,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws ReflectionException
      *
-     * @return ContainerContextService[]
+     * @return ContextServiceContract[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -167,11 +169,11 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param Service $service The service annotation
      *
-     * @return ContainerService
+     * @return ServiceContract
      */
-    protected function getServiceFromAnnotation(Service $service): ContainerService
+    protected function getServiceFromAnnotation(Service $service): ServiceContract
     {
-        return ContainerService::fromArray($service->asArray());
+        return ServiceModel::fromArray($service->asArray());
     }
 
     /**
@@ -179,11 +181,11 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @param ServiceContext $service The service context annotation
      *
-     * @return ContainerContextService
+     * @return ContextServiceContract
      */
-    protected function getServiceContextFromAnnotation(ServiceContext $service): ContainerContextService
+    protected function getServiceContextFromAnnotation(ServiceContext $service): ContextServiceContract
     {
-        return ContainerContextService::fromArray($service->asArray());
+        return ContextServiceModel::fromArray($service->asArray());
     }
 
     /**

@@ -21,7 +21,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Routing\Annotation\Models\Route;
 use Valkyrja\Routing\Annotation\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\Models\Route as RouterRoute;
+use Valkyrja\Routing\Models\Route as RouteModel;
+use Valkyrja\Routing\Route as RouteContract;
 
 /**
  * Class RouteAnnotations.
@@ -46,12 +47,12 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      * @throws InvalidRoutePath
      * @throws InvalidArgumentException
      *
-     * @return RouterRoute[]
+     * @return RouteContract[]
      */
     public function getRoutes(string ...$classes): array
     {
         $routes = $this->getClassRoutes($classes);
-        /** @var RouterRoute[] $finalRoutes */
+        /** @var RouteContract[] $finalRoutes */
         $finalRoutes = [];
 
         // Iterate through all the routes
@@ -122,11 +123,11 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @throws ReflectionException
      *
-     * @return RouterRoute[]
+     * @return RouteContract[]
      */
     protected function getClassRoutes(array $classes): array
     {
-        /** @var RouterRoute[] $routes */
+        /** @var RouteContract[] $routes */
         $routes = [];
 
         // Iterate through all the classes
@@ -230,11 +231,11 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      *
      * @throws InvalidArgumentException
      *
-     * @return RouterRoute
+     * @return RouteContract
      */
-    protected function getRouteFromAnnotation(Route $route): RouterRoute
+    protected function getRouteFromAnnotation(Route $route): RouteContract
     {
-        return RouterRoute::fromArray($route->asArray());
+        return RouteModel::fromArray($route->asArray());
     }
 
     /**

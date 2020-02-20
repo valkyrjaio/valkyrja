@@ -19,8 +19,6 @@ use Valkyrja\Dispatcher\Dispatch;
  * Interface Command.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface Command extends Dispatch
 {

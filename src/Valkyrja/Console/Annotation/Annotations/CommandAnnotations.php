@@ -20,7 +20,8 @@ use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Annotation\CommandAnnotations as CommandAnnotationsContract;
 use Valkyrja\Console\Annotation\Models\Command;
-use Valkyrja\Console\Command as ConsoleCommand;
+use Valkyrja\Console\Command as CommandContract;
+use Valkyrja\Console\Models\Command as CommandModel;
 
 /**
  * Class CommandAnnotations.
@@ -36,7 +37,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
      *
      * @throws ReflectionException
      *
-     * @return ConsoleCommand[]
+     * @return CommandContract[]
      */
     public function getCommands(string ...$classes): array
     {
@@ -53,7 +54,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
             }
 
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Console\Annotation\Models\Command $annotation */
+            /** @var Command $annotation */
             foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
@@ -96,11 +97,11 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
      *
      * @param Command $command The command annotation
      *
-     * @return ConsoleCommand
+     * @return CommandContract
      */
-    protected function getCommandFromAnnotation(Command $command): ConsoleCommand
+    protected function getCommandFromAnnotation(Command $command): CommandContract
     {
-        return ConsoleCommand::fromArray($command->asArray());
+        return CommandModel::fromArray($command->asArray());
     }
 
     /**

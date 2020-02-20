@@ -20,8 +20,6 @@ use Valkyrja\Dispatcher\Models\Dispatchable;
  * Class Command.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 class Command implements CommandContract
 {

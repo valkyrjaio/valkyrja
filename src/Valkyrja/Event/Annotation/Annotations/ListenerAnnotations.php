@@ -19,7 +19,8 @@ use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Event\Annotation\ListenerAnnotations as ListenerAnnotationsContract;
 use Valkyrja\Event\Annotation\Models\Listener;
-use Valkyrja\Event\Listener as EventListener;
+use Valkyrja\Event\Listener as ListenerContract;
+use Valkyrja\Event\Models\Listener as ListenerModel;
 
 /**
  * Class ListenerAnnotations.
@@ -87,11 +88,11 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
      *
      * @param Listener $listener The listener annotation
      *
-     * @return EventListener
+     * @return ListenerContract
      */
-    protected function getListenerFromAnnotation(Listener $listener): EventListener
+    protected function getListenerFromAnnotation(Listener $listener): ListenerContract
     {
-        return EventListener::fromArray($listener->asArray());
+        return ListenerModel::fromArray($listener->asArray());
     }
 
     /**

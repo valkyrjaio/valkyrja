@@ -19,8 +19,6 @@ use Closure;
  * Interface ServiceContext.
  *
  * @author Melech Mizrachi
- *
- * @method static fromArray(array $properties)
  */
 interface ServiceContext extends Service
 {
