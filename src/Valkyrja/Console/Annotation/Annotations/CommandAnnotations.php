@@ -76,6 +76,10 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
      */
     protected function setCommandProperties(Annotation $annotation): void
     {
+        if (! $annotation->getClass()) {
+            return;
+        }
+
         $classReflection = $this->getClassReflection($annotation->getClass());
 
         if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
