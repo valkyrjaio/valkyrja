@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -66,7 +66,7 @@ interface ArgumentsRegex
      * )                          End capture
      */
     public const ARGUMENTS_REGEX = <<<'REGEX'
-    ([a-zA-Z0-9_\\\:]*) 
+    ([a-zA-Z0-9_\\\:]*)
     \s* \= \s* \'? "? \s*
     ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\<\>\|\s]*)
 REGEX;

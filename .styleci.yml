@@ -24,7 +24,6 @@ disabled:
   - phpdoc_align
   - unalign_equals
   - phpdoc_summary
-  - declare_equal_normalize
 
 finder:
   exclude:

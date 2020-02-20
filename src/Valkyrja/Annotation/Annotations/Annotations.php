@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -228,7 +228,8 @@ class Annotations implements AnnotationsContract
                     'class'    => $class,
                     'property' => $property,
                 ],
-                ...$this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
+                ...
+                $this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
             );
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -72,10 +72,10 @@ interface ClassRegex
      * annotation
      */
     public const CLASS_REGEX = <<<'REGEX'
-    \( 
-        \s* 
+    \(
+        \s*
             ([a-zA-Z0-9\_\-\\\/\:\{\}\(\)\+\[\]\.\=\,\'\"\*\<\>\|\s]*)
-        \s* 
+        \s*
     \)
 REGEX;
 }
