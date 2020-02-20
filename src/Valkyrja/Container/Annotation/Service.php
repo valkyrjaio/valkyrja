@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Container\Annotation;
 
 use Valkyrja\Annotation\Annotation;
-use \Valkyrja\Container\Service as ServiceModel;
+use Valkyrja\Container\Service as ServiceModel;
 
 /**
  * Interface Service.

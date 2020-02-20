@@ -13,8 +13,6 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Annotation\Models;
 
-use Valkyrja\Dispatcher\Models\Dispatchable;
-
 /**
  * Trait Annotatable.
  *

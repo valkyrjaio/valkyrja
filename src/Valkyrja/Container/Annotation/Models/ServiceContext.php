@@ -14,9 +14,9 @@ declare(strict_types = 1);
 namespace Valkyrja\Container\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
+use Valkyrja\Container\Annotation\ServiceContext as ServiceContextContract;
 use Valkyrja\Container\Models\Serviceable;
 use Valkyrja\Container\Models\ServiceContextable;
-use Valkyrja\Container\Annotation\ServiceContext as ServiceContextContract;
 
 /**
  * Class ServiceContext.

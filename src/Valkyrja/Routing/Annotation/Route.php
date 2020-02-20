@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Routing\Annotation;
 
 use Valkyrja\Annotation\Annotation;
-use \Valkyrja\Routing\Route as RouteModel;
+use Valkyrja\Routing\Route as RouteModel;
 
 /**
  * Interface Route.
