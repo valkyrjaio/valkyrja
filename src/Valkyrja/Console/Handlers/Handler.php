@@ -169,7 +169,7 @@ abstract class Handler implements HandlerContract
      */
     protected function argumentsSection(Argument ...$arguments): void
     {
-        if (! $arguments) {
+        if (empty($arguments)) {
             $arguments = $this->getArguments();
         }
 
@@ -200,7 +200,7 @@ abstract class Handler implements HandlerContract
      */
     protected function optionsSection(Option ...$options): void
     {
-        if (! $options) {
+        if (empty($options)) {
             $options = $this->getOptions();
         }
 
