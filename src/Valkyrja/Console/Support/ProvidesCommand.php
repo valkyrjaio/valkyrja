@@ -14,7 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Console\Support;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Console\Command;
+use Valkyrja\Console\Models\Command;
 use Valkyrja\Support\Providers\Provides;
 
 /**

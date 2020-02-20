@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Events;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Event\Listener;
+use Valkyrja\Event\Models\Listener;
 
 /**
  * Test the listener model.

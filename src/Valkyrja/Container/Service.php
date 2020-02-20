@@ -16,35 +16,18 @@ namespace Valkyrja\Container;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Service.
+ * Interface Service.
  *
  * @author Melech Mizrachi
  */
-class Service extends Dispatch
+interface Service extends Dispatch
 {
-    /**
-     * Whether this service is a singleton.
-     *
-     * @var bool
-     */
-    protected bool $singleton = false;
-
-    /**
-     * Default arguments.
-     *
-     * @var array|null
-     */
-    protected ?array $defaults = null;
-
     /**
      * Get whether this is a singleton.
      *
      * @return bool
      */
-    public function isSingleton(): bool
-    {
-        return $this->singleton;
-    }
+    public function isSingleton(): bool;
 
     /**
      * Set whether this is a singleton.
@@ -53,22 +36,14 @@ class Service extends Dispatch
      *
      * @return $this
      */
-    public function setSingleton(bool $singleton = true): self
-    {
-        $this->singleton = $singleton;
-
-        return $this;
-    }
+    public function setSingleton(bool $singleton = true): self;
 
     /**
      * Get defaults.
      *
      * @return array|null
      */
-    public function getDefaults(): ?array
-    {
-        return $this->defaults;
-    }
+    public function getDefaults(): ?array;
 
     /**
      * Set defaults.
@@ -77,10 +52,5 @@ class Service extends Dispatch
      *
      * @return $this
      */
-    public function setDefaults(array $defaults = null): self
-    {
-        $this->defaults = $defaults;
-
-        return $this;
-    }
+    public function setDefaults(array $defaults = null): self;
 }

@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Console;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Console\Command;
+use Valkyrja\Console\Models\Command;
 
 /**
  * Test the command model.

@@ -14,6 +14,7 @@ declare(strict_types = 1);
 namespace Valkyrja\Annotation\Parsers;
 
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Application\Application;
@@ -179,7 +180,7 @@ class AnnotationsParser implements AnnotationsParserContract
             $annotation = new $annotationsMap[$annotationType]();
         } else {
             // Otherwise set a new base annotation model
-            $annotation = new Annotation();
+            $annotation = new AnnotationModel();
         }
 
         return $annotation;

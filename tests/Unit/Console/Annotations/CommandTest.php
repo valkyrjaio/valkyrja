@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Console\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Console\Annotation\Models\Command;
 
 /**
  * Test the command model.
@@ -24,7 +24,7 @@ class CommandTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Annotations\Command
+     * @var \Valkyrja\Console\Annotation\Models\Command
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class CommandTest extends TestCase
      */
     public function testSetPath(): void
     {
-        $this->assertEquals(null, $this->class->setPath($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setPath($this->value));
     }
 
     /**
@@ -108,7 +108,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegexNull(): void
     {
-        $this->assertEquals(null, $this->class->setRegex(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setRegex(null));
     }
 
     /**
@@ -118,7 +118,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegex(): void
     {
-        $this->assertEquals(null, $this->class->setRegex($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setRegex($this->value));
     }
 
     /**
@@ -150,7 +150,7 @@ class CommandTest extends TestCase
      */
     public function testSetParamsNull(): void
     {
-        $this->assertEquals(null, $this->class->setParams(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setParams(null));
     }
 
     /**
@@ -160,7 +160,7 @@ class CommandTest extends TestCase
      */
     public function testSetParams(): void
     {
-        $this->assertEquals(null, $this->class->setParams([$this->value]) ?? null);
+        $this->assertEquals($this->class, $this->class->setParams([$this->value]));
     }
 
     /**
@@ -192,7 +192,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegmentsNull(): void
     {
-        $this->assertEquals(null, $this->class->setSegments(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setSegments(null));
     }
 
     /**
@@ -202,7 +202,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegments(): void
     {
-        $this->assertEquals(null, $this->class->setSegments([$this->value]) ?? null);
+        $this->assertEquals($this->class, $this->class->setSegments([$this->value]));
     }
 
     /**
@@ -234,7 +234,7 @@ class CommandTest extends TestCase
      */
     public function testSetDescriptionNull(): void
     {
-        $this->assertEquals(null, $this->class->setDescription(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setDescription(null));
     }
 
     /**
@@ -244,6 +244,6 @@ class CommandTest extends TestCase
      */
     public function testSetDescription(): void
     {
-        $this->assertEquals(null, $this->class->setDescription($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setDescription($this->value));
     }
 }

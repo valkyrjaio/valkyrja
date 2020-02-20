@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Unit\Console\Input;
 
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Enums\OptionMode;
-use Valkyrja\Console\Input\Option;
+use Valkyrja\Console\Inputs\Option;
 
 /**
  * Test the Option input class.
@@ -25,7 +25,7 @@ class OptionTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Input\Option
+     * @var \Valkyrja\Console\Inputs\Option
      */
     protected $class;
 
@@ -60,7 +60,7 @@ class OptionTest extends TestCase
     /**
      * Get the class to test with.
      *
-     * @return \Valkyrja\Console\Input\Option
+     * @return \Valkyrja\Console\Inputs\Option
      */
     protected function getClass(): Option
     {

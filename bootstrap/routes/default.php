@@ -20,7 +20,7 @@ declare(strict_types = 1);
  *
  */
 
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Models\Route;
 
 router()->get(
     (new Route())

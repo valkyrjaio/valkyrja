@@ -15,12 +15,12 @@ use Exception;
 use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
-use Valkyrja\Console\Input\NativeInput;
-use Valkyrja\Console\NativeConsole;
-use Valkyrja\Console\NativeKernel as ConsoleKernel;
-use Valkyrja\Console\Output\NativeOutput;
-use Valkyrja\Container\NativeContainer;
-use Valkyrja\Event\NativeEvents;
+use Valkyrja\Console\Dispatchers\Console;
+use Valkyrja\Console\Inputs\Input;
+use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
+use Valkyrja\Console\Outputs\Output;
+use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Event\Dispatchers\NativeEvents;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -68,7 +68,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, container() instanceof NativeContainer);
+        $this->assertEquals(true, container() instanceof Container);
     }
 
     /**
@@ -156,7 +156,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, console() instanceof NativeConsole);
+        $this->assertEquals(true, console() instanceof Console);
     }
 
     /**
@@ -186,7 +186,7 @@ class HelpersTest extends TestCase
      */
     public function testInput(): void
     {
-        $this->assertEquals(true, input() instanceof NativeInput);
+        $this->assertEquals(true, input() instanceof Input);
     }
 
     /**
@@ -216,7 +216,7 @@ class HelpersTest extends TestCase
      */
     public function testOutput(): void
     {
-        $this->assertEquals(true, output() instanceof NativeOutput);
+        $this->assertEquals(true, output() instanceof Output);
     }
 
     /**

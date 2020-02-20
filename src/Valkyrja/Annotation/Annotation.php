@@ -13,12 +13,44 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Annotation;
 
+use Valkyrja\Dispatcher\Dispatch;
+
 /**
- * Class Annotation.
+ * Interface Annotation.
  *
  * @author Melech Mizrachi
  */
-class Annotation
+interface Annotation extends Dispatch
 {
-    use Annotatable;
+    /**
+     * Get the type.
+     *
+     * @return string
+     */
+    public function getAnnotationType(): ?string;
+
+    /**
+     * Set the type.
+     *
+     * @param string $annotationType The type
+     *
+     * @return $this
+     */
+    public function setAnnotationType(string $annotationType = null): self;
+
+    /**
+     * Get the annotation properties (within parentheses).
+     *
+     * @return array
+     */
+    public function getAnnotationProperties(): ?array;
+
+    /**
+     * Set the annotation properties (within parentheses).
+     *
+     * @param array $annotationProperties The annotation arguments
+     *
+     * @return $this
+     */
+    public function setAnnotationProperties(array $annotationProperties = null): self;
 }

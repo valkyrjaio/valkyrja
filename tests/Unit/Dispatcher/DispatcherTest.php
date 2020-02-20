@@ -15,14 +15,14 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Service;
-use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Container\Models\Service;
+use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
+use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Dispatcher\NativeDispatcher;
 
 /**
  * Test the dispatcher trait.
@@ -34,7 +34,7 @@ class DispatcherTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Dispatcher\NativeDispatcher
+     * @var Dispatcher
      */
     protected $class;
 
@@ -75,7 +75,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new NativeDispatcher(new Valkyrja());
+        $this->class = new Dispatcher(new Valkyrja());
     }
 
     /**

@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Dispatcher;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Dispatcher\Models\Dispatch;
 
 /**
  * Test the dispatch model.

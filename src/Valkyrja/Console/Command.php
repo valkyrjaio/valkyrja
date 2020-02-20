@@ -16,56 +16,18 @@ namespace Valkyrja\Console;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Command.
+ * Interface Command.
  *
  * @author Melech Mizrachi
  */
-class Command extends Dispatch
+interface Command extends Dispatch
 {
-    /**
-     * The path.
-     *
-     * @var string|null
-     */
-    protected ?string $path = null;
-
-    /**
-     * The regex for dynamic routes.
-     *
-     * @var string|null
-     */
-    protected ?string $regex = null;
-
-    /**
-     * Any params for dynamic routes.
-     *
-     * @var array|null
-     */
-    protected ?array $params = null;
-
-    /**
-     * Any segments for optional parts of path.
-     *
-     * @var array|null
-     */
-    protected ?array $segments = null;
-
-    /**
-     * The description.
-     *
-     * @var string|null
-     */
-    protected ?string $description = null;
-
     /**
      * Get the path.
      *
      * @return string
      */
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
+    public function getPath(): ?string;
 
     /**
      * Set the path.
@@ -74,22 +36,14 @@ class Command extends Dispatch
      *
      * @return $this
      */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-
-        return $this;
-    }
+    public function setPath(string $path): self;
 
     /**
      * Get the regex.
      *
      * @return string
      */
-    public function getRegex(): ?string
-    {
-        return $this->regex;
-    }
+    public function getRegex(): ?string;
 
     /**
      * Set the regex.
@@ -98,22 +52,14 @@ class Command extends Dispatch
      *
      * @return $this
      */
-    public function setRegex(string $regex = null): self
-    {
-        $this->regex = $regex;
-
-        return $this;
-    }
+    public function setRegex(string $regex = null): self;
 
     /**
      * Get the params.
      *
      * @return array
      */
-    public function getParams(): ?array
-    {
-        return $this->params;
-    }
+    public function getParams(): ?array;
 
     /**
      * Set the params.
@@ -122,22 +68,14 @@ class Command extends Dispatch
      *
      * @return $this
      */
-    public function setParams(array $params = null): self
-    {
-        $this->params = $params;
-
-        return $this;
-    }
+    public function setParams(array $params = null): self;
 
     /**
      * Get the segments.
      *
      * @return array
      */
-    public function getSegments(): ?array
-    {
-        return $this->segments;
-    }
+    public function getSegments(): ?array;
 
     /**
      * Set the segments.
@@ -146,22 +84,14 @@ class Command extends Dispatch
      *
      * @return $this
      */
-    public function setSegments(array $segments = null): self
-    {
-        $this->segments = $segments;
-
-        return $this;
-    }
+    public function setSegments(array $segments = null): self;
 
     /**
      * Get the description.
      *
      * @return string
      */
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+    public function getDescription(): ?string;
 
     /**
      * Set the description.
@@ -170,10 +100,5 @@ class Command extends Dispatch
      *
      * @return $this
      */
-    public function setDescription(string $description = null): self
-    {
-        $this->description = $description;
-
-        return $this;
-    }
+    public function setDescription(string $description = null): self;
 }

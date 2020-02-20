@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Container;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\ServiceContext;
+use Valkyrja\Container\Models\ServiceContext;
 
 /**
  * Test the service context model.

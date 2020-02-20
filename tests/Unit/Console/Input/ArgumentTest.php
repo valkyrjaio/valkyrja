@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Unit\Console\Input;
 
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Console\Enums\ArgumentMode;
-use Valkyrja\Console\Input\Argument;
+use Valkyrja\Console\Inputs\Argument;
 
 /**
  * Test the Argument input class.
@@ -25,7 +25,7 @@ class ArgumentTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Input\Argument
+     * @var \Valkyrja\Console\Inputs\Argument
      */
     protected $class;
 
@@ -46,7 +46,7 @@ class ArgumentTest extends TestCase
     /**
      * Get the class to test with.
      *
-     * @return \Valkyrja\Console\Input\Argument
+     * @return \Valkyrja\Console\Inputs\Argument
      */
     protected function getClass(): Argument
     {

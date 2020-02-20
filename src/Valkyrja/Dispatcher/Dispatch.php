@@ -14,100 +14,21 @@ declare(strict_types = 1);
 namespace Valkyrja\Dispatcher;
 
 use Closure;
+use Valkyrja\Model\Model;
 
 /**
- * Class Dispatch.
+ * Interface Dispatch.
  *
  * @author Melech Mizrachi
  */
-class Dispatch
+interface Dispatch extends Model
 {
-    /**
-     * The id.
-     *
-     * @var string|null
-     */
-    protected ?string $id = null;
-
-    /**
-     * The name.
-     *
-     * @var string|null
-     */
-    protected ?string $name = null;
-
-    /**
-     * The class.
-     *
-     * @var string|null
-     */
-    protected ?string $class = null;
-
-    /**
-     * The property.
-     *
-     * @var string|null
-     */
-    protected ?string $property = null;
-
-    /**
-     * The method.
-     *
-     * @var string|null
-     */
-    protected ?string $method = null;
-
-    /**
-     * Whether the property or method is static.
-     *
-     * @var bool
-     */
-    protected bool $static = false;
-
-    /**
-     * The function.
-     *
-     * @var string|null
-     */
-    protected ?string $function = null;
-
-    /**
-     * The matches.
-     *
-     * @var array|null
-     */
-    protected ?array $matches = null;
-
-    /**
-     * The closure.
-     *
-     * @var Closure|null
-     */
-    protected ?Closure $closure = null;
-
-    /**
-     * The dependencies.
-     *
-     * @var array|null
-     */
-    protected ?array $dependencies = null;
-
-    /**
-     * The arguments.
-     *
-     * @var array|null
-     */
-    protected ?array $arguments = null;
-
     /**
      * Get the id.
      *
      * @return string
      */
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
+    public function getId(): ?string;
 
     /**
      * Set the id.
@@ -116,22 +37,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setId(string $id = null): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
+    public function setId(string $id = null): self;
 
     /**
      * Get the name.
      *
      * @return string
      */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+    public function getName(): ?string;
 
     /**
      * Set the name.
@@ -140,22 +53,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setName(string $name = null): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    public function setName(string $name = null): self;
 
     /**
      * Get the class.
      *
      * @return string
      */
-    public function getClass(): ?string
-    {
-        return $this->class;
-    }
+    public function getClass(): ?string;
 
     /**
      * Set the class.
@@ -164,22 +69,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setClass(string $class = null): self
-    {
-        $this->class = $class;
-
-        return $this;
-    }
+    public function setClass(string $class = null): self;
 
     /**
      * Get the property.
      *
      * @return string
      */
-    public function getProperty(): ?string
-    {
-        return $this->property;
-    }
+    public function getProperty(): ?string;
 
     /**
      * Set the property.
@@ -188,22 +85,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setProperty(string $property = null): self
-    {
-        $this->property = $property;
-
-        return $this;
-    }
+    public function setProperty(string $property = null): self;
 
     /**
      * Get the method.
      *
      * @return string
      */
-    public function getMethod(): ?string
-    {
-        return $this->method;
-    }
+    public function getMethod(): ?string;
 
     /**
      * Set the method.
@@ -212,22 +101,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setMethod(string $method = null): self
-    {
-        $this->method = $method;
-
-        return $this;
-    }
+    public function setMethod(string $method = null): self;
 
     /**
      * Get whether the member is static.
      *
      * @return bool
      */
-    public function isStatic(): bool
-    {
-        return $this->static;
-    }
+    public function isStatic(): bool;
 
     /**
      * Set whether the member is static.
@@ -236,20 +117,12 @@ class Dispatch
      *
      * @return $this
      */
-    public function setStatic(bool $static = true): self
-    {
-        $this->static = $static;
-
-        return $this;
-    }
+    public function setStatic(bool $static = true): self;
 
     /**
      * @return string
      */
-    public function getFunction(): ?string
-    {
-        return $this->function;
-    }
+    public function getFunction(): ?string;
 
     /**
      * Set the function.
@@ -258,22 +131,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setFunction(string $function = null): self
-    {
-        $this->function = $function;
-
-        return $this;
-    }
+    public function setFunction(string $function = null): self;
 
     /**
      * Get the closure.
      *
      * @return Closure
      */
-    public function getClosure(): ?Closure
-    {
-        return $this->closure;
-    }
+    public function getClosure(): ?Closure;
 
     /**
      * Set the closure.
@@ -282,22 +147,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setClosure(Closure $closure = null): self
-    {
-        $this->closure = $closure;
-
-        return $this;
-    }
+    public function setClosure(Closure $closure = null): self;
 
     /**
      * Get the matches.
      *
      * @return array
      */
-    public function getMatches(): ?array
-    {
-        return $this->matches;
-    }
+    public function getMatches(): ?array;
 
     /**
      * Set the matches.
@@ -306,22 +163,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setMatches(array $matches = null): self
-    {
-        $this->matches = $matches;
-
-        return $this;
-    }
+    public function setMatches(array $matches = null): self;
 
     /**
      * Get the arguments.
      *
      * @return array
      */
-    public function getArguments(): ?array
-    {
-        return $this->arguments;
-    }
+    public function getArguments(): ?array;
 
     /**
      * Set the arguments.
@@ -330,22 +179,14 @@ class Dispatch
      *
      * @return $this
      */
-    public function setArguments(array $arguments = null): self
-    {
-        $this->arguments = $arguments;
-
-        return $this;
-    }
+    public function setArguments(array $arguments = null): self;
 
     /**
      * Get the dependencies.
      *
      * @return array
      */
-    public function getDependencies(): ?array
-    {
-        return $this->dependencies;
-    }
+    public function getDependencies(): ?array;
 
     /**
      * Set the dependencies.
@@ -354,10 +195,5 @@ class Dispatch
      *
      * @return $this
      */
-    public function setDependencies(array $dependencies = null): self
-    {
-        $this->dependencies = $dependencies;
-
-        return $this;
-    }
+    public function setDependencies(array $dependencies = null): self;
 }

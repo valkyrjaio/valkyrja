@@ -16,40 +16,25 @@ namespace Valkyrja\Event;
 use Valkyrja\Dispatcher\Dispatch;
 
 /**
- * Class Event.
+ * Interface Listener.
  *
  * @author Melech Mizrachi
  */
-class Listener extends Dispatch
+interface Listener extends Dispatch
 {
-    /**
-     * The event to listen to.
-     *
-     * @var string|null
-     */
-    protected ?string $event = null;
-
     /**
      * Get the event.
      *
      * @return string
      */
-    public function getEvent(): ?string
-    {
-        return $this->event;
-    }
+    public function getEvent(): ?string;
 
     /**
      * Set the event.
      *
      * @param string $event The event
      *
-     * @return Listener
+     * @return $this
      */
-    public function setEvent(string $event = null): self
-    {
-        $this->event = $event;
-
-        return $this;
-    }
+    public function setEvent(string $event = null): self;
 }

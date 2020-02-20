@@ -65,9 +65,7 @@ class RouteTest extends TestCase
      */
     public function testSetPath(): void
     {
-        $set = $this->getRoute()->setPath($this->stringValue) ?? null;
-
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $this->getRoute()->setPath($this->stringValue));
     }
 
     /**
@@ -105,9 +103,9 @@ class RouteTest extends TestCase
      */
     public function testSetRequestMethods(): void
     {
-        $set = $this->getRoute()->setRequestMethods([RequestMethod::POST]) ?? null;
+        $set = $this->getRoute()->setRequestMethods([RequestMethod::POST]);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -154,9 +152,9 @@ class RouteTest extends TestCase
      */
     public function testSetRegex(): void
     {
-        $set = $this->getRoute()->setRegex($this->stringValue) ?? null;
+        $set = $this->getRoute()->setRegex($this->stringValue);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -166,9 +164,9 @@ class RouteTest extends TestCase
      */
     public function testSetRegexNull(): void
     {
-        $set = $this->getRoute()->setRegex(null) ?? null;
+        $set = $this->getRoute()->setRegex(null);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -200,9 +198,9 @@ class RouteTest extends TestCase
      */
     public function testSetParams(): void
     {
-        $set = $this->getRoute()->setParams([$this->stringValue]) ?? null;
+        $set = $this->getRoute()->setParams([$this->stringValue]);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -212,9 +210,9 @@ class RouteTest extends TestCase
      */
     public function testSetParamsNull(): void
     {
-        $set = $this->getRoute()->setParams(null) ?? null;
+        $set = $this->getRoute()->setParams(null);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -246,9 +244,9 @@ class RouteTest extends TestCase
      */
     public function testSetSegments(): void
     {
-        $set = $this->getRoute()->setSegments([$this->stringValue]) ?? null;
+        $set = $this->getRoute()->setSegments([$this->stringValue]);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -258,9 +256,9 @@ class RouteTest extends TestCase
      */
     public function testSetSegmentsNull(): void
     {
-        $set = $this->getRoute()->setSegments(null) ?? null;
+        $set = $this->getRoute()->setSegments(null);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -292,9 +290,9 @@ class RouteTest extends TestCase
      */
     public function testSetMiddleware(): void
     {
-        $set = $this->getRoute()->setMiddleware([$this->stringValue]) ?? null;
+        $set = $this->getRoute()->setMiddleware([$this->stringValue]);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -304,9 +302,9 @@ class RouteTest extends TestCase
      */
     public function testSetMiddlewareNull(): void
     {
-        $set = $this->getRoute()->setMiddleware(null) ?? null;
+        $set = $this->getRoute()->setMiddleware(null) ;
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -338,9 +336,9 @@ class RouteTest extends TestCase
      */
     public function testSetDynamic(): void
     {
-        $set = $this->getRoute()->setDynamic(true) ?? null;
+        $set = $this->getRoute()->setDynamic(true);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**
@@ -372,9 +370,9 @@ class RouteTest extends TestCase
      */
     public function testSetSecure(): void
     {
-        $set = $this->getRoute()->setSecure(true) ?? null;
+        $set = $this->getRoute()->setSecure(true);
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->getRoute(), $set);
     }
 
     /**

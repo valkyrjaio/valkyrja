@@ -21,7 +21,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Routing\Annotation\Models\Route;
 use Valkyrja\Routing\Annotation\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
-use Valkyrja\Routing\Route as RouterRoute;
+use Valkyrja\Routing\Models\Route as RouterRoute;
 
 /**
  * Class RouteAnnotations.
@@ -234,32 +234,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      */
     protected function getRouteFromAnnotation(Route $route): RouterRoute
     {
-        $routerRoute = new RouterRoute();
-
-        $routerRoute
-            ->setPath($route->getPath())
-            ->setSegments($route->getSegments())
-            ->setRedirectPath($route->getRedirectPath())
-            ->setRedirectCode($route->getRedirectCode())
-            ->setRegex($route->getRegex())
-            ->setParams($route->getParams())
-            ->setRequestMethods($route->getRequestMethods())
-            ->setSecure($route->isSecure())
-            ->setDynamic($route->isDynamic())
-            ->setRedirect($route->isRedirect())
-            ->setId($route->getId())
-            ->setName($route->getName())
-            ->setClass($route->getClass())
-            ->setProperty($route->getProperty())
-            ->setMethod($route->getMethod())
-            ->setStatic($route->isStatic())
-            ->setFunction($route->getFunction())
-            ->setMatches($route->getMatches())
-            ->setDependencies($route->getDependencies())
-            ->setMiddleware($route->getMiddleware())
-            ->setArguments($route->getArguments());
-
-        return $routerRoute;
+        return RouterRoute::fromArray($route->asArray());
     }
 
     /**
@@ -277,7 +252,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     /**
      * Bind the route annotations.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

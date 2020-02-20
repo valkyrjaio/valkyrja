@@ -13,17 +13,17 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Config\Commands\ConfigCacheCommand;
-use Valkyrja\Console\Commands\CacheAllCommand;
-use Valkyrja\Console\Commands\CommandsListCommand;
-use Valkyrja\Console\Commands\CommandsListForBashCommand;
-use Valkyrja\Console\Commands\ConsoleCacheCommand;
-use Valkyrja\Console\Commands\OptimizeCommand;
-use Valkyrja\Container\Commands\ContainerCacheCommand;
+use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Console\Commands\CacheAll;
+use Valkyrja\Console\Commands\CommandsList;
+use Valkyrja\Console\Commands\CommandsListForBash;
+use Valkyrja\Console\Commands\ConsoleCache;
+use Valkyrja\Console\Commands\Optimize;
+use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Enum\Enum;
-use Valkyrja\Event\Commands\EventsCacheCommand;
-use Valkyrja\Routing\Commands\RoutesCacheCommand;
-use Valkyrja\Routing\Commands\RoutesListCommand;
+use Valkyrja\Event\Commands\EventsCache;
+use Valkyrja\Routing\Commands\RoutesCache;
+use Valkyrja\Routing\Commands\RoutesList;
 
 /**
  * Enum Provider.
@@ -32,14 +32,14 @@ use Valkyrja\Routing\Commands\RoutesListCommand;
  */
 final class Provider extends Enum
 {
-    public const CONFIG_CACHE_COMMAND           = ConfigCacheCommand::class;
-    public const CONFIG_ALL_COMMAND             = CacheAllCommand::class;
-    public const COMMANDS_LIST_COMMAND          = CommandsListCommand::class;
-    public const CONSOLE_CACHE_COMMAND          = ConsoleCacheCommand::class;
-    public const COMMANDS_LIST_FOR_BASH_COMMAND = CommandsListForBashCommand::class;
-    public const OPTIMIZE_COMMAND               = OptimizeCommand::class;
-    public const CONTAINER_CACHE_COMMAND        = ContainerCacheCommand::class;
-    public const EVENTS_CACHE_COMMAND           = EventsCacheCommand::class;
-    public const ROUTES_CACHE_COMMAND           = RoutesCacheCommand::class;
-    public const ROUTES_LIST_COMMAND            = RoutesListCommand::class;
+    public const CONFIG_CACHE_COMMAND           = ConfigCache::class;
+    public const CONFIG_ALL_COMMAND             = CacheAll::class;
+    public const COMMANDS_LIST_COMMAND          = CommandsList::class;
+    public const CONSOLE_CACHE_COMMAND          = ConsoleCache::class;
+    public const COMMANDS_LIST_FOR_BASH_COMMAND = CommandsListForBash::class;
+    public const OPTIMIZE_COMMAND               = Optimize::class;
+    public const CONTAINER_CACHE_COMMAND        = ContainerCache::class;
+    public const EVENTS_CACHE_COMMAND           = EventsCache::class;
+    public const ROUTES_CACHE_COMMAND           = RoutesCache::class;
+    public const ROUTES_LIST_COMMAND            = RoutesList::class;
 }

@@ -15,7 +15,7 @@ use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Models\Route;
 
 /**
  * Test the route model.

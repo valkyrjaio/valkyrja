@@ -16,12 +16,12 @@ use ReflectionClass;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Parsers\AnnotationsParser;
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Console\Annotations\Command;
-use Valkyrja\Container\Annotations\Service;
-use Valkyrja\Container\Annotations\ServiceAlias;
-use Valkyrja\Container\Annotations\ServiceContext;
+use Valkyrja\Console\Annotation\Models\Command;
+use Valkyrja\Container\Annotation\Models\Service;
+use Valkyrja\Container\Annotation\Models\ServiceAlias;
+use Valkyrja\Container\Annotation\Models\ServiceContext;
 use Valkyrja\Container\Enums\Contract;
-use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Routing\Annotation\Models\Route;
 
 /**
@@ -168,7 +168,7 @@ class AnnotationsParserTest extends TestCase
             'Command'        => Command::class,
             'Listener'       => Listener::class,
             'Route'          => Route::class,
-            'Service'        => Service::class,
+            'Service'        => \Valkyrja\Container\Annotation\Models\Service::class,
             'ServiceAlias'   => ServiceAlias::class,
             'ServiceContext' => ServiceContext::class,
         ];
@@ -243,7 +243,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceContextAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof ServiceContext);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof \Valkyrja\Container\Annotation\Models\ServiceContext);
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Annotations;
 
-use Valkyrja\Annotation\Annotatable;
+use Valkyrja\Annotation\Models\Annotatable;
 
 /**
  * Annotatable trait class used for unit testing.

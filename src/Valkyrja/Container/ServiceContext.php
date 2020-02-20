@@ -16,56 +16,18 @@ namespace Valkyrja\Container;
 use Closure;
 
 /**
- * Class ServiceContext.
+ * Interface ServiceContext.
  *
  * @author Melech Mizrachi
  */
-class ServiceContext extends Service
+interface ServiceContext extends Service
 {
-    /**
-     * The context class.
-     *
-     * @var string|null
-     */
-    protected ?string $contextClass = null;
-
-    /**
-     * The context property.
-     *
-     * @var string|null
-     */
-    protected ?string $contextProperty = null;
-
-    /**
-     * The context method.
-     *
-     * @var string|null
-     */
-    protected ?string $contextMethod = null;
-
-    /**
-     * The context function.
-     *
-     * @var string|null
-     */
-    protected ?string $contextFunction = null;
-
-    /**
-     * The context closure.
-     *
-     * @var Closure|null
-     */
-    protected ?Closure $contextClosure = null;
-
     /**
      * Get the context class.
      *
      * @return string
      */
-    public function getContextClass(): ?string
-    {
-        return $this->contextClass;
-    }
+    public function getContextClass(): ?string;
 
     /**
      * Set the context class.
@@ -74,22 +36,14 @@ class ServiceContext extends Service
      *
      * @return $this
      */
-    public function setContextClass(string $contextClass): self
-    {
-        $this->contextClass = $contextClass;
-
-        return $this;
-    }
+    public function setContextClass(string $contextClass): self;
 
     /**
      * Get the context property.
      *
      * @return string|null
      */
-    public function getContextProperty(): ?string
-    {
-        return $this->contextProperty;
-    }
+    public function getContextProperty(): ?string;
 
     /**
      * Set the context property.
@@ -98,22 +52,14 @@ class ServiceContext extends Service
      *
      * @return $this
      */
-    public function setContextProperty(string $contextProperty): self
-    {
-        $this->contextProperty = $contextProperty;
-
-        return $this;
-    }
+    public function setContextProperty(string $contextProperty): self;
 
     /**
      * Get the context method.
      *
      * @return string|null
      */
-    public function getContextMethod(): ?string
-    {
-        return $this->contextMethod;
-    }
+    public function getContextMethod(): ?string;
 
     /**
      * Set the context method.
@@ -122,22 +68,14 @@ class ServiceContext extends Service
      *
      * @return $this
      */
-    public function setContextMethod(string $contextMethod): self
-    {
-        $this->contextMethod = $contextMethod;
-
-        return $this;
-    }
+    public function setContextMethod(string $contextMethod): self;
 
     /**
      * Get the context function.
      *
      * @return string|null
      */
-    public function getContextFunction(): ?string
-    {
-        return $this->contextFunction;
-    }
+    public function getContextFunction(): ?string;
 
     /**
      * Set the context function.
@@ -146,22 +84,14 @@ class ServiceContext extends Service
      *
      * @return $this
      */
-    public function setContextFunction(string $contextFunction): self
-    {
-        $this->contextFunction = $contextFunction;
-
-        return $this;
-    }
+    public function setContextFunction(string $contextFunction): self;
 
     /**
      * Get the context closure.
      *
      * @return Closure|null
      */
-    public function getContextClosure(): ?Closure
-    {
-        return $this->contextClosure;
-    }
+    public function getContextClosure(): ?Closure;
 
     /**
      * Set the context closure.
@@ -170,10 +100,5 @@ class ServiceContext extends Service
      *
      * @return $this
      */
-    public function setContextClosure(Closure $contextClosure): self
-    {
-        $this->contextClosure = $contextClosure;
-
-        return $this;
-    }
+    public function setContextClosure(Closure $contextClosure): self;
 }

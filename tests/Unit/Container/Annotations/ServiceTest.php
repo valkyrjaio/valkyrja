@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Container\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Annotations\Service;
+use Valkyrja\Container\Annotation\Models\Service;
 
 /**
  * Test the service model.
@@ -24,7 +24,7 @@ class ServiceTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Container\Annotations\Service
+     * @var Service
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class ServiceTest extends TestCase
      */
     public function testSetSingleton(): void
     {
-        $this->assertEquals(null, $this->class->setSingleton(true) ?? null);
+        $this->assertEquals($this->class, $this->class->setSingleton(true));
     }
 
     /**
@@ -108,7 +108,7 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaultsNull(): void
     {
-        $this->assertEquals(null, $this->class->setDefaults(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setDefaults(null));
     }
 
     /**
@@ -118,6 +118,6 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaults(): void
     {
-        $this->assertEquals(null, $this->class->setDefaults([$this->value]) ?? null);
+        $this->assertEquals($this->class, $this->class->setDefaults([$this->value]));
     }
 }

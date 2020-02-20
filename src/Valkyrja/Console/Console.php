@@ -14,8 +14,6 @@ declare(strict_types = 1);
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
-use Valkyrja\Console\Input\Input;
-use Valkyrja\Console\Output\Output;
 use Valkyrja\Support\Cacheable;
 use Valkyrja\Support\Providers\ProvidersAware;
 

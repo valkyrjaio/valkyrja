@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Container\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Annotations\ServiceContext;
+use Valkyrja\Container\Annotation\Models\ServiceContext;
 
 /**
  * Test the service context model.
@@ -24,7 +24,7 @@ class ServiceContextTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Container\Annotations\ServiceContext
+     * @var ServiceContext
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextClass(): void
     {
-        $this->assertEquals(null, $this->class->setContextClass($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setContextClass($this->value));
     }
 
     /**
@@ -108,7 +108,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextProperty(): void
     {
-        $this->assertEquals(null, $this->class->setContextProperty($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setContextProperty($this->value));
     }
 
     /**
@@ -140,7 +140,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextMethod(): void
     {
-        $this->assertEquals(null, $this->class->setContextMethod($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setContextMethod($this->value));
     }
 
     /**
@@ -172,7 +172,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextFunction(): void
     {
-        $this->assertEquals(null, $this->class->setContextFunction($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setContextFunction($this->value));
     }
 
     /**
@@ -192,8 +192,7 @@ class ServiceContextTest extends TestCase
      */
     public function testGetContextClosure(): void
     {
-        $value = function () {
-        };
+        $value = function () {};
         $this->class->setContextClosure($value);
 
         $this->assertEquals($value, $this->class->getContextClosure());
@@ -206,11 +205,8 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextClosure(): void
     {
-        $set = $this->class->setContextClosure(
-                function () {
-                }
-            ) ?? null;
+        $set = $this->class->setContextClosure(function () {});
 
-        $this->assertEquals(null, $set);
+        $this->assertEquals($this->class, $set);
     }
 }

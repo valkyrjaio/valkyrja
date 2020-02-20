@@ -13,107 +13,21 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Routing;
 
-use InvalidArgumentException;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Http\Enums\StatusCode;
 
 /**
- * Class Route.
+ * Interface Route.
  *
  * @author Melech Mizrachi
  */
-class Route extends Dispatch
+interface Route extends Dispatch
 {
-    /**
-     * The path for this route.
-     *
-     * @var string|null
-     */
-    protected ?string $path = null;
-
-    /**
-     * The redirect path for this route.
-     *
-     * @var string|null
-     */
-    protected ?string $redirectPath = null;
-
-    /**
-     * The redirect status code for this route.
-     *
-     * @var int
-     */
-    protected int $redirectCode = StatusCode::FOUND;
-
-    /**
-     * The request methods for this route.
-     *
-     * @var array
-     */
-    protected array $requestMethods = [
-        RequestMethod::GET,
-        RequestMethod::HEAD,
-    ];
-
-    /**
-     * The regex for dynamic routes.
-     *
-     * @var string|null
-     */
-    protected ?string $regex = null;
-
-    /**
-     * Any params for dynamic routes.
-     *
-     * @var array|null
-     */
-    protected ?array $params = null;
-
-    /**
-     * Any segments for optional parts of path.
-     *
-     * @var array|null
-     */
-    protected ?array $segments = null;
-
-    /**
-     * The middleware for this route.
-     *
-     * @var array|null
-     */
-    protected ?array $middleware = null;
-
-    /**
-     * Whether the route is dynamic.
-     *
-     * @var bool
-     */
-    protected bool $dynamic = false;
-
-    /**
-     * Whether the route is secure.
-     *
-     * @var bool
-     */
-    protected bool $secure = false;
-
-    /**
-     * Whether the route is a redirect.
-     *
-     * @var bool
-     */
-    protected bool $redirect = false;
-
     /**
      * Get the route's path.
      *
      * @return string
      */
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
+    public function getPath(): ?string;
 
     /**
      * Set the route's path.
@@ -122,22 +36,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-
-        return $this;
-    }
+    public function setPath(string $path): self;
 
     /**
      * Get the redirect path.
      *
      * @return string
      */
-    public function getRedirectPath(): ?string
-    {
-        return $this->redirectPath;
-    }
+    public function getRedirectPath(): ?string;
 
     /**
      * Set the redirect path.
@@ -146,22 +52,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setRedirectPath(string $redirectPath = null): self
-    {
-        $this->redirectPath = $redirectPath;
-
-        return $this;
-    }
+    public function setRedirectPath(string $redirectPath = null): self;
 
     /**
      * Get the redirect status code.
      *
      * @return int
      */
-    public function getRedirectCode(): int
-    {
-        return $this->redirectCode;
-    }
+    public function getRedirectCode(): int;
 
     /**
      * Set the redirect status code.
@@ -170,52 +68,30 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setRedirectCode(int $redirectCode): self
-    {
-        $this->redirectCode = $redirectCode;
-
-        return $this;
-    }
+    public function setRedirectCode(int $redirectCode): self;
 
     /**
      * Get the request methods.
      *
      * @return array
      */
-    public function getRequestMethods(): array
-    {
-        return $this->requestMethods;
-    }
+    public function getRequestMethods(): array;
 
     /**
      * Set the request methods.
      *
      * @param array $requestMethods The request methods
      *
-     * @throws InvalidArgumentException
-     *
      * @return $this
      */
-    public function setRequestMethods(array $requestMethods): self
-    {
-        if (array_diff($requestMethods, RequestMethod::validValues())) {
-            throw new InvalidArgumentException('Invalid request methods set');
-        }
-
-        $this->requestMethods = $requestMethods;
-
-        return $this;
-    }
+    public function setRequestMethods(array $requestMethods): self;
 
     /**
      * Get the regex.
      *
      * @return string
      */
-    public function getRegex(): ?string
-    {
-        return $this->regex;
-    }
+    public function getRegex(): ?string;
 
     /**
      * Set the regex.
@@ -224,22 +100,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setRegex(string $regex = null): self
-    {
-        $this->regex = $regex;
-
-        return $this;
-    }
+    public function setRegex(string $regex = null): self;
 
     /**
      * Get the params.
      *
      * @return array
      */
-    public function getParams(): ?array
-    {
-        return $this->params;
-    }
+    public function getParams(): ?array;
 
     /**
      * Set the params.
@@ -248,22 +116,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setParams(array $params = null): self
-    {
-        $this->params = $params;
-
-        return $this;
-    }
+    public function setParams(array $params = null): self;
 
     /**
      * Get the segments.
      *
      * @return array
      */
-    public function getSegments(): ?array
-    {
-        return $this->segments;
-    }
+    public function getSegments(): ?array;
 
     /**
      * Set the segments.
@@ -272,22 +132,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setSegments(array $segments = null): self
-    {
-        $this->segments = $segments;
-
-        return $this;
-    }
+    public function setSegments(array $segments = null): self;
 
     /**
      * Get the middleware.
      *
      * @return array
      */
-    public function getMiddleware(): ?array
-    {
-        return $this->middleware;
-    }
+    public function getMiddleware(): ?array;
 
     /**
      * Set the middleware.
@@ -296,22 +148,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setMiddleware(array $middleware = null): self
-    {
-        $this->middleware = $middleware;
-
-        return $this;
-    }
+    public function setMiddleware(array $middleware = null): self;
 
     /**
      * Check whether the route is dynamic.
      *
      * @return bool
      */
-    public function isDynamic(): bool
-    {
-        return $this->dynamic;
-    }
+    public function isDynamic(): bool;
 
     /**
      * Set the route as dynamic.
@@ -320,22 +164,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setDynamic(bool $dynamic = true): self
-    {
-        $this->dynamic = $dynamic;
-
-        return $this;
-    }
+    public function setDynamic(bool $dynamic = true): self;
 
     /**
      * Get whether the route is secure.
      *
      * @return bool
      */
-    public function isSecure(): bool
-    {
-        return $this->secure;
-    }
+    public function isSecure(): bool;
 
     /**
      * Set whether the route is secure.
@@ -344,22 +180,14 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setSecure(bool $secure = true): self
-    {
-        $this->secure = $secure;
-
-        return $this;
-    }
+    public function setSecure(bool $secure = true): self;
 
     /**
      * Get whether the route is a redirect.
      *
      * @return bool
      */
-    public function isRedirect(): bool
-    {
-        return $this->redirect;
-    }
+    public function isRedirect(): bool;
 
     /**
      * Set whether the route is a redirect.
@@ -368,10 +196,5 @@ class Route extends Dispatch
      *
      * @return $this
      */
-    public function setRedirect(bool $redirect): self
-    {
-        $this->redirect = $redirect;
-
-        return $this;
-    }
+    public function setRedirect(bool $redirect): self;
 }

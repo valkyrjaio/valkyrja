@@ -16,16 +16,16 @@ use TypeError;
 use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
-use Valkyrja\Config\Commands\ConfigCacheCommand;
+use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Console\NativeConsole;
-use Valkyrja\Console\NativeKernel as ConsoleKernel;
-use Valkyrja\Container\NativeContainer;
-use Valkyrja\Dispatcher\NativeDispatcher;
+use Valkyrja\Console\Dispatchers\Console;
+use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
+use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Env\EnvTest;
-use Valkyrja\Event\NativeEvents;
+use Valkyrja\Event\Dispatchers\NativeEvents;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -80,7 +80,7 @@ class ApplicationTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, $this->app->container() instanceof NativeContainer);
+        $this->assertEquals(true, $this->app->container() instanceof Container);
     }
 
     /**
@@ -90,7 +90,7 @@ class ApplicationTest extends TestCase
      */
     public function testDispatcher(): void
     {
-        $this->assertEquals(true, $this->app->dispatcher() instanceof NativeDispatcher);
+        $this->assertEquals(true, $this->app->dispatcher() instanceof Dispatcher);
     }
 
     /**
@@ -274,7 +274,7 @@ class ApplicationTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, $this->app->console() instanceof NativeConsole);
+        $this->assertEquals(true, $this->app->console() instanceof Console);
     }
 
     /**
@@ -585,7 +585,7 @@ class ApplicationTest extends TestCase
     public function testApplicationSetupWithCachedConfig(): void
     {
         // Get the config cache command
-        $configCacheCommand = $this->app->console()->matchCommand(ConfigCacheCommand::COMMAND);
+        $configCacheCommand = $this->app->console()->matchCommand(ConfigCache::COMMAND);
         // Run the config cache command
         $this->app->console()->dispatchCommand($configCacheCommand);
 

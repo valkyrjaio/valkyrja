@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Events\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotation\Models\Listener;
 
 /**
  * Test the listener model.
@@ -24,7 +24,7 @@ class ListenerTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Event\Annotations\Listener
+     * @var \Valkyrja\Event\Annotation\Models\Listener
      */
     protected $class;
 
@@ -76,7 +76,7 @@ class ListenerTest extends TestCase
      */
     public function testSetEventNull(): void
     {
-        $this->assertEquals(null, $this->class->setEvent(null) ?? null);
+        $this->assertEquals($this->class, $this->class->setEvent(null));
     }
 
     /**
@@ -86,6 +86,6 @@ class ListenerTest extends TestCase
      */
     public function testSetEvent(): void
     {
-        $this->assertEquals(null, $this->class->setEvent($this->value) ?? null);
+        $this->assertEquals($this->class, $this->class->setEvent($this->value));
     }
 }

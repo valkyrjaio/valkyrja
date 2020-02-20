@@ -13,12 +13,12 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Annotation\Enums;
 
-use Valkyrja\Console\Annotations\Command;
-use Valkyrja\Container\Annotations\Service;
-use Valkyrja\Container\Annotations\ServiceAlias;
-use Valkyrja\Container\Annotations\ServiceContext;
+use Valkyrja\Console\Annotation\Models\Command;
+use Valkyrja\Container\Annotation\Models\Service;
+use Valkyrja\Container\Annotation\Models\ServiceAlias;
+use Valkyrja\Container\Annotation\Models\ServiceContext;
 use Valkyrja\Enum\Enum;
-use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Routing\Annotation\Models\Route;
 
 /**
