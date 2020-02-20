@@ -13,6 +13,8 @@ declare(strict_types = 1);
 
 namespace Valkyrja\Console\Events;
 
+use Valkyrja\Console\Input;
+
 /**
  * Class ConsoleKernelHandled.
  *
@@ -37,8 +39,8 @@ class ConsoleKernelHandled
     /**
      * ConsoleKernelHandled constructor.
      *
-     * @param \Valkyrja\Console\Input $input
-     * @param int                     $exitCode
+     * @param Input $input
+     * @param int   $exitCode
      */
     public function __construct(Input $input, int $exitCode)
     {
