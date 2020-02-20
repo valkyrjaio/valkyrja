@@ -20,7 +20,6 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
@@ -77,14 +76,14 @@ interface Application
      * @param string $key     [optional] The variable to get
      * @param mixed  $default [optional] The default value to return
      *
-     * @return mixed|Env||config|Env
+     * @return mixed
      */
     public static function env(string $key = null, $default = null);
 
     /**
      * Get environment variables.
      *
-     * @return Env||config|Env
+     * @return string
      */
     public static function getEnv(): string;
 
