@@ -16,6 +16,7 @@ namespace Valkyrja\Console\Kernels;
 use Throwable;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Console;
+use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Events\ConsoleKernelHandled;
 use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input;
@@ -72,8 +73,6 @@ class Kernel implements KernelContract
      */
     public function handle(Input $input, Output $output): int
     {
-        $exitCode = 1;
-
         try {
             $exitCode = $this->console->dispatch($input, $output);
         } catch (Throwable $exception) {
@@ -83,6 +82,8 @@ class Kernel implements KernelContract
 
             // Log the error
             $this->app->logger()->error((string) $exception);
+
+            $exitCode = ExitCode::FAILURE;
         }
 
         $this->app->events()->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);
