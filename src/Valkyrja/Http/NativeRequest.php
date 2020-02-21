@@ -1182,5 +1182,4 @@ class NativeRequest implements Request
     {
         return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
     }
-
 }
