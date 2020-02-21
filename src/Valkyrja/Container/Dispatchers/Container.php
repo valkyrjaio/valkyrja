@@ -167,6 +167,11 @@ class Container implements ContainerContract
         string $context = null,
         string $member = null
     ): Service {
+        // If the context index is null then there's no context
+        if (null === $serviceContext->getId()) {
+            throw new InvalidContextException('Invalid context.');
+        }
+
         $service   = new ServiceModel();
         $serviceId = $this->contextServiceId($serviceContext->getId(), $context, $member);
 
