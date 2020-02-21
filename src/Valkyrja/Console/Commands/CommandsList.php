@@ -19,6 +19,8 @@ use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function strlen;
+
 /**
  * Class ConsoleCommands.
  *
@@ -143,23 +145,6 @@ class CommandsList extends Handler
     }
 
     /**
-     * Sort commands by name.
-     *
-     * @param array $commands The commands
-     *
-     * @return void
-     */
-    protected function sortCommands(array &$commands): void
-    {
-        usort(
-            $commands,
-            static function (Command $item1, Command $item2) {
-                return $item1->getName() <=> $item2->getName();
-            }
-        );
-    }
-
-    /**
      * The command section.
      *
      * @param Command $command         The current command
@@ -180,5 +165,22 @@ class CommandsList extends Handler
 
             $previousSection = $currentSection;
         }
+    }
+
+    /**
+     * Sort commands by name.
+     *
+     * @param array $commands The commands
+     *
+     * @return void
+     */
+    protected function sortCommands(array &$commands): void
+    {
+        usort(
+            $commands,
+            static function (Command $item1, Command $item2) {
+                return $item1->getName() <=> $item2->getName();
+            }
+        );
     }
 }

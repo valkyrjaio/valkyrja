@@ -45,13 +45,60 @@ class PHPMailerMail implements Mail
     /**
      * NativeMail constructor.
      *
-     * @param \Valkyrja\Application\Application $app
-     * @param PHPMailer                         $PHPMailer
+     * @param Application $app
+     * @param PHPMailer   $PHPMailer
      */
     public function __construct(Application $app, PHPMailer $PHPMailer)
     {
         $this->app       = $app;
         $this->PHPMailer = $PHPMailer;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Mail::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        // Create a new instance of the PHPMailer class
+        $PHPMailer = new PHPMailer(true);
+
+        // Enable verbose debug output
+        $PHPMailer->SMTPDebug = $app->debug() ? 2 : 0;
+        // Set mailer to use SMTP
+        $PHPMailer->isSMTP();
+        // Specify main and backup SMTP servers
+        $PHPMailer->Host = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::HOST];
+        // SMTP Port
+        $PHPMailer->Port = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PORT];
+        // Enable SMTP authentication
+        $PHPMailer->SMTPAuth = true;
+        // SMTP username
+        $PHPMailer->Username = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::USERNAME];
+        // SMTP password
+        $PHPMailer->Password = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PASSWORD];
+        // Enable TLS encryption, `ssl` also accepted
+        $PHPMailer->SMTPSecure = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::ENCRYPTION];
+
+        $app->container()->singleton(
+            Mail::class,
+            new static($app, $PHPMailer)
+        );
     }
 
     /**
@@ -194,52 +241,5 @@ class PHPMailerMail implements Mail
     public function send(): bool
     {
         return $this->PHPMailer->send();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Mail::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        // Create a new instance of the PHPMailer class
-        $PHPMailer = new PHPMailer(true);
-
-        // Enable verbose debug output
-        $PHPMailer->SMTPDebug = $app->debug() ? 2 : 0;
-        // Set mailer to use SMTP
-        $PHPMailer->isSMTP();
-        // Specify main and backup SMTP servers
-        $PHPMailer->Host = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::HOST];
-        // SMTP Port
-        $PHPMailer->Port = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PORT];
-        // Enable SMTP authentication
-        $PHPMailer->SMTPAuth = true;
-        // SMTP username
-        $PHPMailer->Username = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::USERNAME];
-        // SMTP password
-        $PHPMailer->Password = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::PASSWORD];
-        // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::ENCRYPTION];
-
-        $app->container()->singleton(
-            Mail::class,
-            new static($app, $PHPMailer)
-        );
     }
 }

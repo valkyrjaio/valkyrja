@@ -27,6 +27,8 @@ use Valkyrja\Event\Events;
 use Valkyrja\Event\Listener;
 use Valkyrja\Support\Cacheables\Cacheable;
 
+use function get_class;
+
 /**
  * Class Events.
  *
@@ -37,18 +39,17 @@ class NativeEvents implements Events
     use Cacheable;
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The event listeners.
      *
      * @var array
      */
     protected static array $events = [];
+    /**
+     * The application.
+     *
+     * @var Application
+     */
+    protected Application $app;
 
     /**
      * Events constructor.
@@ -58,6 +59,73 @@ class NativeEvents implements Events
     public function __construct(Application $application)
     {
         $this->app = $application;
+    }
+
+    /**
+     * Get the config.
+     *
+     * @return array
+     */
+    protected function getConfig(): array
+    {
+        return $this->app->config(ConfigKeyPart::EVENTS);
+    }
+
+    /**
+     * Set not cached.
+     *
+     * @return void
+     */
+    protected function setupNotCached(): void
+    {
+        self::$events = [];
+    }
+
+    /**
+     * Setup the events from cache.
+     *
+     * @return void
+     */
+    protected function setupFromCache(): void
+    {
+        // Set the application events with said file
+        $cache = $this->app->config(ConfigKey::CACHE_EVENTS)
+            ?? require $this->app->config(ConfigKey::EVENTS_CACHE_FILE_PATH);
+
+        self::$events = unserialize(
+            base64_decode($cache[ConfigKeyPart::EVENTS], true),
+            [
+                'allowed_classes' => [
+                    Listener::class,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Setup annotations.
+     *
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
+     *
+     * @return void
+     */
+    protected function setupAnnotations(): void
+    {
+        /** @var ListenerAnnotations $containerAnnotations */
+        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
+
+        // Get all the annotated listeners from the list of classes
+        $listeners = $containerAnnotations->getListeners(...$this->app->config(ConfigKey::EVENTS_CLASSES));
+
+        // Iterate through the listeners
+        foreach ($listeners as $listener) {
+            // Set the service
+            $this->listen($listener->getEvent(), $listener);
+        }
     }
 
     /**
@@ -242,7 +310,7 @@ class NativeEvents implements Events
     }
 
     /**
-     * Trigger an event interface.
+     * Trigger an event.
      *
      * @param Event $event The event
      *
@@ -273,73 +341,6 @@ class NativeEvents implements Events
     public function set(array $events): void
     {
         self::$events = $events;
-    }
-
-    /**
-     * Get the config.
-     *
-     * @return array
-     */
-    protected function getConfig(): array
-    {
-        return $this->app->config(ConfigKeyPart::EVENTS);
-    }
-
-    /**
-     * Set not cached.
-     *
-     * @return void
-     */
-    protected function setupNotCached(): void
-    {
-        self::$events = [];
-    }
-
-    /**
-     * Setup the events from cache.
-     *
-     * @return void
-     */
-    protected function setupFromCache(): void
-    {
-        // Set the application events with said file
-        $cache = $this->app->config(ConfigKey::CACHE_EVENTS)
-            ?? require $this->app->config(ConfigKey::EVENTS_CACHE_FILE_PATH);
-
-        self::$events = unserialize(
-            base64_decode($cache[ConfigKeyPart::EVENTS], true),
-            [
-                'allowed_classes' => [
-                    Listener::class,
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Setup annotations.
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
-     */
-    protected function setupAnnotations(): void
-    {
-        /** @var ListenerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
-
-        // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(...$this->app->config(ConfigKey::EVENTS_CLASSES));
-
-        // Iterate through the listeners
-        foreach ($listeners as $listener) {
-            // Set the service
-            $this->listen($listener->getEvent(), $listener);
-        }
     }
 
     /**

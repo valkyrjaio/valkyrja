@@ -31,6 +31,35 @@ use Valkyrja\Console\Models\Command as CommandModel;
 class CommandAnnotations extends Annotations implements CommandAnnotationsContract
 {
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            CommandAnnotationsContract::class,
+        ];
+    }
+
+    /**
+     * Bind the command annotations.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            CommandAnnotationsContract::class,
+            new static(
+                $app->container()->getSingleton(AnnotationsParser::class)
+            )
+        );
+    }
+
+    /**
      * Get the commands.
      *
      * @param string ...$classes The classes
@@ -106,34 +135,5 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
     protected function getCommandFromAnnotation(Command $command): CommandContract
     {
         return CommandModel::fromArray($command->asArray());
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            CommandAnnotationsContract::class,
-        ];
-    }
-
-    /**
-     * Bind the command annotations.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            CommandAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
-        );
     }
 }

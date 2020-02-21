@@ -18,6 +18,9 @@ use Valkyrja\Console\Input as InputContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
 
+use function in_array;
+use function is_array;
+
 /**
  * Class Input.
  *
@@ -72,6 +75,78 @@ class Input implements InputContract
         $this->request = $request;
 
         $this->parseRequestArguments();
+    }
+
+    /**
+     * Parse request arguments to split by options and arguments.
+     *
+     * @return void
+     */
+    protected function parseRequestArguments(): void
+    {
+        // Iterate through the request arguments
+        foreach ($this->getRequestArguments() as $argument) {
+            // Split the string on an equal sign
+            $exploded = explode('=', $argument);
+
+            $key   = $exploded[0];
+            $value = $exploded[1] ?? true;
+            $type  = 'arguments';
+
+            // If the key has double dash it is a long option
+            if (strpos($key, '--') !== false) {
+                $type = 'longOptions';
+            } // If the key has a single dash it is a short option
+            elseif (strpos($key, '-') !== false) {
+                $type = 'shortOptions';
+            }
+
+            // If the key is already set
+            if (isset($this->{$type}[$key])) {
+                // If the key isn't already an array
+                if (! is_array($this->{$type}[$key])) {
+                    // Make it an array with the current value
+                    $this->{$type}[$key] = [$this->{$type}[$key]];
+                }
+
+                // Add the next value to the array
+                $this->{$type}[$key][] = $value;
+
+                continue;
+            }
+
+            // Set the key value pair
+            $this->{$type}[$key] = $value;
+        }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            InputContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            InputContract::class,
+            new static(
+                $app->request()
+            )
+        );
     }
 
     /**
@@ -150,49 +225,6 @@ class Input implements InputContract
         array_shift($arguments);
 
         return $this->requestArguments = $arguments;
-    }
-
-    /**
-     * Parse request arguments to split by options and arguments.
-     *
-     * @return void
-     */
-    protected function parseRequestArguments(): void
-    {
-        // Iterate through the request arguments
-        foreach ($this->getRequestArguments() as $argument) {
-            // Split the string on an equal sign
-            $exploded = explode('=', $argument);
-
-            $key   = $exploded[0];
-            $value = $exploded[1] ?? true;
-            $type  = 'arguments';
-
-            // If the key has double dash it is a long option
-            if (strpos($key, '--') !== false) {
-                $type = 'longOptions';
-            } // If the key has a single dash it is a short option
-            elseif (strpos($key, '-') !== false) {
-                $type = 'shortOptions';
-            }
-
-            // If the key is already set
-            if (isset($this->{$type}[$key])) {
-                // If the key isn't already an array
-                if (! is_array($this->{$type}[$key])) {
-                    // Make it an array with the current value
-                    $this->{$type}[$key] = [$this->{$type}[$key]];
-                }
-
-                // Add the next value to the array
-                $this->{$type}[$key][] = $value;
-
-                continue;
-            }
-
-            // Set the key value pair
-            $this->{$type}[$key] = $value;
-        }
     }
 
     /**
@@ -320,34 +352,5 @@ class Input implements InputContract
             '-V',
             '--version',
         ];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            InputContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            InputContract::class,
-            new static(
-                $app->request()
-            )
-        );
     }
 }

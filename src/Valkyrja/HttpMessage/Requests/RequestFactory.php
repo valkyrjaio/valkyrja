@@ -30,6 +30,11 @@ use Valkyrja\HttpMessage\Streams\Stream;
 use Valkyrja\HttpMessage\Uri;
 use Valkyrja\HttpMessage\Uris\Uri as HttpUri;
 
+use function array_key_exists;
+use function is_array;
+use function is_callable;
+use function strlen;
+
 /**
  * Abstract Class RequestFactory.
  *
@@ -99,49 +104,6 @@ abstract class RequestFactory
             $files,
             static::marshalProtocolVersion($server)
         );
-    }
-
-    /**
-     * Access a value in an array, returning a default value if not found.
-     * Will also do a case-insensitive search if a case sensitive search fails.
-     *
-     * @param string $key
-     * @param array  $values
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public static function get($key, array $values, $default = null)
-    {
-        if (array_key_exists($key, $values)) {
-            return $values[$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * Search for a header value.
-     * Does a case-insensitive search for a matching header.
-     * If found, it is returned as a string, using comma concatenation.
-     * If not, the $default is returned.
-     *
-     * @param string $header
-     * @param array  $headers
-     * @param mixed  $default
-     *
-     * @return string
-     */
-    public static function getHeader(string $header, array $headers, $default = null): string
-    {
-        $header  = strtolower($header);
-        $headers = array_change_key_case($headers, CASE_LOWER);
-
-        if (array_key_exists($header, $headers)) {
-            return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
-        }
-
-        return (string) ($default ?? '');
     }
 
     /**
@@ -256,6 +218,42 @@ abstract class RequestFactory
     }
 
     /**
+     * Parse a cookie header according to RFC 6265.
+     * PHP will replace special characters in cookie names, which results in other cookies not being available due to
+     * overwriting. Thus, the server request should take the cookies from the request header instead.
+     *
+     * @param string $cookieHeader
+     *
+     * @return array
+     */
+    private static function parseCookieHeader(string $cookieHeader): array
+    {
+        preg_match_all(
+            '(
+            (?:^\\n?[ \t]*|;[ ])
+            (?P<name>[!#$%&\'*+\-.0-9A-Z^_`a-z|~]+)
+            =
+            (?P<DQUOTE>"?)
+                (?P<value>[\x21\x23-\x2b\x2d-\x3a\x3c-\x5b\x5d-\x7e]*)
+            (?P=DQUOTE)
+            (?=\\n?[ \t]*$|;[ ])
+        )x',
+            $cookieHeader,
+            $matches,
+            PREG_SET_ORDER
+        );
+
+        $cookies = [];
+
+        /** @var array $matches */
+        foreach ($matches as $match) {
+            $cookies[$match['name']] = urldecode($match['value']);
+        }
+
+        return $cookies;
+    }
+
+    /**
      * Marshal the URI from the $_SERVER array and headers.
      *
      * @param array $server
@@ -321,6 +319,103 @@ abstract class RequestFactory
         }
 
         return $uri->withPath($path)->withFragment($fragment)->withQuery($query);
+    }
+
+    /**
+     * Access a value in an array, returning a default value if not found.
+     * Will also do a case-insensitive search if a case sensitive search fails.
+     *
+     * @param string $key
+     * @param array  $values
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public static function get($key, array $values, $default = null)
+    {
+        if (array_key_exists($key, $values)) {
+            return $values[$key];
+        }
+
+        return $default;
+    }
+
+    /**
+     * Return HTTP protocol version (X.Y).
+     *
+     * @param array $server
+     *
+     * @throws UnexpectedValueException
+     *
+     * @return string
+     */
+    protected static function marshalProtocolVersion(array $server): string
+    {
+        if (! isset($server['SERVER_PROTOCOL'])) {
+            return '1.1';
+        }
+
+        if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
+            throw new UnexpectedValueException(
+                sprintf(
+                    'Unrecognized protocol version (%s)',
+                    $server['SERVER_PROTOCOL']
+                )
+            );
+        }
+
+        return $matches['version'];
+    }
+
+    /**
+     * Create and return an UploadedFile instance from a $_FILES specification.
+     * If the specification represents an array of values, this method will
+     * delegate to normalizeNestedFileSpec() and return that return value.
+     *
+     * @param array $value $_FILES struct
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array|UploadedFile
+     */
+    private static function createUploadedFileFromSpec(array $value)
+    {
+        if (is_array($value['tmp_name'])) {
+            return self::normalizeNestedFileSpec($value);
+        }
+
+        return new UploadedFile(
+            $value['size'],
+            $value['error'],
+            $value['tmp_name'],
+            null,
+            $value['name'],
+            $value['type']
+        );
+    }
+
+    /**
+     * Search for a header value.
+     * Does a case-insensitive search for a matching header.
+     * If found, it is returned as a string, using comma concatenation.
+     * If not, the $default is returned.
+     *
+     * @param string $header
+     * @param array  $headers
+     * @param mixed  $default
+     *
+     * @return string
+     */
+    public static function getHeader(string $header, array $headers, $default = null): string
+    {
+        $header  = strtolower($header);
+        $headers = array_change_key_case($headers, CASE_LOWER);
+
+        if (array_key_exists($header, $headers)) {
+            return is_array($headers[$header]) ? implode(', ', $headers[$header]) : $headers[$header];
+        }
+
+        return (string) ($default ?? '');
     }
 
     /**
@@ -429,6 +524,35 @@ abstract class RequestFactory
     }
 
     /**
+     * Normalize an array of file specifications.
+     * Loops through all nested files and returns a normalized array of
+     * UploadedFileInterface instances.
+     *
+     * @param array $files
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return UploadedFile[]
+     */
+    private static function normalizeNestedFileSpec(array $files = []): array
+    {
+        $normalizedFiles = [];
+
+        foreach (array_keys($files['tmp_name']) as $key) {
+            $spec                  = [
+                'tmp_name' => $files['tmp_name'][$key],
+                'size'     => $files['size'][$key],
+                'error'    => $files['error'][$key],
+                'name'     => $files['name'][$key],
+                'type'     => $files['type'][$key],
+            ];
+            $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
+        }
+
+        return $normalizedFiles;
+    }
+
+    /**
      * Marshal the host and port from the request header.
      *
      * @param stdClass     $accumulator
@@ -470,124 +594,5 @@ abstract class RequestFactory
             // Unset the port so the default port can be used
             $accumulator->port = null;
         }
-    }
-
-    /**
-     * Create and return an UploadedFile instance from a $_FILES specification.
-     * If the specification represents an array of values, this method will
-     * delegate to normalizeNestedFileSpec() and return that return value.
-     *
-     * @param array $value $_FILES struct
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array|UploadedFile
-     */
-    private static function createUploadedFileFromSpec(array $value)
-    {
-        if (is_array($value['tmp_name'])) {
-            return self::normalizeNestedFileSpec($value);
-        }
-
-        return new UploadedFile(
-            $value['size'],
-            $value['error'],
-            $value['tmp_name'],
-            null,
-            $value['name'],
-            $value['type']
-        );
-    }
-
-    /**
-     * Normalize an array of file specifications.
-     * Loops through all nested files and returns a normalized array of
-     * UploadedFileInterface instances.
-     *
-     * @param array $files
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return UploadedFile[]
-     */
-    private static function normalizeNestedFileSpec(array $files = []): array
-    {
-        $normalizedFiles = [];
-
-        foreach (array_keys($files['tmp_name']) as $key) {
-            $spec                  = [
-                'tmp_name' => $files['tmp_name'][$key],
-                'size'     => $files['size'][$key],
-                'error'    => $files['error'][$key],
-                'name'     => $files['name'][$key],
-                'type'     => $files['type'][$key],
-            ];
-            $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
-        }
-
-        return $normalizedFiles;
-    }
-
-    /**
-     * Return HTTP protocol version (X.Y).
-     *
-     * @param array $server
-     *
-     * @throws UnexpectedValueException
-     *
-     * @return string
-     */
-    protected static function marshalProtocolVersion(array $server): string
-    {
-        if (! isset($server['SERVER_PROTOCOL'])) {
-            return '1.1';
-        }
-
-        if (! preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $server['SERVER_PROTOCOL'], $matches)) {
-            throw new UnexpectedValueException(
-                sprintf(
-                    'Unrecognized protocol version (%s)',
-                    $server['SERVER_PROTOCOL']
-                )
-            );
-        }
-
-        return $matches['version'];
-    }
-
-    /**
-     * Parse a cookie header according to RFC 6265.
-     * PHP will replace special characters in cookie names, which results in other cookies not being available due to
-     * overwriting. Thus, the server request should take the cookies from the request header instead.
-     *
-     * @param string $cookieHeader
-     *
-     * @return array
-     */
-    private static function parseCookieHeader(string $cookieHeader): array
-    {
-        preg_match_all(
-            '(
-            (?:^\\n?[ \t]*|;[ ])
-            (?P<name>[!#$%&\'*+\-.0-9A-Z^_`a-z|~]+)
-            =
-            (?P<DQUOTE>"?)
-                (?P<value>[\x21\x23-\x2b\x2d-\x3a\x3c-\x5b\x5d-\x7e]*)
-            (?P=DQUOTE)
-            (?=\\n?[ \t]*$|;[ ])
-        )x',
-            $cookieHeader,
-            $matches,
-            PREG_SET_ORDER
-        );
-
-        $cookies = [];
-
-        /** @var array $matches */
-        foreach ($matches as $match) {
-            $cookies[$match['name']] = urldecode($match['value']);
-        }
-
-        return $cookies;
     }
 }

@@ -15,6 +15,8 @@ namespace Valkyrja\Http;
 
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 
+use function in_array;
+
 /**
  * Class Cookie.
  *
@@ -167,11 +169,11 @@ class Cookie
             $str .= '; domain=' . $this->domain;
         }
 
-        if (true === $this->secure) {
+        if ($this->secure) {
             $str .= '; secure';
         }
 
-        if (true === $this->httpOnly) {
+        if ($this->httpOnly) {
             $str .= '; httponly';
         }
 
@@ -180,6 +182,16 @@ class Cookie
         }
 
         return $str;
+    }
+
+    /**
+     * Gets the max age of the cookie.
+     *
+     * @return int
+     */
+    public function getMaxAge(): int
+    {
+        return 0 !== $this->expire ? $this->expire - time() : 0;
     }
 
     /**
@@ -238,16 +250,6 @@ class Cookie
     public function getExpire(): int
     {
         return $this->expire;
-    }
-
-    /**
-     * Gets the max age of the cookie.
-     *
-     * @return int
-     */
-    public function getMaxAge(): int
-    {
-        return 0 !== $this->expire ? $this->expire - time() : 0;
     }
 
     /**

@@ -139,6 +139,109 @@ class Uri implements UriContract
     }
 
     /**
+     * Validate a scheme.
+     *
+     * @param string $scheme The scheme
+     *
+     * @throws InvalidScheme
+     *
+     * @return string
+     */
+    protected function validateScheme(string $scheme): string
+    {
+        $scheme = strtolower($scheme);
+        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
+
+        if (! $scheme) {
+            return '';
+        }
+
+        if (static::HTTP_SCHEME !== $scheme && $scheme !== static::HTTPS_SCHEME) {
+            throw new InvalidScheme(
+                sprintf('Invalid scheme "%s" specified; must be either "http" or "https"', $scheme)
+            );
+        }
+
+        return $scheme;
+    }
+
+    /**
+     * Validate a path.
+     *
+     * @param string $path The path
+     *
+     * @throws InvalidPath
+     *
+     * @return string
+     */
+    protected function validatePath(string $path): string
+    {
+        if (strpos($path, '?') !== false) {
+            throw new InvalidPath('Invalid path provided; must not contain a query string');
+        }
+
+        if (strpos($path, '#') !== false) {
+            throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
+        }
+
+        // TODO: Filter path
+
+        return '/' . ltrim($path, '/');
+    }
+
+    /**
+     * Validate a query.
+     *
+     * @param string $query The query
+     *
+     * @throws InvalidQuery
+     *
+     * @return string
+     */
+    protected function validateQuery(string $query): string
+    {
+        if (strpos($query, '#') !== false) {
+            throw new InvalidQuery('Query string must not include a URI fragment');
+        }
+
+        // TODO: Filter query
+
+        return $query;
+    }
+
+    /**
+     * Validate a fragment.
+     *
+     * @param string $fragment The fragment
+     *
+     * @return string
+     */
+    protected function validateFragment(string $fragment): string
+    {
+        // TODO: Filter fragment
+
+        return $fragment;
+    }
+
+    /**
+     * Validate a port.
+     *
+     * @param int $port The port
+     *
+     * @throws InvalidPort
+     *
+     * @return void
+     */
+    protected function validatePort(int $port = null): void
+    {
+        if ($port !== null && ($port < 1 || $port > 65535)) {
+            throw new InvalidPort(
+                sprintf('Invalid port "%d" specified; must be a valid TCP/UDP port', $port)
+            );
+        }
+    }
+
+    /**
      * Retrieve the scheme component of the URI.
      * If no scheme is present, this method MUST return an empty string.
      * The value returned MUST be normalized to lowercase, per RFC 3986
@@ -668,108 +771,5 @@ class Uri implements UriContract
 
         return (static::HTTP_SCHEME === $this->scheme && $this->port === static::HTTP_PORT)
             || (static::HTTPS_SCHEME === $this->scheme && $this->port === static::HTTPS_PORT);
-    }
-
-    /**
-     * Validate a scheme.
-     *
-     * @param string $scheme The scheme
-     *
-     * @throws InvalidScheme
-     *
-     * @return string
-     */
-    protected function validateScheme(string $scheme): string
-    {
-        $scheme = strtolower($scheme);
-        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
-
-        if (! $scheme) {
-            return '';
-        }
-
-        if (static::HTTP_SCHEME !== $scheme && $scheme !== static::HTTPS_SCHEME) {
-            throw new InvalidScheme(
-                sprintf('Invalid scheme "%s" specified; must be either "http" or "https"', $scheme)
-            );
-        }
-
-        return $scheme;
-    }
-
-    /**
-     * Validate a port.
-     *
-     * @param int $port The port
-     *
-     * @throws InvalidPort
-     *
-     * @return void
-     */
-    protected function validatePort(int $port = null): void
-    {
-        if ($port !== null && ($port < 1 || $port > 65535)) {
-            throw new InvalidPort(
-                sprintf('Invalid port "%d" specified; must be a valid TCP/UDP port', $port)
-            );
-        }
-    }
-
-    /**
-     * Validate a path.
-     *
-     * @param string $path The path
-     *
-     * @throws InvalidPath
-     *
-     * @return string
-     */
-    protected function validatePath(string $path): string
-    {
-        if (strpos($path, '?') !== false) {
-            throw new InvalidPath('Invalid path provided; must not contain a query string');
-        }
-
-        if (strpos($path, '#') !== false) {
-            throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
-        }
-
-        // TODO: Filter path
-
-        return '/' . ltrim($path, '/');
-    }
-
-    /**
-     * Validate a query.
-     *
-     * @param string $query The query
-     *
-     * @throws InvalidQuery
-     *
-     * @return string
-     */
-    protected function validateQuery(string $query): string
-    {
-        if (strpos($query, '#') !== false) {
-            throw new InvalidQuery('Query string must not include a URI fragment');
-        }
-
-        // TODO: Filter query
-
-        return $query;
-    }
-
-    /**
-     * Validate a fragment.
-     *
-     * @param string $fragment The fragment
-     *
-     * @return string
-     */
-    protected function validateFragment(string $fragment): string
-    {
-        // TODO: Filter fragment
-
-        return $fragment;
     }
 }

@@ -18,6 +18,8 @@ use RuntimeException;
 use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Console\StreamOutput as StreamOutputContract;
 
+use function is_resource;
+
 /**
  * Class StreamOutput.
  *

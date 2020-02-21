@@ -56,6 +56,35 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     protected string $contextServicesAnnotationType = 'ServiceContext';
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            ContainerAnnotationsContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            ContainerAnnotationsContract::class,
+            new static(
+                $app->container()->getSingleton(AnnotationsParser::class)
+            )
+        );
+    }
+
+    /**
      * Get the services.
      *
      * @param string ...$classes The classes
@@ -187,34 +216,5 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     protected function getServiceContextFromAnnotation(ServiceContext $service): ContextServiceContract
     {
         return ContextServiceModel::fromArray($service->asArray());
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            ContainerAnnotationsContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            ContainerAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
-        );
     }
 }

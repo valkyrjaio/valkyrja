@@ -154,45 +154,6 @@ class Container implements ContainerContract
     }
 
     /**
-     * Get a service model from a context model.
-     *
-     * @param ServiceContext $serviceContext The service context
-     * @param string         $context        [optional] The context class or function
-     * @param string         $member         [optional] The member
-     *
-     * @return Service
-     */
-    protected function getServiceFromContext(
-        ServiceContext $serviceContext,
-        string $context = null,
-        string $member = null
-    ): Service {
-        // If the context index is null then there's no context
-        if (null === $serviceContext->getId()) {
-            throw new InvalidContextException('Invalid context.');
-        }
-
-        $service   = new ServiceModel();
-        $serviceId = $this->contextServiceId($serviceContext->getId(), $context, $member);
-
-        $service
-            ->setId($serviceId)
-            ->setSingleton($serviceContext->isSingleton())
-            ->setDefaults($serviceContext->getDefaults())
-            ->setName($serviceContext->getName())
-            ->setClass($serviceContext->getContextClass())
-            ->setProperty($serviceContext->getContextProperty())
-            ->setMethod($serviceContext->getContextMethod())
-            ->setFunction($serviceContext->getContextFunction())
-            ->setClosure($serviceContext->getContextClosure())
-            ->setArguments($serviceContext->getArguments())
-            ->setDependencies($serviceContext->getDependencies())
-            ->setStatic($serviceContext->isStatic());
-
-        return $service;
-    }
-
-    /**
      * Bind a singleton to the container.
      *
      * @param string $serviceId The service
@@ -411,5 +372,44 @@ class Container implements ContainerContract
         // service@method
         // service@class::method
         return $index;
+    }
+
+    /**
+     * Get a service model from a context model.
+     *
+     * @param ServiceContext $serviceContext The service context
+     * @param string         $context        [optional] The context class or function
+     * @param string         $member         [optional] The member
+     *
+     * @return Service
+     */
+    protected function getServiceFromContext(
+        ServiceContext $serviceContext,
+        string $context = null,
+        string $member = null
+    ): Service {
+        // If the context index is null then there's no context
+        if (null === $serviceContext->getId()) {
+            throw new InvalidContextException('Invalid context.');
+        }
+
+        $service   = new ServiceModel();
+        $serviceId = $this->contextServiceId($serviceContext->getId(), $context, $member);
+
+        $service
+            ->setId($serviceId)
+            ->setSingleton($serviceContext->isSingleton())
+            ->setDefaults($serviceContext->getDefaults())
+            ->setName($serviceContext->getName())
+            ->setClass($serviceContext->getContextClass())
+            ->setProperty($serviceContext->getContextProperty())
+            ->setMethod($serviceContext->getContextMethod())
+            ->setFunction($serviceContext->getContextFunction())
+            ->setClosure($serviceContext->getContextClosure())
+            ->setArguments($serviceContext->getArguments())
+            ->setDependencies($serviceContext->getDependencies())
+            ->setStatic($serviceContext->isStatic());
+
+        return $service;
     }
 }

@@ -103,6 +103,15 @@ interface Request
     ): self;
 
     /**
+     * Gets the mime types associated with the format.
+     *
+     * @param string $format The format
+     *
+     * @return array
+     */
+    public static function getMimeTypes(string $format): array;
+
+    /**
      * Returns the request as a string.
      *
      * @return string The request
@@ -301,6 +310,8 @@ interface Request
      */
     public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
 
+    // : mixed;
+
     /**
      * Gets a "parameter" value from any bag.
      *
@@ -311,8 +322,6 @@ interface Request
      * @return mixed
      */
     public function get(string $key, $default = null);
-
-    // : mixed;
 
     /**
      * Returns current script name.
@@ -455,15 +464,6 @@ interface Request
      * @return string
      */
     public function getMimeType(string $format): string;
-
-    /**
-     * Gets the mime types associated with the format.
-     *
-     * @param string $format The format
-     *
-     * @return array
-     */
-    public static function getMimeTypes(string $format): array;
 
     /**
      * Gets the format associated with the mime type.

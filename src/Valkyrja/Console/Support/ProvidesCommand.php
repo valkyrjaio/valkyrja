@@ -39,18 +39,6 @@ trait ProvidesCommand
     }
 
     /**
-     * Get the command names.
-     *
-     * @return array
-     */
-    public static function commands(): array
-    {
-        return [
-            static::COMMAND,
-        ];
-    }
-
-    /**
      * Publish the command.
      *
      * @param Application $app The application
@@ -66,5 +54,17 @@ trait ProvidesCommand
                 ->setDescription(static::SHORT_DESCRIPTION)
                 ->setClass(static::class)
         );
+    }
+
+    /**
+     * Get the command names.
+     *
+     * @return array
+     */
+    public static function commands(): array
+    {
+        return [
+            static::COMMAND,
+        ];
     }
 }

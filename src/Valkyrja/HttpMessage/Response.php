@@ -62,7 +62,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withStatus(int $code, string $reasonPhrase = null);
+    public function withStatus(int $code, string $reasonPhrase = null): self;
 
     /**
      * Gets the response reason phrase associated with the status code.

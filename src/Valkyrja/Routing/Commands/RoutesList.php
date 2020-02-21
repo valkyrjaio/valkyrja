@@ -20,6 +20,8 @@ use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Routing\Route;
 
+use function strlen;
+
 /**
  * Class RoutesListCommand.
  *
@@ -160,6 +162,20 @@ class RoutesList extends Handler
     }
 
     /**
+     * Format odd rows.
+     *
+     * @param bool $odd
+     *
+     * @return string
+     */
+    protected function oddFormat(bool $odd): string
+    {
+        return $odd
+            ? static::INVERT_FORMAT . static::CYAN_FORMAT
+            : static::INVERT_FORMAT . static::LIGHT_CYAN_FORMAT;
+    }
+
+    /**
      * Output the header message.
      *
      * @param array $headerTexts The header texts
@@ -180,12 +196,5 @@ class RoutesList extends Handler
             . ' |';
 
         output()->writeMessage($headerMessage, true);
-    }
-
-    protected function oddFormat(bool $odd): string
-    {
-        return $odd
-            ? static::INVERT_FORMAT . static::CYAN_FORMAT
-            : static::INVERT_FORMAT . static::LIGHT_CYAN_FORMAT;
     }
 }

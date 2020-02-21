@@ -21,6 +21,8 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
 
+use function get_class;
+
 /**
  * Class Repository.
  *

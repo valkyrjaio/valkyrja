@@ -40,12 +40,17 @@ class FlyFilesystem implements Filesystem
     use Provides;
 
     /**
+     * The adapters.
+     *
+     * @var AdapterInterface[]
+     */
+    protected static array $adapters = [];
+    /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
-
     /**
      * The Fly Filesystem.
      *
@@ -54,17 +59,10 @@ class FlyFilesystem implements Filesystem
     protected FlySystem $flySystem;
 
     /**
-     * The adapters.
-     *
-     * @var AdapterInterface[]
-     */
-    protected static array $adapters = [];
-
-    /**
      * FlyFilesystem constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
-     * @param FilesystemInterface|null          $flySystem   [optional] The FlyFilesystem
+     * @param Application              $application The application
+     * @param FilesystemInterface|null $flySystem   [optional] The FlyFilesystem
      */
     public function __construct(Application $application, FilesystemInterface $flySystem = null)
     {
@@ -73,6 +71,45 @@ class FlyFilesystem implements Filesystem
             ?? new FlySystem(
                 $this->flyAdapter($this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::DEFAULT])
             );
+    }
+
+    /**
+     * Get a flysystem abstract adapter.
+     *
+     * @param string $adapter The adapter
+     *
+     * @return AbstractAdapter
+     */
+    protected function flyAdapter(string $adapter): AbstractAdapter
+    {
+        return $this->{$adapter . 'Adapter'}();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Filesystem::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Filesystem::class,
+            new static($app)
+        );
     }
 
     /**
@@ -416,18 +453,6 @@ class FlyFilesystem implements Filesystem
     }
 
     /**
-     * Get a flysystem abstract adapter.
-     *
-     * @param string $adapter The adapter
-     *
-     * @return AbstractAdapter
-     */
-    protected function flyAdapter(string $adapter): AbstractAdapter
-    {
-        return $this->{$adapter . 'Adapter'}();
-    }
-
-    /**
      * Get the local filesystem.
      *
      * @throws LogicException
@@ -437,6 +462,18 @@ class FlyFilesystem implements Filesystem
     public function local(): Filesystem
     {
         return new static($this->app, new FlySystem($this->localAdapter()));
+    }
+
+    /**
+     * Get the s3 filesystem.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return Filesystem
+     */
+    public function s3(): Filesystem
+    {
+        return new static($this->app, new FlySystem($this->s3Adapter()));
     }
 
     /**
@@ -453,18 +490,6 @@ class FlyFilesystem implements Filesystem
                 $this->app->config(
                 )[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::LOCAL][ConfigKeyPart::DIR]
             );
-    }
-
-    /**
-     * Get the s3 filesystem.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return Filesystem
-     */
-    public function s3(): Filesystem
-    {
-        return new static($this->app, new FlySystem($this->s3Adapter()));
     }
 
     /**
@@ -495,32 +520,5 @@ class FlyFilesystem implements Filesystem
         );
 
         return self::$adapters[ConfigKeyPart::S3];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Filesystem::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Filesystem::class,
-            new static($app)
-        );
     }
 }

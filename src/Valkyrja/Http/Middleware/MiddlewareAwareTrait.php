@@ -173,7 +173,7 @@ trait MiddlewareAwareTrait
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application\Application
+     * @return Application
      */
     abstract protected function getApplication(): Application;
 }

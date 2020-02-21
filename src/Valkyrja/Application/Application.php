@@ -56,16 +56,6 @@ interface Application
     public const VERSION = '1.0';
 
     /**
-     * Setup the application.
-     *
-     * @param array $config [optional] The config to use
-     * @param bool  $force  [optional] Whether to force a setup
-     *
-     * @return void
-     */
-    public function setup(array $config = null, bool $force = false): void;
-
-    /**
      * Get the application instance.
      *
      * @return Application
@@ -97,6 +87,16 @@ interface Application
      * @return void
      */
     public static function setEnv(string $env = null): void;
+
+    /**
+     * Setup the application.
+     *
+     * @param array $config [optional] The config to use
+     * @param bool  $force  [optional] Whether to force a setup
+     *
+     * @return void
+     */
+    public function setup(array $config = null, bool $force = false): void;
 
     /**
      * Get the config.

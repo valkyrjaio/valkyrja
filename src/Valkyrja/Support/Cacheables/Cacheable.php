@@ -72,6 +72,13 @@ trait Cacheable
     }
 
     /**
+     * Get a cacheable representation of the data.
+     *
+     * @return array
+     */
+    abstract public function getCacheable(): array;
+
+    /**
      * Get the config.
      *
      * @return array
@@ -126,16 +133,6 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @return void
-     */
-    protected function setupAnnotations(): void
-    {
-        // Override as necessary
-    }
-
-    /**
-     * Set annotations.
-     *
      * @param array $config
      *
      * @return void
@@ -156,9 +153,12 @@ trait Cacheable
     }
 
     /**
-     * Get a cacheable representation of the data.
+     * Set annotations.
      *
-     * @return array
+     * @return void
      */
-    abstract public function getCacheable(): array;
+    protected function setupAnnotations(): void
+    {
+        // Override as necessary
+    }
 }

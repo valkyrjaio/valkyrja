@@ -31,7 +31,7 @@ class PhpView implements View
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
@@ -125,6 +125,32 @@ class PhpView implements View
         $this->setVariables($variables);
         $this->setTemplateDir($this->app->config(ConfigKey::VIEWS_DIR));
         $this->template($template ?? $this->template);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            View::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidConfigPath
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(View::class, new static($app));
     }
 
     /**
@@ -539,31 +565,5 @@ class PhpView implements View
         }
 
         return $renderedLayout;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            View::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(View::class, new static($app));
     }
 }

@@ -152,18 +152,6 @@ trait ClassDispatcher
     }
 
     /**
-     * Determine if a dispatch has a class/method set.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function hasValidClassMethod(Dispatch $dispatch): bool
-    {
-        return $this->hasValidClass($dispatch) && null !== $dispatch->getMethod();
-    }
-
-    /**
      * Determine if a dispatch's class/method combination is invalid.
      *
      * @param Dispatch $dispatch The dispatch
@@ -176,15 +164,27 @@ trait ClassDispatcher
     }
 
     /**
-     * Determine if a dispatch has a class/property set.
+     * Determine if a dispatch has a class/method set.
      *
      * @param Dispatch $dispatch The dispatch
      *
      * @return bool
      */
-    protected function hasValidClassProperty(Dispatch $dispatch): bool
+    protected function hasValidClassMethod(Dispatch $dispatch): bool
     {
-        return $this->hasValidClass($dispatch) && null !== $dispatch->getProperty();
+        return $this->hasValidClass($dispatch) && null !== $dispatch->getMethod();
+    }
+
+    /**
+     * Determine if a dispatch has a class set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidClass(Dispatch $dispatch): bool
+    {
+        return null !== $dispatch->getClass();
     }
 
     /**
@@ -201,15 +201,15 @@ trait ClassDispatcher
     }
 
     /**
-     * Determine if a dispatch has a class set.
+     * Determine if a dispatch has a class/property set.
      *
      * @param Dispatch $dispatch The dispatch
      *
      * @return bool
      */
-    protected function hasValidClass(Dispatch $dispatch): bool
+    protected function hasValidClassProperty(Dispatch $dispatch): bool
     {
-        return null !== $dispatch->getClass();
+        return $this->hasValidClass($dispatch) && null !== $dispatch->getProperty();
     }
 
     /**

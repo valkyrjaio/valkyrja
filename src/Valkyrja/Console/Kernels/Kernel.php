@@ -62,6 +62,36 @@ class Kernel implements KernelContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::CONSOLE_KERNEL,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Contract::CONSOLE_KERNEL,
+            new static(
+                $app,
+                $app->console()
+            )
+        );
+    }
+
+    /**
      * Handle a console input.
      *
      * @param Input  $input  The input
@@ -135,35 +165,5 @@ class Kernel implements KernelContract
         $this->terminate($input, $exitCode);
 
         return $exitCode;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::CONSOLE_KERNEL,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Contract::CONSOLE_KERNEL,
-            new static(
-                $app,
-                $app->console()
-            )
-        );
     }
 }

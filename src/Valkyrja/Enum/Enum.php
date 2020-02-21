@@ -18,6 +18,13 @@ use InvalidArgumentException;
 use JsonSerializable;
 use ReflectionClass;
 
+use function array_key_exists;
+use function defined;
+use function get_class;
+use function in_array;
+use function is_array;
+use function is_object;
+
 /**
  * Class Enum.
  *

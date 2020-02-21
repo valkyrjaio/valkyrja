@@ -17,6 +17,8 @@ use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Enums\Constant;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 
+use function is_callable;
+
 /**
  * Trait CallableDispatcher.
  *
@@ -91,18 +93,6 @@ trait CallableDispatcher
     }
 
     /**
-     * Determine if a dispatch has a function set.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @return bool
-     */
-    protected function hasValidFunction(Dispatch $dispatch): bool
-    {
-        return null !== $dispatch->getFunction();
-    }
-
-    /**
      * Determine if a dispatch's function is invalid.
      *
      * @param Dispatch $dispatch The dispatch
@@ -112,6 +102,18 @@ trait CallableDispatcher
     protected function isInvalidFunction(Dispatch $dispatch): bool
     {
         return $this->hasValidFunction($dispatch) && ! is_callable($dispatch->getFunction());
+    }
+
+    /**
+     * Determine if a dispatch has a function set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidFunction(Dispatch $dispatch): bool
+    {
+        return null !== $dispatch->getFunction();
     }
 
     /**

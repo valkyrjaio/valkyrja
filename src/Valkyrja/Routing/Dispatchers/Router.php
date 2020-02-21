@@ -36,6 +36,9 @@ use Valkyrja\Routing\Router as RouterContract;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
+use function count;
+use function is_array;
+
 /**
  * Class Router.
  *

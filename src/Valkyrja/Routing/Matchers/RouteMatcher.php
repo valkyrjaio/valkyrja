@@ -18,6 +18,8 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection;
 use Valkyrja\Routing\RouteMatcher as RouteMatcherContract;
 
+use function in_array;
+
 /**
  * Class RouteMatcher.
  *

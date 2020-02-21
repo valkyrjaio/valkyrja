@@ -20,6 +20,8 @@ use Valkyrja\Console\Handler as HandlerContract;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
 
+use function strlen;
+
 /**
  * Abstract Class Handler.
  *
@@ -48,6 +50,16 @@ abstract class Handler implements HandlerContract
     }
 
     /**
+     * The run handler.
+     *
+     * @return int
+     */
+    public function run(): int
+    {
+        return ExitCode::SUCCESS;
+    }
+
+    /**
      * Get the command version.
      *
      * @return int
@@ -57,66 +69,6 @@ abstract class Handler implements HandlerContract
         $this->applicationMessage();
 
         return ExitCode::SUCCESS;
-    }
-
-    /**
-     * Get the valid arguments.
-     *
-     * @return Argument[]
-     */
-    protected function getArguments(): array
-    {
-        return [];
-    }
-
-    /**
-     * Get the valid options.
-     *
-     * @return Option[]
-     */
-    protected function getOptions(): array
-    {
-        return [];
-    }
-
-    /**
-     * The sections divider.
-     *
-     * @return void
-     */
-    protected function sectionDivider(): void
-    {
-        output()->writeMessage('', true);
-    }
-
-    /**
-     * The application message.
-     *
-     * @return void
-     */
-    protected function applicationMessage(): void
-    {
-        output()->formatter()->magenta();
-        output()->writeMessage('Valkyrja Application');
-        output()->formatter()->resetColor();
-        output()->writeMessage(' version ');
-        output()->formatter()->cyan();
-        output()->writeMessage(Application::VERSION, true);
-        output()->formatter()->resetColor();
-    }
-
-    /**
-     * The section message.
-     *
-     * @param string $sectionName
-     *
-     * @return void
-     */
-    protected function sectionTitleMessage(string $sectionName): void
-    {
-        output()->formatter()->underscore();
-        output()->writeMessage($sectionName . ':', true);
-        output()->formatter()->resetOptions();
     }
 
     /**
@@ -133,31 +85,6 @@ abstract class Handler implements HandlerContract
         $this->sectionTitleMessage('Usage');
         output()->writeMessage(static::TAB);
         output()->writeMessage($message, true);
-    }
-
-    /**
-     * Get the usage path.
-     *
-     * @return string
-     */
-    protected function usagePath(): string
-    {
-        $message = static::COMMAND;
-
-        if ($this->getOptions()) {
-            $message .= ' [options]';
-        }
-
-        foreach ($this->getArguments() as $argument) {
-            $message .= ' '
-                . ($argument->getMode() === ArgumentMode::OPTIONAL ? '[' : '')
-                . '<'
-                . $argument->getName()
-                . '>'
-                . ($argument->getMode() === ArgumentMode::OPTIONAL ? ']' : '');
-        }
-
-        return $message;
     }
 
     /**
@@ -223,25 +150,62 @@ abstract class Handler implements HandlerContract
     }
 
     /**
-     * Get an options name for the options section.
-     *
-     * @param Option $option The option
+     * Get the usage path.
      *
      * @return string
      */
-    protected function getOptionName(Option $option): string
+    protected function usagePath(): string
     {
-        $name = '';
+        $message = static::COMMAND;
 
-        if ($option->getShortcut()) {
-            $name .= '-' . $option->getShortcut() . ', ';
-        } else {
-            $name .= static::DOUBLE_TAB;
+        if ($this->getOptions()) {
+            $message .= ' [options]';
         }
 
-        $name .= '--' . $option->getName();
+        foreach ($this->getArguments() as $argument) {
+            $message .= ' '
+                . ($argument->getMode() === ArgumentMode::OPTIONAL ? '[' : '')
+                . '<'
+                . $argument->getName()
+                . '>'
+                . ($argument->getMode() === ArgumentMode::OPTIONAL ? ']' : '');
+        }
 
-        return $name;
+        return $message;
+    }
+
+    /**
+     * The section message.
+     *
+     * @param string $sectionName
+     *
+     * @return void
+     */
+    protected function sectionTitleMessage(string $sectionName): void
+    {
+        output()->formatter()->underscore();
+        output()->writeMessage($sectionName . ':', true);
+        output()->formatter()->resetOptions();
+    }
+
+    /**
+     * Get the valid arguments.
+     *
+     * @return Argument[]
+     */
+    protected function getArguments(): array
+    {
+        return [];
+    }
+
+    /**
+     * The sections divider.
+     *
+     * @return void
+     */
+    protected function sectionDivider(): void
+    {
+        output()->writeMessage('', true);
     }
 
     /**
@@ -266,5 +230,53 @@ abstract class Handler implements HandlerContract
         output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
         output()->writeMessage(str_repeat('.', 8));
         output()->writeMessage($description, true);
+    }
+
+    /**
+     * Get the valid options.
+     *
+     * @return Option[]
+     */
+    protected function getOptions(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get an options name for the options section.
+     *
+     * @param Option $option The option
+     *
+     * @return string
+     */
+    protected function getOptionName(Option $option): string
+    {
+        $name = '';
+
+        if ($option->getShortcut()) {
+            $name .= '-' . $option->getShortcut() . ', ';
+        } else {
+            $name .= static::DOUBLE_TAB;
+        }
+
+        $name .= '--' . $option->getName();
+
+        return $name;
+    }
+
+    /**
+     * The application message.
+     *
+     * @return void
+     */
+    protected function applicationMessage(): void
+    {
+        output()->formatter()->magenta();
+        output()->writeMessage('Valkyrja Application');
+        output()->formatter()->resetColor();
+        output()->writeMessage(' version ');
+        output()->formatter()->cyan();
+        output()->writeMessage(Application::VERSION, true);
+        output()->formatter()->resetColor();
     }
 }

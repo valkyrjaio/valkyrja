@@ -80,6 +80,56 @@ class Response implements ResponseContract
     }
 
     /**
+     * Validate a status code.
+     *
+     * @param int $code The code
+     *
+     * @throws InvalidStatusCode
+     *
+     * @return int
+     */
+    protected function validateStatusCode(int $code): int
+    {
+        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
+            throw new InvalidStatusCode(
+                sprintf(
+                    'Invalid status code "%d"; must adhere to values set in the %s enum class.',
+                    $code,
+                    StatusCode::class
+                )
+            );
+        }
+
+        return $code;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            ResponseContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(ResponseContract::class, new static());
+    }
+
+    /**
      * Gets the response status code.
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.
@@ -224,55 +274,5 @@ class Response implements ResponseContract
         }
 
         return $this;
-    }
-
-    /**
-     * Validate a status code.
-     *
-     * @param int $code The code
-     *
-     * @throws InvalidStatusCode
-     *
-     * @return int
-     */
-    protected function validateStatusCode(int $code): int
-    {
-        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
-            throw new InvalidStatusCode(
-                sprintf(
-                    'Invalid status code "%d"; must adhere to values set in the %s enum class.',
-                    $code,
-                    StatusCode::class
-                )
-            );
-        }
-
-        return $code;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            ResponseContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(ResponseContract::class, new static());
     }
 }

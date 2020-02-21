@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage\Events;
 
-use Valkyrja\HttpMessage\SimpleRequest;
 use Valkyrja\HttpMessage\Response;
+use Valkyrja\HttpMessage\SimpleRequest;
 
 /**
  * Class HttpKernelHandled.

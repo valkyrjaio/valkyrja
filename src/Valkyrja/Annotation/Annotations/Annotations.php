@@ -37,11 +37,16 @@ class Annotations implements AnnotationsContract
     use Provides;
 
     /**
-     * The parser.
-     *
-     * @var AnnotationsParser
+     * Cache index constants.
      */
-    protected AnnotationsParser $parser;
+    protected const CLASS_CACHE             = 'class';
+    protected const CLASS_MEMBERS_CACHE     = 'class.members';
+    protected const CLASS_AND_MEMBERS_CACHE = 'class.and.members';
+    protected const PROPERTY_CACHE          = 'property';
+    protected const PROPERTIES_CACHE        = 'properties';
+    protected const METHOD_CACHE            = 'method';
+    protected const METHODS_CACHE           = 'methods';
+    protected const FUNCTION_CACHE          = 'function';
 
     /**
      * Cached reflection classes.
@@ -58,16 +63,11 @@ class Annotations implements AnnotationsContract
     protected static array $annotations = [];
 
     /**
-     * Cache index constants.
+     * The parser.
+     *
+     * @var AnnotationsParser
      */
-    protected const CLASS_CACHE             = 'class';
-    protected const CLASS_MEMBERS_CACHE     = 'class.members';
-    protected const CLASS_AND_MEMBERS_CACHE = 'class.and.members';
-    protected const PROPERTY_CACHE          = 'property';
-    protected const PROPERTIES_CACHE        = 'properties';
-    protected const METHOD_CACHE            = 'method';
-    protected const METHODS_CACHE           = 'methods';
-    protected const FUNCTION_CACHE          = 'function';
+    protected AnnotationsParser $parser;
 
     /**
      * Annotations constructor.
@@ -77,6 +77,37 @@ class Annotations implements AnnotationsContract
     public function __construct(AnnotationsParser $parser)
     {
         $this->parser = $parser;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            AnnotationsContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            AnnotationsContract::class,
+            new static(
+                $app->container()->getSingleton(
+                    Contract::ANNOTATIONS_PARSER
+                )
+            )
+        );
     }
 
     /**
@@ -228,7 +259,8 @@ class Annotations implements AnnotationsContract
                     'class'    => $class,
                     'property' => $property,
                 ],
-                ...$this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
+                ...
+                $this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
             );
     }
 
@@ -466,26 +498,6 @@ class Annotations implements AnnotationsContract
     }
 
     /**
-     * Set the base annotation model values.
-     *
-     * @param array      $properties     The properties
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
-     */
-    protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
-    {
-        foreach ($annotations as $annotation) {
-            $annotation->setClass($properties['class'] ?? null);
-            $annotation->setProperty($properties['property'] ?? null);
-            $annotation->setMethod($properties['method'] ?? null);
-            $annotation->setFunction($properties['function'] ?? null);
-        }
-
-        return $annotations;
-    }
-
-    /**
      * Get a class's reflection.
      *
      * @param string $class The class
@@ -556,6 +568,26 @@ class Annotations implements AnnotationsContract
     }
 
     /**
+     * Set the base annotation model values.
+     *
+     * @param array      $properties     The properties
+     * @param Annotation ...$annotations The annotations
+     *
+     * @return Annotation[]
+     */
+    protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
+    {
+        foreach ($annotations as $annotation) {
+            $annotation->setClass($properties['class'] ?? null);
+            $annotation->setProperty($properties['property'] ?? null);
+            $annotation->setMethod($properties['method'] ?? null);
+            $annotation->setFunction($properties['function'] ?? null);
+        }
+
+        return $annotations;
+    }
+
+    /**
      * Get dependencies from parameters.
      *
      * @param ReflectionParameter[] $parameters The parameters
@@ -577,36 +609,5 @@ class Annotations implements AnnotationsContract
         }
 
         return $dependencies;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            AnnotationsContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            AnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(
-                    Contract::ANNOTATIONS_PARSER
-                )
-            )
-        );
     }
 }

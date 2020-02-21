@@ -35,6 +35,17 @@ interface Response
     public static function create(string $content = '', int $status = StatusCode::OK, array $headers = []): self;
 
     /**
+     * Cleans or flushes output buffers up to target level.
+     * Resulting level can be greater than target level if a non-removable buffer has been encountered.
+     *
+     * @param int  $targetLevel The target output buffering level
+     * @param bool $flush       Whether to flush or clean the buffers
+     *
+     * @return void
+     */
+    public static function closeOutputBuffers(int $targetLevel, bool $flush): void;
+
+    /**
      * Set the content for the response.
      *
      * @param string $content The response content to set
@@ -472,17 +483,6 @@ interface Response
      * @return Response
      */
     public function send(): self;
-
-    /**
-     * Cleans or flushes output buffers up to target level.
-     * Resulting level can be greater than target level if a non-removable buffer has been encountered.
-     *
-     * @param int  $targetLevel The target output buffering level
-     * @param bool $flush       Whether to flush or clean the buffers
-     *
-     * @return void
-     */
-    public static function closeOutputBuffers(int $targetLevel, bool $flush): void;
 
     /**
      * Returns the Response as an HTTP string.

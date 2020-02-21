@@ -15,6 +15,10 @@ namespace Valkyrja\HttpMessage\Helpers;
 
 use InvalidArgumentException;
 
+use function in_array;
+use function ord;
+use function strlen;
+
 /**
  * Class HeaderSecurity.
  *
@@ -86,6 +90,22 @@ final class HeaderSecurity
     }
 
     /**
+     * Assert a header value is valid.
+     *
+     * @param string $value
+     *
+     * @throws InvalidArgumentException for invalid values
+     *
+     * @return void
+     */
+    public static function assertValid(string $value): void
+    {
+        if (! self::isValid($value)) {
+            throw new InvalidArgumentException(sprintf('"%s" is not valid header value', $value));
+        }
+    }
+
+    /**
      * Validate a header value.
      * Per RFC 7230, only VISIBLE ASCII characters, spaces, and horizontal
      * tabs are allowed in values; header continuations MUST consist of
@@ -119,22 +139,6 @@ final class HeaderSecurity
         }
 
         return true;
-    }
-
-    /**
-     * Assert a header value is valid.
-     *
-     * @param string $value
-     *
-     * @throws InvalidArgumentException for invalid values
-     *
-     * @return void
-     */
-    public static function assertValid(string $value): void
-    {
-        if (! self::isValid($value)) {
-            throw new InvalidArgumentException(sprintf('"%s" is not valid header value', $value));
-        }
     }
 
     /**

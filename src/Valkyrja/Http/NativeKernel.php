@@ -65,6 +65,30 @@ class NativeKernel implements Kernel
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Kernel::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Kernel::class, new static($app, $app->router()));
+    }
+
+    /**
      * Handle a request.
      *
      * @param Request $request The request
@@ -96,44 +120,6 @@ class NativeKernel implements Kernel
         );
 
         return $response;
-    }
-
-    /**
-     * Dispatch the request via the router.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
-     */
-    protected function dispatchRouter(Request $request): Response
-    {
-        // Set the request object in the container
-        $this->app->container()->singleton(Request::class, $request);
-
-        // Dispatch the before request handled middleware
-        $middlewareReturn = $this->requestMiddleware($request);
-
-        // If the middleware returned a response
-        if ($middlewareReturn instanceof Response) {
-            // Return the response
-            return $middlewareReturn;
-        }
-
-        return $this->router->dispatch($request);
-    }
-
-    /**
-     * Get a response from an exception.
-     *
-     * @param Throwable $exception The exception
-     *
-     * @throws Throwable
-     *
-     * @return Response
-     */
-    protected function getExceptionResponse(Throwable $exception): Response
-    {
-        return $this->app->exceptionHandler()->response($exception);
     }
 
     /**
@@ -185,6 +171,44 @@ class NativeKernel implements Kernel
     }
 
     /**
+     * Dispatch the request via the router.
+     *
+     * @param Request $request The request
+     *
+     * @return Response
+     */
+    protected function dispatchRouter(Request $request): Response
+    {
+        // Set the request object in the container
+        $this->app->container()->singleton(Request::class, $request);
+
+        // Dispatch the before request handled middleware
+        $middlewareReturn = $this->requestMiddleware($request);
+
+        // If the middleware returned a response
+        if ($middlewareReturn instanceof Response) {
+            // Return the response
+            return $middlewareReturn;
+        }
+
+        return $this->router->dispatch($request);
+    }
+
+    /**
+     * Get a response from an exception.
+     *
+     * @param Throwable $exception The exception
+     *
+     * @throws Throwable
+     *
+     * @return Response
+     */
+    protected function getExceptionResponse(Throwable $exception): Response
+    {
+        return $this->app->exceptionHandler()->response($exception);
+    }
+
+    /**
      * Get the application.
      *
      * @return Application
@@ -217,29 +241,5 @@ class NativeKernel implements Kernel
             // Terminate each middleware
             $this->terminableMiddleware($request, $response, $route->getMiddleware());
         }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Kernel::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(Kernel::class, new static($app, $app->router()));
     }
 }

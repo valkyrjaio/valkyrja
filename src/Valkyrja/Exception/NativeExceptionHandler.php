@@ -38,14 +38,14 @@ class NativeExceptionHandler implements ExceptionHandler
     public static bool $enabled = false;
 
     /**
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
     /**
      * NativeExceptionHandler constructor.
      *
-     * @param \Valkyrja\Application\Application $application
+     * @param Application $application
      */
     public function __construct(Application $application)
     {

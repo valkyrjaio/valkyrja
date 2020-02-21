@@ -56,18 +56,6 @@ class Directory
     public static string $VENDOR_PATH            = 'vendor';
 
     /**
-     * Get the base directory for the application.
-     *
-     * @param string $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function basePath(string $path = null): string
-    {
-        return static::$BASE_PATH . static::path($path);
-    }
-
-    /**
      * Get the app directory for the application.
      *
      * @param string $path [optional] The path to append
@@ -80,15 +68,29 @@ class Directory
     }
 
     /**
-     * Get the bootstrap directory for the application.
+     * Get the base directory for the application.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public static function bootstrapPath(string $path = null): string
+    public static function basePath(string $path = null): string
     {
-        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
+        return static::$BASE_PATH . static::path($path);
+    }
+
+    /**
+     * Construct a path with the directory separator prepended.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    public static function path(string $path = null): ?string
+    {
+        return $path && $path[0] !== static::DIRECTORY_SEPARATOR
+            ? static::DIRECTORY_SEPARATOR . $path
+            : $path;
     }
 
     /**
@@ -101,6 +103,18 @@ class Directory
     public static function commandsPath(string $path = null): string
     {
         return static::bootstrapPath(static::$COMMANDS_PATH . static::path($path));
+    }
+
+    /**
+     * Get the bootstrap directory for the application.
+     *
+     * @param string $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function bootstrapPath(string $path = null): string
+    {
+        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
 
     /**
@@ -188,15 +202,15 @@ class Directory
     }
 
     /**
-     * Get the storage directory for the application.
+     * Get the cache directory for the application.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public static function storagePath(string $path = null): string
+    public static function cachePath(string $path = null): string
     {
-        return static::basePath(static::$STORAGE_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**
@@ -212,15 +226,15 @@ class Directory
     }
 
     /**
-     * Get the cache directory for the application.
+     * Get the storage directory for the application.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public static function cachePath(string $path = null): string
+    public static function storagePath(string $path = null): string
     {
-        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
+        return static::basePath(static::$STORAGE_PATH . static::path($path));
     }
 
     /**
@@ -245,19 +259,5 @@ class Directory
     public static function vendorPath(string $path = null): string
     {
         return static::basePath(static::$VENDOR_PATH . static::path($path));
-    }
-
-    /**
-     * Construct a path with the directory separator prepended.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    public static function path(string $path = null): ?string
-    {
-        return $path && $path[0] !== static::DIRECTORY_SEPARATOR
-            ? static::DIRECTORY_SEPARATOR . $path
-            : $path;
     }
 }

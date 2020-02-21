@@ -29,6 +29,8 @@ use Valkyrja\HttpMessage\UploadedFile;
 use Valkyrja\HttpMessage\Uri;
 use Valkyrja\Support\Providers\Provides;
 
+use function is_array;
+
 /**
  * Representation of an incoming, server-side HTTP request.
  * Per the HTTP specification, this interface includes properties for
@@ -156,6 +158,54 @@ class Request implements RequestContract
         $this->protocol   = $protocol ?? '1.1';
 
         $this->validateUploadedFiles($this->files);
+    }
+
+    /**
+     * Validate uploaded files.
+     *
+     * @param array $uploadedFiles The uploaded files
+     *
+     * @throws InvalidUploadedFile
+     *
+     * @return void
+     */
+    protected function validateUploadedFiles(array $uploadedFiles): void
+    {
+        foreach ($uploadedFiles as $file) {
+            if (is_array($file)) {
+                $this->validateUploadedFiles($file);
+
+                continue;
+            }
+
+            if (! $file instanceof UploadedFile) {
+                throw new InvalidUploadedFile('Invalid leaf in uploaded files structure');
+            }
+        }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RequestContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(RequestContract::class, RequestFactory::fromGlobals());
     }
 
     /**
@@ -458,53 +508,5 @@ class Request implements RequestContract
     public function isXmlHttpRequest(): bool
     {
         return 'XMLHttpRequest' === $this->getHeaderLine('X-Requested-With');
-    }
-
-    /**
-     * Validate uploaded files.
-     *
-     * @param array $uploadedFiles The uploaded files
-     *
-     * @throws InvalidUploadedFile
-     *
-     * @return void
-     */
-    protected function validateUploadedFiles(array $uploadedFiles): void
-    {
-        foreach ($uploadedFiles as $file) {
-            if (is_array($file)) {
-                $this->validateUploadedFiles($file);
-
-                continue;
-            }
-
-            if (! $file instanceof UploadedFile) {
-                throw new InvalidUploadedFile('Invalid leaf in uploaded files structure');
-            }
-        }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            RequestContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(RequestContract::class, RequestFactory::fromGlobals());
     }
 }

@@ -44,13 +44,6 @@ interface Entity extends Model
     public static function getRepository(): string;
 
     /**
-     * Get the properties.
-     *
-     * @return string[]
-     */
-    public function getProperties(): array;
-
-    /**
      * Get the property types.
      * <code>
      *      [
@@ -68,6 +61,13 @@ interface Entity extends Model
      * @return array
      */
     public static function getPropertyTypes(): array;
+
+    /**
+     * Get the properties.
+     *
+     * @return string[]
+     */
+    public function getProperties(): array;
 
     /**
      * A mapper of property types to properties for generating a full entity with relations.

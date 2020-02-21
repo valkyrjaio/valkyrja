@@ -118,6 +118,15 @@ interface Events extends Cacheable
     public function trigger(string $event, array $arguments = null): array;
 
     /**
+     * Trigger an event.
+     *
+     * @param Event $event The event
+     *
+     * @return array
+     */
+    public function event(Event $event): array;
+
+    /**
      * Get all events.
      *
      * @return array

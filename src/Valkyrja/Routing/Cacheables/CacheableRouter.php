@@ -37,18 +37,17 @@ trait CacheableRouter
     use Cacheable;
 
     /**
-     * Application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The route collection.
      *
      * @var RouteCollection
      */
     protected static RouteCollection $collection;
+    /**
+     * Application.
+     *
+     * @var Application
+     */
+    protected Application $app;
 
     /**
      * Get the config.
@@ -115,7 +114,7 @@ trait CacheableRouter
      */
     protected function setupAnnotations(): void
     {
-        /** @var \Valkyrja\Routing\Annotation\RouteAnnotations $routeAnnotations */
+        /** @var RouteAnnotations $routeAnnotations */
         $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
 
         // Get all the annotated routes from the list of controllers

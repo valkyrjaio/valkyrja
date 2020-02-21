@@ -115,6 +115,32 @@ trait MessageTrait
     }
 
     /**
+     * Set headers.
+     *
+     * @param array $originalHeaders
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    protected function setHeaders(array $originalHeaders): void
+    {
+        $headerNames = $headers = [];
+
+        foreach ($originalHeaders as $header => $value) {
+            $value = $this->assertHeaderValues($value);
+
+            HeaderSecurity::assertValidName($header);
+
+            $headerNames[strtolower($header)] = $header;
+            $headers[$header]                 = $value;
+        }
+
+        $this->headerNames = $headerNames;
+        $this->headers     = $headers;
+    }
+
+    /**
      * Checks if a header exists by the given case-insensitive name.
      *
      * @param string $name Case-insensitive header field name.
@@ -332,32 +358,6 @@ trait MessageTrait
                 )
             );
         }
-    }
-
-    /**
-     * Set headers.
-     *
-     * @param array $originalHeaders
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    protected function setHeaders(array $originalHeaders): void
-    {
-        $headerNames = $headers = [];
-
-        foreach ($originalHeaders as $header => $value) {
-            $value = $this->assertHeaderValues($value);
-
-            HeaderSecurity::assertValidName($header);
-
-            $headerNames[strtolower($header)] = $header;
-            $headers[$header]                 = $value;
-        }
-
-        $this->headerNames = $headerNames;
-        $this->headers     = $headers;
     }
 
     /**

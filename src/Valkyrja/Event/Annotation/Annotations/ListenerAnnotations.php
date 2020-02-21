@@ -30,6 +30,35 @@ use Valkyrja\Event\Models\Listener as ListenerModel;
 class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
 {
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            ListenerAnnotationsContract::class,
+        ];
+    }
+
+    /**
+     * Bind the listener annotations.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            ListenerAnnotationsContract::class,
+            new static(
+                $app->container()->getSingleton(AnnotationsParser::class)
+            )
+        );
+    }
+
+    /**
      * Get the events.
      *
      * @param string ...$classes The classes
@@ -45,7 +74,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var \Valkyrja\Event\Annotation\Models\Listener $annotation */
+            /** @var Listener $annotation */
             foreach ($this->methodsAnnotationsType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
@@ -59,7 +88,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     /**
      * Set the properties for a listener annotation.
      *
-     * @param \Valkyrja\Event\Annotation\Models\Listener $listener
+     * @param Listener $listener
      *
      * @throws ReflectionException
      *
@@ -93,34 +122,5 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     protected function getListenerFromAnnotation(Listener $listener): ListenerContract
     {
         return ListenerModel::fromArray($listener->asArray());
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            ListenerAnnotationsContract::class,
-        ];
-    }
-
-    /**
-     * Bind the listener annotations.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            ListenerAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
-        );
     }
 }

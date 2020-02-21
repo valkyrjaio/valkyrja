@@ -30,18 +30,42 @@ class NativeResponseBuilder implements ResponseBuilder
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
     protected Application $app;
 
     /**
      * ResponseBuilder constructor.
      *
-     * @param \Valkyrja\Application\Application $app
+     * @param Application $app
      */
     public function __construct(Application $app)
     {
         $this->app = $app;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            ResponseBuilder::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(ResponseBuilder::class, new static($app));
     }
 
     /**
@@ -148,29 +172,5 @@ class NativeResponseBuilder implements ResponseBuilder
         array $headers = []
     ): RedirectResponse {
         return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            ResponseBuilder::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(ResponseBuilder::class, new static($app));
     }
 }

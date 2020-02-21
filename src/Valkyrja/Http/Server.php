@@ -15,6 +15,8 @@ namespace Valkyrja\Http;
 
 use Valkyrja\Support\Collection;
 
+use function in_array;
+
 /**
  * Class Server.
  *

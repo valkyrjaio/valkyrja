@@ -20,6 +20,8 @@ use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function count;
+
 /**
  * Class OutputFormatter.
  *
@@ -49,6 +51,33 @@ class OutputFormatter implements OutputFormatterContract
      * @var int[]
      */
     protected array $options = [];
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            OutputFormatterContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            OutputFormatterContract::class,
+            new static()
+        );
+    }
 
     /**
      * Set the foreground.
@@ -183,25 +212,6 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
-     * Set a color.
-     *
-     * @param int  $color      The color
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    protected function setColor(int $color, bool $background = null): void
-    {
-        if (null !== $background) {
-            $this->background = $color;
-
-            return;
-        }
-
-        $this->foreground = $color;
-    }
-
-    /**
      * Set an option.
      *
      * @param FormatOption $option The option
@@ -314,18 +324,6 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
-     * Set an option by its number value.
-     *
-     * @param int $option The option
-     *
-     * @return void
-     */
-    protected function setOptionNum(int $option): void
-    {
-        $this->options[$option] = $option;
-    }
-
-    /**
      * Format a message.
      *
      * @param string $message The message
@@ -367,29 +365,33 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
-     * The items provided by this provider.
+     * Set a color.
      *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            OutputFormatterContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
+     * @param int  $color      The color
+     * @param bool $background [optional] Whether this is to set the background
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    protected function setColor(int $color, bool $background = null): void
     {
-        $app->container()->singleton(
-            OutputFormatterContract::class,
-            new static()
-        );
+        if (null !== $background) {
+            $this->background = $color;
+
+            return;
+        }
+
+        $this->foreground = $color;
+    }
+
+    /**
+     * Set an option by its number value.
+     *
+     * @param int $option The option
+     *
+     * @return void
+     */
+    protected function setOptionNum(int $option): void
+    {
+        $this->options[$option] = $option;
     }
 }

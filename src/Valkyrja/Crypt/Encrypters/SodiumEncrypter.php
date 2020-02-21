@@ -29,6 +29,30 @@ class SodiumEncrypter implements Encrypter
     use Provides;
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::ENCRYPTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Contract::ENCRYPTER, new static());
+    }
+
+    /**
      * Encrypt a message.
      *
      * @param string $message The message to encrypt
@@ -77,29 +101,5 @@ class SodiumEncrypter implements Encrypter
     public function encryptObject(object $object, string $key): string
     {
         return $this->encrypt(json_encode($object, JSON_THROW_ON_ERROR), $key);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::ENCRYPTER,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(Contract::ENCRYPTER, new static());
     }
 }

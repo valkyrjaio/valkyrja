@@ -18,6 +18,8 @@ use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
 
+use function in_array;
+
 /**
  * Class Request.
  *
@@ -28,125 +30,104 @@ class NativeRequest implements Request
     use Provides;
 
     protected static bool $httpMethodParameterOverride = false;
-
+    /**
+     * @var array
+     */
+    protected static array $formats = [];
     /**
      * Custom parameters.
      *
      * @var Collection
      */
     protected Collection $attributes;
-
     /**
      * Request body parameters ($_POST).
      *
      * @var Collection
      */
     protected Collection $request;
-
     /**
      * Query string parameters ($_GET).
      *
      * @var Query
      */
     protected Query $query;
-
     /**
      * Server and execution environment parameters ($_SERVER).
      *
      * @var Server
      */
     protected Server $server;
-
     /**
      * Uploaded files ($_FILES).
      *
      * @var Files
      */
     protected Files $files;
-
     /**
      * Cookies ($_COOKIE).
      *
      * @var Collection
      */
     protected Collection $cookies;
-
     /**
      * Headers (taken from the $_SERVER).
      *
      * @var Headers
      */
     protected Headers $headers;
-
     /**
      * @var string|null
      */
     protected ?string $content = null;
-
     /**
      * @var array
      */
     protected array $languages = [];
-
     /**
      * @var array
      */
     protected array $charsets = [];
-
     /**
      * @var array
      */
     protected array $encodings = [];
-
     /**
      * @var array
      */
     protected array $acceptableContentTypes = [];
-
     /**
      * @var string|null
      */
     protected ?string $path = null;
-
     /**
      * @var string|null
      */
     protected ?string $requestUri = null;
-
     /**
      * @var string|null
      */
     protected ?string $baseUrl = null;
-
     /**
      * @var string|null
      */
     protected ?string $basePath = null;
-
     /**
      * @var string|null
      */
     protected ?string $method = null;
-
     /**
      * @var string|null
      */
     protected ?string $format = null;
-
     /**
      * @var string
      */
     protected string $locale;
-
     /**
      * @var string
      */
     protected string $defaultLocale = 'en';
-
-    /**
-     * @var array
-     */
-    protected static array $formats = [];
 
     /**
      * Request Constructor.
@@ -319,7 +300,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST'] .= ':' . $components['port'];
+            $server['HTTP_HOST']   .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -384,22 +365,6 @@ class NativeRequest implements Request
             $server,
             $content
         );
-    }
-
-    /**
-     * Clones the current request.
-     * Note that the session is not cloned as duplicated requests
-     * are most of the time sub-requests of the main one.
-     */
-    public function __clone()
-    {
-        $this->query      = clone $this->query;
-        $this->request    = clone $this->request;
-        $this->attributes = clone $this->attributes;
-        $this->cookies    = clone $this->cookies;
-        $this->files      = clone $this->files;
-        $this->server     = clone $this->server;
-        $this->headers    = clone $this->headers;
     }
 
     /**
@@ -955,6 +920,47 @@ class NativeRequest implements Request
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Request::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Request::class,
+            static::createFromGlobals()
+        );
+    }
+
+    /**
+     * Clones the current request.
+     * Note that the session is not cloned as duplicated requests
+     * are most of the time sub-requests of the main one.
+     */
+    public function __clone()
+    {
+        $this->query      = clone $this->query;
+        $this->request    = clone $this->request;
+        $this->attributes = clone $this->attributes;
+        $this->cookies    = clone $this->cookies;
+        $this->files      = clone $this->files;
+        $this->server     = clone $this->server;
+        $this->headers    = clone $this->headers;
+    }    /**
      * Sets the request method.
      *
      * @param string $method
@@ -968,6 +974,8 @@ class NativeRequest implements Request
 
         return $this;
     }
+
+
 
     /**
      * Gets the request "intended" method.
@@ -1173,30 +1181,4 @@ class NativeRequest implements Request
         return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
     }
 
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Request::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Request::class,
-            static::createFromGlobals()
-        );
-    }
 }

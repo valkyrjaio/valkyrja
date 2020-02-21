@@ -19,6 +19,8 @@ use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
 
+use function is_string;
+
 /**
  * Class SodiumDecrypter.
  *
@@ -27,6 +29,30 @@ use Valkyrja\Support\Providers\Provides;
 class SodiumDecrypter implements Decrypter
 {
     use Provides;
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::DECRYPTER,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(Contract::DECRYPTER, new static());
+    }
 
     /**
      * Decrypt a message.
@@ -216,29 +242,5 @@ class SodiumDecrypter implements Decrypter
     protected function isValidPlainDecoded($plain): bool
     {
         return $plain !== false;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::DECRYPTER,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(Contract::DECRYPTER, new static());
     }
 }

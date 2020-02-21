@@ -36,6 +36,13 @@ interface Handler
     public function help(): int;
 
     /**
+     * The run handler.
+     *
+     * @return int
+     */
+    public function run(): int;
+
+    /**
      * Get the command version.
      *
      * @return int

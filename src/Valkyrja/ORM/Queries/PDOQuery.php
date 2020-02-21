@@ -18,6 +18,9 @@ use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 
+use function is_bool;
+use function is_int;
+
 /**
  * Class PDOQuery.
  *

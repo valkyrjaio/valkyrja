@@ -75,6 +75,39 @@ class Crypt implements CryptContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::CRYPT,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $container = $app->container();
+
+        $container->singleton(
+            Contract::CRYPT,
+            new static(
+                $app,
+                $container->get(Contract::ENCRYPTER),
+                $container->get(Contract::DECRYPTER)
+            )
+        );
+    }
+
+    /**
      * Get the key.
      *
      * @return string
@@ -222,38 +255,5 @@ class Crypt implements CryptContract
     protected function getFileContentsFromKeyPath(): ?string
     {
         return file_get_contents($this->getKeyPathFromConfig()) ?: null;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::CRYPT,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $container = $app->container();
-
-        $container->singleton(
-            Contract::CRYPT,
-            new static(
-                $app,
-                $container->get(Contract::ENCRYPTER),
-                $container->get(Contract::DECRYPTER)
-            )
-        );
     }
 }

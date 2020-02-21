@@ -21,6 +21,11 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Providers\Provides;
 
+use function array_key_exists;
+use function constant;
+use function defined;
+use function is_array;
+
 /**
  * Class AnnotationsParser.
  *
@@ -45,6 +50,35 @@ class AnnotationsParser implements AnnotationsParserContract
     public function __construct(Application $application)
     {
         $this->app = $application;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            AnnotationsParserContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            AnnotationsParserContract::class,
+            new static(
+                $app
+            )
+        );
     }
 
     /**
@@ -250,6 +284,28 @@ class AnnotationsParser implements AnnotationsParserContract
     }
 
     /**
+     * Get the properties for a matched annotation.
+     *
+     * @param array $matches The matches
+     * @param int   $index   The index
+     *
+     * @return array
+     */
+    protected function getParts(array $matches, int $index): array
+    {
+        $properties = [];
+
+        // Written like this to appease the code coverage gods
+        $properties['annotation']  = $matches[1][$index] ?? null;
+        $properties['properties']  = $matches[2][$index] ?? null;
+        $properties['type']        = $matches[3][$index] ?? null;
+        $properties['variable']    = $matches[4][$index] ?? null;
+        $properties['description'] = $matches[5][$index] ?? null;
+
+        return $this->processParts($properties);
+    }
+
+    /**
      * Set the annotation's properties.
      *
      * @param Annotation $annotation The annotation
@@ -275,28 +331,6 @@ class AnnotationsParser implements AnnotationsParserContract
         }
 
         $annotation->setAnnotationProperties($properties);
-    }
-
-    /**
-     * Get the properties for a matched annotation.
-     *
-     * @param array $matches The matches
-     * @param int   $index   The index
-     *
-     * @return array
-     */
-    protected function getParts(array $matches, int $index): array
-    {
-        $properties = [];
-
-        // Written like this to appease the code coverage gods
-        $properties['annotation']  = $matches[1][$index] ?? null;
-        $properties['properties']  = $matches[2][$index] ?? null;
-        $properties['type']        = $matches[3][$index] ?? null;
-        $properties['variable']    = $matches[4][$index] ?? null;
-        $properties['description'] = $matches[5][$index] ?? null;
-
-        return $this->processParts($properties);
     }
 
     /**
@@ -326,6 +360,22 @@ class AnnotationsParser implements AnnotationsParserContract
         }
 
         return $parts;
+    }
+
+    /**
+     * Clean a match from asterisks and new lines.
+     *
+     * @param string $match The match
+     *
+     * @return string
+     */
+    protected function cleanMatch(string $match = null): ?string
+    {
+        if (! $match) {
+            return $match;
+        }
+
+        return trim(str_replace('*', '', $match));
     }
 
     /**
@@ -374,50 +424,5 @@ class AnnotationsParser implements AnnotationsParserContract
         }
 
         return $value;
-    }
-
-    /**
-     * Clean a match from asterisks and new lines.
-     *
-     * @param string $match The match
-     *
-     * @return string
-     */
-    protected function cleanMatch(string $match = null): ?string
-    {
-        if (! $match) {
-            return $match;
-        }
-
-        return trim(str_replace('*', '', $match));
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            AnnotationsParserContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            AnnotationsParserContract::class,
-            new static(
-                $app
-            )
-        );
     }
 }

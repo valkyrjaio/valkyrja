@@ -23,6 +23,12 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\Support\ClassHelpers;
 
+use function count;
+use function is_array;
+use function is_int;
+use function is_string;
+use function strlen;
+
 /**
  * Class PDOEntityRetriever
  *
@@ -299,60 +305,6 @@ class PDOEntityRetriever implements EntityRetriever
     }
 
     /**
-     * Bind criteria for a select statement.
-     *
-     * @param Query      $query
-     * @param array|null $criteria
-     *
-     * @return void
-     */
-    protected function bindValuesForSelect(Query $query, array $criteria = null): void
-    {
-        // Iterate through the criteria once more
-        foreach ($criteria as $column => $criterion) {
-            // If the criterion is null
-            if ($criterion === null) {
-                // Skip as we've already set the where to IS NULL
-                continue;
-            }
-
-            // If the criterion is an array
-            if (is_array($criterion)) {
-                // Iterate through the criterion and bind each value individually
-                foreach ($criterion as $index => $criterionItem) {
-                    $query->bindValue($column . $index, $criterionItem);
-                }
-
-                continue;
-            }
-
-            // And bind each value to the column
-            $query->bindValue($column, $criterion);
-        }
-    }
-
-    /**
-     * Get select results as an array of Entities.
-     *
-     * @param Entity[]   $entities
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return void
-     */
-    protected function selectResultsRelations(array $entities, array $columns = null, bool $getRelations = null): void
-    {
-        // Iterate through the rows found
-        foreach ($entities as $entity) {
-            // If no columns were specified then we can safely get all the relations
-            if (null === $columns && $getRelations === true) {
-                // Add the model to the final results
-                $entity->setRelations();
-            }
-        }
-    }
-
-    /**
      * Build a select query statement by given criteria.
      * <code>
      *      $this->queryBuilder(
@@ -418,6 +370,60 @@ class PDOEntityRetriever implements EntityRetriever
     }
 
     /**
+     * Bind criteria for a select statement.
+     *
+     * @param Query      $query
+     * @param array|null $criteria
+     *
+     * @return void
+     */
+    protected function bindValuesForSelect(Query $query, array $criteria = null): void
+    {
+        // Iterate through the criteria once more
+        foreach ($criteria as $column => $criterion) {
+            // If the criterion is null
+            if ($criterion === null) {
+                // Skip as we've already set the where to IS NULL
+                continue;
+            }
+
+            // If the criterion is an array
+            if (is_array($criterion)) {
+                // Iterate through the criterion and bind each value individually
+                foreach ($criterion as $index => $criterionItem) {
+                    $query->bindValue($column . $index, $criterionItem);
+                }
+
+                continue;
+            }
+
+            // And bind each value to the column
+            $query->bindValue($column, $criterion);
+        }
+    }
+
+    /**
+     * Get select results as an array of Entities.
+     *
+     * @param Entity[]   $entities
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return void
+     */
+    protected function selectResultsRelations(array $entities, array $columns = null, bool $getRelations = null): void
+    {
+        // Iterate through the rows found
+        foreach ($entities as $entity) {
+            // If no columns were specified then we can safely get all the relations
+            if (null === $columns && $getRelations === true) {
+                // Add the model to the final results
+                $entity->setRelations();
+            }
+        }
+    }
+
+    /**
      * Set the criteria in the query builder.
      *
      * @param QueryBuilder $query
@@ -453,6 +459,69 @@ class PDOEntityRetriever implements EntityRetriever
 
             $this->setEqualCriterionInQuery($query, $column);
         }
+    }
+
+    /**
+     * Set the order by options in a query builder.
+     *
+     * @param QueryBuilder $query
+     * @param array        $orderBy
+     *
+     * @return void
+     */
+    protected function setOrderByInQuery(QueryBuilder $query, array $orderBy): void
+    {
+        // Iterate through each order by
+        foreach ($orderBy as $column => $order) {
+            // Switch through the order (value) set
+            switch ($order) {
+                // If the order is ascending
+                case OrderBy::ASC:
+                    // Set the column via the orderByAsc method
+                    $query->orderByAsc($column);
+
+                    break;
+                // If the order is descending
+                case OrderBy::DESC:
+                    // Set the column via the orderByDesc method
+                    $query->orderByDesc($column);
+
+                    break;
+                default:
+                    // Otherwise set the order (which is the column)
+                    $query->orderBy($order);
+
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Set the limit in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param int          $limit
+     *
+     * @return void
+     */
+    protected function setLimitInQuery(QueryBuilder $query, int $limit): void
+    {
+        // Set it in the query
+        $query->limit($limit);
+    }
+
+    /**
+     * Set the offset in the query builder.
+     *
+     * @param QueryBuilder $query
+     * @param int          $offset
+     *
+     * @return void
+     */
+    protected function setOffsetInQuery(QueryBuilder $query, int $offset): void
+    {
+        // Set it in the query
+        $query->offset($offset);
     }
 
     /**
@@ -520,69 +589,6 @@ class PDOEntityRetriever implements EntityRetriever
     protected function setEqualCriterionInQuery(QueryBuilder $query, string $column): void
     {
         $query->where($column . ' = ' . $this->columnParam($column));
-    }
-
-    /**
-     * Set the order by options in a query builder.
-     *
-     * @param QueryBuilder $query
-     * @param array        $orderBy
-     *
-     * @return void
-     */
-    protected function setOrderByInQuery(QueryBuilder $query, array $orderBy): void
-    {
-        // Iterate through each order by
-        foreach ($orderBy as $column => $order) {
-            // Switch through the order (value) set
-            switch ($order) {
-                // If the order is ascending
-                case OrderBy::ASC:
-                    // Set the column via the orderByAsc method
-                    $query->orderByAsc($column);
-
-                    break;
-                // If the order is descending
-                case OrderBy::DESC:
-                    // Set the column via the orderByDesc method
-                    $query->orderByDesc($column);
-
-                    break;
-                default:
-                    // Otherwise set the order (which is the column)
-                    $query->orderBy($order);
-
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Set the limit in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param int          $limit
-     *
-     * @return void
-     */
-    protected function setLimitInQuery(QueryBuilder $query, int $limit): void
-    {
-        // Set it in the query
-        $query->limit($limit);
-    }
-
-    /**
-     * Set the offset in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param int          $offset
-     *
-     * @return void
-     */
-    protected function setOffsetInQuery(QueryBuilder $query, int $offset): void
-    {
-        // Set it in the query
-        $query->offset($offset);
     }
 
     /**

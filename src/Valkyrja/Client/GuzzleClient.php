@@ -47,6 +47,33 @@ class GuzzleClient implements Client
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Client::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Client::class,
+            new static(new Guzzle())
+        );
+    }
+
+    /**
      * Make a request.
      *
      * @param string $method  The request method
@@ -138,32 +165,5 @@ class GuzzleClient implements Client
     public function delete(string $uri, array $options = []): ResponseInterface
     {
         return $this->guzzle->delete($uri, $options);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Client::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Client::class,
-            new static(new Guzzle())
-        );
     }
 }

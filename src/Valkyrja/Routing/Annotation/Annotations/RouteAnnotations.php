@@ -39,6 +39,35 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     protected string $routeAnnotationType = 'Route';
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RouteAnnotationsContract::class,
+        ];
+    }
+
+    /**
+     * Bind the route annotations.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            RouteAnnotationsContract::class,
+            new static(
+                $app->container()->getSingleton(AnnotationsParser::class)
+            )
+        );
+    }
+
+    /**
      * Get routes.
      *
      * @param string ...$classes The classes
@@ -83,6 +112,34 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     }
 
     /**
+     * Get all classes' routes.
+     *
+     * @param array $classes The classes
+     *
+     * @throws ReflectionException
+     *
+     * @return RouteContract[]
+     */
+    protected function getClassRoutes(array $classes): array
+    {
+        /** @var RouteContract[] $routes */
+        $routes = [];
+
+        // Iterate through all the classes
+        foreach ($classes as $class) {
+            $annotations = $this->classMembersAnnotationsType($this->routeAnnotationType, $class);
+
+            // Get all the routes for each class and iterate through them
+            foreach ($annotations as $annotation) {
+                // Set the annotation in the routes list
+                $routes[] = $annotation;
+            }
+        }
+
+        return $routes;
+    }
+
+    /**
      * Set the route properties from arguments.
      *
      * @param Route $route
@@ -117,31 +174,17 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     }
 
     /**
-     * Get all classes' routes.
+     * Get a route from a route annotation.
      *
-     * @param array $classes The classes
+     * @param Route $route The route annotation
      *
-     * @throws ReflectionException
+     * @throws InvalidArgumentException
      *
-     * @return RouteContract[]
+     * @return RouteContract
      */
-    protected function getClassRoutes(array $classes): array
+    protected function getRouteFromAnnotation(Route $route): RouteContract
     {
-        /** @var RouteContract[] $routes */
-        $routes = [];
-
-        // Iterate through all the classes
-        foreach ($classes as $class) {
-            $annotations = $this->classMembersAnnotationsType($this->routeAnnotationType, $class);
-
-            // Get all the routes for each class and iterate through them
-            foreach ($annotations as $annotation) {
-                // Set the annotation in the routes list
-                $routes[] = $annotation;
-            }
-        }
-
-        return $routes;
+        return RouteModel::fromArray($route->asArray());
     }
 
     /**
@@ -173,13 +216,13 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         // If the base is dynamic
-        if (false !== $controllerRoute->isDynamic()) {
+        if ($controllerRoute->isDynamic()) {
             // Set the route to dynamic
             $newRoute->setDynamic(true);
         }
 
         // If the base is secure
-        if (false !== $controllerRoute->isSecure()) {
+        if ($controllerRoute->isSecure()) {
             // Set the route to dynamic
             $newRoute->setSecure(true);
         }
@@ -222,48 +265,5 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         return $path;
-    }
-
-    /**
-     * Get a route from a route annotation.
-     *
-     * @param Route $route The route annotation
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return RouteContract
-     */
-    protected function getRouteFromAnnotation(Route $route): RouteContract
-    {
-        return RouteModel::fromArray($route->asArray());
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            RouteAnnotationsContract::class,
-        ];
-    }
-
-    /**
-     * Bind the route annotations.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            RouteAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
-        );
     }
 }

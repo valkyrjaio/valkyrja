@@ -23,6 +23,11 @@ use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
+use function count;
+use function defined;
+use function function_exists;
+use function in_array;
+
 /**
  * Class Response.
  *
@@ -271,6 +276,33 @@ class NativeResponse implements Response
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Response::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Response::class,
+            new static()
+        );
+    }    /**
      * Set the content for the response.
      *
      * @param string $content The response content to set
@@ -283,6 +315,8 @@ class NativeResponse implements Response
 
         return $this;
     }
+
+
 
     /**
      * Get the content for the response.
@@ -887,7 +921,7 @@ class NativeResponse implements Response
             }
             $this->headers->set(
                 'ETag',
-                (true === $weak ? 'W/' : '') . $etag
+                ($weak ? 'W/' : '') . $etag
             );
         }
 
@@ -1140,34 +1174,5 @@ class NativeResponse implements Response
                 ob_end_clean();
             }
         }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Response::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Response::class,
-            new static()
-        );
     }
 }

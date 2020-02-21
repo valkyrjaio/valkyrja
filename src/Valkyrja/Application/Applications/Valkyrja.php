@@ -21,6 +21,9 @@ use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
 
+use function define;
+use function defined;
+
 /**
  * Class Valkyrja.
  *
@@ -64,7 +67,7 @@ class Valkyrja implements Application
     public function setup(array $config = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
-        if (self::$setup && false === $force) {
+        if (self::$setup && ! $force) {
             return;
         }
 
@@ -93,6 +96,36 @@ class Valkyrja implements Application
         $this->bootstrapSetup();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
+    }
+
+    /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version(): string
+    {
+        return static::VERSION;
+    }
+
+    /**
+     * Get whether the application is using a compiled version.
+     *
+     * @return bool
+     */
+    public function isCompiled(): bool
+    {
+        return $this->isCompiled;
+    }
+
+    /**
+     * Set the application as using compiled.
+     *
+     * @return void
+     */
+    public function setCompiled(): void
+    {
+        $this->isCompiled = true;
     }
 
     /**
@@ -221,35 +254,5 @@ class Valkyrja implements Application
     protected function bootstrapTimezone(): void
     {
         date_default_timezone_set(self::$config[ConfigKeyPart::APP][ConfigKeyPart::TIMEZONE]);
-    }
-
-    /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string
-    {
-        return static::VERSION;
-    }
-
-    /**
-     * Get whether the application is using a compiled version.
-     *
-     * @return bool
-     */
-    public function isCompiled(): bool
-    {
-        return $this->isCompiled;
-    }
-
-    /**
-     * Set the application as using compiled.
-     *
-     * @return void
-     */
-    public function setCompiled(): void
-    {
-        $this->isCompiled = true;
     }
 }

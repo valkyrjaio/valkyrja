@@ -47,6 +47,10 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
+use function constant;
+use function defined;
+use function func_num_args;
+
 /**
  * Trait Helpers.
  *

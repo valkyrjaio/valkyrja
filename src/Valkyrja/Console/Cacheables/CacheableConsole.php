@@ -38,32 +38,29 @@ trait CacheableConsole
     use ProvidersAwareTrait;
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The commands.
      *
      * @var Command[]
      */
     protected static array $commands = [];
-
     /**
      * The command paths.
      *
      * @var string[]
      */
     protected static array $paths = [];
-
     /**
      * The commands by name.
      *
      * @var string[]
      */
     protected static array $namedCommands = [];
+    /**
+     * The application.
+     *
+     * @var Application
+     */
+    protected Application $app;
 
     /**
      * Get the application.
@@ -125,35 +122,6 @@ trait CacheableConsole
     }
 
     /**
-     * Setup command providers.
-     *
-     * @return void
-     */
-    protected function setupCommandProviders(): void
-    {
-        /** @var string[] $providers */
-        $providers = $this->app->config(ConfigKey::CONSOLE_PROVIDERS);
-
-        // Iterate through all the providers
-        foreach ($providers as $provider) {
-            $this->register($provider);
-        }
-
-        // If this is not a dev environment
-        if (! $this->app->debug()) {
-            return;
-        }
-
-        /** @var string[] $devProviders */
-        $devProviders = $this->app->config(ConfigKey::CONSOLE_DEV_PROVIDERS);
-
-        // Iterate through all the providers
-        foreach ($devProviders as $provider) {
-            $this->register($provider);
-        }
-    }
-
-    /**
      * Setup annotations.
      *
      * @throws InvalidClosureException
@@ -195,6 +163,35 @@ trait CacheableConsole
             ConfigKeyPart::NAMED_COMMANDS => self::$namedCommands,
             ConfigKeyPart::PROVIDED       => self::$provided,
         ];
+    }
+
+    /**
+     * Setup command providers.
+     *
+     * @return void
+     */
+    protected function setupCommandProviders(): void
+    {
+        /** @var string[] $providers */
+        $providers = $this->app->config(ConfigKey::CONSOLE_PROVIDERS);
+
+        // Iterate through all the providers
+        foreach ($providers as $provider) {
+            $this->register($provider);
+        }
+
+        // If this is not a dev environment
+        if (! $this->app->debug()) {
+            return;
+        }
+
+        /** @var string[] $devProviders */
+        $devProviders = $this->app->config(ConfigKey::CONSOLE_DEV_PROVIDERS);
+
+        // Iterate through all the providers
+        foreach ($devProviders as $provider) {
+            $this->register($provider);
+        }
     }
 
     /**

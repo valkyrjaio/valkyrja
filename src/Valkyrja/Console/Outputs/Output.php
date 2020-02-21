@@ -58,6 +58,35 @@ class Output implements OutputContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            OutputContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            OutputContract::class,
+            new static(
+                $app->container()->getSingleton(Contract::OUTPUT_FORMATTER)
+            )
+        );
+    }
+
+    /**
      * Get the formatter.
      *
      * @return OutputFormatterContract
@@ -149,34 +178,5 @@ class Output implements OutputContract
         if ($newLine) {
             echo PHP_EOL;
         }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            OutputContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            OutputContract::class,
-            new static(
-                $app->container()->getSingleton(Contract::OUTPUT_FORMATTER)
-            )
-        );
     }
 }

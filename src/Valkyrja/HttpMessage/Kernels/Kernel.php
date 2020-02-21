@@ -68,6 +68,30 @@ class Kernel implements KernelContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            KernelContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(KernelContract::class, new static($app, $app->router()));
+    }
+
+    /**
      * Handle a request.
      *
      * @param Request $request The request
@@ -99,42 +123,6 @@ class Kernel implements KernelContract
         );
 
         return $response;
-    }
-
-    /**
-     * Dispatch the request via the router.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
-     */
-    protected function dispatchRouter(Request $request): Response
-    {
-        // Set the request object in the container
-        $this->app->container()->singleton(Request::class, $request);
-
-        // Dispatch the before request handled middleware
-        $request = $this->requestMiddleware($request);
-
-        return $this->router->dispatch($request);
-    }
-
-    /**
-     * Get a response from an exception.
-     *
-     * @param Throwable $exception The exception
-     *
-     * @throws Throwable
-     *
-     * @return Response
-     */
-    protected function getExceptionResponse(Throwable $exception): Response
-    {
-        if ($this->app->debug()) {
-            throw $exception;
-        }
-
-        return $this->app->exceptionHandler()->response($exception);
     }
 
     /**
@@ -192,6 +180,42 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Dispatch the request via the router.
+     *
+     * @param Request $request The request
+     *
+     * @return Response
+     */
+    protected function dispatchRouter(Request $request): Response
+    {
+        // Set the request object in the container
+        $this->app->container()->singleton(Request::class, $request);
+
+        // Dispatch the before request handled middleware
+        $request = $this->requestMiddleware($request);
+
+        return $this->router->dispatch($request);
+    }
+
+    /**
+     * Get a response from an exception.
+     *
+     * @param Throwable $exception The exception
+     *
+     * @throws Throwable
+     *
+     * @return Response
+     */
+    protected function getExceptionResponse(Throwable $exception): Response
+    {
+        if ($this->app->debug()) {
+            throw $exception;
+        }
+
+        return $this->app->exceptionHandler()->response($exception);
+    }
+
+    /**
      * Get the application.
      *
      * @return Application
@@ -199,29 +223,5 @@ class Kernel implements KernelContract
     protected function getApplication(): Application
     {
         return $this->app;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            KernelContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(KernelContract::class, new static($app, $app->router()));
     }
 }

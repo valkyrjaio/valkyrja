@@ -17,6 +17,8 @@ use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Support\Providers\Provides;
 
+use function is_array;
+
 /**
  * Class PathGenerator.
  *
@@ -25,6 +27,30 @@ use Valkyrja\Support\Providers\Provides;
 class NativePathGenerator implements PathGenerator
 {
     use Provides;
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            PathGenerator::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(PathGenerator::class, new static());
+    }
 
     /**
      * Parse segments, data, and params into a path.
@@ -170,29 +196,5 @@ class NativePathGenerator implements PathGenerator
         }
 
         return $segment;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            PathGenerator::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param \Valkyrja\Application\Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(PathGenerator::class, new static());
     }
 }

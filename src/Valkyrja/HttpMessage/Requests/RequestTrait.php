@@ -82,48 +82,6 @@ trait RequestTrait
     protected $body;
 
     /**
-     * Initialize the Request.
-     *
-     * @param Uri    $uri     [optional] The uri
-     * @param string $method  [optional] The method
-     * @param Stream $body    [optional] The body stream
-     * @param array  $headers [optional] The headers
-     *
-     * @throws InvalidArgumentException
-     * @throws InvalidMethod
-     * @throws InvalidPath
-     * @throws InvalidPort
-     * @throws InvalidProtocolVersion
-     * @throws InvalidQuery
-     * @throws InvalidScheme
-     * @throws InvalidStream
-     *
-     * @return void
-     */
-    protected function initialize(
-        Uri $uri = null,
-        string $method = null,
-        Stream $body = null,
-        array $headers = null
-    ): void {
-        $this->uri     = $uri ?? new HttpUri();
-        $this->method  = $method ?? RequestMethod::GET;
-        $this->body    = $body ?? new HttpStream('php://input');
-        $this->headers = $headers ?? [];
-
-        $this->setHeaders($headers);
-        $this->validateMethod($this->method);
-        $this->validateProtocolVersion($this->protocol);
-
-        if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
-            $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
-            $this->headers[static::$HOST_NAME]          = [
-                $this->uri->getHost(),
-            ];
-        }
-    }
-
-    /**
      * Retrieves the message's request target.
      * Retrieves the message's request-target either as it will appear (for
      * clients), as it appeared at request (for servers), or as it was
@@ -316,6 +274,48 @@ trait RequestTrait
     {
         if (! RequestMethod::isValid($method)) {
             throw new InvalidMethod(sprintf('Unsupported HTTP method "%s" provided', $method));
+        }
+    }
+
+    /**
+     * Initialize the Request.
+     *
+     * @param Uri    $uri     [optional] The uri
+     * @param string $method  [optional] The method
+     * @param Stream $body    [optional] The body stream
+     * @param array  $headers [optional] The headers
+     *
+     * @throws InvalidArgumentException
+     * @throws InvalidMethod
+     * @throws InvalidPath
+     * @throws InvalidPort
+     * @throws InvalidProtocolVersion
+     * @throws InvalidQuery
+     * @throws InvalidScheme
+     * @throws InvalidStream
+     *
+     * @return void
+     */
+    protected function initialize(
+        Uri $uri = null,
+        string $method = null,
+        Stream $body = null,
+        array $headers = null
+    ): void {
+        $this->uri     = $uri ?? new HttpUri();
+        $this->method  = $method ?? RequestMethod::GET;
+        $this->body    = $body ?? new HttpStream('php://input');
+        $this->headers = $headers ?? [];
+
+        $this->setHeaders($headers);
+        $this->validateMethod($this->method);
+        $this->validateProtocolVersion($this->protocol);
+
+        if ($this->hasHeader(static::$HOST_NAME) && $this->uri->getHost()) {
+            $this->headerNames[static::$HOST_NAME_NORM] = static::$HOST_NAME;
+            $this->headers[static::$HOST_NAME]          = [
+                $this->uri->getHost(),
+            ];
         }
     }
 }

@@ -22,6 +22,10 @@ use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 
+use function get_class;
+use function is_array;
+use function is_object;
+
 /**
  * Class PDOEntityPersister
  *
@@ -329,6 +333,18 @@ class PDOEntityPersister implements EntityPersister
     }
 
     /**
+     * Get a column param from a column name.
+     *
+     * @param string $column
+     *
+     * @return string
+     */
+    protected function columnParam(string $column): string
+    {
+        return ':' . $column;
+    }
+
+    /**
      * Set properties for save, delete, or create queries.
      *
      * @param QueryBuilder $query
@@ -376,17 +392,5 @@ class PDOEntityPersister implements EntityPersister
             // Bind property
             $query->bindValue($column, $property);
         }
-    }
-
-    /**
-     * Get a column param from a column name.
-     *
-     * @param string $column
-     *
-     * @return string
-     */
-    protected function columnParam(string $column): string
-    {
-        return ':' . $column;
     }
 }

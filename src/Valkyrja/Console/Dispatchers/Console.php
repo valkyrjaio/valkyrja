@@ -58,6 +58,35 @@ class Console implements ConsoleContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::CONSOLE,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            Contract::CONSOLE,
+            new static($app)
+        );
+
+        $app->console()->setup();
+    }
+
+    /**
      * Add a new command.
      *
      * @param Command $command The command
@@ -326,34 +355,5 @@ class Console implements ConsoleContract
             // Set in the named commands list to find it more easily later
             self::$namedCommands[$command->getName()] = $command->getPath();
         }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::CONSOLE,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Contract::CONSOLE,
-            new static($app)
-        );
-
-        $app->console()->setup();
     }
 }

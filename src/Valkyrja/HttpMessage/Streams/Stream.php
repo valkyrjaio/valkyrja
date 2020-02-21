@@ -17,6 +17,9 @@ use RuntimeException;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\Stream as StreamContract;
 
+use function is_int;
+use function is_resource;
+
 /**
  * Describes a data stream.
  * Typically, an instance will wrap a PHP stream; this interface provides
@@ -45,6 +48,36 @@ class Stream implements StreamContract
     public function __construct(string $stream, string $mode = null)
     {
         $this->setStream($stream, $mode);
+    }
+
+    /**
+     * Set the stream.
+     *
+     * @param string $stream The stream
+     * @param string $mode   [optional] The mode
+     *
+     * @throws InvalidStream
+     *
+     * @return void
+     */
+    protected function setStream(string $stream, string $mode = null): void
+    {
+        // Set the mode
+        $mode = $mode ?? 'rb';
+
+        // Open a new resource stream
+        $resource = fopen($stream, $mode);
+
+        // If the resource isn't a resource or a stream resource type
+        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
+            // Throw a new invalid stream exception
+            throw new InvalidStream(
+                'Invalid stream provided; must be a string stream identifier or stream resource'
+            );
+        }
+
+        // Set the stream
+        $this->stream = $resource;
     }
 
     /**
@@ -438,35 +471,5 @@ class Stream implements StreamContract
         $metadata = stream_get_meta_data($this->stream);
 
         return $metadata[$key] ?? null;
-    }
-
-    /**
-     * Set the stream.
-     *
-     * @param string $stream The stream
-     * @param string $mode   [optional] The mode
-     *
-     * @throws InvalidStream
-     *
-     * @return void
-     */
-    protected function setStream(string $stream, string $mode = null): void
-    {
-        // Set the mode
-        $mode = $mode ?? 'rb';
-
-        // Open a new resource stream
-        $resource = fopen($stream, $mode);
-
-        // If the resource isn't a resource or a stream resource type
-        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
-            // Throw a new invalid stream exception
-            throw new InvalidStream(
-                'Invalid stream provided; must be a string stream identifier or stream resource'
-            );
-        }
-
-        // Set the stream
-        $this->stream = $resource;
     }
 }

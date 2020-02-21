@@ -41,25 +41,23 @@ trait ContainerCacheable
     use ProvidersAwareTrait;
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The aliases.
      *
      * @var string[]
      */
     protected static array $aliases = [];
-
     /**
      * The services.
      *
      * @var Service[]
      */
     protected static array $services = [];
+    /**
+     * The application.
+     *
+     * @var Application
+     */
+    protected Application $app;
 
     /**
      * Get the application.
@@ -173,6 +171,22 @@ trait ContainerCacheable
     }
 
     /**
+     * Get a cacheable representation of the service container.
+     *
+     * @return array
+     */
+    public function getCacheable(): array
+    {
+        $this->setup(true, false);
+
+        return [
+            ConfigKeyPart::SERVICES => base64_encode(serialize(self::$services)),
+            ConfigKeyPart::ALIASES  => self::$aliases,
+            ConfigKeyPart::PROVIDED => self::$provided,
+        ];
+    }
+
+    /**
      * Setup service providers.
      *
      * @return void
@@ -199,22 +213,6 @@ trait ContainerCacheable
         foreach ($devProviders as $provider) {
             $this->register($provider);
         }
-    }
-
-    /**
-     * Get a cacheable representation of the service container.
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            ConfigKeyPart::SERVICES => base64_encode(serialize(self::$services)),
-            ConfigKeyPart::ALIASES  => self::$aliases,
-            ConfigKeyPart::PROVIDED => self::$provided,
-        ];
     }
 
     /**

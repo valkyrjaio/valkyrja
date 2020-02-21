@@ -33,6 +33,8 @@ use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
+use function get_class;
+
 /**
  * Class PDOEntityManager.
  *
@@ -43,46 +45,41 @@ class PDOEntityManager implements EntityManager
     use Provides;
 
     /**
+     * Connections.
+     *
+     * @var PDO[]
+     */
+    protected static array $connections = [];
+    /**
      * The application.
      *
      * @var Application
      */
     protected Application $app;
-
     /**
      * The entity retriever.
      *
      * @var EntityRetriever
      */
     protected EntityRetriever $entityRetriever;
-
     /**
      * The entity persister.
      *
      * @var EntityPersister
      */
     protected EntityPersister $entityPersister;
-
     /**
      * The connection to use.
      *
      * @var string
      */
     protected string $connection;
-
     /**
      * Repositories.
      *
      * @var Repository[]
      */
     protected array $repositories = [];
-
-    /**
-     * Connections.
-     *
-     * @var PDO[]
-     */
-    protected static array $connections = [];
 
     /**
      * PDOEntityManager constructor.
@@ -98,6 +95,91 @@ class PDOEntityManager implements EntityManager
         $this->entityPersister = new PDOEntityPersister($this, $this->connection());
 
         $this->connection()->beginTransaction();
+    }
+
+    /**
+     * Get a pdo store by name.
+     *
+     * @return PDO
+     */
+    protected function connection(): PDO
+    {
+        if (isset(self::$connections[$this->connection])) {
+            return self::$connections[$this->connection];
+        }
+
+        $config = $this->getConnectionConfig($this->connection);
+
+        return self::$connections[$this->connection] = $this->getConnectionFromConfig($config);
+    }
+
+    /**
+     * Get the store config.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array
+     */
+    protected function getConnectionConfig(string $name): array
+    {
+        $config = $this->app->config('database.connections.' . $name);
+
+        if (null === $config) {
+            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Get the store from the config.
+     *
+     * @param array $config
+     *
+     * @return PDO
+     */
+    protected function getConnectionFromConfig(array $config): PDO
+    {
+        $dsn = $config[ConfigKeyPart::DRIVER]
+            . ':host=' . $config[ConfigKeyPart::HOST]
+            . ';port=' . $config[ConfigKeyPart::PORT]
+            . ';dbname=' . $config[ConfigKeyPart::DB]
+            . ';charset=' . $config[ConfigKeyPart::CHARSET];
+
+        return new PDO(
+            $dsn,
+            $config[ConfigKeyPart::USERNAME],
+            $config[ConfigKeyPart::PASSWORD],
+            []
+        );
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            EntityManager::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(EntityManager::class, new static($app));
     }
 
     /**
@@ -499,90 +581,5 @@ class PDOEntityManager implements EntityManager
     public function clear(Entity $entity = null): void
     {
         $this->entityPersister->clear($entity);
-    }
-
-    /**
-     * Get a pdo store by name.
-     *
-     * @return PDO
-     */
-    protected function connection(): PDO
-    {
-        if (isset(self::$connections[$this->connection])) {
-            return self::$connections[$this->connection];
-        }
-
-        $config = $this->getConnectionConfig($this->connection);
-
-        return self::$connections[$this->connection] = $this->getConnectionFromConfig($config);
-    }
-
-    /**
-     * Get the store config.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    protected function getConnectionConfig(string $name): array
-    {
-        $config = $this->app->config('database.connections.' . $name);
-
-        if (null === $config) {
-            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
-        }
-
-        return $config;
-    }
-
-    /**
-     * Get the store from the config.
-     *
-     * @param array $config
-     *
-     * @return PDO
-     */
-    protected function getConnectionFromConfig(array $config): PDO
-    {
-        $dsn = $config[ConfigKeyPart::DRIVER]
-            . ':host=' . $config[ConfigKeyPart::HOST]
-            . ';port=' . $config[ConfigKeyPart::PORT]
-            . ';dbname=' . $config[ConfigKeyPart::DB]
-            . ';charset=' . $config[ConfigKeyPart::CHARSET];
-
-        return new PDO(
-            $dsn,
-            $config[ConfigKeyPart::USERNAME],
-            $config[ConfigKeyPart::PASSWORD],
-            []
-        );
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            EntityManager::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(EntityManager::class, new static($app));
     }
 }

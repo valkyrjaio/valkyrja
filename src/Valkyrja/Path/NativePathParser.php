@@ -42,6 +42,30 @@ class NativePathParser implements PathParser
 REGEX;
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            PathParser::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(PathParser::class, new static());
+    }
+
+    /**
      * Parse a path and get its parts.
      *
      * @param string $path The path
@@ -165,65 +189,6 @@ REGEX;
     }
 
     /**
-     * Split segments based on ending bracket within the segments.
-     *
-     * @param array  $segments    The segments
-     * @param string $deliminator The deliminator
-     *
-     * @return array
-     */
-    protected function splitSegments(array $segments, string $deliminator): array
-    {
-        // The final segments to return
-        $returnSegments = [];
-
-        // Iterate through the segments once more
-        foreach ($segments as $segment) {
-            // If the segment has the deliminator
-            if (strpos($segment, $deliminator) !== false) {
-                $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
-
-                continue;
-            }
-
-            // Otherwise set the segment normally
-            $returnSegments[] = $segment;
-        }
-
-        return $returnSegments;
-    }
-
-    /**
-     * Split a segment by deliminator (recursive).
-     *
-     * @param array  $segments    The segments
-     * @param string $segment     The segment
-     * @param string $deliminator The deliminator
-     *
-     * @return void
-     */
-    protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
-    {
-        // Split the segment on that bracket
-        // Iterate through the parts
-        foreach (explode($deliminator, $segment) as $part) {
-            if (! $part) {
-                continue;
-            }
-
-            // If the segment has the deliminator
-            if (strpos($part, $deliminator) !== false) {
-                $this->splitSegmentsDeliminator($segments, $part, $deliminator);
-
-                continue;
-            }
-
-            // Setting each part individually
-            $segments[] = $part;
-        }
-    }
-
-    /**
      * Parse a path with no optionals.
      *
      * @param string $path     The path
@@ -299,26 +264,61 @@ REGEX;
     }
 
     /**
-     * The items provided by this provider.
+     * Split segments based on ending bracket within the segments.
+     *
+     * @param array  $segments    The segments
+     * @param string $deliminator The deliminator
      *
      * @return array
      */
-    public static function provides(): array
+    protected function splitSegments(array $segments, string $deliminator): array
     {
-        return [
-            PathParser::class,
-        ];
+        // The final segments to return
+        $returnSegments = [];
+
+        // Iterate through the segments once more
+        foreach ($segments as $segment) {
+            // If the segment has the deliminator
+            if (strpos($segment, $deliminator) !== false) {
+                $this->splitSegmentsDeliminator($returnSegments, $segment, $deliminator);
+
+                continue;
+            }
+
+            // Otherwise set the segment normally
+            $returnSegments[] = $segment;
+        }
+
+        return $returnSegments;
     }
 
     /**
-     * Publish the provider.
+     * Split a segment by deliminator (recursive).
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param array  $segments    The segments
+     * @param string $segment     The segment
+     * @param string $deliminator The deliminator
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    protected function splitSegmentsDeliminator(array &$segments, string $segment, string $deliminator): void
     {
-        $app->container()->singleton(PathParser::class, new static());
+        // Split the segment on that bracket
+        // Iterate through the parts
+        foreach (explode($deliminator, $segment) as $part) {
+            if (! $part) {
+                continue;
+            }
+
+            // If the segment has the deliminator
+            if (strpos($part, $deliminator) !== false) {
+                $this->splitSegmentsDeliminator($segments, $part, $deliminator);
+
+                continue;
+            }
+
+            // Setting each part individually
+            $segments[] = $part;
+        }
     }
 }

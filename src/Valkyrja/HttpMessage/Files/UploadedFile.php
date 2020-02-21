@@ -20,6 +20,8 @@ use Valkyrja\HttpMessage\Stream;
 use Valkyrja\HttpMessage\Streams\Stream as HttpStream;
 use Valkyrja\HttpMessage\UploadedFile as UploadedFileContract;
 
+use function dirname;
+
 /**
  * Value object representing a file uploaded through an HTTP request.
  * Instances of this interface are considered immutable; all methods that
@@ -242,7 +244,7 @@ class UploadedFile implements UploadedFileContract
         }
         // Otherwise try to use the move_uploaded_file function
         // and if the move_uploaded_file function call failed
-        elseif (false === move_uploaded_file($this->file, $targetPath)) {
+        elseif (! move_uploaded_file($this->file, $targetPath)) {
             // Throw a runtime exception
             throw new RuntimeException('Error occurred while moving uploaded file');
         }

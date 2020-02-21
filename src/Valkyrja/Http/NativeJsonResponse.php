@@ -232,7 +232,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @throws InvalidArgumentException
      *
