@@ -151,11 +151,9 @@ interface Router extends Cacheable
      *
      * @param Request $request The request
      *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     * @return Route
      */
-    public function requestRoute(Request $request): ?Route;
+    public function requestRoute(Request $request): Route;
 
     /**
      * Get a route by path.

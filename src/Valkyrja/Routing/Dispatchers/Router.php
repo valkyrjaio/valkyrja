@@ -57,6 +57,35 @@ class Router implements RouterContract
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RouterContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(
+            RouterContract::class,
+            new static($app)
+        );
+
+        $app->router()->setup();
+    }
+
+    /**
      * Set a single route.
      *
      * @param Route $route The route
@@ -297,18 +326,24 @@ class Router implements RouterContract
      * @param Request $request The request
      *
      * @throws InvalidArgumentException
+     * @throws NotFoundHttpException
      *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
+     * @return Route
      */
-    public function requestRoute(Request $request): ?Route
+    public function requestRoute(Request $request): Route
     {
-        $requestMethod = $request->getMethod();
         // Decode the request uri
         $requestUri = rawurldecode($request->getPathOnly());
+        // Try to match the route
+        $route = $this->matchRoute($requestUri, $request->getMethod());
 
-        return $this->matchRoute($requestUri, $requestMethod);
+        // If no route is found
+        if (null === $route) {
+            // Abort with 404
+            $this->app->abort();
+        }
+
+        return $route;
     }
 
     /**
@@ -373,31 +408,15 @@ class Router implements RouterContract
      */
     public function dispatch(Request $request): Response
     {
-        // Check the returned route
-        if (null === $route = $this->requestRoute($request)) {
-            $this->app->abort();
-        }
+        // Get the route
+        $route = $this->requestRoute($request);
 
-        // If the route is a redirect and a redirect route is set
-        if ($route->isRedirect() && $route->getRedirectPath()) {
-            // Throw the redirect to the redirect path
-            $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode())->throw();
-        }
-
-        // If the route is secure and the current request is not secure
-        if ($route->isSecure() && ! $request->isSecure()) {
-            // Throw the redirect to the secure path
-            $this->app->redirect()->secure($request->getPath())->throw();
-        }
-
+        // Determine if the route is a redirect
+        $this->determineRedirectRoute($route);
+        // Determine if the route is secure and should be redirected
+        $this->determineIsSecureRoute($request, $route);
         // Dispatch the route's before request handled middleware
-        $middlewareReturn = $this->routeRequestMiddleware($request, $route);
-
-        // If the middleware returned a response
-        if ($middlewareReturn instanceof Response) {
-            // Return the response
-            return $middlewareReturn;
-        }
+        $this->routeRequestMiddleware($request, $route);
 
         // Trigger an event for route matched
         $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
@@ -405,16 +424,11 @@ class Router implements RouterContract
         $this->app->container()->singleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->app->dispatcher()->dispatch(
-            $route,
-            $route->getMatches()
-        );
-
+        $dispatch = $this->app->dispatcher()->dispatch($route, $route->getMatches());
         // Get the response from the dispatch
         $response = $this->getResponseFromDispatch($dispatch);
 
-        // Dispatch the route's before request handled middleware and return
-        // the response
+        // Dispatch the route's before request handled middleware and return the response
         $this->routeResponseMiddleware($request, $response, $route);
 
         return $response;
@@ -455,49 +469,62 @@ class Router implements RouterContract
     }
 
     /**
+     * Determine if a route is a redirect.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function determineRedirectRoute(Route $route): void
+    {
+        // If the route is a redirect and a redirect route is set
+        if ($route->isRedirect() && $route->getRedirectPath()) {
+            // Throw the redirect to the redirect path
+            $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode())->throw();
+        }
+    }
+
+    /**
+     * Determine if the route should be secure.
+     *
+     * @param Request $request The request
+     * @param Route   $route   The route
+     *
+     * @return void
+     */
+    protected function determineIsSecureRoute(Request $request, Route $route): void
+    {
+        // If the route is secure and the current request is not secure
+        if ($route->isSecure() && ! $request->isSecure()) {
+            // Throw the redirect to the secure path
+            $this->app->redirect()->secure($request->getPath())->throw();
+        }
+    }
+
+    /**
      * Dispatch a route's before request handled middleware.
      *
      * @param Request $request The request
      * @param Route   $route   The route
      *
-     * @return mixed
-     */
-    protected function routeRequestMiddleware(Request $request, Route $route)
-    {
-        // If the route has no middleware
-        if (null === $route->getMiddleware()) {
-            // Return the request passed through
-            return $request;
-        }
-
-        return $this->app->kernel()->requestMiddleware(
-            $request,
-            $route->getMiddleware()
-        );
-    }
-
-    /**
-     * Dispatch a route's after request handled middleware.
-     *
-     * @param Request  $request  The request
-     * @param Response $response The response
-     * @param Route    $route    The route
-     *
      * @return void
      */
-    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): void
+    protected function routeRequestMiddleware(Request $request, Route $route): void
     {
         // If the route has no middleware
         if (null === $route->getMiddleware()) {
-            // Return the response passed through
             return;
         }
 
-        $this->app->kernel()->responseMiddleware(
+        $middlewareReturn = $this->app->kernel()->requestMiddleware(
             $request,
-            $response,
             $route->getMiddleware()
         );
+        // If the middleware returned a response
+        if ($middlewareReturn instanceof Response) {
+            // Return the response
+            abortResponse($middlewareReturn);
+        }
     }
 
     /**
@@ -534,31 +561,26 @@ class Router implements RouterContract
     }
 
     /**
-     * The items provided by this provider.
+     * Dispatch a route's after request handled middleware.
      *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            RouterContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
+     * @param Request  $request  The request
+     * @param Response $response The response
+     * @param Route    $route    The route
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    protected function routeResponseMiddleware(Request $request, Response $response, Route $route): void
     {
-        $app->container()->singleton(
-            RouterContract::class,
-            new static($app)
-        );
+        // If the route has no middleware
+        if (null === $route->getMiddleware()) {
+            // Return the response passed through
+            return;
+        }
 
-        $app->router()->setup();
+        $this->app->kernel()->responseMiddleware(
+            $request,
+            $response,
+            $route->getMiddleware()
+        );
     }
 }
