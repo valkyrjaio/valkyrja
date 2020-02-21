@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Messages;
 
 use InvalidArgumentException;
 use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
+use Valkyrja\HttpMessage\Helpers\HeaderSecurity;
+use Valkyrja\HttpMessage\Stream;
 
 /**
  * Trait MessageTrait.
@@ -77,7 +79,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withProtocolVersion(string $version)
+    public function withProtocolVersion(string $version): self
     {
         $this->validateProtocolVersion($version);
 
@@ -195,7 +197,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withHeader(string $name, string ...$values)
+    public function withHeader(string $name, string ...$values): self
     {
         HeaderSecurity::assertValidName($name);
 
@@ -232,7 +234,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withAddedHeader(string $name, string ...$values)
+    public function withAddedHeader(string $name, string ...$values): self
     {
         HeaderSecurity::assertValidName($name);
 
@@ -262,7 +264,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withoutHeader(string $name)
+    public function withoutHeader(string $name): self
     {
         if (! $this->hasHeader($name)) {
             return clone $this;
@@ -300,7 +302,7 @@ trait MessageTrait
      *
      * @return static
      */
-    public function withBody(Stream $body)
+    public function withBody(Stream $body): self
     {
         $new = clone $this;
 

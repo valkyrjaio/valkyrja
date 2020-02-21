@@ -11,20 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Models;
 
 use DateTime;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
+use Valkyrja\HttpMessage\Enums\SameSite;
+use Valkyrja\Model\Model;
+use Valkyrja\Model\ModelTrait;
 
 /**
  * Class Cookie.
  *
  * @author Melech Mizrachi
  */
-class Cookie
+class Cookie implements Model
 {
-    public const LAX    = 'lax';
-    public const STRICT = 'strict';
+    use ModelTrait;
 
     protected const DELETED = 'deleted';
 
@@ -413,7 +415,7 @@ class Cookie
      */
     public function setSameSite(string $sameSite = null): self
     {
-        if (! in_array($sameSite, [self::LAX, self::STRICT, null], true)) {
+        if (! in_array($sameSite, [SameSite::LAX, SameSite::STRICT, null], true)) {
             throw new InvalidSameSiteTypeException(
                 'The "sameSite" parameter value is not valid.'
             );

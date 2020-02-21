@@ -11,18 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Middleware;
-
-use Valkyrja\HttpMessage\Middleware as MiddlewareContract;
-use Valkyrja\HttpMessage\Request;
-use Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage;
 
 /**
- * Abstract Class Middleware.
+ * Interface Middleware.
  *
  * @author Melech Mizrachi
  */
-abstract class Middleware implements MiddlewareContract
+interface Middleware
 {
     /**
      * Middleware handler for before a request is dispatched.
@@ -31,7 +27,7 @@ abstract class Middleware implements MiddlewareContract
      *
      * @return Request|Response
      */
-    abstract public static function before(Request $request);
+    public static function before(Request $request);
 
     /**
      * Middleware handler for after a request is dispatched.
@@ -41,7 +37,7 @@ abstract class Middleware implements MiddlewareContract
      *
      * @return Response
      */
-    abstract public static function after(Request $request, Response $response): Response;
+    public static function after(Request $request, Response $response): Response;
 
     /**
      * Middleware handler run when the application is terminating.
@@ -51,5 +47,5 @@ abstract class Middleware implements MiddlewareContract
      *
      * @return void
      */
-    abstract public static function terminate(Request $request, Response $response): void;
+    public static function terminate(Request $request, Response $response): void;
 }

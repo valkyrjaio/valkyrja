@@ -11,14 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Kernels;
 
 use Throwable;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\HttpMessage\Events\HttpKernelHandled;
 use Valkyrja\HttpMessage\Events\HttpKernelTerminate;
+use Valkyrja\HttpMessage\Kernel as KernelContract;
 use Valkyrja\HttpMessage\Middleware\MiddlewareAwareTrait;
+use Valkyrja\HttpMessage\Request;
+use Valkyrja\HttpMessage\Response;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Support\Providers\Provides;
@@ -28,7 +31,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class NativeKernel implements Kernel
+class Kernel implements KernelContract
 {
     use MiddlewareAwareTrait;
     use Provides;
@@ -206,7 +209,7 @@ class NativeKernel implements Kernel
     public static function provides(): array
     {
         return [
-            Kernel::class,
+            KernelContract::class,
         ];
     }
 
@@ -219,6 +222,6 @@ class NativeKernel implements Kernel
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(Kernel::class, new static($app, $app->router()));
+        $app->container()->singleton(KernelContract::class, new static($app, $app->router()));
     }
 }

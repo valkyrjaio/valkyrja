@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Requests;
 
 use InvalidArgumentException;
 use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
@@ -21,6 +21,9 @@ use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
 use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\SimpleRequest as SimpleRequestContract;
+use Valkyrja\HttpMessage\Stream;
+use Valkyrja\HttpMessage\Uri;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -39,7 +42,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStream;
  *
  * @author Melech Mizrachi
  */
-class NativeRequest implements Request
+class SimpleRequest implements SimpleRequestContract
 {
     use RequestTrait;
 

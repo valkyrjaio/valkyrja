@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\HttpMessage\EmptyResponse as EmptyResponseContract;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
-use Valkyrja\HttpMessage\NativeResponse;
 
 /**
  * Class NativeEmptyResponse.
  *
  * @author Melech Mizrachi
  */
-class NativeEmptyResponse extends NativeResponse implements EmptyResponse
+class EmptyResponse extends Response implements EmptyResponseContract
 {
     /**
      * NativeEmptyResponse constructor.
@@ -49,7 +49,7 @@ class NativeEmptyResponse extends NativeResponse implements EmptyResponse
     public static function provides(): array
     {
         return [
-            EmptyResponse::class,
+            EmptyResponseContract::class,
         ];
     }
 
@@ -64,6 +64,6 @@ class NativeEmptyResponse extends NativeResponse implements EmptyResponse
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(EmptyResponse::class, new static());
+        $app->container()->singleton(EmptyResponseContract::class, new static());
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage\Middleware;
 
 use Valkyrja\Application\Application;
+use Valkyrja\HttpMessage\Middleware as MiddlewareContract;
 use Valkyrja\HttpMessage\Request;
 use Valkyrja\HttpMessage\Response;
 
@@ -65,8 +66,8 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch middleware.
      *
-     * @param Request $request    The request
-     * @param array   $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return mixed
      */
@@ -90,7 +91,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var Middleware $item */
+            /* @var MiddlewareContract $item */
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
@@ -107,9 +108,9 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch after request processed middleware.
      *
-     * @param Request  $request    The request
-     * @param Response $response   The response
-     * @param array    $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param Response   $response   The response
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return mixed
      */
@@ -131,7 +132,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var Middleware $item */
+            /* @var MiddlewareContract $item */
             $response = $item::after($request, $response);
 
             // Set the returned response in the container
@@ -144,9 +145,9 @@ trait MiddlewareAwareTrait
     /**
      * Dispatch terminable middleware.
      *
-     * @param Request  $request    The request
-     * @param Response $response   The response
-     * @param array    $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param Response   $response   The response
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return void
      */
@@ -165,7 +166,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var Middleware $item */
+            /* @var MiddlewareContract $item */
             $item::terminate($request, $response);
         }
     }
@@ -173,7 +174,7 @@ trait MiddlewareAwareTrait
     /**
      * Get the application.
      *
-     * @return \Valkyrja\Application\Application
+     * @return Application
      */
     abstract protected function getApplication(): Application;
 }

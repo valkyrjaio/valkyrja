@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage;
 
 use InvalidArgumentException;
+use Valkyrja\HttpMessage\Models\Cookie;
 
 /**
  * Representation of an outgoing, server-side response.
@@ -95,7 +96,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withCookie(Cookie $cookie);
+    public function withCookie(Cookie $cookie): self;
 
     /**
      * Return an instance with the specified cookie appended to the
@@ -113,7 +114,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public function withoutCookie(Cookie $cookie);
+    public function withoutCookie(Cookie $cookie): self;
 
     /**
      * Send the response.

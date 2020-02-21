@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
-
-use Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage;
 
 /**
- * Interface EmptyResponse.
+ * Interface TextResponse.
  *
  * @author Melech Mizrachi
  */
-interface EmptyResponse extends Response
+interface TextResponse extends Response
 {
 }

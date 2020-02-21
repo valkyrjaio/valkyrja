@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Streams;
 
 use RuntimeException;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Stream as StreamContract;
 
 /**
  * Describes a data stream.
@@ -24,7 +25,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStream;
  *
  * @author Melech Mizrachi
  */
-class NativeStream implements Stream
+class Stream implements StreamContract
 {
     /**
      * The stream.

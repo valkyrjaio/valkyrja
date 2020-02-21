@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
-
-use Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage;
 
 /**
- * Interface JsonResponse.
+ * Interface RedirectResponse.
  *
  * @author Melech Mizrachi
  */
-interface JsonResponse extends Response
+interface RedirectResponse extends Response
 {
 }

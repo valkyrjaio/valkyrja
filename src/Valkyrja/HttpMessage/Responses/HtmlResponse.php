@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -19,20 +19,20 @@ use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
-use Valkyrja\HttpMessage\NativeResponse;
-use Valkyrja\HttpMessage\NativeStream;
+use Valkyrja\HttpMessage\HtmlResponse as HtmlResponseContract;
+use Valkyrja\HttpMessage\Streams\Stream;
 
 /**
- * Class NativeTextResponse.
+ * Class NativeHtmlResponse.
  *
  * @author Melech Mizrachi
  */
-class NativeTextResponse extends NativeResponse implements TextResponse
+class HtmlResponse extends Response implements HtmlResponseContract
 {
     /**
-     * NativeTextResponse constructor.
+     * NativeHtmlResponse constructor.
      *
-     * @param string $text    The text
+     * @param string $html    The html
      * @param int    $status  [optional] The status
      * @param array  $headers [optional] The headers
      *
@@ -41,17 +41,17 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $text = '', int $status = null, array $headers = [])
+    public function __construct(string $html = '', int $status = null, array $headers = [])
     {
-        $body = new NativeStream('php://temp', 'wb+');
+        $body = new Stream('php://temp', 'wb+');
 
-        $body->write($text);
+        $body->write($html);
         $body->rewind();
 
         parent::__construct(
             $body,
             $status,
-            $this->injectHeader(Header::CONTENT_TYPE, 'text/plain; charset=utf-8', $headers)
+            $this->injectHeader(Header::CONTENT_TYPE, 'text/html; charset=utf-8', $headers)
         );
     }
 
@@ -63,14 +63,14 @@ class NativeTextResponse extends NativeResponse implements TextResponse
     public static function provides(): array
     {
         return [
-            TextResponse::class,
+            HtmlResponseContract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @throws InvalidArgumentException
      *
@@ -78,6 +78,6 @@ class NativeTextResponse extends NativeResponse implements TextResponse
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(TextResponse::class, new static());
+        $app->container()->singleton(HtmlResponseContract::class, new static());
     }
 }

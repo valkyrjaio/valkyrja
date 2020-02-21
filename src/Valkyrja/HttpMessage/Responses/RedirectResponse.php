@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
@@ -19,14 +19,14 @@ use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
-use Valkyrja\HttpMessage\NativeResponse;
+use Valkyrja\HttpMessage\RedirectResponse as RedirectResponseContract;
 
 /**
  * Class NativeRedirectResponse.
  *
  * @author Melech Mizrachi
  */
-class NativeRedirectResponse extends NativeResponse implements RedirectResponse
+class RedirectResponse extends Response implements RedirectResponseContract
 {
     /**
      * NativeRedirectResponse constructor.
@@ -56,14 +56,14 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
     public static function provides(): array
     {
         return [
-            RedirectResponse::class,
+            RedirectResponseContract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @throws InvalidArgumentException
      *
@@ -71,6 +71,6 @@ class NativeRedirectResponse extends NativeResponse implements RedirectResponse
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(RedirectResponse::class, new static());
+        $app->container()->singleton(RedirectResponseContract::class, new static());
     }
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage;
 
-use Valkyrja\HttpMessage\Middleware\MiddlewareAware;
-
 /**
  * Interface Kernel.
  *

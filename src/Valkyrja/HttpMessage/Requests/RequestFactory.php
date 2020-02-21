@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Requests;
 
 use InvalidArgumentException;
 use stdClass;
@@ -25,13 +25,17 @@ use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile;
+use Valkyrja\HttpMessage\Files\UploadedFile;
+use Valkyrja\HttpMessage\Streams\Stream;
+use Valkyrja\HttpMessage\Uri;
+use Valkyrja\HttpMessage\Uris\Uri as HttpUri;
 
 /**
- * Class ServerRequestFactory.
+ * Abstract Class RequestFactory.
  *
  * @author Melech Mizrachi
  */
-abstract class ServerRequestFactory
+abstract class RequestFactory
 {
     /**
      * Function to use to get apache request headers; present only to simplify mocking.
@@ -64,7 +68,7 @@ abstract class ServerRequestFactory
      * @throws InvalidPath
      * @throws InvalidMethod
      *
-     * @return ServerRequest
+     * @return Request
      *
      * @see fromServer()
      */
@@ -74,7 +78,7 @@ abstract class ServerRequestFactory
         array $body = null,
         array $cookies = null,
         array $files = null
-    ): ServerRequest {
+    ): Request {
         $server  = static::normalizeServer($server ?: $_SERVER);
         $files   = static::normalizeFiles($files ?: $_FILES);
         $headers = static::marshalHeaders($server);
@@ -83,10 +87,10 @@ abstract class ServerRequestFactory
             $cookies = self::parseCookieHeader($headers['cookie']);
         }
 
-        return new NativeServerRequest(
+        return new Request(
             static::marshalUriFromServer($server, $headers),
             static::get('REQUEST_METHOD', $server, RequestMethod::GET),
-            new NativeStream('php://input'),
+            new Stream('php://input'),
             $headers,
             $server,
             $cookies ?? $_COOKIE,
@@ -266,7 +270,7 @@ abstract class ServerRequestFactory
      */
     public static function marshalUriFromServer(array $server, array $headers): Uri
     {
-        $uri = new NativeUri();
+        $uri = new HttpUri();
 
         // URI scheme
         $scheme = 'http';
@@ -485,7 +489,7 @@ abstract class ServerRequestFactory
             return self::normalizeNestedFileSpec($value);
         }
 
-        return new NativeUploadedFile(
+        return new UploadedFile(
             $value['size'],
             $value['error'],
             $value['tmp_name'],

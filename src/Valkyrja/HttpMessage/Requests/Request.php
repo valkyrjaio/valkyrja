@@ -11,9 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Requests;
 
 use InvalidArgumentException;
+use Valkyrja\Application\Application;
+use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
+use Valkyrja\HttpMessage\Exceptions\InvalidPath;
+use Valkyrja\HttpMessage\Exceptions\InvalidPort;
+use Valkyrja\HttpMessage\Exceptions\InvalidProtocolVersion;
+use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
+use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile;
+use Valkyrja\HttpMessage\Request as RequestContract;
+use Valkyrja\HttpMessage\Stream;
+use Valkyrja\HttpMessage\UploadedFile;
+use Valkyrja\HttpMessage\Uri;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Representation of an incoming, server-side HTTP request.
@@ -48,8 +62,102 @@ use InvalidArgumentException;
  *
  * @author Melech Mizrachi
  */
-interface ServerRequest extends Request
+class Request implements RequestContract
 {
+    use RequestTrait;
+    use Provides;
+
+    /**
+     * The server params.
+     *
+     * @var array
+     */
+    protected array $server = [];
+
+    /**
+     * The attributes.
+     *
+     * @var array
+     */
+    protected array $attributes = [];
+
+    /**
+     * The query params.
+     *
+     * @var array
+     */
+    protected array $query = [];
+
+    /**
+     * The cookies.
+     *
+     * @var array
+     */
+    protected array $cookies = [];
+
+    /**
+     * The parsed body.
+     *
+     * @var array[]
+     */
+    protected array $parsedBody = [];
+
+    /**
+     * The files.
+     *
+     * @var array
+     */
+    protected array $files = [];
+
+    /**
+     * NativeServerRequest constructor.
+     *
+     * @param Uri    $uri        [optional] The uri
+     * @param string $method     [optional] The method
+     * @param Stream $body       [optional] The body stream
+     * @param array  $headers    [optional] The headers
+     * @param array  $server     [optional] The server
+     * @param array  $cookies    [optional] The cookies
+     * @param array  $query      [optional] The query string
+     * @param array  $parsedBody [optional] The parsed body
+     * @param array  $files      [optional] The files
+     * @param string $protocol   [optional] The protocol version
+     *
+     * @throws InvalidArgumentException
+     * @throws InvalidMethod
+     * @throws InvalidPath
+     * @throws InvalidPort
+     * @throws InvalidProtocolVersion
+     * @throws InvalidQuery
+     * @throws InvalidScheme
+     * @throws InvalidStream
+     * @throws InvalidUploadedFile
+     */
+    public function __construct(
+        Uri $uri = null,
+        string $method = null,
+        Stream $body = null,
+        array $headers = null,
+        array $server = null,
+        array $cookies = null,
+        array $query = null,
+        array $parsedBody = null,
+        array $files = null,
+        string $protocol = null
+    ) {
+        $this->initialize($uri, $method, $body, $headers);
+
+        $this->headers    = $headers ?? [];
+        $this->server     = $server ?? [];
+        $this->cookies    = $cookies ?? [];
+        $this->query      = $query ?? [];
+        $this->parsedBody = $parsedBody ?? [];
+        $this->files      = $files ?? [];
+        $this->protocol   = $protocol ?? '1.1';
+
+        $this->validateUploadedFiles($this->files);
+    }
+
     /**
      * Retrieve server parameters.
      * Retrieves data related to the incoming request environment,
@@ -58,7 +166,10 @@ interface ServerRequest extends Request
      *
      * @return array
      */
-    public function getServerParams(): array;
+    public function getServerParams(): array
+    {
+        return $this->server;
+    }
 
     /**
      * Retrieve cookies.
@@ -68,7 +179,10 @@ interface ServerRequest extends Request
      *
      * @return array
      */
-    public function getCookieParams(): array;
+    public function getCookieParams(): array
+    {
+        return $this->cookies;
+    }
 
     /**
      * Return an instance with the specified cookies.
@@ -85,7 +199,14 @@ interface ServerRequest extends Request
      *
      * @return static
      */
-    public function withCookieParams(array $cookies);
+    public function withCookieParams(array $cookies): self
+    {
+        $new = clone $this;
+
+        $new->cookies = $cookies;
+
+        return $new;
+    }
 
     /**
      * Retrieve a specific cookie value.
@@ -95,7 +216,10 @@ interface ServerRequest extends Request
      *
      * @return string|null
      */
-    public function getCookieParam(string $name): ?string;
+    public function getCookieParam(string $name): ?string
+    {
+        return $this->cookies[$name] ?? null;
+    }
 
     /**
      * Determine if a specific cookie exists.
@@ -104,7 +228,10 @@ interface ServerRequest extends Request
      *
      * @return bool
      */
-    public function hasCookieParam(string $name): bool;
+    public function hasCookieParam(string $name): bool
+    {
+        return isset($this->cookies[$name]);
+    }
 
     /**
      * Retrieve query string arguments.
@@ -116,7 +243,10 @@ interface ServerRequest extends Request
      *
      * @return array
      */
-    public function getQueryParams(): array;
+    public function getQueryParams(): array
+    {
+        return $this->query;
+    }
 
     /**
      * Return an instance with the specified query string arguments.
@@ -138,7 +268,14 @@ interface ServerRequest extends Request
      *
      * @return static
      */
-    public function withQueryParams(array $query);
+    public function withQueryParams(array $query): self
+    {
+        $new = clone $this;
+
+        $new->query = $query;
+
+        return $new;
+    }
 
     /**
      * Retrieve normalized file upload data.
@@ -150,7 +287,10 @@ interface ServerRequest extends Request
      * @return array An array tree of UploadedFileInterface instances; an empty
      *               array MUST be returned if no data is present.
      */
-    public function getUploadedFiles(): array;
+    public function getUploadedFiles(): array
+    {
+        return $this->files;
+    }
 
     /**
      * Create a new instance with the specified uploaded files.
@@ -165,7 +305,16 @@ interface ServerRequest extends Request
      *
      * @return static
      */
-    public function withUploadedFiles(array $uploadedFiles);
+    public function withUploadedFiles(array $uploadedFiles): self
+    {
+        $this->validateUploadedFiles($uploadedFiles);
+
+        $new = clone $this;
+
+        $new->files = $uploadedFiles;
+
+        return $new;
+    }
 
     /**
      * Retrieve any parameters provided in the request body.
@@ -178,9 +327,12 @@ interface ServerRequest extends Request
      * the absence of body content.
      *
      * @return array The deserialized body parameters, if any.
-     *          These will typically be an array or object.
+     *               These will typically be an array or object.
      */
-    public function getParsedBody(): array;
+    public function getParsedBody(): array
+    {
+        return $this->parsedBody;
+    }
 
     /**
      * Return an instance with the specified body parameters.
@@ -202,12 +354,18 @@ interface ServerRequest extends Request
      * @param array $data The deserialized body data. This will
      *                    typically be in an array or object.
      *
-     * @throws InvalidArgumentException if an unsupported argument type is
-     *          provided.
+     * @throws InvalidArgumentException if an unsupported argument type is provided.
      *
      * @return static
      */
-    public function withParsedBody(array $data);
+    public function withParsedBody(array $data): self
+    {
+        $new = clone $this;
+
+        $new->parsedBody = $data;
+
+        return $new;
+    }
 
     /**
      * Retrieve attributes derived from the request.
@@ -219,7 +377,10 @@ interface ServerRequest extends Request
      *
      * @return array Attributes derived from the request.
      */
-    public function getAttributes(): array;
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
 
     /**
      * Retrieve a single derived request attribute.
@@ -237,7 +398,10 @@ interface ServerRequest extends Request
      *
      * @see getAttributes()
      */
-    public function getAttribute(string $name, $default = null);
+    public function getAttribute(string $name, $default = null)
+    {
+        return $this->attributes[$name] ?? $default;
+    }
 
     /**
      * Return an instance with the specified derived request attribute.
@@ -254,7 +418,14 @@ interface ServerRequest extends Request
      *
      * @see getAttributes()
      */
-    public function withAttribute(string $name, $value);
+    public function withAttribute(string $name, $value): self
+    {
+        $new = clone $this;
+
+        $new->attributes[$name] = $value;
+
+        return $new;
+    }
 
     /**
      * Return an instance that removes the specified derived request attribute.
@@ -270,12 +441,70 @@ interface ServerRequest extends Request
      *
      * @see getAttributes()
      */
-    public function withoutAttribute(string $name);
+    public function withoutAttribute(string $name): self
+    {
+        $new = clone $this;
+
+        unset($new->attributes[$name]);
+
+        return $new;
+    }
 
     /**
      * Is this an AJAX request?
      *
      * @return bool
      */
-    public function isXmlHttpRequest(): bool;
+    public function isXmlHttpRequest(): bool
+    {
+        return 'XMLHttpRequest' === $this->getHeaderLine('X-Requested-With');
+    }
+
+    /**
+     * Validate uploaded files.
+     *
+     * @param array $uploadedFiles The uploaded files
+     *
+     * @throws InvalidUploadedFile
+     *
+     * @return void
+     */
+    protected function validateUploadedFiles(array $uploadedFiles): void
+    {
+        foreach ($uploadedFiles as $file) {
+            if (is_array($file)) {
+                $this->validateUploadedFiles($file);
+
+                continue;
+            }
+
+            if (! $file instanceof UploadedFile) {
+                throw new InvalidUploadedFile('Invalid leaf in uploaded files structure');
+            }
+        }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RequestContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(RequestContract::class, RequestFactory::fromGlobals());
+    }
 }

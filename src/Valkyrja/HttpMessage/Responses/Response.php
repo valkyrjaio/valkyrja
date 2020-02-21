@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -20,6 +20,11 @@ use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Messages\MessageTrait;
+use Valkyrja\HttpMessage\Models\Cookie;
+use Valkyrja\HttpMessage\Response as ResponseContract;
+use Valkyrja\HttpMessage\Stream;
+use Valkyrja\HttpMessage\Streams\Stream as HttpStream;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -36,7 +41,7 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  */
-class NativeResponse implements Response
+class Response implements ResponseContract
 {
     use MessageTrait;
     use Provides;
@@ -68,7 +73,7 @@ class NativeResponse implements Response
      */
     public function __construct(Stream $body = null, int $status = null, array $headers = null)
     {
-        $this->stream     = $body ?? new NativeStream('php://input', 'rw');
+        $this->stream     = $body ?? new HttpStream('php://input', 'rw');
         $this->statusCode = $this->validateStatusCode($status ?? StatusCode::OK);
 
         $this->setHeaders($headers ?? []);
@@ -109,7 +114,7 @@ class NativeResponse implements Response
      *
      * @return static
      */
-    public function withStatus(int $code, string $reasonPhrase = null)
+    public function withStatus(int $code, string $reasonPhrase = null): self
     {
         $new = clone $this;
 
@@ -148,13 +153,13 @@ class NativeResponse implements Response
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
-     * @param Cookie $cookie The cookie model
+     * @param \Valkyrja\HttpMessage\Models\Cookie $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *
      * @return static
      */
-    public function withCookie(Cookie $cookie)
+    public function withCookie(Cookie $cookie): self
     {
         return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
     }
@@ -169,13 +174,13 @@ class NativeResponse implements Response
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
-     * @param Cookie $cookie The cookie model
+     * @param \Valkyrja\HttpMessage\Models\Cookie $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *
      * @return static
      */
-    public function withoutCookie(Cookie $cookie)
+    public function withoutCookie(Cookie $cookie): self
     {
         $cookie->setValue();
         $cookie->setExpire();
@@ -188,9 +193,9 @@ class NativeResponse implements Response
      *
      * @throws RuntimeException
      *
-     * @return Response
+     * @return ResponseContract
      */
-    public function send(): Response
+    public function send(): ResponseContract
     {
         $httpLine = sprintf(
             'HTTP/%s %s %s',
@@ -253,7 +258,7 @@ class NativeResponse implements Response
     public static function provides(): array
     {
         return [
-            Response::class,
+            ResponseContract::class,
         ];
     }
 
@@ -268,6 +273,6 @@ class NativeResponse implements Response
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(Response::class, new static());
+        $app->container()->singleton(ResponseContract::class, new static());
     }
 }

@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Uris;
 
 use InvalidArgumentException;
 use Valkyrja\HttpMessage\Exceptions\InvalidPath;
 use Valkyrja\HttpMessage\Exceptions\InvalidPort;
 use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
+use Valkyrja\HttpMessage\Uri as UriContract;
 
 /**
  * Value object representing a URI.
@@ -38,7 +39,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
  *
  * @author Melech Mizrachi
  */
-class NativeUri implements Uri
+class Uri implements UriContract
 {
     protected const HTTP_PORT    = 80;
     protected const HTTPS_PORT   = 443;
@@ -398,7 +399,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified scheme.
      */
-    public function withScheme(string $scheme): Uri
+    public function withScheme(string $scheme): self
     {
         if ($scheme === $this->scheme) {
             return clone $this;
@@ -426,7 +427,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified user information.
      */
-    public function withUserInfo(string $user, string $password = null): Uri
+    public function withUserInfo(string $user, string $password = null): self
     {
         $info = $user;
 
@@ -457,7 +458,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified host.
      */
-    public function withHost(string $host): Uri
+    public function withHost(string $host): self
     {
         if ($host === $this->host) {
             return clone $this;
@@ -486,7 +487,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified port.
      */
-    public function withPort(int $port = null): Uri
+    public function withPort(int $port = null): self
     {
         if ($port === $this->port) {
             return clone $this;
@@ -521,7 +522,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified path.
      */
-    public function withPath(string $path): Uri
+    public function withPath(string $path): self
     {
         if ($path === $this->path) {
             return clone $this;
@@ -551,7 +552,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified query string.
      */
-    public function withQuery(string $query): Uri
+    public function withQuery(string $query): self
     {
         if ($query === $this->query) {
             return clone $this;
@@ -578,7 +579,7 @@ class NativeUri implements Uri
      *
      * @return static A new instance with the specified fragment.
      */
-    public function withFragment(string $fragment): Uri
+    public function withFragment(string $fragment): self
     {
         if ($fragment === $this->fragment) {
             return clone $this;

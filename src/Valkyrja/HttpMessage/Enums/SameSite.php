@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage\Enums;
 
-use Valkyrja\HttpMessage\Response;
+use Valkyrja\Enum\Enum;
 
 /**
- * Interface TextResponse.
+ * Enum SameSite.
  *
  * @author Melech Mizrachi
  */
-interface TextResponse extends Response
+final class SameSite extends Enum
 {
+    public const LAX    = 'lax';
+    public const STRICT = 'strict';
 }

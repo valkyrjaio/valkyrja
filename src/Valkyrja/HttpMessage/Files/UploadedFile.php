@@ -11,11 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Files;
 
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Stream;
+use Valkyrja\HttpMessage\Streams\Stream as HttpStream;
+use Valkyrja\HttpMessage\UploadedFile as UploadedFileContract;
 
 /**
  * Value object representing a file uploaded through an HTTP request.
@@ -26,7 +29,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStream;
  *
  * @author Melech Mizrachi
  */
-class NativeUploadedFile implements UploadedFile
+class UploadedFile implements UploadedFileContract
 {
     /**
      * The uploaded file.
@@ -163,7 +166,7 @@ class NativeUploadedFile implements UploadedFile
         }
 
         // Set the stream as a new native stream
-        $this->stream = new NativeStream($this->file);
+        $this->stream = new HttpStream($this->file);
 
         return $this->stream;
     }

@@ -43,7 +43,7 @@ interface Message
      *
      * @return static
      */
-    public function withProtocolVersion(string $version);
+    public function withProtocolVersion(string $version): self;
 
     /**
      * Retrieves all message header values.
@@ -130,7 +130,7 @@ interface Message
      *
      * @return static
      */
-    public function withHeader(string $name, string ...$value);
+    public function withHeader(string $name, string ...$value): self;
 
     /**
      * Return an instance with the specified header appended with the given
@@ -149,7 +149,7 @@ interface Message
      *
      * @return static
      */
-    public function withAddedHeader(string $name, string ...$value);
+    public function withAddedHeader(string $name, string ...$value): self;
 
     /**
      * Return an instance without the specified header.
@@ -162,7 +162,7 @@ interface Message
      *
      * @return static
      */
-    public function withoutHeader(string $name);
+    public function withoutHeader(string $name): self;
 
     /**
      * Gets the body of the message.
@@ -184,5 +184,5 @@ interface Message
      *
      * @return static
      */
-    public function withBody(Stream $body);
+    public function withBody(Stream $body): self;
 }

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage;
+namespace Valkyrja\HttpMessage\Requests;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Enums\RequestMethod;
@@ -23,6 +23,11 @@ use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidRequestTarget;
 use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Messages\MessageTrait;
+use Valkyrja\HttpMessage\Stream;
+use Valkyrja\HttpMessage\Streams\Stream as HttpStream;
+use Valkyrja\HttpMessage\Uri;
+use Valkyrja\HttpMessage\Uris\Uri as HttpUri;
 
 /**
  * Representation of an outgoing, client-side request.
@@ -101,9 +106,9 @@ trait RequestTrait
         Stream $body = null,
         array $headers = null
     ): void {
-        $this->uri     = $uri ?? new NativeUri();
+        $this->uri     = $uri ?? new HttpUri();
         $this->method  = $method ?? RequestMethod::GET;
-        $this->body    = $body ?? new NativeStream('php://input');
+        $this->body    = $body ?? new HttpStream('php://input');
         $this->headers = $headers ?? [];
 
         $this->setHeaders($headers);
@@ -169,7 +174,7 @@ trait RequestTrait
      *
      * @return static
      */
-    public function withRequestTarget(string $requestTarget)
+    public function withRequestTarget(string $requestTarget): self
     {
         $this->validateRequestTarget($requestTarget);
 
@@ -205,7 +210,7 @@ trait RequestTrait
      *
      * @return static
      */
-    public function withMethod(string $method)
+    public function withMethod(string $method): self
     {
         $this->validateMethod($method);
 
@@ -259,7 +264,7 @@ trait RequestTrait
      *
      * @return static
      */
-    public function withUri(Uri $uri, bool $preserveHost = false)
+    public function withUri(Uri $uri, bool $preserveHost = false): self
     {
         $new = clone $this;
 

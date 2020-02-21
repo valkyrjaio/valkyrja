@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -19,15 +19,15 @@ use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Enums\Header;
 use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
-use Valkyrja\HttpMessage\NativeResponse;
-use Valkyrja\HttpMessage\NativeStream;
+use Valkyrja\HttpMessage\JsonResponse as JsonResponseContract;
+use Valkyrja\HttpMessage\Streams\Stream;
 
 /**
  * Class NativeJsonResponse.
  *
  * @author Melech Mizrachi
  */
-class NativeJsonResponse extends NativeResponse implements JsonResponse
+class JsonResponse extends Response implements JsonResponseContract
 {
     /**
      * The default encoding options to use for json_encode().
@@ -55,7 +55,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
         array $headers = null,
         int $encodingOptions = null
     ) {
-        $body = new NativeStream('php://temp', 'wb+');
+        $body = new Stream('php://temp', 'wb+');
 
         $encodingOptions ??= static::DEFAULT_ENCODING_OPTIONS;
 
@@ -77,7 +77,7 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
     public static function provides(): array
     {
         return [
-            JsonResponse::class,
+            JsonResponseContract::class,
         ];
     }
 
@@ -92,6 +92,6 @@ class NativeJsonResponse extends NativeResponse implements JsonResponse
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(JsonResponse::class, new static());
+        $app->container()->singleton(JsonResponseContract::class, new static());
     }
 }

@@ -11,10 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\HttpMessage\Middleware;
-
-use Valkyrja\HttpMessage\Request;
-use Valkyrja\HttpMessage\Response;
+namespace Valkyrja\HttpMessage;
 
 /**
  * Interface MiddlewareAware.
@@ -44,8 +41,8 @@ interface MiddlewareAware
     /**
      * Dispatch middleware.
      *
-     * @param Request $request    The request
-     * @param array   $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return mixed
      */
@@ -54,9 +51,9 @@ interface MiddlewareAware
     /**
      * Dispatch after request processed middleware.
      *
-     * @param Request  $request    The request
-     * @param Response $response   The response
-     * @param array    $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param Response   $response   The response
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return mixed
      */
@@ -65,9 +62,9 @@ interface MiddlewareAware
     /**
      * Dispatch terminable middleware.
      *
-     * @param Request  $request    The request
-     * @param Response $response   The response
-     * @param array    $middleware [optional] The middleware to dispatch
+     * @param Request    $request    The request
+     * @param Response   $response   The response
+     * @param array|null $middleware [optional] The middleware to dispatch
      *
      * @return void
      */
