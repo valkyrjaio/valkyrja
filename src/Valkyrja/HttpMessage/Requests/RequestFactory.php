@@ -35,6 +35,9 @@ use function is_array;
 use function is_callable;
 use function strlen;
 
+use const CASE_LOWER;
+use const PREG_SET_ORDER;
+
 /**
  * Abstract Class RequestFactory.
  *

@@ -22,6 +22,10 @@ use Valkyrja\HttpMessage\UploadedFile as UploadedFileContract;
 
 use function dirname;
 
+use const PHP_SAPI;
+use const UPLOAD_ERR_EXTENSION;
+use const UPLOAD_ERR_OK;
+
 /**
  * Value object representing a file uploaded through an HTTP request.
  * Instances of this interface are considered immutable; all methods that

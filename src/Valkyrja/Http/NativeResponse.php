@@ -28,6 +28,12 @@ use function defined;
 use function function_exists;
 use function in_array;
 
+use const DATE_RFC2822;
+use const PHP_OUTPUT_HANDLER_CLEANABLE;
+use const PHP_OUTPUT_HANDLER_FLUSHABLE;
+use const PHP_OUTPUT_HANDLER_REMOVABLE;
+use const PHP_SAPI;
+
 /**
  * Class Response.
  *

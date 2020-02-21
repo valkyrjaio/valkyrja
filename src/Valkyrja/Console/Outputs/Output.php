@@ -22,6 +22,8 @@ use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 
+use const PHP_EOL;
+
 /**
  * Class Output.
  *

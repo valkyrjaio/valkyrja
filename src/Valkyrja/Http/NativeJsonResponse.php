@@ -17,6 +17,9 @@ use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 
+use const JSON_ERROR_NONE;
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Class JsonResponse.
  *

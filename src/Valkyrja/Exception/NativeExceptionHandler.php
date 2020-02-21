@@ -23,6 +23,8 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\Util\Misc;
 
+use const E_ALL;
+
 /**
  * Class NativeExceptionHandler.
  *

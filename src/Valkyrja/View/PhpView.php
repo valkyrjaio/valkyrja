@@ -19,6 +19,9 @@ use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 
+use const ENT_QUOTES;
+use const EXTR_OVERWRITE;
+
 /**
  * Class View.
  *

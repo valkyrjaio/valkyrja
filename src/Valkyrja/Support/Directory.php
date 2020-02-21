@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
+use const DIRECTORY_SEPARATOR;
+
 /**
  * class Directory.
  *

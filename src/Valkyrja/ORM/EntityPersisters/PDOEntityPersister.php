@@ -26,6 +26,8 @@ use function get_class;
 use function is_array;
 use function is_object;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Class PDOEntityPersister
  *

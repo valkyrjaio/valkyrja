@@ -20,6 +20,8 @@ use Valkyrja\HttpMessage\Stream as StreamContract;
 use function is_int;
 use function is_resource;
 
+use const SEEK_SET;
+
 /**
  * Describes a data stream.
  * Typically, an instance will wrap a PHP stream; this interface provides

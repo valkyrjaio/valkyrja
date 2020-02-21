@@ -20,6 +20,8 @@ use Valkyrja\Support\Providers\Provides;
 
 use function in_array;
 
+use const PREG_SPLIT_NO_EMPTY;
+
 /**
  * Class Request.
  *

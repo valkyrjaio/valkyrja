@@ -22,6 +22,8 @@ use function in_array;
 use function is_array;
 use function is_object;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Trait EntityTrait.
  *

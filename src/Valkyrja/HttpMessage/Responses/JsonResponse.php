@@ -22,6 +22,8 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\JsonResponse as JsonResponseContract;
 use Valkyrja\HttpMessage\Streams\Stream;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Class NativeJsonResponse.
  *

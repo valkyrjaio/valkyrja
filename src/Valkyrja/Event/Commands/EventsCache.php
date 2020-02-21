@@ -18,6 +18,8 @@ use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use const LOCK_EX;
+
 /**
  * Class EventsCache.
  *

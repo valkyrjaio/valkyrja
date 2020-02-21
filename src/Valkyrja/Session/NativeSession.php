@@ -22,6 +22,8 @@ use Valkyrja\Support\Providers\Provides;
 
 use function is_string;
 
+use const PHP_SESSION_ACTIVE;
+
 /**
  * Class Session.
  *
@@ -44,13 +46,6 @@ class NativeSession implements Session
      * @var array
      */
     protected array $data = [];
-
-    /**
-     * Whether the session has been started.
-     *
-     * @var bool
-     */
-    protected bool $started;
 
     /**
      * Session constructor.

@@ -15,6 +15,8 @@ namespace Valkyrja\HttpMessage;
 
 use RuntimeException;
 
+use const SEEK_SET;
+
 /**
  * Describes a data stream.
  * Typically, an instance will wrap a PHP stream; this interface provides

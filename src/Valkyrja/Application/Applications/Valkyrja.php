@@ -24,6 +24,8 @@ use Valkyrja\Support\Providers\Provider;
 use function define;
 use function defined;
 
+use const E_ALL;
+
 /**
  * Class Valkyrja.
  *

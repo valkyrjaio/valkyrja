@@ -16,6 +16,8 @@ namespace Valkyrja\Exception;
 use Throwable;
 use Valkyrja\Http\Response;
 
+use const E_ALL;
+
 /**
  * Interface ExceptionHandler.
  *

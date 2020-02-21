@@ -21,6 +21,10 @@ use Valkyrja\Support\Providers\Provides;
 
 use function is_string;
 
+use const JSON_THROW_ON_ERROR;
+use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
+use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
+
 /**
  * Class SodiumDecrypter.
  *

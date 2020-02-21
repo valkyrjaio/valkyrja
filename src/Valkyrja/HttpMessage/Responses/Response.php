@@ -203,7 +203,7 @@ class Response implements ResponseContract
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
-     * @param \Valkyrja\HttpMessage\Models\Cookie $cookie The cookie model
+     * @param Cookie $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *
@@ -224,7 +224,7 @@ class Response implements ResponseContract
      * immutability of the message, and MUST return an instance that has the
      * new cookie header and/or value.
      *
-     * @param \Valkyrja\HttpMessage\Models\Cookie $cookie The cookie model
+     * @param Cookie $cookie The cookie model
      *
      * @throws InvalidArgumentException for invalid header names or values.
      *

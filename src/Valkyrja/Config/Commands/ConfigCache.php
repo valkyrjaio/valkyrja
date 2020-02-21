@@ -17,6 +17,8 @@ use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use const LOCK_EX;
+
 /**
  * Class ConfigCache.
  *

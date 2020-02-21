@@ -19,6 +19,8 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection as RouteCollectionContract;
 use Valkyrja\Routing\RouteMatcher as RouteMatcherContract;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Class RouteCollection.
  *

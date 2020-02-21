@@ -20,6 +20,8 @@ use Valkyrja\Console\StreamOutput as StreamOutputContract;
 
 use function is_resource;
 
+use const PHP_EOL;
+
 /**
  * Class StreamOutput.
  *
