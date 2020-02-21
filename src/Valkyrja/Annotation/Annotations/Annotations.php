@@ -228,8 +228,7 @@ class Annotations implements AnnotationsContract
                     'class'    => $class,
                     'property' => $property,
                 ],
-                ...
-                $this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
+                ...$this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
             );
     }
 
