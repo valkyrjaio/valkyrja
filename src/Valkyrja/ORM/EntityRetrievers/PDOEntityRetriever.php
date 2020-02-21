@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\EntityRetrievers;
 
+use function count;
 use InvalidArgumentException;
+use function is_array;
+use function is_int;
+use function is_string;
 use PDO;
+use function strlen;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\EntityRetriever;
@@ -22,12 +27,6 @@ use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\Support\ClassHelpers;
-
-use function count;
-use function is_array;
-use function is_int;
-use function is_string;
-use function strlen;
 
 /**
  * Class PDOEntityRetriever

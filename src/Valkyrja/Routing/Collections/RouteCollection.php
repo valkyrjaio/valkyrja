@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
+use const JSON_THROW_ON_ERROR;
 use Valkyrja\Application\Application;
 use Valkyrja\Routing\Matchers\RouteMatcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection as RouteCollectionContract;
 use Valkyrja\Routing\RouteMatcher as RouteMatcherContract;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class RouteCollection.

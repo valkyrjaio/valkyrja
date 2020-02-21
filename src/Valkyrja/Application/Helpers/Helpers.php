@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Helpers;
 
+use function constant;
+use function defined;
+use function func_num_args;
 use InvalidArgumentException;
 use Valkyrja\Annotation\Annotations;
 use Valkyrja\Application\Application;
@@ -46,10 +49,6 @@ use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
-
-use function constant;
-use function defined;
-use function func_num_args;
 
 /**
  * Trait Helpers.

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage\Streams;
 
-use RuntimeException;
-use Valkyrja\HttpMessage\Exceptions\InvalidStream;
-use Valkyrja\HttpMessage\Stream as StreamContract;
-
 use function is_int;
 use function is_resource;
-
+use RuntimeException;
 use const SEEK_SET;
+use Valkyrja\HttpMessage\Exceptions\InvalidStream;
+use Valkyrja\HttpMessage\Stream as StreamContract;
 
 /**
  * Describes a data stream.

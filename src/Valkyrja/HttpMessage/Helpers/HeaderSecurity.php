@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage\Helpers;
 
-use InvalidArgumentException;
-
 use function in_array;
+use InvalidArgumentException;
 use function ord;
 use function strlen;
 

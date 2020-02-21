@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage\Files;
 
+use function dirname;
 use InvalidArgumentException;
+use const PHP_SAPI;
 use RuntimeException;
+use const UPLOAD_ERR_EXTENSION;
+use const UPLOAD_ERR_OK;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\Stream;
 use Valkyrja\HttpMessage\Streams\Stream as HttpStream;
 use Valkyrja\HttpMessage\UploadedFile as UploadedFileContract;
-
-use function dirname;
-
-use const PHP_SAPI;
-use const UPLOAD_ERR_EXTENSION;
-use const UPLOAD_ERR_OK;
 
 /**
  * Value object representing a file uploaded through an HTTP request.

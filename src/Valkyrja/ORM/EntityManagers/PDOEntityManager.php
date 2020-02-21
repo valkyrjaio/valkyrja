@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\EntityManagers;
 
+use function get_class;
 use InvalidArgumentException;
 use PDO;
 use Valkyrja\Application\Application;
@@ -32,8 +33,6 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
-
-use function get_class;
 
 /**
  * Class PDOEntityManager.

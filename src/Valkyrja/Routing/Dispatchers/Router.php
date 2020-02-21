@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Dispatchers;
 
+use function count;
 use Exception;
 use InvalidArgumentException;
+use function is_array;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -35,9 +37,6 @@ use Valkyrja\Routing\RouteMatcher;
 use Valkyrja\Routing\Router as RouterContract;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
-
-use function count;
-use function is_array;
 
 /**
  * Class Router.

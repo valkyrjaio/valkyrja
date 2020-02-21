@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
+use function in_array;
+use const PREG_SPLIT_NO_EMPTY;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Support\Collection;
 use Valkyrja\Support\Providers\Provides;
-
-use function in_array;
-
-use const PREG_SPLIT_NO_EMPTY;
 
 /**
  * Class Request.
@@ -302,7 +300,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   .= ':' . $components['port'];
+            $server['HTTP_HOST'] .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -962,7 +960,9 @@ class NativeRequest implements Request
         $this->files      = clone $this->files;
         $this->server     = clone $this->server;
         $this->headers    = clone $this->headers;
-    }    /**
+    }
+
+    /**
      * Sets the request method.
      *
      * @param string $method
@@ -976,8 +976,6 @@ class NativeRequest implements Request
 
         return $this;
     }
-
-
 
     /**
      * Gets the request "intended" method.
@@ -1182,5 +1180,4 @@ class NativeRequest implements Request
     {
         return 'XMLHttpRequest' === $this->headers->get('X-Requested-With');
     }
-
 }

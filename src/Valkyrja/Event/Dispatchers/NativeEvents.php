@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
+use function get_class;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
@@ -26,8 +27,6 @@ use Valkyrja\Event\Event;
 use Valkyrja\Event\Events;
 use Valkyrja\Event\Listener;
 use Valkyrja\Support\Cacheables\Cacheable;
-
-use function get_class;
 
 /**
  * Class Events.
