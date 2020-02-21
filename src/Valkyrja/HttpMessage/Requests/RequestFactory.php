@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpMessage\Requests;
 
+use function array_key_exists;
+use const CASE_LOWER;
 use InvalidArgumentException;
+use function is_array;
+use function is_callable;
+use const PREG_SET_ORDER;
 use stdClass;
+use function strlen;
 use UnexpectedValueException;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
@@ -29,14 +35,6 @@ use Valkyrja\HttpMessage\Files\UploadedFile;
 use Valkyrja\HttpMessage\Streams\Stream;
 use Valkyrja\HttpMessage\Uri;
 use Valkyrja\HttpMessage\Uris\Uri as HttpUri;
-
-use function array_key_exists;
-use function is_array;
-use function is_callable;
-use function strlen;
-
-use const CASE_LOWER;
-use const PREG_SET_ORDER;
 
 /**
  * Abstract Class RequestFactory.

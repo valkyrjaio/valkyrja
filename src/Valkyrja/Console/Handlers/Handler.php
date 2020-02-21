@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Handlers;
 
+use function strlen;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Handler as HandlerContract;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
-
-use function strlen;
 
 /**
  * Abstract Class Handler.

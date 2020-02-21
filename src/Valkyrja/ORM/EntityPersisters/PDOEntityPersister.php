@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\EntityPersisters;
 
+use function get_class;
+use function is_array;
+use function is_object;
+use const JSON_THROW_ON_ERROR;
 use PDO;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
@@ -21,12 +25,6 @@ use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-
-use function get_class;
-use function is_array;
-use function is_object;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class PDOEntityPersister

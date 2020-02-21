@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
+use function strlen;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
-
-use function strlen;
 
 /**
  * Class ConsoleCommands.

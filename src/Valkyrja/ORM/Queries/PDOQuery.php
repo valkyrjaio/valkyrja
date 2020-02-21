@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Queries;
 
+use function is_bool;
+use function is_int;
 use PDO;
 use PDOStatement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
-
-use function is_bool;
-use function is_int;
 
 /**
  * Class PDOQuery.

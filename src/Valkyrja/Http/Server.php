@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Support\Collection;
-
 use function in_array;
+use Valkyrja\Support\Collection;
 
 /**
  * Class Server.

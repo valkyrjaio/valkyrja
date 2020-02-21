@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Http;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
-use Valkyrja\Http\Enums\StatusCode;
-
 use const JSON_ERROR_NONE;
 use const JSON_THROW_ON_ERROR;
+use Valkyrja\Application\Application;
+use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Class JsonResponse.

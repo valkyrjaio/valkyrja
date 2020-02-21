@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Repositories;
 
+use function get_class;
 use InvalidArgumentException;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
@@ -20,8 +21,6 @@ use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
-
-use function get_class;
 
 /**
  * Class Repository.

@@ -14,15 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 use Exception;
+use function is_string;
+use const PHP_SESSION_ACTIVE;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Providers\Provides;
-
-use function is_string;
-
-use const PHP_SESSION_ACTIVE;
 
 /**
  * Class Session.

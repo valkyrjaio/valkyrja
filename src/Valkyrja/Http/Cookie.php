@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
-
 use function in_array;
+use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 
 /**
  * Class Cookie.

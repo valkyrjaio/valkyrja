@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Outputs;
 
 use InvalidArgumentException;
+use const PHP_EOL;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
@@ -21,8 +22,6 @@ use Valkyrja\Console\Output as OutputContract;
 use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
-
-use const PHP_EOL;
 
 /**
  * Class Output.
