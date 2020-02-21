@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
+use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Dispatch;
@@ -270,6 +271,10 @@ class Dispatcher implements DispatcherContract
         foreach ($arguments as $argument) {
             // If the argument is a service
             if ($argument instanceof Service) {
+                if (null === $argument->getId()) {
+                    throw new InvalidArgumentException('Invalid argument.');
+                }
+
                 // Dispatch the argument and set the results to the argument
                 $argument = $this->app->container()->get(
                     $argument->getId(),
