@@ -24,6 +24,8 @@ use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
@@ -187,6 +189,8 @@ interface Application
      * @param int      $code       [optional] The Exception code
      * @param Response $response   [optional] The Response to send
      *
+     * @throws HttpException
+     *
      * @return void
      */
     public function abort(
@@ -203,6 +207,8 @@ interface Application
      * @param string $uri        [optional] The URI to redirect to
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
+     *
+     * @throws HttpRedirectException
      *
      * @return void
      */
