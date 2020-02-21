@@ -97,13 +97,7 @@ class Dispatcher implements DispatcherContract
      */
     public function verifyClassMethod(Dispatch $dispatch): void
     {
-        // If a class and method are set and not callable
-        if (
-            null !== $dispatch->getClass()
-            && null !== $dispatch->getMethod()
-            && ! method_exists($dispatch->getClass(), $dispatch->getMethod())
-        ) {
-            // Throw a new invalid method exception
+        if ($this->isInvalidClassMethod($dispatch)) {
             throw new InvalidMethodException(
                 'Method does not exist in class : '
                 . $dispatch->getName() . ' '
@@ -125,13 +119,7 @@ class Dispatcher implements DispatcherContract
      */
     public function verifyClassProperty(Dispatch $dispatch): void
     {
-        // If a class and method are set and not callable
-        if (
-            null !== $dispatch->getClass()
-            && null !== $dispatch->getProperty()
-            && ! property_exists($dispatch->getClass(), $dispatch->getProperty())
-        ) {
-            // Throw a new invalid property exception
+        if ($this->isInvalidClassProperty($dispatch)) {
             throw new InvalidPropertyException(
                 'Property does not exist in class : '
                 . $dispatch->getName() . ' '
@@ -154,7 +142,7 @@ class Dispatcher implements DispatcherContract
     public function verifyFunction(Dispatch $dispatch): void
     {
         // If a function is set and is not callable
-        if (null !== $dispatch->getFunction() && ! is_callable($dispatch->getFunction())) {
+        if ($this->isInvalidFunction($dispatch)) {
             // Throw a new invalid function exception
             throw new InvalidFunctionException(
                 'Function is not callable for : '
@@ -175,7 +163,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a class and method exist before continuing
-        if (null === $dispatch->getClass() || null === $dispatch->getMethod()) {
+        if (! $this->hasValidClassMethod($dispatch)) {
             return null;
         }
 
@@ -197,7 +185,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchClassProperty(Dispatch $dispatch)
     {
         // Ensure a class and property exist before continuing
-        if (null === $dispatch->getClass() || null === $dispatch->getProperty()) {
+        if (! $this->hasValidClassProperty($dispatch)) {
             return null;
         }
 
@@ -219,7 +207,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchClass(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a class exists before continuing
-        if (null === $dispatch->getClass()) {
+        if (! $this->hasValidClass($dispatch)) {
             return null;
         }
 
@@ -249,7 +237,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a function exists before continuing
-        if (null === $dispatch->getFunction()) {
+        if (! $this->hasValidFunction($dispatch)) {
             return null;
         }
 
@@ -271,7 +259,7 @@ class Dispatcher implements DispatcherContract
     public function dispatchClosure(Dispatch $dispatch, array $arguments = null)
     {
         // Ensure a closure exists before continuing
-        if (null === $dispatch->getClosure()) {
+        if (! $this->hasValidClosure($dispatch)) {
             return null;
         }
 
@@ -446,6 +434,103 @@ class Dispatcher implements DispatcherContract
         }
 
         return $argument;
+    }
+
+    /**
+     * Determine if a dispatch has a class/method set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidClassMethod(Dispatch $dispatch): bool
+    {
+        return $this->hasValidClass($dispatch) && null !== $dispatch->getMethod();
+    }
+
+    /**
+     * Determine if a dispatch's class/method combination is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidClassMethod(Dispatch $dispatch): bool
+    {
+        return $this->hasValidClassMethod($dispatch) && ! method_exists($dispatch->getClass(), $dispatch->getMethod());
+    }
+
+    /**
+     * Determine if a dispatch has a class/property set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidClassProperty(Dispatch $dispatch): bool
+    {
+        return $this->hasValidClass($dispatch) && null !== $dispatch->getProperty();
+    }
+
+    /**
+     * Determine if a dispatch's class/property combination is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidClassProperty(Dispatch $dispatch): bool
+    {
+        return $this->hasValidClassProperty($dispatch)
+            && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
+    }
+
+    /**
+     * Determine if a dispatch has a class set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidClass(Dispatch $dispatch): bool
+    {
+        return null !== $dispatch->getClass();
+    }
+
+    /**
+     * Determine if a dispatch has a function set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidFunction(Dispatch $dispatch): bool
+    {
+        return null !== $dispatch->getFunction();
+    }
+
+    /**
+     * Determine if a dispatch's function is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidFunction(Dispatch $dispatch): bool
+    {
+        return $this->hasValidFunction($dispatch) && ! is_callable($dispatch->getFunction());
+    }
+
+    /**
+     * Determine if a dispatch has a closure set.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function hasValidClosure(Dispatch $dispatch): bool
+    {
+        return null !== $dispatch->getClosure();
     }
 
     /**
