@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Inputs;
 
-use function in_array;
-use function is_array;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Input as InputContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
+
+use function in_array;
+use function is_array;
 
 /**
  * Class Input.

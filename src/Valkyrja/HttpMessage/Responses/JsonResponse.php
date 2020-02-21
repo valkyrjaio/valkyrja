@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage\Responses;
 
 use InvalidArgumentException;
-use const JSON_THROW_ON_ERROR;
 use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Enums\Header;
@@ -22,6 +21,8 @@ use Valkyrja\HttpMessage\Exceptions\InvalidStatusCode;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\JsonResponse as JsonResponseContract;
 use Valkyrja\HttpMessage\Streams\Stream;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Class NativeJsonResponse.

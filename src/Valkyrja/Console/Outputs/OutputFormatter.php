@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Outputs;
 
-use function count;
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Support\Providers\Provides;
+
+use function count;
 
 /**
  * Class OutputFormatter.

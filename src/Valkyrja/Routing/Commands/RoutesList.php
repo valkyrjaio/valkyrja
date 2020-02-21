@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Commands;
 
 use InvalidArgumentException;
-use function strlen;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Routing\Route;
+
+use function strlen;
 
 /**
  * Class RoutesListCommand.

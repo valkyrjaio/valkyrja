@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
-use function is_callable;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Enums\Constant;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
+
+use function is_callable;
 
 /**
  * Trait CallableDispatcher.

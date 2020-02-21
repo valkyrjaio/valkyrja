@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Enum;
 
-use function array_key_exists;
-use function defined;
 use Exception;
-use function get_class;
-use function in_array;
 use InvalidArgumentException;
-use function is_array;
-use function is_object;
 use JsonSerializable;
 use ReflectionClass;
+
+use function array_key_exists;
+use function defined;
+use function get_class;
+use function in_array;
+use function is_array;
+use function is_object;
 
 /**
  * Class Enum.

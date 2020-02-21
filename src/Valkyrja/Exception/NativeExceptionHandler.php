@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
-use const E_ALL;
 use Throwable;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
@@ -23,6 +22,8 @@ use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Whoops\Util\Misc;
+
+use const E_ALL;
 
 /**
  * Class NativeExceptionHandler.

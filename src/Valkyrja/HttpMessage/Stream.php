@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage;
 
 use RuntimeException;
+
 use const SEEK_SET;
 
 /**

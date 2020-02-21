@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Outputs;
 
 use InvalidArgumentException;
-use function is_resource;
-use const PHP_EOL;
 use RuntimeException;
 use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Console\StreamOutput as StreamOutputContract;
+
+use function is_resource;
+
+use const PHP_EOL;
 
 /**
  * Class StreamOutput.

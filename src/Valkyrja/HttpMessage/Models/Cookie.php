@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage\Models;
 
 use DateTime;
-use function in_array;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 use Valkyrja\HttpMessage\Enums\SameSite;
 use Valkyrja\Model\Model;
 use Valkyrja\Model\ModelTrait;
+
+use function in_array;
 
 /**
  * Class Cookie.

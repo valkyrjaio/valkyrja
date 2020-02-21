@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage\Requests;
 
 use InvalidArgumentException;
-use function is_array;
 use Valkyrja\Application\Application;
 use Valkyrja\HttpMessage\Exceptions\InvalidMethod;
 use Valkyrja\HttpMessage\Exceptions\InvalidPath;
@@ -29,6 +28,8 @@ use Valkyrja\HttpMessage\Stream;
 use Valkyrja\HttpMessage\UploadedFile;
 use Valkyrja\HttpMessage\Uri;
 use Valkyrja\Support\Providers\Provides;
+
+use function is_array;
 
 /**
  * Representation of an incoming, server-side HTTP request.

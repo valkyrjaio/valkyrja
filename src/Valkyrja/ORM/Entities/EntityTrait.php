@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use function in_array;
-use function is_array;
-use function is_object;
-use const JSON_THROW_ON_ERROR;
 use Valkyrja\Model\ModelTrait;
 use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Repositories\Repository;
+
+use function in_array;
+use function is_array;
+use function is_object;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Trait EntityTrait.

@@ -13,24 +13,26 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use function count;
-use const DATE_RFC2822;
 use DateTime;
 use DateTimeZone;
-use function defined;
-use function function_exists;
-use function in_array;
 use InvalidArgumentException;
-use const PHP_OUTPUT_HANDLER_CLEANABLE;
-use const PHP_OUTPUT_HANDLER_FLUSHABLE;
-use const PHP_OUTPUT_HANDLER_REMOVABLE;
-use const PHP_SAPI;
 use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
+
+use function count;
+use function defined;
+use function function_exists;
+use function in_array;
+
+use const DATE_RFC2822;
+use const PHP_OUTPUT_HANDLER_CLEANABLE;
+use const PHP_OUTPUT_HANDLER_FLUSHABLE;
+use const PHP_OUTPUT_HANDLER_REMOVABLE;
+use const PHP_SAPI;
 
 /**
  * Class Response.
@@ -306,9 +308,7 @@ class NativeResponse implements Response
             Response::class,
             new static()
         );
-    }
-
-    /**
+    }    /**
      * Set the content for the response.
      *
      * @param string $content The response content to set
@@ -321,6 +321,8 @@ class NativeResponse implements Response
 
         return $this;
     }
+
+
 
     /**
      * Get the content for the response.

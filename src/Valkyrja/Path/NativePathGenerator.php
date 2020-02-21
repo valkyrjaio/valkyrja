@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Path;
 
 use InvalidArgumentException;
-use function is_array;
 use Valkyrja\Application\Application;
 use Valkyrja\Support\Providers\Provides;
+
+use function is_array;
 
 /**
  * Class PathGenerator.

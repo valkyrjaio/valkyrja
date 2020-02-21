@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Matchers;
 
-use function in_array;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection;
 use Valkyrja\Routing\RouteMatcher as RouteMatcherContract;
+
+use function in_array;
 
 /**
  * Class RouteMatcher.

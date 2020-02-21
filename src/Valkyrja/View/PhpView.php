@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
-use const ENT_QUOTES;
-use const EXTR_OVERWRITE;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
+
+use const ENT_QUOTES;
+use const EXTR_OVERWRITE;
 
 /**
  * Class View.

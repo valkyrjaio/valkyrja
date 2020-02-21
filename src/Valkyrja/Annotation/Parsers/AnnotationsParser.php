@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Parsers;
 
-use function array_key_exists;
-use function constant;
-use function defined;
-use function is_array;
-use const JSON_THROW_ON_ERROR;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\AnnotationsParser as AnnotationsParserContract;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
@@ -25,6 +20,13 @@ use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Support\Providers\Provides;
+
+use function array_key_exists;
+use function constant;
+use function defined;
+use function is_array;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Class AnnotationsParser.

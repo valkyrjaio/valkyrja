@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
-use const E_ALL;
 use Throwable;
 use Valkyrja\Http\Response;
+
+use const E_ALL;
 
 /**
  * Interface ExceptionHandler.

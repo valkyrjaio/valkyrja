@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
-use function define;
-use function defined;
-use const E_ALL;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\Helpers;
 use Valkyrja\Config\Enums\ConfigKeyPart;
@@ -23,6 +20,11 @@ use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
+
+use function define;
+use function defined;
+
+use const E_ALL;
 
 /**
  * Class Valkyrja.

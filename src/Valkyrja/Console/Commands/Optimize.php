@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
-use const LOCK_EX;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
+
+use const LOCK_EX;
 
 /**
  * Class Optimize.
