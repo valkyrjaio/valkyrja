@@ -1,4 +1,4 @@
-preset: psr12
+preset: recommended
 
 risky: true
 
@@ -20,6 +20,12 @@ enabled:
   - blank_line_before_declare
 
 disabled:
+  - concat_without_spaces
+  - phpdoc_align
+  - unalign_equals
+  - phpdoc_summary
+  - no_blank_lines_between_imports
+  - alpha_ordered_imports
 
 finder:
   exclude:
