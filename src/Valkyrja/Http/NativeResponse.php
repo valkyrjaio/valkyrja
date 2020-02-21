@@ -308,7 +308,9 @@ class NativeResponse implements Response
             Response::class,
             new static()
         );
-    }    /**
+    }
+
+    /**
      * Set the content for the response.
      *
      * @param string $content The response content to set
@@ -321,8 +323,6 @@ class NativeResponse implements Response
 
         return $this;
     }
-
-
 
     /**
      * Get the content for the response.

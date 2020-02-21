@@ -302,7 +302,7 @@ class NativeRequest implements Request
 
         if (isset($components['port'])) {
             $server['SERVER_PORT'] = $components['port'];
-            $server['HTTP_HOST']   .= ':' . $components['port'];
+            $server['HTTP_HOST'] .= ':' . $components['port'];
         }
 
         if (isset($components['user'])) {
@@ -962,7 +962,9 @@ class NativeRequest implements Request
         $this->files      = clone $this->files;
         $this->server     = clone $this->server;
         $this->headers    = clone $this->headers;
-    }    /**
+    }
+
+    /**
      * Sets the request method.
      *
      * @param string $method
@@ -976,8 +978,6 @@ class NativeRequest implements Request
 
         return $this;
     }
-
-
 
     /**
      * Gets the request "intended" method.
