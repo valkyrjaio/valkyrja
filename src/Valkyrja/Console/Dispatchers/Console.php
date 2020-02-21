@@ -75,9 +75,7 @@ class Console implements ConsoleContract
         $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
         $dispatcher = $this->app->dispatcher();
 
-        $dispatcher->verifyClassMethod($command);
-        $dispatcher->verifyFunction($command);
-        $dispatcher->verifyClosure($command);
+        $dispatcher->verifyDispatch($command);
 
         $this->addParsedCommand($command, $this->app->pathParser()->parse((string) $command->getPath()));
     }

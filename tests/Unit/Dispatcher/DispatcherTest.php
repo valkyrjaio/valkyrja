@@ -18,7 +18,6 @@ use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Container\Models\Service;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Models\Dispatch;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
@@ -199,40 +198,6 @@ class DispatcherTest extends TestCase
             );
         } catch (Exception $exception) {
             $this->assertEquals(true, $exception instanceof InvalidFunctionException);
-        }
-    }
-
-    /**
-     * Verify a valid closure dispatch.
-     *
-     * @return void
-     */
-    public function testVerifyClosure(): void
-    {
-        $valid = $this->class->verifyClosure(
-                (new Dispatch())
-                    ->setClosure(
-                        function () {
-                        }
-                    )
-            ) ?? null;
-
-        $this->assertEquals(null, $valid);
-    }
-
-    /**
-     * Verify an invalid closure dispatch.
-     *
-     * @return void
-     */
-    public function testVerifyClosureInvalid(): void
-    {
-        try {
-            $this->class->verifyClosure(
-                new Dispatch()
-            );
-        } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidClosureException);
         }
     }
 

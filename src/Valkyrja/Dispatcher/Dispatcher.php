@@ -27,6 +27,21 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 interface Dispatcher
 {
     /**
+     * Verify the dispatch's dispatch capabilities.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @throws InvalidDispatchCapabilityException
+     * @throws InvalidFunctionException
+     * @throws InvalidMethodException
+     * @throws InvalidPropertyException
+     * @throws InvalidClosureException
+     *
+     * @return void
+     */
+    public function verifyDispatch(Dispatch $dispatch): void;
+
+    /**
      * Verify the class and method of a dispatch.
      *
      * @param Dispatch $dispatch The dispatch
@@ -58,32 +73,6 @@ interface Dispatcher
      * @return void
      */
     public function verifyFunction(Dispatch $dispatch): void;
-
-    /**
-     * Verify the closure of a dispatch.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidClosureException
-     *
-     * @return void
-     */
-    public function verifyClosure(Dispatch $dispatch): void;
-
-    /**
-     * Verify the dispatch's dispatch capabilities.
-     *
-     * @param Dispatch $dispatch The dispatch
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
-     */
-    public function verifyDispatch(Dispatch $dispatch): void;
 
     /**
      * Dispatch a class method.
