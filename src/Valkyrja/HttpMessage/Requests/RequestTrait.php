@@ -56,16 +56,16 @@ trait RequestTrait
     /**
      * The uri.
      *
-     * @var Uri|null
+     * @var Uri
      */
-    protected ?Uri $uri = null;
+    protected Uri $uri;
 
     /**
      * The method.
      *
-     * @var string|null
+     * @var string
      */
-    protected ?string $method = null;
+    protected string $method;
 
     /**
      * The request target.
@@ -77,9 +77,9 @@ trait RequestTrait
     /**
      * The body.
      *
-     * @var resource|null
+     * @var Stream
      */
-    protected $body;
+    protected Stream $body;
 
     /**
      * Retrieves the message's request target.
