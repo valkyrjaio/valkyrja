@@ -26,14 +26,14 @@ class ServiceContextTest extends TestCase
      *
      * @var ServiceContext
      */
-    protected $class;
+    protected ServiceContext $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.
@@ -192,7 +192,7 @@ class ServiceContextTest extends TestCase
      */
     public function testGetContextClosure(): void
     {
-        $value = function () {};
+        $value = static function () {};
         $this->class->setContextClosure($value);
 
         $this->assertEquals($value, $this->class->getContextClosure());
@@ -205,7 +205,7 @@ class ServiceContextTest extends TestCase
      */
     public function testSetContextClosure(): void
     {
-        $set = $this->class->setContextClosure(function () {});
+        $set = $this->class->setContextClosure(static function () {});
 
         $this->assertEquals($this->class, $set);
     }

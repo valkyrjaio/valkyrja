@@ -37,6 +37,12 @@ use Valkyrja\Session\NativeSession;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\PhpView;
 
+use function get_class;
+use function is_array;
+use function is_string;
+
+use const DIRECTORY_SEPARATOR;
+
 /**
  * Test the functionality of the helper functions.
  *
@@ -49,7 +55,7 @@ class HelpersTest extends TestCase
      *
      * @var string
      */
-    protected $subPath = '/sub/path';
+    protected string $subPath = '/sub/path';
 
     /**
      * Test the app() static helper method.

@@ -33,7 +33,7 @@ class ServiceTest extends TestCase
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.

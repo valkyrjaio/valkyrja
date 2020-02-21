@@ -23,14 +23,14 @@ class ModelTest extends TestCase
     /**
      * The model class.
      *
-     * @var \Valkyrja\Tests\Unit\Model\EntityClass
+     * @var EntityClass
      */
-    protected $model;
+    protected EntityClass $model;
 
     /**
      * Get the model class to test with.
      *
-     * @return \Valkyrja\Tests\Unit\Model\EntityClass
+     * @return EntityClass
      */
     protected function getModel(): EntityClass
     {

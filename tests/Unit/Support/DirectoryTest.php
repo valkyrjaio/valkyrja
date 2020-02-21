@@ -14,6 +14,8 @@ namespace Valkyrja\Tests\Unit\Support;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Support\Directory;
 
+use const DIRECTORY_SEPARATOR;
+
 /**
  * Test the Directory support class.
  *
@@ -26,14 +28,14 @@ class DirectoryTest extends TestCase
      *
      * @var string
      */
-    protected $basePath = '/base/path';
+    protected string $basePath = '/base/path';
 
     /**
      * The sub path.
      *
      * @var string
      */
-    protected $subPath = '/sub/path';
+    protected string $subPath = '/sub/path';
 
     /**
      * Setup the test.

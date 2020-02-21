@@ -25,28 +25,28 @@ class ArgumentTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Inputs\Argument
+     * @var Argument
      */
-    protected $class;
+    protected Argument $class;
 
     /**
      * The name.
      *
      * @var string
      */
-    protected $name = 'Test Name';
+    protected string $name = 'Test Name';
 
     /**
      * The description.
      *
      * @var string
      */
-    protected $description = 'Test Description';
+    protected string $description = 'Test Description';
 
     /**
      * Get the class to test with.
      *
-     * @return \Valkyrja\Console\Inputs\Argument
+     * @return Argument
      */
     protected function getClass(): Argument
     {

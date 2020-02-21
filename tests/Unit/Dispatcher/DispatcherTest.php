@@ -23,6 +23,8 @@ use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 
+use function count;
+
 /**
  * Test the dispatcher trait.
  *
@@ -35,35 +37,35 @@ class DispatcherTest extends TestCase
      *
      * @var Dispatcher
      */
-    protected $class;
+    protected Dispatcher $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * A valid property.
      *
      * @var string
      */
-    public $validProperty = 'test';
+    public string $validProperty = 'test';
 
     /**
      * A valid property with null value.
      *
-     * @var string
+     * @var string|null
      */
-    public $validPropertyNull;
+    public ?string $validPropertyNull = null;
 
     /**
      * A valid static property.
      *
      * @var string
      */
-    public static $validStaticProperty = 'test';
+    public static string $validStaticProperty = 'test';
 
     /**
      * Setup the test.
@@ -211,7 +213,7 @@ class DispatcherTest extends TestCase
         $valid = $this->class->verifyDispatch(
                 (new Dispatch())
                     ->setClosure(
-                        function () {
+                        static function () {
                         }
                     )
             ) ?? null;
@@ -409,7 +411,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = (new Dispatch())
             ->setClosure(
-                function () {
+                static function () {
                     return 'test';
                 }
             );
@@ -427,7 +429,7 @@ class DispatcherTest extends TestCase
         $array    = ['foo', 'bar'];
         $dispatch = (new Dispatch())
             ->setClosure(
-                function (array $array) {
+                static function (array $array) {
                     return count($array);
                 }
             );

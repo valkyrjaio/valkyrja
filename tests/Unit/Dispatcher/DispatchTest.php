@@ -33,7 +33,7 @@ class DispatchTest extends TestCase
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.
@@ -374,7 +374,7 @@ class DispatchTest extends TestCase
      */
     public function testGetClosure(): void
     {
-        $value = function () {
+        $value = static function () {
         };
         $this->class->setClosure($value);
 
@@ -401,7 +401,7 @@ class DispatchTest extends TestCase
     public function testSetClosure(): void
     {
         $set = $this->class->setClosure(
-            function () {
+            static function () {
             }
         );
 

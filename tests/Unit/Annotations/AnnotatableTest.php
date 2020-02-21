@@ -24,7 +24,7 @@ class AnnotatableTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Tests\Unit\Annotations\AnnotatableClass
+     * @var AnnotatableClass
      */
     protected $class;
 
@@ -33,7 +33,7 @@ class AnnotatableTest extends TestCase
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.

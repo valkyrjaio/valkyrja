@@ -46,6 +46,10 @@ use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\PhpView;
 
+use function get_class;
+use function is_array;
+use function is_string;
+
 /**
  * Test the functionality of the Application.
  *

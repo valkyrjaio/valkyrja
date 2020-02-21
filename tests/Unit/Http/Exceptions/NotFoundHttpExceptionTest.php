@@ -24,14 +24,14 @@ class NotFoundHttpExceptionTest extends TestCase
     /**
      * The exception.
      *
-     * @var \Valkyrja\Http\Exceptions\NotFoundHttpException
+     * @var NotFoundHttpException
      */
-    protected $exception;
+    protected NotFoundHttpException $exception;
 
     /**
      * Get the exception.
      *
-     * @return \Valkyrja\Http\Exceptions\NotFoundHttpException
+     * @return NotFoundHttpException
      */
     protected function getException(): NotFoundHttpException
     {

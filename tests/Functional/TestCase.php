@@ -26,9 +26,9 @@ class TestCase extends PHPUnitTestCase
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Applications\Valkyrja
+     * @var Valkyrja
      */
-    protected $app;
+    protected Valkyrja $app;
 
     /**
      * Setup functional tests.

@@ -26,16 +26,16 @@ class EntityClass implements Entity
     /**
      * A property to test with.
      *
-     * @var string
+     * @var string|null
      */
-    protected $property;
+    protected ?string $property = null;
 
     /**
      * A property to test with using getter/setter.
      *
-     * @var string
+     * @var string|null
      */
-    protected $prop;
+    protected ?string $prop = null;
 
     /**
      * Get the prop.
@@ -62,7 +62,7 @@ class EntityClass implements Entity
      *
      * @param string $prop The prop
      *
-     * @return \Valkyrja\Tests\Unit\Model\EntityClass
+     * @return EntityClass
      */
     public function setProp(string $prop): EntityClass
     {

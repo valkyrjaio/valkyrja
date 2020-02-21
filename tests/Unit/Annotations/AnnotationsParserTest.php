@@ -13,8 +13,10 @@ namespace Valkyrja\Tests\Unit\Annotations;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Parsers\AnnotationsParser;
+use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Container\Annotation\Models\Service;
@@ -40,7 +42,7 @@ class AnnotationsParserTest extends TestCase
      *
      * @var string
      */
-    public static $property = 'test';
+    public static string $property = 'test';
 
     /**
      * A static property to test with for invalid key array (Line 257).
@@ -52,16 +54,16 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Annotation\Parsers\AnnotationsParser
+     * @var AnnotationsParser
      */
-    protected $class;
+    protected AnnotationsParser $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.
@@ -88,13 +90,12 @@ class AnnotationsParserTest extends TestCase
     /**
      * Test the getAnnotations method.
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @return void
      */
     public function testGetAnnotations(): void
     {
-        $reflection = new ReflectionClass(self::class);
-        $docString  = $reflection->getDocComment();
+        $docString  = (new ReflectionClass(self::class))->getDocComment();
 
         $this->assertCount(4, $this->class->getAnnotations($docString));
     }
@@ -168,7 +169,7 @@ class AnnotationsParserTest extends TestCase
             'Command'        => Command::class,
             'Listener'       => Listener::class,
             'Route'          => Route::class,
-            'Service'        => \Valkyrja\Container\Annotation\Models\Service::class,
+            'Service'        => Service::class,
             'ServiceAlias'   => ServiceAlias::class,
             'ServiceContext' => ServiceContext::class,
         ];
@@ -243,7 +244,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceContextAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof \Valkyrja\Container\Annotation\Models\ServiceContext);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof ServiceContext);
     }
 
     /**
@@ -267,8 +268,8 @@ class AnnotationsParserTest extends TestCase
      */
     public function testPublish(): void
     {
-        /* @var \Valkyrja\Application\Application $app */
-        $app = $this->createMock(\Valkyrja\Application\Application::class);
+        /* @var Application $app */
+        $app = $this->createMock(Application::class);
 
         $this->assertEquals(null, $this->class::publish($app) ?? null);
     }

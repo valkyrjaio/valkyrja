@@ -26,14 +26,14 @@ class ServiceTest extends TestCase
      *
      * @var Service
      */
-    protected $class;
+    protected Service $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.

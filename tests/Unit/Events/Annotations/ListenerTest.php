@@ -24,16 +24,16 @@ class ListenerTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Event\Annotation\Models\Listener
+     * @var Listener
      */
-    protected $class;
+    protected Listener $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.

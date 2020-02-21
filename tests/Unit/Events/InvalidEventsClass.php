@@ -23,14 +23,14 @@ class InvalidEventsClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * InvalidEventsClass constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {

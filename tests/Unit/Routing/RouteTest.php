@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Models\Route;
 
+use function get_class;
+
 /**
  * Test the route model.
  *
@@ -27,21 +29,21 @@ class RouteTest extends TestCase
     /**
      * The route model.
      *
-     * @var \Valkyrja\Routing\Route
+     * @var Route
      */
-    protected $route;
+    protected Route $route;
 
     /**
      * The string value to test with.
      *
      * @var string
      */
-    protected $stringValue = 'test';
+    protected string $stringValue = 'test';
 
     /**
      * Get the route model to test with.
      *
-     * @return \Valkyrja\Routing\Route
+     * @return Route
      */
     protected function getRoute(): Route
     {

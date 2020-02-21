@@ -25,14 +25,14 @@ class HttpExceptionTest extends TestCase
     /**
      * The exception.
      *
-     * @var \Valkyrja\Http\Exceptions\HttpException
+     * @var HttpException
      */
-    protected $exception;
+    protected HttpException $exception;
 
     /**
      * Get the exception.
      *
-     * @return \Valkyrja\Http\Exceptions\HttpException
+     * @return HttpException
      */
     protected function getException(): HttpException
     {

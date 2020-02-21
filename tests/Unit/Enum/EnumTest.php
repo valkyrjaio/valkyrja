@@ -16,6 +16,8 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Enum\Enum;
 
+use function get_class;
+
 /**
  * Test the Enum abstract class.
  *
@@ -49,7 +51,7 @@ class EnumTest extends TestCase
     /**
      * Get an enum to test with.
      *
-     * @return \Valkyrja\Enum\Enum
+     * @return Enum
      */
     protected function getEnum(): Enum
     {
@@ -168,7 +170,7 @@ class EnumTest extends TestCase
     /**
      * Get an enum with no default values set to test with.
      *
-     * @return \Valkyrja\Enum\Enum
+     * @return Enum
      */
     protected function getEnumEmpty(): Enum
     {

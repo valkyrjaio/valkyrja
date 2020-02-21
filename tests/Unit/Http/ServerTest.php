@@ -24,16 +24,16 @@ class ServerTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Http\Server
+     * @var Server
      */
-    protected $class;
+    protected Server $class;
 
     /**
      * The server array to test with.
      *
      * @var array
      */
-    protected $server = [
+    protected static array $server = [
         'NON_HEADER'     => 'test',
         'BOGUS'          => 'test',
         'CONTENT_TYPE'   => 'test',
@@ -46,7 +46,7 @@ class ServerTest extends TestCase
      *
      * @var array
      */
-    protected $headers = [
+    protected static array $headers = [
         'Content-Type'   => 'test',
         'Content-Length' => 'test',
         'Header'         => 'test',
@@ -61,7 +61,7 @@ class ServerTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Server($this->server);
+        $this->class = new Server(self::$server);
     }
 
     /**
@@ -71,6 +71,6 @@ class ServerTest extends TestCase
      */
     public function testGetHeaders(): void
     {
-        $this->assertEquals($this->headers, $this->class->getHeaders());
+        $this->assertEquals(self::$headers, $this->class->getHeaders());
     }
 }

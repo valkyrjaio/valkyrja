@@ -24,14 +24,14 @@ class HttpRedirectExceptionTest extends TestCase
     /**
      * The exception.
      *
-     * @var \Valkyrja\Http\Exceptions\HttpRedirectException
+     * @var HttpRedirectException
      */
-    protected $exception;
+    protected HttpRedirectException $exception;
 
     /**
      * Get the exception.
      *
-     * @return \Valkyrja\Http\Exceptions\HttpRedirectException
+     * @return HttpRedirectException
      */
     protected function getException(): HttpRedirectException
     {

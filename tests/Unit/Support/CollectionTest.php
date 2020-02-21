@@ -9,10 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Unit\Events;
+namespace Valkyrja\Tests\Unit\Support;
 
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Support\Collection;
+
+use function count;
 
 /**
  * Test the collection support class.
@@ -24,23 +26,23 @@ class CollectionTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Support\Collection
+     * @var Collection
      */
-    protected $class;
+    protected Collection $class;
 
     /**
      * The value to test with.
      *
      * @var array
      */
-    protected $value = ['foo' => 'bar'];
+    protected array $value = ['foo' => 'bar'];
 
     /**
      * The value to test with.
      *
      * @var array
      */
-    protected $valueAlt = ['bar' => 'foo'];
+    protected array $valueAlt = ['bar' => 'foo'];
 
     /**
      * Setup the test.

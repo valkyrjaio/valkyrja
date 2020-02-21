@@ -23,14 +23,14 @@ class InvalidContainerClass
     /**
      * The application.
      *
-     * @var \Valkyrja\Application\Application
+     * @var Application
      */
-    protected $app;
+    protected Application $app;
 
     /**
      * InvalidContainerClass constructor.
      *
-     * @param \Valkyrja\Application\Application $application The application
+     * @param Application $application The application
      */
     public function __construct(Application $application)
     {

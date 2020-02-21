@@ -25,42 +25,42 @@ class OptionTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Inputs\Option
+     * @var Option
      */
-    protected $class;
+    protected Option $class;
 
     /**
      * The name.
      *
      * @var string
      */
-    protected $name = 'Test Name';
+    protected string $name = 'Test Name';
 
     /**
      * The description.
      *
      * @var string
      */
-    protected $description = 'Test Description';
+    protected string $description = 'Test Description';
 
     /**
      * The shortcut.
      *
      * @var string
      */
-    protected $shortcut = 'S';
+    protected string $shortcut = 'S';
 
     /**
      * The default value.
      *
      * @var string
      */
-    protected $default = 'Default Value';
+    protected string $default = 'Default Value';
 
     /**
      * Get the class to test with.
      *
-     * @return \Valkyrja\Console\Inputs\Option
+     * @return Option
      */
     protected function getClass(): Option
     {

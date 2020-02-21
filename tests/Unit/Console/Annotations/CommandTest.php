@@ -24,16 +24,16 @@ class CommandTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var \Valkyrja\Console\Annotation\Models\Command
+     * @var Command
      */
-    protected $class;
+    protected Command $class;
 
     /**
      * The value to test with.
      *
      * @var string
      */
-    protected $value = 'test';
+    protected string $value = 'test';
 
     /**
      * Setup the test.

@@ -34,7 +34,7 @@ class ProviderClass extends Provider
     /**
      * Publish the service provider.
      *
-     * @param \Valkyrja\Application\Application $app The application
+     * @param Application $app The application
      *
      * @return void
      */

@@ -13,6 +13,8 @@ namespace Valkyrja\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
 
+use function is_array;
+
 /**
  * Test the default config class.
  *
@@ -25,7 +27,7 @@ class ConfigTest extends TestCase
      *
      * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * Get the config to test with.
