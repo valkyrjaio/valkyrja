@@ -25,18 +25,18 @@ interface Output
     /**
      * Get the formatter.
      *
-     * @return OutputFormatter
+     * @return Formatter
      */
-    public function formatter(): OutputFormatter;
+    public function formatter(): Formatter;
 
     /**
      * Set the formatter.
      *
-     * @param OutputFormatter $formatter
+     * @param Formatter $formatter
      *
      * @return void
      */
-    public function setFormatter(OutputFormatter $formatter): void;
+    public function setFormatter(Formatter $formatter): void;
 
     /**
      * Write messages to the console.

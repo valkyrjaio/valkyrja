@@ -21,7 +21,6 @@ use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Inputs\Input;
 use Valkyrja\Console\Kernels\Kernel as NativeConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
-use Valkyrja\Console\Outputs\OutputFormatter;
 use Valkyrja\Container\Annotation\Annotators\ContainerAnnotator;
 use Valkyrja\Container\Dispatchers\Container;
 use Valkyrja\Crypt\Crypts\Crypt;
@@ -76,7 +75,6 @@ final class Provider extends Enum
     public const FILESYSTEM          = FlyFilesystem::class;
     public const INPUT               = Input::class;
     public const OUTPUT              = Output::class;
-    public const OUTPUT_FORMATTER    = OutputFormatter::class;
     public const KERNEL              = NativeKernel::class;
     public const LISTENER_ANNOTATOR  = ListenerAnnotator::class;
     public const PATH_GENERATOR      = NativePathGenerator::class;

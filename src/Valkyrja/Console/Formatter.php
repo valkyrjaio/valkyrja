@@ -18,11 +18,11 @@ use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 
 /**
- * Interface OutputFormatter.
+ * Interface Formatter.
  *
  * @author Melech Mizrachi
  */
-interface OutputFormatter
+interface Formatter
 {
     /**
      * Set the foreground.

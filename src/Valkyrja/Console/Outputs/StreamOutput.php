@@ -15,7 +15,6 @@ namespace Valkyrja\Console\Outputs;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
 use Valkyrja\Console\StreamOutput as StreamOutputContract;
 
 use function is_resource;
@@ -39,15 +38,14 @@ class StreamOutput extends Output implements StreamOutputContract
     /**
      * Output constructor.
      *
-     * @param OutputFormatterContract $formatter The output formatter
-     * @param resource                $stream    The resource to use as a stream
+     * @param resource $stream The resource to use as a stream
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function __construct(OutputFormatterContract $formatter, $stream = null)
+    public function __construct($stream = null)
     {
-        parent::__construct($formatter);
+        parent::__construct();
 
         // Set the resource
         $resource = $stream ?? fopen('php://stdout', 'wb');

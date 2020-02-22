@@ -29,7 +29,6 @@ final class Config extends Enum
         Provider::CONSOLE_KERNEL,
         Provider::INPUT,
         Provider::OUTPUT,
-        Provider::OUTPUT_FORMATTER,
         Provider::COMMAND_ANNOTATOR,
         Provider::CONTAINER_ANNOTATOR,
         Provider::CRYPT,

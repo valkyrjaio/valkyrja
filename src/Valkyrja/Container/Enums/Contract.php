@@ -22,7 +22,6 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output;
-use Valkyrja\Console\OutputFormatter;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
@@ -78,7 +77,6 @@ final class Contract extends Enum
     public const FILESYSTEM          = Filesystem::class;
     public const INPUT               = Input::class;
     public const OUTPUT              = Output::class;
-    public const OUTPUT_FORMATTER    = OutputFormatter::class;
     public const KERNEL              = Kernel::class;
     public const LISTENER_ANNOTATOR  = ListenerAnnotator::class;
     public const PATH_GENERATOR      = PathGenerator::class;

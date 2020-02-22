@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Outputs;
+namespace Valkyrja\Console\Formatters;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
+use Valkyrja\Console\Formatter as OutputFormatterContract;
 use Valkyrja\Support\Providers\Provides;
 
 use function count;
@@ -27,8 +27,10 @@ use function count;
  *
  * @author Melech Mizrachi
  */
-class OutputFormatter implements OutputFormatterContract
+class Formatter implements OutputFormatterContract
 {
+    use FormatterColors;
+    use FormatterOptions;
     use Provides;
 
     /**
@@ -104,102 +106,6 @@ class OutputFormatter implements OutputFormatterContract
     }
 
     /**
-     * Set foreground or background to black.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function black(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::BLACK : FormatForeground::BLACK, $background);
-    }
-
-    /**
-     * Set foreground or background to red.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function red(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::RED : FormatForeground::RED, $background);
-    }
-
-    /**
-     * Set foreground or background to green.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function green(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::GREEN : FormatForeground::GREEN, $background);
-    }
-
-    /**
-     * Set foreground or background to yellow.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function yellow(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::YELLOW : FormatForeground::YELLOW, $background);
-    }
-
-    /**
-     * Set foreground or background to blue.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function blue(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::BLUE : FormatForeground::BLUE, $background);
-    }
-
-    /**
-     * Set foreground or background to magenta.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function magenta(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::MAGENTA : FormatForeground::MAGENTA, $background);
-    }
-
-    /**
-     * Set foreground or background to cyan.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function cyan(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::CYAN : FormatForeground::CYAN, $background);
-    }
-
-    /**
-     * Set foreground or background to white.
-     *
-     * @param bool $background [optional] Whether this is to set the background
-     *
-     * @return void
-     */
-    public function white(bool $background = null): void
-    {
-        $this->setColor($background ? FormatBackground::WHITE : FormatForeground::WHITE, $background);
-    }
-
-    /**
      * Set foreground or background to default.
      *
      * @param bool $background [optional] Whether this is to set the background
@@ -261,56 +167,6 @@ class OutputFormatter implements OutputFormatterContract
         foreach ($options as $option) {
             $this->setOption($option);
         }
-    }
-
-    /**
-     * Set the bold option.
-     *
-     * @return void
-     */
-    public function bold(): void
-    {
-        $this->setOptionNum(FormatOption::BOLD);
-    }
-
-    /**
-     * Set the underscore option.
-     *
-     * @return void
-     */
-    public function underscore(): void
-    {
-        $this->setOptionNum(FormatOption::UNDERSCORE);
-    }
-
-    /**
-     * Set the blink option.
-     *
-     * @return void
-     */
-    public function blink(): void
-    {
-        $this->setOptionNum(FormatOption::BLINK);
-    }
-
-    /**
-     * Set the reverse option.
-     *
-     * @return void
-     */
-    public function reverse(): void
-    {
-        $this->setOptionNum(FormatOption::INVERSE);
-    }
-
-    /**
-     * Set the conceal option.
-     *
-     * @return void
-     */
-    public function conceal(): void
-    {
-        $this->setOptionNum(FormatOption::CONCEAL);
     }
 
     /**

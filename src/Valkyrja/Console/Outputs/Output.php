@@ -17,9 +17,8 @@ use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
+use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Output as OutputContract;
-use Valkyrja\Console\OutputFormatter as OutputFormatterContract;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 
 use const PHP_EOL;
@@ -43,18 +42,16 @@ class Output implements OutputContract
     /**
      * The formatter.
      *
-     * @var OutputFormatterContract
+     * @var Formatter
      */
-    protected OutputFormatterContract $formatter;
+    protected Formatter $formatter;
 
     /**
      * Output constructor.
-     *
-     * @param OutputFormatterContract $formatter The output formatter
      */
-    public function __construct(OutputFormatterContract $formatter)
+    public function __construct()
     {
-        $this->formatter = $formatter;
+        $this->formatter = new \Valkyrja\Console\Formatters\Formatter();
 
         self::$quiet = config(ConfigKey::CONSOLE_QUIET) || input()->hasOption('--quiet');
     }
@@ -82,18 +79,16 @@ class Output implements OutputContract
     {
         $app->container()->singleton(
             OutputContract::class,
-            new static(
-                $app->container()->getSingleton(Contract::OUTPUT_FORMATTER)
-            )
+            new static()
         );
     }
 
     /**
      * Get the formatter.
      *
-     * @return OutputFormatterContract
+     * @return Formatter
      */
-    public function formatter(): OutputFormatterContract
+    public function formatter(): Formatter
     {
         return $this->formatter;
     }
@@ -101,11 +96,11 @@ class Output implements OutputContract
     /**
      * Set the formatter.
      *
-     * @param OutputFormatterContract $formatter
+     * @param Formatter $formatter
      *
      * @return void
      */
-    public function setFormatter(OutputFormatterContract $formatter): void
+    public function setFormatter(Formatter $formatter): void
     {
         $this->formatter = $formatter;
     }
