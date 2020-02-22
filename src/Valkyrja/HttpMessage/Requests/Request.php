@@ -23,6 +23,7 @@ use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
 use Valkyrja\HttpMessage\Exceptions\InvalidScheme;
 use Valkyrja\HttpMessage\Exceptions\InvalidStream;
 use Valkyrja\HttpMessage\Exceptions\InvalidUploadedFile;
+use Valkyrja\HttpMessage\Factories\RequestFactory;
 use Valkyrja\HttpMessage\Request as RequestContract;
 use Valkyrja\HttpMessage\Stream;
 use Valkyrja\HttpMessage\UploadedFile;
