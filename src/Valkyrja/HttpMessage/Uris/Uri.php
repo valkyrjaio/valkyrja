@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\HttpMessage\Uris;
 
 use InvalidArgumentException;
+use Valkyrja\HttpMessage\Enums\Port;
+use Valkyrja\HttpMessage\Enums\Scheme;
 use Valkyrja\HttpMessage\Exceptions\InvalidPath;
 use Valkyrja\HttpMessage\Exceptions\InvalidPort;
 use Valkyrja\HttpMessage\Exceptions\InvalidQuery;
@@ -41,11 +43,6 @@ use Valkyrja\HttpMessage\Uri as UriContract;
  */
 class Uri implements UriContract
 {
-    protected const HTTP_PORT    = 80;
-    protected const HTTPS_PORT   = 443;
-    protected const HTTP_SCHEME  = 'http';
-    protected const HTTPS_SCHEME = 'https';
-
     /**
      * The scheme.
      *
@@ -156,7 +153,7 @@ class Uri implements UriContract
             return '';
         }
 
-        if (static::HTTP_SCHEME !== $scheme && $scheme !== static::HTTPS_SCHEME) {
+        if (Scheme::HTTP !== $scheme && $scheme !== Scheme::HTTPS) {
             throw new InvalidScheme(
                 sprintf('Invalid scheme "%s" specified; must be either "http" or "https"', $scheme)
             );
@@ -769,7 +766,7 @@ class Uri implements UriContract
             return true;
         }
 
-        return (static::HTTP_SCHEME === $this->scheme && $this->port === static::HTTP_PORT)
-            || (static::HTTPS_SCHEME === $this->scheme && $this->port === static::HTTPS_PORT);
+        return (Scheme::HTTP === $this->scheme && $this->port === Port::HTTP)
+            || (Scheme::HTTPS === $this->scheme && $this->port === Port::HTTPS);
     }
 }
