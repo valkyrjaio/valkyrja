@@ -23,9 +23,12 @@ use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotations as AnnotationsContract;
 use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Enums\Property;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
+
+use function in_array;
 
 /**
  * Class Annotations.
@@ -148,7 +151,7 @@ class Annotations implements AnnotationsContract
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
-                    'class' => $class,
+                    Property::CLASS_NAME => $class,
                 ],
                 ...$this->parser->getAnnotations((string) $this->getClassReflection($class)->getDocComment())
             );
@@ -162,9 +165,9 @@ class Annotations implements AnnotationsContract
      *
      * @throws ReflectionException
      *
-     * @return array
+     * @return Annotation[]
      */
-    public function classAnnotationsType(string $type, string $class): array
+    public function classAnnotationsByType(string $type, string $class): array
     {
         return $this->filterAnnotationsByType($type, ...$this->classAnnotations($class));
     }
@@ -199,7 +202,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function classMembersAnnotationsType(string $type, string $class): array
+    public function classMembersAnnotationsByType(string $type, string $class): array
     {
         return $this->filterAnnotationsByType($type, ...$this->classMembersAnnotations($class));
     }
@@ -234,7 +237,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function classAndMembersAnnotationsType(string $type, string $class): array
+    public function classAndMembersAnnotationsByType(string $type, string $class): array
     {
         return $this->filterAnnotationsByType($type, ...$this->classAndMembersAnnotations($class));
     }
@@ -251,15 +254,17 @@ class Annotations implements AnnotationsContract
      */
     public function propertyAnnotations(string $class, string $property): array
     {
-        $index = static::PROPERTY_CACHE . $class . $property;
+        $index      = static::PROPERTY_CACHE . $class . $property;
+        $reflection = $this->getPropertyReflection($class, $property);
 
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
-                    'class'    => $class,
-                    'property' => $property,
+                    Property::CLASS_NAME => $class,
+                    Property::PROPERTY   => $property,
+                    Property::STATIC     => $reflection->isStatic(),
                 ],
-                ...$this->parser->getAnnotations((string) $this->getPropertyReflection($class, $property)->getDocComment())
+                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
             );
     }
 
@@ -274,7 +279,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function propertyAnnotationsType(string $type, string $class, string $property): array
+    public function propertyAnnotationsByType(string $type, string $class, string $property): array
     {
         return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
     }
@@ -325,7 +330,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function propertiesAnnotationsType(string $type, string $class): array
+    public function propertiesAnnotationsByType(string $type, string $class): array
     {
         return $this->filterAnnotationsByType($type, ...$this->propertiesAnnotations($class));
     }
@@ -348,8 +353,9 @@ class Annotations implements AnnotationsContract
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
-                    'class'  => $class,
-                    'method' => $method,
+                    Property::CLASS_NAME => $class,
+                    Property::METHOD     => $method,
+                    Property::STATIC     => $reflection->isStatic(),
                 ],
                 ...$this->getReflectionFunctionAnnotations($reflection)
             );
@@ -366,7 +372,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function methodAnnotationsType(string $type, string $class, string $method): array
+    public function methodAnnotationsByType(string $type, string $class, string $method): array
     {
         return $this->filterAnnotationsByType($type, ...$this->methodAnnotations($class, $method));
     }
@@ -417,7 +423,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function methodsAnnotationsType(string $type, string $class): array
+    public function methodsAnnotationsByType(string $type, string $class): array
     {
         return $this->filterAnnotationsByType($type, ...$this->methodsAnnotations($class));
     }
@@ -438,7 +444,7 @@ class Annotations implements AnnotationsContract
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
                 [
-                    'function' => $function,
+                    Property::FUNCTION => $function,
                 ],
                 ...$this->getReflectionFunctionAnnotations($this->getFunctionReflection($function))
             );
@@ -454,7 +460,7 @@ class Annotations implements AnnotationsContract
      *
      * @return Annotation[]
      */
-    public function functionAnnotationsType(string $type, string $function): array
+    public function functionAnnotationsByType(string $type, string $function): array
     {
         return $this->filterAnnotationsByType($type, ...$this->functionAnnotations($function));
     }
@@ -465,17 +471,30 @@ class Annotations implements AnnotationsContract
      * @param string     $type           The type to match
      * @param Annotation ...$annotations The annotations
      *
-     * @return array
+     * @return Annotation[]
      */
     public function filterAnnotationsByType(string $type, Annotation ...$annotations): array
+    {
+        return $this->filterAnnotationsByTypes([$type], ...$annotations);
+    }
+
+    /**
+     * Filter annotations by types.
+     *
+     * @param array      $types          The types to match
+     * @param Annotation ...$annotations The annotations
+     *
+     * @return Annotation[]
+     */
+    public function filterAnnotationsByTypes(array $types, Annotation ...$annotations): array
     {
         // Set a list of annotations to return
         $annotationsList = [];
 
         // Iterate through the annotation
         foreach ($annotations as $annotation) {
-            // If the annotation's type matches the type requested
-            if ($annotation->getAnnotationType() === $type) {
+            // If the annotation's type matches the types requested
+            if (in_array($annotation->getType(), $types, true)) {
                 // Set the annotation in the list
                 $annotationsList[] = $annotation;
             }
@@ -577,10 +596,11 @@ class Annotations implements AnnotationsContract
     protected function setAnnotationValues(array $properties, Annotation ...$annotations): array
     {
         foreach ($annotations as $annotation) {
-            $annotation->setClass($properties['class'] ?? null);
-            $annotation->setProperty($properties['property'] ?? null);
-            $annotation->setMethod($properties['method'] ?? null);
-            $annotation->setFunction($properties['function'] ?? null);
+            $annotation->setClass($properties[Property::CLASS_NAME] ?? null);
+            $annotation->setProperty($properties[Property::PROPERTY] ?? null);
+            $annotation->setMethod($properties[Property::METHOD] ?? null);
+            $annotation->setFunction($properties[Property::FUNCTION] ?? null);
+            $annotation->setStatic($properties[Property::STATIC] ?? false);
         }
 
         return $annotations;

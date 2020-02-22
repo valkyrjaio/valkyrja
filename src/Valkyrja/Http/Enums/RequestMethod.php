@@ -289,6 +289,18 @@ final class RequestMethod extends Enum
      */
     public const PATCH = 'PATCH';
 
+    public const ANY = [
+        self::GET,
+        self::HEAD,
+        self::POST,
+        self::PUT,
+        self::PATCH,
+        self::CONNECT,
+        self::OPTIONS,
+        self::TRACE,
+        self::DELETE,
+    ];
+
     /**
      * Valid request method values to avoid reflection class being created
      * dynamically in the Enum::isValid() method.

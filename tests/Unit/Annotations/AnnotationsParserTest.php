@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Enums\Config;
+use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Parsers\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
@@ -95,7 +97,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetAnnotations(): void
     {
-        $docString  = (new ReflectionClass(self::class))->getDocComment();
+        $docString = (new ReflectionClass(self::class))->getDocComment();
 
         $this->assertCount(4, $this->class->getAnnotations($docString));
     }
@@ -136,26 +138,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetRegex(): void
     {
-        $regex = '/'
-            . AnnotationsParser::ANNOTATION_SYMBOL
-            . '([a-zA-Z]*)'
-            . '(?:' . AnnotationsParser::CLASS_REGEX . ')?'
-            . AnnotationsParser::LINE_REGEX
-            . '/x';
-
-        $this->assertEquals($regex, $this->class->getRegex());
-    }
-
-    /**
-     * Test the getArgumentsRegex method.
-     *
-     * @return void
-     */
-    public function testGetArgumentsRegex(): void
-    {
-        $regex = '/' . AnnotationsParser::ARGUMENTS_REGEX . '/x';
-
-        $this->assertEquals($regex, $this->class->getArgumentsRegex());
+        $this->assertEquals(Regex::REGEX, $this->class->getRegex());
     }
 
     /**
@@ -165,16 +148,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetAnnotationsMap(): void
     {
-        $map = [
-            'Command'        => Command::class,
-            'Listener'       => Listener::class,
-            'Route'          => Route::class,
-            'Service'        => Service::class,
-            'ServiceAlias'   => ServiceAlias::class,
-            'ServiceContext' => ServiceContext::class,
-        ];
-
-        $this->assertEquals($map, $this->class->getAnnotationsMap());
+        $this->assertEquals(Config::MAP, $this->class->getAnnotationsMap());
     }
 
     /**

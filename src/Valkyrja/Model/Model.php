@@ -66,7 +66,7 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function setProperties(array $properties): void;
+    public function setPropertiesFromArray(array $properties): void;
 
     /**
      * Get model as an array.

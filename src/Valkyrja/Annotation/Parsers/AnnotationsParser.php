@@ -15,6 +15,8 @@ namespace Valkyrja\Annotation\Parsers;
 
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\AnnotationsParser as AnnotationsParserContract;
+use Valkyrja\Annotation\Enums\Part;
+use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Application\Application;
@@ -170,22 +172,7 @@ class AnnotationsParser implements AnnotationsParserContract
          *             (must be a variable beginning with $)
          * $matches[5] Description part of line annotation
          */
-        return '/'
-            . self::ANNOTATION_SYMBOL
-            . '([a-zA-Z]*)'
-            . '(?:' . self::CLASS_REGEX . ')?'
-            . self::LINE_REGEX
-            . '/x';
-    }
-
-    /**
-     * Get the properties regex.
-     *
-     * @return string
-     */
-    public function getArgumentsRegex(): string
-    {
-        return '/' . static::ARGUMENTS_REGEX . '/x';
+        return Regex::REGEX;
     }
 
     /**
@@ -260,22 +247,22 @@ class AnnotationsParser implements AnnotationsParserContract
         $parts = $this->getParts($matches, $index);
 
         // Get the annotation model from the annotations map
-        $annotation = $this->getAnnotationFromMap($parts['annotation']);
+        $annotation = $this->getAnnotationFromMap($parts[Part::TYPE]);
 
         // Set the annotation's type
-        $annotation->setAnnotationType($parts['annotation']);
+        $annotation->setType($parts[Part::TYPE]);
 
         // If there are properties
-        if (null !== $parts['properties'] && $parts['properties']) {
+        if (null !== $parts[Part::PROPERTIES] && $parts[Part::PROPERTIES]) {
             // Filter the properties and set them in the annotation
-            $annotation->setAnnotationProperties($this->getPropertiesAsArray($parts['properties']));
+            $annotation->setProperties($this->getPropertiesAsArray($parts[Part::PROPERTIES]));
 
             // Having set the properties there's no need to retain this key in
             // the properties
-            unset($parts['properties']);
+            unset($parts[Part::PROPERTIES]);
 
             // Set the annotation's properties to setters if they exist
-            $this->setProperties($annotation);
+            $annotation->setPropertiesFromArray($annotation->getProperties());
         }
 
         // Set all the matches
@@ -295,83 +282,55 @@ class AnnotationsParser implements AnnotationsParserContract
      */
     protected function getParts(array $matches, int $index): array
     {
-        $properties = [];
+        $parts = [];
 
         // Written like this to appease the code coverage gods
-        $properties['annotation']  = $matches[1][$index] ?? null;
-        $properties['properties']  = $matches[2][$index] ?? null;
-        $properties['type']        = $matches[3][$index] ?? null;
-        $properties['variable']    = $matches[4][$index] ?? null;
-        $properties['description'] = $matches[5][$index] ?? null;
+        $parts[Part::TYPE]          = $matches[1][$index] ?? null;
+        $parts[Part::PROPERTIES]    = $matches[2][$index] ?? null;
+        $parts[Part::VARIABLE_TYPE] = $matches[3][$index] ?? null;
+        $parts[Part::VARIABLE]      = $matches[4][$index] ?? null;
+        $parts[Part::DESCRIPTION]   = $matches[5][$index] ?? null;
 
-        return $this->processParts($properties);
+        return $this->cleanParts($parts);
     }
 
     /**
-     * Set the annotation's properties.
+     * Clean the parts.
      *
-     * @param Annotation $annotation The annotation
-     *
-     * @return void
-     */
-    protected function setProperties(Annotation $annotation): void
-    {
-        $properties = $annotation->getAnnotationProperties();
-
-        // Iterate through the properties
-        foreach ($annotation->getAnnotationProperties() as $key => $argument) {
-            $methodName = 'set' . ucfirst($key);
-
-            // Check if there is a setter function for this argument
-            if (method_exists($annotation, $methodName)) {
-                // Set the argument using the setter
-                $annotation->{$methodName}($argument);
-
-                // Unset from the properties array
-                unset($properties[$key]);
-            }
-        }
-
-        $annotation->setAnnotationProperties($properties);
-    }
-
-    /**
-     * Process the properties.
-     *
-     * @param array $parts The properties
+     * @param array $parts The parts
      *
      * @return array
      */
-    protected function processParts(array $parts): array
+    protected function cleanParts(array $parts): array
     {
-        // If the type and description exist by the variable does not
+        // If the variable type and description exist but the variable does not
         // then that means the variable regex group captured the
         // first word of the description
-        if ($parts['type'] && $parts['description'] && ! $parts['variable']) {
+        if ($parts[Part::VARIABLE_TYPE] && $parts[Part::DESCRIPTION] && ! $parts[Part::VARIABLE]) {
             // Rectify this by concatenating the type and description
-            $parts['description'] = $parts['type'] . $parts['description'];
+            $parts[Part::DESCRIPTION] = $parts[Part::VARIABLE_TYPE] . $parts[Part::DESCRIPTION];
 
             // Then unset the type
-            unset($parts['type']);
+            unset($parts[Part::VARIABLE_TYPE]);
         }
 
         // Iterate through the properties
         foreach ($parts as &$property) {
             // Clean each one
-            $property = $this->cleanMatch($property);
+            $property = $this->cleanPart($property);
         }
 
         return $parts;
     }
 
     /**
-     * Clean a match from asterisks and new lines.
+     * Clean a part from asterisks and new lines.
      *
      * @param string $match The match
      *
      * @return string
      */
-    protected function cleanMatch(string $match = null): ?string
+    protected function cleanPart(string $match = null): ?string
     {
         if (! $match) {
             return $match;
@@ -381,7 +340,7 @@ class AnnotationsParser implements AnnotationsParserContract
     }
 
     /**
-     * Determine if a value is a defined constant.
+     * Determine if a property's value.
      *
      * @param mixed $value The value to check
      *
@@ -390,13 +349,7 @@ class AnnotationsParser implements AnnotationsParserContract
     protected function determinePropertyValue($value)
     {
         if (is_array($value)) {
-            foreach ($value as &$item) {
-                $item = $this->determinePropertyValue($item);
-            }
-
-            unset($item);
-
-            return $value;
+            return $this->determineArrayPropertyValue($value);
         }
 
         // Trim the value of spaces
@@ -407,13 +360,45 @@ class AnnotationsParser implements AnnotationsParserContract
             return $value;
         }
 
-        // Determine if the value is a constant
-        if (defined($value)) {
-            // Set the value as the constant's value
-            return constant($value);
+        return $this->determineStaticPropertyValue($value);
+    }
+
+    /**
+     * Determine an array property's values.
+     *
+     * @param mixed $value The value to check
+     *
+     * @return array
+     */
+    protected function determineArrayPropertyValue(array $value): array
+    {
+        foreach ($value as &$item) {
+            $item = $this->determinePropertyValue($item);
         }
 
+        unset($item);
+
+        return $value;
+    }
+
+    /**
+     * Determine if a value is a defined static.
+     *
+     * @param mixed $value The value to check
+     *
+     * @return mixed
+     */
+    protected function determineStaticPropertyValue($value)
+    {
         [$class, $member] = explode('::', $value, 2);
+        // Check if the class name is a key defined in the reference classes config
+        $class = $this->getClassFromAlias($class);
+
+        // Determine if the value is a constant
+        if (defined("$class::$member")) {
+            // Set the value as the constant's value
+            return constant("$class::$member");
+        }
 
         // Check for static property
         if (property_exists($class, $member)) {
@@ -426,5 +411,19 @@ class AnnotationsParser implements AnnotationsParserContract
         }
 
         return $value;
+    }
+
+    /**
+     * Get a class alias.
+     *
+     * @param string $class The class to check for a reference
+     *
+     * @return string
+     */
+    protected function getClassFromAlias(string $class): string
+    {
+        $aliases = config(ConfigKey::ANNOTATIONS_ALIASES);
+
+        return $aliases[$class] ?? $class;
     }
 }

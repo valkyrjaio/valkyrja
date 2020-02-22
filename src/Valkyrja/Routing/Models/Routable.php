@@ -36,21 +36,21 @@ trait Routable
      *
      * @var string|null
      */
-    protected ?string $redirectPath = null;
+    protected ?string $to = null;
 
     /**
      * The redirect status code for this route.
      *
      * @var int
      */
-    protected int $redirectCode = StatusCode::FOUND;
+    protected int $code = StatusCode::FOUND;
 
     /**
      * The request methods for this route.
      *
      * @var array
      */
-    protected array $requestMethods = [
+    protected array $methods = [
         RequestMethod::GET,
         RequestMethod::HEAD,
     ];
@@ -133,21 +133,21 @@ trait Routable
      *
      * @return string
      */
-    public function getRedirectPath(): ?string
+    public function getTo(): ?string
     {
-        return $this->redirectPath;
+        return $this->to;
     }
 
     /**
      * Set the redirect path.
      *
-     * @param string|null $redirectPath
+     * @param string|null $to
      *
      * @return static
      */
-    public function setRedirectPath(string $redirectPath = null): self
+    public function setTo(string $to = null): self
     {
-        $this->redirectPath = $redirectPath;
+        $this->to = $to;
 
         return $this;
     }
@@ -157,21 +157,21 @@ trait Routable
      *
      * @return int
      */
-    public function getRedirectCode(): int
+    public function getCode(): int
     {
-        return $this->redirectCode;
+        return $this->code;
     }
 
     /**
      * Set the redirect status code.
      *
-     * @param int $redirectCode
+     * @param int $code
      *
      * @return static
      */
-    public function setRedirectCode(int $redirectCode): self
+    public function setCode(int $code): self
     {
-        $this->redirectCode = $redirectCode;
+        $this->code = $code;
 
         return $this;
     }
@@ -181,27 +181,27 @@ trait Routable
      *
      * @return array
      */
-    public function getRequestMethods(): array
+    public function getMethods(): array
     {
-        return $this->requestMethods;
+        return $this->methods;
     }
 
     /**
      * Set the request methods.
      *
-     * @param array $requestMethods The request methods
+     * @param array $methods The request methods
      *
      * @throws InvalidArgumentException
      *
      * @return static
      */
-    public function setRequestMethods(array $requestMethods): self
+    public function setMethods(array $methods): self
     {
-        if (array_diff($requestMethods, RequestMethod::validValues())) {
+        if (array_diff($methods, RequestMethod::validValues())) {
             throw new InvalidArgumentException('Invalid request methods set');
         }
 
-        $this->requestMethods = $requestMethods;
+        $this->methods = $methods;
 
         return $this;
     }

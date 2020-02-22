@@ -99,7 +99,7 @@ class RouteCollection implements RouteCollectionContract
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->matcher->trimPath($route->getPath()));
 
-        foreach ($route->getRequestMethods() as $requestMethod) {
+        foreach ($route->getMethods() as $requestMethod) {
             // If this is a dynamic route
             if ($route->isDynamic()) {
                 // Set the dynamic route's properties through the path parser

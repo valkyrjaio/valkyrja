@@ -48,6 +48,7 @@ final class ConfigKey extends Enum
     public const ANNOTATIONS_ENABLED   = 'annotations.enabled';
     public const ANNOTATIONS_CACHE_DIR = 'annotations.cacheDir';
     public const ANNOTATIONS_MAP       = 'annotations.map';
+    public const ANNOTATIONS_ALIASES   = 'annotations.aliases';
 
     public const CONSOLE_PROVIDERS                   = 'console.providers';
     public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';

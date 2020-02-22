@@ -27,7 +27,7 @@ interface Annotation extends Dispatch
      *
      * @return string
      */
-    public function getAnnotationType(): ?string;
+    public function getType(): ?string;
 
     /**
      * Set the type.
@@ -36,21 +36,21 @@ interface Annotation extends Dispatch
      *
      * @return static
      */
-    public function setAnnotationType(string $annotationType = null): self;
+    public function setType(string $annotationType = null): self;
 
     /**
      * Get the annotation properties (within parentheses).
      *
      * @return array
      */
-    public function getAnnotationProperties(): ?array;
+    public function getProperties(): ?array;
 
     /**
      * Set the annotation properties (within parentheses).
      *
-     * @param array $annotationProperties The annotation arguments
+     * @param array $properties The annotation arguments
      *
      * @return static
      */
-    public function setAnnotationProperties(array $annotationProperties = null): self;
+    public function setProperties(array $properties = null): self;
 }

@@ -18,7 +18,8 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotations\Annotations;
 use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
-use Valkyrja\Routing\Annotation\Models\Route;
+use Valkyrja\Routing\Annotation\Enums\Annotation;
+use Valkyrja\Routing\Annotation\Route;
 use Valkyrja\Routing\Annotation\RouteAnnotations as RouteAnnotationsContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
@@ -31,13 +32,6 @@ use Valkyrja\Routing\Route as RouteContract;
  */
 class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 {
-    /**
-     * The route annotation type.
-     *
-     * @var string
-     */
-    protected string $routeAnnotationType = 'Route';
-
     /**
      * The items provided by this provider.
      *
@@ -89,7 +83,8 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
             // Set the route's properties
             $this->setRouteProperties($route);
 
-            $classAnnotations = $this->classAnnotationsType($this->routeAnnotationType, $route->getClass());
+            // Get the class's annotations
+            $classAnnotations = $this->getClassAnnotations($route->getClass());
 
             // If this route's class has annotations
             if ($classAnnotations) {
@@ -127,10 +122,8 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
 
         // Iterate through all the classes
         foreach ($classes as $class) {
-            $annotations = $this->classMembersAnnotationsType($this->routeAnnotationType, $class);
-
             // Get all the routes for each class and iterate through them
-            foreach ($annotations as $annotation) {
+            foreach ($this->getClassMemberAnnotations($class) as $annotation) {
                 // Set the annotation in the routes list
                 $routes[] = $annotation;
             }
@@ -250,11 +243,8 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     protected function validatePath(string $path): string
     {
         // Trim slashes from the beginning and end of the path
-        $path = trim($path, '/');
-
-        // If the path only had a slash
-        if (! $path) {
-            // Return as just slash
+        if (! $path = trim($path, '/')) {
+            // If the path only had a slash return as just slash
             return '/';
         }
 
@@ -265,5 +255,39 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
         }
 
         return $path;
+    }
+
+    /**
+     * Get class annotations
+     *
+     * @param string $class The class
+     *
+     * @throws ReflectionException
+     *
+     * @return array
+     */
+    protected function getClassAnnotations(string $class): array
+    {
+        return $this->filterAnnotationsByTypes(
+            Annotation::validValues(),
+            ...$this->classAnnotations($class)
+        );
+    }
+
+    /**
+     * Get class member annotations
+     *
+     * @param string $class The class
+     *
+     * @throws ReflectionException
+     *
+     * @return array
+     */
+    protected function getClassMemberAnnotations(string $class): array
+    {
+        return $this->filterAnnotationsByTypes(
+            Annotation::validValues(),
+            ...$this->classMembersAnnotations($class)
+        );
     }
 }

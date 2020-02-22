@@ -43,7 +43,7 @@ interface Route extends Dispatch
      *
      * @return string
      */
-    public function getRedirectPath(): ?string;
+    public function getTo(): ?string;
 
     /**
      * Set the redirect path.
@@ -52,14 +52,14 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRedirectPath(string $redirectPath = null): self;
+    public function setTo(string $redirectPath = null): self;
 
     /**
      * Get the redirect status code.
      *
      * @return int
      */
-    public function getRedirectCode(): int;
+    public function getCode(): int;
 
     /**
      * Set the redirect status code.
@@ -68,14 +68,14 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRedirectCode(int $redirectCode): self;
+    public function setCode(int $redirectCode): self;
 
     /**
      * Get the request methods.
      *
      * @return array
      */
-    public function getRequestMethods(): array;
+    public function getMethods(): array;
 
     /**
      * Set the request methods.
@@ -84,7 +84,7 @@ interface Route extends Dispatch
      *
      * @return static
      */
-    public function setRequestMethods(array $requestMethods): self;
+    public function setMethods(array $requestMethods): self;
 
     /**
      * Get the regex.

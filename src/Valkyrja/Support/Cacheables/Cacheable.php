@@ -125,7 +125,7 @@ trait Cacheable
     protected function setupFromAnnotations(array $config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config[ConfigKeyPart::USE_ANNOTATIONS] ?? false) && (config()[ConfigKey::ANNOTATIONS_ENABLED] ?? false)) {
+        if (($config[ConfigKeyPart::USE_ANNOTATIONS] ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
             $this->setupAnnotations();
         }
     }

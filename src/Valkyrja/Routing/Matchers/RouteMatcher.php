@@ -148,7 +148,7 @@ class RouteMatcher implements RouteMatcherContract
      */
     protected function isValidMethod(Route $route, string $method): bool
     {
-        return in_array($method, $route->getRequestMethods(), true);
+        return in_array($method, $route->getMethods(), true);
     }
 
     /**

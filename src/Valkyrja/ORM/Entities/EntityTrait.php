@@ -317,7 +317,7 @@ trait EntityTrait
      *
      * @return void
      */
-    public function setProperties(array $properties): void
+    public function setPropertiesFromArray(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {

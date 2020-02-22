@@ -76,7 +76,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->classAnnotationsType('Command', $class) as $annotation) {
+            foreach ($this->classAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -84,7 +84,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
 
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->methodsAnnotationsType('Command', $class) as $annotation) {
+            foreach ($this->methodsAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);

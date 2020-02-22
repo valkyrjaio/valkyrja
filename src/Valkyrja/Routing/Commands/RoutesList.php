@@ -69,6 +69,9 @@ class RoutesList extends Handler
             strlen($headerTexts[3]),
         ];
 
+        // Sort routes by path
+        usort($routerRoutes, fn(Route $a, Route $b): int => $a->getPath() <=> $b->getPath());
+
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);
         }
@@ -119,8 +122,12 @@ class RoutesList extends Handler
      */
     protected function setRoute(Route $route, array &$routes, array &$lengths): void
     {
-        $requestMethod = implode(' | ', $route->getRequestMethods());
+        $requestMethod = implode(' | ', $route->getMethods());
         $dispatch      = 'Closure';
+
+        if ($requestMethod === 'GET | HEAD | POST | PUT | PATCH | CONNECT | OPTIONS | TRACE | DELETE') {
+            $requestMethod = 'ANY';
+        }
 
         if (null !== $route->getFunction()) {
             $dispatch = $route->getFunction();

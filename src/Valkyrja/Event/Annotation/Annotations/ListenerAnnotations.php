@@ -75,7 +75,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Listener $annotation */
-            foreach ($this->methodsAnnotationsType('Listener', $class) as $annotation) {
+            foreach ($this->methodsAnnotationsByType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getListenerFromAnnotation($annotation);

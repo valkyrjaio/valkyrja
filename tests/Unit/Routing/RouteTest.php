@@ -96,7 +96,7 @@ class RouteTest extends TestCase
                 RequestMethod::GET,
                 RequestMethod::HEAD,
             ],
-            $this->getRoute()->getRequestMethods()
+            $this->getRoute()->getMethods()
         );
     }
 
@@ -107,7 +107,7 @@ class RouteTest extends TestCase
      */
     public function testSetRequestMethods(): void
     {
-        $set = $this->getRoute()->setRequestMethods([RequestMethod::POST]);
+        $set = $this->getRoute()->setMethods([RequestMethod::POST]);
 
         $this->assertEquals(true, $set instanceof Route);
     }
@@ -120,7 +120,7 @@ class RouteTest extends TestCase
     public function testSetRequestMethodsInvalid(): void
     {
         try {
-            $this->getRoute()->setRequestMethods(['invalid value']);
+            $this->getRoute()->setMethods(['invalid value']);
         } catch (Exception $exception) {
             $this->assertEquals(InvalidArgumentException::class, get_class($exception));
         }
@@ -134,9 +134,9 @@ class RouteTest extends TestCase
     public function testGetRequestMethods(): void
     {
         $value = [RequestMethod::POST];
-        $this->getRoute()->setRequestMethods($value);
+        $this->getRoute()->setMethods($value);
 
-        $this->assertEquals($value, $this->getRoute()->getRequestMethods());
+        $this->assertEquals($value, $this->getRoute()->getMethods());
     }
 
     /**

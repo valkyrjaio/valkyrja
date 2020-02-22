@@ -13,24 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation;
 
-use Valkyrja\Annotation\Regex\ArgumentsRegex;
-use Valkyrja\Annotation\Regex\ClassRegex;
-use Valkyrja\Annotation\Regex\LineRegex;
-
 /**
  * Interface AnnotationsParser.
  *
  * @author Melech Mizrachi
  */
-interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
+interface AnnotationsParser
 {
-    /**
-     * Annotation symbol.
-     *
-     * @constant string
-     */
-    public const ANNOTATION_SYMBOL = '@';
-
     /**
      * Get annotations from a given string.
      *
@@ -55,13 +44,6 @@ interface AnnotationsParser extends ClassRegex, LineRegex, ArgumentsRegex
      * @return string
      */
     public function getRegex(): string;
-
-    /**
-     * Get the arguments regex.
-     *
-     * @return string
-     */
-    public function getArgumentsRegex(): string;
 
     /**
      * Get the annotations map.

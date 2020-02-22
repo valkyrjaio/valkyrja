@@ -111,10 +111,4 @@ final class ConfigKeyPart extends Enum
     public const REGEX                       = 'regex';
     public const COMMANDS                    = 'commands';
     public const NAMED_COMMANDS              = 'namedCommands';
-    public const COMMAND                     = 'Command';
-    public const LISTENER                    = 'Listener';
-    public const ROUTE                       = 'Route';
-    public const SERVICE                     = 'Service';
-    public const SERVICE_ALIAS               = 'ServiceAlias';
-    public const SERVICE_CONTEXT             = 'ServiceContext';
 }

@@ -31,7 +31,7 @@ trait ModelTrait
     {
         $model = new static();
 
-        $model->setProperties($properties);
+        $model->setPropertiesFromArray($properties);
 
         return $model;
     }
@@ -103,7 +103,7 @@ trait ModelTrait
      *
      * @return void
      */
-    public function setProperties(array $properties): void
+    public function setPropertiesFromArray(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {

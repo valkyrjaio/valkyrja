@@ -25,35 +25,35 @@ trait Annotatable
      *
      * @var string|null
      */
-    protected ?string $annotationType = null;
+    protected ?string $type = null;
 
     /**
      * The annotation properties (within parenthesis).
      *
      * @var array|null
      */
-    protected ?array $annotationProperties = null;
+    protected ?array $properties = null;
 
     /**
      * Get the type.
      *
      * @return string
      */
-    public function getAnnotationType(): ?string
+    public function getType(): ?string
     {
-        return $this->annotationType;
+        return $this->type;
     }
 
     /**
      * Set the type.
      *
-     * @param string $annotationType The type
+     * @param string $type The type
      *
      * @return static
      */
-    public function setAnnotationType(string $annotationType = null): self
+    public function setType(string $type = null): self
     {
-        $this->annotationType = $annotationType;
+        $this->type = $type;
 
         return $this;
     }
@@ -63,21 +63,21 @@ trait Annotatable
      *
      * @return array
      */
-    public function getAnnotationProperties(): ?array
+    public function getProperties(): ?array
     {
-        return $this->annotationProperties;
+        return $this->properties;
     }
 
     /**
      * Set the annotation properties (within parentheses).
      *
-     * @param array $annotationProperties The annotation arguments
+     * @param array $properties The annotation arguments
      *
      * @return static
      */
-    public function setAnnotationProperties(array $annotationProperties = null): self
+    public function setProperties(array $properties = null): self
     {
-        $this->annotationProperties = $annotationProperties;
+        $this->properties = $properties;
 
         return $this;
     }

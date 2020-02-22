@@ -119,7 +119,7 @@ class Router implements RouterContract
      */
     public function get(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::GET, RequestMethod::HEAD]);
+        $route->setMethods([RequestMethod::GET, RequestMethod::HEAD]);
 
         $this->addRoute($route);
     }
@@ -135,7 +135,7 @@ class Router implements RouterContract
      */
     public function post(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::POST]);
+        $route->setMethods([RequestMethod::POST]);
 
         $this->addRoute($route);
     }
@@ -151,7 +151,7 @@ class Router implements RouterContract
      */
     public function put(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::PUT]);
+        $route->setMethods([RequestMethod::PUT]);
 
         $this->addRoute($route);
     }
@@ -167,7 +167,7 @@ class Router implements RouterContract
      */
     public function patch(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::PATCH]);
+        $route->setMethods([RequestMethod::PATCH]);
 
         $this->addRoute($route);
     }
@@ -183,7 +183,7 @@ class Router implements RouterContract
      */
     public function delete(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::DELETE]);
+        $route->setMethods([RequestMethod::DELETE]);
 
         $this->addRoute($route);
     }
@@ -199,7 +199,7 @@ class Router implements RouterContract
      */
     public function head(Route $route): void
     {
-        $route->setRequestMethods([RequestMethod::HEAD]);
+        $route->setMethods([RequestMethod::HEAD]);
 
         $this->addRoute($route);
     }
@@ -215,16 +215,7 @@ class Router implements RouterContract
      */
     public function any(Route $route): void
     {
-        $route->setRequestMethods(
-            [
-                RequestMethod::HEAD,
-                RequestMethod::GET,
-                RequestMethod::POST,
-                RequestMethod::PUT,
-                RequestMethod::PATCH,
-                RequestMethod::DELETE,
-            ]
-        );
+        $route->setMethods(RequestMethod::ANY);
 
         $this->addRoute($route);
     }
@@ -481,9 +472,9 @@ class Router implements RouterContract
     protected function determineRedirectRoute(Route $route): void
     {
         // If the route is a redirect and a redirect route is set
-        if ($route->isRedirect() && $route->getRedirectPath()) {
+        if ($route->isRedirect() && $route->getTo()) {
             // Throw the redirect to the redirect path
-            $this->app->redirect($route->getRedirectPath(), $route->getRedirectCode())->throw();
+            $this->app->redirect($route->getTo(), $route->getCode())->throw();
         }
     }
 
