@@ -19,8 +19,6 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection as RouteCollectionContract;
 use Valkyrja\Routing\RouteMatcher as RouteMatcherContract;
 
-use const JSON_THROW_ON_ERROR;
-
 /**
  * Class RouteCollection.
  *
@@ -90,7 +88,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function add(Route $route): void
     {
-        $key                = md5(json_encode((array) $route, JSON_THROW_ON_ERROR));
+        $key                = $route->getPath();
         $this->routes[$key] = $route;
 
         // Verify the dispatch
@@ -166,7 +164,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function getStatic(string $path, string $method = null): ?Route
     {
-        if (null !== $method) {
+        if (null === $method) {
             return $this->get($path);
         }
 
@@ -185,7 +183,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function issetStatic(string $path, string $method = null): bool
     {
-        if (null !== $method) {
+        if (null === $method) {
             return $this->isset($path);
         }
 
@@ -220,7 +218,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function getDynamic(string $regex, string $method = null): ?Route
     {
-        if (null !== $method) {
+        if (null === $method) {
             return $this->get($regex);
         }
 
@@ -239,7 +237,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function issetDynamic(string $regex, string $method = null): bool
     {
-        if (null !== $method) {
+        if (null === $method) {
             return $this->isset($regex);
         }
 

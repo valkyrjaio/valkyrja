@@ -125,7 +125,7 @@ class RouteMatcher implements RouteMatcherContract
             // If the preg match is successful, we've found our route!
             /* @var array $matches */
             if (preg_match($regex, $path, $matches)) {
-                $route = $this->getMatchedDynamicRoute($dynamicRoute, $matches, $method);
+                $route = $this->getMatchedDynamicRoute($regex, $matches, $method);
 
                 break;
             }
