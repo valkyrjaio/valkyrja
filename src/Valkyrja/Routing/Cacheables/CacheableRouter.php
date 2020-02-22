@@ -22,7 +22,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Routing\Annotation\RouteAnnotations;
+use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Collections\RouteCollection;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Cacheables\Cacheable;
@@ -114,8 +114,8 @@ trait CacheableRouter
      */
     protected function setupAnnotations(): void
     {
-        /** @var RouteAnnotations $routeAnnotations */
-        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotations::class);
+        /** @var RouteAnnotator $routeAnnotations */
+        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotator::class);
 
         // Get all the annotated routes from the list of controllers
         $routes = $routeAnnotations->getRoutes(...$this->app->config(ConfigKey::ROUTING_CONTROLLERS));

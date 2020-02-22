@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -217,9 +217,9 @@ interface Application
     /**
      * Return the annotations instance from the container.
      *
-     * @return Annotations
+     * @return Annotator
      */
-    public function annotations(): Annotations;
+    public function annotations(): Annotator;
 
     /**
      * Return the client instance from the container.

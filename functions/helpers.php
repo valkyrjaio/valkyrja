@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
@@ -89,9 +89,9 @@ if (! function_exists('annotations')) {
     /**
      * Return the annotations instance from the container.
      *
-     * @return Annotations
+     * @return Annotator
      */
-    function annotations(): Annotations
+    function annotations(): Annotator
     {
         return app()->annotations();
     }

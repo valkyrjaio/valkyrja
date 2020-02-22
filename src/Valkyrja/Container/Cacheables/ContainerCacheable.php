@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Cacheables;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Container\Annotation\ContainerAnnotations;
+use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Exceptions\EndlessContextLoopException;
 use Valkyrja\Container\Exceptions\InvalidContextException;
 use Valkyrja\Container\Exceptions\InvalidServiceIdException;
@@ -133,8 +133,8 @@ trait ContainerCacheable
      */
     protected function setupAnnotations(): void
     {
-        /** @var ContainerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(ContainerAnnotations::class);
+        /** @var ContainerAnnotator $containerAnnotations */
+        $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
 
         // Get all the annotated services from the list of controllers
         $services = $containerAnnotations->getServices(

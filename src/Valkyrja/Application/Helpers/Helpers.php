@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Helpers;
 
 use InvalidArgumentException;
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 use Valkyrja\Application\Application;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Enums\ConfigKeyPart;
@@ -331,11 +331,11 @@ trait Helpers
     /**
      * Return the annotations instance from the container.
      *
-     * @return Annotations
+     * @return Annotator
      */
-    public function annotations(): Annotations
+    public function annotations(): Annotator
     {
-        return self::$container->getSingleton(Contract::ANNOTATIONS);
+        return self::$container->getSingleton(Contract::ANNOTATOR);
     }
 
     /**

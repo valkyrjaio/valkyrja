@@ -11,24 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Annotation\Annotations;
+namespace Valkyrja\Console\Annotation\Annotators;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotations\Annotations;
-use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Application;
-use Valkyrja\Console\Annotation\CommandAnnotations as CommandAnnotationsContract;
+use Valkyrja\Console\Annotation\CommandAnnotator as CommandAnnotatorContract;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
 
 /**
- * Class CommandAnnotations.
+ * Class CommandAnnotator.
  *
  * @author Melech Mizrachi
  */
-class CommandAnnotations extends Annotations implements CommandAnnotationsContract
+class CommandAnnotator extends Annotator implements CommandAnnotatorContract
 {
     /**
      * The items provided by this provider.
@@ -38,7 +37,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
     public static function provides(): array
     {
         return [
-            CommandAnnotationsContract::class,
+            CommandAnnotatorContract::class,
         ];
     }
 
@@ -52,10 +51,8 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            CommandAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
+            CommandAnnotatorContract::class,
+            new static($app)
         );
     }
 
@@ -76,7 +73,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->classAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->filter()->classAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -84,7 +81,7 @@ class CommandAnnotations extends Annotations implements CommandAnnotationsContra
 
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->methodsAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->filter()->methodsAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);

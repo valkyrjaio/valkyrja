@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Annotation\Annotations;
+namespace Valkyrja\Container\Annotation\Annotators;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotations\Annotations;
-use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Annotation\ContainerAnnotations as ContainerAnnotationsContract;
+use Valkyrja\Container\Annotation\ContainerAnnotator as ContainerAnnotatorContract;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
@@ -28,11 +27,11 @@ use Valkyrja\Container\Service as ServiceContract;
 use Valkyrja\Container\ServiceContext as ContextServiceContract;
 
 /**
- * Class ContainerAnnotations.
+ * Class ContainerAnnotator.
  *
  * @author Melech Mizrachi
  */
-class ContainerAnnotations extends Annotations implements ContainerAnnotationsContract
+class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
 {
     /**
      * The services annotation type.
@@ -63,7 +62,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     public static function provides(): array
     {
         return [
-            ContainerAnnotationsContract::class,
+            ContainerAnnotatorContract::class,
         ];
     }
 
@@ -77,10 +76,8 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            ContainerAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
+            ContainerAnnotatorContract::class,
+            new static($app)
         );
     }
 
@@ -144,7 +141,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Annotation $annotation */
-            foreach ($this->classAndMembersAnnotationsByType($type, $class) as $annotation) {
+            foreach ($this->filter()->classAndMembersAnnotationsByType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
 
                 // If this annotation is a service

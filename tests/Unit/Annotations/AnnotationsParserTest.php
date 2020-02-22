@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Enums\Annotation as AnnotationEnum;
 use Valkyrja\Annotation\Enums\Config;
 use Valkyrja\Annotation\Enums\Regex;
-use Valkyrja\Annotation\Parsers\AnnotationsParser;
+use Valkyrja\Annotation\Parsers\Parser;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
@@ -57,9 +57,9 @@ class AnnotationsParserTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var AnnotationsParser
+     * @var Parser
      */
-    protected AnnotationsParser $class;
+    protected Parser $class;
 
     /**
      * The value to test with.
@@ -77,7 +77,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new AnnotationsParser(new Valkyrja());
+        $this->class = new Parser(new Valkyrja());
     }
 
     /**
@@ -222,32 +222,5 @@ class AnnotationsParserTest extends TestCase
         $this->assertEquals(
             true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_CONTEXT) instanceof Context
         );
-    }
-
-    /**
-     * Test the provides method.
-     *
-     * @return void
-     */
-    public function testProvides(): void
-    {
-        $expected = [
-            Contract::ANNOTATIONS_PARSER,
-        ];
-
-        $this->assertEquals($expected, $this->class::provides());
-    }
-
-    /**
-     * Test the publish method.
-     *
-     * @return void
-     */
-    public function testPublish(): void
-    {
-        /* @var Application $app */
-        $app = $this->createMock(Application::class);
-
-        $this->assertEquals(null, $this->class::publish($app) ?? null);
     }
 }

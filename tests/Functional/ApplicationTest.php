@@ -13,7 +13,7 @@ namespace Valkyrja\Tests\Functional;
 
 use Exception;
 use TypeError;
-use Valkyrja\Annotation\Annotations\Annotations;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
@@ -258,7 +258,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, $this->app->annotations() instanceof Annotations);
+        $this->assertEquals(true, $this->app->annotations() instanceof Annotator);
     }
 
     /**

@@ -17,7 +17,7 @@ use ReflectionException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Console\Annotation\CommandAnnotations;
+use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -135,8 +135,8 @@ trait CacheableConsole
      */
     protected function setupAnnotations(): void
     {
-        /** @var CommandAnnotations $commandAnnotations */
-        $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotations::class);
+        /** @var CommandAnnotator $commandAnnotations */
+        $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotator::class);
 
         // Get all the annotated commands from the list of handlers
         $commands = $commandAnnotations->getCommands(...$this->app->config(ConfigKey::CONSOLE_HANDLERS));

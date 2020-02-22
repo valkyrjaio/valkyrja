@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotation;
 
 use ReflectionException;
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 
 /**
  * Class CommandAnnotations.
  *
  * @author Melech Mizrachi
  */
-interface CommandAnnotations extends Annotations
+interface CommandAnnotator extends Annotator
 {
     /**
      * Get the commands.

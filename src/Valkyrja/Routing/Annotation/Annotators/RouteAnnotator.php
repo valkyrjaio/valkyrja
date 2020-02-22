@@ -11,26 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotation\Annotations;
+namespace Valkyrja\Routing\Annotation\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Annotations\Annotations;
-use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Application;
 use Valkyrja\Routing\Annotation\Enums\Annotation;
 use Valkyrja\Routing\Annotation\Route;
-use Valkyrja\Routing\Annotation\RouteAnnotations as RouteAnnotationsContract;
+use Valkyrja\Routing\Annotation\RouteAnnotator as RouteAnnotatorContract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route as RouteContract;
 
 /**
- * Class RouteAnnotations.
+ * Class RouteAnnotator.
  *
  * @author Melech Mizrachi
  */
-class RouteAnnotations extends Annotations implements RouteAnnotationsContract
+class RouteAnnotator extends Annotator implements RouteAnnotatorContract
 {
     /**
      * The items provided by this provider.
@@ -40,7 +39,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     public static function provides(): array
     {
         return [
-            RouteAnnotationsContract::class,
+            RouteAnnotatorContract::class,
         ];
     }
 
@@ -54,10 +53,8 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            RouteAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
+            RouteAnnotatorContract::class,
+            new static($app)
         );
     }
 
@@ -268,7 +265,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      */
     protected function getClassAnnotations(string $class): array
     {
-        return $this->filterAnnotationsByTypes(
+        return $this->filter()->filterAnnotationsByTypes(
             Annotation::validValues(),
             ...$this->classAnnotations($class)
         );
@@ -285,7 +282,7 @@ class RouteAnnotations extends Annotations implements RouteAnnotationsContract
      */
     protected function getClassMemberAnnotations(string $class): array
     {
-        return $this->filterAnnotationsByTypes(
+        return $this->filter()->filterAnnotationsByTypes(
             Annotation::validValues(),
             ...$this->classMembersAnnotations($class)
         );

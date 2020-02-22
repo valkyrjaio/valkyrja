@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Functional;
 
 use Exception;
-use Valkyrja\Annotation\Annotations\Annotations;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Dispatchers\Console;
@@ -142,7 +142,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotations() instanceof Annotations);
+        $this->assertEquals(true, annotations() instanceof Annotator);
     }
 
     /**

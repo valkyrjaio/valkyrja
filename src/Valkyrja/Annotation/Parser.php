@@ -18,7 +18,7 @@ namespace Valkyrja\Annotation;
  *
  * @author Melech Mizrachi
  */
-interface AnnotationsParser
+interface Parser
 {
     /**
      * Get annotations from a given string.

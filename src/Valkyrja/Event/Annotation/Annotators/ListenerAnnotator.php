@@ -11,23 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Annotation\Annotations;
+namespace Valkyrja\Event\Annotation\Annotators;
 
 use ReflectionException;
-use Valkyrja\Annotation\Annotations\Annotations;
-use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Application;
-use Valkyrja\Event\Annotation\ListenerAnnotations as ListenerAnnotationsContract;
+use Valkyrja\Event\Annotation\ListenerAnnotator as ListenerAnnotatorContract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
 
 /**
- * Class ListenerAnnotations.
+ * Class ListenerAnnotator.
  *
  * @author Melech Mizrachi
  */
-class ListenerAnnotations extends Annotations implements ListenerAnnotationsContract
+class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
 {
     /**
      * The items provided by this provider.
@@ -37,7 +36,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     public static function provides(): array
     {
         return [
-            ListenerAnnotationsContract::class,
+            ListenerAnnotatorContract::class,
         ];
     }
 
@@ -51,10 +50,8 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
     public static function publish(Application $app): void
     {
         $app->container()->singleton(
-            ListenerAnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(AnnotationsParser::class)
-            )
+            ListenerAnnotatorContract::class,
+            new static($app)
         );
     }
 
@@ -75,7 +72,7 @@ class ListenerAnnotations extends Annotations implements ListenerAnnotationsCont
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Listener $annotation */
-            foreach ($this->methodsAnnotationsByType('Listener', $class) as $annotation) {
+            foreach ($this->filter()->methodsAnnotationsByType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getListenerFromAnnotation($annotation);

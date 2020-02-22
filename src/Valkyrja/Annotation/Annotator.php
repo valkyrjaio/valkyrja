@@ -20,27 +20,34 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 /**
- * Interface Annotations.
+ * Interface Annotator.
  *
  * @author Melech Mizrachi
  */
-interface Annotations
+interface Annotator
 {
+    /**
+     * Get the filterer.
+     *
+     * @return Filter
+     */
+    public function filter(): Filter;
+
     /**
      * Get the parser.
      *
-     * @return AnnotationsParser
+     * @return Parser
      */
-    public function getParser(): AnnotationsParser;
+    public function parser(): Parser;
 
     /**
      * Set the parser.
      *
-     * @param AnnotationsParser $parser The parser
+     * @param Parser $parser The parser
      *
      * @return void
      */
-    public function setParser(AnnotationsParser $parser): void;
+    public function setParser(Parser $parser): void;
 
     /**
      * Get a class's annotations.
@@ -52,16 +59,6 @@ interface Annotations
     public function classAnnotations(string $class): array;
 
     /**
-     * Get a class's annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
-     */
-    public function classAnnotationsByType(string $type, string $class): array;
-
-    /**
      * Get a class's members' annotations.
      *
      * @param string $class The class
@@ -71,16 +68,6 @@ interface Annotations
     public function classMembersAnnotations(string $class): array;
 
     /**
-     * Get a class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
-     */
-    public function classMembersAnnotationsByType(string $type, string $class): array;
-
-    /**
      * Get a class's and class's members' annotations.
      *
      * @param string $class The class
@@ -88,16 +75,6 @@ interface Annotations
      * @return Annotation[]
      */
     public function classAndMembersAnnotations(string $class): array;
-
-    /**
-     * Get a class's and class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
-     */
-    public function classAndMembersAnnotationsByType(string $type, string $class): array;
 
     /**
      * Get a property's annotations.
@@ -110,17 +87,6 @@ interface Annotations
     public function propertyAnnotations(string $class, string $property): array;
 
     /**
-     * Get a property's annotations by type.
-     *
-     * @param string $type     The type
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @return Annotation[]
-     */
-    public function propertyAnnotationsByType(string $type, string $class, string $property): array;
-
-    /**
      * Get a class's properties' annotations.
      *
      * @param string $class The class
@@ -128,16 +94,6 @@ interface Annotations
      * @return Annotation[]
      */
     public function propertiesAnnotations(string $class): array;
-
-    /**
-     * Get a class's properties' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
-     */
-    public function propertiesAnnotationsByType(string $type, string $class): array;
 
     /**
      * Get a method's annotations.
@@ -150,17 +106,6 @@ interface Annotations
     public function methodAnnotations(string $class, string $method): array;
 
     /**
-     * Get a method's annotations by type.
-     *
-     * @param string $type   The type
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @return Annotation[]
-     */
-    public function methodAnnotationsByType(string $type, string $class, string $method): array;
-
-    /**
      * Get a class's methods' annotations.
      *
      * @param string $class The class
@@ -170,16 +115,6 @@ interface Annotations
     public function methodsAnnotations(string $class): array;
 
     /**
-     * Get a class's methods' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @return Annotation[]
-     */
-    public function methodsAnnotationsByType(string $type, string $class): array;
-
-    /**
      * Get a function's annotations.
      *
      * @param string $function The function
@@ -187,36 +122,6 @@ interface Annotations
      * @return Annotation[]
      */
     public function functionAnnotations(string $function): array;
-
-    /**
-     * Get a function's annotations.
-     *
-     * @param string $type     The type
-     * @param string $function The function
-     *
-     * @return Annotation[]
-     */
-    public function functionAnnotationsByType(string $type, string $function): array;
-
-    /**
-     * Filter annotations by type.
-     *
-     * @param string     $type           The type to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
-     */
-    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array;
-
-    /**
-     * Filter annotations by types.
-     *
-     * @param array      $types          The types to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
-     */
-    public function filterAnnotationsByTypes(array $types, Annotation ...$annotations): array;
 
     /**
      * Get a reflection class's annotations.

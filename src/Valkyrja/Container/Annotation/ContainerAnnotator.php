@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation;
 
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
 
@@ -22,7 +22,7 @@ use Valkyrja\Container\Annotation\Service\Context;
  *
  * @author Melech Mizrachi
  */
-interface ContainerAnnotations extends Annotations
+interface ContainerAnnotator extends Annotator
 {
     /**
      * Get the services.

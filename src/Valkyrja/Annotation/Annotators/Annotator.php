@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Annotation\Annotations;
+namespace Valkyrja\Annotation\Annotators;
 
 use ReflectionClass;
 use ReflectionException;
@@ -21,21 +21,21 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotations as AnnotationsContract;
-use Valkyrja\Annotation\AnnotationsParser;
+use Valkyrja\Annotation\Annotator as AnnotationsContract;
 use Valkyrja\Annotation\Enums\Property;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Filters\Filter as AnnotationsFilter;
+use Valkyrja\Annotation\Parser;
+use Valkyrja\Annotation\Parsers\Parser as AnnotationsParser;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Support\Providers\Provides;
 
-use function in_array;
-
 /**
- * Class Annotations.
+ * Class Annotator.
  *
  * @author Melech Mizrachi
  */
-class Annotations implements AnnotationsContract
+class Annotator implements AnnotationsContract
 {
     use Provides;
 
@@ -66,20 +66,28 @@ class Annotations implements AnnotationsContract
     protected static array $annotations = [];
 
     /**
+     * The filter.
+     *
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
      * The parser.
      *
-     * @var AnnotationsParser
+     * @var Parser
      */
-    protected AnnotationsParser $parser;
+    protected Parser $parser;
 
     /**
      * Annotations constructor.
      *
-     * @param AnnotationsParser $parser The parser
+     * @param Application $app
      */
-    public function __construct(AnnotationsParser $parser)
+    public function __construct(Application $app)
     {
-        $this->parser = $parser;
+        $this->filter = new AnnotationsFilter($this);
+        $this->parser = new AnnotationsParser($app);
     }
 
     /**
@@ -105,20 +113,26 @@ class Annotations implements AnnotationsContract
     {
         $app->container()->singleton(
             AnnotationsContract::class,
-            new static(
-                $app->container()->getSingleton(
-                    Contract::ANNOTATIONS_PARSER
-                )
-            )
+            new static($app)
         );
+    }
+
+    /**
+     * Get the filterer.
+     *
+     * @return Filter
+     */
+    public function filter(): Filter
+    {
+        return $this->filter;
     }
 
     /**
      * Get the parser.
      *
-     * @return AnnotationsParser
+     * @return Parser
      */
-    public function getParser(): AnnotationsParser
+    public function parser(): Parser
     {
         return $this->parser;
     }
@@ -126,11 +140,11 @@ class Annotations implements AnnotationsContract
     /**
      * Set the parser.
      *
-     * @param AnnotationsParser $parser The parser
+     * @param Parser $parser The parser
      *
      * @return void
      */
-    public function setParser(AnnotationsParser $parser): void
+    public function setParser(Parser $parser): void
     {
         $this->parser = $parser;
     }
@@ -158,21 +172,6 @@ class Annotations implements AnnotationsContract
     }
 
     /**
-     * Get a class's annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function classAnnotationsByType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->classAnnotations($class));
-    }
-
-    /**
      * Get a class's members' annotations.
      *
      * @param string $class The class
@@ -193,21 +192,6 @@ class Annotations implements AnnotationsContract
     }
 
     /**
-     * Get a class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function classMembersAnnotationsByType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->classMembersAnnotations($class));
-    }
-
-    /**
      * Get a class's and class's members' annotations.
      *
      * @param string $class The class
@@ -225,21 +209,6 @@ class Annotations implements AnnotationsContract
                 $this->classAnnotations($class),
                 $this->classMembersAnnotations($class)
             );
-    }
-
-    /**
-     * Get a class's and class's members' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function classAndMembersAnnotationsByType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->classAndMembersAnnotations($class));
     }
 
     /**
@@ -266,22 +235,6 @@ class Annotations implements AnnotationsContract
                 ],
                 ...$this->parser->getAnnotations((string) $reflection->getDocComment())
             );
-    }
-
-    /**
-     * Get a property's annotations by type.
-     *
-     * @param string $type     The type
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function propertyAnnotationsByType(string $type, string $class, string $property): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->propertyAnnotations($class, $property));
     }
 
     /**
@@ -321,21 +274,6 @@ class Annotations implements AnnotationsContract
     }
 
     /**
-     * Get a class's properties' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function propertiesAnnotationsByType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->propertiesAnnotations($class));
-    }
-
-    /**
      * Get a method's annotations.
      *
      * @param string $class  The class
@@ -359,22 +297,6 @@ class Annotations implements AnnotationsContract
                 ],
                 ...$this->getReflectionFunctionAnnotations($reflection)
             );
-    }
-
-    /**
-     * Get a method's annotations by type.
-     *
-     * @param string $type   The type
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function methodAnnotationsByType(string $type, string $class, string $method): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->methodAnnotations($class, $method));
     }
 
     /**
@@ -414,21 +336,6 @@ class Annotations implements AnnotationsContract
     }
 
     /**
-     * Get a class's methods' annotations by type.
-     *
-     * @param string $type  The type
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function methodsAnnotationsByType(string $type, string $class): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->methodsAnnotations($class));
-    }
-
-    /**
      * Get a function's annotations.
      *
      * @param string $function The function
@@ -448,59 +355,6 @@ class Annotations implements AnnotationsContract
                 ],
                 ...$this->getReflectionFunctionAnnotations($this->getFunctionReflection($function))
             );
-    }
-
-    /**
-     * Get a function's annotations.
-     *
-     * @param string $type     The type
-     * @param string $function The function
-     *
-     * @throws ReflectionException
-     *
-     * @return Annotation[]
-     */
-    public function functionAnnotationsByType(string $type, string $function): array
-    {
-        return $this->filterAnnotationsByType($type, ...$this->functionAnnotations($function));
-    }
-
-    /**
-     * Filter annotations by type.
-     *
-     * @param string     $type           The type to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
-     */
-    public function filterAnnotationsByType(string $type, Annotation ...$annotations): array
-    {
-        return $this->filterAnnotationsByTypes([$type], ...$annotations);
-    }
-
-    /**
-     * Filter annotations by types.
-     *
-     * @param array      $types          The types to match
-     * @param Annotation ...$annotations The annotations
-     *
-     * @return Annotation[]
-     */
-    public function filterAnnotationsByTypes(array $types, Annotation ...$annotations): array
-    {
-        // Set a list of annotations to return
-        $annotationsList = [];
-
-        // Iterate through the annotation
-        foreach ($annotations as $annotation) {
-            // If the annotation's type matches the types requested
-            if (in_array($annotation->getType(), $types, true)) {
-                // Set the annotation in the list
-                $annotationsList[] = $annotation;
-            }
-        }
-
-        return $annotationsList;
     }
 
     /**

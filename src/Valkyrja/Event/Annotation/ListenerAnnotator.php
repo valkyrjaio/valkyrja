@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Annotation;
 
-use Valkyrja\Annotation\Annotations;
+use Valkyrja\Annotation\Annotator;
 use Valkyrja\Event\Annotation\Models\Listener;
 
 /**
@@ -21,7 +21,7 @@ use Valkyrja\Event\Annotation\Models\Listener;
  *
  * @author Melech Mizrachi
  */
-interface ListenerAnnotations extends Annotations
+interface ListenerAnnotator extends Annotator
 {
     /**
      * Get the events.

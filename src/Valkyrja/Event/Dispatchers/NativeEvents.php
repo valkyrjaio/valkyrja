@@ -21,7 +21,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Event\Annotation\ListenerAnnotations;
+use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events;
 use Valkyrja\Event\Listener;
@@ -115,8 +115,8 @@ class NativeEvents implements Events
      */
     protected function setupAnnotations(): void
     {
-        /** @var ListenerAnnotations $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotations::class);
+        /** @var ListenerAnnotator $containerAnnotations */
+        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);
 
         // Get all the annotated listeners from the list of classes
         $listeners = $containerAnnotations->getListeners(...$this->app->config(ConfigKey::EVENTS_CLASSES));
