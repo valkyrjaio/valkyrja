@@ -70,7 +70,7 @@ class RoutesList extends Handler
         ];
 
         // Sort routes by path
-        usort($routerRoutes, fn(Route $a, Route $b): int => $a->getPath() <=> $b->getPath());
+        usort($routerRoutes, fn (Route $a, Route $b): int => $a->getPath() <=> $b->getPath());
 
         foreach ($routerRoutes as $route) {
             $this->setRoute($route, $routes, $lengths);
