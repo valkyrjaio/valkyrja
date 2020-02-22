@@ -12,7 +12,7 @@
 namespace Valkyrja\Tests\Unit\Container\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Annotation\Models\ServiceContext;
+use Valkyrja\Container\Annotation\Models\Context;
 
 /**
  * Test the service context model.
@@ -24,9 +24,9 @@ class ServiceContextTest extends TestCase
     /**
      * The class to test with.
      *
-     * @var ServiceContext
+     * @var Context
      */
-    protected ServiceContext $class;
+    protected Context $class;
 
     /**
      * The value to test with.
@@ -44,7 +44,7 @@ class ServiceContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new ServiceContext();
+        $this->class = new Context();
     }
 
     /**

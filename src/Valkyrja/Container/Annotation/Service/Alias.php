@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Annotation;
+namespace Valkyrja\Container\Annotation\Service;
 
 use Valkyrja\Annotation\Annotation;
 
 /**
- * Interface ServiceAlias.
+ * Interface Alias.
  *
  * @author Melech Mizrachi
  */
-interface ServiceAlias extends Annotation
+interface Alias extends Annotation
 {
 }

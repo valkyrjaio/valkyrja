@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Console\Annotation\Command as CommandContract;
+use Valkyrja\Console\Annotation\Command as Contract;
 use Valkyrja\Console\Models\Commandable;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Console\Models\Commandable;
  *
  * @author Melech Mizrachi
  */
-class Command extends Annotation implements CommandContract
+class Command extends Annotation implements Contract
 {
     use Commandable;
 }

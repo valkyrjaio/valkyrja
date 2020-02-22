@@ -23,6 +23,6 @@ use Valkyrja\Enum\Enum;
 final class Annotation extends Enum
 {
     public const SERVICE         = 'Service';
-    public const SERVICE_ALIAS   = 'ServiceAlias';
-    public const SERVICE_CONTEXT = 'ServiceContext';
+    public const SERVICE_ALIAS   = 'Service\\Alias';
+    public const SERVICE_CONTEXT = 'Service\\Context';
 }

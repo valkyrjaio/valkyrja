@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Annotation\Enums;
 
 use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Container\Annotation\Models\ServiceAlias;
-use Valkyrja\Container\Annotation\Models\ServiceContext;
+use Valkyrja\Container\Annotation\Models\Alias;
+use Valkyrja\Container\Annotation\Models\Context;
 use Valkyrja\Enum\Enum;
 
 /**
@@ -26,6 +26,6 @@ use Valkyrja\Enum\Enum;
 final class AnnotationClass extends Enum
 {
     public const SERVICE         = Service::class;
-    public const SERVICE_ALIAS   = ServiceAlias::class;
-    public const SERVICE_CONTEXT = ServiceContext::class;
+    public const SERVICE_ALIAS   = Alias::class;
+    public const SERVICE_CONTEXT = Context::class;
 }

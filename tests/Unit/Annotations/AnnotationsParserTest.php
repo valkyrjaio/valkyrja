@@ -22,8 +22,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Container\Annotation\Models\ServiceAlias;
-use Valkyrja\Container\Annotation\Models\ServiceContext;
+use Valkyrja\Container\Annotation\Models\Alias;
+use Valkyrja\Container\Annotation\Models\Context;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Routing\Annotation\Models\Route;
@@ -208,7 +208,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAliasAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceAlias') instanceof ServiceAlias);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceAlias') instanceof Alias);
     }
 
     /**
@@ -218,7 +218,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceContextAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof ServiceContext);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof Context);
     }
 
     /**

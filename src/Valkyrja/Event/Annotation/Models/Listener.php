@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Event\Listener as ListenerContract;
+use Valkyrja\Event\Listener as Contract;
 use Valkyrja\Event\Models\Listenable;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Event\Models\Listenable;
  *
  * @author Melech Mizrachi
  */
-class Listener extends Annotation implements ListenerContract
+class Listener extends Annotation implements Contract
 {
     use Listenable;
 }

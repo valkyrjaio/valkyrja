@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Container\Annotation\ServiceContext as ServiceContextContract;
+use Valkyrja\Container\Annotation\Service\Context as Contract;
 use Valkyrja\Container\Models\Serviceable;
 use Valkyrja\Container\Models\ServiceContextable;
 
@@ -23,7 +23,7 @@ use Valkyrja\Container\Models\ServiceContextable;
  *
  * @author Melech Mizrachi
  */
-class ServiceContext extends Annotation implements ServiceContextContract
+class Context extends Annotation implements Contract
 {
     use Serviceable;
     use ServiceContextable;

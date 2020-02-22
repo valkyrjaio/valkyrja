@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Models;
 
-use Valkyrja\Annotation\Annotation as AnnotationContract;
+use Valkyrja\Annotation\Annotation as Contract;
 use Valkyrja\Dispatcher\Models\Dispatchable;
 
 /**
@@ -21,7 +21,7 @@ use Valkyrja\Dispatcher\Models\Dispatchable;
  *
  * @author Melech Mizrachi
  */
-class Annotation implements AnnotationContract
+class Annotation implements Contract
 {
     use Annotatable;
     use Dispatchable;

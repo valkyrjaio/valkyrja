@@ -20,8 +20,8 @@ use Valkyrja\Annotation\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\ContainerAnnotations as ContainerAnnotationsContract;
 use Valkyrja\Container\Annotation\Service;
-use Valkyrja\Container\Annotation\ServiceAlias;
-use Valkyrja\Container\Annotation\ServiceContext;
+use Valkyrja\Container\Annotation\Service\Alias;
+use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Container\Models\Service as ServiceModel;
 use Valkyrja\Container\Models\ServiceContext as ContextServiceModel;
 use Valkyrja\Container\Service as ServiceContract;
@@ -105,7 +105,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws ReflectionException
      *
-     * @return ServiceAlias[]
+     * @return Alias[]
      */
     public function getAliasServices(string ...$classes): array
     {
@@ -119,7 +119,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
      *
      * @throws ReflectionException
      *
-     * @return ServiceContext[]
+     * @return \Valkyrja\Container\Annotation\Service\Context[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -157,7 +157,7 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
 
                 // If this annotation is a context service
                 if ($type === $this->contextServicesAnnotationType) {
-                    /* @var ServiceContext $annotation */
+                    /* @var Context $annotation */
                     $annotations[] = $this->getServiceContextFromAnnotation($annotation);
 
                     continue;
@@ -209,11 +209,11 @@ class ContainerAnnotations extends Annotations implements ContainerAnnotationsCo
     /**
      * Get a service context from a service context annotation.
      *
-     * @param ServiceContext $service The service context annotation
+     * @param \Valkyrja\Container\Annotation\Service\Context $service The service context annotation
      *
      * @return ContextServiceContract
      */
-    protected function getServiceContextFromAnnotation(ServiceContext $service): ContextServiceContract
+    protected function getServiceContextFromAnnotation(Context $service): ContextServiceContract
     {
         return ContextServiceModel::fromArray($service->asArray());
     }

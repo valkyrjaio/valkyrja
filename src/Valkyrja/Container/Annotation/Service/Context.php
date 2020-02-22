@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Annotation\Models;
+namespace Valkyrja\Container\Annotation\Service;
 
-use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Container\Annotation\ServiceAlias as ServiceAliasContract;
+use Valkyrja\Annotation\Annotation;
+use Valkyrja\Container\ServiceContext;
 
 /**
- * Class ServiceAlias.
+ * Interface Context.
  *
  * @author Melech Mizrachi
  */
-class ServiceAlias extends Annotation implements ServiceAliasContract
+interface Context extends Annotation, ServiceContext
 {
 }
