@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Applications;
 
 use Valkyrja\Application\Application;
+use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
+use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Events;
+use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
 
@@ -33,7 +38,57 @@ use const E_ALL;
  */
 class Valkyrja implements Application
 {
+    use ContainerHelpers;
     use Helpers;
+
+    /**
+     * Get the instance of the application.
+     *
+     * @var Application
+     */
+    protected static Application $app;
+
+    /**
+     * Application env.
+     *
+     * @var string
+     */
+    protected static string $env;
+
+    /**
+     * Application config.
+     *
+     * @var array
+     */
+    protected static array $config;
+
+    /**
+     * Get the instance of the container.
+     *
+     * @var Container
+     */
+    protected static Container $container;
+
+    /**
+     * Get the instance of the dispatcher.
+     *
+     * @var Dispatcher
+     */
+    protected static Dispatcher $dispatcher;
+
+    /**
+     * Get the instance of the events.
+     *
+     * @var Events
+     */
+    protected static Events $events;
+
+    /**
+     * Get the instance of the exception handler.
+     *
+     * @var ExceptionHandler
+     */
+    protected static ExceptionHandler $exceptionHandler;
 
     /**
      * Whether the application was setup.

@@ -42,6 +42,7 @@ trait CacheableRouter
      * @var RouteCollection
      */
     protected static RouteCollection $collection;
+
     /**
      * Application.
      *
