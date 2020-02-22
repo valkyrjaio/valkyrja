@@ -22,87 +22,8 @@ use Valkyrja\Support\Cacheable;
  *
  * @author Melech Mizrachi
  */
-interface Router extends Cacheable
+interface Router extends Cacheable, MethodHelpers, RouteHelpers
 {
-    /**
-     * Set a single route.
-     *
-     * @param Route $route
-     *
-     * @return void
-     */
-    public function addRoute(Route $route): void;
-
-    /**
-     * Helper function to set a GET addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function get(Route $route): void;
-
-    /**
-     * Helper function to set a POST addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function post(Route $route): void;
-
-    /**
-     * Helper function to set a PUT addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function put(Route $route): void;
-
-    /**
-     * Helper function to set a PATCH addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function patch(Route $route): void;
-
-    /**
-     * Helper function to set a DELETE addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function delete(Route $route): void;
-
-    /**
-     * Helper function to set a HEAD addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function head(Route $route): void;
-
-    /**
-     * Helper function to set any request method addRoute.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    public function any(Route $route): void;
-
-    /**
-     * Get all routes set by the application.
-     *
-     * @return Route[]
-     */
-    public function getRoutes(): array;
-
     /**
      * Get the route collection.
      *
@@ -116,65 +37,6 @@ interface Router extends Cacheable
      * @return RouteMatcher
      */
     public function matcher(): RouteMatcher;
-
-    /**
-     * Get a route by name.
-     *
-     * @param string $name The name of the route to get
-     *
-     * @return Route
-     */
-    public function route(string $name): Route;
-
-    /**
-     * Determine whether a route name exists.
-     *
-     * @param string $name The name of the route
-     *
-     * @return bool
-     */
-    public function routeIsset(string $name): bool;
-
-    /**
-     * Get a route url by name.
-     *
-     * @param string $name     The name of the route to get
-     * @param array  $data     [optional] The route data if dynamic
-     * @param bool   $absolute [optional] Whether this url should be absolute
-     *
-     * @return string
-     */
-    public function routeUrl(string $name, array $data = null, bool $absolute = null): string;
-
-    /**
-     * Get a route from a request.
-     *
-     * @param Request $request The request
-     *
-     * @return Route
-     */
-    public function requestRoute(Request $request): Route;
-
-    /**
-     * Get a route by path.
-     *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    public function matchRoute(string $path, string $method = null): ?Route;
-
-    /**
-     * Determine if a uri is valid.
-     *
-     * @param string $uri The uri to check
-     *
-     * @return bool
-     */
-    public function isInternalUri(string $uri): bool;
 
     /**
      * Dispatch the route and find a match.
