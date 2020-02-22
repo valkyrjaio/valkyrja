@@ -20,8 +20,6 @@ use Valkyrja\HttpMessage\Stream as StreamContract;
 use function is_int;
 use function is_resource;
 
-use const SEEK_SET;
-
 /**
  * Describes a data stream.
  * Typically, an instance will wrap a PHP stream; this interface provides
@@ -32,6 +30,10 @@ use const SEEK_SET;
  */
 class Stream implements StreamContract
 {
+    use Read;
+    use Seek;
+    use Write;
+
     /**
      * The stream.
      *
@@ -123,7 +125,7 @@ class Stream implements StreamContract
     public function close(): void
     {
         // If there is no stream
-        if (null === $this->stream) {
+        if ($this->isValidStream()) {
             // Don't do anything
             return;
         }
@@ -174,7 +176,7 @@ class Stream implements StreamContract
         $fstat = null;
 
         // If the stream isn't set
-        if (null === $this->stream) {
+        if ($this->isValidStream()) {
             // Return without attempting to get the fstat
             return $fstat;
         }
@@ -194,11 +196,7 @@ class Stream implements StreamContract
      */
     public function tell(): int
     {
-        // If there is no stream available
-        if (null === $this->stream) {
-            // Throw a runtime exception
-            throw new RuntimeException('No resource available; cannot tell position');
-        }
+        $this->verifyStream();
 
         // Get the tell for the stream
         $result = ftell($this->stream);
@@ -220,204 +218,12 @@ class Stream implements StreamContract
     public function eof(): bool
     {
         // If there is no stream
-        if (null === $this->stream) {
+        if ($this->isValidStream()) {
             // Don't do anything
             return true;
         }
 
         return feof($this->stream);
-    }
-
-    /**
-     * Returns whether or not the stream is seekable.
-     *
-     * @return bool
-     */
-    public function isSeekable(): bool
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // Don't do anything
-            return false;
-        }
-
-        return (bool) $this->getMetadata('seekable');
-    }
-
-    /**
-     * Seek to a position in the stream.
-     *
-     * @link http://www.php.net/manual/en/function.fseek.php
-     *
-     * @param int $offset Stream offset
-     * @param int $whence Specifies how the cursor position will be calculated
-     *                    based on the seek offset. Valid values are identical
-     *                    to the built-in PHP $whence values for `fseek()`.
-     *                    SEEK_SET: Set position equal to offset bytes
-     *                    SEEK_CUR: Set position to current location plus
-     *                    offset SEEK_END: Set position to end-of-stream plus
-     *                    offset.
-     *
-     * @throws RuntimeException on failure.
-     *
-     * @return void
-     */
-    public function seek(int $offset, int $whence = SEEK_SET): void
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // Throw a new runtime exception
-            throw new RuntimeException('No resource available; cannot seek position');
-        }
-
-        // If the stream isn't seekable
-        if (! $this->isSeekable()) {
-            // Throw a new runtime exception
-            throw new RuntimeException('Stream is not seekable');
-        }
-
-        // Get the results of the seek attempt
-        $result = fseek($this->stream, $offset, $whence);
-
-        // If the result was not a 0, denoting an error occurred
-        if (0 !== $result) {
-            // Throw a new runtime exception
-            throw new RuntimeException('Error seeking within stream');
-        }
-    }
-
-    /**
-     * Seek to the beginning of the stream.
-     * If the stream is not seekable, this method will raise an exception;
-     * otherwise, it will perform a seek(0).
-     *
-     * @link http://www.php.net/manual/en/function.fseek.php
-     *
-     * @throws RuntimeException on failure.
-     *
-     * @return void
-     *
-     * @see  seek()
-     */
-    public function rewind(): void
-    {
-        $this->seek(0);
-    }
-
-    /**
-     * Returns whether or not the stream is writable.
-     *
-     * @return bool
-     */
-    public function isWritable(): bool
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // The stream is definitely not writable
-            return false;
-        }
-
-        // Get the stream's mode
-        $mode = $this->getMetadata('mode');
-
-        return
-            false !== strpos($mode, 'x')
-            || false !== strpos($mode, 'w')
-            || false !== strpos($mode, 'c')
-            || false !== strpos($mode, 'a')
-            || false !== strpos($mode, '+');
-    }
-
-    /**
-     * Write data to the stream.
-     *
-     * @param string $string The string that is to be written.
-     *
-     * @throws RuntimeException on failure.
-     *
-     * @return int Returns the number of bytes written to the stream.
-     */
-    public function write(string $string): int
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // Throw a new runtime exception
-            throw new RuntimeException('No resource available; cannot write');
-        }
-
-        // If the stream isn't seekable
-        if (! $this->isSeekable()) {
-            // Throw a new runtime exception
-            throw new RuntimeException('Stream is not writable');
-        }
-
-        // Attempt to write to the stream
-        $result = fwrite($this->stream, $string);
-
-        // If the write was not successful
-        if (false === $result) {
-            // Throw a runtime exception
-            throw new RuntimeException('Error writing to stream');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns whether or not the stream is readable.
-     *
-     * @return bool
-     */
-    public function isReadable(): bool
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // It's not readable
-            return false;
-        }
-
-        // Get the stream's mode
-        $mode = $this->getMetadata('mode');
-
-        return false !== strpos($mode, 'r') || false !== strpos($mode, '+');
-    }
-
-    /**
-     * Read data from the stream.
-     *
-     * @param int $length Read up to $length bytes from the object and return
-     *                    them. Fewer than $length bytes may be returned if
-     *                    underlying stream call returns fewer bytes.
-     *
-     * @throws RuntimeException if an error occurs.
-     *
-     * @return string Returns the data read from the stream, or an empty string
-     *          if no bytes are available.
-     */
-    public function read(int $length): string
-    {
-        // If there is no stream
-        if (null === $this->stream) {
-            // Throw a runtime exception
-            throw new RuntimeException('No resource available; cannot read');
-        }
-
-        // If the stream is not readable
-        if (! $this->isReadable()) {
-            // Throw a runtime exception
-            throw new RuntimeException('Stream is not readable');
-        }
-
-        // Read the stream
-        $result = fread($this->stream, $length);
-
-        // If there was a failure in reading the stream
-        if (false === $result) {
-            // Throw a runtime exception
-            throw new RuntimeException('Error reading stream');
-        }
-
-        return $result;
     }
 
     /**
@@ -473,5 +279,29 @@ class Stream implements StreamContract
         $metadata = stream_get_meta_data($this->stream);
 
         return $metadata[$key] ?? null;
+    }
+
+    /**
+     * Is the stream valid.
+     *
+     * @return bool
+     */
+    protected function isValidStream(): bool
+    {
+        return null === $this->stream;
+    }
+
+    /**
+     * Verify the stream.
+     *
+     * @return void
+     */
+    protected function verifyStream(): void
+    {
+        // If there is no stream
+        if ($this->isValidStream()) {
+            // Throw a runtime exception
+            throw new RuntimeException('No resource available; cannot read');
+        }
     }
 }
