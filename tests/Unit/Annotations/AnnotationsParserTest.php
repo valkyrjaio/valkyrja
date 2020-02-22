@@ -15,15 +15,16 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Enums\Annotation as AnnotationEnum;
 use Valkyrja\Annotation\Enums\Config;
 use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Parsers\AnnotationsParser;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
-use Valkyrja\Container\Annotation\Models\Service;
 use Valkyrja\Container\Annotation\Models\Alias;
 use Valkyrja\Container\Annotation\Models\Context;
+use Valkyrja\Container\Annotation\Models\Service;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Routing\Annotation\Models\Route;
@@ -168,7 +169,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetCommandAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('Command') instanceof Command);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::COMMAND) instanceof Command);
     }
 
     /**
@@ -178,7 +179,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetListenerAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('Listener') instanceof Listener);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::LISTENER) instanceof Listener);
     }
 
     /**
@@ -188,7 +189,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetRouteAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('Route') instanceof Route);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::ROUTE) instanceof Route);
     }
 
     /**
@@ -198,7 +199,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('Service') instanceof Service);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE) instanceof Service);
     }
 
     /**
@@ -208,7 +209,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAliasAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceAlias') instanceof Alias);
+        $this->assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_ALIAS) instanceof Alias);
     }
 
     /**
@@ -218,7 +219,9 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceContextAnnotationFromMap(): void
     {
-        $this->assertEquals(true, $this->class->getAnnotationFromMap('ServiceContext') instanceof Context);
+        $this->assertEquals(
+            true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_CONTEXT) instanceof Context
+        );
     }
 
     /**
