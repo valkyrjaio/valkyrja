@@ -25,6 +25,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Enums\Provider;
+use Valkyrja\Path\Enums\Config;
 
 return [
     /*
@@ -145,16 +146,5 @@ return [
      * //
      *
      */
-    CKP::PATH_REGEX_MAP       => env(
-        EnvKey::APP_PATH_REGEX_MAP,
-        [
-            'num'                  => '(\d+)',
-            'slug'                 => '([a-zA-Z0-9-]+)',
-            'alpha'                => '([a-zA-Z]+)',
-            'alpha-lowercase'      => '([a-z]+)',
-            'alpha-uppercase'      => '([A-Z]+)',
-            'alpha-num'            => '([a-zA-Z0-9]+)',
-            'alpha-num-underscore' => '(\w+)',
-        ]
-    ),
+    CKP::PATH_REGEX_MAP       => env(EnvKey::APP_PATH_REGEX_MAP, Config::REGEX_MAP),
 ];
