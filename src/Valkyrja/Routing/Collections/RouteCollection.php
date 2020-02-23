@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
+use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Routing\Matchers\RouteMatcher;
 use Valkyrja\Routing\Route;
@@ -88,6 +89,10 @@ class RouteCollection implements RouteCollectionContract
      */
     public function add(Route $route): void
     {
+        if (! $route->getPath()) {
+            throw new InvalidArgumentException('Invalid path defined in route.');
+        }
+
         $key                = $route->getPath();
         $this->routes[$key] = $route;
 
@@ -315,6 +320,10 @@ class RouteCollection implements RouteCollectionContract
      */
     protected function parseDynamicRoute(Route $route): void
     {
+        if (! $route->getPath()) {
+            throw new InvalidArgumentException('Invalid path defined in route.');
+        }
+
         // Parse the path
         $parsedRoute = $this->app->pathParser()->parse($route->getPath());
 
