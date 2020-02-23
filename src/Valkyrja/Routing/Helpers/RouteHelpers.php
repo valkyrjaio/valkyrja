@@ -27,7 +27,7 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\RouteCollection;
 use Valkyrja\Routing\RouteMatcher;
 
-use function count;
+use function strlen;
 
 /**
  * Trait RouteHelpers.
@@ -232,9 +232,8 @@ trait RouteHelpers
             return false;
         }
 
-        // Get only the path (full string from the first slash to the end
-        // of the path)
-        $uri = (string) substr($uri, strpos($uri, '/'), count($uri));
+        // Get only the path (full string from the first slash to the end of the path)
+        $uri = (string) substr($uri, strpos($uri, '/'), strlen($uri));
 
         // Try to match the route
         $route = $this->matchRoute($uri);
