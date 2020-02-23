@@ -91,6 +91,7 @@ class HttpException extends RuntimeException
                 // Set the response as the error template
                 $this->response = response($this->getDefaultView($template)->render());
             } catch (Exception $exception) {
+                $this->response = response((string) $this->statusCode);
             }
         }
     }
