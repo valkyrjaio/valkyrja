@@ -263,7 +263,7 @@ class PDOEntityPersister implements EntityPersister
         $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
 
         // If the execute failed
-        if (! $results = $query->execute()) {
+        if (! $query->execute()) {
             // Throw a fail exception
             throw new ExecuteException($query->getError());
         }
