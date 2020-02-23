@@ -21,6 +21,17 @@ namespace Valkyrja\Http;
 interface RedirectResponse extends Response
 {
     /**
+     * Make a new redirect response.
+     *
+     * @param string|null $uri     [optional] The uri
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return static
+     */
+    public static function makeRedirect(string $uri = null, int $status = null, array $headers = null): self;
+
+    /**
      * Get the uri.
      *
      * @return string

@@ -21,7 +21,7 @@ use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 
 /**
- * Class NativeEmptyResponse.
+ * Class EmptyResponse.
  *
  * @author Melech Mizrachi
  */

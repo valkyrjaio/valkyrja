@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Http\Enums\StatusCode;
-
 /**
  * Interface ResponseFactory.
  *
@@ -25,57 +23,40 @@ interface ResponseFactory
     /**
      * Make a new instance of Response.
      *
-     * @param mixed $content    [optional] The response content
-     * @param int   $statusCode [optional] The response status code
-     * @param array $headers    [optional] An array of response headers
+     * @param string|null $content    [optional] The response content
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return Response
      */
-    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
-
-    /**
-     * View response builder.
-     *
-     * @param string $template   The view template to use
-     * @param array  $data       [optional] The view data
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
-     *
-     * @return Response
-     */
-    public function view(
-        string $template,
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response;
+    public function make(string $content = null, int $statusCode = null, array $headers = null): Response;
 
     /**
      * Json response builder.
      *
-     * @param array $data       [optional] The data to set
-     * @param int   $statusCode [optional] The response status code
-     * @param array $headers    [optional] An array of response headers
+     * @param array|null $data       [optional] The data to set
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return JsonResponse
      */
-    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
+    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
 
     /**
      * JsonP response builder.
      *
-     * @param string $callback   The jsonp callback
-     * @param array  $data       [optional] The data to set
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $callback   The jsonp callback
+     * @param array|null $data       [optional] The data to set
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return JsonResponse
      */
     public function jsonp(
         string $callback,
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
+        array $data = null,
+        int $statusCode = null,
+        array $headers = null
     ): JsonResponse;
 
     /**
@@ -87,11 +68,7 @@ interface ResponseFactory
      *
      * @return RedirectResponse
      */
-    public function redirect(
-        string $uri = '/',
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): RedirectResponse;
+    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse;
 
     /**
      * Redirect to a named route response builder.
@@ -106,8 +83,20 @@ interface ResponseFactory
      */
     public function route(
         string $route,
-        array $parameters = [],
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
+        array $parameters = null,
+        int $statusCode = null,
+        array $headers = null
     ): RedirectResponse;
+
+    /**
+     * View response builder.
+     *
+     * @param string     $template   The view template to use
+     * @param array|null $data       [optional] The view data
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
+     *
+     * @return Response
+     */
+    public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response;
 }

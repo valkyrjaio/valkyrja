@@ -302,12 +302,12 @@ if (! function_exists('view')) {
     /**
      * Helper function to get a new view.
      *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
+     * @param string|null $template  [optional] The template to use
+     * @param array       $variables [optional] The variables to use
      *
      * @return View
      */
-    function view(string $template = '', array $variables = []): View
+    function view(string $template = null, array $variables = []): View
     {
         return app()->view($template, $variables);
     }

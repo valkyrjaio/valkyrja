@@ -15,12 +15,17 @@ namespace Valkyrja\Http\Factories;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Enums\Contract;
+use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as ResponseFactoryContract;
+use Valkyrja\Http\Streams\Stream;
 use Valkyrja\Support\Providers\Provides;
+
+use function func_num_args;
 
 /**
  * Class ResponseFactory.
@@ -39,13 +44,21 @@ class ResponseFactory implements ResponseFactoryContract
     protected Application $app;
 
     /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
      * ResponseBuilder constructor.
      *
      * @param Application $app
      */
     public function __construct(Application $app)
     {
-        $this->app = $app;
+        $this->app       = $app;
+        $this->container = $app->container();
     }
 
     /**
@@ -75,59 +88,56 @@ class ResponseFactory implements ResponseFactoryContract
     /**
      * Make a new instance of Response.
      *
-     * @param string $content    [optional] The response content
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $content    [optional] The response content
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return Response
      */
-    public function make(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
+    public function make(string $content = null, int $statusCode = null, array $headers = null): Response
     {
-        return $this->app->response($content, $statusCode, $headers);
-    }
+        /** @var Response $response */
+        $response = $this->container->getSingleton(Contract::RESPONSE);
 
-    /**
-     * View response builder.
-     *
-     * @param string $template   The view template to use
-     * @param array  $data       [optional] The view data
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
-     *
-     * @return Response
-     */
-    public function view(
-        string $template,
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
-    ): Response {
-        $content = $this->app->view()->make($template, $data)->render();
+        if (func_num_args() === 0) {
+            return $response;
+        }
 
-        return $this->make($content, $statusCode, $headers);
+        $stream = new Stream(StreamEnum::TEMP, 'wb+');
+        $stream->write($content ?? '');
+        $stream->rewind();
+
+        return $response::make($stream, $statusCode, $headers);
     }
 
     /**
      * Json response builder.
      *
-     * @param array $data       [optional] The data to set
-     * @param int   $statusCode [optional] The response status code
-     * @param array $headers    [optional] An array of response headers
+     * @param array|null $data       [optional] The data to set
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return JsonResponse
      */
-    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
+    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        return $this->app->json($data, $statusCode, $headers);
+        /** @var JsonResponse $response */
+        $response = $this->container->getSingleton(Contract::JSON_RESPONSE);
+
+        if (func_num_args() === 0) {
+            return $response;
+        }
+
+        return $response::makeJson($data, $statusCode, $headers);
     }
 
     /**
      * JsonP response builder.
      *
-     * @param string $callback   The jsonp callback
-     * @param array  $data       [optional] The data to set
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $callback   The jsonp callback
+     * @param array|null $data       [optional] The data to set
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @throws InvalidArgumentException
      *
@@ -135,9 +145,9 @@ class ResponseFactory implements ResponseFactoryContract
      */
     public function jsonp(
         string $callback,
-        array $data = [],
-        int $statusCode = StatusCode::OK,
-        array $headers = []
+        array $data = null,
+        int $statusCode = null,
+        array $headers = null
     ): JsonResponse {
         return $this->json($data, $statusCode, $headers)->withCallback($callback);
     }
@@ -145,36 +155,60 @@ class ResponseFactory implements ResponseFactoryContract
     /**
      * Redirect to response builder.
      *
-     * @param string $uri        [optional] The uri to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $uri        [optional] The uri to redirect to
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    public function redirect(
-        string $uri = '/',
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): RedirectResponse {
-        return $this->app->redirect($uri, $statusCode, $headers);
+    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
+    {
+        /** @var RedirectResponse $response */
+        $response = $this->container->getSingleton(Contract::REDIRECT_RESPONSE);
+
+        if (func_num_args() === 0) {
+            return $response;
+        }
+
+        return $response::makeRedirect($uri, $statusCode, $headers);
     }
 
     /**
      * Redirect to a named route response builder.
      *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $route      The route to match
+     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
     public function route(
         string $route,
-        array $parameters = [],
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
+        array $parameters = null,
+        int $statusCode = null,
+        array $headers = null
     ): RedirectResponse {
-        return $this->app->redirectRoute($route, $parameters, $statusCode, $headers);
+        // Get the uri from the router using the route and parameters
+        $uri = $this->app->router()->routeUrl($route, $parameters);
+
+        return $this->redirect($uri, $statusCode, $headers);
+    }
+
+    /**
+     * View response builder.
+     *
+     * @param string     $template   The view template to use
+     * @param array|null $data       [optional] The view data
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
+     *
+     * @return Response
+     */
+    public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response
+    {
+        $content = $this->app->view()->make($template, $data)->render();
+
+        return $this->make($content, $statusCode, $headers);
     }
 }

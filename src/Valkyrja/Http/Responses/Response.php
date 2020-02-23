@@ -74,6 +74,20 @@ class Response implements ResponseContract
      */
     public function __construct(Stream $body = null, int $status = null, array $headers = null)
     {
+        $this->initialize($body, $status, $headers);
+    }
+
+    /**
+     * Initialize a response.
+     *
+     * @param Stream|null $body    [optional] The body
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return void
+     */
+    protected function initialize(Stream $body = null, int $status = null, array $headers = null): void
+    {
         $this->stream       = $body ?? new HttpStream(StreamEnum::INPUT, 'rw');
         $this->statusCode   = $this->validateStatusCode($status ?? StatusCode::OK);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
@@ -106,29 +120,21 @@ class Response implements ResponseContract
     }
 
     /**
-     * The items provided by this provider.
+     * Make a new response.
      *
-     * @return array
+     * @param Stream|null $body    [optional] The body
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return static
      */
-    public static function provides(): array
+    public static function make(Stream $body = null, int $status = null, array $headers = null): self
     {
-        return [
-            ResponseContract::class,
-        ];
-    }
+        $response = new static();
 
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(ResponseContract::class, new static());
+        $response->initialize($body, $status, $headers);
+
+        return $response;
     }
 
     /**
@@ -276,5 +282,31 @@ class Response implements ResponseContract
         }
 
         return $this;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            ResponseContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(ResponseContract::class, new static());
     }
 }

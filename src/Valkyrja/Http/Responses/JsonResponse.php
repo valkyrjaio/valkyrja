@@ -27,7 +27,7 @@ use Valkyrja\Http\Streams\Stream;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class NativeJsonResponse.
+ * Class JsonResponse.
  *
  * @author Melech Mizrachi
  */
@@ -57,7 +57,7 @@ class JsonResponse extends Response implements JsonResponseContract
     /**
      * NativeJsonResponse constructor.
      *
-     * @param array      $data            The data
+     * @param array|null $data            [optional] The data
      * @param int|null   $status          [optional] The status
      * @param array|null $headers         [optional] The headers
      * @param int|null   $encodingOptions [optional] The encoding options
@@ -68,16 +68,37 @@ class JsonResponse extends Response implements JsonResponseContract
      * @throws InvalidStream
      */
     public function __construct(
-        array $data = [],
+        array $data = null,
         int $status = null,
         array $headers = null,
         int $encodingOptions = null
     ) {
-        $this->data            = $data;
+        parent::__construct();
+
+        $this->initializeJson($data, $status, $headers, $encodingOptions);
+    }
+
+    /**
+     * Initialize a json response.
+     *
+     * @param array|null $data            [optional] The data
+     * @param int|null   $status          [optional] The status
+     * @param array|null $headers         [optional] The headers
+     * @param int|null   $encodingOptions [optional] The encoding options
+     *
+     * @return void
+     */
+    protected function initializeJson(
+        array $data = null,
+        int $status = null,
+        array $headers = null,
+        int $encodingOptions = null
+    ): void {
+        $this->data            = $data ?? [];
         $this->encodingOptions = $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS;
 
         $body = new Stream(StreamEnum::TEMP, 'wb+');
-        $body->write(json_encode($data, JSON_THROW_ON_ERROR | $this->encodingOptions));
+        $body->write(json_encode($this->data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 
         parent::__construct(
@@ -88,29 +109,26 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * The items provided by this provider.
+     * Make a new json response.
      *
-     * @return array
+     * @param array|null $data            [optional] The data
+     * @param int|null   $status          [optional] The status
+     * @param array|null $headers         [optional] The headers
+     * @param int|null   $encodingOptions [optional] The encoding options
+     *
+     * @return static
      */
-    public static function provides(): array
-    {
-        return [
-            JsonResponseContract::class,
-        ];
-    }
+    public static function makeJson(
+        array $data = null,
+        int $status = null,
+        array $headers = null,
+        int $encodingOptions = null
+    ): self {
+        $response = new static();
 
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(JsonResponseContract::class, new static());
+        $response->initializeJson($data, $status, $headers, $encodingOptions);
+
+        return $response;
     }
 
     /**
@@ -163,5 +181,31 @@ class JsonResponse extends Response implements JsonResponseContract
                 );
             }
         }
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            JsonResponseContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(JsonResponseContract::class, new static());
     }
 }

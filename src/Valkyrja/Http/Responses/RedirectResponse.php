@@ -23,7 +23,7 @@ use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\RedirectResponse as RedirectResponseContract;
 
 /**
- * Class NativeRedirectResponse.
+ * Class RedirectResponse.
  *
  * @author Melech Mizrachi
  */
@@ -39,49 +39,57 @@ class RedirectResponse extends Response implements RedirectResponseContract
     /**
      * NativeRedirectResponse constructor.
      *
-     * @param string     $uri     The uri
-     * @param int|null   $status  [optional] The status
-     * @param array|null $headers [optional] The headers
+     * @param string|null $uri     [optional] The uri
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $uri = '/', int $status = null, array $headers = [])
+    public function __construct(string $uri = null, int $status = null, array $headers = null)
     {
-        $this->uri = $uri;
+        parent::__construct();
+
+        $this->initializeRedirect($uri, $status, $headers);
+    }
+
+    /**
+     * Initialize a redirect response.
+     *
+     * @param string|null $uri     [optional] The uri
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return void
+     */
+    protected function initializeRedirect(string $uri = null, int $status = null, array $headers = null): void
+    {
+        $this->uri = $uri ?? '/';
 
         parent::__construct(
             null,
             $status ?? StatusCode::FOUND,
-            $this->injectHeader(Header::LOCATION, $uri, $headers, true)
+            $this->injectHeader(Header::LOCATION, $this->uri, $headers, true)
         );
     }
 
     /**
-     * The items provided by this provider.
+     * Make a new redirect response.
      *
-     * @return array
+     * @param string|null $uri     [optional] The uri
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return static
      */
-    public static function provides(): array
+    public static function makeRedirect(string $uri = null, int $status = null, array $headers = null): self
     {
-        return [
-            RedirectResponseContract::class,
-        ];
-    }
+        $response = new static();
 
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(RedirectResponseContract::class, new static());
+        $response->initializeRedirect($uri, $status, $headers);
+
+        return $response;
     }
 
     /**
@@ -122,7 +130,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         // If not path was set
         if (null === $path) {
             // If the uri is already set
-            $path = $this->uri ?? request()->getPath();
+            $path = $this->uri ?? request()->getUri()->getPath();
         }
 
         // If the path doesn't start with a /
@@ -135,7 +143,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
         }
 
         // Set the uri to https with the host and path
-        $this->setUri('https://' . request()->getHttpHost() . $path);
+        $this->setUri('https://' . request()->getUri()->getHostPort() . $path);
 
         return $this;
     }
@@ -147,7 +155,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public function back(): self
     {
-        $refererUri = request()->headers()->get('Referer');
+        $refererUri = request()->getHeaderLine('Referer');
 
         // Ensure the route being redirected to is a valid internal route
         if (! router()->isInternalUri($refererUri)) {
@@ -170,5 +178,31 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public function throw(): void
     {
         throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->getHeaders());
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            RedirectResponseContract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->container()->singleton(RedirectResponseContract::class, new static());
     }
 }

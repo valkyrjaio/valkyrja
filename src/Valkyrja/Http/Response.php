@@ -31,6 +31,17 @@ use Valkyrja\Http\Models\Cookie;
 interface Response extends Message
 {
     /**
+     * Make a new response.
+     *
+     * @param Stream|null $body    [optional] The body
+     * @param int|null    $status  [optional] The status
+     * @param array|null  $headers [optional] The headers
+     *
+     * @return static
+     */
+    public static function make(Stream $body = null, int $status = null, array $headers = null): self;
+
+    /**
      * Gets the response status code.
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.

@@ -91,13 +91,13 @@ if (! function_exists('response')) {
     /**
      * Return a new response from the application.
      *
-     * @param string $content    [optional] The content to set
-     * @param int    $statusCode [optional] The status code to set
-     * @param array  $headers    [optional] The headers to set
+     * @param string|null $content    [optional] The content to set
+     * @param int|null    $statusCode [optional] The status code to set
+     * @param array|null  $headers    [optional] The headers to set
      *
      * @return Response
      */
-    function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
+    function response(string $content = null, int $statusCode = null, array $headers = null): Response
     {
         return app()->response($content, $statusCode, $headers);
     }
@@ -107,13 +107,13 @@ if (! function_exists('json')) {
     /**
      * Return a new json response from the application.
      *
-     * @param array $data       [optional] An array of data
-     * @param int   $statusCode [optional] The status code to set
-     * @param array $headers    [optional] The headers to set
+     * @param array|null $data       [optional] An array of data
+     * @param int|null   $statusCode [optional] The status code to set
+     * @param array|null $headers    [optional] The headers to set
      *
      * @return JsonResponse
      */
-    function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
+    function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
         return app()->json($data, $statusCode, $headers);
     }
@@ -123,13 +123,13 @@ if (! function_exists('redirect')) {
     /**
      * Return a new redirect response from the application.
      *
-     * @param string $uri        [optional] The URI to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $uri        [optional] The URI to redirect to
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    function redirect(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): RedirectResponse
+    function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
         return app()->redirect($uri, $statusCode, $headers);
     }
@@ -139,18 +139,18 @@ if (! function_exists('redirectRoute')) {
     /**
      * Return a new redirect response from the application for a given route.
      *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $route      The route to match
+     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
     function redirectRoute(
         string $route,
-        array $parameters = [],
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
+        array $parameters = null,
+        int $statusCode = null,
+        array $headers = null
     ): RedirectResponse {
         return app()->redirectRoute($route, $parameters, $statusCode, $headers);
     }
@@ -173,12 +173,6 @@ if (! function_exists('redirectTo')) {
         int $statusCode = StatusCode::FOUND,
         array $headers = []
     ): void {
-        throw new HttpRedirectException(
-            $statusCode,
-            $uri,
-            null,
-            $headers,
-            0
-        );
+        app()->redirectTo($uri, $statusCode, $headers);
     }
 }

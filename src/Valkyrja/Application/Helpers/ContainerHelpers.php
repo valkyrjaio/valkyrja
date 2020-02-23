@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Helpers;
 
-use InvalidArgumentException;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
@@ -22,15 +21,12 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Http\Streams\Stream;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
@@ -194,98 +190,62 @@ trait ContainerHelpers
     /**
      * Return a new response from the application.
      *
-     * @param string $content    [optional] The content to set
-     * @param int    $statusCode [optional] The status code to set
-     * @param array  $headers    [optional] The headers to set
-     *
-     * @throws InvalidArgumentException
+     * @param string|null $content    [optional] The content to set
+     * @param int|null    $statusCode [optional] The status code to set
+     * @param array|null  $headers    [optional] The headers to set
      *
      * @return Response
      */
-    public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response
+    public function response(string $content = null, int $statusCode = null, array $headers = null): Response
     {
-        /** @var Response $response */
-        $response = self::$container->getSingleton(Contract::RESPONSE);
-
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        $stream = new Stream(StreamEnum::TEMP, 'wb+');
-        $stream->write($content);
-        $stream->rewind();
-
-        return new $response($stream, $statusCode, $headers);
+        return $this->responseFactory()->make($content, $statusCode, $headers);
     }
 
     /**
      * Return a new json response from the application.
      *
-     * @param array $data       [optional] An array of data
-     * @param int   $statusCode [optional] The status code to set
-     * @param array $headers    [optional] The headers to set
-     *
-     * @throws InvalidArgumentException
+     * @param array|null $data       [optional] An array of data
+     * @param int|null   $statusCode [optional] The status code to set
+     * @param array|null $headers    [optional] The headers to set
      *
      * @return JsonResponse
      */
-    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse
+    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        /** @var JsonResponse $response */
-        $response = self::$container->getSingleton(Contract::JSON_RESPONSE);
-
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        return new $response($data, $statusCode, $headers);
+        return $this->responseFactory()->json($data, $statusCode, $headers);
     }
 
     /**
      * Return a new json response from the application.
      *
-     * @param string $uri        [optional] The URI to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $uri        [optional] The URI to redirect to
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    public function redirect(
-        string $uri = null,
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): RedirectResponse {
-        /** @var RedirectResponse $response */
-        $response = self::$container->getSingleton(Contract::REDIRECT_RESPONSE);
-
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        return new $response($uri ?? '/', $statusCode, $headers);
+    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
+    {
+        return $this->responseFactory()->redirect($uri, $statusCode, $headers);
     }
 
     /**
      * Return a new redirect response from the application for a given route.
      *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic
-     *                           routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $route      The route to match
+     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
     public function redirectRoute(
         string $route,
-        array $parameters = [],
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
+        array $parameters = null,
+        int $statusCode = null,
+        array $headers = null
     ): RedirectResponse {
-        // Get the uri from the router using the route and parameters
-        $uri = $this->router()->routeUrl($route, $parameters);
-
-        return $this->redirect($uri, $statusCode, $headers);
+        return $this->responseFactory()->route($route, $parameters, $statusCode, $headers);
     }
 
     /**
@@ -311,12 +271,12 @@ trait ContainerHelpers
     /**
      * Helper function to get a new view.
      *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
+     * @param string|null $template  [optional] The template to use
+     * @param array       $variables [optional] The variables to use
      *
      * @return View
      */
-    public function view(string $template = '', array $variables = []): View
+    public function view(string $template = null, array $variables = []): View
     {
         /** @var View $view */
         $view = self::$container->getSingleton(Contract::VIEW);

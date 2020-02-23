@@ -25,7 +25,7 @@ use Valkyrja\Http\HtmlResponse as HtmlResponseContract;
 use Valkyrja\Http\Streams\Stream;
 
 /**
- * Class NativeHtmlResponse.
+ * Class HtmlResponse.
  *
  * @author Melech Mizrachi
  */

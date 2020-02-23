@@ -315,56 +315,51 @@ interface Application
     /**
      * Return a new response from the application.
      *
-     * @param string $content    [optional] The content to set
-     * @param int    $statusCode [optional] The status code to set
-     * @param array  $headers    [optional] The headers to set
+     * @param string|null $content    [optional] The content to set
+     * @param int|null    $statusCode [optional] The status code to set
+     * @param array|null  $headers    [optional] The headers to set
      *
      * @return Response
      */
-    public function response(string $content = '', int $statusCode = StatusCode::OK, array $headers = []): Response;
+    public function response(string $content = null, int $statusCode = null, array $headers = null): Response;
 
     /**
      * Return a new json response from the application.
      *
-     * @param array $data       [optional] An array of data
-     * @param int   $statusCode [optional] The status code to set
-     * @param array $headers    [optional] The headers to set
+     * @param array|null $data       [optional] An array of data
+     * @param int|null   $statusCode [optional] The status code to set
+     * @param array|null $headers    [optional] The headers to set
      *
      * @return JsonResponse
      */
-    public function json(array $data = [], int $statusCode = StatusCode::OK, array $headers = []): JsonResponse;
+    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
 
     /**
      * Return a new redirect response from the application.
      *
-     * @param string $uri        [optional] The URI to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $uri        [optional] The URI to redirect to
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    public function redirect(
-        string $uri = null,
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
-    ): RedirectResponse;
+    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse;
 
     /**
      * Return a new redirect response from the application for a given route.
      *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic
-     *                           routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $route      The route to match
+     * @param array|null  $parameters [optional] Any parameters to set for dynamic routes
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
     public function redirectRoute(
         string $route,
-        array $parameters = [],
-        int $statusCode = StatusCode::FOUND,
-        array $headers = []
+        array $parameters = null,
+        int $statusCode = null,
+        array $headers = null
     ): RedirectResponse;
 
     /**
@@ -384,10 +379,10 @@ interface Application
     /**
      * Helper function to get a new view.
      *
-     * @param string $template  [optional] The template to use
-     * @param array  $variables [optional] The variables to use
+     * @param string|null $template  [optional] The template to use
+     * @param array       $variables [optional] The variables to use
      *
      * @return View
      */
-    public function view(string $template = '', array $variables = []): View;
+    public function view(string $template = null, array $variables = []): View;
 }
