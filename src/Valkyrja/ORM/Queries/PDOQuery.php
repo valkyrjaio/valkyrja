@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Queries;
 
 use PDO;
 use PDOStatement;
+use RuntimeException;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 
@@ -103,7 +104,13 @@ class PDOQuery implements Query
      */
     public function prepare(string $query): Query
     {
-        $this->statement = $this->connection->prepare($query);
+        $statement = $this->connection->prepare($query);
+
+        if (is_int($statement)) {
+            throw new RuntimeException('Error occurred when preparing the query.');
+        }
+
+        $this->statement = $statement;
 
         if (null !== $this->table) {
             $this->bindValue('QueryTable', $this->table);
