@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
+use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Enums\Constant;
@@ -217,10 +218,16 @@ trait ClassDispatcher
      *
      * @param Dispatch $dispatch The dispatch
      *
+     * @throws InvalidArgumentException
+     *
      * @return mixed|string|null
      */
     protected function getClassFromDispatch(Dispatch $dispatch)
     {
+        if (! $dispatch->getClass()) {
+            throw new InvalidArgumentException('Invalid class defined in dispatch model.');
+        }
+
         return $dispatch->isStatic() ? $dispatch->getClass() : $this->container->get($dispatch->getClass());
     }
 }
