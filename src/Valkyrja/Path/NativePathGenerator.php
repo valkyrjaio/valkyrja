@@ -71,6 +71,7 @@ class NativePathGenerator implements PathGenerator
         }
 
         $path         = '';
+        $params       = $params ?? [];
         $replace      = [];
         $replacements = [];
 
