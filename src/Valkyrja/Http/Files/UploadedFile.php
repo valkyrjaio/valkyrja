@@ -108,21 +108,16 @@ class UploadedFile implements UploadedFileContract
     ) {
         // If the error is less than the lowest valued UPLOAD_ERR_* constant
         // Or the error is greater than the highest valued UPLOAD_ERR_* constant
-        if (
-            UPLOAD_ERR_OK > $errorStatus
-            || $errorStatus > UPLOAD_ERR_EXTENSION
-        ) {
+        if (UPLOAD_ERR_OK > $errorStatus || $errorStatus > UPLOAD_ERR_EXTENSION) {
             // Throw an invalid argument exception for the error status
             throw new InvalidArgumentException(
                 'Invalid error status for UploadedFile;  must be an UPLOAD_ERR_* constant value.'
             );
         }
 
-        // If the file is not set
-        // and the stream is not set
+        // If the file is not set and the stream is not set
         if (null === $file && null === $stream) {
-            // Throw an invalid argument exception as on or the other
-            // is required
+            // Throw an invalid argument exception as on or the other is required
             throw new InvalidArgumentException(
                 'Either one of file or stream are required. Neither passed as arguments.'
             );
@@ -169,6 +164,10 @@ class UploadedFile implements UploadedFileContract
         if (null !== $this->stream) {
             // Return the stream
             return $this->stream;
+        }
+
+        if (null === $this->file) {
+            throw new InvalidArgumentException('Either one of file or stream are required. Neither exists.');
         }
 
         // Set the stream as a new native stream
