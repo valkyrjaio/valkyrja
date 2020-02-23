@@ -241,7 +241,7 @@ class Response implements ResponseContract
     public function withoutCookie(Cookie $cookie): self
     {
         $cookie->setValue();
-        $cookie->setExpire();
+        $cookie->setExpire(0);
 
         return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
     }
