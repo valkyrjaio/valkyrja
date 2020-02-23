@@ -21,7 +21,8 @@
         "monolog/monolog"  : "2.0.2",
         "ext-json"         : "*",
         "ext-pdo"          : "*",
-        "ext-sodium"       : "*"
+        "ext-sodium"       : "*",
+        "phpmailer/phpmailer": "^6.1"
     },
     "require-dev"       : {
         "filp/whoops"                 : "2.7.1",
