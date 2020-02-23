@@ -21,7 +21,6 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
@@ -140,7 +139,6 @@ trait RouteHelpers
      * @param Request $request The request
      *
      * @throws InvalidArgumentException
-     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      *
      * @return Route
      */
@@ -189,7 +187,7 @@ trait RouteHelpers
         return 'http'
             . ($route->isSecure() ? 's' : '')
             . '://'
-            . request()->getHttpHost();
+            . request()->getUri()->getHost();
     }
 
     /**

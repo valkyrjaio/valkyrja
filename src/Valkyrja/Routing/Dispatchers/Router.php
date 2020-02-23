@@ -15,7 +15,6 @@ namespace Valkyrja\Routing\Dispatchers;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Http\Exceptions\NotFoundHttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Cacheables\CacheableRouter;
@@ -107,7 +106,6 @@ class Router implements RouterContract
      *
      * @param Request $request The request
      *
-     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      * @throws InvalidArgumentException
      *
      * @return Response
@@ -167,9 +165,9 @@ class Router implements RouterContract
     protected function determineIsSecureRoute(Request $request, Route $route): void
     {
         // If the route is secure and the current request is not secure
-        if ($route->isSecure() && ! $request->isSecure()) {
+        if ($route->isSecure() && ! $request->getUri()->isSecure()) {
             // Throw the redirect to the secure path
-            $this->app->redirect()->secure($request->getPath())->throw();
+            $this->app->redirect()->secure($request->getUri()->getPath())->throw();
         }
     }
 
