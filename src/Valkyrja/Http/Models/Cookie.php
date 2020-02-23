@@ -112,7 +112,7 @@ class Cookie implements Model
      * @param string|null $sameSite [optional] Whether the cookie will be available
      *                              for cross-site requests
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
+     * @throws InvalidSameSiteTypeException
      */
     public function __construct(
         string $name,
@@ -227,9 +227,9 @@ class Cookie implements Model
     /**
      * Get the cookie's value.
      *
-     * @return string
+     * @return string|null
      */
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -261,11 +261,11 @@ class Cookie implements Model
     /**
      * Set expire time for the cookie.
      *
-     * @param int|null $expire The expire time
+     * @param int $expire The expire time
      *
      * @return Cookie
      */
-    public function setExpire(int $expire = null): self
+    public function setExpire(int $expire): self
     {
         $this->expire = $expire;
 
@@ -285,11 +285,11 @@ class Cookie implements Model
     /**
      * Set the path the cookie is available to.
      *
-     * @param string|null $path The path
+     * @param string $path The path
      *
      * @return Cookie
      */
-    public function setPath(string $path = null): self
+    public function setPath(string $path): self
     {
         $this->path = $path;
 
@@ -299,9 +299,9 @@ class Cookie implements Model
     /**
      * Get the domain the cookie is available to.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDomain(): string
+    public function getDomain():? string
     {
         return $this->domain;
     }
@@ -335,11 +335,11 @@ class Cookie implements Model
      * Set whether the cookie should only be transmitted over a secure HTTPS
      * connection.
      *
-     * @param bool|null $secure
+     * @param bool $secure
      *
      * @return Cookie
      */
-    public function setSecure(bool $secure = null): self
+    public function setSecure(bool $secure): self
     {
         $this->secure = $secure;
 
@@ -385,11 +385,11 @@ class Cookie implements Model
     /**
      * Set whether the cookie value should be sent with no url encoding.
      *
-     * @param bool|null $raw
+     * @param bool $raw
      *
      * @return Cookie
      */
-    public function setRaw(bool $raw = null): self
+    public function setRaw(bool $raw): self
     {
         $this->raw = $raw;
 
@@ -399,9 +399,9 @@ class Cookie implements Model
     /**
      * Get whether the cookie will be available for cross-site requests.
      *
-     * @return string
+     * @return string|null
      */
-    public function getSameSite(): string
+    public function getSameSite():? string
     {
         return $this->sameSite;
     }
@@ -411,7 +411,7 @@ class Cookie implements Model
      *
      * @param string|null $sameSite
      *
-     * @throws \Valkyrja\Http\Exceptions\InvalidSameSiteTypeException
+     * @throws InvalidSameSiteTypeException
      *
      * @return Cookie
      */
