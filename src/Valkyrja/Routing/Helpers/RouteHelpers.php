@@ -187,7 +187,7 @@ trait RouteHelpers
         return 'http'
             . ($route->isSecure() ? 's' : '')
             . '://'
-            . request()->getUri()->getHost();
+            . request()->getUri()->getHostPort();
     }
 
     /**
