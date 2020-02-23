@@ -203,7 +203,7 @@ trait MessageTrait
     {
         $value = $this->getHeader($name);
 
-        if (! $value) {
+        if (empty($value)) {
             return '';
         }
 
