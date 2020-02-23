@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum Config.

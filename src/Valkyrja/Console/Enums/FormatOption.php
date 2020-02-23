@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum FormatOption.
@@ -35,7 +35,7 @@ final class FormatOption extends Enum
         self::CONCEAL    => 28,
     ];
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::BOLD       => self::BOLD,
         self::UNDERSCORE => self::UNDERSCORE,
         self::BLINK      => self::BLINK,

@@ -11,7 +11,7 @@
 
 namespace Valkyrja\Tests\Unit\Enum;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Test implementation of the enum abstract.
@@ -23,7 +23,7 @@ class EnumClass extends Enum
     public const FOO = 'bar';
     public const BAR = 'foo';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::FOO => self::FOO,
         self::BAR => self::BAR,
     ];

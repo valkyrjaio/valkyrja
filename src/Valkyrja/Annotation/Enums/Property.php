@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Enums;
 
 use Valkyrja\Dispatcher\Enums\Property as DispatchProperty;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum Property.

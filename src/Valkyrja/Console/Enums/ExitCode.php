@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum ExitCode.
@@ -26,7 +26,7 @@ final class ExitCode extends Enum
     public const FAILURE   = 1;
     public const AUTO_EXIT = 255;
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::SUCCESS   => self::SUCCESS,
         self::FAILURE   => self::FAILURE,
         self::AUTO_EXIT => self::AUTO_EXIT,

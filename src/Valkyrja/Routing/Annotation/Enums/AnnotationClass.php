@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Routing\Annotation\Models\Any;
 use Valkyrja\Routing\Annotation\Models\Connect;
 use Valkyrja\Routing\Annotation\Models\Delete;

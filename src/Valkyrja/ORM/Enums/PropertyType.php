@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum PropertyType.
@@ -23,7 +23,7 @@ final class PropertyType extends Enum
     public const ARRAY  = 'array';
     public const OBJECT = 'object';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::ARRAY,
         self::OBJECT,
     ];

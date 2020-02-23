@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum Visibility.
@@ -25,7 +25,7 @@ final class Visibility extends Enum
     public const PUBLIC  = 'public';
     public const PRIVATE = 'private';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::PUBLIC  => self::PUBLIC,
         self::PRIVATE => self::PRIVATE,
     ];

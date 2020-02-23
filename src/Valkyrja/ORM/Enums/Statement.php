@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum Statement.
@@ -45,7 +45,7 @@ final class Statement extends Enum
     public const LIMIT     = 'LIMIT';
     public const OFFSET    = 'OFFSET';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::SELECT,
         self::INSERT,
         self::INTO,

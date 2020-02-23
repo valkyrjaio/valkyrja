@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotation\Enums;
 
 use Valkyrja\Console\Annotation\Models\Command;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum AnnotationClass.

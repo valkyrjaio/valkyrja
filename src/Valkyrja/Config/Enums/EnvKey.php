@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum EnvKey.

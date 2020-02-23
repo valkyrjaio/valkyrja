@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum OrderBy.
@@ -23,7 +23,7 @@ final class OrderBy extends Enum
     public const ASC  = 'ASC';
     public const DESC = 'DESC';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::ASC,
         self::DESC,
     ];

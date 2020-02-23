@@ -14,7 +14,7 @@ namespace Valkyrja\Tests\Unit\Enum;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 use function get_class;
 
@@ -223,7 +223,7 @@ class EnumTest extends TestCase
      */
     public function testToStringExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, '__toString'));
+        $this->assertEquals(true, method_exists(\Valkyrja\Enum\Enums\Enum::class, '__toString'));
     }
 
     /**

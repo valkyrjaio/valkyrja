@@ -28,7 +28,7 @@ use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Events;

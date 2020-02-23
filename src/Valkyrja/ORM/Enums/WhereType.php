@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum WhereType.
@@ -35,7 +35,7 @@ final class WhereType extends Enum
     public const REGEXP             = 'REGEXP';
     public const NOT_REGEXP         = 'NOT REGEXP';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::EQUALS             => self::EQUALS,
         self::NOT_EQUAL          => self::NOT_EQUAL,
         self::IN                 => self::IN,

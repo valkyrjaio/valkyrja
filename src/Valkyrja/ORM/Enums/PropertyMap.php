@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum PropertyMap.
@@ -28,7 +28,7 @@ final class PropertyMap extends Enum
     public const COLUMNS       = 'columns';
     public const GET_RELATIONS = 'getRelations';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::ORDER_BY,
         self::LIMIT,
         self::OFFSET,

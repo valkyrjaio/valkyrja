@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Enums;
 
-use Valkyrja\Container\Annotation\Models\Service;
 use Valkyrja\Container\Annotation\Models\Alias;
 use Valkyrja\Container\Annotation\Models\Context;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Container\Annotation\Models\Service;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum AnnotationClass.

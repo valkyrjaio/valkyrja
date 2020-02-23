@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum FormatBackground.
@@ -40,7 +40,7 @@ final class FormatBackground extends Enum
     public const LIGHT_WHITE   = 107;
     public const DEFAULT       = 49;
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::BLACK         => self::BLACK,
         self::RED           => self::RED,
         self::GREEN         => self::GREEN,

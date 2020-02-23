@@ -15,7 +15,7 @@ namespace Valkyrja\Annotation\Enums;
 
 use Valkyrja\Console\Annotation\Enums\AnnotationClass as ConsoleAnnotationClass;
 use Valkyrja\Container\Annotation\Enums\AnnotationClass as ContainerAnnotationClass;
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Event\Annotation\Enums\AnnotationClass as EventAnnotationClass;
 use Valkyrja\Routing\Annotation\Enums\AnnotationClass as RoutingAnnotationClass;
 

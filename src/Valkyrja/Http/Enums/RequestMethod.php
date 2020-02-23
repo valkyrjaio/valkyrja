@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Method Definitions.
@@ -307,7 +307,7 @@ final class RequestMethod extends Enum
      *
      * @constant array
      */
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::GET     => self::GET,
         self::POST    => self::POST,
         self::PUT     => self::PUT,

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Logger\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum LogLevel.
@@ -31,7 +31,7 @@ final class LogLevel extends Enum
     public const ALERT     = 'alert';
     public const EMERGENCY = 'emergency';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::DEBUG     => self::DEBUG,
         self::INFO      => self::INFO,
         self::NOTICE    => self::NOTICE,

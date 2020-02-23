@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Enum\Enum;
+use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum OutputStyle.
@@ -26,7 +26,7 @@ final class OutputStyle extends Enum
     public const PLAIN  = 'PLAIN';
     public const RAW    = 'RAW';
 
-    protected const VALUES = [
+    protected static ?array $VALUES = [
         self::NORMAL => self::NORMAL,
         self::PLAIN  => self::PLAIN,
         self::RAW    => self::RAW,
