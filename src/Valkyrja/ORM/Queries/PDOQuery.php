@@ -106,7 +106,7 @@ class PDOQuery implements Query
     {
         $statement = $this->connection->prepare($query);
 
-        if (is_int($statement)) {
+        if (is_bool($statement)) {
             throw new RuntimeException('Error occurred when preparing the query.');
         }
 
