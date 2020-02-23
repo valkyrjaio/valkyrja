@@ -27,7 +27,6 @@ use function array_key_exists;
 use function constant;
 use function defined;
 use function is_array;
-
 use function is_string;
 
 use const JSON_THROW_ON_ERROR;
@@ -264,7 +263,7 @@ class Parser implements AnnotationsParserContract
             unset($parts[Part::PROPERTIES]);
 
             // Set the annotation's properties to setters if they exist
-            $annotation->setPropertiesFromArray($annotation->getProperties());
+            $annotation->setPropertiesFromArray($annotation->getProperties() ?? []);
         }
 
         // Set all the matches
