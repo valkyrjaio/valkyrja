@@ -22,11 +22,31 @@ interface Handler
 {
     /**
      * The command.
+     *
+     * @var string
      */
-    public const COMMAND           = '';
-    public const PATH              = '';
+    public const COMMAND = '';
+
+    /**
+     * The path.
+     *
+     * @var string
+     */
+    public const PATH = '';
+
+    /**
+     * The short description.
+     *
+     * @var string
+     */
     public const SHORT_DESCRIPTION = '';
-    public const DESCRIPTION       = '';
+
+    /**
+     * The description.
+     *
+     * @var string
+     */
+    public const DESCRIPTION = '';
 
     /**
      * Help docs for this command.

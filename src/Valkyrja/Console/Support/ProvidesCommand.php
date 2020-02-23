@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Support;
 
 use Valkyrja\Application\Application;
+use Valkyrja\Console\Handler;
 use Valkyrja\Console\Models\Command;
 use Valkyrja\Support\Providers\Provides;
 
@@ -21,6 +22,11 @@ use Valkyrja\Support\Providers\Provides;
  * Trait ProvidesCommand.
  *
  * @author Melech Mizrachi
+ *
+ * @see Handler::PATH
+ * @see Handler::COMMAND
+ * @see Handler::SHORT_DESCRIPTION
+ * @see Handler::DESCRIPTION
  */
 trait ProvidesCommand
 {
