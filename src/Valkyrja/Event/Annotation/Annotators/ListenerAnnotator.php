@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Annotation\Annotators;
 
+use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Application;
@@ -93,6 +94,10 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
      */
     protected function setListenerProperties(Listener $listener): void
     {
+        if (! $listener->getClass()) {
+            throw new InvalidArgumentException('Invalid class defined in listener.');
+        }
+
         $classReflection = $this->getClassReflection($listener->getClass());
 
         if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
