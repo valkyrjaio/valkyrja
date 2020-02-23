@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Models\Cookie;
 
 /**
  * Representation of an outgoing, server-side response.

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Models;
 
 use DateTime;
+use Valkyrja\Http\Cookie as CookieContract;
 use Valkyrja\Http\Enums\SameSite;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
-use Valkyrja\Model\Model;
 use Valkyrja\Model\ModelTrait;
 
 use function in_array;
@@ -26,7 +26,7 @@ use function in_array;
  *
  * @author Melech Mizrachi
  */
-class Cookie implements Model
+class Cookie implements CookieContract
 {
     use ModelTrait;
 
