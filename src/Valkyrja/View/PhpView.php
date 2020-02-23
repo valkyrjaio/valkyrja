@@ -117,15 +117,15 @@ class PhpView implements View
      * View constructor.
      *
      * @param Application $app       The application
-     * @param string      $template  [optional] The template to set
-     * @param array       $variables [optional] The variables to set
+     * @param string|null $template  [optional] The template to set
+     * @param array|null  $variables [optional] The variables to set
      *
      * @throws InvalidConfigPath
      */
-    public function __construct(Application $app, string $template = null, array $variables = [])
+    public function __construct(Application $app, string $template = null, array $variables = null)
     {
         $this->app = $app;
-        $this->setVariables($variables);
+        $this->setVariables($variables ?? []);
         $this->setTemplateDir($this->app->config(ConfigKey::VIEWS_DIR));
         $this->template($template ?? $this->template);
     }
@@ -159,14 +159,14 @@ class PhpView implements View
     /**
      * Make a new View.
      *
-     * @param string $template  [optional] The template to set
-     * @param array  $variables [optional] The variables to set
+     * @param string|null $template  [optional] The template to set
+     * @param array|null  $variables [optional] The variables to set
      *
      * @throws InvalidConfigPath
      *
      * @return View
      */
-    public function make(string $template = null, array $variables = []): View
+    public function make(string $template = null, array $variables = null): View
     {
         return new static($this->app, $template, $variables);
     }

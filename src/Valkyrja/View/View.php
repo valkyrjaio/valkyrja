@@ -23,12 +23,12 @@ interface View
     /**
      * Make a new View.
      *
-     * @param string $template  [optional] The template to set
-     * @param array  $variables [optional] The variables to set
+     * @param string|null $template  [optional] The template to set
+     * @param array|null  $variables [optional] The variables to set
      *
      * @return View
      */
-    public function make(string $template = null, array $variables = []): self;
+    public function make(string $template = null, array $variables = null): self;
 
     /**
      * Get the variables.
