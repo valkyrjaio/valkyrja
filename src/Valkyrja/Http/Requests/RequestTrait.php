@@ -308,7 +308,7 @@ trait RequestTrait
         $this->body    = $body ?? new HttpStream(StreamEnum::INPUT);
         $this->headers = $headers ?? [];
 
-        $this->setHeaders($headers);
+        $this->setHeaders($this->headers);
         $this->validateMethod($this->method);
         $this->validateProtocolVersion($this->protocol);
 

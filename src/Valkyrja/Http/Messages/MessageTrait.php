@@ -18,6 +18,8 @@ use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
 use Valkyrja\Http\Helpers\HeaderSecurity;
 use Valkyrja\Http\Stream;
 
+use function is_array;
+
 /**
  * Trait MessageTrait.
  *
@@ -128,6 +130,7 @@ trait MessageTrait
         $headerNames = $headers = [];
 
         foreach ($originalHeaders as $header => $value) {
+            $value = is_array($value) ? $value : [$value];
             $value = $this->assertHeaderValues(...$value);
 
             HeaderSecurity::assertValidName($header);
