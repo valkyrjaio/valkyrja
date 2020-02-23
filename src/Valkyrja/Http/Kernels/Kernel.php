@@ -194,6 +194,10 @@ class Kernel implements KernelContract
         // Dispatch the before request handled middleware
         $request = $this->requestMiddleware($request);
 
+        if ($request instanceof Response) {
+            return $request;
+        }
+
         return $this->router->dispatch($request);
     }
 
