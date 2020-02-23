@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Annotation;
 
 use Valkyrja\Annotation\Annotator;
-use Valkyrja\Event\Annotation\Models\Listener;
 
 /**
  * Interface ListenerAnnotations.
