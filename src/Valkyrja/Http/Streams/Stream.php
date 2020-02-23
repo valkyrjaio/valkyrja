@@ -17,7 +17,6 @@ use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Stream as StreamContract;
 
-use function is_int;
 use function is_resource;
 
 /**
@@ -202,7 +201,7 @@ class Stream implements StreamContract
         $result = ftell($this->stream);
 
         // If the tell is not an int
-        if (! is_int($result)) {
+        if ($result === false) {
             // Throw a runtime exception
             throw new RuntimeException('Error occurred during tell operation');
         }
