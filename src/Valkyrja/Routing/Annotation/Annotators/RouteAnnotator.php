@@ -77,6 +77,10 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
 
         // Iterate through all the routes
         foreach ($routes as $route) {
+            if (! $route->getClass() || ! $route->getPath()) {
+                throw new InvalidArgumentException('Invalid class or path defined in route.');
+            }
+
             // Set the route's properties
             $this->setRouteProperties($route);
 
@@ -84,7 +88,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
             $classAnnotations = $this->getClassAnnotations($route->getClass());
 
             // If this route's class has annotations
-            if ($classAnnotations) {
+            if (! empty($classAnnotations)) {
                 /** @var Route $annotation */
                 // Iterate through all the annotations
                 foreach ($classAnnotations as $annotation) {
@@ -141,6 +145,10 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     protected function setRouteProperties(Route $route): void
     {
+        if (! $route->getClass()) {
+            throw new InvalidArgumentException('Invalid class defined in route.');
+        }
+
         if (null === $route->getProperty()) {
             $methodReflection = $this->getMethodReflection(
                 $route->getClass(),
@@ -156,7 +164,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
 
         if (null === $route->getPath()) {
             throw new InvalidRoutePath(
-                'Invalid route name for route : '
+                'Invalid route path for route : '
                 . $route->getClass()
                 . '@' . $route->getMethod()
             );
@@ -188,6 +196,10 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
     protected function getControllerBuiltRoute(Route $controllerRoute, Route $route): Route
     {
         $newRoute = clone $route;
+
+        if (! $route->getPath()) {
+            throw new InvalidArgumentException('Invalid path defined in route.');
+        }
 
         // If there is a base path for this controller
         if (null !== $controllerRoute->getPath()) {
