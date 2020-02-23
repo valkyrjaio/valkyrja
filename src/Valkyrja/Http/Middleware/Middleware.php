@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware;
 
+use Valkyrja\Http\Middleware as MiddlewareContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
 /**
- * Abstract Class BeforeMiddleware.
+ * Abstract Class Middleware.
  *
  * @author Melech Mizrachi
  */
-abstract class Middleware
+abstract class Middleware implements MiddlewareContract
 {
     /**
      * Middleware handler for before a request is dispatched.

@@ -219,7 +219,7 @@ class Input implements InputContract
             return $this->requestArguments;
         }
 
-        $arguments = $this->request->server()->get('argv');
+        $arguments = $this->request->getServerParams()['argv'] ?? [];
 
         // strip the application name
         array_shift($arguments);

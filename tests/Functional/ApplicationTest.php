@@ -29,12 +29,12 @@ use Valkyrja\Event\Dispatchers\NativeEvents;
 use Valkyrja\Filesystem\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\NativeJsonResponse;
-use Valkyrja\Http\NativeKernel;
-use Valkyrja\Http\NativeRedirectResponse;
-use Valkyrja\Http\NativeRequest;
-use Valkyrja\Http\NativeResponse;
-use Valkyrja\Http\NativeResponseBuilder;
+use Valkyrja\Http\Responses\JsonResponse;
+use Valkyrja\Http\Kernels\Kernel;
+use Valkyrja\Http\Responses\RedirectResponse;
+use Valkyrja\Http\Requests\Request;
+use Valkyrja\Http\Responses\Response;
+use Valkyrja\Http\Factories\ResponseFactory;
 use Valkyrja\Logger\MonologLogger;
 use Valkyrja\Path\NativePathGenerator;
 use Valkyrja\Path\NativePathParser;
@@ -308,7 +308,7 @@ class ApplicationTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, $this->app->kernel() instanceof NativeKernel);
+        $this->assertEquals(true, $this->app->kernel() instanceof Kernel);
     }
 
     /**
@@ -348,7 +348,7 @@ class ApplicationTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, $this->app->request() instanceof NativeRequest);
+        $this->assertEquals(true, $this->app->request() instanceof Request);
     }
 
     /**
@@ -368,7 +368,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, $this->app->response() instanceof NativeResponse);
+        $this->assertEquals(true, $this->app->response() instanceof Response);
     }
 
     /**
@@ -378,7 +378,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->response('test') instanceof NativeResponse);
+        $this->assertEquals(true, $this->app->response('test') instanceof Response);
     }
 
     /**
@@ -388,7 +388,7 @@ class ApplicationTest extends TestCase
      */
     public function testJson(): void
     {
-        $this->assertEquals(true, $this->app->json() instanceof NativeJsonResponse);
+        $this->assertEquals(true, $this->app->json() instanceof JsonResponse);
     }
 
     /**
@@ -398,7 +398,7 @@ class ApplicationTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->json(['test' => 'value']) instanceof NativeJsonResponse);
+        $this->assertEquals(true, $this->app->json(['test' => 'value']) instanceof JsonResponse);
     }
 
     /**
@@ -408,7 +408,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirect(): void
     {
-        $this->assertEquals(true, $this->app->redirect() instanceof NativeRedirectResponse);
+        $this->assertEquals(true, $this->app->redirect() instanceof RedirectResponse);
     }
 
     /**
@@ -418,7 +418,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        $this->assertEquals(true, $this->app->redirect('/') instanceof NativeRedirectResponse);
+        $this->assertEquals(true, $this->app->redirect('/') instanceof RedirectResponse);
     }
 
     /**
@@ -428,7 +428,7 @@ class ApplicationTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof NativeRedirectResponse);
+        $this->assertEquals(true, $this->app->redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**
@@ -438,7 +438,7 @@ class ApplicationTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, $this->app->responseBuilder() instanceof NativeResponseBuilder);
+        $this->assertEquals(true, $this->app->responseFactory() instanceof ResponseFactory);
     }
 
     /**

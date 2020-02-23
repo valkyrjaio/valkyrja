@@ -26,16 +26,16 @@ class HttpRedirectExceptionTest extends TestCase
      *
      * @var HttpRedirectException
      */
-    protected HttpRedirectException $exception;
+    protected \Valkyrja\Http\Exceptions\HttpRedirectException $exception;
 
     /**
      * Get the exception.
      *
-     * @return HttpRedirectException
+     * @return \Valkyrja\Http\Exceptions\HttpRedirectException
      */
-    protected function getException(): HttpRedirectException
+    protected function getException(): \Valkyrja\Http\Exceptions\HttpRedirectException
     {
-        return $this->exception ?? $this->exception = new HttpRedirectException();
+        return $this->exception ?? $this->exception = new \Valkyrja\Http\Exceptions\HttpRedirectException();
     }
 
     /**
@@ -45,7 +45,7 @@ class HttpRedirectExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getException() instanceof HttpRedirectException);
+        $this->assertEquals(true, $this->getException() instanceof \Valkyrja\Http\Exceptions\HttpRedirectException);
     }
 
     /**

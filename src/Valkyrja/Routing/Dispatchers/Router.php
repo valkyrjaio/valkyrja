@@ -107,7 +107,7 @@ class Router implements RouterContract
      *
      * @param Request $request The request
      *
-     * @throws NotFoundHttpException
+     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      * @throws InvalidArgumentException
      *
      * @return Response

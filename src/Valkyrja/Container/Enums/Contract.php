@@ -40,7 +40,7 @@ use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Model\Model;
@@ -85,7 +85,7 @@ final class Contract extends Enum
     public const RESPONSE            = Response::class;
     public const JSON_RESPONSE       = JsonResponse::class;
     public const REDIRECT_RESPONSE   = RedirectResponse::class;
-    public const RESPONSE_BUILDER    = ResponseBuilder::class;
+    public const RESPONSE_FACTORY    = ResponseFactory::class;
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RouteAnnotator::class;
     public const SESSION             = Session::class;

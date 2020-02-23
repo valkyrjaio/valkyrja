@@ -255,7 +255,7 @@ trait Helpers
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
      *
-     * @throws HttpRedirectException
+     * @throws \Valkyrja\Http\Exceptions\HttpRedirectException
      *
      * @return void
      */

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Http\Enums\StatusCode;
-
 /**
  * Interface RedirectResponse.
  *
@@ -22,21 +20,6 @@ use Valkyrja\Http\Enums\StatusCode;
  */
 interface RedirectResponse extends Response
 {
-    /**
-     * Create a new redirect response.
-     *
-     * @param string $uri     [optional] The URI to redirect to
-     * @param int    $status  [optional] The response status code
-     * @param array  $headers [optional] An array of response headers
-     *
-     * @return RedirectResponse
-     */
-    public static function createRedirect(
-        string $uri = null,
-        int $status = StatusCode::FOUND,
-        array $headers = []
-    ): self;
-
     /**
      * Get the uri.
      *
@@ -49,23 +32,23 @@ interface RedirectResponse extends Response
      *
      * @param string $uri The uri
      *
-     * @return RedirectResponse
+     * @return static
      */
     public function setUri(string $uri): self;
 
     /**
      * Set the redirect uri to secure.
      *
-     * @param string $path The path
+     * @param string|null $path The path
      *
-     * @return RedirectResponse
+     * @return static
      */
     public function secure(string $path = null): self;
 
     /**
      * Redirect back to the referer.
      *
-     * @return RedirectResponse
+     * @return static
      */
     public function back(): self;
 

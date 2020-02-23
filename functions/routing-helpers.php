@@ -17,7 +17,7 @@ use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 
@@ -79,11 +79,11 @@ if (! function_exists('responseBuilder')) {
     /**
      * Get the response builder.
      *
-     * @return ResponseBuilder
+     * @return ResponseFactory
      */
-    function responseBuilder(): ResponseBuilder
+    function responseBuilder(): ResponseFactory
     {
-        return app()->responseBuilder();
+        return app()->responseFactory();
     }
 }
 

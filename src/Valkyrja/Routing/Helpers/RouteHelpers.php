@@ -140,14 +140,14 @@ trait RouteHelpers
      * @param Request $request The request
      *
      * @throws InvalidArgumentException
-     * @throws NotFoundHttpException
+     * @throws \Valkyrja\Http\Exceptions\NotFoundHttpException
      *
      * @return Route
      */
     public function requestRoute(Request $request): Route
     {
         // Decode the request uri
-        $requestUri = rawurldecode($request->getPathOnly());
+        $requestUri = rawurldecode($request->getUri()->getPath());
         // Try to match the route
         $route = $this->matchRoute($requestUri, $request->getMethod());
 
@@ -229,7 +229,7 @@ trait RouteHelpers
         $host = (string) substr($uri, 0, strpos($uri, '/'));
 
         // If the host does not match the current request uri's host
-        if ($host && $host !== $this->app->request()->getHttpHost()) {
+        if ($host && $host !== $this->app->request()->getUri()->getHost()) {
             // Return false immediately
             return false;
         }

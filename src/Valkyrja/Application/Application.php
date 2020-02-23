@@ -31,7 +31,7 @@ use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
@@ -370,9 +370,9 @@ interface Application
     /**
      * Return a new response from the application.
      *
-     * @return ResponseBuilder
+     * @return ResponseFactory
      */
-    public function responseBuilder(): ResponseBuilder;
+    public function responseFactory(): ResponseFactory;
 
     /**
      * Return the session.

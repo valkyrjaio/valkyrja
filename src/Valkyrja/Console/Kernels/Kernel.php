@@ -97,7 +97,7 @@ class Kernel implements KernelContract
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws HttpException
+     * @throws \Valkyrja\Http\Exceptions\HttpException
      *
      * @return int
      */

@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Enums;
 
 use Valkyrja\Enum\Enum;
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Http\Enums\StatusCode;
 
 /**
  * Enum AliasClass.
@@ -24,6 +22,6 @@ use Valkyrja\Http\Enums\StatusCode;
  */
 final class AliasClass extends Enum
 {
-    public const REQUEST_METHOD = RequestMethod::class;
-    public const STATUS_CODE    = StatusCode::class;
+    public const REQUEST_METHOD = \Valkyrja\Http\Enums\RequestMethod::class;
+    public const STATUS_CODE    = \Valkyrja\Http\Enums\StatusCode::class;
 }

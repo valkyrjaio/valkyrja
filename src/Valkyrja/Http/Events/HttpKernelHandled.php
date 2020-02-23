@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Events;
 
-use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Http\SimpleRequest;
 
 /**
  * Class HttpKernelHandled.
@@ -26,9 +26,9 @@ class HttpKernelHandled
     /**
      * The request.
      *
-     * @var Request
+     * @var SimpleRequest
      */
-    public Request $request;
+    public SimpleRequest $request;
 
     /**
      * The response.
@@ -40,10 +40,10 @@ class HttpKernelHandled
     /**
      * HttpKernelHandled constructor.
      *
-     * @param Request  $request
-     * @param Response $response
+     * @param SimpleRequest $request
+     * @param Response      $response
      */
-    public function __construct(Request $request, Response $response)
+    public function __construct(SimpleRequest $request, Response $response)
     {
         $this->request  = $request;
         $this->response = $response;

@@ -13,519 +13,262 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http;
 
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Support\Collection;
+use InvalidArgumentException;
 
 /**
- * Interface Request.
+ * Representation of an incoming, server-side HTTP request.
+ * Per the HTTP specification, this interface includes properties for
+ * each of the following:
+ * - Protocol version
+ * - HTTP method
+ * - URI
+ * - Headers
+ * - Message body
+ * Additionally, it encapsulates all data as it has arrived to the
+ * application from the CGI and/or PHP environment, including:
+ * - The values represented in $_SERVER.
+ * - Any cookies provided (generally via $_COOKIE)
+ * - Query string arguments (generally via $_GET, or as parsed via parse_str())
+ * - Upload files, if any (as represented by $_FILES)
+ * - Deserialized body parameters (generally from $_POST)
+ * $_SERVER values MUST be treated as immutable, as they represent application
+ * state at the time of request; as such, no methods are provided to allow
+ * modification of those values. The other values provide such methods, as they
+ * can be restored from $_SERVER or the request body, and may need treatment
+ * during the application (e.g., body parameters may be deserialized based on
+ * content type).
+ * Additionally, this interface recognizes the utility of introspecting a
+ * request to derive and match additional parameters (e.g., via URI path
+ * matching, decrypting cookie values, deserializing non-form-encoded body
+ * content, matching authorization headers to users, etc). These parameters
+ * are stored in an "attributes" property.
+ * Requests are considered immutable; all methods that might change state MUST
+ * be implemented such that they retain the internal state of the current
+ * message and return an instance that contains the changed state.
  *
  * @author Melech Mizrachi
  */
-interface Request
+interface Request extends SimpleRequest
 {
-    public const HEADER_FORWARDED    = 'forwarded';
-    public const HEADER_CLIENT_IP    = 'client_ip';
-    public const HEADER_CLIENT_HOST  = 'client_host';
-    public const HEADER_CLIENT_PROTO = 'client_proto';
-    public const HEADER_CLIENT_PORT  = 'client_port';
-
-    public const FORMATS = [
-        'html' => ['text/html', 'application/xhtml+xml'],
-        'txt'  => ['text/plain'],
-        'js'   => [
-            'application/javascript',
-            'application/x-javascript',
-            'text/javascript',
-        ],
-        'css'  => ['text/css'],
-        'json' => ['application/json', 'application/x-json'],
-        'xml'  => ['text/xml', 'application/xml', 'application/x-xml'],
-        'rdf'  => ['application/rdf+xml'],
-        'atom' => ['application/atom+xml'],
-        'rss'  => ['application/rss+xml'],
-        'form' => ['application/x-www-form-urlencoded'],
-    ];
-
     /**
-     * Create a new Request instance.
-     *
-     * @param array           $query      The GET parameters
-     * @param array           $request    The POST parameters
-     * @param array           $attributes The request attributes (parameters
-     *                                    parsed from the PATH_INFO, ...)
-     * @param array           $cookies    The COOKIE parameters
-     * @param array           $files      The FILES parameters
-     * @param array           $server     The SERVER parameters
-     * @param string|resource $content    The raw body data
-     *
-     * @return Request
-     */
-    public static function factory(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        $content = null
-    ): self;
-
-    /**
-     * Creates a new request with values from PHP super globals.
-     *
-     * @return Request
-     */
-    public static function createFromGlobals(): self;
-
-    /**
-     * Creates a Request based on a given URI and configuration.
-     * The information contained in the URI always take precedence
-     * over the other information (server and parameters).
-     *
-     * @param string $uri        The URI
-     * @param string $method     The HTTP method
-     * @param array  $parameters The query (GET) or request (POST) parameters
-     * @param array  $cookies    The request cookies ($_COOKIE)
-     * @param array  $files      The request files ($_FILES)
-     * @param array  $server     The server parameters ($_SERVER)
-     * @param string $content    The raw body data
-     *
-     * @return Request
-     */
-    public static function create(
-        string $uri,
-        string $method = RequestMethod::GET,
-        array $parameters = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        string $content = null
-    ): self;
-
-    /**
-     * Gets the mime types associated with the format.
-     *
-     * @param string $format The format
+     * Retrieve server parameters.
+     * Retrieves data related to the incoming request environment,
+     * typically derived from PHP's $_SERVER superglobal. The data IS NOT
+     * REQUIRED to originate from $_SERVER.
      *
      * @return array
      */
-    public static function getMimeTypes(string $format): array;
+    public function getServerParams(): array;
 
     /**
-     * Returns the request as a string.
-     *
-     * @return string The request
-     */
-    public function __toString(): string;
-
-    /**
-     * Return the GET Collection.
-     *
-     * @return Collection
-     */
-    public function query(): Collection;
-
-    /**
-     * Set the GET parameters.
-     *
-     * @param array $query
-     *
-     * @return Request
-     */
-    public function setQuery(array $query = []): self;
-
-    /**
-     * Return the POST Collection.
-     *
-     * @return Collection
-     */
-    public function request(): Collection;
-
-    /**
-     * Set the POST parameters.
-     *
-     * @param array $request
-     *
-     * @return Request
-     */
-    public function setRequest(array $request = []): self;
-
-    /**
-     * Return the attributes Collection.
-     *
-     * @return Collection
-     */
-    public function attributes(): Collection;
-
-    /**
-     * Set the attributes.
-     *
-     * @param array $attributes
-     *
-     * @return Request
-     */
-    public function setAttributes(array $attributes = []): self;
-
-    /**
-     * Return the COOKIES Collection.
-     *
-     * @return Collection
-     */
-    public function cookies(): Collection;
-
-    /**
-     * Set the COOKIES parameters.
-     *
-     * @param array $cookies
-     *
-     * @return Request
-     */
-    public function setCookies(array $cookies = []): self;
-
-    /**
-     * Return the FILES Collection.
-     *
-     * @return Files
-     */
-    public function files(): Files;
-
-    /**
-     * Set the FILES parameters.
-     *
-     * @param array $files
-     *
-     * @return Request
-     */
-    public function setFiles(array $files = []): self;
-
-    /**
-     * Return the SERVER Collection.
-     *
-     * @return Server
-     */
-    public function server(): Server;
-
-    /**
-     * Set the SERVER parameters.
-     *
-     * @param array $server
-     *
-     * @return Request
-     */
-    public function setServer(array $server = []): self;
-
-    /**
-     * Return the headers Collection.
-     *
-     * @return Headers
-     */
-    public function headers(): Headers;
-
-    /**
-     * Set the headers parameters.
-     *
-     * @param array $headers
-     *
-     * @return Request
-     */
-    public function setHeaders(array $headers = []): self;
-
-    /**
-     * Get the content.
-     *
-     * @return string
-     */
-    public function getContent(): string;
-
-    /**
-     * Set the content.
-     *
-     * @param string $content
-     *
-     * @return Request
-     */
-    public function setContent(string $content = null): self;
-
-    /**
-     * Get the languages.
+     * Retrieve cookies.
+     * Retrieves cookies sent by the client to the server.
+     * The data MUST be compatible with the structure of the $_COOKIE
+     * superglobal.
      *
      * @return array
      */
-    public function getLanguages(): array;
+    public function getCookieParams(): array;
 
     /**
-     * Set the languages.
+     * Return an instance with the specified cookies.
+     * The data IS NOT REQUIRED to come from the $_COOKIE superglobal, but MUST
+     * be compatible with the structure of $_COOKIE. Typically, this data will
+     * be injected at instantiation.
+     * This method MUST NOT update the related Cookie header of the request
+     * instance, nor related values in the server params.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated cookie values.
      *
-     * @param array $languages
+     * @param array $cookies Array of key/value pairs representing cookies.
      *
-     * @return Request
+     * @return static
      */
-    public function setLanguages(array $languages = []): self;
+    public function withCookieParams(array $cookies): self;
 
     /**
-     * Get the charsets.
+     * Retrieve a specific cookie value.
+     * Retrieves a cookie value sent by the client to the server.
+     *
+     * @param string $name The cookie name to retrieve
+     *
+     * @return string|null
+     */
+    public function getCookieParam(string $name): ?string;
+
+    /**
+     * Determine if a specific cookie exists.
+     *
+     * @param string $name The cookie name to check for
+     *
+     * @return bool
+     */
+    public function hasCookieParam(string $name): bool;
+
+    /**
+     * Retrieve query string arguments.
+     * Retrieves the deserialized query string arguments, if any.
+     * Note: the query params might not be in sync with the URI or server
+     * params. If you need to ensure you are only getting the original
+     * values, you may need to parse the query string from
+     * `getUri()->getQuery()` or from the `QUERY_STRING` server param.
      *
      * @return array
      */
-    public function getCharsets(): array;
+    public function getQueryParams(): array;
 
     /**
-     * Set the charsets.
+     * Return an instance with the specified query string arguments.
+     * These values SHOULD remain immutable over the course of the incoming
+     * request. They MAY be injected during instantiation, such as from PHP's
+     * $_GET superglobal, or MAY be derived from some other value such as the
+     * URI. In cases where the arguments are parsed from the URI, the data
+     * MUST be compatible with what PHP's parse_str() would return for
+     * purposes of how duplicate query parameters are handled, and how nested
+     * sets are handled.
+     * Setting query string arguments MUST NOT change the URI stored by the
+     * request, nor the values in the server params.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated query string arguments.
      *
-     * @param array $charsets
+     * @param array $query Array of query string arguments, typically from
+     *                     $_GET.
      *
-     * @return Request
+     * @return static
      */
-    public function setCharsets(array $charsets = []): self;
+    public function withQueryParams(array $query): self;
 
     /**
-     * Get the encodings.
+     * Retrieve normalized file upload data.
+     * This method returns upload metadata in a normalized tree, with each leaf
+     * an instance of Psr\Http\Message\UploadedFileInterface.
+     * These values MAY be prepared from $_FILES or the message body during
+     * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return array
+     * @return array An array tree of UploadedFileInterface instances; an empty
+     *               array MUST be returned if no data is present.
      */
-    public function getEncodings(): array;
+    public function getUploadedFiles(): array;
 
     /**
-     * Set the encodings.
+     * Create a new instance with the specified uploaded files.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated body parameters.
      *
-     * @param array $encodings
+     * @param array $uploadedFiles An array tree of UploadedFileInterface
+     *                             instances.
      *
-     * @return Request
+     * @throws InvalidArgumentException if an invalid structure is provided.
+     *
+     * @return static
      */
-    public function setEncodings(array $encodings = []): self;
+    public function withUploadedFiles(array $uploadedFiles): self;
 
     /**
-     * Get the acceptable content types.
+     * Retrieve any parameters provided in the request body.
+     * If the request Content-Type is either application/x-www-form-urlencoded
+     * or multipart/form-data, and the request method is POST, this method MUST
+     * return the contents of $_POST.
+     * Otherwise, this method may return any results of deserializing
+     * the request body content; as parsing returns structured content, the
+     * potential types MUST be arrays or objects only. A null value indicates
+     * the absence of body content.
      *
-     * @return array
+     * @return array The deserialized body parameters, if any.
+     *               These will typically be an array or object.
      */
-    public function getAcceptableContentTypes(): array;
+    public function getParsedBody(): array;
 
     /**
-     * Set the acceptable content types.
+     * Return an instance with the specified body parameters.
+     * These MAY be injected during instantiation.
+     * If the request Content-Type is either application/x-www-form-urlencoded
+     * or multipart/form-data, and the request method is POST, use this method
+     * ONLY to inject the contents of $_POST.
+     * The data IS NOT REQUIRED to come from $_POST, but MUST be the results of
+     * deserializing the request body content. Deserialization/parsing returns
+     * structured data, and, as such, this method ONLY accepts arrays or
+     * objects, or a null value if nothing was available to parse.
+     * As an example, if content negotiation determines that the request data
+     * is a JSON payload, this method could be used to create a request
+     * instance with the deserialized parameters.
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated body parameters.
      *
-     * @param array $acceptableContentTypes
+     * @param array $data The deserialized body data. This will
+     *                    typically be in an array or object.
      *
-     * @return Request
+     * @throws InvalidArgumentException if an unsupported argument type is provided.
+     *
+     * @return static
      */
-    public function setAcceptableContentTypes(array $acceptableContentTypes = []): self;
-
-    // : mixed;
+    public function withParsedBody(array $data): self;
 
     /**
-     * Gets a "parameter" value from any bag.
+     * Retrieve attributes derived from the request.
+     * The request "attributes" may be used to allow injection of any
+     * parameters derived from the request: e.g., the results of path
+     * match operations; the results of decrypting cookies; the results of
+     * deserializing non-form-encoded message bodies; etc. Attributes
+     * will be application and request specific, and CAN be mutable.
      *
-     * @param string $key     the key
-     * @param mixed  $default the default value if the parameter key does not
-     *                        exist
+     * @return array Attributes derived from the request.
+     */
+    public function getAttributes(): array;
+
+    /**
+     * Retrieve a single derived request attribute.
+     * Retrieves a single derived request attribute as described in
+     * getAttributes(). If the attribute has not been previously set, returns
+     * the default value as provided.
+     * This method obviates the need for a hasAttribute() method, as it allows
+     * specifying a default value to return if the attribute is not found.
+     *
+     * @param string $name    The attribute name.
+     * @param mixed  $default Default value to return if the attribute does not exist.
      *
      * @return mixed
+     *
+     * @see getAttributes()
      */
-    public function get(string $key, $default = null);
+    public function getAttribute(string $name, $default = null);
 
     /**
-     * Returns current script name.
+     * Return an instance with the specified derived request attribute.
+     * This method allows setting a single derived request attribute as
+     * described in getAttributes().
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that has the
+     * updated attribute.
      *
-     * @return string
+     * @param string $name  The attribute name.
+     * @param mixed  $value The value of the attribute.
+     *
+     * @return static
+     *
+     * @see getAttributes()
      */
-    public function getScriptName(): string;
+    public function withAttribute(string $name, $value): self;
 
     /**
-     * Returns the path being requested relative to the executed script.
+     * Return an instance that removes the specified derived request attribute.
+     * This method allows removing a single derived request attribute as
+     * described in getAttributes().
+     * This method MUST be implemented in such a way as to retain the
+     * immutability of the message, and MUST return an instance that removes
+     * the attribute.
      *
-     * @return string
+     * @param string $name The attribute name.
+     *
+     * @return static
+     *
+     * @see getAttributes()
      */
-    public function getPath(): string;
-
-    /**
-     * Returns the path being requested with no query string.
-     *
-     * @return string
-     */
-    public function getPathOnly(): string;
-
-    /**
-     * Gets the request's scheme.
-     *
-     * @return string
-     */
-    public function getScheme(): string;
-
-    /**
-     * Returns the port on which the request is made.
-     * This method can read the client port from the "X-Forwarded-Port" header
-     * when trusted proxies were set via "setTrustedProxies()".
-     * The "X-Forwarded-Port" header must contain the client port.
-     * If your reverse proxy uses a different header name than
-     * "X-Forwarded-Port", configure it via "setTrustedHeaderName()" with the
-     * "client-port" key.
-     *
-     * @return int
-     */
-    public function getPort(): int;
-
-    /**
-     * Returns the user.
-     *
-     * @return string
-     */
-    public function getUser(): string;
-
-    /**
-     * Returns the password.
-     *
-     * @return string
-     */
-    public function getPassword(): string;
-
-    /**
-     * Gets the user info.
-     *
-     * @return string
-     */
-    public function getUserInfo(): string;
-
-    /**
-     * Returns the HTTP host being requested.
-     * The port name will be appended to the host if it's non-standard.
-     *
-     * @return string
-     */
-    public function getHttpHost(): string;
-
-    /**
-     * Returns the requested URI (path and query string).
-     *
-     * @return string
-     */
-    public function getRequestUri(): string;
-
-    /**
-     * Gets the scheme and HTTP host.
-     *
-     * @return string
-     */
-    public function getSchemeAndHttpHost(): string;
-
-    /**
-     * Checks whether the request is secure or not.
-     * This method can read the client protocol from the "X-Forwarded-Proto"
-     * header when trusted proxies were set via "setTrustedProxies()".
-     * The "X-Forwarded-Proto" header must contain the protocol: "https" or
-     * "http".
-     * If your reverse proxy uses a different header name than
-     * "X-Forwarded-Proto"
-     * ("SSL_HTTPS" for instance), configure it via "setTrustedHeaderName()"
-     * with the "client-proto" key.
-     *
-     * @return bool
-     */
-    public function isSecure(): bool;
-
-    /**
-     * Returns the host name.
-     *
-     * @return string
-     */
-    public function getHost(): string;
-
-    /**
-     * Sets the request method.
-     *
-     * @param string $method
-     *
-     * @return Request
-     */
-    public function setMethod(string $method): self;
-
-    /**
-     * Gets the request "intended" method.
-     *
-     * @return string The request method
-     *
-     * @see getRealMethod()
-     */
-    public function getMethod(): string;
-
-    /**
-     * Gets the "real" request method.
-     *
-     * @return string The request method
-     *
-     * @see getMethod()
-     */
-    public function getRealMethod(): string;
-
-    /**
-     * Gets the mime type associated with the format.
-     *
-     * @param string $format The format
-     *
-     * @return string
-     */
-    public function getMimeType(string $format): string;
-
-    /**
-     * Gets the format associated with the mime type.
-     *
-     * @param string $mimeType The associated mime type
-     *
-     * @return string
-     */
-    public function getFormat(string $mimeType): string;
-
-    /**
-     * Gets the request format.
-     *
-     * @param string $default The default format
-     *
-     * @return string
-     */
-    public function getRequestFormat(string $default = 'html'): string;
-
-    /**
-     * Sets the request format.
-     *
-     * @param string $format The request format
-     *
-     * @return Request
-     */
-    public function setRequestFormat(string $format): self;
-
-    /**
-     * Gets the format associated with the request.
-     *
-     * @return string
-     */
-    public function getContentType(): string;
-
-    /**
-     * Get the locale.
-     *
-     * @return string
-     */
-    public function getLocale(): string;
-
-    /**
-     * Checks if the request method is of specified type.
-     *
-     * @param string $method Uppercase request method (GET, POST etc)
-     *
-     * @return bool
-     */
-    public function isMethod(string $method): bool;
-
-    /**
-     * Gets the Etags.
-     *
-     * @return array
-     */
-    public function getETags(): array;
-
-    /**
-     * @return bool
-     */
-    public function isNoCache(): bool;
+    public function withoutAttribute(string $name): self;
 
     /**
      * Is this an AJAX request?

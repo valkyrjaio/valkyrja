@@ -23,13 +23,14 @@ use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Exceptions\InvalidStatusCodeException;
+use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseBuilder;
+use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Http\Streams\Stream;
 use Valkyrja\Logger\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
@@ -210,7 +211,11 @@ trait ContainerHelpers
             return $response;
         }
 
-        return $response::create($content, $statusCode, $headers);
+        $stream = new Stream(StreamEnum::TEMP, 'wb+');
+        $stream->write($content);
+        $stream->rewind();
+
+        return new $response($stream, $statusCode, $headers);
     }
 
     /**
@@ -233,7 +238,7 @@ trait ContainerHelpers
             return $response;
         }
 
-        return $response::createJson('', $statusCode, $headers, $data);
+        return new $response($data, $statusCode, $headers);
     }
 
     /**
@@ -242,9 +247,6 @@ trait ContainerHelpers
      * @param string $uri        [optional] The URI to redirect to
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
-     *
-     * @throws InvalidStatusCodeException
-     * @throws InvalidArgumentException
      *
      * @return RedirectResponse
      */
@@ -260,7 +262,7 @@ trait ContainerHelpers
             return $response;
         }
 
-        return $response::createRedirect($uri, $statusCode, $headers);
+        return new $response($uri ?? '/', $statusCode, $headers);
     }
 
     /**
@@ -271,9 +273,6 @@ trait ContainerHelpers
      *                           routes
      * @param int    $statusCode [optional] The response status code
      * @param array  $headers    [optional] An array of response headers
-     *
-     * @throws InvalidStatusCodeException
-     * @throws InvalidArgumentException
      *
      * @return RedirectResponse
      */
@@ -292,11 +291,11 @@ trait ContainerHelpers
     /**
      * Return a new response from the application.
      *
-     * @return ResponseBuilder
+     * @return ResponseFactory
      */
-    public function responseBuilder(): ResponseBuilder
+    public function responseFactory(): ResponseFactory
     {
-        return self::$container->getSingleton(Contract::RESPONSE_BUILDER);
+        return self::$container->getSingleton(Contract::RESPONSE_FACTORY);
     }
 
     /**

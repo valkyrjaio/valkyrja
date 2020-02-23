@@ -31,9 +31,9 @@ class NotFoundHttpExceptionTest extends TestCase
     /**
      * Get the exception.
      *
-     * @return NotFoundHttpException
+     * @return \Valkyrja\Http\Exceptions\NotFoundHttpException
      */
-    protected function getException(): NotFoundHttpException
+    protected function getException(): \Valkyrja\Http\Exceptions\NotFoundHttpException
     {
         return $this->exception ?? $this->exception = new NotFoundHttpException();
     }
