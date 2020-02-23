@@ -301,7 +301,7 @@ class Cookie implements Model
      *
      * @return string|null
      */
-    public function getDomain():? string
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
@@ -401,7 +401,7 @@ class Cookie implements Model
      *
      * @return string|null
      */
-    public function getSameSite():? string
+    public function getSameSite(): ?string
     {
         return $this->sameSite;
     }
