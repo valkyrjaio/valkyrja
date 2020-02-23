@@ -23,7 +23,7 @@ use Valkyrja\Routing\Route;
 use function strlen;
 
 /**
- * Class RoutesListCommand.
+ * Class RoutesList.
  *
  * @author Melech Mizrachi
  */
