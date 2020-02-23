@@ -25,9 +25,9 @@ trait ModelTrait
      *
      * @param array $properties
      *
-     * @return static|Model
+     * @return static
      */
-    public static function fromArray(array $properties): Model
+    public static function fromArray(array $properties): self
     {
         $model = new static();
 
