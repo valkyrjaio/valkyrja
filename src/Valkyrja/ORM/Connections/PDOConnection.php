@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Connections;
 
 use InvalidArgumentException;
 use PDO;
+use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Connection as ConnectionContract;
@@ -155,6 +156,10 @@ class PDOConnection implements ConnectionContract
     {
         $statement = $this->connection->prepare($query);
 
+        if (! ($statement instanceof \PDOStatement)) {
+            throw new RuntimeException('Statement preparation has failed.');
+        }
+
         return new PDOStatement($statement);
     }
 
@@ -175,6 +180,6 @@ class PDOConnection implements ConnectionContract
      */
     public function query(): Query
     {
-        return new PDOQuery($this->connection);
+        return new PDOQuery($this);
     }
 }
