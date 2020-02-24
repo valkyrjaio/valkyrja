@@ -46,9 +46,6 @@ use Valkyrja\Mail\Mailers\PHPMailerMail;
 use Valkyrja\Model\NativeModel;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\EntityManager;
-use Valkyrja\ORM\Queries\PDOQuery;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\Path\Generators\PathGenerator;
 use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Annotation\Annotators\RouteAnnotator;
@@ -99,9 +96,6 @@ final class Provider extends Enum
     public const MODEL               = NativeModel::class;
     public const ENTITY              = Entity::class;
     public const ENTITY_MANAGER      = EntityManager::class;
-    public const QUERY               = PDOQuery::class;
-    public const QUERY_BUILDER       = SqlQueryBuilder::class;
-    public const REPOSITORY          = Repository::class;
     public const EXCEPTION_HANDLER   = ExceptionHandler::class;
     public const HTTP_EXCEPTION      = HttpException::class;
 }

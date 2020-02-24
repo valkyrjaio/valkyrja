@@ -13,20 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Queries;
 
-use RuntimeException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Query;
+use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
 
-use function is_bool;
-
 /**
- * Class PDOQuery.
+ * Class Query.
  *
  * @author Melech Mizrachi
  */
-class PDOQuery implements Query
+class Query implements QueryContract
 {
     /**
      * The connection.
@@ -73,7 +70,7 @@ class PDOQuery implements Query
      *
      * @return static
      */
-    public function table(string $table): Query
+    public function table(string $table): self
     {
         $this->table = $table;
 
@@ -87,7 +84,7 @@ class PDOQuery implements Query
      *
      * @return static
      */
-    public function entity(string $entity): Query
+    public function entity(string $entity): self
     {
         $this->entity = $entity;
 
@@ -101,7 +98,7 @@ class PDOQuery implements Query
      *
      * @return static
      */
-    public function prepare(string $query): Query
+    public function prepare(string $query): self
     {
         $this->statement = $this->connection->prepare($query);
 
@@ -124,7 +121,7 @@ class PDOQuery implements Query
      *
      * @return static
      */
-    public function bindValue(string $property, $value): Query
+    public function bindValue(string $property, $value): self
     {
         // And bind each value to the column
         $this->statement->bindValue($this->propertyBind($property), $value);

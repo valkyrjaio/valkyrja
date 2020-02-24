@@ -19,7 +19,7 @@ use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Connection as ConnectionContract;
-use Valkyrja\ORM\Queries\PDOQuery;
+use Valkyrja\ORM\Queries\Query as QueryClass;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\Statement;
 
@@ -182,6 +182,6 @@ class PDOConnection implements ConnectionContract
      */
     public function query(): Query
     {
-        return new PDOQuery($this);
+        return new QueryClass($this);
     }
 }
