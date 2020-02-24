@@ -23,6 +23,8 @@ use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\Statement;
 
+use function is_bool;
+
 /**
  * Class PDOConnection.
  *
@@ -156,7 +158,7 @@ class PDOConnection implements ConnectionContract
     {
         $statement = $this->connection->prepare($query);
 
-        if (! ($statement instanceof \PDOStatement)) {
+        if (is_bool($statement)) {
             throw new RuntimeException('Statement preparation has failed.');
         }
 

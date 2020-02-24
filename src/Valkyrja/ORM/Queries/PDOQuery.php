@@ -103,13 +103,7 @@ class PDOQuery implements Query
      */
     public function prepare(string $query): Query
     {
-        $statement = $this->connection->prepare($query);
-
-        if (is_bool($statement)) {
-            throw new RuntimeException('Error occurred when preparing the query.');
-        }
-
-        $this->statement = $statement;
+        $this->statement = $this->connection->prepare($query);
 
         if (null !== $this->table) {
             $this->bindValue('QueryTable', $this->table);
