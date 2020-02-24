@@ -22,7 +22,7 @@ use Valkyrja\Enum\Enums\Enum;
  */
 final class FacadeStaticMethod extends Enum
 {
-    public const MAKE  = 'make';
-    public const MAKE_JSON = 'makeJson';
+    public const MAKE          = 'make';
+    public const MAKE_JSON     = 'makeJson';
     public const MAKE_REDIRECT = 'makeRedirect';
 }
