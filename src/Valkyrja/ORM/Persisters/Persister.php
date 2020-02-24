@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Persisters;
 
-use PDO;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
-use Valkyrja\ORM\Persister;
+use Valkyrja\ORM\Persister as PersisterContract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 
@@ -29,19 +28,12 @@ use function is_object;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class PDOPersister
+ * Class Persister
  *
  * @author Melech Mizrachi
  */
-class PDOPersister implements Persister
+class Persister implements PersisterContract
 {
-    /**
-     * The connection.
-     *
-     * @var PDO
-     */
-    protected PDO $connection;
-
     /**
      * The entity manager.
      *
@@ -71,15 +63,13 @@ class PDOPersister implements Persister
     protected array $deleteEntities = [];
 
     /**
-     * PDOEntityPersister constructor.
+     * Persister constructor.
      *
      * @param EntityManager $entityManager
-     * @param PDO           $connection
      */
-    public function __construct(EntityManager $entityManager, PDO $connection)
+    public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->connection    = $connection;
     }
 
     /**
@@ -246,10 +236,6 @@ class PDOPersister implements Persister
      */
     protected function saveCreateDelete(string $type, Entity $entity): void
     {
-        if (! $this->connection->inTransaction()) {
-            $this->connection->beginTransaction();
-        }
-
         $idField    = $entity::getIdField();
         $properties = $entity->forDataStore();
 

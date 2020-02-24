@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Retrievers;
 
 use InvalidArgumentException;
-use PDO;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever;
 use Valkyrja\Support\ClassHelpers;
+use \Valkyrja\ORM\Retriever as RetrieverContract;
 
 use function count;
 use function is_array;
@@ -30,19 +29,12 @@ use function is_string;
 use function strlen;
 
 /**
- * Class PDORetriever
+ * Class Retriever
  *
  * @author Melech Mizrachi
  */
-class PDORetriever implements Retriever
+class Retriever implements RetrieverContract
 {
-    /**
-     * The connection.
-     *
-     * @var PDO
-     */
-    protected PDO $connection;
-
     /**
      * The entity manager.
      *
@@ -54,12 +46,10 @@ class PDORetriever implements Retriever
      * PDOEntityRetriever constructor.
      *
      * @param EntityManager $entityManager
-     * @param PDO           $connection
      */
-    public function __construct(EntityManager $entityManager, PDO $connection)
+    public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->connection    = $connection;
     }
 
     /**

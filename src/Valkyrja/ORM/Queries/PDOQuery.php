@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Queries;
 
-use PDO;
-use PDOStatement;
 use RuntimeException;
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
+use Valkyrja\ORM\Statement;
 
 use function is_bool;
-use function is_int;
 
 /**
  * Class PDOQuery.
@@ -32,16 +31,16 @@ class PDOQuery implements Query
     /**
      * The connection.
      *
-     * @var PDO
+     * @var Connection
      */
-    protected PDO $connection;
+    protected Connection $connection;
 
     /**
      * The statement.
      *
-     * @var PDOStatement
+     * @var Statement
      */
-    protected PDOStatement $statement;
+    protected Statement $statement;
 
     /**
      * The table to query on.
@@ -60,9 +59,9 @@ class PDOQuery implements Query
     /**
      * PDOQuery constructor.
      *
-     * @param PDO $connection
+     * @param Connection $connection
      */
-    public function __construct(PDO $connection)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -134,11 +133,7 @@ class PDOQuery implements Query
     public function bindValue(string $property, $value): Query
     {
         // And bind each value to the column
-        $this->statement->bindValue(
-            $this->propertyBind($property),
-            $value,
-            $this->getBindValueType($value)
-        );
+        $this->statement->bindValue($this->propertyBind($property), $value);
 
         return $this;
     }
@@ -160,7 +155,7 @@ class PDOQuery implements Query
      */
     public function getResult()
     {
-        $results = $this->statement->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->statement->fetchAll();
 
         // If there is no entity specified just return the results
         if (null === $this->entity) {
@@ -191,7 +186,7 @@ class PDOQuery implements Query
      */
     public function getError(): string
     {
-        return $this->statement->errorInfo()[2] ?? 'An unknown error occurred.';
+        return $this->statement->errorMessage() ?? 'An unknown error occurred.';
     }
 
     /**
@@ -204,25 +199,5 @@ class PDOQuery implements Query
     protected function propertyBind(string $property): string
     {
         return ':' . $property;
-    }
-
-    /**
-     * Get value type to bind with.
-     *
-     * @param mixed $value
-     *
-     * @return int
-     */
-    protected function getBindValueType($value): int
-    {
-        $type = PDO::PARAM_STR;
-
-        if (is_int($value)) {
-            $type = PDO::PARAM_INT;
-        } elseif (is_bool($value)) {
-            $type = PDO::PARAM_BOOL;
-        }
-
-        return $type;
     }
 }

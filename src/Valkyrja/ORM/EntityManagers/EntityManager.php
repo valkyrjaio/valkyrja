@@ -14,21 +14,20 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\EntityManagers;
 
 use InvalidArgumentException;
-use PDO;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\EntityManager as EntityManagerContract;
 use Valkyrja\ORM\Exceptions;
 use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Persisters\PDOPersister;
-use Valkyrja\ORM\Queries\PDOQuery;
+use Valkyrja\ORM\Persisters\Persister as PersisterClass;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Retrievers\PDORetriever;
+use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
@@ -36,44 +35,56 @@ use Valkyrja\Support\Providers\Provides;
 use function get_class;
 
 /**
- * Class PDOEntityManager.
+ * Class EntityManager.
  *
  * @author Melech Mizrachi
  */
-class PDOEntityManager implements EntityManager
+class EntityManager implements EntityManagerContract
 {
     use Provides;
 
     /**
      * Connections.
      *
-     * @var PDO[]
+     * @var Connection[]
      */
     protected static array $connections = [];
+
     /**
      * The application.
      *
      * @var Application
      */
     protected Application $app;
+
+    /**
+     * The adapter.
+     *
+     * @var Adapter
+     */
+    protected Adapter $adapter;
+
     /**
      * The entity retriever.
      *
      * @var Retriever
      */
     protected Retriever $entityRetriever;
+
     /**
      * The entity persister.
      *
      * @var Persister
      */
     protected Persister $entityPersister;
+
     /**
      * The connection to use.
      *
      * @var string
      */
     protected string $connection;
+
     /**
      * Repositories.
      *
@@ -82,78 +93,52 @@ class PDOEntityManager implements EntityManager
     protected array $repositories = [];
 
     /**
-     * PDOEntityManager constructor.
+     * EntityManager constructor.
      *
      * @param Application $app
      * @param string|null $connection
      */
     public function __construct(Application $app, string $connection = null)
     {
+        $config                = $app->config();
         $this->app             = $app;
-        $this->connection      = $connection ?? $app->config()[ConfigKeyPart::DB][ConfigKeyPart::DEFAULT];
-        $this->entityRetriever = new PDORetriever($this, $this->connection());
-        $this->entityPersister = new PDOPersister($this, $this->connection());
+        $this->connection      = $connection ?? $config[CKP::DB][CKP::DEFAULT];
+        $this->entityRetriever = new RetrieverClass($this);
+        $this->entityPersister = new PersisterClass($this);
+        $adapterName           = $config[CKP::DB][CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
+        $this->adapter         = $this->adapter($adapterName);
 
         $this->connection()->beginTransaction();
     }
 
     /**
+     * The adapter.
+     *
+     * @param string $name
+     *
+     * @return Adapter
+     */
+    protected function adapter(string $name): Adapter
+    {
+        $config = $this->app->config();
+        /** @var Adapter $adapter */
+        $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
+
+        return $adapter::make($this->app, $this);
+    }
+
+    /**
      * Get a pdo store by name.
      *
-     * @return PDO
+     * @param string|null $connection
+     *
+     * @return Connection
      */
-    protected function connection(): PDO
+    public function connection(string $connection = null): Connection
     {
-        if (isset(self::$connections[$this->connection])) {
-            return self::$connections[$this->connection];
-        }
+        $connection = $connection ?? $this->connection;
 
-        $config = $this->getConnectionConfig($this->connection);
-
-        return self::$connections[$this->connection] = $this->getConnectionFromConfig($config);
-    }
-
-    /**
-     * Get the store config.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    protected function getConnectionConfig(string $name): array
-    {
-        $config = $this->app->config('database.connections.' . $name);
-
-        if (null === $config) {
-            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
-        }
-
-        return $config;
-    }
-
-    /**
-     * Get the store from the config.
-     *
-     * @param array $config
-     *
-     * @return PDO
-     */
-    protected function getConnectionFromConfig(array $config): PDO
-    {
-        $dsn = $config[ConfigKeyPart::DRIVER]
-            . ':host=' . $config[ConfigKeyPart::HOST]
-            . ';port=' . $config[ConfigKeyPart::PORT]
-            . ';dbname=' . $config[ConfigKeyPart::DB]
-            . ';charset=' . $config[ConfigKeyPart::CHARSET];
-
-        return new PDO(
-            $dsn,
-            $config[ConfigKeyPart::USERNAME],
-            $config[ConfigKeyPart::PASSWORD],
-            []
-        );
+        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->connection($connection));
     }
 
     /**
@@ -164,7 +149,7 @@ class PDOEntityManager implements EntityManager
     public static function provides(): array
     {
         return [
-            EntityManager::class,
+            EntityManagerContract::class,
         ];
     }
 
@@ -179,7 +164,7 @@ class PDOEntityManager implements EntityManager
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(EntityManager::class, new static($app));
+        $app->container()->singleton(EntityManagerContract::class, new static($app));
     }
 
     /**
@@ -192,7 +177,7 @@ class PDOEntityManager implements EntityManager
      */
     public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        $queryBuilder = new SqlQueryBuilder($this);
+        $queryBuilder = $this->adapter->queryBuilder();
 
         if (null !== $entity) {
             $queryBuilder->entity($entity, $alias);
@@ -211,7 +196,7 @@ class PDOEntityManager implements EntityManager
      */
     public function query(string $query, string $entity = null): Query
     {
-        $pdoQuery = new PDOQuery($this->connection());
+        $pdoQuery = $this->connection()->query();
 
         if (null !== $entity) {
             $pdoQuery->entity($entity);
@@ -254,6 +239,16 @@ class PDOEntityManager implements EntityManager
     }
 
     /**
+     * In a transaction.
+     *
+     * @return bool
+     */
+    public function inTransaction(): bool
+    {
+        return $this->connection()->inTransaction();
+    }
+
+    /**
      * Commit all items in the transaction.
      *
      * @throws Exceptions\ExecuteException
@@ -274,7 +269,7 @@ class PDOEntityManager implements EntityManager
      */
     public function rollback(): bool
     {
-        return $this->connection()->rollBack();
+        return $this->connection()->rollback();
     }
 
     /**
@@ -506,6 +501,10 @@ class PDOEntityManager implements EntityManager
      */
     public function create(Entity $entity, bool $useRepository): void
     {
+        if (! $this->inTransaction()) {
+            $this->beginTransaction();
+        }
+
         if ($useRepository) {
             $this->repository(get_class($entity))->create($entity);
 
@@ -532,6 +531,10 @@ class PDOEntityManager implements EntityManager
      */
     public function save(Entity $entity, bool $useRepository): void
     {
+        if (! $this->inTransaction()) {
+            $this->beginTransaction();
+        }
+
         if ($useRepository) {
             $this->repository(get_class($entity))->save($entity);
 
@@ -558,6 +561,10 @@ class PDOEntityManager implements EntityManager
      */
     public function delete(Entity $entity, bool $useRepository): void
     {
+        if (! $this->inTransaction()) {
+            $this->beginTransaction();
+        }
+
         if ($useRepository) {
             $this->repository(get_class($entity))->delete($entity);
 

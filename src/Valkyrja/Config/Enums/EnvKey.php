@@ -82,6 +82,8 @@ final class EnvKey extends Enum
     public const DB_ENGINE     = 'DB_ENGINE';
     public const DB_SCHEME     = 'DB_SCHEME';
     public const DB_SSL_MODE   = 'DB_SSL_MODE';
+    public const DB_ADAPTER    = 'DB_ADAPTER';
+    public const DB_ADAPTERS   = 'DB_ADAPTERS';
 
     public const EVENTS_USE_ANNOTATIONS             = 'EVENTS_USE_ANNOTATIONS';
     public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENTS_USE_ANNOTATIONS_EXCLUSIVELY';

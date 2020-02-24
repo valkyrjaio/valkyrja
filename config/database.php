@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\ORM\Adapters\PDOAdapter;
 
 return [
     /*
@@ -35,6 +36,21 @@ return [
      *
      */
     CKP::DEFAULT     => env(EnvKey::DB_CONNECTION, CKP::MYSQL),
+
+    /*
+     *-------------------------------------------------------------------------
+     * Default Database Connection Name
+     *-------------------------------------------------------------------------
+     *
+     * //
+     *
+     */
+    CKP::ADAPTERS    => env(
+        EnvKey::DB_ADAPTERS,
+        [
+            CKP::PDO => PDOAdapter::class,
+        ]
+    ),
 
     /*
      *-------------------------------------------------------------------------
@@ -59,6 +75,7 @@ return [
             CKP::PREFIX      => env(EnvKey::DB_PREFIX, ''),
             CKP::STRICT      => env(EnvKey::DB_STRICT, true),
             CKP::ENGINE      => env(EnvKey::DB_ENGINE, null),
+            CKP::ADAPTER     => env(EnvKey::DB_ADAPTER, CKP::PDO),
         ],
 
         CKP::PGSQL => [
@@ -72,6 +89,7 @@ return [
             CKP::PREFIX   => env(EnvKey::DB_PREFIX, ''),
             CKP::SCHEMA   => env(EnvKey::DB_SCHEME, 'public'),
             CKP::SSL_MODE => env(EnvKey::DB_SSL_MODE, 'prefer'),
+            CKP::ADAPTER  => env(EnvKey::DB_ADAPTER, CKP::PDO),
         ],
 
         CKP::SQLSRV => [
@@ -83,6 +101,7 @@ return [
             CKP::PASSWORD => env(EnvKey::DB_PASSWORD, ''),
             CKP::CHARSET  => env(EnvKey::DB_CHARSET, 'utf8'),
             CKP::PREFIX   => env(EnvKey::DB_PREFIX, ''),
+            CKP::ADAPTER  => env(EnvKey::DB_ADAPTER, CKP::PDO),
         ],
 
     ],

@@ -21,6 +21,15 @@ namespace Valkyrja\ORM;
 interface EntityManager
 {
     /**
+     * Get a pdo store by name.
+     *
+     * @param string|null $connection
+     *
+     * @return Connection
+     */
+    public function connection(string $connection = null): Connection;
+
+    /**
      * Get a new query builder instance.
      *
      * @param string|null $entity
@@ -55,6 +64,13 @@ interface EntityManager
      * @return bool
      */
     public function beginTransaction(): bool;
+
+    /**
+     * In a transaction.
+     *
+     * @return bool
+     */
+    public function inTransaction(): bool;
 
     /**
      * Commit all items in the transaction.

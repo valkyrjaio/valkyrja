@@ -92,6 +92,8 @@ final class ConfigKeyPart extends Enum
     public const SSL_MODE                    = 'sslmode';
     public const CLASSES                     = 'classes';
     public const ADAPTERS                    = 'adapters';
+    public const ADAPTER                     = 'adapter';
+    public const PDO                         = 'PDO';
     public const LOCAL                       = 'local';
     public const S3                          = 's3';
     public const DIR                         = 'dir';

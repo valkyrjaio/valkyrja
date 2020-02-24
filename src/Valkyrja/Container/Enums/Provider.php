@@ -45,7 +45,7 @@ use Valkyrja\Log\Providers\LoggerServiceProvider;
 use Valkyrja\Mail\Mailers\PHPMailerMail;
 use Valkyrja\Model\NativeModel;
 use Valkyrja\ORM\Entities\Entity;
-use Valkyrja\ORM\EntityManagers\PDOEntityManager;
+use Valkyrja\ORM\EntityManagers\EntityManager;
 use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\Repository;
@@ -98,7 +98,7 @@ final class Provider extends Enum
     public const CRYPT_DECRYPTER     = SodiumDecrypter::class;
     public const MODEL               = NativeModel::class;
     public const ENTITY              = Entity::class;
-    public const ENTITY_MANAGER      = PDOEntityManager::class;
+    public const ENTITY_MANAGER      = EntityManager::class;
     public const QUERY               = PDOQuery::class;
     public const QUERY_BUILDER       = SqlQueryBuilder::class;
     public const REPOSITORY          = Repository::class;

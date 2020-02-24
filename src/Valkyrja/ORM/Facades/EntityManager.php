@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -25,6 +26,7 @@ use Valkyrja\ORM\Repository;
  *
  * @author Melech Mizrachi
  *
+ * @method static Connection connection(string $connection = null)
  * @method static QueryBuilder queryBuilder(string $entity = null, string $alias = null)
  * @method static Query query(string $query, string $entity = null)
  * @method static Repository repository(string $entity)
