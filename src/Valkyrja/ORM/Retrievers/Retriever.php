@@ -20,7 +20,7 @@ use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\Support\ClassHelpers;
-use \Valkyrja\ORM\Retriever as RetrieverContract;
+use Valkyrja\ORM\Retriever as RetrieverContract;
 
 use function count;
 use function is_array;
