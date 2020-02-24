@@ -15,8 +15,8 @@ namespace Valkyrja\Console\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Command;
-use Valkyrja\Console\Input;
-use Valkyrja\Console\Output;
+use Valkyrja\Console\Input as ConsoleInput;
+use Valkyrja\Console\Output as ConsoleOutput;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -28,9 +28,9 @@ use Valkyrja\Facade\Facades\Facade;
  * @method static Command|null command(string $name)
  * @method static bool hasCommand(string $name)
  * @method static void removeCommand(string $name)
- * @method static Command inputCommand(Input $input)
+ * @method static Command inputCommand(ConsoleInput $input)
  * @method static Command matchCommand(string $path)
- * @method static int dispatch(Input $input, Output $output)
+ * @method static int dispatch(ConsoleInput $input, ConsoleOutput $output)
  * @method static int dispatchCommand(Command $command)
  * @method static Command[] all()
  * @method static void set(Command ...$commands)

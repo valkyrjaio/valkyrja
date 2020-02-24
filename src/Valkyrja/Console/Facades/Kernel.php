@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Console\Input;
-use Valkyrja\Console\Output;
+use Valkyrja\Console\Input as ConsoleInput;
+use Valkyrja\Console\Output as ConsoleOutput;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -23,9 +23,9 @@ use Valkyrja\Facade\Facades\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static int handle(Input $input, Output $output)
- * @method static void terminate(Input $input, int $exitCode)
- * @method static int run(Input $input = null, Output $output = null)
+ * @method static int handle(ConsoleInput $input, ConsoleOutput $output)
+ * @method static void terminate(ConsoleInput $input, int $exitCode)
+ * @method static int run(ConsoleInput $input = null, ConsoleOutput $output = null)
  */
 class Kernel extends Facade
 {

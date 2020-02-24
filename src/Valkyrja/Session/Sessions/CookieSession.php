@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Sessions;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
-use Valkyrja\Session\Sessions\Session;
 
 /**
  * Class CookieSession.
