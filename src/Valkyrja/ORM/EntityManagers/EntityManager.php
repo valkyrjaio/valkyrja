@@ -128,20 +128,6 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Get a pdo store by name.
-     *
-     * @param string|null $connection
-     *
-     * @return Connection
-     */
-    public function connection(string $connection = null): Connection
-    {
-        $connection = $connection ?? $this->connection;
-
-        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->connection($connection));
-    }
-
-    /**
      * The items provided by this provider.
      *
      * @return array
@@ -165,6 +151,20 @@ class EntityManager implements EntityManagerContract
     public static function publish(Application $app): void
     {
         $app->container()->singleton(EntityManagerContract::class, new static($app));
+    }
+
+    /**
+     * Get a pdo store by name.
+     *
+     * @param string|null $connection
+     *
+     * @return Connection
+     */
+    public function connection(string $connection = null): Connection
+    {
+        $connection = $connection ?? $this->connection;
+
+        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->connection($connection));
     }
 
     /**
