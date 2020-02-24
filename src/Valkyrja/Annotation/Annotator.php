@@ -15,7 +15,6 @@ namespace Valkyrja\Annotation;
 
 use ReflectionClass;
 use ReflectionFunction;
-use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionProperty;
 
@@ -32,6 +31,15 @@ interface Annotator
      * @return Filter
      */
     public function filter(): Filter;
+
+    /**
+     * Set the filterer.
+     *
+     * @param Filter $filter The filter
+     *
+     * @return void
+     */
+    public function setFilter(Filter $filter): void;
 
     /**
      * Get the parser.
@@ -122,15 +130,6 @@ interface Annotator
      * @return Annotation[]
      */
     public function functionAnnotations(string $function): array;
-
-    /**
-     * Get a reflection class's annotations.
-     *
-     * @param ReflectionFunctionAbstract $reflection The reflection class
-     *
-     * @return Annotation[]
-     */
-    public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array;
 
     /**
      * Get a class's reflection.

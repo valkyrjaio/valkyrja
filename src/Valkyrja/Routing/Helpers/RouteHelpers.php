@@ -24,8 +24,8 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Http\Request;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\RouteCollection;
-use Valkyrja\Routing\RouteMatcher;
+use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Matcher;
 
 use function strlen;
 
@@ -34,8 +34,8 @@ use function strlen;
  *
  * @author Melech Mizrachi
  *
- * @property RouteCollection $collection
- * @property Application     $app
+ * @property Collection  $collection
+ * @property Application $app
  */
 trait RouteHelpers
 {
@@ -176,40 +176,6 @@ trait RouteHelpers
     }
 
     /**
-     * Get a route's host.
-     *
-     * @param Route $route The route
-     *
-     * @return string
-     */
-    protected function routeHost(Route $route): string
-    {
-        return 'http'
-            . ($route->isSecure() ? 's' : '')
-            . '://'
-            . request()->getUri()->getHostPort();
-    }
-
-    /**
-     * Validate the route url.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validateRouteUrl(string $path): string
-    {
-        // If the last character is not a slash and the config is set to
-        // ensure trailing slash
-        if ($path[-1] !== '/' && $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false)) {
-            // add a trailing slash
-            $path .= '/';
-        }
-
-        return $path;
-    }
-
-    /**
      * Determine if a uri is valid.
      *
      * @param string $uri The uri to check
@@ -244,14 +210,48 @@ trait RouteHelpers
     /**
      * Get the route collection.
      *
-     * @return RouteCollection
+     * @return Collection
      */
-    abstract public function collection(): RouteCollection;
+    abstract public function collection(): Collection;
 
     /**
      * Get the route matcher.
      *
-     * @return RouteMatcher
+     * @return Matcher
      */
-    abstract public function matcher(): RouteMatcher;
+    abstract public function matcher(): Matcher;
+
+    /**
+     * Get a route's host.
+     *
+     * @param Route $route The route
+     *
+     * @return string
+     */
+    protected function routeHost(Route $route): string
+    {
+        return 'http'
+            . ($route->isSecure() ? 's' : '')
+            . '://'
+            . request()->getUri()->getHostPort();
+    }
+
+    /**
+     * Validate the route url.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    protected function validateRouteUrl(string $path): string
+    {
+        // If the last character is not a slash and the config is set to
+        // ensure trailing slash
+        if ($path[-1] !== '/' && $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false)) {
+            // add a trailing slash
+            $path .= '/';
+        }
+
+        return $path;
+    }
 }

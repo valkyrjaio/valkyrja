@@ -99,6 +99,78 @@ interface EntityManager
     public function find(string $entity, bool $useRepository, $id, bool $getRelations = null): ?Entity;
 
     /**
+     * Find one entity by given criteria.
+     * <code>
+     *      $repository
+     *          ->findOneBy(
+     *              Entity::class,
+     *              true | false,
+     *              [
+     *                  'column'  => 'value',
+     *                  'column2' => 'value2',
+     *              ],
+     *              [
+     *                  'column'
+     *                  'column2' => OrderBy::ASC,
+     *                  'column3' => OrderBy::DESC,
+     *              ],
+     *              1,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param string     $entity
+     * @param bool       $useRepository
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param int|null   $offset
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return Entity|null
+     */
+    public function findBy(
+        string $entity,
+        bool $useRepository,
+        array $criteria,
+        array $orderBy = null,
+        int $offset = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): ?Entity;
+
+    /**
+     * Find entities by given criteria.
+     * <code>
+     *      $entityManager
+     *          ->findBy(
+     *              Entity::class,
+     *              true | false,
+     *              [
+     *                  'column'
+     *                  'column2' => OrderBy::ASC,
+     *                  'column3' => OrderBy::DESC,
+     *              ]
+     *          )
+     * </code>.
+     *
+     * @param string     $entity
+     * @param bool       $useRepository
+     * @param array      $orderBy
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return Entity[]
+     */
+    public function findAll(
+        string $entity,
+        bool $useRepository,
+        array $orderBy = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array;
+
+    /**
      * Find entities by given criteria.
      * <code>
      *      $entityManager
@@ -130,85 +202,13 @@ interface EntityManager
      *
      * @return Entity[]
      */
-    public function findBy(
+    public function findAllBy(
         string $entity,
         bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
-        array $columns = null,
-        bool $getRelations = null
-    ): array;
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $repository
-     *          ->findOneBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param bool       $useRepository
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity
-     */
-    public function findOneBy(
-        string $entity,
-        bool $useRepository,
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = null
-    ): Entity;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityManager
-     *          ->findBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param bool       $useRepository
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(
-        string $entity,
-        bool $useRepository,
-        array $orderBy = null,
         array $columns = null,
         bool $getRelations = null
     ): array;

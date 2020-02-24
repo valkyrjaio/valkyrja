@@ -15,7 +15,7 @@ namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Support\Cacheable;
-use Valkyrja\Support\Providers\ProvidersAware;
+use Valkyrja\Support\ProvidersAware;
 
 /**
  * Interface Console.
@@ -38,7 +38,7 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @param string $name The command name
      *
-     * @return Command
+     * @return Command|null
      */
     public function command(string $name): ?Command;
 
@@ -90,18 +90,18 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @throws CommandNotFound
      *
-     * @return mixed
+     * @return int
      */
-    public function dispatch(Input $input, Output $output);
+    public function dispatch(Input $input, Output $output): int;
 
     /**
      * Dispatch a command.
      *
      * @param Command $command The command
      *
-     * @return mixed
+     * @return int
      */
-    public function dispatchCommand(Command $command);
+    public function dispatchCommand(Command $command): int;
 
     /**
      * Get all commands.
@@ -122,7 +122,7 @@ interface Console extends Cacheable, ProvidersAware
     /**
      * Get the named commands list.
      *
-     * @return array
+     * @return string[]
      */
     public function getNamedCommands(): array;
 }

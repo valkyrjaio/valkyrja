@@ -147,8 +147,8 @@ interface Request extends SimpleRequest
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return array An array tree of UploadedFileInterface instances; an empty
-     *               array MUST be returned if no data is present.
+     * @return UploadedFile[] An array tree of UploadedFileInterface instances; an empty
+     *                        array MUST be returned if no data is present.
      */
     public function getUploadedFiles(): array;
 
@@ -158,14 +158,14 @@ interface Request extends SimpleRequest
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface
-     *                             instances.
+     * @param UploadedFile ...$uploadedFiles An array tree of UploadedFileInterface
+     *                                       instances.
      *
      * @throws InvalidArgumentException if an invalid structure is provided.
      *
      * @return static
      */
-    public function withUploadedFiles(array $uploadedFiles): self;
+    public function withUploadedFiles(UploadedFile ...$uploadedFiles): self;
 
     /**
      * Retrieve any parameters provided in the request body.

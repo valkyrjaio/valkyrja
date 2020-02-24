@@ -55,6 +55,7 @@
         "guzzlehttp/guzzle"          : "Required for use with Valkyrja Client (6.5.2).",
         "league/flysystem"           : "Required for use with Valkyrja FileSystem (1.0.63).",
         "league/flysystem-aws-s3-v3" : "Required for use with Valkyrja FileSystem S3 (1.0.23)",
+        "aws/aws-sdk-php"            : "Required for use with Valkyrja FileSystem S3 (1.0.23)",
         "monolog/monolog"            : "Required for use with Valkyrja Logger (1.3.1).",
         "phpmailer/phpmailer"        : "Required for use with Valkyrja Mail (6.1.4).",
         "predis/predis"              : "Required for use with Redis Valkyrja Cache (1.1.1).",

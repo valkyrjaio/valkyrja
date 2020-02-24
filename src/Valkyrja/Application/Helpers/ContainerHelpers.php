@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Helpers;
 
 use Valkyrja\Annotation\Annotator;
+use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -27,7 +28,7 @@ use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Logger\Logger;
+use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
@@ -52,9 +53,19 @@ trait ContainerHelpers
      *
      * @return Annotator
      */
-    public function annotations(): Annotator
+    public function annotator(): Annotator
     {
         return self::$container->getSingleton(Contract::ANNOTATOR);
+    }
+
+    /**
+     * Return the cache instance from the container.
+     *
+     * @return Cache
+     */
+    public function cache(): Cache
+    {
+        return self::$container->getSingleton(Contract::CACHE);
     }
 
     /**

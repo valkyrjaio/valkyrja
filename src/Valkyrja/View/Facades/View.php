@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja framework.
+ *
+ * (c) Melech Mizrachi
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\View\Facades;
+
+use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Container\Enums\Contract as ContractEnum;
+use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\View\View as Contract;
+
+/**
+ * Class View.
+ *
+ * @author Melech Mizrachi
+ *
+ * @method static Contract make(string $template = null, array $variables = null)
+ * @method static array getVariables()
+ * @method static Contract setVariables(array $variables = [])
+ * @method static mixed variable(string $key)
+ * @method static Contract setVariable(string $key, $value)
+ * @method static string escape(string $value)
+ * @method static string getTemplateDir(string $path = null)
+ * @method static Contract setTemplateDir(string $path)
+ * @method static string getFileExtension()
+ * @method static Contract setFileExtension(string $extension)
+ * @method static string getLayoutPath()
+ * @method static string getTemplatePath()
+ * @method static Contract layout(string $layout = null)
+ * @method static Contract withoutLayout()
+ * @method static Contract template(string $template)
+ * @method static string partial(string $partial, array $variables = [])
+ * @method static string block(string $name)
+ * @method static bool hasBlock(string $name)
+ * @method static bool hasBlockBeenEnded(string $name)
+ * @method static void startBlock(string $name)
+ * @method static string endBlock(string $name)
+ * @method static string render(array $variables = [])
+ * @method static string __toString()
+ */
+class View extends Facade
+{
+    /**
+     * The facade instance.
+     *
+     * @return string|object
+     */
+    public static function instance()
+    {
+        return Valkyrja::app()->container()->getSingleton(ContractEnum::VIEW);
+    }
+}

@@ -16,7 +16,6 @@ namespace Valkyrja\Annotation\Annotators;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;
-use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
@@ -125,6 +124,18 @@ class Annotator implements AnnotationsContract
     public function filter(): Filter
     {
         return $this->filter;
+    }
+
+    /**
+     * Set the filterer.
+     *
+     * @param Filter $filter The filter
+     *
+     * @return void
+     */
+    public function setFilter(Filter $filter): void
+    {
+        $this->filter = $filter;
     }
 
     /**
@@ -295,7 +306,7 @@ class Annotator implements AnnotationsContract
                     Property::METHOD     => $method,
                     Property::STATIC     => $reflection->isStatic(),
                 ],
-                ...$this->getReflectionFunctionAnnotations($reflection)
+                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
             );
     }
 
@@ -353,20 +364,8 @@ class Annotator implements AnnotationsContract
                 [
                     Property::FUNCTION => $function,
                 ],
-                ...$this->getReflectionFunctionAnnotations($this->getFunctionReflection($function))
+                ...$this->parser->getAnnotations((string) $this->getFunctionReflection($function)->getDocComment())
             );
-    }
-
-    /**
-     * Get a reflection class's annotations.
-     *
-     * @param ReflectionFunctionAbstract $reflection The reflection class
-     *
-     * @return Annotation[]
-     */
-    public function getReflectionFunctionAnnotations(ReflectionFunctionAbstract $reflection): array
-    {
-        return $this->parser->getAnnotations((string) $reflection->getDocComment());
     }
 
     /**

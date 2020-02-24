@@ -114,7 +114,7 @@ class Console implements ConsoleContract
      *
      * @param string $name The command name
      *
-     * @return Command
+     * @return Command|null
      */
     public function command(string $name): ?Command
     {
@@ -221,9 +221,9 @@ class Console implements ConsoleContract
      *
      * @throws CommandNotFound
      *
-     * @return mixed
+     * @return int
      */
-    public function dispatch(Input $input, Output $output)
+    public function dispatch(Input $input, Output $output): int
     {
         // Verify the command exists
         if (null === $command = $this->inputCommand($input)) {
@@ -246,9 +246,9 @@ class Console implements ConsoleContract
      *
      * @param Command $command The command
      *
-     * @return mixed
+     * @return int
      */
-    public function dispatchCommand(Command $command)
+    public function dispatchCommand(Command $command): int
     {
         // Trigger an event before dispatching
         $this->app->events()->trigger('Command.dispatching', [$command]);
@@ -293,7 +293,7 @@ class Console implements ConsoleContract
     /**
      * Get the named commands list.
      *
-     * @return array
+     * @return string[]
      */
     public function getNamedCommands(): array
     {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Application;
 
 use Valkyrja\Annotation\Annotator;
+use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
@@ -32,7 +33,7 @@ use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Logger\Logger;
+use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
@@ -215,11 +216,18 @@ interface Application
     public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void;
 
     /**
-     * Return the annotations instance from the container.
+     * Return the annotator instance from the container.
      *
      * @return Annotator
      */
-    public function annotations(): Annotator;
+    public function annotator(): Annotator;
+
+    /**
+     * Return the cache instance from the container.
+     *
+     * @return Cache
+     */
+    public function cache(): Cache;
 
     /**
      * Return the client instance from the container.

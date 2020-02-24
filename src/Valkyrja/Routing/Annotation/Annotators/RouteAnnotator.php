@@ -172,6 +172,23 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
     }
 
     /**
+     * Get class annotations
+     *
+     * @param string $class The class
+     *
+     * @throws ReflectionException
+     *
+     * @return array
+     */
+    protected function getClassAnnotations(string $class): array
+    {
+        return $this->filter()->filterAnnotationsByTypes(
+            Annotation::validValues(),
+            ...$this->classAnnotations($class)
+        );
+    }
+
+    /**
      * Get a route from a route annotation.
      *
      * @param Route $route The route annotation
@@ -264,23 +281,6 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
         }
 
         return $path;
-    }
-
-    /**
-     * Get class annotations
-     *
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return array
-     */
-    protected function getClassAnnotations(string $class): array
-    {
-        return $this->filter()->filterAnnotationsByTypes(
-            Annotation::validValues(),
-            ...$this->classAnnotations($class)
-        );
     }
 
     /**

@@ -307,7 +307,7 @@ trait EntityTrait
             $propertyMap[PropertyMap::GET_RELATIONS]
         );
 
-        return $repository->findBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
+        return $repository->findAllBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
     }
 
     /**

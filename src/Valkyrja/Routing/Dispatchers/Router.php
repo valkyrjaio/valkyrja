@@ -22,8 +22,8 @@ use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Helpers\MethodHelpers;
 use Valkyrja\Routing\Helpers\RouteHelpers;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\RouteCollection;
-use Valkyrja\Routing\RouteMatcher;
+use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Router as RouterContract;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
@@ -84,9 +84,9 @@ class Router implements RouterContract
     /**
      * Get the route collection.
      *
-     * @return RouteCollection
+     * @return Collection
      */
-    public function collection(): RouteCollection
+    public function collection(): Collection
     {
         return self::$collection;
     }
@@ -94,9 +94,9 @@ class Router implements RouterContract
     /**
      * Get the route matcher.
      *
-     * @return RouteMatcher
+     * @return Matcher
      */
-    public function matcher(): RouteMatcher
+    public function matcher(): Matcher
     {
         return self::$collection->matcher();
     }

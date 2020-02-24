@@ -23,20 +23,6 @@ namespace Valkyrja\Http\Uris;
 trait Fragment
 {
     /**
-     * Validate a fragment.
-     *
-     * @param string $fragment The fragment
-     *
-     * @return string
-     */
-    protected function validateFragment(string $fragment): string
-    {
-        // TODO: Filter fragment
-
-        return $fragment;
-    }
-
-    /**
      * Retrieve the fragment component of the URI.
      * If no fragment is present, this method MUST return an empty string.
      * The leading "#" character is not part of the fragment and MUST NOT be
@@ -80,5 +66,19 @@ trait Fragment
         $new->fragment = $fragment;
 
         return $new;
+    }
+
+    /**
+     * Validate a fragment.
+     *
+     * @param string $fragment The fragment
+     *
+     * @return string
+     */
+    protected function validateFragment(string $fragment): string
+    {
+        // TODO: Filter fragment
+
+        return $fragment;
     }
 }

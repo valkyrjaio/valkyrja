@@ -19,16 +19,16 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
-use Valkyrja\ORM\EntityPersister;
-use Valkyrja\ORM\EntityPersisters\PDOEntityPersister;
-use Valkyrja\ORM\EntityRetriever;
-use Valkyrja\ORM\EntityRetrievers\PDOEntityRetriever;
 use Valkyrja\ORM\Exceptions;
+use Valkyrja\ORM\Persister;
+use Valkyrja\ORM\Persisters\PDOPersister;
 use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\Retrievers\PDORetriever;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
@@ -59,15 +59,15 @@ class PDOEntityManager implements EntityManager
     /**
      * The entity retriever.
      *
-     * @var EntityRetriever
+     * @var Retriever
      */
-    protected EntityRetriever $entityRetriever;
+    protected Retriever $entityRetriever;
     /**
      * The entity persister.
      *
-     * @var EntityPersister
+     * @var Persister
      */
-    protected EntityPersister $entityPersister;
+    protected Persister $entityPersister;
     /**
      * The connection to use.
      *
@@ -91,8 +91,8 @@ class PDOEntityManager implements EntityManager
     {
         $this->app             = $app;
         $this->connection      = $connection ?? $app->config()[ConfigKeyPart::DB][ConfigKeyPart::DEFAULT];
-        $this->entityRetriever = new PDOEntityRetriever($this, $this->connection());
-        $this->entityPersister = new PDOEntityPersister($this, $this->connection());
+        $this->entityRetriever = new PDORetriever($this, $this->connection());
+        $this->entityPersister = new PDOPersister($this, $this->connection());
 
         $this->connection()->beginTransaction();
     }
@@ -318,57 +318,6 @@ class PDOEntityManager implements EntityManager
     }
 
     /**
-     * Find entities by given criteria.
-     * <code>
-     *      $repository
-     *          ->findBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param bool       $useRepository
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findBy(
-        string $entity,
-        bool $useRepository,
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = null
-    ): array {
-        if ($useRepository) {
-            return $this->repository($entity)->findBy($criteria, $orderBy, $limit, $offset, $columns, $getRelations);
-        }
-
-        ClassHelpers::validateClass($entity, Entity::class);
-
-        return $this->entityRetriever->findBy($entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations);
-    }
-
-    /**
      * Find one entity by given criteria.
      * <code>
      *      $repository
@@ -397,9 +346,9 @@ class PDOEntityManager implements EntityManager
      * @param array|null $columns
      * @param bool|null  $getRelations
      *
-     * @return Entity
+     * @return Entity|null
      */
-    public function findOneBy(
+    public function findBy(
         string $entity,
         bool $useRepository,
         array $criteria,
@@ -407,14 +356,14 @@ class PDOEntityManager implements EntityManager
         int $offset = null,
         array $columns = null,
         bool $getRelations = null
-    ): Entity {
+    ): ?Entity {
         if ($useRepository) {
-            return $this->repository($entity)->findOneBy($criteria, $orderBy, $offset, $columns, $getRelations);
+            return $this->repository($entity)->findBy($criteria, $orderBy, $offset, $columns, $getRelations);
         }
 
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->findOneBy($entity, $criteria, $orderBy, $offset, $columns, $getRelations);
+        return $this->entityRetriever->findBy($entity, $criteria, $orderBy, $offset, $columns, $getRelations);
     }
 
     /**
@@ -454,6 +403,59 @@ class PDOEntityManager implements EntityManager
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->findAll($entity, $orderBy, $columns, $getRelations);
+    }
+
+    /**
+     * Find entities by given criteria.
+     * <code>
+     *      $repository
+     *          ->findBy(
+     *              Entity::class,
+     *              true | false,
+     *              [
+     *                  'column'  => 'value',
+     *                  'column2' => 'value2',
+     *              ],
+     *              [
+     *                  'column'
+     *                  'column2' => OrderBy::ASC,
+     *                  'column3' => OrderBy::DESC,
+     *              ],
+     *              1,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param string     $entity
+     * @param bool       $useRepository
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param int|null   $limit
+     * @param int|null   $offset
+     * @param array|null $columns
+     * @param bool|null  $getRelations
+     *
+     * @return Entity[]
+     */
+    public function findAllBy(
+        string $entity,
+        bool $useRepository,
+        array $criteria,
+        array $orderBy = null,
+        int $limit = null,
+        int $offset = null,
+        array $columns = null,
+        bool $getRelations = null
+    ): array {
+        if ($useRepository) {
+            return $this->repository($entity)->findAllBy($criteria, $orderBy, $limit, $offset, $columns, $getRelations);
+        }
+
+        ClassHelpers::validateClass($entity, Entity::class);
+
+        return $this->entityRetriever->findAllBy(
+            $entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
+        );
     }
 
     /**

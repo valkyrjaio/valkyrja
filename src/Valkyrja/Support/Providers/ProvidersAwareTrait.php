@@ -73,18 +73,6 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Check whether a given item is provided by a deferred provider.
-     *
-     * @param string $itemId The item
-     *
-     * @return bool
-     */
-    public function isProvided(string $itemId): bool
-    {
-        return isset(self::$provided[$itemId]);
-    }
-
-    /**
      * Determine whether a provider has been registered.
      *
      * @param string $provider The provider
@@ -107,6 +95,18 @@ trait ProvidersAwareTrait
     {
         // Register the provider
         $this->register(self::$provided[$itemId], true);
+    }
+
+    /**
+     * Check whether a given item is provided by a deferred provider.
+     *
+     * @param string $itemId The item
+     *
+     * @return bool
+     */
+    public function isProvided(string $itemId): bool
+    {
+        return isset(self::$provided[$itemId]);
     }
 
     /**

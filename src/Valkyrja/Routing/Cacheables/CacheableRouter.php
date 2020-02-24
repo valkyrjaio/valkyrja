@@ -23,7 +23,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
-use Valkyrja\Routing\Collections\RouteCollection;
+use Valkyrja\Routing\Collections\Collection;
 use Valkyrja\Routing\Route;
 use Valkyrja\Support\Cacheables\Cacheable;
 
@@ -39,9 +39,9 @@ trait CacheableRouter
     /**
      * The route collection.
      *
-     * @var RouteCollection
+     * @var Collection
      */
-    protected static RouteCollection $collection;
+    protected static Collection $collection;
 
     /**
      * Application.
@@ -76,7 +76,7 @@ trait CacheableRouter
      */
     protected function setupNotCached(): void
     {
-        self::$collection = new RouteCollection($this->app);
+        self::$collection = new Collection($this->app);
     }
 
     /**
@@ -94,7 +94,7 @@ trait CacheableRouter
             base64_decode($cache[ConfigKeyPart::COLLECTION], true),
             [
                 'allowed_classes' => [
-                    RouteCollection::class,
+                    Collection::class,
                     Route::class,
                 ],
             ]

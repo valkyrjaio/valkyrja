@@ -130,40 +130,6 @@ abstract class Enum implements EnumContract
     }
 
     /**
-     * Get the reflection valid values.
-     *
-     * @return array
-     */
-    protected static function reflectionValidValues(): array
-    {
-        try {
-            // Get a reflection class of the enum
-            $values = (new ReflectionClass(static::class))->getConstants();
-        } // Catch any exceptions
-        catch (Exception $exception) {
-            $values = [];
-        }
-
-        $validValues = [];
-
-        // Iterate through the values
-        foreach ($values as $key => $value) {
-            // If this value is defined in this abstract Enum (self)
-            if (defined(self::class . '::' . $key)) {
-                // Unset it from the list as its not a valid Enum value, but
-                // rather a value the Enum class needs (like self::VALUES)
-                unset($values[$key]);
-
-                continue;
-            }
-
-            $validValues[$value] = $value;
-        }
-
-        return $validValues;
-    }
-
-    /**
      * Json serialize the enum.
      *
      * @return string
@@ -211,5 +177,39 @@ abstract class Enum implements EnumContract
     public function __toString(): string
     {
         return (string) $this->getValue();
+    }
+
+    /**
+     * Get the reflection valid values.
+     *
+     * @return array
+     */
+    protected static function reflectionValidValues(): array
+    {
+        try {
+            // Get a reflection class of the enum
+            $values = (new ReflectionClass(static::class))->getConstants();
+        } // Catch any exceptions
+        catch (Exception $exception) {
+            $values = [];
+        }
+
+        $validValues = [];
+
+        // Iterate through the values
+        foreach ($values as $key => $value) {
+            // If this value is defined in this abstract Enum (self)
+            if (defined(self::class . '::' . $key)) {
+                // Unset it from the list as its not a valid Enum value, but
+                // rather a value the Enum class needs (like self::VALUES)
+                unset($values[$key]);
+
+                continue;
+            }
+
+            $validValues[$value] = $value;
+        }
+
+        return $validValues;
     }
 }

@@ -16,7 +16,7 @@ namespace Valkyrja\Http;
 use InvalidArgumentException;
 
 /**
- * Interface MessageInterface.
+ * Interface Message.
  *
  * @author Melech Mizrachi
  */

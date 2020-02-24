@@ -25,26 +25,26 @@ use Valkyrja\Container\Dispatchers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Env\EnvTest;
-use Valkyrja\Event\Dispatchers\NativeEvents;
-use Valkyrja\Filesystem\FlyFilesystem;
+use Valkyrja\Event\Dispatchers\Events;
+use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Responses\JsonResponse;
-use Valkyrja\Http\Kernels\Kernel;
-use Valkyrja\Http\Responses\RedirectResponse;
-use Valkyrja\Http\Requests\Request;
-use Valkyrja\Http\Responses\Response;
 use Valkyrja\Http\Factories\ResponseFactory;
-use Valkyrja\Logger\MonologLogger;
-use Valkyrja\Path\NativePathGenerator;
-use Valkyrja\Path\NativePathParser;
+use Valkyrja\Http\Kernels\Kernel;
+use Valkyrja\Http\Requests\Request;
+use Valkyrja\Http\Responses\JsonResponse;
+use Valkyrja\Http\Responses\RedirectResponse;
+use Valkyrja\Http\Responses\Response;
+use Valkyrja\Log\Loggers\MonologLogger;
+use Valkyrja\Path\Generators\PathGenerator;
+use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Dispatchers\Router;
-use Valkyrja\Session\NativeSession;
+use Valkyrja\Session\Sessions\Session;
 use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
-use Valkyrja\View\PhpView;
+use Valkyrja\View\Views\PhpView;
 
 use function get_class;
 use function is_array;
@@ -104,7 +104,7 @@ class ApplicationTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, $this->app->events() instanceof NativeEvents);
+        $this->assertEquals(true, $this->app->events() instanceof Events);
     }
 
     /**
@@ -258,7 +258,7 @@ class ApplicationTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, $this->app->annotations() instanceof Annotator);
+        $this->assertEquals(true, $this->app->annotator() instanceof Annotator);
     }
 
     /**
@@ -318,7 +318,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathGenerator(): void
     {
-        $this->assertEquals(true, $this->app->pathGenerator() instanceof NativePathGenerator);
+        $this->assertEquals(true, $this->app->pathGenerator() instanceof PathGenerator);
     }
 
     /**
@@ -328,7 +328,7 @@ class ApplicationTest extends TestCase
      */
     public function testPathParser(): void
     {
-        $this->assertEquals(true, $this->app->pathParser() instanceof NativePathParser);
+        $this->assertEquals(true, $this->app->pathParser() instanceof PathParser);
     }
 
     /**
@@ -448,7 +448,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, $this->app->session() instanceof NativeSession);
+        $this->assertEquals(true, $this->app->session() instanceof Session);
     }
 
     /**

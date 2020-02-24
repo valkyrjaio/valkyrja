@@ -69,7 +69,7 @@ interface Input
      *
      * @param string $argument The argument
      *
-     * @return string
+     * @return string|null
      */
     public function getArgument(string $argument): ?string;
 
@@ -87,7 +87,7 @@ interface Input
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getShortOption(string $option): ?string;
 
@@ -105,7 +105,7 @@ interface Input
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getLongOption(string $option): ?string;
 
@@ -123,7 +123,7 @@ interface Input
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getOption(string $option): ?string;
 
@@ -146,7 +146,7 @@ interface Input
     /**
      * Get the global options as a flat array.
      *
-     * @return array
+     * @return string[]
      */
     public function getGlobalOptionsFlat(): array;
 }

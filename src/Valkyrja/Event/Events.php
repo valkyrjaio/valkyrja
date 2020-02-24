@@ -113,7 +113,7 @@ interface Events extends Cacheable
      * @param string $event     The event
      * @param array  $arguments [optional] The arguments
      *
-     * @return array
+     * @return mixed[]
      */
     public function trigger(string $event, array $arguments = null): array;
 
@@ -122,21 +122,21 @@ interface Events extends Cacheable
      *
      * @param Event $event The event
      *
-     * @return array
+     * @return mixed[]
      */
     public function event(Event $event): array;
 
     /**
      * Get all events.
      *
-     * @return array
+     * @return Listener[][]
      */
     public function all(): array;
 
     /**
      * Set the events.
      *
-     * @param array $events The events
+     * @param Listener[][] $events The events
      *
      * @return void
      */

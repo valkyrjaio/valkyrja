@@ -86,11 +86,11 @@ interface View
     /**
      * Set the template directory.
      *
-     * @param string $templateDir The path to set
+     * @param string $path The path to set
      *
      * @return View
      */
-    public function setTemplateDir(string $templateDir): self;
+    public function setTemplateDir(string $path): self;
 
     /**
      * Get the file extension.

@@ -57,7 +57,7 @@ interface Stream
     /**
      * Attaches a new stream.
      *
-     * @param string $stream The stream
+     * @param string      $stream The stream
      * @param string|null $mode   [optional] The mode
      *
      * @return void

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container;
 
 use Valkyrja\Support\Cacheable;
-use Valkyrja\Support\Providers\ProvidersAware;
+use Valkyrja\Support\ProvidersAware;
 
 /**
  * Interface Container.

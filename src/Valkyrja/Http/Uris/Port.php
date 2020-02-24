@@ -29,24 +29,6 @@ use Valkyrja\Http\Exceptions\InvalidPort;
 trait Port
 {
     /**
-     * Validate a port.
-     *
-     * @param int|null $port The port
-     *
-     * @throws InvalidPort
-     *
-     * @return void
-     */
-    protected function validatePort(int $port = null): void
-    {
-        if ($port !== null && ($port < 1 || $port > 65535)) {
-            throw new InvalidPort(
-                sprintf('Invalid port "%d" specified; must be a valid TCP/UDP port', $port)
-            );
-        }
-    }
-
-    /**
      * Retrieve the port component of the URI.
      * If a port is present, and it is non-standard for the current scheme,
      * this method MUST return it as an integer. If the port is the standard
@@ -134,6 +116,24 @@ trait Port
      * @return string The URI host.
      */
     abstract public function getHost(): string;
+
+    /**
+     * Validate a port.
+     *
+     * @param int|null $port The port
+     *
+     * @throws InvalidPort
+     *
+     * @return void
+     */
+    protected function validatePort(int $port = null): void
+    {
+        if ($port !== null && ($port < 1 || $port > 65535)) {
+            throw new InvalidPort(
+                sprintf('Invalid port "%d" specified; must be a valid TCP/UDP port', $port)
+            );
+        }
+    }
 
     /**
      * Determine whether this uri is on a standard port for the scheme.

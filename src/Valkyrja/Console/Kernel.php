@@ -28,7 +28,7 @@ interface Kernel
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @throws HttpException
      *
      * @return int
      */

@@ -14,6 +14,7 @@ declare(strict_types=1);
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
@@ -26,7 +27,7 @@ use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Response;
-use Valkyrja\Logger\Logger;
+use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Session\Session;
@@ -85,15 +86,27 @@ if (! function_exists('abortResponse')) {
     }
 }
 
-if (! function_exists('annotations')) {
+if (! function_exists('annotator')) {
     /**
-     * Return the annotations instance from the container.
+     * Return the annotator instance from the container.
      *
      * @return Annotator
      */
-    function annotations(): Annotator
+    function annotator(): Annotator
     {
-        return app()->annotations();
+        return app()->annotator();
+    }
+}
+
+if (! function_exists('cache')) {
+    /**
+     * Return the cache instance from the container.
+     *
+     * @return Cache
+     */
+    function cache(): Cache
+    {
+        return app()->cache();
     }
 }
 

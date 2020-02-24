@@ -23,10 +23,10 @@ use Valkyrja\Support\Providers\Provides;
  *
  * @author Melech Mizrachi
  *
- * @see Handler::PATH
- * @see Handler::COMMAND
- * @see Handler::SHORT_DESCRIPTION
- * @see Handler::DESCRIPTION
+ * @see    Handler::PATH
+ * @see    Handler::COMMAND
+ * @see    Handler::SHORT_DESCRIPTION
+ * @see    Handler::DESCRIPTION
  */
 trait ProvidesCommand
 {

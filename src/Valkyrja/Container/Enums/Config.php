@@ -24,6 +24,7 @@ final class Config extends Enum
 {
     public const PROVIDERS = [
         Provider::ANNOTATOR,
+        Provider::CACHE,
         Provider::CLIENT,
         Provider::CONSOLE,
         Provider::CONSOLE_KERNEL,

@@ -25,26 +25,6 @@ use Valkyrja\Http\Exceptions\InvalidQuery;
 trait Query
 {
     /**
-     * Validate a query.
-     *
-     * @param string $query The query
-     *
-     * @throws InvalidQuery
-     *
-     * @return string
-     */
-    protected function validateQuery(string $query): string
-    {
-        if (strpos($query, '#') !== false) {
-            throw new InvalidQuery('Query string must not include a URI fragment');
-        }
-
-        // TODO: Filter query
-
-        return $query;
-    }
-
-    /**
      * Retrieve the query string of the URI.
      * If no query string is present, this method MUST return an empty string.
      * The leading "?" character is not part of the query and MUST NOT be
@@ -93,5 +73,25 @@ trait Query
         $new->query = $query;
 
         return $new;
+    }
+
+    /**
+     * Validate a query.
+     *
+     * @param string $query The query
+     *
+     * @throws InvalidQuery
+     *
+     * @return string
+     */
+    protected function validateQuery(string $query): string
+    {
+        if (strpos($query, '#') !== false) {
+            throw new InvalidQuery('Query string must not include a URI fragment');
+        }
+
+        // TODO: Filter query
+
+        return $query;
     }
 }

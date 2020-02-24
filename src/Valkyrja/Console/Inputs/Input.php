@@ -232,7 +232,7 @@ class Input implements InputContract
      *
      * @param string $argument The argument
      *
-     * @return string
+     * @return string|null
      */
     public function getArgument(string $argument): ?string
     {
@@ -256,7 +256,7 @@ class Input implements InputContract
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getShortOption(string $option): ?string
     {
@@ -280,7 +280,7 @@ class Input implements InputContract
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getLongOption(string $option): ?string
     {
@@ -304,7 +304,7 @@ class Input implements InputContract
      *
      * @param string $option The option
      *
-     * @return string
+     * @return string|null
      */
     public function getOption(string $option): ?string
     {
@@ -340,7 +340,7 @@ class Input implements InputContract
     /**
      * Get the global options as a flat array.
      *
-     * @return array
+     * @return string[]
      */
     public function getGlobalOptionsFlat(): array
     {

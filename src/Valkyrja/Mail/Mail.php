@@ -85,36 +85,36 @@ interface Mail
      *
      * @param bool $isHTML
      *
-     * @return void
+     * @return static
      */
-    public function isHTML(bool $isHTML = true): void;
+    public function isHTML(bool $isHTML = true): self;
 
     /**
      * Set the subject.
      *
      * @param string $subject
      *
-     * @return void
+     * @return static
      */
-    public function subject(string $subject): void;
+    public function subject(string $subject): self;
 
     /**
      * Set the body of the mail.
      *
      * @param string $body
      *
-     * @return void
+     * @return static
      */
-    public function body(string $body): void;
+    public function body(string $body): self;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.
      *
      * @param string $body
      *
-     * @return void
+     * @return static
      */
-    public function plainBody(string $body): void;
+    public function plainBody(string $body): self;
 
     /**
      * Send the mail.

@@ -16,7 +16,7 @@ namespace Valkyrja\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
- * Interface Crypt.
+ * Interface Decrypter.
  *
  * @author Melech Mizrachi
  */

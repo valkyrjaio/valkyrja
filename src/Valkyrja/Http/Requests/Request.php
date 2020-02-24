@@ -115,16 +115,16 @@ class Request implements RequestContract
     /**
      * NativeServerRequest constructor.
      *
-     * @param Uri|null    $uri        [optional] The uri
-     * @param string|null $method     [optional] The method
-     * @param Stream|null $body       [optional] The body stream
-     * @param array|null  $headers    [optional] The headers
-     * @param array|null  $server     [optional] The server
-     * @param array|null  $cookies    [optional] The cookies
-     * @param array|null  $query      [optional] The query string
-     * @param array|null  $parsedBody [optional] The parsed body
-     * @param array|null  $files      [optional] The files
-     * @param string|null $protocol   [optional] The protocol version
+     * @param Uri|null     $uri        [optional] The uri
+     * @param string|null  $method     [optional] The method
+     * @param Stream|null  $body       [optional] The body stream
+     * @param array|null   $headers    [optional] The headers
+     * @param array|null   $server     [optional] The server
+     * @param array|null   $cookies    [optional] The cookies
+     * @param array|null   $query      [optional] The query string
+     * @param array|null   $parsedBody [optional] The parsed body
+     * @param string|null  $protocol   [optional] The protocol version
+     * @param UploadedFile ...$files   [optional] The files
      *
      * @throws InvalidArgumentException
      * @throws InvalidMethod
@@ -145,8 +145,8 @@ class Request implements RequestContract
         array $cookies = null,
         array $query = null,
         array $parsedBody = null,
-        array $files = null,
-        string $protocol = null
+        string $protocol = null,
+        UploadedFile ...$files
     ) {
         $this->initialize($uri, $method, $body, $headers);
 
@@ -155,10 +155,8 @@ class Request implements RequestContract
         $this->cookies    = $cookies ?? [];
         $this->query      = $query ?? [];
         $this->parsedBody = $parsedBody ?? [];
-        $this->files      = $files ?? [];
         $this->protocol   = $protocol ?? '1.1';
-
-        $this->validateUploadedFiles($this->files);
+        $this->files      = $files ?? [];
     }
 
     /**
@@ -335,8 +333,8 @@ class Request implements RequestContract
      * These values MAY be prepared from $_FILES or the message body during
      * instantiation, or MAY be injected via withUploadedFiles().
      *
-     * @return array An array tree of UploadedFileInterface instances; an empty
-     *               array MUST be returned if no data is present.
+     * @return UploadedFile[] An array tree of UploadedFileInterface instances; an empty
+     *                        array MUST be returned if no data is present.
      */
     public function getUploadedFiles(): array
     {
@@ -349,17 +347,13 @@ class Request implements RequestContract
      * immutability of the message, and MUST return an instance that has the
      * updated body parameters.
      *
-     * @param array $uploadedFiles An array tree of UploadedFileInterface
-     *                             instances.
-     *
-     * @throws InvalidArgumentException if an invalid structure is provided.
+     * @param UploadedFile ...$uploadedFiles An array tree of UploadedFileInterface
+     *                                       instances.
      *
      * @return static
      */
-    public function withUploadedFiles(array $uploadedFiles): self
+    public function withUploadedFiles(UploadedFile ...$uploadedFiles): self
     {
-        $this->validateUploadedFiles($uploadedFiles);
-
         $new = clone $this;
 
         $new->files = $uploadedFiles;

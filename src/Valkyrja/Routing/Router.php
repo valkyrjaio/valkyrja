@@ -27,16 +27,16 @@ interface Router extends Cacheable, MethodHelpers, RouteHelpers
     /**
      * Get the route collection.
      *
-     * @return RouteCollection
+     * @return Collection
      */
-    public function collection(): RouteCollection;
+    public function collection(): Collection;
 
     /**
      * Get the route matcher.
      *
-     * @return RouteMatcher
+     * @return Matcher
      */
-    public function matcher(): RouteMatcher;
+    public function matcher(): Matcher;
 
     /**
      * Dispatch the route and find a match.

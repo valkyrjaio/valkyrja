@@ -15,7 +15,8 @@ namespace Valkyrja\Container\Enums;
 
 use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Client\GuzzleClient;
+use Valkyrja\Cache\Caches\Cache;
+use Valkyrja\Client\Clients\GuzzleClient;
 use Valkyrja\Console\Annotation\Annotators\CommandAnnotator;
 use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Inputs\Input;
@@ -30,9 +31,9 @@ use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
-use Valkyrja\Event\Dispatchers\NativeEvents;
-use Valkyrja\Exception\NativeExceptionHandler;
-use Valkyrja\Filesystem\FlyFilesystem;
+use Valkyrja\Event\Dispatchers\Events;
+use Valkyrja\Exception\Handlers\ExceptionHandler;
+use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Factories\ResponseFactory;
 use Valkyrja\Http\Kernels\Kernel;
@@ -40,20 +41,20 @@ use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
-use Valkyrja\Logger\Providers\LoggerServiceProvider;
-use Valkyrja\Mail\PHPMailerMail;
+use Valkyrja\Log\Providers\LoggerServiceProvider;
+use Valkyrja\Mail\Mailers\PHPMailerMail;
 use Valkyrja\Model\NativeModel;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\PDOEntityManager;
 use Valkyrja\ORM\Queries\PDOQuery;
 use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\Repository;
-use Valkyrja\Path\NativePathGenerator;
-use Valkyrja\Path\NativePathParser;
+use Valkyrja\Path\Generators\PathGenerator;
+use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Annotation\Annotators\RouteAnnotator;
 use Valkyrja\Routing\Dispatchers\Router;
-use Valkyrja\Session\NativeSession;
-use Valkyrja\View\PhpView;
+use Valkyrja\Session\Sessions\Session;
+use Valkyrja\View\Views\PhpView;
 
 /**
  * Enum Provider.
@@ -64,6 +65,7 @@ final class Provider extends Enum
 {
     public const APP                 = Valkyrja::class;
     public const ANNOTATOR           = Annotator::class;
+    public const CACHE               = Cache::class;
     public const COMMAND_ANNOTATOR   = CommandAnnotator::class;
     public const CONSOLE             = Console::class;
     public const CONSOLE_KERNEL      = NativeConsoleKernel::class;
@@ -71,14 +73,14 @@ final class Provider extends Enum
     public const CONTAINER_ANNOTATOR = ContainerAnnotator::class;
     public const DISPATCHER          = Dispatcher::class;
     public const ENV                 = Env::class;
-    public const EVENTS              = NativeEvents::class;
+    public const EVENTS              = Events::class;
     public const FILESYSTEM          = FlyFilesystem::class;
     public const INPUT               = Input::class;
     public const OUTPUT              = Output::class;
     public const KERNEL              = Kernel::class;
     public const LISTENER_ANNOTATOR  = ListenerAnnotator::class;
-    public const PATH_GENERATOR      = NativePathGenerator::class;
-    public const PATH_PARSER         = NativePathParser::class;
+    public const PATH_GENERATOR      = PathGenerator::class;
+    public const PATH_PARSER         = PathParser::class;
     public const REQUEST             = Request::class;
     public const RESPONSE            = Response::class;
     public const JSON_RESPONSE       = JsonResponse::class;
@@ -86,7 +88,7 @@ final class Provider extends Enum
     public const RESPONSE_BUILDER    = ResponseFactory::class;
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RouteAnnotator::class;
-    public const SESSION             = NativeSession::class;
+    public const SESSION             = Session::class;
     public const VIEW                = PhpView::class;
     public const CLIENT              = GuzzleClient::class;
     public const LOGGER              = LoggerServiceProvider::class;
@@ -100,6 +102,6 @@ final class Provider extends Enum
     public const QUERY               = PDOQuery::class;
     public const QUERY_BUILDER       = SqlQueryBuilder::class;
     public const REPOSITORY          = Repository::class;
-    public const EXCEPTION_HANDLER   = NativeExceptionHandler::class;
+    public const EXCEPTION_HANDLER   = ExceptionHandler::class;
     public const HTTP_EXCEPTION      = HttpException::class;
 }

@@ -20,8 +20,8 @@ use Valkyrja\Console\Inputs\Input;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
 use Valkyrja\Container\Dispatchers\Container;
-use Valkyrja\Event\Dispatchers\NativeEvents;
-use Valkyrja\Filesystem\FlyFilesystem;
+use Valkyrja\Event\Dispatchers\Events;
+use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Factories\ResponseFactory;
@@ -30,12 +30,12 @@ use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
-use Valkyrja\Logger\MonologLogger;
+use Valkyrja\Log\Loggers\MonologLogger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
-use Valkyrja\Session\NativeSession;
+use Valkyrja\Session\Sessions\Session;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\PhpView;
+use Valkyrja\View\Views\PhpView;
 
 use function get_class;
 use function is_array;
@@ -84,7 +84,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, events() instanceof NativeEvents);
+        $this->assertEquals(true, events() instanceof Events);
     }
 
     /**
@@ -142,7 +142,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotations() instanceof Annotator);
+        $this->assertEquals(true, annotator() instanceof Annotator);
     }
 
     /**
@@ -352,7 +352,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, session() instanceof NativeSession);
+        $this->assertEquals(true, session() instanceof Session);
     }
 
     /**

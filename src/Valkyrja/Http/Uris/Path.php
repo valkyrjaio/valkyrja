@@ -25,30 +25,6 @@ use Valkyrja\Http\Exceptions\InvalidPath;
 trait Path
 {
     /**
-     * Validate a path.
-     *
-     * @param string $path The path
-     *
-     * @throws InvalidPath
-     *
-     * @return string
-     */
-    protected function validatePath(string $path): string
-    {
-        if (strpos($path, '?') !== false) {
-            throw new InvalidPath('Invalid path provided; must not contain a query string');
-        }
-
-        if (strpos($path, '#') !== false) {
-            throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
-        }
-
-        // TODO: Filter path
-
-        return '/' . ltrim($path, '/');
-    }
-
-    /**
      * Retrieve the path component of the URI.
      * The path can either be empty or absolute (starting with a slash) or
      * rootless (not starting with a slash). Implementations MUST support all
@@ -108,5 +84,29 @@ trait Path
         $new->path = $path;
 
         return $new;
+    }
+
+    /**
+     * Validate a path.
+     *
+     * @param string $path The path
+     *
+     * @throws InvalidPath
+     *
+     * @return string
+     */
+    protected function validatePath(string $path): string
+    {
+        if (strpos($path, '?') !== false) {
+            throw new InvalidPath('Invalid path provided; must not contain a query string');
+        }
+
+        if (strpos($path, '#') !== false) {
+            throw new InvalidPath('Invalid path provided; must not contain a URI fragment');
+        }
+
+        // TODO: Filter path
+
+        return '/' . ltrim($path, '/');
     }
 }

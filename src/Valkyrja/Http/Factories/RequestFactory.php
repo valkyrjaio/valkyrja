@@ -89,8 +89,8 @@ abstract class RequestFactory
             $cookies ?? $_COOKIE,
             $query ?? $_GET,
             $body ?? $_POST,
-            $files,
-            static::marshalProtocolVersion($server)
+            static::marshalProtocolVersion($server),
+            ...$files,
         );
     }
 

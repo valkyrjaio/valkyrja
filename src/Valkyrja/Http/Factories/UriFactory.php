@@ -103,6 +103,25 @@ abstract class UriFactory
     }
 
     /**
+     * Access a value in an array, returning a default value if not found.
+     * Will also do a case-insensitive search if a case sensitive search fails.
+     *
+     * @param string     $key
+     * @param array      $values
+     * @param mixed|null $default
+     *
+     * @return mixed
+     */
+    public static function get(string $key, array $values, $default = null)
+    {
+        if (array_key_exists($key, $values)) {
+            return $values[$key];
+        }
+
+        return $default;
+    }
+
+    /**
      * Search for a header value.
      * Does a case-insensitive search for a matching header.
      * If found, it is returned as a string, using comma concatenation.
@@ -273,24 +292,5 @@ abstract class UriFactory
             // Unset the port so the default port can be used
             $accumulator->port = null;
         }
-    }
-
-    /**
-     * Access a value in an array, returning a default value if not found.
-     * Will also do a case-insensitive search if a case sensitive search fails.
-     *
-     * @param string     $key
-     * @param array      $values
-     * @param mixed|null $default
-     *
-     * @return mixed
-     */
-    public static function get(string $key, array $values, $default = null)
-    {
-        if (array_key_exists($key, $values)) {
-            return $values[$key];
-        }
-
-        return $default;
     }
 }
