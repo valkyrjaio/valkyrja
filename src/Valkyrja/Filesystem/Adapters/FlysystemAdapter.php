@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use InvalidArgumentException;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
