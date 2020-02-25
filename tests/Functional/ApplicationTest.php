@@ -26,7 +26,7 @@ use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Env\EnvTest;
 use Valkyrja\Event\Dispatchers\Events;
-use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
+use Valkyrja\Filesystem\Filesystems\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Factories\ResponseFactory;
@@ -298,7 +298,7 @@ class ApplicationTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        $this->assertEquals(true, $this->app->filesystem() instanceof FlyFilesystem);
+        $this->assertEquals(true, $this->app->filesystem() instanceof Filesystem);
     }
 
     /**

@@ -24,17 +24,19 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Filesystem\FlysystemLocal;
+use Valkyrja\Filesystem\FlysystemS3;
 
 return [
     /*
      *-------------------------------------------------------------------------
-     * Filesystem Default Adapter
+     * Filesystem Default Disk
      *-------------------------------------------------------------------------
      *
      * //
      *
      */
-    CKP::DEFAULT  => env(EnvKey::FILESYSTEM_DEFAULT, 'local'),
+    CKP::DEFAULT  => env(EnvKey::FILESYSTEM_DEFAULT, CKP::LOCAL),
 
     /*
      *-------------------------------------------------------------------------
@@ -44,9 +46,26 @@ return [
      * //
      *
      */
-    CKP::ADAPTERS => [
+    CKP::ADAPTERS => env(
+        EnvKey::FILESYSTEM_ADAPTERS,
+        [
+            CKP::LOCAL => FlysystemLocal::class,
+            CKP::S3    => FlysystemS3::class,
+        ]
+    ),
+
+    /*
+     *-------------------------------------------------------------------------
+     * Filesystem Disks
+     *-------------------------------------------------------------------------
+     *
+     * //
+     *
+     */
+    CKP::DISKS    => [
         CKP::LOCAL => [
-            CKP::DIR => env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app')),
+            CKP::DIR     => env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app')),
+            CKP::ADAPTER => env(EnvKey::FILESYSTEM_LOCAL_ADAPTER, CKP::LOCAL),
         ],
 
         CKP::S3 => [
@@ -57,6 +76,7 @@ return [
             CKP::BUCKET  => env(EnvKey::FILESYSTEM_S3_BUCKET),
             CKP::DIR     => env(EnvKey::FILESYSTEM_S3_DIR, '/'),
             CKP::OPTIONS => env(EnvKey::FILESYSTEM_S3_OPTIONS, []),
+            CKP::ADAPTER => env(EnvKey::FILESYSTEM_S3_ADAPTER, CKP::S3),
         ],
     ],
 ];

@@ -11,49 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Filesystems;
+namespace Valkyrja\Filesystem;
 
-use Aws\S3\S3Client;
 use InvalidArgumentException;
-use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem as FlySystem;
-use League\Flysystem\FilesystemInterface;
 use League\Flysystem\RootViolationException;
-use LogicException;
-use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class Filesystem.
+ * Abstract Class FlysystemAdapter.
  *
  * @author Melech Mizrachi
  */
-class FlyFilesystem implements Filesystem
+abstract class FlysystemAdapter implements Adapter
 {
-    use Provides;
-
-    /**
-     * The adapters.
-     *
-     * @var AdapterInterface[]
-     */
-    protected static array $adapters = [];
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
     /**
      * The Fly Filesystem.
      *
@@ -62,58 +37,21 @@ class FlyFilesystem implements Filesystem
     protected FlySystem $flySystem;
 
     /**
-     * FlyFilesystem constructor.
+     * FlysystemAdapter constructor.
      *
-     * @param Application              $application The application
-     * @param FilesystemInterface|null $flySystem   [optional] The FlyFilesystem
+     * @param AdapterInterface $adapter The flysystem adapter
      */
-    public function __construct(Application $application, FilesystemInterface $flySystem = null)
+    public function __construct(AdapterInterface $adapter)
     {
-        $this->app       = $application;
-        $this->flySystem = $flySystem
-            ?? new FlySystem(
-                $this->flyAdapter($this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::DEFAULT])
-            );
+        $this->flySystem = new FlySystem($adapter);
     }
 
     /**
-     * Get a flysystem abstract adapter.
+     * Make a new adapter instance.
      *
-     * @param string $adapter The adapter
-     *
-     * @return AbstractAdapter
+     * @return static
      */
-    protected function flyAdapter(string $adapter): AbstractAdapter
-    {
-        return $this->{$adapter . 'Adapter'}();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Filesystem::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->singleton(
-            Filesystem::class,
-            new static($app)
-        );
-    }
+    abstract public static function make(): self;
 
     /**
      * Determine whether a path exists.
@@ -439,89 +377,5 @@ class FlyFilesystem implements Filesystem
     public function listContents(string $directory = null, bool $recursive = false): array
     {
         return $this->flySystem->listContents($directory ?? '', $recursive);
-    }
-
-    /**
-     * Get a filesystem for an adapter.
-     *
-     * @param string $adapter The adapter
-     *
-     * @return Filesystem
-     */
-    public function adapter(string $adapter): Filesystem
-    {
-        $flyAdapter = $this->{$adapter . 'Adapter'}();
-
-        return new static($flyAdapter);
-    }
-
-    /**
-     * Get the local filesystem.
-     *
-     * @throws LogicException
-     *
-     * @return Filesystem
-     */
-    public function local(): Filesystem
-    {
-        return new static($this->app, new FlySystem($this->localAdapter()));
-    }
-
-    /**
-     * Get the s3 filesystem.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return Filesystem
-     */
-    public function s3(): Filesystem
-    {
-        return new static($this->app, new FlySystem($this->s3Adapter()));
-    }
-
-    /**
-     * Get the local flysystem adapter.
-     *
-     * @throws LogicException
-     *
-     * @return Local
-     */
-    protected function localAdapter(): Local
-    {
-        return self::$adapters[ConfigKeyPart::LOCAL]
-            ?? self::$adapters[ConfigKeyPart::LOCAL] = new Local(
-                $this->app->config(
-                )[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::LOCAL][ConfigKeyPart::DIR]
-            );
-    }
-
-    /**
-     * Get the s3 flysystem adapter.
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return AwsS3Adapter
-     */
-    protected function s3Adapter(): AwsS3Adapter
-    {
-        if (isset(self::$adapters[ConfigKeyPart::S3])) {
-            return self::$adapters[ConfigKeyPart::S3];
-        }
-
-        $config       = $this->app->config()[ConfigKeyPart::FILESYSTEM][ConfigKeyPart::ADAPTERS][ConfigKeyPart::S3];
-        $clientConfig = [
-            'credentials' => [
-                'key'    => $config[ConfigKeyPart::KEY],
-                'secret' => $config[ConfigKeyPart::SECRET],
-            ],
-            'region'      => $config[ConfigKeyPart::REGION],
-            'version'     => $config[ConfigKeyPart::VERSION],
-        ];
-
-        self::$adapters['s3'] = new AwsS3Adapter(
-            new S3Client($clientConfig), $config[ConfigKeyPart::BUCKET], $config[ConfigKeyPart::DIR]
-        );
-
-        return self::$adapters[ConfigKeyPart::S3];
     }
 }

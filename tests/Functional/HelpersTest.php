@@ -21,7 +21,7 @@ use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
 use Valkyrja\Container\Dispatchers\Container;
 use Valkyrja\Event\Dispatchers\Events;
-use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
+use Valkyrja\Filesystem\Filesystems\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Factories\ResponseFactory;
@@ -182,7 +182,7 @@ class HelpersTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        $this->assertEquals(true, filesystem() instanceof FlyFilesystem);
+        $this->assertEquals(true, filesystem() instanceof Filesystem);
     }
 
     /**

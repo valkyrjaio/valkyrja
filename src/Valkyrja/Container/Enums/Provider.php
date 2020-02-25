@@ -33,7 +33,7 @@ use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
 use Valkyrja\Event\Dispatchers\Events;
 use Valkyrja\Exception\Handlers\ExceptionHandler;
-use Valkyrja\Filesystem\Filesystems\FlyFilesystem;
+use Valkyrja\Filesystem\Filesystems\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Factories\ResponseFactory;
 use Valkyrja\Http\Kernels\Kernel;
@@ -71,7 +71,7 @@ final class Provider extends Enum
     public const DISPATCHER          = Dispatcher::class;
     public const ENV                 = Env::class;
     public const EVENTS              = Events::class;
-    public const FILESYSTEM          = FlyFilesystem::class;
+    public const FILESYSTEM          = Filesystem::class;
     public const INPUT               = Input::class;
     public const OUTPUT              = Output::class;
     public const KERNEL              = Kernel::class;

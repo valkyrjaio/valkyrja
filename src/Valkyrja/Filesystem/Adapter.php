@@ -16,12 +16,19 @@ namespace Valkyrja\Filesystem;
 use Valkyrja\Filesystem\Enums\Visibility;
 
 /**
- * Interface Filesystem.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Filesystem
+interface Adapter
 {
+    /**
+     * Make a new adapter instance.
+     *
+     * @return static
+     */
+    public static function make(): self;
+
     /**
      * Determine whether a path exists.
      *
@@ -230,27 +237,4 @@ interface Filesystem
      * @return array
      */
     public function listContents(string $directory = null, bool $recursive = false): array;
-
-    /**
-     * Get a filesystem for an adapter.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
-     */
-    public function adapter(string $name = null): Adapter;
-
-    /**
-     * Get the local filesystem.
-     *
-     * @return Adapter
-     */
-    public function local(): Adapter;
-
-    /**
-     * Get the s3 filesystem.
-     *
-     * @return Adapter
-     */
-    public function s3(): Adapter;
 }

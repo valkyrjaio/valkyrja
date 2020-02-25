@@ -91,6 +91,8 @@ final class ConfigKeyPart extends Enum
     public const SCHEMA                      = 'schema';
     public const SSL_MODE                    = 'sslmode';
     public const CLASSES                     = 'classes';
+    public const DISKS                       = 'disks';
+    public const DISK                        = 'disk';
     public const ADAPTERS                    = 'adapters';
     public const ADAPTER                     = 'adapter';
     public const PDO                         = 'PDO';
@@ -113,4 +115,5 @@ final class ConfigKeyPart extends Enum
     public const REGEX                       = 'regex';
     public const COMMANDS                    = 'commands';
     public const NAMED_COMMANDS              = 'namedCommands';
+    public const VALHALLA                    = 'valhalla';
 }

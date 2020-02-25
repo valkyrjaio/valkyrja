@@ -84,15 +84,19 @@ final class ConfigKey extends Enum
     public const EVENTS_CACHE_FILE_PATH             = 'events.cacheFilePath';
     public const EVENTS_USE_CACHE_FILE              = 'events.useCache';
 
-    public const FILESYSTEM_DEFAULT    = 'filesystem.default';
-    public const FILESYSTEM_LOCAL_DIR  = 'filesystem.adapters.local.dir';
-    public const FILESYSTEM_S3_KEY     = 'filesystem.adapters.s3.key';
-    public const FILESYSTEM_S3_SECRET  = 'filesystem.adapters.s3.secret';
-    public const FILESYSTEM_S3_REGION  = 'filesystem.adapters.s3.region';
-    public const FILESYSTEM_S3_VERSION = 'filesystem.adapters.s3.version';
-    public const FILESYSTEM_S3_BUCKET  = 'filesystem.adapters.s3.bucket';
-    public const FILESYSTEM_S3_DIR     = 'filesystem.adapters.s3.dir';
-    public const FILESYSTEM_S3_OPTIONS = 'filesystem.adapters.s3.options';
+    public const FILESYSTEM_DEFAULT       = 'filesystem.default';
+    public const FILESYSTEM_ADAPTERS      = 'filesystem.adapters';
+    public const FILESYSTEM_DISKS         = 'filesystem.disks';
+    public const FILESYSTEM_LOCAL_DIR     = 'filesystem.disks.local.dir';
+    public const FILESYSTEM_LOCAL_ADAPTER = 'filesystem.disks.local.adapter';
+    public const FILESYSTEM_S3_KEY        = 'filesystem.disks.s3.key';
+    public const FILESYSTEM_S3_SECRET     = 'filesystem.disks.s3.secret';
+    public const FILESYSTEM_S3_REGION     = 'filesystem.disks.s3.region';
+    public const FILESYSTEM_S3_VERSION    = 'filesystem.disks.s3.version';
+    public const FILESYSTEM_S3_BUCKET     = 'filesystem.disks.s3.bucket';
+    public const FILESYSTEM_S3_DIR        = 'filesystem.disks.s3.dir';
+    public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
+    public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
     public const LOGGER_NAME      = 'logger.name';
     public const LOGGER_FILE_PATH = 'logger.filePath';

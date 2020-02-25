@@ -15,8 +15,8 @@ namespace Valkyrja\Filesystem\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Filesystem as Contract;
 
 /**
  * Class Filesystem.
@@ -44,9 +44,9 @@ use Valkyrja\Filesystem\Filesystem as Contract;
  * @method static bool createDir(string $path)
  * @method static bool deleteDir(string $path)
  * @method static array listContents(string $directory = null, bool $recursive = false)
- * @method static Contract adapter(string $adapter)
- * @method static Contract local()
- * @method static Contract s3()
+ * @method static Adapter adapter(string $adapter)
+ * @method static Adapter local()
+ * @method static Adapter s3()
  */
 class Filesystem extends Facade
 {
