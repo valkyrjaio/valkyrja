@@ -61,6 +61,8 @@ class PDOConnection implements ConnectionContract
     {
         $this->app        = $app;
         $this->connection = $this->getConnectionFromConfig($this->getConnectionConfig($connection));
+
+        $this->beginTransaction();
     }
 
     /**

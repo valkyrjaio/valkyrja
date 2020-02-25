@@ -21,6 +21,15 @@ namespace Valkyrja\ORM;
 interface EntityManager
 {
     /**
+     * The adapter.
+     *
+     * @param string|null $name
+     *
+     * @return Adapter
+     */
+    public function adapter(string $name = null): Adapter;
+
+    /**
      * Get a pdo store by name.
      *
      * @param string|null $connection

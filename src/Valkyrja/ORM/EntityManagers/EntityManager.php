@@ -58,13 +58,6 @@ class EntityManager implements EntityManagerContract
     protected Application $app;
 
     /**
-     * The adapter.
-     *
-     * @var Adapter
-     */
-    protected Adapter $adapter;
-
-    /**
      * The entity retriever.
      *
      * @var Retriever
@@ -86,6 +79,20 @@ class EntityManager implements EntityManagerContract
     protected string $connection;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * Adapters.
+     *
+     * @var Adapter[]
+     */
+    protected static array $adapters = [];
+
+    /**
      * Repositories.
      *
      * @var Repository[]
@@ -100,31 +107,11 @@ class EntityManager implements EntityManagerContract
      */
     public function __construct(Application $app, string $connection = null)
     {
-        $config                = $app->config();
+        $this->config          = $app->config()[CKP::DB];
         $this->app             = $app;
-        $this->connection      = $connection ?? $config[CKP::DB][CKP::DEFAULT];
+        $this->connection      = $connection ?? $this->config[CKP::DEFAULT];
         $this->entityRetriever = new RetrieverClass($this);
         $this->entityPersister = new PersisterClass($this);
-        $adapterName           = $config[CKP::DB][CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
-        $this->adapter         = $this->adapter($adapterName);
-
-        $this->connection()->beginTransaction();
-    }
-
-    /**
-     * The adapter.
-     *
-     * @param string $name
-     *
-     * @return Adapter
-     */
-    protected function adapter(string $name): Adapter
-    {
-        $config = $this->app->config();
-        /** @var Adapter $adapter */
-        $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
-
-        return $adapter::make($this->app, $this);
     }
 
     /**
@@ -154,6 +141,28 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
+     * The adapter.
+     *
+     * @param string|null $name
+     *
+     * @return Adapter
+     */
+    public function adapter(string $name = null): Adapter
+    {
+        $name ??= $this->config[CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
+
+        if (isset(self::$adapters[$name])) {
+            return self::$adapters[$name];
+        }
+
+        $config = $this->app->config();
+        /** @var Adapter $adapter */
+        $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
+
+        return $adapter::make($this->app, $this);
+    }
+
+    /**
      * Get a pdo store by name.
      *
      * @param string|null $connection
@@ -162,9 +171,9 @@ class EntityManager implements EntityManagerContract
      */
     public function connection(string $connection = null): Connection
     {
-        $connection = $connection ?? $this->connection;
+        $connection ??= $this->connection;
 
-        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->connection($connection));
+        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->adapter()->connection($connection));
     }
 
     /**
@@ -177,7 +186,7 @@ class EntityManager implements EntityManagerContract
      */
     public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        $queryBuilder = $this->adapter->queryBuilder();
+        $queryBuilder = $this->adapter()->queryBuilder();
 
         if (null !== $entity) {
             $queryBuilder->entity($entity, $alias);
