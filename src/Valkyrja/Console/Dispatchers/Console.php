@@ -116,7 +116,7 @@ class Console implements ConsoleContract
      *
      * @return Command|null
      */
-    public function command(string $name): ?Command
+    public function getCommand(string $name): ?Command
     {
         return $this->hasCommand($name)
             ? self::$commands[self::$namedCommands[$name]]

@@ -27,7 +27,7 @@ interface Output
      *
      * @return Formatter
      */
-    public function formatter(): Formatter;
+    public function getFormatter(): Formatter;
 
     /**
      * Set the formatter.

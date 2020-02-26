@@ -159,7 +159,7 @@ class CommandsList extends Handler
         $currentSection = $commandName ? $parts[0] : 'global';
 
         if ($previousSection !== $currentSection) {
-            output()->formatter()->cyan();
+            output()->getFormatter()->cyan();
             output()->writeMessage(static::TAB);
             output()->writeMessage($currentSection, true);
 

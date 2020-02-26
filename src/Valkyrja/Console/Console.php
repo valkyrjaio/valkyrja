@@ -40,7 +40,7 @@ interface Console extends Cacheable, ProvidersAware
      *
      * @return Command|null
      */
-    public function command(string $name): ?Command;
+    public function getCommand(string $name): ?Command;
 
     /**
      * Determine whether a command exists.

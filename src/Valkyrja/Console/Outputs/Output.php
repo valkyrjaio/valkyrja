@@ -88,7 +88,7 @@ class Output implements OutputContract
      *
      * @return Formatter
      */
-    public function formatter(): Formatter
+    public function getFormatter(): Formatter
     {
         return $this->formatter;
     }

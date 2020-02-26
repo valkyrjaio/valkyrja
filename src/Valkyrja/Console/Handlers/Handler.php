@@ -183,9 +183,9 @@ abstract class Handler implements HandlerContract
      */
     protected function sectionTitleMessage(string $sectionName): void
     {
-        output()->formatter()->underscore();
+        output()->getFormatter()->underscore();
         output()->writeMessage($sectionName . ':', true);
-        output()->formatter()->resetOptions();
+        output()->getFormatter()->resetOptions();
     }
 
     /**
@@ -222,10 +222,10 @@ abstract class Handler implements HandlerContract
         $longestLength = $longestLength ?? 0;
         $spacesToAdd   = $longestLength - strlen($name);
 
-        output()->formatter()->green();
+        output()->getFormatter()->green();
         output()->writeMessage(static::TAB . $name);
 
-        output()->formatter()->resetColor();
+        output()->getFormatter()->resetColor();
 
         output()->writeMessage($spacesToAdd > 0 ? str_repeat('.', $spacesToAdd) : '');
         output()->writeMessage(str_repeat('.', 8));
@@ -271,12 +271,12 @@ abstract class Handler implements HandlerContract
      */
     protected function applicationMessage(): void
     {
-        output()->formatter()->magenta();
+        output()->getFormatter()->magenta();
         output()->writeMessage('Valkyrja Application');
-        output()->formatter()->resetColor();
+        output()->getFormatter()->resetColor();
         output()->writeMessage(' version ');
-        output()->formatter()->cyan();
+        output()->getFormatter()->cyan();
         output()->writeMessage(Application::VERSION, true);
-        output()->formatter()->resetColor();
+        output()->getFormatter()->resetColor();
     }
 }
