@@ -25,12 +25,11 @@ interface Adapter
     /**
      * Make a new adapter.
      *
-     * @param Application   $app
-     * @param EntityManager $entityManager
+     * @param array $config
      *
      * @return static
      */
-    public static function make(Application $app, EntityManager $entityManager): self;
+    public static function make(array $config): self;
 
     /**
      * Create a new connection.
@@ -40,14 +39,4 @@ interface Adapter
      * @return Connection
      */
     public function createConnection(string $connection): Connection;
-
-    /**
-     * Create a new query builder.
-     *
-     * @param string|null $entity
-     * @param string|null $alias
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 }

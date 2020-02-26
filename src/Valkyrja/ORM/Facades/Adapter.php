@@ -15,17 +15,18 @@ namespace Valkyrja\ORM\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Http\Enums\FacadeStaticMethod;
+use Valkyrja\ORM\Adapter as Contract;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\PDOConnection;
-use Valkyrja\ORM\QueryBuilder;
 
 /**
  * Class Adapter.
  *
  * @author Melech Mizrachi
  *
+ * @method static Contract make(array $config)
  * @method static Connection|PDOConnection getConnection(string $connection)
- * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
  */
 class Adapter extends Facade
 {
@@ -37,5 +38,17 @@ class Adapter extends Facade
     public static function instance()
     {
         return Valkyrja::app()->entityManager()->getAdapter();
+    }
+
+    /**
+     * Get an array of static methods.
+     *
+     * @return array
+     */
+    protected static function getStaticMethods(): array
+    {
+        return [
+            FacadeStaticMethod::MAKE => FacadeStaticMethod::MAKE,
+        ];
     }
 }

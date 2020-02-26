@@ -20,14 +20,9 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager as EntityManagerContract;
-use Valkyrja\ORM\Exceptions;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Persisters\Persister as PersisterClass;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
-use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
@@ -42,13 +37,6 @@ class EntityManager implements EntityManagerContract
     use Provides;
 
     /**
-     * Connections.
-     *
-     * @var Connection[]
-     */
-    protected static array $connections = [];
-
-    /**
      * The application.
      *
      * @var Application
@@ -56,25 +44,11 @@ class EntityManager implements EntityManagerContract
     protected Application $app;
 
     /**
-     * The entity retriever.
-     *
-     * @var Retriever
-     */
-    protected Retriever $entityRetriever;
-
-    /**
-     * The entity persister.
-     *
-     * @var Persister
-     */
-    protected Persister $entityPersister;
-
-    /**
      * The connection to use.
      *
      * @var string
      */
-    protected string $connection;
+    protected string $defaultConnection;
 
     /**
      * The config.
@@ -108,16 +82,13 @@ class EntityManager implements EntityManagerContract
      * EntityManager constructor.
      *
      * @param Application $app
-     * @param string|null $connection
      */
-    public function __construct(Application $app, string $connection = null)
+    public function __construct(Application $app)
     {
-        $this->config          = $app->config()[CKP::DB];
-        $this->app             = $app;
-        $this->connection      = $connection ?? $this->config[CKP::DEFAULT];
-        $this->defaultAdapter  = $this->config[CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
-        $this->entityRetriever = new RetrieverClass($this);
-        $this->entityPersister = new PersisterClass($this);
+        $this->config            = $app->config()[CKP::DB];
+        $this->app               = $app;
+        $this->defaultConnection = $this->config[CKP::DEFAULT];
+        $this->defaultAdapter    = $this->config[CKP::CONNECTIONS][$this->defaultConnection][CKP::ADAPTER] ?? CKP::PDO;
     }
 
     /**
@@ -165,7 +136,7 @@ class EntityManager implements EntityManagerContract
         /** @var Adapter $adapter */
         $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
 
-        return $adapter::make($this->app, $this);
+        return $adapter::make($this->config[CKP::CONNECTIONS]);
     }
 
     /**
@@ -177,10 +148,7 @@ class EntityManager implements EntityManagerContract
      */
     public function getConnection(string $connection = null): Connection
     {
-        $connection ??= $this->connection;
-
-        return self::$connections[$connection]
-            ?? (self::$connections[$connection] = $this->getAdapter()->createConnection($connection));
+        return $this->getAdapter()->createConnection($connection ?? $this->defaultConnection);
     }
 
     /**
@@ -193,7 +161,7 @@ class EntityManager implements EntityManagerContract
      */
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        return $this->getAdapter()->createQueryBuilder($entity, $alias);
+        return $this->getConnection()->createQueryBuilder($entity, $alias);
     }
 
     /**
@@ -227,9 +195,10 @@ class EntityManager implements EntityManagerContract
         ClassHelpers::validateClass($entity, Entity::class);
 
         /** @var Entity|string $entity */
+        /** @var Repository $repository */
         $repository = $entity::getRepository();
 
-        return $this->repositories[$entity] = new $repository($this, $entity, $entity::getTable());
+        return $this->repositories[$entity] = $repository::make($this, $entity);
     }
 
     /**
@@ -265,13 +234,11 @@ class EntityManager implements EntityManagerContract
     /**
      * Commit all items in the transaction.
      *
-     * @throws Exceptions\ExecuteException
-     *
      * @return bool
      */
     public function commit(): bool
     {
-        $this->entityPersister->persist();
+        $this->getConnection()->getPersister()->persist();
 
         return $this->getConnection()->commit();
     }
@@ -318,7 +285,7 @@ class EntityManager implements EntityManagerContract
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->find($entity, $id, $getRelations);
+        return $this->getConnection()->getRetriever()->find($entity, $id, $getRelations);
     }
 
     /**
@@ -361,7 +328,9 @@ class EntityManager implements EntityManagerContract
     ): ?Entity {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->findBy($entity, $criteria, $orderBy, $offset, $columns, $getRelations);
+        return $this->getConnection()->getRetriever()->findBy(
+            $entity, $criteria, $orderBy, $offset, $columns, $getRelations
+        );
     }
 
     /**
@@ -394,7 +363,7 @@ class EntityManager implements EntityManagerContract
     ): array {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->findAll($entity, $orderBy, $columns, $getRelations);
+        return $this->getConnection()->getRetriever()->findAll($entity, $orderBy, $columns, $getRelations);
     }
 
     /**
@@ -439,7 +408,7 @@ class EntityManager implements EntityManagerContract
     ): array {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->findAllBy(
+        return $this->getConnection()->getRetriever()->findAllBy(
             $entity,
             $criteria,
             $orderBy,
@@ -473,7 +442,7 @@ class EntityManager implements EntityManagerContract
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        return $this->entityRetriever->count($entity, $criteria);
+        return $this->getConnection()->getRetriever()->count($entity, $criteria);
     }
 
     /**
@@ -492,7 +461,7 @@ class EntityManager implements EntityManagerContract
      */
     public function create(Entity $entity): void
     {
-        $this->entityPersister->create($entity);
+        $this->getConnection()->getPersister()->create($entity);
     }
 
     /**
@@ -511,7 +480,7 @@ class EntityManager implements EntityManagerContract
      */
     public function save(Entity $entity): void
     {
-        $this->entityPersister->save($entity);
+        $this->getConnection()->getPersister()->save($entity);
     }
 
     /**
@@ -530,7 +499,7 @@ class EntityManager implements EntityManagerContract
      */
     public function delete(Entity $entity): void
     {
-        $this->entityPersister->delete($entity);
+        $this->getConnection()->getPersister()->delete($entity);
     }
 
     /**
@@ -548,6 +517,6 @@ class EntityManager implements EntityManagerContract
      */
     public function clear(Entity $entity = null): void
     {
-        $this->entityPersister->clear($entity);
+        $this->getConnection()->getPersister()->clear($entity);
     }
 }

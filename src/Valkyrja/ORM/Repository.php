@@ -21,6 +21,16 @@ namespace Valkyrja\ORM;
 interface Repository
 {
     /**
+     * Make a new repository.
+     *
+     * @param EntityManager $entityManager
+     * @param string        $entity
+     *
+     * @return static
+     */
+    public static function make(EntityManager $entityManager, string $entity): self;
+
+    /**
      * Find a single entity given its id.
      * <code>
      *      $repository

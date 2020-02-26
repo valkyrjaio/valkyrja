@@ -21,6 +21,8 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
 
+use Valkyrja\Support\ClassHelpers;
+
 use function get_class;
 
 /**
@@ -61,9 +63,24 @@ class Repository implements RepositoryContract
      */
     public function __construct(EntityManager $entityManager, string $entity)
     {
+        ClassHelpers::validateClass($entity, Entity::class);
+
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
         $this->table         = $this->entity::getTable();
+    }
+
+    /**
+     * Make a new repository.
+     *
+     * @param EntityManager $entityManager
+     * @param string        $entity
+     *
+     * @return static
+     */
+    public static function make(EntityManager $entityManager, string $entity): self
+    {
+        return new static($entityManager, $entity);
     }
 
     /**

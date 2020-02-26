@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Retrievers;
 
 use InvalidArgumentException;
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -38,18 +38,18 @@ class Retriever implements RetrieverContract
     /**
      * The entity manager.
      *
-     * @var EntityManager
+     * @var Connection
      */
-    protected EntityManager $entityManager;
+    protected Connection $connection;
 
     /**
-     * PDOEntityRetriever constructor.
+     * Retriever constructor.
      *
-     * @param EntityManager $entityManager
+     * @param Connection $connection
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -268,7 +268,7 @@ class Retriever implements RetrieverContract
         int $offset = null,
         bool $getRelations = false
     ) {
-        $this->entityManager->ensureTransaction();
+        $this->connection->ensureTransaction();
 
         ClassHelpers::validateClass($entity, Entity::class);
 
@@ -276,7 +276,7 @@ class Retriever implements RetrieverContract
         $queryBuilder = $this->getQueryBuilderForSelect($entity, $columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new query with the query builder
-        $query = $this->entityManager->createQuery($queryBuilder->getQueryString(), $entity);
+        $query = $this->connection->createQuery($queryBuilder->getQueryString(), $entity);
 
         // Bind criteria
         $this->bindValuesForSelect($query, $criteria);
@@ -336,7 +336,7 @@ class Retriever implements RetrieverContract
         int $offset = null
     ): QueryBuilder {
         // Create a new query
-        $query = $this->entityManager->createQueryBuilder($entity)->select($columns);
+        $query = $this->connection->createQueryBuilder($entity)->select($columns);
 
         // If criteria has been passed
         if (null !== $criteria) {

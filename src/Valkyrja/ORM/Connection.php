@@ -80,4 +80,28 @@ interface Connection
      * @return Query
      */
     public function createQuery(string $query = null, string $entity = null): Query;
+
+    /**
+     * Create a new query builder.
+     *
+     * @param string|null $entity
+     * @param string|null $alias
+     *
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
+
+    /**
+     * Get the retriever.
+     *
+     * @return Retriever
+     */
+    public function getRetriever(): Retriever;
+
+    /**
+     * Get the persister.
+     *
+     * @return Persister
+     */
+    public function getPersister(): Persister;
 }

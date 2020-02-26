@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\QueryBuilders;
 
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Query;
@@ -28,11 +28,11 @@ use Valkyrja\ORM\QueryBuilder;
 class SqlQueryBuilder implements QueryBuilder
 {
     /**
-     * The entity manager.
+     * The connection.
      *
-     * @var EntityManager
+     * @var Connection
      */
-    protected EntityManager $entityManager;
+    protected Connection $connection;
 
     /**
      * The type of statement to build.
@@ -112,13 +112,13 @@ class SqlQueryBuilder implements QueryBuilder
     protected ?string $entity = null;
 
     /**
-     * PDOQuery constructor.
+     * SqlQueryBuilder constructor.
      *
-     * @param EntityManager $entityManager
+     * @param Connection $connection
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -492,7 +492,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function createQuery(): Query
     {
-        return $this->entityManager->createQuery($this->getQueryString(), $this->entity);
+        return $this->connection->createQuery($this->getQueryString(), $this->entity);
     }
 
     /**

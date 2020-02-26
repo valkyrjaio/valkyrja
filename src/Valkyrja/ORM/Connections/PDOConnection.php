@@ -17,10 +17,16 @@ use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\PDOConnection as ConnectionContract;
+use Valkyrja\ORM\Persister;
+use Valkyrja\ORM\Persisters\Persister as PersisterClass;
 use Valkyrja\ORM\Queries\Query as QueryClass;
 use Valkyrja\ORM\Query;
+use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
+use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\ORM\Statement;
 
 use function is_bool;
@@ -54,15 +60,38 @@ class PDOConnection implements ConnectionContract
     protected PDO $connection;
 
     /**
+     * The entity retriever.
+     *
+     * @var Retriever
+     */
+    protected Retriever $retriever;
+
+    /**
+     * The entity persister.
+     *
+     * @var Persister
+     */
+    protected Persister $persister;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * PDOConnection constructor.
      *
-     * @param Application $app
-     * @param string      $connection
+     * @param array  $config
+     * @param string $connection
      */
-    public function __construct(Application $app, string $connection)
+    public function __construct(array $config, string $connection)
     {
-        $this->app        = $app;
+        $this->config     = $config;
         $this->connection = $this->getConnectionFromConfig($this->getConnectionConfig($connection));
+        $this->retriever  = new RetrieverClass($this);
+        $this->persister  = new PersisterClass($this);
 
         $this->beginTransaction();
     }
@@ -76,16 +105,16 @@ class PDOConnection implements ConnectionContract
      */
     protected function getConnectionFromConfig(array $config): PDO
     {
-        $dsn = $config[ConfigKeyPart::DRIVER]
-            . ':host=' . $config[ConfigKeyPart::HOST]
-            . ';port=' . $config[ConfigKeyPart::PORT]
-            . ';dbname=' . $config[ConfigKeyPart::DB]
-            . ';charset=' . $config[ConfigKeyPart::CHARSET];
+        $dsn = $config[CKP::DRIVER]
+            . ':host=' . $config[CKP::HOST]
+            . ';port=' . $config[CKP::PORT]
+            . ';dbname=' . $config[CKP::DB]
+            . ';charset=' . $config[CKP::CHARSET];
 
         return new PDO(
             $dsn,
-            $config[ConfigKeyPart::USERNAME],
-            $config[ConfigKeyPart::PASSWORD],
+            $config[CKP::USERNAME],
+            $config[CKP::PASSWORD],
             []
         );
     }
@@ -101,7 +130,7 @@ class PDOConnection implements ConnectionContract
      */
     protected function getConnectionConfig(string $name): array
     {
-        $config = $this->app->config('database.connections.' . $name);
+        $config = $this->config[$name] ?? null;
 
         if (null === $config) {
             throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
@@ -222,5 +251,44 @@ class PDOConnection implements ConnectionContract
         }
 
         return $pdoQuery;
+    }
+
+    /**
+     * Create a new query builder.
+     *
+     * @param string|null $entity
+     * @param string|null $alias
+     *
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
+    {
+        $queryBuilder = new SqlQueryBuilder($this);
+
+        if (null !== $entity) {
+            $queryBuilder->entity($entity, $alias);
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Get the retriever.
+     *
+     * @return Retriever
+     */
+    public function getRetriever(): Retriever
+    {
+        return $this->retriever;
+    }
+
+    /**
+     * Get the persister.
+     *
+     * @return Persister
+     */
+    public function getPersister(): Persister
+    {
+        return $this->persister;
     }
 }

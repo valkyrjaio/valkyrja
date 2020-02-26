@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Adapters;
 
-use Valkyrja\Application\Application;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Connections\PDOConnection;
-use Valkyrja\ORM\EntityManager;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 
 /**
  * Class PDOAdapter.
@@ -29,42 +25,39 @@ use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 class PDOAdapter implements Adapter
 {
     /**
-     * The application.
+     * Connections.
      *
-     * @var Application
+     * @var Connection[]
      */
-    protected Application $app;
+    protected static array $connections = [];
 
     /**
-     * The entity manager.
+     * The config.
      *
-     * @var EntityManager
+     * @var array
      */
-    protected EntityManager $entityManager;
+    protected array $config;
 
     /**
      * PDOAdapter constructor.
      *
-     * @param Application   $app
-     * @param EntityManager $entityManager
+     * @param array $config
      */
-    public function __construct(Application $app, EntityManager $entityManager)
+    public function __construct(array $config)
     {
-        $this->app           = $app;
-        $this->entityManager = $entityManager;
+        $this->config = $config;
     }
 
     /**
      * Make a new adapter.
      *
-     * @param Application   $app
-     * @param EntityManager $entityManager
+     * @param array $config
      *
      * @return static
      */
-    public static function make(Application $app, EntityManager $entityManager): self
+    public static function make(array $config): self
     {
-        return new static($app, $entityManager);
+        return new static($config);
     }
 
     /**
@@ -76,25 +69,7 @@ class PDOAdapter implements Adapter
      */
     public function createConnection(string $connection): Connection
     {
-        return new PDOConnection($this->app, $connection);
-    }
-
-    /**
-     * Create a new query builder.
-     *
-     * @param string|null $entity
-     * @param string|null $alias
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
-    {
-        $queryBuilder = new SqlQueryBuilder($this->entityManager);
-
-        if (null !== $entity) {
-            $queryBuilder->entity($entity, $alias);
-        }
-
-        return $queryBuilder;
+        return self::$connections[$connection]
+            ?? (self::$connections[$connection] = new PDOConnection($this->config, $connection));
     }
 }

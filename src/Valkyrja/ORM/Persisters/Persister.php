@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Persisters;
 
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Persister as PersisterContract;
@@ -37,9 +37,9 @@ class Persister implements PersisterContract
     /**
      * The entity manager.
      *
-     * @var EntityManager
+     * @var Connection
      */
-    protected EntityManager $entityManager;
+    protected Connection $connection;
 
     /**
      * The entities awaiting to be committed for creation.
@@ -65,11 +65,11 @@ class Persister implements PersisterContract
     /**
      * Persister constructor.
      *
-     * @param EntityManager $entityManager
+     * @param Connection $connection
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
@@ -193,7 +193,7 @@ class Persister implements PersisterContract
     public function persist(): void
     {
         // Ensure a transaction is in progress
-        $this->entityManager->ensureTransaction();
+        $this->connection->ensureTransaction();
 
         // Iterate through the models awaiting creation
         foreach ($this->createEntities as $cid => $createEntity) {
@@ -246,7 +246,7 @@ class Persister implements PersisterContract
         $queryBuilder = $this->getQueryBuilderForSaveCreateDelete($type, $entity, $idField, $properties);
 
         // Create a new query with the query builder
-        $query = $this->entityManager->createQuery($queryBuilder->getQueryString(), get_class($entity));
+        $query = $this->connection->createQuery($queryBuilder->getQueryString(), get_class($entity));
 
         // Bind values
         $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
@@ -257,7 +257,7 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->{$idField} = $this->entityManager->lastInsertId();
+        $entity->{$idField} = $this->connection->lastInsertId();
     }
 
     /**
@@ -277,7 +277,7 @@ class Persister implements PersisterContract
         array $properties
     ): QueryBuilder {
         // Create a new query
-        $queryBuilder = $this->entityManager->createQueryBuilder(get_class($entity))->{strtolower($type)}();
+        $queryBuilder = $this->connection->createQueryBuilder(get_class($entity))->{strtolower($type)}();
 
         /* @var QueryBuilder $queryBuilder */
 
