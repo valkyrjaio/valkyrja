@@ -28,9 +28,9 @@ use Valkyrja\Mail\Mail as Contract;
  * @method static bool addCC(string $address, string $name = '')
  * @method static bool addBCC(string $address, string $name = '')
  * @method static bool addAttachment(string $path, string $name = '')
- * @method static Contract subject(string $subject)
- * @method static Contract body(string $body)
- * @method static Contract plainBody(string $body)
+ * @method static Contract setSubject(string $subject)
+ * @method static Contract setBody(string $body)
+ * @method static Contract setPlainBody(string $body)
  * @method static bool send()
  */
 class Mail extends Facade

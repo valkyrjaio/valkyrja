@@ -96,7 +96,7 @@ interface Mail
      *
      * @return static
      */
-    public function subject(string $subject): self;
+    public function setSubject(string $subject): self;
 
     /**
      * Set the body of the mail.
@@ -105,7 +105,7 @@ interface Mail
      *
      * @return static
      */
-    public function body(string $body): self;
+    public function setBody(string $body): self;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.
@@ -114,7 +114,7 @@ interface Mail
      *
      * @return static
      */
-    public function plainBody(string $body): self;
+    public function setPlainBody(string $body): self;
 
     /**
      * Send the mail.

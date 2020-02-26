@@ -213,7 +213,7 @@ class PHPMailerMail implements Mail
      *
      * @return static
      */
-    public function subject(string $subject): self
+    public function setSubject(string $subject): self
     {
         $this->phpMailer->Subject = $subject;
 
@@ -227,7 +227,7 @@ class PHPMailerMail implements Mail
      *
      * @return static
      */
-    public function body(string $body): self
+    public function setBody(string $body): self
     {
         $this->phpMailer->Body = $body;
 
@@ -241,7 +241,7 @@ class PHPMailerMail implements Mail
      *
      * @return static
      */
-    public function plainBody(string $body): self
+    public function setPlainBody(string $body): self
     {
         $this->phpMailer->AltBody = $body;
 
