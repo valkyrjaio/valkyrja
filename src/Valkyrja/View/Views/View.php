@@ -488,9 +488,9 @@ class View implements ViewContract
      *  True if the block has been ended
      *  False if the block has not yet been ended
      */
-    public function hasBlockBeenEnded(string $name): bool
+    public function hasBlockEnded(string $name): bool
     {
-        return $this->engine()->hasBlockBeenEnded($name);
+        return $this->engine()->hasBlockEnded($name);
     }
 
     /**
