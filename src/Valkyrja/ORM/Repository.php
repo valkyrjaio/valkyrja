@@ -168,7 +168,7 @@ interface Repository
      *
      * @return void
      */
-    public function create(Entity $entity): void;
+    public function create(Entity $entity, bool $defer = true): void;
 
     /**
      * Save an existing model given criteria to find. If no criteria specified uses all model properties.
@@ -180,7 +180,7 @@ interface Repository
      *
      * @return void
      */
-    public function save(Entity $entity): void;
+    public function save(Entity $entity, bool $defer = true): void;
 
     /**
      * Delete an existing model.
@@ -192,7 +192,7 @@ interface Repository
      *
      * @return void
      */
-    public function delete(Entity $entity): void;
+    public function delete(Entity $entity, bool $defer = true): void;
 
     /**
      * Clear a model previously set for creation, save, or deletion.
@@ -208,13 +208,6 @@ interface Repository
      * @return void
      */
     public function clear(Entity $entity = null): void;
-
-    /**
-     * Get the last inserted id.
-     *
-     * @return string
-     */
-    public function lastInsertId(): string;
 
     /**
      * Get a new query builder instance.

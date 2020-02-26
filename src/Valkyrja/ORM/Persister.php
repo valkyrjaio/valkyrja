@@ -30,10 +30,11 @@ interface Persister
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function create(Entity $entity): void;
+    public function create(Entity $entity, bool $defer = true): void;
 
     /**
      * Set a model for saving on transaction commit.
@@ -45,10 +46,11 @@ interface Persister
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function save(Entity $entity): void;
+    public function save(Entity $entity, bool $defer = true): void;
 
     /**
      * Set a model for deletion on transaction commit.
@@ -60,10 +62,11 @@ interface Persister
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function delete(Entity $entity): void;
+    public function delete(Entity $entity, bool $defer = true): void;
 
     /**
      * Clear a model previously set for creation, save, or deletion.

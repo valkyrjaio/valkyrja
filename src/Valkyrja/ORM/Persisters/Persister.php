@@ -82,11 +82,20 @@ class Persister implements PersisterContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
+     *
+     * @throws ExecuteException
      *
      * @return void
      */
-    public function create(Entity $entity): void
+    public function create(Entity $entity, bool $defer = true): void
     {
+        if (! $defer) {
+            $this->saveCreateDelete(Statement::UPDATE, $entity);
+
+            return;
+        }
+
         $id = spl_object_id($entity);
 
         $this->createEntities[$id] = $entity;
@@ -102,11 +111,20 @@ class Persister implements PersisterContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
+     *
+     * @throws ExecuteException
      *
      * @return void
      */
-    public function save(Entity $entity): void
+    public function save(Entity $entity, bool $defer = true): void
     {
+        if (! $defer) {
+            $this->saveCreateDelete(Statement::INSERT, $entity);
+
+            return;
+        }
+
         $id = spl_object_id($entity);
 
         $this->saveEntities[$id] = $entity;
@@ -122,11 +140,19 @@ class Persister implements PersisterContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
+     *
+     * @throws ExecuteException
      *
      * @return void
      */
-    public function delete(Entity $entity): void
+    public function delete(Entity $entity, bool $defer = true): void
     {
+        if (! $defer) {
+            $this->saveCreateDelete(Statement::DELETE, $entity);
+
+            return;
+        }
         $id = spl_object_id($entity);
 
         $this->deleteEntities[$id] = $entity;

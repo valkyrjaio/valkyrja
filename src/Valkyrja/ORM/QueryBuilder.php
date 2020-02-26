@@ -116,6 +116,9 @@ interface QueryBuilder
      *
      * @param string $column
      * @param string $value
+     * TODO: Change to use:
+     * <code>string $column, string $value = null</code>
+     * If $value is null, value becomes ":$column"
      *
      * @return static
      */
@@ -135,6 +138,10 @@ interface QueryBuilder
      *          ->where('column = :column')
      *          ->where('column2 = :column2');
      * </code>.
+     * TODO: Change to use:
+     * <code>string $column, string $assignment = null, string $value = null</code>
+     * If $assignment is null, value becomes '='
+     * If $value is null, value becomes ":$column"
      *
      * @param string $where
      *
@@ -151,6 +158,10 @@ interface QueryBuilder
      *          ->where('column = :column')
      *          ->andWhere('column2 = :column2');
      * </code>.
+     * TODO: Change to use:
+     * <code>string $column, string $assignment = null, string $value = null</code>
+     * If $assignment is null, value becomes '='
+     * If $value is null, value becomes ":$column"
      *
      * @param string $where
      *
@@ -167,6 +178,10 @@ interface QueryBuilder
      *          ->where('column = :column')
      *          ->andWhere('column2 = :column2');
      * </code>.
+     * TODO: Change to use:
+     * <code>string $column, string $assignment = null, string $value = null</code>
+     * If $assignment is null, value becomes '='
+     * If $value is null, value becomes ":$column"
      *
      * @param string $where
      *

@@ -240,16 +240,17 @@ class Repository implements RepositoryContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
      *
      * @return void
      */
-    public function create(Entity $entity): void
+    public function create(Entity $entity, bool $defer = true): void
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->create($entity);
+        $this->entityManager->create($entity, $defer);
     }
 
     /**
@@ -259,16 +260,17 @@ class Repository implements RepositoryContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
      *
      * @return void
      */
-    public function save(Entity $entity): void
+    public function save(Entity $entity, bool $defer = true): void
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->save($entity);
+        $this->entityManager->save($entity, $defer);
     }
 
     /**
@@ -278,16 +280,17 @@ class Repository implements RepositoryContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
      *
      * @return void
      */
-    public function delete(Entity $entity): void
+    public function delete(Entity $entity, bool $defer = true): void
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->delete($entity);
+        $this->entityManager->delete($entity, $defer);
     }
 
     /**
@@ -309,16 +312,6 @@ class Repository implements RepositoryContract
         }
 
         $this->entityManager->clear($entity);
-    }
-
-    /**
-     * Get the last inserted id.
-     *
-     * @return string
-     */
-    public function lastInsertId(): string
-    {
-        return $this->entityManager->lastInsertId();
     }
 
     /**

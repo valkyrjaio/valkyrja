@@ -26,7 +26,7 @@ use Valkyrja\ORM\PDOConnection;
  * @author Melech Mizrachi
  *
  * @method static Contract make(array $config)
- * @method static Connection|PDOConnection getConnection(string $connection)
+ * @method static Connection|PDOConnection getConnection(string $connection = null)
  */
 class Adapter extends Facade
 {

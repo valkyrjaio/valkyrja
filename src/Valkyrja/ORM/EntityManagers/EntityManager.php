@@ -20,9 +20,11 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager as EntityManagerContract;
+use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\Retriever;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
@@ -42,13 +44,6 @@ class EntityManager implements EntityManagerContract
      * @var Application
      */
     protected Application $app;
-
-    /**
-     * The connection to use.
-     *
-     * @var string
-     */
-    protected string $defaultConnection;
 
     /**
      * The config.
@@ -85,10 +80,10 @@ class EntityManager implements EntityManagerContract
      */
     public function __construct(Application $app)
     {
-        $this->config            = $app->config()[CKP::DB];
-        $this->app               = $app;
-        $this->defaultConnection = $this->config[CKP::DEFAULT];
-        $this->defaultAdapter    = $this->config[CKP::CONNECTIONS][$this->defaultConnection][CKP::ADAPTER] ?? CKP::PDO;
+        $this->config         = $app->config()[CKP::DB];
+        $this->app            = $app;
+        $defaultConnection    = $this->config[CKP::DEFAULT];
+        $this->defaultAdapter = $this->config[CKP::CONNECTIONS][$defaultConnection][CKP::ADAPTER] ?? CKP::PDO;
     }
 
     /**
@@ -136,7 +131,7 @@ class EntityManager implements EntityManagerContract
         /** @var Adapter $adapter */
         $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
 
-        return $adapter::make($this->config[CKP::CONNECTIONS]);
+        return $adapter::make($this->config);
     }
 
     /**
@@ -148,7 +143,7 @@ class EntityManager implements EntityManagerContract
      */
     public function getConnection(string $connection = null): Connection
     {
-        return $this->getAdapter()->createConnection($connection ?? $this->defaultConnection);
+        return $this->getAdapter()->createConnection($connection);
     }
 
     /**
@@ -175,6 +170,26 @@ class EntityManager implements EntityManagerContract
     public function createQuery(string $query = null, string $entity = null): Query
     {
         return $this->getConnection()->createQuery($query, $entity);
+    }
+
+    /**
+     * Get the retriever.
+     *
+     * @return Retriever
+     */
+    public function getRetriever(): Retriever
+    {
+        return $this->getConnection()->getRetriever();
+    }
+
+    /**
+     * Get the persister.
+     *
+     * @return Persister
+     */
+    public function getPersister(): Persister
+    {
+        return $this->getConnection()->getPersister();
     }
 
     /**
@@ -329,7 +344,12 @@ class EntityManager implements EntityManagerContract
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->getConnection()->getRetriever()->findBy(
-            $entity, $criteria, $orderBy, $offset, $columns, $getRelations
+            $entity,
+            $criteria,
+            $orderBy,
+            $offset,
+            $columns,
+            $getRelations
         );
     }
 
@@ -456,12 +476,13 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function create(Entity $entity): void
+    public function create(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->create($entity);
+        $this->getConnection()->getPersister()->create($entity, $defer);
     }
 
     /**
@@ -475,12 +496,13 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function save(Entity $entity): void
+    public function save(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->save($entity);
+        $this->getConnection()->getPersister()->save($entity, $defer);
     }
 
     /**
@@ -494,12 +516,13 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
-    public function delete(Entity $entity): void
+    public function delete(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->delete($entity);
+        $this->getConnection()->getPersister()->delete($entity, $defer);
     }
 
     /**

@@ -34,9 +34,9 @@ interface Adapter
     /**
      * Create a new connection.
      *
-     * @param string $connection The connection to use
+     * @param string|null $connection The connection to use
      *
      * @return Connection
      */
-    public function createConnection(string $connection): Connection;
+    public function createConnection(string $connection = null): Connection;
 }
