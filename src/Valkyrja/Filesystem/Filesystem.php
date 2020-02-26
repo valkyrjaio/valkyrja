@@ -232,13 +232,13 @@ interface Filesystem
     public function listContents(string $directory = null, bool $recursive = false): array;
 
     /**
-     * Get a filesystem for an adapter.
+     * Get an adapter by name.
      *
      * @param string|null $name The adapter name
      *
      * @return Adapter
      */
-    public function adapter(string $name = null): Adapter;
+    public function getAdapter(string $name = null): Adapter;
 
     /**
      * Get the local filesystem.

@@ -44,7 +44,7 @@ use Valkyrja\Filesystem\Enums\Visibility;
  * @method static bool createDir(string $path)
  * @method static bool deleteDir(string $path)
  * @method static array listContents(string $directory = null, bool $recursive = false)
- * @method static Adapter adapter(string $adapter)
+ * @method static Adapter getAdapter(string $adapter)
  * @method static Adapter local()
  * @method static Adapter s3()
  */

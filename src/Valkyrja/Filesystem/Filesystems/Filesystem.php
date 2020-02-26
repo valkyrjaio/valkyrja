@@ -98,7 +98,7 @@ class Filesystem implements FilesystemContract
      */
     public function exists(string $path): bool
     {
-        return $this->adapter()->exists($path);
+        return $this->getAdapter()->exists($path);
     }
 
     /**
@@ -110,7 +110,7 @@ class Filesystem implements FilesystemContract
      */
     public function read(string $path): ?string
     {
-        return $this->adapter()->read($path);
+        return $this->getAdapter()->read($path);
     }
 
     /**
@@ -123,7 +123,7 @@ class Filesystem implements FilesystemContract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->adapter()->write($path, $contents);
+        return $this->getAdapter()->write($path, $contents);
     }
 
     /**
@@ -136,7 +136,7 @@ class Filesystem implements FilesystemContract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->adapter()->writeStream($path, $resource);
+        return $this->getAdapter()->writeStream($path, $resource);
     }
 
     /**
@@ -149,7 +149,7 @@ class Filesystem implements FilesystemContract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->adapter()->update($path, $contents);
+        return $this->getAdapter()->update($path, $contents);
     }
 
     /**
@@ -162,7 +162,7 @@ class Filesystem implements FilesystemContract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->adapter()->updateStream($path, $resource);
+        return $this->getAdapter()->updateStream($path, $resource);
     }
 
     /**
@@ -175,7 +175,7 @@ class Filesystem implements FilesystemContract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->adapter()->put($path, $contents);
+        return $this->getAdapter()->put($path, $contents);
     }
 
     /**
@@ -188,7 +188,7 @@ class Filesystem implements FilesystemContract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->adapter()->putStream($path, $resource);
+        return $this->getAdapter()->putStream($path, $resource);
     }
 
     /**
@@ -201,7 +201,7 @@ class Filesystem implements FilesystemContract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->adapter()->rename($path, $newPath);
+        return $this->getAdapter()->rename($path, $newPath);
     }
 
     /**
@@ -214,7 +214,7 @@ class Filesystem implements FilesystemContract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->adapter()->copy($path, $newPath);
+        return $this->getAdapter()->copy($path, $newPath);
     }
 
     /**
@@ -226,7 +226,7 @@ class Filesystem implements FilesystemContract
      */
     public function delete(string $path): bool
     {
-        return $this->adapter()->delete($path);
+        return $this->getAdapter()->delete($path);
     }
 
     /**
@@ -238,7 +238,7 @@ class Filesystem implements FilesystemContract
      */
     public function metadata(string $path): ?array
     {
-        return $this->adapter()->metadata($path);
+        return $this->getAdapter()->metadata($path);
     }
 
     /**
@@ -250,7 +250,7 @@ class Filesystem implements FilesystemContract
      */
     public function mimetype(string $path): ?string
     {
-        return $this->adapter()->mimetype($path);
+        return $this->getAdapter()->mimetype($path);
     }
 
     /**
@@ -262,7 +262,7 @@ class Filesystem implements FilesystemContract
      */
     public function size(string $path): ?int
     {
-        return $this->adapter()->size($path);
+        return $this->getAdapter()->size($path);
     }
 
     /**
@@ -274,7 +274,7 @@ class Filesystem implements FilesystemContract
      */
     public function timestamp(string $path): ?int
     {
-        return $this->adapter()->timestamp($path);
+        return $this->getAdapter()->timestamp($path);
     }
 
     /**
@@ -286,7 +286,7 @@ class Filesystem implements FilesystemContract
      */
     public function visibility(string $path): ?string
     {
-        return $this->adapter()->visibility($path);
+        return $this->getAdapter()->visibility($path);
     }
 
     /**
@@ -299,7 +299,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->adapter()->setVisibility($path, $visibility);
+        return $this->getAdapter()->setVisibility($path, $visibility);
     }
 
     /**
@@ -311,7 +311,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->adapter()->setVisibilityPublic($path);
+        return $this->getAdapter()->setVisibilityPublic($path);
     }
 
     /**
@@ -323,7 +323,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->adapter()->setVisibilityPrivate($path);
+        return $this->getAdapter()->setVisibilityPrivate($path);
     }
 
     /**
@@ -335,7 +335,7 @@ class Filesystem implements FilesystemContract
      */
     public function createDir(string $path): bool
     {
-        return $this->adapter()->createDir($path);
+        return $this->getAdapter()->createDir($path);
     }
 
     /**
@@ -347,7 +347,7 @@ class Filesystem implements FilesystemContract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->adapter()->deleteDir($path);
+        return $this->getAdapter()->deleteDir($path);
     }
 
     /**
@@ -360,17 +360,17 @@ class Filesystem implements FilesystemContract
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {
-        return $this->adapter()->listContents($directory, $recursive);
+        return $this->getAdapter()->listContents($directory, $recursive);
     }
 
     /**
-     * Get a filesystem for an adapter.
+     * Get an adapter by name.
      *
      * @param string|null $name The adapter name
      *
      * @return Adapter
      */
-    public function adapter(string $name = null): Adapter
+    public function getAdapter(string $name = null): Adapter
     {
         $name ??= $this->config[CKP::CONNECTIONS][$this->config[CKP::DEFAULT]][CKP::ADAPTER];
 
@@ -391,7 +391,7 @@ class Filesystem implements FilesystemContract
      */
     public function local(): Adapter
     {
-        return $this->adapter(CKP::LOCAL);
+        return $this->getAdapter(CKP::LOCAL);
     }
 
     /**
@@ -401,6 +401,6 @@ class Filesystem implements FilesystemContract
      */
     public function s3(): Adapter
     {
-        return $this->adapter(CKP::S3);
+        return $this->getAdapter(CKP::S3);
     }
 }
