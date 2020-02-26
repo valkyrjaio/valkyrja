@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\ORM\Adapters\PDOAdapter;
+use Valkyrja\ORM\Enums\Config;
 
 return [
     /*
@@ -39,7 +39,7 @@ return [
 
     /*
      *-------------------------------------------------------------------------
-     * Default Database Connection Name
+     * Database Adapters
      *-------------------------------------------------------------------------
      *
      * //
@@ -47,9 +47,7 @@ return [
      */
     CKP::ADAPTERS    => env(
         EnvKey::DB_ADAPTERS,
-        [
-            CKP::PDO => PDOAdapter::class,
-        ]
+        Config::ADAPTERS
     ),
 
     /*
