@@ -18,7 +18,7 @@ use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\ORM\Connection as ConnectionContract;
+use Valkyrja\ORM\PDOConnection as ConnectionContract;
 use Valkyrja\ORM\Queries\Query as QueryClass;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\Statement;
@@ -38,12 +38,14 @@ class PDOConnection implements ConnectionContract
      * @var PDO[]
      */
     protected static array $connections = [];
+
     /**
      * The application.
      *
      * @var Application
      */
     protected Application $app;
+
     /**
      * The connection.
      *
@@ -63,26 +65,6 @@ class PDOConnection implements ConnectionContract
         $this->connection = $this->getConnectionFromConfig($this->getConnectionConfig($connection));
 
         $this->beginTransaction();
-    }
-
-    /**
-     * Get the store config.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    protected function getConnectionConfig(string $name): array
-    {
-        $config = $this->app->config('database.connections.' . $name);
-
-        if (null === $config) {
-            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
-        }
-
-        return $config;
     }
 
     /**
@@ -106,6 +88,36 @@ class PDOConnection implements ConnectionContract
             $config[ConfigKeyPart::PASSWORD],
             []
         );
+    }
+
+    /**
+     * Get the store config.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array
+     */
+    protected function getConnectionConfig(string $name): array
+    {
+        $config = $this->app->config('database.connections.' . $name);
+
+        if (null === $config) {
+            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
+        }
+
+        return $config;
+    }
+
+    /**
+     * The PDO.
+     *
+     * @return PDO
+     */
+    public function pdo(): PDO
+    {
+        return $this->connection;
     }
 
     /**
