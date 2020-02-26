@@ -189,7 +189,7 @@ class View implements ViewContract
      *
      * @return Engine
      */
-    public function engine(string $name = null): Engine
+    public function getEngine(string $name = null): Engine
     {
         $name ??= $this->engine;
 
@@ -450,7 +450,7 @@ class View implements ViewContract
      */
     public function getPartial(string $partial, array $variables = []): string
     {
-        return $this->engine()->getPartial($partial, $variables);
+        return $this->getEngine()->getPartial($partial, $variables);
     }
 
     /**
@@ -462,7 +462,7 @@ class View implements ViewContract
      */
     public function getBlock(string $name): string
     {
-        return $this->engine()->getBlock($name);
+        return $this->getEngine()->getBlock($name);
     }
 
     /**
@@ -476,7 +476,7 @@ class View implements ViewContract
      */
     public function hasBlock(string $name): bool
     {
-        return $this->engine()->hasBlock($name);
+        return $this->getEngine()->hasBlock($name);
     }
 
     /**
@@ -490,7 +490,7 @@ class View implements ViewContract
      */
     public function hasBlockEnded(string $name): bool
     {
-        return $this->engine()->hasBlockEnded($name);
+        return $this->getEngine()->hasBlockEnded($name);
     }
 
     /**
@@ -502,7 +502,7 @@ class View implements ViewContract
      */
     public function startBlock(string $name): void
     {
-        $this->engine()->startBlock($name);
+        $this->getEngine()->startBlock($name);
     }
 
     /**
@@ -514,7 +514,7 @@ class View implements ViewContract
      */
     public function endBlock(string $name): void
     {
-        $this->engine()->endBlock($name);
+        $this->getEngine()->endBlock($name);
     }
 
     /**
@@ -530,7 +530,7 @@ class View implements ViewContract
         $this->variables = array_merge($this->variables, $variables, ['view' => $this]);
 
         // Render the template
-        $template = $this->engine()->render($this->templatePath);
+        $template = $this->getEngine()->render($this->templatePath);
 
         // Check if a layout has been set
         if (null === $this->layout) {
@@ -563,7 +563,7 @@ class View implements ViewContract
     protected function renderLayout(string $layoutPath): string
     {
         // Render the layout
-        $renderedLayout = $this->engine()->render($layoutPath);
+        $renderedLayout = $this->getEngine()->render($layoutPath);
 
         // Check if the layout has changed
         if ($this->hasLayoutChanged) {

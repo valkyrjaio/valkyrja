@@ -39,7 +39,7 @@ interface View
      *
      * @return Engine
      */
-    public function engine(string $name = null): Engine;
+    public function getEngine(string $name = null): Engine;
 
     /**
      * Get the variables.

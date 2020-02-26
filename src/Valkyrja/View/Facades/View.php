@@ -16,6 +16,7 @@ namespace Valkyrja\View\Facades;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\View\Engine;
 use Valkyrja\View\View as Contract;
 
 /**
@@ -24,6 +25,7 @@ use Valkyrja\View\View as Contract;
  * @author Melech Mizrachi
  *
  * @method static Contract make(string $template = null, array $variables = [])
+ * @method static Engine getEngine(string $name = null)
  * @method static array getVariables()
  * @method static Contract setVariables(array $variables = [])
  * @method static mixed variable(string $key)
