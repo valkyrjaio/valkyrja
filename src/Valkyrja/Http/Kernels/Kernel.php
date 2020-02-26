@@ -88,7 +88,7 @@ class Kernel implements KernelContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(KernelContract::class, new static($app, $app->router()));
+        $app->container()->setSingleton(KernelContract::class, new static($app, $app->router()));
     }
 
     /**
@@ -189,7 +189,7 @@ class Kernel implements KernelContract
     protected function dispatchRouter(Request $request): Response
     {
         // Set the request object in the container
-        $this->app->container()->singleton(Request::class, $request);
+        $this->app->container()->setSingleton(Request::class, $request);
 
         // Dispatch the before request handled middleware
         $request = $this->requestMiddleware($request);

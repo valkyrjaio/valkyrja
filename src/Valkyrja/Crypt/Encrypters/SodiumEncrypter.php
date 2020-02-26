@@ -52,7 +52,7 @@ class SodiumEncrypter implements Encrypter
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(Contract::ENCRYPTER, new static());
+        $app->container()->setSingleton(Contract::ENCRYPTER, new static());
     }
 
     /**

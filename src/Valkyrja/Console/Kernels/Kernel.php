@@ -82,7 +82,7 @@ class Kernel implements KernelContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             Contract::CONSOLE_KERNEL,
             new static(
                 $app,
@@ -148,12 +148,12 @@ class Kernel implements KernelContract
     {
         $container = $this->app->container();
 
-        $container->singleton(
+        $container->setSingleton(
             Input::class,
             $input ?? $input = $container->get(Input::class)
         );
 
-        $container->singleton(
+        $container->setSingleton(
             Output::class,
             $output ?? $output = $container->get(Output::class)
         );

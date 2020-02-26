@@ -271,19 +271,19 @@ class Valkyrja implements Application
     protected function bootstrapContainer(): void
     {
         // Set the application instance in the container
-        self::$container->singleton(Contract::APP, $this);
+        self::$container->setSingleton(Contract::APP, $this);
         // Set the events instance in the container
-        self::$container->singleton('env', self::$env);
+        self::$container->setSingleton('env', self::$env);
         // Set the events instance in the container
-        self::$container->singleton('config', self::$config);
+        self::$container->setSingleton('config', self::$config);
         // Set the container instance in the container
-        self::$container->singleton(Contract::CONTAINER, self::$container);
+        self::$container->setSingleton(Contract::CONTAINER, self::$container);
         // Set the dispatcher instance in the dispatcher
-        self::$container->singleton(Contract::DISPATCHER, self::$dispatcher);
+        self::$container->setSingleton(Contract::DISPATCHER, self::$dispatcher);
         // Set the events instance in the container
-        self::$container->singleton(Contract::EVENTS, self::$events);
+        self::$container->setSingleton(Contract::EVENTS, self::$events);
         // Set the exception handler instance in the container
-        self::$container->singleton(Contract::EXCEPTION_HANDLER, self::$exceptionHandler);
+        self::$container->setSingleton(Contract::EXCEPTION_HANDLER, self::$exceptionHandler);
     }
 
     /**

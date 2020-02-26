@@ -75,7 +75,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             ContainerAnnotatorContract::class,
             new static($app)
         );

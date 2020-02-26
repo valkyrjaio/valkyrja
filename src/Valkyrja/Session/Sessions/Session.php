@@ -316,6 +316,6 @@ class Session implements SessionContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(SessionContract::class, new static($app));
+        $app->container()->setSingleton(SessionContract::class, new static($app));
     }
 }

@@ -206,6 +206,6 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(JsonResponseContract::class, new static());
+        $app->container()->setSingleton(JsonResponseContract::class, new static());
     }
 }

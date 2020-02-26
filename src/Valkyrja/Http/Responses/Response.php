@@ -307,6 +307,6 @@ class Response implements ResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(ResponseContract::class, new static());
+        $app->container()->setSingleton(ResponseContract::class, new static());
     }
 }

@@ -80,6 +80,6 @@ class HtmlResponse extends Response implements HtmlResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(HtmlResponseContract::class, new static());
+        $app->container()->setSingleton(HtmlResponseContract::class, new static());
     }
 }

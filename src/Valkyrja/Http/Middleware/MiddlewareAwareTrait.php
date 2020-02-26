@@ -99,7 +99,7 @@ trait MiddlewareAwareTrait
             }
 
             // Set the returned request in the container
-            $app->container()->singleton(Request::class, $modifiedRequest);
+            $app->container()->setSingleton(Request::class, $modifiedRequest);
         }
 
         return $modifiedRequest;
@@ -136,7 +136,7 @@ trait MiddlewareAwareTrait
             $response = $item::after($request, $response);
 
             // Set the returned response in the container
-            $app->container()->singleton(Response::class, $response);
+            $app->container()->setSingleton(Response::class, $response);
         }
 
         return $response;

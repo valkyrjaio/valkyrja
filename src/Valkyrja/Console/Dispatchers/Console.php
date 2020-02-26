@@ -78,7 +78,7 @@ class Console implements ConsoleContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             Contract::CONSOLE,
             new static($app)
         );

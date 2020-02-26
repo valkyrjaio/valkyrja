@@ -63,7 +63,7 @@ REGEX;
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(ParserContract::class, new static());
+        $app->container()->setSingleton(ParserContract::class, new static());
     }
 
     /**

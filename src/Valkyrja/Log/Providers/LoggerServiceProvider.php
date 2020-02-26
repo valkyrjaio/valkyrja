@@ -82,7 +82,7 @@ class LoggerServiceProvider extends Provider
             LogLevel::DEBUG
         );
 
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             LoggerInterface::class,
             new Monolog(
                 $app->config()[ConfigKeyPart::LOG][ConfigKeyPart::NAME],
@@ -102,7 +102,7 @@ class LoggerServiceProvider extends Provider
      */
     protected static function bindLogger(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             Logger::class,
             new MonologLogger(
                 $app->container()->getSingleton(LoggerInterface::class)

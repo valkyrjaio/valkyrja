@@ -78,7 +78,7 @@ class Parser implements AnnotationsParserContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             AnnotationsParserContract::class,
             new static(
                 $app

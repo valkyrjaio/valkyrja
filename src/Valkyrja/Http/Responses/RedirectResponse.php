@@ -203,6 +203,6 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(RedirectResponseContract::class, new static());
+        $app->container()->setSingleton(RedirectResponseContract::class, new static());
     }
 }

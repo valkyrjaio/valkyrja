@@ -50,7 +50,7 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             ListenerAnnotatorContract::class,
             new static($app)
         );

@@ -55,7 +55,7 @@ class SodiumDecrypter implements Decrypter
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(Contract::DECRYPTER, new static());
+        $app->container()->setSingleton(Contract::DECRYPTER, new static());
     }
 
     /**

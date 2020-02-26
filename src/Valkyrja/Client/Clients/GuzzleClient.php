@@ -68,7 +68,7 @@ class GuzzleClient implements ClientContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             ClientContract::class,
             new static(new Guzzle())
         );

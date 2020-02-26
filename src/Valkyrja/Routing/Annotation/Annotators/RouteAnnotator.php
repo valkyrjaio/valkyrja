@@ -52,7 +52,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             RouteAnnotatorContract::class,
             new static($app)
         );

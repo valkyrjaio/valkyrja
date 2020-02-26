@@ -50,7 +50,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             CommandAnnotatorContract::class,
             new static($app)
         );

@@ -141,7 +141,7 @@ class Input implements InputContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             InputContract::class,
             new static(
                 $app->request()

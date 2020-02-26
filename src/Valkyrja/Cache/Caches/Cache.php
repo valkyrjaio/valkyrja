@@ -75,7 +75,7 @@ class Cache implements CacheContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             CacheContract::class,
             new static($app)
         );

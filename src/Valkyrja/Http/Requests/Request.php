@@ -204,7 +204,7 @@ class Request implements RequestContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(RequestContract::class, RequestFactory::fromGlobals());
+        $app->container()->setSingleton(RequestContract::class, RequestFactory::fromGlobals());
     }
 
     /**

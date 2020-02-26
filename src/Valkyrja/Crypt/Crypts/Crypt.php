@@ -97,7 +97,7 @@ class Crypt implements CryptContract
     {
         $container = $app->container();
 
-        $container->singleton(
+        $container->setSingleton(
             Contract::CRYPT,
             new static(
                 $app,

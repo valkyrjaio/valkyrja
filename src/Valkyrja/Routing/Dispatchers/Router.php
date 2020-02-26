@@ -73,7 +73,7 @@ class Router implements RouterContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             RouterContract::class,
             new static($app)
         );
@@ -125,7 +125,7 @@ class Router implements RouterContract
         // Trigger an event for route matched
         $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
         // Set the found route in the service container
-        $this->app->container()->singleton(Route::class, $route);
+        $this->app->container()->setSingleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->app->dispatcher()->dispatch($route, $route->getMatches());

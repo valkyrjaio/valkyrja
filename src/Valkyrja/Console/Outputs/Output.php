@@ -77,7 +77,7 @@ class Output implements OutputContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             OutputContract::class,
             new static()
         );

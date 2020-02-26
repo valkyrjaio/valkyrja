@@ -96,7 +96,7 @@ class PHPMailerMail implements Mail
         // Enable TLS encryption, `ssl` also accepted
         $PHPMailer->SMTPSecure = $app->config()[ConfigKeyPart::MAIL][ConfigKeyPart::ENCRYPTION];
 
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             Mail::class,
             new static($app, $PHPMailer)
         );

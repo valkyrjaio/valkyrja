@@ -64,6 +64,6 @@ class EmptyResponse extends Response implements EmptyResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(EmptyResponseContract::class, new static());
+        $app->container()->setSingleton(EmptyResponseContract::class, new static());
     }
 }

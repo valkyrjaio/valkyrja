@@ -80,6 +80,6 @@ class TextResponse extends Response implements TextResponseContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(TextResponseContract::class, new static());
+        $app->container()->setSingleton(TextResponseContract::class, new static());
     }
 }

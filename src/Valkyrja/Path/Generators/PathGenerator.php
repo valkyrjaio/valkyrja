@@ -50,7 +50,7 @@ class PathGenerator implements GeneratorContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(GeneratorContract::class, new static());
+        $app->container()->setSingleton(GeneratorContract::class, new static());
     }
 
     /**

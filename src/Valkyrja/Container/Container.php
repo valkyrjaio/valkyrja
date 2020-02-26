@@ -31,7 +31,7 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return void
      */
-    public function alias(string $alias, string $serviceId): void;
+    public function setAlias(string $alias, string $serviceId): void;
 
     /**
      * Bind a service to the container.
@@ -50,7 +50,7 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return void
      */
-    public function context(ServiceContext $serviceContext): void;
+    public function setContext(ServiceContext $serviceContext): void;
 
     /**
      * Bind a singleton to the container.
@@ -58,7 +58,7 @@ interface Container extends Cacheable, ProvidersAware
      * @param string $serviceId The service
      * @param mixed  $singleton The singleton
      */
-    public function singleton(string $serviceId, $singleton): void;
+    public function setSingleton(string $serviceId, $singleton): void;
 
     /**
      * Check whether a given service exists.
@@ -127,7 +127,7 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @return mixed
      */
-    public function make(string $serviceId, array $arguments = null);
+    public function makeService(string $serviceId, array $arguments = null);
 
     /**
      * Get a singleton from the container.

@@ -23,17 +23,17 @@ use Valkyrja\Facade\Facades\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static void alias(string $alias, string $serviceId)
+ * @method static void setAlias(string $alias, string $serviceId)
  * @method static void bind(Service $service, bool $verify = true)
- * @method static void context(ServiceContext $serviceContext)
- * @method static void singleton(string $serviceId, $singleton)
+ * @method static void setContext(ServiceContext $serviceContext)
+ * @method static void setSingleton(string $serviceId, $singleton)
  * @method static bool has(string $serviceId)
  * @method static bool hasContext(string $serviceId, string $context, string $member = null)
  * @method static bool isAlias(string $serviceId)
  * @method static bool isSingleton(string $serviceId)
  * @method static bool isProvided(string $serviceId)
  * @method static mixed get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
- * @method static mixed make(string $serviceId, array $arguments = null)
+ * @method static mixed makeService(string $serviceId, array $arguments = null)
  * @method static mixed getSingleton(string $serviceId)
  * @method static mixed getProvided(string $serviceId, array $arguments = null, string $context = null, string $member = null)
  * @method static string contextServiceId(string $serviceId, string $context, string $member = null)

@@ -82,7 +82,7 @@ class ResponseFactory implements ResponseFactoryContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(ResponseFactoryContract::class, new static($app));
+        $app->container()->setSingleton(ResponseFactoryContract::class, new static($app));
     }
 
     /**

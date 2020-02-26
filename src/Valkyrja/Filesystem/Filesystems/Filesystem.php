@@ -83,7 +83,7 @@ class Filesystem implements FilesystemContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             FilesystemContract::class,
             new static($app)
         );

@@ -65,7 +65,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function alias(string $alias, string $serviceId): void
+    public function setAlias(string $alias, string $serviceId): void
     {
         self::$aliases[$alias] = $serviceId;
     }
@@ -118,7 +118,7 @@ class Container implements ContainerContract
      *
      * @return void
      */
-    public function context(ServiceContext $serviceContext): void
+    public function setContext(ServiceContext $serviceContext): void
     {
         $context        = $serviceContext->getClass() ?? $serviceContext->getFunction();
         $member         = $serviceContext->getMethod() ?? $serviceContext->getProperty();
@@ -159,7 +159,7 @@ class Container implements ContainerContract
      * @param string $serviceId The service
      * @param mixed  $singleton The singleton
      */
-    public function singleton(string $serviceId, $singleton): void
+    public function setSingleton(string $serviceId, $singleton): void
     {
         self::$singletons[$serviceId] = $singleton;
     }
@@ -255,7 +255,7 @@ class Container implements ContainerContract
         // If the service is in the container
         if ($this->has($serviceId)) {
             // Return the made service
-            return $this->make($serviceId, $arguments);
+            return $this->makeService($serviceId, $arguments);
         }
 
         // Check if the service id is provided by a deferred service provider
@@ -280,7 +280,7 @@ class Container implements ContainerContract
      *
      * @return mixed
      */
-    public function make(string $serviceId, array $arguments = null)
+    public function makeService(string $serviceId, array $arguments = null)
     {
         $service   = self::$services[$serviceId];
         $arguments = $service->getDefaults() ?? $arguments;
@@ -298,7 +298,7 @@ class Container implements ContainerContract
         if ($service->isSingleton()) {
             $this->app->events()->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
-            $this->singleton($serviceId, $made);
+            $this->setSingleton($serviceId, $made);
         }
 
         return $made;

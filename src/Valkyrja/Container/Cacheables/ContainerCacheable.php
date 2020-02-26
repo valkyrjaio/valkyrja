@@ -155,7 +155,7 @@ trait ContainerCacheable
         // Iterate through the services
         foreach ($contextServices as $context) {
             // Set the service
-            $this->context($context);
+            $this->setContext($context);
         }
 
         // Get all the annotated services from the list of classes
@@ -166,7 +166,7 @@ trait ContainerCacheable
         // Iterate through the services
         foreach ($aliasServices as $alias) {
             // Set the service
-            $this->alias($alias->getName(), $alias->getId());
+            $this->setAlias($alias->getName(), $alias->getId());
         }
     }
 
@@ -223,7 +223,7 @@ trait ContainerCacheable
      *
      * @return void
      */
-    abstract public function alias(string $alias, string $serviceId): void;
+    abstract public function setAlias(string $alias, string $serviceId): void;
 
     /**
      * Bind a service to the container.
@@ -242,7 +242,7 @@ trait ContainerCacheable
      *
      * @return void
      */
-    abstract public function context(ServiceContext $serviceContext): void;
+    abstract public function setContext(ServiceContext $serviceContext): void;
 
     /**
      * Get a singleton from the container.

@@ -143,7 +143,7 @@ class EntityManager implements EntityManagerContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(EntityManagerContract::class, new static($app));
+        $app->container()->setSingleton(EntityManagerContract::class, new static($app));
     }
 
     /**

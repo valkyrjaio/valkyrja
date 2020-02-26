@@ -164,7 +164,7 @@ class View implements ViewContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(ViewContract::class, new static($app));
+        $app->container()->setSingleton(ViewContract::class, new static($app));
     }
 
     /**

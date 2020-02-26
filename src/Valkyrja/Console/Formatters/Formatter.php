@@ -75,7 +75,7 @@ class Formatter implements OutputFormatterContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             OutputFormatterContract::class,
             new static()
         );

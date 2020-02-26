@@ -110,7 +110,7 @@ class Annotator implements AnnotationsContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(
+        $app->container()->setSingleton(
             AnnotationsContract::class,
             new static($app)
         );
