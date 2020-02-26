@@ -84,6 +84,13 @@ class EntityManager implements EntityManagerContract
     protected array $config;
 
     /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
+
+    /**
      * Adapters.
      *
      * @var Adapter[]
@@ -108,6 +115,7 @@ class EntityManager implements EntityManagerContract
         $this->config          = $app->config()[CKP::DB];
         $this->app             = $app;
         $this->connection      = $connection ?? $this->config[CKP::DEFAULT];
+        $this->defaultAdapter  = $this->config[CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
         $this->entityRetriever = new RetrieverClass($this);
         $this->entityPersister = new PersisterClass($this);
     }
@@ -147,7 +155,7 @@ class EntityManager implements EntityManagerContract
      */
     public function adapter(string $name = null): Adapter
     {
-        $name ??= $this->config[CKP::CONNECTIONS][$this->connection][CKP::ADAPTER] ?? CKP::PDO;
+        $name ??= $this->defaultAdapter;
 
         if (isset(self::$adapters[$name])) {
             return self::$adapters[$name];
@@ -171,9 +179,8 @@ class EntityManager implements EntityManagerContract
     {
         $connection ??= $this->connection;
 
-        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->adapter()->connection(
-                $connection
-            ));
+        return self::$connections[$connection]
+            ?? (self::$connections[$connection] = $this->adapter()->connection($connection));
     }
 
     /**
@@ -186,32 +193,20 @@ class EntityManager implements EntityManagerContract
      */
     public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        $queryBuilder = $this->adapter()->queryBuilder();
-
-        if (null !== $entity) {
-            $queryBuilder->entity($entity, $alias);
-        }
-
-        return $queryBuilder;
+        return $this->adapter()->queryBuilder($entity, $alias);
     }
 
     /**
      * Start a query.
      *
-     * @param string      $query
+     * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query, string $entity = null): Query
+    public function query(string $query = null, string $entity = null): Query
     {
-        $pdoQuery = $this->connection()->query();
-
-        if (null !== $entity) {
-            $pdoQuery->entity($entity);
-        }
-
-        return $pdoQuery->prepare($query);
+        return $this->connection()->query($query, $entity);
     }
 
     /**

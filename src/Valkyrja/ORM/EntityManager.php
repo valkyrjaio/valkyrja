@@ -51,12 +51,12 @@ interface EntityManager
     /**
      * Start a query.
      *
-     * @param string      $query
+     * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query, string $entity = null): Query;
+    public function query(string $query = null, string $entity = null): Query;
 
     /**
      * Get a repository instance.

@@ -82,10 +82,19 @@ class PDOAdapter implements Adapter
     /**
      * The query builder.
      *
+     * @param string|null $entity
+     * @param string|null $alias
+     *
      * @return QueryBuilder
      */
-    public function queryBuilder(): QueryBuilder
+    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        return new SqlQueryBuilder($this->entityManager);
+        $queryBuilder = new SqlQueryBuilder($this->entityManager);
+
+        if (null !== $entity) {
+            $queryBuilder->entity($entity, $alias);
+        }
+
+        return $queryBuilder;
     }
 }

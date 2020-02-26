@@ -74,7 +74,10 @@ interface Connection
     /**
      * The query.
      *
+     * @param string|null $query
+     * @param string|null $entity
+     *
      * @return Query
      */
-    public function query(): Query;
+    public function query(string $query = null, string $entity = null): Query;
 }

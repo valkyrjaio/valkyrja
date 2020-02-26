@@ -204,10 +204,23 @@ class PDOConnection implements ConnectionContract
     /**
      * The query.
      *
+     * @param string|null $query
+     * @param string|null $entity
+     *
      * @return Query
      */
-    public function query(): Query
+    public function query(string $query = null, string $entity = null): Query
     {
-        return new QueryClass($this);
+        $pdoQuery = new QueryClass($this);
+
+        if (null !== $entity) {
+            $pdoQuery->entity($entity);
+        }
+
+        if (null !== $query) {
+            $pdoQuery->prepare($query);
+        }
+
+        return $pdoQuery;
     }
 }

@@ -18,6 +18,7 @@ use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\PDOConnection;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
@@ -28,9 +29,9 @@ use Valkyrja\ORM\Repository;
  * @author Melech Mizrachi
  *
  * @method static Adapter adapter(string $name = null)
- * @method static Connection connection(string $connection = null)
+ * @method static Connection|PDOConnection connection(string $connection = null)
  * @method static QueryBuilder queryBuilder(string $entity = null, string $alias = null)
- * @method static Query query(string $query, string $entity = null)
+ * @method static Query query(string $query = null, string $entity = null)
  * @method static Repository repository(string $entity)
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
