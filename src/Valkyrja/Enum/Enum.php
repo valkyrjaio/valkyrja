@@ -37,7 +37,7 @@ interface Enum extends JsonSerializable
      *
      * @return array
      */
-    public static function validValues(): array;
+    public static function getValidValues(): array;
 
     /**
      * Json serialize the enum.

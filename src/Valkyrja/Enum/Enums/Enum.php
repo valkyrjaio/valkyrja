@@ -79,7 +79,7 @@ abstract class Enum implements EnumContract
         }
 
         // Get the valid values to compare with
-        $validValues = static::validValues();
+        $validValues = static::getValidValues();
 
         // If the value isset in the valid values array and the value matches
         // the value to check
@@ -107,7 +107,7 @@ abstract class Enum implements EnumContract
      *
      * @return array
      */
-    public static function validValues(): array
+    public static function getValidValues(): array
     {
         // If the VALUES array has been populated
         if (null !== static::$VALUES) {

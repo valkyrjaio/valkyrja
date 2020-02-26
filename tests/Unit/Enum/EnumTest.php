@@ -129,7 +129,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'validValues'));
+        $this->assertEquals(true, method_exists(Enum::class, 'getValidValues'));
     }
 
     /**
@@ -144,7 +144,7 @@ class EnumTest extends TestCase
                 EnumClass::FOO => EnumClass::FOO,
                 EnumClass::BAR => EnumClass::BAR,
             ],
-            $this->getEnum()->validValues()
+            $this->getEnum()->getValidValues()
         );
     }
 
@@ -162,7 +162,7 @@ class EnumTest extends TestCase
                     EnumClass::FOO => EnumClass::FOO,
                     EnumClass::BAR => EnumClass::BAR,
                 ],
-                $this->getEnumEmpty()->validValues()
+                $this->getEnumEmpty()->getValidValues()
             )
         );
     }

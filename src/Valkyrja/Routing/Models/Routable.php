@@ -197,7 +197,7 @@ trait Routable
      */
     public function setMethods(array $methods): self
     {
-        if (array_diff($methods, RequestMethod::validValues())) {
+        if (array_diff($methods, RequestMethod::getValidValues())) {
             throw new InvalidArgumentException('Invalid request methods set');
         }
 
