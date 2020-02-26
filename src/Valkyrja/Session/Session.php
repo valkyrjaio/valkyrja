@@ -32,7 +32,7 @@ interface Session
      *
      * @return string
      */
-    public function id(): string;
+    public function getId(): string;
 
     /**
      * Set the session id.
@@ -48,7 +48,7 @@ interface Session
      *
      * @return string
      */
-    public function name(): string;
+    public function getName(): string;
 
     /**
      * Set the session name.

@@ -150,7 +150,7 @@ class CacheSession extends Session
      */
     protected function getCacheSessionId(): string
     {
-        return $this->id() . '_session';
+        return $this->getId() . '_session';
     }
 
     /**

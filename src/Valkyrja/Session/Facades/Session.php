@@ -22,9 +22,9 @@ use Valkyrja\Facade\Facades\Facade;
  * @author Melech Mizrachi
  *
  * @method static void start()
- * @method static string id()
+ * @method static string getId()
  * @method static void setId(string $id)
- * @method static string name()
+ * @method static string getName()
  * @method static void setName(string $name)
  * @method static bool isActive()
  * @method static bool has(string $id)

@@ -77,7 +77,7 @@ class CookieSession extends Session
             throw new SessionStartFailure('The session failed to start!');
         }
 
-        $dataString = $this->request->getCookieParam($this->id());
+        $dataString = $this->request->getCookieParam($this->getId());
 
         // Set the data
         $this->data = $dataString ? $this->crypt->decryptArray($dataString) : [];
@@ -160,7 +160,7 @@ class CookieSession extends Session
     protected function updateCookieSession(): void
     {
         setcookie(
-            $this->id(),
+            $this->getId(),
             $this->crypt->encryptArray($this->data),
             0,
             '/',

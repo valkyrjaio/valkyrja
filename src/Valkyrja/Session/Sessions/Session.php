@@ -111,7 +111,7 @@ class Session implements SessionContract
      *
      * @return string
      */
-    public function id(): string
+    public function getId(): string
     {
         return session_id();
     }
@@ -143,7 +143,7 @@ class Session implements SessionContract
      *
      * @return string
      */
-    public function name(): string
+    public function getName(): string
     {
         return session_name();
     }
