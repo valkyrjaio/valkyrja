@@ -121,7 +121,7 @@ class Annotator implements AnnotationsContract
      *
      * @return Filter
      */
-    public function filter(): Filter
+    public function getFilter(): Filter
     {
         return $this->filter;
     }
@@ -143,7 +143,7 @@ class Annotator implements AnnotationsContract
      *
      * @return Parser
      */
-    public function parser(): Parser
+    public function getParser(): Parser
     {
         return $this->parser;
     }

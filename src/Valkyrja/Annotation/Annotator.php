@@ -30,7 +30,7 @@ interface Annotator
      *
      * @return Filter
      */
-    public function filter(): Filter;
+    public function getFilter(): Filter;
 
     /**
      * Set the filterer.
@@ -46,7 +46,7 @@ interface Annotator
      *
      * @return Parser
      */
-    public function parser(): Parser;
+    public function getParser(): Parser;
 
     /**
      * Set the parser.

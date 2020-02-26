@@ -141,7 +141,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Annotation $annotation */
-            foreach ($this->filter()->classAndMembersAnnotationsByType($type, $class) as $annotation) {
+            foreach ($this->getFilter()->classAndMembersAnnotationsByType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
 
                 // If this annotation is a service

@@ -73,7 +73,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->filter()->classAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->getFilter()->classAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -81,7 +81,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
 
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->filter()->methodsAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->getFilter()->methodsAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);

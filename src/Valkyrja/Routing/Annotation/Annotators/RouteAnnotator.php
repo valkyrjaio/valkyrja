@@ -182,7 +182,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     protected function getClassAnnotations(string $class): array
     {
-        return $this->filter()->filterAnnotationsByTypes(
+        return $this->getFilter()->filterAnnotationsByTypes(
             Annotation::getValidValues(),
             ...$this->classAnnotations($class)
         );
@@ -294,7 +294,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     protected function getClassMemberAnnotations(string $class): array
     {
-        return $this->filter()->filterAnnotationsByTypes(
+        return $this->getFilter()->filterAnnotationsByTypes(
             Annotation::getValidValues(),
             ...$this->classMembersAnnotations($class)
         );

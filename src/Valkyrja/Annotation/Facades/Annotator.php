@@ -28,9 +28,9 @@ use Valkyrja\Facade\Facades\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Filter filter()
+ * @method static Filter getFilter()
  * @method static void setFilter(Filter $filter)
- * @method static Parser parser()
+ * @method static Parser getParser()
  * @method static void setParser(Parser $parser)
  * @method static Annotation[] classAnnotations(string $class)
  * @method static Annotation[] classMembersAnnotations(string $class)
