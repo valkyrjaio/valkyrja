@@ -44,7 +44,7 @@ use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
-use Valkyrja\View\Views\PhpView;
+use Valkyrja\View\Views\View;
 
 use function get_class;
 use function is_array;
@@ -458,7 +458,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        $this->assertEquals(true, $this->app->view() instanceof PhpView);
+        $this->assertEquals(true, $this->app->view() instanceof View);
     }
 
     /**

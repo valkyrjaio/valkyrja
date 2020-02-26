@@ -169,10 +169,12 @@ class Env
     // public const STORAGE_LOGS_DIR    = null;
 
     /*
-     * Views env variables.
+     * View env variables.
      */
-    // public const VIEWS_DIR   = null;
-    // public const VIEWS_PATHS = null;
+    // public const VIEW_DIR     = null;
+    // public const VIEW_ENGINE  = null;
+    // public const VIEW_ENGINES = null;
+    // public const VIEW_PATHS   = null;
 
     /*
      * Twig views env variables.

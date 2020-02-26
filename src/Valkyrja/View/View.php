@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
+use Valkyrja\View\Exceptions\InvalidConfigPath;
+
 /**
  * Interface View.
  *
@@ -24,11 +26,20 @@ interface View
      * Make a new View.
      *
      * @param string|null $template  [optional] The template to set
-     * @param array|null  $variables [optional] The variables to set
+     * @param array       $variables [optional] The variables to set
      *
-     * @return View
+     * @return static
      */
-    public function make(string $template = null, array $variables = null): self;
+    public function make(string $template = null, array $variables = []): self;
+
+    /**
+     * Get a render engine.
+     *
+     * @param string|null $name The name of the engine
+     *
+     * @return Engine
+     */
+    public function engine(string $name = null): Engine;
 
     /**
      * Get the variables.
@@ -42,7 +53,7 @@ interface View
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return View
+     * @return static
      */
     public function setVariables(array $variables = []): self;
 
@@ -61,7 +72,7 @@ interface View
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return View
+     * @return static
      */
     public function setVariable(string $key, $value): self;
 
@@ -88,7 +99,7 @@ interface View
      *
      * @param string $path The path to set
      *
-     * @return View
+     * @return static
      */
     public function setTemplateDir(string $path): self;
 
@@ -104,7 +115,7 @@ interface View
      *
      * @param string $extension The extension to set
      *
-     * @return View
+     * @return static
      */
     public function setFileExtension(string $extension): self;
 
@@ -123,18 +134,29 @@ interface View
     public function getTemplatePath(): string;
 
     /**
+     * Get the full path for a given template.
+     *
+     * @param string $template The template
+     *
+     * @throws InvalidConfigPath
+     *
+     * @return string
+     */
+    public function getFullPath(string $template): string;
+
+    /**
      * Set the layout for the view template.
      *
      * @param string $layout [optional]
      *
-     * @return View
+     * @return static
      */
     public function layout(string $layout = null): self;
 
     /**
      * Set no layout for this view.
      *
-     * @return View
+     * @return static
      */
     public function withoutLayout(): self;
 
@@ -143,15 +165,15 @@ interface View
      *
      * @param string $template The template
      *
-     * @return View
+     * @return static
      */
     public function template(string $template): self;
 
     /**
      * Output a partial.
      *
-     * @param string $partial
-     * @param array  $variables [optional]
+     * @param string $partial   The partial
+     * @param array  $variables [optional] The variables
      *
      * @return string
      */
@@ -160,7 +182,7 @@ interface View
     /**
      * Output a block.
      *
-     * @param string $name
+     * @param string $name The name of the block
      *
      * @return string
      */
@@ -169,7 +191,7 @@ interface View
     /**
      * Determine if a block exists.
      *
-     * @param string $name
+     * @param string $name The name of the block
      *
      * @return bool
      *  True if the block exists
@@ -180,7 +202,7 @@ interface View
     /**
      * Determine if a block has been ended.
      *
-     * @param string $name
+     * @param string $name The name of the block
      *
      * @return bool
      *  True if the block has been ended
@@ -191,7 +213,7 @@ interface View
     /**
      * Start a block.
      *
-     * @param string $name
+     * @param string $name The name of the block
      *
      * @return void
      */
@@ -200,11 +222,11 @@ interface View
     /**
      * End a block.
      *
-     * @param string $name
+     * @param string $name The name of the block
      *
-     * @return string
+     * @return void
      */
-    public function endBlock(string $name): string;
+    public function endBlock(string $name): void;
 
     /**
      * Render the templates and view.

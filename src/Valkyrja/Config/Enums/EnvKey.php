@@ -134,8 +134,10 @@ final class EnvKey extends Enum
     public const STORAGE_UPLOADS_DIR = 'STORAGE_UPLOADS_DIR';
     public const STORAGE_LOGS_DIR    = 'STORAGE_LOGS_DIR';
 
-    public const VIEWS_DIR   = 'VIEWS_DIR';
-    public const VIEWS_PATHS = 'VIEWS_PATHS';
+    public const VIEW_DIR     = 'VIEW_DIR';
+    public const VIEW_ENGINE  = 'VIEW_ENGINE';
+    public const VIEW_ENGINES = 'VIEW_ENGINES';
+    public const VIEW_PATHS   = 'VIEW_PATHS';
 
     public const TWIG_FILE_EXTENSION = 'TWIG_FILE_EXTENSION';
     public const TWIG_DIR            = 'TWIG_DIR';

@@ -24,6 +24,7 @@ declare(strict_types=1);
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\View\Enums\Config;
 
 return [
     /*
@@ -34,7 +35,27 @@ return [
      * //
      *
      */
-    CKP::DIR   => env(EnvKey::VIEWS_DIR, resourcesPath('views')),
+    CKP::DIR     => env(EnvKey::VIEW_DIR, resourcesPath('views')),
+
+    /*
+     *-------------------------------------------------------------------------
+     * View Default Engine
+     *-------------------------------------------------------------------------
+     *
+     * //
+     *
+     */
+    CKP::ENGINE  => env(EnvKey::VIEW_ENGINE, Config::ENGINE),
+
+    /*
+     *-------------------------------------------------------------------------
+     * View Default Engine
+     *-------------------------------------------------------------------------
+     *
+     * //
+     *
+     */
+    CKP::ENGINES => env(EnvKey::VIEW_ENGINES, Config::ENGINES),
 
     /*
      *-------------------------------------------------------------------------
@@ -44,5 +65,5 @@ return [
      * //
      *
      */
-    CKP::PATHS => env(EnvKey::VIEWS_PATHS, []),
+    CKP::PATHS   => env(EnvKey::VIEW_PATHS, []),
 ];

@@ -51,7 +51,7 @@ use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Annotation\Annotators\RouteAnnotator;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Session\Sessions\Session;
-use Valkyrja\View\Views\PhpView;
+use Valkyrja\View\Views\View;
 
 /**
  * Enum Provider.
@@ -86,7 +86,7 @@ final class Provider extends Enum
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RouteAnnotator::class;
     public const SESSION             = Session::class;
-    public const VIEW                = PhpView::class;
+    public const VIEW                = View::class;
     public const CLIENT              = GuzzleClient::class;
     public const LOGGER              = LoggerServiceProvider::class;
     public const MAIL                = PHPMailerMail::class;

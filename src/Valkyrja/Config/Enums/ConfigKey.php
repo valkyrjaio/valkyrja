@@ -126,8 +126,10 @@ final class ConfigKey extends Enum
     public const STORAGE_UPLOADS_DIR = 'storage.uploadsDir';
     public const STORAGE_LOGS_DIR    = 'storage.logsDir';
 
-    public const VIEWS_DIR   = 'views.dir';
-    public const VIEWS_PATHS = 'views.paths';
+    public const VIEW_DIR     = 'view.dir';
+    public const VIEW_ENGINE  = 'view.engine';
+    public const VIEW_ENGINES = 'view.engines';
+    public const VIEW_PATHS   = 'view.paths';
 
     public const TWIG_FILE_EXTENSION = 'twig.fileExtension';
     public const TWIG_DIR            = 'twig.dir';

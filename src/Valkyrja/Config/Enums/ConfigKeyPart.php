@@ -39,7 +39,7 @@ final class ConfigKeyPart extends Enum
     public const ROUTING     = 'routing';
     public const SESSION     = 'session';
     public const STORAGE     = 'storage';
-    public const VIEWS       = 'views';
+    public const VIEW        = 'view';
     public const TWIG        = 'twig';
 
     public const ENV                         = 'env';
@@ -87,6 +87,7 @@ final class ConfigKeyPart extends Enum
     public const COLLATION                   = 'collation';
     public const PREFIX                      = 'prefix';
     public const STRICT                      = 'strict';
+    public const ENGINES                     = 'engines';
     public const ENGINE                      = 'engine';
     public const SCHEMA                      = 'schema';
     public const SSL_MODE                    = 'sslmode';
@@ -96,6 +97,7 @@ final class ConfigKeyPart extends Enum
     public const ADAPTERS                    = 'adapters';
     public const ADAPTER                     = 'adapter';
     public const PDO                         = 'PDO';
+    public const PHP                         = 'PHP';
     public const LOCAL                       = 'local';
     public const S3                          = 's3';
     public const DIR                         = 'dir';

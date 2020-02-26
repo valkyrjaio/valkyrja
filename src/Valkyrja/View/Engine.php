@@ -21,6 +21,15 @@ namespace Valkyrja\View;
 interface Engine
 {
     /**
+     * Make a new engine.
+     *
+     * @param View $view The view
+     *
+     * @return static
+     */
+    public static function make(View $view): self;
+
+    /**
      * Output a partial.
      *
      * @param string $partial   The partial
@@ -80,11 +89,12 @@ interface Engine
     public function endBlock(string $name): void;
 
     /**
-     * Render the templates and view.
+     * Render a template.
      *
-     * @param array $variables [optional] The variables to set
+     * @param string $path      The path to render
+     * @param array  $variables [optional] The variables to set
      *
      * @return string
      */
-    public function render(array $variables = []): string;
+    public function render(string $path, array $variables = []): string;
 }

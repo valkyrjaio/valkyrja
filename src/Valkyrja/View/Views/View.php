@@ -15,22 +15,30 @@ namespace Valkyrja\View\Views;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
-use Valkyrja\View\View;
+use Valkyrja\View\View as ViewContract;
 
 use const ENT_QUOTES;
-use const EXTR_OVERWRITE;
 
 /**
  * Class View.
  *
  * @author Melech Mizrachi
  */
-class PhpView implements View
+class View implements ViewContract
 {
     use Provides;
+
+    /**
+     * The engines.
+     *
+     * @var Engine[]
+     */
+    protected static array $engines = [];
 
     /**
      * The application.
@@ -87,20 +95,6 @@ class PhpView implements View
     protected array $variables = [];
 
     /**
-     * The block status.
-     *
-     * @var array
-     */
-    protected array $blockStatus = [];
-
-    /**
-     * The view blocks.
-     *
-     * @var array
-     */
-    protected array $blocks = [];
-
-    /**
      * Whether to track layout changes.
      *
      * @var bool
@@ -115,19 +109,35 @@ class PhpView implements View
     protected bool $hasLayoutChanged = false;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * The default engine.
+     *
+     * @var string
+     */
+    protected string $engine;
+
+    /**
      * View constructor.
      *
      * @param Application $app       The application
      * @param string|null $template  [optional] The template to set
-     * @param array|null  $variables [optional] The variables to set
+     * @param array       $variables [optional] The variables to set
      *
      * @throws InvalidConfigPath
      */
-    public function __construct(Application $app, string $template = null, array $variables = null)
+    public function __construct(Application $app, string $template = null, array $variables = [])
     {
-        $this->app = $app;
-        $this->setVariables($variables ?? []);
-        $this->setTemplateDir($this->app->config(ConfigKey::VIEWS_DIR));
+        $this->app    = $app;
+        $this->config = $app->config()[ConfigKeyPart::VIEW];
+        $this->engine = $this->config[ConfigKeyPart::ENGINE];
+        $this->setVariables($variables);
+        $this->setTemplateDir($this->app->config(ConfigKey::VIEW_DIR));
         $this->template($template ?? $this->template);
     }
 
@@ -139,7 +149,7 @@ class PhpView implements View
     public static function provides(): array
     {
         return [
-            View::class,
+            ViewContract::class,
         ];
     }
 
@@ -154,22 +164,43 @@ class PhpView implements View
      */
     public static function publish(Application $app): void
     {
-        $app->container()->singleton(View::class, new static($app));
+        $app->container()->singleton(ViewContract::class, new static($app));
     }
 
     /**
      * Make a new View.
      *
      * @param string|null $template  [optional] The template to set
-     * @param array|null  $variables [optional] The variables to set
+     * @param array       $variables [optional] The variables to set
      *
      * @throws InvalidConfigPath
      *
-     * @return View
+     * @return static
      */
-    public function make(string $template = null, array $variables = null): View
+    public function make(string $template = null, array $variables = []): self
     {
         return new static($this->app, $template, $variables);
+    }
+
+    /**
+     * Get a render engine.
+     *
+     * @param string|null $name The name of the engine
+     *
+     * @return Engine
+     */
+    public function engine(string $name = null): Engine
+    {
+        $name ??= $this->engine;
+
+        if (isset(self::$engines[$name])) {
+            return self::$engines[$name];
+        }
+
+        /** @var Engine $engine */
+        $engine = $this->config[ConfigKeyPart::ENGINES][$name];
+
+        return self::$engines[$name] = $engine::make($this);
     }
 
     /**
@@ -187,9 +218,9 @@ class PhpView implements View
      *
      * @param array $variables [optional] The variables to set
      *
-     * @return View
+     * @return static
      */
-    public function setVariables(array $variables = []): View
+    public function setVariables(array $variables = []): self
     {
         $this->variables = array_merge($this->variables, $variables);
 
@@ -214,9 +245,9 @@ class PhpView implements View
      * @param string $key   The variable key to set
      * @param mixed  $value The value to set
      *
-     * @return View
+     * @return static
      */
-    public function setVariable(string $key, $value): View
+    public function setVariable(string $key, $value): self
     {
         $this->variables[$key] = $value;
 
@@ -257,9 +288,9 @@ class PhpView implements View
      *
      * @param string $path The path to set
      *
-     * @return View
+     * @return static
      */
-    public function setTemplateDir(string $path): View
+    public function setTemplateDir(string $path): self
     {
         $this->templateDir = $path;
 
@@ -281,9 +312,9 @@ class PhpView implements View
      *
      * @param string $extension The extension to set
      *
-     * @return View
+     * @return static
      */
-    public function setFileExtension(string $extension): View
+    public function setFileExtension(string $extension): self
     {
         $this->fileExtension = $extension;
 
@@ -311,184 +342,6 @@ class PhpView implements View
     }
 
     /**
-     * Set the layout for the view template.
-     *
-     * @param string $layout [optional] The layout to set
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return View
-     */
-    public function layout(string $layout = null): View
-    {
-        // If no layout has been set
-        if (null === $layout) {
-            // Set to null
-            return $this->withoutLayout();
-        }
-
-        // If we should be tracking layout changes
-        if ($this->trackLayoutChanges) {
-            // Set the flag
-            $this->hasLayoutChanged = true;
-        }
-
-        $this->layout     = $layout;
-        $this->layoutPath = $this->getFullPath($layout);
-
-        return $this;
-    }
-
-    /**
-     * Set no layout for this view.
-     *
-     * @return View
-     */
-    public function withoutLayout(): View
-    {
-        $this->layout     = null;
-        $this->layoutPath = null;
-
-        return $this;
-    }
-
-    /**
-     * Set the template for the view.
-     *
-     * @param string $template The template
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return View
-     */
-    public function template(string $template): View
-    {
-        $this->template     = $template;
-        $this->templatePath = $this->getFullPath($template);
-
-        return $this;
-    }
-
-    /**
-     * Output a partial.
-     *
-     * @param string $partial   The partial
-     * @param array  $variables [optional]
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return string
-     */
-    public function partial(string $partial, array $variables = []): string
-    {
-        return $this->renderTemplate($this->getFullPath($partial), $variables);
-    }
-
-    /**
-     * Output a block.
-     *
-     * @param string $name The block's name
-     *
-     * @return string
-     */
-    public function block(string $name): string
-    {
-        return $this->blocks[$name] ?? '';
-    }
-
-    /**
-     * Determine if a block exists.
-     *
-     * @param string $name
-     *
-     * @return bool
-     *  True if the block exists
-     *  False if the block doesn't exist
-     */
-    public function hasBlock(string $name): bool
-    {
-        return isset($this->blocks[$name]);
-    }
-
-    /**
-     * Determine if a block has been ended.
-     *
-     * @param string $name
-     *
-     * @return bool
-     *  True if the block has been ended
-     *  False if the block has not yet been ended
-     */
-    public function hasBlockBeenEnded(string $name): bool
-    {
-        return ! isset($this->blockStatus[$name]);
-    }
-
-    /**
-     * Start a block.
-     *
-     * @param string $name The block's name
-     *
-     * @return void
-     */
-    public function startBlock(string $name): void
-    {
-        $this->blockStatus[$name] = $name;
-
-        ob_start();
-    }
-
-    /**
-     * End a block.
-     *
-     * @param string $name The block's name
-     *
-     * @return string
-     */
-    public function endBlock(string $name): string
-    {
-        unset($this->blockStatus[$name]);
-
-        return $this->blocks[$name] = ob_get_clean();
-    }
-
-    /**
-     * Render the templates and view.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return string
-     */
-    public function render(array $variables = []): string
-    {
-        // Set the variables with the new variables and this view instance
-        $this->variables = array_merge($this->variables, $variables, ['view' => $this]);
-
-        // Render the template
-        $template = $this->renderTemplate($this->templatePath);
-
-        // Check if a layout has been set
-        if (null === $this->layout) {
-            return $template;
-        }
-
-        // Begin tracking layout changes for recursive layout
-        $this->trackLayoutChanges = true;
-
-        return $this->renderLayout($this->layoutPath);
-    }
-
-    /**
-     * Get the view as a string.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->render();
-    }
-
-    /**
      * Get the full path for a given template.
      *
      * @param string $template The template
@@ -497,7 +350,7 @@ class PhpView implements View
      *
      * @return string
      */
-    protected function getFullPath(string $template): string
+    public function getFullPath(string $template): string
     {
         // If the first character of the template is an @ symbol
         // Then this is a template from a path in the config
@@ -529,23 +382,175 @@ class PhpView implements View
     }
 
     /**
-     * Render a template.
+     * Set the layout for the view template.
      *
-     * @param string $templatePath The template path
-     * @param array  $variables    [optional] The variables to set
+     * @param string $layout [optional] The layout to set
+     *
+     * @throws InvalidConfigPath
+     *
+     * @return static
+     */
+    public function layout(string $layout = null): self
+    {
+        // If no layout has been set
+        if (null === $layout) {
+            // Set to null
+            return $this->withoutLayout();
+        }
+
+        // If we should be tracking layout changes
+        if ($this->trackLayoutChanges) {
+            // Set the flag
+            $this->hasLayoutChanged = true;
+        }
+
+        $this->layout     = $layout;
+        $this->layoutPath = $this->getFullPath($layout);
+
+        return $this;
+    }
+
+    /**
+     * Set no layout for this view.
+     *
+     * @return static
+     */
+    public function withoutLayout(): self
+    {
+        $this->layout     = null;
+        $this->layoutPath = null;
+
+        return $this;
+    }
+
+    /**
+     * Set the template for the view.
+     *
+     * @param string $template The template
+     *
+     * @throws InvalidConfigPath
+     *
+     * @return static
+     */
+    public function template(string $template): self
+    {
+        $this->template     = $template;
+        $this->templatePath = $this->getFullPath($template);
+
+        return $this;
+    }
+
+    /**
+     * Output a partial.
+     *
+     * @param string $partial   The partial
+     * @param array  $variables [optional] The variables
      *
      * @return string
      */
-    protected function renderTemplate(string $templatePath, array $variables = []): string
+    public function partial(string $partial, array $variables = []): string
     {
-        $variables = array_merge($this->variables, $variables);
+        return $this->engine()->partial($partial, $variables);
+    }
 
-        extract($variables, EXTR_OVERWRITE);
+    /**
+     * Output a block.
+     *
+     * @param string $name The name of the block
+     *
+     * @return string
+     */
+    public function block(string $name): string
+    {
+        return $this->engine()->block($name);
+    }
 
-        ob_start();
-        include $templatePath;
+    /**
+     * Determine if a block exists.
+     *
+     * @param string $name The name of the block
+     *
+     * @return bool
+     *  True if the block exists
+     *  False if the block doesn't exist
+     */
+    public function hasBlock(string $name): bool
+    {
+        return $this->engine()->hasBlock($name);
+    }
 
-        return ob_get_clean();
+    /**
+     * Determine if a block has been ended.
+     *
+     * @param string $name The name of the block
+     *
+     * @return bool
+     *  True if the block has been ended
+     *  False if the block has not yet been ended
+     */
+    public function hasBlockBeenEnded(string $name): bool
+    {
+        return $this->engine()->hasBlockBeenEnded($name);
+    }
+
+    /**
+     * Start a block.
+     *
+     * @param string $name The name of the block
+     *
+     * @return void
+     */
+    public function startBlock(string $name): void
+    {
+        $this->engine()->startBlock($name);
+    }
+
+    /**
+     * End a block.
+     *
+     * @param string $name The name of the block
+     *
+     * @return void
+     */
+    public function endBlock(string $name): void
+    {
+        $this->engine()->endBlock($name);
+    }
+
+    /**
+     * Render the templates and view.
+     *
+     * @param array $variables [optional] The variables to set
+     *
+     * @return string
+     */
+    public function render(array $variables = []): string
+    {
+        // Set the variables with the new variables and this view instance
+        $this->variables = array_merge($this->variables, $variables, ['view' => $this]);
+
+        // Render the template
+        $template = $this->engine()->render($this->templatePath);
+
+        // Check if a layout has been set
+        if (null === $this->layout) {
+            return $template;
+        }
+
+        // Begin tracking layout changes for recursive layout
+        $this->trackLayoutChanges = true;
+
+        return $this->renderLayout($this->layoutPath);
+    }
+
+    /**
+     * Get the view as a string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->render();
     }
 
     /**
@@ -558,7 +563,7 @@ class PhpView implements View
     protected function renderLayout(string $layoutPath): string
     {
         // Render the layout
-        $renderedLayout = $this->renderTemplate($layoutPath);
+        $renderedLayout = $this->engine()->render($layoutPath);
 
         // Check if the layout has changed
         if ($this->hasLayoutChanged) {

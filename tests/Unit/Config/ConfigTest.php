@@ -12,6 +12,7 @@
 namespace Valkyrja\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
+use Valkyrja\Config\Enums\ConfigKeyPart;
 
 use function is_array;
 
@@ -56,7 +57,7 @@ class ConfigTest extends TestCase
      */
     public function testAnnotationsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['annotations']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::ANNOTATIONS]));
     }
 
     /**
@@ -66,7 +67,7 @@ class ConfigTest extends TestCase
      */
     public function testAppConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['app']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::APP]));
     }
 
     /**
@@ -76,7 +77,7 @@ class ConfigTest extends TestCase
      */
     public function testContainerConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['container']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::CONTAINER]));
     }
 
     /**
@@ -86,7 +87,7 @@ class ConfigTest extends TestCase
      */
     public function testConsoleConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['console']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::CONSOLE]));
     }
 
     /**
@@ -96,7 +97,7 @@ class ConfigTest extends TestCase
      */
     public function testEventsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['events']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::EVENTS]));
     }
 
     /**
@@ -106,7 +107,7 @@ class ConfigTest extends TestCase
      */
     public function testLoggerConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['logger']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::LOGGER]));
     }
 
     /**
@@ -116,7 +117,7 @@ class ConfigTest extends TestCase
      */
     public function testRoutingConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['routing']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::ROUTING]));
     }
 
     /**
@@ -126,7 +127,7 @@ class ConfigTest extends TestCase
      */
     public function testSessionConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['session']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::SESSION]));
     }
 
     /**
@@ -136,6 +137,6 @@ class ConfigTest extends TestCase
      */
     public function testViewsConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()['views']));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::VIEW]));
     }
 }

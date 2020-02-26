@@ -177,7 +177,7 @@ return [
      * all the configurations necessary to make that work properly.
      *
      */
-    CKP::VIEWS           => require __DIR__ . '/view.php',
+    CKP::VIEW            => require __DIR__ . '/view.php',
 
     /*
      *-------------------------------------------------------------------------

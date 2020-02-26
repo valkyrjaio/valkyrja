@@ -23,7 +23,7 @@ use Valkyrja\View\View as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static Contract make(string $template = null, array $variables = null)
+ * @method static Contract make(string $template = null, array $variables = [])
  * @method static array getVariables()
  * @method static Contract setVariables(array $variables = [])
  * @method static mixed variable(string $key)
