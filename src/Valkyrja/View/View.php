@@ -151,7 +151,7 @@ interface View
      *
      * @return static
      */
-    public function layout(string $layout = null): self;
+    public function setLayout(string $layout = null): self;
 
     /**
      * Set no layout for this view.
@@ -167,7 +167,7 @@ interface View
      *
      * @return static
      */
-    public function template(string $template): self;
+    public function setTemplate(string $template): self;
 
     /**
      * Output a partial.
@@ -177,7 +177,7 @@ interface View
      *
      * @return string
      */
-    public function partial(string $partial, array $variables = []): string;
+    public function getPartial(string $partial, array $variables = []): string;
 
     /**
      * Output a block.
@@ -186,7 +186,7 @@ interface View
      *
      * @return string
      */
-    public function block(string $name): string;
+    public function getBlock(string $name): string;
 
     /**
      * Determine if a block exists.

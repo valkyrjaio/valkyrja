@@ -86,7 +86,7 @@ class PHPEngine implements Engine
      *
      * @return string
      */
-    public function partial(string $partial, array $variables = []): string
+    public function getPartial(string $partial, array $variables = []): string
     {
         return $this->render($this->view->getFullPath($partial), $variables);
     }
@@ -98,7 +98,7 @@ class PHPEngine implements Engine
      *
      * @return string
      */
-    public function block(string $name): string
+    public function getBlock(string $name): string
     {
         return $this->blocks[$name] ?? '';
     }

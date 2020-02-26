@@ -138,7 +138,7 @@ class View implements ViewContract
         $this->engine = $this->config[ConfigKeyPart::ENGINE];
         $this->setVariables($variables);
         $this->setTemplateDir($this->app->config(ConfigKey::VIEW_DIR));
-        $this->template($template ?? $this->template);
+        $this->setTemplate($template ?? $this->template);
     }
 
     /**
@@ -390,7 +390,7 @@ class View implements ViewContract
      *
      * @return static
      */
-    public function layout(string $layout = null): self
+    public function setLayout(string $layout = null): self
     {
         // If no layout has been set
         if (null === $layout) {
@@ -432,7 +432,7 @@ class View implements ViewContract
      *
      * @return static
      */
-    public function template(string $template): self
+    public function setTemplate(string $template): self
     {
         $this->template     = $template;
         $this->templatePath = $this->getFullPath($template);
@@ -448,9 +448,9 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function partial(string $partial, array $variables = []): string
+    public function getPartial(string $partial, array $variables = []): string
     {
-        return $this->engine()->partial($partial, $variables);
+        return $this->engine()->getPartial($partial, $variables);
     }
 
     /**
@@ -460,9 +460,9 @@ class View implements ViewContract
      *
      * @return string
      */
-    public function block(string $name): string
+    public function getBlock(string $name): string
     {
-        return $this->engine()->block($name);
+        return $this->engine()->getBlock($name);
     }
 
     /**

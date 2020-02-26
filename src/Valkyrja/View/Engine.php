@@ -37,7 +37,7 @@ interface Engine
      *
      * @return string
      */
-    public function partial(string $partial, array $variables = []): string;
+    public function getPartial(string $partial, array $variables = []): string;
 
     /**
      * Output a block.
@@ -46,7 +46,7 @@ interface Engine
      *
      * @return string
      */
-    public function block(string $name): string;
+    public function getBlock(string $name): string;
 
     /**
      * Determine if a block exists.
