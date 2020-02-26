@@ -24,7 +24,7 @@ use Valkyrja\View\Engines\PHPEngine;
  */
 final class Config extends Enum
 {
-    public const ENGINE = CKP::PHP;
+    public const ENGINE  = CKP::PHP;
     public const ENGINES = [
         CKP::PHP => PHPEngine::class,
     ];
