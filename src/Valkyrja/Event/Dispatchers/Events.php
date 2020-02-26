@@ -338,7 +338,7 @@ class Events implements EventsContract
      *
      * @return void
      */
-    public function set(array $events): void
+    public function setEvents(array $events): void
     {
         self::$events = $events;
     }

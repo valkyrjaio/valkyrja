@@ -35,7 +35,7 @@ use Valkyrja\Facade\Facades\Facade;
  * @method static mixed[] trigger(string $event, array $arguments = null)
  * @method static mixed[] event(Event $event)
  * @method static array all()
- * @method static void set(array $events)
+ * @method static void setEvents(array $events)
  */
 class Events extends Facade
 {
