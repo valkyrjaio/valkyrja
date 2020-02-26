@@ -486,13 +486,13 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
-     * Get a query.
+     * Create a new query.
      *
      * @return Query
      */
-    public function getQuery(): Query
+    public function createQuery(): Query
     {
-        return $this->entityManager->query($this->getQueryString(), $this->entity);
+        return $this->entityManager->createQuery($this->getQueryString(), $this->entity);
     }
 
     /**

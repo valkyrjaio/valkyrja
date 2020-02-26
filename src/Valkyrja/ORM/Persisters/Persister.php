@@ -246,7 +246,7 @@ class Persister implements PersisterContract
         $queryBuilder = $this->getQueryBuilderForSaveCreateDelete($type, $entity, $idField, $properties);
 
         // Create a new query with the query builder
-        $query = $this->entityManager->query($queryBuilder->getQueryString(), get_class($entity));
+        $query = $this->entityManager->createQuery($queryBuilder->getQueryString(), get_class($entity));
 
         // Bind values
         $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
@@ -277,7 +277,7 @@ class Persister implements PersisterContract
         array $properties
     ): QueryBuilder {
         // Create a new query
-        $queryBuilder = $this->entityManager->queryBuilder(get_class($entity))->{strtolower($type)}();
+        $queryBuilder = $this->entityManager->createQueryBuilder(get_class($entity))->{strtolower($type)}();
 
         /* @var QueryBuilder $queryBuilder */
 

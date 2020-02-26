@@ -23,9 +23,9 @@ use PDO;
 interface PDOConnection extends Connection
 {
     /**
-     * The PDO.
+     * Get the PDO.
      *
      * @return PDO
      */
-    public function pdo(): PDO;
+    public function getPDO(): PDO;
 }

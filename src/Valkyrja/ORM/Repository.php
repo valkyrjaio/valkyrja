@@ -213,14 +213,14 @@ interface Repository
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $alias = null): QueryBuilder;
+    public function createQueryBuilder(string $alias = null): QueryBuilder;
 
     /**
-     * Start a query.
+     * Create a new query.
      *
      * @param string $query
      *
      * @return Query
      */
-    public function query(string $query): Query;
+    public function createQuery(string $query): Query;
 }

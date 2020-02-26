@@ -276,7 +276,7 @@ class Retriever implements RetrieverContract
         $queryBuilder = $this->getQueryBuilderForSelect($entity, $columns, $criteria, $orderBy, $limit, $offset);
 
         // Create a new query with the query builder
-        $query = $this->entityManager->query($queryBuilder->getQueryString(), $entity);
+        $query = $this->entityManager->createQuery($queryBuilder->getQueryString(), $entity);
 
         // Bind criteria
         $this->bindValuesForSelect($query, $criteria);
@@ -336,7 +336,7 @@ class Retriever implements RetrieverContract
         int $offset = null
     ): QueryBuilder {
         // Create a new query
-        $query = $this->entityManager->queryBuilder($entity)->select($columns);
+        $query = $this->entityManager->createQueryBuilder($entity)->select($columns);
 
         // If criteria has been passed
         if (null !== $criteria) {

@@ -39,7 +39,7 @@ use Valkyrja\ORM\QueryBuilder as Contract;
  * @method static Contract limit(int $limit)
  * @method static Contract offset(int $offset)
  * @method static string getQueryString()
- * @method static QueryContract getQuery()
+ * @method static QueryContract createQuery()
  */
 class QueryBuilder extends Facade
 {
@@ -50,6 +50,6 @@ class QueryBuilder extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->queryBuilder();
+        return Valkyrja::app()->entityManager()->createQueryBuilder();
     }
 }

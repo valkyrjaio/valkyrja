@@ -111,11 +111,11 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
-     * The PDO.
+     * Get the PDO.
      *
      * @return PDO
      */
-    public function pdo(): PDO
+    public function getPDO(): PDO
     {
         return $this->connection;
     }
@@ -202,14 +202,14 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
-     * The query.
+     * Create a new query.
      *
      * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query = null, string $entity = null): Query
+    public function createQuery(string $query = null, string $entity = null): Query
     {
         $pdoQuery = new QueryClass($this);
 

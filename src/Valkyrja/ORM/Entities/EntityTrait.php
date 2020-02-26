@@ -292,7 +292,7 @@ trait EntityTrait
      */
     protected function getRelationEntities(string $entityName, array $propertyMap): array
     {
-        $repository   = entityManager()->repository($entityName);
+        $repository   = entityManager()->getRepository($entityName);
         $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
         $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
         $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;

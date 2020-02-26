@@ -39,6 +39,6 @@ class Query extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->query();
+        return Valkyrja::app()->entityManager()->createQuery();
     }
 }

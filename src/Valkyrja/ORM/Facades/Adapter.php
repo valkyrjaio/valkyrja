@@ -24,8 +24,8 @@ use Valkyrja\ORM\QueryBuilder;
  *
  * @author Melech Mizrachi
  *
- * @method static Connection|PDOConnection connection(string $connection)
- * @method static QueryBuilder queryBuilder(string $entity = null, string $alias = null)
+ * @method static Connection|PDOConnection getConnection(string $connection)
+ * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
  */
 class Adapter extends Facade
 {
@@ -36,6 +36,6 @@ class Adapter extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->adapter();
+        return Valkyrja::app()->entityManager()->getAdapter();
     }
 }

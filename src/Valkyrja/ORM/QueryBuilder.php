@@ -262,9 +262,9 @@ interface QueryBuilder
     public function getQueryString(): string;
 
     /**
-     * Get a query.
+     * Create a new query.
      *
      * @return Query
      */
-    public function getQuery(): Query;
+    public function createQuery(): Query;
 }

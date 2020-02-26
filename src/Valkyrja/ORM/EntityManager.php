@@ -21,51 +21,51 @@ namespace Valkyrja\ORM;
 interface EntityManager
 {
     /**
-     * The adapter.
+     * Get an adapter by name.
      *
      * @param string|null $name
      *
      * @return Adapter
      */
-    public function adapter(string $name = null): Adapter;
+    public function getAdapter(string $name = null): Adapter;
 
     /**
-     * Get a pdo store by name.
+     * Get a connection by name.
      *
      * @param string|null $connection
      *
      * @return Connection
      */
-    public function connection(string $connection = null): Connection;
+    public function getConnection(string $connection = null): Connection;
 
     /**
-     * Get a new query builder instance.
+     * Create a new query builder.
      *
      * @param string|null $entity
      * @param string|null $alias
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder;
+    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 
     /**
-     * Start a query.
+     * Create a new query.
      *
      * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query = null, string $entity = null): Query;
+    public function createQuery(string $query = null, string $entity = null): Query;
 
     /**
-     * Get a repository instance.
+     * Get a repository by entity name.
      *
      * @param string $entity
      *
      * @return Repository
      */
-    public function repository(string $entity): Repository;
+    public function getRepository(string $entity): Repository;
 
     /**
      * Initiate a transaction.

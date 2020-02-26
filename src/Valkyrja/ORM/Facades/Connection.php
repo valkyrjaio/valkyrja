@@ -30,7 +30,7 @@ use Valkyrja\ORM\Statement;
  * @method static bool rollback()
  * @method static string lastInsertId()
  * @method static Statement prepare(string $query)
- * @method static QueryContract query(string $query = null, string $entity = null)
+ * @method static QueryContract createQuery(string $query = null, string $entity = null)
  */
 class Connection extends Facade
 {
@@ -41,6 +41,6 @@ class Connection extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->connection();
+        return Valkyrja::app()->entityManager()->getConnection();
     }
 }

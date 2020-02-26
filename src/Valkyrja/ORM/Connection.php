@@ -72,12 +72,12 @@ interface Connection
     public function lastInsertId(): string;
 
     /**
-     * The query.
+     * Create a new query.
      *
      * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query = null, string $entity = null): Query;
+    public function createQuery(string $query = null, string $entity = null): Query;
 }

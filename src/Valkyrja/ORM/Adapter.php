@@ -33,21 +33,21 @@ interface Adapter
     public static function make(Application $app, EntityManager $entityManager): self;
 
     /**
-     * The connection.
+     * Create a new connection.
      *
      * @param string $connection The connection to use
      *
      * @return Connection
      */
-    public function connection(string $connection): Connection;
+    public function createConnection(string $connection): Connection;
 
     /**
-     * The query builder.
+     * Create a new query builder.
      *
      * @param string|null $entity
      * @param string|null $alias
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder;
+    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 }

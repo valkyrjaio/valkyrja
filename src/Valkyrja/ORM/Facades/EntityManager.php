@@ -28,11 +28,11 @@ use Valkyrja\ORM\Repository;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter adapter(string $name = null)
- * @method static Connection|PDOConnection connection(string $connection = null)
- * @method static QueryBuilder queryBuilder(string $entity = null, string $alias = null)
- * @method static Query query(string $query = null, string $entity = null)
- * @method static Repository repository(string $entity)
+ * @method static Adapter getAdapter(string $name = null)
+ * @method static Connection|PDOConnection getConnection(string $connection = null)
+ * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
+ * @method static Query createQuery(string $query = null, string $entity = null)
+ * @method static Repository getRepository(string $entity)
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
  * @method static void ensureTransaction()

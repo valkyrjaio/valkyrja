@@ -147,13 +147,13 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * The adapter.
+     * Get an adapter by name.
      *
      * @param string|null $name
      *
      * @return Adapter
      */
-    public function adapter(string $name = null): Adapter
+    public function getAdapter(string $name = null): Adapter
     {
         $name ??= $this->defaultAdapter;
 
@@ -169,48 +169,48 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Get a pdo store by name.
+     * Get a connection by name.
      *
      * @param string|null $connection
      *
      * @return Connection
      */
-    public function connection(string $connection = null): Connection
+    public function getConnection(string $connection = null): Connection
     {
         $connection ??= $this->connection;
 
         return self::$connections[$connection]
-            ?? (self::$connections[$connection] = $this->adapter()->connection($connection));
+            ?? (self::$connections[$connection] = $this->getAdapter()->createConnection($connection));
     }
 
     /**
-     * Get a new query builder instance.
+     * Create a new query builder.
      *
      * @param string|null $entity
      * @param string|null $alias
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $entity = null, string $alias = null): QueryBuilder
+    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        return $this->adapter()->queryBuilder($entity, $alias);
+        return $this->getAdapter()->createQueryBuilder($entity, $alias);
     }
 
     /**
-     * Start a query.
+     * Create a new query.
      *
      * @param string|null $query
      * @param string|null $entity
      *
      * @return Query
      */
-    public function query(string $query = null, string $entity = null): Query
+    public function createQuery(string $query = null, string $entity = null): Query
     {
-        return $this->connection()->query($query, $entity);
+        return $this->getConnection()->createQuery($query, $entity);
     }
 
     /**
-     * Get a repository instance.
+     * Get a repository by entity name.
      *
      * @param string $entity
      *
@@ -218,7 +218,7 @@ class EntityManager implements EntityManagerContract
      *
      * @return Repository
      */
-    public function repository(string $entity): Repository
+    public function getRepository(string $entity): Repository
     {
         if (isset($this->repositories[$entity])) {
             return $this->repositories[$entity];
@@ -239,7 +239,7 @@ class EntityManager implements EntityManagerContract
      */
     public function beginTransaction(): bool
     {
-        return $this->connection()->beginTransaction();
+        return $this->getConnection()->beginTransaction();
     }
 
     /**
@@ -249,7 +249,7 @@ class EntityManager implements EntityManagerContract
      */
     public function inTransaction(): bool
     {
-        return $this->connection()->inTransaction();
+        return $this->getConnection()->inTransaction();
     }
 
     /**
@@ -259,7 +259,7 @@ class EntityManager implements EntityManagerContract
      */
     public function ensureTransaction(): void
     {
-        $this->connection()->ensureTransaction();
+        $this->getConnection()->ensureTransaction();
     }
 
     /**
@@ -273,7 +273,7 @@ class EntityManager implements EntityManagerContract
     {
         $this->entityPersister->persist();
 
-        return $this->connection()->commit();
+        return $this->getConnection()->commit();
     }
 
     /**
@@ -283,7 +283,7 @@ class EntityManager implements EntityManagerContract
      */
     public function rollback(): bool
     {
-        return $this->connection()->rollback();
+        return $this->getConnection()->rollback();
     }
 
     /**
@@ -293,7 +293,7 @@ class EntityManager implements EntityManagerContract
      */
     public function lastInsertId(): string
     {
-        return $this->connection()->lastInsertId();
+        return $this->getConnection()->lastInsertId();
     }
 
     /**

@@ -311,21 +311,21 @@ class Repository implements RepositoryContract
      *
      * @return QueryBuilder
      */
-    public function queryBuilder(string $alias = null): QueryBuilder
+    public function createQueryBuilder(string $alias = null): QueryBuilder
     {
-        return $this->entityManager->queryBuilder($this->entity, $alias);
+        return $this->entityManager->createQueryBuilder($this->entity, $alias);
     }
 
     /**
-     * Start a query.
+     * Create a new query.
      *
      * @param string $query
      *
      * @return Query
      */
-    public function query(string $query): Query
+    public function createQuery(string $query): Query
     {
-        return $this->entityManager->query($query, $this->entity);
+        return $this->entityManager->createQuery($query, $this->entity);
     }
 
     /**
