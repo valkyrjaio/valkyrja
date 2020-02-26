@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -26,16 +27,16 @@ class HttpRedirectExceptionTest extends TestCase
      *
      * @var HttpRedirectException
      */
-    protected \Valkyrja\Http\Exceptions\HttpRedirectException $exception;
+    protected HttpRedirectException $exception;
 
     /**
      * Get the exception.
      *
-     * @return \Valkyrja\Http\Exceptions\HttpRedirectException
+     * @return HttpRedirectException
      */
-    protected function getException(): \Valkyrja\Http\Exceptions\HttpRedirectException
+    protected function getException(): HttpRedirectException
     {
-        return $this->exception ?? $this->exception = new \Valkyrja\Http\Exceptions\HttpRedirectException();
+        return $this->exception ?? $this->exception = new HttpRedirectException();
     }
 
     /**
@@ -45,7 +46,7 @@ class HttpRedirectExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getException() instanceof \Valkyrja\Http\Exceptions\HttpRedirectException);
+        $this->assertEquals(true, $this->getException() instanceof HttpRedirectException);
     }
 
     /**

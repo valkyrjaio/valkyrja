@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -15,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Support\Collection;
 
 use function count;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the collection support class.
@@ -309,6 +312,6 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        $this->assertEquals(json_encode($this->valueAlt), (string) $this->class);
+        $this->assertEquals(json_encode($this->valueAlt, JSON_THROW_ON_ERROR), (string) $this->class);
     }
 }

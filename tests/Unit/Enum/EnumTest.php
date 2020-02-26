@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -17,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Enum\Enums\Enum;
 
 use function get_class;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the Enum abstract class.
@@ -194,7 +197,7 @@ class EnumTest extends TestCase
      */
     public function testJsonSerialize(): void
     {
-        $jsonSerialized = json_encode($this->getEnum());
+        $jsonSerialized = json_encode($this->getEnum(), JSON_THROW_ON_ERROR);
         $serialized     = '"foo"';
 
         $this->assertEquals($serialized, $jsonSerialized);
@@ -223,7 +226,7 @@ class EnumTest extends TestCase
      */
     public function testToStringExists(): void
     {
-        $this->assertEquals(true, method_exists(\Valkyrja\Enum\Enums\Enum::class, '__toString'));
+        $this->assertEquals(true, method_exists(Enum::class, '__toString'));
     }
 
     /**

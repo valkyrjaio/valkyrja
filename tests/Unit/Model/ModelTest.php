@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -12,6 +13,8 @@
 namespace Valkyrja\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the abstract model.
@@ -118,9 +121,9 @@ class ModelTest extends TestCase
             [
                 'property' => null,
                 'prop'     => null,
-            ]
+            ], JSON_THROW_ON_ERROR
         );
 
-        $this->assertEquals($json, json_encode($this->getModel()));
+        $this->assertEquals($json, json_encode($this->getModel(), JSON_THROW_ON_ERROR));
     }
 }

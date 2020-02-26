@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -19,13 +20,11 @@ use Valkyrja\Annotation\Enums\Annotation as AnnotationEnum;
 use Valkyrja\Annotation\Enums\Config;
 use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Parsers\Parser;
-use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Container\Annotation\Models\Alias;
 use Valkyrja\Container\Annotation\Models\Context;
 use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Routing\Annotation\Models\Route;
 

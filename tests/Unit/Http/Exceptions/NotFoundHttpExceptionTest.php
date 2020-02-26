@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 /*
  * This file is part of the Valkyrja framework.
@@ -31,9 +32,9 @@ class NotFoundHttpExceptionTest extends TestCase
     /**
      * Get the exception.
      *
-     * @return \Valkyrja\Http\Exceptions\NotFoundHttpException
+     * @return NotFoundHttpException
      */
-    protected function getException(): \Valkyrja\Http\Exceptions\NotFoundHttpException
+    protected function getException(): NotFoundHttpException
     {
         return $this->exception ?? $this->exception = new NotFoundHttpException();
     }
