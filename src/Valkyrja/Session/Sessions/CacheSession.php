@@ -56,7 +56,7 @@ class CacheSession extends Session
         parent::__construct($application, $sessionId, $sessionName);
 
         $this->cache      = $this->app->cache();
-        $this->cacheStore = $this->cache->store();
+        $this->cacheStore = $this->cache->getStore();
     }
 
     /**

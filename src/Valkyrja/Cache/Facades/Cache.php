@@ -22,7 +22,7 @@ use Valkyrja\Facade\Facades\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Store store(string $name = null)
+ * @method static Store getStore(string $name = null)
  */
 class Cache extends Facade
 {

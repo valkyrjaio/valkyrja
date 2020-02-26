@@ -38,7 +38,14 @@ class Cache implements CacheContract
     protected Application $app;
 
     /**
-     * Stores.
+     * The default store.
+     *
+     * @var string
+     */
+    protected string $defaultStore;
+
+    /**
+     * The stores.
      *
      * @var Store[]
      */
@@ -51,7 +58,8 @@ class Cache implements CacheContract
      */
     public function __construct(Application $app)
     {
-        $this->app = $app;
+        $this->app          = $app;
+        $this->defaultStore = $this->app->config()['cache']['default'];
     }
 
     /**
@@ -90,23 +98,9 @@ class Cache implements CacheContract
      *
      * @return Store
      */
-    public function store(string $name = null): Store
+    public function getStore(string $name = null): Store
     {
-        return $this->getStore($name);
-    }
-
-    /**
-     * Get the appropriate store.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return Store
-     */
-    protected function getStore(string $name = null): Store
-    {
-        $name = $name ?? $this->app->config()['cache']['default'];
+        $name ??= $this->defaultStore;
 
         if (isset($this->stores[$name])) {
             return $this->stores[$name];

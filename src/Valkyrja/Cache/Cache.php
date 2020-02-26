@@ -31,5 +31,5 @@ interface Cache
      *
      * @return Store
      */
-    public function store(string $name = null): Store;
+    public function getStore(string $name = null): Store;
 }
