@@ -129,6 +129,18 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
+     * Ensure a transaction is in progress.
+     *
+     * @return void
+     */
+    public function ensureTransaction(): void
+    {
+        if (! $this->inTransaction()) {
+            $this->beginTransaction();
+        }
+    }
+
+    /**
      * Commit all items in the transaction.
      *
      *

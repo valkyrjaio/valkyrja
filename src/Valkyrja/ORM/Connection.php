@@ -35,6 +35,13 @@ interface Connection
     public function inTransaction(): bool;
 
     /**
+     * Ensure a transaction is in progress.
+     *
+     * @return void
+     */
+    public function ensureTransaction(): void;
+
+    /**
      * Commit all items in the transaction.
      *
      * @return bool

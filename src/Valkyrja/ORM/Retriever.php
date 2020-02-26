@@ -37,7 +37,7 @@ interface Retriever
      *
      * @return Entity|null
      */
-    public function find(string $entity, $id, bool $getRelations = null): ?Entity;
+    public function find(string $entity, $id, bool $getRelations = false): ?Entity;
 
     /**
      * Find one entity by given criteria.
@@ -74,7 +74,7 @@ interface Retriever
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity;
 
     /**
@@ -102,7 +102,7 @@ interface Retriever
         string $entity,
         array $orderBy = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array;
 
     /**
@@ -142,7 +142,7 @@ interface Retriever
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array;
 
     /**

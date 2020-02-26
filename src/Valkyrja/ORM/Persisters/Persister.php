@@ -192,6 +192,9 @@ class Persister implements PersisterContract
      */
     public function persist(): void
     {
+        // Ensure a transaction is in progress
+        $this->entityManager->ensureTransaction();
+
         // Iterate through the models awaiting creation
         foreach ($this->createEntities as $cid => $createEntity) {
             // Create the model

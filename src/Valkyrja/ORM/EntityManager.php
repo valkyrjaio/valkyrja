@@ -82,6 +82,13 @@ interface EntityManager
     public function inTransaction(): bool;
 
     /**
+     * Ensure a transaction is in progress.
+     *
+     * @return void
+     */
+    public function ensureTransaction(): void;
+
+    /**
      * Commit all items in the transaction.
      *
      * @return bool
@@ -115,13 +122,12 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
      * @return Entity|null
      */
-    public function find(string $entity, bool $useRepository, $id, bool $getRelations = null): ?Entity;
+    public function find(string $entity, $id, bool $getRelations = false): ?Entity;
 
     /**
      * Find one entity by given criteria.
@@ -145,7 +151,6 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $offset
@@ -156,12 +161,11 @@ interface EntityManager
      */
     public function findBy(
         string $entity,
-        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity;
 
     /**
@@ -180,7 +184,6 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
@@ -189,10 +192,9 @@ interface EntityManager
      */
     public function findAll(
         string $entity,
-        bool $useRepository,
         array $orderBy = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array;
 
     /**
@@ -217,7 +219,6 @@ interface EntityManager
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -229,13 +230,12 @@ interface EntityManager
      */
     public function findAllBy(
         string $entity,
-        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array;
 
     /**
@@ -253,12 +253,11 @@ interface EntityManager
      * </code>.
      *
      * @param string $entity
-     * @param bool   $useRepository
      * @param array  $criteria
      *
      * @return int
      */
-    public function count(string $entity, bool $useRepository, array $criteria): int;
+    public function count(string $entity, array $criteria): int;
 
     /**
      * Set a model for creation on transaction commit.
@@ -271,11 +270,10 @@ interface EntityManager
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function create(Entity $entity, bool $useRepository): void;
+    public function create(Entity $entity): void;
 
     /**
      * Set a model for saving on transaction commit.
@@ -288,11 +286,10 @@ interface EntityManager
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function save(Entity $entity, bool $useRepository): void;
+    public function save(Entity $entity): void;
 
     /**
      * Set a model for deletion on transaction commit.
@@ -305,11 +302,10 @@ interface EntityManager
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function delete(Entity $entity, bool $useRepository): void;
+    public function delete(Entity $entity): void;
 
     /**
      * Clear a model previously set for creation, save, or deletion.

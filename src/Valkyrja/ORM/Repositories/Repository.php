@@ -81,9 +81,9 @@ class Repository implements RepositoryContract
      *
      * @return Entity|null
      */
-    public function find($id, bool $getRelations = null): ?Entity
+    public function find($id, bool $getRelations = false): ?Entity
     {
-        return $this->entityManager->find($this->entity, false, $id, $getRelations);
+        return $this->entityManager->find($this->entity, $id, $getRelations);
     }
 
     /**
@@ -118,10 +118,15 @@ class Repository implements RepositoryContract
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity {
         return $this->entityManager->findBy(
-            $this->entity, false, $criteria, $orderBy, $offset, $columns, $getRelations
+            $this->entity,
+            $criteria,
+            $orderBy,
+            $offset,
+            $columns,
+            $getRelations
         );
     }
 
@@ -144,9 +149,9 @@ class Repository implements RepositoryContract
      *
      * @return Entity[]
      */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array
+    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = false): array
     {
-        return $this->entityManager->findAll($this->entity, false, $orderBy, $columns, $getRelations);
+        return $this->entityManager->findAll($this->entity, $orderBy, $columns, $getRelations);
     }
 
     /**
@@ -183,10 +188,10 @@ class Repository implements RepositoryContract
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array {
         return $this->entityManager->findAllBy(
-            $this->entity, false, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
+            $this->entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
         );
     }
 
@@ -208,7 +213,7 @@ class Repository implements RepositoryContract
      */
     public function count(array $criteria): int
     {
-        return $this->entityManager->count($this->entity, false, $criteria);
+        return $this->entityManager->count($this->entity, $criteria);
     }
 
     /**
@@ -227,7 +232,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->create($entity, false);
+        $this->entityManager->create($entity);
     }
 
     /**
@@ -246,7 +251,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->save($entity, false);
+        $this->entityManager->save($entity);
     }
 
     /**
@@ -265,7 +270,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->delete($entity, false);
+        $this->entityManager->delete($entity);
     }
 
     /**

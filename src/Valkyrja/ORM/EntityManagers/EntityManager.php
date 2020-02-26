@@ -32,8 +32,6 @@ use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
-use function get_class;
-
 /**
  * Class EntityManager.
  *
@@ -173,7 +171,9 @@ class EntityManager implements EntityManagerContract
     {
         $connection ??= $this->connection;
 
-        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->adapter()->connection($connection));
+        return self::$connections[$connection] ?? (self::$connections[$connection] = $this->adapter()->connection(
+                $connection
+            ));
     }
 
     /**
@@ -258,6 +258,16 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
+     * Ensure a transaction is in progress.
+     *
+     * @return void
+     */
+    public function ensureTransaction(): void
+    {
+        $this->connection()->ensureTransaction();
+    }
+
+    /**
      * Commit all items in the transaction.
      *
      * @throws Exceptions\ExecuteException
@@ -304,18 +314,13 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
      * @return Entity|null
      */
-    public function find(string $entity, bool $useRepository, $id, bool $getRelations = null): ?Entity
+    public function find(string $entity, $id, bool $getRelations = false): ?Entity
     {
-        if ($useRepository) {
-            return $this->repository($entity)->find($id, $getRelations);
-        }
-
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->find($entity, $id, $getRelations);
@@ -343,7 +348,6 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $offset
@@ -354,17 +358,12 @@ class EntityManager implements EntityManagerContract
      */
     public function findBy(
         string $entity,
-        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity {
-        if ($useRepository) {
-            return $this->repository($entity)->findBy($criteria, $orderBy, $offset, $columns, $getRelations);
-        }
-
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->findBy($entity, $criteria, $orderBy, $offset, $columns, $getRelations);
@@ -386,7 +385,6 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $orderBy
      * @param array|null $columns
      * @param bool|null  $getRelations
@@ -395,15 +393,10 @@ class EntityManager implements EntityManagerContract
      */
     public function findAll(
         string $entity,
-        bool $useRepository,
         array $orderBy = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array {
-        if ($useRepository) {
-            return $this->repository($entity)->findAll($orderBy, $columns, $getRelations);
-        }
-
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->findAll($entity, $orderBy, $columns, $getRelations);
@@ -431,7 +424,6 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param string     $entity
-     * @param bool       $useRepository
      * @param array      $criteria
      * @param array|null $orderBy
      * @param int|null   $limit
@@ -443,22 +435,23 @@ class EntityManager implements EntityManagerContract
      */
     public function findAllBy(
         string $entity,
-        bool $useRepository,
         array $criteria,
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array {
-        if ($useRepository) {
-            return $this->repository($entity)->findAllBy($criteria, $orderBy, $limit, $offset, $columns, $getRelations);
-        }
-
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->findAllBy(
-            $entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
+            $entity,
+            $criteria,
+            $orderBy,
+            $limit,
+            $offset,
+            $columns,
+            $getRelations
         );
     }
 
@@ -477,17 +470,12 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param string $entity
-     * @param bool   $useRepository
      * @param array  $criteria
      *
      * @return int
      */
-    public function count($entity, bool $useRepository, array $criteria): int
+    public function count(string $entity, array $criteria): int
     {
-        if ($useRepository) {
-            return $this->repository($entity)->count($criteria);
-        }
-
         ClassHelpers::validateClass($entity, Entity::class);
 
         return $this->entityRetriever->count($entity, $criteria);
@@ -504,22 +492,11 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function create(Entity $entity, bool $useRepository): void
+    public function create(Entity $entity): void
     {
-        if (! $this->inTransaction()) {
-            $this->beginTransaction();
-        }
-
-        if ($useRepository) {
-            $this->repository(get_class($entity))->create($entity);
-
-            return;
-        }
-
         $this->entityPersister->create($entity);
     }
 
@@ -534,22 +511,11 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function save(Entity $entity, bool $useRepository): void
+    public function save(Entity $entity): void
     {
-        if (! $this->inTransaction()) {
-            $this->beginTransaction();
-        }
-
-        if ($useRepository) {
-            $this->repository(get_class($entity))->save($entity);
-
-            return;
-        }
-
         $this->entityPersister->save($entity);
     }
 
@@ -564,22 +530,11 @@ class EntityManager implements EntityManagerContract
      * </code>.
      *
      * @param Entity $entity
-     * @param bool   $useRepository
      *
      * @return void
      */
-    public function delete(Entity $entity, bool $useRepository): void
+    public function delete(Entity $entity): void
     {
-        if (! $this->inTransaction()) {
-            $this->beginTransaction();
-        }
-
-        if ($useRepository) {
-            $this->repository(get_class($entity))->delete($entity);
-
-            return;
-        }
-
         $this->entityPersister->delete($entity);
     }
 

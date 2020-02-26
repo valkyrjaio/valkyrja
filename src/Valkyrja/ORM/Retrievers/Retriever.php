@@ -19,8 +19,8 @@ use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\Support\ClassHelpers;
 use Valkyrja\ORM\Retriever as RetrieverContract;
+use Valkyrja\Support\ClassHelpers;
 
 use function count;
 use function is_array;
@@ -71,7 +71,7 @@ class Retriever implements RetrieverContract
      *
      * @return Entity|null
      */
-    public function find(string $entity, $id, bool $getRelations = null): ?Entity
+    public function find(string $entity, $id, bool $getRelations = false): ?Entity
     {
         if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
@@ -126,7 +126,7 @@ class Retriever implements RetrieverContract
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity {
         return $this->findAllBy($entity, $criteria, $orderBy, 1, $offset, $columns, $getRelations)[0] ?? null;
     }
@@ -156,7 +156,7 @@ class Retriever implements RetrieverContract
         string $entity,
         array $orderBy = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array {
         return $this->findAllBy($entity, [], $orderBy, null, null, $columns, $getRelations);
     }
@@ -198,7 +198,7 @@ class Retriever implements RetrieverContract
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array {
         return (array) $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
     }
@@ -266,8 +266,10 @@ class Retriever implements RetrieverContract
         array $orderBy = null,
         int $limit = null,
         int $offset = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ) {
+        $this->entityManager->ensureTransaction();
+
         ClassHelpers::validateClass($entity, Entity::class);
 
         // Get the query builders
@@ -286,9 +288,9 @@ class Retriever implements RetrieverContract
         $result = $query->getResult();
 
         // If the results are an array (not a count result [int])
-        if (is_array($result)) {
+        if ($getRelations && is_array($result)) {
             // Try to get the entity relations
-            $this->selectResultsRelations($result, $columns, $getRelations);
+            $this->selectResultsRelations($columns, ...$result);
         }
 
         return $result;
@@ -395,21 +397,17 @@ class Retriever implements RetrieverContract
     /**
      * Get select results as an array of Entities.
      *
-     * @param Entity[]   $entities
      * @param array|null $columns
-     * @param bool|null  $getRelations
+     * @param Entity     ...$entities
      *
      * @return void
      */
-    protected function selectResultsRelations(array $entities, array $columns = null, bool $getRelations = null): void
+    protected function selectResultsRelations(array $columns = null, Entity ...$entities): void
     {
         // Iterate through the rows found
         foreach ($entities as $entity) {
-            // If no columns were specified then we can safely get all the relations
-            if (null === $columns && $getRelations === true) {
-                // Add the model to the final results
-                $entity->setRelations();
-            }
+            // Get the entity relations
+            $entity->setRelations($columns);
         }
     }
 

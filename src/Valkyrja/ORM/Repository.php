@@ -35,7 +35,7 @@ interface Repository
      *
      * @return Entity|null
      */
-    public function find($id, bool $getRelations = null): ?Entity;
+    public function find($id, bool $getRelations = false): ?Entity;
 
     /**
      * Find one entity by given criteria.
@@ -69,7 +69,7 @@ interface Repository
         array $orderBy = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): ?Entity;
 
     /**
@@ -91,7 +91,7 @@ interface Repository
      *
      * @return Entity[]
      */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = null): array;
+    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = false): array;
 
     /**
      * Find entities by given criteria.
@@ -127,7 +127,7 @@ interface Repository
         int $limit = null,
         int $offset = null,
         array $columns = null,
-        bool $getRelations = null
+        bool $getRelations = false
     ): array;
 
     /**
