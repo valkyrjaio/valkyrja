@@ -78,14 +78,14 @@ class LoggerServiceProvider extends Provider
     protected static function bindLoggerInterface(Application $app): void
     {
         $handler = new StreamHandler(
-            $app->config()[ConfigKeyPart::LOGGER][ConfigKeyPart::FILE_PATH],
+            $app->config()[ConfigKeyPart::LOG][ConfigKeyPart::FILE_PATH],
             LogLevel::DEBUG
         );
 
         $app->container()->singleton(
             LoggerInterface::class,
             new Monolog(
-                $app->config()[ConfigKeyPart::LOGGER][ConfigKeyPart::NAME],
+                $app->config()[ConfigKeyPart::LOG][ConfigKeyPart::NAME],
                 [
                     $handler,
                 ]

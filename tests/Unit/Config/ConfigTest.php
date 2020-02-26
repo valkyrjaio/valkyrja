@@ -107,7 +107,7 @@ class ConfigTest extends TestCase
      */
     public function testLoggerConfig(): void
     {
-        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::LOGGER]));
+        $this->assertEquals(true, isset($this->getConfig()[ConfigKeyPart::LOG]));
     }
 
     /**

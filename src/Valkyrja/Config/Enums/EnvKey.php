@@ -106,8 +106,8 @@ final class EnvKey extends Enum
     public const FILESYSTEM_S3_OPTIONS    = 'FILESYSTEM_S3_OPTIONS';
     public const FILESYSTEM_S3_ADAPTER    = 'FILESYSTEM_S3_ADAPTER';
 
-    public const LOGGER_NAME      = 'LOGGER_NAME';
-    public const LOGGER_FILE_PATH = 'LOGGER_FILE_PATH';
+    public const LOG_NAME      = 'LOG_NAME';
+    public const LOG_FILE_PATH = 'LOG_FILE_PATH';
 
     public const MAIL_HOST         = 'MAIL_HOST';
     public const MAIL_PORT         = 'MAIL_PORT';

@@ -128,8 +128,8 @@ class Env
     /*
      * Logger env variables.
      */
-    // public const LOGGER_NAME      = null;
-    // public const LOGGER_FILE_PATH = null;
+    // public const LOG_NAME      = null;
+    // public const LOG_FILE_PATH = null;
 
     /*
      * Mail env variables.

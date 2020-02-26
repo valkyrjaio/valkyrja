@@ -98,8 +98,8 @@ final class ConfigKey extends Enum
     public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
     public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
-    public const LOGGER_NAME      = 'logger.name';
-    public const LOGGER_FILE_PATH = 'logger.filePath';
+    public const LOG_NAME      = 'log.name';
+    public const LOG_FILE_PATH = 'log.filePath';
 
     public const MAIL_HOST         = 'mail.host';
     public const MAIL_PORT         = 'mail.port';

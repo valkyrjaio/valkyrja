@@ -34,7 +34,7 @@ final class ConfigKeyPart extends Enum
     public const DB          = 'database';
     public const EVENTS      = 'events';
     public const FILESYSTEM  = 'filesystem';
-    public const LOGGER      = 'logger';
+    public const LOG         = 'log';
     public const MAIL        = 'mail';
     public const ROUTING     = 'routing';
     public const SESSION     = 'session';
