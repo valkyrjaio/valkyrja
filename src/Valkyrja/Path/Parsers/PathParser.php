@@ -20,6 +20,8 @@ use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Path\PathParser as ParserContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function is_array;
+
 /**
  * Class PathParser.
  *
@@ -189,7 +191,7 @@ REGEX;
     {
         $segments = preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path)
 
-        if ($segments === false) {
+        if (! is_array($segments)) {
             throw new RuntimeException('Invalid path segments set in path: ' . $path);
         }
 
