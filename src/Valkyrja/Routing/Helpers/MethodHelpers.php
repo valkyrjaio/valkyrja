@@ -259,7 +259,7 @@ trait MethodHelpers
             ->setPath($path)
             ->setTo($to)
             ->setName($name)
-            ->setMethods($methods);
+            ->setMethods($methods ?? [RequestMethod::GET, RequestMethod::HEAD]);
     }
 
     /**
@@ -321,7 +321,7 @@ trait MethodHelpers
     /**
      * Verify a handler.
      *
-     * @param string|Closure $handler The handler
+     * @param mixed $handler The handler
      *
      * @return void
      */
