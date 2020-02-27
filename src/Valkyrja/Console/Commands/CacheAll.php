@@ -15,9 +15,9 @@ namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Exceptions\CommandNotFound;
-use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Inputs\Option;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Container\Commands\ContainerCache;
@@ -29,7 +29,7 @@ use Valkyrja\Routing\Commands\RoutesCache;
  *
  * @author Melech Mizrachi
  */
-class CacheAll extends Handler
+class CacheAll extends Commander
 {
     use ProvidesCommand;
 

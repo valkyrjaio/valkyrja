@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Handlers;
+namespace Valkyrja\Console\Commanders;
 
 use Valkyrja\Application\Application;
+use Valkyrja\Console\Commander as HandlerContract;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Handler as HandlerContract;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
 
@@ -27,13 +27,61 @@ use function strlen;
  *
  * @author Melech Mizrachi
  */
-abstract class Handler implements HandlerContract
+abstract class Commander implements HandlerContract
 {
+    /**
+     * The command.
+     */
+    public const COMMAND           = '';
+    public const PATH              = '';
+    public const SHORT_DESCRIPTION = '';
+    public const DESCRIPTION       = '';
+
     /**
      * Tabbing structure to use.
      */
     protected const TAB        = '  ';
     protected const DOUBLE_TAB = self::TAB . self::TAB;
+
+    /**
+     * Get the command.
+     *
+     * @return string
+     */
+    public static function getCommand(): string
+    {
+        return static::COMMAND;
+    }
+
+    /**
+     * Get the command path.
+     *
+     * @return string
+     */
+    public static function getPath(): string
+    {
+        return static::PATH;
+    }
+
+    /**
+     * Get the short description.
+     *
+     * @return string
+     */
+    public static function getShortDescription(): string
+    {
+        return static::SHORT_DESCRIPTION;
+    }
+
+    /**
+     * Get the description.
+     *
+     * @return string
+     */
+    public static function getDescription(): string
+    {
+        return static::DESCRIPTION;
+    }
 
     /**
      * Help docs for this command.

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Support;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Console\Handler;
 use Valkyrja\Console\Models\Command;
 use Valkyrja\Support\Providers\Provides;
 
@@ -22,15 +21,38 @@ use Valkyrja\Support\Providers\Provides;
  * Trait ProvidesCommand.
  *
  * @author Melech Mizrachi
- *
- * @see    Handler::PATH
- * @see    Handler::COMMAND
- * @see    Handler::SHORT_DESCRIPTION
- * @see    Handler::DESCRIPTION
  */
 trait ProvidesCommand
 {
     use Provides;
+
+    /**
+     * Get the command.
+     *
+     * @return string
+     */
+    abstract public static function getCommand(): string;
+
+    /**
+     * Get the command path.
+     *
+     * @return string
+     */
+    abstract public static function getPath(): string;
+
+    /**
+     * Get the short description.
+     *
+     * @return string
+     */
+    abstract public static function getShortDescription(): string;
+
+    /**
+     * The run handler.
+     *
+     * @return int
+     */
+    abstract public function run(): int;
 
     /**
      * Get the provided command.
@@ -40,7 +62,7 @@ trait ProvidesCommand
     public static function provides(): array
     {
         return [
-            static::PATH,
+            static::getPath(),
         ];
     }
 
@@ -55,10 +77,11 @@ trait ProvidesCommand
     {
         $app->console()->addCommand(
             (new Command())
-                ->setPath(static::PATH)
-                ->setName(static::COMMAND)
-                ->setDescription(static::SHORT_DESCRIPTION)
+                ->setPath(static::getPath())
+                ->setName(static::getCommand())
+                ->setDescription(static::getShortDescription())
                 ->setClass(static::class)
+                ->setClass('run')
         );
     }
 
@@ -70,7 +93,7 @@ trait ProvidesCommand
     public static function commands(): array
     {
         return [
-            static::COMMAND,
+            static::getCommand(),
         ];
     }
 }

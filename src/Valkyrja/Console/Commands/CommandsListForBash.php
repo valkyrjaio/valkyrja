@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
+use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
  *
  * @author Melech Mizrachi
  */
-class CommandsListForBash extends Handler
+class CommandsListForBash extends Commander
 {
     use ProvidesCommand;
 

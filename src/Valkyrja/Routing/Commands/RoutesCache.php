@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Commands;
 
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 use const LOCK_EX;
@@ -25,7 +25,7 @@ use const LOCK_EX;
  *
  * @author Melech Mizrachi
  */
-class RoutesCache extends Handler
+class RoutesCache extends Commander
 {
     use ProvidesCommand;
 

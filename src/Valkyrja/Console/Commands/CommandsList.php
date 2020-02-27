@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\Command;
+use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Handlers\Handler;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
 
@@ -26,7 +26,7 @@ use function strlen;
  *
  * @author Melech Mizrachi
  */
-class CommandsList extends Handler
+class CommandsList extends Commander
 {
     use ProvidesCommand;
 

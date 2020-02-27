@@ -14,39 +14,39 @@ declare(strict_types=1);
 namespace Valkyrja\Console;
 
 /**
- * Interface Handler.
+ * Interface Commander.
  *
  * @author Melech Mizrachi
  */
-interface Handler
+interface Commander
 {
     /**
-     * The command.
+     * Get the command.
      *
-     * @var string
+     * @return string
      */
-    public const COMMAND = '';
+    public static function getCommand(): string;
 
     /**
-     * The path.
+     * Get the command path.
      *
-     * @var string
+     * @return string
      */
-    public const PATH = '';
+    public static function getPath(): string;
 
     /**
-     * The short description.
+     * Get the short description.
      *
-     * @var string
+     * @return string
      */
-    public const SHORT_DESCRIPTION = '';
+    public static function getShortDescription(): string;
 
     /**
-     * The description.
+     * Get the description.
      *
-     * @var string
+     * @return string
      */
-    public const DESCRIPTION = '';
+    public static function getDescription(): string;
 
     /**
      * Help docs for this command.
