@@ -18,6 +18,7 @@ use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
 
 use function is_array;
+use function is_string;
 
 /**
  * Trait RouteGroup.
@@ -233,10 +234,14 @@ trait RouteGroup
      */
     protected function mergePropertiesForRoute($value, $routeValue, string $glue = '')
     {
-        if (is_array($value)) {
+        if (is_array($value) && is_array($routeValue)) {
             return array_merge($value, $routeValue);
         }
 
-        return $value . $glue . $routeValue;
+        if (is_string($value) && is_string($routeValue)) {
+            return $value . $glue . $routeValue;
+        }
+
+        return $routeValue;
     }
 }

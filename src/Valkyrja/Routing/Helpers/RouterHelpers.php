@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Helpers;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -135,6 +136,10 @@ trait RouterHelpers
                 $route->getParams()
             )
             : $route->getPath();
+
+        if (null === $path) {
+            throw new RuntimeException('Invalid path for route with name: ' . $name);
+        }
 
         return $host . $this->validateRouteUrl($path);
     }
