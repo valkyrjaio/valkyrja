@@ -30,14 +30,14 @@ use Valkyrja\Routing\Matcher;
 use function strlen;
 
 /**
- * Trait RouteHelpers.
+ * Trait RouterHelpers.
  *
  * @author Melech Mizrachi
  *
  * @property Collection  $collection
  * @property Application $app
  */
-trait RouteHelpers
+trait RouterHelpers
 {
     /**
      * Set a single route.
@@ -55,6 +55,12 @@ trait RouteHelpers
      */
     public function addRoute(Route $route): void
     {
+        $this->setPathInRoute($route);
+        $this->setControllerInRoute($route);
+        $this->setNameInRoute($route);
+        $this->setMiddlewareInRoute($route);
+        $this->setSecureInRoute($route);
+
         // Set the route in the collection
         self::$collection->add($route);
     }
@@ -254,4 +260,49 @@ trait RouteHelpers
 
         return $path;
     }
+
+    /**
+     * Set a controller context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setPathInRoute(Route $route): void;
+
+    /**
+     * Set a controller context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setControllerInRoute(Route $route): void;
+
+    /**
+     * Set a controller context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setNameInRoute(Route $route): void;
+
+    /**
+     * Set a controller context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setMiddlewareInRoute(Route $route): void;
+
+    /**
+     * Set a secure context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setSecureInRoute(Route $route): void;
 }

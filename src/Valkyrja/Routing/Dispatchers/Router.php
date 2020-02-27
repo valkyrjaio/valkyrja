@@ -19,8 +19,9 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Cacheables\CacheableRouter;
 use Valkyrja\Routing\Events\RouteMatched;
-use Valkyrja\Routing\Helpers\MethodHelpers;
-use Valkyrja\Routing\Helpers\RouteHelpers;
+use Valkyrja\Routing\Helpers\RouteGroup;
+use Valkyrja\Routing\Helpers\RouteMethods;
+use Valkyrja\Routing\Helpers\RouterHelpers;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
@@ -38,9 +39,10 @@ use function is_array;
 class Router implements RouterContract
 {
     use CacheableRouter;
-    use MethodHelpers;
     use Provides;
-    use RouteHelpers;
+    use RouteGroup;
+    use RouteMethods;
+    use RouterHelpers;
 
     /**
      * Router constructor.

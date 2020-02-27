@@ -16,11 +16,11 @@ namespace Valkyrja\Routing;
 use Closure;
 
 /**
- * Interface MethodHelpers.
+ * Interface RouteMethods.
  *
  * @author Melech Mizrachi
  */
-interface MethodHelpers
+interface RouteMethods
 {
     /**
      * Helper method to set a GET route.

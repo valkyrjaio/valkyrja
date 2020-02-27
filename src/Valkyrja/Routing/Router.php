@@ -22,7 +22,7 @@ use Valkyrja\Support\Cacheable;
  *
  * @author Melech Mizrachi
  */
-interface Router extends Cacheable, MethodHelpers
+interface Router extends Cacheable, RouteGroup, RouteMethods
 {
     /**
      * Get the route collection.

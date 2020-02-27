@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Facades;
 
+use Closure;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Request;
@@ -20,6 +21,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Router as Contract;
 
 /**
  * Class Router.
@@ -34,6 +36,12 @@ use Valkyrja\Routing\Route;
  * @method static Route head(string $path, $handler, string $name = null)
  * @method static Route any(string $path, $handler, string $name = null)
  * @method static Route redirect(string $path, string $to, array $methods = null, string $name = null)
+ * @method static Contract withPath(string $path)
+ * @method static Contract withController(string $controller)
+ * @method static Contract withName(string $name)
+ * @method static Contract withMiddleware(array $middleware)
+ * @method static Contract withSecure(bool $secure = true)
+ * @method static Contract group(Closure $group)
  * @method static Collection collection()
  * @method static Matcher matcher()
  * @method static void addRoute(Route $route)

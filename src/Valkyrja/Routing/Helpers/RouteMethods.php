@@ -22,11 +22,11 @@ use Valkyrja\Routing\Route;
 use function is_string;
 
 /**
- * Trait MethodHelpers.
+ * Trait RouteMethods.
  *
  * @author Melech Mizrachi
  */
-trait MethodHelpers
+trait RouteMethods
 {
     /**
      * The static handler split.
@@ -350,6 +350,7 @@ trait MethodHelpers
 
         if (strpos($handler, self::$staticHandlerSplit) !== false) {
             $this->setRouteStaticHandler($route, $handler);
+            $route->setStatic();
 
             return;
         }
