@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Path\Parsers;
 
 use InvalidArgumentException;
+use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Path\PathParser as ParserContract;
@@ -186,7 +187,13 @@ REGEX;
      */
     protected function getSegments(string $path): array
     {
-        return preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path);
+        $segments = preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path)
+
+        if ($segments === false) {
+            throw new RuntimeException('Invalid path segments set in path: ' . $path);
+        }
+
+        return $segments;
     }
 
     /**
