@@ -189,7 +189,7 @@ REGEX;
      */
     protected function getSegments(string $path): array
     {
-        $segments = preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path)
+        $segments = preg_split('~' . static::VARIABLE_REGEX . '(*SKIP)(*F) | \[~x', $path);
 
         if (! is_array($segments)) {
             throw new RuntimeException('Invalid path segments set in path: ' . $path);
