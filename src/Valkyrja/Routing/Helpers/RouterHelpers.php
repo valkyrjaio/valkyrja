@@ -22,6 +22,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Route;
@@ -88,11 +89,11 @@ trait RouterHelpers
     public function getRoute(string $name): Route
     {
         // If no route was found
-        if (! $this->hasRoute($name)) {
+        if (! $this->hasRoute($name) || ! $route = self::$collection->getNamed($name)) {
             throw new InvalidRouteName($name);
         }
 
-        return self::$collection->getNamed($name);
+        return $route;
     }
 
     /**
@@ -150,6 +151,7 @@ trait RouterHelpers
      * @param Request $request The request
      *
      * @throws InvalidArgumentException
+     * @throws HttpException
      *
      * @return Route
      */
