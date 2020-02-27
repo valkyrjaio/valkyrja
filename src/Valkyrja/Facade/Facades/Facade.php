@@ -66,14 +66,12 @@ abstract class Facade implements FacadeContract
      */
     public static function setInstance($instance): void
     {
+        static::verifyInstance($instance);
+
         if (is_object($instance)) {
             self::$instances[static::class] = $instance;
 
             return;
-        }
-
-        if (! is_string($instance)) {
-            throw new InvalidArgumentException('Instance must be a string or an object.');
         }
 
         self::$instances[static::class] = self::getContainer()->get($instance);
@@ -136,6 +134,20 @@ abstract class Facade implements FacadeContract
         $staticMethods = static::getStaticMethods();
 
         return ! empty($staticMethods) && (isset($staticMethods[$method]) || in_array($method, $staticMethods, true));
+    }
+
+    /**
+     * Verify an instance's type.
+     *
+     * @param mixed $instance The instance
+     *
+     * @return void
+     */
+    protected static function verifyInstance($instance): void
+    {
+        if (! is_string($instance) && ! is_object($instance)) {
+            throw new InvalidArgumentException('Instance must be a string or an object.');
+        }
     }
 
     /**
