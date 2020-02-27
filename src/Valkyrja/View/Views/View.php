@@ -328,7 +328,7 @@ class View implements ViewContract
      */
     public function getLayoutPath(): string
     {
-        return $this->layoutPath;
+        return $this->layoutPath ?? '';
     }
 
     /**
@@ -533,7 +533,7 @@ class View implements ViewContract
         $template = $this->getEngine()->render($this->templatePath);
 
         // Check if a layout has been set
-        if (null === $this->layout) {
+        if (null === $this->layout || null === $this->layoutPath) {
             return $template;
         }
 
@@ -566,7 +566,7 @@ class View implements ViewContract
         $renderedLayout = $this->getEngine()->render($layoutPath);
 
         // Check if the layout has changed
-        if ($this->hasLayoutChanged) {
+        if ($this->hasLayoutChanged && null !== $this->layoutPath) {
             // Reset the flag
             $this->hasLayoutChanged = false;
             // Render the new layout
