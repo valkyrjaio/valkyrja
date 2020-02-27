@@ -123,6 +123,8 @@ trait Routable
      */
     public function setPath(string $path): self
     {
+        $this->dynamic = strpos($path, '{') !== false;
+
         $this->path = $path;
 
         return $this;

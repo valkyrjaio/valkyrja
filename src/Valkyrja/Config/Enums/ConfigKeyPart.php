@@ -36,6 +36,7 @@ final class ConfigKeyPart extends Enum
     public const FILESYSTEM  = 'filesystem';
     public const LOG         = 'log';
     public const MAIL        = 'mail';
+    public const PATH        = 'path';
     public const ROUTING     = 'routing';
     public const SESSION     = 'session';
     public const STORAGE     = 'storage';
@@ -52,7 +53,7 @@ final class ConfigKeyPart extends Enum
     public const HTTP_EXCEPTION_CLASS        = 'httpExceptionClass';
     public const DISPATCHER                  = 'dispatcher';
     public const EXCEPTION_HANDLER           = 'exceptionHandler';
-    public const PATH_REGEX_MAP              = 'pathRegexMap';
+    public const PATTERNS                    = 'patterns';
     public const ENABLED                     = 'enabled';
     public const MAP                         = 'map';
     public const NAME                        = 'name';

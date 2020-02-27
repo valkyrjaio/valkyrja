@@ -39,7 +39,6 @@ final class ConfigKey extends Enum
     public const APP_VERSION              = 'app.version';
     public const APP_KEY                  = 'app.key';
     public const APP_HTTP_EXCEPTION_CLASS = 'app.httpExceptionClass';
-    public const APP_PATH_REGEX_MAP       = 'app.pathRegexMap';
     public const APP_CONTAINER            = 'app.container';
     public const APP_DISPATCHER           = 'app.dispatcher';
     public const APP_EVENTS               = 'app.events';
@@ -108,6 +107,8 @@ final class ConfigKey extends Enum
     public const MAIL_ENCRYPTION   = 'mail.encryption';
     public const MAIL_USERNAME     = 'mail.username';
     public const MAIL_PASSWORD     = 'mail.password';
+
+    public const PATH_PATTERNS = 'path.patterns';
 
     public const ROUTING_TRAILING_SLASH              = 'routing.trailingSlash';
     public const ROUTING_USE_ABSOLUTE_URLS           = 'routing.useAbsoluteUrls';

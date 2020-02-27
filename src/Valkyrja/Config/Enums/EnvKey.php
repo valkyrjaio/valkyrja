@@ -34,7 +34,6 @@ final class EnvKey extends Enum
     public const APP_VERSION              = 'APP_VERSION';
     public const APP_KEY                  = 'APP_KEY';
     public const APP_HTTP_EXCEPTION_CLASS = 'APP_HTTP_EXCEPTION_CLASS';
-    public const APP_PATH_REGEX_MAP       = 'APP_PATH_REGEX_MAP';
     public const APP_CONTAINER            = 'APP_CONTAINER';
     public const APP_DISPATCHER           = 'APP_DISPATCHER';
     public const APP_EVENTS               = 'APP_EVENTS';
@@ -116,6 +115,8 @@ final class EnvKey extends Enum
     public const MAIL_ENCRYPTION   = 'MAIL_ENCRYPTION';
     public const MAIL_USERNAME     = 'MAIL_USERNAME';
     public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
+
+    public const PATH_PATTERNS = 'PATH_PATTERNS';
 
     public const ROUTING_TRAILING_SLASH              = 'ROUTING_TRAILING_SLASH';
     public const ROUTING_USE_ABSOLUTE_URLS           = 'ROUTING_USE_ABSOLUTE_URLS';

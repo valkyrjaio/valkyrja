@@ -22,7 +22,7 @@ use Valkyrja\Enum\Enums\Enum;
  */
 final class Config extends Enum
 {
-    public const REGEX_MAP = [
+    public const PATTERNS = [
         'num'                  => '(\d+)',
         'slug'                 => '([a-zA-Z0-9-]+)',
         'alpha'                => '([a-zA-Z]+)',

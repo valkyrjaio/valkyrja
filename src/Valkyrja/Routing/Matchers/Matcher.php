@@ -93,7 +93,7 @@ class Matcher implements RouteMatcherContract
         $route = null;
 
         // Let's check if the route is set in the static routes
-        if ($this->collection->issetStatic($path, $method)) {
+        if ($this->collection->hasStatic($path, $method)) {
             $route = $this->getMatchedStaticRoute($path, $method);
         }
 

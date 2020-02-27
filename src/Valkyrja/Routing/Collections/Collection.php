@@ -186,7 +186,7 @@ class Collection implements RouteCollectionContract
      *
      * @return bool
      */
-    public function issetStatic(string $path, string $method = null): bool
+    public function hasStatic(string $path, string $method = null): bool
     {
         if (null === $method) {
             return $this->isset($path);
@@ -240,7 +240,7 @@ class Collection implements RouteCollectionContract
      *
      * @return bool
      */
-    public function issetDynamic(string $regex, string $method = null): bool
+    public function hasDynamic(string $regex, string $method = null): bool
     {
         if (null === $method) {
             return $this->isset($regex);
@@ -286,7 +286,7 @@ class Collection implements RouteCollectionContract
      *
      * @return bool
      */
-    public function issetNamed(string $name): bool
+    public function hasNamed(string $name): bool
     {
         return isset($this->named[$name]);
     }

@@ -78,10 +78,10 @@ trait RouteHelpers
      *
      * @return Route
      */
-    public function route(string $name): Route
+    public function getRoute(string $name): Route
     {
         // If no route was found
-        if (! $this->routeIsset($name)) {
+        if (! $this->hasRoute($name)) {
             throw new InvalidRouteName($name);
         }
 
@@ -95,9 +95,9 @@ trait RouteHelpers
      *
      * @return bool
      */
-    public function routeIsset(string $name): bool
+    public function hasRoute(string $name): bool
     {
-        return self::$collection->issetNamed($name);
+        return self::$collection->hasNamed($name);
     }
 
     /**
@@ -111,10 +111,10 @@ trait RouteHelpers
      *
      * @return string
      */
-    public function routeUrl(string $name, array $data = null, bool $absolute = null): string
+    public function getUrl(string $name, array $data = null, bool $absolute = null): string
     {
         // Get the matching route
-        $route = $this->route($name);
+        $route = $this->getRoute($name);
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
@@ -142,12 +142,12 @@ trait RouteHelpers
      *
      * @return Route
      */
-    public function requestRoute(Request $request): Route
+    public function getRouteFromRequest(Request $request): Route
     {
         // Decode the request uri
         $requestUri = rawurldecode($request->getUri()->getPath());
         // Try to match the route
-        $route = $this->matchRoute($requestUri, $request->getMethod());
+        $route = $this->getRouteByPath($requestUri, $request->getMethod());
 
         // If no route is found
         if (null === $route) {
@@ -170,13 +170,13 @@ trait RouteHelpers
      *      The route if found or null when no static route is
      *      found for the path and method combination specified
      */
-    public function matchRoute(string $path, string $method = null): ?Route
+    public function getRouteByPath(string $path, string $method = null): ?Route
     {
         return self::$collection->matcher()->match($path, $method);
     }
 
     /**
-     * Determine if a uri is valid.
+     * Determine if a uri is internal.
      *
      * @param string $uri The uri to check
      *
@@ -202,7 +202,7 @@ trait RouteHelpers
         $uri = (string) substr($uri, strpos($uri, '/'), strlen($uri));
 
         // Try to match the route
-        $route = $this->matchRoute($uri);
+        $route = $this->getRouteByPath($uri);
 
         return $route instanceof Route;
     }

@@ -113,7 +113,7 @@ class Router implements RouterContract
     public function dispatch(Request $request): Response
     {
         // Get the route
-        $route = $this->requestRoute($request);
+        $route = $this->getRouteFromRequest($request);
 
         // Determine if the route is a redirect
         $this->determineRedirectRoute($route);

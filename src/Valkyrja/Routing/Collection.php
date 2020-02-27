@@ -74,7 +74,7 @@ interface Collection
      *
      * @return bool
      */
-    public function issetStatic(string $path, string $method = null): bool;
+    public function hasStatic(string $path, string $method = null): bool;
 
     /**
      * Get static routes of a certain request method.
@@ -105,7 +105,7 @@ interface Collection
      *
      * @return bool
      */
-    public function issetDynamic(string $regex, string $method = null): bool;
+    public function hasDynamic(string $regex, string $method = null): bool;
 
     /**
      * Get the dynamic routes in this collection.
@@ -134,7 +134,7 @@ interface Collection
      *
      * @return bool
      */
-    public function issetNamed(string $name): bool;
+    public function hasNamed(string $name): bool;
 
     /**
      * Get the named routes in this collection.

@@ -38,7 +38,6 @@ class Env
     // public const APP_VERSION              = null;
     // public const APP_KEY                  = null;
     // public const APP_HTTP_EXCEPTION_CLASS = null;
-    // public const APP_PATH_REGEX_MAP       = null;
     //
     // public const APP_CONTAINER         = null;
     // public const APP_DISPATCHER        = null;
@@ -141,6 +140,11 @@ class Env
     // public const MAIL_ENCRYPTION   = null;
     // public const MAIL_USERNAME     = null;
     // public const MAIL_PASSWORD     = null;
+
+    /**
+     * Path env variables.
+     */
+    // public const PATH_PATTERNS = null;
 
     /*
      * Routing env variables.

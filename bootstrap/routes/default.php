@@ -11,23 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-/*
- *-------------------------------------------------------------------------
- * Define Application Routes
- *-------------------------------------------------------------------------
- *
- * TODO: ADD EXPLANATION
- *
- */
+use Valkyrja\Routing\Facades\Router;
 
-use Valkyrja\Routing\Models\Route;
-
-router()->get(
-    (new Route())
-        ->setPath('/')
-        ->setName('welcome')
-        ->setClosure(
-            static function () {
-            }
-        )
-);
+Router::get('/', static function () {}, 'welcome');

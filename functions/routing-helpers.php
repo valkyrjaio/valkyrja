@@ -55,7 +55,7 @@ if (! function_exists('route')) {
      */
     function route(string $name): Route
     {
-        return router()->route($name);
+        return router()->getRoute($name);
     }
 }
 
@@ -71,7 +71,7 @@ if (! function_exists('routeUrl')) {
      */
     function routeUrl(string $name, array $data = null, bool $absolute = null): string
     {
-        return router()->routeUrl($name, $data, $absolute);
+        return router()->getUrl($name, $data, $absolute);
     }
 }
 

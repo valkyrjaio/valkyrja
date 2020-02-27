@@ -184,7 +184,7 @@ class ResponseFactory implements ResponseFactoryContract
         array $headers = null
     ): RedirectResponse {
         // Get the uri from the router using the route and parameters
-        $uri = $this->app->router()->routeUrl($route, $parameters);
+        $uri = $this->app->router()->getUrl($route, $parameters);
 
         return $this->createRedirectResponse($uri, $statusCode, $headers);
     }

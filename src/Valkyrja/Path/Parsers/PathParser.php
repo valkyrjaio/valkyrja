@@ -260,7 +260,7 @@ REGEX;
      */
     protected function getParamReplacement(int $key, array $params): string
     {
-        return config()[ConfigKeyPart::APP][ConfigKeyPart::PATH_REGEX_MAP][$params[2][$key]]
+        return config()[ConfigKeyPart::PATH][ConfigKeyPart::PATTERNS][$params[2][$key]]
             ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 
