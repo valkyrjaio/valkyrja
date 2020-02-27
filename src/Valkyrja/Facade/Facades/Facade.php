@@ -32,9 +32,9 @@ abstract class Facade implements FacadeContract
     /**
      * The instance.
      *
-     * @var object
+     * @var object[]
      */
-    protected static ?object $instance = null;
+    protected static array $instances = [];
 
     /**
      * The container.
@@ -50,11 +50,11 @@ abstract class Facade implements FacadeContract
      */
     public static function getInstance(): object
     {
-        if (null === static::$instance) {
+        if (! isset(self::$instances[static::class])) {
             static::setInstance(static::instance());
         }
 
-        return self::$instance;
+        return self::$instances[static::class];
     }
 
     /**
@@ -67,7 +67,7 @@ abstract class Facade implements FacadeContract
     public static function setInstance($instance): void
     {
         if (is_object($instance)) {
-            static::$instance = $instance;
+            self::$instances[static::class] = $instance;
 
             return;
         }
@@ -76,7 +76,7 @@ abstract class Facade implements FacadeContract
             throw new InvalidArgumentException('Instance must be a string or an object.');
         }
 
-        static::$instance = self::getContainer()->get($instance);
+        self::$instances[static::class] = self::getContainer()->get($instance);
     }
 
     /**
