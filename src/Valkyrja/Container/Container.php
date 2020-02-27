@@ -24,6 +24,16 @@ use Valkyrja\Support\ProvidersAware;
 interface Container extends Cacheable, ProvidersAware
 {
     /**
+     * Get a container with context.
+     *
+     * @param string $context The context class name || function name || variable name
+     * @param string $member  [optional] The context member method name || property name
+     *
+     * @return static
+     */
+    // public function withContext(string $context = null, string $member = null): self;
+
+    /**
      * Set an alias to the container.
      *
      * @param string $alias     The alias

@@ -25,7 +25,6 @@ use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Enums\Provider;
-use Valkyrja\Path\Enums\Config;
 
 return [
     /*

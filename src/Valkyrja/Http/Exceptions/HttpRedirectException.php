@@ -52,7 +52,8 @@ class HttpRedirectException extends HttpException
         Response $response = null
     ) {
         $this->uri = $uri ?? '/';
-        $response  ??= redirect($uri, $statusCode, $headers);
+        // Set a new redirect response if one wasn't passed in
+        $response ??= redirect($uri, $statusCode, $headers);
 
         parent::__construct($statusCode, 'Redirect', $previous, $headers, $code, $response);
     }

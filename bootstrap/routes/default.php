@@ -13,4 +13,9 @@ declare(strict_types=1);
 
 use Valkyrja\Routing\Facades\Router;
 
-Router::get('/', static function () {}, 'welcome');
+Router::get(
+    '/',
+    static function () {
+    },
+    'welcome'
+);
