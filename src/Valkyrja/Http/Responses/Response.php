@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\Header;
@@ -64,32 +63,32 @@ class Response implements ResponseContract
     /**
      * NativeResponse constructor.
      *
-     * @param Stream|null $body    [optional] The body
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
+     * @param Stream|null $body       [optional] The body
+     * @param int|null    $statusCode [optional] The status
+     * @param array|null  $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(Stream $body = null, int $status = null, array $headers = null)
+    public function __construct(Stream $body = null, int $statusCode = null, array $headers = null)
     {
-        $this->initialize($body, $status, $headers);
+        $this->initialize($body, $statusCode, $headers);
     }
 
     /**
      * Initialize a response.
      *
-     * @param Stream|null $body    [optional] The body
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
+     * @param Stream|null $body       [optional] The body
+     * @param int|null    $statusCode [optional] The status
+     * @param array|null  $headers    [optional] The headers
      *
      * @return void
      */
-    protected function initialize(Stream $body = null, int $status = null, array $headers = null): void
+    protected function initialize(Stream $body = null, int $statusCode = null, array $headers = null): void
     {
         $this->stream       = $body ?? new HttpStream(StreamEnum::INPUT, 'rw');
-        $this->statusCode   = $this->validateStatusCode($status ?? StatusCode::OK);
+        $this->statusCode   = $this->validateStatusCode($statusCode ?? StatusCode::OK);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
         $this->setHeaders($headers ?? []);
@@ -120,19 +119,23 @@ class Response implements ResponseContract
     }
 
     /**
-     * Make a new response.
+     * Create a response.
      *
-     * @param Stream|null $body    [optional] The body
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
+     * @param string|null $content    [optional] The body
+     * @param int|null    $statusCode [optional] The status
+     * @param array|null  $headers    [optional] The headers
      *
      * @return static
      */
-    public static function make(Stream $body = null, int $status = null, array $headers = null): self
+    public static function createResponse(string $content = null, int $statusCode = null, array $headers = null): self
     {
         $response = new static();
 
-        $response->initialize($body, $status, $headers);
+        $stream = new HttpStream(StreamEnum::TEMP, 'wb+');
+        $stream->write($content ?? '');
+        $stream->rewind();
+
+        $response->initialize($stream, $statusCode, $headers);
 
         return $response;
     }
@@ -244,44 +247,6 @@ class Response implements ResponseContract
         $cookie->setExpire(0);
 
         return $this->withAddedHeader(Header::SET_COOKIE, (string) $cookie);
-    }
-
-    /**
-     * Send the response.
-     *
-     * @throws RuntimeException
-     *
-     * @return ResponseContract
-     */
-    public function send(): ResponseContract
-    {
-        $httpLine = sprintf(
-            'HTTP/%s %s %s',
-            $this->getProtocolVersion(),
-            $this->getStatusCode(),
-            $this->getReasonPhrase()
-        );
-
-        header($httpLine, true, $this->getStatusCode());
-
-        foreach ($this->getHeaders() as $name => $values) {
-            /** @var array $values */
-            foreach ($values as $value) {
-                header("$name: $value", false);
-            }
-        }
-
-        $stream = $this->getBody();
-
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
-
-        while (! $stream->eof()) {
-            echo $stream->read(1024 * 8);
-        }
-
-        return $this;
     }
 
     /**

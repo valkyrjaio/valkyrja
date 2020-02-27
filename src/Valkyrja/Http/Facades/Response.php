@@ -26,7 +26,7 @@ use Valkyrja\Http\Stream;
  *
  * @author Melech Mizrachi
  *
- * @method static Contract make(Stream $body = null, int $status = null, array $headers = null)
+ * @method static Contract createResponse(string $content = null, int $status = null, array $headers = null)
  * @method static string getProtocolVersion()
  * @method static Contract withProtocolVersion(string $version)
  * @method static array getHeaders()
@@ -43,7 +43,6 @@ use Valkyrja\Http\Stream;
  * @method static string getReasonPhrase()
  * @method static Contract withCookie(Cookie $cookie)
  * @method static Contract withoutCookie(Cookie $cookie)
- * @method static Contract send()
  */
 class Response extends Facade
 {
@@ -65,7 +64,7 @@ class Response extends Facade
     protected static function getStaticMethods(): array
     {
         return [
-            FacadeStaticMethod::MAKE => FacadeStaticMethod::MAKE,
+            FacadeStaticMethod::CREATE_RESPONSE => FacadeStaticMethod::CREATE_RESPONSE,
         ];
     }
 }

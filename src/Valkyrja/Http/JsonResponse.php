@@ -21,7 +21,7 @@ namespace Valkyrja\Http;
 interface JsonResponse extends Response
 {
     /**
-     * Make a new json response.
+     * Create a JSON response.
      *
      * @param array|null $data            [optional] The data
      * @param int|null   $status          [optional] The status
@@ -30,7 +30,7 @@ interface JsonResponse extends Response
      *
      * @return static
      */
-    public static function makeJson(
+    public static function createJsonResponse(
         array $data = null,
         int $status = null,
         array $headers = null,

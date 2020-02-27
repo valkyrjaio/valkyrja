@@ -54,8 +54,7 @@ class HttpException extends RuntimeException
      *
      * @param int       $statusCode  [optional] The status code to use
      * @param string    $message     [optional] The Exception message to throw
-     * @param Exception $previous    [optional] The previous exception used for
-     *                               the exception chaining
+     * @param Exception $previous    [optional] The previous exception used for the exception chaining
      * @param array     $headers     [optional] The headers to send
      * @param int       $code        [optional] The Exception code
      * @param Response  $response    [optional] The Response to send

@@ -34,16 +34,16 @@ class HtmlResponse extends Response implements HtmlResponseContract
     /**
      * NativeHtmlResponse constructor.
      *
-     * @param string     $html    The html
-     * @param int|null   $status  [optional] The status
-     * @param array|null $headers [optional] The headers
+     * @param string     $html       The html
+     * @param int|null   $statusCode [optional] The status
+     * @param array|null $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $html = '', int $status = null, array $headers = [])
+    public function __construct(string $html = '', int $statusCode = null, array $headers = [])
     {
         $body = new Stream(StreamEnum::TEMP, 'wb+');
 
@@ -52,7 +52,7 @@ class HtmlResponse extends Response implements HtmlResponseContract
 
         parent::__construct(
             $body,
-            $status,
+            $statusCode,
             $this->injectHeader(Header::CONTENT_TYPE, ContentType::TEXT_HTML_UTF8, $headers)
         );
     }

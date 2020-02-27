@@ -31,7 +31,7 @@ use Valkyrja\Http\Stream;
  * @method static Contract back()
  * @method static void throw()
  * @method static Contract makeRedirect(string $uri = null, int $status = null, array $headers = null)
- * @method static Contract make(Stream $body = null, int $status = null, array $headers = null)
+ * @method static Contract createResponse(string $content = null, int $status = null, array $headers = null)
  * @method static string getProtocolVersion()
  * @method static Contract withProtocolVersion(string $version)
  * @method static array getHeaders()
@@ -48,7 +48,6 @@ use Valkyrja\Http\Stream;
  * @method static string getReasonPhrase()
  * @method static Contract withCookie(Cookie $cookie)
  * @method static Contract withoutCookie(Cookie $cookie)
- * @method static Contract send()
  */
 class RedirectResponse extends Response
 {
@@ -70,8 +69,8 @@ class RedirectResponse extends Response
     protected static function getStaticMethods(): array
     {
         return [
-            FacadeStaticMethod::MAKE          => FacadeStaticMethod::MAKE,
-            FacadeStaticMethod::MAKE_REDIRECT => FacadeStaticMethod::MAKE_REDIRECT,
+            FacadeStaticMethod::CREATE_RESPONSE => FacadeStaticMethod::CREATE_RESPONSE,
+            FacadeStaticMethod::CREATE_REDIRECT => FacadeStaticMethod::CREATE_REDIRECT,
         ];
     }
 }

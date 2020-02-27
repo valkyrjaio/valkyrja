@@ -39,19 +39,19 @@ class RedirectResponse extends Response implements RedirectResponseContract
     /**
      * NativeRedirectResponse constructor.
      *
-     * @param string|null $uri     [optional] The uri
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
+     * @param string|null $uri        [optional] The uri
+     * @param int|null    $statusCode [optional] The status
+     * @param array|null  $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $uri = null, int $status = null, array $headers = null)
+    public function __construct(string $uri = null, int $statusCode = null, array $headers = null)
     {
         parent::__construct();
 
-        $this->initializeRedirect($uri, $status, $headers);
+        $this->initializeRedirect($uri, $statusCode, $headers);
     }
 
     /**
@@ -75,7 +75,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
     }
 
     /**
-     * Make a new redirect response.
+     * Create a redirect response.
      *
      * @param string|null $uri     [optional] The uri
      * @param int|null    $status  [optional] The status
@@ -83,7 +83,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      *
      * @return static
      */
-    public static function makeRedirect(string $uri = null, int $status = null, array $headers = null): self
+    public static function createRedirectResponse(string $uri = null, int $status = null, array $headers = null): self
     {
         $response = new static();
 
@@ -177,7 +177,7 @@ class RedirectResponse extends Response implements RedirectResponseContract
      */
     public function throw(): void
     {
-        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->getHeaders());
+        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->getHeaders(), 0, $this);
     }
 
     /**

@@ -34,16 +34,16 @@ class TextResponse extends Response implements TextResponseContract
     /**
      * NativeTextResponse constructor.
      *
-     * @param string     $text    The text
-     * @param int|null   $status  [optional] The status
-     * @param array|null $headers [optional] The headers
+     * @param string     $text       The text
+     * @param int|null   $statusCode [optional] The status
+     * @param array|null $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
      * @throws InvalidStatusCode
      * @throws InvalidStream
      */
-    public function __construct(string $text = '', int $status = null, array $headers = [])
+    public function __construct(string $text = '', int $statusCode = null, array $headers = [])
     {
         $body = new Stream(StreamEnum::TEMP, 'wb+');
 
@@ -52,7 +52,7 @@ class TextResponse extends Response implements TextResponseContract
 
         parent::__construct(
             $body,
-            $status,
+            $statusCode,
             $this->injectHeader(Header::CONTENT_TYPE, ContentType::TEXT_PLAIN_UTF8, $headers)
         );
     }

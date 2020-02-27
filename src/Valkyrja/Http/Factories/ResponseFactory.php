@@ -17,12 +17,10 @@ use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
-use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as ResponseFactoryContract;
-use Valkyrja\Http\Streams\Stream;
 use Valkyrja\Support\Providers\Provides;
 
 use function func_num_args;
@@ -86,7 +84,7 @@ class ResponseFactory implements ResponseFactoryContract
     }
 
     /**
-     * Make a new instance of Response.
+     * Create a response.
      *
      * @param string|null $content    [optional] The response content
      * @param int|null    $statusCode [optional] The response status code
@@ -94,7 +92,7 @@ class ResponseFactory implements ResponseFactoryContract
      *
      * @return Response
      */
-    public function make(string $content = null, int $statusCode = null, array $headers = null): Response
+    public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
     {
         /** @var Response $response */
         $response = $this->container->getSingleton(Contract::RESPONSE);
@@ -103,15 +101,11 @@ class ResponseFactory implements ResponseFactoryContract
             return $response;
         }
 
-        $stream = new Stream(StreamEnum::TEMP, 'wb+');
-        $stream->write($content ?? '');
-        $stream->rewind();
-
-        return $response::make($stream, $statusCode, $headers);
+        return $response::createResponse($content, $statusCode, $headers);
     }
 
     /**
-     * Json response builder.
+     * Create a JSON response.
      *
      * @param array|null $data       [optional] The data to set
      * @param int|null   $statusCode [optional] The response status code
@@ -119,7 +113,7 @@ class ResponseFactory implements ResponseFactoryContract
      *
      * @return JsonResponse
      */
-    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
+    public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
         /** @var JsonResponse $response */
         $response = $this->container->getSingleton(Contract::JSON_RESPONSE);
@@ -128,11 +122,11 @@ class ResponseFactory implements ResponseFactoryContract
             return $response;
         }
 
-        return $response::makeJson($data, $statusCode, $headers);
+        return $response::createJsonResponse($data, $statusCode, $headers);
     }
 
     /**
-     * JsonP response builder.
+     * Create a JSONP response.
      *
      * @param string     $callback   The jsonp callback
      * @param array|null $data       [optional] The data to set
@@ -143,17 +137,17 @@ class ResponseFactory implements ResponseFactoryContract
      *
      * @return JsonResponse
      */
-    public function jsonp(
+    public function createJsonpResponse(
         string $callback,
         array $data = null,
         int $statusCode = null,
         array $headers = null
     ): JsonResponse {
-        return $this->json($data, $statusCode, $headers)->withCallback($callback);
+        return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
 
     /**
-     * Redirect to response builder.
+     * Create a redirect response.
      *
      * @param string|null $uri        [optional] The uri to redirect to
      * @param int|null    $statusCode [optional] The response status code
@@ -161,7 +155,7 @@ class ResponseFactory implements ResponseFactoryContract
      *
      * @return RedirectResponse
      */
-    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
+    public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
         /** @var RedirectResponse $response */
         $response = $this->container->getSingleton(Contract::REDIRECT_RESPONSE);
@@ -170,7 +164,7 @@ class ResponseFactory implements ResponseFactoryContract
             return $response;
         }
 
-        return $response::makeRedirect($uri, $statusCode, $headers);
+        return $response::createRedirectResponse($uri, $statusCode, $headers);
     }
 
     /**
@@ -192,7 +186,7 @@ class ResponseFactory implements ResponseFactoryContract
         // Get the uri from the router using the route and parameters
         $uri = $this->app->router()->routeUrl($route, $parameters);
 
-        return $this->redirect($uri, $statusCode, $headers);
+        return $this->createRedirectResponse($uri, $statusCode, $headers);
     }
 
     /**
@@ -209,6 +203,6 @@ class ResponseFactory implements ResponseFactoryContract
     {
         $content = $this->app->view()->make($template, $data)->render();
 
-        return $this->make($content, $statusCode, $headers);
+        return $this->createResponse($content, $statusCode, $headers);
     }
 }

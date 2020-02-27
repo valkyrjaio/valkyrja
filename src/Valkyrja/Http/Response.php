@@ -30,15 +30,15 @@ use InvalidArgumentException;
 interface Response extends Message
 {
     /**
-     * Make a new response.
+     * Create a response.
      *
-     * @param Stream|null $body    [optional] The body
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
+     * @param string|null $content    [optional] The body
+     * @param int|null    $statusCode [optional] The status
+     * @param array|null  $headers    [optional] The headers
      *
      * @return static
      */
-    public static function make(Stream $body = null, int $status = null, array $headers = null): self;
+    public static function createResponse(string $content = null, int $statusCode = null, array $headers = null): self;
 
     /**
      * Gets the response status code.
@@ -125,11 +125,4 @@ interface Response extends Message
      * @return static
      */
     public function withoutCookie(Cookie $cookie): self;
-
-    /**
-     * Send the response.
-     *
-     * @return Response
-     */
-    public function send(): self;
 }

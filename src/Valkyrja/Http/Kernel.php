@@ -30,6 +30,15 @@ interface Kernel extends MiddlewareAware
     public function handle(Request $request): Response;
 
     /**
+     * Send the response.
+     *
+     * @param Response $response
+     *
+     * @return static
+     */
+    public function send(Response $response): self;
+
+    /**
      * Terminate the kernel request.
      *
      * @param Request  $request  The request

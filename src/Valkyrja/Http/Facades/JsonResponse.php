@@ -28,7 +28,7 @@ use Valkyrja\Http\Stream;
  * @method static Contract withCallback(string $callback)
  * @method static Contract withoutCallback()
  * @method static Contract makeJson(array $data = null, int $status = null, array $headers = null, int $encodingOptions = null)
- * @method static Contract make(Stream $body = null, int $status = null, array $headers = null)
+ * @method static Contract createResponse(string $content = null, int $status = null, array $headers = null)
  * @method static string getProtocolVersion()
  * @method static Contract withProtocolVersion(string $version)
  * @method static array getHeaders()
@@ -45,7 +45,6 @@ use Valkyrja\Http\Stream;
  * @method static string getReasonPhrase()
  * @method static Contract withCookie(Cookie $cookie)
  * @method static Contract withoutCookie(Cookie $cookie)
- * @method static Contract send()
  */
 class JsonResponse extends Response
 {
@@ -67,8 +66,8 @@ class JsonResponse extends Response
     protected static function getStaticMethods(): array
     {
         return [
-            FacadeStaticMethod::MAKE      => FacadeStaticMethod::MAKE,
-            FacadeStaticMethod::MAKE_JSON => FacadeStaticMethod::MAKE_JSON,
+            FacadeStaticMethod::CREATE_RESPONSE => FacadeStaticMethod::CREATE_RESPONSE,
+            FacadeStaticMethod::CREATE_JSON     => FacadeStaticMethod::CREATE_JSON,
         ];
     }
 }

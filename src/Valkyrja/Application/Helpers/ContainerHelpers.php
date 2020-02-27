@@ -209,7 +209,7 @@ trait ContainerHelpers
      */
     public function response(string $content = null, int $statusCode = null, array $headers = null): Response
     {
-        return $this->responseFactory()->make($content, $statusCode, $headers);
+        return $this->responseFactory()->createResponse($content, $statusCode, $headers);
     }
 
     /**
@@ -223,7 +223,7 @@ trait ContainerHelpers
      */
     public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        return $this->responseFactory()->json($data, $statusCode, $headers);
+        return $this->responseFactory()->createJsonResponse($data, $statusCode, $headers);
     }
 
     /**
@@ -237,7 +237,7 @@ trait ContainerHelpers
      */
     public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
     {
-        return $this->responseFactory()->redirect($uri, $statusCode, $headers);
+        return $this->responseFactory()->createRedirectResponse($uri, $statusCode, $headers);
     }
 
     /**

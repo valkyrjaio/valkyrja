@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Kernels;
 
+use RuntimeException;
 use Throwable;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
@@ -126,6 +127,44 @@ class Kernel implements KernelContract
     }
 
     /**
+     * Send the response.
+     *
+     * @param Response $response
+     *
+     * @throws RuntimeException
+     *
+     * @return static
+     */
+    public function send(Response $response): self
+    {
+        $httpLine = sprintf(
+            'HTTP/%s %s %s',
+            $response->getProtocolVersion(),
+            $response->getStatusCode(),
+            $response->getReasonPhrase()
+        );
+
+        header($httpLine, true, $response->getStatusCode());
+
+        foreach ($response->getHeaders() as $name => $values) {
+            /** @var array $values */
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+
+        $stream = $response->getBody();
+
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        echo $stream->getContents();
+
+        return $this;
+    }
+
+    /**
      * Terminate the request.
      *
      * @param Request  $request  The request
@@ -172,8 +211,11 @@ class Kernel implements KernelContract
             $request = $this->app->container()->getSingleton(Request::class);
         }
 
-        // Handle the request, dispatch the after request middleware, and send the response
-        $response = $this->handle($request)->send();
+        // Handle the request, dispatch the after request middleware
+        $response = $this->handle($request);
+
+        // Send the response
+        $this->send($response);
 
         // Terminate the application
         $this->terminate($request, $response);

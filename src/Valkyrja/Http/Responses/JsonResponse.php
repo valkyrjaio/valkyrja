@@ -58,7 +58,7 @@ class JsonResponse extends Response implements JsonResponseContract
      * NativeJsonResponse constructor.
      *
      * @param array|null $data            [optional] The data
-     * @param int|null   $status          [optional] The status
+     * @param int|null   $statusCode      [optional] The status
      * @param array|null $headers         [optional] The headers
      * @param int|null   $encodingOptions [optional] The encoding options
      *
@@ -69,13 +69,13 @@ class JsonResponse extends Response implements JsonResponseContract
      */
     public function __construct(
         array $data = null,
-        int $status = null,
+        int $statusCode = null,
         array $headers = null,
         int $encodingOptions = null
     ) {
         parent::__construct();
 
-        $this->initializeJson($data, $status, $headers, $encodingOptions);
+        $this->initializeJson($data, $statusCode, $headers, $encodingOptions);
     }
 
     /**
@@ -109,7 +109,7 @@ class JsonResponse extends Response implements JsonResponseContract
     }
 
     /**
-     * Make a new json response.
+     * Create a JSON response.
      *
      * @param array|null $data            [optional] The data
      * @param int|null   $status          [optional] The status
@@ -118,7 +118,7 @@ class JsonResponse extends Response implements JsonResponseContract
      *
      * @return static
      */
-    public static function makeJson(
+    public static function createJsonResponse(
         array $data = null,
         int $status = null,
         array $headers = null,
