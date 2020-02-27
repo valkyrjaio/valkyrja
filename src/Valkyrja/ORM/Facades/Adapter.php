@@ -17,7 +17,7 @@ use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\ORM\Adapter as Contract;
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\PDOConnection;
 
 /**
@@ -26,7 +26,7 @@ use Valkyrja\ORM\PDOConnection;
  * @author Melech Mizrachi
  *
  * @method static Contract make(array $config)
- * @method static Connection|PDOConnection getConnection(string $connection = null)
+ * @method static ConnectionContract|PDOConnection getConnection(string $connection = null)
  */
 class Adapter extends Facade
 {

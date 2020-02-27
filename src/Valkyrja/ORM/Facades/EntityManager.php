@@ -15,12 +15,12 @@ namespace Valkyrja\ORM\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
-use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Adapter as AdapterContract;
+use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\PDOConnection;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\Query as QueryContract;
+use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
 use Valkyrja\ORM\Repository;
 
 /**
@@ -28,10 +28,10 @@ use Valkyrja\ORM\Repository;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $name = null)
- * @method static Connection|PDOConnection getConnection(string $connection = null)
- * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
- * @method static Query createQuery(string $query = null, string $entity = null)
+ * @method static AdapterContract getAdapter(string $name = null)
+ * @method static ConnectionContract|PDOConnection getConnection(string $connection = null)
+ * @method static QueryBuilderContract createQueryBuilder(string $entity = null, string $alias = null)
+ * @method static QueryContract createQuery(string $query = null, string $entity = null)
  * @method static Repository getRepository(string $entity)
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
