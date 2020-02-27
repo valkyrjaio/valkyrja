@@ -250,6 +250,74 @@ class Response implements ResponseContract
     }
 
     /**
+     * Send the response HTTP line header.
+     *
+     * @return static
+     */
+    public function sendHttpLine(): self
+    {
+        $httpLine = sprintf(
+            'HTTP/%s %s %s',
+            $this->protocol,
+            $this->statusCode,
+            $this->statusPhrase
+        );
+
+        header($httpLine, true, $this->statusCode);
+
+        return $this;
+    }
+
+    /**
+     * Send the response headers.
+     *
+     * @return static
+     */
+    public function sendHeaders(): self
+    {
+        foreach ($this->headers as $name => $values) {
+            /** @var array $values */
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Send the response body.
+     *
+     * @return static
+     */
+    public function sendBody(): self
+    {
+        $stream = $this->stream;
+
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        echo $stream->getContents();
+
+        return $this;
+    }
+
+    /**
+     * Send the response.
+     *
+     * @return static
+     */
+    public function send(): self
+    {
+        $this->sendHttpLine();
+        $this->sendHeaders();
+        $this->sendBody();
+
+        return $this;
+    }
+
+    /**
      * The items provided by this provider.
      *
      * @return array

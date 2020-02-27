@@ -125,4 +125,32 @@ interface Response extends Message
      * @return static
      */
     public function withoutCookie(Cookie $cookie): self;
+
+    /**
+     * Send the response HTTP line header.
+     *
+     * @return static
+     */
+    public function sendHttpLine(): self;
+
+    /**
+     * Send the response headers.
+     *
+     * @return static
+     */
+    public function sendHeaders(): self;
+
+    /**
+     * Send the response body.
+     *
+     * @return static
+     */
+    public function sendBody(): self;
+
+    /**
+     * Send the response.
+     *
+     * @return static
+     */
+    public function send(): self;
 }

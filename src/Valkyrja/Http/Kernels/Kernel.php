@@ -137,29 +137,7 @@ class Kernel implements KernelContract
      */
     public function send(Response $response): self
     {
-        $httpLine = sprintf(
-            'HTTP/%s %s %s',
-            $response->getProtocolVersion(),
-            $response->getStatusCode(),
-            $response->getReasonPhrase()
-        );
-
-        header($httpLine, true, $response->getStatusCode());
-
-        foreach ($response->getHeaders() as $name => $values) {
-            /** @var array $values */
-            foreach ($values as $value) {
-                header("$name: $value", false);
-            }
-        }
-
-        $stream = $response->getBody();
-
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
-
-        echo $stream->getContents();
+        $response->send();
 
         return $this;
     }
