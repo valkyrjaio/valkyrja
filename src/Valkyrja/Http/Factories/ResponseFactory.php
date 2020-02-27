@@ -201,7 +201,7 @@ class ResponseFactory implements ResponseFactoryContract
      */
     public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response
     {
-        $content = $this->app->view()->make($template, $data)->render();
+        $content = $this->app->view()->make($template, $data ?? [])->render();
 
         return $this->createResponse($content, $statusCode, $headers);
     }
