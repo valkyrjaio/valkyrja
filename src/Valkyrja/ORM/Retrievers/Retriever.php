@@ -73,9 +73,8 @@ class Retriever implements RetrieverContract
      */
     public function find(string $entity, $id, bool $getRelations = false): ?Entity
     {
-        if (! is_string($id) && ! is_int($id)) {
-            throw new InvalidArgumentException('ID should be an int or string only.');
-        }
+        // Validate the id
+        $this->validateId($id);
 
         /** @var Entity|string $entity */
 
@@ -224,6 +223,20 @@ class Retriever implements RetrieverContract
     public function count(string $entity, array $criteria): int
     {
         return (int) $this->select($entity, ['COUNT(*)'], $criteria);
+    }
+
+    /**
+     * Validate an id.
+     *
+     * @param mixed $id The id
+     *
+     * @return void
+     */
+    protected function validateId($id): void
+    {
+        if (! is_string($id) && ! is_int($id)) {
+            throw new InvalidArgumentException('ID should be an int or string only.');
+        }
     }
 
     /**
