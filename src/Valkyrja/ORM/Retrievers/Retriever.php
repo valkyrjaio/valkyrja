@@ -77,10 +77,12 @@ class Retriever implements RetrieverContract
         $this->validateId($id);
 
         /** @var Entity|string $entity */
+        $idField = $entity::getIdField();
+        /** @var string $entity */
 
         return $this->findAllBy(
                 $entity,
-                [$entity::getIdField() => $id],
+                [$idField => $id],
                 null,
                 null,
                 null,
