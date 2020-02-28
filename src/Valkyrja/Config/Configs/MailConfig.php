@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Mail.
+ * Class MailConfig.
  *
  * @author Melech Mizrachi
  */
-class Mail extends Model
+class MailConfig extends Model
 {
     public string $host        = 'smtp1.example.com;smtp2.example.com';
     public int    $port        = 587;
@@ -32,7 +32,7 @@ class Mail extends Model
     public string $password    = '';
 
     /**
-     * Mail constructor.
+     * MailConfig constructor.
      */
     public function __construct()
     {

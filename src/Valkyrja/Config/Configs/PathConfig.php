@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 use Valkyrja\Path\Enums\Config;
 
 /**
- * Class Path.
+ * Class PathConfig.
  *
  * @author Melech Mizrachi
  */
-class Path extends Model
+class PathConfig extends Model
 {
     public array $patterns = [];
 
     /**
-     * Path constructor.
+     * PathConfig constructor.
      */
     public function __construct()
     {

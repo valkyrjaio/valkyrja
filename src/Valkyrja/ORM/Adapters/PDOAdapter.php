@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Adapters;
 
+use Valkyrja\Config\Configs\ORMConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
@@ -35,9 +36,9 @@ class PDOAdapter implements Adapter
     /**
      * The config.
      *
-     * @var array
+     * @var ORMConfig
      */
-    protected array $config;
+    protected ORMConfig $config;
 
     /**
      * The connection to use.
@@ -49,9 +50,9 @@ class PDOAdapter implements Adapter
     /**
      * PDOAdapter constructor.
      *
-     * @param array $config
+     * @param ORMConfig $config
      */
-    public function __construct(array $config)
+    public function __construct(ORMConfig $config)
     {
         $this->config            = $config;
         $this->defaultConnection = $this->config[CKP::DEFAULT];
@@ -60,11 +61,11 @@ class PDOAdapter implements Adapter
     /**
      * Make a new adapter.
      *
-     * @param array $config
+     * @param ORMConfig $config
      *
      * @return static
      */
-    public static function make(array $config): self
+    public static function make(ORMConfig $config): self
     {
         return new static($config);
     }
@@ -81,6 +82,6 @@ class PDOAdapter implements Adapter
         $connection ??= $this->defaultConnection;
 
         return self::$connections[$connection]
-            ?? (self::$connections[$connection] = new PDOConnection($this->config[CKP::CONNECTIONS], $connection));
+            ?? (self::$connections[$connection] = new PDOConnection($this->config->connections->{$connection}));
     }
 }

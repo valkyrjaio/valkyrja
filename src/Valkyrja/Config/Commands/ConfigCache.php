@@ -47,23 +47,16 @@ class ConfigCache extends Commander
             unlink(config(ConfigKey::CONFIG_CACHE_FILE_PATH));
         }
 
-        // If the config file exists
-        if (file_exists(config(ConfigKey::CONFIG_FILE_PATH))) {
-            // Re-setup the application with it
-            app()->setup(require config(ConfigKey::CONFIG_FILE_PATH), true);
-        } else {
-            // Otherwise just re-setup the application with default configs
-            app()->setup(null, true);
-        }
+        $config             = config();
+        $config->app->debug = false;
+        $config->app->env   = 'production';
 
-        $cache = config();
+        app()->setup($config, true);
 
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::CONFIG_CACHE_FILE_PATH),
-            '<?php
-
-declare(strict_types=1); return ' . var_export($cache, true) . ';',
+            serialize(config()),
             LOCK_EX
         );
 

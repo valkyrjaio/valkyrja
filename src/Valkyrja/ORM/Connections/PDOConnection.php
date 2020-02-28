@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Configs\ORM\ConnectionConfig;
 use Valkyrja\ORM\PDOConnection as ConnectionContract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Persisters\Persister as PersisterClass;
@@ -76,20 +76,19 @@ class PDOConnection implements ConnectionContract
     /**
      * The config.
      *
-     * @var array
+     * @var ConnectionConfig
      */
-    protected array $config;
+    protected ConnectionConfig $config;
 
     /**
      * PDOConnection constructor.
      *
-     * @param array  $config
-     * @param string $connection
+     * @param ConnectionConfig $config
      */
-    public function __construct(array $config, string $connection)
+    public function __construct(ConnectionConfig $config)
     {
         $this->config     = $config;
-        $this->connection = $this->getConnectionFromConfig($this->getConnectionConfig($connection));
+        $this->connection = $this->getConnectionFromConfig($config);
         $this->retriever  = new RetrieverClass($this);
         $this->persister  = new PersisterClass($this);
 
@@ -99,24 +98,19 @@ class PDOConnection implements ConnectionContract
     /**
      * Get the store from the config.
      *
-     * @param array $config
+     * @param ConnectionConfig $config
      *
      * @return PDO
      */
-    protected function getConnectionFromConfig(array $config): PDO
+    protected function getConnectionFromConfig(ConnectionConfig $config): PDO
     {
-        $dsn = $config[CKP::DRIVER]
-            . ':host=' . $config[CKP::HOST]
-            . ';port=' . $config[CKP::PORT]
-            . ';dbname=' . $config[CKP::DB]
-            . ';charset=' . $config[CKP::CHARSET];
+        $dsn = $config->driver
+            . ':host=' . $config->host
+            . ';port=' . $config->port
+            . ';dbname=' . $config->db
+            . ';charset=' . $config->charset;
 
-        return new PDO(
-            $dsn,
-            $config[CKP::USERNAME],
-            $config[CKP::PASSWORD],
-            []
-        );
+        return new PDO($dsn, $config->username, $config->password, []);
     }
 
     /**

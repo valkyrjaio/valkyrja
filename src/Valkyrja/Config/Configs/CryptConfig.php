@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Session.
+ * Class CryptConfig.
  *
  * @author Melech Mizrachi
  */
-class Session extends Model
+class CryptConfig extends Model
 {
-    public string $id   = '';
-    public string $name = '';
+    public string  $key     = 'default_key_phrase';
+    public ?string $keyPath = null;
 
     /**
-     * Session constructor.
+     * CryptConfig constructor.
      */
     public function __construct()
     {
-        $this->id   = (string) env(EnvKey::SESSION_ID, $this->id);
-        $this->name = (string) env(EnvKey::SESSION_NAME, $this->name);
+        $this->key     = env(EnvKey::CRYPT_KEY, $this->key);
+        $this->keyPath = env(EnvKey::CRYPT_KEY_PATH, $this->keyPath);
     }
 }

@@ -14,29 +14,33 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Annotatable;
-use Valkyrja\Config\Models\Cacheable;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\CacheableConfig as Model;
 use Valkyrja\Container\Enums\Config;
+use Valkyrja\Support\Providers\Provider;
 
 /**
- * Class Container.
+ * Class ContainerConfig.
  *
  * @author Melech Mizrachi
  */
-class Container extends Model
+class ContainerConfig extends Model
 {
-    use Annotatable;
-    use Cacheable;
-
     public array $aliases         = [];
     public array $services        = [];
     public array $contextServices = [];
-    public array $providers       = [];
-    public array $devProviders    = [];
 
     /**
-     * Container constructor.
+     * @var Provider[]|string[]
+     */
+    public array $providers = [];
+
+    /**
+     * @var Provider[]|string[]
+     */
+    public array $devProviders = [];
+
+    /**
+     * ContainerConfig constructor.
      */
     public function __construct()
     {

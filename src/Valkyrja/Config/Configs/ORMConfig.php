@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Configs;
 
-use Valkyrja\Config\Configs\ORM\Connections;
+use Valkyrja\Config\Configs\ORM\ConnectionsConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 use Valkyrja\ORM\Enums\Config;
 
 /**
- * Class Database.
+ * Class ORMConfig.
  *
  * @author Melech Mizrachi
  */
-class Database extends Model
+class ORMConfig extends Model
 {
     public string       $default  = CKP::MYSQL;
     public array        $adapters = [];
-    public Connections  $connections;
+    public ConnectionsConfig  $connections;
 
     /**
-     * Database constructor.
+     * ORMConfig constructor.
      */
     public function __construct()
     {
@@ -48,6 +48,6 @@ class Database extends Model
      */
     protected function setConnections(): void
     {
-        $this->connections = new Connections();
+        $this->connections = new ConnectionsConfig();
     }
 }

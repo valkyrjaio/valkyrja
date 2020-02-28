@@ -15,13 +15,13 @@ namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt as CryptContract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Config\Configs\CryptConfig;
 
 /**
  * Class Crypt.
@@ -49,9 +49,9 @@ class Crypt implements CryptContract
     /**
      * The config.
      *
-     * @var array
+     * @var CryptConfig
      */
-    protected array $config;
+    protected CryptConfig $config;
 
     /**
      * The key
@@ -69,7 +69,7 @@ class Crypt implements CryptContract
      */
     public function __construct(Application $app, Encrypter $encrypter, Decrypter $decrypter)
     {
-        $this->config    = $app->config()[ConfigKeyPart::CRYPT];
+        $this->config    = $app->config()->crypt;
         $this->encrypter = $encrypter;
         $this->decrypter = $decrypter;
     }
@@ -214,7 +214,7 @@ class Crypt implements CryptContract
      */
     protected function getKeyFromConfig(): string
     {
-        return $this->config[ConfigKeyPart::KEY];
+        return $this->config->key;
     }
 
     /**
@@ -224,7 +224,7 @@ class Crypt implements CryptContract
      */
     protected function getKeyPathFromConfig(): ?string
     {
-        return $this->config[ConfigKeyPart::KEY_PATH];
+        return $this->config->keyPath;
     }
 
     /**

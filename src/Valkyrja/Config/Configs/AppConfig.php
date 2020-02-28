@@ -16,14 +16,14 @@ namespace Valkyrja\Config\Configs;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Enums\Provider;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class App.
+ * Class AppConfig.
  *
  * @author Melech Mizrachi
  */
-class App extends Model
+class AppConfig extends Model
 {
     public string $env              = 'production';
     public bool   $debug            = false;
@@ -38,7 +38,7 @@ class App extends Model
     public string $exceptionHandler = Provider::EXCEPTION_HANDLER;
 
     /**
-     * App constructor.
+     * AppConfig constructor.
      */
     public function __construct()
     {

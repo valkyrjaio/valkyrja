@@ -15,14 +15,14 @@ namespace Valkyrja\Config\Configs\Filesystem;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class S3.
+ * Class S3Config.
  *
  * @author Melech Mizrachi
  */
-class S3 extends Model
+class S3Config extends Model
 {
     public string $adapter = CKP::S3;
     public string $dir     = '/';
@@ -34,7 +34,7 @@ class S3 extends Model
     public array  $options = [];
 
     /**
-     * S3 constructor.
+     * S3Config constructor.
      */
     public function __construct()
     {

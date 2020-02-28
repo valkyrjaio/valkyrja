@@ -44,6 +44,8 @@ final class EnvKey extends Enum
     public const ANNOTATIONS_MAP       = 'ANNOTATIONS_MAP';
     public const ANNOTATIONS_ALIASES   = 'ANNOTATIONS_ALIASES';
 
+    public const CACHE_DEFAULT = 'CACHE_DEFAULT';
+
     public const CONSOLE_PROVIDERS                   = 'CONSOLE_PROVIDERS';
     public const CONSOLE_DEV_PROVIDERS               = 'CONSOLE_DEV_PROVIDERS';
     public const CONSOLE_QUIET                       = 'CONSOLE_QUIET';

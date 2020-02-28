@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem;
 
 use League\Flysystem\Adapter\Local;
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 
 /**
  * Abstract Class FlysystemLocal.
@@ -30,10 +29,8 @@ class FlysystemLocal extends FlysystemAdapter
      */
     public static function make(): self
     {
-        $config = config()[CKP::FILESYSTEM][CKP::DISKS][CKP::LOCAL];
-
         return new static(
-            new Local($config[CKP::DIR])
+            new Local(config()->filesystem->disks->local->dir)
         );
     }
 }

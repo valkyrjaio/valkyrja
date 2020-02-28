@@ -14,24 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Crypt.
+ * Class CacheConfig.
  *
  * @author Melech Mizrachi
  */
-class Crypt extends Model
+class CacheConfig extends Model
 {
-    public string $key     = 'default_key_phrase';
-    public string $keyPath = '';
+    public string $default = '';
 
     /**
-     * Crypt constructor.
+     * CacheConfig constructor.
      */
     public function __construct()
     {
-        $this->key     = env(EnvKey::CRYPT_KEY, $this->key);
-        $this->keyPath = env(EnvKey::CRYPT_KEY_PATH, $this->keyPath);
+        $this->default = env(EnvKey::CACHE_DEFAULT, $this->default);
     }
 }

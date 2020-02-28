@@ -14,19 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Cacheables;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Configs\ContainerConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
-use Valkyrja\Container\Exceptions\EndlessContextLoopException;
-use Valkyrja\Container\Exceptions\InvalidContextException;
-use Valkyrja\Container\Exceptions\InvalidServiceIdException;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceContext;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
@@ -72,38 +64,41 @@ trait ContainerCacheable
     /**
      * Get the config.
      *
-     * @return array
+     * @return ContainerConfig
      */
-    protected function getConfig(): array
+    protected function getConfig(): ContainerConfig
     {
-        return $this->app->config(ConfigKeyPart::CONTAINER);
+        return $this->app->config()->container;
     }
 
     /**
      * Set not cached.
      *
+     * @param ContainerConfig $config
+     *
      * @return void
      */
-    protected function setupNotCached(): void
+    protected function setupNotCached(ContainerConfig $config): void
     {
         self::$registered = [];
         self::$services   = [];
         self::$provided   = [];
 
         // Setup service providers
-        $this->setupServiceProviders();
+        $this->setupServiceProviders($config);
     }
 
     /**
      * Setup the container from cache.
      *
+     * @param ContainerConfig $config
+     *
      * @return void
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(ContainerConfig $config): void
     {
         // Set the application container with said file
-        $cache = $this->app->config(ConfigKey::CACHE_CONTAINER)
-            ?? require $this->app->config(ConfigKey::CONTAINER_CACHE_FILE_PATH);
+        $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$services = unserialize(
             base64_decode($cache[ConfigKeyPart::SERVICES], true),
@@ -120,51 +115,32 @@ trait ContainerCacheable
     /**
      * Setup annotations.
      *
-     * @throws EndlessContextLoopException
-     * @throws InvalidServiceIdException
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidContextException
+     * @param ContainerConfig $config
      *
      * @return void
      */
-    protected function setupAnnotations(): void
+    protected function setupAnnotations(ContainerConfig $config): void
     {
         /** @var ContainerAnnotator $containerAnnotations */
         $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
 
         // Get all the annotated services from the list of controllers
-        $services = $containerAnnotations->getServices(
-            ...$this->app->config(ConfigKey::CONTAINER_SERVICES)
-        );
-
         // Iterate through the services
-        foreach ($services as $service) {
+        foreach ($containerAnnotations->getServices(...$config->services) as $service) {
             // Set the service
             $this->bind($service);
         }
 
         // Get all the annotated services from the list of controllers
-        $contextServices = $containerAnnotations->getContextServices(
-            ...$this->app->config(ConfigKey::CONTAINER_CONTEXT_SERVICES)
-        );
-
         // Iterate through the services
-        foreach ($contextServices as $context) {
+        foreach ($containerAnnotations->getContextServices(...$config->contextServices) as $context) {
             // Set the service
             $this->setContext($context);
         }
 
         // Get all the annotated services from the list of classes
-        $aliasServices = $containerAnnotations->getAliasServices(
-            ...$this->app->config(ConfigKey::CONTAINER_SERVICES)
-        );
-
         // Iterate through the services
-        foreach ($aliasServices as $alias) {
+        foreach ($containerAnnotations->getAliasServices(...$config->aliases) as $alias) {
             // Set the service
             $this->setAlias($alias->getName(), $alias->getId());
         }
@@ -189,15 +165,14 @@ trait ContainerCacheable
     /**
      * Setup service providers.
      *
+     * @param ContainerConfig $config
+     *
      * @return void
      */
-    protected function setupServiceProviders(): void
+    protected function setupServiceProviders(ContainerConfig $config): void
     {
-        /** @var array $providers */
-        $providers = $this->app->config(ConfigKey::CONTAINER_PROVIDERS);
-
         // Iterate through all the providers
-        foreach ($providers as $provider) {
+        foreach ($config->providers as $provider) {
             $this->register($provider);
         }
 
@@ -206,11 +181,8 @@ trait ContainerCacheable
             return;
         }
 
-        /** @var array $devProviders */
-        $devProviders = $this->app->config(ConfigKey::CONTAINER_DEV_PROVIDERS);
-
         // Iterate through all the providers
-        foreach ($devProviders as $provider) {
+        foreach ($config->devProviders as $provider) {
             $this->register($provider);
         }
     }

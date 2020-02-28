@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Models;
 
 /**
- * Trait Annotatable.
+ * Class AnnotatableConfig.
  *
  * @author Melech Mizrachi
  */
-trait Annotatable
+class AnnotatableConfig extends ConfigModel
 {
     public bool      $useAnnotations                  = false;
     public bool      $useAnnotationsExclusively       = false;

@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 use Valkyrja\View\Enums\Config;
 
 /**
- * Class View.
+ * Class ViewConfig.
  *
  * @author Melech Mizrachi
  */
-class View extends Model
+class ViewConfig extends Model
 {
     public string $dir     = '';
     public string $engine  = Config::ENGINE;
@@ -30,7 +30,7 @@ class View extends Model
     public array  $paths   = [];
 
     /**
-     * View constructor.
+     * ViewConfig constructor.
      */
     public function __construct()
     {

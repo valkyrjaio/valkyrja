@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
-use Valkyrja\Routing\Matchers\Matcher;
-use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Collection as RouteCollectionContract;
 use Valkyrja\Routing\Matcher as RouteMatcherContract;
+use Valkyrja\Routing\Matchers\Matcher;
+use Valkyrja\Routing\Route;
 
 /**
  * Class RouteCollection.
@@ -27,13 +26,6 @@ use Valkyrja\Routing\Matcher as RouteMatcherContract;
  */
 class Collection implements RouteCollectionContract
 {
-    /**
-     * Application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
     /**
      * The routes.
      *
@@ -71,12 +63,9 @@ class Collection implements RouteCollectionContract
 
     /**
      * RouteCollection constructor.
-     *
-     * @param Application $app
      */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app     = $app;
         $this->matcher = new Matcher($this);
     }
 
@@ -97,7 +86,7 @@ class Collection implements RouteCollectionContract
         $this->routes[$key] = $route;
 
         // Verify the dispatch
-        $this->app->dispatcher()->verifyDispatch($route);
+        app()->dispatcher()->verifyDispatch($route);
 
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->matcher->trimPath($route->getPath()));
@@ -325,7 +314,7 @@ class Collection implements RouteCollectionContract
         }
 
         // Parse the path
-        $parsedRoute = $this->app->pathParser()->parse($route->getPath());
+        $parsedRoute = app()->pathParser()->parse($route->getPath());
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);

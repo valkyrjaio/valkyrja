@@ -14,28 +14,32 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Annotatable;
-use Valkyrja\Config\Models\Cacheable;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\CacheableConfig as Model;
 use Valkyrja\Console\Enums\Config;
+use Valkyrja\Support\Providers\Provider;
 
 /**
- * Class Console.
+ * Class ConsoleConfig.
  *
  * @author Melech Mizrachi
  */
-class Console extends Model
+class ConsoleConfig extends Model
 {
-    use Annotatable;
-    use Cacheable;
+    public array $handlers = [];
 
-    public array $handlers     = [];
-    public array $providers    = [];
+    /**
+     * @var Provider[]|string[]
+     */
+    public array $providers = [];
+
+    /**
+     * @var Provider[]|string[]
+     */
     public array $devProviders = [];
     public bool  $quiet        = false;
 
     /**
-     * Console constructor.
+     * ConsoleConfig constructor.
      */
     public function __construct()
     {

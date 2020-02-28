@@ -14,24 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Annotatable;
-use Valkyrja\Config\Models\Cacheable;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\CacheableConfig as Model;
 
 /**
- * Class Event.
+ * Class EventConfig.
  *
  * @author Melech Mizrachi
  */
-class Event extends Model
+class EventConfig extends Model
 {
-    use Annotatable;
-    use Cacheable;
-
     public array $listeners = [];
 
     /**
-     * Event constructor.
+     * EventConfig constructor.
      */
     public function __construct()
     {

@@ -48,38 +48,30 @@ class Optimize extends Commander
             unlink(config(ConfigKey::CONFIG_CACHE_FILE_PATH));
         }
 
-        app()->setup(
-            [
-                'app' => [
-                    'debug' => false,
-                    'env'   => 'production',
-                ],
-            ],
-            true
-        );
+        $configCache = config();
+
+        $configCache->app->debug = false;
+        $configCache->app->env   = 'production';
 
         $containerCache = container()->getCacheable();
         $consoleCache   = console()->getCacheable();
         $eventsCache    = events()->getCacheable();
         $routesCache    = router()->getCacheable();
-        $configCache    = config();
 
-        $configCache['cache']['container'] = $containerCache;
-        $configCache['cache']['console']   = $consoleCache;
-        $configCache['cache']['events']    = $eventsCache;
-        $configCache['cache']['routing']   = $routesCache;
+        $configCache->container->cache = $containerCache;
+        $configCache->console->cache   = $consoleCache;
+        $configCache->event->cache     = $eventsCache;
+        $configCache->routing->cache   = $routesCache;
 
-        $configCache['container']['useCache'] = true;
-        $configCache['console']['useCache']   = true;
-        $configCache['events']['useCache']    = true;
-        $configCache['routing']['useCache']   = true;
+        $configCache->container->useCache = true;
+        $configCache->console->useCache   = true;
+        $configCache->event->useCache     = true;
+        $configCache->routing->useCache   = true;
 
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::CONFIG_CACHE_FILE_PATH),
-            '<?php
-
-declare(strict_types=1); return ' . var_export($configCache, true) . ';',
+            serialize($configCache),
             LOCK_EX
         );
 

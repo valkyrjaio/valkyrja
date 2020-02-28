@@ -59,7 +59,7 @@ class Cache implements CacheContract
     public function __construct(Application $app)
     {
         $this->app          = $app;
-        $this->defaultStore = $this->app->config()['cache']['default'];
+        $this->defaultStore = $this->app->config()->cache->default;
     }
 
     /**

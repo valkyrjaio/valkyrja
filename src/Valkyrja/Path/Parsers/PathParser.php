@@ -16,7 +16,7 @@ namespace Valkyrja\Path\Parsers;
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Configs\PathConfig;
 use Valkyrja\Path\PathParser as ParserContract;
 use Valkyrja\Support\Providers\Provides;
 
@@ -46,6 +46,23 @@ class PathParser implements ParserContract
 REGEX;
 
     /**
+     * The path config.
+     *
+     * @var PathConfig
+     */
+    protected PathConfig $config;
+
+    /**
+     * PathParser constructor.
+     *
+     * @param Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->config = $app->config()->path;
+    }
+
+    /**
      * The items provided by this provider.
      *
      * @return array
@@ -66,7 +83,7 @@ REGEX;
      */
     public static function publish(Application $app): void
     {
-        $app->container()->setSingleton(ParserContract::class, new static());
+        $app->container()->setSingleton(ParserContract::class, new static($app));
     }
 
     /**
@@ -269,7 +286,7 @@ REGEX;
      */
     protected function getParamReplacement(int $key, array $params): string
     {
-        return config()[ConfigKeyPart::PATH][ConfigKeyPart::PATTERNS][$params[2][$key]]
+        return $this->config->patterns[$params[2][$key]]
             ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 

@@ -15,7 +15,6 @@ namespace Valkyrja\Filesystem;
 
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 
 /**
  * Abstract Class FlysystemS3.
@@ -31,19 +30,19 @@ class FlysystemS3 extends FlysystemAdapter
      */
     public static function make(): self
     {
-        $config       = config()[CKP::FILESYSTEM][CKP::DISKS][CKP::S3];
+        $config       = config()->filesystem->disks->s3;
         $clientConfig = [
             'credentials' => [
-                'key'    => $config[CKP::KEY],
-                'secret' => $config[CKP::SECRET],
+                'key'    => $config->key,
+                'secret' => $config->secret,
             ],
-            'region'      => $config[CKP::REGION],
-            'version'     => $config[CKP::VERSION],
+            'region'      => $config->region,
+            'version'     => $config->version,
         ];
 
         return new static(
             new AwsS3Adapter(
-                new S3Client($clientConfig), $config[CKP::BUCKET], $config[CKP::DIR]
+                new S3Client($clientConfig), $config->bucket, $config->dir
             )
         );
     }

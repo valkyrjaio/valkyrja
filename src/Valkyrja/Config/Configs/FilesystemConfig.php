@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Configs;
 
-use Valkyrja\Config\Configs\Filesystem\Disks;
+use Valkyrja\Config\Configs\Filesystem\DisksConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 use Valkyrja\Filesystem\Enums\Config;
 
 /**
- * Class Filesystem.
+ * Class FilesystemConfig.
  *
  * @author Melech Mizrachi
  */
-class Filesystem extends Model
+class FilesystemConfig extends Model
 {
     public string $default  = CKP::LOCAL;
     public array  $adapters = [];
-    public Disks  $disks;
+    public DisksConfig  $disks;
 
     /**
-     * Filesystem constructor.
+     * FilesystemConfig constructor.
      */
     public function __construct()
     {
@@ -48,6 +48,6 @@ class Filesystem extends Model
      */
     protected function setDisks(): void
     {
-        $this->disks = new Disks();
+        $this->disks = new DisksConfig();
     }
 }

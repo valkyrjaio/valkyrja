@@ -18,8 +18,8 @@ use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Container\Dispatchers\Container;
@@ -48,7 +48,6 @@ use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\Views\View;
 
 use function get_class;
-use function is_array;
 use function is_string;
 
 /**
@@ -125,7 +124,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, is_array($this->app->config()));
+        $this->assertEquals(true, ($this->app->config() instanceof Config));
     }
 
     /**
@@ -135,9 +134,10 @@ class ApplicationTest extends TestCase
      */
     public function testAddConfig(): void
     {
-        $this->app->addConfig(['new' => []]);
+        $config = new Config();
+        $this->app->addConfig($config, 'new');
 
-        $this->assertEquals(true, isset($this->app->config()['new']));
+        $this->assertEquals(true, isset($this->app->config()->new));
     }
 
     /**
@@ -191,7 +191,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::ENV], $this->app->environment());
+        $this->assertEquals($this->app->config()->app->env, $this->app->environment());
     }
 
     /**
@@ -201,7 +201,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::DEBUG], $this->app->debug());
+        $this->assertEquals($this->app->config()->app->debug, $this->app->debug());
     }
 
     /**
@@ -469,10 +469,10 @@ class ApplicationTest extends TestCase
      */
     public function testSetupTwice(): void
     {
-        $config = $this->app->config();
+        $config = new Config();
 
         // Set debug to true
-        $config['app']['debug'] = true;
+        $config->app->debug = true;
         // Try to re-setup the application without forcing
         $this->app->setup($config);
 
@@ -488,9 +488,9 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = $this->app->config();
+        $config = new Config();
 
-        $config['app']['debug'] = true;
+        $config->app->debug = true;
         $this->app->setup($config, true);
 
         $this->assertEquals(true, $this->app->debug());
@@ -504,9 +504,9 @@ class ApplicationTest extends TestCase
     public function testInvalidDispatcher(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['dispatcher'] = InvalidDispatcherClass::class;
+            $config->app->dispatcher = InvalidDispatcherClass::class;
             $this->app->setup($config, true);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
@@ -523,9 +523,9 @@ class ApplicationTest extends TestCase
     public function testInvalidContainer(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['container'] = InvalidContainerClass::class;
+            $config->app->container = InvalidContainerClass::class;
             $this->app->setup($config, true);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
@@ -542,9 +542,9 @@ class ApplicationTest extends TestCase
     public function testInvalidEvents(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['events'] = InvalidEventsClass::class;
+            $config->app->events = InvalidEventsClass::class;
             $this->app->setup($config, true);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
@@ -570,14 +570,14 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationSetupWithConfigProvider(): void
     {
-        $config              = $this->app->config();
-        $config['providers'] = [
+        $config            = new Config();
+        $config->providers = [
             ProviderClass::class,
         ];
 
         $this->app->setup($config, true);
 
-        $this->assertEquals(ProviderClass::class, $this->app->config()[ConfigKeyPart::PROVIDERS][0]);
+        $this->assertEquals(ProviderClass::class, $this->app->config()->providers[0]);
 
         $this->app->setup(null, true);
     }
@@ -595,8 +595,8 @@ class ApplicationTest extends TestCase
         $this->app->console()->dispatchCommand($configCacheCommand);
 
         // Set some config differently
-        $config                 = $this->app->config();
-        $config['app']['debug'] = true;
+        $config             = new Config();
+        $config->app->debug = true;
 
         // Resetup the app with the new config and force
         $this->app->setup($config, true);

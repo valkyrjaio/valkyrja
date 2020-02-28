@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs\ORM;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Connections.
+ * Class ConnectionsConfig.
  *
  * @author Melech Mizrachi
  */
-class Connections extends Model
+class ConnectionsConfig extends Model
 {
-    public Connection $mysql;
-    public Connection $pgsql;
-    public Connection $sqlsrv;
+    public ConnectionConfig $mysql;
+    public ConnectionConfig $pgsql;
+    public ConnectionConfig $sqlsrv;
 
     /**
-     * Connections constructor.
+     * ConnectionsConfig constructor.
      */
     public function __construct()
     {
@@ -44,7 +44,7 @@ class Connections extends Model
      */
     protected function setMysqlConnection(): void
     {
-        $this->mysql = new Connection();
+        $this->mysql = new ConnectionConfig();
     }
 
     /**
@@ -54,7 +54,7 @@ class Connections extends Model
      */
     protected function setPgsqlConnection(): void
     {
-        $this->pgsql = new Connection(CKP::PGSQL);
+        $this->pgsql = new ConnectionConfig(CKP::PGSQL);
     }
 
     /**
@@ -64,6 +64,6 @@ class Connections extends Model
      */
     protected function setSqlsrvConnection(): void
     {
-        $this->sqlsrv = new Connection(CKP::SQLSRV);
+        $this->sqlsrv = new ConnectionConfig(CKP::SQLSRV);
     }
 }

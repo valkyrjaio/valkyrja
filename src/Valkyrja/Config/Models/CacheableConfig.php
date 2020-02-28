@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Models;
 
 /**
- * Trait Cacheable.
+ * Class CacheableConfig.
  *
  * @author Melech Mizrachi
  */
-trait Cacheable
+class CacheableConfig extends AnnotatableConfig
 {
+    public array  $cache         = [];
     public string $filePath      = '';
     public string $cacheFilePath = '';
     public bool   $useCache      = false;

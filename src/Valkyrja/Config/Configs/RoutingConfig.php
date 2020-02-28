@@ -14,20 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Annotatable;
-use Valkyrja\Config\Models\Cacheable;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\CacheableConfig as Model;
 
 /**
- * Class Routing.
+ * Class RoutingConfig.
  *
  * @author Melech Mizrachi
  */
-class Routing extends Model
+class RoutingConfig extends Model
 {
-    use Annotatable;
-    use Cacheable;
-
     public array $middleware       = [];
     public array $middlewareGroups = [];
     public array $controllers      = [];
@@ -35,7 +30,7 @@ class Routing extends Model
     public bool  $useAbsoluteUrls  = false;
 
     /**
-     * Routing constructor.
+     * RoutingConfig constructor.
      */
     public function __construct()
     {

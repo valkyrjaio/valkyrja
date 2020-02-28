@@ -16,6 +16,7 @@ use Exception;
 use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Inputs\Input;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
@@ -39,7 +40,6 @@ use Valkyrja\Support\Directory;
 use Valkyrja\View\Views\View;
 
 use function get_class;
-use function is_array;
 use function is_string;
 
 use const DIRECTORY_SEPARATOR;
@@ -105,7 +105,7 @@ class HelpersTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, is_array(config()));
+        $this->assertEquals(true, (config() instanceof Config));
     }
 
     /**

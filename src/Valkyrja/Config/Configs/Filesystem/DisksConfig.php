@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Configs\Filesystem;
 
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Disks.
+ * Class DisksConfig.
  *
  * @author Melech Mizrachi
  */
-class Disks extends Model
+class DisksConfig extends Model
 {
-    public Local $local;
-    public S3 $s3;
+    public LocalConfig $local;
+    public S3Config $s3;
 
     /**
-     * Disks constructor.
+     * DisksConfig constructor.
      */
     public function __construct()
     {
@@ -41,7 +41,7 @@ class Disks extends Model
      */
     protected function setLocalDisk(): void
     {
-        $this->local = new Local();
+        $this->local = new LocalConfig();
     }
 
     /**
@@ -51,6 +51,6 @@ class Disks extends Model
      */
     protected function setS3Disk(): void
     {
-        $this->s3 = new S3();
+        $this->s3 = new S3Config();
     }
 }

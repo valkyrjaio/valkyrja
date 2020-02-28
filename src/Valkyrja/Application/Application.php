@@ -17,6 +17,7 @@ use Valkyrja\Annotation\Annotator;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
+use Valkyrja\Config\Models\ConfigModel as ConfigModel;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -93,12 +94,12 @@ interface Application
     /**
      * Setup the application.
      *
-     * @param array $config [optional] The config to use
-     * @param bool  $force  [optional] Whether to force a setup
+     * @param Config $config [optional] The config to use
+     * @param bool   $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(array $config = null, bool $force = false): void;
+    public function setup(Config $config = null, bool $force = false): void;
 
     /**
      * Get the config.
@@ -106,18 +107,19 @@ interface Application
      * @param string $key     [optional] The key to get
      * @param mixed  $default [optional] The default value if the key is not found
      *
-     * @return mixed
+     * @return mixed|Config|null
      */
     public function config(string $key = null, $default = null);
 
     /**
      * Add to the global config array.
      *
-     * @param array $newConfig The new config to add
+     * @param Config $newConfig The new config to add
+     * @param string $key       The key to use
      *
      * @return void
      */
-    public function addConfig(array $newConfig): void;
+    public function addConfig(Config $newConfig, string $key): void;
 
     /**
      * Add to the global config array.

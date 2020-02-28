@@ -16,10 +16,10 @@ namespace Valkyrja\Config\Models;
 use Valkyrja\Model\Models\Model;
 
 /**
- * Class Config.
+ * Class ConfigModel.
  *
  * @author Melech Mizrachi
  */
-class Config extends Model
+class ConfigModel extends Model
 {
 }

@@ -15,20 +15,20 @@ namespace Valkyrja\Config\Configs\Filesystem;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Local.
+ * Class LocalConfig.
  *
  * @author Melech Mizrachi
  */
-class Local extends Model
+class LocalConfig extends Model
 {
     public string $adapter = CKP::LOCAL;
     public string $dir     = '';
 
     /**
-     * Local constructor.
+     * LocalConfig constructor.
      */
     public function __construct()
     {

@@ -15,14 +15,14 @@ namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Annotation\Enums\Config;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Annotation.
+ * Class AnnotationConfig.
  *
  * @author Melech Mizrachi
  */
-class Annotation extends Model
+class AnnotationConfig extends Model
 {
     public bool   $enabled  = false;
     public string $cacheDir = '';
@@ -30,7 +30,7 @@ class Annotation extends Model
     public array  $aliases  = [];
 
     /**
-     * Annotation constructor.
+     * AnnotationConfig constructor.
      */
     public function __construct()
     {

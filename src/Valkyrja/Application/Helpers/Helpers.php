@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Application\Helpers;
 
 use Valkyrja\Application\Application;
+use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Models\ConfigModel as ConfigModel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
@@ -35,7 +37,7 @@ use function defined;
  *
  * @property Application      $app
  * @property string           $env
- * @property array            $config
+ * @property Config           $config
  * @property Container        $container
  * @property Dispatcher       $dispatcher
  * @property Events           $events
@@ -111,7 +113,7 @@ trait Helpers
      * @param string $key     [optional] The key to get
      * @param mixed  $default [optional] The default value if the key is not found
      *
-     * @return mixed
+     * @return mixed|Config|null
      */
     public function config(string $key = null, $default = null)
     {
@@ -130,7 +132,7 @@ trait Helpers
         foreach ($keys as $configItem) {
             // Trying to get the item from the config
             // or load the default
-            $config = $config[$configItem] ?? $default;
+            $config = $config->{$configItem} ?? $default;
 
             // If the item was not found, might as well return out from here
             // instead of continuing to iterate through the remaining keys
@@ -148,14 +150,15 @@ trait Helpers
     /**
      * Add to the global config array.
      *
-     * @param array $newConfig The new config to add
+     * @param Config $newConfig The new config to add
+     * @param string $key       The key to use
      *
      * @return void
      */
-    public function addConfig(array $newConfig): void
+    public function addConfig(Config $newConfig, string $key): void
     {
         // Set the config within the application
-        self::$config = array_replace_recursive(self::$config, $newConfig);
+        self::$config->{$key} = $newConfig;
     }
 
     /**
@@ -205,7 +208,7 @@ trait Helpers
      */
     public function environment(): string
     {
-        return self::$config[ConfigKeyPart::APP][ConfigKeyPart::ENV];
+        return self::$config->app->env;
     }
 
     /**
@@ -215,7 +218,7 @@ trait Helpers
      */
     public function debug(): bool
     {
-        return self::$config[ConfigKeyPart::APP][ConfigKeyPart::DEBUG];
+        return self::$config->app->debug;
     }
 
     /**
@@ -238,7 +241,7 @@ trait Helpers
         int $code = 0,
         Response $response = null
     ): void {
-        throw new self::$config[ConfigKeyPart::APP][ConfigKeyPart::HTTP_EXCEPTION_CLASS](
+        throw new self::$config->app->httpException(
             $statusCode,
             $message,
             null,

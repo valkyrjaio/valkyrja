@@ -14,20 +14,20 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Configs;
 
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Logging.
+ * Class LoggingConfig.
  *
  * @author Melech Mizrachi
  */
-class Logging extends Model
+class LoggingConfig extends Model
 {
     public string $name     = 'ApplicationLog';
     public string $filePath = '';
 
     /**
-     * Logging constructor.
+     * LoggingConfig constructor.
      */
     public function __construct()
     {

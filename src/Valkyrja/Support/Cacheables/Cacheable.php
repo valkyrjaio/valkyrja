@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheables;
 
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Models\CacheableConfig;
 
 /**
  * Trait Cacheable.
@@ -46,29 +46,30 @@ trait Cacheable
         }
 
         self::$setup = true;
-        $config      = $this->getConfig();
+        // The cacheable config
+        $config = $this->getConfig();
 
-        $this->beforeSetup();
+        $this->beforeSetup($config);
 
         // If the application should use the routes cache file
-        if ($useCache && ($config[ConfigKeyPart::USE_CACHE] ?? false)) {
-            $this->setupFromCache();
+        if ($useCache && ($config->useCache)) {
+            $this->setupFromCache($config);
 
             // Then return out of setup
             return;
         }
 
-        $this->setupNotCached();
+        $this->setupNotCached($config);
         $this->setupFromAnnotations($config);
 
         // If only annotations should be used for routing
-        if ($config[ConfigKeyPart::USE_ANNOTATIONS_EXCLUSIVELY] ?? false) {
+        if ($config->useAnnotationsExclusively ?? false) {
             // Return to avoid loading routes file
             return;
         }
 
         $this->requireConfig($config);
-        $this->afterSetup();
+        $this->afterSetup($config);
     }
 
     /**
@@ -81,16 +82,18 @@ trait Cacheable
     /**
      * Get the config.
      *
-     * @return array
+     * @return CacheableConfig
      */
-    abstract protected function getConfig(): array;
+    abstract protected function getConfig(): CacheableConfig;
 
     /**
      * Before setup.
      *
+     * @param CacheableConfig $config
+     *
      * @return void
      */
-    protected function beforeSetup(): void
+    protected function beforeSetup(CacheableConfig $config): void
     {
         // Override as necessary
     }
@@ -98,9 +101,11 @@ trait Cacheable
     /**
      * Setup from cache.
      *
+     * @param CacheableConfig $config
+     *
      * @return void
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(CacheableConfig $config): void
     {
         // Override as necessary
     }
@@ -108,9 +113,11 @@ trait Cacheable
     /**
      * Set not cached.
      *
+     * @param CacheableConfig $config
+     *
      * @return void
      */
-    protected function setupNotCached(): void
+    protected function setupNotCached(CacheableConfig $config): void
     {
         // Override as necessary
     }
@@ -118,36 +125,38 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param array $config
+     * @param CacheableConfig $config
      *
      * @return void
      */
-    protected function setupFromAnnotations(array $config): void
+    protected function setupFromAnnotations(CacheableConfig $config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config[ConfigKeyPart::USE_ANNOTATIONS] ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
-            $this->setupAnnotations();
+        if (($config->useAnnotations ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
+            $this->setupAnnotations($config);
         }
     }
 
     /**
      * Set annotations.
      *
-     * @param array $config
+     * @param CacheableConfig $config
      *
      * @return void
      */
-    protected function requireConfig(array $config): void
+    protected function requireConfig(CacheableConfig $config): void
     {
-        require $config[ConfigKeyPart::FILE_PATH];
+        require $config->filePath;
     }
 
     /**
      * Before setup.
      *
+     * @param CacheableConfig $config
+     *
      * @return void
      */
-    protected function afterSetup(): void
+    protected function afterSetup(CacheableConfig $config): void
     {
         // Override as necessary
     }
@@ -155,9 +164,11 @@ trait Cacheable
     /**
      * Set annotations.
      *
+     * @param CacheableConfig $config
+     *
      * @return void
      */
-    protected function setupAnnotations(): void
+    protected function setupAnnotations(CacheableConfig $config): void
     {
         // Override as necessary
     }

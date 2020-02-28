@@ -15,14 +15,14 @@ namespace Valkyrja\Config\Configs\ORM;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Config as Model;
+use Valkyrja\Config\Models\ConfigModel as Model;
 
 /**
- * Class Connection.
+ * Class ConnectionConfig.
  *
  * @author Melech Mizrachi
  */
-class Connection extends Model
+class ConnectionConfig extends Model
 {
     public string $adapter   = CKP::PDO;
     public string $driver    = CKP::MYSQL;
@@ -41,7 +41,7 @@ class Connection extends Model
     public string $sslMode   = 'prefer';
 
     /**
-     * Connection constructor.
+     * ConnectionConfig constructor.
      *
      * @param string|null $driver
      * @param string|null $adapter
