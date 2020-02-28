@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
+use Valkyrja\ORM\Entity as EntityContract;
 use Valkyrja\Model\ModelTrait;
 use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
@@ -378,21 +379,40 @@ trait EntityTrait
 
                 break;
             default:
-                // Otherwise if a type was set and type is an array and the value is an array
-                // Then this should be an array of entities
-                if ($type !== null && is_array($type) && is_array($value)) {
-                    // Iterate through the items
-                    foreach ($value as &$item) {
-                        // Create a new entity for each item
-                        $item = new $type[0]($item);
-                    }
+                $value = $this->getPropertyValueForEntities($type, $value);
+        }
 
-                    // Unset the reference loop item
-                    unset($item);
-                } // Otherwise if a type was set and the value isn't already of that type
-                elseif ($type !== null && ! ($value instanceof $type)) {
-                    $value = new $type($value);
-                }
+        return $value;
+    }
+
+    /**
+     * Get property value for entities.
+     *
+     * @param mixed $type
+     * @param mixed $value
+     *
+     * @return EntityContract|EntityContract[]
+     */
+    protected function getPropertyValueForEntities($type, $value)
+    {
+        /** @var EntityContract $entity */
+        $entity = $type;
+
+        // Otherwise if a type was set and type is an array and the value is an array
+        // Then this should be an array of entities
+        if ($type !== null && is_array($type) && is_array($value)) {
+            $entity = $type[0];
+            // Iterate through the items
+            foreach ($value as &$item) {
+                // Create a new entity for each item
+                $item = $entity::fromArray($item);
+            }
+
+            // Unset the reference loop item
+            unset($item);
+        } // Otherwise if a type was set and the value isn't already of that type
+        elseif ($type !== null && ! ($value instanceof $type)) {
+            $value = $entity::fromArray($value);
         }
 
         return $value;
