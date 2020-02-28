@@ -71,7 +71,7 @@ class Optimize extends Commander
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::CONFIG_CACHE_FILE_PATH),
-            serialize($configCache),
+            serialize((object) json_decode(json_encode($configCache))),
             LOCK_EX
         );
 

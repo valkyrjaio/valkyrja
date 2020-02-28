@@ -75,9 +75,9 @@ trait CacheableConsole
     /**
      * Get the config.
      *
-     * @return ConsoleConfig
+     * @return ConsoleConfig|object
      */
-    protected function getConfig(): ConsoleConfig
+    protected function getConfig(): object
     {
         return $this->app->config()->console;
     }
@@ -85,11 +85,11 @@ trait CacheableConsole
     /**
      * Set not cached.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @return void
      */
-    protected function setupNotCached(ConsoleConfig $config): void
+    protected function setupNotCached(object $config): void
     {
         self::$paths         = [];
         self::$commands      = [];
@@ -102,38 +102,38 @@ trait CacheableConsole
     /**
      * Setup the console from cache.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @return void
      */
-    protected function setupFromCache(ConsoleConfig $config): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application console with said file
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$commands      = unserialize(
-            base64_decode($cache[ConfigKeyPart::COMMANDS], true),
+            base64_decode($cache->commands, true),
             [
                 'allowed_classes' => [
                     Command::class,
                 ],
             ]
         );
-        self::$paths         = $cache[ConfigKeyPart::PATHS];
-        self::$namedCommands = $cache[ConfigKeyPart::NAMED_COMMANDS];
-        self::$provided      = $cache[ConfigKeyPart::PROVIDED];
+        self::$paths         = (array) $cache->paths;
+        self::$namedCommands = (array) $cache->namedCommands;
+        self::$provided      = (array) $cache->provided;
     }
 
     /**
      * Setup annotations.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @throws ReflectionException
      *
      * @return void
      */
-    protected function setupAnnotations(ConsoleConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var CommandAnnotator $commandAnnotations */
         $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotator::class);
@@ -166,11 +166,11 @@ trait CacheableConsole
     /**
      * Setup command providers.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @return void
      */
-    protected function setupCommandProviders(ConsoleConfig $config): void
+    protected function setupCommandProviders(object $config): void
     {
         // Iterate through all the providers
         foreach ($config->providers as $provider) {

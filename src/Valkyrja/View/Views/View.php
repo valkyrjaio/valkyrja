@@ -110,9 +110,9 @@ class View implements ViewContract
     /**
      * The config.
      *
-     * @var ViewConfig
+     * @var ViewConfig|object
      */
-    protected ViewConfig $config;
+    protected object $config;
 
     /**
      * The default engine.
@@ -197,7 +197,7 @@ class View implements ViewContract
         }
 
         /** @var Engine $engine */
-        $engine = $this->config->engines[$name];
+        $engine = \is_array($this->config->engines) ? $this->config->engines[$name] : $this->config->engines->{$name};
 
         return self::$engines[$name] = $engine::make($this);
     }

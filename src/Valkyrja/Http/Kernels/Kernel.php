@@ -191,6 +191,9 @@ class Kernel implements KernelContract
         // Handle the request, dispatch the after request middleware
         $response = $this->handle($request);
 
+        // foreach(get_included_files() as $file){echo $file . '<br />';}
+        // dd(get_included_files());
+
         // Send the response
         $this->send($response);
 

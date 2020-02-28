@@ -64,9 +64,9 @@ trait ContainerCacheable
     /**
      * Get the config.
      *
-     * @return ContainerConfig
+     * @return ContainerConfig|object
      */
-    protected function getConfig(): ContainerConfig
+    protected function getConfig(): object
     {
         return $this->app->config()->container;
     }
@@ -74,11 +74,11 @@ trait ContainerCacheable
     /**
      * Set not cached.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupNotCached(ContainerConfig $config): void
+    protected function setupNotCached(object $config): void
     {
         self::$registered = [];
         self::$services   = [];
@@ -91,35 +91,35 @@ trait ContainerCacheable
     /**
      * Setup the container from cache.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupFromCache(ContainerConfig $config): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application container with said file
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$services = unserialize(
-            base64_decode($cache[ConfigKeyPart::SERVICES], true),
+            base64_decode($cache->services, true),
             [
                 'allowed_classes' => [
                     Service::class,
                 ],
             ]
         );
-        self::$provided = $cache[ConfigKeyPart::PROVIDED];
-        self::$aliases  = $cache[ConfigKeyPart::ALIASES];
+        self::$provided = (array) $cache->provided;
+        self::$aliases  = (array) $cache->aliases;
     }
 
     /**
      * Setup annotations.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(ContainerConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var ContainerAnnotator $containerAnnotations */
         $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
@@ -165,11 +165,11 @@ trait ContainerCacheable
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupServiceProviders(ContainerConfig $config): void
+    protected function setupServiceProviders(object $config): void
     {
         // Iterate through all the providers
         foreach ($config->providers as $provider) {

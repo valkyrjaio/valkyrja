@@ -48,9 +48,9 @@ trait CacheableRouter
     /**
      * Get the config.
      *
-     * @return RoutingConfig
+     * @return RoutingConfig|object
      */
-    protected function getConfig(): RoutingConfig
+    protected function getConfig(): object
     {
         return $this->app->config()->routing;
     }
@@ -77,17 +77,17 @@ trait CacheableRouter
     /**
      * Setup the router from cache.
      *
-     * @param RoutingConfig $config
+     * @param RoutingConfig|object $config
      *
      * @return void
      */
-    protected function setupFromCache(RoutingConfig $config): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application routes with said file
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$collection = unserialize(
-            base64_decode($cache[ConfigKeyPart::COLLECTION], true),
+            base64_decode($cache->collection, true),
             [
                 'allowed_classes' => [
                     Matcher::class,
@@ -101,11 +101,11 @@ trait CacheableRouter
     /**
      * Setup annotated routes.
      *
-     * @param RoutingConfig $config
+     * @param RoutingConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(RoutingConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
         $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotator::class);

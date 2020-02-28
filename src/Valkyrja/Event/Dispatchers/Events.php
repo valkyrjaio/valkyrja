@@ -64,9 +64,9 @@ class Events implements EventsContract
     /**
      * Get the config.
      *
-     * @return EventConfig
+     * @return EventConfig|object
      */
-    protected function getConfig(): EventConfig
+    protected function getConfig(): object
     {
         return $this->app->config()->event;
     }
@@ -84,17 +84,17 @@ class Events implements EventsContract
     /**
      * Setup the events from cache.
      *
-     * @param EventConfig $config
+     * @param EventConfig|object $config
      *
      * @return void
      */
-    protected function setupFromCache(EventConfig $config): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application events with said file
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$events = unserialize(
-            base64_decode($cache[ConfigKeyPart::EVENTS], true),
+            base64_decode($cache->events, true),
             [
                 'allowed_classes' => [
                     Listener::class,
@@ -106,11 +106,11 @@ class Events implements EventsContract
     /**
      * Setup annotations.
      *
-     * @param EventConfig $config
+     * @param EventConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(EventConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var ListenerAnnotator $containerAnnotations */
         $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);

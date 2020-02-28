@@ -82,18 +82,18 @@ trait Cacheable
     /**
      * Get the config.
      *
-     * @return CacheableConfig
+     * @return CacheableConfig|object
      */
-    abstract protected function getConfig(): CacheableConfig;
+    abstract protected function getConfig(): object;
 
     /**
      * Before setup.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function beforeSetup(CacheableConfig $config): void
+    protected function beforeSetup(object $config): void
     {
         // Override as necessary
     }
@@ -101,11 +101,11 @@ trait Cacheable
     /**
      * Setup from cache.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function setupFromCache(CacheableConfig $config): void
+    protected function setupFromCache(object $config): void
     {
         // Override as necessary
     }
@@ -113,11 +113,11 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function setupNotCached(CacheableConfig $config): void
+    protected function setupNotCached(object $config): void
     {
         // Override as necessary
     }
@@ -125,11 +125,11 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function setupFromAnnotations(CacheableConfig $config): void
+    protected function setupFromAnnotations(object $config): void
     {
         // If annotations are enabled and cacheable should use annotations
         if (($config->useAnnotations ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
@@ -140,11 +140,11 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function requireConfig(CacheableConfig $config): void
+    protected function requireConfig(object $config): void
     {
         require $config->filePath;
     }
@@ -152,11 +152,11 @@ trait Cacheable
     /**
      * Before setup.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function afterSetup(CacheableConfig $config): void
+    protected function afterSetup(object $config): void
     {
         // Override as necessary
     }
@@ -164,11 +164,11 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig $config
+     * @param CacheableConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(CacheableConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         // Override as necessary
     }

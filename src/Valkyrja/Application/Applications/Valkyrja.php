@@ -17,7 +17,6 @@ use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Enums\Config as ConfigEnum;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
@@ -58,9 +57,9 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var Config
+     * @var Config|object
      */
-    protected static Config $config;
+    protected static object $config;
 
     /**
      * Get the instance of the container.
@@ -255,7 +254,7 @@ class Valkyrja implements Application
         self::$config = unserialize(
             file_get_contents($cacheFilePath),
             [
-                'allowed_classes' => $this->getCacheAllowedClasses(),
+                'allowed_classes' => true,
             ]
         );
     }
@@ -267,7 +266,7 @@ class Valkyrja implements Application
      */
     protected function getCacheAllowedClasses(): array
     {
-        return self::env(EnvKey::CONFIG_CACHE_ALLOWED_CLASSES, ConfigEnum::ALLOWED_CLASSES);
+        return self::env(EnvKey::CONFIG_CACHE_ALLOWED_CLASSES);
     }
 
     /**
