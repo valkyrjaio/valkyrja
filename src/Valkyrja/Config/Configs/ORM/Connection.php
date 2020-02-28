@@ -48,20 +48,20 @@ class Connection extends Model
      */
     public function __construct(string $driver = null, string $adapter = null)
     {
-        $this->driver    = $driver ?? $this->driver;
-        $this->adapter   = $adapter ?? $this->adapter;
-        $this->host      = (string) env(EnvKey::DB_HOST, $this->host);
-        $this->port      = (string) env(EnvKey::DB_PORT, $this->port);
-        $this->db        = (string) env(EnvKey::DB_DATABASE, $this->db);
-        $this->username  = (string) env(EnvKey::DB_USERNAME, $this->username);
-        $this->password  = (string) env(EnvKey::DB_PASSWORD, $this->password);
-        $this->socket    = (string) env(EnvKey::DB_SOCKET, $this->socket);
-        $this->charset   = (string) env(EnvKey::DB_CHARSET, $this->charset);
-        $this->collation = (string) env(EnvKey::DB_COLLATION, $this->collation);
-        $this->prefix    = (string) env(EnvKey::DB_PREFIX, $this->prefix);
-        $this->strict    = (bool) env(EnvKey::DB_STRICT, $this->strict);
-        $this->engine    = (string) env(EnvKey::DB_ENGINE, $this->engine);
-        $this->schema    = (string) env(EnvKey::DB_SCHEMA, $this->schema);
+        $this->driver     = $driver ?? $this->driver;
+        $this->adapter    = $adapter ?? $this->adapter;
+        $this->host       = (string) env(EnvKey::DB_HOST, $this->host);
+        $this->port       = (string) env(EnvKey::DB_PORT, $this->port);
+        $this->db         = (string) env(EnvKey::DB_DATABASE, $this->db);
+        $this->username   = (string) env(EnvKey::DB_USERNAME, $this->username);
+        $this->password   = (string) env(EnvKey::DB_PASSWORD, $this->password);
+        $this->socket     = (string) env(EnvKey::DB_SOCKET, $this->socket);
+        $this->charset    = (string) env(EnvKey::DB_CHARSET, $this->charset);
+        $this->collation  = (string) env(EnvKey::DB_COLLATION, $this->collation);
+        $this->prefix     = (string) env(EnvKey::DB_PREFIX, $this->prefix);
+        $this->strict     = (bool) env(EnvKey::DB_STRICT, $this->strict);
+        $this->engine     = (string) env(EnvKey::DB_ENGINE, $this->engine);
+        $this->schema     = (string) env(EnvKey::DB_SCHEMA, $this->schema);
         $this->sslMode    = (string) env(EnvKey::DB_SSL_MODE, $this->sslMode);
     }
 }
