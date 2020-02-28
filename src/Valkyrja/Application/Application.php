@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Annotator;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Models\ConfigModel as ConfigModel;
+use Valkyrja\Config\Models\ConfigModel;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -94,12 +94,21 @@ interface Application
     /**
      * Setup the application.
      *
-     * @param Config $config [optional] The config to use
-     * @param bool   $force  [optional] Whether to force a setup
+     * @param string|null $config [optional] The config to use
+     * @param bool        $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(Config $config = null, bool $force = false): void;
+    public function setup(string $config = null, bool $force = false): void;
+
+    /**
+     * Add to the global config array.
+     *
+     * @param Config $config The config to add
+     *
+     * @return static
+     */
+    public function withConfig(Config $config): self;
 
     /**
      * Get the config.
@@ -114,21 +123,12 @@ interface Application
     /**
      * Add to the global config array.
      *
-     * @param Config $newConfig The new config to add
-     * @param string $key       The key to use
+     * @param ConfigModel $newConfig The new config to add
+     * @param string      $key       The key to use
      *
      * @return void
      */
-    public function addConfig(Config $newConfig, string $key): void;
-
-    /**
-     * Add to the global config array.
-     *
-     * @param Config $config The config to add
-     *
-     * @return void
-     */
-    // public function withConfig(Config $config): void;
+    public function addConfig(ConfigModel $newConfig, string $key): void;
 
     /**
      * Get the container instance.

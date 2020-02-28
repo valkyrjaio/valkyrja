@@ -130,6 +130,7 @@ trait CacheableConsole
      * @param ConsoleConfig $config
      *
      * @throws ReflectionException
+     *
      * @return void
      */
     protected function setupAnnotations(ConsoleConfig $config): void

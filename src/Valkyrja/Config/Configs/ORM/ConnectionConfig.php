@@ -62,6 +62,6 @@ class ConnectionConfig extends Model
         $this->strict    = (bool) env(EnvKey::DB_STRICT, $this->strict);
         $this->engine    = (string) env(EnvKey::DB_ENGINE, $this->engine);
         $this->schema    = (string) env(EnvKey::DB_SCHEMA, $this->schema);
-        $this->sslMode    = (string) env(EnvKey::DB_SSL_MODE, $this->sslMode);
+        $this->sslMode   = (string) env(EnvKey::DB_SSL_MODE, $this->sslMode);
     }
 }

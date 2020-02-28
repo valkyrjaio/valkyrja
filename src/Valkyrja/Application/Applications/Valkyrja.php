@@ -17,6 +17,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
 use Valkyrja\Config\Config;
+use Valkyrja\Config\Enums\Config as ConfigEnum;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
@@ -24,7 +25,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
-use Valkyrja\Config\Enums\Config as ConfigEnum;
 
 use function define;
 use function defined;
@@ -106,9 +106,9 @@ class Valkyrja implements Application
     /**
      * Application constructor.
      *
-     * @param Config $config [optional] The config to use
+     * @param string|null $config [optional] The config class to use
      */
-    public function __construct(Config $config = null)
+    public function __construct(string $config = null)
     {
         $this->setup($config);
     }
@@ -116,12 +116,12 @@ class Valkyrja implements Application
     /**
      * Setup the application.
      *
-     * @param Config $config [optional] The config to use
-     * @param bool   $force  [optional] Whether to force a setup
+     * @param string|null $config [optional] The config to use
+     * @param bool        $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(Config $config = null, bool $force = false): void
+    public function setup(string $config = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -153,6 +153,31 @@ class Valkyrja implements Application
         $this->bootstrapSetup();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
+    }
+
+    /**
+     * Add to the global config array.
+     *
+     * @param Config $config The config to add
+     *
+     * @return static
+     */
+    public function withConfig(Config $config): self
+    {
+        self::$config = $config;
+
+        // Bootstrap debug capabilities
+        $this->bootstrapExceptionHandler();
+        // Bootstrap core functionality
+        $this->bootstrapCore();
+        // Bootstrap the container
+        $this->bootstrapContainer();
+        // Bootstrap setup
+        $this->bootstrapSetup();
+        // Bootstrap the timezone
+        $this->bootstrapTimezone();
+
+        return $this;
     }
 
     /**
@@ -188,11 +213,11 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param Config $config [optional] The config
+     * @param string|null $config [optional] The config class to use
      *
      * @return void
      */
-    protected function bootstrapConfig(Config $config = null): void
+    protected function bootstrapConfig(string $config = null): void
     {
         $envCacheFile  = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
         $cacheFilePath = Directory::cachePath('config.php');
@@ -211,13 +236,11 @@ class Valkyrja implements Application
             return;
         }
 
-        self::$config = $config ?? self::env(EnvKey::CONFIG_CLASS) ?? new Config();
+        $config ??= $config ?? self::env(EnvKey::CONFIG_CLASS, Config::class);
 
-        foreach (self::$config->providers as $provider) {
-            // Config providers are NOT deferred and will not follow the
-            // deferred value
-            $provider::publish($this);
-        }
+        self::$config = new $config();
+
+        $this->publishConfigProviders();
     }
 
     /**
@@ -245,6 +268,19 @@ class Valkyrja implements Application
     protected function getCacheAllowedClasses(): array
     {
         return self::env(EnvKey::CONFIG_CACHE_ALLOWED_CLASSES, ConfigEnum::ALLOWED_CLASSES);
+    }
+
+    /**
+     * Publish config providers.
+     *
+     * @return void
+     */
+    protected function publishConfigProviders(): void
+    {
+        foreach (self::$config->providers as $provider) {
+            // Config providers are NOT deferred and will not follow the deferred value
+            $provider::publish($this);
+        }
     }
 
     /**

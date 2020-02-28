@@ -51,8 +51,6 @@ class ConfigCache extends Commander
         $config->app->debug = false;
         $config->app->env   = 'production';
 
-        app()->setup($config, true);
-
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::CONFIG_CACHE_FILE_PATH),
