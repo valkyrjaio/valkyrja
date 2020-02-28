@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
+use stdClass;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
@@ -254,19 +255,11 @@ class Valkyrja implements Application
         self::$config = unserialize(
             file_get_contents($cacheFilePath),
             [
-                'allowed_classes' => true,
+                'allowed_classes' => [
+                    stdClass::class
+                ],
             ]
         );
-    }
-
-    /**
-     * Get cache allowed classes for unserialize.
-     *
-     * @return array
-     */
-    protected function getCacheAllowedClasses(): array
-    {
-        return self::env(EnvKey::CONFIG_CACHE_ALLOWED_CLASSES);
     }
 
     /**
