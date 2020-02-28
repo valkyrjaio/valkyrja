@@ -23,11 +23,11 @@ use Valkyrja\Support\Cacheables\Cacheable;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 /**
- * Trait ContainerCacheable.
+ * Trait CacheableContainer.
  *
  * @author Melech Mizrachi
  */
-trait ContainerCacheable
+trait CacheableContainer
 {
     use Cacheable;
     use ProvidersAwareTrait;
