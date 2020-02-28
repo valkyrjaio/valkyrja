@@ -26,8 +26,8 @@ class ViewConfig extends Model
 {
     public string $dir     = '';
     public string $engine  = Config::ENGINE;
-    public array  $engines = [];
-    public array  $paths   = [];
+    public object $engines;
+    public object $paths;
 
     /**
      * ViewConfig constructor.
@@ -36,7 +36,7 @@ class ViewConfig extends Model
     {
         $this->dir     = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
         $this->engine  = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
-        $this->engines = (array) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $this->engines));
-        $this->paths   = (array) env(EnvKey::VIEW_PATHS, $this->paths);
+        $this->engines = (object) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, []));
+        $this->paths   = (object) env(EnvKey::VIEW_PATHS, []);
     }
 }
