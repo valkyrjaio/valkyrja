@@ -81,7 +81,7 @@ trait ProvidesCommand
                 ->setName(static::getCommand())
                 ->setDescription(static::getShortDescription())
                 ->setClass(static::class)
-                ->setClass('run')
+                ->setMethod('run')
         );
     }
 
