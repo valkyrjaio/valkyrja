@@ -63,7 +63,7 @@ trait Annotatable
      *
      * @return array
      */
-    public function getModelProperties(): ?array
+    public function getProperties(): ?array
     {
         return $this->properties;
     }

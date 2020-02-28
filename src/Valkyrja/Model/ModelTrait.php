@@ -27,7 +27,7 @@ trait ModelTrait
      *
      * @var array
      */
-    protected static array $properties = [];
+    protected static array $modelProperties = [];
 
     /**
      * Set properties from an array of properties.
@@ -112,11 +112,11 @@ trait ModelTrait
      */
     public function getModelProperties(): array
     {
-        if (empty(static::$properties)) {
-            static::$properties = array_keys(get_object_vars($this));
+        if (empty(static::$modelProperties)) {
+            static::$modelProperties = array_keys(get_object_vars($this));
         }
 
-        return static::$properties;
+        return static::$modelProperties;
     }
 
     /**

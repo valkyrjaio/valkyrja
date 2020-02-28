@@ -263,7 +263,7 @@ class Parser implements AnnotationsParserContract
             unset($parts[Part::PROPERTIES]);
 
             // Set the annotation's properties to setters if they exist
-            $annotation->setModelProperties($annotation->getModelProperties() ?? []);
+            $annotation->setModelProperties($annotation->getProperties() ?? []);
         }
 
         // Set all the matches

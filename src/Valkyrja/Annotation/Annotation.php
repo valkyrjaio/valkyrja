@@ -43,7 +43,7 @@ interface Annotation extends Dispatch
      *
      * @return array
      */
-    public function getModelProperties(): ?array;
+    public function getProperties(): ?array;
 
     /**
      * Set the annotation properties (within parentheses).

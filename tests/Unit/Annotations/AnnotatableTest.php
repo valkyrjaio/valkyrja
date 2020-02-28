@@ -507,7 +507,7 @@ class AnnotatableTest extends TestCase
      */
     public function testGetAnnotationArgumentsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getModelProperties());
+        $this->assertEquals(null, $this->class->getProperties());
     }
 
     /**
@@ -519,7 +519,7 @@ class AnnotatableTest extends TestCase
     {
         $this->class->setProperties([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getModelProperties());
+        $this->assertEquals([$this->value], $this->class->getProperties());
     }
 
     /**
