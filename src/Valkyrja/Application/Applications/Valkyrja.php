@@ -24,6 +24,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
+use Valkyrja\Config\Enums\Config as ConfigEnum;
 
 use function define;
 use function defined;
@@ -205,23 +206,45 @@ class Valkyrja implements Application
         // If we should use the config cache file
         if (is_file($cacheFilePath)) {
             // Get the config from the cache file's contents
-            self::$config = unserialize(
-                file_get_contents($cacheFilePath),
-                [
-                    'allowed_classes' => true,
-                ]
-            );
+            $this->setupFromCacheFile($cacheFilePath);
 
             return;
         }
 
-        self::$config = $config ?? new Config();
+        self::$config = $config ?? self::env(EnvKey::CONFIG_CLASS) ?? new Config();
 
         foreach (self::$config->providers as $provider) {
             // Config providers are NOT deferred and will not follow the
             // deferred value
             $provider::publish($this);
         }
+    }
+
+    /**
+     * Setup the application from a cache file.
+     *
+     * @param string $cacheFilePath The cache file path
+     *
+     * @return void
+     */
+    protected function setupFromCacheFile(string $cacheFilePath): void
+    {
+        self::$config = unserialize(
+            file_get_contents($cacheFilePath),
+            [
+                'allowed_classes' => $this->getCacheAllowedClasses(),
+            ]
+        );
+    }
+
+    /**
+     * Get cache allowed classes for unserialize.
+     *
+     * @return array
+     */
+    protected function getCacheAllowedClasses(): array
+    {
+        return self::env(EnvKey::CONFIG_CACHE_ALLOWED_CLASSES, ConfigEnum::ALLOWED_CLASSES);
     }
 
     /**

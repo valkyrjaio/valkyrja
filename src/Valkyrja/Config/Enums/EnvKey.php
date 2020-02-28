@@ -22,10 +22,12 @@ use Valkyrja\Enum\Enums\Enum;
  */
 final class EnvKey extends Enum
 {
-    public const CONFIG_PROVIDERS       = 'CONFIG_PROVIDERS';
-    public const CONFIG_FILE_PATH       = 'CONFIG_FILE_PATH';
-    public const CONFIG_CACHE_FILE_PATH = 'CONFIG_CACHE_FILE_PATH';
-    public const CONFIG_USE_CACHE_FILE  = 'CONFIG_USE_CACHE_FILE';
+    public const CONFIG_CLASS                 = 'CONFIG_CLASS';
+    public const CONFIG_PROVIDERS             = 'CONFIG_PROVIDERS';
+    public const CONFIG_FILE_PATH             = 'CONFIG_FILE_PATH';
+    public const CONFIG_CACHE_FILE_PATH       = 'CONFIG_CACHE_FILE_PATH';
+    public const CONFIG_CACHE_ALLOWED_CLASSES = 'CONFIG_CACHE_ALLOWED_CLASSES';
+    public const CONFIG_USE_CACHE_FILE        = 'CONFIG_USE_CACHE_FILE';
 
     public const APP_ENV                  = 'APP_ENV';
     public const APP_DEBUG                = 'APP_DEBUG';
