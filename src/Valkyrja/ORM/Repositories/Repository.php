@@ -67,7 +67,7 @@ class Repository implements RepositoryContract
 
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
-        $this->table         = $this->entity::getTable();
+        $this->table         = $this->entity::getEntityTable();
     }
 
     /**

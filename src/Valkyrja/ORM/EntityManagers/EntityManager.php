@@ -211,7 +211,7 @@ class EntityManager implements EntityManagerContract
 
         /** @var Entity|string $entity */
         /** @var Repository $repository */
-        $repository = $entity::getRepository();
+        $repository = $entity::getEntityRepository();
 
         return $this->repositories[$entity] = $repository::make($this, $entity);
     }

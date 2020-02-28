@@ -27,7 +27,7 @@ interface Entity extends Model
      *
      * @return string
      */
-    public static function getTable(): string;
+    public static function getEntityTable(): string;
 
     /**
      * Get the id field.
@@ -41,7 +41,7 @@ interface Entity extends Model
      *
      * @return string
      */
-    public static function getRepository(): string;
+    public static function getEntityRepository(): string;
 
     /**
      * Get the property types.
@@ -60,14 +60,14 @@ interface Entity extends Model
      *
      * @return array
      */
-    public static function getPropertyTypes(): array;
+    public static function getEntityPropertyTypes(): array;
 
     /**
      * Get the properties.
      *
      * @return string[]
      */
-    public function getProperties(): array;
+    public function getEntityProperties(): array;
 
     /**
      * A mapper of property types to properties for generating a full entity with relations.
@@ -90,7 +90,7 @@ interface Entity extends Model
      *
      * @return array
      */
-    public function getPropertyMapper(): array;
+    public function getEntityPropertyMapper(): array;
 
     /**
      * Get the entity as an array for saving to the data store.
@@ -106,5 +106,5 @@ interface Entity extends Model
      *
      * @return void
      */
-    public function setRelations(array $columns = null): void;
+    public function setEntityRelations(array $columns = null): void;
 }

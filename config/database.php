@@ -85,7 +85,7 @@ return [
             CKP::PASSWORD => env(EnvKey::DB_PASSWORD, ''),
             CKP::CHARSET  => env(EnvKey::DB_CHARSET, 'utf8'),
             CKP::PREFIX   => env(EnvKey::DB_PREFIX, ''),
-            CKP::SCHEMA   => env(EnvKey::DB_SCHEME, 'public'),
+            CKP::SCHEMA   => env(EnvKey::DB_SCHEMA, 'public'),
             CKP::SSL_MODE => env(EnvKey::DB_SSL_MODE, 'prefer'),
             CKP::ADAPTER  => env(EnvKey::DB_ADAPTER, CKP::PDO),
         ],

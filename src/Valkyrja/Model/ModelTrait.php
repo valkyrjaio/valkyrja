@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Trait ModelTrait.
  *
@@ -20,6 +22,13 @@ namespace Valkyrja\Model;
  */
 trait ModelTrait
 {
+    /**
+     * Array of properties in the model.
+     *
+     * @var array
+     */
+    protected static array $properties = [];
+
     /**
      * Set properties from an array of properties.
      *
@@ -31,7 +40,7 @@ trait ModelTrait
     {
         $model = new static();
 
-        $model->setPropertiesFromArray($properties);
+        $model->setModelProperties($properties);
 
         return $model;
     }
@@ -97,13 +106,27 @@ trait ModelTrait
     }
 
     /**
+     * Get the properties.
+     *
+     * @return string[]
+     */
+    public function getModelProperties(): array
+    {
+        if (empty(static::$properties)) {
+            static::$properties = array_keys(get_object_vars($this));
+        }
+
+        return static::$properties;
+    }
+
+    /**
      * Set properties from an array of properties.
      *
      * @param array $properties
      *
      * @return void
      */
-    public function setPropertiesFromArray(array $properties): void
+    public function setModelProperties(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -135,6 +158,6 @@ trait ModelTrait
      */
     public function jsonSerialize(): array
     {
-        return get_object_vars($this);
+        return json_decode(json_encode(get_object_vars($this), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
     }
 }

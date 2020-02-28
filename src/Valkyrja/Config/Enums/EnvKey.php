@@ -58,6 +58,7 @@ final class EnvKey extends Enum
     public const CONTAINER_DEV_PROVIDERS               = 'CONTAINER_DEV_PROVIDERS';
     public const CONTAINER_USE_ANNOTATIONS             = 'CONTAINER_USE_ANNOTATIONS';
     public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = 'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY';
+    public const CONTAINER_ALIASES                     = 'CONTAINER_ALIASES';
     public const CONTAINER_SERVICES                    = 'CONTAINER_SERVICES';
     public const CONTAINER_CONTEXT_SERVICES            = 'CONTAINER_CONTEXT_SERVICES';
     public const CONTAINER_FILE_PATH                   = 'CONTAINER_FILE_PATH';
@@ -79,17 +80,17 @@ final class EnvKey extends Enum
     public const DB_PREFIX     = 'DB_PREFIX';
     public const DB_STRICT     = 'DB_STRICT';
     public const DB_ENGINE     = 'DB_ENGINE';
-    public const DB_SCHEME     = 'DB_SCHEME';
+    public const DB_SCHEMA     = 'DB_SCHEMA';
     public const DB_SSL_MODE   = 'DB_SSL_MODE';
     public const DB_ADAPTER    = 'DB_ADAPTER';
     public const DB_ADAPTERS   = 'DB_ADAPTERS';
 
-    public const EVENTS_USE_ANNOTATIONS             = 'EVENTS_USE_ANNOTATIONS';
-    public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENTS_USE_ANNOTATIONS_EXCLUSIVELY';
-    public const EVENTS_CLASSES                     = 'EVENTS_CLASSES';
-    public const EVENTS_FILE_PATH                   = 'EVENTS_FILE_PATH';
-    public const EVENTS_CACHE_FILE_PATH             = 'EVENTS_CACHE_FILE_PATH';
-    public const EVENTS_USE_CACHE_FILE              = 'EVENTS_USE_CACHE_FILE';
+    public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
+    public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
+    public const EVENT_LISTENERS                   = 'EVENT_LISTENERS';
+    public const EVENT_FILE_PATH                   = 'EVENT_FILE_PATH';
+    public const EVENT_CACHE_FILE_PATH             = 'EVENT_CACHE_FILE_PATH';
+    public const EVENT_USE_CACHE_FILE              = 'EVENT_USE_CACHE_FILE';
 
     public const FILESYSTEM_DEFAULT       = 'FILESYSTEM_DEFAULT';
     public const FILESYSTEM_ADAPTERS      = 'FILESYSTEM_ADAPTERS';

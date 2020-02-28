@@ -43,7 +43,7 @@ use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
 use Valkyrja\Log\Providers\LoggerServiceProvider;
 use Valkyrja\Mail\Mailers\PHPMailerMail;
-use Valkyrja\Model\NativeModel;
+use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\EntityManager;
 use Valkyrja\Path\Generators\PathGenerator;
@@ -93,7 +93,7 @@ final class Provider extends Enum
     public const CRYPT               = Crypt::class;
     public const CRYPT_ENCRYPTER     = SodiumEncrypter::class;
     public const CRYPT_DECRYPTER     = SodiumDecrypter::class;
-    public const MODEL               = NativeModel::class;
+    public const MODEL               = Model::class;
     public const ENTITY              = Entity::class;
     public const ENTITY_MANAGER      = EntityManager::class;
     public const EXCEPTION_HANDLER   = ExceptionHandler::class;

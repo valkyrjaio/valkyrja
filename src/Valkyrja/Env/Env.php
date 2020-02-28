@@ -71,6 +71,7 @@ class Env
     // public const CONTAINER_DEV_PROVIDERS               = null;
     // public const CONTAINER_USE_ANNOTATIONS             = null;
     // public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    // public const CONTAINER_ALIASES                     = null;
     // public const CONTAINER_SERVICES                    = null;
     // public const CONTAINER_CONTEXT_SERVICES            = null;
     // public const CONTAINER_FILE_PATH                   = null;
@@ -98,18 +99,18 @@ class Env
     // public const DB_PREFIX     = null;
     // public const DB_STRICT     = null;
     // public const DB_ENGINE     = null;
-    // public const DB_SCHEME     = null;
+    // public const DB_SCHEMA     = null;
     // public const DB_SSL_MODE   = null;
 
     /*
      * Events env variables.
      */
-    // public const EVENTS_USE_ANNOTATIONS             = null;
-    // public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = null;
-    // public const EVENTS_CLASSES                     = null;
-    // public const EVENTS_FILE_PATH                   = null;
-    // public const EVENTS_CACHE_FILE_PATH             = null;
-    // public const EVENTS_USE_CACHE_FILE              = null;
+    // public const EVENT_USE_ANNOTATIONS             = null;
+    // public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = null;
+    // public const EVENT_LISTENERS                   = null;
+    // public const EVENT_FILE_PATH                   = null;
+    // public const EVENT_CACHE_FILE_PATH             = null;
+    // public const EVENT_USE_CACHE_FILE              = null;
 
     /*
      * Filesystem env variables.

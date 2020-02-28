@@ -60,7 +60,7 @@ trait EntityTrait
      *
      * @var array
      */
-    protected static array $properties = [];
+    protected static array $entityProperties = [];
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
@@ -99,7 +99,7 @@ trait EntityTrait
      *
      * @return string
      */
-    public static function getTable(): string
+    public static function getEntityTable(): string
     {
         return static::$table;
     }
@@ -111,7 +111,7 @@ trait EntityTrait
      */
     public static function getIdField(): string
     {
-        return self::$idField;
+        return static::$idField;
     }
 
     /**
@@ -119,7 +119,7 @@ trait EntityTrait
      *
      * @return string
      */
-    public static function getRepository(): string
+    public static function getEntityRepository(): string
     {
         return static::$repository;
     }
@@ -129,13 +129,13 @@ trait EntityTrait
      *
      * @return string[]
      */
-    public function getProperties(): array
+    public function getEntityProperties(): array
     {
-        if (empty(self::$properties)) {
-            self::$properties = array_keys(get_object_vars($this));
+        if (empty(static::$entityProperties)) {
+            static::$entityProperties = $this->getModelProperties();
         }
 
-        return self::$properties;
+        return static::$entityProperties;
     }
 
     /**
@@ -155,7 +155,7 @@ trait EntityTrait
      *
      * @return array
      */
-    public static function getPropertyTypes(): array
+    public static function getEntityPropertyTypes(): array
     {
         return static::$propertyTypes;
     }
@@ -181,7 +181,7 @@ trait EntityTrait
      *
      * @return array
      */
-    public function getPropertyMapper(): array
+    public function getEntityPropertyMapper(): array
     {
         return [];
     }
@@ -196,8 +196,12 @@ trait EntityTrait
         $properties = [];
 
         // Otherwise iterate through the properties array
-        foreach ($this->getProperties() as $property) {
-            $this->getPropertyValueForDataStore($property);
+        foreach ($this->getModelProperties() as $property) {
+            if (isset($this->getEntityPropertyMapper()[$property])) {
+                continue;
+            }
+
+            $properties[$property] = $this->getPropertyValueForDataStore($property);
         }
 
         return $properties;
@@ -210,10 +214,10 @@ trait EntityTrait
      *
      * @return void
      */
-    public function setRelations(array $columns = null): void
+    public function setEntityRelations(array $columns = null): void
     {
-        $propertyTypes  = $this::getPropertyTypes();
-        $propertyMapper = $this->getPropertyMapper();
+        $propertyTypes  = $this::getEntityPropertyTypes();
+        $propertyMapper = $this->getEntityPropertyMapper();
 
         // Iterate through the property types
         foreach ($propertyTypes as $property => $type) {
@@ -317,7 +321,7 @@ trait EntityTrait
      *
      * @return void
      */
-    public function setPropertiesFromArray(array $properties): void
+    public function setModelProperties(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {

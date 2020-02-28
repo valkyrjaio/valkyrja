@@ -422,7 +422,7 @@ class Retriever implements RetrieverContract
         // Iterate through the rows found
         foreach ($entities as $entity) {
             // Get the entity relations
-            $entity->setRelations($columns);
+            $entity->setEntityRelations($columns);
         }
     }
 

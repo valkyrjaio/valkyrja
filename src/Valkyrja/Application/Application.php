@@ -16,6 +16,7 @@ namespace Valkyrja\Application;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -117,6 +118,15 @@ interface Application
      * @return void
      */
     public function addConfig(array $newConfig): void;
+
+    /**
+     * Add to the global config array.
+     *
+     * @param Config $config The config to add
+     *
+     * @return void
+     */
+    // public function withConfig(Config $config): void;
 
     /**
      * Get the container instance.

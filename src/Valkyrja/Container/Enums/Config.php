@@ -53,4 +53,6 @@ final class Config extends Enum
         Provider::SESSION,
         Provider::VIEW,
     ];
+
+    public const DEV_PROVIDERS = [];
 }

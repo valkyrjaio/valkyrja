@@ -11,14 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model;
+namespace Valkyrja\Model\Models;
+
+use Valkyrja\Model\Model as ModelContract;
+use Valkyrja\Model\ModelTrait;
 
 /**
- * Class NativeModel.
+ * Class Model.
  *
  * @author Melech Mizrachi
  */
-class NativeModel implements Model
+class Model implements ModelContract
 {
     use ModelTrait;
 }

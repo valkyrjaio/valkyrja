@@ -34,7 +34,7 @@ return [
      * //
      *
      */
-    CKP::USE_ANNOTATIONS             => env(EnvKey::EVENTS_USE_ANNOTATIONS, false),
+    CKP::USE_ANNOTATIONS             => env(EnvKey::EVENT_USE_ANNOTATIONS, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return [
      * //
      *
      */
-    CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::EVENTS_USE_ANNOTATIONS_EXCLUSIVELY, false),
+    CKP::USE_ANNOTATIONS_EXCLUSIVELY => env(EnvKey::EVENT_USE_ANNOTATIONS_EXCLUSIVELY, false),
 
     /*
      *-------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
      * //
      *
      */
-    CKP::CLASSES                     => env(EnvKey::EVENTS_CLASSES, []),
+    CKP::CLASSES                     => env(EnvKey::EVENT_LISTENERS, []),
 
     /*
      *-------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
      * //
      *
      */
-    CKP::FILE_PATH                   => env(EnvKey::EVENTS_FILE_PATH, eventsPath('default.php')),
+    CKP::FILE_PATH                   => env(EnvKey::EVENT_FILE_PATH, eventsPath('default.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -74,7 +74,7 @@ return [
      * //
      *
      */
-    CKP::CACHE_FILE_PATH             => env(EnvKey::EVENTS_CACHE_FILE_PATH, cachePath('events.php')),
+    CKP::CACHE_FILE_PATH             => env(EnvKey::EVENT_CACHE_FILE_PATH, cachePath('events.php')),
 
     /*
      *-------------------------------------------------------------------------
@@ -84,5 +84,5 @@ return [
      * //
      *
      */
-    CKP::USE_CACHE                   => env(EnvKey::EVENTS_USE_CACHE_FILE, false),
+    CKP::USE_CACHE                   => env(EnvKey::EVENT_USE_CACHE_FILE, false),
 ];
