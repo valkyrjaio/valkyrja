@@ -21,8 +21,6 @@ use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\View as ViewContract;
 
-use const ENT_QUOTES;
-
 /**
  * Class View.
  *
@@ -45,20 +43,6 @@ class View implements ViewContract
      * @var Application
      */
     protected Application $app;
-
-    /**
-     * The layout template.
-     *
-     * @var string|null
-     */
-    protected ?string $layout = null;
-
-    /**
-     * The fully qualified layout path.
-     *
-     * @var string|null
-     */
-    protected ?string $layoutPath = null;
 
     /**
      * The body content template.
@@ -94,20 +78,6 @@ class View implements ViewContract
     protected array $variables = [];
 
     /**
-     * Whether to track layout changes.
-     *
-     * @var bool
-     */
-    protected bool $trackLayoutChanges = false;
-
-    /**
-     * Whether a layout change has occurred.
-     *
-     * @var bool
-     */
-    protected bool $hasLayoutChanged = false;
-
-    /**
      * The config.
      *
      * @var ViewConfig|object
@@ -136,7 +106,7 @@ class View implements ViewContract
         $this->config = $app->config()->view;
         $this->engine = $this->config->engine;
         $this->setVariables($variables);
-        $this->setTemplateDir($this->config->dir);
+        $this->setDir($this->config->dir);
         $this->setTemplate($template ?? $this->template);
     }
 
@@ -157,9 +127,9 @@ class View implements ViewContract
      *
      * @param Application $app The application
      *
+     * @return void
      * @throws InvalidConfigPath
      *
-     * @return void
      */
     public static function publish(Application $app): void
     {
@@ -172,9 +142,9 @@ class View implements ViewContract
      * @param string|null $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
      *
+     * @return static
      * @throws InvalidConfigPath
      *
-     * @return static
      */
     public function make(string $template = null, array $variables = []): self
     {
@@ -254,28 +224,13 @@ class View implements ViewContract
     }
 
     /**
-     * Escape a value for output.
-     *
-     * @param string $value The value to escape
-     *
-     * @return string
-     */
-    public function escape(string $value): string
-    {
-        $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
-        $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
-
-        return $value;
-    }
-
-    /**
      * Get the template directory.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null): string
+    public function getDir(string $path = null): string
     {
         return $this->templateDir . ($path
                 ? Directory::DIRECTORY_SEPARATOR . $path
@@ -289,7 +244,7 @@ class View implements ViewContract
      *
      * @return static
      */
-    public function setTemplateDir(string $path): self
+    public function setDir(string $path): self
     {
         $this->templateDir = $path;
 
@@ -321,16 +276,6 @@ class View implements ViewContract
     }
 
     /**
-     * Get the layout template path.
-     *
-     * @return string
-     */
-    public function getLayoutPath(): string
-    {
-        return $this->layoutPath ?? '';
-    }
-
-    /**
      * Get the template path.
      *
      * @return string
@@ -341,13 +286,30 @@ class View implements ViewContract
     }
 
     /**
+     * Set the template for the view.
+     *
+     * @param string $template The template
+     *
+     * @return static
+     * @throws InvalidConfigPath
+     *
+     */
+    public function setTemplate(string $template): self
+    {
+        $this->template     = $template;
+        $this->templatePath = $this->getFullPath($template);
+
+        return $this;
+    }
+
+    /**
      * Get the full path for a given template.
      *
      * @param string $template The template
      *
+     * @return string
      * @throws InvalidConfigPath
      *
-     * @return string
      */
     public function getFullPath(string $template): string
     {
@@ -374,146 +336,10 @@ class View implements ViewContract
 
             $path = implode($explodeOn, $parts);
         } else {
-            $path = $this->getTemplateDir($template);
+            $path = $this->getDir($template);
         }
 
         return $path . $this->getFileExtension();
-    }
-
-    /**
-     * Set the layout for the view template.
-     *
-     * @param string $layout [optional] The layout to set
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return static
-     */
-    public function setLayout(string $layout = null): self
-    {
-        // If no layout has been set
-        if (null === $layout) {
-            // Set to null
-            return $this->withoutLayout();
-        }
-
-        // If we should be tracking layout changes
-        if ($this->trackLayoutChanges) {
-            // Set the flag
-            $this->hasLayoutChanged = true;
-        }
-
-        $this->layout     = $layout;
-        $this->layoutPath = $this->getFullPath($layout);
-
-        return $this;
-    }
-
-    /**
-     * Set no layout for this view.
-     *
-     * @return static
-     */
-    public function withoutLayout(): self
-    {
-        $this->layout     = null;
-        $this->layoutPath = null;
-
-        return $this;
-    }
-
-    /**
-     * Set the template for the view.
-     *
-     * @param string $template The template
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return static
-     */
-    public function setTemplate(string $template): self
-    {
-        $this->template     = $template;
-        $this->templatePath = $this->getFullPath($template);
-
-        return $this;
-    }
-
-    /**
-     * Output a partial.
-     *
-     * @param string $partial   The partial
-     * @param array  $variables [optional] The variables
-     *
-     * @return string
-     */
-    public function getPartial(string $partial, array $variables = []): string
-    {
-        return $this->getEngine()->getPartial($partial, $variables);
-    }
-
-    /**
-     * Output a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return string
-     */
-    public function getBlock(string $name): string
-    {
-        return $this->getEngine()->getBlock($name);
-    }
-
-    /**
-     * Determine if a block exists.
-     *
-     * @param string $name The name of the block
-     *
-     * @return bool
-     *  True if the block exists
-     *  False if the block doesn't exist
-     */
-    public function hasBlock(string $name): bool
-    {
-        return $this->getEngine()->hasBlock($name);
-    }
-
-    /**
-     * Determine if a block has been ended.
-     *
-     * @param string $name The name of the block
-     *
-     * @return bool
-     *  True if the block has been ended
-     *  False if the block has not yet been ended
-     */
-    public function hasBlockEnded(string $name): bool
-    {
-        return $this->getEngine()->hasBlockEnded($name);
-    }
-
-    /**
-     * Start a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return void
-     */
-    public function startBlock(string $name): void
-    {
-        $this->getEngine()->startBlock($name);
-    }
-
-    /**
-     * End a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return void
-     */
-    public function endBlock(string $name): void
-    {
-        $this->getEngine()->endBlock($name);
     }
 
     /**
@@ -526,20 +352,10 @@ class View implements ViewContract
     public function render(array $variables = []): string
     {
         // Set the variables with the new variables and this view instance
-        $this->variables = array_merge($this->variables, $variables, ['view' => $this]);
+        $this->variables = array_merge($this->variables, $variables);
 
         // Render the template
-        $template = $this->getEngine()->render($this->templatePath);
-
-        // Check if a layout has been set
-        if (null === $this->layout || null === $this->layoutPath) {
-            return $template;
-        }
-
-        // Begin tracking layout changes for recursive layout
-        $this->trackLayoutChanges = true;
-
-        return $this->renderLayout($this->layoutPath);
+        return $this->getEngine()->render($this->templatePath, $this->variables);
     }
 
     /**
@@ -550,28 +366,5 @@ class View implements ViewContract
     public function __toString(): string
     {
         return $this->render();
-    }
-
-    /**
-     * Render a layout path.
-     *
-     * @param string $layoutPath The layout path
-     *
-     * @return string
-     */
-    protected function renderLayout(string $layoutPath): string
-    {
-        // Render the layout
-        $renderedLayout = $this->getEngine()->render($layoutPath);
-
-        // Check if the layout has changed
-        if ($this->hasLayoutChanged && null !== $this->layoutPath) {
-            // Reset the flag
-            $this->hasLayoutChanged = false;
-            // Render the new layout
-            $renderedLayout = $this->renderLayout($this->layoutPath);
-        }
-
-        return $renderedLayout;
     }
 }

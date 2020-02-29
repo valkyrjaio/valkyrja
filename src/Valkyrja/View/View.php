@@ -77,31 +77,22 @@ interface View
     public function setVariable(string $key, $value): self;
 
     /**
-     * Escape a value for output.
-     *
-     * @param string $value The value to escape
-     *
-     * @return string
-     */
-    public function escape(string $value): string;
-
-    /**
-     * Get the template directory.
+     * Get the directory.
      *
      * @param string $path [optional] The path to append
      *
      * @return string
      */
-    public function getTemplateDir(string $path = null): string;
+    public function getDir(string $path = null): string;
 
     /**
-     * Set the template directory.
+     * Set the directory.
      *
      * @param string $path The path to set
      *
      * @return static
      */
-    public function setTemplateDir(string $path): self;
+    public function setDir(string $path): self;
 
     /**
      * Get the file extension.
@@ -120,18 +111,19 @@ interface View
     public function setFileExtension(string $extension): self;
 
     /**
-     * Get the layout template path.
-     *
-     * @return string
-     */
-    public function getLayoutPath(): string;
-
-    /**
      * Get the template path.
      *
      * @return string
      */
     public function getTemplatePath(): string;
+    /**
+     * Set the template for the view.
+     *
+     * @param string $template The template
+     *
+     * @return static
+     */
+    public function setTemplate(string $template): self;
 
     /**
      * Get the full path for a given template.
@@ -143,90 +135,6 @@ interface View
      * @return string
      */
     public function getFullPath(string $template): string;
-
-    /**
-     * Set the layout for the view template.
-     *
-     * @param string $layout [optional]
-     *
-     * @return static
-     */
-    public function setLayout(string $layout = null): self;
-
-    /**
-     * Set no layout for this view.
-     *
-     * @return static
-     */
-    public function withoutLayout(): self;
-
-    /**
-     * Set the template for the view.
-     *
-     * @param string $template The template
-     *
-     * @return static
-     */
-    public function setTemplate(string $template): self;
-
-    /**
-     * Output a partial.
-     *
-     * @param string $partial   The partial
-     * @param array  $variables [optional] The variables
-     *
-     * @return string
-     */
-    public function getPartial(string $partial, array $variables = []): string;
-
-    /**
-     * Output a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return string
-     */
-    public function getBlock(string $name): string;
-
-    /**
-     * Determine if a block exists.
-     *
-     * @param string $name The name of the block
-     *
-     * @return bool
-     *  True if the block exists
-     *  False if the block doesn't exist
-     */
-    public function hasBlock(string $name): bool;
-
-    /**
-     * Determine if a block has been ended.
-     *
-     * @param string $name The name of the block
-     *
-     * @return bool
-     *  True if the block has been ended
-     *  False if the block has not yet been ended
-     */
-    public function hasBlockEnded(string $name): bool;
-
-    /**
-     * Start a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return void
-     */
-    public function startBlock(string $name): void;
-
-    /**
-     * End a block.
-     *
-     * @param string $name The name of the block
-     *
-     * @return void
-     */
-    public function endBlock(string $name): void;
 
     /**
      * Render the templates and view.
