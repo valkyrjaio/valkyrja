@@ -130,7 +130,7 @@ class EntityManager implements EntityManagerContract
         /** @var Adapter $adapter */
         $adapter = $this->config->adapters[$name];
 
-        return $adapter::make($this->config->connections);
+        return $adapter::make($this->config);
     }
 
     /**

@@ -25,11 +25,11 @@ interface Adapter
     /**
      * Make a new adapter.
      *
-     * @param ORMConfig $config
+     * @param ORMConfig|object $config
      *
      * @return static
      */
-    public static function make(ORMConfig $config): self;
+    public static function make(object $config): self;
 
     /**
      * Create a new connection.

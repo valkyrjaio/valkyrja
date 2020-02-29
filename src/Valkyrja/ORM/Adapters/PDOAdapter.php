@@ -50,9 +50,9 @@ class PDOAdapter implements Adapter
     /**
      * PDOAdapter constructor.
      *
-     * @param ORMConfig $config
+     * @param ORMConfig|object $config
      */
-    public function __construct(ORMConfig $config)
+    public function __construct(object $config)
     {
         $this->config            = $config;
         $this->defaultConnection = $this->config[CKP::DEFAULT];
@@ -61,11 +61,11 @@ class PDOAdapter implements Adapter
     /**
      * Make a new adapter.
      *
-     * @param ORMConfig $config
+     * @param ORMConfig|object $config
      *
      * @return static
      */
-    public static function make(ORMConfig $config): self
+    public static function make(object $config): self
     {
         return new static($config);
     }

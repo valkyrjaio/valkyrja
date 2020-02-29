@@ -119,4 +119,5 @@ final class ConfigKeyPart extends Enum
     public const COMMANDS                    = 'commands';
     public const NAMED_COMMANDS              = 'namedCommands';
     public const VALHALLA                    = 'valhalla';
+    public const REDIS                       = 'redis';
 }

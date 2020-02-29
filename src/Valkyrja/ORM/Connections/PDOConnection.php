@@ -83,9 +83,9 @@ class PDOConnection implements ConnectionContract
     /**
      * PDOConnection constructor.
      *
-     * @param ConnectionConfig $config
+     * @param ConnectionConfig|object $config
      */
-    public function __construct(ConnectionConfig $config)
+    public function __construct(object $config)
     {
         $this->config     = $config;
         $this->connection = $this->getConnectionFromConfig($config);
@@ -98,11 +98,11 @@ class PDOConnection implements ConnectionContract
     /**
      * Get the store from the config.
      *
-     * @param ConnectionConfig $config
+     * @param ConnectionConfig|object $config
      *
      * @return PDO
      */
-    protected function getConnectionFromConfig(ConnectionConfig $config): PDO
+    protected function getConnectionFromConfig(object $config): PDO
     {
         $dsn = $config->driver
             . ':host=' . $config->host

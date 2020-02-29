@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Configs;
 
+use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\ConfigModel as Model;
 
@@ -23,7 +24,8 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class CacheConfig extends Model
 {
-    public string $default = '';
+    public string $default = ConfigKeyPart::REDIS;
+    public array  $stores  = [];
 
     /**
      * CacheConfig constructor.
@@ -31,5 +33,18 @@ class CacheConfig extends Model
     public function __construct()
     {
         $this->default = env(EnvKey::CACHE_DEFAULT, $this->default);
+        $this->setStores();
+    }
+
+    /**
+     * Set the stores.
+     *
+     * @param array $stores
+     *
+     * @return void
+     */
+    protected function setStores(array $stores = []): void
+    {
+        $this->stores = env(EnvKey::CACHE_STORES, $stores);
     }
 }

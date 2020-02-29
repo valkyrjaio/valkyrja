@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
-use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
@@ -43,9 +42,11 @@ class Optimize extends Commander
      */
     public function run(): int
     {
+        $cacheFilePath = config()->cacheFilePath;
+
         // If the cache file already exists, delete it
-        if (file_exists(config(ConfigKey::CONFIG_CACHE_FILE_PATH))) {
-            unlink(config(ConfigKey::CONFIG_CACHE_FILE_PATH));
+        if (file_exists($cacheFilePath)) {
+            unlink($cacheFilePath);
         }
 
         $configCache = config();
@@ -72,11 +73,7 @@ class Optimize extends Commander
         $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
 
         // Get the results of the cache attempt
-        $result = file_put_contents(
-            config(ConfigKey::CONFIG_CACHE_FILE_PATH),
-            $serialized,
-            LOCK_EX
-        );
+        $result = file_put_contents($cacheFilePath, $serialized, LOCK_EX);
 
         if ($result === false) {
             output()->writeMessage('An error occurred while optimizing the application.', true);
