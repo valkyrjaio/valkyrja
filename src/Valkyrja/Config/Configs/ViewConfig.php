@@ -24,43 +24,19 @@ use Valkyrja\View\Enums\Config;
  */
 class ViewConfig extends Model
 {
-    public string $dir    = '';
-    public string $engine = Config::ENGINE;
-    public object $engines;
-    public object $paths;
+    public string $dir     = '';
+    public string $engine  = Config::ENGINE;
+    public array  $engines = [];
+    public array  $paths   = [];
 
     /**
      * ViewConfig constructor.
      */
     public function __construct()
     {
-        $this->dir    = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
-        $this->engine = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
-        $this->setEngines();
-        $this->setPaths();
-    }
-
-    /**
-     * Set the engines.
-     *
-     * @param array $engines
-     *
-     * @return void
-     */
-    protected function setEngines(array $engines = []): void
-    {
-        $this->engines = (object) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $engines));
-    }
-
-    /**
-     * Set the paths.
-     *
-     * @param array $paths
-     *
-     * @return void
-     */
-    protected function setPaths(array $paths = []): void
-    {
-        $this->paths = (object) env(EnvKey::VIEW_PATHS, $paths);
+        $this->dir     = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
+        $this->engine  = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
+        $this->engines = (array) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $this->engines));
+        $this->paths   = (array) env(EnvKey::VIEW_PATHS, $this->paths);
     }
 }

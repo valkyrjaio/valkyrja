@@ -197,7 +197,7 @@ class View implements ViewContract
         }
 
         /** @var Engine $engine */
-        $engine = $this->config->engines->{$name};
+        $engine = \is_array($this->config->engines) ? $this->config->engines[$name] : $this->config->engines->{$name};
 
         return self::$engines[$name] = $engine::make($this);
     }
@@ -356,7 +356,7 @@ class View implements ViewContract
         if (strpos($template, '@') === 0) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $path      = $this->config->paths->{$parts[0]} ?? null;
+            $path      = config('views.paths.' . $parts[0]);
 
             // If there is no path
             if ($path === null) {
