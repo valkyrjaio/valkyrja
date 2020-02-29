@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Collection as RouteCollectionContract;
 use Valkyrja\Routing\Matcher as RouteMatcherContract;
 use Valkyrja\Routing\Matchers\Matcher;
@@ -36,21 +37,21 @@ class Collection implements RouteCollectionContract
     /**
      * The static routes.
      *
-     * @var string[][]
+     * @var Route[][]
      */
     protected array $static = [];
 
     /**
      * The dynamic routes.
      *
-     * @var string[][]
+     * @var Route[][]
      */
     protected array $dynamic = [];
 
     /**
      * The named routes.
      *
-     * @var string[]
+     * @var Route[]
      */
     protected array $named = [];
 
@@ -82,9 +83,6 @@ class Collection implements RouteCollectionContract
             throw new InvalidArgumentException('Invalid path defined in route.');
         }
 
-        $key                = $route->getPath();
-        $this->routes[$key] = $route;
-
         // Verify the dispatch
         app()->dispatcher()->verifyDispatch($route);
 
@@ -96,52 +94,68 @@ class Collection implements RouteCollectionContract
             if ($route->isDynamic()) {
                 // Set the dynamic route's properties through the path parser
                 $this->parseDynamicRoute($route);
-                // Set the route's regex and path in the dynamic routes list
-                $this->dynamic[$requestMethod][$route->getRegex()] = $key;
+                // Set the route in the dynamic routes list
+                $this->dynamic[$requestMethod][$route->getRegex()] = $route;
             } // Otherwise set it in the static routes array
             else {
-                // Set the route's path in the static routes list
-                $this->static[$requestMethod][$route->getPath()] = $key;
+                // Set the route in the static routes list
+                $this->static[$requestMethod][$route->getPath()] = $route;
             }
         }
 
         // If this route has a name set
         if ($route->getName()) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = $key;
+            $this->named[$route->getName()] = $route;
         }
+
+        $this->routes[] = $route;
     }
 
     /**
      * Get a route.
      *
-     * @param string $path The path
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route|null
      *      The route if found or null when no route is
      *      found for the path combination specified
      */
-    public function get(string $path): ?Route
+    public function get(string $path, string $method = null): ?Route
     {
-        return $this->routes[$path] ?? null;
+        return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method) ?? null;
     }
 
     /**
      * Determine if a route exists.
      *
-     * @param string $path The path
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return bool
      */
-    public function isset(string $path): bool
+    public function isset(string $path, string $method = null): bool
     {
-        return isset($this->routes[$path]);
+        return $this->hasStatic($path, $method) || $this->hasDynamic($path, $method);
     }
 
     /**
+     * Get all routes.
+     *
      * @return Route[]
      */
     public function all(): array
+    {
+        return array_merge($this->static, $this->dynamic);
+    }
+
+    /**
+     * Get a flat array of routes.
+     *
+     * @return Route[]
+     */
+    public function allFlattened(): array
     {
         return $this->routes;
     }
@@ -159,12 +173,15 @@ class Collection implements RouteCollectionContract
     public function getStatic(string $path, string $method = null): ?Route
     {
         if (null === $method) {
-            return $this->get($path);
+            return $this->getStatic($path, RequestMethod::GET)
+                ?? $this->getStatic($path, RequestMethod::HEAD)
+                ?? $this->getStatic($path, RequestMethod::POST)
+                ?? $this->getStatic($path, RequestMethod::PUT)
+                ?? $this->getStatic($path, RequestMethod::PATCH)
+                ?? $this->getStatic($path, RequestMethod::DELETE);
         }
 
-        $methodPath = $this->static[$method][$path] ?? null;
-
-        return $methodPath ? $this->get($methodPath) : null;
+        return $this->static[$method][$path] ?? null;
     }
 
     /**
@@ -178,7 +195,12 @@ class Collection implements RouteCollectionContract
     public function hasStatic(string $path, string $method = null): bool
     {
         if (null === $method) {
-            return $this->isset($path);
+            return $this->hasStatic($path, RequestMethod::GET)
+                || $this->hasStatic($path, RequestMethod::HEAD)
+                || $this->hasStatic($path, RequestMethod::POST)
+                || $this->hasStatic($path, RequestMethod::PUT)
+                || $this->hasStatic($path, RequestMethod::PATCH)
+                || $this->hasStatic($path, RequestMethod::DELETE);
         }
 
         return isset($this->static[$method][$path]);
@@ -213,12 +235,15 @@ class Collection implements RouteCollectionContract
     public function getDynamic(string $regex, string $method = null): ?Route
     {
         if (null === $method) {
-            return $this->get($regex);
+            return $this->getDynamic($regex, RequestMethod::GET)
+                ?? $this->getDynamic($regex, RequestMethod::HEAD)
+                ?? $this->getDynamic($regex, RequestMethod::POST)
+                ?? $this->getDynamic($regex, RequestMethod::PUT)
+                ?? $this->getDynamic($regex, RequestMethod::PATCH)
+                ?? $this->getDynamic($regex, RequestMethod::DELETE);
         }
 
-        $methodPath = $this->dynamic[$method][$regex] ?? null;
-
-        return $methodPath ? $this->get($methodPath) : null;
+        return $this->dynamic[$method][$regex] ?? null;
     }
 
     /**
@@ -232,7 +257,12 @@ class Collection implements RouteCollectionContract
     public function hasDynamic(string $regex, string $method = null): bool
     {
         if (null === $method) {
-            return $this->isset($regex);
+            return $this->hasDynamic($regex, RequestMethod::GET)
+                || $this->hasDynamic($regex, RequestMethod::HEAD)
+                || $this->hasDynamic($regex, RequestMethod::POST)
+                || $this->hasDynamic($regex, RequestMethod::PUT)
+                || $this->hasDynamic($regex, RequestMethod::PATCH)
+                || $this->hasDynamic($regex, RequestMethod::DELETE);
         }
 
         return isset($this->dynamic[$method][$regex]);
@@ -265,7 +295,7 @@ class Collection implements RouteCollectionContract
      */
     public function getNamed(string $name): ?Route
     {
-        return $this->get($this->named[$name] ?? $name);
+        return $this->named[$name] ?? null;
     }
 
     /**

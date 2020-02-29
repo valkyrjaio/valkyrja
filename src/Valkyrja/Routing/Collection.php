@@ -33,26 +33,37 @@ interface Collection
      * Get a route.
      *
      * @param string $path The path
+     * @param string|null $method [optional] The request method
      *
      * @return Route|null
      *      The route if found or null when no route is
      *      found for the path combination specified
      */
-    public function get(string $path): ?Route;
+    public function get(string $path, string $method = null): ?Route;
 
     /**
      * Determine if a route exists.
      *
      * @param string $path The path
+     * @param string|null $method [optional] The request method
      *
      * @return bool
      */
-    public function isset(string $path): bool;
+    public function isset(string $path, string $method = null): bool;
 
     /**
-     * @return Route[]
+     * Get all routes.
+     *
+     * @return Route[][]
      */
     public function all(): array;
+
+    /**
+     * Get a flat array of routes.
+     *
+     * @return Route[]
+     */
+    public function allFlattened(): array;
 
     /**
      * Get a static route.

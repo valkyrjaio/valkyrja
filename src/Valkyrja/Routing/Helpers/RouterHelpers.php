@@ -74,7 +74,7 @@ trait RouterHelpers
      */
     public function getRoutes(): array
     {
-        return self::$collection->all();
+        return self::$collection->allFlattened();
     }
 
     /**
