@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Dispatchers;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Cacheables\ContainerCacheable;
+use Valkyrja\Container\Cacheables\CacheableContainer;
 use Valkyrja\Container\Container as ContainerContract;
 use Valkyrja\Container\Events\ServiceMade;
 use Valkyrja\Container\Events\ServiceMadeSingleton;
@@ -38,7 +38,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
  */
 class Container implements ContainerContract
 {
-    use ContainerCacheable;
+    use CacheableContainer;
 
     /**
      * The singletons.

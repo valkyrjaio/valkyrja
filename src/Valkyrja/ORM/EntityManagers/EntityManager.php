@@ -28,6 +28,7 @@ use Valkyrja\ORM\Retriever;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Config\Configs\ORMConfig;
 
 /**
  * Class EntityManager.
@@ -48,9 +49,9 @@ class EntityManager implements EntityManagerContract
     /**
      * The config.
      *
-     * @var array
+     * @var ORMConfig
      */
-    protected array $config;
+    protected ORMConfig $config;
 
     /**
      * The default adapter.
@@ -80,10 +81,9 @@ class EntityManager implements EntityManagerContract
      */
     public function __construct(Application $app)
     {
-        $this->config         = $app->config()[CKP::DB];
+        $this->config         = $app->config()->orm;
         $this->app            = $app;
-        $defaultConnection    = $this->config[CKP::DEFAULT];
-        $this->defaultAdapter = $this->config[CKP::CONNECTIONS][$defaultConnection][CKP::ADAPTER] ?? CKP::PDO;
+        $this->defaultAdapter = $this->config->connections->{$this->config->default}->adapter ?? CKP::PDO;
     }
 
     /**
@@ -127,9 +127,8 @@ class EntityManager implements EntityManagerContract
             return self::$adapters[$name];
         }
 
-        $config = $this->app->config();
         /** @var Adapter $adapter */
-        $adapter = $config[CKP::DB][CKP::ADAPTERS][$name];
+        $adapter = $this->config->adapters[$name];
 
         return $adapter::make($this->config);
     }

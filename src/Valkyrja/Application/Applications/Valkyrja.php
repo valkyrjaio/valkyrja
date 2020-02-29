@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
+use stdClass;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Enums\Contract;
@@ -24,7 +25,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Providers\Provider;
 
 use function define;
 use function defined;
@@ -58,9 +58,9 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var array
+     * @var Config|object
      */
-    protected static array $config;
+    protected static object $config;
 
     /**
      * Get the instance of the container.
@@ -106,9 +106,9 @@ class Valkyrja implements Application
     /**
      * Application constructor.
      *
-     * @param array $config [optional] The config to use
+     * @param string|null $config [optional] The config class to use
      */
-    public function __construct(array $config = null)
+    public function __construct(string $config = null)
     {
         $this->setup($config);
     }
@@ -116,12 +116,12 @@ class Valkyrja implements Application
     /**
      * Setup the application.
      *
-     * @param array $config [optional] The config to use
-     * @param bool  $force  [optional] Whether to force a setup
+     * @param string|null $config [optional] The config to use
+     * @param bool        $force  [optional] Whether to force a setup
      *
      * @return void
      */
-    public function setup(array $config = null, bool $force = false): void
+    public function setup(string $config = null, bool $force = false): void
     {
         // If the application was already setup, no need to do it again
         if (self::$setup && ! $force) {
@@ -153,6 +153,31 @@ class Valkyrja implements Application
         $this->bootstrapSetup();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
+    }
+
+    /**
+     * Add to the global config array.
+     *
+     * @param Config $config The config to add
+     *
+     * @return static
+     */
+    public function withConfig(Config $config): self
+    {
+        self::$config = $config;
+
+        // Bootstrap debug capabilities
+        $this->bootstrapExceptionHandler();
+        // Bootstrap core functionality
+        $this->bootstrapCore();
+        // Bootstrap the container
+        $this->bootstrapContainer();
+        // Bootstrap setup
+        $this->bootstrapSetup();
+        // Bootstrap the timezone
+        $this->bootstrapTimezone();
+
+        return $this;
     }
 
     /**
@@ -188,35 +213,64 @@ class Valkyrja implements Application
     /**
      * Bootstrap the config.
      *
-     * @param array $config [optional] The config
+     * @param string|null $config [optional] The config class to use
      *
      * @return void
      */
-    protected function bootstrapConfig(array $config = null): void
+    protected function bootstrapConfig(string $config = null): void
     {
-        $envCacheFile  = Directory::basePath((string) self::env(EnvKey::CONFIG_CACHE_FILE_PATH));
-        $cacheFilePath = is_file($envCacheFile) ? $envCacheFile : Directory::cachePath('config.php');
+        $envCacheFile  = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
+        $cacheFilePath = Directory::cachePath('config.php');
+
+        // If an env variable for cache file path was set
+        if (null !== $envCacheFile) {
+            $envCacheFilePath = Directory::basePath((string) self::env(EnvKey::CONFIG_CACHE_FILE_PATH));
+            $cacheFilePath    = is_file($envCacheFilePath) ? $envCacheFilePath : $cacheFilePath;
+        }
 
         // If we should use the config cache file
         if (is_file($cacheFilePath)) {
             // Get the config from the cache file's contents
-            self::$config = require $cacheFilePath;
+            $this->setupFromCacheFile($cacheFilePath);
 
             return;
         }
 
-        $config         = $config ?? [];
-        $envConfigFile  = Directory::basePath((string) self::env(EnvKey::CONFIG_FILE_PATH));
-        $configFilePath = is_file($envConfigFile) ? $envConfigFile : Directory::configPath('config.php');
-        $defaultConfigs = require $configFilePath;
+        $config ??= $config ?? self::env(EnvKey::CONFIG_CLASS, Config::class);
 
-        self::$config = array_replace_recursive($defaultConfigs, $config);
-        /** @var Provider[] $providers */
-        $providers = self::$config[ConfigKeyPart::PROVIDERS];
+        self::$config = new $config();
 
-        foreach ($providers as $provider) {
-            // Config providers are NOT deferred and will not follow the
-            // deferred value
+        $this->publishConfigProviders();
+    }
+
+    /**
+     * Setup the application from a cache file.
+     *
+     * @param string $cacheFilePath The cache file path
+     *
+     * @return void
+     */
+    protected function setupFromCacheFile(string $cacheFilePath): void
+    {
+        self::$config = unserialize(
+            file_get_contents($cacheFilePath),
+            [
+                'allowed_classes' => [
+                    stdClass::class,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Publish config providers.
+     *
+     * @return void
+     */
+    protected function publishConfigProviders(): void
+    {
+        foreach (self::$config->providers as $provider) {
+            // Config providers are NOT deferred and will not follow the deferred value
             $provider::publish($this);
         }
     }
@@ -229,7 +283,7 @@ class Valkyrja implements Application
     protected function bootstrapExceptionHandler(): void
     {
         // The exception handler class to use from the config
-        $exceptionHandlerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EXCEPTION_HANDLER];
+        $exceptionHandlerImpl = self::$config->app->exceptionHandler;
 
         // Set the exception handler to a new instance of the exception handler implementation
         self::$exceptionHandler = new $exceptionHandlerImpl($this);
@@ -249,11 +303,11 @@ class Valkyrja implements Application
     protected function bootstrapCore(): void
     {
         // The events class to use from the config
-        $eventsImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::EVENTS];
+        $eventsImpl = self::$config->app->events;
         // The container class to use from the config
-        $containerImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::CONTAINER];
+        $containerImpl = self::$config->app->container;
         // The dispatcher class to use from the config
-        $dispatcherImpl = self::$config[ConfigKeyPart::APP][ConfigKeyPart::DISPATCHER];
+        $dispatcherImpl = self::$config->app->dispatcher;
 
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
@@ -310,6 +364,6 @@ class Valkyrja implements Application
      */
     protected function bootstrapTimezone(): void
     {
-        date_default_timezone_set(self::$config[ConfigKeyPart::APP][ConfigKeyPart::TIMEZONE]);
+        date_default_timezone_set(self::$config->app->timezone);
     }
 }

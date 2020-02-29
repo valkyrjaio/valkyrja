@@ -44,10 +44,10 @@ final class ConfigKey extends Enum
     public const APP_EVENTS               = 'app.events';
     public const APP_EXCEPTION_HANDLER    = 'app.exceptionHandler';
 
-    public const ANNOTATIONS_ENABLED   = 'annotations.enabled';
-    public const ANNOTATIONS_CACHE_DIR = 'annotations.cacheDir';
-    public const ANNOTATIONS_MAP       = 'annotations.map';
-    public const ANNOTATIONS_ALIASES   = 'annotations.aliases';
+    public const ANNOTATIONS_ENABLED   = 'annotation.enabled';
+    public const ANNOTATIONS_CACHE_DIR = 'annotation.cacheDir';
+    public const ANNOTATIONS_MAP       = 'annotation.map';
+    public const ANNOTATIONS_ALIASES   = 'annotation.aliases';
 
     public const CONSOLE_PROVIDERS                   = 'console.providers';
     public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';
@@ -72,16 +72,16 @@ final class ConfigKey extends Enum
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
 
-    public const DB_CONNECTION  = 'database.default';
-    public const DB_ADAPTERS    = 'database.adapters';
-    public const DB_CONNECTIONS = 'database.connections';
+    public const DB_CONNECTION  = 'orm.default';
+    public const DB_ADAPTERS    = 'orm.adapters';
+    public const DB_CONNECTIONS = 'orm.connections';
 
-    public const EVENTS_USE_ANNOTATIONS             = 'events.useAnnotations';
-    public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'events.useAnnotationsExclusively';
-    public const EVENTS_CLASSES                     = 'events.classes';
-    public const EVENTS_FILE_PATH                   = 'events.filePath';
-    public const EVENTS_CACHE_FILE_PATH             = 'events.cacheFilePath';
-    public const EVENTS_USE_CACHE_FILE              = 'events.useCache';
+    public const EVENTS_USE_ANNOTATIONS             = 'event.useAnnotations';
+    public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'event.useAnnotationsExclusively';
+    public const EVENTS_CLASSES                     = 'event.classes';
+    public const EVENTS_FILE_PATH                   = 'event.filePath';
+    public const EVENTS_CACHE_FILE_PATH             = 'event.cacheFilePath';
+    public const EVENTS_USE_CACHE_FILE              = 'event.useCache';
 
     public const FILESYSTEM_DEFAULT       = 'filesystem.default';
     public const FILESYSTEM_ADAPTERS      = 'filesystem.adapters';
@@ -97,8 +97,8 @@ final class ConfigKey extends Enum
     public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
     public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
-    public const LOG_NAME      = 'log.name';
-    public const LOG_FILE_PATH = 'log.filePath';
+    public const LOG_NAME      = 'logging.name';
+    public const LOG_FILE_PATH = 'logging.filePath';
 
     public const MAIL_HOST         = 'mail.host';
     public const MAIL_PORT         = 'mail.port';

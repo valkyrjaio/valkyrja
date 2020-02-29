@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
+use Valkyrja\Config\Configs\ORMConfig;
+
 /**
  * Interface Adapter.
  *
@@ -23,11 +25,11 @@ interface Adapter
     /**
      * Make a new adapter.
      *
-     * @param array $config
+     * @param ORMConfig|object $config
      *
      * @return static
      */
-    public static function make(array $config): self;
+    public static function make(object $config): self;
 
     /**
      * Create a new connection.

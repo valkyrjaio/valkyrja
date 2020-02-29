@@ -20,6 +20,7 @@ use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Config\Configs\FilesystemConfig;
 
 /**
  * Class Filesystem.
@@ -47,9 +48,9 @@ class Filesystem implements FilesystemContract
     /**
      * The config.
      *
-     * @var array
+     * @var FilesystemConfig
      */
-    protected array $config;
+    protected FilesystemConfig $config;
 
     /**
      * FlyFilesystem constructor.
@@ -59,7 +60,7 @@ class Filesystem implements FilesystemContract
     public function __construct(Application $application)
     {
         $this->app    = $application;
-        $this->config = $this->app->config()[CKP::FILESYSTEM];
+        $this->config = $this->app->config()->filesystem;
     }
 
     /**
@@ -372,14 +373,14 @@ class Filesystem implements FilesystemContract
      */
     public function getAdapter(string $name = null): Adapter
     {
-        $name ??= $this->config[CKP::CONNECTIONS][$this->config[CKP::DEFAULT]][CKP::ADAPTER];
+        $name ??= $this->config->disks->{$this->config->default}->adapter;
 
         if (isset(self::$adapters[$name])) {
             return self::$adapters[$name];
         }
 
         /** @var Adapter $adapter */
-        $adapter = $this->config[CKP::ADAPTERS][$name];
+        $adapter = $this->config->adapters[$name];
 
         return self::$adapters[$name] = $adapter::make();
     }

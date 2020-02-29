@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Dispatchers;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Configs\EventConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -64,11 +64,11 @@ class Events implements EventsContract
     /**
      * Get the config.
      *
-     * @return array
+     * @return EventConfig|object
      */
-    protected function getConfig(): array
+    protected function getConfig(): object
     {
-        return $this->app->config(ConfigKeyPart::EVENTS);
+        return $this->app->config()->event;
     }
 
     /**
@@ -84,13 +84,14 @@ class Events implements EventsContract
     /**
      * Setup the events from cache.
      *
+     * @param EventConfig|object $config
+     *
      * @return void
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application events with said file
-        $cache = $this->app->config(ConfigKey::CACHE_EVENTS)
-            ?? require $this->app->config(ConfigKey::EVENTS_CACHE_FILE_PATH);
+        $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$events = unserialize(
             base64_decode($cache[ConfigKeyPart::EVENTS], true),
@@ -105,24 +106,18 @@ class Events implements EventsContract
     /**
      * Setup annotations.
      *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
+     * @param EventConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var ListenerAnnotator $containerAnnotations */
         $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);
 
         // Get all the annotated listeners from the list of classes
-        $listeners = $containerAnnotations->getListeners(...$this->app->config(ConfigKey::EVENTS_CLASSES));
-
         // Iterate through the listeners
-        foreach ($listeners as $listener) {
+        foreach ($containerAnnotations->getListeners(...$config->listeners) as $listener) {
             // Set the service
             $this->listen($listener->getEvent(), $listener);
         }

@@ -16,6 +16,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
@@ -129,7 +130,7 @@ if (! function_exists('config')) {
      * @param string $key     [optional] The key to get
      * @param mixed  $default [optional] The default value if the key is not found
      *
-     * @return mixed
+     * @return mixed|Config|null
      */
     function config(string $key = null, $default = null)
     {

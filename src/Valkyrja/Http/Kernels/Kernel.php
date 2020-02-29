@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Kernels;
 use RuntimeException;
 use Throwable;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
 use Valkyrja\Http\Kernel as KernelContract;
@@ -62,10 +61,10 @@ class Kernel implements KernelContract
         $this->app    = $application;
         $this->router = $router;
 
-        $config = $application->config()[ConfigKeyPart::ROUTING];
+        $config = $application->config()->routing;
 
-        self::$middleware       = $config[ConfigKeyPart::MIDDLEWARE];
-        self::$middlewareGroups = $config[ConfigKeyPart::MIDDLEWARE_GROUPS];
+        self::$middleware       = $config->middleware;
+        self::$middlewareGroups = $config->middlewareGroups;
     }
 
     /**

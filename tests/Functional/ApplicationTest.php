@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -18,8 +19,8 @@ use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Container\Dispatchers\Container;
@@ -48,7 +49,6 @@ use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\Views\View;
 
 use function get_class;
-use function is_array;
 use function is_string;
 
 /**
@@ -125,7 +125,7 @@ class ApplicationTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, is_array($this->app->config()));
+        $this->assertEquals(true, ($this->app->config() instanceof Config));
     }
 
     /**
@@ -135,9 +135,10 @@ class ApplicationTest extends TestCase
      */
     public function testAddConfig(): void
     {
-        $this->app->addConfig(['new' => []]);
+        $config = new Config();
+        $this->app->addConfig($config, 'new');
 
-        $this->assertEquals(true, isset($this->app->config()['new']));
+        $this->assertEquals(true, isset($this->app->config()->new));
     }
 
     /**
@@ -191,7 +192,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::ENV], $this->app->environment());
+        $this->assertEquals($this->app->config()->app->env, $this->app->environment());
     }
 
     /**
@@ -201,7 +202,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        $this->assertEquals($this->app->config()[ConfigKeyPart::APP][ConfigKeyPart::DEBUG], $this->app->debug());
+        $this->assertEquals($this->app->config()->app->debug, $this->app->debug());
     }
 
     /**
@@ -469,12 +470,8 @@ class ApplicationTest extends TestCase
      */
     public function testSetupTwice(): void
     {
-        $config = $this->app->config();
-
-        // Set debug to true
-        $config['app']['debug'] = true;
         // Try to re-setup the application without forcing
-        $this->app->setup($config);
+        $this->app->setup(ConfigTest::class);
 
         // It shouldn't have used the new config settings and kept the old
         // so debug should still be false
@@ -488,10 +485,10 @@ class ApplicationTest extends TestCase
      */
     public function testDebugOn(): void
     {
-        $config = $this->app->config();
+        $config = new Config();
 
-        $config['app']['debug'] = true;
-        $this->app->setup($config, true);
+        $config->app->debug = true;
+        $this->app = $this->app->withConfig($config);
 
         $this->assertEquals(true, $this->app->debug());
     }
@@ -504,15 +501,15 @@ class ApplicationTest extends TestCase
     public function testInvalidDispatcher(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['dispatcher'] = InvalidDispatcherClass::class;
-            $this->app->setup($config, true);
+            $config->app->dispatcher = InvalidDispatcherClass::class;
+            $this->app = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }
 
-        $this->app->setup(null, true);
+        $this->app = $this->app->withConfig(new Config());
     }
 
     /**
@@ -523,15 +520,15 @@ class ApplicationTest extends TestCase
     public function testInvalidContainer(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['container'] = InvalidContainerClass::class;
-            $this->app->setup($config, true);
+            $config->app->container = InvalidContainerClass::class;
+            $this->app = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }
 
-        $this->app->setup(null, true);
+        $this->app = $this->app->withConfig(new Config());
     }
 
     /**
@@ -542,25 +539,15 @@ class ApplicationTest extends TestCase
     public function testInvalidEvents(): void
     {
         try {
-            $config = $this->app->config();
+            $config = new Config();
 
-            $config['app']['events'] = InvalidEventsClass::class;
-            $this->app->setup($config, true);
+            $config->app->events = InvalidEventsClass::class;
+            $this->app = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }
 
-        $this->app->setup(null, true);
-    }
-
-    /**
-     * Test resetting the application with proper config.
-     *
-     * @return void
-     */
-    public function testResetApplication(): void
-    {
-        $this->assertEquals(null, $this->app->setup(null, true) ?? null);
+        $this->app = $this->app->withConfig(new Config());
     }
 
     /**
@@ -570,16 +557,16 @@ class ApplicationTest extends TestCase
      */
     public function testApplicationSetupWithConfigProvider(): void
     {
-        $config              = $this->app->config();
-        $config['providers'] = [
+        $config            = new Config();
+        $config->providers = [
             ProviderClass::class,
         ];
 
-        $this->app->setup($config, true);
+        $this->app = $this->app->withConfig($config);
 
-        $this->assertEquals(ProviderClass::class, $this->app->config()[ConfigKeyPart::PROVIDERS][0]);
+        $this->assertEquals(ProviderClass::class, $this->app->config()->providers[0]);
 
-        $this->app->setup(null, true);
+        $this->app = $this->app->withConfig(new Config());
     }
 
     /**
@@ -594,12 +581,8 @@ class ApplicationTest extends TestCase
         // Run the config cache command
         $this->app->console()->dispatchCommand($configCacheCommand);
 
-        // Set some config differently
-        $config                 = $this->app->config();
-        $config['app']['debug'] = true;
-
         // Resetup the app with the new config and force
-        $this->app->setup($config, true);
+        $this->app->setup(ConfigTest::class);
 
         // Because the app will use the config cache the forced changes to the config made above shouldn't
         // take effect and the value for app.debug should still be false.
@@ -609,6 +592,6 @@ class ApplicationTest extends TestCase
         unlink($this->app->config(ConfigKey::CONFIG_CACHE_FILE_PATH));
 
         // Reset the application to normal operations
-        $this->app->setup(null, true);
+        $this->app = $this->app->withConfig(new Config());
     }
 }

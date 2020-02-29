@@ -15,7 +15,6 @@ namespace Valkyrja\Session\Sessions;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Session\Session as SessionContract;
@@ -61,9 +60,10 @@ class Session implements SessionContract
     public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
     {
         $this->app = $application;
+        $config    = $application->config()->session;
 
-        $sessionId   = $sessionId ?? $this->app->config()[ConfigKeyPart::SESSION][ConfigKeyPart::ID];
-        $sessionName = $sessionName ?? $this->app->config()[ConfigKeyPart::SESSION][ConfigKeyPart::NAME];
+        $sessionId   = $sessionId ?? $config->id;
+        $sessionName = $sessionName ?? $config->name;
 
         // If a session id is provided
         if (null !== $sessionId) {

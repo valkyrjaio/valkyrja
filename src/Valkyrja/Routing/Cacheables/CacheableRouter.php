@@ -13,18 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Cacheables;
 
-use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Configs\RoutingConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Collections\Collection;
-use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Matchers\Matcher;
+use Valkyrja\Routing\Models\Route;
 use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
@@ -53,11 +48,11 @@ trait CacheableRouter
     /**
      * Get the config.
      *
-     * @return array
+     * @return RoutingConfig|object
      */
-    protected function getConfig(): array
+    protected function getConfig(): object
     {
-        return $this->app->config(ConfigKeyPart::ROUTING);
+        return $this->app->config()->routing;
     }
 
     /**
@@ -76,24 +71,26 @@ trait CacheableRouter
      */
     protected function setupNotCached(): void
     {
-        self::$collection = new Collection($this->app);
+        self::$collection = new Collection();
     }
 
     /**
      * Setup the router from cache.
      *
+     * @param RoutingConfig|object $config
+     *
      * @return void
      */
-    protected function setupFromCache(): void
+    protected function setupFromCache(object $config): void
     {
         // Set the application routes with said file
-        $cache = $this->app->config(ConfigKey::CACHE_ROUTING)
-            ?? require $this->app->config(ConfigKey::ROUTING_CACHE_FILE_PATH);
+        $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$collection = unserialize(
             base64_decode($cache[ConfigKeyPart::COLLECTION], true),
             [
                 'allowed_classes' => [
+                    Matcher::class,
                     Collection::class,
                     Route::class,
                 ],
@@ -104,25 +101,18 @@ trait CacheableRouter
     /**
      * Setup annotated routes.
      *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidArgumentException
+     * @param RoutingConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
         $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotator::class);
 
         // Get all the annotated routes from the list of controllers
-        $routes = $routeAnnotations->getRoutes(...$this->app->config(ConfigKey::ROUTING_CONTROLLERS));
-
         // Iterate through the routes
-        foreach ($routes as $route) {
+        foreach ($routeAnnotations->getRoutes(...$config->controllers) as $route) {
             // Set the route
             self::$collection->add($route);
         }
