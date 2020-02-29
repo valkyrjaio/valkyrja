@@ -126,21 +126,21 @@ trait CacheableContainer
 
         // Get all the annotated services from the list of controllers
         // Iterate through the services
-        foreach ($containerAnnotations->getServices(...(array) $config->services) as $service) {
+        foreach ($containerAnnotations->getServices(...$config->services) as $service) {
             // Set the service
             $this->bind($service);
         }
 
         // Get all the annotated services from the list of controllers
         // Iterate through the services
-        foreach ($containerAnnotations->getContextServices(...(array) $config->contextServices) as $context) {
+        foreach ($containerAnnotations->getContextServices(...$config->contextServices) as $context) {
             // Set the service
             $this->setContext($context);
         }
 
         // Get all the annotated services from the list of classes
         // Iterate through the services
-        foreach ($containerAnnotations->getAliasServices(...(array) $config->aliases) as $alias) {
+        foreach ($containerAnnotations->getAliasServices(...$config->aliases) as $alias) {
             // Set the service
             $this->setAlias($alias->getName(), $alias->getId());
         }

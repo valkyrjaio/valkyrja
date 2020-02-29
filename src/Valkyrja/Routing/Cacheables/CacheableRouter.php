@@ -112,7 +112,7 @@ trait CacheableRouter
 
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes
-        foreach ($routeAnnotations->getRoutes(...(array) $config->controllers) as $route) {
+        foreach ($routeAnnotations->getRoutes(...$config->controllers) as $route) {
             // Set the route
             self::$collection->add($route);
         }

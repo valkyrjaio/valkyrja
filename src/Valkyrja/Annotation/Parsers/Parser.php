@@ -48,13 +48,6 @@ class Parser implements AnnotationsParserContract
     protected Application $app;
 
     /**
-     * The annotations map.
-     *
-     * @var array
-     */
-    protected array $map;
-
-    /**
      * AnnotationsParser constructor.
      *
      * @param Application $application The application
@@ -159,7 +152,7 @@ class Parser implements AnnotationsParserContract
      */
     public function getRegex(): string
     {
-        /**
+        /*
          * @description
          *
          * This regex will produce an array matches list of
@@ -171,11 +164,13 @@ class Parser implements AnnotationsParserContract
          * $matches[2] Parenthesis enclosed results
          *
          * @Annotation $matches[3] $matches[4] $matches[5]
-         * Matches: @method, @param $test, @description description, @param int $test Description, etc
+         * Matches: @method, @param $test, @description description,
+         *          @param int $test Description, etc
          * None of the below matches requires the previous one to exist
          *
          * $matches[3] Description or type part of a line annotation
-         * $matches[4] Variable part of line annotation (must be a variable beginning with $)
+         * $matches[4] Variable part of line annotation
+         *             (must be a variable beginning with $)
          * $matches[5] Description part of line annotation
          */
         return Regex::REGEX;
@@ -188,7 +183,7 @@ class Parser implements AnnotationsParserContract
      */
     public function getAnnotationsMap(): array
     {
-        return $this->map ?? $this->map = (array) $this->app->config()->annotation->map;
+        return $this->app->config()->annotation->map;
     }
 
     /**
@@ -434,6 +429,6 @@ class Parser implements AnnotationsParserContract
     {
         $aliases = config(ConfigKey::ANNOTATIONS_ALIASES);
 
-        return $aliases->{$class} ?? $class;
+        return $aliases[$class] ?? $class;
     }
 }

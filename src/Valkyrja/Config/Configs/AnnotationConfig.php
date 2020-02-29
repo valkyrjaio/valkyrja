@@ -26,8 +26,8 @@ class AnnotationConfig extends Model
 {
     public bool   $enabled  = false;
     public string $cacheDir = '';
-    public object $map;
-    public object $aliases;
+    public array  $map      = [];
+    public array  $aliases  = [];
 
     /**
      * AnnotationConfig constructor.
@@ -36,31 +36,7 @@ class AnnotationConfig extends Model
     {
         $this->enabled  = (bool) env(EnvKey::ANNOTATIONS_ENABLED, $this->enabled);
         $this->cacheDir = (string) env(EnvKey::ANNOTATIONS_CACHE_DIR, storagePath('vendor/annotations'));
-        $this->setMap();
-        $this->setAliases();
-    }
-
-    /**
-     * Set the map.
-     *
-     * @param array $map
-     *
-     * @return void
-     */
-    protected function setMap(array $map = []): void
-    {
-        $this->map = (object) env(EnvKey::ANNOTATIONS_MAP, array_merge(Config::MAP, $map));
-    }
-
-    /**
-     * Set the aliases.
-     *
-     * @param array $aliases
-     *
-     * @return void
-     */
-    protected function setAliases(array $aliases = []): void
-    {
-        $this->aliases = (object) env(EnvKey::ANNOTATIONS_ALIASES, array_merge(Config::ALIASES, $aliases));
+        $this->map      = (array) env(EnvKey::ANNOTATIONS_MAP, array_merge(Config::MAP, $this->map));
+        $this->aliases  = (array) env(EnvKey::ANNOTATIONS_ALIASES, array_merge(Config::ALIASES, $this->aliases));
     }
 }
