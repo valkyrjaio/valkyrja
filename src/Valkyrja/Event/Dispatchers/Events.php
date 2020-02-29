@@ -94,7 +94,7 @@ class Events implements EventsContract
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$events = unserialize(
-            base64_decode($cache->events, true),
+            base64_decode($cache[ConfigKeyPart::EVENTS], true),
             [
                 'allowed_classes' => [
                     Listener::class,

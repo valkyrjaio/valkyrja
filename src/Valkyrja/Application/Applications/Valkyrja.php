@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
+use stdClass;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ContainerHelpers;
 use Valkyrja\Application\Helpers\Helpers;
@@ -29,7 +30,6 @@ use function define;
 use function defined;
 
 use const E_ALL;
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Valkyrja.
@@ -252,7 +252,14 @@ class Valkyrja implements Application
      */
     protected function setupFromCacheFile(string $cacheFilePath): void
     {
-        self::$config = json_decode(file_get_contents($cacheFilePath), false, 512, JSON_THROW_ON_ERROR);
+        self::$config = unserialize(
+            file_get_contents($cacheFilePath),
+            [
+                'allowed_classes' => [
+                    stdClass::class
+                ],
+            ]
+        );
     }
 
     /**

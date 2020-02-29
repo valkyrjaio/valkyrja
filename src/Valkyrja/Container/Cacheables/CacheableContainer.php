@@ -101,15 +101,15 @@ trait CacheableContainer
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$services = unserialize(
-            base64_decode($cache->services, true),
+            base64_decode($cache[ConfigKeyPart::SERVICES], true),
             [
                 'allowed_classes' => [
                     Service::class,
                 ],
             ]
         );
-        self::$provided = (array) $cache->provided;
-        self::$aliases  = (array) $cache->aliases;
+        self::$provided = $cache[ConfigKeyPart::PROVIDED];
+        self::$aliases  = $cache[ConfigKeyPart::ALIASES];
     }
 
     /**

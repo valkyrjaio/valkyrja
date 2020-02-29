@@ -87,7 +87,7 @@ trait CacheableRouter
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$collection = unserialize(
-            base64_decode($cache->collection, true),
+            base64_decode($cache[ConfigKeyPart::COLLECTION], true),
             [
                 'allowed_classes' => [
                     Matcher::class,

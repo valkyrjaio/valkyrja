@@ -112,16 +112,16 @@ trait CacheableConsole
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$commands      = unserialize(
-            base64_decode($cache->commands, true),
+            base64_decode($cache[ConfigKeyPart::COMMANDS], true),
             [
                 'allowed_classes' => [
                     Command::class,
                 ],
             ]
         );
-        self::$paths         = (array) $cache->paths;
-        self::$namedCommands = (array) $cache->namedCommands;
-        self::$provided      = (array) $cache->provided;
+        self::$paths         = $cache[ConfigKeyPart::PATHS];
+        self::$namedCommands = $cache[ConfigKeyPart::NAMED_COMMANDS];
+        self::$provided      = $cache[ConfigKeyPart::PROVIDED];
     }
 
     /**
