@@ -116,6 +116,7 @@ interface View
      * @return string
      */
     public function getTemplatePath(): string;
+
     /**
      * Set the template for the view.
      *
