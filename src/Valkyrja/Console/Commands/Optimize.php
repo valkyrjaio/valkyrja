@@ -18,6 +18,7 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
 
 /**
@@ -71,7 +72,7 @@ class Optimize extends Commander
         // Get the results of the cache attempt
         $result = file_put_contents(
             config(ConfigKey::CONFIG_CACHE_FILE_PATH),
-            serialize((object) json_decode(json_encode($configCache))),
+            json_encode($configCache, JSON_THROW_ON_ERROR),
             LOCK_EX
         );
 
