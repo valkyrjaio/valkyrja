@@ -356,7 +356,7 @@ class View implements ViewContract
         if (strpos($template, '@') === 0) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $path      = (string) config('views.paths.' . $parts[0]);
+            $path      = config()->view->paths[$parts[0]] ?? null;
 
             // If there is no path
             if ($path === null) {
