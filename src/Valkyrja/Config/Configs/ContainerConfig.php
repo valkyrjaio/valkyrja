@@ -148,5 +148,4 @@ class ContainerConfig extends Model
             array_merge(Config::DEV_PROVIDERS, $devProviders)
         );
     }
-
 }
