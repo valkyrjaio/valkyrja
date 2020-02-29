@@ -90,7 +90,7 @@ class CacheableConfig extends AnnotatableConfig
      */
     protected function setFilePath(string $filePath = ''): void
     {
-        $this->filePath = (string) env($this->envFilePathKey, $filePath );
+        $this->filePath = (string) env($this->envFilePathKey, $filePath);
     }
 
     /**
