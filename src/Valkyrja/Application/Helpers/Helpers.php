@@ -29,6 +29,7 @@ use Valkyrja\Http\Response;
 
 use function constant;
 use function defined;
+use function is_object;
 
 /**
  * Trait Helpers.
@@ -126,13 +127,12 @@ trait Helpers
         // Explode the keys on period
         $keys = explode(ConfigKeyPart::SEP, $key);
         // Set the config to return
-        $config = self::$config;
+        $config = clone self::$config;
 
         // Iterate through the keys
         foreach ($keys as $configItem) {
-            // Trying to get the item from the config
-            // or load the default
-            $config = $config->{$configItem} ?? $default;
+            // Trying to get the item from the config or set the default
+            $config = (is_object($config) ? $config->{$configItem} : $config[$configItem]) ?? $default;
 
             // If the item was not found, might as well return out from here
             // instead of continuing to iterate through the remaining keys
@@ -140,8 +140,6 @@ trait Helpers
                 return $default;
             }
         }
-
-        // do while($current !== $default);
 
         // Return the found config
         return $config;
