@@ -24,8 +24,8 @@ use Valkyrja\View\Enums\Config;
  */
 class ViewConfig extends Model
 {
-    public string $dir     = '';
-    public string $engine  = Config::ENGINE;
+    public string $dir    = '';
+    public string $engine = Config::ENGINE;
     public object $engines;
     public object $paths;
 
@@ -34,9 +34,33 @@ class ViewConfig extends Model
      */
     public function __construct()
     {
-        $this->dir     = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
-        $this->engine  = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
-        $this->engines = (object) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, []));
-        $this->paths   = (object) env(EnvKey::VIEW_PATHS, []);
+        $this->dir    = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
+        $this->engine = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
+        $this->setEngines();
+        $this->setPaths();
+    }
+
+    /**
+     * Set the engines.
+     *
+     * @param array $engines
+     *
+     * @return void
+     */
+    protected function setEngines(array $engines = []): void
+    {
+        $this->engines = (object) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $engines));
+    }
+
+    /**
+     * Set the paths.
+     *
+     * @param array $paths
+     *
+     * @return void
+     */
+    protected function setPaths(array $paths = []): void
+    {
+        $this->paths = (object) env(EnvKey::VIEW_PATHS, $paths);
     }
 }

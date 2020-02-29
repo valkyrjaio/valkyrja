@@ -140,7 +140,7 @@ trait CacheableConsole
 
         // Get all the annotated commands from the list of handlers
         // Iterate through the commands
-        foreach ($commandAnnotations->getCommands(...$config->handlers) as $command) {
+        foreach ($commandAnnotations->getCommands(...(array) $config->handlers) as $command) {
             // Set the service
             $this->addCommand($command);
         }
