@@ -256,7 +256,7 @@ class Valkyrja implements Application
             file_get_contents($cacheFilePath),
             [
                 'allowed_classes' => [
-                    stdClass::class
+                    stdClass::class,
                 ],
             ]
         );
