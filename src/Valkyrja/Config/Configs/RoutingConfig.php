@@ -23,32 +23,121 @@ use Valkyrja\Config\Models\CacheableConfig as Model;
  */
 class RoutingConfig extends Model
 {
-    public array $middleware       = [];
-    public array $middlewareGroups = [];
-    public array $controllers      = [];
-    public bool  $useTrailingSlash = false;
-    public bool  $useAbsoluteUrls  = false;
+    /**
+     * The middleware.
+     *
+     * @var array
+     */
+    public array $middleware;
+
+    /**
+     * The middleware groups.
+     *
+     * @var array
+     */
+    public array $middlewareGroups;
+
+    /**
+     * The annotated controllers.
+     *
+     * @var array
+     */
+    public array $controllers;
+
+    /**
+     * The flag to enable trailing slashes for all urls.
+     *
+     * @var bool
+     */
+    public bool $useTrailingSlash;
+
+    /**
+     * The flag to enable absolute urls.
+     *
+     * @var bool
+     */
+    public bool $useAbsoluteUrls;
 
     /**
      * RoutingConfig constructor.
      */
     public function __construct()
     {
-        $this->middleware       = (array) env(EnvKey::ROUTING_MIDDLEWARE, $this->controllers);
-        $this->middlewareGroups = (array) env(EnvKey::ROUTING_MIDDLEWARE_GROUPS, $this->controllers);
-        $this->controllers      = (array) env(EnvKey::ROUTING_CONTROLLERS, $this->controllers);
-        $this->useTrailingSlash = (bool) env(EnvKey::ROUTING_TRAILING_SLASH, $this->useTrailingSlash);
-        $this->useAbsoluteUrls  = (bool) env(EnvKey::ROUTING_USE_ABSOLUTE_URLS, $this->useAbsoluteUrls);
+        $this->setMiddleware();
+        $this->setMiddlewareGroups();
+        $this->setControllers();
+        $this->setUseTrailingSlash();
+        $this->setUseAbsoluteUrls();
 
-        $this->envUseAnnotationsKey            = EnvKey::ROUTING_USE_ANNOTATIONS;
-        $this->envUseAnnotationsExclusivelyKey = EnvKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY;
+        $this->setFilePathEnvKey(EnvKey::ROUTING_FILE_PATH);
+        $this->setCacheFilePathEnvKey(EnvKey::ROUTING_CACHE_FILE_PATH);
+        $this->setUseCacheEnvKey(EnvKey::ROUTING_USE_CACHE_FILE);
+        $this->setUseAnnotationsEnvKey(EnvKey::ROUTING_USE_ANNOTATIONS);
+        $this->setUseAnnotationsExclusivelyEnvKey(EnvKey::ROUTING_USE_ANNOTATIONS_EXCLUSIVELY);
+
+        $this->setFilePath(routesPath('default.php'));
+        $this->setCacheFilePath(cachePath('routing.php'));
+        $this->setUseCache();
         $this->setAnnotationsConfig();
+    }
 
-        $this->filePath            = routesPath('default.php');
-        $this->cacheFilePath       = cachePath('routing.php');
-        $this->envFilePathKey      = EnvKey::ROUTING_FILE_PATH;
-        $this->envCacheFilePathKey = EnvKey::ROUTING_CACHE_FILE_PATH;
-        $this->envUseCacheKey      = EnvKey::ROUTING_USE_CACHE_FILE;
-        $this->setCacheableConfig();
+    /**
+     * Set the middleware.
+     *
+     * @param array $middleware [optional] The middleware
+     *
+     * @return void
+     */
+    protected function setMiddleware(array $middleware = []): void
+    {
+        $this->middleware = (array) env(EnvKey::ROUTING_MIDDLEWARE, $middleware);
+    }
+
+    /**
+     * Set the middleware groups.
+     *
+     * @param array $middlewareGroups [optional] The middleware groups
+     *
+     * @return void
+     */
+    protected function setMiddlewareGroups(array $middlewareGroups = []): void
+    {
+        $this->middlewareGroups = (array) env(EnvKey::ROUTING_MIDDLEWARE_GROUPS, $middlewareGroups);
+    }
+
+    /**
+     * Set the annotated controllers.
+     *
+     * @param array $controllers [optional] The annotated controllers
+     *
+     * @return void
+     */
+    protected function setControllers(array $controllers = []): void
+    {
+        $this->controllers = (array) env(EnvKey::ROUTING_CONTROLLERS, $controllers);
+    }
+
+    /**
+     * Set the flag to enable trailing slashes for all urls.
+     *
+     * @param bool $useTrailingSlash [optional] The flag to enable trailing slashes for all urls
+     *
+     * @return void
+     */
+    protected function setUseTrailingSlash(bool $useTrailingSlash = false): void
+    {
+        $this->useTrailingSlash = (bool) env(EnvKey::ROUTING_TRAILING_SLASH, $useTrailingSlash);
+    }
+
+    /**
+     * Set the flag to enable absolute urls.
+     *
+     * @param bool $useAbsoluteUrls [optional] The flag to enable absolute urls
+     *
+     * @return void
+     */
+    protected function setUseAbsoluteUrls(bool $useAbsoluteUrls = false): void
+    {
+        $this->useAbsoluteUrls  = (bool) env(EnvKey::ROUTING_USE_ABSOLUTE_URLS, $useAbsoluteUrls);
     }
 }

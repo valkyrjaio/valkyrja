@@ -23,15 +23,50 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class LoggingConfig extends Model
 {
-    public string $name     = 'ApplicationLog';
-    public string $filePath = '';
+    /**
+     * The log name.
+     *
+     * @var string
+     */
+    public string $name;
+
+    /**
+     * The file path.
+     *
+     * @var string
+     */
+    public string $filePath;
 
     /**
      * LoggingConfig constructor.
      */
     public function __construct()
     {
-        $this->name     = env(EnvKey::LOG_NAME, $this->name);
-        $this->filePath = (string) env(EnvKey::LOG_FILE_PATH, storagePath('logs/valkyrja.log'));
+        $this->setName();
+        $this->setFilePath(storagePath('logs/valkyrja.log'));
+    }
+
+    /**
+     * Set the log name.
+     *
+     * @param string $name [optional] The log name
+     *
+     * @return void
+     */
+    protected function setName(string $name = 'ApplicationLog'): void
+    {
+        $this->name = (string) env(EnvKey::LOG_NAME, $name);
+    }
+
+    /**
+     * Set the file path.
+     *
+     * @param string $name [optional] The file path
+     *
+     * @return void
+     */
+    protected function setFilePath(string $filePath = ''): void
+    {
+        $this->filePath = (string) env(EnvKey::LOG_FILE_PATH, $filePath);
     }
 }

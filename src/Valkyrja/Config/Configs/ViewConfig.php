@@ -24,19 +24,103 @@ use Valkyrja\View\Enums\Config;
  */
 class ViewConfig extends Model
 {
-    public string $dir     = '';
-    public string $engine  = Config::ENGINE;
-    public array  $engines = [];
-    public array  $paths   = [];
+    /**
+     * The dir.
+     *
+     * @var string
+     */
+    public string $dir;
+
+    /**
+     * The default engine.
+     *
+     * @var string
+     */
+    public string $engine;
+
+    /**
+     * The engines.
+     *
+     * @var array
+     */
+    public array $engines;
+
+    /**
+     * The paths.
+     *
+     * @example
+     * <code>
+     *      [
+     *         '@path' => '/some/path/on/disk',
+     *      ]
+     * </code>
+     * Then we can do:
+     * <code>
+     *      view('@path/template');
+     *      $view->layout('@path/layout');
+     *      $view->partial('@path/partials/partial');
+     * </code>
+     *
+     * @var array
+     */
+    public array $paths;
 
     /**
      * ViewConfig constructor.
      */
     public function __construct()
     {
-        $this->dir     = (string) env(EnvKey::VIEW_DIR, resourcesPath('views'));
-        $this->engine  = (string) env(EnvKey::VIEW_ENGINE, $this->engine);
-        $this->engines = (array) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $this->engines));
-        $this->paths   = (array) env(EnvKey::VIEW_PATHS, $this->paths);
+        $this->setDir(resourcesPath('views'));
+        $this->setEngine();
+        $this->setEngines();
+        $this->setPaths();
+    }
+
+    /**
+     * Set the dir.
+     *
+     * @param string $dir [optional] The dir
+     *
+     * @return void
+     */
+    protected function setDir(string $dir = ''): void
+    {
+        $this->dir = (string) env(EnvKey::VIEW_DIR, $dir);
+    }
+
+    /**
+     * Set the default engine.
+     *
+     * @param string $engine [optional] The default engine
+     *
+     * @return void
+     */
+    protected function setEngine(string $engine = Config::ENGINE): void
+    {
+        $this->engine = (string) env(EnvKey::VIEW_ENGINE, $engine);
+    }
+
+    /**
+     * Set the engines.
+     *
+     * @param array $engines [optional] The engines
+     *
+     * @return void
+     */
+    protected function setEngines(array $engines = []): void
+    {
+        $this->engines = (array) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $engines));
+    }
+
+    /**
+     * Set the paths.
+     *
+     * @param array $paths [optional] The paths
+     *
+     * @return void
+     */
+    protected function setPaths(array $paths = []): void
+    {
+        $this->paths = (array) env(EnvKey::VIEW_PATHS, $paths);
     }
 }

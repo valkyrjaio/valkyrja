@@ -24,13 +24,30 @@ use Valkyrja\Path\Enums\Config;
  */
 class PathConfig extends Model
 {
-    public array $patterns = [];
+    /**
+     * The patterns.
+     *
+     * @var array
+     */
+    public array $patterns;
 
     /**
      * PathConfig constructor.
      */
     public function __construct()
     {
-        $this->patterns = (array) env(EnvKey::PATH_PATTERNS, array_merge(Config::PATTERNS, $this->patterns));
+        $this->setPatterns();
+    }
+
+    /**
+     * Set the patterns.
+     *
+     * @param array $patterns [optional] The patterns
+     *
+     * @return void
+     */
+    protected function setPatterns(array $patterns = []): void
+    {
+        $this->patterns = (array) env(EnvKey::PATH_PATTERNS, array_merge(Config::PATTERNS, $patterns));
     }
 }

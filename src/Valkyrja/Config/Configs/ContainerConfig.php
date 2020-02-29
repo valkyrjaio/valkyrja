@@ -25,46 +25,128 @@ use Valkyrja\Support\Providers\Provider;
  */
 class ContainerConfig extends Model
 {
-    public array $aliases         = [];
-    public array $services        = [];
-    public array $contextServices = [];
+    /**
+     * The annotated service aliases.
+     *
+     * @var string[]
+     */
+    public array $aliases;
 
     /**
-     * @var Provider[]|string[]
+     * The annotated services.
+     *
+     * @var string[]
      */
-    public array $providers = [];
+    public array $services;
 
     /**
+     * The annotated context services.
+     *
+     * @var string[]
+     */
+    public array $contextServices;
+
+    /**
+     * The command providers.
+     *
      * @var Provider[]|string[]
      */
-    public array $devProviders = [];
+    public array $providers;
+
+    /**
+     * The dev command providers.
+     *
+     * @var Provider[]|string[]
+     */
+    public array $devProviders;
 
     /**
      * ContainerConfig constructor.
      */
     public function __construct()
     {
-        $this->aliases         = (array) env(EnvKey::CONTAINER_ALIASES, $this->aliases);
-        $this->services        = (array) env(EnvKey::CONTAINER_SERVICES, $this->services);
-        $this->contextServices = (array) env(EnvKey::CONTAINER_CONTEXT_SERVICES, $this->contextServices);
-        $this->providers       = (array) env(
-            EnvKey::CONTAINER_PROVIDERS,
-            array_merge(Config::PROVIDERS, $this->providers)
-        );
-        $this->devProviders    = (array) env(
-            EnvKey::CONTAINER_DEV_PROVIDERS,
-            array_merge(Config::DEV_PROVIDERS, $this->devProviders)
-        );
+        $this->setAliases();
+        $this->setServices();
+        $this->setContextServices();
+        $this->setProviders();
+        $this->setDevProviders();
 
-        $this->envUseAnnotationsKey            = EnvKey::CONTAINER_USE_ANNOTATIONS;
-        $this->envUseAnnotationsExclusivelyKey = EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY;
+        $this->setFilePathEnvKey(EnvKey::CONTAINER_FILE_PATH);
+        $this->setCacheFilePathEnvKey(EnvKey::CONTAINER_CACHE_FILE_PATH);
+        $this->setUseCacheEnvKey(EnvKey::CONTAINER_USE_CACHE_FILE);
+        $this->setUseAnnotationsEnvKey(EnvKey::CONTAINER_USE_ANNOTATIONS);
+        $this->setUseAnnotationsExclusivelyEnvKey(EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY);
+
+        $this->setFilePath(servicesPath('default.php'));
+        $this->setCacheFilePath(cachePath('container.php'));
+        $this->setUseCache();
         $this->setAnnotationsConfig();
-
-        $this->filePath            = servicesPath('default.php');
-        $this->cacheFilePath       = cachePath('container.php');
-        $this->envFilePathKey      = EnvKey::CONTAINER_FILE_PATH;
-        $this->envCacheFilePathKey = EnvKey::CONTAINER_CACHE_FILE_PATH;
-        $this->envUseCacheKey      = EnvKey::CONTAINER_USE_CACHE_FILE;
-        $this->setCacheableConfig();
     }
+
+    /**
+     * Set the annotated service aliases.
+     *
+     * @param array $aliases [optional] The annotated service aliases
+     *
+     * @return void
+     */
+    protected function setAliases(array $aliases = []): void
+    {
+        $this->aliases = (array) env(EnvKey::CONTAINER_ALIASES, $aliases);
+    }
+
+    /**
+     * Set the annotated services.
+     *
+     * @param array $aliases [optional] The annotated service aliases
+     *
+     * @return void
+     */
+    protected function setServices(array $aliases = []): void
+    {
+        $this->aliases = (array) env(EnvKey::CONTAINER_SERVICES, $aliases);
+    }
+
+    /**
+     * Set the annotated context services.
+     *
+     * @param array $aliases [optional] The annotated service aliases
+     *
+     * @return void
+     */
+    protected function setContextServices(array $aliases = []): void
+    {
+        $this->aliases = (array) env(EnvKey::CONTAINER_CONTEXT_SERVICES, $aliases);
+    }
+
+    /**
+     * Set the command providers.
+     *
+     * @param array $providers [optional] The command providers
+     *
+     * @return void
+     */
+    protected function setProviders(array $providers = []): void
+    {
+        $this->providers = (array) env(
+            EnvKey::CONTAINER_PROVIDERS,
+            array_merge(Config::PROVIDERS, $providers)
+        );
+    }
+
+    /**
+     * Set the dev command providers.
+     *
+     * @param array $devProviders [optional] The dev command providers
+     *
+     * @return void
+     */
+    protected function setDevProviders(array $devProviders = []): void
+    {
+        $this->devProviders = (array) env(
+            EnvKey::CONTAINER_DEV_PROVIDERS,
+            array_merge(Config::DEV_PROVIDERS, $devProviders)
+        );
+    }
+
 }

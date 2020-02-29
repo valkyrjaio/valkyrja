@@ -23,7 +23,18 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class SessionConfig extends Model
 {
-    public ?string $id   = null;
+    /**
+     * The optional id.
+     *
+     * @var string|null
+     */
+    public ?string $id = null;
+
+    /**
+     * The optional name.
+     *
+     * @var string|null
+     */
     public ?string $name = null;
 
     /**
@@ -31,7 +42,31 @@ class SessionConfig extends Model
      */
     public function __construct()
     {
-        $this->id   = env(EnvKey::SESSION_ID, $this->id);
-        $this->name = env(EnvKey::SESSION_NAME, $this->name);
+        $this->setId();
+        $this->setName();
+    }
+
+    /**
+     * Set the optional id.
+     *
+     * @param string|null $id [optional] The optional id
+     *
+     * @return void
+     */
+    protected function setId(string $id = null): void
+    {
+        $this->id = env(EnvKey::SESSION_ID, $id);
+    }
+
+    /**
+     * Set the optional name.
+     *
+     * @param string|null $name [optional] The optional name
+     *
+     * @return void
+     */
+    protected function setName(string $name = null): void
+    {
+        $this->name = env(EnvKey::SESSION_NAME, $name);
     }
 }

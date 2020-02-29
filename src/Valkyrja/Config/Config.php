@@ -40,99 +40,131 @@ use Valkyrja\Support\Providers\Provider;
 class Config extends Model
 {
     /**
+     * The annotation module config.
+     *
      * @var AnnotationConfig
      */
     public AnnotationConfig $annotation;
 
     /**
+     * The application module config.
+     *
      * @var AppConfig
      */
     public AppConfig $app;
 
     /**
+     * The cache module config.
+     *
      * @var CacheConfig
      */
     public CacheConfig $cache;
 
     /**
+     * The console module config.
+     *
      * @var ConsoleConfig
      */
     public ConsoleConfig $console;
 
     /**
+     * The container module config.
+     *
      * @var ContainerConfig
      */
     public ContainerConfig $container;
 
     /**
+     * The crypt module config.
+     *
      * @var CryptConfig
      */
     public CryptConfig $crypt;
 
     /**
+     * The ORM module config.
+     *
      * @var ORMConfig
      */
     public ORMConfig $orm;
 
     /**
+     * The event module config.
+     *
      * @var EventConfig
      */
     public EventConfig $event;
 
     /**
+     * The filesystem module config.
+     *
      * @var FilesystemConfig
      */
     public FilesystemConfig $filesystem;
 
     /**
+     * The logging module config.
+     *
      * @var LoggingConfig
      */
     public LoggingConfig $logging;
 
     /**
+     * The mail module config.
+     *
      * @var MailConfig
      */
     public MailConfig $mail;
 
     /**
+     * The path module config.
+     *
      * @var PathConfig
      */
     public PathConfig $path;
 
     /**
+     * The routing module config.
+     *
      * @var RoutingConfig
      */
     public RoutingConfig $routing;
 
     /**
+     * The session module config.
+     *
      * @var SessionConfig
      */
     public SessionConfig $session;
 
     /**
+     * The view module config.
+     *
      * @var ViewConfig
      */
     public ViewConfig $view;
 
     /**
-     * @var Provider[]
+     * Array of config providers.
+     *  NOTE: Provider::deferred() is disregarded.
+     *
+     * @var Provider[]|string[]
      */
-    public array $providers = [];
+    public array $providers;
 
     /**
+     * The cache file path.
+     *
      * @var string
      */
-    public string $filePath = '';
+    public string $cacheFilePath;
 
     /**
-     * @var string
-     */
-    public string $cacheFilePath = '';
-
-    /**
+     * Whether to use cache.
+     *
      * @var bool
      */
-    public bool $useCache = false;
+    public bool $useCache;
 
     /**
      * Config constructor.
@@ -154,160 +186,224 @@ class Config extends Model
         $this->setRoutingConfig();
         $this->setSessionConfig();
         $this->setViewConfig();
-
-        $this->providers     = (array) env(EnvKey::CONFIG_PROVIDERS, $this->providers);
-        $this->filePath      = (string) env(EnvKey::CONFIG_FILE_PATH, configPath('config.php'));
-        $this->cacheFilePath = (string) env(EnvKey::CONFIG_CACHE_FILE_PATH, cachePath('config.php'));
-        $this->useCache      = (bool) env(EnvKey::CONFIG_USE_CACHE_FILE, $this->useCache);
+        $this->setProviders();
+        $this->setCacheFilePath(cachePath('config.php'));
+        $this->setUseCache();
     }
 
     /**
-     * Set annotation config.
+     * Set the annotation module config.
+     *
+     * @param AnnotationConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setAnnotationConfig(): void
+    protected function setAnnotationConfig(AnnotationConfig $config = null): void
     {
-        $this->annotation = new AnnotationConfig();
+        $this->annotation = $config ?? new AnnotationConfig();
     }
 
     /**
-     * Set app config.
+     * Set the app module config.
+     *
+     * @param AppConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setAppConfig(): void
+    protected function setAppConfig(AppConfig $config = null): void
     {
-        $this->app = new AppConfig();
+        $this->app = $config ?? new AppConfig();
     }
 
     /**
-     * Set cache config.
+     * Set the cache module config.
+     *
+     * @param CacheConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setCacheConfig(): void
+    protected function setCacheConfig(CacheConfig $config = null): void
     {
-        $this->cache = new CacheConfig();
+        $this->cache = $config ?? new CacheConfig();
     }
 
     /**
-     * Set console config.
+     * Set the console module config.
+     *
+     * @param ConsoleConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setConsoleConfig(): void
+    protected function setConsoleConfig(ConsoleConfig $config = null): void
     {
-        $this->console = new ConsoleConfig();
+        $this->console = $config ?? new ConsoleConfig();
     }
 
     /**
-     * Set container config.
+     * Set the container module config.
+     *
+     * @param ContainerConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setContainerConfig(): void
+    protected function setContainerConfig(ContainerConfig $config = null): void
     {
-        $this->container = new ContainerConfig();
+        $this->container = $config ?? new ContainerConfig();
     }
 
     /**
-     * Set crypt config.
+     * Set the crypt module config.
+     *
+     * @param CryptConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setCryptConfig(): void
+    protected function setCryptConfig(CryptConfig $config = null): void
     {
-        $this->crypt = new CryptConfig();
+        $this->crypt = $config ?? new CryptConfig();
     }
 
     /**
-     * Set ORM config.
+     * Set the ORM module config.
+     *
+     * @param ORMConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setOrmConfig(): void
+    protected function setOrmConfig(ORMConfig $config = null): void
     {
-        $this->orm = new ORMConfig();
+        $this->orm = $config ?? new ORMConfig();
     }
 
     /**
-     * Set event config.
+     * Set the event module config.
+     *
+     * @param EventConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setEventConfig(): void
+    protected function setEventConfig(EventConfig $config = null): void
     {
-        $this->event = new EventConfig();
+        $this->event = $config ?? new EventConfig();
     }
 
     /**
-     * Set filesystem config.
+     * Set the filesystem module config.
+     *
+     * @param FilesystemConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setFilesystemConfig(): void
+    protected function setFilesystemConfig(FilesystemConfig $config = null): void
     {
-        $this->filesystem = new FilesystemConfig();
+        $this->filesystem = $config ?? new FilesystemConfig();
     }
 
     /**
-     * Set logging config.
+     * Set the logging module config.
+     *
+     * @param LoggingConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setLoggingConfig(): void
+    protected function setLoggingConfig(LoggingConfig $config = null): void
     {
-        $this->logging = new LoggingConfig();
+        $this->logging = $config ?? new LoggingConfig();
     }
 
     /**
-     * Set mail config.
+     * Set the mail module config.
+     *
+     * @param MailConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setMailConfig(): void
+    protected function setMailConfig(MailConfig $config = null): void
     {
-        $this->mail = new MailConfig();
+        $this->mail = $config ?? new MailConfig();
     }
 
     /**
-     * Set path config.
+     * Set the path module config.
+     *
+     * @param PathConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setPathConfig(): void
+    protected function setPathConfig(PathConfig $config = null): void
     {
-        $this->path = new PathConfig();
+        $this->path = $config ?? new PathConfig();
     }
 
     /**
-     * Set routing config.
+     * Set the routing module config.
+     *
+     * @param RoutingConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setRoutingConfig(): void
+    protected function setRoutingConfig(RoutingConfig $config = null): void
     {
-        $this->routing = new RoutingConfig();
+        $this->routing = $config ?? new RoutingConfig();
     }
 
     /**
-     * Set session config.
+     * Set the session module config.
+     *
+     * @param SessionConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setSessionConfig(): void
+    protected function setSessionConfig(SessionConfig $config = null): void
     {
-        $this->session = new SessionConfig();
+        $this->session = $config ?? new SessionConfig();
     }
 
     /**
-     * Set view config.
+     * Set the view module config.
+     *
+     * @param ViewConfig|null $config [optional] The config
      *
      * @return void
      */
-    protected function setViewConfig(): void
+    protected function setViewConfig(ViewConfig $config = null): void
     {
-        $this->view = new ViewConfig();
+        $this->view = $config ?? new ViewConfig();
+    }
+
+    /**
+     * Set the config providers.
+     *
+     * @param array $providers [optional] The providers
+     *
+     * @return void
+     */
+    protected function setProviders(array $providers = []): void
+    {
+        $this->providers = (array) env(EnvKey::CONFIG_PROVIDERS, $providers);
+    }
+
+    /**
+     * Set the cache file path.
+     *
+     * @param string $cacheFilePath [optional] The cache file path
+     *
+     * @return void
+     */
+    protected function setCacheFilePath(string $cacheFilePath = ''): void
+    {
+        $this->cacheFilePath = (string) env(EnvKey::CONFIG_CACHE_FILE_PATH, $cacheFilePath);
+    }
+
+    /**
+     * Set whether to use cache or not.
+     *
+     * @param bool $useCache [optional] The flag
+     *
+     * @return void
+     */
+    protected function setUseCache(bool $useCache = false): void
+    {
+        $this->useCache = (bool) env(EnvKey::CONFIG_USE_CACHE_FILE, $useCache);
     }
 }

@@ -20,11 +20,33 @@ namespace Valkyrja\Config\Models;
  */
 class AnnotatableConfig extends ConfigModel
 {
-    public bool      $useAnnotations                  = false;
-    public bool      $useAnnotationsExclusively       = false;
+    /**
+     * The flag to enable annotations.
+     *
+     * @var bool
+     */
+    public bool $useAnnotations;
 
-    protected string $envUseAnnotationsKey            = '';
-    protected string $envUseAnnotationsExclusivelyKey = '';
+    /**
+     * The flag to use annotations exclusively (forgoing filePath).
+     *
+     * @var bool
+     */
+    public bool $useAnnotationsExclusively;
+
+    /**
+     * The use annotations flag env key.
+     *
+     * @var string
+     */
+    protected string $envUseAnnotationsKey;
+
+    /**
+     * The use annotations exclusively env key.
+     *
+     * @var string
+     */
+    protected string $envUseAnnotationsExclusivelyKey;
 
     /**
      * Set annotations config.
@@ -33,10 +55,58 @@ class AnnotatableConfig extends ConfigModel
      */
     protected function setAnnotationsConfig(): void
     {
-        $this->useAnnotations            = (bool) env($this->envUseAnnotationsKey, $this->useAnnotations);
+        $this->setUseAnnotations();
+        $this->setUseAnnotationsExclusively();
+    }
+
+    /**
+     * Set the flag to use annotations.
+     *
+     * @param bool $useAnnotations [optional] The flag to use annotations
+     *
+     * @return void
+     */
+    protected function setUseAnnotations(bool $useAnnotations = false): void
+    {
+        $this->useAnnotations = (bool) env($this->envUseAnnotationsKey, $useAnnotations);
+    }
+
+    /**
+     * Set the flag to use annotations exclusively.
+     *
+     * @param bool $useAnnotationsExclusively [optional] Flag to use annotations exclusively
+     *
+     * @return void
+     */
+    protected function setUseAnnotationsExclusively(bool $useAnnotationsExclusively = false): void
+    {
         $this->useAnnotationsExclusively = (bool) env(
             $this->envUseAnnotationsExclusivelyKey,
-            $this->useAnnotationsExclusively
+            $useAnnotationsExclusively
         );
+    }
+
+    /**
+     * Set the use annotations flag env key.
+     *
+     * @param string $envKey The use annotations flag env key.
+     *
+     * @return void
+     */
+    protected function setUseAnnotationsEnvKey(string $envKey): void
+    {
+        $this->envUseAnnotationsKey = $envKey;
+    }
+
+    /**
+     * Set the use annotations exclusively flag env key.
+     *
+     * @param string $envKey The use annotations exclusively flag env key.
+     *
+     * @return void
+     */
+    protected function setUseAnnotationsExclusivelyEnvKey(string $envKey): void
+    {
+        $this->envUseAnnotationsExclusivelyKey = $envKey;
     }
 }

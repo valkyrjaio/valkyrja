@@ -24,15 +24,50 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class LocalConfig extends Model
 {
-    public string $adapter = CKP::LOCAL;
-    public string $dir     = '';
+    /**
+     * The adapter.
+     *
+     * @var string
+     */
+    public string $adapter;
+
+    /**
+     * The dir.
+     *
+     * @var string
+     */
+    public string $dir;
 
     /**
      * LocalConfig constructor.
      */
     public function __construct()
     {
-        $this->adapter = (string) env(EnvKey::FILESYSTEM_LOCAL_ADAPTER, $this->adapter);
-        $this->dir     = (string) env(EnvKey::FILESYSTEM_LOCAL_DIR, storagePath('app'));
+        $this->setAdapter();
+        $this->setDir(storagePath('app'));
+    }
+
+    /**
+     * Set the adapter.
+     *
+     * @param string $adapter [optional] The adapter
+     *
+     * @return void
+     */
+    protected function setAdapter(string $adapter = CKP::LOCAL): void
+    {
+        $this->adapter = (string) env(EnvKey::FILESYSTEM_LOCAL_ADAPTER, $adapter);
+    }
+
+    /**
+     * Set the dir.
+     *
+     * @param string $dir [optional] The dir
+     *
+     * @return void
+     */
+    protected function setDir(string $dir = ''): void
+    {
+        $this->dir = (string) env(EnvKey::FILESYSTEM_LOCAL_DIR, $dir);
     }
 }

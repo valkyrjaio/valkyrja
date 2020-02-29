@@ -22,7 +22,18 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class DisksConfig extends Model
 {
+    /**
+     * The local disk.
+     *
+     * @var LocalConfig
+     */
     public LocalConfig $local;
+
+    /**
+     * The s3 disk.
+     *
+     * @var S3Config
+     */
     public S3Config $s3;
 
     /**
@@ -37,20 +48,24 @@ class DisksConfig extends Model
     /**
      * Set the local disk.
      *
+     * @param LocalConfig|null $config [optional] The config
+     *
      * @return void
      */
-    protected function setLocalDisk(): void
+    protected function setLocalDisk(LocalConfig $config = null): void
     {
-        $this->local = new LocalConfig();
+        $this->local = $config ?? new LocalConfig();
     }
 
     /**
      * Set the local disk.
      *
+     * @param S3Config|null $config [optional] The config
+     *
      * @return void
      */
-    protected function setS3Disk(): void
+    protected function setS3Disk(S3Config $config = null): void
     {
-        $this->s3 = new S3Config();
+        $this->s3 = $config ?? new S3Config();
     }
 }

@@ -26,8 +26,25 @@ use Valkyrja\ORM\Enums\Config;
  */
 class ORMConfig extends Model
 {
-    public string       $default  = CKP::MYSQL;
-    public array        $adapters = [];
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    public string $default;
+
+    /**
+     * The adapters.
+     *
+     * @var string[]
+     */
+    public array $adapters;
+
+    /**
+     * The connections.
+     *
+     * @var ConnectionsConfig
+     */
     public ConnectionsConfig  $connections;
 
     /**
@@ -35,19 +52,44 @@ class ORMConfig extends Model
      */
     public function __construct()
     {
-        $this->default  = env(EnvKey::DB_CONNECTION, $this->default);
-        $this->adapters = env(EnvKey::DB_ADAPTERS, array_merge(Config::ADAPTERS, $this->adapters));
-
+        $this->setDefault();
+        $this->setAdapters();
         $this->setConnections();
     }
 
     /**
-     * Set connections.
+     * Set the default adapter.
+     *
+     * @param string $default [optional] The default adapter
      *
      * @return void
      */
-    protected function setConnections(): void
+    protected function setDefault(string $default = CKP::MYSQL): void
     {
-        $this->connections = new ConnectionsConfig();
+        $this->default = (string) env(EnvKey::DB_CONNECTION, $default);
+    }
+
+    /**
+     * Set the adapters.
+     *
+     * @param array $adapters [optional] The adapters
+     *
+     * @return void
+     */
+    protected function setAdapters(array $adapters = []): void
+    {
+        $this->adapters = (array) env(EnvKey::DB_ADAPTERS, array_merge(Config::ADAPTERS, $adapters));
+    }
+
+    /**
+     * Set the connections.
+     *
+     * @param ConnectionsConfig|null $config [optional] The config
+     *
+     * @return void
+     */
+    protected function setConnections(ConnectionsConfig $config = null): void
+    {
+        $this->connections = $config ?? new ConnectionsConfig();
     }
 }

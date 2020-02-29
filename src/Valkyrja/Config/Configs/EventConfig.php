@@ -23,6 +23,11 @@ use Valkyrja\Config\Models\CacheableConfig as Model;
  */
 class EventConfig extends Model
 {
+    /**
+     * The annotated listeners.
+     *
+     * @var array
+     */
     public array $listeners = [];
 
     /**
@@ -30,17 +35,29 @@ class EventConfig extends Model
      */
     public function __construct()
     {
-        $this->listeners = (array) env(EnvKey::EVENT_LISTENERS, $this->listeners);
+        $this->setListeners();
 
-        $this->envUseAnnotationsKey            = EnvKey::EVENT_USE_ANNOTATIONS;
-        $this->envUseAnnotationsExclusivelyKey = EnvKey::EVENT_USE_ANNOTATIONS_EXCLUSIVELY;
+        $this->setFilePathEnvKey(EnvKey::EVENT_FILE_PATH);
+        $this->setCacheFilePathEnvKey(EnvKey::EVENT_CACHE_FILE_PATH);
+        $this->setUseCacheEnvKey(EnvKey::EVENT_USE_CACHE_FILE);
+        $this->setUseAnnotationsEnvKey(EnvKey::EVENT_USE_ANNOTATIONS);
+        $this->setUseAnnotationsExclusivelyEnvKey(EnvKey::EVENT_USE_ANNOTATIONS_EXCLUSIVELY);
+
+        $this->setFilePath(eventsPath('default.php'));
+        $this->setCacheFilePath(cachePath('events.php'));
+        $this->setUseCache();
         $this->setAnnotationsConfig();
+    }
 
-        $this->filePath            = eventsPath('default.php');
-        $this->cacheFilePath       = cachePath('events.php');
-        $this->envFilePathKey      = EnvKey::EVENT_FILE_PATH;
-        $this->envCacheFilePathKey = EnvKey::EVENT_CACHE_FILE_PATH;
-        $this->envUseCacheKey      = EnvKey::EVENT_USE_CACHE_FILE;
-        $this->setCacheableConfig();
+    /**
+     * Set the annotated listeners.
+     *
+     * @param array $listeners [optional] The annotated listeners
+     *
+     * @return void
+     */
+    protected function setListeners(array $listeners = []): void
+    {
+        $this->listeners = (array) env(EnvKey::EVENT_LISTENERS, $listeners ?? $this->listeners);
     }
 }

@@ -24,27 +24,50 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class CacheConfig extends Model
 {
-    public string $default = ConfigKeyPart::REDIS;
-    public array  $stores  = [];
+    /**
+     * The default store.
+     *
+     * @var string
+     */
+    public string $default;
+
+    /**
+     * The cache stores.
+     *
+     * @var array
+     */
+    public array $stores;
 
     /**
      * CacheConfig constructor.
      */
     public function __construct()
     {
-        $this->default = env(EnvKey::CACHE_DEFAULT, $this->default);
+        $this->setDefault();
         $this->setStores();
     }
 
     /**
-     * Set the stores.
+     * Set the default store.
      *
-     * @param array $stores
+     * @param string $default [optional] The default store
+     *
+     * @return void
+     */
+    protected function setDefault(string $default = ConfigKeyPart::REDIS): void
+    {
+        $this->default = (string) env(EnvKey::CACHE_DEFAULT, $default);
+    }
+
+    /**
+     * Set the cache stores.
+     *
+     * @param array $stores [optional] The cache stores
      *
      * @return void
      */
     protected function setStores(array $stores = []): void
     {
-        $this->stores = env(EnvKey::CACHE_STORES, $stores);
+        $this->stores = (array) env(EnvKey::CACHE_STORES, $stores);
     }
 }

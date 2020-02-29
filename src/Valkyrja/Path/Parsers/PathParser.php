@@ -48,9 +48,9 @@ REGEX;
     /**
      * The path config.
      *
-     * @var PathConfig
+     * @var PathConfig|object
      */
-    protected PathConfig $config;
+    protected object $config;
 
     /**
      * PathParser constructor.

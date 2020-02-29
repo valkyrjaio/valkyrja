@@ -26,28 +26,70 @@ use Valkyrja\Filesystem\Enums\Config;
  */
 class FilesystemConfig extends Model
 {
-    public string $default  = CKP::LOCAL;
-    public array  $adapters = [];
-    public DisksConfig  $disks;
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    public string $default;
+
+    /**
+     * The adapters.
+     *
+     * @var array
+     */
+    public array $adapters;
+
+    /**
+     * The disks.
+     *
+     * @var DisksConfig
+     */
+    public DisksConfig $disks;
 
     /**
      * FilesystemConfig constructor.
      */
     public function __construct()
     {
-        $this->default  = (string) env(EnvKey::FILESYSTEM_DEFAULT, $this->default);
-        $this->adapters = (array) env(EnvKey::FILESYSTEM_ADAPTERS, array_merge(Config::ADAPTERS, $this->adapters));
-
+        $this->setDefault();
+        $this->setAdapters();
         $this->setDisks();
     }
 
     /**
-     * Set disks.
+     * Set the default adapter.
+     *
+     * @param string $default [optional] The default adapter
      *
      * @return void
      */
-    protected function setDisks(): void
+    protected function setDefault(string $default = CKP::LOCAL): void
     {
-        $this->disks = new DisksConfig();
+        $this->default = (string) env(EnvKey::FILESYSTEM_DEFAULT, $default);
+    }
+
+    /**
+     * Set the adapters.
+     *
+     * @param array $adapters [optional] The adapters
+     *
+     * @return void
+     */
+    protected function setAdapters(array $adapters = []): void
+    {
+        $this->adapters = (array) env(EnvKey::FILESYSTEM_ADAPTERS, array_merge(Config::ADAPTERS, $adapters));
+    }
+
+    /**
+     * Set the disks.
+     *
+     * @param DisksConfig|null $config [optional] The config
+     *
+     * @return void
+     */
+    protected function setDisks(DisksConfig $config = null): void
+    {
+        $this->disks = $config ?? new DisksConfig();
     }
 }

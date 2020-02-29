@@ -25,44 +25,107 @@ use Valkyrja\Support\Providers\Provider;
  */
 class ConsoleConfig extends Model
 {
-    public array $handlers = [];
+    /**
+     * The annotated command handlers.
+     *
+     * @var string[]
+     */
+    public array $handlers;
 
     /**
+     * The command providers.
+     *
      * @var Provider[]|string[]
      */
-    public array $providers = [];
+    public array $providers;
 
     /**
+     * The dev command providers.
+     *
      * @var Provider[]|string[]
      */
-    public array $devProviders = [];
-    public bool  $quiet        = false;
+    public array $devProviders;
+
+    /**
+     * Flag to enable quiet console (no output).
+     *
+     * @var bool
+     */
+    public bool $quiet;
 
     /**
      * ConsoleConfig constructor.
      */
     public function __construct()
     {
-        $this->handlers     = (array) env(EnvKey::CONSOLE_HANDLERS, $this->handlers);
-        $this->quiet        = (bool) env(EnvKey::CONSOLE_QUIET, $this->quiet);
-        $this->providers    = (array) env(
+        $this->setHandlers();
+        $this->setProviders();
+        $this->setDevProviders();
+        $this->setQuiet();
+
+        $this->setFilePathEnvKey(EnvKey::CONSOLE_FILE_PATH);
+        $this->setCacheFilePathEnvKey(EnvKey::CONSOLE_CACHE_FILE_PATH);
+        $this->setUseCacheEnvKey(EnvKey::CONSOLE_USE_CACHE_FILE);
+        $this->setUseAnnotationsEnvKey(EnvKey::CONSOLE_USE_ANNOTATIONS);
+        $this->setUseAnnotationsExclusivelyEnvKey(EnvKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY);
+
+        $this->setFilePath(commandsPath('default.php'));
+        $this->setCacheFilePath(cachePath('commands.php'));
+        $this->setUseCache();
+        $this->setAnnotationsConfig();
+    }
+
+    /**
+     * Set the annotated command handlers.
+     *
+     * @param array $handlers [optional] The annotated command handlers
+     *
+     * @return void
+     */
+    protected function setHandlers(array $handlers = []): void
+    {
+        $this->handlers = (array) env(EnvKey::CONSOLE_HANDLERS, $handlers);
+    }
+
+    /**
+     * Set the command providers.
+     *
+     * @param array $providers [optional] The command providers
+     *
+     * @return void
+     */
+    protected function setProviders(array $providers = []): void
+    {
+        $this->providers = (array) env(
             EnvKey::CONSOLE_PROVIDERS,
-            array_merge(Config::PROVIDERS, $this->providers)
+            array_merge(Config::PROVIDERS, $providers)
         );
+    }
+
+    /**
+     * Set the dev command providers.
+     *
+     * @param array $devProviders [optional] The dev command providers
+     *
+     * @return void
+     */
+    protected function setDevProviders(array $devProviders = []): void
+    {
         $this->devProviders = (array) env(
             EnvKey::CONSOLE_DEV_PROVIDERS,
-            array_merge(Config::DEV_PROVIDERS, $this->devProviders)
+            array_merge(Config::DEV_PROVIDERS, $devProviders)
         );
+    }
 
-        $this->envUseAnnotationsKey            = EnvKey::CONSOLE_USE_ANNOTATIONS;
-        $this->envUseAnnotationsExclusivelyKey = EnvKey::CONSOLE_USE_ANNOTATIONS_EXCLUSIVELY;
-        $this->setAnnotationsConfig();
-
-        $this->filePath            = commandsPath('default.php');
-        $this->cacheFilePath       = cachePath('commands.php');
-        $this->envFilePathKey      = EnvKey::CONSOLE_FILE_PATH;
-        $this->envCacheFilePathKey = EnvKey::CONSOLE_CACHE_FILE_PATH;
-        $this->envUseCacheKey      = EnvKey::CONSOLE_USE_CACHE_FILE;
-        $this->setCacheableConfig();
+    /**
+     * Set the flag to enable quiet console (no output).
+     *
+     * @param bool $quiet [optional] The quiet flag
+     *
+     * @return void
+     */
+    protected function setQuiet(bool $quiet = false): void
+    {
+        $this->quiet = (bool) env(EnvKey::CONSOLE_QUIET, $quiet);
     }
 }

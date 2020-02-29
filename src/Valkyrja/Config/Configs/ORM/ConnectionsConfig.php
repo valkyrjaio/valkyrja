@@ -23,8 +23,25 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class ConnectionsConfig extends Model
 {
+    /**
+     * The mysql connection.
+     *
+     * @var ConnectionConfig
+     */
     public ConnectionConfig $mysql;
+
+    /**
+     * The pgsql connection.
+     *
+     * @var ConnectionConfig
+     */
     public ConnectionConfig $pgsql;
+
+    /**
+     * The sqlsrv connection.
+     *
+     * @var ConnectionConfig
+     */
     public ConnectionConfig $sqlsrv;
 
     /**
@@ -40,30 +57,36 @@ class ConnectionsConfig extends Model
     /**
      * Set the mysql connection.
      *
+     * @param ConnectionConfig|null $config [optional] The config
+     *
      * @return void
      */
-    protected function setMysqlConnection(): void
+    protected function setMysqlConnection(ConnectionConfig $config = null): void
     {
-        $this->mysql = new ConnectionConfig();
+        $this->mysql = $config ?? new ConnectionConfig();
     }
 
     /**
      * Set the pgsql connection.
      *
+     * @param ConnectionConfig|null $config [optional] The config
+     *
      * @return void
      */
-    protected function setPgsqlConnection(): void
+    protected function setPgsqlConnection(ConnectionConfig $config = null): void
     {
-        $this->pgsql = new ConnectionConfig(CKP::PGSQL);
+        $this->pgsql = $config ?? new ConnectionConfig(CKP::PGSQL);
     }
 
     /**
      * Set the sqlsrv connection.
      *
+     * @param ConnectionConfig|null $config [optional] The config
+     *
      * @return void
      */
-    protected function setSqlsrvConnection(): void
+    protected function setSqlsrvConnection(ConnectionConfig $config = null): void
     {
-        $this->sqlsrv = new ConnectionConfig(CKP::SQLSRV);
+        $this->sqlsrv = $config ?? new ConnectionConfig(CKP::SQLSRV);
     }
 }

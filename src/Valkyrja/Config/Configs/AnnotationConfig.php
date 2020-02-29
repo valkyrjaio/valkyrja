@@ -24,19 +24,108 @@ use Valkyrja\Config\Models\ConfigModel as Model;
  */
 class AnnotationConfig extends Model
 {
-    public bool   $enabled  = false;
-    public string $cacheDir = '';
-    public array  $map      = [];
-    public array  $aliases  = [];
+    /**
+     * Flag for whether annotations are enabled.
+     *
+     * @var bool
+     */
+    public bool $enabled;
+
+    /**
+     * The cache dir.
+     *
+     * @var string
+     */
+    public string $cacheDir;
+
+    /**
+     * The annotations map.
+     *
+     * @example
+     * <code>
+     *      [
+     *         'Annotation' => Annotation::class,
+     *      ]
+     * </code>
+     *
+     * @var array
+     */
+    public array $map;
+
+    /**
+     * The annotation aliases.
+     *
+     * @example
+     * <code>
+     *      [
+     *         'Word' => WordEnum::class,
+     *      ]
+     * </code>
+     * Then we can do:
+     * <code>
+     * @Annotation("name" : "Word::VALUE")
+     * </code>
+     *
+     * @var array
+     */
+    public array $aliases;
 
     /**
      * AnnotationConfig constructor.
      */
     public function __construct()
     {
-        $this->enabled  = (bool) env(EnvKey::ANNOTATIONS_ENABLED, $this->enabled);
-        $this->cacheDir = (string) env(EnvKey::ANNOTATIONS_CACHE_DIR, storagePath('vendor/annotations'));
-        $this->map      = (array) env(EnvKey::ANNOTATIONS_MAP, array_merge(Config::MAP, $this->map));
-        $this->aliases  = (array) env(EnvKey::ANNOTATIONS_ALIASES, array_merge(Config::ALIASES, $this->aliases));
+        $this->setEnabled();
+        $this->setCacheDir(storagePath('framework/annotations'));
+        $this->setMap();
+        $this->setAliases();
+    }
+
+    /**
+     * Set the enabled flag.
+     *
+     * @param bool $enabled
+     *
+     * @return void
+     */
+    protected function setEnabled(bool $enabled = false): void
+    {
+        $this->enabled = (bool) env(EnvKey::ANNOTATIONS_ENABLED, $enabled);
+    }
+
+    /**
+     * Set the cache dir.
+     *
+     * @param string $cacheDir
+     *
+     * @return void
+     */
+    protected function setCacheDir(string $cacheDir = ''): void
+    {
+        $this->cacheDir = (string) env(EnvKey::ANNOTATIONS_CACHE_DIR, $cacheDir);
+    }
+
+    /**
+     * Set the map.
+     *
+     * @param array $map
+     *
+     * @return void
+     */
+    protected function setMap(array $map = []): void
+    {
+        $this->map = (array) env(EnvKey::ANNOTATIONS_MAP, array_merge(Config::MAP, $map));
+    }
+
+    /**
+     * Set the aliases.
+     *
+     * @param array $aliases
+     *
+     * @return void
+     */
+    protected function setAliases(array $aliases = []): void
+    {
+        $this->aliases = (array) env(EnvKey::ANNOTATIONS_ALIASES, array_merge(Config::ALIASES, $aliases));
     }
 }
