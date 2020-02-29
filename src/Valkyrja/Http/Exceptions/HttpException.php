@@ -85,7 +85,7 @@ class HttpException extends RuntimeException
         $template = 'errors/' . $this->statusCode;
 
         // If no response has been set and there is a template with the error code
-        if (null === $this->response && file_exists($view->getTemplateDir($template . $view->getFileExtension()))) {
+        if (null === $this->response && file_exists($view->getDir($template . $view->getFileExtension()))) {
             try {
                 // Set the response as the error template
                 $this->response = response($this->getDefaultView($template)->render());
