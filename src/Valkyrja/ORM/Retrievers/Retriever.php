@@ -78,6 +78,7 @@ class Retriever implements RetrieverContract
 
         /** @var Entity|string $entity */
         $idField = $entity::getIdField();
+
         /** @var string $entity */
 
         return $this->findAllBy(
@@ -388,24 +389,52 @@ class Retriever implements RetrieverContract
     {
         // Iterate through the criteria once more
         foreach ($criteria as $column => $criterion) {
-            // If the criterion is null
-            if ($criterion === null) {
-                // Skip as we've already set the where to IS NULL
-                continue;
-            }
+            $this->bindValueForSelect($query, $column, $criterion);
+        }
+    }
 
-            // If the criterion is an array
-            if (is_array($criterion)) {
-                // Iterate through the criterion and bind each value individually
-                foreach ($criterion as $index => $criterionItem) {
-                    $query->bindValue($column . $index, $criterionItem);
-                }
+    /**
+     * Bind criteria value for a select statement.
+     *
+     * @param Query  $query
+     * @param string $column
+     * @param mixed  $criterion
+     *
+     * @return void
+     */
+    protected function bindValueForSelect(Query $query, string $column, $criterion): void
+    {
+        // If the criterion is null
+        if ($criterion === null) {
+            // Skip as we've already set the where to IS NULL
+            return;
+        }
 
-                continue;
-            }
+        // If the criterion is an array
+        if (is_array($criterion)) {
+            $this->bindArrayValueForSelect($query, $column, $criterion);
 
-            // And bind each value to the column
-            $query->bindValue($column, $criterion);
+            return;
+        }
+
+        // And bind each value to the column
+        $query->bindValue($column, $criterion);
+    }
+
+    /**
+     * Bind array value for a select statement.
+     *
+     * @param Query  $query
+     * @param string $column
+     * @param array  $criterion
+     *
+     * @return void
+     */
+    protected function bindArrayValueForSelect(Query $query, string $column, array $criterion): void
+    {
+        // Iterate through the criterion and bind each value individually
+        foreach ($criterion as $index => $criterionItem) {
+            $query->bindValue($column . $index, $criterionItem);
         }
     }
 
