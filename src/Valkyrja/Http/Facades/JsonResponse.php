@@ -54,7 +54,7 @@ class JsonResponse extends Response
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(Contract::Class);
+        return Valkyrja::app()->container()->getSingleton(Contract::class);
     }
 
     /**
