@@ -14,18 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Dispatchers;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\EventConfig;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Event\Annotation\ListenerAnnotator;
+use Valkyrja\Event\Cacheables\CacheableEvents;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as EventsContract;
 use Valkyrja\Event\Listener;
-use Valkyrja\Support\Cacheables\Cacheable;
 
 use function get_class;
 
@@ -36,14 +33,8 @@ use function get_class;
  */
 class Events implements EventsContract
 {
-    use Cacheable;
+    use CacheableEvents;
 
-    /**
-     * The event listeners.
-     *
-     * @var Listener[][]
-     */
-    protected static array $events = [];
     /**
      * The application.
      *
@@ -59,68 +50,6 @@ class Events implements EventsContract
     public function __construct(Application $application)
     {
         $this->app = $application;
-    }
-
-    /**
-     * Get the config.
-     *
-     * @return EventConfig|object
-     */
-    protected function getConfig(): object
-    {
-        return $this->app->config()->event;
-    }
-
-    /**
-     * Set not cached.
-     *
-     * @return void
-     */
-    protected function setupNotCached(): void
-    {
-        self::$events = [];
-    }
-
-    /**
-     * Setup the events from cache.
-     *
-     * @param EventConfig|object $config
-     *
-     * @return void
-     */
-    protected function setupFromCache(object $config): void
-    {
-        // Set the application events with said file
-        $cache = $config->cache ?? require $config->cacheFilePath;
-
-        self::$events = unserialize(
-            base64_decode($cache[ConfigKeyPart::EVENTS], true),
-            [
-                'allowed_classes' => [
-                    Listener::class,
-                ],
-            ]
-        );
-    }
-
-    /**
-     * Setup annotations.
-     *
-     * @param EventConfig|object $config
-     *
-     * @return void
-     */
-    protected function setupAnnotations(object $config): void
-    {
-        /** @var ListenerAnnotator $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);
-
-        // Get all the annotated listeners from the list of classes
-        // Iterate through the listeners
-        foreach ($containerAnnotations->getListeners(...$config->listeners) as $listener) {
-            // Set the service
-            $this->listen($listener->getEvent(), $listener);
-        }
     }
 
     /**
@@ -336,19 +265,5 @@ class Events implements EventsContract
     public function setEvents(array $events): void
     {
         self::$events = $events;
-    }
-
-    /**
-     * Get a cacheable representation of the events.
-     *
-     * @return array
-     */
-    public function getCacheable(): array
-    {
-        $this->setup(true, false);
-
-        return [
-            ConfigKeyPart::EVENTS => base64_encode(serialize(self::$events)),
-        ];
     }
 }

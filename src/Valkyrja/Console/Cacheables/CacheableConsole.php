@@ -16,7 +16,6 @@ namespace Valkyrja\Console\Cacheables;
 use ReflectionException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Configs\ConsoleConfig;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -108,20 +107,20 @@ trait CacheableConsole
      */
     protected function setupFromCache(object $config): void
     {
-        // Set the application console with said file
+        /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$commands      = unserialize(
-            base64_decode($cache[ConfigKeyPart::COMMANDS], true),
+            base64_decode($cache->commands, true),
             [
                 'allowed_classes' => [
                     Command::class,
                 ],
             ]
         );
-        self::$paths         = $cache[ConfigKeyPart::PATHS];
-        self::$namedCommands = $cache[ConfigKeyPart::NAMED_COMMANDS];
-        self::$provided      = $cache[ConfigKeyPart::PROVIDED];
+        self::$paths         = $cache->paths;
+        self::$namedCommands = $cache->namedCommands;
+        self::$provided      = $cache->provided;
     }
 
     /**
@@ -149,18 +148,19 @@ trait CacheableConsole
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return array
+     * @return CacheConfig
      */
-    public function getCacheable(): array
+    public function getCacheable(): CacheConfig
     {
         $this->setup(true, false);
 
-        return [
-            ConfigKeyPart::COMMANDS       => base64_encode(serialize(self::$commands)),
-            ConfigKeyPart::PATHS          => self::$paths,
-            ConfigKeyPart::NAMED_COMMANDS => self::$namedCommands,
-            ConfigKeyPart::PROVIDED       => self::$provided,
-        ];
+        $config                = new CacheConfig();
+        $config->commands      = base64_encode(serialize(self::$commands));
+        $config->paths         = self::$paths;
+        $config->namedCommands = self::$namedCommands;
+        $config->provided      = self::$provided;
+
+        return $config;
     }
 
     /**

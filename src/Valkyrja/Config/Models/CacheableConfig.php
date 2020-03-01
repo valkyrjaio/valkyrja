@@ -23,9 +23,9 @@ class CacheableConfig extends AnnotatableConfig
     /**
      * The cache from a Cacheable::getCacheable().
      *
-     * @var array
+     * @var ConfigModel|null
      */
-    public array $cache = [];
+    public ?ConfigModel $cache = null;
 
     /**
      * The file path.

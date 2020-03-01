@@ -15,7 +15,6 @@ namespace Valkyrja\Routing\Cacheables;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Configs\RoutingConfig;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Collections\Collection;
 use Valkyrja\Routing\Matchers\Matcher;
@@ -83,11 +82,11 @@ trait CacheableRouter
      */
     protected function setupFromCache(object $config): void
     {
-        // Set the application routes with said file
+        /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$collection = unserialize(
-            base64_decode($cache[ConfigKeyPart::COLLECTION], true),
+            base64_decode($cache->collection, true),
             [
                 'allowed_classes' => [
                     Matcher::class,
@@ -121,14 +120,15 @@ trait CacheableRouter
     /**
      * Get a cacheable representation of the data.
      *
-     * @return array
+     * @return CacheConfig
      */
-    public function getCacheable(): array
+    public function getCacheable(): CacheConfig
     {
         $this->setup(true, false);
 
-        return [
-            ConfigKeyPart::COLLECTION => base64_encode(serialize(self::$collection)),
-        ];
+        $config             = new CacheConfig();
+        $config->collection = base64_encode(serialize(self::$collection));
+
+        return $config;
     }
 }

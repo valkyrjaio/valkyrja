@@ -15,6 +15,7 @@ namespace Valkyrja\Support\Cacheables;
 
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Config\Models\CacheableConfig;
+use Valkyrja\Config\Models\ConfigModel;
 
 /**
  * Trait Cacheable.
@@ -75,9 +76,9 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return array
+     * @return ConfigModel
      */
-    abstract public function getCacheable(): array;
+    abstract public function getCacheable(): ConfigModel;
 
     /**
      * Get the config.

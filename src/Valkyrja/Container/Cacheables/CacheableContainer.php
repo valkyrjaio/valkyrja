@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Cacheables;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Configs\ContainerConfig;
-use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceContext;
@@ -97,19 +96,19 @@ trait CacheableContainer
      */
     protected function setupFromCache(object $config): void
     {
-        // Set the application container with said file
+        /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
         self::$services = unserialize(
-            base64_decode($cache[ConfigKeyPart::SERVICES], true),
+            base64_decode($cache->services, true),
             [
                 'allowed_classes' => [
                     Service::class,
                 ],
             ]
         );
-        self::$provided = $cache[ConfigKeyPart::PROVIDED];
-        self::$aliases  = $cache[ConfigKeyPart::ALIASES];
+        self::$provided = $cache->provided;
+        self::$aliases  = $cache->aliases;
     }
 
     /**
@@ -149,17 +148,18 @@ trait CacheableContainer
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return array
+     * @return CacheConfig
      */
-    public function getCacheable(): array
+    public function getCacheable(): CacheConfig
     {
         $this->setup(true, false);
 
-        return [
-            ConfigKeyPart::SERVICES => base64_encode(serialize(self::$services)),
-            ConfigKeyPart::ALIASES  => self::$aliases,
-            ConfigKeyPart::PROVIDED => self::$provided,
-        ];
+        $config           = new CacheConfig();
+        $config->services = base64_encode(serialize(self::$services));
+        $config->aliases  = self::$aliases;
+        $config->provided = self::$provided;
+
+        return $config;
     }
 
     /**
