@@ -98,13 +98,6 @@ class SqlQueryBuilder implements QueryBuilder
     protected ?int $offset = null;
 
     /**
-     * The built query.
-     *
-     * @var string|null
-     */
-    protected ?string $queryString = null;
-
-    /**
      * The entity to query with.
      *
      * @var Entity|string|null
@@ -447,30 +440,28 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function getQueryString(): string
     {
-        if (null !== $this->queryString) {
-            return $this->queryString;
-        }
+        $queryString = '';
 
         switch ($this->type) {
             case Statement::SELECT:
-                $this->queryString = $this->getSelectQuery();
+                $queryString = $this->getSelectQuery();
 
                 break;
             case Statement::UPDATE:
-                $this->queryString = $this->getUpdateQuery();
+                $queryString = $this->getUpdateQuery();
 
                 break;
             case Statement::INSERT:
-                $this->queryString = $this->getInsertQuery();
+                $queryString = $this->getInsertQuery();
 
                 break;
             case Statement::DELETE:
-                $this->queryString = $this->getDeleteQuery();
+                $queryString = $this->getDeleteQuery();
 
                 break;
         }
 
-        return (string) $this->queryString;
+        return $queryString;
     }
 
     /**
@@ -578,17 +569,13 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getSetQuery(): string
     {
-        $query = '';
+        $values = [];
 
         foreach ($this->values as $column => $value) {
-            if (! empty($query)) {
-                $query .= ', ';
-            }
-
-            $query .= $column . ' = ' . $value;
+            $values[] = $column . ' = ' . $value;
         }
 
-        return Statement::SET . ' ' . $query;
+        return Statement::SET . ' ' . implode(', ', $values);
     }
 
     /**
