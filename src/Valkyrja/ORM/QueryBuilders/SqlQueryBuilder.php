@@ -214,7 +214,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function table(string $table, string $alias = null): QueryBuilder
     {
-        $this->table = $table . ($alias !== null ? ' ' . $alias : '');
+        $this->table = $table . ' ' . ((string) $alias);
 
         return $this;
     }
@@ -286,13 +286,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function where(string $where): QueryBuilder
     {
-        if (empty($this->where)) {
-            $this->setWhere($where);
-
-            return $this;
-        }
-
-        $this->setWhere($where, Statement::WHERE_AND);
+        empty($this->where)
+            ? $this->setWhere($where)
+            : $this->setWhere($where, Statement::WHERE_AND);
 
         return $this;
     }
@@ -313,11 +309,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function andWhere(string $where): QueryBuilder
     {
-        if (empty($this->where)) {
-            return $this->where($where);
-        }
-
-        $this->setWhere($where, Statement::WHERE_AND);
+        empty($this->where)
+            ? $this->setWhere($where)
+            : $this->setWhere($where, Statement::WHERE_AND);
 
         return $this;
     }
@@ -338,11 +332,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function orWhere(string $where): QueryBuilder
     {
-        if (empty($this->where)) {
-            return $this->where($where);
-        }
-
-        $this->setWhere($where, Statement::WHERE_OR);
+        empty($this->where)
+            ? $this->setWhere($where)
+            : $this->setWhere($where, Statement::WHERE_OR);
 
         return $this;
     }
@@ -506,11 +498,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function setWhere(string $where, string $type = null): void
     {
-        if (null !== $type) {
-            $where = $type . ' ' . $where;
-        }
-
-        $this->where[] = $where;
+        $this->where[] = ((string) $type) . ' ' . $where;
     }
 
     /**
@@ -523,13 +511,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function setOrderBy(string $column, string $order = null): void
     {
-        $orderBy = $column;
-
-        if (null !== $order) {
-            $orderBy .= ' ' . $order;
-        }
-
-        $this->orderBy[] = $orderBy;
+        $this->orderBy[] = $column . ' ' . ((string) $order);
     }
 
     /**
@@ -621,11 +603,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getWhereQuery(): string
     {
-        if (empty($this->where)) {
-            return '';
-        }
-
-        return Statement::WHERE . ' ' . implode(' ', $this->where);
+        return empty($this->where)
+            ? ''
+            : Statement::WHERE . ' ' . implode(' ', $this->where);
     }
 
     /**
@@ -635,11 +615,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getOrderByQuery(): string
     {
-        if (empty($this->orderBy)) {
-            return '';
-        }
-
-        return Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
+        return empty($this->orderBy)
+            ? ''
+            : Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
     }
 
     /**
@@ -649,11 +627,9 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getLimitQuery(): string
     {
-        if (null === $this->limit) {
-            return '';
-        }
-
-        return Statement::LIMIT . ' ' . $this->limit;
+        return null === $this->limit
+            ? ''
+            : Statement::LIMIT . ' ' . $this->limit;
     }
 
     /**
@@ -663,10 +639,8 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getOffsetQuery(): string
     {
-        if (null === $this->offset) {
-            return '';
-        }
-
-        return Statement::OFFSET . ' ' . $this->offset;
+        return null === $this->offset
+            ? ''
+            : Statement::OFFSET . ' ' . $this->offset;
     }
 }
