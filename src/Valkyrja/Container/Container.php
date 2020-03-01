@@ -153,17 +153,10 @@ interface Container extends Cacheable, ProvidersAware
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
-    public function getProvided(
-        string $serviceId,
-        array $arguments = null,
-        string $context = null,
-        string $member = null
-    );
+    public function getProvided(string $serviceId, array $arguments = null);
 
     /**
      * Get the context service id.

@@ -228,16 +228,18 @@ class Container implements ContainerContract
      */
     public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
     {
-        // If there is a context set for this context and member combination
-        if (null !== $context && $this->hasContext($serviceId, $context, $member)) {
-            // Return that context
-            return $this->get($this->contextServiceId($serviceId, $context, $member), $arguments);
+        $serviceId = null === $context
+            ? $serviceId
+            : $this->contextServiceId($serviceId, $context, $member);
+
+        // If this service is an alias
+        if ($this->isAlias($serviceId)) {
+            $serviceId = self::$aliases[$serviceId];
         }
 
-        // If there is a context set for this context only
-        if (null !== $context && $this->hasContext($serviceId, $context)) {
-            // Return that context
-            return $this->get($this->contextServiceId($serviceId, $context), $arguments);
+        // Check if the service id is provided by a deferred service provider
+        if ($this->isProvided($serviceId)) {
+            $this->initializeProvided($serviceId);
         }
 
         // If the service is a singleton
@@ -246,26 +248,10 @@ class Container implements ContainerContract
             return $this->getSingleton($serviceId);
         }
 
-        // If this service is an alias
-        if ($this->isAlias($serviceId)) {
-            // Return the appropriate service
-            return $this->get(self::$aliases[$serviceId], $arguments, $context, $member);
-        }
-
         // If the service is in the container
         if ($this->has($serviceId)) {
             // Return the made service
             return $this->makeService($serviceId, $arguments);
-        }
-
-        // Check if the service id is provided by a deferred service provider
-        if ($this->isProvided($serviceId)) {
-            return $this->getProvided($serviceId, $arguments, $context, $member);
-        }
-
-        // If there are no argument return a new object
-        if (null === $arguments) {
-            return new $serviceId();
         }
 
         // Return a new object with the arguments
@@ -327,20 +313,14 @@ class Container implements ContainerContract
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
-    public function getProvided(
-        string $serviceId,
-        array $arguments = null,
-        string $context = null,
-        string $member = null
-    ) {
+    public function getProvided(string $serviceId, array $arguments = null)
+    {
         $this->initializeProvided($serviceId);
 
-        return $this->get($serviceId, $arguments, $context, $member);
+        return $this->get($serviceId, $arguments);
     }
 
     /**
