@@ -115,12 +115,7 @@ class Kernel implements KernelContract
         $this->responseMiddleware($request, $response);
 
         // Trigger an event for kernel handled
-        $this->app->events()->trigger(
-            HttpKernelHandled::class,
-            [
-                new HttpKernelHandled($request, $response),
-            ]
-        );
+        $this->app->events()->trigger(HttpKernelHandled::class, [$request, $response]);
 
         return $response;
     }
@@ -164,12 +159,7 @@ class Kernel implements KernelContract
         }
 
         // Trigger an event for kernel handled
-        $this->app->events()->trigger(
-            HttpKernelTerminate::class,
-            [
-                new HttpKernelTerminate($request, $response),
-            ]
-        );
+        $this->app->events()->trigger(HttpKernelTerminate::class, [$request, $response]);
     }
 
     /**

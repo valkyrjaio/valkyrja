@@ -219,6 +219,8 @@ class Events implements EventsContract
             return $responses;
         }
 
+        // TODO: if ($arguments !== null && $event is class) $arguments = new $event(...$arguments)
+
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
             // Attempt to dispatch the event listener using any one of the
