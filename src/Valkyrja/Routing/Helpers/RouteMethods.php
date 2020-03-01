@@ -466,7 +466,6 @@ trait RouteMethods
      */
     protected function getDependencies(Route $route): array
     {
-        $reflection   = null;
         $dependencies = [];
 
         if (($class = $route->getClass()) && ($method = $route->getMethod())) {
