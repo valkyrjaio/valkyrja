@@ -255,7 +255,7 @@ class Container implements ContainerContract
         }
 
         // Return a new object with the arguments
-        return new $serviceId(...$arguments);
+        return new $serviceId(...($arguments ?? []));
     }
 
     /**
