@@ -16,6 +16,8 @@ namespace Valkyrja\Dispatcher\Models;
 use Closure;
 use Valkyrja\Model\ModelTrait;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Trait Dispatchable.
  *
@@ -362,5 +364,19 @@ trait Dispatchable
         $this->dependencies = $dependencies;
 
         return $this;
+    }
+
+    /**
+     * Serialize properties for json_encode.
+     *
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        $array = json_decode(json_encode(get_object_vars($this), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+
+        $array['closure'] = null;
+
+        return $array;
     }
 }
