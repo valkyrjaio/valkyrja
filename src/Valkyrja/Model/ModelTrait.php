@@ -130,12 +130,6 @@ trait ModelTrait
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            // If the value is null or the property doesn't exist in this model
-            if (null === $value || ! property_exists($this, $property)) {
-                // Continue to the next property
-                continue;
-            }
-
             // Set the property
             $this->{$property} = $value;
         }

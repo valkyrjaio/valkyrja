@@ -160,16 +160,7 @@ class Valkyrja implements Application
 
         // Publish config providers
         $this->publishConfigProviders();
-        // Bootstrap debug capabilities
-        $this->bootstrapExceptionHandler();
-        // Bootstrap core functionality
-        $this->bootstrapCore();
-        // Bootstrap the container
-        $this->bootstrapContainer();
-        // Bootstrap setup
-        $this->bootstrapSetup();
-        // Bootstrap the timezone
-        $this->bootstrapTimezone();
+        $this->bootstrapAfterConfig();
 
         return $this;
     }
@@ -405,6 +396,8 @@ class Valkyrja implements Application
                 ],
             ]
         );
+
+        $this->bootstrapAfterConfig();
     }
 
     /**
@@ -418,6 +411,25 @@ class Valkyrja implements Application
             // Config providers are NOT deferred and will not follow the deferred value
             $provider::publish($this);
         }
+    }
+
+    /**
+     * Run bootstraps after config bootstrap.
+     *
+     * @return void
+     */
+    protected function bootstrapAfterConfig(): void
+    {
+        // Bootstrap debug capabilities
+        $this->bootstrapExceptionHandler();
+        // Bootstrap core functionality
+        $this->bootstrapCore();
+        // Bootstrap the container
+        $this->bootstrapContainer();
+        // Bootstrap setup
+        $this->bootstrapSetup();
+        // Bootstrap the timezone
+        $this->bootstrapTimezone();
     }
 
     /**

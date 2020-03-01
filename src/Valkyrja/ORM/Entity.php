@@ -63,13 +63,6 @@ interface Entity extends Model
     public static function getEntityPropertyTypes(): array;
 
     /**
-     * Get the properties.
-     *
-     * @return string[]
-     */
-    public function getEntityProperties(): array;
-
-    /**
      * A mapper of property types to properties for generating a full entity with relations.
      * NOTE: Used in conjunction with Entity::$propertyTypes. If a property type is defined
      * but a property mapper is not, then the property type is NOT automatically filled in

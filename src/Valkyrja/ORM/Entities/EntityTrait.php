@@ -56,14 +56,6 @@ trait EntityTrait
     protected static string $repository = Repository::class;
 
     /**
-     * Valid types allowed to be mass set.
-     *  NOTE: Set this if you'd like to save a array_keys(get_object_vars()) call later.
-     *
-     * @var array
-     */
-    protected static array $entityProperties = [];
-
-    /**
      * Types for attributes that differs from what they were saved into the database as.
      * <code>
      *      [
@@ -123,20 +115,6 @@ trait EntityTrait
     public static function getEntityRepository(): string
     {
         return static::$repository;
-    }
-
-    /**
-     * Get the properties.
-     *
-     * @return string[]
-     */
-    public function getEntityProperties(): array
-    {
-        if (empty(static::$entityProperties)) {
-            static::$entityProperties = $this->getModelProperties();
-        }
-
-        return static::$entityProperties;
     }
 
     /**
@@ -313,41 +291,6 @@ trait EntityTrait
         );
 
         return $repository->findAllBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
-    }
-
-    /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
-     *
-     * @return void
-     */
-    public function setModelProperties(array $properties): void
-    {
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            $this->setEntityProperty($property, $value);
-        }
-    }
-
-    /**
-     * Set a property.
-     *
-     * @param string $property
-     * @param mixed  $value
-     *
-     * @return void
-     */
-    protected function setEntityProperty(string $property, $value): void
-    {
-        // If the value is null or the property doesn't exist in this model
-        if (null === $value || ! property_exists($this, $property)) {
-            // Continue to the next property
-            return;
-        }
-
-        // Set the property
-        $this->{$property} = $this->getPropertyValueByType($property, $value);
     }
 
     /**
