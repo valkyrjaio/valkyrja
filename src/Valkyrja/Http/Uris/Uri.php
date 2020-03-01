@@ -134,6 +134,7 @@ class Uri implements UriContract
 
         $this->validatePort($this->port);
     }
+
     /**
      * Determine whether the URI is secure.
      * If a scheme is present, and the value matches 'https',
