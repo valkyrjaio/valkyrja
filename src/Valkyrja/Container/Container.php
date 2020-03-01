@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
+use ArrayAccess;
 use Valkyrja\Support\Cacheable;
 use Valkyrja\Support\ProvidersAware;
 
@@ -21,7 +22,7 @@ use Valkyrja\Support\ProvidersAware;
  *
  * @author Melech Mizrachi
  */
-interface Container extends Cacheable, ProvidersAware
+interface Container extends ArrayAccess, Cacheable, ProvidersAware
 {
     /**
      * Get a container with context.

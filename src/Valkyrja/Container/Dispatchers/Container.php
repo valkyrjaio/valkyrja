@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Dispatchers;
 
+use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Cacheables\CacheableContainer;
 use Valkyrja\Container\Container as ContainerContract;
@@ -334,24 +335,63 @@ class Container implements ContainerContract
      */
     public function contextServiceId(string $serviceId, string $context = null, string $member = null): string
     {
-        $index = $serviceId . '@' . ($context ?? '');
-
-        // If there is a method
-        if (null !== $member) {
-            // If there is a class
-            if (null !== $context) {
-                // Add the double colon to separate the method name and class
-                $index .= '::';
-            }
-
-            // Append the method/function to the string
-            $index .= $member;
-        }
-
         // service@class
         // service@method
         // service@class::method
-        return $index;
+        return $serviceId . '@' . ($context ?? '') . ($context && $member ? '::' : '') . ($member ?? '');
+    }
+
+    /**
+     * Offset set.
+     *
+     * @param string|null $serviceId The service id
+     * @param mixed       $service   The service
+     *
+     * @return void
+     */
+    public function offsetSet($serviceId, $service): void
+    {
+        if (null === $serviceId) {
+            throw new RuntimeException('Invalid serviceId.');
+        }
+
+        $this->setSingleton($serviceId, $service);
+    }
+
+    /**
+     * Offset exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function offsetExists($serviceId): bool
+    {
+        return $this->isSingleton($serviceId);
+    }
+
+    /**
+     * Offset unset.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return void
+     */
+    public function offsetUnset($serviceId): void
+    {
+        unset(self::$singletons[$serviceId]);
+    }
+
+    /**
+     * Offset get.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return mixed
+     */
+    public function offsetGet($serviceId)
+    {
+        return $this->getSingleton($serviceId);
     }
 
     /**
