@@ -17,7 +17,7 @@ use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Stream as StreamContract;
 
-use function is_resource;
+use const SEEK_SET;
 
 /**
  * Describes a data stream.
@@ -29,9 +29,7 @@ use function is_resource;
  */
 class Stream implements StreamContract
 {
-    use Read;
-    use Seek;
-    use Write;
+    use StreamHelpers;
 
     /**
      * The stream.
@@ -54,33 +52,151 @@ class Stream implements StreamContract
     }
 
     /**
-     * Set the stream.
+     * Returns whether or not the stream is seekable.
      *
-     * @param string      $stream The stream
-     * @param string|null $mode   [optional] The mode
+     * @return bool
+     */
+    public function isSeekable(): bool
+    {
+        // If there is no stream
+        if ($this->isValidStream()) {
+            // Don't do anything
+            return false;
+        }
+
+        return (bool) $this->getMetadata('seekable');
+    }
+
+    /**
+     * Seek to a position in the stream.
      *
-     * @throws InvalidStream
+     * @link http://www.php.net/manual/en/function.fseek.php
+     *
+     * @param int $offset Stream offset
+     * @param int $whence Specifies how the cursor position will be calculated
+     *                    based on the seek offset. Valid values are identical
+     *                    to the built-in PHP $whence values for `fseek()`.
+     *                    SEEK_SET: Set position equal to offset bytes
+     *                    SEEK_CUR: Set position to current location plus
+     *                    offset SEEK_END: Set position to end-of-stream plus
+     *                    offset.
+     *
+     * @throws RuntimeException on failure.
      *
      * @return void
      */
-    protected function setStream(string $stream, string $mode = null): void
+    public function seek(int $offset, int $whence = SEEK_SET): void
     {
-        // Set the mode
-        $mode = $mode ?? 'rb';
+        $this->verifyStream();
+        $this->verifySeekable();
 
-        // Open a new resource stream
-        $resource = fopen($stream, $mode);
+        // Get the results of the seek attempt
+        $result = fseek($this->stream, $offset, $whence);
 
-        // If the resource isn't a resource or a stream resource type
-        if (! is_resource($resource) || 'stream' !== get_resource_type($resource)) {
-            // Throw a new invalid stream exception
-            throw new InvalidStream(
-                'Invalid stream provided; must be a string stream identifier or stream resource'
-            );
+        $this->verifySeekResult($result);
+    }
+
+    /**
+     * Seek to the beginning of the stream.
+     * If the stream is not seekable, this method will raise an exception;
+     * otherwise, it will perform a seek(0).
+     *
+     * @link http://www.php.net/manual/en/function.fseek.php
+     *
+     * @throws RuntimeException on failure.
+     *
+     * @return void
+     *
+     * @see  seek()
+     */
+    public function rewind(): void
+    {
+        $this->seek(0);
+    }
+
+    /**
+     * Returns whether or not the stream is readable.
+     *
+     * @return bool
+     */
+    public function isReadable(): bool
+    {
+        // If there is no stream
+        if ($this->isValidStream()) {
+            // It's not readable
+            return false;
         }
 
-        // Set the stream
-        $this->stream = $resource;
+        // Get the stream's mode
+        $mode = $this->getMetadata('mode');
+
+        return $this->isModeReadable((string) $mode);
+    }
+
+    /**
+     * Read data from the stream.
+     *
+     * @param int $length Read up to $length bytes from the object and return
+     *                    them. Fewer than $length bytes may be returned if
+     *                    underlying stream call returns fewer bytes.
+     *
+     * @throws RuntimeException if an error occurs.
+     *
+     * @return string Returns the data read from the stream, or an empty string
+     *          if no bytes are available.
+     */
+    public function read(int $length): string
+    {
+        $this->verifyStream();
+        $this->verifyReadable();
+
+        // Read the stream
+        $result = fread($this->stream, $length);
+
+        $this->verifyReadResult($result);
+
+        return $result;
+    }
+
+    /**
+     * Returns whether or not the stream is writable.
+     *
+     * @return bool
+     */
+    public function isWritable(): bool
+    {
+        // If there is no stream
+        if ($this->isValidStream()) {
+            // The stream is definitely not writable
+            return false;
+        }
+
+        // Get the stream's mode
+        $mode = $this->getMetadata('mode');
+
+        return $this->isModeWriteable((string) $mode);
+    }
+
+    /**
+     * Write data to the stream.
+     *
+     * @param string $string The string that is to be written.
+     *
+     * @throws RuntimeException on failure.
+     *
+     * @return int Returns the number of bytes written to the stream.
+     */
+    public function write(string $string): int
+    {
+        $this->verifyStream();
+        $this->verifyWritable();
+
+        // Attempt to write to the stream
+        $result = fwrite($this->stream, $string);
+
+        $this->verifyWriteResult($result);
+
+        return $result;
     }
 
     /**
@@ -278,29 +394,5 @@ class Stream implements StreamContract
         $metadata = stream_get_meta_data($this->stream);
 
         return $metadata[$key] ?? null;
-    }
-
-    /**
-     * Is the stream valid.
-     *
-     * @return bool
-     */
-    protected function isValidStream(): bool
-    {
-        return null === $this->stream;
-    }
-
-    /**
-     * Verify the stream.
-     *
-     * @return void
-     */
-    protected function verifyStream(): void
-    {
-        // If there is no stream
-        if ($this->isValidStream()) {
-            // Throw a runtime exception
-            throw new RuntimeException('No resource available; cannot read');
-        }
     }
 }
