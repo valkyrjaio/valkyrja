@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Uris;
 
-use Valkyrja\Http\Enums\Scheme as SchemeEnum;
 use Valkyrja\Http\Exceptions\InvalidScheme;
 
 /**
@@ -37,7 +36,7 @@ trait Scheme
      */
     public function isSecure(): bool
     {
-        return $this->getScheme() === 'https';
+        return $this->scheme === 'https';
     }
 
     /**
@@ -86,7 +85,7 @@ trait Scheme
     public function getSchemeHostPort(): string
     {
         $hostPort = $this->getHostPort();
-        $scheme   = $this->getScheme();
+        $scheme   = $this->scheme;
 
         return $hostPort && $scheme ? $scheme . '://' . $hostPort : $hostPort;
     }
@@ -128,10 +127,6 @@ trait Scheme
      */
     public function withScheme(string $scheme): self
     {
-        if ($scheme === $this->scheme) {
-            return clone $this;
-        }
-
         $scheme = $this->validateScheme($scheme);
 
         $new = clone $this;
@@ -150,21 +145,5 @@ trait Scheme
      *
      * @return string
      */
-    protected function validateScheme(string $scheme): string
-    {
-        $scheme = strtolower($scheme);
-        $scheme = (string) preg_replace('#:(//)?$#', '', $scheme);
-
-        if (! $scheme) {
-            return '';
-        }
-
-        if (SchemeEnum::HTTP !== $scheme && $scheme !== SchemeEnum::HTTPS) {
-            throw new InvalidScheme(
-                sprintf('Invalid scheme "%s" specified; must be either "http" or "https"', $scheme)
-            );
-        }
-
-        return $scheme;
-    }
+    abstract protected function validateScheme(string $scheme): string;
 }
