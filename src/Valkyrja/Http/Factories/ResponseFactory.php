@@ -16,7 +16,6 @@ namespace Valkyrja\Http\Factories;
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
@@ -95,7 +94,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
     {
         /** @var Response $response */
-        $response = $this->container->getSingleton(Contract::RESPONSE);
+        $response = $this->container->getSingleton(Response::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -116,7 +115,7 @@ class ResponseFactory implements ResponseFactoryContract
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
         /** @var JsonResponse $response */
-        $response = $this->container->getSingleton(Contract::JSON_RESPONSE);
+        $response = $this->container->getSingleton(JsonResponse::class);
 
         if (func_num_args() === 0) {
             return $response;
@@ -155,10 +154,13 @@ class ResponseFactory implements ResponseFactoryContract
      *
      * @return RedirectResponse
      */
-    public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
-    {
+    public function createRedirectResponse(
+        string $uri = null,
+        int $statusCode = null,
+        array $headers = null
+    ): RedirectResponse {
         /** @var RedirectResponse $response */
-        $response = $this->container->getSingleton(Contract::REDIRECT_RESPONSE);
+        $response = $this->container->getSingleton(RedirectResponse::class);
 
         if (func_num_args() === 0) {
             return $response;

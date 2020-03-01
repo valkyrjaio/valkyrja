@@ -21,7 +21,6 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
@@ -212,7 +211,7 @@ if (! function_exists('input')) {
      */
     function input(): Input
     {
-        return container()->get(Contract::INPUT);
+        return container()->get(Input::class);
     }
 }
 
@@ -296,7 +295,7 @@ if (! function_exists('output')) {
      */
     function output(): Output
     {
-        return container()->get(Contract::OUTPUT);
+        return container()->get(Output::class);
     }
 }
 
@@ -308,7 +307,7 @@ if (! function_exists('reflector')) {
      */
     function reflector(): \Valkyrja\Reflection\Reflector
     {
-        return container()->get(Contract::REFLECTOR);
+        return container()->get(\Valkyrja\Reflection\Reflector::class);
     }
 }
 

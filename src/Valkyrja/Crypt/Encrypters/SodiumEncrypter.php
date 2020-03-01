@@ -15,7 +15,6 @@ namespace Valkyrja\Crypt\Encrypters;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Support\Providers\Provides;
 
@@ -39,7 +38,7 @@ class SodiumEncrypter implements Encrypter
     public static function provides(): array
     {
         return [
-            Contract::ENCRYPTER,
+            Encrypter::class,
         ];
     }
 
@@ -52,7 +51,7 @@ class SodiumEncrypter implements Encrypter
      */
     public static function publish(Application $app): void
     {
-        $app->container()->setSingleton(Contract::ENCRYPTER, new static());
+        $app->container()->setSingleton(Encrypter::class, new static());
     }
 
     /**

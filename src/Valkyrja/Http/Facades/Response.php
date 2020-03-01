@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
@@ -53,7 +52,7 @@ class Response extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(ContractEnum::RESPONSE);
+        return Valkyrja::app()->container()->getSingleton(Contract::class);
     }
 
     /**

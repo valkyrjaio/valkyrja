@@ -148,9 +148,9 @@ trait CacheableContainer
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 

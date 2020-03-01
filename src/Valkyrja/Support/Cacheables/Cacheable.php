@@ -76,9 +76,9 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return ConfigModel
+     * @return ConfigModel|object
      */
-    abstract public function getCacheable(): ConfigModel;
+    abstract public function getCacheable(): object;
 
     /**
      * Get the config.

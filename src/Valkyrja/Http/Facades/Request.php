@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
@@ -69,6 +68,6 @@ class Request extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(ContractEnum::REQUEST);
+        return Valkyrja::app()->container()->getSingleton(Contract::class);
     }
 }

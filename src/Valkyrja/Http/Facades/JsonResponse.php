@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\Http\JsonResponse as Contract;
@@ -55,7 +54,7 @@ class JsonResponse extends Response
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(ContractEnum::JSON_RESPONSE);
+        return Valkyrja::app()->container()->getSingleton(Contract::Class);
     }
 
     /**

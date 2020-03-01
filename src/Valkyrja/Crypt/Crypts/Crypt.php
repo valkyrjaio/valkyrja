@@ -15,13 +15,12 @@ namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Enums\Contract;
+use Valkyrja\Config\Configs\CryptConfig;
 use Valkyrja\Crypt\Crypt as CryptContract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
-use Valkyrja\Config\Configs\CryptConfig;
 
 /**
  * Class Crypt.
@@ -82,7 +81,7 @@ class Crypt implements CryptContract
     public static function provides(): array
     {
         return [
-            Contract::CRYPT,
+            CryptContract::class,
         ];
     }
 
@@ -98,11 +97,11 @@ class Crypt implements CryptContract
         $container = $app->container();
 
         $container->setSingleton(
-            Contract::CRYPT,
+            CryptContract::class,
             new static(
                 $app,
-                $container->get(Contract::ENCRYPTER),
-                $container->get(Contract::DECRYPTER)
+                $container->get(Encrypter::class),
+                $container->get(Decrypter::class)
             )
         );
     }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Decrypters;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
@@ -42,7 +41,7 @@ class SodiumDecrypter implements Decrypter
     public static function provides(): array
     {
         return [
-            Contract::DECRYPTER,
+            Decrypter::class,
         ];
     }
 
@@ -55,7 +54,7 @@ class SodiumDecrypter implements Decrypter
      */
     public static function publish(Application $app): void
     {
-        $app->container()->setSingleton(Contract::DECRYPTER, new static());
+        $app->container()->setSingleton(Decrypter::class, new static());
     }
 
     /**

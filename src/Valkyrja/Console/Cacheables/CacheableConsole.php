@@ -148,9 +148,9 @@ trait CacheableConsole
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\Http\RedirectResponse as Contract;
@@ -58,7 +57,7 @@ class RedirectResponse extends Response
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(ContractEnum::REDIRECT_RESPONSE);
+        return Valkyrja::app()->container()->getSingleton(Contract::class);
     }
 
     /**

@@ -22,7 +22,6 @@ use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel as KernelContract;
 use Valkyrja\Console\Output;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Support\Providers\Provides;
 
@@ -69,7 +68,7 @@ class Kernel implements KernelContract
     public static function provides(): array
     {
         return [
-            Contract::CONSOLE_KERNEL,
+            KernelContract::class,
         ];
     }
 
@@ -83,7 +82,7 @@ class Kernel implements KernelContract
     public static function publish(Application $app): void
     {
         $app->container()->setSingleton(
-            Contract::CONSOLE_KERNEL,
+            KernelContract::class,
             new static(
                 $app,
                 $app->console()
@@ -97,7 +96,7 @@ class Kernel implements KernelContract
      * @param Input  $input  The input
      * @param Output $output The output
      *
-     * @throws \Valkyrja\Http\Exceptions\HttpException
+     * @throws HttpException
      *
      * @return int
      */

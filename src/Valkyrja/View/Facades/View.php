@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\View\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Enums\Contract as ContractEnum;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\View\Engine;
 use Valkyrja\View\View as Contract;
@@ -58,6 +57,6 @@ class View extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(ContractEnum::VIEW);
+        return Valkyrja::app()->container()->getSingleton(Contract::class);
     }
 }

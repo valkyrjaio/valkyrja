@@ -120,9 +120,9 @@ trait CacheableRouter
     /**
      * Get a cacheable representation of the data.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 

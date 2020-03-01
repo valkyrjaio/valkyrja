@@ -19,7 +19,6 @@ use Valkyrja\Client\Client;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\JsonResponse;
@@ -56,7 +55,7 @@ trait ContainerHelpers
      */
     public function annotator(): Annotator
     {
-        return self::$container->getSingleton(Contract::ANNOTATOR);
+        return self::$container->getSingleton(Annotator::class);
     }
 
     /**
@@ -66,7 +65,7 @@ trait ContainerHelpers
      */
     public function cache(): Cache
     {
-        return self::$container->getSingleton(Contract::CACHE);
+        return self::$container->getSingleton(Cache::class);
     }
 
     /**
@@ -76,7 +75,7 @@ trait ContainerHelpers
      */
     public function client(): Client
     {
-        return self::$container->getSingleton(Contract::CLIENT);
+        return self::$container->getSingleton(Client::class);
     }
 
     /**
@@ -86,7 +85,7 @@ trait ContainerHelpers
      */
     public function console(): Console
     {
-        return self::$container->getSingleton(Contract::CONSOLE);
+        return self::$container->getSingleton(Console::class);
     }
 
     /**
@@ -96,7 +95,7 @@ trait ContainerHelpers
      */
     public function consoleKernel(): ConsoleKernel
     {
-        return self::$container->getSingleton(Contract::CONSOLE_KERNEL);
+        return self::$container->getSingleton(ConsoleKernel::class);
     }
 
     /**
@@ -106,7 +105,7 @@ trait ContainerHelpers
      */
     public function crypt(): Crypt
     {
-        return self::$container->getSingleton(Contract::CRYPT);
+        return self::$container->getSingleton(Crypt::class);
     }
 
     /**
@@ -116,7 +115,7 @@ trait ContainerHelpers
      */
     public function entityManager(): EntityManager
     {
-        return self::$container->getSingleton(Contract::ENTITY_MANAGER);
+        return self::$container->getSingleton(EntityManager::class);
     }
 
     /**
@@ -126,7 +125,7 @@ trait ContainerHelpers
      */
     public function filesystem(): Filesystem
     {
-        return self::$container->getSingleton(Contract::FILESYSTEM);
+        return self::$container->getSingleton(Filesystem::class);
     }
 
     /**
@@ -136,7 +135,7 @@ trait ContainerHelpers
      */
     public function kernel(): Kernel
     {
-        return self::$container->getSingleton(Contract::KERNEL);
+        return self::$container->getSingleton(Kernel::class);
     }
 
     /**
@@ -146,7 +145,7 @@ trait ContainerHelpers
      */
     public function logger(): Logger
     {
-        return self::$container->getSingleton(Contract::LOGGER);
+        return self::$container->getSingleton(Logger::class);
     }
 
     /**
@@ -156,7 +155,7 @@ trait ContainerHelpers
      */
     public function mail(): Mail
     {
-        return self::$container->getSingleton(Contract::MAIL);
+        return self::$container->getSingleton(Mail::class);
     }
 
     /**
@@ -166,7 +165,7 @@ trait ContainerHelpers
      */
     public function pathGenerator(): PathGenerator
     {
-        return self::$container->getSingleton(Contract::PATH_GENERATOR);
+        return self::$container->getSingleton(PathGenerator::class);
     }
 
     /**
@@ -176,7 +175,7 @@ trait ContainerHelpers
      */
     public function pathParser(): PathParser
     {
-        return self::$container->getSingleton(Contract::PATH_PARSER);
+        return self::$container->getSingleton(PathParser::class);
     }
 
     /**
@@ -186,7 +185,7 @@ trait ContainerHelpers
      */
     public function reflector(): Reflector
     {
-        return self::$container->getSingleton(Contract::REFLECTOR);
+        return self::$container->getSingleton(Reflector::class);
     }
 
     /**
@@ -196,7 +195,7 @@ trait ContainerHelpers
      */
     public function request(): Request
     {
-        return self::$container->getSingleton(Contract::REQUEST);
+        return self::$container->getSingleton(Request::class);
     }
 
     /**
@@ -206,7 +205,7 @@ trait ContainerHelpers
      */
     public function router(): Router
     {
-        return self::$container->getSingleton(Contract::ROUTER);
+        return self::$container->getSingleton(Router::class);
     }
 
     /**
@@ -277,7 +276,7 @@ trait ContainerHelpers
      */
     public function responseFactory(): ResponseFactory
     {
-        return self::$container->getSingleton(Contract::RESPONSE_FACTORY);
+        return self::$container->getSingleton(ResponseFactory::class);
     }
 
     /**
@@ -287,7 +286,7 @@ trait ContainerHelpers
      */
     public function session(): Session
     {
-        return self::$container->getSingleton(Contract::SESSION);
+        return self::$container->getSingleton(Session::class);
     }
 
     /**
@@ -301,7 +300,7 @@ trait ContainerHelpers
     public function view(string $template = null, array $variables = []): View
     {
         /** @var View $view */
-        $view = self::$container->getSingleton(Contract::VIEW);
+        $view = self::$container->getSingleton(View::class);
 
         if (func_num_args() === 0) {
             return $view;

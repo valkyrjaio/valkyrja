@@ -22,7 +22,6 @@ use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
 use Valkyrja\Console\Support\CommandProvider;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -65,7 +64,7 @@ class Console implements ConsoleContract
     public static function provides(): array
     {
         return [
-            Contract::CONSOLE,
+            ConsoleContract::class,
         ];
     }
 
@@ -79,7 +78,7 @@ class Console implements ConsoleContract
     public static function publish(Application $app): void
     {
         $app->container()->setSingleton(
-            Contract::CONSOLE,
+            ConsoleContract::class,
             new static($app)
         );
 

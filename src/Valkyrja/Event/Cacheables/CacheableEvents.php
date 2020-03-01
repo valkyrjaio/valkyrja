@@ -102,9 +102,9 @@ trait CacheableEvents
     /**
      * Get a cacheable representation of the events.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 

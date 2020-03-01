@@ -21,7 +21,6 @@ use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\ConfigModel;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Enums\Contract;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Events;
@@ -508,14 +507,13 @@ class Valkyrja implements Application
      */
     protected function bootstrapExceptionHandler(): void
     {
-        // The exception handler class to use from the config
-        $exceptionHandlerImpl = self::$config->app->exceptionHandler;
-
-        // Set the exception handler to a new instance of the exception handler implementation
-        self::$exceptionHandler = new $exceptionHandlerImpl($this);
-
         // If debug is on, enable debug handling
         if ($this->debug()) {
+            // The exception handler class to use from the config
+            $exceptionHandlerImpl = self::$config->app->exceptionHandler;
+            // Set the exception handler to a new instance of the exception handler implementation
+            self::$exceptionHandler = new $exceptionHandlerImpl($this);
+
             // Enable exception handling
             self::$exceptionHandler::enable(E_ALL, true);
         }
@@ -551,19 +549,22 @@ class Valkyrja implements Application
     protected function bootstrapContainer(): void
     {
         // Set the application instance in the container
-        self::$container->setSingleton(Contract::APP, $this);
+        self::$container->setSingleton(Application::class, $this);
         // Set the events instance in the container
         self::$container->setSingleton('env', self::$env);
         // Set the events instance in the container
         self::$container->setSingleton('config', self::$config);
         // Set the container instance in the container
-        self::$container->setSingleton(Contract::CONTAINER, self::$container);
+        self::$container->setSingleton(Container::class, self::$container);
         // Set the dispatcher instance in the dispatcher
-        self::$container->setSingleton(Contract::DISPATCHER, self::$dispatcher);
+        self::$container->setSingleton(Dispatcher::class, self::$dispatcher);
         // Set the events instance in the container
-        self::$container->setSingleton(Contract::EVENTS, self::$events);
-        // Set the exception handler instance in the container
-        self::$container->setSingleton(Contract::EXCEPTION_HANDLER, self::$exceptionHandler);
+        self::$container->setSingleton(Events::class, self::$events);
+
+        if ($this->debug()) {
+            // Set the exception handler instance in the container
+            self::$container->setSingleton(ExceptionHandler::class, self::$exceptionHandler);
+        }
     }
 
     /**
