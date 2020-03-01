@@ -177,12 +177,7 @@ class Collection implements RouteCollectionContract
     public function hasStatic(string $path, string $method = null): bool
     {
         if (null === $method) {
-            return $this->hasStatic($path, RequestMethod::GET)
-                || $this->hasStatic($path, RequestMethod::HEAD)
-                || $this->hasStatic($path, RequestMethod::POST)
-                || $this->hasStatic($path, RequestMethod::PUT)
-                || $this->hasStatic($path, RequestMethod::PATCH)
-                || $this->hasStatic($path, RequestMethod::DELETE);
+            return $this->hasAnyStatic($path);
         }
 
         return isset($this->static[$method][$path]);
@@ -239,12 +234,7 @@ class Collection implements RouteCollectionContract
     public function hasDynamic(string $regex, string $method = null): bool
     {
         if (null === $method) {
-            return $this->hasDynamic($regex, RequestMethod::GET)
-                || $this->hasDynamic($regex, RequestMethod::HEAD)
-                || $this->hasDynamic($regex, RequestMethod::POST)
-                || $this->hasDynamic($regex, RequestMethod::PUT)
-                || $this->hasDynamic($regex, RequestMethod::PATCH)
-                || $this->hasDynamic($regex, RequestMethod::DELETE);
+            return $this->hasAnyDynamic($regex);
         }
 
         return isset($this->dynamic[$method][$regex]);
@@ -397,5 +387,48 @@ class Collection implements RouteCollectionContract
         $route->setRegex($parsedRoute['regex']);
         $route->setParams($parsedRoute['params']);
         $route->setSegments($parsedRoute['segments']);
+    }
+
+    /**
+     * Has any static (no request method filtering).
+     *
+     * @param string $path The path
+     *
+     * @return bool
+     */
+    protected function hasAnyStatic(string $path): bool
+    {
+        return $this->hasAnyOfType($this->static, $path);
+    }
+
+    /**
+     * Has any dynamic (no request method filtering).
+     *
+     * @param string $regex The regex
+     *
+     * @return bool
+     */
+    protected function hasAnyDynamic(string $regex): bool
+    {
+        return $this->hasAnyOfType($this->dynamic, $regex);
+    }
+
+    /**
+     * Has a path in the type of routing.
+     *
+     * @param array  $type The type [static|dynamic]
+     * @param string $path The path
+     *
+     * @return bool
+     */
+    protected function hasAnyOfType(array $type, string $path): bool
+    {
+        foreach ($type as $requestMethod) {
+            if (isset($requestMethod[$path])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
