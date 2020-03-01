@@ -105,6 +105,7 @@ class Router implements RouterContract
     {
         return self::$collection->matcher();
     }
+
     /**
      * Set a single route.
      *
