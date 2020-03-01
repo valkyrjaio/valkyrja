@@ -20,6 +20,8 @@ use Valkyrja\Routing\Matcher as RouteMatcherContract;
 use Valkyrja\Routing\Matchers\Matcher;
 use Valkyrja\Routing\Route;
 
+use function is_array;
+
 /**
  * Class RouteCollection.
  *
@@ -91,7 +93,7 @@ class Collection implements RouteCollectionContract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[] = $route;
+        $this->routes[] = $route->asArray();
     }
 
     /**
@@ -129,7 +131,7 @@ class Collection implements RouteCollectionContract
      */
     public function all(): array
     {
-        return array_merge($this->static, $this->dynamic);
+        return $this->ensureMethodRoutes(array_merge($this->static, $this->dynamic));
     }
 
     /**
@@ -139,7 +141,7 @@ class Collection implements RouteCollectionContract
      */
     public function allFlattened(): array
     {
-        return $this->routes;
+        return $this->ensureRoutes($this->routes);
     }
 
     /**
@@ -154,16 +156,7 @@ class Collection implements RouteCollectionContract
      */
     public function getStatic(string $path, string $method = null): ?Route
     {
-        if (null === $method) {
-            return $this->getStatic($path, RequestMethod::GET)
-                ?? $this->getStatic($path, RequestMethod::HEAD)
-                ?? $this->getStatic($path, RequestMethod::POST)
-                ?? $this->getStatic($path, RequestMethod::PUT)
-                ?? $this->getStatic($path, RequestMethod::PATCH)
-                ?? $this->getStatic($path, RequestMethod::DELETE);
-        }
-
-        return $this->static[$method][$path] ?? null;
+        return $this->getOfType($this->static, $path, $method);
     }
 
     /**
@@ -203,16 +196,7 @@ class Collection implements RouteCollectionContract
      */
     public function getDynamic(string $regex, string $method = null): ?Route
     {
-        if (null === $method) {
-            return $this->getDynamic($regex, RequestMethod::GET)
-                ?? $this->getDynamic($regex, RequestMethod::HEAD)
-                ?? $this->getDynamic($regex, RequestMethod::POST)
-                ?? $this->getDynamic($regex, RequestMethod::PUT)
-                ?? $this->getDynamic($regex, RequestMethod::PATCH)
-                ?? $this->getDynamic($regex, RequestMethod::DELETE);
-        }
-
-        return $this->dynamic[$method][$regex] ?? null;
+        return $this->getOfType($this->dynamic, $regex, $method);
     }
 
     /**
@@ -251,7 +235,7 @@ class Collection implements RouteCollectionContract
      */
     public function getNamed(string $name): ?Route
     {
-        return $this->named[$name] ?? null;
+        return $this->ensureRoute($this->named[$name] ?? null);
     }
 
     /**
@@ -273,7 +257,7 @@ class Collection implements RouteCollectionContract
      */
     public function allNamed(): array
     {
-        return $this->named;
+        return $this->ensureRoutes($this->named);
     }
 
     /**
@@ -329,11 +313,11 @@ class Collection implements RouteCollectionContract
             // Set the dynamic route's properties through the path parser
             $this->parseDynamicRoute($route);
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod][$route->getRegex()] = $route;
+            $this->dynamic[$requestMethod][$route->getRegex()] = $route->asArray();
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod][$route->getPath()] = $route;
+            $this->static[$requestMethod][$route->getPath()] = $route->asArray();
         }
     }
 
@@ -349,7 +333,7 @@ class Collection implements RouteCollectionContract
         // If this route has a name set
         if ($route->getName()) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = $route;
+            $this->named[$route->getName()] = $route->asArray();
         }
     }
 
@@ -374,6 +358,42 @@ class Collection implements RouteCollectionContract
     }
 
     /**
+     * Get a route of type (static|dynamic).
+     *
+     * @param array       $type   The type [static|dynamic]
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
+     *
+     * @return Route|null
+     */
+    protected function getOfType(array $type, string $path, string $method = null): ?Route
+    {
+        if (null === $method) {
+            return $this->getAnyOfType($type, $path);
+        }
+
+        return $this->ensureRoute($type[$method][$path] ?? null);
+    }
+
+    /**
+     * Get a route of any type (static|dynamic).
+     *
+     * @param array       $type   The type [static|dynamic]
+     * @param string      $path   The path
+     *
+     * @return Route|null
+     */
+    protected function getAnyOfType(array $type, string $path): ?Route
+    {
+        return $this->getOfType($type, $path, RequestMethod::GET)
+            ?? $this->getOfType($type, $path, RequestMethod::HEAD)
+            ?? $this->getOfType($type, $path, RequestMethod::POST)
+            ?? $this->getOfType($type, $path, RequestMethod::PUT)
+            ?? $this->getOfType($type, $path, RequestMethod::PATCH)
+            ?? $this->getOfType($type, $path, RequestMethod::DELETE);
+    }
+
+    /**
      * Has a path of type (static|dynamic).
      *
      * @param array       $type   The type [static|dynamic]
@@ -392,7 +412,7 @@ class Collection implements RouteCollectionContract
     }
 
     /**
-     * Has a path in the type of routing.
+     * Has a path of any type.
      *
      * @param array  $type The type [static|dynamic]
      * @param string $path The path
@@ -421,9 +441,61 @@ class Collection implements RouteCollectionContract
     protected function allOfType(array $type, string $method = null): array
     {
         if ($method === null) {
-            return $type;
+            return $this->ensureMethodRoutes($type);
         }
 
-        return $type[$method] ?? [];
+        return $this->ensureRoutes($type[$method] ?? []);
+    }
+
+    /**
+     * Ensure request methods are arrays of routes.
+     *
+     * @param array $methodsArray
+     *
+     * @return array
+     */
+    protected function ensureMethodRoutes(array $methodsArray): array
+    {
+        $methods = [];
+
+        foreach ($methodsArray as $method) {
+            $methodsArray[] = $this->ensureRoutes($method);
+        }
+
+        return $methods;
+    }
+
+    /**
+     * Ensure an array is an array of routes.
+     *
+     * @param array $routesArray The routes array
+     *
+     * @return array
+     */
+    protected function ensureRoutes(array $routesArray): array
+    {
+        $routes = [];
+
+        foreach ($routesArray as $route) {
+            $routes[] = \Valkyrja\Routing\Models\Route::fromArray($route);
+        }
+
+        return $routes;
+    }
+
+    /**
+     * Ensure a route, or null, is returned.
+     *
+     * @param Route|array|null $route The route
+     *
+     * @return Route|null
+     */
+    protected function ensureRoute($route = null): ?Route
+    {
+        if (is_array($route)) {
+            return \Valkyrja\Routing\Models\Route::fromArray($route);
+        }
+
+        return $route;
     }
 }
