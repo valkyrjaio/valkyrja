@@ -37,12 +37,14 @@ trait CacheableContainer
      * @var string[]
      */
     protected static array $aliases = [];
+
     /**
      * The services.
      *
      * @var Service[]
      */
     protected static array $services = [];
+
     /**
      * The application.
      *
@@ -99,14 +101,7 @@ trait CacheableContainer
         /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
-        self::$services = unserialize(
-            base64_decode($cache->services, true),
-            [
-                'allowed_classes' => [
-                    Service::class,
-                ],
-            ]
-        );
+        self::$services = $cache->services;
         self::$provided = $cache->provided;
         self::$aliases  = $cache->aliases;
     }
@@ -155,7 +150,7 @@ trait CacheableContainer
         $this->setup(true, false);
 
         $config           = new CacheConfig();
-        $config->services = base64_encode(serialize(self::$services));
+        $config->services = self::$services;
         $config->aliases  = self::$aliases;
         $config->provided = self::$provided;
 

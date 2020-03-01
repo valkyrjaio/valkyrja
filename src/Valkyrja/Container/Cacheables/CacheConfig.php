@@ -25,9 +25,9 @@ class CacheConfig extends ConfigModel
     /**
      * The base64 encoded services.
      *
-     * @var string
+     * @var array
      */
-    public string $services;
+    public array $services;
 
     /**
      * The aliases.

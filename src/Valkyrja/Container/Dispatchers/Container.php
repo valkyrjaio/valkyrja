@@ -100,7 +100,7 @@ class Container implements ContainerContract
             $this->app->dispatcher()->verifyDispatch($service);
         }
 
-        self::$services[$service->getId()] = $service;
+        self::$services[$service->getId()] = $service->asArray();
     }
 
     /**
@@ -269,7 +269,7 @@ class Container implements ContainerContract
      */
     public function makeService(string $serviceId, array $arguments = null)
     {
-        $service   = self::$services[$serviceId];
+        $service   = ServiceModel::fromArray(self::$services[$serviceId]);
         $arguments = $service->getDefaults() ?? $arguments;
 
         // Dispatch before make event
