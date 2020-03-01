@@ -42,7 +42,6 @@ use Valkyrja\Http\Uri as UriContract;
 class Uri implements UriContract
 {
     use UriHelpers;
-    use Scheme;
 
     /**
      * The scheme.
@@ -134,6 +133,37 @@ class Uri implements UriContract
         $this->fragment = $this->validateFragment($fragment ?? '');
 
         $this->validatePort($this->port);
+    }
+    /**
+     * Determine whether the URI is secure.
+     * If a scheme is present, and the value matches 'https',
+     * this method MUST return true.
+     * If the scheme is present, and the value does not match
+     * 'https', this method MUST return false.
+     * If no scheme is present, this method MUST return false.
+     *
+     * @return bool
+     */
+    public function isSecure(): bool
+    {
+        return $this->scheme === 'https';
+    }
+
+    /**
+     * Retrieve the scheme component of the URI.
+     * If no scheme is present, this method MUST return an empty string.
+     * The value returned MUST be normalized to lowercase, per RFC 3986
+     * Section 3.1.
+     * The trailing ":" character is not part of the scheme and MUST NOT be
+     * added.
+     *
+     * @see https://tools.ietf.org/html/rfc3986#section-3.1
+     *
+     * @return string The URI scheme.
+     */
+    public function getScheme(): string
+    {
+        return $this->scheme;
     }
 
     /**
@@ -249,6 +279,40 @@ class Uri implements UriContract
     }
 
     /**
+     * Retrieve the scheme, host, and port components of the URI.
+     * If a scheme is present, a host is present, and a port is present,
+     * and the port is non-standard for the current scheme, this method
+     * MUST return the scheme, followed by the host, followed by the
+     * port in a fashion akin to the following <scheme://host:port>.
+     * If a scheme is present, a host is present, and a port is present,
+     * and the port is standard for the current scheme, this method
+     * MUST return only the scheme followed by the host, in a
+     * fashion akin to the following <scheme://host>.
+     * If a scheme is present, a host is present, and a port is not
+     * present, this method MUST return only the scheme followed by
+     * the host, in a fashion akin to the following <scheme://host>.
+     * If a scheme is not present, a host is present, and a port is
+     * present, this method MUST return only the host, followed by
+     * the port, in a fashion akin to the following <host:port>.
+     * If a scheme is not present, a host is present, and a port is
+     * not present, this method MUST return only the host.
+     * If a scheme is not present, a host is not present, and a port
+     * is not present, this method MUST return an empty string.
+     * If a scheme is present, a host is not present, and a port
+     * is either present or not, this method MUST return an
+     * empty string.
+     *
+     * @return string
+     */
+    public function getSchemeHostPort(): string
+    {
+        $hostPort = $this->getHostPort();
+        $scheme   = $this->scheme;
+
+        return $hostPort && $scheme ? $scheme . '://' . $hostPort : $hostPort;
+    }
+
+    /**
      * Retrieve the path component of the URI.
      * The path can either be empty or absolute (starting with a slash) or
      * rootless (not starting with a slash). Implementations MUST support all
@@ -314,6 +378,32 @@ class Uri implements UriContract
     public function getFragment(): string
     {
         return $this->fragment;
+    }
+
+    /**
+     * Return an instance with the specified scheme.
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified scheme.
+     * Implementations MUST support the schemes "http" and "https" case
+     * insensitively, and MAY accommodate other schemes if required.
+     * An empty scheme is equivalent to removing the scheme.
+     *
+     * @param string $scheme The scheme to use with the new instance.
+     *
+     * @throws InvalidScheme for invalid or
+     *          unsupported schemes.
+     *
+     * @return static A new instance with the specified scheme.
+     */
+    public function withScheme(string $scheme): self
+    {
+        $scheme = $this->validateScheme($scheme);
+
+        $new = clone $this;
+
+        $new->scheme = $scheme;
+
+        return $new;
     }
 
     /**
