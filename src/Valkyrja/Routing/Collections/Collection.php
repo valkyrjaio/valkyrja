@@ -125,7 +125,7 @@ class Collection implements RouteCollectionContract
     /**
      * Get all routes.
      *
-     * @return Route[]
+     * @return Route[][]
      */
     public function all(): array
     {
@@ -176,11 +176,7 @@ class Collection implements RouteCollectionContract
      */
     public function hasStatic(string $path, string $method = null): bool
     {
-        if (null === $method) {
-            return $this->hasAnyStatic($path);
-        }
-
-        return isset($this->static[$method][$path]);
+        return $this->hasOfType($this->static, $path, $method);
     }
 
     /**
@@ -192,11 +188,7 @@ class Collection implements RouteCollectionContract
      */
     public function allStatic(string $method = null): array
     {
-        if ($method === null) {
-            return $this->static;
-        }
-
-        return $this->static[$method];
+        return $this->allOfType($this->static, $method);
     }
 
     /**
@@ -233,11 +225,7 @@ class Collection implements RouteCollectionContract
      */
     public function hasDynamic(string $regex, string $method = null): bool
     {
-        if (null === $method) {
-            return $this->hasAnyDynamic($regex);
-        }
-
-        return isset($this->dynamic[$method][$regex]);
+        return $this->hasOfType($this->dynamic, $regex, $method);
     }
 
     /**
@@ -249,11 +237,7 @@ class Collection implements RouteCollectionContract
      */
     public function allDynamic(string $method = null): array
     {
-        if ($method === null) {
-            return $this->dynamic;
-        }
-
-        return $this->dynamic[$method] ?? [];
+        return $this->allOfType($this->dynamic, $method);
     }
 
     /**
@@ -390,27 +374,21 @@ class Collection implements RouteCollectionContract
     }
 
     /**
-     * Has any static (no request method filtering).
+     * Has a path of type (static|dynamic).
      *
-     * @param string $path The path
+     * @param array       $type   The type [static|dynamic]
+     * @param string      $path   The path
+     * @param string|null $method [optional] The request method
      *
      * @return bool
      */
-    protected function hasAnyStatic(string $path): bool
+    protected function hasOfType(array $type, string $path, string $method = null): bool
     {
-        return $this->hasAnyOfType($this->static, $path);
-    }
+        if (null === $method) {
+            return $this->hasAnyOfType($type, $path);
+        }
 
-    /**
-     * Has any dynamic (no request method filtering).
-     *
-     * @param string $regex The regex
-     *
-     * @return bool
-     */
-    protected function hasAnyDynamic(string $regex): bool
-    {
-        return $this->hasAnyOfType($this->dynamic, $regex);
+        return isset($type[$method][$path]);
     }
 
     /**
@@ -430,5 +408,22 @@ class Collection implements RouteCollectionContract
         }
 
         return false;
+    }
+
+    /**
+     * Get all of type with optional by request method.
+     *
+     * @param array       $type   The type [static|dynamic]
+     * @param string|null $method [optional] The request method
+     *
+     * @return array
+     */
+    protected function allOfType(array $type, string $method = null): array
+    {
+        if ($method === null) {
+            return $type;
+        }
+
+        return $type[$method] ?? [];
     }
 }
