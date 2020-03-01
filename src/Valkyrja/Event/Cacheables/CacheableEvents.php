@@ -69,14 +69,7 @@ trait CacheableEvents
         /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
-        self::$events = unserialize(
-            base64_decode($cache->events, true),
-            [
-                'allowed_classes' => [
-                    Listener::class,
-                ],
-            ]
-        );
+        self::$events = $cache->events;
     }
 
     /**
@@ -109,7 +102,7 @@ trait CacheableEvents
         $this->setup(true, false);
 
         $config         = new CacheConfig();
-        $config->events = base64_encode(serialize(self::$events));
+        $config->events = self::$events;
 
         return $config;
     }

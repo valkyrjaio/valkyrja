@@ -25,7 +25,7 @@ class CacheConfig extends ConfigModel
     /**
      * The base64 encoded events.
      *
-     * @var string
+     * @var array
      */
-    public string $events;
+    public array $events;
 }

@@ -233,7 +233,7 @@ trait CollectionHelpers
         $routes = [];
 
         foreach ($routesArray as $route) {
-            $routes[] = \Valkyrja\Routing\Models\Route::fromArray($route);
+            $routes[] = $this->ensureRoute($route);
         }
 
         return $routes;

@@ -23,8 +23,10 @@ use Valkyrja\Event\Cacheables\CacheableEvents;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as EventsContract;
 use Valkyrja\Event\Listener;
+use Valkyrja\Event\Models\Listener as ListenerModel;
 
 use function get_class;
+use function is_array;
 
 /**
  * Class Events.
@@ -76,10 +78,10 @@ class Events implements EventsContract
         if (null !== $listener->getId()) {
             // Use it when setting to allow removal
             // or checking if it exists later
-            self::$events[$event][$listener->getId()] = $listener;
+            self::$events[$event][$listener->getId()] = $listener->asArray();
         } else {
             // Otherwise set the listener normally
-            self::$events[$event][] = $listener;
+            self::$events[$event][] = $listener->asArray();
         }
     }
 
@@ -146,7 +148,7 @@ class Events implements EventsContract
     public function getListeners(string $event): array
     {
         return $this->has($event)
-            ? self::$events[$event]
+            ? $this->ensureListeners(self::$events[$event])
             : [];
     }
 
@@ -223,9 +225,8 @@ class Events implements EventsContract
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
-            // Attempt to dispatch the event listener using any one of the
-            // callable options
-            $dispatch = $this->app->dispatcher()->dispatch($listener, $arguments);
+            // Attempt to dispatch the event listener using any one of the callable options
+            $dispatch = $this->app->dispatcher()->dispatch($this->ensureListener($listener), $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;
@@ -254,7 +255,7 @@ class Events implements EventsContract
      */
     public function all(): array
     {
-        return self::$events;
+        return $this->ensureEventListeners(self::$events);
     }
 
     /**
@@ -267,5 +268,57 @@ class Events implements EventsContract
     public function setEvents(array $events): void
     {
         self::$events = $events;
+    }
+
+    /**
+     * Ensure events are arrays of listeners.
+     *
+     * @param array $eventsArray
+     *
+     * @return array
+     */
+    protected function ensureEventListeners(array $eventsArray): array
+    {
+        $events = [];
+
+        foreach ($eventsArray as $method) {
+            $eventsArray[] = $this->ensureListeners($method);
+        }
+
+        return $events;
+    }
+
+    /**
+     * Ensure an array is an array of listeners.
+     *
+     * @param array $listenersArray The listeners array
+     *
+     * @return array
+     */
+    protected function ensureListeners(array $listenersArray): array
+    {
+        $listeners = [];
+
+        foreach ($listenersArray as $route) {
+            $listeners[] = $this->ensureListener($route);
+        }
+
+        return $listeners;
+    }
+
+    /**
+     * Ensure a listener, or null, is returned.
+     *
+     * @param Listener|array $listener The listener
+     *
+     * @return Listener
+     */
+    protected function ensureListener($listener): Listener
+    {
+        if (is_array($listener)) {
+            return ListenerModel::fromArray($listener);
+        }
+
+        return $listener;
     }
 }
