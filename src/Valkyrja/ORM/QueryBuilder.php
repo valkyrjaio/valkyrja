@@ -190,7 +190,7 @@ interface QueryBuilder
     public function orWhere(string $where): self;
 
     /**
-     * Add an order by without specifying the order to the query statement.
+     * Add an order by to the query statement.
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -199,11 +199,12 @@ interface QueryBuilder
      *          ->orderBy('column');
      * </code>.
      *
-     * @param string $column
+     * @param string      $column
+     * @param string|null $type [optional]
      *
      * @return static
      */
-    public function orderBy(string $column): self;
+    public function orderBy(string $column, string $type = null): self;
 
     /**
      * Add an order by ascending to the query statement.

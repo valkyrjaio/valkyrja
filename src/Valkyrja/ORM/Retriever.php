@@ -50,7 +50,7 @@ interface Retriever
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],
@@ -84,7 +84,7 @@ interface Retriever
      *          ->findBy(
      *              Entity::class,
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ]
@@ -116,7 +116,7 @@ interface Retriever
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],

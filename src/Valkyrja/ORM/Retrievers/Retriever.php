@@ -104,7 +104,7 @@ class Retriever implements RetrieverContract
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],
@@ -140,7 +140,7 @@ class Retriever implements RetrieverContract
      *          ->findBy(
      *              Entity::class,
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ]
@@ -174,7 +174,7 @@ class Retriever implements RetrieverContract
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],
@@ -256,7 +256,7 @@ class Retriever implements RetrieverContract
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],
@@ -325,7 +325,7 @@ class Retriever implements RetrieverContract
      *                  'column2' => 'value2',
      *              ],
      *              [
-     *                  'column'
+     *                  'column'  => null,
      *                  'column2' => OrderBy::ASC,
      *                  'column3' => OrderBy::DESC,
      *              ],
@@ -505,26 +505,7 @@ class Retriever implements RetrieverContract
     {
         // Iterate through each order by
         foreach ($orderBy as $column => $order) {
-            // Switch through the order (value) set
-            switch ($order) {
-                // If the order is ascending
-                case OrderBy::ASC:
-                    // Set the column via the orderByAsc method
-                    $query->orderByAsc($column);
-
-                    break;
-                // If the order is descending
-                case OrderBy::DESC:
-                    // Set the column via the orderByDesc method
-                    $query->orderByDesc($column);
-
-                    break;
-                default:
-                    // Otherwise set the order (which is the column)
-                    $query->orderBy($order);
-
-                    break;
-            }
+            $query->orderBy($column, $order);
         }
     }
 

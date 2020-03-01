@@ -357,11 +357,12 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->orderBy('column');
      * </code>.
      *
-     * @param string $column
+     * @param string      $column
+     * @param string|null $type [optional]
      *
      * @return static
      */
-    public function orderBy(string $column): QueryBuilder
+    public function orderBy(string $column, string $type = null): QueryBuilder
     {
         $this->setOrderBy($column);
 
