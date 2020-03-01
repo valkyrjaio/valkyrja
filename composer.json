@@ -41,9 +41,7 @@
             "Valkyrja\\" : "src/Valkyrja"
         },
         "files" : [
-            "functions/helpers.php",
-            "functions/path-helpers.php",
-            "functions/routing-helpers.php"
+            "functions/helpers.php"
         ]
     },
     "autoload-dev"      : {
