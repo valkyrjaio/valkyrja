@@ -79,35 +79,17 @@ class Collection implements RouteCollectionContract
      */
     public function add(Route $route): void
     {
-        if (! $route->getPath()) {
-            throw new InvalidArgumentException('Invalid path defined in route.');
-        }
-
+        // Verify the route
+        $this->verifyRoute($route);
         // Verify the dispatch
         app()->dispatcher()->verifyDispatch($route);
 
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->matcher->trimPath($route->getPath()));
-
-        foreach ($route->getMethods() as $requestMethod) {
-            // If this is a dynamic route
-            if ($route->isDynamic()) {
-                // Set the dynamic route's properties through the path parser
-                $this->parseDynamicRoute($route);
-                // Set the route in the dynamic routes list
-                $this->dynamic[$requestMethod][$route->getRegex()] = $route;
-            } // Otherwise set it in the static routes array
-            else {
-                // Set the route in the static routes list
-                $this->static[$requestMethod][$route->getPath()] = $route;
-            }
-        }
-
-        // If this route has a name set
-        if ($route->getName()) {
-            // Set the route in the named routes list
-            $this->named[$route->getName()] = $route;
-        }
+        // Set the route to its request methods
+        $this->setRouteToRequestMethods($route);
+        // Set the route to the named
+        $this->setRouteToNamed($route);
 
         $this->routes[] = $route;
     }
@@ -331,6 +313,73 @@ class Collection implements RouteCollectionContract
     }
 
     /**
+     * Verify a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function verifyRoute(Route $route): void
+    {
+        if (! $route->getPath()) {
+            throw new InvalidArgumentException('Invalid path defined in route.');
+        }
+    }
+
+    /**
+     * Set a route to its request methods.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function setRouteToRequestMethods(Route $route): void
+    {
+        foreach ($route->getMethods() as $requestMethod) {
+            $this->setRouteToRequestMethod($route, $requestMethod);
+        }
+    }
+
+    /**
+     * Set the route to the request method.
+     *
+     * @param Route  $route         The route
+     * @param string $requestMethod The request method
+     *
+     * @return void
+     */
+    protected function setRouteToRequestMethod(Route $route, string $requestMethod): void
+    {
+        // If this is a dynamic route
+        if ($route->isDynamic()) {
+            // Set the dynamic route's properties through the path parser
+            $this->parseDynamicRoute($route);
+            // Set the route in the dynamic routes list
+            $this->dynamic[$requestMethod][$route->getRegex()] = $route;
+        } // Otherwise set it in the static routes array
+        else {
+            // Set the route in the static routes list
+            $this->static[$requestMethod][$route->getPath()] = $route;
+        }
+    }
+
+    /**
+     * Set the route to the named.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function setRouteToNamed(Route $route): void
+    {
+        // If this route has a name set
+        if ($route->getName()) {
+            // Set the route in the named routes list
+            $this->named[$route->getName()] = $route;
+        }
+    }
+
+    /**
      * Parse a dynamic route and set its properties.
      *
      * @param Route $route The route
@@ -339,9 +388,7 @@ class Collection implements RouteCollectionContract
      */
     protected function parseDynamicRoute(Route $route): void
     {
-        if (! $route->getPath()) {
-            throw new InvalidArgumentException('Invalid path defined in route.');
-        }
+        $this->verifyRoute($route);
 
         // Parse the path
         $parsedRoute = app()->pathParser()->parse($route->getPath());
