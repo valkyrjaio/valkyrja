@@ -20,7 +20,6 @@ use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
