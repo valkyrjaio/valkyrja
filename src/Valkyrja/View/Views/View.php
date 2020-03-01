@@ -127,9 +127,9 @@ class View implements ViewContract
      *
      * @param Application $app The application
      *
-     * @return void
      * @throws InvalidConfigPath
      *
+     * @return void
      */
     public static function publish(Application $app): void
     {
@@ -142,9 +142,9 @@ class View implements ViewContract
      * @param string|null $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
      *
-     * @return static
      * @throws InvalidConfigPath
      *
+     * @return static
      */
     public function make(string $template = null, array $variables = []): self
     {
@@ -290,9 +290,9 @@ class View implements ViewContract
      *
      * @param string $template The template
      *
-     * @return static
      * @throws InvalidConfigPath
      *
+     * @return static
      */
     public function setTemplate(string $template): self
     {
@@ -307,9 +307,9 @@ class View implements ViewContract
      *
      * @param string $template The template
      *
-     * @return string
      * @throws InvalidConfigPath
      *
+     * @return string
      */
     public function getFullPath(string $template): string
     {

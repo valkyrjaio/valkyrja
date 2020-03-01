@@ -176,9 +176,9 @@ class PHPEngine implements PHPEngineContract
      *
      * @param string $layout [optional] The layout to set
      *
-     * @return static
      * @throws InvalidConfigPath
      *
+     * @return static
      */
     public function setLayout(string $layout = null): self
     {
@@ -219,9 +219,9 @@ class PHPEngine implements PHPEngineContract
      * @param string $partial   The partial
      * @param array  $variables [optional]
      *
-     * @return string
      * @throws InvalidConfigPath
      *
+     * @return string
      */
     public function getPartial(string $partial, array $variables = []): string
     {
