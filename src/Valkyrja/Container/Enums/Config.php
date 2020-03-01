@@ -48,6 +48,7 @@ final class Config extends Enum
         Provider::ENTITY_MANAGER,
         Provider::PATH_GENERATOR,
         Provider::PATH_PARSER,
+        Provider::REFLECTOR,
         Provider::ROUTER,
         Provider::ROUTE_ANNOTATOR,
         Provider::SESSION,

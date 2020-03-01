@@ -40,6 +40,7 @@ use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
@@ -317,6 +318,13 @@ interface Application
      * @return PathParser
      */
     public function pathParser(): PathParser;
+
+    /**
+     * Return the reflector instance from the container.
+     *
+     * @return Reflector
+     */
+    public function reflector(): Reflector;
 
     /**
      * Return the request instance from the container.

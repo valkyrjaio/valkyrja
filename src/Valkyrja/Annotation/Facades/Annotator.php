@@ -54,6 +54,6 @@ class Annotator extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->annotator();
+        return annotator();
     }
 }

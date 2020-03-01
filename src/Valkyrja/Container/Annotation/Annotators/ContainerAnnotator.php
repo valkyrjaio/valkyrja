@@ -77,7 +77,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     {
         $app->container()->setSingleton(
             ContainerAnnotatorContract::class,
-            new static($app)
+            new static($app, $app->reflector())
         );
     }
 
@@ -116,7 +116,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
      *
      * @throws ReflectionException
      *
-     * @return \Valkyrja\Container\Annotation\Service\Context[]
+     * @return Context[]
      */
     public function getContextServices(string ...$classes): array
     {
@@ -126,7 +126,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     /**
      * Get all annotations for a class and its members by type.
      *
-     * @param string $type       The type
+     * @param string $type The type
      * @param string ...$classes The classes
      *
      * @throws ReflectionException
@@ -180,12 +180,13 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     protected function setServiceProperties(Annotation $annotation): void
     {
         if (null === $annotation->getProperty() && $annotation->getClass() !== null) {
-            $parameters =
-                $this->getMethodReflection($annotation->getClass(), $annotation->getMethod() ?? '__construct')
-                     ->getParameters();
+            $reflection = $this->reflector->getMethodReflection(
+                $annotation->getClass(),
+                $annotation->getMethod() ?? '__construct'
+            );
 
             // Set the dependencies
-            $annotation->setDependencies($this->getDependencies(...$parameters));
+            $annotation->setDependencies($this->reflector->getDependencies($reflection));
         }
 
         $annotation->setMatches();
@@ -206,7 +207,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     /**
      * Get a service context from a service context annotation.
      *
-     * @param \Valkyrja\Container\Annotation\Service\Context $service The service context annotation
+     * @param Context $service The service context annotation
      *
      * @return ContextServiceContract
      */

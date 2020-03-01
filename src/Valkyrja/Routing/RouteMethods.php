@@ -33,13 +33,14 @@ interface RouteMethods
      *      get('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function get(string $path, $handler, string $name = null): Route;
+    public function get(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a POST route.
@@ -52,13 +53,14 @@ interface RouteMethods
      *      post('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function post(string $path, $handler, string $name = null): Route;
+    public function post(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PUT route.
@@ -71,13 +73,14 @@ interface RouteMethods
      *      put('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function put(string $path, $handler, string $name = null): Route;
+    public function put(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a PATCH route.
@@ -90,13 +93,14 @@ interface RouteMethods
      *      patch('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function patch(string $path, $handler, string $name = null): Route;
+    public function patch(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a DELETE route.
@@ -109,13 +113,14 @@ interface RouteMethods
      *      delete('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function delete(string $path, $handler, string $name = null): Route;
+    public function delete(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set a HEAD route.
@@ -128,13 +133,14 @@ interface RouteMethods
      *      head('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function head(string $path, $handler, string $name = null): Route;
+    public function head(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.
@@ -147,13 +153,14 @@ interface RouteMethods
      *      any('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @return Route
      */
-    public function any(string $path, $handler, string $name = null): Route;
+    public function any(string $path, $handler, string $name = null, bool $setDependencies = false): Route;
 
     /**
      * Helper method to set any request method route.

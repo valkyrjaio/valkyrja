@@ -13,12 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Annotators;
 
-use ReflectionClass;
 use ReflectionException;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionParameter;
-use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as AnnotationsContract;
 use Valkyrja\Annotation\Enums\Property;
@@ -27,6 +22,7 @@ use Valkyrja\Annotation\Filters\Filter as AnnotationsFilter;
 use Valkyrja\Annotation\Parser;
 use Valkyrja\Annotation\Parsers\Parser as AnnotationsParser;
 use Valkyrja\Application\Application;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Support\Providers\Provides;
 
 /**
@@ -79,14 +75,23 @@ class Annotator implements AnnotationsContract
     protected Parser $parser;
 
     /**
+     * The reflector.
+     *
+     * @var Reflector
+     */
+    protected Reflector $reflector;
+
+    /**
      * Annotations constructor.
      *
      * @param Application $app
+     * @param Reflector   $reflector
      */
-    public function __construct(Application $app)
+    public function __construct(Application $app, Reflector $reflector)
     {
-        $this->filter = new AnnotationsFilter($this);
-        $this->parser = new AnnotationsParser($app);
+        $this->reflector = $reflector;
+        $this->filter    = new AnnotationsFilter($this);
+        $this->parser    = new AnnotationsParser($app);
     }
 
     /**
@@ -112,7 +117,7 @@ class Annotator implements AnnotationsContract
     {
         $app->container()->setSingleton(
             AnnotationsContract::class,
-            new static($app)
+            new static($app, $app->reflector())
         );
     }
 
@@ -178,7 +183,7 @@ class Annotator implements AnnotationsContract
                 [
                     Property::CLASS_NAME => $class,
                 ],
-                ...$this->parser->getAnnotations((string) $this->getClassReflection($class)->getDocComment())
+                ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
             );
     }
 
@@ -235,7 +240,7 @@ class Annotator implements AnnotationsContract
     public function propertyAnnotations(string $class, string $property): array
     {
         $index      = static::PROPERTY_CACHE . $class . $property;
-        $reflection = $this->getPropertyReflection($class, $property);
+        $reflection = $this->reflector->getPropertyReflection($class, $property);
 
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
@@ -269,7 +274,7 @@ class Annotator implements AnnotationsContract
 
         // Get the class's reflection
         // Iterate through the properties
-        foreach ($this->getClassReflection($class)->getProperties() as $property) {
+        foreach ($this->reflector->getClassReflection($class)->getProperties() as $property) {
             $index = static::METHOD_CACHE . $class . $property->getName();
             // Set the property's reflection class in the cache
             self::$reflections[$index] = $property;
@@ -297,7 +302,7 @@ class Annotator implements AnnotationsContract
     public function methodAnnotations(string $class, string $method): array
     {
         $index      = static::METHOD_CACHE . $class . $method;
-        $reflection = $this->getMethodReflection($class, $method);
+        $reflection = $this->reflector->getMethodReflection($class, $method);
 
         return self::$annotations[$index]
             ?? self::$annotations[$index] = $this->setAnnotationValues(
@@ -331,7 +336,7 @@ class Annotator implements AnnotationsContract
 
         // Get the class's reflection
         // Iterate through the methods
-        foreach ($this->getClassReflection($class)->getMethods() as $method) {
+        foreach ($this->reflector->getClassReflection($class)->getMethods() as $method) {
             $index = static::METHOD_CACHE . $class . $method->getName();
             // Set the method's reflection class in the cache
             self::$reflections[$index] = $method;
@@ -364,78 +369,10 @@ class Annotator implements AnnotationsContract
                 [
                     Property::FUNCTION => $function,
                 ],
-                ...$this->parser->getAnnotations((string) $this->getFunctionReflection($function)->getDocComment())
+                ...$this->parser->getAnnotations(
+                (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+            )
             );
-    }
-
-    /**
-     * Get a class's reflection.
-     *
-     * @param string $class The class
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionClass
-     */
-    public function getClassReflection(string $class): ReflectionClass
-    {
-        $index = static::CLASS_CACHE . $class;
-
-        return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionClass($class);
-    }
-
-    /**
-     * Get a property's reflection.
-     *
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionProperty
-     */
-    public function getPropertyReflection(string $class, string $property): ReflectionProperty
-    {
-        $index = static::PROPERTY_CACHE . $class . $property;
-
-        return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionProperty($class, $property);
-    }
-
-    /**
-     * Get a method's reflection.
-     *
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionMethod
-     */
-    public function getMethodReflection(string $class, string $method): ReflectionMethod
-    {
-        $index = static::METHOD_CACHE . $class . $method;
-
-        return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionMethod($class, $method);
-    }
-
-    /**
-     * get a function's reflection.
-     *
-     * @param string $function The function
-     *
-     * @throws ReflectionException
-     *
-     * @return ReflectionFunction
-     */
-    public function getFunctionReflection(string $function): ReflectionFunction
-    {
-        $index = static::FUNCTION_CACHE . $function;
-
-        return self::$reflections[$index]
-            ?? self::$reflections[$index] = new ReflectionFunction($function);
     }
 
     /**
@@ -457,29 +394,5 @@ class Annotator implements AnnotationsContract
         }
 
         return $annotations;
-    }
-
-    /**
-     * Get dependencies from parameters.
-     *
-     * @param ReflectionParameter[] $parameters The parameters
-     *
-     * @return string[]
-     */
-    protected function getDependencies(ReflectionParameter ...$parameters): array
-    {
-        // Setup to find any injectable objects through the service container
-        $dependencies = [];
-
-        // Iterate through the method's parameters
-        foreach ($parameters as $parameter) {
-            // We only care for classes
-            if ($parameter->getClass()) {
-                // Set the injectable in the array
-                $dependencies[] = $parameter->getClass()->getName();
-            }
-        }
-
-        return $dependencies;
     }
 }

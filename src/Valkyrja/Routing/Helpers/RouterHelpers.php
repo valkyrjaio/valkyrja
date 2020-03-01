@@ -46,23 +46,10 @@ trait RouterHelpers
      *
      * @param Route $route The route
      *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidArgumentException
-     *
      * @return void
      */
     public function addRoute(Route $route): void
     {
-        $this->setPathInRoute($route);
-        $this->setControllerInRoute($route);
-        $this->setNameInRoute($route);
-        $this->setMiddlewareInRoute($route);
-        $this->setSecureInRoute($route);
-
         // Set the route in the collection
         self::$collection->add($route);
     }
@@ -267,49 +254,4 @@ trait RouterHelpers
 
         return $path;
     }
-
-    /**
-     * Set a controller context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setPathInRoute(Route $route): void;
-
-    /**
-     * Set a controller context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setControllerInRoute(Route $route): void;
-
-    /**
-     * Set a controller context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setNameInRoute(Route $route): void;
-
-    /**
-     * Set a controller context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setMiddlewareInRoute(Route $route): void;
-
-    /**
-     * Set a secure context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setSecureInRoute(Route $route): void;
 }

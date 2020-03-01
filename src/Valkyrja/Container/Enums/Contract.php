@@ -52,6 +52,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
@@ -88,6 +89,7 @@ final class Contract extends Enum
     public const JSON_RESPONSE       = JsonResponse::class;
     public const REDIRECT_RESPONSE   = RedirectResponse::class;
     public const RESPONSE_FACTORY    = ResponseFactory::class;
+    public const REFLECTOR           = Reflector::class;
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RouteAnnotator::class;
     public const SESSION             = Session::class;

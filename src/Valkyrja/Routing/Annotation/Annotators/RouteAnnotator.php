@@ -54,7 +54,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
     {
         $app->container()->setSingleton(
             RouteAnnotatorContract::class,
-            new static($app)
+            new static($app, $app->reflector())
         );
     }
 
@@ -150,13 +150,13 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
         }
 
         if (null === $route->getProperty()) {
-            $methodReflection = $this->getMethodReflection(
+            $methodReflection = $this->reflector->getMethodReflection(
                 $route->getClass(),
                 $route->getMethod() ?? '__construct'
             );
 
             // Set the dependencies
-            $route->setDependencies($this->getDependencies(...$methodReflection->getParameters()));
+            $route->setDependencies($this->reflector->getDependencies($methodReflection));
         }
 
         // Avoid having large arrays in cached routes file
@@ -182,7 +182,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     protected function getClassAnnotations(string $class): array
     {
-        return $this->getFilter()->filterAnnotationsByTypes(
+        return $this->filter->filterAnnotationsByTypes(
             Annotation::getValidValues(),
             ...$this->classAnnotations($class)
         );

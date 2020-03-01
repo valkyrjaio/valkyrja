@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation;
 
-use ReflectionClass;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionProperty;
-
 /**
  * Interface Annotator.
  *
@@ -130,42 +125,4 @@ interface Annotator
      * @return Annotation[]
      */
     public function functionAnnotations(string $function): array;
-
-    /**
-     * Get a class's reflection.
-     *
-     * @param string $class The class
-     *
-     * @return ReflectionClass
-     */
-    public function getClassReflection(string $class): ReflectionClass;
-
-    /**
-     * Get a property's reflection.
-     *
-     * @param string $class    The class
-     * @param string $property The property
-     *
-     * @return ReflectionProperty
-     */
-    public function getPropertyReflection(string $class, string $property): ReflectionProperty;
-
-    /**
-     * Get a method's reflection.
-     *
-     * @param string $class  The class
-     * @param string $method The method
-     *
-     * @return ReflectionMethod
-     */
-    public function getMethodReflection(string $class, string $method): ReflectionMethod;
-
-    /**
-     * get a function's reflection.
-     *
-     * @param string $function The function
-     *
-     * @return ReflectionFunction
-     */
-    public function getFunctionReflection(string $function): ReflectionFunction;
 }

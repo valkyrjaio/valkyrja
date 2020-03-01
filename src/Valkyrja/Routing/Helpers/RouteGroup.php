@@ -139,6 +139,22 @@ trait RouteGroup
     }
 
     /**
+     * Set group context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function setGroupContextInRoute(Route $route): void
+    {
+        $this->setPathInRoute($route);
+        $this->setControllerInRoute($route);
+        $this->setNameInRoute($route);
+        $this->setMiddlewareInRoute($route);
+        $this->setSecureInRoute($route);
+    }
+
+    /**
      * Set a controller context in a route.
      *
      * @param Route $route The route

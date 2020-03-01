@@ -16,6 +16,7 @@ namespace Valkyrja\Routing\Helpers;
 use Closure;
 use InvalidArgumentException;
 use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
 
@@ -53,17 +54,18 @@ trait RouteMethods
      *      get('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function get(string $path, $handler, string $name = null): Route
+    public function get(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::GET]);
 
@@ -81,17 +83,18 @@ trait RouteMethods
      *      post('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function post(string $path, $handler, string $name = null): Route
+    public function post(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::POST]);
 
@@ -109,17 +112,18 @@ trait RouteMethods
      *      put('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function put(string $path, $handler, string $name = null): Route
+    public function put(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::PUT]);
 
@@ -137,17 +141,18 @@ trait RouteMethods
      *      patch('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function patch(string $path, $handler, string $name = null): Route
+    public function patch(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::PATCH]);
 
@@ -165,17 +170,18 @@ trait RouteMethods
      *      delete('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function delete(string $path, $handler, string $name = null): Route
+    public function delete(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::DELETE]);
 
@@ -193,17 +199,18 @@ trait RouteMethods
      *      head('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function head(string $path, $handler, string $name = null): Route
+    public function head(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods([RequestMethod::HEAD]);
 
@@ -221,17 +228,18 @@ trait RouteMethods
      *      any('/', Closure)
      * </code>
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    public function any(string $path, $handler, string $name = null): Route
+    public function any(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        $route = $this->getRouteForHelper($path, $handler, $name);
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
 
         $route->setMethods(RequestMethod::ANY);
 
@@ -274,22 +282,33 @@ trait RouteMethods
     /**
      * Get a route for a helper method.
      *
-     * @param string         $path    The path
-     * @param string|Closure $handler The handler
-     * @param string|null    $name    [optional] The name of the route
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
      *
      * @throws InvalidArgumentException
      *
      * @return Route
      */
-    protected function getRouteForHelper(string $path, $handler, string $name = null): Route
-    {
+    protected function getRouteForHelper(
+        string $path,
+        $handler,
+        string $name = null,
+        bool $setDependencies = true
+    ): Route {
         $route = new RouteModel();
 
         $route->setPath($path);
         $route->setName($name);
 
         $this->setRouteHandler($route, $handler);
+        $this->setGroupContextInRoute($route);
+
+        if ($setDependencies) {
+            $this->setDependencies($route);
+        }
+
         $this->addRoute($route);
 
         return $route;
@@ -421,4 +440,52 @@ trait RouteMethods
 
         $route->setProperty($member);
     }
+
+    /**
+     * Set a route's dependencies.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function setDependencies(Route $route): void
+    {
+        if (null !== $route->getDependencies()) {
+            return;
+        }
+
+        $route->setDependencies($this->getDependencies($route));
+    }
+
+    /**
+     * Get a route's dependencies.
+     *
+     * @param Route $route The route
+     *
+     * @return array
+     */
+    protected function getDependencies(Route $route): array
+    {
+        $reflection   = null;
+        $dependencies = [];
+
+        if (($class = $route->getClass()) && ($method = $route->getMethod())) {
+            $dependencies = Reflector::getDependencies(Reflector::getMethodReflection($class, $method));
+        } elseif ($function = $route->getFunction()) {
+            $dependencies = Reflector::getDependencies(Reflector::getFunctionReflection($function));
+        } elseif ($closure = $route->getClosure()) {
+            $dependencies = Reflector::getDependencies(Reflector::getClosureReflection($closure));
+        }
+
+        return $dependencies;
+    }
+
+    /**
+     * Set group context in a route.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    abstract protected function setGroupContextInRoute(Route $route): void;
 }

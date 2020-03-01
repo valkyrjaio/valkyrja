@@ -48,6 +48,7 @@ use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\EntityManagers\EntityManager;
 use Valkyrja\Path\Generators\PathGenerator;
 use Valkyrja\Path\Parsers\PathParser;
+use Valkyrja\Reflection\Reflectors\Reflector;
 use Valkyrja\Routing\Annotation\Annotators\RouteAnnotator;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Session\Sessions\Session;
@@ -83,6 +84,7 @@ final class Provider extends Enum
     public const JSON_RESPONSE       = JsonResponse::class;
     public const REDIRECT_RESPONSE   = RedirectResponse::class;
     public const RESPONSE_BUILDER    = ResponseFactory::class;
+    public const REFLECTOR           = Reflector::class;
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RouteAnnotator::class;
     public const SESSION             = Session::class;

@@ -300,6 +300,18 @@ if (! function_exists('output')) {
     }
 }
 
+if (! function_exists('reflector')) {
+    /**
+     * Get reflector.
+     *
+     * @return \Valkyrja\Reflection\Reflector
+     */
+    function reflector(): \Valkyrja\Reflection\Reflector
+    {
+        return container()->get(Contract::REFLECTOR);
+    }
+}
+
 if (! function_exists('session')) {
     /**
      * Return the session.

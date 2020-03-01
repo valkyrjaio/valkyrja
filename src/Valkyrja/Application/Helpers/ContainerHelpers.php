@@ -33,6 +33,7 @@ use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
@@ -176,6 +177,16 @@ trait ContainerHelpers
     public function pathParser(): PathParser
     {
         return self::$container->getSingleton(Contract::PATH_PARSER);
+    }
+
+    /**
+     * Return the reflector instance from the container.
+     *
+     * @return Reflector
+     */
+    public function reflector(): Reflector
+    {
+        return self::$container->getSingleton(Contract::REFLECTOR);
     }
 
     /**

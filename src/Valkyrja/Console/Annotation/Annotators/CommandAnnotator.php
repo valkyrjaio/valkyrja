@@ -52,7 +52,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
     {
         $app->container()->setSingleton(
             CommandAnnotatorContract::class,
-            new static($app)
+            new static($app, $app->reflector())
         );
     }
 
@@ -73,7 +73,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->getFilter()->classAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->filter->classAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -81,7 +81,7 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
 
             // Get all the annotations for each class and iterate through them
             /** @var Command $annotation */
-            foreach ($this->getFilter()->methodsAnnotationsByType('Command', $class) as $annotation) {
+            foreach ($this->filter->methodsAnnotationsByType('Command', $class) as $annotation) {
                 $this->setCommandProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getCommandFromAnnotation($annotation);
@@ -106,17 +106,16 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
             return;
         }
 
-        $classReflection = $this->getClassReflection($annotation->getClass());
+        $classReflection = $this->reflector->getClassReflection($annotation->getClass());
 
         if ($annotation->getMethod() || $classReflection->hasMethod('__construct')) {
-            $methodReflection = $this->getMethodReflection(
+            $methodReflection = $this->reflector->getMethodReflection(
                 $annotation->getClass(),
                 $annotation->getMethod() ?? '__construct'
             );
-            $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $annotation->setDependencies($this->getDependencies(...$parameters));
+            $annotation->setDependencies($this->reflector->getDependencies($methodReflection));
         }
 
         $annotation->setMatches();

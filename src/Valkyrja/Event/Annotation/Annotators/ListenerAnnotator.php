@@ -52,7 +52,7 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
     {
         $app->container()->setSingleton(
             ListenerAnnotatorContract::class,
-            new static($app)
+            new static($app, $app->reflector())
         );
     }
 
@@ -98,17 +98,16 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
             throw new InvalidArgumentException('Invalid class defined in listener.');
         }
 
-        $classReflection = $this->getClassReflection($listener->getClass());
+        $classReflection = $this->reflector->getClassReflection($listener->getClass());
 
         if ($listener->getMethod() || $classReflection->hasMethod('__construct')) {
-            $methodReflection = $this->getMethodReflection(
+            $methodReflection = $this->reflector->getMethodReflection(
                 $listener->getClass(),
                 $listener->getMethod() ?? '__construct'
             );
-            $parameters       = $methodReflection->getParameters();
 
             // Set the dependencies
-            $listener->setDependencies($this->getDependencies(...$parameters));
+            $listener->setDependencies($this->reflector->getDependencies($methodReflection));
         }
 
         $listener->setMatches();
