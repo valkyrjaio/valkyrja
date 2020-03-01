@@ -22,7 +22,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
 use Valkyrja\Support\ClassHelpers;
 
-use function count;
+use function array_keys;
 use function is_array;
 use function is_int;
 use function is_string;
@@ -477,7 +477,7 @@ class Retriever implements RetrieverContract
 
             // If the criterion is an array
             if (is_array($criterion)) {
-                $this->setArrayCriterionInQuery($query, $column, $criterion);
+                $this->setArrayCriterionInQuery($query, $column, array_keys($criterion));
 
                 continue;
             }
@@ -574,24 +574,14 @@ class Retriever implements RetrieverContract
      *
      * @param QueryBuilder $query
      * @param string       $column
-     * @param array        $criterion
+     * @param array        $indexes
      *
      * @return void
      */
-    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $criterion): void
+    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $indexes): void
     {
-        $criterionConcat = '';
-        $lastIndex       = count($criterion) - 1;
-
-        // Iterate through the criterion and set each item individually to be bound later
-        foreach ($criterion as $index => $criterionItem) {
-            $criterionConcat .= $this->columnParam($column . $index);
-
-            // If this is not the last index, add a comma
-            if ($index < $lastIndex) {
-                $criterionConcat .= ',';
-            }
-        }
+        // Implode the criterion. Prepend with : to account for
+        $criterionConcat = ':' . implode(', :', $indexes);
 
         // Set the where statement as an in
         $query->where($column . ' IN (' . $criterionConcat . ')');
