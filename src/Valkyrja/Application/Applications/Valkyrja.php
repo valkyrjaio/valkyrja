@@ -15,7 +15,7 @@ namespace Valkyrja\Application\Applications;
 
 use stdClass;
 use Valkyrja\Application\Application;
-use Valkyrja\Application\Helpers\ContainerHelpers;
+use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
@@ -25,10 +25,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Response;
 use Valkyrja\Support\Directory;
 
 use function constant;
@@ -45,7 +41,7 @@ use const E_ALL;
  */
 class Valkyrja implements Application
 {
-    use ContainerHelpers;
+    use ApplicationHelpersTrait;
 
     /**
      * Get the instance of the application.
@@ -149,16 +145,6 @@ class Valkyrja implements Application
 
         // Bootstrap debug capabilities
         $this->bootstrapConfig($config);
-        // Bootstrap debug capabilities
-        $this->bootstrapExceptionHandler();
-        // Bootstrap core functionality
-        $this->bootstrapCore();
-        // Bootstrap the container
-        $this->bootstrapContainer();
-        // Bootstrap setup
-        $this->bootstrapSetup();
-        // Bootstrap the timezone
-        $this->bootstrapTimezone();
     }
 
     /**
@@ -172,6 +158,8 @@ class Valkyrja implements Application
     {
         self::$config = $config;
 
+        // Publish config providers
+        $this->publishConfigProviders();
         // Bootstrap debug capabilities
         $this->bootstrapExceptionHandler();
         // Bootstrap core functionality
@@ -184,16 +172,6 @@ class Valkyrja implements Application
         $this->bootstrapTimezone();
 
         return $this;
-    }
-
-    /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string
-    {
-        return static::VERSION;
     }
 
     /**
@@ -243,12 +221,9 @@ class Valkyrja implements Application
         }
 
         // If the env has this variable defined and the variable isn't null
-        if (
-            defined(static::getEnv() . '::' . $key)
-            && null !== $env = constant(static::getEnv() . '::' . $key)
-        ) {
+        if (defined(static::getEnv() . '::' . $key)) {
             // Return the variable
-            return $env;
+            return constant(static::getEnv() . '::' . $key) ?? $default;
         }
 
         // Otherwise return the default
@@ -370,72 +345,6 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the environment with which the application is running in.
-     *
-     * @return string
-     */
-    public function environment(): string
-    {
-        return self::$config->app->env;
-    }
-
-    /**
-     * Whether the application is running in debug mode or not.
-     *
-     * @return bool
-     */
-    public function debug(): bool
-    {
-        return self::$config->app->debug;
-    }
-
-    /**
-     * Abort the application due to error.
-     *
-     * @param int      $statusCode The status code to use
-     * @param string   $message    [optional] The Exception message to throw
-     * @param array    $headers    [optional] The headers to send
-     * @param int      $code       [optional] The Exception code
-     * @param Response $response   [optional] The Response to send
-     *
-     * @throws HttpException
-     *
-     * @return void
-     */
-    public function abort(
-        int $statusCode = StatusCode::NOT_FOUND,
-        string $message = '',
-        array $headers = [],
-        int $code = 0,
-        Response $response = null
-    ): void {
-        throw new self::$config->app->httpException(
-            $statusCode,
-            $message,
-            null,
-            $headers,
-            $code,
-            $response
-        );
-    }
-
-    /**
-     * Redirect to a given uri, and abort the application.
-     *
-     * @param string $uri        [optional] The URI to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
-     *
-     * @throws HttpRedirectException
-     *
-     * @return void
-     */
-    public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void
-    {
-        throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
-    }
-
-    /**
      * Bootstrap the config.
      *
      * @param string|null $config [optional] The config class to use
@@ -443,6 +352,29 @@ class Valkyrja implements Application
      * @return void
      */
     protected function bootstrapConfig(string $config = null): void
+    {
+        // Get the cache file
+        $cacheFilePath = $this->getCacheFilePath();
+
+        // If we should use the config cache file
+        if (is_file($cacheFilePath)) {
+            // Get the config from the cache file's contents
+            $this->setupFromCacheFile($cacheFilePath);
+
+            return;
+        }
+
+        $config ??= self::env(EnvKey::CONFIG_CLASS, Config::class);
+
+        $this->withConfig(new $config());
+    }
+
+    /**
+     * Get cache file path.
+     *
+     * @return string
+     */
+    protected function getCacheFilePath(): string
     {
         $envCacheFile  = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
         $cacheFilePath = Directory::cachePath('config.php');
@@ -453,19 +385,7 @@ class Valkyrja implements Application
             $cacheFilePath    = is_file($envCacheFilePath) ? $envCacheFilePath : $cacheFilePath;
         }
 
-        // If we should use the config cache file
-        if (is_file($cacheFilePath)) {
-            // Get the config from the cache file's contents
-            $this->setupFromCacheFile($cacheFilePath);
-
-            return;
-        }
-
-        $config ??= $config ?? self::env(EnvKey::CONFIG_CLASS, Config::class);
-
-        self::$config = new $config();
-
-        $this->publishConfigProviders();
+        return $cacheFilePath;
     }
 
     /**
