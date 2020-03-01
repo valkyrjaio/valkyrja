@@ -112,7 +112,9 @@ class Kernel implements KernelContract
         }
 
         // Dispatch the after request handled middleware and return the response
-        $this->responseMiddleware($request, $response);
+        $response = $this->responseMiddleware($request, $response);
+        // Set the returned response in the container
+        $this->app->container()->setSingleton(Response::class, $response);
 
         // Trigger an event for kernel handled
         $this->app->events()->trigger(HttpKernelHandled::class, [$request, $response]);
@@ -203,9 +205,8 @@ class Kernel implements KernelContract
         // Dispatch the before request handled middleware
         $request = $this->requestMiddleware($request);
 
-        if ($request instanceof Response) {
-            return $request;
-        }
+        // Set the returned request in the container
+        $this->app->container()->setSingleton(Request::class, $request);
 
         return $this->router->dispatch($request);
     }
@@ -226,15 +227,5 @@ class Kernel implements KernelContract
         }
 
         return $this->app->exceptionHandler()->response($exception);
-    }
-
-    /**
-     * Get the application.
-     *
-     * @return Application
-     */
-    protected function getApplication(): Application
-    {
-        return $this->app;
     }
 }

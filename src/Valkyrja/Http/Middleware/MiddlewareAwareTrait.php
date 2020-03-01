@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Middleware;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Http\Middleware as MiddlewareContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -74,12 +73,9 @@ trait MiddlewareAwareTrait
     public function requestMiddleware(Request $request, array $middleware = null)
     {
         // Set the middleware to any middleware passed or the base middleware
-        $middleware = $middleware ?? self::$middleware;
+        $middleware = $middleware ?? static::$middleware;
 
         $modifiedRequest = $request;
-
-        // Get the application
-        $app = $this->getApplication();
 
         // Iterate through the middleware
         foreach ($middleware as $item) {
@@ -95,11 +91,8 @@ trait MiddlewareAwareTrait
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
-                return $modifiedRequest;
+                abortResponse($modifiedRequest);
             }
-
-            // Set the returned request in the container
-            $app->container()->setSingleton(Request::class, $modifiedRequest);
         }
 
         return $modifiedRequest;
@@ -117,10 +110,7 @@ trait MiddlewareAwareTrait
     public function responseMiddleware(Request $request, Response $response, array $middleware = null)
     {
         // Set the middleware to any middleware passed or the base middleware
-        $middleware = $middleware ?? self::$middleware;
-
-        // Get the application
-        $app = $this->getApplication();
+        $middleware = $middleware ?? static::$middleware;
 
         // Iterate through the middleware
         foreach ($middleware as $item) {
@@ -134,9 +124,6 @@ trait MiddlewareAwareTrait
 
             /* @var MiddlewareContract $item */
             $response = $item::after($request, $response);
-
-            // Set the returned response in the container
-            $app->container()->setSingleton(Response::class, $response);
         }
 
         return $response;
@@ -154,7 +141,7 @@ trait MiddlewareAwareTrait
     public function terminableMiddleware(Request $request, Response $response, array $middleware = null): void
     {
         // Set the middleware to any middleware passed or the base middleware
-        $middleware = $middleware ?? self::$middleware;
+        $middleware = $middleware ?? static::$middleware;
 
         // Iterate through the middleware
         foreach ($middleware as $item) {
@@ -170,11 +157,4 @@ trait MiddlewareAwareTrait
             $item::terminate($request, $response);
         }
     }
-
-    /**
-     * Get the application.
-     *
-     * @return Application
-     */
-    abstract protected function getApplication(): Application;
 }
