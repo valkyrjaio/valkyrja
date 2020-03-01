@@ -17,17 +17,19 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Models\ConfigModel;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Cacheables\CacheableRouter;
+use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Collections\Collection as CollectionClass;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Helpers\RouteGroup;
 use Valkyrja\Routing\Helpers\RouteMethods;
-use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
+use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
+use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as RouterContract;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
@@ -42,19 +44,23 @@ use function strlen;
  */
 class Router implements RouterContract
 {
-    use CacheableRouter;
     use Provides;
     use RouteGroup;
     use RouteMethods;
 
+    protected Application       $app;
+    protected static Collection $collection;
+
     /**
      * Router constructor.
      *
-     * @param Application $application The application
+     * @param Application     $application The application
+     * @param Collection|null $collection
      */
-    public function __construct(Application $application)
+    public function __construct(Application $application, Collection $collection)
     {
-        $this->app = $application;
+        $this->app        = $application;
+        self::$collection = $collection;
     }
 
     /**
@@ -80,7 +86,7 @@ class Router implements RouterContract
     {
         $app->container()->setSingleton(
             RouterContract::class,
-            new static($app)
+            new static($app, new CollectionClass(new MatcherClass()))
         );
 
         $app->router()->setup();
@@ -270,6 +276,29 @@ class Router implements RouterContract
         $route = $this->getRouteByPath($uri);
 
         return $route instanceof Route;
+    }
+
+    /**
+     * Set the data from cache.
+     *
+     * @param bool $force    [optional] Whether to force setup
+     * @param bool $useCache [optional] Whether to use cache
+     *
+     * @return void
+     */
+    public function setup(bool $force = false, bool $useCache = true): void
+    {
+        self::$collection->setup($force, $useCache);
+    }
+
+    /**
+     * Get a cacheable representation of the data.
+     *
+     * @return ConfigModel|object
+     */
+    public function getCacheable(): object
+    {
+        return self::$collection->getCacheable();
     }
 
     /**

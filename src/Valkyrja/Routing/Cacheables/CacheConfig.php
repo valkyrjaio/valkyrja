@@ -22,10 +22,8 @@ use Valkyrja\Config\Models\ConfigModel;
  */
 class CacheConfig extends ConfigModel
 {
-    /**
-     * The base64 encoded serialized collection.
-     *
-     * @var string
-     */
-    public string $collection;
+    public array $routes = [];
+    public array $static = [];
+    public array $dynamic = [];
+    public array $named = [];
 }

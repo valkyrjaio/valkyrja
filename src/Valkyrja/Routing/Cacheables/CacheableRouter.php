@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Cacheables;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Config\Configs\RoutingConfig;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
-use Valkyrja\Routing\Collections\Collection;
-use Valkyrja\Routing\Matchers\Matcher;
-use Valkyrja\Routing\Models\Route;
 use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
@@ -31,27 +27,13 @@ trait CacheableRouter
     use Cacheable;
 
     /**
-     * The route collection.
-     *
-     * @var Collection
-     */
-    protected static Collection $collection;
-
-    /**
-     * Application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * Get the config.
      *
      * @return RoutingConfig|object
      */
     protected function getConfig(): object
     {
-        return $this->app->config()->routing;
+        return config()->routing;
     }
 
     /**
@@ -70,7 +52,6 @@ trait CacheableRouter
      */
     protected function setupNotCached(): void
     {
-        self::$collection = new Collection();
     }
 
     /**
@@ -85,16 +66,10 @@ trait CacheableRouter
         /** @var CacheConfig $cache */
         $cache = $config->cache ?? require $config->cacheFilePath;
 
-        self::$collection = unserialize(
-            base64_decode($cache->collection, true),
-            [
-                'allowed_classes' => [
-                    Matcher::class,
-                    Collection::class,
-                    Route::class,
-                ],
-            ]
-        );
+        $this->routes  = $cache->routes;
+        $this->static  = $cache->static;
+        $this->dynamic = $cache->dynamic;
+        $this->named   = $cache->named;
     }
 
     /**
@@ -107,13 +82,13 @@ trait CacheableRouter
     protected function setupAnnotations(object $config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
-        $routeAnnotations = $this->app->container()->getSingleton(RouteAnnotator::class);
+        $routeAnnotations = container()->getSingleton(RouteAnnotator::class);
 
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes
         foreach ($routeAnnotations->getRoutes(...$config->controllers) as $route) {
             // Set the route
-            self::$collection->add($route);
+            $this->add($route);
         }
     }
 
@@ -126,8 +101,11 @@ trait CacheableRouter
     {
         $this->setup(true, false);
 
-        $config             = new CacheConfig();
-        $config->collection = base64_encode(serialize(self::$collection));
+        $config          = new CacheConfig();
+        $config->routes  = $this->routes;
+        $config->static  = $this->static;
+        $config->dynamic = $this->dynamic;
+        $config->named   = $this->named;
 
         return $config;
     }

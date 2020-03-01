@@ -33,13 +33,15 @@ class Matcher implements RouteMatcherContract
     protected Collection $collection;
 
     /**
-     * RouteMatcher constructor.
+     * Set the collection.
      *
-     * @param Collection $routeCollection
+     * @param Collection $collection The collection
+     *
+     * @return void
      */
-    public function __construct(Collection $routeCollection)
+    public function setCollection(Collection $collection): void
     {
-        $this->collection = $routeCollection;
+        $this->collection = $collection;
     }
 
     /**

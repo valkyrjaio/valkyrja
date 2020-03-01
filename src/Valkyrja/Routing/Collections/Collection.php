@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
-use Valkyrja\Routing\Collection as RouteCollectionContract;
-use Valkyrja\Routing\Matcher as RouteMatcherContract;
-use Valkyrja\Routing\Matchers\Matcher;
+use Valkyrja\Routing\Cacheables\CacheableRouter;
+use Valkyrja\Routing\Collection as CollectionContract;
+use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 
 /**
@@ -23,8 +23,9 @@ use Valkyrja\Routing\Route;
  *
  * @author Melech Mizrachi
  */
-class Collection implements RouteCollectionContract
+class Collection implements CollectionContract
 {
+    use CacheableRouter;
     use CollectionHelpers;
 
     /**
@@ -58,16 +59,20 @@ class Collection implements RouteCollectionContract
     /**
      * The route matcher.
      *
-     * @var RouteMatcherContract
+     * @var Matcher
      */
-    protected RouteMatcherContract $matcher;
+    protected Matcher $matcher;
 
     /**
      * RouteCollection constructor.
+     *
+     * @param Matcher $matcher
      */
-    public function __construct()
+    public function __construct(Matcher $matcher)
     {
-        $this->matcher = new Matcher($this);
+        $matcher->setCollection($this);
+
+        $this->matcher = $matcher;
     }
 
     /**
@@ -261,9 +266,9 @@ class Collection implements RouteCollectionContract
     /**
      * Get the route matcher.
      *
-     * @return RouteMatcherContract
+     * @return Matcher
      */
-    public function matcher(): RouteMatcherContract
+    public function matcher(): Matcher
     {
         return $this->matcher;
     }

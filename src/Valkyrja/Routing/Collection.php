@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
+use Valkyrja\Support\Cacheable;
+
 /**
  * Interface Collection.
  *
  * @author Melech Mizrachi
  */
-interface Collection
+interface Collection extends Cacheable
 {
     /**
      * Add a route.
