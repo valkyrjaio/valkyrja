@@ -140,13 +140,8 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function select(array $columns = null): QueryBuilder
     {
-        $this->type = Statement::SELECT;
-
-        if (null !== $columns) {
-            $this->columns = $columns;
-        } else {
-            $this->columns[] = '*';
-        }
+        $this->type    = Statement::SELECT;
+        $this->columns = $columns ?? ['*'];
 
         return $this;
     }
