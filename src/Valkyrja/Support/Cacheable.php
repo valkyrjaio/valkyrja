@@ -35,7 +35,7 @@ interface Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return ConfigModel|object
+     * @return ConfigModel
      */
-    public function getCacheable(): object;
+    public function getCacheable(): ConfigModel;
 }

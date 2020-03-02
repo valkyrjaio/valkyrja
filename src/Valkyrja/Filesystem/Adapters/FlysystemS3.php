@@ -30,19 +30,19 @@ class FlysystemS3 extends FlysystemAdapter
      */
     public static function make(): self
     {
-        $config       = config()->filesystem->disks->s3;
+        $config       = config()['filesystem']['disks']['s3'];
         $clientConfig = [
             'credentials' => [
-                'key'    => $config->key,
-                'secret' => $config->secret,
+                'key'    => $config['key'],
+                'secret' => $config['secret'],
             ],
-            'region'      => $config->region,
-            'version'     => $config->version,
+            'region'      => $config['region'],
+            'version'     => $config['version'],
         ];
 
         return new static(
             new AwsS3Adapter(
-                new S3Client($clientConfig), $config->bucket, $config->dir
+                new S3Client($clientConfig), $config['bucket'], $config['dir']
             )
         );
     }

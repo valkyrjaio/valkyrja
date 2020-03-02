@@ -48,7 +48,7 @@ REGEX;
     /**
      * The path config.
      *
-     * @var PathConfig|object
+     * @var PathConfig|array
      */
     protected object $config;
 
@@ -59,7 +59,7 @@ REGEX;
      */
     public function __construct(Application $app)
     {
-        $this->config = $app->config()->path;
+        $this->config = $app->config()['path'];
     }
 
     /**
@@ -286,7 +286,7 @@ REGEX;
      */
     protected function getParamReplacement(int $key, array $params): string
     {
-        return $this->config->patterns[$params[2][$key]]
+        return $this->config['patterns'][$params[2][$key]]
             ?? ('(' . ($params[2][$key] ?: $params[1][$key]) . ')');
     }
 

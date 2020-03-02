@@ -76,19 +76,19 @@ class PDOConnection implements ConnectionContract
     /**
      * The config.
      *
-     * @var ConnectionConfig
+     * @var ConnectionConfig|array
      */
-    protected ConnectionConfig $config;
+    protected array $config;
 
     /**
      * PDOConnection constructor.
      *
-     * @param ConnectionConfig|object $config
+     * @param string $connection
      */
-    public function __construct(object $config)
+    public function __construct(string $connection)
     {
-        $this->config     = $config;
-        $this->connection = $this->getConnectionFromConfig($config);
+        $this->config     = config()['orm']['connections'][$connection];
+        $this->connection = $this->getConnectionFromConfig();
         $this->retriever  = new RetrieverClass($this);
         $this->persister  = new PersisterClass($this);
 
@@ -98,19 +98,17 @@ class PDOConnection implements ConnectionContract
     /**
      * Get the store from the config.
      *
-     * @param ConnectionConfig|object $config
-     *
      * @return PDO
      */
-    protected function getConnectionFromConfig(object $config): PDO
+    protected function getConnectionFromConfig(): PDO
     {
-        $dsn = $config->driver
-            . ':host=' . $config->host
-            . ';port=' . $config->port
-            . ';dbname=' . $config->db
-            . ';charset=' . $config->charset;
+        $dsn = $this->config['driver']
+            . ':host=' . $this->config['host']
+            . ';port=' . $this->config['port']
+            . ';dbname=' . $this->config['db']
+            . ';charset=' . $this->config['charset'];
 
-        return new PDO($dsn, $config->username, $config->password, []);
+        return new PDO($dsn, $this->config['username'], $this->config['password'], []);
     }
 
     /**

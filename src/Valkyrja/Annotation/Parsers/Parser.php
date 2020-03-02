@@ -183,7 +183,7 @@ class Parser implements AnnotationsParserContract
      */
     public function getAnnotationsMap(): array
     {
-        return $this->app->config()->annotation->map;
+        return $this->app->config()['annotation']['map'];
     }
 
     /**

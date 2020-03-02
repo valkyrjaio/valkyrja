@@ -49,9 +49,9 @@ class EntityManager implements EntityManagerContract
     /**
      * The config.
      *
-     * @var ORMConfig
+     * @var ORMConfig|array
      */
-    protected ORMConfig $config;
+    protected $config;
 
     /**
      * The default adapter.
@@ -81,9 +81,9 @@ class EntityManager implements EntityManagerContract
      */
     public function __construct(Application $app)
     {
-        $this->config         = $app->config()->orm;
+        $this->config         = $app->config()['orm'];
         $this->app            = $app;
-        $this->defaultAdapter = $this->config->connections->{$this->config->default}->adapter ?? CKP::PDO;
+        $this->defaultAdapter = $this->config['connections'][$this->config['default']]['adapter'] ?? CKP::PDO;
     }
 
     /**
@@ -128,9 +128,9 @@ class EntityManager implements EntityManagerContract
         }
 
         /** @var Adapter $adapter */
-        $adapter = $this->config->adapters[$name];
+        $adapter = $this->config['adapters'][$name];
 
-        return $adapter::make($this->config);
+        return $adapter::make();
     }
 
     /**

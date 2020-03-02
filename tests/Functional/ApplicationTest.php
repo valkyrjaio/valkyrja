@@ -138,7 +138,7 @@ class ApplicationTest extends TestCase
         $config = new Config();
         $this->app->addConfig($config, 'new');
 
-        $this->assertEquals(true, isset($this->app->config()->new));
+        $this->assertEquals(true, isset($this->app->config()['new']));
     }
 
     /**
@@ -192,7 +192,7 @@ class ApplicationTest extends TestCase
      */
     public function testEnvironment(): void
     {
-        $this->assertEquals($this->app->config()->app->env, $this->app->environment());
+        $this->assertEquals($this->app->config()['app']['env'], $this->app->environment());
     }
 
     /**
@@ -202,7 +202,7 @@ class ApplicationTest extends TestCase
      */
     public function testDebug(): void
     {
-        $this->assertEquals($this->app->config()->app->debug, $this->app->debug());
+        $this->assertEquals($this->app->config()['app']['debug'], $this->app->debug());
     }
 
     /**
@@ -564,7 +564,7 @@ class ApplicationTest extends TestCase
 
         $this->app = $this->app->withConfig($config);
 
-        $this->assertEquals(ProviderClass::class, $this->app->config()->providers[0]);
+        $this->assertEquals(ProviderClass::class, $this->app->config()['providers'][0]);
 
         $this->app = $this->app->withConfig(new Config());
     }

@@ -17,7 +17,9 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
+use const PHP_EOL;
 
 /**
  * Class Optimize.
@@ -42,7 +44,7 @@ class Optimize extends Commander
      */
     public function run(): int
     {
-        $cacheFilePath = config()->cacheFilePath;
+        $cacheFilePath = config()['cacheFilePath'];
 
         // If the cache file already exists, delete it
         if (file_exists($cacheFilePath)) {
@@ -69,10 +71,10 @@ class Optimize extends Commander
         $configCache->event->useCache     = true;
         $configCache->routing->useCache   = true;
 
-        $asArray = json_decode(json_encode($configCache), true);
-        $asString = '<?php return ' . var_export($asArray, true) . ';' . \PHP_EOL;
-        $serialized = serialize($configCache);
-        $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
+        $asArray = json_decode(json_encode($configCache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        $asString = '<?php return ' . var_export($asArray, true) . ';' . PHP_EOL;
+        // $serialized = serialize($configCache);
+        // $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
 
         // Get the results of the cache attempt
         $result = file_put_contents($cacheFilePath, $asString, LOCK_EX);

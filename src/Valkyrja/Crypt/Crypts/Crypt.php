@@ -48,9 +48,9 @@ class Crypt implements CryptContract
     /**
      * The config.
      *
-     * @var CryptConfig
+     * @var CryptConfig|array
      */
-    protected CryptConfig $config;
+    protected $config;
 
     /**
      * The key
@@ -68,7 +68,7 @@ class Crypt implements CryptContract
      */
     public function __construct(Application $app, Encrypter $encrypter, Decrypter $decrypter)
     {
-        $this->config    = $app->config()->crypt;
+        $this->config    = $app->config()['crypt'];
         $this->encrypter = $encrypter;
         $this->decrypter = $decrypter;
     }
@@ -213,7 +213,7 @@ class Crypt implements CryptContract
      */
     protected function getKeyFromConfig(): string
     {
-        return $this->config->key;
+        return $this->config['key'];
     }
 
     /**
@@ -223,7 +223,7 @@ class Crypt implements CryptContract
      */
     protected function getKeyPathFromConfig(): ?string
     {
-        return $this->config->keyPath;
+        return $this->config['keyPath'];
     }
 
     /**

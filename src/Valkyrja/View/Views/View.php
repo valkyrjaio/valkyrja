@@ -80,7 +80,7 @@ class View implements ViewContract
     /**
      * The config.
      *
-     * @var ViewConfig|object
+     * @var ViewConfig|array
      */
     protected $config;
 

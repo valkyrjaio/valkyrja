@@ -58,7 +58,7 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var Config|object|array
+     * @var Config|array
      */
     protected static $config;
 
@@ -290,7 +290,7 @@ class Valkyrja implements Application
     public function addConfig(ConfigModel $newConfig, string $key): void
     {
         // Set the config within the application
-        self::$config->{$key} = $newConfig;
+        self::$config[$key] = $newConfig;
     }
 
     /**

@@ -59,7 +59,7 @@ class Cache implements CacheContract
     public function __construct(Application $app)
     {
         $this->app          = $app;
-        $this->defaultStore = $this->app->config()->cache->default;
+        $this->defaultStore = $this->app->config()['cache']['default'];
     }
 
     /**
@@ -122,7 +122,7 @@ class Cache implements CacheContract
      */
     protected function getStoreConfig(string $name): array
     {
-        $config = $this->app->config()->cache->stores[$name] ?? null;
+        $config = $this->app->config()['cache']['stores'][$name] ?? null;
 
         if (null === $config) {
             throw new InvalidArgumentException('Invalid store name specified: ' . $name);

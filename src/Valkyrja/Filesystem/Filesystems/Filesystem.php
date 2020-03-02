@@ -48,9 +48,9 @@ class Filesystem implements FilesystemContract
     /**
      * The config.
      *
-     * @var FilesystemConfig
+     * @var FilesystemConfig|array
      */
-    protected FilesystemConfig $config;
+    protected $config;
 
     /**
      * FlyFilesystem constructor.
@@ -60,7 +60,7 @@ class Filesystem implements FilesystemContract
     public function __construct(Application $application)
     {
         $this->app    = $application;
-        $this->config = $this->app->config()->filesystem;
+        $this->config = $this->app->config()['filesystem'];
     }
 
     /**
@@ -373,14 +373,14 @@ class Filesystem implements FilesystemContract
      */
     public function getAdapter(string $name = null): Adapter
     {
-        $name ??= $this->config->disks->{$this->config->default}->adapter;
+        $name ??= $this->config['disks'][$this->config['default']]['adapter'];
 
         if (isset(self::$adapters[$name])) {
             return self::$adapters[$name];
         }
 
         /** @var Adapter $adapter */
-        $adapter = $this->config->adapters[$name];
+        $adapter = $this->config['adapters'][$name];
 
         return self::$adapters[$name] = $adapter::make();
     }

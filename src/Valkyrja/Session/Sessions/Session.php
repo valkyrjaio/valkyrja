@@ -60,10 +60,10 @@ class Session implements SessionContract
     public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
     {
         $this->app = $application;
-        $config    = $application->config()->session;
+        $config    = $application->config()['session'];
 
-        $sessionId   = $sessionId ?? $config->id;
-        $sessionName = $sessionName ?? $config->name;
+        $sessionId   = $sessionId ?? $config['id'];
+        $sessionName = $sessionName ?? $config['name'];
 
         // If a session id is provided
         if (null !== $sessionId) {

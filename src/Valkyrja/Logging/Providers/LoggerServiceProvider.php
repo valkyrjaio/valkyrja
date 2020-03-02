@@ -76,13 +76,13 @@ class LoggerServiceProvider extends Provider
      */
     protected static function bindLoggerInterface(Application $app): void
     {
-        $config  = $app->config()->logging;
-        $handler = new StreamHandler($config->filePath, LogLevel::DEBUG);
+        $config  = $app->config()['logging'];
+        $handler = new StreamHandler($config['filePath'], LogLevel::DEBUG);
 
         $app->container()->setSingleton(
             LoggerInterface::class,
             new Monolog(
-                $config->name,
+                $config['name'],
                 [
                     $handler,
                 ]

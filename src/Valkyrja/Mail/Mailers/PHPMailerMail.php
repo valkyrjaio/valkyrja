@@ -75,7 +75,7 @@ class PHPMailerMail implements Mail
      */
     public static function publish(Application $app): void
     {
-        $config = $app->config()->mail;
+        $config = $app->config()['mail'];
 
         // Create a new instance of the PHPMailer class
         $PHPMailer = new PHPMailer(true);
@@ -85,17 +85,17 @@ class PHPMailerMail implements Mail
         // Set mailer to use SMTP
         $PHPMailer->isSMTP();
         // Specify main and backup SMTP servers
-        $PHPMailer->Host = $config->host;
+        $PHPMailer->Host = $config['host'];
         // SMTP Port
-        $PHPMailer->Port = $config->port;
+        $PHPMailer->Port = $config['port'];
         // Enable SMTP authentication
         $PHPMailer->SMTPAuth = true;
         // SMTP username
-        $PHPMailer->Username = $config->username;
+        $PHPMailer->Username = $config['username'];
         // SMTP password
-        $PHPMailer->Password = $config->password;
+        $PHPMailer->Password = $config['password'];
         // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $config->encryption;
+        $PHPMailer->SMTPSecure = $config['encryption'];
 
         $app->container()->setSingleton(
             Mail::class,

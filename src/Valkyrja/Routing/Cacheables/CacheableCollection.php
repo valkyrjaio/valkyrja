@@ -18,22 +18,22 @@ use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
- * Trait CacheableRouter.
+ * Trait CacheableCollection.
  *
  * @author Melech Mizrachi
  */
-trait CacheableRouter
+trait CacheableCollection
 {
     use Cacheable;
 
     /**
      * Get the config.
      *
-     * @return RoutingConfig|object
+     * @return RoutingConfig|array
      */
     protected function getConfig()
     {
-        return config('routing');
+        return config()['routing'];
     }
 
     /**
@@ -57,11 +57,11 @@ trait CacheableRouter
     /**
      * Setup the router from cache.
      *
-     * @param RoutingConfig|object $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */
-    protected function setupFromCache($config): void
+    protected function setupFromCache(array $config): void
     {
         /** @var CacheConfig $cache */
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
@@ -75,11 +75,11 @@ trait CacheableRouter
     /**
      * Setup annotated routes.
      *
-     * @param RoutingConfig|object $config
+     * @param RoutingConfig $config
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations(RoutingConfig $config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
         $routeAnnotations = container()->getSingleton(RouteAnnotator::class);
@@ -95,9 +95,9 @@ trait CacheableRouter
     /**
      * Get a cacheable representation of the data.
      *
-     * @return CacheConfig|object
+     * @return CacheConfig
      */
-    public function getCacheable(): object
+    public function getCacheable(): CacheConfig
     {
         $this->setup(true, false);
 

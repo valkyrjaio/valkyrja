@@ -40,11 +40,11 @@ trait CacheableEvents
     /**
      * Get the config.
      *
-     * @return EventConfig|object
+     * @return EventConfig|array
      */
     protected function getConfig()
     {
-        return $this->app->config('event');
+        return $this->app->config()['event'];
     }
 
     /**
@@ -60,11 +60,11 @@ trait CacheableEvents
     /**
      * Setup the events from cache.
      *
-     * @param EventConfig|object $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
-    protected function setupFromCache($config): void
+    protected function setupFromCache(array $config): void
     {
         /** @var CacheConfig $cache */
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
@@ -75,11 +75,11 @@ trait CacheableEvents
     /**
      * Setup annotations.
      *
-     * @param EventConfig|object $config
+     * @param EventConfig $config
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations(EventConfig $config): void
     {
         /** @var ListenerAnnotator $containerAnnotations */
         $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);
@@ -95,9 +95,9 @@ trait CacheableEvents
     /**
      * Get a cacheable representation of the events.
      *
-     * @return CacheConfig|object
+     * @return CacheConfig
      */
-    public function getCacheable(): object
+    public function getCacheable(): CacheConfig
     {
         $this->setup(true, false);
 

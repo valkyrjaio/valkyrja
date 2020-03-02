@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
-use Valkyrja\Routing\Cacheables\CacheableRouter;
+use Valkyrja\Routing\Cacheables\CacheableCollection;
 use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
@@ -25,7 +25,7 @@ use Valkyrja\Routing\Route;
  */
 class Collection implements CollectionContract
 {
-    use CacheableRouter;
+    use CacheableCollection;
     use CollectionHelpers;
 
     /**

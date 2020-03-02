@@ -30,7 +30,7 @@ class FlysystemLocal extends FlysystemAdapter
     public static function make(): self
     {
         return new static(
-            new Local(config()->filesystem->disks->local->dir)
+            new Local(config()['filesystem']['disks']['local']['dir'])
         );
     }
 }

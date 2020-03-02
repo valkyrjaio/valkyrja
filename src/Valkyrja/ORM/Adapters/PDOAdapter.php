@@ -36,9 +36,9 @@ class PDOAdapter implements Adapter
     /**
      * The config.
      *
-     * @var ORMConfig
+     * @var ORMConfig|array
      */
-    protected ORMConfig $config;
+    protected $config;
 
     /**
      * The connection to use.
@@ -49,25 +49,21 @@ class PDOAdapter implements Adapter
 
     /**
      * PDOAdapter constructor.
-     *
-     * @param ORMConfig|object $config
      */
-    public function __construct(object $config)
+    public function __construct()
     {
-        $this->config            = $config;
+        $this->config            = config()['orm'];
         $this->defaultConnection = $this->config[CKP::DEFAULT];
     }
 
     /**
      * Make a new adapter.
      *
-     * @param ORMConfig|object $config
-     *
      * @return static
      */
-    public static function make(object $config): self
+    public static function make(): self
     {
-        return new static($config);
+        return new static();
     }
 
     /**
@@ -82,6 +78,6 @@ class PDOAdapter implements Adapter
         $connection ??= $this->defaultConnection;
 
         return self::$connections[$connection]
-            ?? (self::$connections[$connection] = new PDOConnection($this->config->connections->{$connection}));
+            ?? (self::$connections[$connection] = new PDOConnection($connection));
     }
 }
