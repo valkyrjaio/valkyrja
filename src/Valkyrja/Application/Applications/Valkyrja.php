@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
-use stdClass;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
 use Valkyrja\Config\Config;
@@ -30,7 +29,6 @@ use Valkyrja\Support\Directory;
 use function constant;
 use function define;
 use function defined;
-use function is_object;
 
 use const E_ALL;
 
@@ -268,7 +266,7 @@ class Valkyrja implements Application
         // Iterate through the keys
         foreach ($keys as $configItem) {
             // Trying to get the item from the config or set the default
-            $config = (is_object($config) ? $config->{$configItem} : $config[$configItem]) ?? $default;
+            $config = $config[$configItem] ?? $default;
 
             // If the item was not found, might as well return out from here
             // instead of continuing to iterate through the remaining keys

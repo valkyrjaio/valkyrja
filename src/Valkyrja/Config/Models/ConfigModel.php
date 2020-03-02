@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Models;
 
+use ArrayAccess;
 use Valkyrja\Model\Models\Model;
 
 /**
@@ -20,6 +21,37 @@ use Valkyrja\Model\Models\Model;
  *
  * @author Melech Mizrachi
  */
-class ConfigModel extends Model
+class ConfigModel extends Model implements ArrayAccess
 {
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->{$offset});
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset)
+    {
+        return $this->{$offset};
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->{$offset} = $value;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->{$offset});
+    }
 }
