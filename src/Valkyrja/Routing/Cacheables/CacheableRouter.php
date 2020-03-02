@@ -31,9 +31,9 @@ trait CacheableRouter
      *
      * @return RoutingConfig|object
      */
-    protected function getConfig(): object
+    protected function getConfig()
     {
-        return config()->routing;
+        return config('routing');
     }
 
     /**
@@ -61,15 +61,15 @@ trait CacheableRouter
      *
      * @return void
      */
-    protected function setupFromCache(object $config): void
+    protected function setupFromCache($config): void
     {
         /** @var CacheConfig $cache */
-        $cache = $config->cache ?? require $config->cacheFilePath;
+        $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        $this->routes  = $cache->routes;
-        $this->static  = $cache->static;
-        $this->dynamic = $cache->dynamic;
-        $this->named   = $cache->named;
+        $this->routes  = $cache['routes'];
+        $this->static  = $cache['static'];
+        $this->dynamic = $cache['dynamic'];
+        $this->named   = $cache['named'];
     }
 
     /**

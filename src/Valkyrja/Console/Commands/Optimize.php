@@ -69,11 +69,13 @@ class Optimize extends Commander
         $configCache->event->useCache     = true;
         $configCache->routing->useCache   = true;
 
+        $asArray = json_decode(json_encode($configCache), true);
+        $asString = '<?php return ' . var_export($asArray, true) . ';' . \PHP_EOL;
         $serialized = serialize($configCache);
         $serialized = preg_replace('/O:\d+:"[^"]++"/', 'O:8:"stdClass"', $serialized);
 
         // Get the results of the cache attempt
-        $result = file_put_contents($cacheFilePath, $serialized, LOCK_EX);
+        $result = file_put_contents($cacheFilePath, $asString, LOCK_EX);
 
         if ($result === false) {
             output()->writeMessage('An error occurred while optimizing the application.', true);

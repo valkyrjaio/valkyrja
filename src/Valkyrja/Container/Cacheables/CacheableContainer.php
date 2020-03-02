@@ -67,9 +67,9 @@ trait CacheableContainer
      *
      * @return ContainerConfig|object
      */
-    protected function getConfig(): object
+    protected function getConfig()
     {
-        return $this->app->config()->container;
+        return $this->app->config('container');
     }
 
     /**
@@ -96,14 +96,14 @@ trait CacheableContainer
      *
      * @return void
      */
-    protected function setupFromCache(object $config): void
+    protected function setupFromCache($config): void
     {
         /** @var CacheConfig $cache */
-        $cache = $config->cache ?? require $config->cacheFilePath;
+        $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$services = $cache->services;
-        self::$provided = $cache->provided;
-        self::$aliases  = $cache->aliases;
+        self::$services = $cache['services'];
+        self::$provided = $cache['provided'];
+        self::$aliases  = $cache['aliases'];
     }
 
     /**

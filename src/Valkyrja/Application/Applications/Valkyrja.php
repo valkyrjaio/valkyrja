@@ -60,9 +60,9 @@ class Valkyrja implements Application
     /**
      * Application config.
      *
-     * @var Config|object
+     * @var Config|object|array
      */
-    protected static object $config;
+    protected static $config;
 
     /**
      * Get the instance of the container.
@@ -263,7 +263,7 @@ class Valkyrja implements Application
         // Explode the keys on period
         $keys = explode(ConfigKeyPart::SEP, $key);
         // Set the config to return
-        $config = clone self::$config;
+        $config = self::$config;
 
         // Iterate through the keys
         foreach ($keys as $configItem) {
@@ -388,14 +388,7 @@ class Valkyrja implements Application
      */
     protected function setupFromCacheFile(string $cacheFilePath): void
     {
-        self::$config = unserialize(
-            file_get_contents($cacheFilePath),
-            [
-                'allowed_classes' => [
-                    stdClass::class,
-                ],
-            ]
-        );
+        self::$config = require $cacheFilePath;
 
         $this->bootstrapAfterConfig();
     }
@@ -459,11 +452,11 @@ class Valkyrja implements Application
     protected function bootstrapCore(): void
     {
         // The events class to use from the config
-        $eventsImpl = self::$config->app->events;
+        $eventsImpl = self::$config['app']['events'];
         // The container class to use from the config
-        $containerImpl = self::$config->app->container;
+        $containerImpl = self::$config['app']['container'];
         // The dispatcher class to use from the config
-        $dispatcherImpl = self::$config->app->dispatcher;
+        $dispatcherImpl = self::$config['app']['dispatcher'];
 
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
@@ -523,6 +516,6 @@ class Valkyrja implements Application
      */
     protected function bootstrapTimezone(): void
     {
-        date_default_timezone_set(self::$config->app->timezone);
+        date_default_timezone_set(self::$config['app']['timezone']);
     }
 }

@@ -42,9 +42,9 @@ trait CacheableEvents
      *
      * @return EventConfig|object
      */
-    protected function getConfig(): object
+    protected function getConfig()
     {
-        return $this->app->config()->event;
+        return $this->app->config('event');
     }
 
     /**
@@ -64,12 +64,12 @@ trait CacheableEvents
      *
      * @return void
      */
-    protected function setupFromCache(object $config): void
+    protected function setupFromCache($config): void
     {
         /** @var CacheConfig $cache */
-        $cache = $config->cache ?? require $config->cacheFilePath;
+        $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$events = $cache->events;
+        self::$events = $cache['events'];
     }
 
     /**

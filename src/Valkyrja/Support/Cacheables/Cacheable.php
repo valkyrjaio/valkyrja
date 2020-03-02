@@ -53,7 +53,7 @@ trait Cacheable
         $this->beforeSetup($config);
 
         // If the application should use the routes cache file
-        if ($useCache && ($config->useCache)) {
+        if ($useCache && ($config['useCache'])) {
             $this->setupFromCache($config);
 
             // Then return out of setup
@@ -85,7 +85,7 @@ trait Cacheable
      *
      * @return CacheableConfig|object
      */
-    abstract protected function getConfig(): object;
+    abstract protected function getConfig();
 
     /**
      * Before setup.
@@ -94,7 +94,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function beforeSetup(object $config): void
+    protected function beforeSetup($config): void
     {
         // Override as necessary
     }
@@ -106,7 +106,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupFromCache(object $config): void
+    protected function setupFromCache($config): void
     {
         // Override as necessary
     }

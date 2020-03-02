@@ -62,10 +62,10 @@ class Kernel implements KernelContract
         $this->app    = $application;
         $this->router = $router;
 
-        $config = $application->config()->routing;
+        $config = $application->config('routing');
 
-        self::$middleware       = $config->middleware;
-        self::$middlewareGroups = $config->middlewareGroups;
+        self::$middleware       = $config['middleware'];
+        self::$middlewareGroups = $config['middlewareGroups'];
     }
 
     /**

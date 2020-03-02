@@ -58,7 +58,7 @@ trait ApplicationHelpersTrait
      */
     public function environment(): string
     {
-        return self::$config->app->env;
+        return self::$config['app']['env'];
     }
 
     /**
@@ -68,7 +68,7 @@ trait ApplicationHelpersTrait
      */
     public function debug(): bool
     {
-        return self::$config->app->debug;
+        return self::$config['app']['debug'];
     }
 
     /**

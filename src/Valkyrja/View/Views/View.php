@@ -82,7 +82,7 @@ class View implements ViewContract
      *
      * @var ViewConfig|object
      */
-    protected object $config;
+    protected $config;
 
     /**
      * The default engine.
@@ -103,10 +103,10 @@ class View implements ViewContract
     public function __construct(Application $app, string $template = null, array $variables = [])
     {
         $this->app    = $app;
-        $this->config = $app->config()->view;
-        $this->engine = $this->config->engine;
+        $this->config = $app->config('view');
+        $this->engine = $this->config['engine'];
         $this->setVariables($variables);
-        $this->setDir($this->config->dir);
+        $this->setDir($this->config['dir']);
         $this->setTemplate($template ?? $this->template);
     }
 
@@ -160,14 +160,14 @@ class View implements ViewContract
      */
     public function getEngine(string $name = null): Engine
     {
-        $name ??= $this->engine;
+        $name ??= $this->config['engine'];
 
         if (isset(self::$engines[$name])) {
             return self::$engines[$name];
         }
 
         /** @var Engine $engine */
-        $engine = $this->config->engines[$name];
+        $engine = $this->config['engines'][$name];
 
         return self::$engines[$name] = $engine::make($this);
     }
@@ -318,7 +318,7 @@ class View implements ViewContract
         if (strpos($template, '@') === 0) {
             $explodeOn = Directory::DIRECTORY_SEPARATOR;
             $parts     = explode($explodeOn, $template);
-            $path      = config()->view->paths[$parts[0]] ?? null;
+            $path      = $this->config['paths'][$parts[0]] ?? null;
 
             // If there is no path
             if ($path === null) {
