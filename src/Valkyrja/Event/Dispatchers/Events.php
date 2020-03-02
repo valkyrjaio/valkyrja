@@ -78,10 +78,10 @@ class Events implements EventsContract
         if (null !== $listener->getId()) {
             // Use it when setting to allow removal
             // or checking if it exists later
-            self::$events[$event][$listener->getId()] = $listener->asArray();
+            self::$events[$event][$listener->getId()] = $listener;
         } else {
             // Otherwise set the listener normally
-            self::$events[$event][] = $listener->asArray();
+            self::$events[$event][] = $listener;
         }
     }
 

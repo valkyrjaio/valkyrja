@@ -96,7 +96,7 @@ class Collection implements CollectionContract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[] = $route->asArray();
+        $this->routes[] = $route;
     }
 
     /**

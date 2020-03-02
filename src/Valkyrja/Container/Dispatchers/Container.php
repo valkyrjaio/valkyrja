@@ -100,7 +100,7 @@ class Container implements ContainerContract
             $this->app->dispatcher()->verifyDispatch($service);
         }
 
-        self::$services[$service->getId()] = $service->asArray();
+        self::$services[$service->getId()] = $service;
     }
 
     /**

@@ -69,11 +69,11 @@ trait CollectionHelpers
             // Set the dynamic route's properties through the path parser
             $this->parseDynamicRoute($route);
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod][$route->getRegex()] = $route->asArray();
+            $this->dynamic[$requestMethod][$route->getRegex()] = $route;
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod][$route->getPath()] = $route->asArray();
+            $this->static[$requestMethod][$route->getPath()] = $route;
         }
     }
 
@@ -89,7 +89,7 @@ trait CollectionHelpers
         // If this route has a name set
         if ($route->getName()) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = $route->asArray();
+            $this->named[$route->getName()] = $route;
         }
     }
 
