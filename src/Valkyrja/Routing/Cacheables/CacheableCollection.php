@@ -63,7 +63,6 @@ trait CacheableCollection
      */
     protected function setupFromCache(array $config): void
     {
-        /** @var CacheConfig $cache */
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
         $this->routes  = $cache['routes'];

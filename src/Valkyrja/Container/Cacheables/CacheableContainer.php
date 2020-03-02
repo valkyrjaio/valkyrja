@@ -81,7 +81,6 @@ trait CacheableContainer
      */
     protected function setupFromCache(array $config): void
     {
-        /** @var CacheConfig $cache */
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
         self::$services = $cache['services'];
