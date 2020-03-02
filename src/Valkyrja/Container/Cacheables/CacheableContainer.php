@@ -92,11 +92,11 @@ trait CacheableContainer
     /**
      * Set not cached.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupNotCached(ContainerConfig $config): void
+    protected function setupNotCached(object $config): void
     {
         self::$registered = [];
         self::$services   = [];
@@ -109,11 +109,11 @@ trait CacheableContainer
     /**
      * Setup annotations.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(ContainerConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var ContainerAnnotator $containerAnnotations */
         $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
@@ -143,9 +143,9 @@ trait CacheableContainer
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 
@@ -160,11 +160,11 @@ trait CacheableContainer
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig $config
+     * @param ContainerConfig|object $config
      *
      * @return void
      */
-    protected function setupServiceProviders(ContainerConfig $config): void
+    protected function setupServiceProviders(object $config): void
     {
         // Iterate through all the providers
         foreach ($config->providers as $provider) {

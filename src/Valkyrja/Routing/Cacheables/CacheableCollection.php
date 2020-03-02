@@ -75,11 +75,11 @@ trait CacheableCollection
     /**
      * Setup annotated routes.
      *
-     * @param RoutingConfig $config
+     * @param RoutingConfig|object $config
      *
      * @return void
      */
-    protected function setupAnnotations(RoutingConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
         $routeAnnotations = container()->getSingleton(RouteAnnotator::class);
@@ -97,7 +97,7 @@ trait CacheableCollection
      *
      * @return CacheConfig
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 

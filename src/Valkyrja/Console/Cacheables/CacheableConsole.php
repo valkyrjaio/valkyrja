@@ -109,11 +109,11 @@ trait CacheableConsole
     /**
      * Set not cached.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @return void
      */
-    protected function setupNotCached(ConsoleConfig $config): void
+    protected function setupNotCached(object $config): void
     {
         self::$paths         = [];
         self::$commands      = [];
@@ -126,13 +126,13 @@ trait CacheableConsole
     /**
      * Setup annotations.
      *
-     * @param ConsoleConfig $config
+     * @param ConsoleConfig|object $config
      *
      * @throws ReflectionException
      *
      * @return void
      */
-    protected function setupAnnotations(ConsoleConfig $config): void
+    protected function setupAnnotations(object $config): void
     {
         /** @var CommandAnnotator $commandAnnotations */
         $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotator::class);
@@ -148,9 +148,9 @@ trait CacheableConsole
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return CacheConfig
+     * @return CacheConfig|object
      */
-    public function getCacheable(): CacheConfig
+    public function getCacheable(): object
     {
         $this->setup(true, false);
 
@@ -166,7 +166,7 @@ trait CacheableConsole
     /**
      * Setup command providers.
      *
-     * @param ConsoleConfig|array $config
+     * @param ConsoleConfig|object $config
      *
      * @return void
      */
