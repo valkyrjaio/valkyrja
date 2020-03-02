@@ -108,11 +108,11 @@ trait CacheableConsole
     /**
      * Set not cached.
      *
-     * @param ConsoleConfig|object $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
-    protected function setupNotCached(object $config): void
+    protected function setupNotCached($config): void
     {
         self::$paths         = [];
         self::$commands      = [];
@@ -125,20 +125,20 @@ trait CacheableConsole
     /**
      * Setup annotations.
      *
-     * @param ConsoleConfig|object $config
+     * @param ConsoleConfig|array $config
      *
      * @throws ReflectionException
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations($config): void
     {
         /** @var CommandAnnotator $commandAnnotations */
         $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotator::class);
 
         // Get all the annotated commands from the list of handlers
         // Iterate through the commands
-        foreach ($commandAnnotations->getCommands(...$config->handlers) as $command) {
+        foreach ($commandAnnotations->getCommands(...$config['handlers']) as $command) {
             // Set the service
             $this->addCommand($command);
         }
@@ -165,11 +165,11 @@ trait CacheableConsole
     /**
      * Setup command providers.
      *
-     * @param ConsoleConfig|object $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
-    protected function setupCommandProviders(object $config): void
+    protected function setupCommandProviders($config): void
     {
         // Iterate through all the providers
         foreach ($config->providers as $provider) {

@@ -50,7 +50,7 @@ REGEX;
      *
      * @var PathConfig|array
      */
-    protected object $config;
+    protected $config;
 
     /**
      * PathParser constructor.

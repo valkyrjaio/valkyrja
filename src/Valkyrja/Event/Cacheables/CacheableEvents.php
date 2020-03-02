@@ -74,11 +74,11 @@ trait CacheableEvents
     /**
      * Setup annotations.
      *
-     * @param EventConfig|object $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations($config): void
     {
         /** @var ListenerAnnotator $containerAnnotations */
         $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);

@@ -126,14 +126,14 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|object $config
+     * @param CacheableConfig|array $config
      *
      * @return void
      */
-    protected function setupFromAnnotations(object $config): void
+    protected function setupFromAnnotations($config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config->useAnnotations ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
+        if (($config['useAnnotations'] ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
             $this->setupAnnotations($config);
         }
     }
@@ -141,23 +141,23 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|object $config
+     * @param CacheableConfig|array $config
      *
      * @return void
      */
-    protected function requireConfig(object $config): void
+    protected function requireConfig($config): void
     {
-        require $config->filePath;
+        require $config['filePath'];
     }
 
     /**
      * Before setup.
      *
-     * @param CacheableConfig|object $config
+     * @param CacheableConfig|array $config
      *
      * @return void
      */
-    protected function afterSetup(object $config): void
+    protected function afterSetup($config): void
     {
         // Override as necessary
     }
@@ -165,11 +165,11 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|object $config
+     * @param CacheableConfig|array $config
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations($config): void
     {
         // Override as necessary
     }

@@ -91,11 +91,11 @@ trait CacheableContainer
     /**
      * Set not cached.
      *
-     * @param ContainerConfig|object $config
+     * @param ContainerConfig|array $config
      *
      * @return void
      */
-    protected function setupNotCached(object $config): void
+    protected function setupNotCached($config): void
     {
         self::$registered = [];
         self::$services   = [];
@@ -108,11 +108,11 @@ trait CacheableContainer
     /**
      * Setup annotations.
      *
-     * @param ContainerConfig|object $config
+     * @param ContainerConfig|array $config
      *
      * @return void
      */
-    protected function setupAnnotations(object $config): void
+    protected function setupAnnotations($config): void
     {
         /** @var ContainerAnnotator $containerAnnotations */
         $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
@@ -159,11 +159,11 @@ trait CacheableContainer
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig|object $config
+     * @param ContainerConfig|array $config
      *
      * @return void
      */
-    protected function setupServiceProviders(object $config): void
+    protected function setupServiceProviders($config): void
     {
         // Iterate through all the providers
         foreach ($config->providers as $provider) {
