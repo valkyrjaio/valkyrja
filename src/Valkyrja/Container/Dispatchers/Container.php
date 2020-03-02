@@ -222,8 +222,8 @@ class Container implements ContainerContract
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
+     * @param string $context   [optional] The context class name || function name
+     * @param string $member    [optional] The context member name
      *
      * @return mixed
      */
@@ -231,7 +231,7 @@ class Container implements ContainerContract
     {
         $serviceId = null === $context
             ? $serviceId
-            : $this->contextServiceId($serviceId, $context, $member);
+            : $this->getServiceIdFromContext($serviceId, $context, $member);
 
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
@@ -431,5 +431,25 @@ class Container implements ContainerContract
             ->setStatic($serviceContext->isStatic());
 
         return $service;
+    }
+
+    /**
+     * Get a service id from context.
+     *
+     * @param string $serviceId The service
+     * @param string $context   [optional] The context class name || function name
+     * @param string $member    [optional] The context member name
+     *
+     * @return string
+     */
+    protected function getServiceIdFromContext(string $serviceId, string $context, string $member = null): string
+    {
+        if ($this->hasContext($serviceId, $context, $member)) {
+            $serviceId = $this->contextServiceId($serviceId, $context, $member);
+        } elseif ($this->hasContext($serviceId, $context)) {
+            $serviceId = $this->contextServiceId($serviceId, $context);
+        }
+
+        return $serviceId;
     }
 }

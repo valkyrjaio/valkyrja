@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Kernels;
 use RuntimeException;
 use Throwable;
 use Valkyrja\Application\Application;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
 use Valkyrja\Http\Kernel as KernelContract;
@@ -226,6 +227,6 @@ class Kernel implements KernelContract
             throw $exception;
         }
 
-        return $this->app->exceptionHandler()->response($exception);
+        return $this->app->response($this->app->view('errors/500')->render(), StatusCode::INTERNAL_SERVER_ERROR);
     }
 }

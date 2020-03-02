@@ -177,16 +177,9 @@ class Dispatcher implements DispatcherContract
      */
     protected function getDependencies(Dispatch $dispatch): ?array
     {
-        $dependencies = null;
-
-        // If the dispatch is static it doesn't need dependencies
-        if ($dispatch->isStatic()) {
-            return $dependencies;
-        }
-
         $dependencies = [];
         $context      = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member       = $dispatch->getProperty() ?? $dispatch->getMethod();
+        $member       = $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
