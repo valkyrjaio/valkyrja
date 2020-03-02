@@ -281,8 +281,8 @@ class Events implements EventsContract
     {
         $events = [];
 
-        foreach ($eventsArray as $method) {
-            $eventsArray[] = $this->ensureListeners($method);
+        foreach ($eventsArray as $key => $method) {
+            $eventsArray[$key] = $this->ensureListeners($method);
         }
 
         return $events;
@@ -299,8 +299,8 @@ class Events implements EventsContract
     {
         $listeners = [];
 
-        foreach ($listenersArray as $route) {
-            $listeners[] = $this->ensureListener($route);
+        foreach ($listenersArray as $key => $listener) {
+            $listeners[$key] = $this->ensureListener($listener);
         }
 
         return $listeners;

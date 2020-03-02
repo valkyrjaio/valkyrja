@@ -214,8 +214,8 @@ trait CollectionHelpers
     {
         $methods = [];
 
-        foreach ($methodsArray as $method) {
-            $methodsArray[] = $this->ensureRoutes($method);
+        foreach ($methodsArray as $key => $method) {
+            $methodsArray[$key] = $this->ensureRoutes($method);
         }
 
         return $methods;
@@ -232,8 +232,8 @@ trait CollectionHelpers
     {
         $routes = [];
 
-        foreach ($routesArray as $route) {
-            $routes[] = $this->ensureRoute($route);
+        foreach ($routesArray as $key => $route) {
+            $routes[$key] = $this->ensureRoute($route);
         }
 
         return $routes;
