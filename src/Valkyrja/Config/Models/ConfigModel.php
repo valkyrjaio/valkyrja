@@ -24,7 +24,7 @@ use Valkyrja\Model\Models\Model;
 class ConfigModel extends Model implements ArrayAccess
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -32,7 +32,7 @@ class ConfigModel extends Model implements ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -40,7 +40,7 @@ class ConfigModel extends Model implements ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -48,7 +48,7 @@ class ConfigModel extends Model implements ArrayAccess
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
