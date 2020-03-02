@@ -114,11 +114,11 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param CacheableConfig|object $config
+     * @param CacheableConfig|array $config
      *
      * @return void
      */
-    protected function setupNotCached(object $config): void
+    protected function setupNotCached($config): void
     {
         // Override as necessary
     }
