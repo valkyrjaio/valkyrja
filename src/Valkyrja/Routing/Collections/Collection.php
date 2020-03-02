@@ -18,6 +18,8 @@ use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 
+use const JSON_THROW_ON_ERROR;
+
 /**
  * Class RouteCollection.
  *
@@ -96,7 +98,7 @@ class Collection implements CollectionContract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[] = $route;
+        $this->routes[md5(json_encode($route, JSON_THROW_ON_ERROR))] = $route;
     }
 
     /**
