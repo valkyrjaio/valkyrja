@@ -294,9 +294,9 @@ class Router implements RouterContract
     /**
      * Get a cacheable representation of the data.
      *
-     * @return ConfigModel
+     * @return ConfigModel|object
      */
-    public function getCacheable(): ConfigModel
+    public function getCacheable(): object
     {
         return self::$collection->getCacheable();
     }
