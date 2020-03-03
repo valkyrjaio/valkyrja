@@ -53,8 +53,8 @@ class Optimize extends Commander
 
         $configCache = config();
 
-        $configCache->app->debug = false;
-        $configCache->app->env   = 'production';
+        $configCache['app']['debug'] = false;
+        $configCache['app']['env']   = 'production';
 
         $containerCache = container()->getCacheable();
         $consoleCache   = console()->getCacheable();
