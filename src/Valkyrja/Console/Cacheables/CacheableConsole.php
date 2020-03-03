@@ -172,7 +172,7 @@ trait CacheableConsole
     protected function setupCommandProviders($config): void
     {
         // Iterate through all the providers
-        foreach ($config->providers as $provider) {
+        foreach ($config['providers'] as $provider) {
             $this->register($provider);
         }
 
@@ -182,7 +182,7 @@ trait CacheableConsole
         }
 
         // Iterate through all the providers
-        foreach ($config->devProviders as $provider) {
+        foreach ($config['devProviders'] as $provider) {
             $this->register($provider);
         }
     }

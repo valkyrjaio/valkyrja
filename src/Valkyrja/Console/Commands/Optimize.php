@@ -61,15 +61,15 @@ class Optimize extends Commander
         $eventsCache    = events()->getCacheable();
         $routesCache    = router()->getCacheable();
 
-        $configCache->container->cache = $containerCache;
-        $configCache->console->cache   = $consoleCache;
-        $configCache->event->cache     = $eventsCache;
-        $configCache->routing->cache   = $routesCache;
+        $configCache['container']['cache'] = $containerCache;
+        $configCache['console']['cache']   = $consoleCache;
+        $configCache['event']['cache']     = $eventsCache;
+        $configCache['routing']['cache']   = $routesCache;
 
-        $configCache->container->useCache = true;
-        $configCache->console->useCache   = true;
-        $configCache->event->useCache     = true;
-        $configCache->routing->useCache   = true;
+        $configCache['container']['useCache'] = true;
+        $configCache['console']['useCache']   = true;
+        $configCache['event']['useCache']     = true;
+        $configCache['routing']['useCache']   = true;
 
         $asArray  = json_decode(json_encode($configCache, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         $asString = '<?php return ' . var_export($asArray, true) . ';' . PHP_EOL;

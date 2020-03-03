@@ -119,21 +119,21 @@ trait CacheableContainer
 
         // Get all the annotated services from the list of controllers
         // Iterate through the services
-        foreach ($containerAnnotations->getServices(...$config->services) as $service) {
+        foreach ($containerAnnotations->getServices(...$config['services']) as $service) {
             // Set the service
             $this->bind($service);
         }
 
         // Get all the annotated services from the list of controllers
         // Iterate through the services
-        foreach ($containerAnnotations->getContextServices(...$config->contextServices) as $context) {
+        foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
             // Set the service
             $this->setContext($context);
         }
 
         // Get all the annotated services from the list of classes
         // Iterate through the services
-        foreach ($containerAnnotations->getAliasServices(...$config->aliases) as $alias) {
+        foreach ($containerAnnotations->getAliasServices(...$config['aliases']) as $alias) {
             // Set the service
             $this->setAlias($alias->getName(), $alias->getId());
         }
@@ -166,7 +166,7 @@ trait CacheableContainer
     protected function setupServiceProviders($config): void
     {
         // Iterate through all the providers
-        foreach ($config->providers as $provider) {
+        foreach ($config['providers'] as $provider) {
             $this->register($provider);
         }
 
@@ -176,7 +176,7 @@ trait CacheableContainer
         }
 
         // Iterate through all the providers
-        foreach ($config->devProviders as $provider) {
+        foreach ($config['devProviders'] as $provider) {
             $this->register($provider);
         }
     }

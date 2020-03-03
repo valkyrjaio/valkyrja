@@ -85,7 +85,7 @@ trait CacheableEvents
 
         // Get all the annotated listeners from the list of classes
         // Iterate through the listeners
-        foreach ($containerAnnotations->getListeners(...$config->listeners) as $listener) {
+        foreach ($containerAnnotations->getListeners(...$config['listeners']) as $listener) {
             // Set the service
             $this->listen($listener->getEvent(), $listener);
         }
