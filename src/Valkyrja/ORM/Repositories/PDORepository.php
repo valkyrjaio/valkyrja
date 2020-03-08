@@ -602,7 +602,7 @@ class PDORepository implements Repository
             }
 
             // If the criterion has a percent at the start or the end
-            if ($criterion[0] === '%' || $criterion[strlen($criterion) - 1] === '%') {
+            if (is_string($criterion) && ($criterion[0] === '%' || $criterion[strlen($criterion) - 1] === '%')) {
                 $this->setLikeCriterionInQuery($query, $column);
 
                 continue;
