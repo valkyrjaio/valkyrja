@@ -370,8 +370,8 @@ class Annotator implements AnnotationsContract
                     Property::FUNCTION => $function,
                 ],
                 ...$this->parser->getAnnotations(
-                (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-            )
+                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+                )
             );
     }
 

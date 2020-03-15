@@ -42,7 +42,9 @@ class FlysystemS3 extends FlysystemAdapter
 
         return new static(
             new AwsS3Adapter(
-                new S3Client($clientConfig), $config['bucket'], $config['dir']
+                new S3Client($clientConfig),
+                $config['bucket'],
+                $config['dir']
             )
         );
     }
