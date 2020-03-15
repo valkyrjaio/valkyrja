@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Retrievers;
 
+use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
 
+use Valkyrja\Support\ClassHelpers;
+
 use function is_array;
 use function is_int;
+use function is_string;
 
 /**
  * Class Retriever
@@ -98,6 +102,8 @@ class Retriever implements RetrieverContract
      */
     public function find(string $entity, bool $getRelations = false): self
     {
+        ClassHelpers::validateClass($entity, Entity::class);
+
         $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
         $this->query        = $this->connection->createQuery('', $entity);
         $this->getRelations = $getRelations;
@@ -124,6 +130,10 @@ class Retriever implements RetrieverContract
      */
     public function findOne(string $entity, $id, bool $getRelations = false): self
     {
+        ClassHelpers::validateClass($entity, Entity::class);
+
+        $this->validateId($id);
+
         $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
         $this->query        = $this->connection->createQuery('', $entity);
         $this->one          = true;
@@ -151,6 +161,8 @@ class Retriever implements RetrieverContract
      */
     public function count(string $entity): self
     {
+        ClassHelpers::validateClass($entity, Entity::class);
+
         $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select(['COUNT(*)']);
         $this->query        = $this->connection->createQuery('', $entity);
 
@@ -257,6 +269,7 @@ class Retriever implements RetrieverContract
      */
     public function getResults()
     {
+        $this->connection->ensureTransaction();
         $this->query->prepare($this->queryBuilder->getQueryString())->execute();
 
         $results = $this->query->getResult();
@@ -274,6 +287,20 @@ class Retriever implements RetrieverContract
         }
 
         return $results;
+    }
+
+    /**
+     * Validate an id.
+     *
+     * @param mixed $id The id
+     *
+     * @return void
+     */
+    protected function validateId($id): void
+    {
+        if (! is_string($id) && ! is_int($id)) {
+            throw new InvalidArgumentException('ID should be an int or string only.');
+        }
     }
 
     /**

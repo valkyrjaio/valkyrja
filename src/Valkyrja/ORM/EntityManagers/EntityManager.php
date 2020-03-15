@@ -294,8 +294,6 @@ class EntityManager implements EntityManagerContract
      */
     public function find(string $entity, bool $getRelations = false): Retriever
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
         return $this->getConnection()->getRetriever()->find($entity, $getRelations);
     }
 
@@ -318,8 +316,6 @@ class EntityManager implements EntityManagerContract
      */
     public function findOne(string $entity, $id, bool $getRelations = false): Retriever
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
         return $this->getConnection()->getRetriever()->findOne($entity, $id, $getRelations);
     }
 
@@ -338,8 +334,6 @@ class EntityManager implements EntityManagerContract
      */
     public function count(string $entity): Retriever
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
         return $this->getConnection()->getRetriever()->count($entity);
     }
 
