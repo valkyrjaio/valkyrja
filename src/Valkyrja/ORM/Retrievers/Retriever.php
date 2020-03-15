@@ -19,7 +19,6 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
-
 use Valkyrja\Support\ClassHelpers;
 
 use function is_array;
@@ -36,9 +35,16 @@ class Retriever implements RetrieverContract
     /**
      * The columns.
      *
-     * @var array
+     * @var string[]
      */
     protected array $columns = [];
+
+    /**
+     * The values to bind.
+     *
+     * @var array
+     */
+    protected array $values = [];
 
     /**
      * Whether to get relations.
@@ -102,11 +108,7 @@ class Retriever implements RetrieverContract
      */
     public function find(string $entity, bool $getRelations = false): self
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
-        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
-        $this->query        = $this->connection->createQuery('', $entity);
-        $this->getRelations = $getRelations;
+        $this->setQueryProperties($entity, null, $getRelations);
 
         return $this;
     }
@@ -130,18 +132,12 @@ class Retriever implements RetrieverContract
      */
     public function findOne(string $entity, $id, bool $getRelations = false): self
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
         $this->validateId($id);
-
-        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
-        $this->query        = $this->connection->createQuery('', $entity);
-        $this->one          = true;
-        $this->getRelations = $getRelations;
+        $this->setQueryProperties($entity, null, $getRelations);
+        $this->limit(1);
 
         /** @var Entity $entity */
-        $this->queryBuilder->where($entity::getIdField(), $id);
-        $this->query->bindValue($entity::getIdField(), $id);
+        $this->where($entity::getIdField(), '=', $id);
 
         return $this;
     }
@@ -161,10 +157,7 @@ class Retriever implements RetrieverContract
      */
     public function count(string $entity): self
     {
-        ClassHelpers::validateClass($entity, Entity::class);
-
-        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select(['COUNT(*)']);
-        $this->query        = $this->connection->createQuery('', $entity);
+        $this->setQueryProperties($entity, ['COUNT(*)']);
 
         return $this;
     }
@@ -196,8 +189,8 @@ class Retriever implements RetrieverContract
      */
     public function where(string $column, string $operator, $value = null): self
     {
-        $this->queryBuilder->where($column, $operator, $value);
-        $this->query->bindValue($column, $value);
+        $this->queryBuilder->where($column, $operator);
+        $this->setValue($column, $value);
 
         return $this;
     }
@@ -213,8 +206,8 @@ class Retriever implements RetrieverContract
      */
     public function orWhere(string $column, string $operator, $value = null): self
     {
-        $this->queryBuilder->orWhere($column, $operator, $value);
-        $this->query->bindValue($column, $value);
+        $this->queryBuilder->orWhere($column, $operator);
+        $this->setValue($column, $value);
 
         return $this;
     }
@@ -245,6 +238,10 @@ class Retriever implements RetrieverContract
     {
         $this->queryBuilder->limit($limit);
 
+        if ($limit === 1) {
+            $this->one = true;
+        }
+
         return $this;
     }
 
@@ -269,24 +266,11 @@ class Retriever implements RetrieverContract
      */
     public function getResults()
     {
-        $this->connection->ensureTransaction();
-        $this->query->prepare($this->queryBuilder->getQueryString())->execute();
+        $this->prepareResults();
 
         $results = $this->query->getResult();
 
-        if (is_int($results)) {
-            return $results;
-        }
-
-        if ($this->getRelations && is_array($results)) {
-            $this->setRelations($this->columns, ...$results);
-        }
-
-        if ($this->one) {
-            return $results[0] ?? null;
-        }
-
-        return $results;
+        return $this->determineResults($results);
     }
 
     /**
@@ -301,6 +285,99 @@ class Retriever implements RetrieverContract
         if (! is_string($id) && ! is_int($id)) {
             throw new InvalidArgumentException('ID should be an int or string only.');
         }
+    }
+
+    /**
+     * Set query builder and query.
+     *
+     * @param string        $entity
+     * @param string[]|null $columns [optional]
+     * @param bool          $getRelations [optional]
+     *
+     * @return void
+     */
+    protected function setQueryProperties(string $entity, array $columns = null, bool $getRelations = false): void
+    {
+        ClassHelpers::validateClass($entity, Entity::class);
+
+        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select($columns);
+        $this->query        = $this->connection->createQuery('', $entity);
+
+        $this->setGetRelations($getRelations);
+    }
+
+    /**
+     * Set get relations flag.
+     *
+     * @param bool $getRelations
+     *
+     * @return void
+     */
+    protected function setGetRelations(bool $getRelations): void
+    {
+        $this->getRelations = $getRelations;
+    }
+
+    /**
+     * Set a value to bind later.
+     *
+     * @param string $column
+     * @param mixed  $value
+     *
+     * @return void
+     */
+    protected function setValue(string $column, $value): void
+    {
+        $this->values[$column] = $value;
+    }
+
+    /**
+     * Prepare results.
+     *
+     * @return void
+     */
+    protected function prepareResults(): void
+    {
+        $this->connection->ensureTransaction();
+        $this->query->prepare($this->queryBuilder->getQueryString());
+        $this->bindValues();
+        $this->query->execute();
+    }
+
+    /**
+     * Bind values to the query.
+     *
+     * @return void
+     */
+    protected function bindValues(): void
+    {
+        foreach ($this->values as $column => $value) {
+            $this->query->bindValue($column, $value);
+        }
+    }
+
+    /**
+     * Determine the results and how to return them.
+     *
+     * @param mixed $results
+     *
+     * @return Entity[]|Entity|int|null
+     */
+    protected function determineResults($results)
+    {
+        if (is_int($results)) {
+            return $results;
+        }
+
+        if ($this->getRelations && is_array($results)) {
+            $this->setRelations($this->columns, ...$results);
+        }
+
+        if ($this->one) {
+            return $results[0] ?? null;
+        }
+
+        return $results;
     }
 
     /**
