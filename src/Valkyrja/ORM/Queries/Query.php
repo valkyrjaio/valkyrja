@@ -18,6 +18,8 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
 
+use function is_array;
+
 /**
  * Class Query.
  *
@@ -123,6 +125,14 @@ class Query implements QueryContract
      */
     public function bindValue(string $property, $value): self
     {
+        if (is_array($value)) {
+            foreach ($value as $key => $item) {
+                $this->bindValue($property . $key, $item);
+            }
+
+            return $this;
+        }
+
         // And bind each value to the column
         $this->statement->bindValue($this->propertyBind($property), $value);
 

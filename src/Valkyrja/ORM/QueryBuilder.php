@@ -138,36 +138,14 @@ interface QueryBuilder
      *          ->where('column = :column')
      *          ->where('column2 = :column2');
      * </code>.
-     * TODO: Change to use:
-     * <code>string $column, string $assignment = null, string $value = null</code>
-     * If $assignment is null, value becomes '='
-     * If $value is null, value becomes ":$column"
      *
-     * @param string $where
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function where(string $where): self;
-
-    /**
-     * Add an additional `AND` where condition to the query statement.
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column = :column')
-     *          ->andWhere('column2 = :column2');
-     * </code>.
-     * TODO: Change to use:
-     * <code>string $column, string $assignment = null, string $value = null</code>
-     * If $assignment is null, value becomes '='
-     * If $value is null, value becomes ":$column"
-     *
-     * @param string $where
-     *
-     * @return static
-     */
-    public function andWhere(string $where): self;
+    public function where(string $column, string $operator, $value = null): self;
 
     /**
      * Add an additional `OR` where condition to the query statement.
@@ -178,16 +156,14 @@ interface QueryBuilder
      *          ->where('column = :column')
      *          ->andWhere('column2 = :column2');
      * </code>.
-     * TODO: Change to use:
-     * <code>string $column, string $assignment = null, string $value = null</code>
-     * If $assignment is null, value becomes '='
-     * If $value is null, value becomes ":$column"
      *
-     * @param string $where
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function orWhere(string $where): self;
+    public function orWhere(string $column, string $operator, $value = null): self;
 
     /**
      * Add an order by to the query statement.

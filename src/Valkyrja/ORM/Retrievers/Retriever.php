@@ -16,13 +16,11 @@ namespace Valkyrja\ORM\Retrievers;
 use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
 use Valkyrja\Support\ClassHelpers;
 
-use function array_keys;
 use function is_array;
 use function is_int;
 use function is_string;
@@ -477,13 +475,15 @@ class Retriever implements RetrieverContract
 
             // If the criterion is an array
             if (is_array($criterion)) {
-                $this->setArrayCriterionInQuery($query, $column, array_keys($criterion));
+                $this->setArrayCriterionInQuery($query, $column, $criterion);
 
                 continue;
             }
 
-            // If the criterion has a percent at the start or the end
-            if ($criterion[0] === '%' || $criterion[strlen($criterion) - 1] === '%') {
+            // If the criterion has a percent
+            if (is_string($criterion) && (strpos($criterion, '%') === 0 || strpos($criterion, '%') === strlen(
+                        $criterion - 1
+                    ))) {
                 $this->setLikeCriterionInQuery($query, $column);
 
                 continue;
@@ -547,7 +547,7 @@ class Retriever implements RetrieverContract
      */
     protected function setNullCriterionInQuery(QueryBuilder $query, string $column): void
     {
-        $query->where($column . ' IS NULL');
+        $query->where($column, 'IS', 'NULL');
     }
 
     /**
@@ -555,17 +555,13 @@ class Retriever implements RetrieverContract
      *
      * @param QueryBuilder $query
      * @param string       $column
-     * @param array        $indexes
+     * @param array        $value
      *
      * @return void
      */
-    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $indexes): void
+    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $value): void
     {
-        // Implode the criterion. Prepend with : to account for
-        $criterionConcat = ':' . implode(', :', $indexes);
-
-        // Set the where statement as an in
-        $query->where($column . ' IN (' . $criterionConcat . ')');
+        $query->where($column, 'IN', $value);
     }
 
     /**
@@ -578,7 +574,7 @@ class Retriever implements RetrieverContract
      */
     protected function setLikeCriterionInQuery(QueryBuilder $query, string $column): void
     {
-        $query->where($column . ' LIKE ' . $this->columnParam($column));
+        $query->where($column, 'LIKE');
     }
 
     /**
@@ -591,18 +587,6 @@ class Retriever implements RetrieverContract
      */
     protected function setEqualCriterionInQuery(QueryBuilder $query, string $column): void
     {
-        $query->where($column . ' = ' . $this->columnParam($column));
-    }
-
-    /**
-     * Get a column param from a column name.
-     *
-     * @param string $column
-     *
-     * @return string
-     */
-    protected function columnParam(string $column): string
-    {
-        return ':' . $column;
+        $query->where($column, '=');
     }
 }

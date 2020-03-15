@@ -20,6 +20,8 @@ use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 
+use function is_array;
+
 /**
  * Class SqlQueryBuilder.
  *
@@ -260,46 +262,23 @@ class SqlQueryBuilder implements QueryBuilder
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column');
+     *          ->where('column', '=', ':column');
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
-     *          ->where('column2 = :column2');
+     *          ->where('column', '=', ':column')
+     *          ->where('column2', '=', ':column2');
      * </code>.
      *
-     * @param string $where
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function where(string $where): QueryBuilder
+    public function where(string $column, string $operator, $value = null): QueryBuilder
     {
-        empty($this->where)
-            ? $this->setWhere($where)
-            : $this->setWhere($where, Statement::WHERE_AND);
-
-        return $this;
-    }
-
-    /**
-     * Add an additional `AND` where condition to the query statement.
-     * <code>
-     *      $queryBuilder
-     *          ->select()
-     *          ->table('table')
-     *          ->where('column = :column')
-     *          ->andWhere('column2 = :column2');
-     * </code>.
-     *
-     * @param string $where
-     *
-     * @return static
-     */
-    public function andWhere(string $where): QueryBuilder
-    {
-        empty($this->where)
-            ? $this->setWhere($where)
-            : $this->setWhere($where, Statement::WHERE_AND);
+        $this->setWhere($this->getWhereString($column, $operator, $value), Statement::WHERE_AND);
 
         return $this;
     }
@@ -310,19 +289,19 @@ class SqlQueryBuilder implements QueryBuilder
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
-     *          ->andWhere('column2 = :column2');
+     *          ->where('column', '=', ':column')
+     *          ->andWhere('column2', '=', ':column2');
      * </code>.
      *
-     * @param string $where
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function orWhere(string $where): QueryBuilder
+    public function orWhere(string $column, string $operator, $value = null): QueryBuilder
     {
-        empty($this->where)
-            ? $this->setWhere($where)
-            : $this->setWhere($where, Statement::WHERE_OR);
+        $this->setWhere($this->getWhereString($column, $operator, $value), Statement::WHERE_OR);
 
         return $this;
     }
@@ -365,9 +344,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function orderByAsc(string $column): QueryBuilder
     {
-        $this->setOrderBy($column, OrderBy::ASC);
-
-        return $this;
+        return $this->orderBy($column, OrderBy::ASC);
     }
 
     /**
@@ -386,9 +363,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function orderByDesc(string $column): QueryBuilder
     {
-        $this->setOrderBy($column, OrderBy::DESC);
-
-        return $this;
+        return $this->orderBy($column, OrderBy::DESC);
     }
 
     /**
@@ -484,7 +459,42 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function setWhere(string $where, string $type = null): void
     {
-        $this->where[] = ((string) $type) . ' ' . $where;
+        $this->where[] = (empty($this->where) ? '' : (string) $type) . ' ' . $where;
+    }
+
+    /**
+     * Get a where string.
+     *
+     * @param string $column
+     * @param string $operator
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function getWhereString(string $column, string $operator, $value = null): string
+    {
+        return $column . $operator . $this->getWhereValue($column, $value);
+    }
+
+    /**
+     * Get a where value
+     *
+     * @param string $column
+     * @param mixed  $value
+     *
+     * @return string
+     */
+    protected function getWhereValue(string $column, $value): string
+    {
+        if (null === $value) {
+            return ':' . $column;
+        }
+
+        if (! is_array($value)) {
+            return (string) $value;
+        }
+
+        return '(:' . $column . implode(', :' . $column, array_keys($value)) . ')';
     }
 
     /**

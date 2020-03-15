@@ -60,13 +60,6 @@ class PDOConnection implements ConnectionContract
     protected PDO $connection;
 
     /**
-     * The entity retriever.
-     *
-     * @var Retriever
-     */
-    protected Retriever $retriever;
-
-    /**
      * The entity persister.
      *
      * @var Persister
@@ -89,7 +82,6 @@ class PDOConnection implements ConnectionContract
     {
         $this->config     = config()['orm']['connections'][$connection];
         $this->connection = $this->getConnectionFromConfig();
-        $this->retriever  = new RetrieverClass($this);
         $this->persister  = new PersisterClass($this);
 
         $this->beginTransaction();
@@ -271,7 +263,7 @@ class PDOConnection implements ConnectionContract
      */
     public function getRetriever(): Retriever
     {
-        return $this->retriever;
+        return new RetrieverClass($this);
     }
 
     /**
