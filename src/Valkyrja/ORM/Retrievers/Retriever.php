@@ -16,6 +16,7 @@ namespace Valkyrja\ORM\Retrievers;
 use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Enums\Operator;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
@@ -137,7 +138,7 @@ class Retriever implements RetrieverContract
         $this->limit(1);
 
         /** @var Entity $entity */
-        $this->where($entity::getIdField(), '=', $id);
+        $this->where($entity::getIdField(), Operator::EQUALS, $id);
 
         return $this;
     }
