@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Retrievers;
 
-use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
-use Valkyrja\Support\ClassHelpers;
 
 use function is_array;
 use function is_int;
-use function is_string;
-use function strlen;
 
 /**
  * Class Retriever
@@ -34,11 +30,46 @@ use function strlen;
 class Retriever implements RetrieverContract
 {
     /**
-     * The entity manager.
+     * The columns.
+     *
+     * @var array
+     */
+    protected array $columns = [];
+
+    /**
+     * Whether to get relations.
+     *
+     * @var bool
+     */
+    protected bool $getRelations = false;
+
+    /**
+     * Whether to only retrieve one.
+     *
+     * @var bool
+     */
+    protected bool $one = false;
+
+    /**
+     * The connection.
      *
      * @var Connection
      */
     protected Connection $connection;
+
+    /**
+     * The query builder.
+     *
+     * @var QueryBuilder
+     */
+    protected QueryBuilder $queryBuilder;
+
+    /**
+     * The query.
+     *
+     * @var Query
+     */
+    protected Query $query;
 
     /**
      * Retriever constructor.
@@ -48,6 +79,30 @@ class Retriever implements RetrieverContract
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+    }
+
+    /**
+     * Find by given criteria.
+     * <code>
+     *      $entityRetriever
+     *          ->findBy(
+     *              Entity::class,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param string    $entity
+     * @param bool|null $getRelations
+     *
+     * @return static
+     */
+    public function find(string $entity, bool $getRelations = false): self
+    {
+        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
+        $this->query        = $this->connection->createQuery('', $entity);
+        $this->getRelations = $getRelations;
+
+        return $this;
     }
 
     /**
@@ -65,142 +120,20 @@ class Retriever implements RetrieverContract
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @throws InvalidArgumentException If id is not a string or int
-     *
-     * @return Entity|null
+     * @return static
      */
-    public function find(string $entity, $id, bool $getRelations = false): ?Entity
+    public function findOne(string $entity, $id, bool $getRelations = false): self
     {
-        // Validate the id
-        $this->validateId($id);
+        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select();
+        $this->query        = $this->connection->createQuery('', $entity);
+        $this->one          = true;
+        $this->getRelations = $getRelations;
 
-        /** @var Entity|string $entity */
-        $idField = $entity::getIdField();
+        /** @var Entity $entity */
+        $this->queryBuilder->where($entity::getIdField(), $id);
+        $this->query->bindValue($entity::getIdField(), $id);
 
-        /** @var string $entity */
-
-        return $this->findAllBy(
-                $entity,
-                [$idField => $id],
-                null,
-                null,
-                null,
-                null,
-                $getRelations
-            )[0]
-            ?? null;
-    }
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findOneBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity|null
-     */
-    public function findBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): ?Entity {
-        return $this->findAllBy($entity, $criteria, $orderBy, 1, $offset, $columns, $getRelations)[0] ?? null;
-    }
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(
-        string $entity,
-        array $orderBy = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array {
-        return $this->findAllBy($entity, [], $orderBy, null, null, $columns, $getRelations);
-    }
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAllBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array {
-        return (array) $this->select($entity, $columns, $criteria, $orderBy, $limit, $offset, $getRelations);
+        return $this;
     }
 
     /**
@@ -208,385 +141,155 @@ class Retriever implements RetrieverContract
      * <code>
      *      $entityRetriever
      *          ->count(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ]
+     *              Entity::class
      *          )
      * </code>.
      *
      * @param string $entity
-     * @param array  $criteria
      *
-     * @return int
+     * @return static
      */
-    public function count(string $entity, array $criteria): int
+    public function count(string $entity): self
     {
-        return (int) $this->select($entity, ['COUNT(*)'], $criteria);
+        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select(['COUNT(*)']);
+        $this->query        = $this->connection->createQuery('', $entity);
+
+        return $this;
     }
 
     /**
-     * Validate an id.
+     * Set columns.
      *
-     * @param mixed $id The id
+     * @param array $columns
      *
-     * @return void
+     * @return static
      */
-    protected function validateId($id): void
+    public function columns(array $columns): self
     {
-        if (! is_string($id) && ! is_int($id)) {
-            throw new InvalidArgumentException('ID should be an int or string only.');
-        }
+        $this->columns      = $columns;
+        $this->queryBuilder = $this->queryBuilder->select($columns);
+
+        return $this;
     }
 
     /**
-     * Select entities by given criteria.
-     * <code>
-     *      $this
-     *          ->select(
-     *              [
-     *                  'column',
-     *                  'column2',
-     *              ],
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
+     * Add a where condition.
+     * - Each additional use will add an `AND` where condition.
      *
-     * @param string     $entity
-     * @param array|null $columns
-     * @param array|null $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param bool|null  $getRelations
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
-     * @return Entity[]|int
+     * @return static
      */
-    protected function select(
-        string $entity,
-        array $columns = null,
-        array $criteria = null,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        bool $getRelations = false
-    ) {
-        $this->connection->ensureTransaction();
-
-        ClassHelpers::validateClass($entity, Entity::class);
-
-        // Get the query builders
-        $queryBuilder = $this->getQueryBuilderForSelect($entity, $columns, $criteria, $orderBy, $limit, $offset);
-
-        // Create a new query with the query builder
-        $query = $this->connection->createQuery($queryBuilder->getQueryString(), $entity);
-
-        // Bind criteria
-        $this->bindValuesForSelect($query, $criteria);
-
-        // Execute the query
-        $query->execute();
-
-        // Get all the results from the query
-        $result = $query->getResult();
-
-        // If the results are an array (not a count result [int])
-        if ($getRelations && is_array($result)) {
-            // Try to get the entity relations
-            $this->selectResultsRelations($columns, ...$result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Build a select query statement by given criteria.
-     * <code>
-     *      $this->queryBuilder(
-     *              [
-     *                  'column',
-     *                  'column2',
-     *              ],
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array|null $columns
-     * @param array|null $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     *
-     * @return QueryBuilder
-     */
-    protected function getQueryBuilderForSelect(
-        string $entity,
-        array $columns = null,
-        array $criteria = null,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null
-    ): QueryBuilder {
-        // Create a new query
-        $query = $this->connection->createQueryBuilder($entity)->select($columns);
-
-        // If criteria has been passed
-        if (null !== $criteria) {
-            $this->setCriteriaInQuery($query, $criteria);
-        }
-
-        // If order by has been passed
-        if (null !== $orderBy) {
-            $this->setOrderByInQuery($query, $orderBy);
-        }
-
-        // If a limit is passed
-        if (null !== $limit) {
-            $this->setLimitInQuery($query, $limit);
-        }
-
-        // If an offset is passed
-        if (null !== $offset) {
-            $this->setOffsetInQuery($query, $offset);
-        }
-
-        return $query;
-    }
-
-    /**
-     * Bind criteria for a select statement.
-     *
-     * @param Query      $query
-     * @param array|null $criteria
-     *
-     * @return void
-     */
-    protected function bindValuesForSelect(Query $query, array $criteria = null): void
+    public function where(string $column, string $operator, $value = null): self
     {
-        // Iterate through the criteria once more
-        foreach ($criteria as $column => $criterion) {
-            $this->bindValueForSelect($query, $column, $criterion);
-        }
+        $this->queryBuilder->where($column, $operator, $value);
+        $this->query->bindValue($column, $value);
+
+        return $this;
     }
 
     /**
-     * Bind criteria value for a select statement.
+     * Add an additional `OR` where condition.
      *
-     * @param Query  $query
-     * @param string $column
-     * @param mixed  $criterion
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
      *
-     * @return void
+     * @return static
      */
-    protected function bindValueForSelect(Query $query, string $column, $criterion): void
+    public function orWhere(string $column, string $operator, $value = null): self
     {
-        // If the criterion is null
-        if ($criterion === null) {
-            // Skip as we've already set the where to IS NULL
-            return;
-        }
+        $this->queryBuilder->orWhere($column, $operator, $value);
+        $this->query->bindValue($column, $value);
 
-        // If the criterion is an array
-        if (is_array($criterion)) {
-            $this->bindArrayValueForSelect($query, $column, $criterion);
-
-            return;
-        }
-
-        // And bind each value to the column
-        $query->bindValue($column, $criterion);
+        return $this;
     }
 
     /**
-     * Bind array value for a select statement.
+     * Set order by.
      *
-     * @param Query  $query
-     * @param string $column
-     * @param array  $criterion
+     * @param string      $orderBy
+     * @param string|null $type
      *
-     * @return void
+     * @return static
      */
-    protected function bindArrayValueForSelect(Query $query, string $column, array $criterion): void
+    public function orderBY(string $orderBy, string $type = null): self
     {
-        // Iterate through the criterion and bind each value individually
-        foreach ($criterion as $index => $criterionItem) {
-            $query->bindValue($column . $index, $criterionItem);
-        }
+        $this->queryBuilder->orderBy($orderBy, $type);
+
+        return $this;
     }
 
     /**
-     * Get select results as an array of Entities.
+     * Set limit.
+     *
+     * @param int $limit
+     *
+     * @return static
+     */
+    public function limit(int $limit): self
+    {
+        $this->queryBuilder->limit($limit);
+
+        return $this;
+    }
+
+    /**
+     * Set offset.
+     *
+     * @param int $offset
+     *
+     * @return static
+     */
+    public function offset(int $offset): self
+    {
+        $this->queryBuilder->offset($offset);
+
+        return $this;
+    }
+
+    /**
+     * Get results.
+     *
+     * @return Entity[]|Entity|int|null
+     */
+    public function getResults()
+    {
+        $this->query->prepare($this->queryBuilder->getQueryString())->execute();
+
+        $results = $this->query->getResult();
+
+        if (is_int($results)) {
+            return $results;
+        }
+
+        if ($this->getRelations && is_array($results)) {
+            $this->setRelations($this->columns, ...$results);
+        }
+
+        if ($this->one) {
+            return $results[0] ?? null;
+        }
+
+        return $results;
+    }
+
+    /**
+     * Set result relations.
      *
      * @param array|null $columns
      * @param Entity     ...$entities
      *
      * @return void
      */
-    protected function selectResultsRelations(array $columns = null, Entity ...$entities): void
+    protected function setRelations(array $columns = null, Entity ...$entities): void
     {
         // Iterate through the rows found
         foreach ($entities as $entity) {
             // Get the entity relations
             $entity->setEntityRelations($columns);
         }
-    }
-
-    /**
-     * Set the criteria in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param array        $criteria
-     *
-     * @return void
-     */
-    protected function setCriteriaInQuery(QueryBuilder $query, array $criteria): void
-    {
-        // Iterate through each criteria and set the column = :column
-        // so we can use bindColumn() in PDO later
-        foreach ($criteria as $column => $criterion) {
-            // If the criterion is null
-            if ($criterion === null) {
-                $this->setNullCriterionInQuery($query, $column);
-
-                continue;
-            }
-
-            // If the criterion is an array
-            if (is_array($criterion)) {
-                $this->setArrayCriterionInQuery($query, $column, $criterion);
-
-                continue;
-            }
-
-            // If the criterion has a percent
-            if (is_string($criterion) && (strpos($criterion, '%') === 0 || strpos($criterion, '%') === strlen(
-                        $criterion - 1
-                    ))) {
-                $this->setLikeCriterionInQuery($query, $column);
-
-                continue;
-            }
-
-            $this->setEqualCriterionInQuery($query, $column);
-        }
-    }
-
-    /**
-     * Set the order by options in a query builder.
-     *
-     * @param QueryBuilder $query
-     * @param array        $orderBy
-     *
-     * @return void
-     */
-    protected function setOrderByInQuery(QueryBuilder $query, array $orderBy): void
-    {
-        // Iterate through each order by
-        foreach ($orderBy as $column => $order) {
-            $query->orderBy($column, $order);
-        }
-    }
-
-    /**
-     * Set the limit in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param int          $limit
-     *
-     * @return void
-     */
-    protected function setLimitInQuery(QueryBuilder $query, int $limit): void
-    {
-        // Set it in the query
-        $query->limit($limit);
-    }
-
-    /**
-     * Set the offset in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param int          $offset
-     *
-     * @return void
-     */
-    protected function setOffsetInQuery(QueryBuilder $query, int $offset): void
-    {
-        // Set it in the query
-        $query->offset($offset);
-    }
-
-    /**
-     * Set a null criterion in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param string       $column
-     *
-     * @return void
-     */
-    protected function setNullCriterionInQuery(QueryBuilder $query, string $column): void
-    {
-        $query->where($column, 'IS', 'NULL');
-    }
-
-    /**
-     * Set an array criterion in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param string       $column
-     * @param array        $value
-     *
-     * @return void
-     */
-    protected function setArrayCriterionInQuery(QueryBuilder $query, string $column, array $value): void
-    {
-        $query->where($column, 'IN', $value);
-    }
-
-    /**
-     * Set a like where statement for a criterion/column in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param string       $column
-     *
-     * @return void
-     */
-    protected function setLikeCriterionInQuery(QueryBuilder $query, string $column): void
-    {
-        $query->where($column, 'LIKE');
-    }
-
-    /**
-     * Set an equal where statement for a criterion/column in the query builder.
-     *
-     * @param QueryBuilder $query
-     * @param string       $column
-     *
-     * @return void
-     */
-    protected function setEqualCriterionInQuery(QueryBuilder $query, string $column): void
-    {
-        $query->where($column, '=');
     }
 }

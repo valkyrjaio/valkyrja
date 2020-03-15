@@ -124,12 +124,28 @@ interface EntityManager
     public function lastInsertId(): string;
 
     /**
+     * Find by given criteria.
+     * <code>
+     *      $entityManager
+     *          ->findBy(
+     *              Entity::class,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param string    $entity
+     * @param bool|null $getRelations
+     *
+     * @return Retriever
+     */
+    public function find(string $entity, bool $getRelations = false): Retriever;
+
+    /**
      * Find a single entity given its id.
      * <code>
-     *      $repository
+     *      $entityManager
      *          ->find(
      *              Entity::class,
-     *              true | false,
      *              1,
      *              true | false | null
      *          )
@@ -139,139 +155,24 @@ interface EntityManager
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
+     * @return Retriever
      */
-    public function find(string $entity, $id, bool $getRelations = false): ?Entity;
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $repository
-     *          ->findOneBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity|null
-     */
-    public function findBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): ?Entity;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityManager
-     *          ->findBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(
-        string $entity,
-        array $orderBy = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityManager
-     *          ->findBy(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAllBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array;
+    public function findOne(string $entity, $id, bool $getRelations = false): Retriever;
 
     /**
      * Count all the results of given criteria.
      * <code>
      *      $entityManager
      *          ->count(
-     *              Entity::class,
-     *              true | false,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ]
+     *              Entity::class
      *          )
      * </code>.
      *
      * @param string $entity
-     * @param array  $criteria
      *
-     * @return int
+     * @return Retriever
      */
-    public function count(string $entity, array $criteria): int;
+    public function count(string $entity): Retriever;
 
     /**
      * Set a model for creation on transaction commit.

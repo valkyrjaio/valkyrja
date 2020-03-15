@@ -21,6 +21,23 @@ namespace Valkyrja\ORM;
 interface Retriever
 {
     /**
+     * Find by given criteria.
+     * <code>
+     *      $entityRetriever
+     *          ->findBy(
+     *              Entity::class,
+     *              1
+     *          )
+     * </code>.
+     *
+     * @param string    $entity
+     * @param bool|null $getRelations
+     *
+     * @return static
+     */
+    public function find(string $entity, bool $getRelations = false): self;
+
+    /**
      * Find a single entity given its id.
      * <code>
      *      $entityRetriever
@@ -35,133 +52,89 @@ interface Retriever
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
+     * @return static
      */
-    public function find(string $entity, $id, bool $getRelations = false): ?Entity;
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findOneBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity|null
-     */
-    public function findBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): ?Entity;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(
-        string $entity,
-        array $orderBy = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'  => null,
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param string     $entity
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAllBy(
-        string $entity,
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array;
+    public function findOne(string $entity, $id, bool $getRelations = false): self;
 
     /**
      * Count all the results of given criteria.
      * <code>
      *      $entityRetriever
      *          ->count(
-     *              Entity::class,
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ]
+     *              Entity::class
      *          )
      * </code>.
      *
      * @param string $entity
-     * @param array  $criteria
      *
-     * @return int
+     * @return static
      */
-    public function count(string $entity, array $criteria): int;
+    public function count(string $entity): self;
+
+    /**
+     * Set columns.
+     *
+     * @param array $columns
+     *
+     * @return static
+     */
+    public function columns(array $columns): self;
+
+    /**
+     * Add a where condition.
+     * - Each additional use will add an `AND` where condition.
+     *
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
+     *
+     * @return static
+     */
+    public function where(string $column, string $operator, $value = null): self;
+
+    /**
+     * Add an additional `OR` where condition.
+     *
+     * @param string     $column
+     * @param string     $operator
+     * @param mixed|null $value
+     *
+     * @return static
+     */
+    public function orWhere(string $column, string $operator, $value = null): self;
+
+    /**
+     * Set an order by.
+     *
+     * @param string $orderBy
+     * @param string|null $type
+     *
+     * @return static
+     */
+    public function orderBY(string $orderBy, string $type = null): self;
+
+    /**
+     * Set limit.
+     *
+     * @param int $limit
+     *
+     * @return static
+     */
+    public function limit(int $limit): self;
+
+    /**
+     * Set offset.
+     *
+     * @param int $offset
+     *
+     * @return static
+     */
+    public function offset(int $offset): self;
+
+    /**
+     * Get results.
+     *
+     * @return Entity[]|Entity|int|null
+     */
+    public function getResults();
 }

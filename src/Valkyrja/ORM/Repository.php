@@ -31,132 +31,30 @@ interface Repository
     public static function make(EntityManager $entityManager, string $entity): self;
 
     /**
+     * Find by given criteria.
+     *
+     * @param bool|null $getRelations
+     *
+     * @return Retriever
+     */
+    public function find(bool $getRelations = false): Retriever;
+
+    /**
      * Find a single entity given its id.
-     * <code>
-     *      $repository
-     *          ->find(
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
      *
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
+     * @return Retriever
      */
-    public function find($id, bool $getRelations = false): ?Entity;
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $repository
-     *          ->findOneBy(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity|null
-     */
-    public function findBy(
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): ?Entity;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $repository
-     *          ->findBy(
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = false): array;
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $repository
-     *          ->findBy(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAllBy(
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array;
+    public function findOne($id, bool $getRelations = false): Retriever;
 
     /**
      * Count all the results of given criteria.
-     * <code>
-     *      $repository
-     *          ->count(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ]
-     *          )
-     * </code>.
      *
-     * @param array $criteria
-     *
-     * @return int
+     * @return Retriever
      */
-    public function count(array $criteria): int;
+    public function count(): Retriever;
 
     /**
      * Create a new model.
@@ -165,6 +63,7 @@ interface Repository
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -177,6 +76,7 @@ interface Repository
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */
@@ -189,6 +89,7 @@ interface Repository
      * </code>.
      *
      * @param Entity $entity
+     * @param bool   $defer [optional]
      *
      * @return void
      */

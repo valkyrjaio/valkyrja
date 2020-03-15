@@ -21,6 +21,7 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
 
+use Valkyrja\ORM\Retriever;
 use Valkyrja\Support\ClassHelpers;
 
 use function get_class;
@@ -84,153 +85,38 @@ class Repository implements RepositoryContract
     }
 
     /**
+     * Find by given criteria.
+     *
+     * @param bool|null $getRelations
+     *
+     * @return Retriever
+     */
+    public function find(bool $getRelations = false): Retriever
+    {
+        return $this->entityManager->find($this->entity, $getRelations);
+    }
+
+    /**
      * Find a single entity given its id.
-     * <code>
-     *      $repository
-     *          ->find(
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
      *
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Entity|null
+     * @return Retriever
      */
-    public function find($id, bool $getRelations = false): ?Entity
+    public function findOne($id, bool $getRelations = false): Retriever
     {
-        return $this->entityManager->find($this->entity, $id, $getRelations);
-    }
-
-    /**
-     * Find one entity by given criteria.
-     * <code>
-     *      $repository
-     *          ->findOneBy(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity|null
-     */
-    public function findBy(
-        array $criteria,
-        array $orderBy = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): ?Entity {
-        return $this->entityManager->findBy(
-            $this->entity,
-            $criteria,
-            $orderBy,
-            $offset,
-            $columns,
-            $getRelations
-        );
-    }
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $repository
-     *          ->findBy(
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ]
-     *          )
-     * </code>.
-     *
-     * @param array      $orderBy
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAll(array $orderBy = null, array $columns = null, bool $getRelations = false): array
-    {
-        return $this->entityManager->findAll($this->entity, $orderBy, $columns, $getRelations);
-    }
-
-    /**
-     * Find entities by given criteria.
-     * <code>
-     *      $repository
-     *          ->findBy(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ],
-     *              [
-     *                  'column'
-     *                  'column2' => OrderBy::ASC,
-     *                  'column3' => OrderBy::DESC,
-     *              ],
-     *              1,
-     *              1
-     *          )
-     * </code>.
-     *
-     * @param array      $criteria
-     * @param array|null $orderBy
-     * @param int|null   $limit
-     * @param int|null   $offset
-     * @param array|null $columns
-     * @param bool|null  $getRelations
-     *
-     * @return Entity[]
-     */
-    public function findAllBy(
-        array $criteria,
-        array $orderBy = null,
-        int $limit = null,
-        int $offset = null,
-        array $columns = null,
-        bool $getRelations = false
-    ): array {
-        return $this->entityManager->findAllBy(
-            $this->entity, $criteria, $orderBy, $limit, $offset, $columns, $getRelations
-        );
+        return $this->entityManager->findOne($this->entity, $id, $getRelations);
     }
 
     /**
      * Count all the results of given criteria.
-     * <code>
-     *      $repository
-     *          ->count(
-     *              [
-     *                  'column'  => 'value',
-     *                  'column2' => 'value2',
-     *              ]
-     *          )
-     * </code>.
      *
-     * @param array $criteria
-     *
-     * @return int
+     * @return Retriever
      */
-    public function count(array $criteria): int
+    public function count(): Retriever
     {
-        return $this->entityManager->count($this->entity, $criteria);
+        return $this->entityManager->count($this->entity);
     }
 
     /**
