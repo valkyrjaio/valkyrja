@@ -67,13 +67,13 @@ class PDOAdapter implements Adapter
     }
 
     /**
-     * Create a new connection.
+     * Get a connection.
      *
      * @param string|null $connection The connection to use
      *
      * @return Connection
      */
-    public function createConnection(string $connection = null): Connection
+    public function getConnection(string $connection = null): Connection
     {
         $connection ??= $this->defaultConnection;
 

@@ -72,7 +72,7 @@ interface Connection
     public function lastInsertId(): string;
 
     /**
-     * Create a new query.
+     * Create a new query instance.
      *
      * @param string|null $query
      * @param string|null $entity
@@ -82,7 +82,7 @@ interface Connection
     public function createQuery(string $query = null, string $entity = null): Query;
 
     /**
-     * Create a new query builder.
+     * Create a new query builder instance.
      *
      * @param string|null $entity
      * @param string|null $alias
@@ -92,11 +92,11 @@ interface Connection
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 
     /**
-     * Get the retriever.
+     * Create a new retriever instance.
      *
      * @return Retriever
      */
-    public function getRetriever(): Retriever;
+    public function createRetriever(): Retriever;
 
     /**
      * Get the persister.

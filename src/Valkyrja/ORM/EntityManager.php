@@ -21,7 +21,7 @@ namespace Valkyrja\ORM;
 interface EntityManager
 {
     /**
-     * Get an adapter by name.
+     * Get an adapter.
      *
      * @param string|null $name
      *
@@ -30,7 +30,7 @@ interface EntityManager
     public function getAdapter(string $name = null): Adapter;
 
     /**
-     * Get a connection by name.
+     * Get a connection.
      *
      * @param string|null $connection
      *
@@ -39,7 +39,7 @@ interface EntityManager
     public function getConnection(string $connection = null): Connection;
 
     /**
-     * Create a new query builder.
+     * Create a new query builder instance.
      *
      * @param string|null $entity
      * @param string|null $alias
@@ -49,7 +49,7 @@ interface EntityManager
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder;
 
     /**
-     * Create a new query.
+     * Create a new query instance.
      *
      * @param string|null $query
      * @param string|null $entity
@@ -59,11 +59,11 @@ interface EntityManager
     public function createQuery(string $query = null, string $entity = null): Query;
 
     /**
-     * Get the retriever.
+     * Create a new retriever instance.
      *
      * @return Retriever
      */
-    public function getRetriever(): Retriever;
+    public function createRetriever(): Retriever;
 
     /**
      * Get the persister.

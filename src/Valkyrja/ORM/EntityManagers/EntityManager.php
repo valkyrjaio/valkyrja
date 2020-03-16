@@ -113,7 +113,7 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Get an adapter by name.
+     * Get an adapter.
      *
      * @param string|null $name
      *
@@ -134,7 +134,7 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Get a connection by name.
+     * Get a connection.
      *
      * @param string|null $connection
      *
@@ -142,11 +142,11 @@ class EntityManager implements EntityManagerContract
      */
     public function getConnection(string $connection = null): Connection
     {
-        return $this->getAdapter()->createConnection($connection);
+        return $this->getAdapter()->getConnection($connection);
     }
 
     /**
-     * Create a new query builder.
+     * Create a new query builder instance.
      *
      * @param string|null $entity
      * @param string|null $alias
@@ -159,7 +159,7 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Create a new query.
+     * Create a new query instance.
      *
      * @param string|null $query
      * @param string|null $entity
@@ -172,13 +172,13 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Get the retriever.
+     * Create a new retriever instance.
      *
      * @return Retriever
      */
-    public function getRetriever(): Retriever
+    public function createRetriever(): Retriever
     {
-        return $this->getConnection()->getRetriever();
+        return $this->getConnection()->createRetriever();
     }
 
     /**
@@ -294,7 +294,7 @@ class EntityManager implements EntityManagerContract
      */
     public function find(string $entity, bool $getRelations = false): Retriever
     {
-        return $this->getConnection()->getRetriever()->find($entity, $getRelations);
+        return $this->getConnection()->createRetriever()->find($entity, $getRelations);
     }
 
     /**
@@ -316,7 +316,7 @@ class EntityManager implements EntityManagerContract
      */
     public function findOne(string $entity, $id, bool $getRelations = false): Retriever
     {
-        return $this->getConnection()->getRetriever()->findOne($entity, $id, $getRelations);
+        return $this->getConnection()->createRetriever()->findOne($entity, $id, $getRelations);
     }
 
     /**
@@ -334,7 +334,7 @@ class EntityManager implements EntityManagerContract
      */
     public function count(string $entity): Retriever
     {
-        return $this->getConnection()->getRetriever()->count($entity);
+        return $this->getConnection()->createRetriever()->count($entity);
     }
 
     /**

@@ -215,7 +215,7 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
-     * Create a new query.
+     * Create a new query instance.
      *
      * @param string|null $query
      * @param string|null $entity
@@ -238,7 +238,7 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
-     * Create a new query builder.
+     * Create a new query builder instance.
      *
      * @param string|null $entity
      * @param string|null $alias
@@ -257,11 +257,11 @@ class PDOConnection implements ConnectionContract
     }
 
     /**
-     * Get the retriever.
+     * Create a new retriever instance.
      *
      * @return Retriever
      */
-    public function getRetriever(): Retriever
+    public function createRetriever(): Retriever
     {
         return new RetrieverClass($this);
     }

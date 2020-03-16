@@ -28,11 +28,11 @@ interface Adapter
     public static function make(): self;
 
     /**
-     * Create a new connection.
+     * Get a connection.
      *
      * @param string|null $connection The connection to use
      *
      * @return Connection
      */
-    public function createConnection(string $connection = null): Connection;
+    public function getConnection(string $connection = null): Connection;
 }
