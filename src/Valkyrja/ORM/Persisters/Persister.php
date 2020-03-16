@@ -310,7 +310,7 @@ class Persister implements PersisterContract
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {
             // Set the id for the where clause
-            $queryBuilder->where($idField . ' = ' . $this->columnParam($idField));
+            $queryBuilder->where($idField);
         }
 
         if ($type !== Statement::DELETE) {
@@ -350,18 +350,6 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Get a column param from a column name.
-     *
-     * @param string $column
-     *
-     * @return string
-     */
-    protected function columnParam(string $column): string
-    {
-        return ':' . $column;
-    }
-
-    /**
      * Set properties for save, delete, or create queries.
      *
      * @param QueryBuilder $query
@@ -378,7 +366,7 @@ class Persister implements PersisterContract
             }
 
             // Set the column and param name
-            $query->set($column, $this->columnParam($column));
+            $query->set($column);
         }
     }
 

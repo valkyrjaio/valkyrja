@@ -84,29 +84,29 @@ interface Retriever
      * Add a where condition.
      * - Each additional use will add an `AND` where condition.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function where(string $column, string $operator, $value = null): self;
+    public function where(string $column, string $operator = null, $value = null): self;
 
     /**
      * Add an additional `OR` where condition.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator, $value = null): self;
+    public function orWhere(string $column, string $operator = null, $value = null): self;
 
     /**
      * Set an order by.
      *
-     * @param string $orderBy
+     * @param string      $orderBy
      * @param string|null $type
      *
      * @return static

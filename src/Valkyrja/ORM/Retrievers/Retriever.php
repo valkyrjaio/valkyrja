@@ -16,7 +16,6 @@ namespace Valkyrja\ORM\Retrievers;
 use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\Operator;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
@@ -138,7 +137,7 @@ class Retriever implements RetrieverContract
         $this->limit(1);
 
         /** @var Entity $entity */
-        $this->where($entity::getIdField(), Operator::EQUALS, $id);
+        $this->where($entity::getIdField(), null, $id);
 
         return $this;
     }
@@ -182,13 +181,13 @@ class Retriever implements RetrieverContract
      * Add a where condition.
      * - Each additional use will add an `AND` where condition.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function where(string $column, string $operator, $value = null): self
+    public function where(string $column, string $operator = null, $value = null): self
     {
         $this->queryBuilder->where($column, $operator);
         $this->setValue($column, $value);
@@ -199,13 +198,13 @@ class Retriever implements RetrieverContract
     /**
      * Add an additional `OR` where condition.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator, $value = null): self
+    public function orWhere(string $column, string $operator = null, $value = null): self
     {
         $this->queryBuilder->orWhere($column, $operator);
         $this->setValue($column, $value);
@@ -292,7 +291,7 @@ class Retriever implements RetrieverContract
      * Set query builder and query.
      *
      * @param string        $entity
-     * @param string[]|null $columns [optional]
+     * @param string[]|null $columns      [optional]
      * @param bool          $getRelations [optional]
      *
      * @return void

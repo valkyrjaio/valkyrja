@@ -114,15 +114,12 @@ interface QueryBuilder
      *          ->set('column', ':column');
      * </code>.
      *
-     * @param string $column
-     * @param string $value
-     * TODO: Change to use:
-     * <code>string $column, string $value = null</code>
-     * If $value is null, value becomes ":$column"
+     * @param string     $column
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function set(string $column, string $value): self;
+    public function set(string $column, $value = null): self;
 
     /**
      * Add a where condition to the query statement.
@@ -139,13 +136,13 @@ interface QueryBuilder
      *          ->where('column2 = :column2');
      * </code>.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function where(string $column, string $operator, $value = null): self;
+    public function where(string $column, string $operator = null, $value = null): self;
 
     /**
      * Add an additional `OR` where condition to the query statement.
@@ -157,13 +154,13 @@ interface QueryBuilder
      *          ->andWhere('column2 = :column2');
      * </code>.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator, $value = null): self;
+    public function orWhere(string $column, string $operator = null, $value = null): self;
 
     /**
      * Add an order by to the query statement.

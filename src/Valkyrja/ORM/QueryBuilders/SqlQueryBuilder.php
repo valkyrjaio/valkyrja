@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\QueryBuilders;
 
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Enums\Operator;
 use Valkyrja\ORM\Enums\OrderBy;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Query;
@@ -243,14 +244,14 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->set('column', ':column');
      * </code>.
      *
-     * @param string $column
-     * @param string $value
+     * @param string     $column
+     * @param mixed|null $value
      *
      * @return static
      */
-    public function set(string $column, string $value): QueryBuilder
+    public function set(string $column, $value = null): QueryBuilder
     {
-        $this->values[$column] = $value;
+        $this->values[$column] = $value ?? ":$column";
 
         return $this;
     }
@@ -270,15 +271,15 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->where('column2', '=', ':column2');
      * </code>.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function where(string $column, string $operator, $value = null): QueryBuilder
+    public function where(string $column, string $operator = null, $value = null): QueryBuilder
     {
-        $this->setWhere($this->getWhereString($column, $operator, $value), Statement::WHERE_AND);
+        $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_AND);
 
         return $this;
     }
@@ -293,15 +294,15 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->andWhere('column2', '=', ':column2');
      * </code>.
      *
-     * @param string     $column
-     * @param string     $operator
-     * @param mixed|null $value
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
      *
      * @return static
      */
-    public function orWhere(string $column, string $operator, $value = null): QueryBuilder
+    public function orWhere(string $column, string $operator = null, $value = null): QueryBuilder
     {
-        $this->setWhere($this->getWhereString($column, $operator, $value), Statement::WHERE_OR);
+        $this->setWhere($this->getWhereString($column, $operator ?? Operator::EQUALS, $value), Statement::WHERE_OR);
 
         return $this;
     }
