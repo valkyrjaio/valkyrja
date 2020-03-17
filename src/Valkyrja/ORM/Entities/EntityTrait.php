@@ -57,6 +57,7 @@ trait EntityTrait
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
+     *
      * <code>
      *      [
      *          // An array to be json_encoded/decoded to/from the db
@@ -68,7 +69,7 @@ trait EntityTrait
      *          // An array of related entities
      *          'property_name' => [Entity::class],
      *      ]
-     * </code>.
+     * </code>
      *
      * @var array
      */
@@ -76,12 +77,13 @@ trait EntityTrait
 
     /**
      * Allowed classes for serialization of object type properties.
+     *
      * <code>
      *      [
      *          // An array of allowed classes for serialization for object types
      *          'property_name' => [ClassName::class],
      *      ]
-     * </code>.
+     * </code>
      *
      * @var array
      */
@@ -119,6 +121,7 @@ trait EntityTrait
 
     /**
      * Get the property types.
+     *
      * <code>
      *      [
      *          // An array to be json_encoded/decoded to/from the db
@@ -130,7 +133,7 @@ trait EntityTrait
      *          // An array of related entities
      *          'property_name' => [Entity::class],
      *      ]
-     * </code>.
+     * </code>
      *
      * @return array
      */
@@ -145,6 +148,7 @@ trait EntityTrait
      * but a property mapper is not, then the property type is NOT automatically filled in
      * via the EntityManager and Repository. If a mapper is specified and a type is not
      * then nothing happens.
+     *
      * <code>
      *      [
      *          'property_name' => [
@@ -156,7 +160,7 @@ trait EntityTrait
      *              PropertyMap::GET_RELATIONS => true | false,
      *          ]
      *      ]
-     * </code>.
+     * </code>
      *
      * @return array
      */

@@ -45,6 +45,7 @@ interface Entity extends Model
 
     /**
      * Get the property types.
+     *
      * <code>
      *      [
      *          // An array to be json_encoded/decoded to/from the db
@@ -56,7 +57,7 @@ interface Entity extends Model
      *          // An array of related entities
      *          'property_name' => [Entity::class],
      *      ]
-     * </code>.
+     * </code>
      *
      * @return array
      */
@@ -68,6 +69,7 @@ interface Entity extends Model
      * but a property mapper is not, then the property type is NOT automatically filled in
      * via the EntityManager and Repository. If a mapper is specified and a type is not
      * then nothing happens.
+     *
      * <code>
      *      [
      *          'property_name' => [
@@ -79,7 +81,7 @@ interface Entity extends Model
      *              PropertyMap::GET_RELATIONS => true | false,
      *          ]
      *      ]
-     * </code>.
+     * </code>
      *
      * @return array
      */

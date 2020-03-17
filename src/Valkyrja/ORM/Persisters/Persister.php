@@ -20,6 +20,7 @@ use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Persister as PersisterContract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\SoftDeleteEntity;
 
 use function get_class;
 use function is_array;
@@ -73,13 +74,11 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Set a model for creation on transaction commit.
+     * Create a new entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->create(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -102,13 +101,11 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Set a model for saving on transaction commit.
+     * Update an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->save(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -131,13 +128,11 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Set a model for deletion on transaction commit.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->delete(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -159,13 +154,31 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
+     * Soft delete an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
+    {
+        $entity->setDeleted(true);
+        $this->save($entity, $defer);
+    }
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $persister->clear(new Entity())
+     * </code>
      *
      * @param Entity|null $entity The entity instance to remove.
      *
@@ -248,13 +261,14 @@ class Persister implements PersisterContract
 
     /**
      * Save or create or delete a row.
+     *
      * <code>
      *      $this
      *          ->saveCreateDelete(
      *             'update' | 'insert' | 'delete',
      *              Entity::class
      *          )
-     * </code>.
+     * </code>
      *
      * @param string $type
      * @param Entity $entity

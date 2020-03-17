@@ -21,13 +21,11 @@ namespace Valkyrja\ORM;
 interface Persister
 {
     /**
-     * Set a model for creation on transaction commit.
+     * Create a new entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->create(
-     *              new Entity()
-     *         )
-     * </code>.
+     *      $persister->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -37,13 +35,11 @@ interface Persister
     public function create(Entity $entity, bool $defer = true): void;
 
     /**
-     * Set a model for saving on transaction commit.
+     * Update an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->save(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -53,13 +49,11 @@ interface Persister
     public function save(Entity $entity, bool $defer = true): void;
 
     /**
-     * Set a model for deletion on transaction commit.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->delete(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -69,13 +63,25 @@ interface Persister
     public function delete(Entity $entity, bool $defer = true): void;
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
+     * Soft delete an existing entity.
+     *
      * <code>
-     *      $entityPersister
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $persister->clear(new Entity())
+     * </code>
      *
      * @param Entity|null $entity The entity instance to remove.
      *

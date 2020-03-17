@@ -22,13 +22,10 @@ interface Retriever
 {
     /**
      * Find by given criteria.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              1
-     *          )
-     * </code>.
+     *      $retriever->bind(Entity::class, true | false)
+     * </code>
      *
      * @param string    $entity
      * @param bool|null $getRelations
@@ -39,14 +36,10 @@ interface Retriever
 
     /**
      * Find a single entity given its id.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->find(
-     *              Entity::class,
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
+     *      $retriever->findOne(Entity::class, 1, true | false)
+     * </code>
      *
      * @param string     $entity
      * @param string|int $id
@@ -58,12 +51,10 @@ interface Retriever
 
     /**
      * Count all the results of given criteria.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->count(
-     *              Entity::class
-     *          )
-     * </code>.
+     *      $retriever->count(Entity::class)
+     * </code>
      *
      * @param string $entity
      *

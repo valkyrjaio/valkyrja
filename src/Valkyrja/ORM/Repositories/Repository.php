@@ -22,6 +22,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
 
 use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\ClassHelpers;
 
 use function get_class;
@@ -120,10 +121,11 @@ class Repository implements RepositoryContract
     }
 
     /**
-     * Create a new model.
+     * Create a new entity.
+     *
      * <code>
-     *      $repository->create(Entity::class)
-     * </code>.
+     *      $repository->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -140,10 +142,11 @@ class Repository implements RepositoryContract
     }
 
     /**
-     * Save an existing model given criteria to find. If no criteria specified uses all model properties.
+     * Update an existing entity.
+     *
      * <code>
-     *      $repository->save(Entity::class)
-     * </code>.
+     *      $repository->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -160,10 +163,11 @@ class Repository implements RepositoryContract
     }
 
     /**
-     * Delete an existing model.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $repository->delete(Entity::class)
-     * </code>.
+     *      $repository->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -180,10 +184,32 @@ class Repository implements RepositoryContract
     }
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
+     * Soft delete an existing entity.
+     *
      * <code>
-     *      $repository->clear(Entity::class)
-     * </code>.
+     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @throws InvalidEntityException
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
+    {
+        $this->validateEntity($entity);
+
+        $this->entityManager->delete($entity, $defer);
+    }
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $repository->clear(new Entity())
+     * </code>
      *
      * @param Entity $entity
      *

@@ -57,10 +57,11 @@ interface Repository
     public function count(): Retriever;
 
     /**
-     * Create a new model.
+     * Create a new entity.
+     *
      * <code>
-     *      $repository->create(Entity::class)
-     * </code>.
+     *      $repository->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -70,10 +71,11 @@ interface Repository
     public function create(Entity $entity, bool $defer = true): void;
 
     /**
-     * Save an existing model given criteria to find. If no criteria specified uses all model properties.
+     * Update an existing entity.
+     *
      * <code>
-     *      $repository->save(Entity::class)
-     * </code>.
+     *      $repository->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -83,10 +85,11 @@ interface Repository
     public function save(Entity $entity, bool $defer = true): void;
 
     /**
-     * Delete an existing model.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $repository->delete(Entity::class)
-     * </code>.
+     *      $repository->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -96,13 +99,25 @@ interface Repository
     public function delete(Entity $entity, bool $defer = true): void;
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
+     * Soft delete an existing entity.
+     *
      * <code>
-     *      $repository
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
+     *      $persister->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $repository->clear(new Entity())
+     * </code>
      *
      * @param Entity|null $entity The entity instance to remove.
      *

@@ -125,13 +125,10 @@ interface EntityManager
 
     /**
      * Find by given criteria.
+     *
      * <code>
-     *      $entityManager
-     *          ->findBy(
-     *              Entity::class,
-     *              1
-     *          )
-     * </code>.
+     *      $entityManager->find(Entity::class, true | false)
+     * </code>
      *
      * @param string    $entity
      * @param bool|null $getRelations
@@ -142,14 +139,10 @@ interface EntityManager
 
     /**
      * Find a single entity given its id.
+     *
      * <code>
-     *      $entityManager
-     *          ->find(
-     *              Entity::class,
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
+     *      $entityManager->findOne(Entity::class, 1, true | false)
+     * </code>
      *
      * @param string     $entity
      * @param string|int $id
@@ -161,12 +154,13 @@ interface EntityManager
 
     /**
      * Count all the results of given criteria.
+     *
      * <code>
      *      $entityManager
      *          ->count(
      *              Entity::class
      *          )
-     * </code>.
+     * </code>
      *
      * @param string $entity
      *
@@ -175,14 +169,11 @@ interface EntityManager
     public function count(string $entity): Retriever;
 
     /**
-     * Set a model for creation on transaction commit.
+     * Create a new entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->create(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -192,14 +183,11 @@ interface EntityManager
     public function create(Entity $entity, bool $defer = true): void;
 
     /**
-     * Set a model for saving on transaction commit.
+     * Update an existing entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->save(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -209,14 +197,11 @@ interface EntityManager
     public function save(Entity $entity, bool $defer = true): void;
 
     /**
-     * Set a model for deletion on transaction commit.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->delete(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -226,15 +211,27 @@ interface EntityManager
     public function delete(Entity $entity, bool $defer = true): void;
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
-     * <code>
-     *      $entityManager
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
+     * Soft delete an existing entity.
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * <code>
+     *      $entityManager->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void;
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $entityManager->clear(new Entity())
+     * </code>
+     *
+     * @param Entity|null $entity [optional] The entity instance to remove.
      *
      * @return void
      */

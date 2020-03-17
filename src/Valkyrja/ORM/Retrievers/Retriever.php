@@ -93,13 +93,10 @@ class Retriever implements RetrieverContract
 
     /**
      * Find by given criteria.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->findBy(
-     *              Entity::class,
-     *              1
-     *          )
-     * </code>.
+     *      $retriever->find(Entity::class, true | false)
+     * </code>
      *
      * @param string    $entity
      * @param bool|null $getRelations
@@ -115,14 +112,10 @@ class Retriever implements RetrieverContract
 
     /**
      * Find a single entity given its id.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->find(
-     *              Entity::class,
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
+     *      $retriever->findOne(Entity::class, 1, true | false)
+     * </code>
      *
      * @param string     $entity
      * @param string|int $id
@@ -144,12 +137,10 @@ class Retriever implements RetrieverContract
 
     /**
      * Count all the results of given criteria.
+     *
      * <code>
-     *      $entityRetriever
-     *          ->count(
-     *              Entity::class
-     *          )
-     * </code>.
+     *      $retriever->count(Entity::class)
+     * </code>
      *
      * @param string $entity
      *

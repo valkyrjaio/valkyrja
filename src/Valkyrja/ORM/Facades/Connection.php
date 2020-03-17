@@ -15,7 +15,10 @@ namespace Valkyrja\ORM\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query as QueryContract;
+use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
+use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\Statement;
 
 /**
@@ -31,6 +34,9 @@ use Valkyrja\ORM\Statement;
  * @method static string lastInsertId()
  * @method static Statement prepare(string $query)
  * @method static QueryContract createQuery(string $query = null, string $entity = null)
+ * @method static QueryBuilderContract createQueryBuilder(string $entity = null, string $alias = null)
+ * @method static Retriever createRetriever()
+ * @method static Persister getPersister()
  */
 class Connection extends Facade
 {

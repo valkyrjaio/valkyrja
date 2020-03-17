@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\EntityManagers;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
+use Valkyrja\Config\Configs\ORMConfig;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
@@ -25,10 +26,10 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
-use Valkyrja\Config\Configs\ORMConfig;
 
 /**
  * Class EntityManager.
@@ -279,13 +280,10 @@ class EntityManager implements EntityManagerContract
 
     /**
      * Find by given criteria.
+     *
      * <code>
-     *      $entityManager
-     *          ->findBy(
-     *              Entity::class,
-     *              1
-     *          )
-     * </code>.
+     *      $entityManager->find(Entity::class, true | false)
+     * </code>
      *
      * @param string    $entity
      * @param bool|null $getRelations
@@ -299,14 +297,10 @@ class EntityManager implements EntityManagerContract
 
     /**
      * Find a single entity given its id.
+     *
      * <code>
-     *      $entityManager
-     *          ->find(
-     *              Entity::class,
-     *              1,
-     *              true | false | null
-     *          )
-     * </code>.
+     *      $entityManager->findOne(Entity::class, 1, true | false)
+     * </code>
      *
      * @param string     $entity
      * @param string|int $id
@@ -321,12 +315,10 @@ class EntityManager implements EntityManagerContract
 
     /**
      * Count all the results of given criteria.
+     *
      * <code>
-     *      $entityManager
-     *          ->count(
-     *              Entity::class
-     *          )
-     * </code>.
+     *      $entityManager->count(Entity::class)
+     * </code>
      *
      * @param string $entity
      *
@@ -338,14 +330,11 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Set a model for creation on transaction commit.
+     * Create a new entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->create(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->create(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -358,14 +347,11 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Set a model for saving on transaction commit.
+     * Update an existing entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->save(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->save(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -378,14 +364,11 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Set a model for deletion on transaction commit.
+     * Delete an existing entity.
+     *
      * <code>
-     *      $entityManager
-     *          ->delete(
-     *              new Entity(),
-     *              true | false
-     *          )
-     * </code>.
+     *      $entityManager->delete(new Entity(), true | false)
+     * </code>
      *
      * @param Entity $entity
      * @param bool   $defer [optional]
@@ -398,15 +381,30 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Clear a model previously set for creation, save, or deletion.
-     * <code>
-     *      $entityManager
-     *          ->clear(
-     *              new Entity()
-     *          )
-     * </code>.
+     * Soft delete an existing entity.
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * <code>
+     *      $entityManager->softDelete(new SoftDeleteEntity(), true | false)
+     * </code>
+     *
+     * @param SoftDeleteEntity $entity
+     * @param bool             $defer [optional]
+     *
+     * @return void
+     */
+    public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
+    {
+        $this->getConnection()->getPersister()->softDelete($entity, $defer);
+    }
+
+    /**
+     * Clear all, or a single, deferred entity.
+     *
+     * <code>
+     *      $entityManager->clear(new Entity())
+     * </code>
+     *
+     * @param Entity|null $entity [optional] The entity instance to remove.
      *
      * @return void
      */

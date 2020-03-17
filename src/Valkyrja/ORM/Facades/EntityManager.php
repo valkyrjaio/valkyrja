@@ -19,9 +19,12 @@ use Valkyrja\ORM\Adapter as AdapterContract;
 use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\PDOConnection;
+use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
 use Valkyrja\ORM\Repository;
+use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\SoftDeleteEntity;
 
 /**
  * Class EntityManager.
@@ -33,20 +36,21 @@ use Valkyrja\ORM\Repository;
  * @method static QueryBuilderContract createQueryBuilder(string $entity = null, string $alias = null)
  * @method static QueryContract createQuery(string $query = null, string $entity = null)
  * @method static Repository getRepository(string $entity)
+ * @method static Retriever createRetriever()
+ * @method static Persister getPersister()
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
  * @method static void ensureTransaction()
  * @method static bool commit()
  * @method static bool rollback()
  * @method static string lastInsertId()
- * @method static Entity|null find(string $entity, $id, bool $getRelations = false)
- * @method static Entity|null findBy(string $entity, array $criteria, array $orderBy = null, int $offset = null, array $columns = null, bool $getRelations = false)
- * @method static Entity[] findAll(string $entity, array $orderBy = null, array $columns = null, bool $getRelations = false)
- * @method static Entity[] findAllBy(string $entity, array $criteria, array $orderBy = null, int $limit = null, int $offset = null, array $columns = null, bool $getRelations = false)
- * @method static int count(string $entity, array $criteria)
- * @method static void create(Entity $entity)
- * @method static void save(Entity $entity)
- * @method static void delete(Entity $entity)
+ * @method static Retriever find(string $entity, bool $getRelations = false)
+ * @method static Retriever findOne(string $entity, string|int $id, bool $getRelations = false)
+ * @method static Retriever count(string $entity)
+ * @method static void create(Entity $entity, bool $defer = true)
+ * @method static void save(Entity $entity, bool $defer = true)
+ * @method static void delete(Entity $entity, bool $defer = true)
+ * @method static void softDelete(SoftDeleteEntity $entity, bool $defer = true)
  * @method static void clear(Entity $entity = null)
  */
 class EntityManager extends Facade

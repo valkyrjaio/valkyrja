@@ -119,6 +119,7 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Create a SELECT query statement.
+     *
      * <code>
      *      $queryBuilder->select();
      *      $queryBuilder->select(
@@ -128,7 +129,7 @@ class SqlQueryBuilder implements QueryBuilder
      *              ...
      *          ]
      *      );
-     * </code>.
+     * </code>
      *
      * @param array|null $columns
      *
@@ -144,9 +145,10 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Create an INSERT query statement.
+     *
      * <code>
      *      $queryBuilder->insert();
-     * </code>.
+     * </code>
      *
      * @return static
      */
@@ -159,9 +161,10 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Create an UPDATE query statement.
+     *
      * <code>
      *      $queryBuilder->update();
-     * </code>.
+     * </code>
      *
      * @return static
      */
@@ -174,9 +177,10 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Create an DELETE query statement.
+     *
      * <code>
      *      $queryBuilder->delete();
-     * </code>.
+     * </code>
      *
      * @return static
      */
@@ -189,6 +193,7 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Set the table on which to perform the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -196,7 +201,7 @@ class SqlQueryBuilder implements QueryBuilder
      *      $queryBuilder
      *          ->select()
      *          ->table('table', 't');
-     * </code>.
+     * </code>
      *
      * @param string      $table
      * @param string|null $alias
@@ -212,10 +217,10 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Set the entity to query with.
+     *
      * <code>
-     *      $queryBuilder
-     *          ->entity(Entity::class);
-     * </code>.
+     *      $queryBuilder->entity(Entity::class);
+     * </code>
      *
      * @param string      $entity
      * @param string|null $alias
@@ -233,6 +238,7 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add a value for a column to set.
+     *
      * <code>
      *      $queryBuilder
      *          ->insert()
@@ -242,7 +248,7 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->update()
      *          ->table('table')
      *          ->set('column', ':column');
-     * </code>.
+     * </code>
      *
      * @param string     $column
      * @param mixed|null $value
@@ -259,6 +265,7 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * Add a where condition to the query statement.
      * - Each additional use will add an `AND` where condition.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
@@ -269,7 +276,7 @@ class SqlQueryBuilder implements QueryBuilder
      *          ->table('table')
      *          ->where('column', '=', ':column')
      *          ->where('column2', '=', ':column2');
-     * </code>.
+     * </code>
      *
      * @param string      $column
      * @param string|null $operator
@@ -286,13 +293,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add an additional `OR` where condition to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
      *          ->where('column', '=', ':column')
-     *          ->andWhere('column2', '=', ':column2');
-     * </code>.
+     *          ->orWhere('column2', '=', ':column2');
+     * </code>
      *
      * @param string      $column
      * @param string|null $operator
@@ -309,13 +317,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by without specifying the order to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
+     *          ->where('column', '=', ':column')
      *          ->orderBy('column');
-     * </code>.
+     * </code>
      *
      * @param string      $column
      * @param string|null $type [optional]
@@ -331,13 +340,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by ascending to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
+     *          ->where('column', '=', ':column')
      *          ->orderByAsc('column');
-     * </code>.
+     * </code>
      *
      * @param string $column
      *
@@ -350,13 +360,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add an order by descending to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
+     *          ->where('column', '=', ':column')
      *          ->orderByDesc('column');
-     * </code>.
+     * </code>
      *
      * @param string $column
      *
@@ -369,13 +380,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add limit to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
+     *          ->where('column', '=', ':column')
      *          ->limit(1);
-     * </code>.
+     * </code>
      *
      * @param int $limit
      *
@@ -390,13 +402,14 @@ class SqlQueryBuilder implements QueryBuilder
 
     /**
      * Add offset to the query statement.
+     *
      * <code>
      *      $queryBuilder
      *          ->select()
      *          ->table('table')
-     *          ->where('column = :column')
+     *          ->where('column', '=', ':column')
      *          ->offset(1);
-     * </code>.
+     * </code>
      *
      * @param int $offset
      *

@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\ORM\Entity as EntityContract;
+use Valkyrja\ORM\SoftDeleteEntity as EntityContract;
 
 /**
- * Class Entity.
+ * Class SoftDeleteEntity.
  *
  * @author Melech Mizrachi
  */
-class Entity implements EntityContract
+class SoftDeleteEntity implements EntityContract
 {
     use EntityTrait;
+    use SoftDeleteEntityTrait;
 }
