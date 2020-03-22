@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logging;
+namespace Valkyrja\Log;
 
-use Valkyrja\Logging\Enums\LogLevel;
+use Valkyrja\Log\Enums\LogLevel;
 
 /**
  * Interface Logger.

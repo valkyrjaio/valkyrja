@@ -27,7 +27,7 @@ use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Response;
-use Valkyrja\Logging\Logger;
+use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\Session\Session;

@@ -37,7 +37,7 @@ use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
-use Valkyrja\Logging\Loggers\MonologLogger;
+use Valkyrja\Log\Loggers\MonologLogger;
 use Valkyrja\Path\Generators\PathGenerator;
 use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Dispatchers\Router;

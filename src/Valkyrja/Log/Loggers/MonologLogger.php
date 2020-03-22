@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logging\Loggers;
+namespace Valkyrja\Log\Loggers;
 
 use Psr\Log\LoggerInterface;
-use Valkyrja\Logging\Enums\LogLevel;
-use Valkyrja\Logging\Logger;
+use Valkyrja\Log\Enums\LogLevel;
+use Valkyrja\Log\Logger;
 
 /**
  * Class MonologLogger.

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logging\Enums;
+namespace Valkyrja\Log\Enums;
 
 use Valkyrja\Enum\Enums\Enum;
 

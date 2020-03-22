@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logging\Providers;
+namespace Valkyrja\Log\Providers;
 
 use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Application\Application;
-use Valkyrja\Logging\Enums\LogLevel;
-use Valkyrja\Logging\Logger;
-use Valkyrja\Logging\Loggers\MonologLogger;
+use Valkyrja\Log\Enums\LogLevel;
+use Valkyrja\Log\Logger;
+use Valkyrja\Log\Loggers\MonologLogger;
 use Valkyrja\Support\Providers\Provider;
 
 /**

@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Logging\Facades;
+namespace Valkyrja\Log\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
-use Valkyrja\Logging\Logger as Contract;
+use Valkyrja\Log\Logger as Contract;
 
 /**
  * Class Logger.
