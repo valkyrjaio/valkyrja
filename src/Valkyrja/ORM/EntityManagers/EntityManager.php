@@ -247,15 +247,17 @@ class EntityManager implements EntityManagerContract
     }
 
     /**
-     * Commit all items in the transaction.
+     * Persist all entities.
      *
      * @return bool
      */
-    public function commit(): bool
+    public function persist(): bool
     {
-        $this->getConnection()->getPersister()->persist();
+        $connection = $this->getConnection();
 
-        return $this->getConnection()->commit();
+        $connection->getPersister()->persist();
+
+        return $connection->commit();
     }
 
     /**

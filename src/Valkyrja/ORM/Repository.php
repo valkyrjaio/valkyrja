@@ -35,9 +35,9 @@ interface Repository
      *
      * @param bool|null $getRelations
      *
-     * @return Retriever
+     * @return static
      */
-    public function find(bool $getRelations = false): Retriever;
+    public function find(bool $getRelations = false): self;
 
     /**
      * Find a single entity given its id.
@@ -45,16 +45,83 @@ interface Repository
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Retriever
+     * @return static
      */
-    public function findOne($id, bool $getRelations = false): Retriever;
+    public function findOne($id, bool $getRelations = false): self;
 
     /**
      * Count all the results of given criteria.
      *
-     * @return Retriever
+     * @return static
      */
-    public function count(): Retriever;
+    public function count(): self;
+
+    /**
+     * Set columns.
+     *
+     * @param array $columns
+     *
+     * @return static
+     */
+    public function columns(array $columns): self;
+
+    /**
+     * Add a where condition.
+     * - Each additional use will add an `AND` where condition.
+     *
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
+     *
+     * @return static
+     */
+    public function where(string $column, string $operator = null, $value = null): self;
+
+    /**
+     * Add an additional `OR` where condition.
+     *
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
+     *
+     * @return static
+     */
+    public function orWhere(string $column, string $operator = null, $value = null): self;
+
+    /**
+     * Set an order by.
+     *
+     * @param string      $orderBy
+     * @param string|null $type
+     *
+     * @return static
+     */
+    public function orderBy(string $orderBy, string $type = null): self;
+
+    /**
+     * Set limit.
+     *
+     * @param int $limit
+     *
+     * @return static
+     */
+    public function limit(int $limit): self;
+
+    /**
+     * Set offset.
+     *
+     * @param int $offset
+     *
+     * @return static
+     */
+    public function offset(int $offset): self;
+
+    /**
+     * Get results.
+     *
+     * @return Entity[]|Entity|int|null
+     */
+    public function getResults();
 
     /**
      * Create a new entity.
@@ -124,6 +191,13 @@ interface Repository
      * @return void
      */
     public function clear(Entity $entity = null): void;
+
+    /**
+     * Persist all entities.
+     *
+     * @return bool
+     */
+    public function persist(): bool;
 
     /**
      * Get a new query builder instance.

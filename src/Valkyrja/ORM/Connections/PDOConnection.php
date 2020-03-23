@@ -55,9 +55,9 @@ class PDOConnection implements ConnectionContract
     /**
      * The connection.
      *
-     * @var PDO
+     * @var PDO|null
      */
-    protected PDO $connection;
+    protected ?PDO $connection = null;
 
     /**
      * The entity persister.
@@ -81,10 +81,7 @@ class PDOConnection implements ConnectionContract
     public function __construct(string $connection)
     {
         $this->config     = config()['orm']['connections'][$connection];
-        $this->connection = $this->getConnectionFromConfig();
         $this->persister  = new PersisterClass($this);
-
-        $this->beginTransaction();
     }
 
     /**
@@ -130,7 +127,7 @@ class PDOConnection implements ConnectionContract
      */
     public function getPDO(): PDO
     {
-        return $this->connection;
+        return $this->connection ?? ($this->connection = $this->getConnectionFromConfig());
     }
 
     /**
@@ -140,7 +137,7 @@ class PDOConnection implements ConnectionContract
      */
     public function beginTransaction(): bool
     {
-        return $this->connection->beginTransaction();
+        return $this->getPDO()->beginTransaction();
     }
 
     /**
@@ -150,7 +147,7 @@ class PDOConnection implements ConnectionContract
      */
     public function inTransaction(): bool
     {
-        return $this->connection->inTransaction();
+        return $this->getPDO()->inTransaction();
     }
 
     /**
@@ -173,7 +170,7 @@ class PDOConnection implements ConnectionContract
      */
     public function commit(): bool
     {
-        return $this->connection->commit();
+        return $this->getPDO()->commit();
     }
 
     /**
@@ -183,7 +180,7 @@ class PDOConnection implements ConnectionContract
      */
     public function rollback(): bool
     {
-        return $this->connection->rollBack();
+        return $this->getPDO()->rollBack();
     }
 
     /**
@@ -195,7 +192,7 @@ class PDOConnection implements ConnectionContract
      */
     public function prepare(string $query): Statement
     {
-        $statement = $this->connection->prepare($query);
+        $statement = $this->getPDO()->prepare($query);
 
         if (is_bool($statement)) {
             throw new RuntimeException('Statement preparation has failed.');
@@ -211,7 +208,7 @@ class PDOConnection implements ConnectionContract
      */
     public function lastInsertId(): string
     {
-        return $this->connection->lastInsertId();
+        return $this->getPDO()->lastInsertId();
     }
 
     /**

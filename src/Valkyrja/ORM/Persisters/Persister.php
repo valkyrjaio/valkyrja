@@ -22,7 +22,6 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
 
-use function get_class;
 use function is_array;
 use function is_object;
 
@@ -90,7 +89,7 @@ class Persister implements PersisterContract
     public function create(Entity $entity, bool $defer = true): void
     {
         if (! $defer) {
-            $this->saveCreateDelete(Statement::UPDATE, $entity);
+            $this->persistEntity(Statement::UPDATE, $entity);
 
             return;
         }
@@ -117,7 +116,7 @@ class Persister implements PersisterContract
     public function save(Entity $entity, bool $defer = true): void
     {
         if (! $defer) {
-            $this->saveCreateDelete(Statement::INSERT, $entity);
+            $this->persistEntity(Statement::INSERT, $entity);
 
             return;
         }
@@ -144,10 +143,11 @@ class Persister implements PersisterContract
     public function delete(Entity $entity, bool $defer = true): void
     {
         if (! $defer) {
-            $this->saveCreateDelete(Statement::DELETE, $entity);
+            $this->persistEntity(Statement::DELETE, $entity);
 
             return;
         }
+
         $id = spl_object_id($entity);
 
         $this->deleteEntities[$id] = $entity;
@@ -187,9 +187,7 @@ class Persister implements PersisterContract
     public function clear(Entity $entity = null): void
     {
         if ($entity === null) {
-            $this->createEntities = [];
-            $this->saveEntities   = [];
-            $this->deleteEntities = [];
+            $this->clearDeferred();
 
             return;
         }
@@ -234,28 +232,69 @@ class Persister implements PersisterContract
         // Ensure a transaction is in progress
         $this->connection->ensureTransaction();
 
+        $this->persistCreate();
+        $this->persistSave();
+        $this->persistDelete();
+        $this->clearDeferred();
+    }
+
+    /**
+     * Clear deferred entities.
+     *
+     * @return void
+     */
+    protected function clearDeferred(): void
+    {
+        $this->createEntities = [];
+        $this->saveEntities   = [];
+        $this->deleteEntities = [];
+    }
+
+    /**
+     * Persist all entities for creation.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistCreate(): void
+    {
         // Iterate through the models awaiting creation
-        foreach ($this->createEntities as $cid => $createEntity) {
+        foreach ($this->createEntities as $createEntity) {
             // Create the model
-            $this->saveCreateDelete(Statement::UPDATE, $createEntity);
-            // Unset the model
-            unset($this->createEntities[$cid]);
+            $this->persistEntity(Statement::UPDATE, $createEntity);
         }
+    }
 
+    /**
+     * Persist all entities for save.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistSave(): void
+    {
         // Iterate through the models awaiting save
-        foreach ($this->saveEntities as $sid => $saveEntity) {
+        foreach ($this->saveEntities as $saveEntity) {
             // Save the model
-            $this->saveCreateDelete(Statement::INSERT, $saveEntity);
-            // Unset the model
-            unset($this->saveEntities[$sid]);
+            $this->persistEntity(Statement::INSERT, $saveEntity);
         }
+    }
 
+    /**
+     * Persist all entities for deletion.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistDelete(): void
+    {
         // Iterate through the models awaiting deletion
-        foreach ($this->deleteEntities as $sid => $deleteEntity) {
-            // Save the model
-            $this->saveCreateDelete(Statement::DELETE, $deleteEntity);
-            // Unset the model
-            unset($this->deleteEntities[$sid]);
+        foreach ($this->deleteEntities as $deleteEntity) {
+            // delete the model
+            $this->persistEntity(Statement::DELETE, $deleteEntity);
         }
     }
 
@@ -277,19 +316,15 @@ class Persister implements PersisterContract
      *
      * @return void
      */
-    protected function saveCreateDelete(string $type, Entity $entity): void
+    protected function persistEntity(string $type, Entity $entity): void
     {
         $idField    = $entity::getIdField();
         $properties = $entity->forDataStore();
 
         // Get the query builder
-        $queryBuilder = $this->getQueryBuilderForSaveCreateDelete($type, $entity, $idField, $properties);
-
-        // Create a new query with the query builder
-        $query = $this->connection->createQuery($queryBuilder->getQueryString(), get_class($entity));
-
-        // Bind values
-        $this->bindValuesForSaveCreateDelete($query, $type, $idField, $properties);
+        $queryBuilder = $this->getQueryBuilder($type, $entity, $idField, $properties);
+        // Get the query
+        $query = $this->getQuery($queryBuilder, $type, $idField, $properties);
 
         // If the execute failed
         if (! $query->execute()) {
@@ -301,7 +336,7 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Get the query builder for a save, create, or delete.
+     * Get the query builder.
      *
      * @param string $type
      * @param Entity $entity
@@ -310,16 +345,13 @@ class Persister implements PersisterContract
      *
      * @return QueryBuilder
      */
-    protected function getQueryBuilderForSaveCreateDelete(
-        string $type,
-        Entity $entity,
-        string $idField,
-        array $properties
-    ): QueryBuilder {
+    protected function getQueryBuilder(string $type, Entity $entity, string $idField, array $properties): QueryBuilder
+    {
         // Create a new query
-        $queryBuilder = $this->connection->createQueryBuilder(get_class($entity))->{strtolower($type)}();
+        $queryBuilder = $this->connection->createQueryBuilder();
 
-        /* @var QueryBuilder $queryBuilder */
+        $queryBuilder->table($entity::getEntityTable());
+        $queryBuilder->{strtolower($type)}();
 
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {
@@ -329,28 +361,27 @@ class Persister implements PersisterContract
 
         if ($type !== Statement::DELETE) {
             // Set the properties
-            $this->setPropertiesForSaveCreateDeleteQuery($queryBuilder, $properties);
+            $this->setQueryBuilderProperties($queryBuilder, $properties);
         }
 
         return $queryBuilder;
     }
 
     /**
-     * Bind values for save, create, or delete.
+     * Get the query.
      *
-     * @param Query  $query
-     * @param string $type
-     * @param string $idField
-     * @param array  $properties
+     * @param QueryBuilder $queryBuilder
+     * @param string       $type
+     * @param string       $idField
+     * @param array        $properties
      *
-     * @return void
+     * @return Query
      */
-    protected function bindValuesForSaveCreateDelete(
-        Query $query,
-        string $type,
-        string $idField,
-        array $properties
-    ): void {
+    protected function getQuery(QueryBuilder $queryBuilder, string $type, string $idField, array $properties): Query
+    {
+        // Create a new query with the query builder
+        $query = $this->connection->createQuery($queryBuilder->getQueryString());
+
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {
             // Set the id value for the where clause
@@ -359,19 +390,21 @@ class Persister implements PersisterContract
 
         if ($type !== Statement::DELETE) {
             // Set the properties.
-            $this->setPropertiesForSaveCreateDeleteStatement($query, $properties);
+            $this->bindQueryProperties($query, $properties);
         }
+
+        return $query;
     }
 
     /**
      * Set properties for save, delete, or create queries.
      *
-     * @param QueryBuilder $query
+     * @param QueryBuilder $queryBuilder
      * @param array        $properties
      *
      * @return void
      */
-    protected function setPropertiesForSaveCreateDeleteQuery(QueryBuilder $query, array $properties): void
+    protected function setQueryBuilderProperties(QueryBuilder $queryBuilder, array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {
@@ -380,7 +413,7 @@ class Persister implements PersisterContract
             }
 
             // Set the column and param name
-            $query->set($column);
+            $queryBuilder->set($column);
         }
     }
 
@@ -392,7 +425,7 @@ class Persister implements PersisterContract
      *
      * @return void
      */
-    protected function setPropertiesForSaveCreateDeleteStatement(Query $query, array $properties): void
+    protected function bindQueryProperties(Query $query, array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $column => $property) {

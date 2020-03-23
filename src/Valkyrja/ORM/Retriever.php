@@ -102,7 +102,7 @@ interface Retriever
      *
      * @return static
      */
-    public function orderBY(string $orderBy, string $type = null): self;
+    public function orderBy(string $orderBy, string $type = null): self;
 
     /**
      * Set limit.

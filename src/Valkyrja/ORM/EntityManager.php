@@ -103,11 +103,11 @@ interface EntityManager
     public function ensureTransaction(): void;
 
     /**
-     * Commit all items in the transaction.
+     * Persist all entities.
      *
      * @return bool
      */
-    public function commit(): bool;
+    public function persist(): bool;
 
     /**
      * Rollback the previous transaction.

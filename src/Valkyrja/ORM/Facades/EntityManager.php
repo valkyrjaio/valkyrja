@@ -41,7 +41,7 @@ use Valkyrja\ORM\SoftDeleteEntity;
  * @method static bool beginTransaction()
  * @method static bool inTransaction()
  * @method static void ensureTransaction()
- * @method static bool commit()
+ * @method static bool persist()
  * @method static bool rollback()
  * @method static string lastInsertId()
  * @method static Retriever find(string $entity, bool $getRelations = false)

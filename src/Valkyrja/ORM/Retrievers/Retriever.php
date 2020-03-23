@@ -211,7 +211,7 @@ class Retriever implements RetrieverContract
      *
      * @return static
      */
-    public function orderBY(string $orderBy, string $type = null): self
+    public function orderBy(string $orderBy, string $type = null): self
     {
         $this->queryBuilder->orderBy($orderBy, $type);
 

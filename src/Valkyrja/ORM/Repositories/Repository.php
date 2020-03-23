@@ -20,7 +20,6 @@ use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
-
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\ClassHelpers;
@@ -40,6 +39,13 @@ class Repository implements RepositoryContract
      * @var EntityManager
      */
     protected EntityManager $entityManager;
+
+    /**
+     * The retriever.
+     *
+     * @var Retriever
+     */
+    protected Retriever $retriever;
 
     /**
      * The entity to use.
@@ -90,11 +96,13 @@ class Repository implements RepositoryContract
      *
      * @param bool|null $getRelations
      *
-     * @return Retriever
+     * @return static
      */
-    public function find(bool $getRelations = false): Retriever
+    public function find(bool $getRelations = false): self
     {
-        return $this->entityManager->find($this->entity, $getRelations);
+        $this->retriever = $this->entityManager->find($this->entity, $getRelations);
+
+        return $this;
     }
 
     /**
@@ -103,21 +111,125 @@ class Repository implements RepositoryContract
      * @param string|int $id
      * @param bool|null  $getRelations
      *
-     * @return Retriever
+     * @return static
      */
-    public function findOne($id, bool $getRelations = false): Retriever
+    public function findOne($id, bool $getRelations = false): self
     {
-        return $this->entityManager->findOne($this->entity, $id, $getRelations);
+        $this->retriever = $this->entityManager->findOne($this->entity, $id, $getRelations);
+
+        return $this;
     }
 
     /**
      * Count all the results of given criteria.
      *
-     * @return Retriever
+     * @return static
      */
-    public function count(): Retriever
+    public function count(): self
     {
-        return $this->entityManager->count($this->entity);
+        $this->retriever = $this->entityManager->count($this->entity);
+
+        return $this;
+    }
+
+    /**
+     * Set columns.
+     *
+     * @param array $columns
+     *
+     * @return static
+     */
+    public function columns(array $columns): self
+    {
+        $this->retriever->columns($columns);
+
+        return $this;
+    }
+
+    /**
+     * Add a where condition.
+     * - Each additional use will add an `AND` where condition.
+     *
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
+     *
+     * @return static
+     */
+    public function where(string $column, string $operator = null, $value = null): self
+    {
+        $this->retriever->where($column, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Add an additional `OR` where condition.
+     *
+     * @param string      $column
+     * @param string|null $operator
+     * @param mixed|null  $value
+     *
+     * @return static
+     */
+    public function orWhere(string $column, string $operator = null, $value = null): self
+    {
+        $this->retriever->orWhere($column, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * Set an order by.
+     *
+     * @param string      $orderBy
+     * @param string|null $type
+     *
+     * @return static
+     */
+    public function orderBy(string $orderBy, string $type = null): self
+    {
+        $this->retriever->orderBy($orderBy, $type);
+
+        return $this;
+    }
+
+    /**
+     * Set limit.
+     *
+     * @param int $limit
+     *
+     * @return static
+     */
+    public function limit(int $limit): self
+    {
+        $this->retriever->limit($limit);
+
+        return $this;
+    }
+
+    /**
+     * Set offset.
+     *
+     * @param int $offset
+     *
+     * @return static
+     */
+    public function offset(int $offset): self
+    {
+        $this->retriever->offset($offset);
+
+        return $this;
+    }
+
+    /**
+     * Get results.
+     *
+     * @return Entity[]|Entity|int|null
+     */
+    public function getResults()
+    {
+        return $this->retriever->getResults();
     }
 
     /**
@@ -224,6 +336,16 @@ class Repository implements RepositoryContract
         }
 
         $this->entityManager->clear($entity);
+    }
+
+    /**
+     * Persist all entities.
+     *
+     * @return bool
+     */
+    public function persist(): bool
+    {
+        return $this->entityManager->persist();
     }
 
     /**
