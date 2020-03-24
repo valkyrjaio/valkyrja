@@ -14,9 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Repositories;
 
 use InvalidArgumentException;
+use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
+use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
@@ -34,11 +37,32 @@ use function get_class;
 class Repository implements RepositoryContract
 {
     /**
+     * The adapter.
+     *
+     * @var Adapter
+     */
+    protected Adapter $adapter;
+
+    /**
+     * The connection.
+     *
+     * @var Connection
+     */
+    protected Connection $connection;
+
+    /**
      * The entity manager.
      *
      * @var EntityManager
      */
     protected EntityManager $entityManager;
+
+    /**
+     * The persister.
+     *
+     * @var Persister
+     */
+    protected Persister $persister;
 
     /**
      * The retriever.
@@ -62,6 +86,20 @@ class Repository implements RepositoryContract
     protected string $table;
 
     /**
+     * The id field.
+     *
+     * @var string
+     */
+    protected string $idField;
+
+    /**
+     * Whether to get relations.
+     *
+     * @var bool
+     */
+    protected bool $getRelations = false;
+
+    /**
      * Repository constructor.
      *
      * @param EntityManager $entityManager
@@ -73,9 +111,13 @@ class Repository implements RepositoryContract
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
+        $this->adapter       = $entityManager->getAdapter();
+        $this->connection    = $this->adapter->getConnection();
+        $this->persister     = $this->connection->getPersister();
         $this->entityManager = $entityManager;
         $this->entity        = $entity;
         $this->table         = $this->entity::getEntityTable();
+        $this->idField       = $this->entity::getIdField();
     }
 
     /**
@@ -92,6 +134,47 @@ class Repository implements RepositoryContract
     }
 
     /**
+     * Set the adapter to use.
+     *
+     * @param string $adapter
+     *
+     * @return static
+     */
+    public function setAdapter(string $adapter): self
+    {
+        $this->adapter    = $this->entityManager->getAdapter($adapter);
+        $this->connection = $this->adapter->getConnection();
+        $this->persister  = $this->connection->getPersister();
+
+        return $this;
+    }
+
+    /**
+     * Get the connection.
+     *
+     * @return Connection
+     */
+    public function getConnection(): Connection
+    {
+        return $this->connection;
+    }
+
+    /**
+     * Set the connection to use.
+     *
+     * @param string $connection
+     *
+     * @return static
+     */
+    public function setConnection(string $connection): self
+    {
+        $this->connection = $this->adapter->getConnection($connection);
+        $this->persister  = $this->connection->getPersister();
+
+        return $this;
+    }
+
+    /**
      * Find by given criteria.
      *
      * @param bool|null $getRelations
@@ -100,7 +183,8 @@ class Repository implements RepositoryContract
      */
     public function find(bool $getRelations = false): self
     {
-        $this->retriever = $this->entityManager->find($this->entity, $getRelations);
+        $this->retriever    = $this->connection->createRetriever()->find($this->entity, $getRelations);
+        $this->getRelations = $getRelations;
 
         return $this;
     }
@@ -115,7 +199,8 @@ class Repository implements RepositoryContract
      */
     public function findOne($id, bool $getRelations = false): self
     {
-        $this->retriever = $this->entityManager->findOne($this->entity, $id, $getRelations);
+        $this->retriever    = $this->connection->createRetriever()->findOne($this->entity, $id, $getRelations);
+        $this->getRelations = $getRelations;
 
         return $this;
     }
@@ -127,7 +212,8 @@ class Repository implements RepositoryContract
      */
     public function count(): self
     {
-        $this->retriever = $this->entityManager->count($this->entity);
+        $this->retriever    = $this->connection->createRetriever()->count($this->entity);
+        $this->getRelations = false;
 
         return $this;
     }
@@ -182,14 +268,14 @@ class Repository implements RepositoryContract
     /**
      * Set an order by.
      *
-     * @param string      $orderBy
+     * @param string      $column
      * @param string|null $type
      *
      * @return static
      */
-    public function orderBy(string $orderBy, string $type = null): self
+    public function orderBy(string $column, string $type = null): self
     {
-        $this->retriever->orderBy($orderBy, $type);
+        $this->retriever->orderBy($column, $type);
 
         return $this;
     }
@@ -250,7 +336,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->create($entity, $defer);
+        $this->persister->create($entity, $defer);
     }
 
     /**
@@ -271,7 +357,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->save($entity, $defer);
+        $this->persister->save($entity, $defer);
     }
 
     /**
@@ -292,7 +378,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->delete($entity, $defer);
+        $this->persister->delete($entity, $defer);
     }
 
     /**
@@ -313,7 +399,7 @@ class Repository implements RepositoryContract
     {
         $this->validateEntity($entity);
 
-        $this->entityManager->delete($entity, $defer);
+        $this->persister->softDelete($entity, $defer);
     }
 
     /**
@@ -335,7 +421,7 @@ class Repository implements RepositoryContract
             $this->validateEntity($entity);
         }
 
-        $this->entityManager->clear($entity);
+        $this->persister->clear($entity);
     }
 
     /**
@@ -345,7 +431,11 @@ class Repository implements RepositoryContract
      */
     public function persist(): bool
     {
-        return $this->entityManager->persist();
+        $this->connection->ensureTransaction();
+
+        $this->persister->persist();
+
+        return $this->connection->commit();
     }
 
     /**
@@ -357,7 +447,7 @@ class Repository implements RepositoryContract
      */
     public function createQueryBuilder(string $alias = null): QueryBuilder
     {
-        return $this->entityManager->createQueryBuilder($this->entity, $alias);
+        return $this->connection->createQueryBuilder($this->entity, $alias);
     }
 
     /**
@@ -369,7 +459,7 @@ class Repository implements RepositoryContract
      */
     public function createQuery(string $query): Query
     {
-        return $this->entityManager->createQuery($query, $this->entity);
+        return $this->connection->createQuery($query, $this->entity);
     }
 
     /**

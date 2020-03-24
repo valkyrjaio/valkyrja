@@ -206,14 +206,14 @@ class Retriever implements RetrieverContract
     /**
      * Set order by.
      *
-     * @param string      $orderBy
+     * @param string      $column
      * @param string|null $type
      *
      * @return static
      */
-    public function orderBy(string $orderBy, string $type = null): self
+    public function orderBy(string $column, string $type = null): self
     {
-        $this->queryBuilder->orderBy($orderBy, $type);
+        $this->queryBuilder->orderBy($column, $type);
 
         return $this;
     }

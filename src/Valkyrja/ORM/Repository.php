@@ -31,6 +31,31 @@ interface Repository
     public static function make(EntityManager $entityManager, string $entity): self;
 
     /**
+     * Set the adapter to use.
+     *
+     * @param string $adapter
+     *
+     * @return static
+     */
+    public function setAdapter(string $adapter): self;
+
+    /**
+     * Get the connection.
+     *
+     * @return Connection
+     */
+    public function getConnection(): Connection;
+
+    /**
+     * Set the connection to use.
+     *
+     * @param string $connection
+     *
+     * @return static
+     */
+    public function setConnection(string $connection): self;
+
+    /**
      * Find by given criteria.
      *
      * @param bool|null $getRelations
@@ -91,12 +116,12 @@ interface Repository
     /**
      * Set an order by.
      *
-     * @param string      $orderBy
+     * @param string      $column
      * @param string|null $type
      *
      * @return static
      */
-    public function orderBy(string $orderBy, string $type = null): self;
+    public function orderBy(string $column, string $type = null): self;
 
     /**
      * Set limit.
