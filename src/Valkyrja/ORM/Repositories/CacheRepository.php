@@ -17,6 +17,7 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\SoftDeleteEntity;
 
@@ -177,11 +178,11 @@ class CacheRepository extends Repository
     /**
      * Get results.
      *
-     * @return Entity[]|Entity|int|null
+     * @return Entity[]
      */
-    public function getResults()
+    public function getResults(): array
     {
-        $cacheKey = md5(json_encode($this->retriever, JSON_THROW_ON_ERROR) . $this->getRelations);
+        $cacheKey = $this->getCacheKey();
 
         if ($results = $this->store->has($cacheKey)) {
             return unserialize($results, ['allowed_classes' => [Entity::class]]);
@@ -192,6 +193,56 @@ class CacheRepository extends Repository
         $this->cacheResults($cacheKey, $results);
 
         $this->id = null;
+
+        return $results;
+    }
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|null
+     */
+    public function getOneOrNull(): ?Entity
+    {
+        return $this->getResults()[0] ?? null;
+    }
+
+    /**
+     * Get one or fail.
+     *
+     * @throws EntityNotFoundException
+     *
+     * @return Entity
+     */
+    public function getOneOrFail(): Entity
+    {
+        $results = $this->getOneOrNull();
+
+        if (null === $results) {
+            throw new EntityNotFoundException('Entity Not Found');
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int
+    {
+        $cacheKey = $this->getCacheKey();
+
+        if ($results = $this->store->has($cacheKey)) {
+            return (int) $results;
+        }
+
+        $results = parent::getCount();
+
+        $this->store->forever($cacheKey, (string) $results);
+
+        $this->store->getTagger($this->entity)->tag($cacheKey);
 
         return $results;
     }
@@ -337,6 +388,16 @@ class CacheRepository extends Repository
         $this->clearDeferred();
 
         return $persist;
+    }
+
+    /**
+     * Get cache key.
+     *
+     * @return string
+     */
+    protected function getCacheKey(): string
+    {
+        return md5(json_encode($this->retriever, JSON_THROW_ON_ERROR) . $this->getRelations);
     }
 
     /**

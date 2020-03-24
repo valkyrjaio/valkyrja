@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
+use Valkyrja\ORM\Exceptions\EntityNotFoundException;
+
 /**
  * Interface Retriever
  *
@@ -125,7 +127,30 @@ interface Retriever
     /**
      * Get results.
      *
-     * @return Entity[]|Entity|int|null
+     * @return Entity[]
      */
-    public function getResults();
+    public function getResults(): array;
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|null
+     */
+    public function getOneOrNull(): ?Entity;
+
+    /**
+     * Get one or fail.
+     *
+     * @throws EntityNotFoundException
+     *
+     * @return Entity
+     */
+    public function getOneOrFail(): Entity;
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int;
 }

@@ -16,12 +16,12 @@ namespace Valkyrja\ORM\Retrievers;
 use InvalidArgumentException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
 use Valkyrja\Support\ClassHelpers;
 
-use function is_array;
 use function is_int;
 use function is_string;
 
@@ -52,13 +52,6 @@ class Retriever implements RetrieverContract
      * @var bool
      */
     protected bool $getRelations = false;
-
-    /**
-     * Whether to only retrieve one.
-     *
-     * @var bool
-     */
-    protected bool $one = false;
 
     /**
      * The connection.
@@ -229,10 +222,6 @@ class Retriever implements RetrieverContract
     {
         $this->queryBuilder->limit($limit);
 
-        if ($limit === 1) {
-            $this->one = true;
-        }
-
         return $this;
     }
 
@@ -253,15 +242,59 @@ class Retriever implements RetrieverContract
     /**
      * Get results.
      *
-     * @return Entity[]|Entity|int|null
+     * @return Entity[]
      */
-    public function getResults()
+    public function getResults(): array
     {
         $this->prepareResults();
 
         $results = $this->query->getResult();
 
-        return $this->determineResults($results);
+        if ($this->getRelations) {
+            $this->setRelations($this->columns, ...$results);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|null
+     */
+    public function getOneOrNull(): ?Entity
+    {
+        return $this->getResults()[0] ?? null;
+    }
+
+    /**
+     * Get one or fail.
+     *
+     * @throws EntityNotFoundException
+     *
+     * @return Entity
+     */
+    public function getOneOrFail(): Entity
+    {
+        $results = $this->getOneOrNull();
+
+        if (null === $results) {
+            throw new EntityNotFoundException('Entity Not Found');
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int
+    {
+        $this->prepareResults();
+
+        return (int) $this->query->getResult();
     }
 
     /**
@@ -345,30 +378,6 @@ class Retriever implements RetrieverContract
         foreach ($this->values as $column => $value) {
             $this->query->bindValue($column, $value);
         }
-    }
-
-    /**
-     * Determine the results and how to return them.
-     *
-     * @param mixed $results
-     *
-     * @return Entity[]|Entity|int|null
-     */
-    protected function determineResults($results)
-    {
-        if (is_int($results)) {
-            return $results;
-        }
-
-        if ($this->getRelations && is_array($results)) {
-            $this->setRelations($this->columns, ...$results);
-        }
-
-        if ($this->one) {
-            return $results[0] ?? null;
-        }
-
-        return $results;
     }
 
     /**

@@ -18,6 +18,7 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
@@ -311,11 +312,43 @@ class Repository implements RepositoryContract
     /**
      * Get results.
      *
-     * @return Entity[]|Entity|int|null
+     * @return Entity[]
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->retriever->getResults();
+    }
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|null
+     */
+    public function getOneOrNull(): ?Entity
+    {
+        return $this->retriever->getOneOrNull();
+    }
+
+    /**
+     * Get one or fail.
+     *
+     * @throws EntityNotFoundException
+     *
+     * @return Entity
+     */
+    public function getOneOrFail(): Entity
+    {
+        return $this->retriever->getOneOrFail();
+    }
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->retriever->getCount();
     }
 
     /**
