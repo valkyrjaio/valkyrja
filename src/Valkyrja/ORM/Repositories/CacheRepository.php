@@ -90,7 +90,6 @@ class CacheRepository extends Repository
      * @param EntityManager $entityManager
      * @param Cache         $cache
      * @param string        $entity
-     *
      */
     public function __construct(EntityManager $entityManager, Cache $cache, string $entity)
     {
@@ -350,7 +349,7 @@ class CacheRepository extends Repository
      */
     protected function cacheResults(string $cacheKey, $results): void
     {
-        $tags = $this->id ? [$this->id] : [];
+        $tags   = $this->id ? [$this->id] : [];
         $tags[] = $this->entity;
 
         if (is_array($results)) {
