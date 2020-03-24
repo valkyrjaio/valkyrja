@@ -44,50 +44,6 @@ interface Entity extends Model
     public static function getEntityRepository(): string;
 
     /**
-     * Get the property types.
-     *
-     * <code>
-     *      [
-     *          // An array to be json_encoded/decoded to/from the db
-     *          'property_name' => 'array',
-     *          // An object to be serialized and unserialized to/from the db
-     *          'property_name' => 'object',
-     *          // A related entity
-     *          'property_name' => Entity::class,
-     *          // An array of related entities
-     *          'property_name' => [Entity::class],
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public static function getEntityPropertyTypes(): array;
-
-    /**
-     * A mapper of property types to properties for generating a full entity with relations.
-     * NOTE: Used in conjunction with Entity::$propertyTypes. If a property type is defined
-     * but a property mapper is not, then the property type is NOT automatically filled in
-     * via the EntityManager and Repository. If a mapper is specified and a type is not
-     * then nothing happens.
-     *
-     * <code>
-     *      [
-     *          'property_name' => [
-     *              'foreign_column_relation'  => $this->field,
-     *              PropertyMap::ORDER_BY      => 'some_column',
-     *              PropertyMap::LIMIT         => 1,
-     *              PropertyMap::OFFSET        => 0,
-     *              PropertyMap::COLUMNS       => [],
-     *              PropertyMap::GET_RELATIONS => true | false,
-     *          ]
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public function getEntityPropertyMapper(): array;
-
-    /**
      * Get the entity as an array for saving to the data store.
      *
      * @return array

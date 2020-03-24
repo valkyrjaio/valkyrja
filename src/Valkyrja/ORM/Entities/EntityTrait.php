@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\ORM\Entity as EntityContract;
 use Valkyrja\Model\ModelTrait;
-use Valkyrja\ORM\Enums\PropertyMap;
 use Valkyrja\ORM\Enums\PropertyType;
 use Valkyrja\ORM\Repositories\Repository;
 
@@ -64,10 +62,6 @@ trait EntityTrait
      *          'property_name' => 'array',
      *          // An object to be serialized and unserialized to/from the db
      *          'property_name' => 'object',
-     *          // A related entity
-     *          'property_name' => Entity::class,
-     *          // An array of related entities
-     *          'property_name' => [Entity::class],
      *      ]
      * </code>
      *
@@ -88,6 +82,21 @@ trait EntityTrait
      * @var array
      */
     protected static array $propertyAllowedClasses = [];
+
+    /**
+     * Entity relationship properties.
+     *
+     * <code>
+     *      [
+     *          'property_name',
+     *          'property_name_alt',
+     *          ...
+     *      ]
+     * </code>
+     *
+     * @var array
+     */
+    protected static array $relationshipProperties = [];
 
     /**
      * Get the table.
@@ -120,53 +129,19 @@ trait EntityTrait
     }
 
     /**
-     * Get the property types.
+     * Set properties from an array of properties.
      *
-     * <code>
-     *      [
-     *          // An array to be json_encoded/decoded to/from the db
-     *          'property_name' => 'array',
-     *          // An object to be serialized and unserialized to/from the db
-     *          'property_name' => 'object',
-     *          // A related entity
-     *          'property_name' => Entity::class,
-     *          // An array of related entities
-     *          'property_name' => [Entity::class],
-     *      ]
-     * </code>
+     * @param array $properties
      *
-     * @return array
+     * @return void
      */
-    public static function getEntityPropertyTypes(): array
+    public function setModelProperties(array $properties): void
     {
-        return static::$propertyTypes;
-    }
-
-    /**
-     * A mapper of property types to properties for generating a full entity with relations.
-     * NOTE: Used in conjunction with Entity::$propertyTypes. If a property type is defined
-     * but a property mapper is not, then the property type is NOT automatically filled in
-     * via the EntityManager and Repository. If a mapper is specified and a type is not
-     * then nothing happens.
-     *
-     * <code>
-     *      [
-     *          'property_name' => [
-     *              'foreign_column_relation'  => $this->field,
-     *              PropertyMap::ORDER_BY      => 'some_column',
-     *              PropertyMap::LIMIT         => 1,
-     *              PropertyMap::OFFSET        => 0,
-     *              PropertyMap::COLUMNS       => [],
-     *              PropertyMap::GET_RELATIONS => true | false,
-     *          ]
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public function getEntityPropertyMapper(): array
-    {
-        return [];
+        // Iterate through the properties
+        foreach ($properties as $property => $value) {
+            // Set the property
+            $this->{$property} = $this->getPropertyValueByType($property, $value);
+        }
     }
 
     /**
@@ -180,7 +155,7 @@ trait EntityTrait
 
         // Otherwise iterate through the properties array
         foreach ($this->getModelProperties() as $property) {
-            if (isset($this->getEntityPropertyMapper()[$property])) {
+            if (isset(static::$relationshipProperties[$property])) {
                 continue;
             }
 
@@ -199,16 +174,13 @@ trait EntityTrait
      */
     public function setEntityRelations(array $columns = null): void
     {
-        $propertyTypes  = $this::getEntityPropertyTypes();
-        $propertyMapper = $this->getEntityPropertyMapper();
-
         // Iterate through the property types
-        foreach ($propertyTypes as $property => $type) {
+        foreach (static::$relationshipProperties as $property) {
             if (null !== $columns && ! in_array($property, $columns, true)) {
                 continue;
             }
 
-            $this->setEntityRelation($propertyMapper, $property, $type);
+            $this->__get($property);
         }
     }
 
@@ -225,6 +197,11 @@ trait EntityTrait
         // Check if a type was set for this attribute
         $type = static::$propertyTypes[$property] ?? null;
 
+        // If there is no type specified just return the value
+        if (null === $type) {
+            return $value;
+        }
+
         // If the type is object and the property isn't already an object
         if ($type === PropertyType::OBJECT && is_object($value)) {
             // Unserialize the object
@@ -235,66 +212,6 @@ trait EntityTrait
         }
 
         return $value;
-    }
-
-    /**
-     * Set a relation.
-     *
-     * @param array  $propertyMapper
-     * @param string $property
-     * @param        $type
-     *
-     * @return void
-     */
-    protected function setEntityRelation(array $propertyMapper, string $property, $type): void
-    {
-        $entityName  = is_array($type) ? $type[0] : $type;
-        $propertyMap = $propertyMapper[$property] ?? null;
-
-        if (null !== $propertyMap && (is_array($type) || ! PropertyType::isValid($type))) {
-            $entities = $this->getRelationEntities($entityName, $propertyMap);
-
-            if (is_array($type)) {
-                $this->{$property} = $entities;
-                $this->__set($property, $entities);
-
-                return;
-            }
-
-            if (empty($entities)) {
-                return;
-            }
-
-            $this->__set($property, $entities[0]);
-        }
-    }
-
-    /**
-     * Get relationship's entities.
-     *
-     * @param string $entityName
-     * @param array  $propertyMap
-     *
-     * @return array
-     */
-    protected function getRelationEntities(string $entityName, array $propertyMap): array
-    {
-        $repository   = entityManager()->getRepository($entityName);
-        $orderBy      = $propertyMap[PropertyMap::ORDER_BY] ?? null;
-        $limit        = $propertyMap[PropertyMap::LIMIT] ?? null;
-        $offset       = $propertyMap[PropertyMap::OFFSET] ?? null;
-        $columns      = $propertyMap[PropertyMap::COLUMNS] ?? null;
-        $getRelations = $propertyMap[PropertyMap::GET_RELATIONS] ?? true;
-
-        unset(
-            $propertyMap[PropertyMap::ORDER_BY],
-            $propertyMap[PropertyMap::LIMIT],
-            $propertyMap[PropertyMap::OFFSET],
-            $propertyMap[PropertyMap::COLUMNS],
-            $propertyMap[PropertyMap::GET_RELATIONS]
-        );
-
-        return $repository->findAllBy($propertyMap, $orderBy, $limit, $offset, $columns, $getRelations);
     }
 
     /**
@@ -310,56 +227,18 @@ trait EntityTrait
         // Check if a type was set for this attribute
         $type = static::$propertyTypes[$property] ?? null;
 
-        switch ($type) {
-            // If the type is object and the property isn't already an object
-            case PropertyType::OBJECT:
-                if (! is_object($value)) {
-                    $value = unserialize($value, static::$propertyAllowedClasses[$property] ?? null);
-                }
-
-                break;
-            // If the type is array and the property isn't already an array
-            case PropertyType::ARRAY:
-                if (! is_array($value)) {
-                    $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-                }
-
-                break;
-            default:
-                $value = $this->getPropertyValueForEntities($type, $value);
+        // If there is no type specified just return the value
+        if (null === $type) {
+            return $value;
         }
 
-        return $value;
-    }
-
-    /**
-     * Get property value for entities.
-     *
-     * @param mixed $type
-     * @param mixed $value
-     *
-     * @return EntityContract|EntityContract[]
-     */
-    protected function getPropertyValueForEntities($type, $value)
-    {
-        /** @var EntityContract $entity */
-        $entity = $type;
-
-        // Otherwise if a type was set and type is an array and the value is an array
-        // Then this should be an array of entities
-        if ($type !== null && is_array($type) && is_array($value)) {
-            $entity = $type[0];
-            // Iterate through the items
-            foreach ($value as &$item) {
-                // Create a new entity for each item
-                $item = $entity::fromArray($item);
-            }
-
-            // Unset the reference loop item
-            unset($item);
-        } // Otherwise if a type was set and the value isn't already of that type
-        elseif ($type !== null && ! ($value instanceof $type)) {
-            $value = $entity::fromArray($value);
+        // If the type is object and the property isn't already an object
+        if ($type === PropertyType::OBJECT && ! is_object($value)) {
+            // Unserialize the object
+            $value = unserialize($value, ['allowed_classes' => static::$propertyAllowedClasses[$property] ?? []]);
+        } // If the type is array and the property isn't already an array
+        elseif ($type === PropertyType::ARRAY && ! is_array($value)) {
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
 
         return $value;
