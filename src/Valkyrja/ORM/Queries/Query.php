@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Queries;
 
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
 
@@ -152,20 +153,15 @@ class Query implements QueryContract
     /**
      * Get the result(s).
      *
-     * @return mixed
+     * @return Entity[]|object[]
      */
-    public function getResult()
+    public function getResult(): array
     {
         $results = $this->statement->fetchAll();
 
         // If there is no entity specified just return the results
         if (null === $this->entity) {
             return $results;
-        }
-
-        // If the result of the query was a count
-        if (isset($results[0]['COUNT(*)'])) {
-            return (int) $results[0]['COUNT(*)'];
         }
 
         $entities = [];
@@ -178,6 +174,46 @@ class Query implements QueryContract
         }
 
         return $entities;
+    }
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|object|null
+     */
+    public function getOneOrNull(): ?object
+    {
+        return $this->getResult()[0] ?? null;
+    }
+
+    /**
+     * Get one or fail.
+     *
+     * @throws NotFoundException
+     *
+     * @return Entity|object
+     */
+    public function getOneOrFail(): object
+    {
+        $results = $this->getOneOrNull();
+
+        if (null === $results) {
+            throw new NotFoundException('Result Not Found');
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int
+    {
+        $results = $this->statement->fetchAll();
+
+        return (int) ($results[0]['COUNT(*)'] ?? 0);
     }
 
     /**

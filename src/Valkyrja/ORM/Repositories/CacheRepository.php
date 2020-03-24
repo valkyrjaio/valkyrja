@@ -180,7 +180,7 @@ class CacheRepository extends Repository
      *
      * @return Entity[]
      */
-    public function getResults(): array
+    public function getResult(): array
     {
         $cacheKey = $this->getCacheKey();
 
@@ -188,7 +188,7 @@ class CacheRepository extends Repository
             return unserialize($results, ['allowed_classes' => [Entity::class]]);
         }
 
-        $results = parent::getResults();
+        $results = parent::getResult();
 
         $this->cacheResults($cacheKey, $results);
 
@@ -204,7 +204,7 @@ class CacheRepository extends Repository
      */
     public function getOneOrNull(): ?Entity
     {
-        return $this->getResults()[0] ?? null;
+        return $this->getResult()[0] ?? null;
     }
 
     /**

@@ -314,9 +314,9 @@ class Repository implements RepositoryContract
      *
      * @return Entity[]
      */
-    public function getResults(): array
+    public function getResult(): array
     {
-        return $this->retriever->getResults();
+        return $this->retriever->getResult();
     }
 
     /**

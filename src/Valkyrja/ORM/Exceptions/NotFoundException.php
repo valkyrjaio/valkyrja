@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Exceptions;
 
+use RuntimeException;
+
 /**
- * Exception EntityNotFoundException.
+ * Exception NotFoundException.
  *
  * @author Melech Mizrachi
  */
-class EntityNotFoundException extends NotFoundException
+class NotFoundException extends RuntimeException
 {
 }

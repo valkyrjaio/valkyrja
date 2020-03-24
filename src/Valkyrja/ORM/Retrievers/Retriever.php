@@ -244,7 +244,7 @@ class Retriever implements RetrieverContract
      *
      * @return Entity[]
      */
-    public function getResults(): array
+    public function getResult(): array
     {
         $this->prepareResults();
 
@@ -264,7 +264,7 @@ class Retriever implements RetrieverContract
      */
     public function getOneOrNull(): ?Entity
     {
-        return $this->getResults()[0] ?? null;
+        return $this->getResult()[0] ?? null;
     }
 
     /**

@@ -129,7 +129,7 @@ interface Retriever
      *
      * @return Entity[]
      */
-    public function getResults(): array;
+    public function getResult(): array;
 
     /**
      * Get one or null.

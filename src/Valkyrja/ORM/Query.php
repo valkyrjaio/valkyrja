@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM;
 
+use Valkyrja\ORM\Exceptions\NotFoundException;
+
 /**
  * Interface Query.
  *
@@ -65,11 +67,34 @@ interface Query
     public function execute(): bool;
 
     /**
-     * Get the result(s).
+     * Get the result.
      *
-     * @return mixed
+     * @return Entity[]|object[]
      */
-    public function getResult();
+    public function getResult(): array;
+
+    /**
+     * Get one or null.
+     *
+     * @return Entity|object|null
+     */
+    public function getOneOrNull(): ?object;
+
+    /**
+     * Get one or fail.
+     *
+     * @throws NotFoundException
+     *
+     * @return Entity|object
+     */
+    public function getOneOrFail(): object;
+
+    /**
+     * Get count results.
+     *
+     * @return int
+     */
+    public function getCount(): int;
 
     /**
      * Get the error if one occurred.
