@@ -15,6 +15,8 @@ namespace Valkyrja\Cache\Stores;
 
 use Predis\ClientInterface as Client;
 use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Tagger;
+use Valkyrja\Cache\Taggers\Tagger as TagClass;
 
 /**
  * Class RedisStore.
@@ -66,11 +68,11 @@ class RedisStore implements Store
      *
      * @param string $key
      *
-     * @return mixed
+     * @return string|null
      */
-    public function get(string $key)
+    public function get(string $key): ?string
     {
-        return $this->predis->get($this->getKey($key));
+        return $this->predis->get($this->getKey($key)) ?: null;
     }
 
     /**
@@ -78,11 +80,11 @@ class RedisStore implements Store
      *
      * Items not found in the cache will have a null value.
      *
-     * @param array $keys
+     * @param string ...$keys
      *
      * @return array
      */
-    public function many(array $keys): array
+    public function many(string ...$keys): array
     {
         $prefixedKeys = [];
 
@@ -97,12 +99,12 @@ class RedisStore implements Store
      * Store an item in the cache for a given number of minutes.
      *
      * @param string $key
-     * @param mixed  $value
+     * @param string $value
      * @param int    $minutes
      *
      * @return void
      */
-    public function put(string $key, $value, int $minutes): void
+    public function put(string $key, string $value, int $minutes): void
     {
         $this->predis->setex($this->getKey($key), $minutes * 60, $value);
     }
@@ -120,8 +122,8 @@ class RedisStore implements Store
      *      )
      * </code>
      *
-     * @param array $values
-     * @param int   $minutes
+     * @param string[] $values
+     * @param int      $minutes
      *
      * @return void
      */
@@ -149,7 +151,7 @@ class RedisStore implements Store
      */
     public function increment(string $key, int $value = 1): int
     {
-        return $this->predis->incrby($this->getKey($key), $value);
+        return (int) $this->predis->incrby($this->getKey($key), $value);
     }
 
     /**
@@ -162,7 +164,7 @@ class RedisStore implements Store
      */
     public function decrement(string $key, int $value = 1): int
     {
-        return $this->predis->decrby($this->getKey($key), $value);
+        return (int) $this->predis->decrby($this->getKey($key), $value);
     }
 
     /**
@@ -208,6 +210,18 @@ class RedisStore implements Store
     public function getPrefix(): string
     {
         return $this->prefix ?? '';
+    }
+
+    /**
+     * Get tagger.
+     *
+     * @param string ...$tags
+     *
+     * @return Tagger
+     */
+    public function getTagger(string ...$tags): Tagger
+    {
+        return TagClass::make($this, ...$tags);
     }
 
     /**

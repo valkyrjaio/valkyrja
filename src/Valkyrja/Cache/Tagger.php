@@ -14,12 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Cache;
 
 /**
- * Interface Store.
+ * Interface Tagger.
  *
  * @author Melech Mizrachi
  */
-interface Store
+interface Tagger
 {
+    /**
+     * Make a new Tag Store.
+     *
+     * @param Store  $store
+     * @param string ...$tags
+     *
+     * @return static
+     */
+    public static function make(Store $store, string ...$tags): self;
+
     /**
      * Determine if an item exists in the cache.
      *
@@ -127,18 +137,38 @@ interface Store
     public function flush(): bool;
 
     /**
-     * Get the cache key prefix.
+     * Tag a key.
      *
-     * @return string
+     * @param string $key
+     *
+     * @return static
      */
-    public function getPrefix(): string;
+    public function tag(string $key): self;
 
     /**
-     * Get the tagger.
+     * Untag a key.
      *
-     * @param string ...$tags
+     * @param string $key
      *
-     * @return Tagger
+     * @return static
      */
-    public function getTagger(string ...$tags): Tagger;
+    public function untag(string $key): self;
+
+    /**
+     * Tag many keys.
+     *
+     * @param string ...$keys
+     *
+     * @return static
+     */
+    public function tagMany(string ...$keys): self;
+
+    /**
+     * Untag many keys.
+     *
+     * @param string ...$keys
+     *
+     * @return static
+     */
+    public function untagMany(string ...$keys): self;
 }
