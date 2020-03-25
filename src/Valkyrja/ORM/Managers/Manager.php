@@ -46,24 +46,28 @@ class Manager implements Contract
      * @var Adapter[]
      */
     protected static array $adapters = [];
+
     /**
      * The application.
      *
      * @var Application
      */
     protected Application $app;
+
     /**
      * The config.
      *
      * @var ORMConfig|array
      */
     protected $config;
+
     /**
      * The default adapter.
      *
      * @var string
      */
     protected string $defaultAdapter;
+
     /**
      * Repositories.
      *

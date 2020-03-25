@@ -32,7 +32,7 @@ interface SoftDeleteEntity extends Entity
      *
      * @param bool $deleted
      *
-     * @return $this
+     * @return static
      */
     public function setDeleted(bool $deleted = true): self;
 
@@ -48,7 +48,7 @@ interface SoftDeleteEntity extends Entity
      *
      * @param string|null $deletedAt
      *
-     * @return $this
+     * @return static
      */
     public function setDeletedAt(string $deletedAt = null): self;
 }

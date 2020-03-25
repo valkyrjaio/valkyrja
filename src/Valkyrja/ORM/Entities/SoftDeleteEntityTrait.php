@@ -51,7 +51,7 @@ trait SoftDeleteEntityTrait
      *
      * @param bool $deleted
      *
-     * @return $this
+     * @return static
      */
     public function setDeleted(bool $deleted = true): self
     {
@@ -77,7 +77,7 @@ trait SoftDeleteEntityTrait
      *
      * @param string|null $deletedAt
      *
-     * @return $this
+     * @return static
      */
     public function setDeletedAt(string $deletedAt = null): self
     {
