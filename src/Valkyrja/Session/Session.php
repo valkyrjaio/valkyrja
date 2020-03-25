@@ -78,11 +78,12 @@ interface Session
     /**
      * Get an item from the session.
      *
-     * @param string $id The item id
+     * @param string     $id      The item id
+     * @param mixed|null $default The default value
      *
      * @return mixed
      */
-    public function get(string $id);
+    public function get(string $id, $default = null);
 
     /**
      * Set an item into the session.

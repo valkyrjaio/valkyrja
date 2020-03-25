@@ -186,12 +186,13 @@ class Session implements SessionContract
      * Get an item from the session.
      *
      * @param string $id The item id
+     * @param mixed|null $default The default value
      *
      * @return mixed
      */
-    public function get(string $id)
+    public function get(string $id, $default = null)
     {
-        return $this->has($id) ? $this->data[$id] : null;
+        return $this->data[$id] ?? $default;
     }
 
     /**
