@@ -80,44 +80,8 @@ class PDOConnection implements ConnectionContract
      */
     public function __construct(string $connection)
     {
-        $this->config     = config()['orm']['connections'][$connection];
-        $this->persister  = new PersisterClass($this);
-    }
-
-    /**
-     * Get the store from the config.
-     *
-     * @return PDO
-     */
-    protected function getConnectionFromConfig(): PDO
-    {
-        $dsn = $this->config['driver']
-            . ':host=' . $this->config['host']
-            . ';port=' . $this->config['port']
-            . ';dbname=' . $this->config['db']
-            . ';charset=' . $this->config['charset'];
-
-        return new PDO($dsn, $this->config['username'], $this->config['password'], []);
-    }
-
-    /**
-     * Get the store config.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    protected function getConnectionConfig(string $name): array
-    {
-        $config = $this->config[$name] ?? null;
-
-        if (null === $config) {
-            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
-        }
-
-        return $config;
+        $this->config    = config()['orm']['connections'][$connection];
+        $this->persister = new PersisterClass($this);
     }
 
     /**
@@ -271,5 +235,41 @@ class PDOConnection implements ConnectionContract
     public function getPersister(): Persister
     {
         return $this->persister;
+    }
+
+    /**
+     * Get the store from the config.
+     *
+     * @return PDO
+     */
+    protected function getConnectionFromConfig(): PDO
+    {
+        $dsn = $this->config['driver']
+            . ':host=' . $this->config['host']
+            . ';port=' . $this->config['port']
+            . ';dbname=' . $this->config['db']
+            . ';charset=' . $this->config['charset'];
+
+        return new PDO($dsn, $this->config['username'], $this->config['password'], []);
+    }
+
+    /**
+     * Get the store config.
+     *
+     * @param string|null $name
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return array
+     */
+    protected function getConnectionConfig(string $name): array
+    {
+        $config = $this->config[$name] ?? null;
+
+        if (null === $config) {
+            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
+        }
+
+        return $config;
     }
 }

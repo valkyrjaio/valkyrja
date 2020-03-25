@@ -37,11 +37,11 @@ interface Entity extends Model
     public static function getIdField(): string;
 
     /**
-     * Get the ORM repository.
+     * Get the repository to use for this entity.
      *
-     * @return string
+     * @return string|null
      */
-    public static function getEntityRepository(): string;
+    public static function getEntityRepository(): ?string;
 
     /**
      * Get the entity as an array for saving to the data store.

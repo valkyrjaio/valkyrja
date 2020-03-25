@@ -49,6 +49,6 @@ class QueryBuilder extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->createQueryBuilder();
+        return Valkyrja::app()->orm()->createQueryBuilder();
     }
 }

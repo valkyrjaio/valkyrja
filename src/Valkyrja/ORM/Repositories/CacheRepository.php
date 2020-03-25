@@ -16,9 +16,9 @@ namespace Valkyrja\ORM\Repositories;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
+use Valkyrja\ORM\Manager;
 use Valkyrja\ORM\SoftDeleteEntity;
 
 use function cache;
@@ -88,30 +88,30 @@ class CacheRepository extends Repository
     /**
      * Repository constructor.
      *
-     * @param EntityManager $entityManager
-     * @param Cache         $cache
-     * @param string        $entity
+     * @param Manager $manager
+     * @param Cache   $cache
+     * @param string  $entity
      */
-    public function __construct(EntityManager $entityManager, Cache $cache, string $entity)
+    public function __construct(Manager $manager, Cache $cache, string $entity)
     {
         $this->cache = $cache;
         $this->store = $cache->getStore();
 
-        parent::__construct($entityManager, $entity);
+        parent::__construct($manager, $entity);
     }
 
     /**
      * Make a new repository.
      *
-     * @param EntityManager $entityManager
-     * @param string        $entity
+     * @param Manager $manager
+     * @param string  $entity
      *
      * @return static
      */
-    public static function make(EntityManager $entityManager, string $entity): self
+    public static function make(Manager $manager, string $entity): self
     {
         return new static(
-            $entityManager,
+            $manager,
             cache(),
             $entity
         );
@@ -401,32 +401,6 @@ class CacheRepository extends Repository
     }
 
     /**
-     * Cache results.
-     *
-     * @param string                   $cacheKey
-     * @param Entity[]|Entity|int|null $results
-     *
-     * @return void
-     */
-    protected function cacheResults(string $cacheKey, $results): void
-    {
-        $tags   = $this->id ? [$this->id] : [];
-        $tags[] = $this->entity;
-
-        if (is_array($results)) {
-            $tags = [];
-
-            foreach ($results as $result) {
-                $tags[] = $this->getEntityCacheKey($result);
-            }
-        }
-
-        $this->store->forever($cacheKey, serialize($results));
-
-        $this->store->getTagger(...$tags)->tag($cacheKey);
-    }
-
-    /**
      * Defer or cache.
      *
      * @param string $type
@@ -477,6 +451,52 @@ class CacheRepository extends Repository
     }
 
     /**
+     * Forget entity in cache.
+     *
+     * @param Entity $entity
+     *
+     * @return void
+     */
+    protected function forgetEntity(Entity $entity): void
+    {
+        $id = $this->getEntityCacheKey($entity);
+
+        $this->store->getTagger($id)->flush();
+    }
+
+    /**
+     * Store entity in cache.
+     *
+     * @param Entity $entity
+     *
+     * @return void
+     */
+    protected function storeEntity(Entity $entity): void
+    {
+        $id = $this->getEntityCacheKey($entity);
+
+        $tag = $this->store->getTagger($id);
+
+        $tag->flush();
+        $tag->forever($id, json_encode($entity->asArray(), JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * Get entity cache key.
+     *
+     * @param Entity $entity
+     *
+     * @return string
+     */
+    protected function getEntityCacheKey(Entity $entity): string
+    {
+        $className = get_class($entity);
+        $id        = $entity->{$this->idField};
+
+        return $className . $id;
+    }
+
+    /**
      * Clear deferred entities.
      *
      * @return void
@@ -516,48 +536,28 @@ class CacheRepository extends Repository
     }
 
     /**
-     * Store entity in cache.
+     * Cache results.
      *
-     * @param Entity $entity
-     *
-     * @return void
-     */
-    protected function storeEntity(Entity $entity): void
-    {
-        $id = $this->getEntityCacheKey($entity);
-
-        $tag = $this->store->getTagger($id);
-
-        $tag->flush();
-        $tag->forever($id, json_encode($entity->asArray(), JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * Forget entity in cache.
-     *
-     * @param Entity $entity
+     * @param string                   $cacheKey
+     * @param Entity[]|Entity|int|null $results
      *
      * @return void
      */
-    protected function forgetEntity(Entity $entity): void
+    protected function cacheResults(string $cacheKey, $results): void
     {
-        $id = $this->getEntityCacheKey($entity);
+        $tags   = $this->id ? [$this->id] : [];
+        $tags[] = $this->entity;
 
-        $this->store->getTagger($id)->flush();
-    }
+        if (is_array($results)) {
+            $tags = [];
 
-    /**
-     * Get entity cache key.
-     *
-     * @param Entity $entity
-     *
-     * @return string
-     */
-    protected function getEntityCacheKey(Entity $entity): string
-    {
-        $className = get_class($entity);
-        $id        = $entity->{$this->idField};
+            foreach ($results as $result) {
+                $tags[] = $this->getEntityCacheKey($result);
+            }
+        }
 
-        return $className . $id;
+        $this->store->forever($cacheKey, serialize($results));
+
+        $this->store->getTagger(...$tags)->tag($cacheKey);
     }
 }

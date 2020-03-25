@@ -15,7 +15,6 @@ namespace Valkyrja\ORM\Entities;
 
 use Valkyrja\Model\ModelTrait;
 use Valkyrja\ORM\Enums\PropertyType;
-use Valkyrja\ORM\Repositories\Repository;
 
 use function in_array;
 use function is_array;
@@ -49,9 +48,9 @@ trait EntityTrait
     /**
      * The ORM repository to use.
      *
-     * @var string
+     * @var string|null
      */
-    protected static string $repository = Repository::class;
+    protected static ?string $repository = null;
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
@@ -119,29 +118,13 @@ trait EntityTrait
     }
 
     /**
-     * Get the ORM repository.
+     * Get the repository to use for this entity.
      *
-     * @return string
+     * @return string|null
      */
-    public static function getEntityRepository(): string
+    public static function getEntityRepository(): ?string
     {
         return static::$repository;
-    }
-
-    /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
-     *
-     * @return void
-     */
-    public function setModelProperties(array $properties): void
-    {
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            // Set the property
-            $this->{$property} = $this->getPropertyValueByType($property, $value);
-        }
     }
 
     /**
@@ -212,6 +195,22 @@ trait EntityTrait
         }
 
         return $value;
+    }
+
+    /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties
+     *
+     * @return void
+     */
+    public function setModelProperties(array $properties): void
+    {
+        // Iterate through the properties
+        foreach ($properties as $property => $value) {
+            // Set the property
+            $this->{$property} = $this->getPropertyValueByType($property, $value);
+        }
     }
 
     /**

@@ -45,7 +45,7 @@ use Valkyrja\Log\Providers\LoggerServiceProvider;
 use Valkyrja\Mail\Mailers\PHPMailerMail;
 use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entities\Entity;
-use Valkyrja\ORM\EntityManagers\EntityManager;
+use Valkyrja\ORM\Managers\Manager;
 use Valkyrja\Path\Generators\PathGenerator;
 use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Reflection\Reflectors\Reflector;
@@ -97,7 +97,7 @@ final class Provider extends Enum
     public const CRYPT_DECRYPTER     = SodiumDecrypter::class;
     public const MODEL               = Model::class;
     public const ENTITY              = Entity::class;
-    public const ENTITY_MANAGER      = EntityManager::class;
+    public const ENTITY_MANAGER      = Manager::class;
     public const EXCEPTION_HANDLER   = ExceptionHandler::class;
     public const HTTP_EXCEPTION      = HttpException::class;
 }

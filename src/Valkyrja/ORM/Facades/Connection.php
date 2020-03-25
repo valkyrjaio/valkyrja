@@ -47,6 +47,6 @@ class Connection extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->getConnection();
+        return Valkyrja::app()->orm()->getConnection();
     }
 }

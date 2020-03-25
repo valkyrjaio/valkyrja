@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query as Contract;
 
 /**
@@ -27,7 +28,10 @@ use Valkyrja\ORM\Query as Contract;
  * @method static Contract prepare(string $query)
  * @method static Contract bindValue(string $column, $property)
  * @method static Contract execute()
- * @method static mixed getResult()
+ * @method static Entity[]|object[] getResult()
+ * @method static Entity|null getOneOrNull()
+ * @method static Entity getOneOrFail()
+ * @method static int getCount()
  * @method static string getError()
  */
 class Query extends Facade
@@ -39,6 +43,6 @@ class Query extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->createQuery();
+        return Valkyrja::app()->orm()->createQuery();
     }
 }

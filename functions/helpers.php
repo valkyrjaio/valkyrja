@@ -29,7 +29,7 @@ use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Response;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Manager;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -259,18 +259,6 @@ if (! function_exists('vcrypt')) {
     }
 }
 
-if (! function_exists('entityManager')) {
-    /**
-     * Get the entity manager.
-     *
-     * @return EntityManager
-     */
-    function entityManager(): EntityManager
-    {
-        return app()->entityManager();
-    }
-}
-
 if (! function_exists('logger')) {
     /**
      * Get logger.
@@ -292,6 +280,18 @@ if (! function_exists('mail')) {
     function mail(): Mail
     {
         return app()->mail();
+    }
+}
+
+if (! function_exists('orm')) {
+    /**
+     * Get the ORM manager.
+     *
+     * @return Manager
+     */
+    function orm(): Manager
+    {
+        return app()->orm();
     }
 }
 

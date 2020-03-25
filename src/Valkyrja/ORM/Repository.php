@@ -25,12 +25,12 @@ interface Repository
     /**
      * Make a new repository.
      *
-     * @param EntityManager $entityManager
-     * @param string        $entity
+     * @param Manager $manager
+     * @param string  $entity
      *
      * @return static
      */
-    public static function make(EntityManager $entityManager, string $entity): self;
+    public static function make(Manager $manager, string $entity): self;
 
     /**
      * Set the adapter to use.

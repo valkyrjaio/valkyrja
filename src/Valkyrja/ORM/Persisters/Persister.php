@@ -239,66 +239,6 @@ class Persister implements PersisterContract
     }
 
     /**
-     * Clear deferred entities.
-     *
-     * @return void
-     */
-    protected function clearDeferred(): void
-    {
-        $this->createEntities = [];
-        $this->saveEntities   = [];
-        $this->deleteEntities = [];
-    }
-
-    /**
-     * Persist all entities for creation.
-     *
-     * @throws ExecuteException
-     *
-     * @return void
-     */
-    protected function persistCreate(): void
-    {
-        // Iterate through the models awaiting creation
-        foreach ($this->createEntities as $createEntity) {
-            // Create the model
-            $this->persistEntity(Statement::UPDATE, $createEntity);
-        }
-    }
-
-    /**
-     * Persist all entities for save.
-     *
-     * @throws ExecuteException
-     *
-     * @return void
-     */
-    protected function persistSave(): void
-    {
-        // Iterate through the models awaiting save
-        foreach ($this->saveEntities as $saveEntity) {
-            // Save the model
-            $this->persistEntity(Statement::INSERT, $saveEntity);
-        }
-    }
-
-    /**
-     * Persist all entities for deletion.
-     *
-     * @throws ExecuteException
-     *
-     * @return void
-     */
-    protected function persistDelete(): void
-    {
-        // Iterate through the models awaiting deletion
-        foreach ($this->deleteEntities as $deleteEntity) {
-            // delete the model
-            $this->persistEntity(Statement::DELETE, $deleteEntity);
-        }
-    }
-
-    /**
      * Save or create or delete a row.
      *
      * <code>
@@ -443,6 +383,66 @@ class Persister implements PersisterContract
 
             // Bind property
             $query->bindValue($column, $property);
+        }
+    }
+
+    /**
+     * Clear deferred entities.
+     *
+     * @return void
+     */
+    protected function clearDeferred(): void
+    {
+        $this->createEntities = [];
+        $this->saveEntities   = [];
+        $this->deleteEntities = [];
+    }
+
+    /**
+     * Persist all entities for creation.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistCreate(): void
+    {
+        // Iterate through the models awaiting creation
+        foreach ($this->createEntities as $createEntity) {
+            // Create the model
+            $this->persistEntity(Statement::UPDATE, $createEntity);
+        }
+    }
+
+    /**
+     * Persist all entities for save.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistSave(): void
+    {
+        // Iterate through the models awaiting save
+        foreach ($this->saveEntities as $saveEntity) {
+            // Save the model
+            $this->persistEntity(Statement::INSERT, $saveEntity);
+        }
+    }
+
+    /**
+     * Persist all entities for deletion.
+     *
+     * @throws ExecuteException
+     *
+     * @return void
+     */
+    protected function persistDelete(): void
+    {
+        // Iterate through the models awaiting deletion
+        foreach ($this->deleteEntities as $deleteEntity) {
+            // delete the model
+            $this->persistEntity(Statement::DELETE, $deleteEntity);
         }
     }
 }

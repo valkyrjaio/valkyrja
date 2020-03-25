@@ -32,7 +32,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Manager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
@@ -188,16 +188,6 @@ trait ApplicationHelpersTrait
     }
 
     /**
-     * Return the entity manager instance from the container.
-     *
-     * @return EntityManager
-     */
-    public function entityManager(): EntityManager
-    {
-        return self::$container->getSingleton(EntityManager::class);
-    }
-
-    /**
      * Return the filesystem instance from the container.
      *
      * @return Filesystem
@@ -235,6 +225,16 @@ trait ApplicationHelpersTrait
     public function mail(): Mail
     {
         return self::$container->getSingleton(Mail::class);
+    }
+
+    /**
+     * Return the ORM manager instance from the container.
+     *
+     * @return Manager
+     */
+    public function orm(): Manager
+    {
+        return self::$container->getSingleton(Manager::class);
     }
 
     /**

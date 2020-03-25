@@ -298,20 +298,6 @@ class Retriever implements RetrieverContract
     }
 
     /**
-     * Validate an id.
-     *
-     * @param mixed $id The id
-     *
-     * @return void
-     */
-    protected function validateId($id): void
-    {
-        if (! is_string($id) && ! is_int($id)) {
-            throw new InvalidArgumentException('ID should be an int or string only.');
-        }
-    }
-
-    /**
      * Set query builder and query.
      *
      * @param string        $entity
@@ -340,6 +326,20 @@ class Retriever implements RetrieverContract
     protected function setGetRelations(bool $getRelations): void
     {
         $this->getRelations = $getRelations;
+    }
+
+    /**
+     * Validate an id.
+     *
+     * @param mixed $id The id
+     *
+     * @return void
+     */
+    protected function validateId($id): void
+    {
+        if (! is_string($id) && ! is_int($id)) {
+            throw new InvalidArgumentException('ID should be an int or string only.');
+        }
     }
 
     /**

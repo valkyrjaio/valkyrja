@@ -106,11 +106,11 @@ class Query implements QueryContract
         $this->statement = $this->connection->prepare($query);
 
         if (null !== $this->table) {
-            $this->bindValue('QueryTable', $this->table);
+            $this->bindValue('table', $this->table);
         }
 
         if (null !== $this->entity) {
-            $this->bindValue($this->entity, $this->entity::getEntityTable());
+            $this->statement->bindValue($this->entity, $this->entity::getEntityTable());
         }
 
         return $this;
@@ -161,6 +161,12 @@ class Query implements QueryContract
 
         // If there is no entity specified just return the results
         if (null === $this->entity) {
+            foreach ($results as &$result) {
+                $result = (object) $result;
+            }
+
+            unset($result);
+
             return $results;
         }
 

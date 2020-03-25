@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\EntityManagers;
+namespace Valkyrja\ORM\Managers;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
@@ -20,7 +20,7 @@ use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager as EntityManagerContract;
+use Valkyrja\ORM\Manager as Contract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -32,34 +32,13 @@ use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class EntityManager.
+ * Class Manager.
  *
  * @author Melech Mizrachi
  */
-class EntityManager implements EntityManagerContract
+class Manager implements Contract
 {
     use Provides;
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
-     * The config.
-     *
-     * @var ORMConfig|array
-     */
-    protected $config;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
 
     /**
      * Adapters.
@@ -67,7 +46,24 @@ class EntityManager implements EntityManagerContract
      * @var Adapter[]
      */
     protected static array $adapters = [];
-
+    /**
+     * The application.
+     *
+     * @var Application
+     */
+    protected Application $app;
+    /**
+     * The config.
+     *
+     * @var ORMConfig|array
+     */
+    protected $config;
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
     /**
      * Repositories.
      *
@@ -95,7 +91,7 @@ class EntityManager implements EntityManagerContract
     public static function provides(): array
     {
         return [
-            EntityManagerContract::class,
+            Contract::class,
         ];
     }
 
@@ -110,7 +106,7 @@ class EntityManager implements EntityManagerContract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->setSingleton(EntityManagerContract::class, new static($app));
+        $app->container()->setSingleton(Contract::class, new static($app));
     }
 
     /**
@@ -211,7 +207,7 @@ class EntityManager implements EntityManagerContract
 
         /** @var Entity|string $entity */
         /** @var Repository $repository */
-        $repository = $entity::getEntityRepository();
+        $repository = $entity::getEntityRepository() ?? $this->config['repository'];
 
         return $this->repositories[$entity] = $repository::make($this, $entity);
     }

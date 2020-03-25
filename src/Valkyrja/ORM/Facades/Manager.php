@@ -27,7 +27,7 @@ use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 
 /**
- * Class EntityManager.
+ * Class Manager.
  *
  * @author Melech Mizrachi
  *
@@ -53,7 +53,7 @@ use Valkyrja\ORM\SoftDeleteEntity;
  * @method static void softDelete(SoftDeleteEntity $entity, bool $defer = true)
  * @method static void clear(Entity $entity = null)
  */
-class EntityManager extends Facade
+class Manager extends Facade
 {
     /**
      * The facade instance.
@@ -62,6 +62,6 @@ class EntityManager extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager();
+        return Valkyrja::app()->orm();
     }
 }

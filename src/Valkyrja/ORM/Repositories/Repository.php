@@ -17,9 +17,9 @@ use InvalidArgumentException;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
+use Valkyrja\ORM\Manager;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -54,9 +54,9 @@ class Repository implements RepositoryContract
     /**
      * The entity manager.
      *
-     * @var EntityManager
+     * @var Manager
      */
-    protected EntityManager $entityManager;
+    protected Manager $manager;
 
     /**
      * The persister.
@@ -103,35 +103,35 @@ class Repository implements RepositoryContract
     /**
      * Repository constructor.
      *
-     * @param EntityManager $entityManager
-     * @param string        $entity
+     * @param Manager $manager
+     * @param string  $entity
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(EntityManager $entityManager, string $entity)
+    public function __construct(Manager $manager, string $entity)
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        $this->adapter       = $entityManager->getAdapter();
-        $this->connection    = $this->adapter->getConnection();
-        $this->persister     = $this->connection->getPersister();
-        $this->entityManager = $entityManager;
-        $this->entity        = $entity;
-        $this->table         = $this->entity::getEntityTable();
-        $this->idField       = $this->entity::getIdField();
+        $this->adapter    = $manager->getAdapter();
+        $this->connection = $this->adapter->getConnection();
+        $this->persister  = $this->connection->getPersister();
+        $this->manager    = $manager;
+        $this->entity     = $entity;
+        $this->table      = $this->entity::getEntityTable();
+        $this->idField    = $this->entity::getIdField();
     }
 
     /**
      * Make a new repository.
      *
-     * @param EntityManager $entityManager
-     * @param string        $entity
+     * @param Manager $manager
+     * @param string  $entity
      *
      * @return static
      */
-    public static function make(EntityManager $entityManager, string $entity): self
+    public static function make(Manager $manager, string $entity): self
     {
-        return new static($entityManager, $entity);
+        return new static($manager, $entity);
     }
 
     /**
@@ -143,7 +143,7 @@ class Repository implements RepositoryContract
      */
     public function setAdapter(string $adapter): self
     {
-        $this->adapter    = $this->entityManager->getAdapter($adapter);
+        $this->adapter    = $this->manager->getAdapter($adapter);
         $this->connection = $this->adapter->getConnection();
         $this->persister  = $this->connection->getPersister();
 

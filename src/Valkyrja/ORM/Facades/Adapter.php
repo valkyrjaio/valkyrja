@@ -37,7 +37,7 @@ class Adapter extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->entityManager()->getAdapter();
+        return Valkyrja::app()->orm()->getAdapter();
     }
 
     /**

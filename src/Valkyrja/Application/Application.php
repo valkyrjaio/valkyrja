@@ -37,7 +37,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Manager;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
@@ -271,13 +271,6 @@ interface Application
     public function crypt(): Crypt;
 
     /**
-     * Return the entity manager instance from the container.
-     *
-     * @return EntityManager
-     */
-    public function entityManager(): EntityManager;
-
-    /**
      * Return the filesystem instance from the container.
      *
      * @return Filesystem
@@ -304,6 +297,13 @@ interface Application
      * @return Mail
      */
     public function mail(): Mail;
+
+    /**
+     * Return the ORM manager instance from the container.
+     *
+     * @return Manager
+     */
+    public function orm(): Manager;
 
     /**
      * Return the path generator instance from the container.

@@ -18,6 +18,7 @@ use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\ConfigModel as Model;
 use Valkyrja\ORM\Enums\Config;
+use Valkyrja\ORM\Repositories\Repository;
 
 /**
  * Class ORMConfig.
@@ -41,6 +42,13 @@ class ORMConfig extends Model
     public array $adapters;
 
     /**
+     * The default repository to use for all entities.
+     *
+     * @var string
+     */
+    public string $repository;
+
+    /**
      * The connections.
      *
      * @var ConnectionsConfig
@@ -54,6 +62,7 @@ class ORMConfig extends Model
     {
         $this->setDefault();
         $this->setAdapters();
+        $this->setRepository();
         $this->setConnections();
     }
 
@@ -79,6 +88,18 @@ class ORMConfig extends Model
     protected function setAdapters(array $adapters = []): void
     {
         $this->adapters = (array) env(EnvKey::DB_ADAPTERS, array_merge(Config::ADAPTERS, $adapters));
+    }
+
+    /**
+     * Set the default repository to use for all entities.
+     *
+     * @param string $repository
+     *
+     * @return void
+     */
+    protected function setRepository(string $repository = Repository::class): void
+    {
+        $this->repository = $repository;
     }
 
     /**

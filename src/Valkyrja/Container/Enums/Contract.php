@@ -46,7 +46,7 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Model\Model;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\EntityManager;
+use Valkyrja\ORM\Manager;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
@@ -103,7 +103,7 @@ final class Contract extends Enum
     public const DECRYPTER           = Decrypter::class;
     public const MODEL               = Model::class;
     public const ENTITY              = Entity::class;
-    public const ENTITY_MANAGER      = EntityManager::class;
+    public const ENTITY_MANAGER      = Manager::class;
     public const QUERY               = Query::class;
     public const QUERY_BUILDER       = QueryBuilder::class;
     public const REPOSITORY          = Repository::class;
