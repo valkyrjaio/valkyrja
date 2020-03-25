@@ -32,7 +32,7 @@ class ORMConfig extends Model
      *
      * @var string
      */
-    public string $default;
+    public string $connection;
 
     /**
      * The adapters.
@@ -60,7 +60,7 @@ class ORMConfig extends Model
      */
     public function __construct()
     {
-        $this->setDefault();
+        $this->setConnection();
         $this->setAdapters();
         $this->setRepository();
         $this->setConnections();
@@ -69,13 +69,13 @@ class ORMConfig extends Model
     /**
      * Set the default adapter.
      *
-     * @param string $default [optional] The default adapter
+     * @param string $connection [optional] The default adapter
      *
      * @return void
      */
-    protected function setDefault(string $default = CKP::MYSQL): void
+    protected function setConnection(string $connection = CKP::MYSQL): void
     {
-        $this->default = (string) env(EnvKey::DB_CONNECTION, $default);
+        $this->connection = (string) env(EnvKey::DB_CONNECTION, $connection);
     }
 
     /**
@@ -99,7 +99,7 @@ class ORMConfig extends Model
      */
     protected function setRepository(string $repository = Repository::class): void
     {
-        $this->repository = $repository;
+        $this->repository = (string) env(EnvKey::DB_REPOSITORY, $repository);
     }
 
     /**

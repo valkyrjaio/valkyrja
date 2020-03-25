@@ -72,9 +72,10 @@ final class ConfigKey extends Enum
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
 
-    public const DB_CONNECTION  = 'orm.default';
+    public const DB_CONNECTION  = 'orm.connection';
     public const DB_ADAPTERS    = 'orm.adapters';
     public const DB_CONNECTIONS = 'orm.connections';
+    public const DB_REPOSITORY  = 'orm.repository';
 
     public const EVENTS_USE_ANNOTATIONS             = 'event.useAnnotations';
     public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'event.useAnnotationsExclusively';

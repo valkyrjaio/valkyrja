@@ -80,7 +80,7 @@ class Manager implements Contract
     {
         $this->config         = $app->config()['orm'];
         $this->app            = $app;
-        $this->defaultAdapter = $this->config['connections'][$this->config['default']]['adapter'] ?? CKP::PDO;
+        $this->defaultAdapter = $this->config['connections'][$this->config['connection']]['adapter'] ?? CKP::PDO;
     }
 
     /**
