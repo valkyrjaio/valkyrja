@@ -225,9 +225,9 @@ class Persister implements PersisterContract
      *
      * @throws ExecuteException
      *
-     * @return void
+     * @return bool
      */
-    public function persist(): void
+    public function persist(): bool
     {
         // Ensure a transaction is in progress
         $this->connection->ensureTransaction();
@@ -236,6 +236,8 @@ class Persister implements PersisterContract
         $this->persistSave();
         $this->persistDelete();
         $this->clearDeferred();
+
+        return $this->connection->commit();
     }
 
     /**

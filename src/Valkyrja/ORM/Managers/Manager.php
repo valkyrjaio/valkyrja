@@ -48,6 +48,13 @@ class Manager implements Contract
     protected static array $adapters = [];
 
     /**
+     * Repositories.
+     *
+     * @var Repository[]
+     */
+    protected static array $repositories = [];
+
+    /**
      * The application.
      *
      * @var Application
@@ -67,13 +74,6 @@ class Manager implements Contract
      * @var string
      */
     protected string $defaultAdapter;
-
-    /**
-     * Repositories.
-     *
-     * @var Repository[]
-     */
-    protected array $repositories = [];
 
     /**
      * EntityManager constructor.
@@ -131,7 +131,7 @@ class Manager implements Contract
         /** @var Adapter $adapter */
         $adapter = $this->config['adapters'][$name];
 
-        return $adapter::make();
+        return self::$adapters[$name] = $adapter::make();
     }
 
     /**
@@ -203,8 +203,8 @@ class Manager implements Contract
      */
     public function getRepository(string $entity): Repository
     {
-        if (isset($this->repositories[$entity])) {
-            return $this->repositories[$entity];
+        if (isset(self::$repositories[$entity])) {
+            return self::$repositories[$entity];
         }
 
         ClassHelpers::validateClass($entity, Entity::class);
@@ -213,7 +213,7 @@ class Manager implements Contract
         /** @var Repository $repository */
         $repository = $entity::getEntityRepository() ?? $this->config['repository'];
 
-        return $this->repositories[$entity] = $repository::make($this, $entity);
+        return self::$repositories[$entity] = $repository::make($this, $entity);
     }
 
     /**
@@ -253,11 +253,7 @@ class Manager implements Contract
      */
     public function persist(): bool
     {
-        $connection = $this->getConnection();
-
-        $connection->getPersister()->persist();
-
-        return $connection->commit();
+        return $this->getConnection()->getPersister()->persist();
     }
 
     /**

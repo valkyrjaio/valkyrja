@@ -464,11 +464,7 @@ class Repository implements RepositoryContract
      */
     public function persist(): bool
     {
-        $this->connection->ensureTransaction();
-
-        $this->persister->persist();
-
-        return $this->connection->commit();
+        return $this->persister->persist();
     }
 
     /**

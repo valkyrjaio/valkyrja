@@ -92,7 +92,7 @@ interface Persister
     /**
      * Persist all entities.
      *
-     * @return void
+     * @return bool
      */
-    public function persist(): void;
+    public function persist(): bool;
 }
