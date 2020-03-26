@@ -168,9 +168,15 @@ class Config extends Model
 
     /**
      * Config constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setAnnotationConfig();
         $this->setAppConfig();
         $this->setCacheConfig();
@@ -186,6 +192,7 @@ class Config extends Model
         $this->setRoutingConfig();
         $this->setSessionConfig();
         $this->setViewConfig();
+
         $this->setProviders();
         $this->setCacheFilePath(cachePath('config.php'));
         $this->setUseCache();

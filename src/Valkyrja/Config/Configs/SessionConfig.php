@@ -39,9 +39,15 @@ class SessionConfig extends Model
 
     /**
      * SessionConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setId();
         $this->setName();
     }

@@ -104,9 +104,15 @@ class AppConfig extends Model
 
     /**
      * AppConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setEnv();
         $this->setDebug();
         $this->setUrl();

@@ -40,9 +40,15 @@ class CacheConfig extends Model
 
     /**
      * CacheConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setDefault();
         $this->setStores();
     }

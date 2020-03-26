@@ -72,9 +72,15 @@ class AnnotationConfig extends Model
 
     /**
      * AnnotationConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setEnabled();
         $this->setCacheDir(storagePath('framework/annotations'));
         $this->setMap();
@@ -112,9 +118,9 @@ class AnnotationConfig extends Model
      *
      * @return void
      */
-    protected function setMap(array $map = []): void
+    protected function setMap(array $map = Config::MAP): void
     {
-        $this->map = (array) env(EnvKey::ANNOTATIONS_MAP, array_merge(Config::MAP, $map));
+        $this->map = (array) env(EnvKey::ANNOTATIONS_MAP, $map);
     }
 
     /**
@@ -124,8 +130,8 @@ class AnnotationConfig extends Model
      *
      * @return void
      */
-    protected function setAliases(array $aliases = []): void
+    protected function setAliases(array $aliases = Config::ALIASES): void
     {
-        $this->aliases = (array) env(EnvKey::ANNOTATIONS_ALIASES, array_merge(Config::ALIASES, $aliases));
+        $this->aliases = (array) env(EnvKey::ANNOTATIONS_ALIASES, $aliases);
     }
 }

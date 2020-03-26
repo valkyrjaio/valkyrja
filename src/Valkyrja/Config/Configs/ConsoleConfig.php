@@ -55,9 +55,15 @@ class ConsoleConfig extends Model
 
     /**
      * ConsoleConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setHandlers();
         $this->setProviders();
         $this->setDevProviders();
@@ -94,12 +100,9 @@ class ConsoleConfig extends Model
      *
      * @return void
      */
-    protected function setProviders(array $providers = []): void
+    protected function setProviders(array $providers = Config::PROVIDERS): void
     {
-        $this->providers = (array) env(
-            EnvKey::CONSOLE_PROVIDERS,
-            array_merge(Config::PROVIDERS, $providers)
-        );
+        $this->providers = (array) env(EnvKey::CONSOLE_PROVIDERS, $providers);
     }
 
     /**
@@ -109,12 +112,9 @@ class ConsoleConfig extends Model
      *
      * @return void
      */
-    protected function setDevProviders(array $devProviders = []): void
+    protected function setDevProviders(array $devProviders = Config::DEV_PROVIDERS): void
     {
-        $this->devProviders = (array) env(
-            EnvKey::CONSOLE_DEV_PROVIDERS,
-            array_merge(Config::DEV_PROVIDERS, $devProviders)
-        );
+        $this->devProviders = (array) env(EnvKey::CONSOLE_DEV_PROVIDERS, $devProviders);
     }
 
     /**

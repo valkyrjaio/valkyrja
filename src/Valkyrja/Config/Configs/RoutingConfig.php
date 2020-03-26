@@ -60,9 +60,15 @@ class RoutingConfig extends Model
 
     /**
      * RoutingConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setMiddleware();
         $this->setMiddlewareGroups();
         $this->setControllers();

@@ -134,9 +134,14 @@ class ConnectionConfig extends Model
      *
      * @param string|null $driver
      * @param string|null $adapter
+     * @param bool        $setDefaults [optional]
      */
-    public function __construct(string $driver = null, string $adapter = null)
+    public function __construct(string $driver = null, string $adapter = null, bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setDriver($driver ?? CKP::MYSQL);
         $this->setAdapter($adapter ?? CKP::PDO);
         $this->setHost();

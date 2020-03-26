@@ -39,11 +39,17 @@ class LoggingConfig extends Model
 
     /**
      * LoggingConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setName();
-        $this->setFilePath(storagePath('logs/valkyrja.log'));
+        $this->setFilePath(storagePath('logs'));
     }
 
     /**

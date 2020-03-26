@@ -40,9 +40,15 @@ class LocalConfig extends Model
 
     /**
      * LocalConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setAdapter();
         $this->setDir(storagePath('app'));
     }

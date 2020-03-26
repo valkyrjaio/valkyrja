@@ -28,13 +28,19 @@ class EventConfig extends Model
      *
      * @var array
      */
-    public array $listeners = [];
+    public array $listeners;
 
     /**
      * EventConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setListeners();
 
         $this->setFilePathEnvKey(EnvKey::EVENT_FILE_PATH);
@@ -58,6 +64,6 @@ class EventConfig extends Model
      */
     protected function setListeners(array $listeners = []): void
     {
-        $this->listeners = (array) env(EnvKey::EVENT_LISTENERS, $listeners ?? $this->listeners);
+        $this->listeners = (array) env(EnvKey::EVENT_LISTENERS, $listeners);
     }
 }

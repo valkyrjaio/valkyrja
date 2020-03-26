@@ -33,9 +33,15 @@ class PathConfig extends Model
 
     /**
      * PathConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setPatterns();
     }
 
@@ -46,8 +52,8 @@ class PathConfig extends Model
      *
      * @return void
      */
-    protected function setPatterns(array $patterns = []): void
+    protected function setPatterns(array $patterns = Config::PATTERNS): void
     {
-        $this->patterns = (array) env(EnvKey::PATH_PATTERNS, array_merge(Config::PATTERNS, $patterns));
+        $this->patterns = (array) env(EnvKey::PATH_PATTERNS, $patterns);
     }
 }

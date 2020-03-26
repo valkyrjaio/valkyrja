@@ -67,9 +67,15 @@ class ViewConfig extends Model
 
     /**
      * ViewConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setDir(resourcesPath('views'));
         $this->setEngine();
         $this->setEngines();
@@ -107,9 +113,9 @@ class ViewConfig extends Model
      *
      * @return void
      */
-    protected function setEngines(array $engines = []): void
+    protected function setEngines(array $engines = Config::ENGINES): void
     {
-        $this->engines = (array) env(EnvKey::VIEW_ENGINES, array_merge(Config::ENGINES, $engines));
+        $this->engines = (array) env(EnvKey::VIEW_ENGINES, $engines);
     }
 
     /**

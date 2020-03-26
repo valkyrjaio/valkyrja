@@ -62,9 +62,15 @@ class ContainerConfig extends Model
 
     /**
      * ContainerConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setAliases();
         $this->setServices();
         $this->setContextServices();
@@ -126,12 +132,9 @@ class ContainerConfig extends Model
      *
      * @return void
      */
-    protected function setProviders(array $providers = []): void
+    protected function setProviders(array $providers = Config::PROVIDERS): void
     {
-        $this->providers = (array) env(
-            EnvKey::CONTAINER_PROVIDERS,
-            array_merge(Config::PROVIDERS, $providers)
-        );
+        $this->providers = (array) env(EnvKey::CONTAINER_PROVIDERS, $providers);
     }
 
     /**
@@ -141,11 +144,8 @@ class ContainerConfig extends Model
      *
      * @return void
      */
-    protected function setDevProviders(array $devProviders = []): void
+    protected function setDevProviders(array $devProviders = Config::DEV_PROVIDERS): void
     {
-        $this->devProviders = (array) env(
-            EnvKey::CONTAINER_DEV_PROVIDERS,
-            array_merge(Config::DEV_PROVIDERS, $devProviders)
-        );
+        $this->devProviders = (array) env(EnvKey::CONTAINER_DEV_PROVIDERS, $devProviders);
     }
 }

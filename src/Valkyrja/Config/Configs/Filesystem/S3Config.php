@@ -82,9 +82,15 @@ class S3Config extends Model
 
     /**
      * S3Config constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setAdapter();
         $this->setDir();
         $this->setKey();

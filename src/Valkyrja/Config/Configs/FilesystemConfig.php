@@ -49,9 +49,15 @@ class FilesystemConfig extends Model
 
     /**
      * FilesystemConfig constructor.
+     *
+     * @param bool $setDefaults [optional]
      */
-    public function __construct()
+    public function __construct(bool $setDefaults = true)
     {
+        if (! $setDefaults) {
+            return;
+        }
+
         $this->setDefault();
         $this->setAdapters();
         $this->setDisks();
@@ -76,9 +82,9 @@ class FilesystemConfig extends Model
      *
      * @return void
      */
-    protected function setAdapters(array $adapters = []): void
+    protected function setAdapters(array $adapters = Config::ADAPTERS): void
     {
-        $this->adapters = (array) env(EnvKey::FILESYSTEM_ADAPTERS, array_merge(Config::ADAPTERS, $adapters));
+        $this->adapters = (array) env(EnvKey::FILESYSTEM_ADAPTERS, $adapters);
     }
 
     /**
