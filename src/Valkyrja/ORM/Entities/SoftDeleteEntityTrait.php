@@ -80,9 +80,9 @@ trait SoftDeleteEntityTrait
     /**
      * Get the deleted at field value.
      *
-     * @return string
+     * @return string|null
      */
-    public function getDeletedAtFieldValue(): string
+    public function getDeletedAtFieldValue(): ?string
     {
         return (string) $this->{static::$deletedAtField};
     }
@@ -90,11 +90,11 @@ trait SoftDeleteEntityTrait
     /**
      * Set the deleted at field value.
      *
-     * @param string $deletedAt
+     * @param string|null $deletedAt
      *
      * @return void
      */
-    public function setDeletedAtFieldValue(string $deletedAt): void
+    public function setDeletedAtFieldValue(string $deletedAt = null): void
     {
         $this->{static::$deletedAtField} = $deletedAt;
     }
