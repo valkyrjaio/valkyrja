@@ -14,23 +14,23 @@ declare(strict_types=1);
 namespace Valkyrja\ORM;
 
 /**
- * Interface SoftDeleteEntity.
+ * Interface DatedEntity.
  *
  * @author Melech Mizrachi
  */
-interface SoftDeleteEntity extends Entity
+interface DatedEntity extends Entity
 {
     /**
-     * Get the deleted field.
+     * Get the created at field.
      *
      * @return string
      */
-    public static function getDeletedField(): string;
+    public static function getCreatedAtField(): string;
 
     /**
-     * Get the deleted at field.
+     * Get the updated at field.
      *
      * @return string
      */
-    public static function getDeletedAtField(): string;
+    public static function getUpdatedAtField(): string;
 }

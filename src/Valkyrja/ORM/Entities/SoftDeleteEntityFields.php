@@ -11,26 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM;
+namespace Valkyrja\ORM\Entities;
 
 /**
- * Interface SoftDeleteEntity.
+ * Trait SoftDeleteEntityFields.
  *
  * @author Melech Mizrachi
  */
-interface SoftDeleteEntity extends Entity
+trait SoftDeleteEntityFields
 {
-    /**
-     * Get the deleted field.
-     *
-     * @return string
-     */
-    public static function getDeletedField(): string;
+    use SoftDeleteEntityTrait;
 
     /**
-     * Get the deleted at field.
+     * Deleted flag.
      *
-     * @return string
+     * @var bool
      */
-    public static function getDeletedAtField(): string;
+    public bool $deleted = false;
+
+    /**
+     * Deleted at date.
+     *
+     * @var string|null
+     */
+    public ?string $deleted_at = null;
 }

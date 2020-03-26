@@ -14,45 +14,45 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Entities;
 
 /**
- * Trait SoftDeleteEntityTrait.
+ * Trait DatedEntityTrait.
  *
  * @author Melech Mizrachi
  */
-trait SoftDeleteEntityTrait
+trait DatedEntityTrait
 {
     use EntityTrait;
 
     /**
-     * The deleted field.
+     * The created at field.
      *
      * @var string
      */
-    protected static string $deletedField = 'deleted';
+    protected static string $createdAtField = 'created_at';
 
     /**
-     * The deleted at field.
+     * The updated at field.
      *
      * @var string
      */
-    protected static string $deletedAtField = 'deleted_at';
+    protected static string $updatedAtField = 'deleted_at';
 
     /**
-     * Get the deleted field.
+     * Get the created at field.
      *
      * @return string
      */
-    public static function getDeletedField(): string
+    public static function getCreatedAtField(): string
     {
-        return static::$deletedField;
+        return static::$createdAtField;
     }
 
     /**
-     * Get the deleted at field.
+     * Get the updated at field.
      *
      * @return string
      */
-    public static function getDeletedAtField(): string
+    public static function getUpdatedAtField(): string
     {
-        return static::$deletedAtField;
+        return static::$updatedAtField;
     }
 }

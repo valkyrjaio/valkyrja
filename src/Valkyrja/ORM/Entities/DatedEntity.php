@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\ORM\SoftDeleteEntity as EntityContract;
+use Valkyrja\ORM\DatedEntity as EntityContract;
 
 /**
- * Class SoftDeleteEntity.
+ * Class DatedEntity.
  *
  * @author Melech Mizrachi
  */
-class SoftDeleteEntity implements EntityContract
+class DatedEntity implements EntityContract
 {
-    use SoftDeleteEntityFields;
+    use DatedEntityFields;
 }

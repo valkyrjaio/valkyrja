@@ -22,6 +22,7 @@ use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
 
+use function date;
 use function is_array;
 use function is_object;
 
@@ -169,7 +170,9 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->setDeleted(true);
+        $entity->{$entity::getDeletedField()}   = true;
+        $entity->{$entity::getDeletedAtField()} = date('y-m-d H:i:s');
+
         $this->save($entity, $defer);
     }
 
