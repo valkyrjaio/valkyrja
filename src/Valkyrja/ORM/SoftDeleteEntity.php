@@ -18,7 +18,7 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface SoftDeleteEntity extends Entity
+interface SoftDeleteEntity
 {
     /**
      * Get the deleted field.
