@@ -23,6 +23,15 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 interface Decrypter
 {
     /**
+     * Determine if an encrypted message is valid.
+     *
+     * @param string $encrypted
+     *
+     * @return bool
+     */
+    public function isValidEncryptedMessage(string $encrypted): bool;
+
+    /**
      * Decrypt a message.
      *
      * @param string $encrypted The encrypted message to decrypt

@@ -30,6 +30,15 @@ interface Crypt
     public function getKey(): string;
 
     /**
+     * Determine if an encrypted message is valid.
+     *
+     * @param string $encrypted
+     *
+     * @return bool
+     */
+    public function isValidEncryptedMessage(string $encrypted): bool;
+
+    /**
      * Encrypt a message.
      *
      * @param string      $message The message to encrypt

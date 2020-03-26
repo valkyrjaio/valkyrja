@@ -117,6 +117,18 @@ class Crypt implements CryptContract
     }
 
     /**
+     * Determine if an encrypted message is valid.
+     *
+     * @param string $encrypted
+     *
+     * @return bool
+     */
+    public function isValidEncryptedMessage(string $encrypted): bool
+    {
+        return $this->decrypter->isValidEncryptedMessage($encrypted);
+    }
+
+    /**
      * Encrypt a message.
      *
      * @param string $message The message to encrypt

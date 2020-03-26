@@ -58,6 +58,25 @@ class SodiumDecrypter implements Decrypter
     }
 
     /**
+     * Determine if an encrypted message is valid.
+     *
+     * @param string $encrypted
+     *
+     * @return bool
+     */
+    public function isValidEncryptedMessage(string $encrypted): bool
+    {
+        try {
+            $this->getDecoded($encrypted);
+
+            return true;
+        } catch (CryptException $exception) {
+        }
+
+        return false;
+    }
+
+    /**
      * Decrypt a message.
      *
      * @param string $encrypted The encrypted message to decrypt
