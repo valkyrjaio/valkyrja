@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\ORM\Entity as EntityContract;
-
 /**
- * Class Entity.
+ * Trait EntityFields.
  *
  * @author Melech Mizrachi
  */
-class Entity implements EntityContract
+trait EntityFields
 {
-    use EntityFields;
+    use EntityTrait;
+
+    /**
+     * The id.
+     *
+     * @var string
+     */
+    public string $id;
 }

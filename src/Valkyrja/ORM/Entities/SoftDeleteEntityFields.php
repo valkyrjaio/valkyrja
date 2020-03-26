@@ -23,14 +23,14 @@ trait SoftDeleteEntityFields
     use SoftDeleteEntityTrait;
 
     /**
-     * Deleted flag.
+     * The deleted flag.
      *
      * @var bool
      */
     public bool $deleted = false;
 
     /**
-     * Deleted at date.
+     * The deleted at date.
      *
      * @var string|null
      */
