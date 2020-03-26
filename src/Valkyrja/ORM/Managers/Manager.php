@@ -27,7 +27,6 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
