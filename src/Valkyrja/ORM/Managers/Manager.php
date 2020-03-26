@@ -207,8 +207,6 @@ class Manager implements Contract
             return self::$repositories[$entity];
         }
 
-        ClassHelpers::validateClass($entity, Entity::class);
-
         /** @var Entity|string $entity */
         /** @var Repository $repository */
         $repository = $entity::getEntityRepository() ?? $this->config['repository'];

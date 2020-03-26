@@ -38,6 +38,20 @@ use function get_class;
 class Repository implements RepositoryContract
 {
     /**
+     * The adapter name to use.
+     *
+     * @var string|null
+     */
+    protected static ?string $adapterName = null;
+
+    /**
+     * The connection name to use.
+     *
+     * @var string|null
+     */
+    protected static ?string $connectionName = null;
+
+    /**
      * The adapter.
      *
      * @var Adapter
@@ -112,8 +126,8 @@ class Repository implements RepositoryContract
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
-        $this->adapter    = $manager->getAdapter();
-        $this->connection = $this->adapter->getConnection();
+        $this->adapter    = $manager->getAdapter(static::$adapterName);
+        $this->connection = $this->adapter->getConnection(static::$connectionName);
         $this->persister  = $this->connection->getPersister();
         $this->manager    = $manager;
         $this->entity     = $entity;
