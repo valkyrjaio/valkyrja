@@ -22,5 +22,6 @@ use Valkyrja\ORM\SoftDeleteEntity as EntityContract;
  */
 class SoftDeleteEntity implements EntityContract
 {
+    use EntityTrait;
     use SoftDeleteEntityFields;
 }

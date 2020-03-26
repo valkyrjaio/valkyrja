@@ -33,4 +33,36 @@ interface SoftDeleteEntity extends Entity
      * @return string
      */
     public static function getDeletedAtField(): string;
+
+    /**
+     * Get the deleted field value.
+     *
+     * @return bool
+     */
+    public function getDeletedFieldValue(): bool;
+
+    /**
+     * Set the deleted field value.
+     *
+     * @param bool $deleted
+     *
+     * @return void
+     */
+    public function setDeletedFieldValue(bool $deleted): void;
+
+    /**
+     * Get the deleted at field value.
+     *
+     * @return string
+     */
+    public function getDeletedAtFieldValue(): string;
+
+    /**
+     * Set the deleted at field value.
+     *
+     * @param string $deletedAt
+     *
+     * @return void
+     */
+    public function setDeletedAtFieldValue(string $deletedAt): void;
 }

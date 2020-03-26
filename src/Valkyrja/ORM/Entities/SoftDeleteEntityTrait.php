@@ -20,8 +20,6 @@ namespace Valkyrja\ORM\Entities;
  */
 trait SoftDeleteEntityTrait
 {
-    use EntityTrait;
-
     /**
      * The deleted field.
      *
@@ -54,5 +52,50 @@ trait SoftDeleteEntityTrait
     public static function getDeletedAtField(): string
     {
         return static::$deletedAtField;
+    }
+
+    /**
+     * Get the deleted field value.
+     *
+     * @return bool
+     */
+    public function getDeletedFieldValue(): bool
+    {
+        return (bool) $this->{static::$deletedField};
+    }
+
+    /**
+     * Set the deleted field value.
+     *
+     * @param bool $deleted
+     *
+     * @return void
+     */
+    public function setDeletedFieldValue(bool $deleted): void
+    {
+        $this->{static::$deletedField} = $deleted;
+    }
+
+
+    /**
+     * Get the deleted at field value.
+     *
+     * @return string
+     */
+    public function getDeletedAtFieldValue(): string
+    {
+        return (string) $this->{static::$deletedAtField};
+    }
+
+    /**
+     * Set the deleted at field value.
+     *
+     * @param string $deletedAt
+     *
+     * @return void
+     */
+    public function setDeletedAtFieldValue(string $deletedAt): void
+    {
+        $this->{static::$deletedAtField} = $deletedAt;
     }
 }

@@ -44,6 +44,22 @@ interface Entity extends Model
     public static function getEntityRepository(): ?string;
 
     /**
+     * Get the id field value.
+     *
+     * @return string
+     */
+    public function getIdFieldValue(): string;
+
+    /**
+     * Set the id field value.
+     *
+     * @param string $id
+     *
+     * @return void
+     */
+    public function setIdFieldValue(string $id): void;
+
+    /**
      * Get the entity as an array for saving to the data store.
      *
      * @return array

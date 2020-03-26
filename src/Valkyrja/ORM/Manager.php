@@ -82,6 +82,15 @@ interface Manager
     public function getRepository(string $entity): Repository;
 
     /**
+     * Get a repository from an entity class.
+     *
+     * @param Entity $entity
+     *
+     * @return Repository
+     */
+    public function getRepositoryFromClass(Entity $entity): Repository;
+
+    /**
      * Initiate a transaction.
      *
      * @return bool

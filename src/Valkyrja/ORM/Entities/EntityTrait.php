@@ -128,6 +128,28 @@ trait EntityTrait
     }
 
     /**
+     * Get the id field value.
+     *
+     * @return string
+     */
+    public function getIdFieldValue(): string
+    {
+        return (string) $this->{static::$idField};
+    }
+
+    /**
+     * Set the id field value.
+     *
+     * @param string $id
+     *
+     * @return void
+     */
+    public function setIdFieldValue(string $id): void
+    {
+        $this->{static::$idField} = $id;
+    }
+
+    /**
      * Get the entity as an array for saving to the data store.
      *
      * @return array

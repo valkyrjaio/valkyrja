@@ -22,5 +22,6 @@ use Valkyrja\ORM\DatedEntity as EntityContract;
  */
 class DatedEntity implements EntityContract
 {
+    use EntityTrait;
     use DatedEntityFields;
 }

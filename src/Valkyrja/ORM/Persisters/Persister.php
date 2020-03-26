@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Persisters;
 
 use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\DatedEntity;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
@@ -89,6 +90,11 @@ class Persister implements PersisterContract
      */
     public function create(Entity $entity, bool $defer = true): void
     {
+        if ($entity instanceof DatedEntity) {
+            $entity->setCreatedAtFieldValue($this->getFormattedDate());
+            $entity->setUpdatedAtFieldValue($this->getFormattedDate());
+        }
+
         if (! $defer) {
             $this->persistEntity(Statement::UPDATE, $entity);
 
@@ -116,6 +122,10 @@ class Persister implements PersisterContract
      */
     public function save(Entity $entity, bool $defer = true): void
     {
+        if ($entity instanceof DatedEntity) {
+            $entity->setUpdatedAtFieldValue($this->getFormattedDate());
+        }
+
         if (! $defer) {
             $this->persistEntity(Statement::INSERT, $entity);
 
@@ -170,8 +180,8 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->{$entity::getDeletedField()}   = true;
-        $entity->{$entity::getDeletedAtField()} = date('y-m-d H:i:s');
+        $entity->setDeletedFieldValue(true);
+        $entity->setDeletedAtFieldValue($this->getFormattedDate());
 
         $this->save($entity, $defer);
     }
@@ -267,7 +277,7 @@ class Persister implements PersisterContract
         $properties = $entity->forDataStore();
 
         // Get the query builder
-        $queryBuilder = $this->getQueryBuilder($type, $entity, $idField, $properties);
+        $queryBuilder = $this->getQueryBuilder($type, $entity, $properties);
         // Get the query
         $query = $this->getQuery($queryBuilder, $type, $idField, $properties);
 
@@ -277,7 +287,7 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->{$idField} = $this->connection->lastInsertId();
+        $entity->setIdFieldValue($this->connection->lastInsertId());
     }
 
     /**
@@ -285,12 +295,11 @@ class Persister implements PersisterContract
      *
      * @param string $type
      * @param Entity $entity
-     * @param string $idField
      * @param array  $properties
      *
      * @return QueryBuilder
      */
-    protected function getQueryBuilder(string $type, Entity $entity, string $idField, array $properties): QueryBuilder
+    protected function getQueryBuilder(string $type, Entity $entity, array $properties): QueryBuilder
     {
         // Create a new query
         $queryBuilder = $this->connection->createQueryBuilder();
@@ -301,7 +310,7 @@ class Persister implements PersisterContract
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {
             // Set the id for the where clause
-            $queryBuilder->where($idField);
+            $queryBuilder->where($entity::getIdField());
         }
 
         if ($type !== Statement::DELETE) {
@@ -449,5 +458,15 @@ class Persister implements PersisterContract
             // delete the model
             $this->persistEntity(Statement::DELETE, $deleteEntity);
         }
+    }
+
+    /**
+     * Get the formatted date.
+     *
+     * @return string
+     */
+    protected function getFormattedDate(): string
+    {
+        return date('y-m-d H:i:s');
     }
 }

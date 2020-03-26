@@ -214,6 +214,20 @@ class Manager implements Contract
     }
 
     /**
+     * Get a repository from an entity class.
+     *
+     * @param Entity $entity
+     *
+     * @throws InvalidClassProvidedException
+     *
+     * @return Repository
+     */
+    public function getRepositoryFromClass(Entity $entity): Repository
+    {
+        return $this->getRepository(get_class($entity));
+    }
+
+    /**
      * Initiate a transaction.
      *
      * @return bool

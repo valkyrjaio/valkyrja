@@ -20,8 +20,6 @@ namespace Valkyrja\ORM\Entities;
  */
 trait DatedEntityTrait
 {
-    use EntityTrait;
-
     /**
      * The created at field.
      *
@@ -54,5 +52,49 @@ trait DatedEntityTrait
     public static function getUpdatedAtField(): string
     {
         return static::$updatedAtField;
+    }
+
+    /**
+     * Get the created at field value.
+     *
+     * @return string
+     */
+    public function getCreatedAtFieldValue(): string
+    {
+        return $this->{static::$createdAtField};
+    }
+
+    /**
+     * Set the created at field value.
+     *
+     * @param string $createdAt
+     *
+     * @return void
+     */
+    public function setCreatedAtFieldValue(string $createdAt): void
+    {
+        $this->{static::$createdAtField} = $createdAt;
+    }
+
+    /**
+     * Get the updated at field value.
+     *
+     * @return string
+     */
+    public function getUpdatedAtFieldValue(): string
+    {
+        return $this->{static::$updatedAtField};
+    }
+
+    /**
+     * Set the updated at field value.
+     *
+     * @param string $updatedAt
+     *
+     * @return void
+     */
+    public function setUpdatedAtFieldValue(string $updatedAt): void
+    {
+        $this->{static::$updatedAtField} = $updatedAt;
     }
 }

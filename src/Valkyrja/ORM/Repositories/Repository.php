@@ -94,20 +94,6 @@ class Repository implements RepositoryContract
     protected string $entity;
 
     /**
-     * The table to use.
-     *
-     * @var string
-     */
-    protected string $table;
-
-    /**
-     * The id field.
-     *
-     * @var string
-     */
-    protected string $idField;
-
-    /**
      * Whether to get relations.
      *
      * @var bool
@@ -131,8 +117,6 @@ class Repository implements RepositoryContract
         $this->persister  = $this->connection->getPersister();
         $this->manager    = $manager;
         $this->entity     = $entity;
-        $this->table      = $this->entity::getEntityTable();
-        $this->idField    = $this->entity::getIdField();
     }
 
     /**

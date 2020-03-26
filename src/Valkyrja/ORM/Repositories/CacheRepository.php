@@ -490,10 +490,7 @@ class CacheRepository extends Repository
      */
     protected function getEntityCacheKey(Entity $entity): string
     {
-        $className = get_class($entity);
-        $id        = $entity->{$this->idField};
-
-        return $className . $id;
+        return get_class($entity) . $entity->getIdFieldValue();
     }
 
     /**
