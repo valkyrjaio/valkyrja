@@ -44,6 +44,13 @@ interface Entity extends Model
     public static function getEntityRepository(): ?string;
 
     /**
+     * Get the property types map.
+     *
+     * @return array
+     */
+    public static function getPropertyTypes(): array;
+
+    /**
      * Get the id field value.
      *
      * @return string

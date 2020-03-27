@@ -128,6 +128,16 @@ trait EntityTrait
     }
 
     /**
+     * Get the property types map.
+     *
+     * @return array
+     */
+    public static function getPropertyTypes(): array
+    {
+        return static::$propertyTypes;
+    }
+
+    /**
      * Get the id field value.
      *
      * @return string
