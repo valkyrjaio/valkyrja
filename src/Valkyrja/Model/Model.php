@@ -83,6 +83,13 @@ interface Model extends JsonSerializable
     public function asArray(): array;
 
     /**
+     * Get model as a deep array where all properties are also arrays.
+     *
+     * @return array
+     */
+    public function asDeepArray(): array;
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array

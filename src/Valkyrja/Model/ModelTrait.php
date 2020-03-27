@@ -146,12 +146,29 @@ trait ModelTrait
     }
 
     /**
+     * Get model as a deep array where all properties are also arrays.
+     *
+     * @return array
+     */
+    public function asDeepArray(): array
+    {
+        /**
+         * Why?!...
+         *
+         * Let me tell you a story. Sometimes models have embedded within them some relationships, and to properly
+         *  ensure that we return a true array with all properties as arrays, and their properties we sort of
+         *  need to do this.
+         */
+        return json_decode(json_encode($this->asArray(), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array
      */
     public function jsonSerialize(): array
     {
-        return json_decode(json_encode(get_object_vars($this), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        return get_object_vars($this);
     }
 }
