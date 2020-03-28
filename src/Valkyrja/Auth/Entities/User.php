@@ -25,4 +25,11 @@ class User implements Contract
 {
     use EntityFields;
     use UserFields;
+
+    /**
+     * The table name.
+     *
+     * @var string
+     */
+    protected static string $table = 'user';
 }

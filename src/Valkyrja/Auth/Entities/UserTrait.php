@@ -24,13 +24,6 @@ use Valkyrja\Auth\Enums\SessionId;
 trait UserTrait
 {
     /**
-     * The table name.
-     *
-     * @var string
-     */
-    protected static string $table = 'user';
-
-    /**
      * The auth repository.
      *
      * @var string
