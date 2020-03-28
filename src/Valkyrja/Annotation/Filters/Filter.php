@@ -49,7 +49,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     *
      * @return Annotation[]
      */
     public function classAnnotationsByType(string $type, string $class): array
@@ -63,7 +62,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     *
      * @return Annotation[]
      */
     public function classMembersAnnotationsByType(string $type, string $class): array
@@ -76,7 +74,6 @@ class Filter implements AnnotationsFilterContract
      *
      * @param string $type  The type
      * @param string $class The class
-     *
      *
      * @return Annotation[]
      */
@@ -92,7 +89,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $class    The class
      * @param string $property The property
      *
-     *
      * @return Annotation[]
      */
     public function propertyAnnotationsByType(string $type, string $class, string $property): array
@@ -105,7 +101,6 @@ class Filter implements AnnotationsFilterContract
      *
      * @param string $type  The type
      * @param string $class The class
-     *
      *
      * @return Annotation[]
      */
@@ -121,7 +116,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $class  The class
      * @param string $method The method
      *
-     *
      * @return Annotation[]
      */
     public function methodAnnotationsByType(string $type, string $class, string $method): array
@@ -135,7 +129,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     *
      * @return Annotation[]
      */
     public function methodsAnnotationsByType(string $type, string $class): array
@@ -148,7 +141,6 @@ class Filter implements AnnotationsFilterContract
      *
      * @param string $type     The type
      * @param string $function The function
-     *
      *
      * @return Annotation[]
      */
