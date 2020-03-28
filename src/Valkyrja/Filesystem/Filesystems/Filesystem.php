@@ -20,7 +20,6 @@ use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
 use Valkyrja\Support\Providers\Provides;
-use Valkyrja\Config\Configs\Filesystem;
 
 /**
  * Class Filesystem.
@@ -48,9 +47,9 @@ class Filesystem implements FilesystemContract
     /**
      * The config.
      *
-     * @var Filesystem|array
+     * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * FlyFilesystem constructor.
@@ -60,7 +59,7 @@ class Filesystem implements FilesystemContract
     public function __construct(Application $application)
     {
         $this->app    = $application;
-        $this->config = $this->app->config()['filesystem'];
+        $this->config = (array) $this->app->config()['filesystem'];
     }
 
     /**

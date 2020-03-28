@@ -20,8 +20,11 @@ use Valkyrja\Http\Middleware\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
-use function auth;
-use function json;
+use function Valkyrja\auth;
+use function Valkyrja\config;
+use function Valkyrja\json;
+use function Valkyrja\redirect;
+use function Valkyrja\router;
 
 /**
  * Class AuthenticatedMiddleware.

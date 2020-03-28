@@ -17,6 +17,8 @@ use Valkyrja\Http\Middleware as MiddlewareContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
+use function Valkyrja\abortResponse;
+
 /**
  * Trait MiddlewareAwareTrait.
  *

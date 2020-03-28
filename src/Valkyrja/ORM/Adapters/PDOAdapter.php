@@ -19,6 +19,8 @@ use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Connections\PDOConnection;
 
+use function Valkyrja\config;
+
 /**
  * Class PDOAdapter.
  *

@@ -25,6 +25,8 @@ use Valkyrja\Console\Output;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Support\Providers\Provides;
 
+use function Valkyrja\dd;
+
 /**
  * Class Kernel.
  *

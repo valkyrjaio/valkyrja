@@ -18,7 +18,12 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function Valkyrja\app;
+use function Valkyrja\config;
+use function Valkyrja\console;
 use const LOCK_EX;
+
+use function Valkyrja\output;
 
 /**
  * Class ConsoleCache.

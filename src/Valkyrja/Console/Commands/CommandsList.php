@@ -20,6 +20,9 @@ use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
 
 use function strlen;
+use function Valkyrja\console;
+use function Valkyrja\input;
+use function Valkyrja\output;
 
 /**
  * Class ConsoleCommands.

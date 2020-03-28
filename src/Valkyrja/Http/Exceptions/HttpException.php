@@ -81,16 +81,16 @@ class HttpException extends RuntimeException
      */
     protected function setDefaultResponse(): void
     {
-        $view     = view();
+        $view     = \Valkyrja\view();
         $template = 'errors/' . $this->statusCode;
 
         // If no response has been set and there is a template with the error code
         if (null === $this->response && file_exists($view->getDir($template . $view->getFileExtension()))) {
             try {
                 // Set the response as the error template
-                $this->response = response($this->getDefaultView($template)->render());
+                $this->response = \Valkyrja\response($this->getDefaultView($template)->render());
             } catch (Exception $exception) {
-                $this->response = response((string) $this->statusCode);
+                $this->response = \Valkyrja\response((string) $this->statusCode);
             }
         }
     }
@@ -104,7 +104,7 @@ class HttpException extends RuntimeException
      */
     protected function getDefaultView(string $template): View
     {
-        return view($template);
+        return \Valkyrja\view($template);
     }
 
     /**

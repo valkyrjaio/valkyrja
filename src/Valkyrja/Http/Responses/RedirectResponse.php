@@ -22,6 +22,9 @@ use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\RedirectResponse as RedirectResponseContract;
 
+use function Valkyrja\request;
+use function Valkyrja\router;
+
 /**
  * Class RedirectResponse.
  *

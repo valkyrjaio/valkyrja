@@ -16,6 +16,8 @@ namespace Valkyrja\Filesystem;
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 
+use function Valkyrja\config;
+
 /**
  * Abstract Class FlysystemS3.
  *

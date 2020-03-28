@@ -17,6 +17,9 @@ use Valkyrja\Config\Configs\Routing;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Support\Cacheables\Cacheable;
 
+use function Valkyrja\config;
+use function Valkyrja\container;
+
 /**
  * Trait CacheableCollection.
  *

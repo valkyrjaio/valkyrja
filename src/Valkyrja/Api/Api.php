@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Api;
 
 use Exception;
-use Valkyrja\Model\Model;
 use Valkyrja\ORM\Entity;
 
 /**

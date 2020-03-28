@@ -18,6 +18,7 @@ use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Route;
 
 use function is_array;
+use function Valkyrja\app;
 
 /**
  * Trait CollectionHelpers.

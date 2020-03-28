@@ -15,7 +15,6 @@ namespace Valkyrja\ORM\Managers;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ORM;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
@@ -63,9 +62,9 @@ class ORM implements Contract
     /**
      * The config.
      *
-     * @var ORM|array
+     * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * The default adapter.
@@ -81,7 +80,7 @@ class ORM implements Contract
      */
     public function __construct(Application $app)
     {
-        $this->config         = $app->config()['orm'];
+        $this->config         = (array) $app->config()['orm'];
         $this->app            = $app;
         $this->defaultAdapter = $this->config['connections'][$this->config['connection']]['adapter'] ?? CKP::PDO;
     }

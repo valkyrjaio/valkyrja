@@ -24,6 +24,13 @@ use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Event\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCache;
 
+use function copy;
+use function str_replace;
+use function Valkyrja\config;
+use function Valkyrja\console;
+use function Valkyrja\output;
+use function Valkyrja\app;
+
 /**
  * Class CacheAllCommand.
  *

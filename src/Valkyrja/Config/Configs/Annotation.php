@@ -17,7 +17,8 @@ use Valkyrja\Annotation\Enums\Config;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Model;
 
-use function env;
+use function Valkyrja\env;
+use function Valkyrja\storagePath;
 
 /**
  * Class Annotation.

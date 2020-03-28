@@ -19,7 +19,7 @@ use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Model;
 use Valkyrja\Filesystem\Enums\Config;
 
-use function env;
+use function Valkyrja\env;
 
 /**
  * Class Filesystem

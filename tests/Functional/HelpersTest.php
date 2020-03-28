@@ -41,6 +41,26 @@ use Valkyrja\View\Views\View;
 
 use function get_class;
 use function is_string;
+use function Valkyrja\abort;
+use function Valkyrja\app;
+use function Valkyrja\env;
+use function Valkyrja\json;
+use function Valkyrja\logger;
+use function Valkyrja\redirect;
+use function Valkyrja\redirectRoute;
+use function Valkyrja\responseBuilder;
+use function Valkyrja\routeUrl;
+use function Valkyrja\view;
+use function Valkyrja\appPath;
+use function Valkyrja\basePath;
+use function Valkyrja\cachePath;
+use function Valkyrja\configPath;
+use function Valkyrja\publicPath;
+use function Valkyrja\redirectTo;
+use function Valkyrja\resourcesPath;
+use function Valkyrja\storagePath;
+use function Valkyrja\testsPath;
+use function Valkyrja\vendorPath;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -75,7 +95,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, container() instanceof Container);
+        $this->assertEquals(true, \Valkyrja\container() instanceof Container);
     }
 
     /**
@@ -85,7 +105,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, events() instanceof Events);
+        $this->assertEquals(true, \Valkyrja\events() instanceof Events);
     }
 
     /**
@@ -105,7 +125,7 @@ class HelpersTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, (config() instanceof Config));
+        $this->assertEquals(true, (\Valkyrja\config() instanceof Config));
     }
 
     /**
@@ -143,7 +163,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, annotator() instanceof Annotator);
+        $this->assertEquals(true, \Valkyrja\annotator() instanceof Annotator);
     }
 
     /**
@@ -153,7 +173,7 @@ class HelpersTest extends TestCase
      */
     public function testClient(): void
     {
-        $this->assertEquals(true, client() instanceof Client);
+        $this->assertEquals(true, \Valkyrja\client() instanceof Client);
     }
 
     /**
@@ -163,7 +183,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, console() instanceof Console);
+        $this->assertEquals(true, \Valkyrja\console() instanceof Console);
     }
 
     /**
@@ -173,7 +193,7 @@ class HelpersTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        $this->assertEquals(true, consoleKernel() instanceof ConsoleKernel);
+        $this->assertEquals(true, \Valkyrja\consoleKernel() instanceof ConsoleKernel);
     }
 
     /**
@@ -183,7 +203,7 @@ class HelpersTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        $this->assertEquals(true, filesystem() instanceof Filesystem);
+        $this->assertEquals(true, \Valkyrja\filesystem() instanceof Filesystem);
     }
 
     /**
@@ -193,7 +213,7 @@ class HelpersTest extends TestCase
      */
     public function testInput(): void
     {
-        $this->assertEquals(true, input() instanceof Input);
+        $this->assertEquals(true, \Valkyrja\input() instanceof Input);
     }
 
     /**
@@ -203,7 +223,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, kernel() instanceof Kernel);
+        $this->assertEquals(true, \Valkyrja\kernel() instanceof Kernel);
     }
 
     /**
@@ -223,7 +243,7 @@ class HelpersTest extends TestCase
      */
     public function testOutput(): void
     {
-        $this->assertEquals(true, output() instanceof Output);
+        $this->assertEquals(true, \Valkyrja\output() instanceof Output);
     }
 
     /**
@@ -233,7 +253,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, request() instanceof Request);
+        $this->assertEquals(true, \Valkyrja\request() instanceof Request);
     }
 
     /**
@@ -243,7 +263,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, router() instanceof Router);
+        $this->assertEquals(true, \Valkyrja\router() instanceof Router);
     }
 
     /**
@@ -253,7 +273,7 @@ class HelpersTest extends TestCase
      */
     public function testRoute(): void
     {
-        $this->assertEquals(true, route('welcome') instanceof Route);
+        $this->assertEquals(true, \Valkyrja\route('welcome') instanceof Route);
     }
 
     /**
@@ -273,7 +293,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, response() instanceof Response);
+        $this->assertEquals(true, \Valkyrja\response() instanceof Response);
     }
 
     /**
@@ -283,7 +303,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, response('test') instanceof Response);
+        $this->assertEquals(true, \Valkyrja\response('test') instanceof Response);
     }
 
     /**
@@ -353,7 +373,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, session() instanceof Session);
+        $this->assertEquals(true, \Valkyrja\session() instanceof Session);
     }
 
     /**

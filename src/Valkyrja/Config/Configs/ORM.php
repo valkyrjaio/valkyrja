@@ -20,7 +20,7 @@ use Valkyrja\Config\Models\Model;
 use Valkyrja\ORM\Enums\Config;
 use Valkyrja\ORM\Repositories\Repository;
 
-use function env;
+use function Valkyrja\env;
 
 /**
  * Class ORM

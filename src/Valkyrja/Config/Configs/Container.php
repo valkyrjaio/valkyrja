@@ -18,7 +18,9 @@ use Valkyrja\Config\Models\Cacheable as Model;
 use Valkyrja\Container\Enums\Config;
 use Valkyrja\Support\Providers\Provider;
 
-use function env;
+use function Valkyrja\cachePath;
+use function Valkyrja\env;
+use function Valkyrja\servicesPath;
 
 /**
  * Class Container

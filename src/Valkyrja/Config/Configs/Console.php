@@ -18,7 +18,9 @@ use Valkyrja\Config\Models\Cacheable as Model;
 use Valkyrja\Console\Enums\Config;
 use Valkyrja\Support\Providers\Provider;
 
-use function env;
+use function Valkyrja\cachePath;
+use function Valkyrja\commandsPath;
+use function Valkyrja\env;
 
 /**
  * Class Console

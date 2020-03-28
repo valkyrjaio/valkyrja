@@ -20,12 +20,12 @@ use Valkyrja\Http\Middleware\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
-use function config;
-use function redirect;
-use function responseBuilder;
-use function router;
-use function session;
 use function time;
+use function Valkyrja\config;
+use function Valkyrja\redirect;
+use function Valkyrja\responseBuilder;
+use function Valkyrja\router;
+use function Valkyrja\session;
 
 /**
  * Class ReAuthenticatedMiddleware.

@@ -17,6 +17,8 @@ use Exception;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Response;
 
+use function Valkyrja\redirect;
+
 /**
  * Class HttpRedirectException.
  *

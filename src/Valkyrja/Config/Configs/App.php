@@ -18,7 +18,7 @@ use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Container\Enums\Provider;
 use Valkyrja\Config\Models\Model;
 
-use function env;
+use function Valkyrja\env;
 
 /**
  * Class App.

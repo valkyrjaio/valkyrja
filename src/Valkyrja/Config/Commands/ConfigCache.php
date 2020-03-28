@@ -16,9 +16,12 @@ namespace Valkyrja\Config\Commands;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function Valkyrja\config;
 use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
 use const PHP_EOL;
+
+use function Valkyrja\output;
 
 /**
  * Class ConfigCache.

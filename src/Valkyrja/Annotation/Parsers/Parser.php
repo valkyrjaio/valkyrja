@@ -29,6 +29,8 @@ use function defined;
 use function is_array;
 use function is_string;
 
+use function Valkyrja\config;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

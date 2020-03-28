@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\View\Views;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\View;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\Engine;
@@ -80,9 +79,9 @@ class View implements ViewContract
     /**
      * The config.
      *
-     * @var View|array
+     * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * The default engine.
@@ -103,7 +102,7 @@ class View implements ViewContract
     public function __construct(Application $app, string $template = null, array $variables = [])
     {
         $this->app    = $app;
-        $this->config = $app->config('view');
+        $this->config = (array) $app->config('view');
         $this->engine = $this->config['engine'];
         $this->setVariables($variables);
         $this->setDir($this->config['dir']);

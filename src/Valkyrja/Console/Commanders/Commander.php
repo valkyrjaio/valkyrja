@@ -21,6 +21,7 @@ use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
 
 use function strlen;
+use function Valkyrja\output;
 
 /**
  * Abstract Class Handler.

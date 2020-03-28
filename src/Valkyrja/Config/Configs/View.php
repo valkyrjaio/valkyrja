@@ -17,7 +17,8 @@ use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Model;
 use Valkyrja\View\Enums\Config;
 
-use function env;
+use function Valkyrja\env;
+use function Valkyrja\resourcesPath;
 
 /**
  * Class View

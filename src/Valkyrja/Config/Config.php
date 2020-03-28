@@ -34,7 +34,8 @@ use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Model;
 use Valkyrja\Support\Providers\Provider;
 
-use function env;
+use function Valkyrja\cachePath;
+use function Valkyrja\env;
 
 /**
  * Class Config.

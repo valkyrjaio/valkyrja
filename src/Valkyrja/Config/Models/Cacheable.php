@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Models;
 
-use function env;
+use function Valkyrja\env;
 
 /**
  * Class Cacheable.

@@ -21,6 +21,9 @@ use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Output as OutputContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function Valkyrja\config;
+use function Valkyrja\input;
+
 use const PHP_EOL;
 
 /**

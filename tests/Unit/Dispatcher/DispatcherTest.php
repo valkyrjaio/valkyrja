@@ -181,7 +181,7 @@ class DispatcherTest extends TestCase
     {
         $valid = $this->class->verifyFunction(
                 (new Dispatch())
-                    ->setFunction('routeUrl')
+                    ->setFunction('\Valkyrja\routeUrl')
             ) ?? null;
 
         $this->assertEquals(null, $valid);

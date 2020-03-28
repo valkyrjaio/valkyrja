@@ -313,7 +313,7 @@ class Router implements RouterContract
         return 'http'
             . ($route->isSecure() ? 's' : '')
             . '://'
-            . request()->getUri()->getHostPort();
+            . \Valkyrja\request()->getUri()->getHostPort();
     }
 
     /**

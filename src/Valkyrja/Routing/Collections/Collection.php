@@ -18,6 +18,8 @@ use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 
+use function Valkyrja\app;
+
 use const JSON_THROW_ON_ERROR;
 
 /**
@@ -113,7 +115,7 @@ class Collection implements CollectionContract
      */
     public function get(string $path, string $method = null): ?Route
     {
-        return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method) ?? null;
+        return $this->getStatic($path, $method) ?? $this->getDynamic($path, $method);
     }
 
     /**

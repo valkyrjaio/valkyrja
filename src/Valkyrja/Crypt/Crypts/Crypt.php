@@ -15,7 +15,6 @@ namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\Crypt;
 use Valkyrja\Crypt\Crypt as CryptContract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
@@ -48,9 +47,9 @@ class Crypt implements CryptContract
     /**
      * The config.
      *
-     * @var Crypt|array
+     * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * The key
@@ -68,7 +67,7 @@ class Crypt implements CryptContract
      */
     public function __construct(Application $app, Encrypter $encrypter, Decrypter $decrypter)
     {
-        $this->config    = $app->config()['crypt'];
+        $this->config    = (array) $app->config()['crypt'];
         $this->encrypter = $encrypter;
         $this->decrypter = $decrypter;
     }

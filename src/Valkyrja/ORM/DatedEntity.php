@@ -18,7 +18,7 @@ namespace Valkyrja\ORM;
  *
  * @author Melech Mizrachi
  */
-interface DatedEntity
+interface DatedEntity extends Entity
 {
     /**
      * Get the created at field.

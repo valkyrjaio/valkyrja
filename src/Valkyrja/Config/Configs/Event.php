@@ -16,7 +16,9 @@ namespace Valkyrja\Config\Configs;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Cacheable as Model;
 
-use function env;
+use function Valkyrja\cachePath;
+use function Valkyrja\env;
+use function Valkyrja\eventsPath;
 
 /**
  * Class Event

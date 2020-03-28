@@ -21,11 +21,11 @@ use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\SoftDeleteEntity;
 
-use function cache;
 use function get_class;
 use function is_array;
 use function json_encode;
 use function md5;
+use function Valkyrja\cache;
 
 use const JSON_THROW_ON_ERROR;
 

@@ -17,6 +17,8 @@ use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
 use Valkyrja\Facade\Facades\Facade;
 
+use function Valkyrja\output;
+
 /**
  * Class Output.
  *

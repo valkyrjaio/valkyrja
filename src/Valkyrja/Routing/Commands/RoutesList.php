@@ -21,6 +21,8 @@ use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Routing\Route;
 
 use function strlen;
+use function Valkyrja\output;
+use function Valkyrja\router;
 
 /**
  * Class RoutesList.

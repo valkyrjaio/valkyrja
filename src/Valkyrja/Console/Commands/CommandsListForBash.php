@@ -17,6 +17,9 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function Valkyrja\console;
+use function Valkyrja\output;
+
 /**
  * Class ConsoleCommands.
  *

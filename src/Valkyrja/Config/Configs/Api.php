@@ -17,7 +17,7 @@ use Valkyrja\Api\Enums\ConfigValue;
 use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Config\Models\Model;
 
-use function env;
+use function Valkyrja\env;
 
 /**
  * Class Api.

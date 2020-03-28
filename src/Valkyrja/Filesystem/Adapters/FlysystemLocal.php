@@ -15,6 +15,8 @@ namespace Valkyrja\Filesystem;
 
 use League\Flysystem\Adapter\Local;
 
+use function Valkyrja\config;
+
 /**
  * Abstract Class FlysystemLocal.
  *

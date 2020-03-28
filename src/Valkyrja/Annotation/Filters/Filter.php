@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Filters;
 
-use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Annotation\Filter as AnnotationsFilterContract;
@@ -50,7 +49,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -65,7 +63,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -80,7 +77,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -96,7 +92,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $class    The class
      * @param string $property The property
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -111,7 +106,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -127,7 +121,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $class  The class
      * @param string $method The method
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -142,7 +135,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type  The type
      * @param string $class The class
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */
@@ -157,7 +149,6 @@ class Filter implements AnnotationsFilterContract
      * @param string $type     The type
      * @param string $function The function
      *
-     * @throws ReflectionException
      *
      * @return Annotation[]
      */

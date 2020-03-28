@@ -30,6 +30,7 @@ use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\ORM\Statement;
 
 use function is_bool;
+use function Valkyrja\config;
 
 /**
  * Class PDOConnection.

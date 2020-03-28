@@ -109,7 +109,7 @@ abstract class Facade implements FacadeContract
      */
     protected static function getContainer(): Container
     {
-        return self::$container ?? (self::$container = container());
+        return self::$container ?? (self::$container = \Valkyrja\container());
     }
 
     /**

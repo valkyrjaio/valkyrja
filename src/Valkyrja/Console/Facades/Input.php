@@ -47,6 +47,6 @@ class Input extends Facade
      */
     public static function instance()
     {
-        return input();
+        return \Valkyrja\input();
     }
 }

@@ -18,8 +18,7 @@ use Valkyrja\Auth\Enums\Header;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
-use function auth;
-use function request;
+use function Valkyrja\auth;
 
 /**
  * Class TokenAuthenticatedMiddleware.
@@ -42,7 +41,7 @@ class TokenAuthenticatedMiddleware extends AuthenticatedMiddleware
         // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {
             try {
-                $token = request()->getHeaderLine(Header::AUTH_TOKEN);
+                $token = \Valkyrja\request()->getHeaderLine(Header::AUTH_TOKEN);
                 // Try to login with the token
                 $repository->loginWithToken($token);
             } catch (Exception $exception) {

@@ -19,6 +19,8 @@ use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Model\ModelTrait;
 
+use function Valkyrja\json;
+
 /**
  * Trait JsonTrait.
  *
