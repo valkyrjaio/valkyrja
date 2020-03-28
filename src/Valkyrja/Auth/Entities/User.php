@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 use Valkyrja\Auth\User as Contract;
-use Valkyrja\ORM\Entities\EntityFields;
+use Valkyrja\ORM\Entities\Entity;
 
 /**
  * Entity User.
  *
  * @author Melech Mizrachi
  */
-class User implements Contract
+class User extends Entity implements Contract
 {
-    use EntityFields;
     use UserFields;
 
     /**
