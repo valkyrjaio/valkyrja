@@ -25,6 +25,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 
 use function count;
+use function microtime;
 
 /**
  * Test the dispatcher trait.

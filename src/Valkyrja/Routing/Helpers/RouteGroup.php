@@ -17,6 +17,7 @@ use Closure;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
 
+use function array_merge;
 use function is_array;
 use function is_string;
 

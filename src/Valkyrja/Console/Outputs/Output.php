@@ -21,6 +21,7 @@ use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Output as OutputContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function strip_tags;
 use function Valkyrja\config;
 use function Valkyrja\input;
 

@@ -15,6 +15,8 @@ namespace Valkyrja\Support;
 
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 
+use function is_a;
+
 /**
  * Class ClassHelpers.
  *

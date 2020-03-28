@@ -13,6 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model;
 
+use function array_keys;
+use function get_object_vars;
+use function json_decode;
+use function json_encode;
+use function method_exists;
+use function property_exists;
+use function str_replace;
+use function ucwords;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

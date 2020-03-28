@@ -20,7 +20,18 @@ use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Session\Session as SessionContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function bin2hex;
+use function hash_equals;
+use function headers_sent;
 use function is_string;
+
+use function preg_match;
+use function random_bytes;
+use function session_id;
+use function session_name;
+use function session_start;
+use function session_status;
+use function session_unset;
 
 use const PHP_SESSION_ACTIVE;
 

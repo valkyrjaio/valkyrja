@@ -28,6 +28,11 @@ use function date;
 use function is_array;
 use function is_object;
 
+use function json_encode;
+use function serialize;
+use function spl_object_id;
+use function strtolower;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

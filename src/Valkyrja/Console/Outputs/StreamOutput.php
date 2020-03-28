@@ -17,6 +17,10 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Console\StreamOutput as StreamOutputContract;
 
+use function fflush;
+use function fopen;
+use function fwrite;
+use function get_resource_type;
 use function is_resource;
 
 use const PHP_EOL;

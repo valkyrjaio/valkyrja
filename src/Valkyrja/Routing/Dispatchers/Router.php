@@ -35,7 +35,11 @@ use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
 use function is_array;
+use function rawurldecode;
+use function str_replace;
 use function strlen;
+use function strpos;
+use function substr;
 
 /**
  * Class Router.

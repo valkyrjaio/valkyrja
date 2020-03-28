@@ -18,7 +18,12 @@ use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
 
+use function base64_decode;
 use function is_string;
+
+use function json_decode;
+use function sodium_crypto_secretbox_open;
+use function sodium_memzero;
 
 use const JSON_THROW_ON_ERROR;
 use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;

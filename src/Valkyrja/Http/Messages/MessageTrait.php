@@ -18,7 +18,12 @@ use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
 use Valkyrja\Http\Helpers\HeaderSecurity;
 use Valkyrja\Http\Stream;
 
+use function array_merge;
+use function implode;
 use function is_array;
+use function preg_match;
+use function sprintf;
+use function strtolower;
 
 /**
  * Trait MessageTrait.

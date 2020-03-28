@@ -18,6 +18,12 @@ use Valkyrja\Application\Application;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Support\Providers\Provides;
 
+use function base64_encode;
+use function json_encode;
+use function random_bytes;
+use function sodium_crypto_secretbox;
+use function sodium_memzero;
+
 use const JSON_THROW_ON_ERROR;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 

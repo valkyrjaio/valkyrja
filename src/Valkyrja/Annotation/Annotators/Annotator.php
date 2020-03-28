@@ -25,6 +25,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Support\Providers\Provides;
 
+use function array_merge;
+
 /**
  * Class Annotator.
  *

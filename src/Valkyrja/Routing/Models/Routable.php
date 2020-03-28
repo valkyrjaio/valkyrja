@@ -17,6 +17,9 @@ use InvalidArgumentException;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Enums\StatusCode;
 
+use function array_diff;
+use function strpos;
+
 /**
  * Trait Routable.
  *

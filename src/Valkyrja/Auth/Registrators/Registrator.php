@@ -18,6 +18,10 @@ use Valkyrja\Auth\Registrator as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\ORM\ORM;
 
+use function password_hash;
+
+use const PASSWORD_DEFAULT;
+
 /**
  * Class Registrator.
  *

@@ -21,6 +21,8 @@ use Valkyrja\Console\Formatter as OutputFormatterContract;
 use Valkyrja\Support\Providers\Provides;
 
 use function count;
+use function implode;
+use function sprintf;
 
 /**
  * Class OutputFormatter.

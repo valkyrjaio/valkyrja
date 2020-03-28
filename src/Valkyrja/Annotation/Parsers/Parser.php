@@ -26,9 +26,17 @@ use Valkyrja\Support\Providers\Provides;
 use function array_key_exists;
 use function constant;
 use function defined;
+use function explode;
 use function is_array;
 use function is_string;
 
+use function json_decode;
+use function method_exists;
+use function preg_match_all;
+use function property_exists;
+use function str_replace;
+use function strpos;
+use function trim;
 use function Valkyrja\config;
 
 use const JSON_THROW_ON_ERROR;

@@ -25,6 +25,9 @@ use function get_class;
 use function is_array;
 use function json_encode;
 use function md5;
+use function serialize;
+use function spl_object_id;
+use function unserialize;
 use function Valkyrja\cache;
 
 use const JSON_THROW_ON_ERROR;

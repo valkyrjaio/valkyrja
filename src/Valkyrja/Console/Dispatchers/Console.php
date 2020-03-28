@@ -29,6 +29,8 @@ use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Support\Providers\Provides;
 
+use function preg_match;
+
 /**
  * Class Console.
  *

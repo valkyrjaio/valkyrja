@@ -24,6 +24,9 @@ use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route as RouteContract;
 
+use function array_merge;
+use function trim;
+
 /**
  * Class RouteAnnotator.
  *

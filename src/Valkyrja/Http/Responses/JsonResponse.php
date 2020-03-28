@@ -24,6 +24,11 @@ use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\JsonResponse as JsonResponseContract;
 use Valkyrja\Http\Streams\Stream;
 
+use function explode;
+use function json_encode;
+use function preg_match;
+use function sprintf;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

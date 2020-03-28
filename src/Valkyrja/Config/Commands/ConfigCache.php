@@ -16,7 +16,13 @@ namespace Valkyrja\Config\Commands;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function file_exists;
+use function file_put_contents;
+use function json_decode;
+use function json_encode;
+use function unlink;
 use function Valkyrja\config;
+use function var_export;
 use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
 use const PHP_EOL;

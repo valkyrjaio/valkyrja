@@ -17,6 +17,12 @@ use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\PHPEngine as PHPEngineContract;
 use Valkyrja\View\View;
 
+use function array_merge;
+use function extract;
+use function htmlentities;
+use function ob_get_clean;
+use function ob_start;
+
 use const ENT_QUOTES;
 use const EXTR_OVERWRITE;
 

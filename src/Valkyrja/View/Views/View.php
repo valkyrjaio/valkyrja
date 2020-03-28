@@ -20,6 +20,12 @@ use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\View as ViewContract;
 
+use function array_merge;
+use function explode;
+use function implode;
+use function strpos;
+use function trim;
+
 /**
  * Class View.
  *

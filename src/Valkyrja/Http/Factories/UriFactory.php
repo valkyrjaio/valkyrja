@@ -21,9 +21,20 @@ use Valkyrja\Http\Exceptions\InvalidScheme;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
 
+use function array_change_key_case;
 use function array_key_exists;
+use function explode;
+use function implode;
 use function is_array;
+use function ltrim;
+use function preg_match;
+use function preg_replace;
 use function strlen;
+
+use function strpos;
+use function strrpos;
+use function strtolower;
+use function substr;
 
 use const CASE_LOWER;
 

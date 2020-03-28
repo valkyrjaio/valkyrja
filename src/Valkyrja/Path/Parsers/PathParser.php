@@ -20,7 +20,13 @@ use Valkyrja\Config\Configs\Path;
 use Valkyrja\Path\PathParser as ParserContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function explode;
 use function is_array;
+use function preg_match_all;
+use function preg_split;
+use function str_replace;
+use function strpos;
+use function substr_count;
 
 /**
  * Class PathParser.

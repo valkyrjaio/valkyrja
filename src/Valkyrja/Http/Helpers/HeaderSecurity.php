@@ -17,6 +17,8 @@ use InvalidArgumentException;
 
 use function in_array;
 use function ord;
+use function preg_match;
+use function sprintf;
 use function strlen;
 
 /**

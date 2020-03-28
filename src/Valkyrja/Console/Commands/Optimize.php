@@ -20,6 +20,7 @@ use Valkyrja\Console\Support\ProvidesCommand;
 use function file_exists;
 use function file_put_contents;
 use function json_decode;
+use function json_encode;
 use function unlink;
 use function Valkyrja\config;
 use function Valkyrja\console;

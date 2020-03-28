@@ -14,6 +14,8 @@ namespace Valkyrja\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
 
+use function json_encode;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

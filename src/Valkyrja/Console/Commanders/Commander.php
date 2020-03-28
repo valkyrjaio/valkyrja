@@ -20,6 +20,8 @@ use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Inputs\Option;
 
+use function max;
+use function str_repeat;
 use function strlen;
 use function Valkyrja\output;
 

@@ -16,6 +16,10 @@ namespace Valkyrja\Dispatcher\Models;
 use Closure;
 use Valkyrja\Model\ModelTrait;
 
+use function get_object_vars;
+use function json_decode;
+use function json_encode;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

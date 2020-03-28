@@ -21,6 +21,9 @@ use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Stores\RedisStore;
 use Valkyrja\Support\Providers\Provides;
 
+use function method_exists;
+use function ucfirst;
+
 /**
  * Class Cache.
  *

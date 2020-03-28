@@ -18,6 +18,9 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher as RouteMatcherContract;
 use Valkyrja\Routing\Route;
 
+use function preg_match;
+use function trim;
+
 /**
  * Class RouteMatcher.
  *

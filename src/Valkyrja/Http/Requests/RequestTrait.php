@@ -30,6 +30,9 @@ use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
 
+use function preg_match;
+use function sprintf;
+
 /**
  * Representation of an outgoing, client-side request.
  * Per the HTTP specification, this interface includes properties for

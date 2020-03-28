@@ -19,6 +19,9 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
+use function headers_sent;
+use function session_start;
+
 /**
  * Class CookieSession.
  *

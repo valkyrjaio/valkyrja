@@ -21,6 +21,8 @@ use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 
+use function array_keys;
+use function implode;
 use function is_array;
 
 /**

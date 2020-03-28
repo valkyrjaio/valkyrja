@@ -27,6 +27,8 @@ use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Support\Providers\Provides;
 
+use function sprintf;
+
 /**
  * Representation of an outgoing, server-side response.
  * Per the HTTP specification, this interface includes properties for
@@ -263,7 +265,7 @@ class Response implements ResponseContract
             $this->statusPhrase
         );
 
-        header($httpLine, true, $this->statusCode);
+        \header($httpLine, true, $this->statusCode);
 
         return $this;
     }
@@ -278,7 +280,7 @@ class Response implements ResponseContract
         foreach ($this->headers as $name => $values) {
             /** @var array $values */
             foreach ($values as $value) {
-                header("$name: $value", false);
+                \header("$name: $value", false);
             }
         }
 

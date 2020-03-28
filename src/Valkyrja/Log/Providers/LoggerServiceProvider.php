@@ -23,6 +23,8 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Log\Loggers\MonologLogger;
 use Valkyrja\Support\Providers\Provider;
 
+use function date;
+
 /**
  * Class LoggerServiceProvider.
  *

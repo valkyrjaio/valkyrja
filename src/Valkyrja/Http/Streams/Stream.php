@@ -17,6 +17,16 @@ use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Stream as StreamContract;
 
+use function fclose;
+use function feof;
+use function fread;
+use function fseek;
+use function fstat;
+use function ftell;
+use function fwrite;
+use function stream_get_contents;
+use function stream_get_meta_data;
+
 use const SEEK_SET;
 
 /**

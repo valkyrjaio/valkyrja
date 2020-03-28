@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Factories;
 
+use function array_change_key_case;
 use function array_key_exists;
+use function implode;
 use function is_array;
+
+use function str_replace;
+use function strpos;
+use function strtolower;
+use function substr;
 
 use const CASE_LOWER;
 

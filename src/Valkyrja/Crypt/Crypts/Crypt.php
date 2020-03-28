@@ -21,6 +21,9 @@ use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Providers\Provides;
 
+use function file_exists;
+use function file_get_contents;
+
 /**
  * Class Crypt.
  *

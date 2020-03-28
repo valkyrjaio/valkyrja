@@ -25,6 +25,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Reflection\Reflector as ReflectorContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function spl_object_id;
+
 /**
  * Class Reflector.
  *

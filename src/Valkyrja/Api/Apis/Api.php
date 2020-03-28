@@ -28,6 +28,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\Support\Providers\Provides;
 
 use function end;
+use function explode;
 use function get_class;
 use function strtolower;
 

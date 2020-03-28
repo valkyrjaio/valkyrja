@@ -29,6 +29,8 @@ use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
+use function get_class;
+
 /**
  * Class ORM.
  *

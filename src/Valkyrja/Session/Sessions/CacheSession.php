@@ -18,8 +18,11 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
+use function headers_sent;
 use function json_decode;
 use function json_encode;
+
+use function session_start;
 
 use const JSON_THROW_ON_ERROR;
 

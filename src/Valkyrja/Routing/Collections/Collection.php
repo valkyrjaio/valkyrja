@@ -18,6 +18,9 @@ use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 
+use function array_merge;
+use function json_encode;
+use function md5;
 use function Valkyrja\app;
 
 use const JSON_THROW_ON_ERROR;

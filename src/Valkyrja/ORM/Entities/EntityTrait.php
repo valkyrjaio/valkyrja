@@ -20,6 +20,11 @@ use function in_array;
 use function is_array;
 use function is_object;
 
+use function json_decode;
+use function json_encode;
+use function serialize;
+use function unserialize;
+
 use const JSON_THROW_ON_ERROR;
 
 /**

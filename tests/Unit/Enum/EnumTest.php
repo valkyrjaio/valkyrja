@@ -17,7 +17,11 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Enum\Enums\Enum;
 
+use function array_diff;
 use function get_class;
+
+use function json_encode;
+use function method_exists;
 
 use const JSON_THROW_ON_ERROR;
 

@@ -20,7 +20,11 @@ use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\Support\ProvidesCommand;
 use Valkyrja\Routing\Route;
 
+use function implode;
+use function max;
+use function str_repeat;
 use function strlen;
+use function usort;
 use function Valkyrja\output;
 use function Valkyrja\router;
 

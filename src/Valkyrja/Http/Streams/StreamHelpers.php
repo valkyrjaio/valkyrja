@@ -16,7 +16,10 @@ namespace Valkyrja\Http\Streams;
 use RuntimeException;
 use Valkyrja\Http\Exceptions\InvalidStream;
 
+use function fopen;
+use function get_resource_type;
 use function is_resource;
+use function strpos;
 
 /**
  * Trait StreamHelpers.

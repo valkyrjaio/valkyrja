@@ -20,7 +20,10 @@ use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
 
+use function explode;
 use function is_string;
+use function str_replace;
+use function strpos;
 
 /**
  * Trait RouteMethods.

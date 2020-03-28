@@ -19,7 +19,11 @@ use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Inputs\Argument;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function array_merge;
+use function explode;
+use function max;
 use function strlen;
+use function usort;
 use function Valkyrja\console;
 use function Valkyrja\input;
 use function Valkyrja\output;

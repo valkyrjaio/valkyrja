@@ -50,6 +50,7 @@ use Valkyrja\View\Views\View;
 
 use function get_class;
 use function is_string;
+use function unlink;
 
 /**
  * Test the functionality of the Application.

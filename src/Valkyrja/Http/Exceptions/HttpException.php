@@ -19,6 +19,8 @@ use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Response;
 use Valkyrja\View\View;
 
+use function file_exists;
+
 /**
  * Class HttpException.
  *

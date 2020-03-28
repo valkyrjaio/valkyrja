@@ -15,7 +15,10 @@ namespace Valkyrja\Tests\Unit\Support;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Support\Collection;
 
+use function array_keys;
 use function count;
+
+use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 

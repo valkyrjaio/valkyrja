@@ -20,6 +20,9 @@ use Valkyrja\Dispatcher\Enums\Constant;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 
+use function method_exists;
+use function property_exists;
+
 /**
  * Trait ClassDispatcher.
  *

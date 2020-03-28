@@ -18,7 +18,11 @@ use Valkyrja\Application\Application;
 use Valkyrja\Path\PathGenerator as GeneratorContract;
 use Valkyrja\Support\Providers\Provides;
 
+use function implode;
 use function is_array;
+use function preg_match;
+use function str_replace;
+use function strpos;
 
 /**
  * Class PathGenerator.

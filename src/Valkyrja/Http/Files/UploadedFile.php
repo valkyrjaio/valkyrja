@@ -22,6 +22,15 @@ use Valkyrja\Http\UploadedFile as UploadedFileContract;
 
 use function dirname;
 
+use function fclose;
+use function fopen;
+use function fwrite;
+use function is_dir;
+use function is_writable;
+use function move_uploaded_file;
+use function sprintf;
+use function strpos;
+
 use const PHP_SAPI;
 use const UPLOAD_ERR_EXTENSION;
 use const UPLOAD_ERR_OK;

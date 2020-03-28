@@ -16,6 +16,7 @@ namespace Valkyrja\Http\Factories;
 use InvalidArgumentException;
 use Valkyrja\Http\Files\UploadedFile;
 
+use function array_keys;
 use function is_array;
 
 /**

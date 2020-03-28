@@ -27,8 +27,13 @@ use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
 
 use function constant;
+use function date_default_timezone_set;
 use function define;
 use function defined;
+
+use function explode;
+use function is_file;
+use function microtime;
 
 use const E_ALL;
 

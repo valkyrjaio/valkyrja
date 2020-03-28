@@ -18,8 +18,13 @@ use Valkyrja\Console\Input as InputContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Support\Providers\Provides;
 
+use function array_merge;
+use function array_shift;
+use function explode;
+use function implode;
 use function in_array;
 use function is_array;
+use function strpos;
 
 /**
  * Class Input.

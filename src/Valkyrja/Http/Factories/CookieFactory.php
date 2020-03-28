@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Factories;
 
+use function preg_match_all;
+use function urldecode;
+
 use const PREG_SET_ORDER;
 
 /**

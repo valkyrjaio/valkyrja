@@ -48,6 +48,9 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Support\Directory as ValkyrjaDirectory;
 
+use function func_get_args;
+use function var_dump;
+
 /**
  * Return the global $app variable.
  *

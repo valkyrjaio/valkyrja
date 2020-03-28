@@ -19,7 +19,10 @@ use Valkyrja\Http\Enums\SameSite;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 use Valkyrja\Model\ModelTrait;
 
+use function gmdate;
 use function in_array;
+use function time;
+use function urlencode;
 
 /**
  * Class Cookie.

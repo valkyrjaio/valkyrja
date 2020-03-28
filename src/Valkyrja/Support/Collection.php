@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
+use function array_keys;
 use function count;
 use function in_array;
+
+use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 

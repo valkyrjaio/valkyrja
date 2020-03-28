@@ -17,6 +17,10 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\ProvidesCommand;
 
+use function array_keys;
+use function implode;
+use function strpos;
+use function substr;
 use function Valkyrja\console;
 use function Valkyrja\output;
 

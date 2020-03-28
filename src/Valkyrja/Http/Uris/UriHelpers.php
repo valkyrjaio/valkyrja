@@ -20,6 +20,12 @@ use Valkyrja\Http\Exceptions\InvalidPort;
 use Valkyrja\Http\Exceptions\InvalidQuery;
 use Valkyrja\Http\Exceptions\InvalidScheme;
 
+use function ltrim;
+use function preg_replace;
+use function sprintf;
+use function strpos;
+use function strtolower;
+
 /**
  * Trait UriHelpers.
  *
