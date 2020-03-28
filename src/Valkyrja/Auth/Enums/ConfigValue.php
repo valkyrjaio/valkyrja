@@ -24,14 +24,14 @@ use Valkyrja\Enum\Enums\Enum;
  */
 final class ConfigValue extends Enum
 {
-    public const ADAPTER = CKP::DEFAULT;
-    public const USER = User::class;
-    public const REPOSITORY = Repository::class;
-    public const ALWAYS_AUTHENTICATE = false;
-    public const KEEP_USER_FRESH = false;
-    public const AUTHENTICATE_ROUTE = RouteName::AUTHENTICATE;
+    public const ADAPTER                = CKP::DEFAULT;
+    public const USER                   = User::class;
+    public const REPOSITORY             = Repository::class;
+    public const ALWAYS_AUTHENTICATE    = false;
+    public const KEEP_USER_FRESH        = false;
+    public const AUTHENTICATE_ROUTE     = RouteName::AUTHENTICATE;
     public const PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
-    public const ADAPTERS = [
+    public const ADAPTERS               = [
         CKP::DEFAULT => Adapter::class,
     ];
 }

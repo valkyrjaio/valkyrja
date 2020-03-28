@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
-use Valkyrja\Auth\Enums\ConfigValue;
-
 /**
  * Interface Adapter.
  *
