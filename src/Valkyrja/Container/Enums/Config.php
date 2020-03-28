@@ -23,6 +23,7 @@ use Valkyrja\Enum\Enums\Enum;
 final class Config extends Enum
 {
     public const PROVIDERS = [
+        Provider::API,
         Provider::ANNOTATOR,
         Provider::CACHE,
         Provider::CLIENT,

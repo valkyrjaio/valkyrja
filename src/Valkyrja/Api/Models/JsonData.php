@@ -11,18 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Enums;
+namespace Valkyrja\Api\Models;
 
-use Valkyrja\Enum\Enums\Enum;
+use Valkyrja\Api\JsonData as Contract;
 
 /**
- * Enum ApiStatus.
+ * Class JsonData.
  *
  * @author Melech Mizrachi
  */
-final class ApiStatus extends Enum
+class JsonData implements Contract
 {
-    public const SUCCESS = 'success';
-    public const ERROR   = 'error';
-    public const FAIL    = 'fail';
+    use JsonDataTrait;
 }

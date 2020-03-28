@@ -11,46 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\Api;
 
-use Exception;
 use Valkyrja\Model\Model;
-use Valkyrja\ORM\Entity;
 
 /**
- * Interface ApiModel.
+ * Interface JsonData.
  *
  * @author Melech Mizrachi
  */
-interface ApiModel extends Model
+interface JsonData extends Model
 {
-    /**
-     * Make a new API model from an exception.
-     *
-     * @param Exception $exception
-     *
-     * @return static
-     */
-    public static function fromException(Exception $exception): self;
-
-    /**
-     * Make a new API model from an entity.
-     *
-     * @param Entity $entity
-     *
-     * @return static
-     */
-    public static function fromEntity(Entity $entity): self;
-
-    /**
-     * Make a new API model from an array of entities.
-     *
-     * @param Entity ...$entities
-     *
-     * @return static
-     */
-    public static function fromEntities(Entity ...$entities): self;
-
     /**
      * Get the item.
      *
@@ -132,22 +103,6 @@ interface ApiModel extends Model
     public function setTotal(int $total = null): self;
 
     /**
-     * Get the message.
-     *
-     * @return string|null
-     */
-    public function getMessage(): ?string;
-
-    /**
-     * Set the error message.
-     *
-     * @param string|null $message
-     *
-     * @return $this
-     */
-    public function setMessage(string $message = null): self;
-
-    /**
      * Get the messages.
      *
      * @return array|null
@@ -178,50 +133,4 @@ interface ApiModel extends Model
      * @return $this
      */
     public function setData(array $data = null): self;
-
-    /**
-     * Get the status code.
-     *
-     * @return int
-     */
-    public function getStatusCode(): int;
-
-    /**
-     * Set the status code.
-     *
-     * @param int $statusCode
-     *
-     * @return $this
-     */
-    public function setStatusCode(int $statusCode): self;
-
-    /**
-     * Get the status.
-     *
-     * @return string
-     */
-    public function getStatus(): string;
-
-    /**
-     * Set the status.
-     *
-     * @param string $status
-     *
-     * @return $this
-     */
-    public function setStatus(string $status): self;
-
-    /**
-     * Get the API model as a JSON string.
-     *
-     * @return string
-     */
-    public function asJson(): string;
-
-    /**
-     * Get the API model as a JSON response.
-     *
-     * @return JsonResponse
-     */
-    public function asJsonResponse(): JsonResponse;
 }

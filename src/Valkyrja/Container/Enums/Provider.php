@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Enums;
 
 use Valkyrja\Annotation\Annotators\Annotator;
+use Valkyrja\Api\Apis\Api;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Cache\Caches\Cache;
 use Valkyrja\Client\Clients\GuzzleClient;
@@ -61,6 +62,7 @@ use Valkyrja\View\Views\View;
  */
 final class Provider extends Enum
 {
+    public const API                 = Api::class;
     public const APP                 = Valkyrja::class;
     public const ANNOTATOR           = Annotator::class;
     public const CACHE               = Cache::class;

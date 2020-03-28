@@ -11,31 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Models;
+namespace Valkyrja\Api\Models;
 
-use Exception;
-use Valkyrja\Http\ApiModel as Contract;
-use Valkyrja\Http\Enums\ApiStatus;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\JsonResponse;
 use Valkyrja\Model\ModelTrait;
-use Valkyrja\ORM\Entity;
-
-use function app;
-use function end;
-use function get_class;
-use function json_encode;
-use function strtolower;
-
-use const JSON_THROW_ON_ERROR;
-
 /**
- * Class ApiModel.
+ * Trait JsonDataTrait.
  *
  * @author Melech Mizrachi
  */
-class ApiModel implements Contract
+trait JsonDataTrait
 {
     use ModelTrait;
 
@@ -94,90 +78,6 @@ class ApiModel implements Contract
      * @var array|null
      */
     protected ?array $data = null;
-
-    /**
-     * The status code.
-     *
-     * @var int
-     */
-    protected int $statusCode = StatusCode::OK;
-
-    /**
-     * The status.
-     *
-     * @var string
-     */
-    protected string $status = ApiStatus::SUCCESS;
-
-    /**
-     * Make a new API model from an exception.
-     *
-     * @param Exception $exception
-     *
-     * @return static
-     */
-    public static function fromException(Exception $exception): self
-    {
-        $apiModel = new static();
-
-        $apiModel->data = [
-            'code' => $exception->getCode(),
-        ];
-
-        $apiModel->message    = $exception->getMessage();
-        $apiModel->status     = ApiStatus::ERROR;
-        $apiModel->statusCode = StatusCode::INTERNAL_SERVER_ERROR;
-
-        if (app()->debug()) {
-            $apiModel->data['file']  = $exception->getFile();
-            $apiModel->data['line']  = $exception->getLine();
-            $apiModel->data['trace'] = $exception->getTrace();
-        }
-
-        if ($exception instanceof HttpException) {
-            $apiModel->setStatusCode($exception->getStatusCode());
-        }
-
-        return $apiModel;
-    }
-
-    /**
-     * Make a new API model from an entity.
-     *
-     * @param Entity $entity
-     *
-     * @return static
-     */
-    public static function fromEntity(Entity $entity): self
-    {
-        $apiModel = new static();
-
-        $apiModel->item = $entity;
-
-        $apiModel->setItemKeysFromEntity($entity);
-
-        return $apiModel;
-    }
-
-    /**
-     * Make a new API model from an array of entities.
-     *
-     * @param Entity ...$entities
-     *
-     * @return static
-     */
-    public static function fromEntities(Entity ...$entities): self
-    {
-        $apiModel = new static();
-
-        $apiModel->items = $entities;
-
-        if ($entities) {
-            $apiModel->setItemKeysFromEntity($entities[0]);
-        }
-
-        return $apiModel;
-    }
 
     /**
      * Get the item.
@@ -372,99 +272,11 @@ class ApiModel implements Contract
     }
 
     /**
-     * Get the status code.
-     *
-     * @return int
-     */
-    public function getStatusCode(): int
-    {
-        return $this->statusCode;
-    }
-
-    /**
-     * Set the status code.
-     *
-     * @param int $statusCode
-     *
-     * @return $this
-     */
-    public function setStatusCode(int $statusCode): self
-    {
-        $this->statusCode = $statusCode;
-
-        return $this;
-    }
-
-    /**
-     * Get the status.
-     *
-     * @return string
-     */
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set the status.
-     *
-     * @param string $status
-     *
-     * @return $this
-     */
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get the API model as a JSON string.
-     *
-     * @return string
-     */
-    public function asJson(): string
-    {
-        return json_encode($this->asArray(), JSON_THROW_ON_ERROR);
-    }
-
-    /**
-     * Get the API model as a JSON response.
-     *
-     * @return JsonResponse
-     */
-    public function asJsonResponse(): JsonResponse
-    {
-        return json($this->asArray(), $this->statusCode);
-    }
-
-    /**
      * Serialize properties for json_encode.
      *
      * @return array
      */
     public function jsonSerialize(): array
-    {
-        $array = [
-            'data'       => $this->getDataForJsonSerialize(),
-            'statusCode' => $this->statusCode,
-            'status'     => $this->status,
-        ];
-
-        if ($this->message) {
-            $array['message'] = $this->message;
-        }
-
-        return $array;
-    }
-
-    /**
-     * Get data for json serialize.
-     *
-     * @return array|null
-     */
-    protected function getDataForJsonSerialize(): ?array
     {
         $data = $this->data ?? [];
 
@@ -484,22 +296,6 @@ class ApiModel implements Contract
             $data['total'] = $this->total;
         }
 
-        return empty($data) ? null : $data;
-    }
-
-    /**
-     * Set item keys from entity.
-     *
-     * @param Entity $entity
-     *
-     * @return void
-     */
-    protected function setItemKeysFromEntity(Entity $entity): void
-    {
-        $classNameParts = explode('\\', get_class($entity));
-        $className      = strtolower(end($classNameParts));
-
-        $this->itemKey  = $className;
-        $this->itemsKey = $className . 's';
+        return $data;
     }
 }

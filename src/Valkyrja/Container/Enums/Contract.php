@@ -15,6 +15,7 @@ namespace Valkyrja\Container\Enums;
 
 use Psr\Log\LoggerInterface;
 use Valkyrja\Annotation\Annotator;
+use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
@@ -65,6 +66,7 @@ use Valkyrja\View\View;
  */
 final class Contract extends Enum
 {
+    public const API                 = Api::class;
     public const APP                 = Application::class;
     public const ANNOTATOR           = Annotator::class;
     public const COMMAND_ANNOTATOR   = CommandAnnotator::class;
