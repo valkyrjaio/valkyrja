@@ -18,7 +18,7 @@ use Valkyrja\Cache\Store;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
-use Valkyrja\ORM\Manager;
+use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\SoftDeleteEntity;
 
 use function cache;
@@ -88,11 +88,11 @@ class CacheRepository extends Repository
     /**
      * Repository constructor.
      *
-     * @param Manager $manager
-     * @param Cache   $cache
-     * @param string  $entity
+     * @param ORM    $manager
+     * @param Cache  $cache
+     * @param string $entity
      */
-    public function __construct(Manager $manager, Cache $cache, string $entity)
+    public function __construct(ORM $manager, Cache $cache, string $entity)
     {
         $this->cache = $cache;
         $this->store = $cache->getStore();
@@ -103,12 +103,12 @@ class CacheRepository extends Repository
     /**
      * Make a new repository.
      *
-     * @param Manager $manager
-     * @param string  $entity
+     * @param ORM    $manager
+     * @param string $entity
      *
      * @return static
      */
-    public static function make(Manager $manager, string $entity): self
+    public static function make(ORM $manager, string $entity): self
     {
         return new static(
             $manager,

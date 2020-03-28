@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\ORM;
 
 /**
- * Interface Manager.
+ * Interface ORM.
  *
  * @author Melech Mizrachi
  */
-interface Manager
+interface ORM
 {
     /**
      * Get an adapter.

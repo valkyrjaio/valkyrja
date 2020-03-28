@@ -32,7 +32,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\Manager;
+use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
@@ -230,11 +230,11 @@ trait ApplicationHelpersTrait
     /**
      * Return the ORM manager instance from the container.
      *
-     * @return Manager
+     * @return ORM
      */
-    public function orm(): Manager
+    public function orm(): ORM
     {
-        return self::$container->getSingleton(Manager::class);
+        return self::$container->getSingleton(ORM::class);
     }
 
     /**

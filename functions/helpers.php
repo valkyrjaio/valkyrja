@@ -29,7 +29,7 @@ use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Response;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\Manager;
+use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -287,9 +287,9 @@ if (! function_exists('orm')) {
     /**
      * Get the ORM manager.
      *
-     * @return Manager
+     * @return ORM
      */
-    function orm(): Manager
+    function orm(): ORM
     {
         return app()->orm();
     }

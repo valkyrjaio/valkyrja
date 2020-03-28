@@ -19,7 +19,7 @@ use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
-use Valkyrja\ORM\Manager;
+use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -68,9 +68,9 @@ class Repository implements RepositoryContract
     /**
      * The entity manager.
      *
-     * @var Manager
+     * @var ORM
      */
-    protected Manager $manager;
+    protected ORM $manager;
 
     /**
      * The persister.
@@ -103,12 +103,12 @@ class Repository implements RepositoryContract
     /**
      * Repository constructor.
      *
-     * @param Manager $manager
-     * @param string  $entity
+     * @param ORM    $manager
+     * @param string $entity
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(Manager $manager, string $entity)
+    public function __construct(ORM $manager, string $entity)
     {
         ClassHelpers::validateClass($entity, Entity::class);
 
@@ -122,12 +122,12 @@ class Repository implements RepositoryContract
     /**
      * Make a new repository.
      *
-     * @param Manager $manager
-     * @param string  $entity
+     * @param ORM    $manager
+     * @param string $entity
      *
      * @return static
      */
-    public static function make(Manager $manager, string $entity): self
+    public static function make(ORM $manager, string $entity): self
     {
         return new static($manager, $entity);
     }

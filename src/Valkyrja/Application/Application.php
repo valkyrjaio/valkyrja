@@ -37,7 +37,7 @@ use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\Manager;
+use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
@@ -301,9 +301,9 @@ interface Application
     /**
      * Return the ORM manager instance from the container.
      *
-     * @return Manager
+     * @return ORM
      */
-    public function orm(): Manager;
+    public function orm(): ORM;
 
     /**
      * Return the path generator instance from the container.

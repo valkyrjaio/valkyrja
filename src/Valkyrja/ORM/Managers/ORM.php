@@ -20,7 +20,7 @@ use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Manager as Contract;
+use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -31,11 +31,11 @@ use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 use Valkyrja\Support\Providers\Provides;
 
 /**
- * Class Manager.
+ * Class ORM.
  *
  * @author Melech Mizrachi
  */
-class Manager implements Contract
+class ORM implements Contract
 {
     use Provides;
 
