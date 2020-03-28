@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Cacheables;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ContainerConfig;
+use Valkyrja\Config\Configs\Container;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Service;
 use Valkyrja\Container\ServiceContext;
@@ -65,7 +65,7 @@ trait CacheableContainer
     /**
      * Get the config.
      *
-     * @return ContainerConfig|array
+     * @return Container|array
      */
     protected function getConfig()
     {
@@ -75,7 +75,7 @@ trait CacheableContainer
     /**
      * Setup the container from cache.
      *
-     * @param ContainerConfig|array $config
+     * @param Container|array $config
      *
      * @return void
      */
@@ -91,7 +91,7 @@ trait CacheableContainer
     /**
      * Set not cached.
      *
-     * @param ContainerConfig|array $config
+     * @param Container|array $config
      *
      * @return void
      */
@@ -108,7 +108,7 @@ trait CacheableContainer
     /**
      * Setup annotations.
      *
-     * @param ContainerConfig|array $config
+     * @param Container|array $config
      *
      * @return void
      */
@@ -142,13 +142,13 @@ trait CacheableContainer
     /**
      * Get a cacheable representation of the service container.
      *
-     * @return CacheConfig|object
+     * @return Cache|object
      */
     public function getCacheable(): object
     {
         $this->setup(true, false);
 
-        $config           = new CacheConfig();
+        $config           = new Cache();
         $config->services = self::$services;
         $config->aliases  = self::$aliases;
         $config->provided = self::$provided;
@@ -159,7 +159,7 @@ trait CacheableContainer
     /**
      * Setup service providers.
      *
-     * @param ContainerConfig|array $config
+     * @param Container|array $config
      *
      * @return void
      */

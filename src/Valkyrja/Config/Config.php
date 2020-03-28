@@ -13,24 +13,28 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config;
 
-use Valkyrja\Config\Configs\AnnotationConfig;
-use Valkyrja\Config\Configs\AppConfig;
-use Valkyrja\Config\Configs\CacheConfig;
-use Valkyrja\Config\Configs\ConsoleConfig;
-use Valkyrja\Config\Configs\ContainerConfig;
-use Valkyrja\Config\Configs\CryptConfig;
-use Valkyrja\Config\Configs\EventConfig;
-use Valkyrja\Config\Configs\FilesystemConfig;
-use Valkyrja\Config\Configs\LoggingConfig;
-use Valkyrja\Config\Configs\MailConfig;
-use Valkyrja\Config\Configs\ORMConfig;
-use Valkyrja\Config\Configs\PathConfig;
-use Valkyrja\Config\Configs\RoutingConfig;
-use Valkyrja\Config\Configs\SessionConfig;
-use Valkyrja\Config\Configs\ViewConfig;
+use Valkyrja\Config\Configs\Annotation;
+use Valkyrja\Config\Configs\Api;
+use Valkyrja\Config\Configs\App;
+use Valkyrja\Config\Configs\Auth;
+use Valkyrja\Config\Configs\Cache;
+use Valkyrja\Config\Configs\Console;
+use Valkyrja\Config\Configs\Container;
+use Valkyrja\Config\Configs\Crypt;
+use Valkyrja\Config\Configs\Event;
+use Valkyrja\Config\Configs\Filesystem;
+use Valkyrja\Config\Configs\Log;
+use Valkyrja\Config\Configs\Mail;
+use Valkyrja\Config\Configs\ORM;
+use Valkyrja\Config\Configs\Path;
+use Valkyrja\Config\Configs\Routing;
+use Valkyrja\Config\Configs\Session;
+use Valkyrja\Config\Configs\View;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\ConfigModel as Model;
+use Valkyrja\Config\Models\Model;
 use Valkyrja\Support\Providers\Provider;
+
+use function env;
 
 /**
  * Class Config.
@@ -42,107 +46,121 @@ class Config extends Model
     /**
      * The annotation module config.
      *
-     * @var AnnotationConfig
+     * @var Annotation
      */
-    public AnnotationConfig $annotation;
+    public Annotation $annotation;
+
+    /**
+     * The api module config.
+     *
+     * @var Api
+     */
+    public Api $api;
 
     /**
      * The application module config.
      *
-     * @var AppConfig
+     * @var App
      */
-    public AppConfig $app;
+    public App $app;
+
+    /**
+     * The auth module config.
+     *
+     * @var Auth
+     */
+    public Auth $auth;
 
     /**
      * The cache module config.
      *
-     * @var CacheConfig
+     * @var Cache
      */
-    public CacheConfig $cache;
+    public Cache $cache;
 
     /**
      * The console module config.
      *
-     * @var ConsoleConfig
+     * @var Console
      */
-    public ConsoleConfig $console;
+    public Console $console;
 
     /**
      * The container module config.
      *
-     * @var ContainerConfig
+     * @var Container
      */
-    public ContainerConfig $container;
+    public Container $container;
 
     /**
      * The crypt module config.
      *
-     * @var CryptConfig
+     * @var Crypt
      */
-    public CryptConfig $crypt;
+    public Crypt $crypt;
 
     /**
      * The ORM module config.
      *
-     * @var ORMConfig
+     * @var ORM
      */
-    public ORMConfig $orm;
+    public ORM $orm;
 
     /**
      * The event module config.
      *
-     * @var EventConfig
+     * @var Event
      */
-    public EventConfig $event;
+    public Event $event;
 
     /**
      * The filesystem module config.
      *
-     * @var FilesystemConfig
+     * @var Filesystem
      */
-    public FilesystemConfig $filesystem;
+    public Filesystem $filesystem;
 
     /**
      * The logging module config.
      *
-     * @var LoggingConfig
+     * @var Log
      */
-    public LoggingConfig $logging;
+    public Log $log;
 
     /**
      * The mail module config.
      *
-     * @var MailConfig
+     * @var Mail
      */
-    public MailConfig $mail;
+    public Mail $mail;
 
     /**
      * The path module config.
      *
-     * @var PathConfig
+     * @var Path
      */
-    public PathConfig $path;
+    public Path $path;
 
     /**
      * The routing module config.
      *
-     * @var RoutingConfig
+     * @var Routing
      */
-    public RoutingConfig $routing;
+    public Routing $routing;
 
     /**
      * The session module config.
      *
-     * @var SessionConfig
+     * @var Session
      */
-    public SessionConfig $session;
+    public Session $session;
 
     /**
      * The view module config.
      *
-     * @var ViewConfig
+     * @var View
      */
-    public ViewConfig $view;
+    public View $view;
 
     /**
      * Array of config providers.
@@ -177,21 +195,23 @@ class Config extends Model
             return;
         }
 
-        $this->setAnnotationConfig();
-        $this->setAppConfig();
-        $this->setCacheConfig();
-        $this->setConsoleConfig();
-        $this->setContainerConfig();
-        $this->setCryptConfig();
-        $this->setOrmConfig();
-        $this->setEventConfig();
-        $this->setFilesystemConfig();
-        $this->setLoggingConfig();
-        $this->setMailConfig();
-        $this->setPathConfig();
-        $this->setRoutingConfig();
-        $this->setSessionConfig();
-        $this->setViewConfig();
+        $this->setAnnotation();
+        $this->setApi();
+        $this->setApp();
+        $this->setAuth();
+        $this->setCache();
+        $this->setConsole();
+        $this->setContainer();
+        $this->setCrypt();
+        $this->setOrm();
+        $this->setEvent();
+        $this->setFilesystem();
+        $this->setLog();
+        $this->setMail();
+        $this->setPath();
+        $this->setRouting();
+        $this->setSession();
+        $this->setView();
 
         $this->setProviders();
         $this->setCacheFilePath(cachePath('config.php'));
@@ -201,181 +221,205 @@ class Config extends Model
     /**
      * Set the annotation module config.
      *
-     * @param AnnotationConfig|null $config [optional] The config
+     * @param Annotation|null $config [optional] The config
      *
      * @return void
      */
-    protected function setAnnotationConfig(AnnotationConfig $config = null): void
+    protected function setAnnotation(Annotation $config = null): void
     {
-        $this->annotation = $config ?? new AnnotationConfig();
+        $this->annotation = $config ?? new Annotation();
+    }
+
+    /**
+     * Set the api module config.
+     *
+     * @param Api|null $config [optional] The config
+     *
+     * @return void
+     */
+    protected function setApi(Api $config = null): void
+    {
+        $this->api = $config ?? new Api();
     }
 
     /**
      * Set the app module config.
      *
-     * @param AppConfig|null $config [optional] The config
+     * @param App|null $config [optional] The config
      *
      * @return void
      */
-    protected function setAppConfig(AppConfig $config = null): void
+    protected function setApp(App $config = null): void
     {
-        $this->app = $config ?? new AppConfig();
+        $this->app = $config ?? new App();
+    }
+
+    /**
+     * Set the auth module config.
+     *
+     * @param Auth|null $config [optional] The config
+     *
+     * @return void
+     */
+    protected function setAuth(Auth $config = null): void
+    {
+        $this->auth = $config ?? new Auth();
     }
 
     /**
      * Set the cache module config.
      *
-     * @param CacheConfig|null $config [optional] The config
+     * @param Cache|null $config [optional] The config
      *
      * @return void
      */
-    protected function setCacheConfig(CacheConfig $config = null): void
+    protected function setCache(Cache $config = null): void
     {
-        $this->cache = $config ?? new CacheConfig();
+        $this->cache = $config ?? new Cache();
     }
 
     /**
      * Set the console module config.
      *
-     * @param ConsoleConfig|null $config [optional] The config
+     * @param Console|null $config [optional] The config
      *
      * @return void
      */
-    protected function setConsoleConfig(ConsoleConfig $config = null): void
+    protected function setConsole(Console $config = null): void
     {
-        $this->console = $config ?? new ConsoleConfig();
+        $this->console = $config ?? new Console();
     }
 
     /**
      * Set the container module config.
      *
-     * @param ContainerConfig|null $config [optional] The config
+     * @param Container|null $config [optional] The config
      *
      * @return void
      */
-    protected function setContainerConfig(ContainerConfig $config = null): void
+    protected function setContainer(Container $config = null): void
     {
-        $this->container = $config ?? new ContainerConfig();
+        $this->container = $config ?? new Container();
     }
 
     /**
      * Set the crypt module config.
      *
-     * @param CryptConfig|null $config [optional] The config
+     * @param Crypt|null $config [optional] The config
      *
      * @return void
      */
-    protected function setCryptConfig(CryptConfig $config = null): void
+    protected function setCrypt(Crypt $config = null): void
     {
-        $this->crypt = $config ?? new CryptConfig();
+        $this->crypt = $config ?? new Crypt();
     }
 
     /**
      * Set the ORM module config.
      *
-     * @param ORMConfig|null $config [optional] The config
+     * @param ORM|null $config [optional] The config
      *
      * @return void
      */
-    protected function setOrmConfig(ORMConfig $config = null): void
+    protected function setOrm(ORM $config = null): void
     {
-        $this->orm = $config ?? new ORMConfig();
+        $this->orm = $config ?? new ORM();
     }
 
     /**
      * Set the event module config.
      *
-     * @param EventConfig|null $config [optional] The config
+     * @param Event|null $config [optional] The config
      *
      * @return void
      */
-    protected function setEventConfig(EventConfig $config = null): void
+    protected function setEvent(Event $config = null): void
     {
-        $this->event = $config ?? new EventConfig();
+        $this->event = $config ?? new Event();
     }
 
     /**
      * Set the filesystem module config.
      *
-     * @param FilesystemConfig|null $config [optional] The config
+     * @param Filesystem|null $config [optional] The config
      *
      * @return void
      */
-    protected function setFilesystemConfig(FilesystemConfig $config = null): void
+    protected function setFilesystem(Filesystem $config = null): void
     {
-        $this->filesystem = $config ?? new FilesystemConfig();
+        $this->filesystem = $config ?? new Filesystem();
     }
 
     /**
      * Set the logging module config.
      *
-     * @param LoggingConfig|null $config [optional] The config
+     * @param Log|null $config [optional] The config
      *
      * @return void
      */
-    protected function setLoggingConfig(LoggingConfig $config = null): void
+    protected function setLog(Log $config = null): void
     {
-        $this->logging = $config ?? new LoggingConfig();
+        $this->log = $config ?? new Log();
     }
 
     /**
      * Set the mail module config.
      *
-     * @param MailConfig|null $config [optional] The config
+     * @param Mail|null $config [optional] The config
      *
      * @return void
      */
-    protected function setMailConfig(MailConfig $config = null): void
+    protected function setMail(Mail $config = null): void
     {
-        $this->mail = $config ?? new MailConfig();
+        $this->mail = $config ?? new Mail();
     }
 
     /**
      * Set the path module config.
      *
-     * @param PathConfig|null $config [optional] The config
+     * @param Path|null $config [optional] The config
      *
      * @return void
      */
-    protected function setPathConfig(PathConfig $config = null): void
+    protected function setPath(Path $config = null): void
     {
-        $this->path = $config ?? new PathConfig();
+        $this->path = $config ?? new Path();
     }
 
     /**
      * Set the routing module config.
      *
-     * @param RoutingConfig|null $config [optional] The config
+     * @param Routing|null $config [optional] The config
      *
      * @return void
      */
-    protected function setRoutingConfig(RoutingConfig $config = null): void
+    protected function setRouting(Routing $config = null): void
     {
-        $this->routing = $config ?? new RoutingConfig();
+        $this->routing = $config ?? new Routing();
     }
 
     /**
      * Set the session module config.
      *
-     * @param SessionConfig|null $config [optional] The config
+     * @param Session|null $config [optional] The config
      *
      * @return void
      */
-    protected function setSessionConfig(SessionConfig $config = null): void
+    protected function setSession(Session $config = null): void
     {
-        $this->session = $config ?? new SessionConfig();
+        $this->session = $config ?? new Session();
     }
 
     /**
      * Set the view module config.
      *
-     * @param ViewConfig|null $config [optional] The config
+     * @param View|null $config [optional] The config
      *
      * @return void
      */
-    protected function setViewConfig(ViewConfig $config = null): void
+    protected function setView(View $config = null): void
     {
-        $this->view = $config ?? new ViewConfig();
+        $this->view = $config ?? new View();
     }
 
     /**

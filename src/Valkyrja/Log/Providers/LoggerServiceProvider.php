@@ -76,7 +76,7 @@ class LoggerServiceProvider extends Provider
      */
     protected static function bindLoggerInterface(Application $app): void
     {
-        $config  = $app->config()['logging'];
+        $config  = $app->config()['log'];
         $handler = new StreamHandler(
             $config['filePath'] . '/' . $config['name'] . date('-Y-m-d') . '.log',
             LogLevel::DEBUG

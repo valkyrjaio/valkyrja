@@ -78,7 +78,10 @@ class Api implements Contract
      */
     public static function publish(Application $app): void
     {
-        $app->container()->setSingleton(Contract::class, new static($app->debug()));
+        $app->container()->setSingleton(
+            Contract::class,
+            new static($app->debug())
+        );
     }
 
     /**

@@ -16,6 +16,7 @@ namespace Valkyrja\Container\Enums;
 use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Api\Apis\Api;
 use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Auth\Managers\Auth as AuthManager;
 use Valkyrja\Cache\Caches\Cache;
 use Valkyrja\Client\Clients\GuzzleClient;
 use Valkyrja\Console\Annotation\Annotators\CommandAnnotator;
@@ -64,6 +65,7 @@ final class Provider extends Enum
 {
     public const API                 = Api::class;
     public const APP                 = Valkyrja::class;
+    public const AUTH                = AuthManager::class;
     public const ANNOTATOR           = Annotator::class;
     public const CACHE               = Cache::class;
     public const COMMAND_ANNOTATOR   = CommandAnnotator::class;

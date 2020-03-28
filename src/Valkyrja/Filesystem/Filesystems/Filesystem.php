@@ -20,7 +20,7 @@ use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
 use Valkyrja\Support\Providers\Provides;
-use Valkyrja\Config\Configs\FilesystemConfig;
+use Valkyrja\Config\Configs\Filesystem;
 
 /**
  * Class Filesystem.
@@ -48,7 +48,7 @@ class Filesystem implements FilesystemContract
     /**
      * The config.
      *
-     * @var FilesystemConfig|array
+     * @var Filesystem|array
      */
     protected $config;
 

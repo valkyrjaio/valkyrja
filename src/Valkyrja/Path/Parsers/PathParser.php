@@ -16,7 +16,7 @@ namespace Valkyrja\Path\Parsers;
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\PathConfig;
+use Valkyrja\Config\Configs\Path;
 use Valkyrja\Path\PathParser as ParserContract;
 use Valkyrja\Support\Providers\Provides;
 
@@ -48,7 +48,7 @@ REGEX;
     /**
      * The path config.
      *
-     * @var PathConfig|array
+     * @var Path|array
      */
     protected $config;
 

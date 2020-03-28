@@ -54,6 +54,18 @@ class Env
     // public const ANNOTATIONS_MAP       = null;
 
     /*
+     * Auth env variables.
+     */
+    // public const AUTH_ADAPTER                = null;
+    // public const AUTH_USER_ENTITY            = null;
+    // public const AUTH_REPOSITORY             = null;
+    // public const AUTH_ADAPTERS               = null;
+    // public const AUTH_ALWAYS_AUTHENTICATE    = null;
+    // public const AUTH_KEEP_USER_FRESH        = null;
+    // public const AUTH_AUTHENTICATE_ROUTE     = null;
+    // public const AUTH_PASSWORD_CONFIRM_ROUTE = null;
+
+    /*
      * Console env variables.
      */
     // public const CONSOLE_PROVIDERS                   = null;

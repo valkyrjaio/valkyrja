@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheables;
 
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Models\CacheableConfig;
-use Valkyrja\Config\Models\ConfigModel;
+use Valkyrja\Config\Models\Cacheable;
+use Valkyrja\Config\Models\Model;
 
 /**
  * Trait Cacheable.
@@ -76,21 +76,21 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return ConfigModel|object
+     * @return Model|object
      */
     abstract public function getCacheable(): object;
 
     /**
      * Get the config.
      *
-     * @return CacheableConfig|array
+     * @return Cacheable|array
      */
     abstract protected function getConfig();
 
     /**
      * Before setup.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -102,7 +102,7 @@ trait Cacheable
     /**
      * Setup from cache.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -114,7 +114,7 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -126,7 +126,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -141,7 +141,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -153,7 +153,7 @@ trait Cacheable
     /**
      * Before setup.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */
@@ -165,7 +165,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableConfig|array $config
+     * @param Cacheable|array $config
      *
      * @return void
      */

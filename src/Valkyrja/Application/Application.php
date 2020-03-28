@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Annotator;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Models\ConfigModel;
+use Valkyrja\Config\Models\Model;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -124,12 +124,12 @@ interface Application
     /**
      * Add to the global config array.
      *
-     * @param ConfigModel $newConfig The new config to add
-     * @param string      $key       The key to use
+     * @param Model  $newConfig The new config to add
+     * @param string $key       The key to use
      *
      * @return void
      */
-    public function addConfig(ConfigModel $newConfig, string $key): void;
+    public function addConfig(Model $newConfig, string $key): void;
 
     /**
      * Get the container instance.

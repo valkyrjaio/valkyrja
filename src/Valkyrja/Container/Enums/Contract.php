@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
+use Valkyrja\Auth\Managers\Auth;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Console\Annotation\CommandAnnotator;
@@ -69,6 +70,7 @@ final class Contract extends Enum
     public const API                 = Api::class;
     public const APP                 = Application::class;
     public const ANNOTATOR           = Annotator::class;
+    public const AUTH                = Auth::class;
     public const COMMAND_ANNOTATOR   = CommandAnnotator::class;
     public const CONFIG              = 'config';
     public const CACHE               = Cache::class;

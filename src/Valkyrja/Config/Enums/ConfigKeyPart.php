@@ -26,16 +26,18 @@ final class ConfigKeyPart extends Enum
 
     public const CONFIG      = 'config';
     public const CACHE       = 'cache';
+    public const API         = 'api';
     public const APP         = 'app';
     public const ANNOTATIONS = 'annotations';
+    public const AUTH        = 'auth';
     public const CONSOLE     = 'console';
     public const CONTAINER   = 'container';
     public const CRYPT       = 'crypt';
-    public const DB          = 'database';
     public const EVENTS      = 'events';
     public const FILESYSTEM  = 'filesystem';
     public const LOG         = 'log';
     public const MAIL        = 'mail';
+    public const ORM         = 'orm';
     public const PATH        = 'path';
     public const ROUTING     = 'routing';
     public const SESSION     = 'session';

@@ -15,7 +15,7 @@ namespace Valkyrja\Console\Cacheables;
 
 use ReflectionException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ConsoleConfig;
+use Valkyrja\Config\Configs\Console;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
@@ -74,7 +74,7 @@ trait CacheableConsole
     /**
      * Get the config.
      *
-     * @return ConsoleConfig|array
+     * @return Console|array
      */
     protected function getConfig()
     {
@@ -84,7 +84,7 @@ trait CacheableConsole
     /**
      * Setup the console from cache.
      *
-     * @param ConsoleConfig|array $config
+     * @param Console|array $config
      *
      * @return void
      */
@@ -108,7 +108,7 @@ trait CacheableConsole
     /**
      * Set not cached.
      *
-     * @param ConsoleConfig|array $config
+     * @param Console|array $config
      *
      * @return void
      */
@@ -125,7 +125,7 @@ trait CacheableConsole
     /**
      * Setup annotations.
      *
-     * @param ConsoleConfig|array $config
+     * @param Console|array $config
      *
      * @throws ReflectionException
      *
@@ -147,13 +147,13 @@ trait CacheableConsole
     /**
      * Get a cacheable representation of the commands.
      *
-     * @return CacheConfig|object
+     * @return Cache|object
      */
     public function getCacheable(): object
     {
         $this->setup(true, false);
 
-        $config                = new CacheConfig();
+        $config                = new Cache();
         $config->commands      = base64_encode(serialize(self::$commands));
         $config->paths         = self::$paths;
         $config->namedCommands = self::$namedCommands;
@@ -165,7 +165,7 @@ trait CacheableConsole
     /**
      * Setup command providers.
      *
-     * @param ConsoleConfig|array $config
+     * @param Console|array $config
      *
      * @return void
      */

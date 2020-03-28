@@ -32,6 +32,9 @@ final class ConfigKey extends Enum
     public const CACHE_CONSOLE   = 'cache.console';
     public const CACHE_ROUTING   = 'cache.routing';
 
+    public const API_JSON_MODEL      = 'api.jsonModel';
+    public const API_JSON_DATA_MODEL = 'api.jsonDataModel';
+
     public const APP_ENV                  = 'app.env';
     public const APP_DEBUG                = 'app.debug';
     public const APP_URL                  = 'app.url';
@@ -48,6 +51,15 @@ final class ConfigKey extends Enum
     public const ANNOTATIONS_CACHE_DIR = 'annotation.cacheDir';
     public const ANNOTATIONS_MAP       = 'annotation.map';
     public const ANNOTATIONS_ALIASES   = 'annotation.aliases';
+
+    public const AUTH_ADAPTER                = 'auth.adapter';
+    public const AUTH_USER_ENTITY            = 'auth.userEntity';
+    public const AUTH_REPOSITORY             = 'auth.repository';
+    public const AUTH_ADAPTERS               = 'auth.adapters';
+    public const AUTH_ALWAYS_AUTHENTICATE    = 'auth.alwaysAuthenticate';
+    public const AUTH_KEEP_USER_FRESH        = 'auth.keepUserFresh';
+    public const AUTH_AUTHENTICATE_ROUTE     = 'auth.authenticateRoute';
+    public const AUTH_PASSWORD_CONFIRM_ROUTE = 'auth.confirmPasswordRoute';
 
     public const CONSOLE_PROVIDERS                   = 'console.providers';
     public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';
@@ -98,8 +110,8 @@ final class ConfigKey extends Enum
     public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
     public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
-    public const LOG_NAME      = 'logging.name';
-    public const LOG_FILE_PATH = 'logging.filePath';
+    public const LOG_NAME      = 'log.name';
+    public const LOG_FILE_PATH = 'log.filePath';
 
     public const MAIL_HOST         = 'mail.host';
     public const MAIL_PORT         = 'mail.port';

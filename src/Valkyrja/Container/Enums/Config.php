@@ -25,6 +25,7 @@ final class Config extends Enum
     public const PROVIDERS = [
         Provider::API,
         Provider::ANNOTATOR,
+        Provider::AUTH,
         Provider::CACHE,
         Provider::CLIENT,
         Provider::CONSOLE,

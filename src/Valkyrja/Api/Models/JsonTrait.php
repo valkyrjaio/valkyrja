@@ -119,7 +119,7 @@ trait JsonTrait
      *
      * @param int $statusCode
      *
-     * @return $this
+     * @return static
      */
     public function setStatusCode(int $statusCode): self
     {
@@ -143,7 +143,7 @@ trait JsonTrait
      *
      * @param string $status
      *
-     * @return $this
+     * @return static
      */
     public function setStatus(string $status): self
     {

@@ -12,8 +12,10 @@ declare(strict_types=1);
  */
 
 use Valkyrja\Annotation\Annotator;
+use Valkyrja\Api\Api;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Auth\Auth;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
@@ -103,6 +105,30 @@ if (! function_exists('annotator')) {
     function annotator(): Annotator
     {
         return app()->annotator();
+    }
+}
+
+if (! function_exists('api')) {
+    /**
+     * Return the api instance from the container.
+     *
+     * @return Api
+     */
+    function api(): Api
+    {
+        return app()->container()->getSingleton(Api::class);
+    }
+}
+
+if (! function_exists('auth')) {
+    /**
+     * Return the auth instance from the container.
+     *
+     * @return Auth
+     */
+    function auth(): Auth
+    {
+        return app()->container()->getSingleton(Auth::class);
     }
 }
 

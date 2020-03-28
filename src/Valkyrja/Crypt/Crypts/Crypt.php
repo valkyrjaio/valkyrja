@@ -15,7 +15,7 @@ namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\CryptConfig;
+use Valkyrja\Config\Configs\Crypt;
 use Valkyrja\Crypt\Crypt as CryptContract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
@@ -48,7 +48,7 @@ class Crypt implements CryptContract
     /**
      * The config.
      *
-     * @var CryptConfig|array
+     * @var Crypt|array
      */
     protected $config;
 

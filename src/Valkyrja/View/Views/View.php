@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Views;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ViewConfig;
+use Valkyrja\Config\Configs\View;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\Engine;
@@ -80,7 +80,7 @@ class View implements ViewContract
     /**
      * The config.
      *
-     * @var ViewConfig|array
+     * @var View|array
      */
     protected $config;
 

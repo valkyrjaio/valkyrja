@@ -18,7 +18,7 @@ use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
 use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\ConfigModel;
+use Valkyrja\Config\Models\Model;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Env\Env;
@@ -282,12 +282,12 @@ class Valkyrja implements Application
     /**
      * Add to the global config array.
      *
-     * @param ConfigModel $newConfig The new config to add
-     * @param string      $key       The key to use
+     * @param Model  $newConfig The new config to add
+     * @param string $key       The key to use
      *
      * @return void
      */
-    public function addConfig(ConfigModel $newConfig, string $key): void
+    public function addConfig(Model $newConfig, string $key): void
     {
         // Set the config within the application
         self::$config[$key] = $newConfig;

@@ -35,7 +35,7 @@ interface Json extends Model
      *
      * @param string|null $message
      *
-     * @return $this
+     * @return static
      */
     public function setMessage(string $message = null): self;
 
@@ -51,7 +51,7 @@ interface Json extends Model
      *
      * @param JsonData|null $data
      *
-     * @return $this
+     * @return static
      */
     public function setData(JsonData $data = null): self;
 
@@ -67,7 +67,7 @@ interface Json extends Model
      *
      * @param int $statusCode
      *
-     * @return $this
+     * @return static
      */
     public function setStatusCode(int $statusCode): self;
 
@@ -83,7 +83,7 @@ interface Json extends Model
      *
      * @param string $status
      *
-     * @return $this
+     * @return static
      */
     public function setStatus(string $status): self;
 

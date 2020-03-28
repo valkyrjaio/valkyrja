@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Model\Models;
 
-use Valkyrja\Model\Model as ModelContract;
+use Valkyrja\Model\ModelContract;
 use Valkyrja\Model\ModelTrait;
 
 /**

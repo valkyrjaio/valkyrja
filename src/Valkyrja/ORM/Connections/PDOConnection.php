@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ORM\ConnectionConfig;
+use Valkyrja\Config\Configs\ORM\Connection;
 use Valkyrja\ORM\PDOConnection as ConnectionContract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Persisters\Persister as PersisterClass;
@@ -69,7 +69,7 @@ class PDOConnection implements ConnectionContract
     /**
      * The config.
      *
-     * @var ConnectionConfig|array
+     * @var Connection|array
      */
     protected array $config;
 

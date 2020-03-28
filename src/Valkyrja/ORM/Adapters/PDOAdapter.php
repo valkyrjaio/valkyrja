@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Adapters;
 
-use Valkyrja\Config\Configs\ORMConfig;
+use Valkyrja\Config\Configs\ORM;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
@@ -36,7 +36,7 @@ class PDOAdapter implements Adapter
     /**
      * The config.
      *
-     * @var ORMConfig|array
+     * @var ORM|array
      */
     protected $config;
 

@@ -29,6 +29,9 @@ final class EnvKey extends Enum
     public const CONFIG_CACHE_ALLOWED_CLASSES = 'CONFIG_CACHE_ALLOWED_CLASSES';
     public const CONFIG_USE_CACHE_FILE        = 'CONFIG_USE_CACHE_FILE';
 
+    public const API_JSON_MODEL      = 'API_JSON_MODEL';
+    public const API_JSON_DATA_MODEL = 'API_JSON_DATA_MODEL';
+
     public const APP_ENV                  = 'APP_ENV';
     public const APP_DEBUG                = 'APP_DEBUG';
     public const APP_URL                  = 'APP_URL';
@@ -45,6 +48,15 @@ final class EnvKey extends Enum
     public const ANNOTATIONS_CACHE_DIR = 'ANNOTATIONS_CACHE_DIR';
     public const ANNOTATIONS_MAP       = 'ANNOTATIONS_MAP';
     public const ANNOTATIONS_ALIASES   = 'ANNOTATIONS_ALIASES';
+
+    public const AUTH_ADAPTER                = 'AUTH_ADAPTER';
+    public const AUTH_USER_ENTITY            = 'AUTH_USER_ENTITY';
+    public const AUTH_REPOSITORY             = 'AUTH_REPOSITORY';
+    public const AUTH_ADAPTERS               = 'AUTH_ADAPTERS';
+    public const AUTH_ALWAYS_AUTHENTICATE    = 'AUTH_ALWAYS_AUTHENTICATE';
+    public const AUTH_KEEP_USER_FRESH        = 'AUTH_KEEP_USER_FRESH';
+    public const AUTH_AUTHENTICATE_ROUTE     = 'AUTH_AUTHENTICATE_ROUTE';
+    public const AUTH_PASSWORD_CONFIRM_ROUTE = 'AUTH_PASSWORD_CONFIRM_ROUTE';
 
     public const CACHE_DEFAULT = 'CACHE_DEFAULT';
     public const CACHE_STORES  = 'CACHE_STORES';

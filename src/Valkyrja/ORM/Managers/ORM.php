@@ -15,7 +15,7 @@ namespace Valkyrja\ORM\Managers;
 
 use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ORMConfig;
+use Valkyrja\Config\Configs\ORM;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
@@ -63,7 +63,7 @@ class ORM implements Contract
     /**
      * The config.
      *
-     * @var ORMConfig|array
+     * @var ORM|array
      */
     protected $config;
 

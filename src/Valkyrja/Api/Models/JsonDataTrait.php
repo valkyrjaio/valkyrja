@@ -94,7 +94,7 @@ trait JsonDataTrait
      *
      * @param object|null $item
      *
-     * @return $this
+     * @return static
      */
     public function setItem(object $item = null): self
     {
@@ -118,7 +118,7 @@ trait JsonDataTrait
      *
      * @param string $itemKey
      *
-     * @return $this
+     * @return static
      */
     public function setItemKey(string $itemKey): self
     {
@@ -142,7 +142,7 @@ trait JsonDataTrait
      *
      * @param array|null $items
      *
-     * @return $this
+     * @return static
      */
     public function setItems(array $items = null): self
     {
@@ -166,7 +166,7 @@ trait JsonDataTrait
      *
      * @param string $itemsKey
      *
-     * @return $this
+     * @return static
      */
     public function setItemsKey(string $itemsKey): self
     {
@@ -190,7 +190,7 @@ trait JsonDataTrait
      *
      * @param int|null $total
      *
-     * @return $this
+     * @return static
      */
     public function setTotal(int $total = null): self
     {
@@ -214,7 +214,7 @@ trait JsonDataTrait
      *
      * @param string|null $message
      *
-     * @return $this
+     * @return static
      */
     public function setMessage(string $message = null): self
     {
@@ -238,7 +238,7 @@ trait JsonDataTrait
      *
      * @param array|null $messages
      *
-     * @return $this
+     * @return static
      */
     public function setMessages(array $messages = null): self
     {
