@@ -22,4 +22,17 @@ use Valkyrja\Auth\Guard as Contract;
  */
 class Guard implements Contract
 {
+    /**
+     * Check if the authenticated user is authorized and passes a gate test.
+     *
+     * @param string $guard
+     *
+     * @return bool
+     */
+    public function isAuthorized(string $guard): bool
+    {
+        // TODO: Implement...
+
+        return false;
+    }
 }

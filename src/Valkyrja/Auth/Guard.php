@@ -20,5 +20,12 @@ namespace Valkyrja\Auth;
  */
 interface Guard
 {
+    /**
+     * Check if the authenticated user is authorized and passes a gate test.
+     *
+     * @param string $guard
+     *
+     * @return bool
+     */
     public function isAuthorized(string $guard): bool;
 }
