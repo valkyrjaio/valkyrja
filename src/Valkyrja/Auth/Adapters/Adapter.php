@@ -19,8 +19,6 @@ use Valkyrja\Auth\Authenticator;
 use Valkyrja\Auth\Registrator;
 use Valkyrja\Auth\Authenticators\Authenticator as AuthenticatorClass;
 use Valkyrja\Auth\Registrators\Registrator as RegistratorClass;
-use Valkyrja\Auth\User;
-use Valkyrja\Support\ClassHelpers;
 
 /**
  * Class Adapter.

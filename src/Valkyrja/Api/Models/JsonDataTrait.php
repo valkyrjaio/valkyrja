@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Models;
 
 use Valkyrja\Model\ModelTrait;
+
 /**
  * Trait JsonDataTrait.
  *

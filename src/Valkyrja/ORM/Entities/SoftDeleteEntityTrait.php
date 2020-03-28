@@ -76,7 +76,6 @@ trait SoftDeleteEntityTrait
         $this->{static::$deletedField} = $deleted;
     }
 
-
     /**
      * Get the deleted at field value.
      *

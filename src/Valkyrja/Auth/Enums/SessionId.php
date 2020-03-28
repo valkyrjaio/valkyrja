@@ -22,6 +22,6 @@ use Valkyrja\Enum\Enums\Enum;
  */
 final class SessionId extends Enum
 {
-    public const USER = 'auth.user';
+    public const USER                         = 'auth.user';
     public const PASSWORD_CONFIRMED_TIMESTAMP = 'auth.passwordConfirmedTimestamp';
 }
