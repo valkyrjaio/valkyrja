@@ -95,4 +95,11 @@ interface Model extends JsonSerializable
      * @return array
      */
     public function jsonSerialize(): array;
+
+    /**
+     * To string.
+     *
+     * @return string
+     */
+    public function __toString(): string;
 }

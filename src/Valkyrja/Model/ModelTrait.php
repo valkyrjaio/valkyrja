@@ -159,7 +159,7 @@ trait ModelTrait
          *  ensure that we return a true array with all properties as arrays, and their properties we sort of
          *  need to do this.
          */
-        return json_decode(json_encode($this->asArray(), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($this->__toString(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -170,5 +170,15 @@ trait ModelTrait
     public function jsonSerialize(): array
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * To string.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) json_encode($this->asArray(), JSON_THROW_ON_ERROR);
     }
 }
