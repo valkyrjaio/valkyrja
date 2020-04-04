@@ -133,5 +133,4 @@ final class ConfigKeyPart
     public const REDIS                       = 'redis';
     public const JSON_MODEL                  = 'jsonModel';
     public const JSON_DATA_MODEL             = 'jsonDataModel';
-
 }

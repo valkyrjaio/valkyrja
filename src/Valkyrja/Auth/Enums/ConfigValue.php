@@ -25,9 +25,9 @@ use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const ADAPTER     = CKP::DEFAULT;
-    public const USER_ENTITY = User::class;
-    public const REPOSITORY  = Repository::class;
+    public const ADAPTER                = CKP::DEFAULT;
+    public const USER_ENTITY            = User::class;
+    public const REPOSITORY             = Repository::class;
     public const ALWAYS_AUTHENTICATE    = false;
     public const KEEP_USER_FRESH        = false;
     public const AUTHENTICATE_ROUTE     = RouteName::AUTHENTICATE;
@@ -35,7 +35,7 @@ final class ConfigValue
     public const ADAPTERS               = [
         CKP::DEFAULT => Adapter::class,
     ];
-    
+
     public static array $defaults = [
         CKP::ADAPTER                => self::ADAPTER,
         CKP::USER_ENTITY            => self::USER_ENTITY,
