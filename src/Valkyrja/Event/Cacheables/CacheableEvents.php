@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Cacheables;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\Event;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
+use Valkyrja\Event\Config\Config as EventConfig;
 use Valkyrja\Event\Listener;
 use Valkyrja\Support\Cacheables\Cacheable;
 
@@ -40,7 +40,7 @@ trait CacheableEvents
     /**
      * Get the config.
      *
-     * @return Event|array
+     * @return EventConfig|array
      */
     protected function getConfig()
     {
@@ -60,7 +60,7 @@ trait CacheableEvents
     /**
      * Setup the events from cache.
      *
-     * @param Event|array $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
@@ -74,7 +74,7 @@ trait CacheableEvents
     /**
      * Setup annotations.
      *
-     * @param Event|array $config
+     * @param EventConfig|array $config
      *
      * @return void
      */

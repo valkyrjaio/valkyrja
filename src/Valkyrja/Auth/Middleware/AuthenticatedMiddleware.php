@@ -38,7 +38,7 @@ class AuthenticatedMiddleware extends Middleware
      *
      * @var string
      */
-    protected static string $user = ConfigValue::USER;
+    protected static string $user = ConfigValue::USER_ENTITY;
 
     /**
      * Middleware handler for before a request is dispatched.

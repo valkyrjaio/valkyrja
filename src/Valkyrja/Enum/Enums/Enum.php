@@ -27,7 +27,7 @@ use function is_object;
 use function sprintf;
 
 /**
- * Class Enum.
+ * Abstract Class Enum.
  *
  * @author Melech Mizrachi
  */

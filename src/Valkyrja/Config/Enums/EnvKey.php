@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum EnvKey.
  *
  * @author Melech Mizrachi
  */
-final class EnvKey extends Enum
+final class EnvKey
 {
     public const CONFIG_CLASS                 = 'CONFIG_CLASS';
     public const CONFIG_PROVIDERS             = 'CONFIG_PROVIDERS';
@@ -32,17 +30,17 @@ final class EnvKey extends Enum
     public const API_JSON_MODEL      = 'API_JSON_MODEL';
     public const API_JSON_DATA_MODEL = 'API_JSON_DATA_MODEL';
 
-    public const APP_ENV                  = 'APP_ENV';
-    public const APP_DEBUG                = 'APP_DEBUG';
-    public const APP_URL                  = 'APP_URL';
-    public const APP_TIMEZONE             = 'APP_TIMEZONE';
-    public const APP_VERSION              = 'APP_VERSION';
-    public const APP_KEY                  = 'APP_KEY';
-    public const APP_HTTP_EXCEPTION_CLASS = 'APP_HTTP_EXCEPTION_CLASS';
-    public const APP_CONTAINER            = 'APP_CONTAINER';
-    public const APP_DISPATCHER           = 'APP_DISPATCHER';
-    public const APP_EVENTS               = 'APP_EVENTS';
-    public const APP_EXCEPTION_HANDLER    = 'APP_EXCEPTION_HANDLER';
+    public const APP_ENV               = 'APP_ENV';
+    public const APP_DEBUG             = 'APP_DEBUG';
+    public const APP_URL               = 'APP_URL';
+    public const APP_TIMEZONE          = 'APP_TIMEZONE';
+    public const APP_VERSION           = 'APP_VERSION';
+    public const APP_KEY               = 'APP_KEY';
+    public const APP_HTTP_EXCEPTION    = 'APP_HTTP_EXCEPTION';
+    public const APP_CONTAINER         = 'APP_CONTAINER';
+    public const APP_DISPATCHER        = 'APP_DISPATCHER';
+    public const APP_EVENTS            = 'APP_EVENTS';
+    public const APP_EXCEPTION_HANDLER = 'APP_EXCEPTION_HANDLER';
 
     public const ANNOTATIONS_ENABLED   = 'ANNOTATIONS_ENABLED';
     public const ANNOTATIONS_CACHE_DIR = 'ANNOTATIONS_CACHE_DIR';
@@ -85,23 +83,24 @@ final class EnvKey extends Enum
     public const CRYPT_KEY      = 'CRYPT_KEY';
     public const CRYPT_KEY_PATH = 'CRYPT_KEY_PATH';
 
-    public const DB_CONNECTION = 'DB_CONNECTION';
-    public const DB_HOST       = 'DB_HOST';
-    public const DB_PORT       = 'DB_PORT';
-    public const DB_DATABASE   = 'DB_DATABASE';
-    public const DB_USERNAME   = 'DB_USERNAME';
-    public const DB_PASSWORD   = 'DB_PASSWORD';
-    public const DB_SOCKET     = 'DB_SOCKET';
-    public const DB_CHARSET    = 'DB_CHARSET';
-    public const DB_COLLATION  = 'DB_COLLATION';
-    public const DB_PREFIX     = 'DB_PREFIX';
-    public const DB_STRICT     = 'DB_STRICT';
-    public const DB_ENGINE     = 'DB_ENGINE';
-    public const DB_SCHEMA     = 'DB_SCHEMA';
-    public const DB_SSL_MODE   = 'DB_SSL_MODE';
-    public const DB_ADAPTER    = 'DB_ADAPTER';
-    public const DB_ADAPTERS   = 'DB_ADAPTERS';
-    public const DB_REPOSITORY = 'DB_REPOSITORY';
+    public const DB_CONNECTION  = 'DB_CONNECTION';
+    public const DB_CONNECTIONS = 'DB_CONNECTIONS';
+    public const DB_HOST        = 'DB_HOST';
+    public const DB_PORT        = 'DB_PORT';
+    public const DB_DATABASE    = 'DB_DATABASE';
+    public const DB_USERNAME    = 'DB_USERNAME';
+    public const DB_PASSWORD    = 'DB_PASSWORD';
+    public const DB_SOCKET      = 'DB_SOCKET';
+    public const DB_CHARSET     = 'DB_CHARSET';
+    public const DB_COLLATION   = 'DB_COLLATION';
+    public const DB_PREFIX      = 'DB_PREFIX';
+    public const DB_STRICT      = 'DB_STRICT';
+    public const DB_ENGINE      = 'DB_ENGINE';
+    public const DB_SCHEMA      = 'DB_SCHEMA';
+    public const DB_SSL_MODE    = 'DB_SSL_MODE';
+    public const DB_ADAPTER     = 'DB_ADAPTER';
+    public const DB_ADAPTERS    = 'DB_ADAPTERS';
+    public const DB_REPOSITORY  = 'DB_REPOSITORY';
 
     public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
     public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
@@ -137,7 +136,7 @@ final class EnvKey extends Enum
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 
-    public const ROUTING_TRAILING_SLASH              = 'ROUTING_TRAILING_SLASH';
+    public const ROUTING_USE_TRAILING_SLASH          = 'ROUTING_USE_TRAILING_SLASH';
     public const ROUTING_USE_ABSOLUTE_URLS           = 'ROUTING_USE_ABSOLUTE_URLS';
     public const ROUTING_MIDDLEWARE                  = 'ROUTING_MIDDLEWARE';
     public const ROUTING_MIDDLEWARE_GROUPS           = 'ROUTING_MIDDLEWARE_GROUPS';

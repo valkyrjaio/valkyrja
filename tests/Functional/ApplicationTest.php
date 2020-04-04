@@ -19,7 +19,6 @@ use Valkyrja\Annotation\Annotators\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
@@ -41,6 +40,7 @@ use Valkyrja\Path\Generators\PathGenerator;
 use Valkyrja\Path\Parsers\PathParser;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Session\Sessions\Session;
+use Valkyrja\Tests\Config;
 use Valkyrja\Tests\EnvTest;
 use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
@@ -204,26 +204,6 @@ class ApplicationTest extends TestCase
     public function testDebug(): void
     {
         $this->assertEquals($this->app->config()['app']['debug'], $this->app->debug());
-    }
-
-    /**
-     * Test the isCompiled() helper method.
-     *
-     * @return void
-     */
-    public function testIsCompiled(): void
-    {
-        $this->assertEquals(false, $this->app->isCompiled());
-    }
-
-    /**
-     * Test the setCompiled() helper method.
-     *
-     * @return void
-     */
-    public function testSetCompiled(): void
-    {
-        $this->assertEquals(null, $this->app->setCompiled() ?? null);
     }
 
     /**
@@ -489,7 +469,7 @@ class ApplicationTest extends TestCase
         $config = new Config();
 
         $config->app->debug = true;
-        $this->app = $this->app->withConfig($config);
+        $this->app          = $this->app->withConfig($config);
 
         $this->assertEquals(true, $this->app->debug());
     }
@@ -505,7 +485,7 @@ class ApplicationTest extends TestCase
             $config = new Config();
 
             $config->app->dispatcher = InvalidDispatcherClass::class;
-            $this->app = $this->app->withConfig($config);
+            $this->app               = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }
@@ -524,7 +504,7 @@ class ApplicationTest extends TestCase
             $config = new Config();
 
             $config->app->container = InvalidContainerClass::class;
-            $this->app = $this->app->withConfig($config);
+            $this->app              = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }
@@ -543,7 +523,7 @@ class ApplicationTest extends TestCase
             $config = new Config();
 
             $config->app->events = InvalidEventsClass::class;
-            $this->app = $this->app->withConfig($config);
+            $this->app           = $this->app->withConfig($config);
         } catch (TypeError $exception) {
             $this->assertInstanceOf(TypeError::class, $exception);
         }

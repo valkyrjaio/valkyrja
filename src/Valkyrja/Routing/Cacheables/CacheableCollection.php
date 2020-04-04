@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Cacheables;
 
-use Valkyrja\Config\Configs\Routing;
+use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Support\Cacheables\Cacheable;
 
@@ -32,7 +32,7 @@ trait CacheableCollection
     /**
      * Get the config.
      *
-     * @return Routing|array
+     * @return RoutingConfig|array
      */
     protected function getConfig()
     {
@@ -60,7 +60,7 @@ trait CacheableCollection
     /**
      * Setup the router from cache.
      *
-     * @param Routing|array $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */
@@ -77,7 +77,7 @@ trait CacheableCollection
     /**
      * Setup annotated routes.
      *
-     * @param Routing|array $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */

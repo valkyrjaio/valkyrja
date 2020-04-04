@@ -30,7 +30,6 @@ use Valkyrja\Crypt\Crypts\Crypt;
 use Valkyrja\Crypt\Decrypters\SodiumDecrypter;
 use Valkyrja\Crypt\Encrypters\SodiumEncrypter;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
 use Valkyrja\Event\Dispatchers\Events;
@@ -61,7 +60,7 @@ use Valkyrja\View\Views\View;
  *
  * @author Melech Mizrachi
  */
-final class Provider extends Enum
+final class Provider
 {
     public const API                 = Api::class;
     public const APP                 = Valkyrja::class;

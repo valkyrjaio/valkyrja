@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum ConfigKey.
  *
  * @author Melech Mizrachi
  */
-final class ConfigKey extends Enum
+final class ConfigKey
 {
     public const CONFIG_PROVIDERS       = 'providers';
     public const CONFIG_FILE_PATH       = 'filePath';

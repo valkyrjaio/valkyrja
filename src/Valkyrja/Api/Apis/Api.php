@@ -24,7 +24,6 @@ use Valkyrja\Application\Application;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\ORM\Entity;
-
 use Valkyrja\Support\Providers\Provides;
 
 use function end;
@@ -42,6 +41,13 @@ class Api implements Contract
     use Provides;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * Whether to run in debug mode.
      *
      * @var bool
@@ -51,11 +57,13 @@ class Api implements Contract
     /**
      * Api constructor.
      *
-     * @param bool $debug [optional]
+     * @param array $config
+     * @param bool  $debug [optional]
      */
-    public function __construct(bool $debug = false)
+    public function __construct(array $config, bool $debug = false)
     {
-        $this->debug = $debug;
+        $this->config = $config;
+        $this->debug  = $debug;
     }
 
     /**
@@ -81,7 +89,10 @@ class Api implements Contract
     {
         $app->container()->setSingleton(
             Contract::class,
-            new static($app->debug())
+            new static(
+                (array) ($app->config()['api'] ?? []),
+                $app->debug()
+            )
         );
     }
 

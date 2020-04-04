@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Cacheables;
 
+use Valkyrja\Config\Config;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Models\Cacheable as CacheableModel;
-use Valkyrja\Config\Models\Model;
 
 use function Valkyrja\config;
 
@@ -78,21 +77,21 @@ trait Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Model|object
+     * @return Config|object
      */
     abstract public function getCacheable(): object;
 
     /**
      * Get the config.
      *
-     * @return CacheableModel|array
+     * @return Config|array
      */
     abstract protected function getConfig();
 
     /**
      * Before setup.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -104,7 +103,7 @@ trait Cacheable
     /**
      * Setup from cache.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -116,7 +115,7 @@ trait Cacheable
     /**
      * Set not cached.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -128,7 +127,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -143,7 +142,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -155,7 +154,7 @@ trait Cacheable
     /**
      * Before setup.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */
@@ -167,7 +166,7 @@ trait Cacheable
     /**
      * Set annotations.
      *
-     * @param CacheableModel|array $config
+     * @param Config|array $config
      *
      * @return void
      */

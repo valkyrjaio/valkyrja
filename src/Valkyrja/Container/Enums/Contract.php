@@ -31,7 +31,6 @@ use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Events;
@@ -65,7 +64,7 @@ use Valkyrja\View\View;
  *
  * @author Melech Mizrachi
  */
-final class Contract extends Enum
+final class Contract
 {
     public const API                 = Api::class;
     public const APP                 = Application::class;

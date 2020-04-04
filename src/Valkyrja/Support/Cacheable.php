@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
-use Valkyrja\Config\Models\Model;
+use Valkyrja\Config\Config;
 
 /**
  * Interface Cacheable.
@@ -35,7 +35,7 @@ interface Cacheable
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Model|object
+     * @return Config|object
      */
     public function getCacheable(): object;
 }

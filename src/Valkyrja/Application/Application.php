@@ -16,8 +16,8 @@ namespace Valkyrja\Application;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Client\Client;
-use Valkyrja\Config\Config;
-use Valkyrja\Config\Models\Model;
+use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
@@ -79,9 +79,9 @@ interface Application
     /**
      * Get environment variables.
      *
-     * @return string
+     * @return string|null
      */
-    public static function getEnv(): string;
+    public static function getEnv(): ?string;
 
     /**
      * Set the environment variables class.
@@ -124,12 +124,12 @@ interface Application
     /**
      * Add to the global config array.
      *
-     * @param Model  $newConfig The new config to add
-     * @param string $key       The key to use
+     * @param ConfigModel $newConfig The new config to add
+     * @param string      $key       The key to use
      *
      * @return void
      */
-    public function addConfig(Model $newConfig, string $key): void;
+    public function addConfig(ConfigModel $newConfig, string $key): void;
 
     /**
      * Get the container instance.
@@ -179,20 +179,6 @@ interface Application
      * @return bool
      */
     public function debug(): bool;
-
-    /**
-     * Get whether the application is using a compiled version.
-     *
-     * @return bool
-     */
-    public function isCompiled(): bool;
-
-    /**
-     * Set the application as using compiled.
-     *
-     * @return void
-     */
-    public function setCompiled(): void;
 
     /**
      * Abort the application due to error.

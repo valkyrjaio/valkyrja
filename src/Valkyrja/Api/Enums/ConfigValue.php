@@ -15,15 +15,20 @@ namespace Valkyrja\Api\Enums;
 
 use Valkyrja\Api\Models\Json;
 use Valkyrja\Api\Models\JsonData;
-use Valkyrja\Enum\Enums\Enum;
+use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 
 /**
  * Enum ConfigValue.
  *
  * @author Melech Mizrachi
  */
-final class ConfigValue extends Enum
+final class ConfigValue
 {
     public const JSON_MODEL      = Json::class;
     public const JSON_DATA_MODEL = JsonData::class;
+
+    public static array $defaults = [
+        CKP::JSON_MODEL      => self::JSON_MODEL,
+        CKP::JSON_DATA_MODEL => self::JSON_DATA_MODEL,
+    ];
 }

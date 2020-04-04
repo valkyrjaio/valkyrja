@@ -23,23 +23,20 @@ class Env
     /*
      * Config env variables.
      */
-    // public const CONFIG_CLASS                 = null;
     // public const CONFIG_PROVIDERS             = null;
-    // public const CONFIG_FILE_PATH             = null;
     // public const CONFIG_CACHE_FILE_PATH       = null;
-    // public const CONFIG_CACHE_ALLOWED_CLASSES = null;
     // public const CONFIG_USE_CACHE_FILE        = null;
 
     /*
      * Application env variables.
      */
-    // public const APP_ENV                  = null;
-    // public const APP_DEBUG                = null;
-    // public const APP_URL                  = null;
-    // public const APP_TIMEZONE             = null;
-    // public const APP_VERSION              = null;
-    // public const APP_KEY                  = null;
-    // public const APP_HTTP_EXCEPTION_CLASS = null;
+    // public const APP_ENV            = null;
+    // public const APP_DEBUG          = null;
+    // public const APP_URL            = null;
+    // public const APP_TIMEZONE       = null;
+    // public const APP_VERSION        = null;
+    // public const APP_KEY            = null;
+    // public const APP_HTTP_EXCEPTION = null;
     //
     // public const APP_CONTAINER         = null;
     // public const APP_DISPATCHER        = null;

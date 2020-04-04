@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Cacheables;
 
-use Valkyrja\Config\Models\Model;
+use Valkyrja\Config\Config;
 
 /**
  * Class CacheConfig.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Model
+class Cache extends Config
 {
     /**
      * The base64 encoded services.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use Valkyrja\Config\Config;
+use Valkyrja\Tests\Config;
 
 /**
  * Class ConfigTest

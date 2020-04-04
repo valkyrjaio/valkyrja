@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum ConfigKeyPart.
  *
  * @author Melech Mizrachi
  */
-final class ConfigKeyPart extends Enum
+final class ConfigKeyPart
 {
     public const SEP = '.';
 
@@ -52,14 +50,15 @@ final class ConfigKeyPart extends Enum
     public const VERSION                     = 'version';
     public const KEY                         = 'key';
     public const KEY_PATH                    = 'keyPath';
-    public const HTTP_EXCEPTION_CLASS        = 'httpExceptionClass';
+    public const HTTP_EXCEPTION              = 'httpException';
     public const DISPATCHER                  = 'dispatcher';
     public const EXCEPTION_HANDLER           = 'exceptionHandler';
     public const PATTERNS                    = 'patterns';
     public const ENABLED                     = 'enabled';
     public const MAP                         = 'map';
     public const NAME                        = 'name';
-    public const FROM                        = 'from';
+    public const FROM_ADDRESS                = 'fromAddress';
+    public const FROM_NAME                   = 'fromName';
     public const DEFAULT                     = 'default';
     public const PROVIDERS                   = 'providers';
     public const PROVIDED                    = 'provided';
@@ -73,9 +72,11 @@ final class ConfigKeyPart extends Enum
     public const USE_ANNOTATIONS             = 'useAnnotations';
     public const USE_ANNOTATIONS_EXCLUSIVELY = 'useAnnotationsExclusively';
     public const QUIET                       = 'quiet';
+    public const LISTENERS                   = 'listeners';
     public const HANDLERS                    = 'handlers';
     public const SERVICES                    = 'services';
     public const CONTEXT_SERVICES            = 'contextServices';
+    public const CONNECTION                  = 'connection';
     public const CONNECTIONS                 = 'connections';
     public const MYSQL                       = 'mysql';
     public const PGSQL                       = 'pgsql';
@@ -95,10 +96,18 @@ final class ConfigKeyPart extends Enum
     public const SCHEMA                      = 'schema';
     public const SSL_MODE                    = 'sslmode';
     public const CLASSES                     = 'classes';
+    public const STORE                       = 'store';
+    public const STORES                      = 'stores';
     public const DISKS                       = 'disks';
     public const DISK                        = 'disk';
     public const ADAPTERS                    = 'adapters';
     public const ADAPTER                     = 'adapter';
+    public const USER_ENTITY                 = 'userEntity';
+    public const REPOSITORY                  = 'repository';
+    public const ALWAYS_AUTHENTICATE         = 'alwaysAuthenticate';
+    public const KEEP_USER_FRESH             = 'keepUserFresh';
+    public const AUTHENTICATE_ROUTE          = 'authenticateRoute';
+    public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const PDO                         = 'PDO';
     public const PHP                         = 'PHP';
     public const LOCAL                       = 'local';
@@ -111,7 +120,7 @@ final class ConfigKeyPart extends Enum
     public const ADDRESS                     = 'address';
     public const ENCRYPTION                  = 'encryption';
     public const CONTROLLERS                 = 'controllers';
-    public const TRAILING_SLASH              = 'trailingSlash';
+    public const USE_TRAILING_SLASH          = 'useTrailingSlash';
     public const USE_ABSOLUTE_URLS           = 'useAbsoluteUrls';
     public const MIDDLEWARE                  = 'middleware';
     public const MIDDLEWARE_GROUPS           = 'middlewareGroups';
@@ -122,4 +131,7 @@ final class ConfigKeyPart extends Enum
     public const NAMED_COMMANDS              = 'namedCommands';
     public const VALHALLA                    = 'valhalla';
     public const REDIS                       = 'redis';
+    public const JSON_MODEL                  = 'jsonModel';
+    public const JSON_DATA_MODEL             = 'jsonDataModel';
+
 }

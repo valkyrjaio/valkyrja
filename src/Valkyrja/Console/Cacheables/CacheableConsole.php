@@ -15,9 +15,9 @@ namespace Valkyrja\Console\Cacheables;
 
 use ReflectionException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\Console;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
+use Valkyrja\Console\Config\Config as ConsoleConfig;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -79,7 +79,7 @@ trait CacheableConsole
     /**
      * Get the config.
      *
-     * @return Console|array
+     * @return ConsoleConfig|array
      */
     protected function getConfig()
     {
@@ -89,7 +89,7 @@ trait CacheableConsole
     /**
      * Setup the console from cache.
      *
-     * @param Console|array $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
@@ -113,7 +113,7 @@ trait CacheableConsole
     /**
      * Set not cached.
      *
-     * @param Console|array $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
@@ -130,7 +130,7 @@ trait CacheableConsole
     /**
      * Setup annotations.
      *
-     * @param Console|array $config
+     * @param ConsoleConfig|array $config
      *
      * @throws ReflectionException
      *
@@ -170,7 +170,7 @@ trait CacheableConsole
     /**
      * Setup command providers.
      *
-     * @param Console|array $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */

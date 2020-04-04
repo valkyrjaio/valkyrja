@@ -181,7 +181,7 @@ class Annotator implements AnnotationsContract
         $index = static::CLASS_CACHE . $class;
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = $this->setAnnotationValues(
+            ??= $this->setAnnotationValues(
                 [
                     Property::CLASS_NAME => $class,
                 ],
@@ -203,7 +203,7 @@ class Annotator implements AnnotationsContract
         $index = static::CLASS_MEMBERS_CACHE . $class;
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = array_merge(
+            ??= array_merge(
                 $this->propertiesAnnotations($class),
                 $this->methodsAnnotations($class)
             );
@@ -223,7 +223,7 @@ class Annotator implements AnnotationsContract
         $index = static::CLASS_AND_MEMBERS_CACHE . $class;
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = array_merge(
+            ??= array_merge(
                 $this->classAnnotations($class),
                 $this->classMembersAnnotations($class)
             );
@@ -245,7 +245,7 @@ class Annotator implements AnnotationsContract
         $reflection = $this->reflector->getPropertyReflection($class, $property);
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = $this->setAnnotationValues(
+            ??= $this->setAnnotationValues(
                 [
                     Property::CLASS_NAME => $class,
                     Property::PROPERTY   => $property,
@@ -307,7 +307,7 @@ class Annotator implements AnnotationsContract
         $reflection = $this->reflector->getMethodReflection($class, $method);
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = $this->setAnnotationValues(
+            ??= $this->setAnnotationValues(
                 [
                     Property::CLASS_NAME => $class,
                     Property::METHOD     => $method,
@@ -367,7 +367,7 @@ class Annotator implements AnnotationsContract
         $index = static::FUNCTION_CACHE . $function;
 
         return self::$annotations[$index]
-            ?? self::$annotations[$index] = $this->setAnnotationValues(
+            ??= $this->setAnnotationValues(
                 [
                     Property::FUNCTION => $function,
                 ],

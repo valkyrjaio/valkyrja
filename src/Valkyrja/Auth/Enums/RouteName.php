@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum RouteName.
  *
  * @author Melech Mizrachi
  */
-final class RouteName extends Enum
+final class RouteName
 {
     public const AUTHENTICATE     = 'auth.authenticate';
     public const PASSWORD_CONFIRM = 'auth.password.confirm';

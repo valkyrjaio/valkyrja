@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Models\Model;
+use Valkyrja\Config\Config;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -298,7 +298,7 @@ class Router implements RouterContract
     /**
      * Get a cacheable representation of the data.
      *
-     * @return Model|object
+     * @return \Valkyrja\Config\Config|object
      */
     public function getCacheable(): object
     {

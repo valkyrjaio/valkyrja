@@ -46,7 +46,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Support\Directory as ValkyrjaDirectory;
+use Valkyrja\Support\Directory;
 
 use function func_get_args;
 use function var_dump;
@@ -490,7 +490,7 @@ function dd(): void
  */
 function basePath(string $path = null): string
 {
-    return ValkyrjaDirectory::basePath($path);
+    return Directory::basePath($path);
 }
 
 /**
@@ -502,7 +502,7 @@ function basePath(string $path = null): string
  */
 function appPath(string $path = null): string
 {
-    return ValkyrjaDirectory::appPath($path);
+    return Directory::appPath($path);
 }
 
 /**
@@ -514,7 +514,7 @@ function appPath(string $path = null): string
  */
 function bootstrapPath(string $path = null): string
 {
-    return ValkyrjaDirectory::bootstrapPath($path);
+    return Directory::bootstrapPath($path);
 }
 
 /**
@@ -526,7 +526,7 @@ function bootstrapPath(string $path = null): string
  */
 function envPath(string $path = null): string
 {
-    return ValkyrjaDirectory::envPath($path);
+    return Directory::envPath($path);
 }
 
 /**
@@ -538,7 +538,7 @@ function envPath(string $path = null): string
  */
 function configPath(string $path = null): string
 {
-    return ValkyrjaDirectory::configPath($path);
+    return Directory::configPath($path);
 }
 
 /**
@@ -550,7 +550,7 @@ function configPath(string $path = null): string
  */
 function commandsPath(string $path = null): string
 {
-    return ValkyrjaDirectory::commandsPath($path);
+    return Directory::commandsPath($path);
 }
 
 /**
@@ -562,7 +562,7 @@ function commandsPath(string $path = null): string
  */
 function eventsPath(string $path = null): string
 {
-    return ValkyrjaDirectory::eventsPath($path);
+    return Directory::eventsPath($path);
 }
 
 /**
@@ -574,7 +574,7 @@ function eventsPath(string $path = null): string
  */
 function routesPath(string $path = null): string
 {
-    return ValkyrjaDirectory::routesPath($path);
+    return Directory::routesPath($path);
 }
 
 /**
@@ -586,7 +586,7 @@ function routesPath(string $path = null): string
  */
 function servicesPath(string $path = null): string
 {
-    return ValkyrjaDirectory::servicesPath($path);
+    return Directory::servicesPath($path);
 }
 
 /**
@@ -598,7 +598,7 @@ function servicesPath(string $path = null): string
  */
 function publicPath(string $path = null): string
 {
-    return ValkyrjaDirectory::publicPath($path);
+    return Directory::publicPath($path);
 }
 
 /**
@@ -610,7 +610,7 @@ function publicPath(string $path = null): string
  */
 function resourcesPath(string $path = null): string
 {
-    return ValkyrjaDirectory::resourcesPath($path);
+    return Directory::resourcesPath($path);
 }
 
 /**
@@ -622,7 +622,7 @@ function resourcesPath(string $path = null): string
  */
 function storagePath(string $path = null): string
 {
-    return ValkyrjaDirectory::storagePath($path);
+    return Directory::storagePath($path);
 }
 
 /**
@@ -634,7 +634,7 @@ function storagePath(string $path = null): string
  */
 function frameworkStoragePath(string $path = null): string
 {
-    return ValkyrjaDirectory::frameworkStoragePath($path);
+    return Directory::frameworkStoragePath($path);
 }
 
 /**
@@ -646,7 +646,7 @@ function frameworkStoragePath(string $path = null): string
  */
 function cachePath(string $path = null): string
 {
-    return ValkyrjaDirectory::cachePath($path);
+    return Directory::cachePath($path);
 }
 
 /**
@@ -658,7 +658,7 @@ function cachePath(string $path = null): string
  */
 function testsPath(string $path = null): string
 {
-    return ValkyrjaDirectory::testsPath($path);
+    return Directory::testsPath($path);
 }
 
 /**
@@ -670,5 +670,5 @@ function testsPath(string $path = null): string
  */
 function vendorPath(string $path = null): string
 {
-    return ValkyrjaDirectory::vendorPath($path);
+    return Directory::vendorPath($path);
 }

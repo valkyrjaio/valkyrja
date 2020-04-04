@@ -15,13 +15,12 @@ namespace Valkyrja\Application\Applications;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
-use Valkyrja\Config\Config;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Models\Model;
+use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
@@ -30,7 +29,6 @@ use function constant;
 use function date_default_timezone_set;
 use function define;
 use function defined;
-
 use function explode;
 use function is_file;
 use function microtime;
@@ -56,9 +54,9 @@ class Valkyrja implements Application
     /**
      * Application env.
      *
-     * @var string
+     * @var string|null
      */
-    protected static string $env;
+    protected static ?string $env = null;
 
     /**
      * Application config.
@@ -101,12 +99,6 @@ class Valkyrja implements Application
      * @var bool
      */
     protected static bool $setup = false;
-    /**
-     * Is the app using a compiled version?
-     *
-     * @var bool
-     */
-    protected bool $isCompiled = false;
 
     /**
      * Application constructor.
@@ -137,8 +129,6 @@ class Valkyrja implements Application
         self::$setup = true;
         // Set the app static
         self::$app = $this;
-        // Ensure the env has been set
-        self::setEnv();
 
         // If the VALKYRJA_START constant hasn't already been set
         if (! defined('VALKYRJA_START')) {
@@ -169,26 +159,6 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get whether the application is using a compiled version.
-     *
-     * @return bool
-     */
-    public function isCompiled(): bool
-    {
-        return $this->isCompiled;
-    }
-
-    /**
-     * Set the application as using compiled.
-     *
-     * @return void
-     */
-    public function setCompiled(): void
-    {
-        $this->isCompiled = true;
-    }
-
-    /**
      * Get the application instance.
      *
      * @return Application
@@ -208,16 +178,22 @@ class Valkyrja implements Application
      */
     public static function env(string $key = null, $default = null)
     {
+        $env = self::$env;
+
+        if (null === $env) {
+            return $default;
+        }
+
         // If there was no variable requested
         if (null === $key) {
             // Return the env class
-            return static::getEnv();
+            return $env;
         }
 
         // If the env has this variable defined and the variable isn't null
-        if (defined(static::getEnv() . '::' . $key)) {
+        if (defined($env . '::' . $key)) {
             // Return the variable
-            return constant(static::getEnv() . '::' . $key) ?? $default;
+            return constant($env . '::' . $key) ?? $default;
         }
 
         // Otherwise return the default
@@ -227,11 +203,11 @@ class Valkyrja implements Application
     /**
      * Get the environment variables class.
      *
-     * @return string
+     * @return string|null
      */
-    public static function getEnv(): string
+    public static function getEnv(): ?string
     {
-        return self::$env ?? (self::$env = Env::class);
+        return self::$env;
     }
 
     /**
@@ -244,7 +220,7 @@ class Valkyrja implements Application
     public static function setEnv(string $env = null): void
     {
         // Set the env class to use
-        self::$env = ($env ?? self::$env ?? Env::class);
+        self::$env = $env;
     }
 
     /**
@@ -257,19 +233,17 @@ class Valkyrja implements Application
      */
     public function config(string $key = null, $default = null)
     {
-        // If no key was specified
-        if (null === $key) {
-            // Return all the entire config
-            return self::$config;
-        }
-
-        // Explode the keys on period
-        $keys = explode(ConfigKeyPart::SEP, $key);
         // Set the config to return
         $config = self::$config;
 
-        // Iterate through the keys
-        foreach ($keys as $configItem) {
+        // If no key was specified
+        if (null === $key) {
+            // Return all the entire config
+            return $config;
+        }
+
+        // Explode the keys on period and iterate through the keys
+        foreach (explode(ConfigKeyPart::SEP, $key) as $configItem) {
             // Trying to get the item from the config or set the default
             $config = $config[$configItem] ?? $default;
 
@@ -287,12 +261,12 @@ class Valkyrja implements Application
     /**
      * Add to the global config array.
      *
-     * @param Model  $newConfig The new config to add
-     * @param string $key       The key to use
+     * @param ConfigModel $newConfig The new config to add
+     * @param string      $key       The key to use
      *
      * @return void
      */
-    public function addConfig(Model $newConfig, string $key): void
+    public function addConfig(ConfigModel $newConfig, string $key): void
     {
         // Set the config within the application
         self::$config[$key] = $newConfig;

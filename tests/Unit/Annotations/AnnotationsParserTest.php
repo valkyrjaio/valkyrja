@@ -17,7 +17,7 @@ use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Enums\Annotation as AnnotationEnum;
-use Valkyrja\Annotation\Enums\Config;
+use Valkyrja\Annotation\Enums\ConfigValue;
 use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Parsers\Parser;
 use Valkyrja\Application\Applications\Valkyrja;
@@ -148,7 +148,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetAnnotationsMap(): void
     {
-        $this->assertEquals(Config::MAP, $this->class->getAnnotationsMap());
+        $this->assertEquals(ConfigValue::MAP, $this->class->getAnnotationsMap());
     }
 
     /**
