@@ -84,6 +84,7 @@ final class ConfigKeyPart
     public const DRIVER                      = 'driver';
     public const HOST                        = 'host';
     public const PORT                        = 'port';
+    public const DB                          = 'db';
     public const USERNAME                    = 'username';
     public const PASSWORD                    = 'password';
     public const UNIX_SOCKET                 = 'unix_socket';

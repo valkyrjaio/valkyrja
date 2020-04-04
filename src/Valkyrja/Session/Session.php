@@ -105,6 +105,13 @@ interface Session
     public function remove(string $id): bool;
 
     /**
+     * Get all items in the session.
+     *
+     * @return array
+     */
+    public function all(): array;
+
+    /**
      * Get a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id

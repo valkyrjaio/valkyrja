@@ -238,6 +238,16 @@ class Session implements SessionContract
     }
 
     /**
+     * Get all items in the session.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->data;
+    }
+
+    /**
      * Get a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id
