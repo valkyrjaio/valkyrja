@@ -20,7 +20,6 @@ use Valkyrja\Api\Json;
 use Valkyrja\Api\JsonData;
 use Valkyrja\Api\Models\Json as JsonClass;
 use Valkyrja\Api\Models\JsonData as JsonDataClass;
-use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
