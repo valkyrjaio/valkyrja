@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Views;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
-use Valkyrja\View\View as ViewContract;
+use Valkyrja\View\View as Contract;
 
 use function array_merge;
 use function explode;
@@ -31,7 +31,7 @@ use function trim;
  *
  * @author Melech Mizrachi
  */
-class View implements ViewContract
+class View implements Contract
 {
     use Provides;
 
@@ -41,13 +41,6 @@ class View implements ViewContract
      * @var Engine[]
      */
     protected static array $engines = [];
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
 
     /**
      * The body content template.
@@ -99,17 +92,17 @@ class View implements ViewContract
     /**
      * View constructor.
      *
-     * @param Application $app       The application
+     * @param array       $config    The config
      * @param string|null $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
      *
      * @throws InvalidConfigPath
      */
-    public function __construct(Application $app, string $template = null, array $variables = [])
+    public function __construct(array $config, string $template = null, array $variables = [])
     {
-        $this->app    = $app;
-        $this->config = (array) $app->config('view');
-        $this->engine = $this->config['engine'];
+        $this->config = $config;
+        $this->engine = $config['engine'];
+
         $this->setVariables($variables);
         $this->setDir($this->config['dir']);
         $this->setTemplate($template ?? $this->template);
@@ -123,22 +116,29 @@ class View implements ViewContract
     public static function provides(): array
     {
         return [
-            ViewContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @throws InvalidConfigPath
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(ViewContract::class, new static($app));
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                (array) $config['view']
+            )
+        );
     }
 
     /**
@@ -153,7 +153,7 @@ class View implements ViewContract
      */
     public function make(string $template = null, array $variables = []): self
     {
-        return new static($this->app, $template, $variables);
+        return new static($this->config, $template, $variables);
     }
 
     /**

@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Enums\Header;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
-use Valkyrja\Http\RedirectResponse as RedirectResponseContract;
+use Valkyrja\Http\RedirectResponse as Contract;
 
 use function Valkyrja\request;
 use function Valkyrja\router;
@@ -30,7 +30,7 @@ use function Valkyrja\router;
  *
  * @author Melech Mizrachi
  */
-class RedirectResponse extends Response implements RedirectResponseContract
+class RedirectResponse extends Response implements Contract
 {
     /**
      * The uri to redirect to.
@@ -191,21 +191,22 @@ class RedirectResponse extends Response implements RedirectResponseContract
     public static function provides(): array
     {
         return [
-            RedirectResponseContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(RedirectResponseContract::class, new static());
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 }

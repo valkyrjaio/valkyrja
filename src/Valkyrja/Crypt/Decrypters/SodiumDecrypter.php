@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Decrypters;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function base64_decode;
 use function is_string;
-
 use function json_decode;
 use function sodium_crypto_secretbox_open;
 use function sodium_memzero;
@@ -53,13 +52,13 @@ class SodiumDecrypter implements Decrypter
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(Decrypter::class, new static());
+        $container->setSingleton(Decrypter::class, new static());
     }
 
     /**

@@ -15,34 +15,44 @@ namespace Valkyrja\Http\Kernels;
 
 use RuntimeException;
 use Throwable;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
+use Valkyrja\Event\Events;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Events\HttpKernelHandled;
 use Valkyrja\Http\Events\HttpKernelTerminate;
-use Valkyrja\Http\Kernel as KernelContract;
+use Valkyrja\Http\Kernel as Contract;
 use Valkyrja\Http\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class Kernel.
  *
  * @author Melech Mizrachi
  */
-class Kernel implements KernelContract
+class Kernel implements Contract
 {
     use MiddlewareAwareTrait;
     use Provides;
 
     /**
-     * The application.
+     * The container.
      *
-     * @var Application
+     * @var Container
      */
-    protected Application $app;
+    protected Container $container;
+
+    /**
+     * The events.
+     *
+     * @var Events
+     */
+    protected Events $events;
 
     /**
      * The router.
@@ -52,17 +62,40 @@ class Kernel implements KernelContract
     protected Router $router;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * Whether to run in debug.
+     *
+     * @var bool
+     */
+    protected bool $debug;
+
+    /**
      * Kernel constructor.
      *
-     * @param Application $application The application
-     * @param Router      $router      The router
+     * @param Container $container The container
+     * @param Events    $events    The events
+     * @param Router    $router    The router
+     * @param array     $config    The config
+     * @param bool      $debug     [optional] Whether to run in debug
      */
-    public function __construct(Application $application, Router $router)
-    {
-        $this->app    = $application;
-        $this->router = $router;
-
-        $config = $application->config('routing');
+    public function __construct(
+        Container $container,
+        Events $events,
+        Router $router,
+        array $config,
+        bool $debug = false
+    ) {
+        $this->container = $container;
+        $this->events    = $events;
+        $this->router    = $router;
+        $this->config    = $config;
+        $this->debug     = $debug;
 
         self::$middleware       = $config['middleware'];
         self::$middlewareGroups = $config['middlewareGroups'];
@@ -76,20 +109,31 @@ class Kernel implements KernelContract
     public static function provides(): array
     {
         return [
-            KernelContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(KernelContract::class, new static($app, $app->router()));
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container,
+                $container->getSingleton(Events::class),
+                $container->getSingleton(Router::class),
+                (array) $config['routing'],
+                $config['app']['debug']
+            )
+        );
     }
 
     /**
@@ -109,16 +153,16 @@ class Kernel implements KernelContract
             $response = $this->getExceptionResponse($exception);
 
             // Log the error
-            $this->app->logger()->error((string) $exception);
+            $this->logException($exception);
         }
 
         // Dispatch the after request handled middleware and return the response
         $response = $this->responseMiddleware($request, $response);
         // Set the returned response in the container
-        $this->app->container()->setSingleton(Response::class, $response);
+        $this->container->setSingleton(Response::class, $response);
 
         // Trigger an event for kernel handled
-        $this->app->events()->trigger(HttpKernelHandled::class, [$request, $response]);
+        $this->events->trigger(HttpKernelHandled::class, [$request, $response]);
 
         return $response;
     }
@@ -153,7 +197,7 @@ class Kernel implements KernelContract
         $this->terminableMiddleware($request, $response);
 
         /* @var Route $route */
-        $route = $this->app->container()->getSingleton(Route::class);
+        $route = $this->container->getSingleton(Route::class);
 
         // If the dispatched route has middleware
         if (null !== $route->getMiddleware()) {
@@ -162,7 +206,7 @@ class Kernel implements KernelContract
         }
 
         // Trigger an event for kernel handled
-        $this->app->events()->trigger(HttpKernelTerminate::class, [$request, $response]);
+        $this->events->trigger(HttpKernelTerminate::class, [$request, $response]);
     }
 
     /**
@@ -178,7 +222,7 @@ class Kernel implements KernelContract
     {
         // If no request was passed get the bootstrapped definition
         if (null === $request) {
-            $request = $this->app->container()->getSingleton(Request::class);
+            $request = $this->container->getSingleton(Request::class);
         }
 
         // Handle the request, dispatch the after request middleware
@@ -201,13 +245,13 @@ class Kernel implements KernelContract
     protected function dispatchRouter(Request $request): Response
     {
         // Set the request object in the container
-        $this->app->container()->setSingleton(Request::class, $request);
+        $this->container->setSingleton(Request::class, $request);
 
         // Dispatch the before request handled middleware
         $request = $this->requestMiddleware($request);
 
         // Set the returned request in the container
-        $this->app->container()->setSingleton(Request::class, $request);
+        $this->container->setSingleton(Request::class, $request);
 
         return $this->router->dispatch($request);
     }
@@ -223,10 +267,28 @@ class Kernel implements KernelContract
      */
     protected function getExceptionResponse(Throwable $exception): Response
     {
-        if ($this->app->debug()) {
+        if ($this->debug) {
             throw $exception;
         }
 
-        return $this->app->response($this->app->view('errors/500')->render(), StatusCode::INTERNAL_SERVER_ERROR);
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = $this->container->getSingleton(ResponseFactory::class);
+
+        return $responseFactory->view('errors/500', null, StatusCode::INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Log an error.
+     *
+     * @param Throwable $exception
+     *
+     * @return void
+     */
+    protected function logException(Throwable $exception): void
+    {
+        /** @var Logger $logger */
+        $logger = $this->container->getSingleton(Logger::class);
+
+        $logger->error((string) $exception);
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Config\Commands;
 
 use Valkyrja\Console\Commanders\Commander;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 
 use function file_exists;
 use function file_put_contents;
@@ -36,7 +36,7 @@ use function Valkyrja\output;
  */
 class ConfigCache extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

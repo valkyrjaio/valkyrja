@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Outputs;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
-use Valkyrja\Console\Output as OutputContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Console\Output as Contract;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 use function strip_tags;
 use function Valkyrja\config;
@@ -32,7 +32,7 @@ use const PHP_EOL;
  *
  * @author Melech Mizrachi
  */
-class Output implements OutputContract
+class Output implements Contract
 {
     use Provides;
 
@@ -68,21 +68,21 @@ class Output implements OutputContract
     public static function provides(): array
     {
         return [
-            OutputContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            OutputContract::class,
+        $container->setSingleton(
+            Contract::class,
             new static()
         );
     }

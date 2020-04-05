@@ -15,21 +15,21 @@ namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Enums\ContentType;
 use Valkyrja\Http\Enums\Header;
 use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Streams\Stream;
-use Valkyrja\Http\TextResponse as TextResponseContract;
+use Valkyrja\Http\TextResponse as Contract;
 
 /**
  * Class TextResponse.
  *
  * @author Melech Mizrachi
  */
-class TextResponse extends Response implements TextResponseContract
+class TextResponse extends Response implements Contract
 {
     /**
      * NativeTextResponse constructor.
@@ -65,21 +65,22 @@ class TextResponse extends Response implements TextResponseContract
     public static function provides(): array
     {
         return [
-            TextResponseContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(TextResponseContract::class, new static());
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 }

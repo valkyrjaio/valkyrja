@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Inputs;
 
-use Valkyrja\Application\Application;
-use Valkyrja\Console\Input as InputContract;
+use Valkyrja\Console\Input as Contract;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Request;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function array_merge;
 use function array_shift;
@@ -31,7 +31,7 @@ use function strpos;
  *
  * @author Melech Mizrachi
  */
-class Input implements InputContract
+class Input implements Contract
 {
     use Provides;
 
@@ -133,23 +133,23 @@ class Input implements InputContract
     public static function provides(): array
     {
         return [
-            InputContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            InputContract::class,
+        $container->setSingleton(
+            Contract::class,
             new static(
-                $app->request()
+                $container->getSingleton(Request::class)
             )
         );
     }

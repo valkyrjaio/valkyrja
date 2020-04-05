@@ -17,7 +17,7 @@ use Valkyrja\Console\Command;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Inputs\Argument;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 
 use function array_merge;
 use function explode;
@@ -35,7 +35,7 @@ use function Valkyrja\output;
  */
 class CommandsList extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

@@ -15,20 +15,50 @@ namespace Valkyrja\Console\Annotation\Annotators;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Application\Application;
-use Valkyrja\Console\Annotation\CommandAnnotator as CommandAnnotatorContract;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Console\Annotation\CommandAnnotator as Contract;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
+use Valkyrja\Container\Container;
+use Valkyrja\Reflection\Reflector;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class CommandAnnotator.
  *
  * @author Melech Mizrachi
  */
-class CommandAnnotator extends Annotator implements CommandAnnotatorContract
+class CommandAnnotator implements Contract
 {
+    use Provides;
+
+    /**
+     * The filter.
+     *
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
+     * The reflector.
+     *
+     * @var Reflector
+     */
+    protected Reflector $reflector;
+
+    /**
+     * ContainerAnnotator constructor.
+     *
+     * @param Filter    $filter
+     * @param Reflector $reflector
+     */
+    public function __construct(Filter $filter, Reflector $reflector)
+    {
+        $this->filter    = $filter;
+        $this->reflector = $reflector;
+    }
+
     /**
      * The items provided by this provider.
      *
@@ -37,22 +67,25 @@ class CommandAnnotator extends Annotator implements CommandAnnotatorContract
     public static function provides(): array
     {
         return [
-            CommandAnnotatorContract::class,
+            Contract::class,
         ];
     }
 
     /**
-     * Bind the command annotations.
+     * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            CommandAnnotatorContract::class,
-            new static($app, $app->reflector())
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Filter::class),
+                $container->getSingleton(Reflector::class)
+            )
         );
     }
 

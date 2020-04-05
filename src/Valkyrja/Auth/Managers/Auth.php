@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Managers;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
+use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class Auth.
@@ -133,19 +133,21 @@ class Auth implements Contract
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
             Contract::class,
             new static(
-                $app->crypt(),
-                $app->orm(),
-                $app->session(),
-                (array) $app->config()['auth']
+                $container->getSingleton(Crypt::class),
+                $container->getSingleton(ORM::class),
+                $container->getSingleton(Session::class),
+                (array) $config['auth']
             )
         );
     }

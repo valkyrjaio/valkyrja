@@ -14,155 +14,126 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Dispatchers;
 
 use RuntimeException;
-use Valkyrja\Application\Application;
-use Valkyrja\Container\Cacheables\CacheableContainer;
-use Valkyrja\Container\Container as ContainerContract;
-use Valkyrja\Container\Events\ServiceMade;
+use Valkyrja\Container\Container as Contract;
+use Valkyrja\Container\Events\AfterServiceMade;
+use Valkyrja\Container\Events\BeforeServiceMade;
 use Valkyrja\Container\Events\ServiceMadeSingleton;
-use Valkyrja\Container\Events\ServiceMake;
-use Valkyrja\Container\Exceptions\EndlessContextLoopException;
-use Valkyrja\Container\Exceptions\InvalidContextException;
-use Valkyrja\Container\Exceptions\InvalidServiceIdException;
-use Valkyrja\Container\Models\Service as ServiceModel;
 use Valkyrja\Container\Service;
-use Valkyrja\Container\ServiceContext;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Event\Events;
+use Valkyrja\Support\ClassHelpers;
+use Valkyrja\Support\Providers\ProvidersAwareTrait;
+
+use function Valkyrja\config;
 
 /**
  * Class Container.
  *
  * @author Melech Mizrachi
  */
-class Container implements ContainerContract
+class Container implements Contract
 {
-    use CacheableContainer;
+    use ProvidersAwareTrait;
+
+    /**
+     * The events.
+     *
+     * @var Events
+     */
+    protected Events $events;
+
+    /**
+     * The aliases.
+     *
+     * @var string[]
+     */
+    protected static array $aliases = [];
+
+    /**
+     * The context services.
+     *
+     * @var string[]
+     */
+    protected static array $contextServices = [];
+
+    /**
+     * The instances.
+     *
+     * @var array
+     */
+    protected static array $instances = [];
+
+    /**
+     * The services.
+     *
+     * @var Service[]
+     */
+    protected static array $services = [];
 
     /**
      * The singletons.
      *
-     * @var array
+     * @var string[]
      */
     protected static array $singletons = [];
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * The context class or function name.
+     *
+     * @var string|null
+     */
+    protected ?string $context = null;
+
+    /**
+     * The context method name.
+     *
+     * @var string|null
+     */
+    protected ?string $contextMethod = null;
+
+    /**
+     * Whether to run in debug.
+     *
+     * @var bool
+     */
+    protected bool $debug = false;
+
+    /**
      * Container constructor.
      *
-     * @param Application $application The application
+     * @param Events $events
+     * @param array  $config
+     * @param bool   $debug
      */
-    public function __construct(Application $application)
+    public function __construct(Events $events, array $config, bool $debug = false)
     {
-        $this->app = $application;
+        $this->events = $events;
+        $this->config = $config;
+        $this->debug  = $debug;
     }
 
     /**
-     * Set an alias to the container.
+     * Get a container with context.
      *
-     * @param string $alias     The alias
-     * @param string $serviceId The service to return
+     * @param string $context The context class or function name
+     * @param string $member  [optional] The context method name
      *
-     * @return void
+     * @return static
      */
-    public function setAlias(string $alias, string $serviceId): void
+    public function withContext(string $context, string $member = null): self
     {
-        self::$aliases[$alias] = $serviceId;
-    }
+        $contextContainer = clone $this;
 
-    /**
-     * Bind a service to the container.
-     *
-     * @param Service $service The service model
-     * @param bool    $verify  [optional] Whether to verify the service
-     *
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidServiceIdException
-     *
-     * @return void
-     */
-    public function bind(Service $service, bool $verify = true): void
-    {
-        // If there is no id
-        if (null === $service->getId()) {
-            // Throw a new exception
-            throw new InvalidServiceIdException('Invalid service id provided.');
-        }
+        $contextContainer->context       = $context;
+        $contextContainer->contextMethod = $member;
 
-        // If we should verify the dispatch
-        if ($verify) {
-            // Then verify it
-            $this->app->dispatcher()->verifyDispatch($service);
-        }
-
-        self::$services[$service->getId()] = $service;
-    }
-
-    /**
-     * Bind a context to the container.
-     *
-     * @param ServiceContext $serviceContext The context service
-     *
-     * @throws InvalidContextException
-     * @throws EndlessContextLoopException
-     * @throws InvalidServiceIdException
-     * @throws InvalidClosureException
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     *
-     * @return void
-     */
-    public function setContext(ServiceContext $serviceContext): void
-    {
-        $context        = $serviceContext->getClass() ?? $serviceContext->getFunction();
-        $member         = $serviceContext->getMethod() ?? $serviceContext->getProperty();
-        $contextContext = $serviceContext->getContextClass() ?? $serviceContext->getContextFunction();
-
-        // If the context index is null then there's no context
-        if (null === $context || null === $serviceContext->getId()) {
-            throw new InvalidContextException('Invalid context.');
-        }
-
-        // If the context is the same as the end service dispatch and the
-        // dispatch isn't static throw an error to disallow this kind of
-        // context as it will create an endless loop where the dispatcher
-        // will attempt to create the callable with the dependencies and the
-        // hasContext check in Container::get() will keep catching it
-        if ($context === $contextContext && ! $serviceContext->isStatic()) {
-            throw new EndlessContextLoopException(
-                'This kind of context will create'
-                . 'an endless loop where the dispatcher will attempt to create the '
-                . 'callable with the dependencies and the hasContext check in '
-                . 'Container::get() will keep catching it: '
-                . $this->contextServiceId(
-                    $serviceContext->getId(),
-                    $context,
-                    $member
-                )
-            );
-        }
-
-        $service = $this->getServiceFromContext($serviceContext, $context, $member);
-
-        $this->bind($service);
-    }
-
-    /**
-     * Bind a singleton to the container.
-     *
-     * @param string $serviceId The service
-     * @param mixed  $singleton The singleton
-     */
-    public function setSingleton(string $serviceId, $singleton): void
-    {
-        self::$singletons[$serviceId] = $singleton;
+        return $contextContainer;
     }
 
     /**
@@ -180,17 +151,88 @@ class Container implements ContainerContract
     /**
      * Check whether a given service has context.
      *
-     * @param string $serviceId The service
-     * @param string $context   The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
      *
      * @return bool
      */
     public function hasContext(string $serviceId, string $context, string $member = null): bool
     {
-        $contextIndex = $this->contextServiceId($serviceId, $context, $member);
+        $contextIndex = $this->getContextServiceId($serviceId, $context, $member);
 
-        return isset(self::$services[$contextIndex]);
+        return isset(self::$contextServices[$contextIndex]);
+    }
+
+    /**
+     * Bind a service to the container.
+     *
+     * @param string $serviceId The service id
+     * @param string $service   The service
+     *
+     * @return void
+     */
+    public function bind(string $serviceId, string $service): void
+    {
+        ClassHelpers::validateClass($service, Service::class);
+
+        self::$services[$serviceId] = $service;
+    }
+
+    /**
+     * Bind a singleton to the container.
+     *
+     * @param string $serviceId The service id
+     * @param string $singleton The singleton service
+     *
+     * @return void
+     */
+    public function bindSingleton(string $serviceId, string $singleton): void
+    {
+        self::$singletons[$serviceId] = $singleton;
+
+        $this->bind($singleton, $singleton);
+    }
+
+    /**
+     * Set an alias to the container.
+     *
+     * @param string $alias     The alias
+     * @param string $serviceId The service to return
+     *
+     * @return void
+     */
+    public function setAlias(string $alias, string $serviceId): void
+    {
+        self::$aliases[$alias] = $serviceId;
+    }
+
+    /**
+     * Bind a context to the container.
+     *
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
+     *
+     * @return void
+     */
+    public function setContext(string $serviceId, string $context, string $member = null): void
+    {
+        $contextIndex = $this->getContextServiceId($serviceId, $context, $member);
+
+        self::$contextServices[$contextIndex] = $serviceId;
+    }
+
+    /**
+     * Bind a singleton to the container.
+     *
+     * @param string $serviceId The service
+     * @param mixed  $singleton The singleton
+     */
+    public function setSingleton(string $serviceId, $singleton): void
+    {
+        self::$singletons[$serviceId] = $serviceId;
+        self::$instances[$serviceId]  = $singleton;
     }
 
     /**
@@ -222,16 +264,14 @@ class Container implements ContainerContract
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class name || function name
-     * @param string $member    [optional] The context member name
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
+    public function get(string $serviceId, array $arguments = [])
     {
-        $serviceId = null === $context
-            ? $serviceId
-            : $this->getServiceIdFromContext($serviceId, $context, $member);
+        if (null !== $this->context) {
+            $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        }
 
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
@@ -256,7 +296,7 @@ class Container implements ContainerContract
         }
 
         // Return a new object with the arguments
-        return new $serviceId(...($arguments ?? []));
+        return new $serviceId(...$arguments);
     }
 
     /**
@@ -267,23 +307,22 @@ class Container implements ContainerContract
      *
      * @return mixed
      */
-    public function makeService(string $serviceId, array $arguments = null)
+    public function makeService(string $serviceId, array $arguments = [])
     {
-        $service   = ServiceModel::fromArray(self::$services[$serviceId]);
-        $arguments = $service->getDefaults() ?? $arguments;
+        $service = self::$services[$serviceId];
 
         // Dispatch before make event
-        $this->app->events()->trigger(ServiceMake::class, [$serviceId, $service, $arguments]);
+        $this->events->trigger(BeforeServiceMade::class, [$serviceId, $service, $arguments]);
 
         // Make the object by dispatching the service
-        $made = $this->app->dispatcher()->dispatch($service, $arguments);
+        $made = $service::make($this, $arguments);
 
         // Dispatch after make event
-        $this->app->events()->trigger(ServiceMade::class, [$serviceId, $made]);
+        $this->events->trigger(AfterServiceMade::class, [$serviceId, $made]);
 
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->app->events()->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
+            $this->events->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
             $this->setSingleton($serviceId, $made);
         }
@@ -301,39 +340,24 @@ class Container implements ContainerContract
     public function getSingleton(string $serviceId)
     {
         // If the service isn't a singleton but is provided
-        if (! $this->isSingleton($serviceId) && $this->isProvided($serviceId)) {
+        if (! isset(self::$instances[$serviceId]) && $this->isProvided($serviceId)) {
             // Initialize the provided service
             $this->initializeProvided($serviceId);
         }
 
-        return self::$singletons[$serviceId];
-    }
-
-    /**
-     * Get a provided service from the container.
-     *
-     * @param string $serviceId The service
-     * @param array  $arguments [optional] The arguments
-     *
-     * @return mixed
-     */
-    public function getProvided(string $serviceId, array $arguments = null)
-    {
-        $this->initializeProvided($serviceId);
-
-        return $this->get($serviceId, $arguments);
+        return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
     }
 
     /**
      * Get the context service id.
      *
-     * @param string $serviceId The service
-     * @param string $context   [optional] The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context = null, string $member = null): string
+    public function getContextServiceId(string $serviceId, string $context = null, string $member = null): string
     {
         // service@class
         // service@method
@@ -379,7 +403,7 @@ class Container implements ContainerContract
      */
     public function offsetUnset($serviceId): void
     {
-        unset(self::$singletons[$serviceId]);
+        unset(self::$instances[$serviceId]);
     }
 
     /**
@@ -392,64 +416,5 @@ class Container implements ContainerContract
     public function offsetGet($serviceId)
     {
         return $this->getSingleton($serviceId);
-    }
-
-    /**
-     * Get a service model from a context model.
-     *
-     * @param ServiceContext $serviceContext The service context
-     * @param string         $context        [optional] The context class or function
-     * @param string         $member         [optional] The member
-     *
-     * @return Service
-     */
-    protected function getServiceFromContext(
-        ServiceContext $serviceContext,
-        string $context = null,
-        string $member = null
-    ): Service {
-        // If the context index is null then there's no context
-        if (null === $serviceContext->getId()) {
-            throw new InvalidContextException('Invalid context.');
-        }
-
-        $service   = new ServiceModel();
-        $serviceId = $this->contextServiceId($serviceContext->getId(), $context, $member);
-
-        $service
-            ->setId($serviceId)
-            ->setSingleton($serviceContext->isSingleton())
-            ->setDefaults($serviceContext->getDefaults())
-            ->setName($serviceContext->getName())
-            ->setClass($serviceContext->getContextClass())
-            ->setProperty($serviceContext->getContextProperty())
-            ->setMethod($serviceContext->getContextMethod())
-            ->setFunction($serviceContext->getContextFunction())
-            ->setClosure($serviceContext->getContextClosure())
-            ->setArguments($serviceContext->getArguments())
-            ->setDependencies($serviceContext->getDependencies())
-            ->setStatic($serviceContext->isStatic());
-
-        return $service;
-    }
-
-    /**
-     * Get a service id from context.
-     *
-     * @param string $serviceId The service
-     * @param string $context   [optional] The context class name || function name
-     * @param string $member    [optional] The context member name
-     *
-     * @return string
-     */
-    protected function getServiceIdFromContext(string $serviceId, string $context, string $member = null): string
-    {
-        if ($this->hasContext($serviceId, $context, $member)) {
-            $serviceId = $this->contextServiceId($serviceId, $context, $member);
-        } elseif ($this->hasContext($serviceId, $context)) {
-            $serviceId = $this->contextServiceId($serviceId, $context);
-        }
-
-        return $serviceId;
     }
 }

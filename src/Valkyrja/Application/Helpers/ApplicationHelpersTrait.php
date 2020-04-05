@@ -101,7 +101,7 @@ trait ApplicationHelpersTrait
         int $code = 0,
         Response $response = null
     ): void {
-        throw new self::$config->app->httpException(
+        throw new self::$config['routing']['httpException'](
             $statusCode,
             $message,
             null,

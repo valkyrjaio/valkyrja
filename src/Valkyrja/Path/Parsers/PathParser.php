@@ -15,10 +15,9 @@ namespace Valkyrja\Path\Parsers;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\Path;
-use Valkyrja\Path\PathParser as ParserContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Container;
+use Valkyrja\Path\PathParser as Contract;
+use Valkyrja\Container\Support\Provides;
 
 use function explode;
 use function is_array;
@@ -33,7 +32,7 @@ use function substr_count;
  *
  * @author Melech Mizrachi
  */
-class PathParser implements ParserContract
+class PathParser implements Contract
 {
     use Provides;
 
@@ -54,18 +53,18 @@ REGEX;
     /**
      * The path config.
      *
-     * @var Path|array
+     * @var array
      */
-    protected $config;
+    protected array $config;
 
     /**
      * PathParser constructor.
      *
-     * @param Application $app
+     * @param array $config
      */
-    public function __construct(Application $app)
+    public function __construct(array $config)
     {
-        $this->config = $app->config()['path'];
+        $this->config = $config;
     }
 
     /**
@@ -76,20 +75,27 @@ REGEX;
     public static function provides(): array
     {
         return [
-            ParserContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(ParserContract::class, new static($app));
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                (array) $config['path']
+            )
+        );
     }
 
     /**

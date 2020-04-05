@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Facades;
 
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Service;
-use Valkyrja\Container\ServiceContext;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -23,19 +21,19 @@ use Valkyrja\Facade\Facades\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static void setAlias(string $alias, string $serviceId)
- * @method static void bind(Service $service, bool $verify = true)
- * @method static void setContext(ServiceContext $serviceContext)
- * @method static void setSingleton(string $serviceId, $singleton)
  * @method static bool has(string $serviceId)
  * @method static bool hasContext(string $serviceId, string $context, string $member = null)
+ * @method static void bind(string $serviceId, string $service)
+ * @method static void bindSingleton(string $serviceId, string $singleton)
+ * @method static void setAlias(string $alias, string $serviceId)
+ * @method static void setContext(string $serviceId, string $context, string $member = null)
+ * @method static void setSingleton(string $serviceId, $singleton)
  * @method static bool isAlias(string $serviceId)
  * @method static bool isSingleton(string $serviceId)
  * @method static bool isProvided(string $serviceId)
- * @method static mixed get(string $serviceId, array $arguments = null, string $context = null, string $member = null)
- * @method static mixed makeService(string $serviceId, array $arguments = null)
+ * @method static mixed get(string $serviceId, array $arguments = [])
+ * @method static mixed makeService(string $serviceId, array $arguments = [])
  * @method static mixed getSingleton(string $serviceId)
- * @method static mixed getProvided(string $serviceId, array $arguments = null, string $context = null, string $member = null)
  * @method static string contextServiceId(string $serviceId, string $context, string $member = null)
  */
 class Container extends Facade

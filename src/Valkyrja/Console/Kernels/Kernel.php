@@ -14,16 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Kernels;
 
 use Throwable;
-use Valkyrja\Application\Application;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Events\ConsoleKernelHandled;
 use Valkyrja\Console\Events\ConsoleKernelTerminate;
 use Valkyrja\Console\Input;
-use Valkyrja\Console\Kernel as KernelContract;
+use Valkyrja\Console\Kernel as Contract;
 use Valkyrja\Console\Output;
+use Valkyrja\Container\Container;
+use Valkyrja\Event\Events;
 use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Log\Logger;
+use Valkyrja\Container\Support\Provides;
 
 use function Valkyrja\dd;
 
@@ -32,16 +34,9 @@ use function Valkyrja\dd;
  *
  * @author Melech Mizrachi
  */
-class Kernel implements KernelContract
+class Kernel implements Contract
 {
     use Provides;
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
 
     /**
      * The console.
@@ -51,15 +46,31 @@ class Kernel implements KernelContract
     protected Console $console;
 
     /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The events manager.
+     *
+     * @var Events
+     */
+    protected Events $events;
+
+    /**
      * Kernel constructor.
      *
-     * @param Application $application The application
-     * @param Console     $console     The console
+     * @param Console   $console   The console
+     * @param Container $container The container
+     * @param Events    $events    The events manager
      */
-    public function __construct(Application $application, Console $console)
+    public function __construct(Console $console, Container $container, Events $events)
     {
-        $this->app     = $application;
-        $this->console = $console;
+        $this->console   = $console;
+        $this->container = $container;
+        $this->events    = $events;
     }
 
     /**
@@ -70,24 +81,25 @@ class Kernel implements KernelContract
     public static function provides(): array
     {
         return [
-            KernelContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            KernelContract::class,
+        $container->setSingleton(
+            Contract::class,
             new static(
-                $app,
-                $app->console()
+                $container->getSingleton(Console::class),
+                $container,
+                $container->getSingleton(Events::class)
             )
         );
     }
@@ -112,12 +124,12 @@ class Kernel implements KernelContract
             dd($exception);
 
             // Log the error
-            $this->app->logger()->error((string) $exception);
+            $this->logException($exception);
 
             $exitCode = ExitCode::FAILURE;
         }
 
-        $this->app->events()->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);
+        $this->events->trigger(ConsoleKernelHandled::class, [new ConsoleKernelHandled($input, $exitCode)]);
 
         return $exitCode;
     }
@@ -132,7 +144,7 @@ class Kernel implements KernelContract
      */
     public function terminate(Input $input, int $exitCode): void
     {
-        $this->app->events()->trigger(ConsoleKernelTerminate::class, [new ConsoleKernelTerminate($input, $exitCode)]);
+        $this->events->trigger(ConsoleKernelTerminate::class, [new ConsoleKernelTerminate($input, $exitCode)]);
     }
 
     /**
@@ -147,16 +159,14 @@ class Kernel implements KernelContract
      */
     public function run(Input $input = null, Output $output = null): int
     {
-        $container = $this->app->container();
-
-        $container->setSingleton(
+        $this->container->setSingleton(
             Input::class,
-            $input ?? $input = $container->get(Input::class)
+            $input ?? $input = $this->container->getSingleton(Input::class)
         );
 
-        $container->setSingleton(
+        $this->container->setSingleton(
             Output::class,
-            $output ?? $output = $container->get(Output::class)
+            $output ?? $output = $this->container->getSingleton(Output::class)
         );
 
         // Handle the request and get the response
@@ -166,5 +176,20 @@ class Kernel implements KernelContract
         $this->terminate($input, $exitCode);
 
         return $exitCode;
+    }
+
+    /**
+     * Log an error.
+     *
+     * @param Throwable $exception
+     *
+     * @return void
+     */
+    protected function logException(Throwable $exception): void
+    {
+        /** @var Logger $logger */
+        $logger = $this->container->getSingleton(Logger::class);
+
+        $logger->error((string) $exception);
     }
 }

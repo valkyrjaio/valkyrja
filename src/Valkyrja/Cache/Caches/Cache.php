@@ -15,11 +15,11 @@ namespace Valkyrja\Cache\Caches;
 
 use InvalidArgumentException;
 use Predis\Client;
-use Valkyrja\Application\Application;
-use Valkyrja\Cache\Cache as CacheContract;
+use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Stores\RedisStore;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 use function method_exists;
 use function ucfirst;
@@ -29,16 +29,16 @@ use function ucfirst;
  *
  * @author Melech Mizrachi
  */
-class Cache implements CacheContract
+class Cache implements Contract
 {
     use Provides;
 
     /**
-     * The application.
+     * The config.
      *
-     * @var Application
+     * @var array
      */
-    protected Application $app;
+    protected array $config;
 
     /**
      * The default store.
@@ -55,14 +55,14 @@ class Cache implements CacheContract
     protected array $stores = [];
 
     /**
-     * NativeCache constructor.
+     * Cache constructor.
      *
-     * @param Application $app
+     * @param array $config
      */
-    public function __construct(Application $app)
+    public function __construct(array $config)
     {
-        $this->app          = $app;
-        $this->defaultStore = $this->app->config()['cache']['default'];
+        $this->config       = $config;
+        $this->defaultStore = $config['default'];
     }
 
     /**
@@ -73,22 +73,26 @@ class Cache implements CacheContract
     public static function provides(): array
     {
         return [
-            CacheContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            CacheContract::class,
-            new static($app)
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                (array) $config['cache']
+            )
         );
     }
 
@@ -125,7 +129,7 @@ class Cache implements CacheContract
      */
     protected function getStoreConfig(string $name): array
     {
-        $config = $this->app->config()['cache']['stores'][$name] ?? null;
+        $config = $this->config['stores'][$name] ?? null;
 
         if (null === $config) {
             throw new InvalidArgumentException('Invalid store name specified: ' . $name);

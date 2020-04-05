@@ -15,9 +15,9 @@ namespace Valkyrja\Mail\Mailers;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Mail\Mail;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class PHPMailerMail.
@@ -29,13 +29,6 @@ class PHPMailerMail implements Mail
     use Provides;
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The PHP Mailer.
      *
      * @var PHPMailer
@@ -45,12 +38,10 @@ class PHPMailerMail implements Mail
     /**
      * NativeMail constructor.
      *
-     * @param Application $app
-     * @param PHPMailer   $phpMailer
+     * @param PHPMailer $phpMailer
      */
-    public function __construct(Application $app, PHPMailer $phpMailer)
+    public function __construct(PHPMailer $phpMailer)
     {
-        $this->app       = $app;
         $this->phpMailer = $phpMailer;
     }
 
@@ -69,37 +60,40 @@ class PHPMailerMail implements Mail
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $config = $app->config()['mail'];
+        $config     = $container->getSingleton('config');
+        $mailConfig = $config['mail'];
 
         // Create a new instance of the PHPMailer class
         $PHPMailer = new PHPMailer(true);
 
         // Enable verbose debug output
-        $PHPMailer->SMTPDebug = $app->debug() ? 2 : 0;
+        $PHPMailer->SMTPDebug = $config['app']['debug'] ? 2 : 0;
         // Set mailer to use SMTP
         $PHPMailer->isSMTP();
         // Specify main and backup SMTP servers
-        $PHPMailer->Host = $config['host'];
+        $PHPMailer->Host = $mailConfig['host'];
         // SMTP Port
-        $PHPMailer->Port = $config['port'];
+        $PHPMailer->Port = $mailConfig['port'];
         // Enable SMTP authentication
         $PHPMailer->SMTPAuth = true;
         // SMTP username
-        $PHPMailer->Username = $config['username'];
+        $PHPMailer->Username = $mailConfig['username'];
         // SMTP password
-        $PHPMailer->Password = $config['password'];
+        $PHPMailer->Password = $mailConfig['password'];
         // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $config['encryption'];
+        $PHPMailer->SMTPSecure = $mailConfig['encryption'];
 
-        $app->container()->setSingleton(
+        $container->setSingleton(
             Mail::class,
-            new static($app, $PHPMailer)
+            new static(
+                $PHPMailer
+            )
         );
     }
 

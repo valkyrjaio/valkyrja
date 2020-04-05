@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Path\Generators;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
-use Valkyrja\Path\PathGenerator as GeneratorContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Container;
+use Valkyrja\Path\PathGenerator as Contract;
+use Valkyrja\Container\Support\Provides;
 
 use function implode;
 use function is_array;
@@ -29,7 +29,7 @@ use function strpos;
  *
  * @author Melech Mizrachi
  */
-class PathGenerator implements GeneratorContract
+class PathGenerator implements Contract
 {
     use Provides;
 
@@ -41,20 +41,23 @@ class PathGenerator implements GeneratorContract
     public static function provides(): array
     {
         return [
-            GeneratorContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(GeneratorContract::class, new static());
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 
     /**

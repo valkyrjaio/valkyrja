@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Service;
 
-use Valkyrja\Annotation\Annotation;
-use Valkyrja\Container\ServiceContext;
+use Valkyrja\Container\Annotation\Service;
 
 /**
  * Interface Context.
  *
  * @author Melech Mizrachi
  */
-interface Context extends Annotation, ServiceContext
+interface Context extends Service
 {
 }

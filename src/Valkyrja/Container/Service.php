@@ -13,44 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container;
 
-use Valkyrja\Dispatcher\Dispatch;
-
 /**
  * Interface Service.
  *
  * @author Melech Mizrachi
  */
-interface Service extends Dispatch
+interface Service
 {
     /**
-     * Get whether this is a singleton.
+     * Make a new instance of this service.
      *
-     * @return bool
-     */
-    public function isSingleton(): bool;
-
-    /**
-     * Set whether this is a singleton.
-     *
-     * @param bool $singleton Whether this is a singleton
+     * @param Container $container The container
+     * @param array     $arguments [optional] The arguments
      *
      * @return static
      */
-    public function setSingleton(bool $singleton = true): self;
-
-    /**
-     * Get defaults.
-     *
-     * @return array|null
-     */
-    public function getDefaults(): ?array;
-
-    /**
-     * Set defaults.
-     *
-     * @param array $defaults The defaults.
-     *
-     * @return static
-     */
-    public function setDefaults(array $defaults = null): self;
+    public static function make(Container $container, array $arguments = []): self;
 }

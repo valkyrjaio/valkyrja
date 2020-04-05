@@ -16,13 +16,12 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Container\Models\Service;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Dispatcher\Models\Dispatch;
 
 use function count;
 use function microtime;
@@ -486,10 +485,7 @@ class DispatcherTest extends TestCase
     public function testDispatchCallableWithArgsInDispatch(): void
     {
         $dispatch = new Dispatch();
-        $service  = (new Service())
-            ->setId(static::class);
-        $dispatch = (new Dispatch())
-            ->setArguments(['test', $dispatch, $service]);
+        $dispatch = (new Dispatch())->setArguments(['test', $dispatch]);
 
         $this->assertEquals(null, $this->class->dispatch($dispatch));
     }

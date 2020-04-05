@@ -438,7 +438,7 @@ class Valkyrja implements Application
         // Set the events to a new instance of the events implementation
         self::$events = new $eventsImpl($this);
         // Set the container to a new instance of the container implementation
-        self::$container = new $containerImpl($this);
+        self::$container = new $containerImpl(self::$events, (array) self::$config['container'], $this->debug());
         // Set the dispatcher to a new instance of the dispatcher implementation
         self::$dispatcher = new $dispatcherImpl($this);
     }
@@ -476,10 +476,6 @@ class Valkyrja implements Application
      */
     protected function bootstrapSetup(): void
     {
-        // Setup the container
-        // NOTE: Not done in container construct to avoid container()
-        // helper returning null self::$container
-        self::$container->setup();
         // Setup the events
         // NOTE: Not done in events construct to avoid container dependency
         // not existing within setup (for ListenerAnnotations)

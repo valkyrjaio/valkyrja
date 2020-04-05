@@ -21,22 +21,6 @@ namespace Valkyrja\Annotation;
 interface Annotator
 {
     /**
-     * Get the filterer.
-     *
-     * @return Filter
-     */
-    public function getFilter(): Filter;
-
-    /**
-     * Set the filterer.
-     *
-     * @param Filter $filter The filter
-     *
-     * @return void
-     */
-    public function setFilter(Filter $filter): void;
-
-    /**
      * Get the parser.
      *
      * @return Parser

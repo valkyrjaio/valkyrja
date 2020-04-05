@@ -11,18 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Models;
+namespace Valkyrja\Container\Events;
 
-use Valkyrja\Container\Service as ServiceContract;
-use Valkyrja\Dispatcher\Models\Dispatchable;
+use Valkyrja\Event\Event;
 
 /**
- * Class Service.
+ * Class ServiceMake.
  *
  * @author Melech Mizrachi
  */
-class Service implements ServiceContract
+class BeforeServiceMade implements Event
 {
-    use Dispatchable;
-    use Serviceable;
 }

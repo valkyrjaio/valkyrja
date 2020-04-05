@@ -15,24 +15,38 @@ namespace Valkyrja\Container\Annotation\Annotators;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Application\Application;
-use Valkyrja\Container\Annotation\ContainerAnnotator as ContainerAnnotatorContract;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Container\Annotation\ContainerAnnotator as Contract;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
-use Valkyrja\Container\Models\Service as ServiceModel;
-use Valkyrja\Container\Models\ServiceContext as ContextServiceModel;
-use Valkyrja\Container\Service as ServiceContract;
-use Valkyrja\Container\ServiceContext as ContextServiceContract;
+use Valkyrja\Container\Container;
+use Valkyrja\Reflection\Reflector;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class ContainerAnnotator.
  *
  * @author Melech Mizrachi
  */
-class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
+class ContainerAnnotator implements Contract
 {
+    use Provides;
+
+    /**
+     * The filter.
+     *
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
+     * The reflector.
+     *
+     * @var Reflector
+     */
+    protected Reflector $reflector;
+
     /**
      * The services annotation type.
      *
@@ -55,6 +69,18 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     protected string $contextServicesAnnotationType = 'ServiceContext';
 
     /**
+     * ContainerAnnotator constructor.
+     *
+     * @param Filter    $filter
+     * @param Reflector $reflector
+     */
+    public function __construct(Filter $filter, Reflector $reflector)
+    {
+        $this->filter    = $filter;
+        $this->reflector = $reflector;
+    }
+
+    /**
      * The items provided by this provider.
      *
      * @return array
@@ -62,22 +88,25 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     public static function provides(): array
     {
         return [
-            ContainerAnnotatorContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            ContainerAnnotatorContract::class,
-            new static($app, $app->reflector())
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Filter::class),
+                $container->getSingleton(Reflector::class)
+            )
         );
     }
 
@@ -126,7 +155,7 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
     /**
      * Get all annotations for a class and its members by type.
      *
-     * @param string $type The type
+     * @param string $type       The type
      * @param string ...$classes The classes
      *
      * @throws ReflectionException
@@ -141,24 +170,8 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Annotation $annotation */
-            foreach ($this->getFilter()->classAndMembersAnnotationsByType($type, $class) as $annotation) {
+            foreach ($this->filter->classAndMembersAnnotationsByType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
-
-                // If this annotation is a service
-                if ($type === $this->servicesAnnotationType) {
-                    /* @var Service $annotation */
-                    $annotations[] = $this->getServiceFromAnnotation($annotation);
-
-                    continue;
-                }
-
-                // If this annotation is a context service
-                if ($type === $this->contextServicesAnnotationType) {
-                    /* @var Context $annotation */
-                    $annotations[] = $this->getServiceContextFromAnnotation($annotation);
-
-                    continue;
-                }
 
                 // Set the annotation in the annotations list
                 $annotations[] = $annotation;
@@ -190,29 +203,5 @@ class ContainerAnnotator extends Annotator implements ContainerAnnotatorContract
         }
 
         $annotation->setMatches();
-    }
-
-    /**
-     * Get a service from a service annotation.
-     *
-     * @param Service $service The service annotation
-     *
-     * @return ServiceContract
-     */
-    protected function getServiceFromAnnotation(Service $service): ServiceContract
-    {
-        return ServiceModel::fromArray($service->asArray());
-    }
-
-    /**
-     * Get a service context from a service context annotation.
-     *
-     * @param Context $service The service context annotation
-     *
-     * @return ContextServiceContract
-     */
-    protected function getServiceContextFromAnnotation(Context $service): ContextServiceContract
-    {
-        return ContextServiceModel::fromArray($service->asArray());
     }
 }

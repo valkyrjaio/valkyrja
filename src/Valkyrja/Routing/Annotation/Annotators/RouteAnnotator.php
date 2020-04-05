@@ -15,14 +15,17 @@ namespace Valkyrja\Routing\Annotation\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Application\Application;
+use Valkyrja\Annotation\Annotator;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Container\Container;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Enums\Annotation;
 use Valkyrja\Routing\Annotation\Route;
-use Valkyrja\Routing\Annotation\RouteAnnotator as RouteAnnotatorContract;
+use Valkyrja\Routing\Annotation\RouteAnnotator as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route as RouteContract;
+use Valkyrja\Container\Support\Provides;
 
 use function array_merge;
 use function trim;
@@ -32,8 +35,45 @@ use function trim;
  *
  * @author Melech Mizrachi
  */
-class RouteAnnotator extends Annotator implements RouteAnnotatorContract
+class RouteAnnotator implements Contract
 {
+    use Provides;
+
+    /**
+     * The annotator.
+     *
+     * @var Annotator
+     */
+    protected Annotator $annotator;
+
+    /**
+     * The filter.
+     *
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
+     * The reflector.
+     *
+     * @var Reflector
+     */
+    protected Reflector $reflector;
+
+    /**
+     * ContainerAnnotator constructor.
+     *
+     * @param Annotator $annotator
+     * @param Filter    $filter
+     * @param Reflector $reflector
+     */
+    public function __construct(Annotator $annotator, Filter $filter, Reflector $reflector)
+    {
+        $this->annotator = $annotator;
+        $this->filter    = $filter;
+        $this->reflector = $reflector;
+    }
+
     /**
      * The items provided by this provider.
      *
@@ -42,22 +82,26 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
     public static function provides(): array
     {
         return [
-            RouteAnnotatorContract::class,
+            Contract::class,
         ];
     }
 
     /**
-     * Bind the route annotations.
+     * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            RouteAnnotatorContract::class,
-            new static($app, $app->reflector())
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Annotator::class),
+                $container->getSingleton(Filter::class),
+                $container->getSingleton(Reflector::class)
+            )
         );
     }
 
@@ -187,7 +231,7 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
     {
         return $this->filter->filterAnnotationsByTypes(
             Annotation::getValidValues(),
-            ...$this->classAnnotations($class)
+            ...$this->annotator->classAnnotations($class)
         );
     }
 
@@ -297,9 +341,9 @@ class RouteAnnotator extends Annotator implements RouteAnnotatorContract
      */
     protected function getClassMemberAnnotations(string $class): array
     {
-        return $this->getFilter()->filterAnnotationsByTypes(
+        return $this->filter->filterAnnotationsByTypes(
             Annotation::getValidValues(),
-            ...$this->classMembersAnnotations($class)
+            ...$this->annotator->classMembersAnnotations($class)
         );
     }
 }

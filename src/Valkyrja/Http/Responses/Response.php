@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\Header;
 use Valkyrja\Http\Enums\StatusCode;
@@ -22,10 +22,10 @@ use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Messages\MessageTrait;
-use Valkyrja\Http\Response as ResponseContract;
+use Valkyrja\Http\Response as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function sprintf;
 
@@ -43,7 +43,7 @@ use function sprintf;
  *
  * @author Melech Mizrachi
  */
-class Response implements ResponseContract
+class Response implements Contract
 {
     use MessageTrait;
     use Provides;
@@ -76,6 +76,33 @@ class Response implements ResponseContract
     public function __construct(Stream $body = null, int $statusCode = null, array $headers = null)
     {
         $this->initialize($body, $statusCode, $headers);
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publish(Container $container): void
+    {
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 
     /**
@@ -317,31 +344,5 @@ class Response implements ResponseContract
         $this->sendBody();
 
         return $this;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            ResponseContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->setSingleton(ResponseContract::class, new static());
     }
 }

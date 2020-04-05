@@ -13,18 +13,68 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Support;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Console\Console;
 use Valkyrja\Console\Models\Command;
-use Valkyrja\Support\Providers\Provides;
 
 /**
- * Trait ProvidesCommand.
+ * Trait Provides.
  *
  * @author Melech Mizrachi
  */
-trait ProvidesCommand
+trait Provides
 {
-    use Provides;
+    /**
+     * Whether this provider is deferred.
+     *
+     * @return bool
+     */
+    public static function deferred(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the provided command.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            static::getPath(),
+        ];
+    }
+
+    /**
+     * Publish the command.
+     *
+     * @param Console $console The application
+     *
+     * @return void
+     */
+    public static function publish(Console $console): void
+    {
+        $console->addCommand(
+            (new Command())
+                ->setPath(static::getPath())
+                ->setName(static::getCommand())
+                ->setDescription(static::getShortDescription())
+                ->setClass(static::class)
+                ->setMethod('run')
+        );
+    }
+
+    /**
+     * Get the command names.
+     *
+     * @return array
+     */
+    public static function commands(): array
+    {
+        return [
+            static::getCommand(),
+        ];
+    }
 
     /**
      * Get the command.
@@ -53,47 +103,4 @@ trait ProvidesCommand
      * @return int
      */
     abstract public function run(): int;
-
-    /**
-     * Get the provided command.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            static::getPath(),
-        ];
-    }
-
-    /**
-     * Publish the command.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->console()->addCommand(
-            (new Command())
-                ->setPath(static::getPath())
-                ->setName(static::getCommand())
-                ->setDescription(static::getShortDescription())
-                ->setClass(static::class)
-                ->setMethod('run')
-        );
-    }
-
-    /**
-     * Get the command names.
-     *
-     * @return array
-     */
-    public static function commands(): array
-    {
-        return [
-            static::getCommand(),
-        ];
-    }
 }

@@ -19,7 +19,7 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Inputs\Option;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Commands\ContainerCache;
 use Valkyrja\Event\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCache;
@@ -38,7 +38,7 @@ use function Valkyrja\app;
  */
 class CacheAll extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

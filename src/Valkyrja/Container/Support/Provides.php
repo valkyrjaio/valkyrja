@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Container\Support;
+
+use Valkyrja\Container\Container;
+
+/**
+ * Trait Provides.
+ *
+ * @author Melech Mizrachi
+ */
+trait Provides
+{
+    /**
+     * Whether this provider is deferred.
+     *
+     * @return bool
+     */
+    public static function deferred(): bool
+    {
+        return true;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    abstract public static function provides(): array;
+
+    /**
+     * Publish the provider.
+     *
+     * @param Container $container
+     *
+     * @return void
+     */
+    abstract public static function publish(Container $container): void;
+}

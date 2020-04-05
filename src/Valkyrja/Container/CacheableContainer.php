@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Events;
+namespace Valkyrja\Container;
 
-use Valkyrja\Event\Event;
+use Valkyrja\Support\Cacheable;
 
 /**
- * Class ServiceMade.
+ * Interface CacheableContainer.
  *
  * @author Melech Mizrachi
  */
-class ServiceMade implements Event
+interface CacheableContainer extends Cacheable, Container
 {
 }

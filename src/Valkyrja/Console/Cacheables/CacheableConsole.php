@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Cacheables;
 
 use ReflectionException;
-use Valkyrja\Application\Application;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Config as ConsoleConfig;
+use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -47,34 +47,34 @@ trait CacheableConsole
      * @var Command[]
      */
     protected static array $commands = [];
+
     /**
      * The command paths.
      *
      * @var string[]
      */
     protected static array $paths = [];
+
     /**
      * The commands by name.
      *
      * @var string[]
      */
     protected static array $namedCommands = [];
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
 
     /**
-     * Get the application.
+     * The container.
      *
-     * @return Application
+     * @var Container
      */
-    protected function getApplication(): Application
-    {
-        return $this->app;
-    }
+    protected Container $container;
+
+    /**
+     * Whether to run in debug or not.
+     *
+     * @var bool
+     */
+    protected bool $debug = false;
 
     /**
      * Get the config.
@@ -83,7 +83,7 @@ trait CacheableConsole
      */
     protected function getConfig()
     {
-        return $this->app->config()['console'];
+        return $this->config;
     }
 
     /**
@@ -139,7 +139,7 @@ trait CacheableConsole
     protected function setupAnnotations($config): void
     {
         /** @var CommandAnnotator $commandAnnotations */
-        $commandAnnotations = $this->app->container()->getSingleton(CommandAnnotator::class);
+        $commandAnnotations = $this->container->getSingleton(CommandAnnotator::class);
 
         // Get all the annotated commands from the list of handlers
         // Iterate through the commands
@@ -182,7 +182,7 @@ trait CacheableConsole
         }
 
         // If this is not a dev environment
-        if (! $this->app->debug()) {
+        if (! $this->debug) {
             return;
         }
 

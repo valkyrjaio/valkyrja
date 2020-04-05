@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
-use InvalidArgumentException;
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Service;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as DispatcherContract;
 use Valkyrja\Dispatcher\Enums\Constant;
@@ -147,8 +145,6 @@ class Dispatcher implements DispatcherContract
     {
         // Get either the arguments passed or from the dispatch model
         $arguments = $arguments ?? $dispatch->getArguments();
-        $context   = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member    = $dispatch->getProperty() ?? $dispatch->getMethod();
 
         // Set the listener arguments to a new blank array
         $dependencies = $this->getDependencies($dispatch);
@@ -162,7 +158,7 @@ class Dispatcher implements DispatcherContract
         // Iterate through the arguments
         foreach ($arguments as $argument) {
             // Append the argument to the arguments list
-            $dependencies[] = $this->getArgumentValue($argument, $context, $member);
+            $dependencies[] = $this->getArgumentValue($argument);
         }
 
         return $dependencies;
@@ -178,20 +174,15 @@ class Dispatcher implements DispatcherContract
     protected function getDependencies(Dispatch $dispatch): ?array
     {
         $dependencies = [];
-        $context      = $dispatch->getClass() ?? $dispatch->getFunction();
-        $member       = $dispatch->getMethod();
+        // $context      = $dispatch->getClass() ?? $dispatch->getFunction();
+        // $member       = $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
                 // Set the dependency in the list
-                $dependencies[] = $this->container->get(
-                    $dependency,
-                    null,
-                    $context,
-                    $member
-                );
+                $dependencies[] = $this->container->get($dependency, []);
             }
         }
 
@@ -201,29 +192,13 @@ class Dispatcher implements DispatcherContract
     /**
      * Get argument value.
      *
-     * @param mixed       $argument The argument
-     * @param string|null $context  [optional] The context
-     * @param string|null $member   [optional] The context member
+     * @param mixed $argument The argument
      *
      * @return mixed
      */
-    protected function getArgumentValue($argument, string $context = null, string $member = null)
+    protected function getArgumentValue($argument)
     {
-        // If the argument is a service
-        if ($argument instanceof Service) {
-            if (null === $argument->getId()) {
-                throw new InvalidArgumentException('Invalid argument.');
-            }
-
-            // Dispatch the argument and set the results to the argument
-            $argument = $this->container->get(
-                $argument->getId(),
-                null,
-                $context,
-                $member
-            );
-        } // If the argument is a dispatch
-        elseif ($argument instanceof Dispatch) {
+        if ($argument instanceof Dispatch) {
             // Dispatch the argument and set the results to the argument
             $argument = $this->dispatch($argument);
         }

@@ -15,32 +15,65 @@ namespace Valkyrja\Annotation\Filters;
 
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator;
-use Valkyrja\Annotation\Filter as AnnotationsFilterContract;
+use Valkyrja\Annotation\Filter as Contract;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 use function in_array;
 
 /**
- * Class AnnotationsFilter.
+ * Class Filter.
  *
  * @author Melech Mizrachi
  */
-class Filter implements AnnotationsFilterContract
+class Filter implements Contract
 {
+    use Provides;
+
     /**
      * The annotations.
      *
      * @var Annotator
      */
-    protected Annotator $annotations;
+    protected Annotator $annotator;
 
     /**
-     * AnnotationsFilter constructor.
+     * Filter constructor.
      *
-     * @param Annotator $annotations
+     * @param Annotator $annotator
      */
-    public function __construct(Annotator $annotations)
+    public function __construct(Annotator $annotator)
     {
-        $this->annotations = $annotations;
+        $this->annotator = $annotator;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publish(Container $container): void
+    {
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Annotator::class)
+            )
+        );
     }
 
     /**
@@ -53,7 +86,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function classAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->classAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->classAnnotations($class));
     }
 
     /**
@@ -66,7 +99,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function classMembersAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->classMembersAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->classMembersAnnotations($class));
     }
 
     /**
@@ -79,7 +112,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function classAndMembersAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->classAndMembersAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->classAndMembersAnnotations($class));
     }
 
     /**
@@ -93,7 +126,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function propertyAnnotationsByType(string $type, string $class, string $property): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->propertyAnnotations($class, $property));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->propertyAnnotations($class, $property));
     }
 
     /**
@@ -106,7 +139,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function propertiesAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->propertiesAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->propertiesAnnotations($class));
     }
 
     /**
@@ -120,7 +153,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function methodAnnotationsByType(string $type, string $class, string $method): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->methodAnnotations($class, $method));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->methodAnnotations($class, $method));
     }
 
     /**
@@ -133,7 +166,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function methodsAnnotationsByType(string $type, string $class): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->methodsAnnotations($class));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->methodsAnnotations($class));
     }
 
     /**
@@ -146,7 +179,7 @@ class Filter implements AnnotationsFilterContract
      */
     public function functionAnnotationsByType(string $type, string $function): array
     {
-        return $this->filterAnnotationsByType($type, ...$this->annotations->functionAnnotations($function));
+        return $this->filterAnnotationsByType($type, ...$this->annotator->functionAnnotations($function));
     }
 
     /**

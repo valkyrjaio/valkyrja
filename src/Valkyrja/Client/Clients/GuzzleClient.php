@@ -17,16 +17,16 @@ use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Application\Application;
-use Valkyrja\Client\Client as ClientContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Client\Client as Contract;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class GuzzleClient.
  *
  * @author Melech Mizrachi
  */
-class GuzzleClient implements ClientContract
+class GuzzleClient implements Contract
 {
     use Provides;
 
@@ -55,21 +55,21 @@ class GuzzleClient implements ClientContract
     public static function provides(): array
     {
         return [
-            ClientContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            ClientContract::class,
+        $container->setSingleton(
+            Contract::class,
             new static(new Guzzle())
         );
     }

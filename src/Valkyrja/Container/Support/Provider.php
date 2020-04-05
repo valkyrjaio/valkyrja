@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Support;
+namespace Valkyrja\Container\Support;
 
 /**
- * Abstract Class CommandProvider.
+ * Abstract Class Provider.
  *
  * @author Melech Mizrachi
  */
-abstract class CommandProvider
+abstract class Provider
 {
-    use ProvidesCommand;
+    use Provides;
 }

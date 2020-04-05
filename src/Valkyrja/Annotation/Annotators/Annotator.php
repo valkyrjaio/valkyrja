@@ -15,15 +15,12 @@ namespace Valkyrja\Annotation\Annotators;
 
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Annotator as AnnotationsContract;
+use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Enums\Property;
-use Valkyrja\Annotation\Filter;
-use Valkyrja\Annotation\Filters\Filter as AnnotationsFilter;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Annotation\Parsers\Parser as AnnotationsParser;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function array_merge;
 
@@ -32,7 +29,7 @@ use function array_merge;
  *
  * @author Melech Mizrachi
  */
-class Annotator implements AnnotationsContract
+class Annotator implements Contract
 {
     use Provides;
 
@@ -63,13 +60,6 @@ class Annotator implements AnnotationsContract
     protected static array $annotations = [];
 
     /**
-     * The filter.
-     *
-     * @var Filter
-     */
-    protected Filter $filter;
-
-    /**
      * The parser.
      *
      * @var Parser
@@ -86,14 +76,13 @@ class Annotator implements AnnotationsContract
     /**
      * Annotations constructor.
      *
-     * @param Application $app
-     * @param Reflector   $reflector
+     * @param Parser    $parser
+     * @param Reflector $reflector
      */
-    public function __construct(Application $app, Reflector $reflector)
+    public function __construct(Parser $parser, Reflector $reflector)
     {
         $this->reflector = $reflector;
-        $this->filter    = new AnnotationsFilter($this);
-        $this->parser    = new AnnotationsParser($app);
+        $this->parser    = $parser;
     }
 
     /**
@@ -104,45 +93,26 @@ class Annotator implements AnnotationsContract
     public static function provides(): array
     {
         return [
-            AnnotationsContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            AnnotationsContract::class,
-            new static($app, $app->reflector())
+        $container->setSingleton(
+            Contract::class,
+            $annotator = new static(
+                $container->getSingleton(Parser::class),
+                $container->getSingleton(Reflector::class)
+            )
         );
-    }
-
-    /**
-     * Get the filterer.
-     *
-     * @return Filter
-     */
-    public function getFilter(): Filter
-    {
-        return $this->filter;
-    }
-
-    /**
-     * Set the filterer.
-     *
-     * @param Filter $filter The filter
-     *
-     * @return void
-     */
-    public function setFilter(Filter $filter): void
-    {
-        $this->filter = $filter;
     }
 
     /**
@@ -182,11 +152,11 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                ],
-                ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+            ],
+            ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
+        );
     }
 
     /**
@@ -204,9 +174,9 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->propertiesAnnotations($class),
-                $this->methodsAnnotations($class)
-            );
+            $this->propertiesAnnotations($class),
+            $this->methodsAnnotations($class)
+        );
     }
 
     /**
@@ -224,9 +194,9 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->classAnnotations($class),
-                $this->classMembersAnnotations($class)
-            );
+            $this->classAnnotations($class),
+            $this->classMembersAnnotations($class)
+        );
     }
 
     /**
@@ -246,13 +216,13 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::PROPERTY   => $property,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::PROPERTY   => $property,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -308,13 +278,13 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::METHOD     => $method,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::METHOD     => $method,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -368,13 +338,13 @@ class Annotator implements AnnotationsContract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::FUNCTION => $function,
-                ],
-                ...$this->parser->getAnnotations(
-                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-                )
-            );
+            [
+                Property::FUNCTION => $function,
+            ],
+            ...$this->parser->getAnnotations(
+            (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+        )
+        );
     }
 
     /**

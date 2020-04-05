@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Factories;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory as ResponseFactoryContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Http\ResponseFactory as Contract;
+use Valkyrja\Routing\Router;
+use Valkyrja\Container\Support\Provides;
+use Valkyrja\View\View;
 
 use function func_num_args;
 
@@ -29,16 +30,9 @@ use function func_num_args;
  *
  * @author Melech Mizrachi
  */
-class ResponseFactory implements ResponseFactoryContract
+class ResponseFactory implements Contract
 {
     use Provides;
-
-    /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
 
     /**
      * The container.
@@ -50,12 +44,11 @@ class ResponseFactory implements ResponseFactoryContract
     /**
      * ResponseBuilder constructor.
      *
-     * @param Application $app
+     * @param Container $container
      */
-    public function __construct(Application $app)
+    public function __construct(Container $container)
     {
-        $this->app       = $app;
-        $this->container = $app->container();
+        $this->container = $container;
     }
 
     /**
@@ -66,20 +59,25 @@ class ResponseFactory implements ResponseFactoryContract
     public static function provides(): array
     {
         return [
-            ResponseFactoryContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(ResponseFactoryContract::class, new static($app));
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container
+            )
+        );
     }
 
     /**
@@ -185,8 +183,11 @@ class ResponseFactory implements ResponseFactoryContract
         int $statusCode = null,
         array $headers = null
     ): RedirectResponse {
+        /** @var Router $router */
+        $router = $this->container->getSingleton(Router::class);
+
         // Get the uri from the router using the route and parameters
-        $uri = $this->app->router()->getUrl($route, $parameters);
+        $uri = $router->getUrl($route, $parameters);
 
         return $this->createRedirectResponse($uri, $statusCode, $headers);
     }
@@ -203,7 +204,10 @@ class ResponseFactory implements ResponseFactoryContract
      */
     public function view(string $template, array $data = null, int $statusCode = null, array $headers = null): Response
     {
-        $content = $this->app->view()->make($template, $data ?? [])->render();
+        /** @var View $view */
+        $view = $this->container->getSingleton(View::class);
+
+        $content = $view->make($template, $data ?? [])->render();
 
         return $this->createResponse($content, $statusCode, $headers);
     }

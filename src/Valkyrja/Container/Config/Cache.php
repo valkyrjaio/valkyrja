@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Cacheables;
+namespace Valkyrja\Container\Config;
 
 use Valkyrja\Config\Config;
 
@@ -23,23 +23,37 @@ use Valkyrja\Config\Config;
 class Cache extends Config
 {
     /**
-     * The base64 encoded services.
-     *
-     * @var array
-     */
-    public array $services;
-
-    /**
      * The aliases.
      *
-     * @var array
+     * @var string[]
      */
     public array $aliases;
 
     /**
+     * The context services.
+     *
+     * @var string[]
+     */
+    public array $contextServices;
+
+    /**
      * The provided services.
      *
-     * @var array
+     * @var string[]
      */
     public array $provided;
+
+    /**
+     * The services.
+     *
+     * @var string[]
+     */
+    public array $services;
+
+    /**
+     * The singletons.
+     *
+     * @var string[]
+     */
+    public array $singletons;
 }

@@ -16,11 +16,11 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
+use Valkyrja\Annotation\Config\Config;
 use Valkyrja\Annotation\Enums\Annotation as AnnotationEnum;
 use Valkyrja\Annotation\Enums\ConfigValue;
 use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Parsers\Parser;
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Container\Annotation\Models\Alias;
 use Valkyrja\Container\Annotation\Models\Context;
@@ -76,7 +76,7 @@ class AnnotationsParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Parser(new Valkyrja());
+        $this->class = new Parser((array) new Config(ConfigValue::$defaults, true));
     }
 
     /**

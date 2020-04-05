@@ -15,20 +15,50 @@ namespace Valkyrja\Event\Annotation\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Annotators\Annotator;
-use Valkyrja\Application\Application;
-use Valkyrja\Event\Annotation\ListenerAnnotator as ListenerAnnotatorContract;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Container\Container;
+use Valkyrja\Event\Annotation\ListenerAnnotator as Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
+use Valkyrja\Reflection\Reflector;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class ListenerAnnotator.
  *
  * @author Melech Mizrachi
  */
-class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
+class ListenerAnnotator implements Contract
 {
+    use Provides;
+
+    /**
+     * The filter.
+     *
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
+     * The reflector.
+     *
+     * @var Reflector
+     */
+    protected Reflector $reflector;
+
+    /**
+     * ContainerAnnotator constructor.
+     *
+     * @param Filter    $filter
+     * @param Reflector $reflector
+     */
+    public function __construct(Filter $filter, Reflector $reflector)
+    {
+        $this->filter    = $filter;
+        $this->reflector = $reflector;
+    }
+
     /**
      * The items provided by this provider.
      *
@@ -37,22 +67,25 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
     public static function provides(): array
     {
         return [
-            ListenerAnnotatorContract::class,
+            Contract::class,
         ];
     }
 
     /**
-     * Bind the listener annotations.
+     * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            ListenerAnnotatorContract::class,
-            new static($app, $app->reflector())
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Filter::class),
+                $container->getSingleton(Reflector::class)
+            )
         );
     }
 
@@ -73,7 +106,7 @@ class ListenerAnnotator extends Annotator implements ListenerAnnotatorContract
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
             /** @var Listener $annotation */
-            foreach ($this->getFilter()->methodsAnnotationsByType('Listener', $class) as $annotation) {
+            foreach ($this->filter->methodsAnnotationsByType('Listener', $class) as $annotation) {
                 $this->setListenerProperties($annotation);
                 // Set the annotation in the annotations list
                 $annotations[] = $this->getListenerFromAnnotation($annotation);

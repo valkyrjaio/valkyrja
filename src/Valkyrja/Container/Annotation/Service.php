@@ -14,13 +14,43 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Annotation;
 
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Container\Service as ServiceModel;
 
 /**
  * Interface Service.
  *
  * @author Melech Mizrachi
  */
-interface Service extends Annotation, ServiceModel
+interface Service extends Annotation
 {
+    /**
+     * Get whether this is a singleton.
+     *
+     * @return bool
+     */
+    public function isSingleton(): bool;
+
+    /**
+     * Set whether this is a singleton.
+     *
+     * @param bool $singleton Whether this is a singleton
+     *
+     * @return static
+     */
+    public function setSingleton(bool $singleton = true): self;
+
+    /**
+     * Get defaults.
+     *
+     * @return array|null
+     */
+    public function getDefaults(): ?array;
+
+    /**
+     * Set defaults.
+     *
+     * @param array $defaults The defaults.
+     *
+     * @return static
+     */
+    public function setDefaults(array $defaults = null): self;
 }

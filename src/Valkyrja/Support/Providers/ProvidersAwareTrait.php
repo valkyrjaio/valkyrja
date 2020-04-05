@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Providers;
 
-use Valkyrja\Application\Application;
-
 /**
  * Trait AllowsProviders.
  *
@@ -67,9 +65,21 @@ trait ProvidersAwareTrait
         }
 
         // Publish the service provider
-        $provider::publish($this->getApplication());
+        $provider::publish($this);
 
         self::$registered[$provider] = true;
+    }
+
+    /**
+     * Check whether a given item is provided by a deferred provider.
+     *
+     * @param string $itemId The provided item id
+     *
+     * @return bool
+     */
+    public function isProvided(string $itemId): bool
+    {
+        return isset(self::$provided[$itemId]);
     }
 
     /**
@@ -87,7 +97,7 @@ trait ProvidersAwareTrait
     /**
      * Initialize a provided item.
      *
-     * @param string $itemId The item
+     * @param string $itemId The provided item id
      *
      * @return void
      */
@@ -96,23 +106,4 @@ trait ProvidersAwareTrait
         // Register the provider
         $this->register(self::$provided[$itemId], true);
     }
-
-    /**
-     * Check whether a given item is provided by a deferred provider.
-     *
-     * @param string $itemId The item
-     *
-     * @return bool
-     */
-    public function isProvided(string $itemId): bool
-    {
-        return isset(self::$provided[$itemId]);
-    }
-
-    /**
-     * Get the application.
-     *
-     * @return Application
-     */
-    abstract protected function getApplication(): Application;
 }

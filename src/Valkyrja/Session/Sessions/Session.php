@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Sessions;
 
 use Exception;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
-use Valkyrja\Session\Session as SessionContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Session\Session as Contract;
+use Valkyrja\Container\Support\Provides;
 
 use function bin2hex;
 use function hash_equals;
 use function headers_sent;
 use function is_string;
-
 use function preg_match;
 use function random_bytes;
 use function session_id;
@@ -40,16 +39,16 @@ use const PHP_SESSION_ACTIVE;
  *
  * @author Melech Mizrachi
  */
-class Session implements SessionContract
+class Session implements Contract
 {
     use Provides;
 
     /**
-     * The application.
+     * The config.
      *
-     * @var Application
+     * @var array
      */
-    protected Application $app;
+    protected array $config;
 
     /**
      * The session data.
@@ -61,17 +60,16 @@ class Session implements SessionContract
     /**
      * Session constructor.
      *
-     * @param Application $application The application
-     * @param string      $sessionId   [optional] The session id
-     * @param string      $sessionName [optional] The session name
+     * @param array  $config      The config
+     * @param string $sessionId   [optional] The session id
+     * @param string $sessionName [optional] The session name
      *
      * @throws InvalidSessionId
      * @throws SessionStartFailure
      */
-    public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
+    public function __construct(array $config, string $sessionId = null, string $sessionName = null)
     {
-        $this->app = $application;
-        $config    = $application->config()['session'];
+        $this->config = $config;
 
         $sessionId   = $sessionId ?? $config['id'];
         $sessionName = $sessionName ?? $config['name'];
@@ -90,6 +88,37 @@ class Session implements SessionContract
 
         // Start the session
         $this->start();
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Container $container
+     *
+     * @return void
+     */
+    public static function publish(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                (array) $config['session']
+            )
+        );
     }
 
     /**
@@ -196,7 +225,7 @@ class Session implements SessionContract
     /**
      * Get an item from the session.
      *
-     * @param string $id The item id
+     * @param string     $id      The item id
      * @param mixed|null $default The default value
      *
      * @return mixed
@@ -312,32 +341,5 @@ class Session implements SessionContract
         $this->data = [];
 
         session_unset();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            SessionContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @throws SessionStartFailure
-     * @throws InvalidSessionId
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $app->container()->setSingleton(SessionContract::class, new static($app));
     }
 }

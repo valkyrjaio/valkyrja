@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Config;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Support\Providers\Provider;
+use Valkyrja\Container\Support\Provider;
 
 /**
  * Class Config.

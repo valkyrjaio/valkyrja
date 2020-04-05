@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Sessions;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
+use Valkyrja\Container\Container;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Session\Session as Contract;
 
 use function headers_sent;
 use function json_decode;
 use function json_encode;
-
 use function session_start;
 
 use const JSON_THROW_ON_ERROR;
@@ -50,16 +50,38 @@ class CacheSession extends Session
     /**
      * CacheSession constructor.
      *
-     * @param Application $application
-     * @param string|null $sessionId
-     * @param string|null $sessionName
+     * @param Cache  $cache       The cache
+     * @param array  $config      The config
+     * @param string $sessionId   [optional] The session id
+     * @param string $sessionName [optional] The session name
+     *
      */
-    public function __construct(Application $application, string $sessionId = null, string $sessionName = null)
+    public function __construct(Cache $cache, array $config, string $sessionId = null, string $sessionName = null)
     {
-        parent::__construct($application, $sessionId, $sessionName);
+        parent::__construct($config, $sessionId, $sessionName);
 
-        $this->cache      = $this->app->cache();
-        $this->cacheStore = $this->cache->getStore();
+        $this->cache      = $cache;
+        $this->cacheStore = $cache->getStore();
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Container $container
+     *
+     * @return void
+     */
+    public static function publish(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                $container->getSingleton(Cache::class),
+                (array) $config['session']
+            )
+        );
     }
 
     /**

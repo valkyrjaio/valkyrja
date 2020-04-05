@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
-use Valkyrja\Application\Application;
-use Valkyrja\Crypt\Crypt as CryptContract;
+use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function file_exists;
 use function file_get_contents;
@@ -29,7 +29,7 @@ use function file_get_contents;
  *
  * @author Melech Mizrachi
  */
-class Crypt implements CryptContract
+class Crypt implements Contract
 {
     use Provides;
 
@@ -64,15 +64,15 @@ class Crypt implements CryptContract
     /**
      * SodiumCrypt constructor.
      *
-     * @param Application $app
-     * @param Encrypter   $encrypter
-     * @param Decrypter   $decrypter
+     * @param Encrypter $encrypter
+     * @param Decrypter $decrypter
+     * @param array     $config
      */
-    public function __construct(Application $app, Encrypter $encrypter, Decrypter $decrypter)
+    public function __construct(Encrypter $encrypter, Decrypter $decrypter, array $config)
     {
-        $this->config    = (array) $app->config()['crypt'];
         $this->encrypter = $encrypter;
         $this->decrypter = $decrypter;
+        $this->config    = $config;
     }
 
     /**
@@ -83,27 +83,27 @@ class Crypt implements CryptContract
     public static function provides(): array
     {
         return [
-            CryptContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $container = $app->container();
+        $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            CryptContract::class,
+            Contract::class,
             new static(
-                $app,
                 $container->get(Encrypter::class),
-                $container->get(Decrypter::class)
+                $container->get(Decrypter::class),
+                (array) $config['crypt']
             )
         );
     }

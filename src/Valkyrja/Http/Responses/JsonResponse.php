@@ -15,13 +15,13 @@ namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Enums\ContentType;
 use Valkyrja\Http\Enums\Header;
 use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
-use Valkyrja\Http\JsonResponse as JsonResponseContract;
+use Valkyrja\Http\JsonResponse as Contract;
 use Valkyrja\Http\Streams\Stream;
 
 use function explode;
@@ -36,7 +36,7 @@ use const JSON_THROW_ON_ERROR;
  *
  * @author Melech Mizrachi
  */
-class JsonResponse extends Response implements JsonResponseContract
+class JsonResponse extends Response implements Contract
 {
     /**
      * The default encoding options to use for json_encode().
@@ -196,21 +196,22 @@ class JsonResponse extends Response implements JsonResponseContract
     public static function provides(): array
     {
         return [
-            JsonResponseContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(JsonResponseContract::class, new static());
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 }

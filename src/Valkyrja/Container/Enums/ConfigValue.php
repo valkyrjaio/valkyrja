@@ -28,6 +28,7 @@ final class ConfigValue
     public const PROVIDERS                   = [
         Provider::API,
         Provider::ANNOTATOR,
+        Provider::ANNOTATION_PARSER,
         Provider::AUTH,
         Provider::CACHE,
         Provider::CLIENT,

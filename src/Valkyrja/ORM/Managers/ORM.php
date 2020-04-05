@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Managers;
 
-use InvalidArgumentException;
-use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
@@ -27,7 +26,7 @@ use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function get_class;
 
@@ -55,13 +54,6 @@ class ORM implements Contract
     protected static array $repositories = [];
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The config.
      *
      * @var array
@@ -76,15 +68,14 @@ class ORM implements Contract
     protected string $defaultAdapter;
 
     /**
-     * EntityManager constructor.
+     * ORM constructor.
      *
-     * @param Application $app
+     * @param array $config
      */
-    public function __construct(Application $app)
+    public function __construct(array $config)
     {
-        $this->config         = (array) $app->config()['orm'];
-        $this->app            = $app;
-        $this->defaultAdapter = $this->config['connections'][$this->config['connection']]['adapter'] ?? CKP::PDO;
+        $this->config         = $config;
+        $this->defaultAdapter = $config['connections'][$config['connection']]['adapter'] ?? CKP::PDO;
     }
 
     /**
@@ -102,15 +93,20 @@ class ORM implements Contract
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
+     * @param Container $container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(Contract::class, new static($app));
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            new static(
+                (array) $config['orm']
+            )
+        );
     }
 
     /**

@@ -33,6 +33,7 @@ class Config extends Model
         CKP::MIDDLEWARE,
         CKP::MIDDLEWARE_GROUPS,
         CKP::CONTROLLERS,
+        CKP::HTTP_EXCEPTION,
         CKP::USE_TRAILING_SLASH,
         CKP::USE_ABSOLUTE_URLS,
         CKP::USE_ANNOTATIONS,
@@ -58,6 +59,7 @@ class Config extends Model
         CKP::FILE_PATH                   => EnvKey::ROUTING_FILE_PATH,
         CKP::CACHE_FILE_PATH             => EnvKey::ROUTING_CACHE_FILE_PATH,
         CKP::USE_CACHE                   => EnvKey::ROUTING_USE_CACHE_FILE,
+        CKP::HTTP_EXCEPTION              => EnvKey::ROUTING_HTTP_EXCEPTION,
     ];
 
     /**
@@ -80,6 +82,13 @@ class Config extends Model
      * @var string[]
      */
     public array $controllers;
+
+    /**
+     * The http exception class.
+     *
+     * @var string
+     */
+    public string $httpException;
 
     /**
      * The flag to enable trailing slashes for all urls.

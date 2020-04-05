@@ -17,11 +17,11 @@ use Exception;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Enums\LogLevel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Log\Loggers\MonologLogger;
-use Valkyrja\Support\Providers\Provider;
 
 use function date;
 
@@ -55,39 +55,39 @@ class LoggerServiceProvider extends Provider
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @throws Exception
-     *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        static::bindLoggerInterface($app);
-        static::bindLogger($app);
+        static::bindLoggerInterface($container);
+        static::bindLogger($container);
     }
 
     /**
      * Bind the logger interface.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @throws Exception
      *
      * @return void
      */
-    protected static function bindLoggerInterface(Application $app): void
+    protected static function bindLoggerInterface(Container $container): void
     {
-        $config  = $app->config()['log'];
-        $handler = new StreamHandler(
-            $config['filePath'] . '/' . $config['name'] . date('-Y-m-d') . '.log',
+        $config    = $container->getSingleton('config');
+        $logConfig = $config['log'];
+        $handler   = new StreamHandler(
+            $logConfig['filePath'] . '/' . $logConfig['name'] . date('-Y-m-d') . '.log',
             LogLevel::DEBUG
         );
 
-        $app->container()->setSingleton(
+        $container->setSingleton(
             LoggerInterface::class,
             new Monolog(
-                $config['name'] . date('-Y-m-d'),
+                $logConfig['name'] . date('-Y-m-d'),
                 [
                     $handler,
                 ]
@@ -98,16 +98,16 @@ class LoggerServiceProvider extends Provider
     /**
      * Bind the logger.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    protected static function bindLogger(Application $app): void
+    protected static function bindLogger(Container $container): void
     {
-        $app->container()->setSingleton(
+        $container->setSingleton(
             Logger::class,
             new MonologLogger(
-                $app->container()->getSingleton(LoggerInterface::class)
+                $container->getSingleton(LoggerInterface::class)
             )
         );
     }

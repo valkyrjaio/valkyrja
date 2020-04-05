@@ -15,7 +15,7 @@ namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 
 use function file_exists;
 use function file_put_contents;
@@ -41,7 +41,7 @@ use const PHP_EOL;
  */
 class Optimize extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

@@ -149,7 +149,7 @@ trait ClassDispatcher
             $class     = new $class(...$arguments);
         } else {
             // Get the class through the container
-            $class = $this->container->get($dispatch->getClass(), $arguments);
+            $class = $this->container->get($dispatch->getClass(), $arguments ?? []);
         }
 
         return $class ?? Constant::DISPATCHED;

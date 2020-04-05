@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Formatters;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Console\Formatter as OutputFormatterContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Console\Formatter as Contract;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 use function count;
 use function implode;
@@ -29,7 +29,7 @@ use function sprintf;
  *
  * @author Melech Mizrachi
  */
-class Formatter implements OutputFormatterContract
+class Formatter implements Contract
 {
     use FormatterColors;
     use FormatterOptions;
@@ -64,21 +64,21 @@ class Formatter implements OutputFormatterContract
     public static function provides(): array
     {
         return [
-            OutputFormatterContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            OutputFormatterContract::class,
+        $container->setSingleton(
+            Contract::class,
             new static()
         );
     }

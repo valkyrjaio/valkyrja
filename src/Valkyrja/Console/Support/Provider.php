@@ -11,15 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Events;
-
-use Valkyrja\Event\Event;
+namespace Valkyrja\Console\Support;
 
 /**
- * Class ServiceMake.
+ * Abstract Class Provider.
  *
  * @author Melech Mizrachi
  */
-class ServiceMake implements Event
+abstract class Provider
 {
+    use Provides;
 }

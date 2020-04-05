@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation;
 
-use Valkyrja\Annotation\Annotator;
-
 /**
  * Interface RouteAnnotations.
  *
  * @author Melech Mizrachi
  */
-interface RouteAnnotator extends Annotator
+interface RouteAnnotator
 {
     /**
      * Get routes.

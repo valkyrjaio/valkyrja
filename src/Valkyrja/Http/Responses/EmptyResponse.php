@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use Valkyrja\Application\Application;
-use Valkyrja\Http\EmptyResponse as EmptyResponseContract;
+use Valkyrja\Container\Container;
+use Valkyrja\Http\EmptyResponse as Contract;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
@@ -25,7 +25,7 @@ use Valkyrja\Http\Exceptions\InvalidStream;
  *
  * @author Melech Mizrachi
  */
-class EmptyResponse extends Response implements EmptyResponseContract
+class EmptyResponse extends Response implements Contract
 {
     /**
      * NativeEmptyResponse constructor.
@@ -49,21 +49,22 @@ class EmptyResponse extends Response implements EmptyResponseContract
     public static function provides(): array
     {
         return [
-            EmptyResponseContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
-     *
-     * @throws InvalidArgumentException
+     * @param Container $container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(EmptyResponseContract::class, new static());
+        $container->setSingleton(
+            Contract::class,
+            new static()
+        );
     }
 }

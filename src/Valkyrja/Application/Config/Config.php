@@ -40,7 +40,6 @@ class Config extends Model
         CKP::DISPATCHER,
         CKP::EVENTS,
         CKP::EXCEPTION_HANDLER,
-        CKP::HTTP_EXCEPTION,
     ];
 
     /**
@@ -59,7 +58,6 @@ class Config extends Model
         CKP::DISPATCHER        => EnvKey::APP_DISPATCHER,
         CKP::EVENTS            => EnvKey::APP_EVENTS,
         CKP::EXCEPTION_HANDLER => EnvKey::APP_EXCEPTION_HANDLER,
-        CKP::HTTP_EXCEPTION    => EnvKey::APP_HTTP_EXCEPTION,
     ];
 
     /**
@@ -131,11 +129,4 @@ class Config extends Model
      * @var string
      */
     public string $exceptionHandler;
-
-    /**
-     * The http exception class.
-     *
-     * @var string
-     */
-    public string $httpException;
 }

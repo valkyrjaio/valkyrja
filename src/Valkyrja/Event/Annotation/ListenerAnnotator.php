@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Annotation;
 
-use Valkyrja\Annotation\Annotator;
-
 /**
  * Interface ListenerAnnotations.
  *
  * @author Melech Mizrachi
  */
-interface ListenerAnnotator extends Annotator
+interface ListenerAnnotator
 {
     /**
      * Get the events.

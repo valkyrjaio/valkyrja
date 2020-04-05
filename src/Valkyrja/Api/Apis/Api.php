@@ -21,10 +21,11 @@ use Valkyrja\Api\JsonData;
 use Valkyrja\Api\Models\Json as JsonClass;
 use Valkyrja\Api\Models\JsonData as JsonDataClass;
 use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\ORM\Entity;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 use function end;
 use function explode;
@@ -81,17 +82,19 @@ class Api implements Contract
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
             Contract::class,
             new static(
-                (array) ($app->config()['api'] ?? []),
-                $app->debug()
+                (array) $config['api'],
+                $config['app']['debug']
             )
         );
     }

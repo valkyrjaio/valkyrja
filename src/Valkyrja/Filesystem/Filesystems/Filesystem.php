@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Filesystems;
 
 use League\Flysystem\AdapterInterface;
-use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Support\Provides;
 
 /**
  * Class Filesystem.
@@ -38,13 +38,6 @@ class Filesystem implements FilesystemContract
     protected static array $adapters = [];
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * The config.
      *
      * @var array
@@ -54,12 +47,11 @@ class Filesystem implements FilesystemContract
     /**
      * FlyFilesystem constructor.
      *
-     * @param Application $application The application
+     * @param array $config The config
      */
-    public function __construct(Application $application)
+    public function __construct(array $config)
     {
-        $this->app    = $application;
-        $this->config = (array) $this->app->config()['filesystem'];
+        $this->config = $config;
     }
 
     /**
@@ -77,15 +69,17 @@ class Filesystem implements FilesystemContract
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
             FilesystemContract::class,
-            new static($app)
+            new static((array) $config['filesystem'])
         );
     }
 

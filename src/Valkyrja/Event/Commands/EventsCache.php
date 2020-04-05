@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Commands;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 
 use function file_put_contents;
 use function Valkyrja\app;
@@ -34,7 +34,7 @@ use function Valkyrja\output;
  */
 class EventsCache extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

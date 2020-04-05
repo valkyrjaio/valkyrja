@@ -18,10 +18,10 @@ use Valkyrja\Annotation\Enums\Part;
 use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
-use Valkyrja\Annotation\Parser as AnnotationsParserContract;
-use Valkyrja\Application\Application;
+use Valkyrja\Annotation\Parser as Contract;
 use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 
 use function array_key_exists;
 use function constant;
@@ -29,7 +29,6 @@ use function defined;
 use function explode;
 use function is_array;
 use function is_string;
-
 use function json_decode;
 use function method_exists;
 use function preg_match_all;
@@ -42,29 +41,29 @@ use function Valkyrja\config;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class AnnotationsParser.
+ * Class Parser.
  *
  * @author Melech Mizrachi
  */
-class Parser implements AnnotationsParserContract
+class Parser implements Contract
 {
     use Provides;
 
     /**
-     * The application.
+     * The config.
      *
-     * @var Application
+     * @var array
      */
-    protected Application $app;
+    protected array $config;
 
     /**
-     * AnnotationsParser constructor.
+     * Parser constructor.
      *
-     * @param Application $application The application
+     * @param array $config
      */
-    public function __construct(Application $application)
+    public function __construct(array $config)
     {
-        $this->app = $application;
+        $this->config = $config;
     }
 
     /**
@@ -75,23 +74,25 @@ class Parser implements AnnotationsParserContract
     public static function provides(): array
     {
         return [
-            AnnotationsParserContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            AnnotationsParserContract::class,
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
             new static(
-                $app
+                (array) $config['annotation']
             )
         );
     }
@@ -193,7 +194,7 @@ class Parser implements AnnotationsParserContract
      */
     public function getAnnotationsMap(): array
     {
-        return $this->app->config()['annotation']['map'];
+        return $this->config['map'];
     }
 
     /**

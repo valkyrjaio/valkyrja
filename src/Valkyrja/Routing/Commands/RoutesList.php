@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
-use Valkyrja\Console\Support\ProvidesCommand;
+use Valkyrja\Console\Support\Provides;
 use Valkyrja\Routing\Route;
 
 use function implode;
@@ -35,7 +35,7 @@ use function Valkyrja\router;
  */
 class RoutesList extends Commander
 {
-    use ProvidesCommand;
+    use Provides;
 
     /**
      * The command.

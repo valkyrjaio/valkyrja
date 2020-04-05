@@ -15,12 +15,16 @@ namespace Valkyrja\Routing\Dispatchers;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Valkyrja\Application\Application;
-use Valkyrja\Config\Enums\ConfigKey;
-use Valkyrja\Config\Config;
+use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
+use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Events;
 use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Path\PathGenerator;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\Collection as CollectionClass;
 use Valkyrja\Routing\Events\RouteMatched;
@@ -31,7 +35,6 @@ use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as RouterContract;
-use Valkyrja\Support\Providers\Provides;
 use Valkyrja\View\View;
 
 use function is_array;
@@ -52,18 +55,92 @@ class Router implements RouterContract
     use RouteGroup;
     use RouteMethods;
 
-    protected Application       $app;
+    /**
+     * The route collection.
+     *
+     * @var Collection|null
+     */
     protected static Collection $collection;
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The dispatcher.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
+
+    /**
+     * The events.
+     *
+     * @var Events
+     */
+    protected Events $events;
+
+    /**
+     * The path generator.
+     *
+     * @var PathGenerator
+     */
+    protected PathGenerator $pathGenerator;
+
+    /**
+     * The request.
+     *
+     * @var Request
+     */
+    protected Request $request;
+
+    /**
+     * The response factory.
+     *
+     * @var ResponseFactory
+     */
+    protected ResponseFactory $responseFactory;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
 
     /**
      * Router constructor.
      *
-     * @param Application     $application The application
+     * @param Container       $container
+     * @param Dispatcher      $dispatcher
+     * @param Events          $events
+     * @param PathGenerator   $pathParser
+     * @param Request         $request
+     * @param ResponseFactory $responseFactory
      * @param Collection|null $collection
+     * @param array           $config
      */
-    public function __construct(Application $application, Collection $collection)
-    {
-        $this->app        = $application;
+    public function __construct(
+        Container $container,
+        Dispatcher $dispatcher,
+        Events $events,
+        PathGenerator $pathParser,
+        Request $request,
+        ResponseFactory $responseFactory,
+        Collection $collection,
+        array $config
+    ) {
+        $this->container       = $container;
+        $this->dispatcher      = $dispatcher;
+        $this->events          = $events;
+        $this->pathGenerator   = $pathParser;
+        $this->request         = $request;
+        $this->responseFactory = $responseFactory;
+        $this->config          = $config;
+
         self::$collection = $collection;
     }
 
@@ -82,18 +159,29 @@ class Router implements RouterContract
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
             RouterContract::class,
-            new static($app, new CollectionClass(new MatcherClass()))
+            $router = new static(
+                $container->getSingleton(Container::class),
+                $container->getSingleton(Dispatcher::class),
+                $container->getSingleton(Events::class),
+                $container->getSingleton(PathGenerator::class),
+                $container->getSingleton(Request::class),
+                $container->getSingleton(ResponseFactory::class),
+                new CollectionClass(new MatcherClass()),
+                (array) $config['routing']
+            )
         );
 
-        $app->router()->setup();
+        $router->setup();
     }
 
     /**
@@ -188,12 +276,12 @@ class Router implements RouterContract
         // Set the host to use if this is an absolute url
         // or the config is set to always use absolute urls
         // or the route is secure (needs https:// appended)
-        $host = $absolute || $route->isSecure() || $this->app->config(ConfigKey::ROUTING_USE_ABSOLUTE_URLS, false)
+        $host = $absolute || $route->isSecure() || $this->config['useAbsoluteUrls']
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
         $path = $route->getSegments()
-            ? $this->app->pathGenerator()->parse(
+            ? $this->pathGenerator->parse(
                 $route->getSegments(),
                 $data,
                 $route->getParams()
@@ -227,7 +315,7 @@ class Router implements RouterContract
         // If no route is found
         if (null === $route) {
             // Abort with 404
-            $this->app->abort();
+            throw new $this->config['httpException']();
         }
 
         return $route;
@@ -268,7 +356,7 @@ class Router implements RouterContract
         $host = (string) substr($uri, 0, strpos($uri, '/'));
 
         // If the host does not match the current request uri's host
-        if ($host && $host !== $this->app->request()->getUri()->getHost()) {
+        if ($host && $host !== $this->request->getUri()->getHost()) {
             // Return false immediately
             return false;
         }
@@ -298,7 +386,7 @@ class Router implements RouterContract
     /**
      * Get a cacheable representation of the data.
      *
-     * @return \Valkyrja\Config\Config|object
+     * @return object
      */
     public function getCacheable(): object
     {
@@ -331,7 +419,7 @@ class Router implements RouterContract
     {
         // If the last character is not a slash and the config is set to
         // ensure trailing slash
-        if ($path[-1] !== '/' && $this->app->config(ConfigKey::ROUTING_TRAILING_SLASH, false)) {
+        if ($path[-1] !== '/' && $this->config['useTrailingSlash']) {
             // add a trailing slash
             $path .= '/';
         }
@@ -361,12 +449,12 @@ class Router implements RouterContract
         $request = $this->routeRequestMiddleware($request, $route);
 
         // Trigger an event for route matched
-        $this->app->events()->trigger(RouteMatched::class, [$route, $request]);
+        $this->events->trigger(RouteMatched::class, [$route, $request]);
         // Set the found route in the service container
-        $this->app->container()->setSingleton(Route::class, $route);
+        $this->container->setSingleton(Route::class, $route);
 
         // Attempt to dispatch the route using any one of the callable options
-        $dispatch = $this->app->dispatcher()->dispatch($route, $route->getMatches());
+        $dispatch = $this->dispatcher->dispatch($route, $route->getMatches());
         // Get the response from the dispatch
         $response = $this->getResponseFromDispatch($dispatch);
 
@@ -386,7 +474,7 @@ class Router implements RouterContract
         // If the route is a redirect and a redirect route is set
         if ($route->isRedirect()) {
             // Throw the redirect to the redirect path
-            $this->app->redirect($route->getTo(), $route->getCode())->throw();
+            $this->responseFactory->createRedirectResponse($route->getTo(), $route->getCode())->throw();
         }
     }
 
@@ -403,7 +491,7 @@ class Router implements RouterContract
         // If the route is secure and the current request is not secure
         if ($route->isSecure() && ! $request->getUri()->isSecure()) {
             // Throw the redirect to the secure path
-            $this->app->redirect()->secure($request->getUri()->getPath())->throw();
+            $this->responseFactory->createRedirectResponse()->secure($request->getUri()->getPath())->throw();
         }
     }
 
@@ -417,7 +505,7 @@ class Router implements RouterContract
      */
     protected function routeRequestMiddleware(Request $request, Route $route): Request
     {
-        return $this->app->kernel()->requestMiddleware($request, $route->getMiddleware() ?? []);
+        return $this->getKernel()->requestMiddleware($request, $route->getMiddleware() ?? []);
     }
 
     /**
@@ -436,16 +524,16 @@ class Router implements RouterContract
 
         // If the dispatch is a View, render it then wrap it in a new response and return it
         if ($dispatch instanceof View) {
-            return $this->app->response($dispatch->render());
+            return $this->responseFactory->createResponse($dispatch->render());
         }
 
         // If the dispatch is an array, return it as JSON
         if (is_array($dispatch)) {
-            return $this->app->json($dispatch);
+            return $this->responseFactory->createJsonResponse($dispatch);
         }
 
         // Otherwise its a string so wrap it in a new response and return it
-        return $this->app->response((string) $dispatch);
+        return $this->responseFactory->createResponse((string) $dispatch);
     }
 
     /**
@@ -459,10 +547,20 @@ class Router implements RouterContract
      */
     protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
     {
-        return $this->app->kernel()->responseMiddleware(
+        return $this->getKernel()->responseMiddleware(
             $request,
             $response,
             $route->getMiddleware() ?? []
         );
+    }
+
+    /**
+     * Get the kernel.
+     *
+     * @return Kernel
+     */
+    protected function getKernel(): Kernel
+    {
+        return $this->container->getSingleton(Kernel::class);
     }
 }

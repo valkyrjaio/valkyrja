@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Container;
 
 use ArrayAccess;
-use Valkyrja\Support\Cacheable;
 use Valkyrja\Support\ProvidersAware;
 
 /**
@@ -22,54 +21,17 @@ use Valkyrja\Support\ProvidersAware;
  *
  * @author Melech Mizrachi
  */
-interface Container extends ArrayAccess, Cacheable, ProvidersAware
+interface Container extends ArrayAccess, ProvidersAware
 {
     /**
      * Get a container with context.
      *
-     * @param string $context The context class name || function name || variable name
-     * @param string $member  [optional] The context member method name || property name
+     * @param string $context The context class or function name
+     * @param string $member  [optional] The context method name
      *
      * @return static
      */
-    // public function withContext(string $context = null, string $member = null): self;
-
-    /**
-     * Set an alias to the container.
-     *
-     * @param string $alias     The alias
-     * @param string $serviceId The service to return
-     *
-     * @return void
-     */
-    public function setAlias(string $alias, string $serviceId): void;
-
-    /**
-     * Bind a service to the container.
-     *
-     * @param Service $service The service model
-     * @param bool    $verify  [optional] Whether to verify the service
-     *
-     * @return void
-     */
-    public function bind(Service $service, bool $verify = true): void;
-
-    /**
-     * Bind a context to the container.
-     *
-     * @param ServiceContext $serviceContext The context service
-     *
-     * @return void
-     */
-    public function setContext(ServiceContext $serviceContext): void;
-
-    /**
-     * Bind a singleton to the container.
-     *
-     * @param string $serviceId The service
-     * @param mixed  $singleton The singleton
-     */
-    public function setSingleton(string $serviceId, $singleton): void;
+    public function withContext(string $context, string $member = null): self;
 
     /**
      * Check whether a given service exists.
@@ -83,13 +45,62 @@ interface Container extends ArrayAccess, Cacheable, ProvidersAware
     /**
      * Check whether a given service has context.
      *
-     * @param string $serviceId The service
-     * @param string $context   The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
      *
      * @return bool
      */
     public function hasContext(string $serviceId, string $context, string $member = null): bool;
+
+    /**
+     * Bind a service to the container.
+     *
+     * @param string $serviceId The service id
+     * @param string $service   The service
+     *
+     * @return void
+     */
+    public function bind(string $serviceId, string $service): void;
+
+    /**
+     * Bind a singleton to the container.
+     *
+     * @param string $serviceId The service id
+     * @param string $singleton The singleton service
+     *
+     * @return void
+     */
+    public function bindSingleton(string $serviceId, string $singleton): void;
+
+    /**
+     * Set an alias to the container.
+     *
+     * @param string $alias     The alias
+     * @param string $serviceId The service to return
+     *
+     * @return void
+     */
+    public function setAlias(string $alias, string $serviceId): void;
+
+    /**
+     * Bind a context to the container.
+     *
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
+     *
+     * @return void
+     */
+    public function setContext(string $serviceId, string $context, string $member = null): void;
+
+    /**
+     * Bind a singleton to the container.
+     *
+     * @param string $serviceId The service
+     * @param mixed  $singleton The singleton
+     */
+    public function setSingleton(string $serviceId, $singleton): void;
 
     /**
      * Check whether a given service is an alias.
@@ -110,25 +121,14 @@ interface Container extends ArrayAccess, Cacheable, ProvidersAware
     public function isSingleton(string $serviceId): bool;
 
     /**
-     * Check whether a given service is provided by a deferred service provider.
-     *
-     * @param string $serviceId The service
-     *
-     * @return bool
-     */
-    public function isProvided(string $serviceId): bool;
-
-    /**
      * Get a service from the container.
      *
      * @param string $serviceId The service
      * @param array  $arguments [optional] The arguments
-     * @param string $context   [optional] The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
      *
      * @return mixed
      */
-    public function get(string $serviceId, array $arguments = null, string $context = null, string $member = null);
+    public function get(string $serviceId, array $arguments = []);
 
     /**
      * Make a service.
@@ -138,7 +138,7 @@ interface Container extends ArrayAccess, Cacheable, ProvidersAware
      *
      * @return mixed
      */
-    public function makeService(string $serviceId, array $arguments = null);
+    public function makeService(string $serviceId, array $arguments = []);
 
     /**
      * Get a singleton from the container.
@@ -150,23 +150,13 @@ interface Container extends ArrayAccess, Cacheable, ProvidersAware
     public function getSingleton(string $serviceId);
 
     /**
-     * Get a provided service from the container.
-     *
-     * @param string $serviceId The service
-     * @param array  $arguments [optional] The arguments
-     *
-     * @return mixed
-     */
-    public function getProvided(string $serviceId, array $arguments = null);
-
-    /**
      * Get the context service id.
      *
-     * @param string $serviceId The service
-     * @param string $context   The context class name || function name || variable name
-     * @param string $member    [optional] The context member method name || property name
+     * @param string      $serviceId The service id
+     * @param string      $context   The context class or function name
+     * @param string|null $member    [optional] The context member name
      *
      * @return string
      */
-    public function contextServiceId(string $serviceId, string $context, string $member = null): string;
+    public function getContextServiceId(string $serviceId, string $context, string $member = null): string;
 }

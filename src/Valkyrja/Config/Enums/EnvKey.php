@@ -36,7 +36,6 @@ final class EnvKey
     public const APP_TIMEZONE          = 'APP_TIMEZONE';
     public const APP_VERSION           = 'APP_VERSION';
     public const APP_KEY               = 'APP_KEY';
-    public const APP_HTTP_EXCEPTION    = 'APP_HTTP_EXCEPTION';
     public const APP_CONTAINER         = 'APP_CONTAINER';
     public const APP_DISPATCHER        = 'APP_DISPATCHER';
     public const APP_EVENTS            = 'APP_EVENTS';
@@ -140,6 +139,7 @@ final class EnvKey
     public const ROUTING_USE_ABSOLUTE_URLS           = 'ROUTING_USE_ABSOLUTE_URLS';
     public const ROUTING_MIDDLEWARE                  = 'ROUTING_MIDDLEWARE';
     public const ROUTING_MIDDLEWARE_GROUPS           = 'ROUTING_MIDDLEWARE_GROUPS';
+    public const ROUTING_HTTP_EXCEPTION              = 'ROUTING_HTTP_EXCEPTION';
     public const ROUTING_USE_ANNOTATIONS             = 'ROUTING_USE_ANNOTATIONS';
     public const ROUTING_USE_ANNOTATIONS_EXCLUSIVELY = 'ROUTING_USE_ANNOTATIONS_EXCLUSIVELY';
     public const ROUTING_CONTROLLERS                 = 'ROUTING_CONTROLLERS';

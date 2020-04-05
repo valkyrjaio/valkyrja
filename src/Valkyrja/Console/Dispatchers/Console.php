@@ -13,21 +13,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Dispatchers;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Console\Cacheables\CacheableConsole;
 use Valkyrja\Console\Command;
-use Valkyrja\Console\Console as ConsoleContract;
+use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
-use Valkyrja\Console\Support\CommandProvider;
+use Valkyrja\Console\Support\Provider;
+use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Event\Events;
+use Valkyrja\Path\PathParser;
+use Valkyrja\Container\Support\Provides;
 
 use function preg_match;
 
@@ -36,7 +39,7 @@ use function preg_match;
  *
  * @author Melech Mizrachi
  */
-class Console implements ConsoleContract
+class Console implements Contract
 {
     use CacheableConsole {
         register as traitRegister;
@@ -49,13 +52,57 @@ class Console implements ConsoleContract
     public const RUN_METHOD = 'run';
 
     /**
+     * The dispatcher.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
+
+    /**
+     * The events.
+     *
+     * @var Events
+     */
+    protected Events $events;
+
+    /**
+     * The path parser.
+     *
+     * @var PathParser
+     */
+    protected PathParser $pathParser;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * Console constructor.
      *
-     * @param Application $application The application
+     * @param Container  $container
+     * @param Dispatcher $dispatcher
+     * @param Events     $events
+     * @param PathParser $pathParser
+     * @param array      $config
+     * @param bool       $debug
      */
-    public function __construct(Application $application)
-    {
-        $this->app = $application;
+    public function __construct(
+        Container $container,
+        Dispatcher $dispatcher,
+        Events $events,
+        PathParser $pathParser,
+        array $config,
+        bool $debug = false
+    ) {
+        $this->container  = $container;
+        $this->dispatcher = $dispatcher;
+        $this->events     = $events;
+        $this->pathParser = $pathParser;
+        $this->config     = $config;
+        $this->debug      = $debug;
     }
 
     /**
@@ -66,25 +113,34 @@ class Console implements ConsoleContract
     public static function provides(): array
     {
         return [
-            ConsoleContract::class,
+            Contract::class,
         ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param Container $container The container
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Container $container): void
     {
-        $app->container()->setSingleton(
-            ConsoleContract::class,
-            new static($app)
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Contract::class,
+            $console = new static(
+                $container,
+                $container->getSingleton(Dispatcher::class),
+                $container->getSingleton(Events::class),
+                $container->getSingleton(PathParser::class),
+                (array) $config['console'],
+                $config['app']['debug'],
+            )
         );
 
-        $app->console()->setup();
+        $console->setup();
     }
 
     /**
@@ -103,11 +159,10 @@ class Console implements ConsoleContract
     public function addCommand(Command $command): void
     {
         $command->setMethod($command->getMethod() ?? static::RUN_METHOD);
-        $dispatcher = $this->app->dispatcher();
 
-        $dispatcher->verifyDispatch($command);
+        $this->dispatcher->verifyDispatch($command);
 
-        $this->addParsedCommand($command, $this->app->pathParser()->parse((string) $command->getPath()));
+        $this->addParsedCommand($command, $this->pathParser->parse((string) $command->getPath()));
     }
 
     /**
@@ -252,13 +307,13 @@ class Console implements ConsoleContract
     public function dispatchCommand(Command $command): int
     {
         // Trigger an event before dispatching
-        $this->app->events()->trigger('Command.dispatching', [$command]);
+        $this->events->trigger('Command.dispatching', [$command]);
 
         // Dispatch the command
-        $dispatch = $this->app->dispatcher()->dispatch($command, $command->getMatches());
+        $dispatch = $this->dispatcher->dispatch($command, $command->getMatches());
 
         // Trigger an event after dispatching
-        $this->app->events()->trigger('Command.dispatched', [$command, $dispatch]);
+        $this->events->trigger('Command.dispatched', [$command, $dispatch]);
 
         return $dispatch;
     }
@@ -315,14 +370,14 @@ class Console implements ConsoleContract
         // Do the default registration of the service provider
         $this->traitRegister($provider, $force);
 
-        /* @var CommandProvider $provider */
+        /* @var Provider $provider */
         // Get the commands names provided
         $commands = $provider::commands();
 
         // Iterate through the provided commands
         foreach ($provider::provides() as $key => $provided) {
             // Parse the provided path
-            $parsedPath = $this->app->pathParser()->parse($provided);
+            $parsedPath = $this->pathParser->parse($provided);
 
             // Set the path and regex in the paths list
             self::$paths[$parsedPath[ConfigKeyPart::REGEX]] = $provided;
