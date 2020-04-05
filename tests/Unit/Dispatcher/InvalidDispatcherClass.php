@@ -37,4 +37,16 @@ class InvalidDispatcherClass
     {
         $this->app = $application;
     }
+
+    /**
+     * Publish.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->setDispatcher(new static($app));
+    }
 }

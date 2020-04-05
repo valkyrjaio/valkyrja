@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
@@ -48,8 +49,22 @@ class CacheableEvents extends Events
         parent::__construct($dispatcher, $config);
 
         $this->container = $container;
+    }
 
-        $this->setup();
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $events = new static($app->container(), $app->dispatcher(), (array) $app->config()['event']);
+
+        $app->setEvents($events);
+
+        $events->setup();
     }
 
     /**

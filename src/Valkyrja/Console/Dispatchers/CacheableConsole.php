@@ -18,6 +18,7 @@ use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Config\Config as ConsoleConfig;
+use Valkyrja\Console\Console as Contract;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
@@ -39,26 +40,29 @@ class CacheableConsole extends Console
     use Cacheable;
 
     /**
-     * Console constructor.
+     * Publish the provider.
      *
-     * @param Container  $container
-     * @param Dispatcher $dispatcher
-     * @param Events     $events
-     * @param PathParser $pathParser
-     * @param array      $config
-     * @param bool       $debug
+     * @param Container $container The container
+     *
+     * @return void
      */
-    public function __construct(
-        Container $container,
-        Dispatcher $dispatcher,
-        Events $events,
-        PathParser $pathParser,
-        array $config,
-        bool $debug = false
-    ) {
-        parent::__construct($container, $dispatcher, $events, $pathParser, $config, $debug);
+    public static function publish(Container $container): void
+    {
+        $config = $container->getSingleton('config');
 
-        $this->setup();
+        $container->setSingleton(
+            Contract::class,
+            $console = new static(
+                $container,
+                $container->getSingleton(Dispatcher::class),
+                $container->getSingleton(Events::class),
+                $container->getSingleton(PathParser::class),
+                (array) $config['console'],
+                $config['app']['debug'],
+            )
+        );
+
+        $console->setup();
     }
 
     /**

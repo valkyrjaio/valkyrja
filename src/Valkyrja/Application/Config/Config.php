@@ -103,21 +103,21 @@ class Config extends Model
     public string $key;
 
     /**
-     * The container class.
+     * The container provider.
      *
      * @var string
      */
     public string $container;
 
     /**
-     * The dispatcher class.
+     * The dispatcher provider.
      *
      * @var string
      */
     public string $dispatcher;
 
     /**
-     * The events manager class.
+     * The events manager provider.
      *
      * @var string
      */

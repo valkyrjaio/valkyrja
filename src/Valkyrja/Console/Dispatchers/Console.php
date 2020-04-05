@@ -165,7 +165,7 @@ class Console implements Contract
 
         $container->setSingleton(
             Contract::class,
-            $console = new static(
+            new static(
                 $container,
                 $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),

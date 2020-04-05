@@ -37,4 +37,16 @@ class InvalidEventsClass
     {
         $this->app = $application;
     }
+
+    /**
+     * Publish.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->setEvents(new static($app));
+    }
 }

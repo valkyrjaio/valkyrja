@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Dispatchers;
 
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
@@ -27,17 +28,20 @@ class CacheableContainer extends Container
 {
     use Cacheable;
 
-    /**¬
-     * CacheableContainer constructor.
+    /**
+     * Publish the provider.
      *
-     * @param array $config
-     * @param bool  $debug
+     * @param Application $app The application
+     *
+     * @return void
      */
-    public function __construct(array $config, bool $debug = false)
+    public static function publish(Application $app): void
     {
-        parent::__construct($config, $debug);
+        $container = new static((array) $app->config()['container'], $app->debug());
 
-        $this->setup();
+        $app->setContainer($container);
+
+        $container->setup();
     }
 
     /**

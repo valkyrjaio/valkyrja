@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Dispatchers;
 
 use RuntimeException;
+use Valkyrja\Application\Application;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
+use Valkyrja\Support\Providers\Provides;
 
 /**
  * Class Container.
@@ -26,6 +28,7 @@ use Valkyrja\Support\Providers\ProvidersAwareTrait;
  */
 class Container implements Contract
 {
+    use Provides;
     use ProvidersAwareTrait;
 
     /**
@@ -101,6 +104,32 @@ class Container implements Contract
     {
         $this->config = $config;
         $this->debug  = $debug;
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return array
+     */
+    public static function provides(): array
+    {
+        return [
+            Contract::class,
+        ];
+    }
+
+    /**
+     * Publish the provider.
+     *
+     * @param Application $app The application
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $container = new static((array) $app->config()['container'], $app->debug());
+
+        $app->setContainer($container);
     }
 
     /**

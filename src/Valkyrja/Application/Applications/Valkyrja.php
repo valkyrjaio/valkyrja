@@ -15,15 +15,16 @@ namespace Valkyrja\Application\Applications;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
+use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Support\Directory;
+use Valkyrja\Support\Providers\Provider;
 
 use function constant;
 use function date_default_timezone_set;
@@ -283,6 +284,20 @@ class Valkyrja implements Application
     }
 
     /**
+     * Set the container instance.
+     *
+     * @param Container $container The container instance
+     *
+     * @return static
+     */
+    public function setContainer(Container $container): self
+    {
+        self::$container = $container;
+
+        return $this;
+    }
+
+    /**
      * Get the dispatcher instance.
      *
      * @return Dispatcher
@@ -293,6 +308,23 @@ class Valkyrja implements Application
     }
 
     /**
+     * Set the dispatcher instance.
+     *
+     * @param Dispatcher $dispatcher The dispatcher instance
+     *
+     * @return static
+     */
+    public function setDispatcher(Dispatcher $dispatcher): self
+    {
+        self::$dispatcher = $dispatcher;
+
+        // Set the dispatcher instance in the container
+        self::$container->setSingleton(Dispatcher::class, $dispatcher);
+
+        return $this;
+    }
+
+    /**
      * Get the events instance.
      *
      * @return Events
@@ -300,6 +332,23 @@ class Valkyrja implements Application
     public function events(): Events
     {
         return self::$events;
+    }
+
+    /**
+     * Set the events instance.
+     *
+     * @param Events $events The events instance
+     *
+     * @return static
+     */
+    public function setEvents(Events $events): self
+    {
+        self::$events = $events;
+
+        // Set the events instance in the container
+        self::$container->setSingleton(Events::class, $events);
+
+        return $this;
     }
 
     /**
@@ -344,13 +393,12 @@ class Valkyrja implements Application
      */
     protected function getCacheFilePath(): string
     {
-        $envCacheFile  = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
-        $cacheFilePath = Directory::cachePath('config.php');
+        $envCacheFilePath = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
+        $cacheFilePath    = Directory::cachePath('config.php');
 
         // If an env variable for cache file path was set
-        if (null !== $envCacheFile) {
-            $envCacheFilePath = Directory::basePath((string) self::env(EnvKey::CONFIG_CACHE_FILE_PATH));
-            $cacheFilePath    = is_file($envCacheFilePath) ? $envCacheFilePath : $cacheFilePath;
+        if (null !== $envCacheFilePath) {
+            $cacheFilePath = is_file($envCacheFilePath) ? $envCacheFilePath : $cacheFilePath;
         }
 
         return $cacheFilePath;
@@ -394,8 +442,6 @@ class Valkyrja implements Application
         $this->bootstrapExceptionHandler();
         // Bootstrap core functionality
         $this->bootstrapCore();
-        // Bootstrap the container
-        $this->bootstrapContainer();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
     }
@@ -426,19 +472,24 @@ class Valkyrja implements Application
      */
     protected function bootstrapCore(): void
     {
-        // The events class to use from the config
-        $eventsImpl = self::$config['app']['events'];
-        // The container class to use from the config
-        $containerImpl = self::$config['app']['container'];
-        // The dispatcher class to use from the config
-        $dispatcherImpl = self::$config['app']['dispatcher'];
+        // Get the container provider from config
+        /** @var Provider $container */
+        $container = self::$config['app']['container'];
+        // Get the dispatcher provider from config
+        /** @var Provider $dispatcher */
+        $dispatcher = self::$config['app']['dispatcher'];
+        // Get the events provider from config
+        /** @var Provider $events */
+        $events = self::$config['app']['events'];
 
-        // Set the container to a new instance of the container implementation
-        self::$container = new $containerImpl((array) self::$config['container'], $this->debug());
-        // Set the dispatcher to a new instance of the dispatcher implementation
-        self::$dispatcher = new $dispatcherImpl(self::$container);
-        // Set the events to a new instance of the events implementation
-        self::$events = new $eventsImpl(self::$container, self::$dispatcher, (array) self::$config['event']);
+        // Publish the container provider
+        $container::publish($this);
+        // Bootstrap the container
+        $this->bootstrapContainer();
+        // Publish the dispatcher provider
+        $dispatcher::publish($this);
+        // Publish the events provider
+        $events::publish($this);
     }
 
     /**
@@ -456,10 +507,6 @@ class Valkyrja implements Application
         self::$container->setSingleton('config', self::$config);
         // Set the container instance in the container
         self::$container->setSingleton(Container::class, self::$container);
-        // Set the dispatcher instance in the dispatcher
-        self::$container->setSingleton(Dispatcher::class, self::$dispatcher);
-        // Set the events instance in the container
-        self::$container->setSingleton(Events::class, self::$events);
 
         if ($this->debug()) {
             // Set the exception handler instance in the container

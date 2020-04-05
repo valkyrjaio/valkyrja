@@ -139,6 +139,15 @@ interface Application
     public function container(): Container;
 
     /**
+     * Set the container instance.
+     *
+     * @param Container $container The container instance
+     *
+     * @return static
+     */
+    public function setContainer(Container $container): self;
+
+    /**
      * Get the dispatcher instance.
      *
      * @return Dispatcher
@@ -146,11 +155,29 @@ interface Application
     public function dispatcher(): Dispatcher;
 
     /**
+     * Set the dispatcher instance.
+     *
+     * @param Dispatcher $dispatcher The dispatcher instance
+     *
+     * @return static
+     */
+    public function setDispatcher(Dispatcher $dispatcher): self;
+
+    /**
      * Get the events instance.
      *
      * @return Events
      */
     public function events(): Events;
+
+    /**
+     * Set the events instance.
+     *
+     * @param Events $events The events instance
+     *
+     * @return static
+     */
+    public function setEvents(Events $events): self;
 
     /**
      * Get the exception handler instance.

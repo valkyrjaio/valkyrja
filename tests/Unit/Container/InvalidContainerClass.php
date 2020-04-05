@@ -37,4 +37,16 @@ class InvalidContainerClass
     {
         $this->app = $application;
     }
+
+    /**
+     * Publish.
+     *
+     * @param Application $app
+     *
+     * @return void
+     */
+    public static function publish(Application $app): void
+    {
+        $app->setContainer(new static($app));
+    }
 }
