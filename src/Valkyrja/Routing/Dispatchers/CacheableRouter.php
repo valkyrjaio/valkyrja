@@ -44,7 +44,7 @@ class CacheableRouter extends Router
 
         $container->setSingleton(
             Contract::class,
-            $router = new static(
+            new static(
                 $container->getSingleton(Container::class),
                 $dispatcher = $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
