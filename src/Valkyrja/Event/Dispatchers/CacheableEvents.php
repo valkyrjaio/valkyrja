@@ -11,31 +11,46 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Cacheables;
+namespace Valkyrja\Event\Dispatchers;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
+use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Config\Config as EventConfig;
-use Valkyrja\Event\Listener;
 use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
- * Trait CacheableEvents.
+ * Class CacheableEvents.
  *
  * @author Melech Mizrachi
- *
- * @property Application $app
  */
-trait CacheableEvents
+class CacheableEvents extends Events
 {
     use Cacheable;
 
     /**
-     * The event listeners.
+     * The container.
      *
-     * @var Listener[][]
+     * @var Container
      */
-    protected static array $events = [];
+    protected Container $container;
+
+    /**
+     * Events constructor.
+     *
+     * @param Container  $container  The container
+     * @param Dispatcher $dispatcher The dispatcher
+     * @param array      $config     The config
+     */
+    public function __construct(Container $container, Dispatcher $dispatcher, array $config)
+    {
+        parent::__construct($dispatcher, $config);
+
+        $this->container = $container;
+
+        $this->setup();
+    }
 
     /**
      * Get the config.
@@ -44,7 +59,7 @@ trait CacheableEvents
      */
     protected function getConfig()
     {
-        return $this->app->config()['event'];
+        return $this->config;
     }
 
     /**
@@ -81,7 +96,7 @@ trait CacheableEvents
     protected function setupAnnotations($config): void
     {
         /** @var ListenerAnnotator $containerAnnotations */
-        $containerAnnotations = $this->app->container()->getSingleton(ListenerAnnotator::class);
+        $containerAnnotations = $this->container->getSingleton(ListenerAnnotator::class);
 
         // Get all the annotated listeners from the list of classes
         // Iterate through the listeners
@@ -105,14 +120,4 @@ trait CacheableEvents
 
         return $config;
     }
-
-    /**
-     * Add an event listener.
-     *
-     * @param string   $event    The event
-     * @param Listener $listener The event listener
-     *
-     * @return void
-     */
-    abstract public function listen(string $event, Listener $listener): void;
 }

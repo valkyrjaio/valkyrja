@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing;
 
-use Valkyrja\Support\Cacheable;
-
 /**
  * Interface Collection.
  *
  * @author Melech Mizrachi
  */
-interface Collection extends Cacheable
+interface Collection
 {
     /**
      * Add a route.
@@ -34,7 +32,7 @@ interface Collection extends Cacheable
     /**
      * Get a route.
      *
-     * @param string $path The path
+     * @param string      $path   The path
      * @param string|null $method [optional] The request method
      *
      * @return Route|null
@@ -46,7 +44,7 @@ interface Collection extends Cacheable
     /**
      * Determine if a route exists.
      *
-     * @param string $path The path
+     * @param string      $path   The path
      * @param string|null $method [optional] The request method
      *
      * @return bool

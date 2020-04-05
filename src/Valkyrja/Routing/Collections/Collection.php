@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
-use Valkyrja\Routing\Cacheables\CacheableCollection;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
@@ -21,18 +21,16 @@ use Valkyrja\Routing\Route;
 use function array_merge;
 use function json_encode;
 use function md5;
-use function Valkyrja\app;
 
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class RouteCollection.
+ * Class Collection.
  *
  * @author Melech Mizrachi
  */
 class Collection implements CollectionContract
 {
-    use CacheableCollection;
     use CollectionHelpers;
 
     /**
@@ -64,6 +62,13 @@ class Collection implements CollectionContract
     protected array $named = [];
 
     /**
+     * The dispatcher.
+     *
+     * @var Dispatcher
+     */
+    protected Dispatcher $dispatcher;
+
+    /**
      * The route matcher.
      *
      * @var Matcher
@@ -71,15 +76,17 @@ class Collection implements CollectionContract
     protected Matcher $matcher;
 
     /**
-     * RouteCollection constructor.
+     * Collection constructor.
      *
-     * @param Matcher $matcher
+     * @param Dispatcher $dispatcher
+     * @param Matcher    $matcher
      */
-    public function __construct(Matcher $matcher)
+    public function __construct(Dispatcher $dispatcher, Matcher $matcher)
     {
         $matcher->setCollection($this);
 
-        $this->matcher = $matcher;
+        $this->dispatcher = $dispatcher;
+        $this->matcher    = $matcher;
     }
 
     /**
@@ -94,7 +101,7 @@ class Collection implements CollectionContract
         // Verify the route
         $this->verifyRoute($route);
         // Verify the dispatch
-        app()->dispatcher()->verifyDispatch($route);
+        $this->dispatcher->verifyDispatch($route);
 
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath($this->matcher->trimPath($route->getPath()));

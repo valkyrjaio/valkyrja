@@ -396,8 +396,6 @@ class Valkyrja implements Application
         $this->bootstrapCore();
         // Bootstrap the container
         $this->bootstrapContainer();
-        // Bootstrap setup
-        $this->bootstrapSetup();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
     }
@@ -435,12 +433,12 @@ class Valkyrja implements Application
         // The dispatcher class to use from the config
         $dispatcherImpl = self::$config['app']['dispatcher'];
 
-        // Set the events to a new instance of the events implementation
-        self::$events = new $eventsImpl($this);
         // Set the container to a new instance of the container implementation
-        self::$container = new $containerImpl(self::$events, (array) self::$config['container'], $this->debug());
+        self::$container = new $containerImpl((array) self::$config['container'], $this->debug());
         // Set the dispatcher to a new instance of the dispatcher implementation
-        self::$dispatcher = new $dispatcherImpl($this);
+        self::$dispatcher = new $dispatcherImpl(self::$container);
+        // Set the events to a new instance of the events implementation
+        self::$events = new $eventsImpl(self::$container, self::$dispatcher, (array) self::$config['event']);
     }
 
     /**
@@ -467,19 +465,6 @@ class Valkyrja implements Application
             // Set the exception handler instance in the container
             self::$container->setSingleton(ExceptionHandler::class, self::$exceptionHandler);
         }
-    }
-
-    /**
-     * Bootstrap main components setup.
-     *
-     * @return void
-     */
-    protected function bootstrapSetup(): void
-    {
-        // Setup the events
-        // NOTE: Not done in events construct to avoid container dependency
-        // not existing within setup (for ListenerAnnotations)
-        self::$events->setup();
     }
 
     /**

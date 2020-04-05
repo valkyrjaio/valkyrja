@@ -15,7 +15,9 @@ namespace Valkyrja\Tests\Unit\Dispatcher;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
-use Valkyrja\Application\Applications\Valkyrja;
+use Valkyrja\Container\Config\Config;
+use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Container\Enums\ConfigValue;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
@@ -77,7 +79,7 @@ class DispatcherTest extends TestCase
     {
         parent::setUp();
 
-        $this->class = new Dispatcher(new Valkyrja());
+        $this->class = new Dispatcher(new Container((array) new Config(ConfigValue::$defaults), true));
     }
 
     /**

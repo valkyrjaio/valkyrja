@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event;
 
-use Valkyrja\Support\Cacheable;
-
 /**
  * Interface Events.
  *
  * @author Melech Mizrachi
  */
-interface Events extends Cacheable
+interface Events
 {
     /**
      * Add an event listener.

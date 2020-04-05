@@ -11,23 +11,54 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Cacheables;
+namespace Valkyrja\Routing\Collections;
 
-use Valkyrja\Routing\Config\Config as RoutingConfig;
+use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
+use Valkyrja\Routing\Config\Cache;
+use Valkyrja\Routing\Config\Config as RoutingConfig;
+use Valkyrja\Routing\Matcher;
 use Valkyrja\Support\Cacheables\Cacheable;
 
-use function Valkyrja\config;
-use function Valkyrja\container;
-
 /**
- * Trait CacheableCollection.
+ * Class CacheableCollection.
  *
  * @author Melech Mizrachi
  */
-trait CacheableCollection
+class CacheableCollection extends Collection
 {
     use Cacheable;
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * RouteCollection constructor.
+     *
+     * @param Container  $container
+     * @param Dispatcher $dispatcher
+     * @param Matcher    $matcher
+     * @param array      $config
+     */
+    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher, array $config)
+    {
+        parent::__construct($dispatcher, $matcher);
+
+        $this->container = $container;
+        $this->config    = $config;
+    }
 
     /**
      * Get the config.
@@ -36,7 +67,7 @@ trait CacheableCollection
      */
     protected function getConfig()
     {
-        return config()['routing'];
+        return $this->config;
     }
 
     /**
@@ -84,7 +115,7 @@ trait CacheableCollection
     protected function setupAnnotations($config): void
     {
         /** @var RouteAnnotator $routeAnnotations */
-        $routeAnnotations = container()->getSingleton(RouteAnnotator::class);
+        $routeAnnotations = $this->container->getSingleton(RouteAnnotator::class);
 
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes

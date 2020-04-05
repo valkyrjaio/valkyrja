@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Event\Cacheables;
+namespace Valkyrja\Console\Config;
 
 use Valkyrja\Config\Config;
 
@@ -23,9 +23,30 @@ use Valkyrja\Config\Config;
 class Cache extends Config
 {
     /**
-     * The base64 encoded events.
+     * The base64 encoded serialized commands.
+     *
+     * @var string
+     */
+    public string $commands;
+
+    /**
+     * The command paths.
      *
      * @var array
      */
-    public array $events;
+    public array $paths;
+
+    /**
+     * The named commands.
+     *
+     * @var array
+     */
+    public array $namedCommands;
+
+    /**
+     * The provided commands.
+     *
+     * @var array
+     */
+    public array $provided;
 }

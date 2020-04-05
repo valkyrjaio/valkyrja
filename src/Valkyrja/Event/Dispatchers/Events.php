@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Event\Cacheables\CacheableEvents;
 use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as EventsContract;
 use Valkyrja\Event\Listener;
@@ -35,23 +34,37 @@ use function is_array;
  */
 class Events implements EventsContract
 {
-    use CacheableEvents;
+    /**
+     * The event listeners.
+     *
+     * @var Listener[][]
+     */
+    protected static array $events = [];
 
     /**
-     * The application.
+     * The dispatcher.
      *
-     * @var Application
+     * @var Dispatcher
      */
-    protected Application $app;
+    protected Dispatcher $dispatcher;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
 
     /**
      * Events constructor.
      *
-     * @param Application $application The application
+     * @param Dispatcher $dispatcher The dispatcher
+     * @param array      $config     The config
      */
-    public function __construct(Application $application)
+    public function __construct(Dispatcher $dispatcher, array $config)
     {
-        $this->app = $application;
+        $this->dispatcher = $dispatcher;
+        $this->config     = $config;
     }
 
     /**
@@ -72,7 +85,7 @@ class Events implements EventsContract
     {
         $this->add($event);
 
-        $this->app->dispatcher()->verifyDispatch($listener);
+        $this->dispatcher->verifyDispatch($listener);
 
         // If this listener has an id
         if (null !== $listener->getId()) {
@@ -226,7 +239,7 @@ class Events implements EventsContract
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
             // Attempt to dispatch the event listener using any one of the callable options
-            $dispatch = $this->app->dispatcher()->dispatch($this->ensureListener($listener), $arguments);
+            $dispatch = $this->dispatcher->dispatch($this->ensureListener($listener), $arguments);
 
             if (null !== $dispatch) {
                 $responses[] = $dispatch;

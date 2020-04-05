@@ -11,20 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Cacheables;
+namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
+use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Config\Config as ConsoleConfig;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
-use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
-use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
-use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
-use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
+use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Events;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Support\Cacheables\Cacheable;
-use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 use function base64_decode;
 use function base64_encode;
@@ -32,49 +30,36 @@ use function serialize;
 use function unserialize;
 
 /**
- * Trait CacheableConsole.
+ * Class CacheableConsole.
  *
  * @author Melech Mizrachi
  */
-trait CacheableConsole
+class CacheableConsole extends Console
 {
     use Cacheable;
-    use ProvidersAwareTrait;
 
     /**
-     * The commands.
+     * Console constructor.
      *
-     * @var Command[]
+     * @param Container  $container
+     * @param Dispatcher $dispatcher
+     * @param Events     $events
+     * @param PathParser $pathParser
+     * @param array      $config
+     * @param bool       $debug
      */
-    protected static array $commands = [];
+    public function __construct(
+        Container $container,
+        Dispatcher $dispatcher,
+        Events $events,
+        PathParser $pathParser,
+        array $config,
+        bool $debug = false
+    ) {
+        parent::__construct($container, $dispatcher, $events, $pathParser, $config, $debug);
 
-    /**
-     * The command paths.
-     *
-     * @var string[]
-     */
-    protected static array $paths = [];
-
-    /**
-     * The commands by name.
-     *
-     * @var string[]
-     */
-    protected static array $namedCommands = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * Whether to run in debug or not.
-     *
-     * @var bool
-     */
-    protected bool $debug = false;
+        $this->setup();
+    }
 
     /**
      * Get the config.
@@ -191,19 +176,4 @@ trait CacheableConsole
             $this->register($provider);
         }
     }
-
-    /**
-     * Add a new command.
-     *
-     * @param Command $command The command
-     *
-     * @throws InvalidDispatchCapabilityException
-     * @throws InvalidFunctionException
-     * @throws InvalidMethodException
-     * @throws InvalidPropertyException
-     * @throws InvalidClosureException
-     *
-     * @return void
-     */
-    abstract public function addCommand(Command $command): void;
 }

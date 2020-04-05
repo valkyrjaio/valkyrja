@@ -15,15 +15,10 @@ namespace Valkyrja\Container\Dispatchers;
 
 use RuntimeException;
 use Valkyrja\Container\Container as Contract;
-use Valkyrja\Container\Events\AfterServiceMade;
-use Valkyrja\Container\Events\BeforeServiceMade;
-use Valkyrja\Container\Events\ServiceMadeSingleton;
 use Valkyrja\Container\Service;
 use Valkyrja\Event\Events;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
-
-use function Valkyrja\config;
 
 /**
  * Class Container.
@@ -33,13 +28,6 @@ use function Valkyrja\config;
 class Container implements Contract
 {
     use ProvidersAwareTrait;
-
-    /**
-     * The events.
-     *
-     * @var Events
-     */
-    protected Events $events;
 
     /**
      * The aliases.
@@ -107,13 +95,11 @@ class Container implements Contract
     /**
      * Container constructor.
      *
-     * @param Events $events
      * @param array  $config
      * @param bool   $debug
      */
-    public function __construct(Events $events, array $config, bool $debug = false)
+    public function __construct(array $config, bool $debug = false)
     {
-        $this->events = $events;
         $this->config = $config;
         $this->debug  = $debug;
     }
@@ -311,18 +297,11 @@ class Container implements Contract
     {
         $service = self::$services[$serviceId];
 
-        // Dispatch before make event
-        $this->events->trigger(BeforeServiceMade::class, [$serviceId, $service, $arguments]);
-
         // Make the object by dispatching the service
         $made = $service::make($this, $arguments);
 
-        // Dispatch after make event
-        $this->events->trigger(AfterServiceMade::class, [$serviceId, $made]);
-
         // If the service is a singleton
         if ($service->isSingleton()) {
-            $this->events->trigger(ServiceMadeSingleton::class, [$serviceId, $made]);
             // Set singleton
             $this->setSingleton($serviceId, $made);
         }

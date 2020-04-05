@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
-use Valkyrja\Application\Application;
+use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as DispatcherContract;
 use Valkyrja\Dispatcher\Enums\Constant;
@@ -33,21 +33,13 @@ class Dispatcher implements DispatcherContract
     use ClassDispatcher;
 
     /**
-     * The application.
-     *
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
      * Dispatcher constructor.
      *
-     * @param Application $application The application
+     * @param Container $container The container
      */
-    public function __construct(Application $application)
+    public function __construct(Container $container)
     {
-        $this->app       = $application;
-        $this->container = $application->container();
+        $this->container = $container;
     }
 
     /**

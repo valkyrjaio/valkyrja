@@ -34,7 +34,7 @@ use Valkyrja\Routing\Helpers\RouteMethods;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Router as RouterContract;
+use Valkyrja\Routing\Router as Contract;
 use Valkyrja\View\View;
 
 use function is_array;
@@ -49,7 +49,7 @@ use function substr;
  *
  * @author Melech Mizrachi
  */
-class Router implements RouterContract
+class Router implements Contract
 {
     use Provides;
     use RouteGroup;
@@ -58,7 +58,7 @@ class Router implements RouterContract
     /**
      * The route collection.
      *
-     * @var Collection|null
+     * @var Collection
      */
     protected static Collection $collection;
 
@@ -120,7 +120,7 @@ class Router implements RouterContract
      * @param PathGenerator   $pathParser
      * @param Request         $request
      * @param ResponseFactory $responseFactory
-     * @param Collection|null $collection
+     * @param Collection      $collection
      * @param array           $config
      */
     public function __construct(
@@ -152,7 +152,7 @@ class Router implements RouterContract
     public static function provides(): array
     {
         return [
-            RouterContract::class,
+            Contract::class,
         ];
     }
 
@@ -168,20 +168,18 @@ class Router implements RouterContract
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            RouterContract::class,
-            $router = new static(
+            Contract::class,
+            new static(
                 $container->getSingleton(Container::class),
-                $container->getSingleton(Dispatcher::class),
+                $dispatcher = $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
                 $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
-                new CollectionClass(new MatcherClass()),
+                new CollectionClass($dispatcher, new MatcherClass()),
                 (array) $config['routing']
             )
         );
-
-        $router->setup();
     }
 
     /**
@@ -189,7 +187,7 @@ class Router implements RouterContract
      *
      * @return Collection
      */
-    public function collection(): Collection
+    public function getCollection(): Collection
     {
         return self::$collection;
     }
@@ -199,7 +197,7 @@ class Router implements RouterContract
      *
      * @return Matcher
      */
-    public function matcher(): Matcher
+    public function getMatcher(): Matcher
     {
         return self::$collection->matcher();
     }
@@ -368,29 +366,6 @@ class Router implements RouterContract
         $route = $this->getRouteByPath($uri);
 
         return $route instanceof Route;
-    }
-
-    /**
-     * Set the data from cache.
-     *
-     * @param bool $force    [optional] Whether to force setup
-     * @param bool $useCache [optional] Whether to use cache
-     *
-     * @return void
-     */
-    public function setup(bool $force = false, bool $useCache = true): void
-    {
-        self::$collection->setup($force, $useCache);
-    }
-
-    /**
-     * Get a cacheable representation of the data.
-     *
-     * @return object
-     */
-    public function getCacheable(): object
-    {
-        return self::$collection->getCacheable();
     }
 
     /**

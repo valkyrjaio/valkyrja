@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use Valkyrja\Config\Enums\ConfigKeyPart;
-use Valkyrja\Console\Cacheables\CacheableConsole;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Exceptions\CommandNotFound;
@@ -22,6 +21,7 @@ use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
 use Valkyrja\Console\Support\Provider;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -30,7 +30,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Event\Events;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Container\Support\Provides;
+use Valkyrja\Support\Providers\ProvidersAwareTrait;
 
 use function preg_match;
 
@@ -41,7 +41,7 @@ use function preg_match;
  */
 class Console implements Contract
 {
-    use CacheableConsole {
+    use ProvidersAwareTrait {
         register as traitRegister;
     }
     use Provides;
@@ -50,6 +50,34 @@ class Console implements Contract
      * The run method to call within command handlers.
      */
     public const RUN_METHOD = 'run';
+
+    /**
+     * The commands.
+     *
+     * @var Command[]
+     */
+    protected static array $commands = [];
+
+    /**
+     * The command paths.
+     *
+     * @var string[]
+     */
+    protected static array $paths = [];
+
+    /**
+     * The commands by name.
+     *
+     * @var string[]
+     */
+    protected static array $namedCommands = [];
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
 
     /**
      * The dispatcher.
@@ -78,6 +106,13 @@ class Console implements Contract
      * @var array
      */
     protected array $config;
+
+    /**
+     * Whether to run in debug or not.
+     *
+     * @var bool
+     */
+    protected bool $debug = false;
 
     /**
      * Console constructor.
@@ -139,8 +174,6 @@ class Console implements Contract
                 $config['app']['debug'],
             )
         );
-
-        $console->setup();
     }
 
     /**

@@ -72,7 +72,7 @@ class Optimize extends Commander
         $containerCache = container()->getCacheable();
         $consoleCache   = console()->getCacheable();
         $eventsCache    = events()->getCacheable();
-        $routesCache    = router()->getCacheable();
+        $routesCache    = router()->getCollection()->getCacheable();
 
         $configCache['container']['cache'] = $containerCache;
         $configCache['console']['cache']   = $consoleCache;

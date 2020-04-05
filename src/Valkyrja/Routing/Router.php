@@ -15,28 +15,27 @@ namespace Valkyrja\Routing;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Support\Cacheable;
 
 /**
  * Interface Router.
  *
  * @author Melech Mizrachi
  */
-interface Router extends Cacheable, RouteGroup, RouteMethods
+interface Router extends RouteGroup, RouteMethods
 {
     /**
      * Get the route collection.
      *
      * @return Collection
      */
-    public function collection(): Collection;
+    public function getCollection(): Collection;
 
     /**
      * Get the route matcher.
      *
      * @return Matcher
      */
-    public function matcher(): Matcher;
+    public function getMatcher(): Matcher;
 
     /**
      * Set a single route.

@@ -15,10 +15,7 @@ namespace Valkyrja\Application\Enums;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
-use Valkyrja\Container\Dispatchers\CacheableContainer;
-use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Event\Dispatchers\Events;
-use Valkyrja\Exception\Handlers\ExceptionHandler;
+use Valkyrja\Container\Enums\Provider;
 
 /**
  * Enum ConfigValue.
@@ -33,10 +30,10 @@ final class ConfigValue
     public const TIMEZONE          = 'UTC';
     public const VERSION           = Application::VERSION;
     public const KEY               = 'some_secret_app_key';
-    public const CONTAINER         = CacheableContainer::class;
-    public const DISPATCHER        = Dispatcher::class;
-    public const EVENTS            = Events::class;
-    public const EXCEPTION_HANDLER = ExceptionHandler::class;
+    public const CONTAINER         = Provider::CONTAINER;
+    public const DISPATCHER        = Provider::DISPATCHER;
+    public const EVENTS            = Provider::EVENTS;
+    public const EXCEPTION_HANDLER = Provider::EXCEPTION_HANDLER;
 
     public static array $defaults = [
         CKP::ENV               => self::ENV,

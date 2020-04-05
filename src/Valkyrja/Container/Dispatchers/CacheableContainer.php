@@ -16,8 +16,6 @@ namespace Valkyrja\Container\Dispatchers;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
-use Valkyrja\Container\CacheableContainer as Contract;
-use Valkyrja\Event\Events;
 use Valkyrja\Support\Cacheables\Cacheable;
 
 /**
@@ -25,20 +23,19 @@ use Valkyrja\Support\Cacheables\Cacheable;
  *
  * @author Melech Mizrachi
  */
-class CacheableContainer extends Container implements Contract
+class CacheableContainer extends Container
 {
     use Cacheable;
 
-    /**
+    /**¬
      * CacheableContainer constructor.
      *
-     * @param Events $events
-     * @param array  $config
-     * @param bool   $debug
+     * @param array $config
+     * @param bool  $debug
      */
-    public function __construct(Events $events, array $config, bool $debug = false)
+    public function __construct(array $config, bool $debug = false)
     {
-        parent::__construct($events, $config, $debug);
+        parent::__construct($config, $debug);
 
         $this->setup();
     }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Console;
 
 use Valkyrja\Console\Exceptions\CommandNotFound;
-use Valkyrja\Support\Cacheable;
 use Valkyrja\Support\ProvidersAware;
 
 /**
@@ -22,7 +21,7 @@ use Valkyrja\Support\ProvidersAware;
  *
  * @author Melech Mizrachi
  */
-interface Console extends Cacheable, ProvidersAware
+interface Console extends ProvidersAware
 {
     /**
      * Add a new command.

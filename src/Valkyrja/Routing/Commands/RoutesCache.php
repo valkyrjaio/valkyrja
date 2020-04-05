@@ -61,7 +61,7 @@ class RoutesCache extends Commander
             true
         );
 
-        $cache = router()->getCacheable();
+        $cache = router()->getCollection()->getCacheable();
 
         // Get the results of the cache attempt
         $result = file_put_contents(
