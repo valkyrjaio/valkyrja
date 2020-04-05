@@ -52,7 +52,6 @@ class CookieSession extends Session
      * @param array   $config      The config
      * @param string  $sessionId   [optional] The session id
      * @param string  $sessionName [optional] The session name
-     *
      */
     public function __construct(
         Crypt $crypt,

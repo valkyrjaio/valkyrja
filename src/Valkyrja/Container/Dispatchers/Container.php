@@ -16,7 +16,6 @@ namespace Valkyrja\Container\Dispatchers;
 use RuntimeException;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
-use Valkyrja\Event\Events;
 use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 

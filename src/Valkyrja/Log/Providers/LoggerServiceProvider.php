@@ -58,6 +58,7 @@ class LoggerServiceProvider extends Provider
      * @param Container $container The container
      *
      * @throws Exception
+     *
      * @return void
      */
     public static function publish(Container $container): void
