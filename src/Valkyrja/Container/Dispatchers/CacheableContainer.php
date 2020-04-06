@@ -45,6 +45,25 @@ class CacheableContainer extends Container
     }
 
     /**
+     * Get a cacheable representation of the service container.
+     *
+     * @return Cache|object
+     */
+    public function getCacheable(): object
+    {
+        $this->setup(true, false);
+
+        $config                  = new Cache();
+        $config->aliases         = self::$aliases;
+        $config->contextServices = self::$contextServices;
+        $config->provided        = self::$provided;
+        $config->services        = self::$services;
+        $config->singletons      = self::$singletons;
+
+        return $config;
+    }
+
+    /**
      * Get the config.
      *
      * @return ContainerConfig|array
@@ -52,6 +71,17 @@ class CacheableContainer extends Container
     protected function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Before setup.
+     *
+     * @param ContainerConfig|array $config
+     *
+     * @return void
+     */
+    protected function beforeSetup($config): void
+    {
     }
 
     /**
@@ -124,25 +154,6 @@ class CacheableContainer extends Container
     }
 
     /**
-     * Get a cacheable representation of the service container.
-     *
-     * @return Cache|object
-     */
-    public function getCacheable(): object
-    {
-        $this->setup(true, false);
-
-        $config                  = new Cache();
-        $config->aliases         = self::$aliases;
-        $config->contextServices = self::$contextServices;
-        $config->provided        = self::$provided;
-        $config->services        = self::$services;
-        $config->singletons      = self::$singletons;
-
-        return $config;
-    }
-
-    /**
      * Setup service providers.
      *
      * @param ContainerConfig|array $config
@@ -165,5 +176,16 @@ class CacheableContainer extends Container
         foreach ($config['devProviders'] as $provider) {
             $this->register($provider);
         }
+    }
+
+    /**
+     * After setup.
+     *
+     * @param ContainerConfig|array $config
+     *
+     * @return void
+     */
+    protected function afterSetup($config): void
+    {
     }
 }

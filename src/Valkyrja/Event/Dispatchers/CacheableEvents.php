@@ -68,6 +68,21 @@ class CacheableEvents extends Events
     }
 
     /**
+     * Get a cacheable representation of the events.
+     *
+     * @return Cache|object
+     */
+    public function getCacheable(): object
+    {
+        $this->setup(true, false);
+
+        $config         = new Cache();
+        $config->events = self::$events;
+
+        return $config;
+    }
+
+    /**
      * Get the config.
      *
      * @return EventConfig|array
@@ -75,6 +90,17 @@ class CacheableEvents extends Events
     protected function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Before setup.
+     *
+     * @param EventConfig|array $config
+     *
+     * @return void
+     */
+    protected function beforeSetup($config): void
+    {
     }
 
     /**
@@ -122,17 +148,13 @@ class CacheableEvents extends Events
     }
 
     /**
-     * Get a cacheable representation of the events.
+     * After setup.
      *
-     * @return Cache|object
+     * @param EventConfig|array $config
+     *
+     * @return void
      */
-    public function getCacheable(): object
+    protected function afterSetup($config): void
     {
-        $this->setup(true, false);
-
-        $config         = new Cache();
-        $config->events = self::$events;
-
-        return $config;
     }
 }

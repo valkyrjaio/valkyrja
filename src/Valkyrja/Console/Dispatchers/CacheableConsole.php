@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
+use Valkyrja\Config\Config;
 use Valkyrja\Console\Annotation\CommandAnnotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
@@ -66,6 +67,24 @@ class CacheableConsole extends Console
     }
 
     /**
+     * Get a cacheable representation of the commands.
+     *
+     * @return ConsoleConfig|object
+     */
+    public function getCacheable(): object
+    {
+        $this->setup(true, false);
+
+        $config                = new Cache();
+        $config->commands      = base64_encode(serialize(self::$commands));
+        $config->paths         = self::$paths;
+        $config->namedCommands = self::$namedCommands;
+        $config->provided      = self::$provided;
+
+        return $config;
+    }
+
+    /**
      * Get the config.
      *
      * @return ConsoleConfig|array
@@ -73,6 +92,17 @@ class CacheableConsole extends Console
     protected function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Before setup.
+     *
+     * @param Config|array $config
+     *
+     * @return void
+     */
+    protected function beforeSetup($config): void
+    {
     }
 
     /**
@@ -139,24 +169,6 @@ class CacheableConsole extends Console
     }
 
     /**
-     * Get a cacheable representation of the commands.
-     *
-     * @return Cache|object
-     */
-    public function getCacheable(): object
-    {
-        $this->setup(true, false);
-
-        $config                = new Cache();
-        $config->commands      = base64_encode(serialize(self::$commands));
-        $config->paths         = self::$paths;
-        $config->namedCommands = self::$namedCommands;
-        $config->provided      = self::$provided;
-
-        return $config;
-    }
-
-    /**
      * Setup command providers.
      *
      * @param ConsoleConfig|array $config
@@ -179,5 +191,16 @@ class CacheableConsole extends Console
         foreach ($config['devProviders'] as $provider) {
             $this->register($provider);
         }
+    }
+
+    /**
+     * After setup.
+     *
+     * @param ConsoleConfig|array $config
+     *
+     * @return void
+     */
+    protected function afterSetup($config): void
+    {
     }
 }

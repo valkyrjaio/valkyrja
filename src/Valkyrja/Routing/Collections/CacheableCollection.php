@@ -61,6 +61,24 @@ class CacheableCollection extends Collection
     }
 
     /**
+     * Get a cacheable representation of the data.
+     *
+     * @return Cache
+     */
+    public function getCacheable(): object
+    {
+        $this->setup(true, false);
+
+        $config          = new Cache();
+        $config->routes  = $this->routes;
+        $config->static  = $this->static;
+        $config->dynamic = $this->dynamic;
+        $config->named   = $this->named;
+
+        return $config;
+    }
+
+    /**
      * Get the config.
      *
      * @return RoutingConfig|array
@@ -126,20 +144,13 @@ class CacheableCollection extends Collection
     }
 
     /**
-     * Get a cacheable representation of the data.
+     * After setup.
      *
-     * @return Cache
+     * @param RoutingConfig|array $config
+     *
+     * @return void
      */
-    public function getCacheable(): object
+    protected function afterSetup($config): void
     {
-        $this->setup(true, false);
-
-        $config          = new Cache();
-        $config->routes  = $this->routes;
-        $config->static  = $this->static;
-        $config->dynamic = $this->dynamic;
-        $config->named   = $this->named;
-
-        return $config;
     }
 }

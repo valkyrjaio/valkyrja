@@ -95,10 +95,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function beforeSetup($config): void
-    {
-        // Override as necessary
-    }
+    abstract protected function beforeSetup($config): void;
 
     /**
      * Setup from cache.
@@ -107,10 +104,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupFromCache(array $config): void
-    {
-        // Override as necessary
-    }
+    abstract protected function setupFromCache(array $config): void;
 
     /**
      * Set not cached.
@@ -119,10 +113,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupNotCached($config): void
-    {
-        // Override as necessary
-    }
+    abstract protected function setupNotCached($config): void;
 
     /**
      * Set annotations.
@@ -146,22 +137,7 @@ trait Cacheable
      *
      * @return void
      */
-    protected function requireConfig($config): void
-    {
-        require $config['filePath'];
-    }
-
-    /**
-     * Before setup.
-     *
-     * @param Config|array $config
-     *
-     * @return void
-     */
-    protected function afterSetup($config): void
-    {
-        // Override as necessary
-    }
+    abstract protected function setupAnnotations($config): void;
 
     /**
      * Set annotations.
@@ -170,8 +146,17 @@ trait Cacheable
      *
      * @return void
      */
-    protected function setupAnnotations($config): void
+    protected function requireConfig($config): void
     {
-        // Override as necessary
+        require $config['filePath'];
     }
+
+    /**
+     * After setup.
+     *
+     * @param Config|array $config
+     *
+     * @return void
+     */
+    abstract protected function afterSetup($config): void;
 }
