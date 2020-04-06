@@ -18,7 +18,6 @@ use Valkyrja\ORM\DatedEntity;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
-use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\Persister as PersisterContract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -27,7 +26,6 @@ use Valkyrja\ORM\SoftDeleteEntity;
 use function date;
 use function is_array;
 use function is_object;
-
 use function json_encode;
 use function serialize;
 use function spl_object_id;
@@ -181,7 +179,6 @@ class Persister implements PersisterContract
      * @param bool             $defer [optional]
      *
      * @throws ExecuteException
-     * @throws InvalidEntityException
      *
      * @return void
      */
@@ -189,10 +186,6 @@ class Persister implements PersisterContract
     {
         $entity->setDeletedFieldValue(true);
         $entity->setDeletedAtFieldValue($this->getFormattedDate());
-
-        if (! ($entity instanceof Entity)) {
-            throw new InvalidEntityException(SoftDeleteEntity::class . ' must also be an instance of ' . Entity::class);
-        }
 
         $this->save($entity, $defer);
     }

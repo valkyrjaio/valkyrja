@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Matchers;
 
-use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher as RouteMatcherContract;
 use Valkyrja\Routing\Route;
@@ -71,8 +70,7 @@ class Matcher implements RouteMatcherContract
      */
     public function match(string $path, string $method): ?Route
     {
-        $path   = $this->trimPath($path);
-        $method = $method ?? RequestMethod::GET;
+        $path = $this->trimPath($path);
 
         if (null !== $route = $this->matchStatic($path, $method)) {
             return $route;
@@ -93,8 +91,6 @@ class Matcher implements RouteMatcherContract
      */
     public function matchStatic(string $path, string $method): ?Route
     {
-        $route = null;
-
         // Let's check if the route is set in the static routes
         if ($this->collection->hasStatic($path, $method)) {
             return $this->getMatchedStaticRoute($path, $method);

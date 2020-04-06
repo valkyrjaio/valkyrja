@@ -127,7 +127,7 @@ class ORM implements Contract
         /** @var Adapter $adapter */
         $adapter = $this->config['adapters'][$name];
 
-        return self::$adapters[$name] = $adapter::make();
+        return self::$adapters[$name] = $adapter::make($this->config);
     }
 
     /**

@@ -19,6 +19,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
+use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -369,7 +370,7 @@ class Router implements Contract
      */
     public function getRouteByPath(string $path, string $method = null): ?Route
     {
-        return self::$collection->matcher()->match($path, $method);
+        return self::$collection->matcher()->match($path, $method ?? RequestMethod::GET);
     }
 
     /**

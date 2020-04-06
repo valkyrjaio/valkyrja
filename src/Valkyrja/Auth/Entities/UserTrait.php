@@ -183,4 +183,11 @@ trait UserTrait
     {
         return $this->forDataStore();
     }
+
+    /**
+     * Get the entity as an array for saving to the data store.
+     *
+     * @return array
+     */
+    abstract public function forDataStore(): array;
 }

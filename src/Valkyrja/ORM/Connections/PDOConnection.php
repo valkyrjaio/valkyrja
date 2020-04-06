@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Config\Configs\ORM\Connection;
 use Valkyrja\ORM\PDOConnection as ConnectionContract;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Persisters\Persister as PersisterClass;
@@ -30,7 +29,6 @@ use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\ORM\Statement;
 
 use function is_bool;
-use function Valkyrja\config;
 
 /**
  * Class PDOConnection.
@@ -70,7 +68,7 @@ class PDOConnection implements ConnectionContract
     /**
      * The config.
      *
-     * @var Connection|array
+     * @var array
      */
     protected array $config;
 
@@ -78,10 +76,11 @@ class PDOConnection implements ConnectionContract
      * PDOConnection constructor.
      *
      * @param string $connection
+     * @param array  $config
      */
-    public function __construct(string $connection)
+    public function __construct(string $connection, array $config)
     {
-        $this->config    = config()['orm']['connections'][$connection];
+        $this->config    = $config['connections'][$connection];
         $this->persister = new PersisterClass($this);
     }
 

@@ -42,13 +42,6 @@ class Stream implements StreamContract
     use StreamHelpers;
 
     /**
-     * The stream.
-     *
-     * @var resource
-     */
-    protected $stream;
-
-    /**
      * StreamImpl constructor.
      *
      * @param string      $stream The stream

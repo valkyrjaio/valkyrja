@@ -34,34 +34,6 @@ class Collection implements CollectionContract
     use CollectionHelpers;
 
     /**
-     * The routes.
-     *
-     * @var Route[]
-     */
-    protected array $routes = [];
-
-    /**
-     * The static routes.
-     *
-     * @var Route[][]
-     */
-    protected array $static = [];
-
-    /**
-     * The dynamic routes.
-     *
-     * @var Route[][]
-     */
-    protected array $dynamic = [];
-
-    /**
-     * The named routes.
-     *
-     * @var Route[]
-     */
-    protected array $named = [];
-
-    /**
      * The dispatcher.
      *
      * @var Dispatcher
@@ -104,7 +76,7 @@ class Collection implements CollectionContract
         $this->dispatcher->verifyDispatch($route);
 
         // Set the path to the validated cleaned path (/some/path)
-        $route->setPath($this->matcher->trimPath($route->getPath()));
+        $route->setPath($this->matcher->trimPath($route->getPath() ?? ''));
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
         // Set the route to the named

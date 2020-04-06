@@ -75,6 +75,7 @@ class SodiumDecrypter implements Decrypter
 
             return true;
         } catch (CryptException $exception) {
+            // Left empty to default to false
         }
 
         return false;

@@ -28,7 +28,7 @@ use function md5;
 use function serialize;
 use function spl_object_id;
 use function unserialize;
-use function Valkyrja\cache;
+use function Valkyrja\container;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -115,7 +115,7 @@ class CacheRepository extends Repository
     {
         return new static(
             $manager,
-            cache(),
+            container()->getSingleton(Cache::class),
             $entity
         );
     }
@@ -187,7 +187,7 @@ class CacheRepository extends Repository
     {
         $cacheKey = $this->getCacheKey();
 
-        if ($results = $this->store->has($cacheKey)) {
+        if ($results = $this->store->get($cacheKey)) {
             return unserialize($results, ['allowed_classes' => [Entity::class]]);
         }
 

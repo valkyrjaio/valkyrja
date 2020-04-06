@@ -293,7 +293,7 @@ trait JsonDataTrait
             $data[$this->itemsKey] = $this->items;
         }
 
-        if ($this->total) {
+        if ($this->total !== null) {
             $data['total'] = $this->total;
         }
 

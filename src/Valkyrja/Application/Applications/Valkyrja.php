@@ -23,6 +23,10 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\Exceptions\HttpRedirectException;
+use Valkyrja\Http\Response;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
 
@@ -362,6 +366,82 @@ class Valkyrja implements Application
     }
 
     /**
+     * Get the environment with which the application is running in.
+     *
+     * @return string
+     */
+    public function environment(): string
+    {
+        return self::$config['app']['env'];
+    }
+
+    /**
+     * Whether the application is running in debug mode or not.
+     *
+     * @return bool
+     */
+    public function debug(): bool
+    {
+        return self::$config['app']['debug'];
+    }
+
+    /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version(): string
+    {
+        return static::VERSION;
+    }
+
+    /**
+     * Abort the application due to error.
+     *
+     * @param int      $statusCode The status code to use
+     * @param string   $message    [optional] The Exception message to throw
+     * @param array    $headers    [optional] The headers to send
+     * @param int      $code       [optional] The Exception code
+     * @param Response $response   [optional] The Response to send
+     *
+     * @throws HttpException
+     *
+     * @return void
+     */
+    public function abort(
+        int $statusCode = StatusCode::NOT_FOUND,
+        string $message = '',
+        array $headers = [],
+        int $code = 0,
+        Response $response = null
+    ): void {
+        throw new self::$config['routing']['httpException'](
+            $statusCode,
+            $message,
+            null,
+            $headers,
+            $code,
+            $response
+        );
+    }
+
+    /**
+     * Redirect to a given uri, and abort the application.
+     *
+     * @param string $uri        [optional] The URI to redirect to
+     * @param int    $statusCode [optional] The response status code
+     * @param array  $headers    [optional] An array of response headers
+     *
+     * @throws HttpRedirectException
+     *
+     * @return void
+     */
+    public function redirectTo(string $uri = null, int $statusCode = StatusCode::FOUND, array $headers = []): void
+    {
+        throw new HttpRedirectException($statusCode, $uri, null, $headers, 0);
+    }
+
+    /**
      * Bootstrap the config.
      *
      * @param string|null $config [optional] The config class to use
@@ -393,15 +473,7 @@ class Valkyrja implements Application
      */
     protected function getCacheFilePath(): string
     {
-        $envCacheFilePath = self::env(EnvKey::CONFIG_CACHE_FILE_PATH);
-        $cacheFilePath    = Directory::cachePath('config.php');
-
-        // If an env variable for cache file path was set
-        if (null !== $envCacheFilePath) {
-            $cacheFilePath = is_file($envCacheFilePath) ? $envCacheFilePath : $cacheFilePath;
-        }
-
-        return $cacheFilePath;
+        return self::env(EnvKey::CONFIG_CACHE_FILE_PATH, Directory::cachePath('config.php'));
     }
 
     /**

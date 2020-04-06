@@ -172,7 +172,7 @@ class Api implements Contract
 
         $jsonData->setItems($objects);
 
-        if ($objects) {
+        if (! empty($objects)) {
             $this->setItemKeysFromObject($objects[0], $jsonData);
         }
 

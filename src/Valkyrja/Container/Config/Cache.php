@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Config;
 
-use Valkyrja\Config\Config;
+use Valkyrja\Config\Config as Model;
 
 /**
- * Class CacheConfig.
+ * Class Cache.
  *
  * @author Melech Mizrachi
  */
-class Cache extends Config
+class Cache extends Model
 {
     /**
      * The aliases.

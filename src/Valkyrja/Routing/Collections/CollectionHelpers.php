@@ -28,6 +28,34 @@ use function Valkyrja\app;
 trait CollectionHelpers
 {
     /**
+     * The routes.
+     *
+     * @var Route[]
+     */
+    protected array $routes = [];
+
+    /**
+     * The static routes.
+     *
+     * @var Route[][]
+     */
+    protected array $static = [];
+
+    /**
+     * The dynamic routes.
+     *
+     * @var Route[][]
+     */
+    protected array $dynamic = [];
+
+    /**
+     * The named routes.
+     *
+     * @var Route[]
+     */
+    protected array $named = [];
+
+    /**
      * Verify a route.
      *
      * @param Route $route The route
@@ -106,7 +134,7 @@ trait CollectionHelpers
         $this->verifyRoute($route);
 
         // Parse the path
-        $parsedRoute = app()->pathParser()->parse($route->getPath());
+        $parsedRoute = app()->pathParser()->parse($route->getPath() ?? '');
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);

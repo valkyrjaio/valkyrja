@@ -65,7 +65,7 @@ trait Cacheable
         $this->setupFromAnnotations($config);
 
         // If only annotations should be used for routing
-        if ($config->useAnnotationsExclusively ?? false) {
+        if ($config['useAnnotationsExclusively'] ?? false) {
             // Return to avoid loading routes file
             return;
         }

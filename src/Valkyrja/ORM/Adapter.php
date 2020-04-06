@@ -23,9 +23,11 @@ interface Adapter
     /**
      * Make a new adapter.
      *
+     * @param array $config
+     *
      * @return static
      */
-    public static function make(): self;
+    public static function make(array $config): self;
 
     /**
      * Get a connection.

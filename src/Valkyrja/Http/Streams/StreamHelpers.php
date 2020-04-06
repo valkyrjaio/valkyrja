@@ -29,6 +29,34 @@ use function strpos;
 trait StreamHelpers
 {
     /**
+     * The stream.
+     *
+     * @var resource
+     */
+    protected $stream;
+
+    /**
+     * Returns whether or not the stream is seekable.
+     *
+     * @return bool
+     */
+    abstract public function isSeekable(): bool;
+
+    /**
+     * Returns whether or not the stream is readable.
+     *
+     * @return bool
+     */
+    abstract public function isReadable(): bool;
+
+    /**
+     * Returns whether or not the stream is writable.
+     *
+     * @return bool
+     */
+    abstract public function isWritable(): bool;
+
+    /**
      * Set the stream.
      *
      * @param string      $stream The stream

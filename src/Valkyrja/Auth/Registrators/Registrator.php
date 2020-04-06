@@ -65,6 +65,7 @@ class Registrator implements Contract
 
             return true;
         } catch (Exception $exception) {
+            // Left empty to default to false
         }
 
         return false;
@@ -86,6 +87,7 @@ class Registrator implements Contract
 
             return true;
         } catch (Exception $exception) {
+            // Left empty to default to false
         }
 
         return false;
