@@ -125,7 +125,7 @@ class RouteAnnotator implements Contract
         // Iterate through all the routes
         foreach ($routes as $route) {
             $class = $route->getClass();
-            $path = $route->getPath();
+            $path  = $route->getPath();
 
             if (null === $class || null === $path) {
                 throw new InvalidArgumentException('Invalid class or path defined in route.');
