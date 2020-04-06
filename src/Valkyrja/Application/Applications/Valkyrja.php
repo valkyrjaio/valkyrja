@@ -135,11 +135,8 @@ class Valkyrja implements Application
         // Set the app static
         self::$app = $this;
 
-        // If the VALKYRJA_START constant hasn't already been set
-        if (! defined('VALKYRJA_START')) {
-            // Set a global constant for when the framework started
-            define('VALKYRJA_START', microtime(true));
-        }
+        // Set a global constant for when the framework started
+        define('VALKYRJA_START', microtime(true));
 
         // Bootstrap debug capabilities
         $this->bootstrapConfig($config);
