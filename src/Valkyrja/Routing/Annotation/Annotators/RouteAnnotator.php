@@ -124,7 +124,10 @@ class RouteAnnotator implements Contract
 
         // Iterate through all the routes
         foreach ($routes as $route) {
-            if (! $route->getClass() || ! $route->getPath()) {
+            $class = $route->getClass();
+            $path = $route->getPath();
+
+            if (null === $class || null === $path) {
                 throw new InvalidArgumentException('Invalid class or path defined in route.');
             }
 
@@ -132,7 +135,7 @@ class RouteAnnotator implements Contract
             $this->setRouteProperties($route);
 
             // Get the class's annotations
-            $classAnnotations = $this->getClassAnnotations($route->getClass());
+            $classAnnotations = $this->getClassAnnotations($class);
 
             // If this route's class has annotations
             if (! empty($classAnnotations)) {
@@ -144,7 +147,7 @@ class RouteAnnotator implements Contract
                 }
             } else {
                 // Validate the path before setting the route
-                $route->setPath($this->validatePath($route->getPath()));
+                $route->setPath($this->validatePath($path));
 
                 // Otherwise just set the route in the final array
                 $finalRoutes[] = $this->getRouteFromAnnotation($route);
