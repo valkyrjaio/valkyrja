@@ -1,0 +1,105 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Valkyrja Framework package.
+ *
+ * (c) Melech Mizrachi <melechmizrachi@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Valkyrja\Routing\Middleware;
+
+use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Request;
+use Valkyrja\Http\Response;
+use Valkyrja\Routing\Support\Middleware;
+use Valkyrja\Support\Directory;
+
+use function base64_decode;
+use function base64_encode;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function filemtime;
+use function md5;
+use function serialize;
+use function time;
+use function unlink;
+use function unserialize;
+
+/**
+ * Class CacheResponseMiddleware.
+ *
+ * @author Melech Mizrachi
+ */
+class CacheResponseMiddleware extends Middleware
+{
+    /**
+     * Middleware handler for before a request is dispatched.
+     *
+     * @param Request $request The request
+     *
+     * @return Request|Response
+     */
+    public static function before(Request $request)
+    {
+        $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
+
+        if (file_exists($filePath) && ! self::$router->debug()) {
+            if (time() - filemtime($filePath) > self::$router->getConfig()['cacheMiddleWareTTL']) {
+                unlink($filePath);
+
+                return $request;
+            }
+
+            $cache = file_get_contents($filePath);
+            /** @var Response $response */
+            $response = unserialize(
+                base64_decode($cache['response'], true),
+                [
+                    'allowed_classes' => true,
+                ]
+            );
+
+            if ($response->getStatusCode() >= StatusCode::INTERNAL_SERVER_ERROR) {
+                return $request;
+            }
+
+            return $response;
+        }
+
+        return $request;
+    }
+
+    /**
+     * Middleware handler run when the application is terminating.
+     *
+     * @param Request  $request  The request
+     * @param Response $response The response
+     *
+     * @return void
+     */
+    public static function terminate(Request $request, Response $response): void
+    {
+        file_put_contents(
+            Directory::cachePath('response/' . static::getHashedPath($request)),
+            base64_encode(serialize($response))
+        );
+    }
+
+    /**
+     * Get a hashed version of the request path.
+     *
+     * @param Request $request
+     *
+     * @return string
+     */
+    protected static function getHashedPath(Request $request): string
+    {
+        return md5($request->getUri()->getPath());
+    }
+}

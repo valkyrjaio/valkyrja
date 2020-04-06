@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Kernels;
+namespace Valkyrja\HttpKernel\Kernels;
 
 use RuntimeException;
 use Throwable;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Events\HttpKernelHandled;
-use Valkyrja\Http\Events\HttpKernelTerminate;
-use Valkyrja\Http\Kernel as Contract;
-use Valkyrja\Http\Middleware\MiddlewareAwareTrait;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
+use Valkyrja\HttpKernel\Events\HttpKernelHandled;
+use Valkyrja\HttpKernel\Events\HttpKernelTerminate;
+use Valkyrja\HttpKernel\Kernel as Contract;
 use Valkyrja\Log\Logger;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
-use Valkyrja\Container\Support\Provides;
+use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 
 /**
  * Class Kernel.

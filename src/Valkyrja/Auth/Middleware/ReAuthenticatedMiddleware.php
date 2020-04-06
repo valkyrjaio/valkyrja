@@ -16,9 +16,9 @@ namespace Valkyrja\Auth\Middleware;
 use Valkyrja\Auth\Enums\RouteName;
 use Valkyrja\Auth\Enums\SessionId;
 use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Middleware\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Support\Middleware;
 
 use function time;
 use function Valkyrja\config;

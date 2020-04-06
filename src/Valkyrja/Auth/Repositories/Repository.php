@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Repositories;
 
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Authenticator;
 use Valkyrja\Auth\Enums\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Registrator;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Session\Session;
-use Valkyrja\Support\ClassHelpers;
+use Valkyrja\Support\Type\Cls;
 
 use function time;
 
@@ -110,7 +110,7 @@ class Repository implements Contract
      */
     public function __construct(Adapter $adapter, Session $session, array $config, string $user)
     {
-        ClassHelpers::validateClass($user, User::class);
+        Cls::validateInherits($user, User::class);
 
         $this->config        = $config;
         $this->adapter       = $adapter;

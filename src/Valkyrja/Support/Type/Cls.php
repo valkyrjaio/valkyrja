@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support;
+namespace Valkyrja\Support\Type;
 
 use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
 
 use function is_a;
 
 /**
- * Class ClassHelpers.
+ * Class Cls.
  *
  * @author Melech Mizrachi
  */
-class ClassHelpers
+class Cls
 {
     /**
-     * Validate a class::name inherits from another class::name.
+     * Validate that a class::name inherits from another class::name.
      *
-     * @param string $object
-     * @param string $className
+     * @param string $object   The object name to validate
+     * @param string $inherits The inherits class name
      *
      * @throws InvalidClassProvidedException
      *
      * @return void
      */
-    public static function validateClass(string $object, string $className): void
+    public static function validateInherits(string $object, string $inherits): void
     {
-        if (! static::checkClassInherits($object, $className)) {
+        if (! static::inherits($object, $inherits)) {
             throw new InvalidClassProvidedException('');
         }
     }
@@ -44,13 +44,13 @@ class ClassHelpers
     /**
      * Check if a class::name inherits from another class::name.
      *
-     * @param string $object
-     * @param string $className
+     * @param string $object   The object name to check
+     * @param string $inherits The inherits class name
      *
      * @return bool
      */
-    public static function checkClassInherits(string $object, string $className): bool
+    public static function inherits(string $object, string $inherits): bool
     {
-        return is_a($object, $className, true);
+        return is_a($object, $inherits, true);
     }
 }

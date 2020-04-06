@@ -16,9 +16,9 @@ namespace Valkyrja\Auth\Middleware;
 use Exception;
 use Valkyrja\Auth\Enums\ConfigValue;
 use Valkyrja\Auth\Enums\RouteName;
-use Valkyrja\Http\Middleware\Middleware;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Support\Middleware;
 
 use function Valkyrja\auth;
 use function Valkyrja\config;

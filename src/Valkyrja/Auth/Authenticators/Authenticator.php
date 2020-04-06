@@ -20,12 +20,10 @@ use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
-
-use Valkyrja\Support\Token;
+use Valkyrja\Support\Type\Str;
 
 use function password_hash;
 use function password_verify;
-
 use function serialize;
 use function unserialize;
 
@@ -197,7 +195,7 @@ class Authenticator implements Contract
      */
     public function resetPassword(User $user): void
     {
-        $user->setResetTokenFieldValue(Token::getToken());
+        $user->setResetTokenFieldValue(Str::generateToken());
 
         $this->saveUser($user);
     }

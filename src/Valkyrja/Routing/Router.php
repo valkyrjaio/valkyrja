@@ -21,8 +21,22 @@ use Valkyrja\Http\Response;
  *
  * @author Melech Mizrachi
  */
-interface Router extends RouteGroup, RouteMethods
+interface Router extends MiddlewareAware, RouteGroup, RouteMethods
 {
+    /**
+     * Get the config.
+     *
+     * @return array
+     */
+    public function getConfig(): array;
+
+    /**
+     * Whether to run in debug.
+     *
+     * @return bool
+     */
+    public function debug(): bool;
+
     /**
      * Get the route collection.
      *

@@ -23,6 +23,7 @@ use Valkyrja\Client\Client;
 use Valkyrja\Config\Config;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Input;
+use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
@@ -30,23 +31,22 @@ use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Console\Kernel as ConsoleKernel;
-use Valkyrja\Http\Kernel;
-use Valkyrja\Http\Response;
-use Valkyrja\Log\Logger;
-use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Reflection\Reflector;
-use Valkyrja\Session\Session;
-use Valkyrja\View\View;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
+use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
+use Valkyrja\HttpKernel\Kernel;
+use Valkyrja\Log\Logger;
+use Valkyrja\Mail\Mail;
+use Valkyrja\ORM\ORM;
+use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
+use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
+use Valkyrja\View\View;
 
 use function func_get_args;
 use function var_dump;
@@ -230,7 +230,7 @@ function input(): Input
 /**
  * Get kernel.
  *
- * @return Kernel
+ * @return \Valkyrja\HttpKernel\Kernel
  */
 function kernel(): Kernel
 {

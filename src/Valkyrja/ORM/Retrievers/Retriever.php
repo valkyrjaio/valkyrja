@@ -20,7 +20,7 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as RetrieverContract;
-use Valkyrja\Support\ClassHelpers;
+use Valkyrja\Support\Type\Cls;
 
 use function is_int;
 use function is_string;
@@ -308,7 +308,7 @@ class Retriever implements RetrieverContract
      */
     protected function setQueryProperties(string $entity, array $columns = null, bool $getRelations = false): void
     {
-        ClassHelpers::validateClass($entity, Entity::class);
+        Cls::validateInherits($entity, Entity::class);
 
         $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select($columns);
         $this->query        = $this->connection->createQuery('', $entity);

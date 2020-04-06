@@ -11,9 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Middleware;
+namespace Valkyrja\Routing\Support;
 
-use Valkyrja\Http\Middleware as MiddlewareContract;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
@@ -76,7 +75,7 @@ trait MiddlewareAwareTrait
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? static::$middleware;
-
+        // Set the request
         $modifiedRequest = $request;
 
         // Iterate through the middleware
@@ -89,7 +88,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var MiddlewareContract $item */
+            /* @var Middleware $item */
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
@@ -124,7 +123,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var MiddlewareContract $item */
+            /* @var Middleware $item */
             $response = $item::after($request, $response);
         }
 
@@ -155,7 +154,7 @@ trait MiddlewareAwareTrait
                 continue;
             }
 
-            /* @var MiddlewareContract $item */
+            /* @var Middleware $item */
             $item::terminate($request, $response);
         }
     }

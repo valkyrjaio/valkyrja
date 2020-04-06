@@ -17,9 +17,9 @@ use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
-use Valkyrja\Support\ClassHelpers;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Container.
@@ -188,7 +188,7 @@ class Container implements Contract
      */
     public function bind(string $serviceId, string $service): void
     {
-        ClassHelpers::validateClass($service, Service::class);
+        Cls::validateInherits($service, Service::class);
 
         self::$services[$serviceId] = $service;
     }

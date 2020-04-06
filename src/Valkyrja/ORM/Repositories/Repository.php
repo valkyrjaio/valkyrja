@@ -26,7 +26,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository as RepositoryContract;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\Support\ClassHelpers;
+use Valkyrja\Support\Type\Cls;
 
 use function get_class;
 
@@ -110,7 +110,7 @@ class Repository implements RepositoryContract
      */
     public function __construct(ORM $manager, string $entity)
     {
-        ClassHelpers::validateClass($entity, Entity::class);
+        Cls::validateInherits($entity, Entity::class);
 
         $this->adapter    = $manager->getAdapter(static::$adapterName);
         $this->connection = $this->adapter->getConnection(static::$connectionName);

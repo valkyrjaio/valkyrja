@@ -11,19 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Middleware;
+namespace Valkyrja\Routing\Support;
 
-use Valkyrja\Http\Middleware as MiddlewareContract;
+use Valkyrja\Container\Container;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Router;
 
 /**
  * Abstract Class Middleware.
  *
  * @author Melech Mizrachi
  */
-abstract class Middleware implements MiddlewareContract
+abstract class Middleware
 {
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    public static Container $container;
+
+    /**
+     * The router.
+     *
+     * @var Router
+     */
+    public static Router $router;
+
     /**
      * Middleware handler for before a request is dispatched.
      *

@@ -20,7 +20,6 @@ use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Kernel;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -35,6 +34,8 @@ use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
+use Valkyrja\Routing\Support\Middleware;
+use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 use Valkyrja\View\View;
 
 use function is_array;
@@ -51,6 +52,7 @@ use function substr;
  */
 class Router implements Contract
 {
+    use MiddlewareAwareTrait;
     use Provides;
     use RouteGroup;
     use RouteMethods;
@@ -112,6 +114,13 @@ class Router implements Contract
     protected array $config;
 
     /**
+     * Whether to run in debug.
+     *
+     * @var bool
+     */
+    protected bool $debug;
+
+    /**
      * Router constructor.
      *
      * @param Container       $container
@@ -122,6 +131,7 @@ class Router implements Contract
      * @param ResponseFactory $responseFactory
      * @param Collection      $collection
      * @param array           $config
+     * @param bool            $debug
      */
     public function __construct(
         Container $container,
@@ -131,7 +141,8 @@ class Router implements Contract
         Request $request,
         ResponseFactory $responseFactory,
         Collection $collection,
-        array $config
+        array $config,
+        bool $debug = false
     ) {
         $this->container       = $container;
         $this->dispatcher      = $dispatcher;
@@ -140,8 +151,12 @@ class Router implements Contract
         $this->request         = $request;
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
+        $this->debug           = $debug;
 
         self::$collection = $collection;
+
+        Middleware::$container = $container;
+        Middleware::$router    = $this;
     }
 
     /**
@@ -177,9 +192,30 @@ class Router implements Contract
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
                 new CollectionClass($dispatcher, new MatcherClass()),
-                (array) $config['routing']
+                (array) $config['routing'],
+                $config['app']['debug']
             )
         );
+    }
+
+    /**
+     * Get the config.
+     *
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * Whether to run in debug.
+     *
+     * @return bool
+     */
+    public function debug(): bool
+    {
+        return $this->debug;
     }
 
     /**
@@ -480,7 +516,7 @@ class Router implements Contract
      */
     protected function routeRequestMiddleware(Request $request, Route $route): Request
     {
-        return $this->getKernel()->requestMiddleware($request, $route->getMiddleware() ?? []);
+        return $this->requestMiddleware($request, $route->getMiddleware() ?? []);
     }
 
     /**
@@ -522,20 +558,6 @@ class Router implements Contract
      */
     protected function routeResponseMiddleware(Request $request, Response $response, Route $route): Response
     {
-        return $this->getKernel()->responseMiddleware(
-            $request,
-            $response,
-            $route->getMiddleware() ?? []
-        );
-    }
-
-    /**
-     * Get the kernel.
-     *
-     * @return Kernel
-     */
-    protected function getKernel(): Kernel
-    {
-        return $this->container->getSingleton(Kernel::class);
+        return $this->responseMiddleware($request, $response, $route->getMiddleware() ?? []);
     }
 }

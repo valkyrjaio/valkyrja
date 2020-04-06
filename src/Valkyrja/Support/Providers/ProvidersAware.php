@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support;
+namespace Valkyrja\Support\Providers;
 
 /**
- * Interface AllowsProviders.
+ * Interface ProvidersAware.
  *
  * @author Melech Mizrachi
  */

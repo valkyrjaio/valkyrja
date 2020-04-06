@@ -52,7 +52,8 @@ class CacheableRouter extends Router
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
                 $collection = new CacheableCollection($container, $dispatcher, new MatcherClass(), $routingConfig),
-                $routingConfig
+                $routingConfig,
+                $config['app']['debug']
             )
         );
 

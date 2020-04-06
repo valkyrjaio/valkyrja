@@ -11,7 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http;
+namespace Valkyrja\HttpKernel;
+
+use Valkyrja\Http\Request;
+use Valkyrja\Http\Response;
+use Valkyrja\Routing\MiddlewareAware;
 
 /**
  * Interface Kernel.
