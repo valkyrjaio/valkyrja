@@ -76,11 +76,9 @@ class CacheableContainer extends Container
     /**
      * Before setup.
      *
-     * @param ContainerConfig|array $config
-     *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(): void
     {
     }
 
@@ -181,11 +179,9 @@ class CacheableContainer extends Container
     /**
      * After setup.
      *
-     * @param ContainerConfig|array $config
-     *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(): void
     {
     }
 }

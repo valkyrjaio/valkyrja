@@ -146,11 +146,9 @@ class CacheableCollection extends Collection
     /**
      * After setup.
      *
-     * @param RoutingConfig|array $config
-     *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(): void
     {
     }
 }

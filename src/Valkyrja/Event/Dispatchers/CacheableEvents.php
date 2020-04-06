@@ -95,11 +95,9 @@ class CacheableEvents extends Events
     /**
      * Before setup.
      *
-     * @param EventConfig|array $config
-     *
      * @return void
      */
-    protected function beforeSetup($config): void
+    protected function beforeSetup(): void
     {
     }
 
@@ -150,11 +148,9 @@ class CacheableEvents extends Events
     /**
      * After setup.
      *
-     * @param EventConfig|array $config
-     *
      * @return void
      */
-    protected function afterSetup($config): void
+    protected function afterSetup(): void
     {
     }
 }
