@@ -85,7 +85,8 @@ class UUID
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 
             // 32 bits for "time_low"
-            random_int(0, 0xffff), random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
 
             // 16 bits for "time_mid"
             random_int(0, 0xffff),
@@ -100,7 +101,9 @@ class UUID
             random_int(0, 0x3fff) | 0x8000,
 
             // 48 bits for "node"
-            random_int(0, 0xffff), random_int(0, 0xffff), random_int(0, 0xffff)
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff)
         );
     }
 

@@ -48,8 +48,8 @@ class HttpRedirectException extends HttpException
         Response $response = null
     ) {
         $statusCode ??= StatusCode::FOUND;
-        $headers    ??= [];
-        $uri        ??= '/';
+        $headers ??= [];
+        $uri ??= '/';
         // Set a new redirect response if one wasn't passed in
         $response ??= new RedirectResponse($uri, $statusCode, $headers);
         // Set the uri
