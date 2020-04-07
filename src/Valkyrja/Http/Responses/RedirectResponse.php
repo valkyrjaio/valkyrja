@@ -23,7 +23,6 @@ use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\RedirectResponse as Contract;
 
 use function Valkyrja\request;
-use function Valkyrja\router;
 
 /**
  * Class RedirectResponse.
@@ -40,7 +39,7 @@ class RedirectResponse extends Response implements Contract
     protected string $uri;
 
     /**
-     * NativeRedirectResponse constructor.
+     * RedirectResponse constructor.
      *
      * @param string|null $uri        [optional] The uri
      * @param int|null    $statusCode [optional] The status
@@ -128,14 +127,8 @@ class RedirectResponse extends Response implements Contract
      *
      * @return static
      */
-    public function secure(string $path = null): self
+    public function secure(string $path): self
     {
-        // If not path was set
-        if (null === $path) {
-            // If the uri is already set
-            $path = $this->uri ?? request()->getUri()->getPath();
-        }
-
         // If the path doesn't start with a /
         if ('/' !== $path[0]) {
             // Set the uri as the path
@@ -160,12 +153,6 @@ class RedirectResponse extends Response implements Contract
     {
         $refererUri = request()->getHeaderLine('Referer');
 
-        // Ensure the route being redirected to is a valid internal route
-        if (! router()->isInternalUri($refererUri)) {
-            // If not set as the index
-            $refererUri = '/';
-        }
-
         $this->setUri($refererUri ?: '/');
 
         return $this;
@@ -180,7 +167,7 @@ class RedirectResponse extends Response implements Contract
      */
     public function throw(): void
     {
-        throw new HttpRedirectException($this->statusCode, $this->uri, null, $this->getHeaders(), 0, $this);
+        throw new HttpRedirectException($this->statusCode, $this->uri, $this->getHeaders(), $this);
     }
 
     /**

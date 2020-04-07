@@ -18,20 +18,13 @@ use Valkyrja\Auth\Enums\ConfigValue;
 use Valkyrja\Auth\Enums\RouteName;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Support\Middleware;
-
-use function Valkyrja\auth;
-use function Valkyrja\config;
-use function Valkyrja\json;
-use function Valkyrja\redirect;
-use function Valkyrja\router;
 
 /**
  * Class AuthenticatedMiddleware.
  *
  * @author Melech Mizrachi
  */
-class AuthenticatedMiddleware extends Middleware
+class AuthenticatedMiddleware extends AuthMiddleware
 {
     /**
      * The user to use.
@@ -49,7 +42,7 @@ class AuthenticatedMiddleware extends Middleware
      */
     public static function before(Request $request)
     {
-        $repository = auth()->getRepository(static::$user);
+        $repository = static::getAuth()->getRepository(static::$user);
 
         // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {
@@ -74,11 +67,11 @@ class AuthenticatedMiddleware extends Middleware
     protected static function getFailedAuthenticationResponse(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            return json();
+            return static::getResponseFactory()->createJsonResponse();
         }
 
-        return redirect(
-            router()->getUrl((string) config('auth.authenticateRoute', RouteName::AUTHENTICATE))
+        return static::getResponseFactory()->createRedirectResponse(
+            self::$router->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE))
         );
     }
 }

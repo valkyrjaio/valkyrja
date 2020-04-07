@@ -19,6 +19,7 @@ use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Path\PathGenerator;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Router as Contract;
@@ -51,7 +52,13 @@ class CacheableRouter extends Router
                 $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
-                $collection = new CacheableCollection($container, $dispatcher, new MatcherClass(), $routingConfig),
+                $collection = new CacheableCollection(
+                    $container,
+                    $dispatcher,
+                    new MatcherClass(),
+                    $container->getSingleton(PathParser::class),
+                    $routingConfig
+                ),
                 $routingConfig,
                 $config['app']['debug']
             )

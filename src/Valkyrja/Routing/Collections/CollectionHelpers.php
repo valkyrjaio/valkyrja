@@ -15,10 +15,10 @@ namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Route;
 
 use function is_array;
-use function Valkyrja\app;
 
 /**
  * Trait CollectionHelpers.
@@ -54,6 +54,13 @@ trait CollectionHelpers
      * @var Route[]
      */
     protected array $named = [];
+
+    /**
+     * The path parser.
+     *
+     * @var PathParser
+     */
+    protected PathParser $pathParser;
 
     /**
      * Verify a route.
@@ -134,7 +141,7 @@ trait CollectionHelpers
         $this->verifyRoute($route);
 
         // Parse the path
-        $parsedRoute = app()->pathParser()->parse($route->getPath() ?? '');
+        $parsedRoute = $this->pathParser->parse($route->getPath() ?? '');
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);

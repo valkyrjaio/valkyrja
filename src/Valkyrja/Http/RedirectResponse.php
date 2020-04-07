@@ -50,11 +50,11 @@ interface RedirectResponse extends Response
     /**
      * Set the redirect uri to secure.
      *
-     * @param string|null $path The path
+     * @param string $path The path
      *
      * @return static
      */
-    public function secure(string $path = null): self;
+    public function secure(string $path): self;
 
     /**
      * Redirect back to the referer.

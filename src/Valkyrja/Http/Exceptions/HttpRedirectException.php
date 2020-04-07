@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Exceptions;
 
-use Exception;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Response;
-
-use function Valkyrja\redirect;
+use Valkyrja\Http\Responses\RedirectResponse;
 
 /**
  * Class HttpRedirectException.
@@ -38,26 +36,26 @@ class HttpRedirectException extends HttpException
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int       $statusCode [optional] The status code to use
-     * @param string    $uri        [optional] The Exception message to throw
-     * @param Exception $previous   [optional] The previous exception used for the exception chaining
-     * @param array     $headers    [optional] The headers to send
-     * @param int       $code       [optional] The Exception code
-     * @param Response  $response   [optional] The Response
+     * @param int      $statusCode [optional] The status code to use
+     * @param string   $uri        [optional] The Exception message to throw
+     * @param array    $headers    [optional] The headers to send
+     * @param Response $response   [optional] The Response
      */
     public function __construct(
-        int $statusCode = StatusCode::FOUND,
+        int $statusCode = null,
         string $uri = null,
-        Exception $previous = null,
-        array $headers = [],
-        int $code = 0,
+        array $headers = null,
         Response $response = null
     ) {
-        $this->uri = $uri ?? '/';
+        $statusCode ??= StatusCode::FOUND;
+        $headers    ??= [];
+        $uri        ??= '/';
         // Set a new redirect response if one wasn't passed in
-        $response ??= redirect($uri, $statusCode, $headers);
+        $response ??= new RedirectResponse($uri, $statusCode, $headers);
+        // Set the uri
+        $this->uri = $uri;
 
-        parent::__construct($statusCode, 'Redirect', $previous, $headers, $code, $response);
+        parent::__construct($statusCode, 'Redirect', $headers, $response);
     }
 
     /**

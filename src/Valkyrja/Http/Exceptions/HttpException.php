@@ -54,28 +54,24 @@ class HttpException extends RuntimeException
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int       $statusCode  [optional] The status code to use
-     * @param string    $message     [optional] The Exception message to throw
-     * @param Exception $previous    [optional] The previous exception used for the exception chaining
-     * @param array     $headers     [optional] The headers to send
-     * @param int       $code        [optional] The Exception code
-     * @param Response  $response    [optional] The Response to send
+     * @param int|null       $statusCode [optional] The status code to use
+     * @param string|null    $message    [optional] The Exception message to throw
+     * @param array|null     $headers    [optional] The headers to send
+     * @param Response|null  $response   [optional] The Response to send
      */
     public function __construct(
-        int $statusCode = StatusCode::INTERNAL_SERVER_ERROR,
-        string $message = '',
-        Exception $previous = null,
-        array $headers = [],
-        int $code = 0,
+        int $statusCode = null,
+        string $message = null,
+        array $headers = null,
         Response $response = null
     ) {
-        $this->statusCode = $statusCode;
-        $this->headers    = $headers;
+        $this->statusCode = $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR;
+        $this->headers    = $headers ?? [];
         $this->response   = $response;
 
         $this->setDefaultResponse();
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message ?? '', 0, null);
     }
 
     /**

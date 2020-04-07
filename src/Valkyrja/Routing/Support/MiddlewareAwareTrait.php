@@ -16,8 +16,6 @@ namespace Valkyrja\Routing\Support;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
-use function Valkyrja\abortResponse;
-
 /**
  * Trait MiddlewareAwareTrait.
  *
@@ -92,7 +90,7 @@ trait MiddlewareAwareTrait
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
-                abortResponse($modifiedRequest);
+                Abort::response($modifiedRequest);
             }
         }
 

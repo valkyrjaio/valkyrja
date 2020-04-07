@@ -18,21 +18,15 @@ use Valkyrja\Auth\Enums\SessionId;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Support\Middleware;
 
 use function time;
-use function Valkyrja\config;
-use function Valkyrja\redirect;
-use function Valkyrja\responseBuilder;
-use function Valkyrja\router;
-use function Valkyrja\session;
 
 /**
  * Class ReAuthenticatedMiddleware.
  *
  * @author Melech Mizrachi
  */
-class ReAuthenticatedMiddleware extends Middleware
+class ReAuthenticatedMiddleware extends AuthMiddleware
 {
     /**
      * Middleware handler for before a request is dispatched.
@@ -57,9 +51,9 @@ class ReAuthenticatedMiddleware extends Middleware
      */
     protected static function shouldReAuthenticate(): bool
     {
-        $confirmedAt = time() - ((int) session()->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
+        $confirmedAt = time() - ((int) static::getSession()->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
 
-        return $confirmedAt > config('auth.password_timeout', 10800);
+        return $confirmedAt > static::getConfig('password_timeout', 10800);
     }
 
     /**
@@ -72,14 +66,11 @@ class ReAuthenticatedMiddleware extends Middleware
     protected static function getFailedAuthenticationResponse(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            return responseBuilder()->createJsonResponse(
-                [],
-                StatusCode::LOCKED
-            );
+            return static::getResponseFactory()->createJsonResponse([], StatusCode::LOCKED);
         }
 
-        return redirect(
-            router()->getUrl((string) config('auth.passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
+        return static::getResponseFactory()->createRedirectResponse(
+            self::$router->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
         );
     }
 }

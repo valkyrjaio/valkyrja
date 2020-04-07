@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Collections;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
@@ -50,11 +51,12 @@ class CacheableCollection extends Collection
      * @param Container  $container
      * @param Dispatcher $dispatcher
      * @param Matcher    $matcher
+     * @param PathParser $pathParser
      * @param array      $config
      */
-    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher, array $config)
+    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher, PathParser $pathParser, array $config)
     {
-        parent::__construct($dispatcher, $matcher);
+        parent::__construct($dispatcher, $matcher, $pathParser);
 
         $this->container = $container;
         $this->config    = $config;

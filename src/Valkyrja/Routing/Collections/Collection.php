@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collection as CollectionContract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
@@ -52,13 +53,15 @@ class Collection implements CollectionContract
      *
      * @param Dispatcher $dispatcher
      * @param Matcher    $matcher
+     * @param PathParser $pathParser
      */
-    public function __construct(Dispatcher $dispatcher, Matcher $matcher)
+    public function __construct(Dispatcher $dispatcher, Matcher $matcher, PathParser $pathParser)
     {
         $matcher->setCollection($this);
 
         $this->dispatcher = $dispatcher;
         $this->matcher    = $matcher;
+        $this->pathParser = $pathParser;
     }
 
     /**

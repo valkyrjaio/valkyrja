@@ -17,6 +17,7 @@ use InvalidArgumentException;
 use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
+use Valkyrja\Console\Formatters\Formatter as FormatterClass;
 use Valkyrja\Console\Output as Contract;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
@@ -55,7 +56,7 @@ class Output implements Contract
      */
     public function __construct()
     {
-        $this->formatter = new \Valkyrja\Console\Formatters\Formatter();
+        $this->formatter = new FormatterClass();
 
         self::$quiet = config(ConfigKey::CONSOLE_QUIET) || input()->hasOption('--quiet');
     }

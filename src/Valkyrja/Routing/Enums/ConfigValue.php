@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Enums;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
-use Valkyrja\Http\Exceptions\HttpException;
 
 /**
  * Enum ConfigValue.
@@ -33,13 +32,11 @@ final class ConfigValue
     public const FILE_PATH                   = '';
     public const CACHE_FILE_PATH             = '';
     public const USE_CACHE_FILE              = false;
-    public const HTTP_EXCEPTION              = HttpException::class;
 
     public static array $defaults = [
         CKP::MIDDLEWARE                  => self::MIDDLEWARE,
         CKP::MIDDLEWARE_GROUPS           => self::MIDDLEWARE_GROUPS,
         CKP::CONTROLLERS                 => self::CONTROLLERS,
-        CKP::HTTP_EXCEPTION              => self::HTTP_EXCEPTION,
         CKP::USE_TRAILING_SLASH          => self::USE_TRAILING_SLASH,
         CKP::USE_ABSOLUTE_URLS           => self::USE_ABSOLUTE_URLS,
         CKP::USE_ANNOTATIONS             => self::USE_ANNOTATIONS,

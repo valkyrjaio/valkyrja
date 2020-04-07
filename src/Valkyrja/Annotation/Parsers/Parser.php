@@ -19,7 +19,6 @@ use Valkyrja\Annotation\Enums\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Parser as Contract;
-use Valkyrja\Config\Enums\ConfigKey;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
 
@@ -36,7 +35,6 @@ use function property_exists;
 use function str_replace;
 use function strpos;
 use function trim;
-use function Valkyrja\config;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -438,8 +436,6 @@ class Parser implements Contract
      */
     protected function getClassFromAlias(string $class): string
     {
-        $aliases = config(ConfigKey::ANNOTATIONS_ALIASES);
-
-        return $aliases[$class] ?? $class;
+        return $this->config['aliases'][$class] ?? $class;
     }
 }

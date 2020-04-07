@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Cacheables;
 
 use Valkyrja\Config\Config;
-use Valkyrja\Config\Enums\ConfigKey;
-
-use function Valkyrja\config;
 
 /**
  * Trait Cacheable.
@@ -125,7 +122,7 @@ trait Cacheable
     protected function setupFromAnnotations($config): void
     {
         // If annotations are enabled and cacheable should use annotations
-        if (($config['useAnnotations'] ?? false) && config(ConfigKey::ANNOTATIONS_ENABLED)) {
+        if (($config['useAnnotations'] ?? false)) {
             $this->setupAnnotations($config);
         }
     }

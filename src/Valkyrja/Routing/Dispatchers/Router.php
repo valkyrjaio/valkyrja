@@ -20,11 +20,13 @@ use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Path\PathGenerator;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\Collection as CollectionClass;
 use Valkyrja\Routing\Events\RouteMatched;
@@ -35,6 +37,7 @@ use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
+use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 use Valkyrja\View\View;
@@ -192,7 +195,11 @@ class Router implements Contract
                 $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
-                new CollectionClass($dispatcher, new MatcherClass()),
+                new CollectionClass(
+                    $dispatcher,
+                    new MatcherClass(),
+                    $container->getSingleton(PathParser::class)
+                ),
                 (array) $config['routing'],
                 $config['app']['debug']
             )
@@ -350,7 +357,7 @@ class Router implements Contract
         // If no route is found
         if (null === $route) {
             // Abort with 404
-            throw new $this->config['httpException']();
+            Abort::abort(StatusCode::NOT_FOUND);
         }
 
         return $route;
@@ -417,7 +424,7 @@ class Router implements Contract
         return 'http'
             . ($route->isSecure() ? 's' : '')
             . '://'
-            . \Valkyrja\request()->getUri()->getHostPort();
+            . $this->request->getUri()->getHostPort();
     }
 
     /**

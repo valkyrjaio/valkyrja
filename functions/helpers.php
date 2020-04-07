@@ -29,7 +29,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
@@ -44,6 +43,7 @@ use Valkyrja\ORM\ORM;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\View;
@@ -64,24 +64,22 @@ function app(): Application
 /**
  * Abort the application due to error.
  *
- * @param int      $statusCode The status code to use
- * @param string   $message    [optional] The Exception message to throw
- * @param array    $headers    [optional] The headers to send
- * @param int      $code       [optional] The Exception code
- * @param Response $response   [optional] The Response to send
+ * @param int|null      $statusCode The status code to use
+ * @param string|null   $message    [optional] The Exception message to throw
+ * @param array|null    $headers    [optional] The headers to send
+ * @param Response|null $response   [optional] The Response to send
  *
  * @throws HttpException
  *
  * @return void
  */
 function abort(
-    int $statusCode = StatusCode::NOT_FOUND,
-    string $message = '',
-    array $headers = [],
-    int $code = 0,
+    int $statusCode = null,
+    string $message = null,
+    array $headers = null,
     Response $response = null
 ): void {
-    app()->abort($statusCode, $message, $headers, $code, $response);
+    Abort::abort($statusCode, $message, $headers, $response);
 }
 
 /**
@@ -95,7 +93,7 @@ function abort(
  */
 function abortResponse(Response $response): void
 {
-    app()->abort(0, '', [], 0, $response);
+    Abort::response($response);
 }
 
 /**
@@ -230,7 +228,7 @@ function input(): Input
 /**
  * Get kernel.
  *
- * @return \Valkyrja\HttpKernel\Kernel
+ * @return Kernel
  */
 function kernel(): Kernel
 {
@@ -427,9 +425,9 @@ function redirectRoute(
 /**
  * Redirect to a given uri, and abort the application.
  *
- * @param string $uri        [optional] The URI to redirect to
- * @param int    $statusCode [optional] The response status code
- * @param array  $headers    [optional] An array of response headers
+ * @param string|null $uri        [optional] The URI to redirect to
+ * @param int|null    $statusCode [optional] The response status code
+ * @param array|null  $headers    [optional] An array of response headers
  *
  * @throws HttpRedirectException
  *
@@ -437,10 +435,10 @@ function redirectRoute(
  */
 function redirectTo(
     string $uri = null,
-    int $statusCode = StatusCode::FOUND,
-    array $headers = []
+    int $statusCode = null,
+    array $headers = null
 ): void {
-    app()->redirectTo($uri, $statusCode, $headers);
+    Abort::redirect($uri, $statusCode, $headers);
 }
 
 /**
