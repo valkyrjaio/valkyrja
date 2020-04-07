@@ -148,10 +148,8 @@ class Authenticator implements Contract
      */
     public function getFreshUser(User $user): User
     {
-        $repository = $this->orm->getRepositoryFromClass($user);
-
         /** @var User $freshUser */
-        $freshUser = $repository->findOne($user->getIdFieldValue())->getOneOrFail();
+        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->getIdFieldValue())->getOneOrFail();
 
         return $freshUser;
     }
@@ -195,7 +193,7 @@ class Authenticator implements Contract
      */
     public function resetPassword(User $user): void
     {
-        $user->setResetTokenFieldValue(Str::generateToken());
+        $user->setResetTokenFieldValue(Str::random());
 
         $this->saveUser($user);
     }
