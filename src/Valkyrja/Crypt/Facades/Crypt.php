@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -38,6 +37,6 @@ class Crypt extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->crypt();
+        return \Valkyrja\crypt();
     }
 }

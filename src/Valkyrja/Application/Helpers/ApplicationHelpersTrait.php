@@ -13,28 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Helpers;
 
-use Valkyrja\Annotation\Annotator;
-use Valkyrja\Cache\Cache;
-use Valkyrja\Client\Client;
-use Valkyrja\Console\Console;
-use Valkyrja\Console\Kernel as ConsoleKernel;
+use RuntimeException;
 use Valkyrja\Container\Container;
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
-use Valkyrja\HttpKernel\Kernel;
-use Valkyrja\Log\Logger;
-use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
-use Valkyrja\Reflection\Reflector;
-use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
+use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Event;
 use Valkyrja\View\View;
 
 use function func_num_args;
@@ -48,245 +30,74 @@ use function func_num_args;
  */
 trait ApplicationHelpersTrait
 {
+
     /**
-     * Return the annotations instance from the container.
+     * Offset set.
      *
-     * @return Annotator
+     * @param string|null $serviceId The service id
+     * @param mixed       $service   The service
+     *
+     * @return void
      */
-    public function annotator(): Annotator
+    public function offsetSet($serviceId, $service): void
     {
-        return self::$container->getSingleton(Annotator::class);
+        self::$container->bind($serviceId, $service);
     }
 
     /**
-     * Return the cache instance from the container.
+     * Offset exists.
      *
-     * @return Cache
+     * @param string $serviceId The service id
+     *
+     * @return bool
      */
-    public function cache(): Cache
+    public function offsetExists($serviceId): bool
     {
-        return self::$container->getSingleton(Cache::class);
+        return self::$container->has($serviceId);
     }
 
     /**
-     * Return the client instance from the container.
+     * Offset unset.
      *
-     * @return Client
+     * @param string $serviceId The service id
+     *
+     * @return void
      */
-    public function client(): Client
+    public function offsetUnset($serviceId): void
     {
-        return self::$container->getSingleton(Client::class);
+        throw new RuntimeException('Cannot unset service: ' . $serviceId);
     }
 
     /**
-     * Return the console instance from the container.
+     * Offset get.
      *
-     * @return Console
+     * @param string $serviceId The service id
+     *
+     * @return mixed
      */
-    public function console(): Console
+    public function offsetGet($serviceId)
     {
-        return self::$container->getSingleton(Console::class);
-    }
+        if ($serviceId === 'config') {
+            return self::$config;
+        }
 
-    /**
-     * Return the console kernel instance from the container.
-     *
-     * @return ConsoleKernel
-     */
-    public function consoleKernel(): ConsoleKernel
-    {
-        return self::$container->getSingleton(ConsoleKernel::class);
-    }
+        if ($serviceId === Container::class) {
+            return self::$container;
+        }
 
-    /**
-     * Return the crypt instance from the container.
-     *
-     * @return Crypt
-     */
-    public function crypt(): Crypt
-    {
-        return self::$container->getSingleton(Crypt::class);
-    }
+        if ($serviceId === Dispatcher::class) {
+            return self::$dispatcher;
+        }
 
-    /**
-     * Return the filesystem instance from the container.
-     *
-     * @return Filesystem
-     */
-    public function filesystem(): Filesystem
-    {
-        return self::$container->getSingleton(Filesystem::class);
-    }
+        if ($serviceId === Event::class) {
+            return self::$events;
+        }
 
-    /**
-     * Return the kernel instance from the container.
-     *
-     * @return Kernel
-     */
-    public function kernel(): Kernel
-    {
-        return self::$container->getSingleton(Kernel::class);
-    }
+        if (self::$container->isSingleton($serviceId)) {
+            return self::$container->getSingleton($serviceId);
+        }
 
-    /**
-     * Return the logger instance from the container.
-     *
-     * @return Logger
-     */
-    public function logger(): Logger
-    {
-        return self::$container->getSingleton(Logger::class);
-    }
-
-    /**
-     * Return the mail instance from the container.
-     *
-     * @return Mail
-     */
-    public function mail(): Mail
-    {
-        return self::$container->getSingleton(Mail::class);
-    }
-
-    /**
-     * Return the ORM manager instance from the container.
-     *
-     * @return ORM
-     */
-    public function orm(): ORM
-    {
-        return self::$container->getSingleton(ORM::class);
-    }
-
-    /**
-     * Return the path generator instance from the container.
-     *
-     * @return PathGenerator
-     */
-    public function pathGenerator(): PathGenerator
-    {
-        return self::$container->getSingleton(PathGenerator::class);
-    }
-
-    /**
-     * Return the path parser instance from the container.
-     *
-     * @return PathParser
-     */
-    public function pathParser(): PathParser
-    {
-        return self::$container->getSingleton(PathParser::class);
-    }
-
-    /**
-     * Return the reflector instance from the container.
-     *
-     * @return Reflector
-     */
-    public function reflector(): Reflector
-    {
-        return self::$container->getSingleton(Reflector::class);
-    }
-
-    /**
-     * Return the request instance from the container.
-     *
-     * @return Request
-     */
-    public function request(): Request
-    {
-        return self::$container->getSingleton(Request::class);
-    }
-
-    /**
-     * Return the router instance from the container.
-     *
-     * @return Router
-     */
-    public function router(): Router
-    {
-        return self::$container->getSingleton(Router::class);
-    }
-
-    /**
-     * Return a new response from the application.
-     *
-     * @param string|null $content    [optional] The content to set
-     * @param int|null    $statusCode [optional] The status code to set
-     * @param array|null  $headers    [optional] The headers to set
-     *
-     * @return Response
-     */
-    public function response(string $content = null, int $statusCode = null, array $headers = null): Response
-    {
-        return $this->responseFactory()->createResponse($content, $statusCode, $headers);
-    }
-
-    /**
-     * Return a new json response from the application.
-     *
-     * @param array|null $data       [optional] An array of data
-     * @param int|null   $statusCode [optional] The status code to set
-     * @param array|null $headers    [optional] The headers to set
-     *
-     * @return JsonResponse
-     */
-    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
-    {
-        return $this->responseFactory()->createJsonResponse($data, $statusCode, $headers);
-    }
-
-    /**
-     * Return a new json response from the application.
-     *
-     * @param string|null $uri        [optional] The URI to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
-     */
-    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
-    {
-        return $this->responseFactory()->createRedirectResponse($uri, $statusCode, $headers);
-    }
-
-    /**
-     * Return a new redirect response from the application for a given route.
-     *
-     * @param string     $route      The route to match
-     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
-     * @param int|null   $statusCode [optional] The response status code
-     * @param array|null $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
-     */
-    public function redirectRoute(
-        string $route,
-        array $parameters = null,
-        int $statusCode = null,
-        array $headers = null
-    ): RedirectResponse {
-        return $this->responseFactory()->route($route, $parameters, $statusCode, $headers);
-    }
-
-    /**
-     * Return a new response from the application.
-     *
-     * @return ResponseFactory
-     */
-    public function responseFactory(): ResponseFactory
-    {
-        return self::$container->getSingleton(ResponseFactory::class);
-    }
-
-    /**
-     * Return the session.
-     *
-     * @return Session
-     */
-    public function session(): Session
-    {
-        return self::$container->getSingleton(Session::class);
+        return self::$container->get($serviceId);
     }
 
     /**

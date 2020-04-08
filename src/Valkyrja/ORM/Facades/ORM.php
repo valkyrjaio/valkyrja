@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\ORM\Adapter as AdapterContract;
 use Valkyrja\ORM\Connection as ConnectionContract;
@@ -27,7 +26,7 @@ use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 
 /**
- * Class Manager.
+ * Class ORM.
  *
  * @author Melech Mizrachi
  *
@@ -53,7 +52,7 @@ use Valkyrja\ORM\SoftDeleteEntity;
  * @method static void softDelete(SoftDeleteEntity $entity, bool $defer = true)
  * @method static void clear(Entity $entity = null)
  */
-class Manager extends Facade
+class ORM extends Facade
 {
     /**
      * The facade instance.
@@ -62,6 +61,6 @@ class Manager extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->orm();
+        return \Valkyrja\orm();
     }
 }

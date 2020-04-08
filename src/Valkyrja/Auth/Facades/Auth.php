@@ -18,11 +18,11 @@ use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
- * Class Manager.
+ * Class Auth.
  *
  * @author Melech Mizrachi
  */
-class Manager extends Facade
+class Auth extends Facade
 {
     /**
      * The facade instance.

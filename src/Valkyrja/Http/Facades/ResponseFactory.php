@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -37,6 +36,6 @@ class ResponseFactory extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->responseFactory();
+        return \Valkyrja\responseFactory();
     }
 }

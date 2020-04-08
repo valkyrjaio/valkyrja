@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Console\Input as ConsoleInput;
 use Valkyrja\Console\Output as ConsoleOutput;
 use Valkyrja\Facade\Facades\Facade;
+
+use function Valkyrja\consoleKernel;
 
 /**
  * Class Kernel.
@@ -36,6 +37,6 @@ class Kernel extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->consoleKernel();
+        return consoleKernel();
     }
 }

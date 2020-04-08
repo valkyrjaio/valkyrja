@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Facades;
 
 use Closure;
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -64,6 +63,6 @@ class Router extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->router();
+        return \Valkyrja\router();
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Facades;
 
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -39,6 +38,6 @@ class Client extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->client();
+        return \Valkyrja\client();
     }
 }

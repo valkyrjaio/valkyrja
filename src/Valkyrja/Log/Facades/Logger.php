@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Log\Logger as Contract;
 
@@ -41,6 +40,6 @@ class Logger extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->logger();
+        return \Valkyrja\logger();
     }
 }

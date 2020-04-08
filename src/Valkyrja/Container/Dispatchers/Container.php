@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Dispatchers;
 
-use RuntimeException;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
@@ -97,8 +96,8 @@ class Container implements Contract
     /**
      * Container constructor.
      *
-     * @param array  $config
-     * @param bool   $debug
+     * @param array $config
+     * @param bool  $debug
      */
     public function __construct(array $config, bool $debug = false)
     {
@@ -382,11 +381,7 @@ class Container implements Contract
      */
     public function offsetSet($serviceId, $service): void
     {
-        if (null === $serviceId) {
-            throw new RuntimeException('Invalid serviceId.');
-        }
-
-        $this->setSingleton($serviceId, $service);
+        $this->bind($serviceId, $service);
     }
 
     /**
@@ -398,7 +393,7 @@ class Container implements Contract
      */
     public function offsetExists($serviceId): bool
     {
-        return $this->isSingleton($serviceId);
+        return $this->has($serviceId);
     }
 
     /**
@@ -410,7 +405,7 @@ class Container implements Contract
      */
     public function offsetUnset($serviceId): void
     {
-        unset(self::$instances[$serviceId]);
+        unset(self::$services[$serviceId]);
     }
 
     /**
@@ -422,6 +417,6 @@ class Container implements Contract
      */
     public function offsetGet($serviceId)
     {
-        return $this->getSingleton($serviceId);
+        return $this->get($serviceId);
     }
 }

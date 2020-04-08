@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\ORM\Adapter as Contract;
 use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\PDOConnection;
+
+use function Valkyrja\orm;
 
 /**
  * Class Adapter.
@@ -37,7 +38,7 @@ class Adapter extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->orm()->getAdapter();
+        return orm()->getAdapter();
     }
 
     /**

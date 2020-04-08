@@ -13,32 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application;
 
-use Valkyrja\Annotation\Annotator;
-use Valkyrja\Cache\Cache;
-use Valkyrja\Client\Client;
+use ArrayAccess;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
+use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Container\Container;
-use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
-use Valkyrja\HttpKernel\Kernel;
-use Valkyrja\Log\Logger;
-use Valkyrja\Mail\Mail;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
-use Valkyrja\Reflection\Reflector;
-use Valkyrja\Routing\Router;
-use Valkyrja\Session\Session;
 use Valkyrja\View\View;
 
 /**
@@ -46,7 +28,7 @@ use Valkyrja\View\View;
  *
  * @author Melech Mizrachi
  */
-interface Application
+interface Application extends ArrayAccess
 {
     /**
      * The Application framework version.
@@ -197,180 +179,18 @@ interface Application
     public function debug(): bool;
 
     /**
-     * Return the annotator instance from the container.
-     *
-     * @return Annotator
-     */
-    public function annotator(): Annotator;
-
-    /**
-     * Return the cache instance from the container.
-     *
-     * @return Cache
-     */
-    public function cache(): Cache;
-
-    /**
-     * Return the client instance from the container.
-     *
-     * @return Client
-     */
-    public function client(): Client;
-
-    /**
-     * Return the console instance from the container.
-     *
-     * @return Console
-     */
-    public function console(): Console;
-
-    /**
-     * Return the console kernel instance from the container.
+     * Get the console kernel instance from the container.
      *
      * @return ConsoleKernel
      */
     public function consoleKernel(): ConsoleKernel;
 
     /**
-     * Return the crypt instance from the container.
-     *
-     * @return Crypt
-     */
-    public function crypt(): Crypt;
-
-    /**
-     * Return the filesystem instance from the container.
-     *
-     * @return Filesystem
-     */
-    public function filesystem(): Filesystem;
-
-    /**
-     * Return the kernel instance from the container.
+     * Get the kernel instance from the container.
      *
      * @return Kernel
      */
     public function kernel(): Kernel;
-
-    /**
-     * Return the logger instance from the container.
-     *
-     * @return Logger
-     */
-    public function logger(): Logger;
-
-    /**
-     * Return the mail instance from the container.
-     *
-     * @return Mail
-     */
-    public function mail(): Mail;
-
-    /**
-     * Return the ORM manager instance from the container.
-     *
-     * @return ORM
-     */
-    public function orm(): ORM;
-
-    /**
-     * Return the path generator instance from the container.
-     *
-     * @return PathGenerator
-     */
-    public function pathGenerator(): PathGenerator;
-
-    /**
-     * Return the path parser instance from the container.
-     *
-     * @return PathParser
-     */
-    public function pathParser(): PathParser;
-
-    /**
-     * Return the reflector instance from the container.
-     *
-     * @return Reflector
-     */
-    public function reflector(): Reflector;
-
-    /**
-     * Return the request instance from the container.
-     *
-     * @return Request
-     */
-    public function request(): Request;
-
-    /**
-     * Return the router instance from the container.
-     *
-     * @return Router
-     */
-    public function router(): Router;
-
-    /**
-     * Return a new response from the application.
-     *
-     * @param string|null $content    [optional] The content to set
-     * @param int|null    $statusCode [optional] The status code to set
-     * @param array|null  $headers    [optional] The headers to set
-     *
-     * @return Response
-     */
-    public function response(string $content = null, int $statusCode = null, array $headers = null): Response;
-
-    /**
-     * Return a new json response from the application.
-     *
-     * @param array|null $data       [optional] An array of data
-     * @param int|null   $statusCode [optional] The status code to set
-     * @param array|null $headers    [optional] The headers to set
-     *
-     * @return JsonResponse
-     */
-    public function json(array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
-
-    /**
-     * Return a new redirect response from the application.
-     *
-     * @param string|null $uri        [optional] The URI to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
-     */
-    public function redirect(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse;
-
-    /**
-     * Return a new redirect response from the application for a given route.
-     *
-     * @param string|null $route      The route to match
-     * @param array|null  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @return RedirectResponse
-     */
-    public function redirectRoute(
-        string $route,
-        array $parameters = null,
-        int $statusCode = null,
-        array $headers = null
-    ): RedirectResponse;
-
-    /**
-     * Return a new response from the application.
-     *
-     * @return ResponseFactory
-     */
-    public function responseFactory(): ResponseFactory;
-
-    /**
-     * Return the session.
-     *
-     * @return Session
-     */
-    public function session(): Session;
 
     /**
      * Helper function to get a new view.

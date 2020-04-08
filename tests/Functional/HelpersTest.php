@@ -55,7 +55,7 @@ use function Valkyrja\redirect;
 use function Valkyrja\redirectRoute;
 use function Valkyrja\redirectTo;
 use function Valkyrja\resourcesPath;
-use function Valkyrja\responseBuilder;
+use function Valkyrja\responseFactory;
 use function Valkyrja\routeUrl;
 use function Valkyrja\storagePath;
 use function Valkyrja\testsPath;
@@ -363,7 +363,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, responseBuilder() instanceof ResponseFactory);
+        $this->assertEquals(true, responseFactory() instanceof ResponseFactory);
     }
 
     /**

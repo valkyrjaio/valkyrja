@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query as Contract;
+
+use function Valkyrja\orm;
 
 /**
  * Class Query.
@@ -43,6 +44,6 @@ class Query extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->orm()->createQuery();
+        return orm()->createQuery();
     }
 }

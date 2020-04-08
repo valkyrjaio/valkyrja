@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Cache\Store;
 use Valkyrja\Facade\Facades\Facade;
 
@@ -33,6 +32,6 @@ class Cache extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->cache();
+        return \Valkyrja\cache();
     }
 }

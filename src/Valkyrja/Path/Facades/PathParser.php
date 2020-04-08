@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -32,6 +31,6 @@ class PathParser extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->pathParser();
+        return \Valkyrja\pathParser();
     }
 }

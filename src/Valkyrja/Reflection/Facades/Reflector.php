@@ -20,7 +20,6 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 
 /**
@@ -45,6 +44,6 @@ class Reflector extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->reflector();
+        return \Valkyrja\reflector();
     }
 }

@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\Statement;
+
+use function Valkyrja\orm;
 
 /**
  * Class Connection.
@@ -47,6 +48,6 @@ class Connection extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->orm()->getConnection();
+        return orm()->getConnection();
     }
 }

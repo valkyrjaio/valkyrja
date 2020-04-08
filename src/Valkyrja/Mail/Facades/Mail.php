@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Mail\Mail as Contract;
 
@@ -42,6 +41,6 @@ class Mail extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->mail();
+        return \Valkyrja\mail();
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
@@ -57,6 +56,6 @@ class Filesystem extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->filesystem();
+        return \Valkyrja\filesystem();
     }
 }

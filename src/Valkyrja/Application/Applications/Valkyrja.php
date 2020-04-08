@@ -19,10 +19,12 @@ use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Enums\ConfigKeyPart;
 use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
+use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
 
@@ -369,6 +371,26 @@ class Valkyrja implements Application
     public function version(): string
     {
         return static::VERSION;
+    }
+
+    /**
+     * Get the console kernel instance from the container.
+     *
+     * @return ConsoleKernel
+     */
+    public function consoleKernel(): ConsoleKernel
+    {
+        return self::$container->getSingleton(ConsoleKernel::class);
+    }
+
+    /**
+     * Get the kernel instance from the container.
+     *
+     * @return Kernel
+     */
+    public function kernel(): Kernel
+    {
+        return self::$container->getSingleton(Kernel::class);
     }
 
     /**
