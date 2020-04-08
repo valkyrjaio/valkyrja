@@ -27,7 +27,6 @@ use Valkyrja\Event\Event;
  */
 trait ApplicationHelpersTrait
 {
-
     /**
      * Offset set.
      *
