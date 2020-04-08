@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Exception\Handlers;
 
 use Valkyrja\Exception\ExceptionHandler as ExceptionHandlerContract;
-use Valkyrja\Support\Providers\Provides;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
