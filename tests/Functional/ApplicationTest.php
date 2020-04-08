@@ -43,7 +43,7 @@ use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
 use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
 use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
-use Valkyrja\View\Views\View;
+use Valkyrja\View\View;
 
 use function is_string;
 use function unlink;
