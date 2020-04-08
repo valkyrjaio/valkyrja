@@ -76,6 +76,10 @@ class HttpException extends RuntimeException
 
     /**
      * Set the default response.
+     *
+     * @return void
+     *
+     * TODO: Move this logic out to HttpKernel
      */
     protected function setDefaultResponse(): void
     {
@@ -99,6 +103,8 @@ class HttpException extends RuntimeException
      * @param string $template The template to use
      *
      * @return View
+     *
+     * TODO: Move this logic out to HttpKernel
      */
     protected function getDefaultView(string $template): View
     {

@@ -18,13 +18,12 @@ use Valkyrja\Api\Api as Contract;
 use Valkyrja\Api\Enums\Status;
 use Valkyrja\Api\Json;
 use Valkyrja\Api\JsonData;
-use Valkyrja\Api\Models\Json as JsonClass;
-use Valkyrja\Api\Models\JsonData as JsonDataClass;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Http\Enums\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
+use Valkyrja\Http\JsonResponse;
 use Valkyrja\ORM\Entity;
-use Valkyrja\Container\Support\Provides;
 
 use function end;
 use function explode;
@@ -39,6 +38,13 @@ use function strtolower;
 class Api implements Contract
 {
     use Provides;
+
+    /**
+     * The json response.
+     *
+     * @var JsonResponse
+     */
+    protected JsonResponse $jsonResponse;
 
     /**
      * The config.
@@ -57,13 +63,15 @@ class Api implements Contract
     /**
      * Api constructor.
      *
-     * @param array $config
-     * @param bool  $debug [optional]
+     * @param JsonResponse $jsonResponse
+     * @param array        $config
+     * @param bool         $debug [optional]
      */
-    public function __construct(array $config, bool $debug = false)
+    public function __construct(JsonResponse $jsonResponse, array $config, bool $debug = false)
     {
-        $this->config = $config;
-        $this->debug  = $debug;
+        $this->jsonResponse = $jsonResponse;
+        $this->config       = $config;
+        $this->debug        = $debug;
     }
 
     /**
@@ -92,6 +100,7 @@ class Api implements Contract
         $container->setSingleton(
             Contract::class,
             new static(
+                $container->getSingleton(JsonResponse::class),
                 (array) $config['api'],
                 $config['app']['debug']
             )
@@ -99,7 +108,7 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response model from an exception.
+     * Make a new JSON model from an exception.
      *
      * @param Exception $exception
      *
@@ -136,7 +145,19 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response model from an object.
+     * Make a new JSON response from an exception
+     *
+     * @param Exception $exception
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromException(Exception $exception): JsonResponse
+    {
+        return $this-$this->getResponseFromModel($this->jsonFromException($exception));
+    }
+
+    /**
+     * Make a new JSON model from an object.
      *
      * @param object $object
      *
@@ -157,7 +178,19 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response model from an array of objects.
+     * Make a new JSON model from an object.
+     *
+     * @param object $object
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromObject(object $object): JsonResponse
+    {
+        return $this-$this->getResponseFromModel($this->jsonFromObject($object));
+    }
+
+    /**
+     * Make a new JSON model from an array of objects.
      *
      * @param object ...$objects
      *
@@ -180,7 +213,19 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response model from an entity.
+     * Make a new JSON response from an array of objects.
+     *
+     * @param object ...$objects
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromObjects(object ...$objects): JsonResponse
+    {
+        return $this-$this->getResponseFromModel($this->jsonFromObjects(...$objects));
+    }
+
+    /**
+     * Make a new JSON model from an entity.
      *
      * @param Entity $entity
      *
@@ -192,7 +237,19 @@ class Api implements Contract
     }
 
     /**
-     * Make a new JSON response model from an array of entities.
+     * Make a new JSON response from an entity.
+     *
+     * @param Entity $entity
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromEntity(Entity $entity): JsonResponse
+    {
+        return $this-$this->getResponseFromModel($this->jsonFromEntity($entity));
+    }
+
+    /**
+     * Make a new JSON model from an array of entities.
      *
      * @param Entity ...$entities
      *
@@ -204,13 +261,25 @@ class Api implements Contract
     }
 
     /**
+     * Make a new JSON response from an array of entities.
+     *
+     * @param Entity ...$entities
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromEntities(Entity ...$entities): JsonResponse
+    {
+        return $this-$this->getResponseFromModel($this->jsonFromEntities(...$entities));
+    }
+
+    /**
      * Get JSON model.
      *
      * @return Json
      */
     protected function getJsonModel(): Json
     {
-        return new JsonClass();
+        return new $this->config['jsonModel']();
     }
 
     /**
@@ -220,7 +289,7 @@ class Api implements Contract
      */
     protected function getJsonDataModel(): JsonData
     {
-        return new JsonDataClass();
+        return new $this->config['jsonDataModel']();
     }
 
     /**
@@ -251,5 +320,17 @@ class Api implements Contract
         $classNameParts = explode('\\', get_class($object));
 
         return strtolower(end($classNameParts));
+    }
+
+    /**
+     * Get a JSON response from a JSON model.
+     *
+     * @param Json $json The json model
+     *
+     * @return JsonResponse
+     */
+    protected function getResponseFromModel(Json $json): JsonResponse
+    {
+        return $this->jsonResponse::createJsonResponse($json->asArray());
     }
 }

@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception\Handlers;
 
-use Throwable;
-use Valkyrja\Application\Application;
 use Valkyrja\Exception\ExceptionHandler as ExceptionHandlerContract;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Response;
+use Valkyrja\Support\Providers\Provides;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -39,21 +35,6 @@ class ExceptionHandler implements ExceptionHandlerContract
      * @var bool
      */
     public static bool $enabled = false;
-
-    /**
-     * @var Application
-     */
-    protected Application $app;
-
-    /**
-     * NativeExceptionHandler constructor.
-     *
-     * @param Application $application
-     */
-    public function __construct(Application $application)
-    {
-        $this->app = $application;
-    }
 
     /**
      * Enable debug mode.
@@ -100,51 +81,5 @@ class ExceptionHandler implements ExceptionHandlerContract
 
         // That's it! Register Whoops and throw a dummy exception:
         $run->register();
-    }
-
-    /**
-     * Get a response from a throwable.
-     *
-     * @param Throwable $exception
-     *
-     * @throws Throwable
-     *
-     * @return Response
-     */
-    public function response(Throwable $exception): Response
-    {
-        if ($exception instanceof HttpException) {
-            if ($exception->getResponse() !== null) {
-                return $exception->getResponse();
-            }
-
-            if ($this->app->debug()) {
-                throw $exception;
-            }
-
-            try {
-                $statusCode = $exception->getStatusCode();
-
-                return $this->app->response($this->app->view("errors/$statusCode")->render(), $statusCode);
-            } catch (Throwable $exception) {
-                return $this->getDefaultResponse();
-            }
-        }
-
-        if ($this->app->debug()) {
-            throw $exception;
-        }
-
-        return $this->getDefaultResponse();
-    }
-
-    /**
-     * Get the default 500 error view.
-     *
-     * @return Response
-     */
-    protected function getDefaultResponse(): Response
-    {
-        return $this->app->response($this->app->view('errors/500')->render(), StatusCode::INTERNAL_SERVER_ERROR);
     }
 }

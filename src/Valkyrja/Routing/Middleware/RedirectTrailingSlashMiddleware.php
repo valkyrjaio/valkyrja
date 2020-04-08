@@ -42,6 +42,7 @@ class RedirectTrailingSlashMiddleware extends Middleware
         if ($path !== '/' && $path[strlen($path) - 1] === '/') {
             $query = $request->getUri()->getQuery();
 
+            // TODO: Remove this in favor of something not using a global helper
             redirectTo(substr($path, 0, -1) . ($query ? '?' . $query : ''));
         }
 

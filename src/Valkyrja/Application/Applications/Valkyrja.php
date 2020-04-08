@@ -23,10 +23,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
-use Valkyrja\Http\Response;
-use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Providers\Provider;
 
@@ -90,13 +86,6 @@ class Valkyrja implements Application
      * @var Events
      */
     protected static Events $events;
-
-    /**
-     * Get the instance of the exception handler.
-     *
-     * @var ExceptionHandler
-     */
-    protected static ExceptionHandler $exceptionHandler;
 
     /**
      * Whether the application was setup.
@@ -353,16 +342,6 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the exception handler instance.
-     *
-     * @return ExceptionHandler
-     */
-    public function exceptionHandler(): ExceptionHandler
-    {
-        return self::$exceptionHandler;
-    }
-
-    /**
      * Get the environment with which the application is running in.
      *
      * @return string
@@ -390,43 +369,6 @@ class Valkyrja implements Application
     public function version(): string
     {
         return static::VERSION;
-    }
-
-    /**
-     * Abort the application due to error.
-     *
-     * @param int|null      $statusCode The status code to use
-     * @param string|null   $message    [optional] The Exception message to throw
-     * @param array|null    $headers    [optional] The headers to send
-     * @param Response|null $response   [optional] The Response to send
-     *
-     * @throws HttpException
-     *
-     * @return void
-     */
-    public function abort(
-        int $statusCode = null,
-        string $message = null,
-        array $headers = null,
-        Response $response = null
-    ): void {
-        Abort::abort($statusCode, $message, $headers, $response);
-    }
-
-    /**
-     * Redirect to a given uri, and abort the application.
-     *
-     * @param string|null $uri        [optional] The URI to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @throws HttpRedirectException
-     *
-     * @return void
-     */
-    public function redirectTo(string $uri = null, int $statusCode = null, array $headers = null): void
-    {
-        throw new HttpRedirectException($statusCode, $uri, $headers);
     }
 
     /**
@@ -515,13 +457,11 @@ class Valkyrja implements Application
     {
         // If debug is on, enable debug handling
         if ($this->debug()) {
-            // The exception handler class to use from the config
-            $exceptionHandlerImpl = self::$config->app->exceptionHandler;
-            // Set the exception handler to a new instance of the exception handler implementation
-            self::$exceptionHandler = new $exceptionHandlerImpl($this);
+            /** @var ExceptionHandler $exceptionHandler */
+            $exceptionHandler = self::$config->app->exceptionHandler;
 
             // Enable exception handling
-            self::$exceptionHandler::enable(E_ALL, true);
+            $exceptionHandler::enable(E_ALL, true);
         }
     }
 
@@ -567,11 +507,6 @@ class Valkyrja implements Application
         self::$container->setSingleton('config', self::$config);
         // Set the container instance in the container
         self::$container->setSingleton(Container::class, self::$container);
-
-        if ($this->debug()) {
-            // Set the exception handler instance in the container
-            self::$container->setSingleton(ExceptionHandler::class, self::$exceptionHandler);
-        }
     }
 
     /**

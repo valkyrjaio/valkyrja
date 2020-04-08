@@ -36,7 +36,6 @@ use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
 use Valkyrja\Exception\Handlers\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystems\Filesystem;
-use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Factories\ResponseFactory;
 use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Responses\JsonResponse;
@@ -104,5 +103,4 @@ final class Provider
     public const ENTITY              = Entity::class;
     public const ENTITY_MANAGER      = ORM::class;
     public const EXCEPTION_HANDLER   = ExceptionHandler::class;
-    public const HTTP_EXCEPTION      = HttpException::class;
 }

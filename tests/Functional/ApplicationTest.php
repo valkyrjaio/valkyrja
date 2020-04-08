@@ -207,34 +207,6 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the abort() helper method.
-     *
-     * @return void
-     */
-    public function testAbort(): void
-    {
-        try {
-            $this->app->abort();
-        } catch (Exception $exception) {
-            $this->assertEquals(HttpException::class, get_class($exception));
-        }
-    }
-
-    /**
-     * Test the redirectTo() helper method.
-     *
-     * @return void
-     */
-    public function testRedirectTo(): void
-    {
-        try {
-            $this->app->redirectTo();
-        } catch (Exception $exception) {
-            $this->assertEquals(HttpRedirectException::class, get_class($exception));
-        }
-    }
-
-    /**
      * Test the annotations() helper method.
      *
      * @return void

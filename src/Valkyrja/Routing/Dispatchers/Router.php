@@ -510,7 +510,7 @@ class Router implements Contract
         // If the route is secure and the current request is not secure
         if ($route->isSecure() && ! $request->getUri()->isSecure()) {
             // Throw the redirect to the secure path
-            $this->responseFactory->createRedirectResponse()->secure($request->getUri()->getPath())->throw();
+            $this->responseFactory->createRedirectResponse()->secure($request->getUri()->getPath(), $request)->throw();
         }
     }
 

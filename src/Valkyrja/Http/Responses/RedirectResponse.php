@@ -21,8 +21,7 @@ use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\RedirectResponse as Contract;
-
-use function Valkyrja\request;
+use Valkyrja\Http\Request;
 
 /**
  * Class RedirectResponse.
@@ -123,23 +122,15 @@ class RedirectResponse extends Response implements Contract
     /**
      * Set the redirect uri to secure.
      *
-     * @param string $path The path
+     * @param string  $path    The path
+     * @param Request $request The request
      *
      * @return static
      */
-    public function secure(string $path): self
+    public function secure(string $path, Request $request): self
     {
-        // If the path doesn't start with a /
-        if ('/' !== $path[0]) {
-            // Set the uri as the path
-            $this->setUri($path);
-
-            // Return out of the method
-            return $this;
-        }
-
         // Set the uri to https with the host and path
-        $this->setUri('https://' . request()->getUri()->getHostPort() . $path);
+        $this->setUri('https://' . $request->getUri()->getHostPort() . $path);
 
         return $this;
     }
@@ -147,11 +138,13 @@ class RedirectResponse extends Response implements Contract
     /**
      * Redirect back to the referer.
      *
+     * @param Request $request The request
+     *
      * @return static
      */
-    public function back(): self
+    public function back(Request $request): self
     {
-        $refererUri = request()->getHeaderLine('Referer');
+        $refererUri = $request->getHeaderLine('Referer');
 
         $this->setUri($refererUri ?: '/');
 

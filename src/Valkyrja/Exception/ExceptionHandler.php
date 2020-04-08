@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Exception;
 
-use Throwable;
-use Valkyrja\Http\Response;
-
 use const E_ALL;
 
 /**
@@ -34,13 +31,4 @@ interface ExceptionHandler
      * @return void
      */
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void;
-
-    /**
-     * Get a response from a throwable.
-     *
-     * @param Throwable $exception
-     *
-     * @return Response
-     */
-    public function response(Throwable $exception): Response;
 }

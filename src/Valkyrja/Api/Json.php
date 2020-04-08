@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api;
 
-use Valkyrja\Http\JsonResponse;
 use Valkyrja\Model\Model;
 
 /**
@@ -86,11 +85,4 @@ interface Json extends Model
      * @return static
      */
     public function setStatus(string $status): self;
-
-    /**
-     * Get the API model as a JSON response.
-     *
-     * @return JsonResponse
-     */
-    public function asResponse(): JsonResponse;
 }

@@ -16,10 +16,7 @@ namespace Valkyrja\Api\Models;
 use Valkyrja\Api\Enums\Status;
 use Valkyrja\Api\JsonData;
 use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\JsonResponse;
 use Valkyrja\Model\ModelTrait;
-
-use function Valkyrja\json;
 
 /**
  * Trait JsonTrait.
@@ -152,16 +149,6 @@ trait JsonTrait
         $this->status = $status;
 
         return $this;
-    }
-
-    /**
-     * Get the API model as a JSON response.
-     *
-     * @return JsonResponse
-     */
-    public function asResponse(): JsonResponse
-    {
-        return json($this->asArray(), $this->statusCode);
     }
 
     /**

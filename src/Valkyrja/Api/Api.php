@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Api;
 
 use Exception;
+use Valkyrja\Http\JsonResponse;
 use Valkyrja\ORM\Entity;
 
 /**
@@ -24,7 +25,7 @@ use Valkyrja\ORM\Entity;
 interface Api
 {
     /**
-     * Make a new JSON response model from an exception.
+     * Make a new JSON model from an exception.
      *
      * @param Exception $exception
      *
@@ -33,7 +34,16 @@ interface Api
     public function jsonFromException(Exception $exception): Json;
 
     /**
-     * Make a new JSON response model from an object.
+     * Make a new JSON response from an exception
+     *
+     * @param Exception $exception
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromException(Exception $exception): JsonResponse;
+
+    /**
+     * Make a new JSON model from an object.
      *
      * @param object $object
      *
@@ -42,7 +52,16 @@ interface Api
     public function jsonFromObject(object $object): Json;
 
     /**
-     * Make a new JSON response model from an array of objects.
+     * Make a new JSON model from an object.
+     *
+     * @param object $object
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromObject(object $object): JsonResponse;
+
+    /**
+     * Make a new JSON model from an array of objects.
      *
      * @param object ...$objects
      *
@@ -51,7 +70,16 @@ interface Api
     public function jsonFromObjects(object ...$objects): Json;
 
     /**
-     * Make a new JSON response model from an entity.
+     * Make a new JSON response from an array of objects.
+     *
+     * @param object ...$objects
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromObjects(object ...$objects): JsonResponse;
+
+    /**
+     * Make a new JSON model from an entity.
      *
      * @param Entity $entity
      *
@@ -60,11 +88,29 @@ interface Api
     public function jsonFromEntity(Entity $entity): Json;
 
     /**
-     * Make a new JSON response model from an array of entities.
+     * Make a new JSON response from an entity.
+     *
+     * @param Entity $entity
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromEntity(Entity $entity): JsonResponse;
+
+    /**
+     * Make a new JSON model from an array of entities.
      *
      * @param Entity ...$entities
      *
      * @return Json
      */
     public function jsonFromEntities(Entity ...$entities): Json;
+
+    /**
+     * Make a new JSON response from an array of entities.
+     *
+     * @param Entity ...$entities
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromEntities(Entity ...$entities): JsonResponse;
 }

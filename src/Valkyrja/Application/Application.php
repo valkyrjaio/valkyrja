@@ -24,10 +24,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\Exceptions\HttpException;
-use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Request;
@@ -179,13 +176,6 @@ interface Application
     public function setEvents(Events $events): self;
 
     /**
-     * Get the exception handler instance.
-     *
-     * @return ExceptionHandler
-     */
-    public function exceptionHandler(): ExceptionHandler;
-
-    /**
      * Get the application version.
      *
      * @return string
@@ -205,38 +195,6 @@ interface Application
      * @return bool
      */
     public function debug(): bool;
-
-    /**
-     * Abort the application due to error.
-     *
-     * @param int|null      $statusCode The status code to use
-     * @param string|null   $message    [optional] The Exception message to throw
-     * @param array|null    $headers    [optional] The headers to send
-     * @param Response|null $response   [optional] The Response to send
-     *
-     * @throws HttpException
-     *
-     * @return void
-     */
-    public function abort(
-        int $statusCode = null,
-        string $message = null,
-        array $headers = null,
-        Response $response = null
-    ): void;
-
-    /**
-     * Redirect to a given uri, and abort the application.
-     *
-     * @param string|null $uri        [optional] The URI to redirect to
-     * @param int|null    $statusCode [optional] The response status code
-     * @param array|null  $headers    [optional] An array of response headers
-     *
-     * @throws HttpRedirectException
-     *
-     * @return void
-     */
-    public function redirectTo(string $uri = null, int $statusCode = null, array $headers = null): void;
 
     /**
      * Return the annotator instance from the container.
