@@ -153,7 +153,7 @@ class Api implements Contract
      */
     public function jsonResponseFromException(Exception $exception): JsonResponse
     {
-        return $this-$this->getResponseFromModel($this->jsonFromException($exception));
+        return $this->getResponseFromModel($this->jsonFromException($exception));
     }
 
     /**
@@ -186,7 +186,7 @@ class Api implements Contract
      */
     public function jsonResponseFromObject(object $object): JsonResponse
     {
-        return $this-$this->getResponseFromModel($this->jsonFromObject($object));
+        return $this->getResponseFromModel($this->jsonFromObject($object));
     }
 
     /**
@@ -221,7 +221,7 @@ class Api implements Contract
      */
     public function jsonResponseFromObjects(object ...$objects): JsonResponse
     {
-        return $this-$this->getResponseFromModel($this->jsonFromObjects(...$objects));
+        return $this->getResponseFromModel($this->jsonFromObjects(...$objects));
     }
 
     /**
@@ -245,7 +245,7 @@ class Api implements Contract
      */
     public function jsonResponseFromEntity(Entity $entity): JsonResponse
     {
-        return $this-$this->getResponseFromModel($this->jsonFromEntity($entity));
+        return $this->getResponseFromModel($this->jsonFromEntity($entity));
     }
 
     /**
@@ -269,7 +269,7 @@ class Api implements Contract
      */
     public function jsonResponseFromEntities(Entity ...$entities): JsonResponse
     {
-        return $this-$this->getResponseFromModel($this->jsonFromEntities(...$entities));
+        return $this->getResponseFromModel($this->jsonFromEntities(...$entities));
     }
 
     /**
