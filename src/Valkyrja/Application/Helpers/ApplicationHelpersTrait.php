@@ -17,9 +17,6 @@ use RuntimeException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Event;
-use Valkyrja\View\View;
-
-use function func_num_args;
 
 /**
  * Trait ApplicationHelpersTrait.
@@ -98,25 +95,5 @@ trait ApplicationHelpersTrait
         }
 
         return self::$container->get($serviceId);
-    }
-
-    /**
-     * Helper function to get a new view.
-     *
-     * @param string|null $template  [optional] The template to use
-     * @param array       $variables [optional] The variables to use
-     *
-     * @return View
-     */
-    public function view(string $template = null, array $variables = []): View
-    {
-        /** @var View $view */
-        $view = self::$container->getSingleton(View::class);
-
-        if (func_num_args() === 0) {
-            return $view;
-        }
-
-        return $view->make($template, $variables);
     }
 }

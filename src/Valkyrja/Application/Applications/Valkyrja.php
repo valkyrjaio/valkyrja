@@ -344,36 +344,6 @@ class Valkyrja implements Application
     }
 
     /**
-     * Get the environment with which the application is running in.
-     *
-     * @return string
-     */
-    public function environment(): string
-    {
-        return self::$config['app']['env'];
-    }
-
-    /**
-     * Whether the application is running in debug mode or not.
-     *
-     * @return bool
-     */
-    public function debug(): bool
-    {
-        return self::$config['app']['debug'];
-    }
-
-    /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string
-    {
-        return static::VERSION;
-    }
-
-    /**
      * Get the console kernel instance from the container.
      *
      * @return ConsoleKernel
@@ -391,6 +361,36 @@ class Valkyrja implements Application
     public function kernel(): Kernel
     {
         return self::$container->getSingleton(Kernel::class);
+    }
+
+    /**
+     * Whether the application is running in debug mode or not.
+     *
+     * @return bool
+     */
+    public function debug(): bool
+    {
+        return self::$config['app']['debug'];
+    }
+
+    /**
+     * Get the environment with which the application is running in.
+     *
+     * @return string
+     */
+    public function environment(): string
+    {
+        return self::$config['app']['env'];
+    }
+
+    /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version(): string
+    {
+        return static::VERSION;
     }
 
     /**

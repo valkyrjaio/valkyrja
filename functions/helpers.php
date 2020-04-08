@@ -51,6 +51,7 @@ use Valkyrja\Support\Directory;
 use Valkyrja\View\View;
 
 use function func_get_args;
+use function func_num_args;
 use function var_dump;
 
 /**
@@ -483,7 +484,14 @@ function session(): Session
  */
 function view(string $template = null, array $variables = []): View
 {
-    return app()->view($template, $variables);
+    /** @var View $view */
+    $view = Valkyrja::app()->container()->getSingleton(View::class);
+
+    if (func_num_args() === 0) {
+        return $view;
+    }
+
+    return $view->make($template, $variables);
 }
 
 /**

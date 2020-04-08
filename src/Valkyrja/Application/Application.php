@@ -17,11 +17,10 @@ use ArrayAccess;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Console\Kernel as ConsoleKernel;
-use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\View\View;
+use Valkyrja\HttpKernel\Kernel;
 
 /**
  * Interface Application.
@@ -158,27 +157,6 @@ interface Application extends ArrayAccess
     public function setEvents(Events $events): self;
 
     /**
-     * Get the application version.
-     *
-     * @return string
-     */
-    public function version(): string;
-
-    /**
-     * Get the environment with which the application is running in.
-     *
-     * @return string
-     */
-    public function environment(): string;
-
-    /**
-     * Whether the application is running in debug mode or not.
-     *
-     * @return bool
-     */
-    public function debug(): bool;
-
-    /**
      * Get the console kernel instance from the container.
      *
      * @return ConsoleKernel
@@ -193,12 +171,23 @@ interface Application extends ArrayAccess
     public function kernel(): Kernel;
 
     /**
-     * Helper function to get a new view.
+     * Whether the application is running in debug mode or not.
      *
-     * @param string|null $template  [optional] The template to use
-     * @param array       $variables [optional] The variables to use
-     *
-     * @return View
+     * @return bool
      */
-    public function view(string $template = null, array $variables = []): View;
+    public function debug(): bool;
+
+    /**
+     * Get the environment with which the application is running in.
+     *
+     * @return string
+     */
+    public function environment(): string;
+
+    /**
+     * Get the application version.
+     *
+     * @return string
+     */
+    public function version(): string;
 }

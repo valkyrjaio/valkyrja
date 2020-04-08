@@ -369,7 +369,7 @@ class ApplicationTest extends TestCase
      */
     public function testView(): void
     {
-        $this->assertEquals(true, $this->app->view() instanceof View);
+        $this->assertEquals(true, $this->app[View::class] instanceof View);
     }
 
     /**
