@@ -50,7 +50,6 @@ use Valkyrja\Session\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\View;
 
-use function func_get_args;
 use function func_num_args;
 use function var_dump;
 
@@ -497,13 +496,13 @@ function view(string $template = null, array $variables = []): View
 /**
  * Dump the passed variables and die.
  *
- * @param mixed The arguments to dump
+ * @param mixed ...$args The arguments to dump
  *
  * @return void
  */
-function dd(): void
+function dd(...$args): void
 {
-    var_dump(func_get_args());
+    var_dump($args);
 
     die(1);
 }
