@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Status code constants.
  *
@@ -21,7 +23,7 @@ namespace Valkyrja\Http\Enums;
  * @link   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
-final class StatusCode extends \Valkyrja\Support\Enum\Enum
+final class StatusCode extends Enum
 {
     public const MIN                             = 100;
     public const MAX                             = 599;

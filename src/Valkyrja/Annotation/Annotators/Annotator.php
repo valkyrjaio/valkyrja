@@ -108,7 +108,7 @@ class Annotator implements Contract
     {
         $container->setSingleton(
             Contract::class,
-            $annotator = new static(
+            new static(
                 $container->getSingleton(Parser::class),
                 $container->getSingleton(Reflector::class)
             )

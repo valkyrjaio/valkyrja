@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum Field.
  *
  * @author Melech Mizrachi
  */
-final class Field extends \Valkyrja\Support\Enum\Enum
+final class Field extends Enum
 {
     public const USERNAME       = 'username';
     public const PASSWORD       = 'password';

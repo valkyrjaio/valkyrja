@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Status text constants.
  *
@@ -21,7 +23,7 @@ namespace Valkyrja\Http\Enums;
  * @link   http://www.iana.org/assignments/http-status-codes/
  * - Hypertext Transfer Protocol (HTTP) Status Code Registry
  */
-final class StatusText extends \Valkyrja\Support\Enum\Enum
+final class StatusText extends Enum
 {
     public const CONTINUE                        = 'Continue';
     public const SWITCHING_PROTOCOLS             = 'Switching Protocols';

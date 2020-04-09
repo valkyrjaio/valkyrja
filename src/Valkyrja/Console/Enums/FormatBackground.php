@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum FormatBackground.
  *
  * @author Melech Mizrachi
  */
-final class FormatBackground extends \Valkyrja\Support\Enum\Enum
+final class FormatBackground extends Enum
 {
     public const BLACK         = 40;
     public const RED           = 41;

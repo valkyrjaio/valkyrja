@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum PropertyType.
  */
-final class PropertyType extends \Valkyrja\Support\Enum\Enum
+final class PropertyType extends Enum
 {
     public const ARRAY  = 'array';
     public const OBJECT = 'object';

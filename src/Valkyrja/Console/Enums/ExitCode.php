@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum ExitCode.
  *
  * @author Melech Mizrachi
  */
-final class ExitCode extends \Valkyrja\Support\Enum\Enum
+final class ExitCode extends Enum
 {
     public const SUCCESS   = 0;
     public const FAILURE   = 1;

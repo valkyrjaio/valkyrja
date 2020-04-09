@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Annotation\Enums;
 
 use Valkyrja\Event\Annotation\Models\Listener;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Enum AnnotationClass.
  *
  * @author Melech Mizrachi
  */
-final class AnnotationClass extends \Valkyrja\Support\Enum\Enum
+final class AnnotationClass extends Enum
 {
     public const LISTENER = Listener::class;
 }

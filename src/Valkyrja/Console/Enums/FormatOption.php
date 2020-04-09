@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum FormatOption.
  *
  * @author Melech Mizrachi
  */
-final class FormatOption extends \Valkyrja\Support\Enum\Enum
+final class FormatOption extends Enum
 {
     public const BOLD       = 1;
     public const UNDERSCORE = 4;

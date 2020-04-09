@@ -226,8 +226,6 @@ class Annotator implements Contract
      *
      * @param string $class The class
      *
-     * @throws ReflectionException
-     *
      * @return array
      */
     protected function getClassAnnotations(string $class): array
@@ -337,8 +335,6 @@ class Annotator implements Contract
      * Get class member annotations
      *
      * @param string $class The class
-     *
-     * @throws ReflectionException
      *
      * @return array
      */

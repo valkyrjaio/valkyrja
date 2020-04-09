@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
  * Enum Regex.
  *
  * @author Melech Mizrachi
  */
-final class Regex extends \Valkyrja\Support\Enum\Enum
+final class Regex extends Enum
 {
     /**
      * Annotation symbol.
