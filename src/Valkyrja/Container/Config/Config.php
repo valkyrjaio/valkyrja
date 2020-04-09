@@ -55,7 +55,7 @@ class Config extends Model
         CKP::CONTEXT_SERVICES            => EnvKey::CONTAINER_CONTEXT_SERVICES,
         CKP::PROVIDERS                   => EnvKey::CONTAINER_PROVIDERS,
         CKP::DEV_PROVIDERS               => EnvKey::CONTAINER_DEV_PROVIDERS,
-        CKP::SETUP_FACADE               => EnvKey::CONTAINER_SETUP_FACADE,
+        CKP::SETUP_FACADE                => EnvKey::CONTAINER_SETUP_FACADE,
         CKP::USE_ANNOTATIONS             => EnvKey::CONTAINER_USE_ANNOTATIONS,
         CKP::USE_ANNOTATIONS_EXCLUSIVELY => EnvKey::CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY,
         CKP::FILE_PATH                   => EnvKey::CONTAINER_FILE_PATH,
