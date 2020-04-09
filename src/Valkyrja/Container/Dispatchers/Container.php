@@ -46,13 +46,6 @@ class Container implements Contract
     protected static array $aliases = [];
 
     /**
-     * The context services.
-     *
-     * @var string[]
-     */
-    protected static array $contextServices = [];
-
-    /**
      * The instances.
      *
      * @var array
@@ -86,6 +79,13 @@ class Container implements Contract
      * @var string|null
      */
     protected ?string $context = null;
+
+    /**
+     * The context id.
+     *
+     * @var string|null
+     */
+    protected ?string $contextId = null;
 
     /**
      * The context method name.
@@ -144,7 +144,7 @@ class Container implements Contract
     }
 
     /**
-     * Get a container with context.
+     * Get a container instance with context.
      *
      * @param string $context The context class or function name
      * @param string $member  [optional] The context method name
@@ -157,6 +157,23 @@ class Container implements Contract
 
         $contextContainer->context       = $context;
         $contextContainer->contextMethod = $member;
+        $contextContainer->contextId     = '@' . $context . ($member ? '::' . $member : '');
+
+        return $contextContainer;
+    }
+
+    /**
+     * Get a container instance with no context.
+     *
+     * @return static
+     */
+    public function withoutContext(): self
+    {
+        $contextContainer = clone $this;
+
+        $contextContainer->context       = null;
+        $contextContainer->contextMethod = null;
+        $contextContainer->contextId     = null;
 
         return $contextContainer;
     }
@@ -170,23 +187,9 @@ class Container implements Contract
      */
     public function has(string $serviceId): bool
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         return isset(self::$services[$serviceId]) || isset(self::$aliases[$serviceId]);
-    }
-
-    /**
-     * Check whether a given service has context.
-     *
-     * @param string      $serviceId The service id
-     * @param string      $context   The context class or function name
-     * @param string|null $member    [optional] The context member name
-     *
-     * @return bool
-     */
-    public function hasContext(string $serviceId, string $context, string $member = null): bool
-    {
-        $contextIndex = $this->getContextServiceId($serviceId, $context, $member);
-
-        return isset(self::$contextServices[$contextIndex]);
     }
 
     /**
@@ -195,13 +198,17 @@ class Container implements Contract
      * @param string $serviceId The service id
      * @param string $service   The service
      *
-     * @return void
+     * @return static
      */
-    public function bind(string $serviceId, string $service): void
+    public function bind(string $serviceId, string $service): self
     {
         Cls::validateInherits($service, Service::class);
 
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         self::$services[$serviceId] = $service;
+
+        return $this;
     }
 
     /**
@@ -210,13 +217,17 @@ class Container implements Contract
      * @param string $serviceId The service id
      * @param string $singleton The singleton service
      *
-     * @return void
+     * @return static
      */
-    public function bindSingleton(string $serviceId, string $singleton): void
+    public function bindSingleton(string $serviceId, string $singleton): self
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         self::$singletons[$serviceId] = $singleton;
 
         $this->bind($singleton, $singleton);
+
+        return $this;
     }
 
     /**
@@ -225,27 +236,15 @@ class Container implements Contract
      * @param string $alias     The alias
      * @param string $serviceId The service to return
      *
-     * @return void
+     * @return static
      */
-    public function setAlias(string $alias, string $serviceId): void
+    public function setAlias(string $alias, string $serviceId): self
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         self::$aliases[$alias] = $serviceId;
-    }
 
-    /**
-     * Bind a context to the container.
-     *
-     * @param string      $serviceId The service id
-     * @param string      $context   The context class or function name
-     * @param string|null $member    [optional] The context member name
-     *
-     * @return void
-     */
-    public function setContext(string $serviceId, string $context, string $member = null): void
-    {
-        $contextIndex = $this->getContextServiceId($serviceId, $context, $member);
-
-        self::$contextServices[$contextIndex] = $serviceId;
+        return $this;
     }
 
     /**
@@ -253,11 +252,17 @@ class Container implements Contract
      *
      * @param string $serviceId The service
      * @param mixed  $singleton The singleton
+     *
+     * @return static
      */
-    public function setSingleton(string $serviceId, $singleton): void
+    public function setSingleton(string $serviceId, $singleton): self
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         self::$singletons[$serviceId] = $serviceId;
         self::$instances[$serviceId]  = $singleton;
+
+        return $this;
     }
 
     /**
@@ -269,6 +274,8 @@ class Container implements Contract
      */
     public function isAlias(string $serviceId): bool
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         return isset(self::$aliases[$serviceId]);
     }
 
@@ -281,6 +288,8 @@ class Container implements Contract
      */
     public function isSingleton(string $serviceId): bool
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         return isset(self::$singletons[$serviceId]);
     }
 
@@ -294,10 +303,6 @@ class Container implements Contract
      */
     public function get(string $serviceId, array $arguments = [])
     {
-        if (null !== $this->context) {
-            $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
-        }
-
         // If this service is an alias
         if ($this->isAlias($serviceId)) {
             $serviceId = self::$aliases[$serviceId];
@@ -334,7 +339,8 @@ class Container implements Contract
      */
     public function makeService(string $serviceId, array $arguments = [])
     {
-        $service = self::$services[$serviceId];
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $service   = self::$services[$serviceId];
 
         // Make the object by dispatching the service
         $made = $service::make($this, $arguments);
@@ -357,6 +363,8 @@ class Container implements Contract
      */
     public function getSingleton(string $serviceId)
     {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
         // If the service isn't a singleton but is provided
         if (! isset(self::$instances[$serviceId]) && $this->isProvided($serviceId)) {
             // Initialize the provided service
@@ -377,10 +385,13 @@ class Container implements Contract
      */
     public function getContextServiceId(string $serviceId, string $context = null, string $member = null): string
     {
-        // service@class
-        // service@method
-        // service@class::method
-        return $serviceId . '@' . ($context ?? '') . ($context && $member ? '::' : '') . ($member ?? '');
+        if (null === $this->context) {
+            return $serviceId;
+        }
+
+        // serviceId@context
+        // serviceId@context::method
+        return $serviceId . $this->contextId;
     }
 
     /**

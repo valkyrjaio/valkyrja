@@ -15,17 +15,17 @@ namespace Valkyrja\Routing\Annotation\Annotators;
 
 use InvalidArgumentException;
 use ReflectionException;
-use Valkyrja\Annotation\Annotator;
+use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Routing\Annotation\Enums\Annotation;
+use Valkyrja\Routing\Annotation\Annotator as Contract;
+use Valkyrja\Routing\Annotation\Enums\AnnotationName;
 use Valkyrja\Routing\Annotation\Route;
-use Valkyrja\Routing\Annotation\RouteAnnotator as Contract;
 use Valkyrja\Routing\Exceptions\InvalidRoutePath;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route as RouteContract;
-use Valkyrja\Container\Support\Provides;
 
 use function array_merge;
 use function trim;
@@ -35,16 +35,16 @@ use function trim;
  *
  * @author Melech Mizrachi
  */
-class RouteAnnotator implements Contract
+class Annotator implements Contract
 {
     use Provides;
 
     /**
      * The annotator.
      *
-     * @var Annotator
+     * @var AnnotationAnnotator
      */
-    protected Annotator $annotator;
+    protected AnnotationAnnotator $annotator;
 
     /**
      * The filter.
@@ -63,11 +63,11 @@ class RouteAnnotator implements Contract
     /**
      * ContainerAnnotator constructor.
      *
-     * @param Annotator $annotator
-     * @param Filter    $filter
-     * @param Reflector $reflector
+     * @param AnnotationAnnotator $annotator
+     * @param Filter              $filter
+     * @param Reflector           $reflector
      */
-    public function __construct(Annotator $annotator, Filter $filter, Reflector $reflector)
+    public function __construct(AnnotationAnnotator $annotator, Filter $filter, Reflector $reflector)
     {
         $this->annotator = $annotator;
         $this->filter    = $filter;
@@ -98,7 +98,7 @@ class RouteAnnotator implements Contract
         $container->setSingleton(
             Contract::class,
             new static(
-                $container->getSingleton(Annotator::class),
+                $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflector::class)
             )
@@ -233,7 +233,7 @@ class RouteAnnotator implements Contract
     protected function getClassAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            Annotation::getValidValues(),
+            AnnotationName::getValidValues(),
             ...$this->annotator->classAnnotations($class)
         );
     }
@@ -345,7 +345,7 @@ class RouteAnnotator implements Contract
     protected function getClassMemberAnnotations(string $class): array
     {
         return $this->filter->filterAnnotationsByTypes(
-            Annotation::getValidValues(),
+            AnnotationName::getValidValues(),
             ...$this->annotator->classMembersAnnotations($class)
         );
     }

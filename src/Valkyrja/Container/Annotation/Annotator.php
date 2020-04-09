@@ -17,11 +17,11 @@ use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
 
 /**
- * Interface ContainerAnnotations.
+ * Interface Annotator.
  *
  * @author Melech Mizrachi
  */
-interface ContainerAnnotator
+interface Annotator
 {
     /**
      * Get the services.

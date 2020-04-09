@@ -16,7 +16,7 @@ namespace Valkyrja\Container\Annotation\Annotators;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Container\Annotation\ContainerAnnotator as Contract;
+use Valkyrja\Container\Annotation\Annotator as Contract;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
@@ -29,7 +29,7 @@ use Valkyrja\Container\Support\Provides;
  *
  * @author Melech Mizrachi
  */
-class ContainerAnnotator implements Contract
+class Annotator implements Contract
 {
     use Provides;
 

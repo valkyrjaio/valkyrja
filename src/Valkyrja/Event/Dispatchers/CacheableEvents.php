@@ -16,7 +16,7 @@ namespace Valkyrja\Event\Dispatchers;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Annotation\ListenerAnnotator;
+use Valkyrja\Event\Annotation\Annotator;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Config\Config as EventConfig;
 use Valkyrja\Support\Cacheable\Cacheable;
@@ -134,8 +134,8 @@ class CacheableEvents extends Events
      */
     protected function setupAnnotations($config): void
     {
-        /** @var ListenerAnnotator $containerAnnotations */
-        $containerAnnotations = $this->container->getSingleton(ListenerAnnotator::class);
+        /** @var Annotator $containerAnnotations */
+        $containerAnnotations = $this->container->getSingleton(Annotator::class);
 
         // Get all the annotated listeners from the list of classes
         // Iterate through the listeners

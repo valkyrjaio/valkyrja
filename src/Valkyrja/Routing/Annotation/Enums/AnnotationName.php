@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Enums;
 
+use Valkyrja\Support\Enum\Enum;
+
 /**
- * Enum Annotation.
+ * Enum AnnotationName.
  *
  * @author Melech Mizrachi
  */
-final class Annotation extends \Valkyrja\Support\Enum\Enum
+final class AnnotationName extends Enum
 {
     public const ROUTE                            = 'Route';
     public const ROUTE_ANY                        = 'Route\\Any';

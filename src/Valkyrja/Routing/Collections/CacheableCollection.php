@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Collections;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Routing\Annotation\RouteAnnotator;
+use Valkyrja\Routing\Annotation\Annotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Routing\Matcher;
@@ -134,8 +134,8 @@ class CacheableCollection extends Collection
      */
     protected function setupAnnotations($config): void
     {
-        /** @var RouteAnnotator $routeAnnotations */
-        $routeAnnotations = $this->container->getSingleton(RouteAnnotator::class);
+        /** @var Annotator $routeAnnotations */
+        $routeAnnotations = $this->container->getSingleton(Annotator::class);
 
         // Get all the annotated routes from the list of controllers
         // Iterate through the routes

@@ -18,7 +18,7 @@ namespace Valkyrja\Event\Annotation;
  *
  * @author Melech Mizrachi
  */
-interface ListenerAnnotator
+interface Annotator
 {
     /**
      * Get the events.

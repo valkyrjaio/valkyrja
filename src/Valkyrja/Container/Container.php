@@ -24,7 +24,7 @@ use Valkyrja\Support\Provider\ProvidersAware;
 interface Container extends ArrayAccess, ProvidersAware
 {
     /**
-     * Get a container with context.
+     * Get a container instance with context.
      *
      * @param string $context The context class or function name
      * @param string $member  [optional] The context method name
@@ -32,6 +32,13 @@ interface Container extends ArrayAccess, ProvidersAware
      * @return static
      */
     public function withContext(string $context, string $member = null): self;
+
+    /**
+     * Get a container instance with no context.
+     *
+     * @return static
+     */
+    public function withoutContext(): self;
 
     /**
      * Check whether a given service exists.
@@ -43,25 +50,14 @@ interface Container extends ArrayAccess, ProvidersAware
     public function has(string $serviceId): bool;
 
     /**
-     * Check whether a given service has context.
-     *
-     * @param string      $serviceId The service id
-     * @param string      $context   The context class or function name
-     * @param string|null $member    [optional] The context member name
-     *
-     * @return bool
-     */
-    public function hasContext(string $serviceId, string $context, string $member = null): bool;
-
-    /**
      * Bind a service to the container.
      *
      * @param string $serviceId The service id
      * @param string $service   The service
      *
-     * @return void
+     * @return static
      */
-    public function bind(string $serviceId, string $service): void;
+    public function bind(string $serviceId, string $service): self;
 
     /**
      * Bind a singleton to the container.
@@ -69,9 +65,9 @@ interface Container extends ArrayAccess, ProvidersAware
      * @param string $serviceId The service id
      * @param string $singleton The singleton service
      *
-     * @return void
+     * @return static
      */
-    public function bindSingleton(string $serviceId, string $singleton): void;
+    public function bindSingleton(string $serviceId, string $singleton): self;
 
     /**
      * Set an alias to the container.
@@ -79,28 +75,19 @@ interface Container extends ArrayAccess, ProvidersAware
      * @param string $alias     The alias
      * @param string $serviceId The service to return
      *
-     * @return void
+     * @return static
      */
-    public function setAlias(string $alias, string $serviceId): void;
-
-    /**
-     * Bind a context to the container.
-     *
-     * @param string      $serviceId The service id
-     * @param string      $context   The context class or function name
-     * @param string|null $member    [optional] The context member name
-     *
-     * @return void
-     */
-    public function setContext(string $serviceId, string $context, string $member = null): void;
+    public function setAlias(string $alias, string $serviceId): self;
 
     /**
      * Bind a singleton to the container.
      *
      * @param string $serviceId The service
      * @param mixed  $singleton The singleton
+     *
+     * @return static
      */
-    public function setSingleton(string $serviceId, $singleton): void;
+    public function setSingleton(string $serviceId, $singleton): self;
 
     /**
      * Check whether a given service is an alias.

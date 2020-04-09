@@ -49,165 +49,34 @@ class ServiceContextTest extends TestCase
     }
 
     /**
-     * Test the getContextClass method's default value.
+     * Test the getService method's default value.
      *
      * @return void
      */
-    public function testGetContextClassDefault(): void
+    public function testGetServiceDefault(): void
     {
-        $this->assertEquals(null, $this->class->getContextClass());
+        $this->assertEquals(null, $this->class->getService());
     }
 
     /**
-     * Test the getContextClass method.
+     * Test the getService method.
      *
      * @return void
      */
-    public function testGetContextClass(): void
+    public function testGetService(): void
     {
-        $this->class->setContextClass($this->value);
+        $this->class->setService($this->value);
 
-        $this->assertEquals($this->value, $this->class->getContextClass());
+        $this->assertEquals($this->value, $this->class->getService());
     }
 
     /**
-     * Test the setContextClass method.
+     * Test the setService method.
      *
      * @return void
      */
-    public function testSetContextClass(): void
+    public function testSetService(): void
     {
-        $this->assertEquals($this->class, $this->class->setContextClass($this->value));
-    }
-
-    /**
-     * Test the getContextProperty method's default value.
-     *
-     * @return void
-     */
-    public function testGetContextPropertyDefault(): void
-    {
-        $this->assertEquals(null, $this->class->getContextProperty());
-    }
-
-    /**
-     * Test the getContextProperty method.
-     *
-     * @return void
-     */
-    public function testGetContextProperty(): void
-    {
-        $this->class->setContextProperty($this->value);
-
-        $this->assertEquals($this->value, $this->class->getContextProperty());
-    }
-
-    /**
-     * Test the setContextProperty method.
-     *
-     * @return void
-     */
-    public function testSetContextProperty(): void
-    {
-        $this->assertEquals($this->class, $this->class->setContextProperty($this->value));
-    }
-
-    /**
-     * Test the getContextMethod method's default value.
-     *
-     * @return void
-     */
-    public function testGetContextMethodDefault(): void
-    {
-        $this->assertEquals(null, $this->class->getContextMethod());
-    }
-
-    /**
-     * Test the getContextMethod method.
-     *
-     * @return void
-     */
-    public function testGetContextMethod(): void
-    {
-        $this->class->setContextMethod($this->value);
-
-        $this->assertEquals($this->value, $this->class->getContextMethod());
-    }
-
-    /**
-     * Test the setContextMethod method.
-     *
-     * @return void
-     */
-    public function testSetContextMethod(): void
-    {
-        $this->assertEquals($this->class, $this->class->setContextMethod($this->value));
-    }
-
-    /**
-     * Test the getContextFunction method's default value.
-     *
-     * @return void
-     */
-    public function testGetContextFunctionDefault(): void
-    {
-        $this->assertEquals(null, $this->class->getContextFunction());
-    }
-
-    /**
-     * Test the getContextFunction method.
-     *
-     * @return void
-     */
-    public function testGetContextFunction(): void
-    {
-        $this->class->setContextFunction($this->value);
-
-        $this->assertEquals($this->value, $this->class->getContextFunction());
-    }
-
-    /**
-     * Test the setContextFunction method.
-     *
-     * @return void
-     */
-    public function testSetContextFunction(): void
-    {
-        $this->assertEquals($this->class, $this->class->setContextFunction($this->value));
-    }
-
-    /**
-     * Test the getContextClosure method's default value.
-     *
-     * @return void
-     */
-    public function testGetContextClosureDefault(): void
-    {
-        $this->assertEquals(null, $this->class->getContextClosure());
-    }
-
-    /**
-     * Test the getContextClosure method.
-     *
-     * @return void
-     */
-    public function testGetContextClosure(): void
-    {
-        $value = static function () {};
-        $this->class->setContextClosure($value);
-
-        $this->assertEquals($value, $this->class->getContextClosure());
-    }
-
-    /**
-     * Test the setContextClosure method.
-     *
-     * @return void
-     */
-    public function testSetContextClosure(): void
-    {
-        $set = $this->class->setContextClosure(static function () {});
-
-        $this->assertEquals($this->class, $set);
+        $this->assertEquals($this->class, $this->class->setService($this->value));
     }
 }

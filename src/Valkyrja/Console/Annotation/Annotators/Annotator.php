@@ -16,7 +16,7 @@ namespace Valkyrja\Console\Annotation\Annotators;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Console\Annotation\CommandAnnotator as Contract;
+use Valkyrja\Console\Annotation\Annotator as Contract;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
@@ -29,7 +29,7 @@ use Valkyrja\Container\Support\Provides;
  *
  * @author Melech Mizrachi
  */
-class CommandAnnotator implements Contract
+class Annotator implements Contract
 {
     use Provides;
 

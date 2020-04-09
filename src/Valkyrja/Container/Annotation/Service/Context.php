@@ -22,4 +22,19 @@ use Valkyrja\Container\Annotation\Service;
  */
 interface Context extends Service
 {
+    /**
+     * Get the service.
+     *
+     * @return string|null
+     */
+    public function getService(): ?string;
+
+    /**
+     * Set the service.
+     *
+     * @param string|null $service The service
+     *
+     * @return $this
+     */
+    public function setService(string $service = null): self;
 }

@@ -15,7 +15,6 @@ namespace Valkyrja\Container\Annotation\Models;
 
 use Valkyrja\Annotation\Models\Annotation;
 use Valkyrja\Container\Annotation\Service as ServiceContract;
-use Valkyrja\Container\Models\Serviceable;
 
 /**
  * Class Service.
@@ -24,5 +23,65 @@ use Valkyrja\Container\Models\Serviceable;
  */
 class Service extends Annotation implements ServiceContract
 {
-    use Serviceable;
+    /**
+     * Whether this service is a singleton.
+     *
+     * @var bool
+     */
+    protected bool $singleton = false;
+
+    /**
+     * Default arguments.
+     *
+     * @var array|null
+     */
+    protected ?array $defaults = null;
+
+    /**
+     * Get whether this is a singleton.
+     *
+     * @return bool
+     */
+    public function isSingleton(): bool
+    {
+        return $this->singleton;
+    }
+
+    /**
+     * Set whether this is a singleton.
+     *
+     * @param bool $singleton Whether this is a singleton
+     *
+     * @return static
+     */
+    public function setSingleton(bool $singleton = true): self
+    {
+        $this->singleton = $singleton;
+
+        return $this;
+    }
+
+    /**
+     * Get defaults.
+     *
+     * @return array|null
+     */
+    public function getDefaults(): ?array
+    {
+        return $this->defaults;
+    }
+
+    /**
+     * Set defaults.
+     *
+     * @param array $defaults The defaults.
+     *
+     * @return static
+     */
+    public function setDefaults(array $defaults = null): self
+    {
+        $this->defaults = $defaults;
+
+        return $this;
+    }
 }

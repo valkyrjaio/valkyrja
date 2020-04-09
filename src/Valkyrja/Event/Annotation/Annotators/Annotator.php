@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Container;
-use Valkyrja\Event\Annotation\ListenerAnnotator as Contract;
+use Valkyrja\Event\Annotation\Annotator as Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
@@ -29,7 +29,7 @@ use Valkyrja\Container\Support\Provides;
  *
  * @author Melech Mizrachi
  */
-class ListenerAnnotator implements Contract
+class Annotator implements Contract
 {
     use Provides;
 

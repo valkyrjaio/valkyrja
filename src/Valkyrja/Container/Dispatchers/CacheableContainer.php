@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Container\Dispatchers;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Container\Annotation\ContainerAnnotator;
+use Valkyrja\Container\Annotation\Annotator;
+use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Support\Cacheable\Cacheable;
@@ -55,7 +56,6 @@ class CacheableContainer extends Container
 
         $config                  = new Cache();
         $config->aliases         = self::$aliases;
-        $config->contextServices = self::$contextServices;
         $config->provided        = self::$provided;
         $config->services        = self::$services;
         $config->singletons      = self::$singletons;
@@ -94,7 +94,6 @@ class CacheableContainer extends Container
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
         self::$aliases         = $cache['aliases'];
-        self::$contextServices = $cache['contextServices'];
         self::$provided        = $cache['provided'];
         self::$services        = $cache['services'];
         self::$singletons      = $cache['singletons'];
@@ -110,7 +109,6 @@ class CacheableContainer extends Container
     protected function setupNotCached($config): void
     {
         self::$aliases         = [];
-        self::$contextServices = [];
         self::$registered      = [];
         self::$provided        = [];
         self::$services        = [];
@@ -129,8 +127,8 @@ class CacheableContainer extends Container
      */
     protected function setupAnnotations($config): void
     {
-        /** @var ContainerAnnotator $containerAnnotations */
-        $containerAnnotations = $this->getSingleton(ContainerAnnotator::class);
+        /** @var Annotator $containerAnnotations */
+        $containerAnnotations = $this->getSingleton(Annotator::class);
 
         // Get all the annotated services from the list of controllers and iterate through the services
         foreach ($containerAnnotations->getServices(...$config['services']) as $service) {
@@ -139,9 +137,10 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of controllers and iterate through the services
+        /** @var Context $context */
         foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
             // Set the service
-            $this->setContext($context->getId(), $context->getClass(), $context->getMethod());
+            $this->withContext($context->getClass(), $context->getMethod())->bind($context->getId(), $context->getService());
         }
 
         // Get all the annotated services from the list of classes and iterate through the services

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
-use Valkyrja\Console\Annotation\CommandAnnotator;
+use Valkyrja\Console\Annotation\Annotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Config\Config as ConsoleConfig;
@@ -154,8 +154,8 @@ class CacheableConsole extends Console
      */
     protected function setupAnnotations($config): void
     {
-        /** @var CommandAnnotator $commandAnnotations */
-        $commandAnnotations = $this->container->getSingleton(CommandAnnotator::class);
+        /** @var Annotator $commandAnnotations */
+        $commandAnnotations = $this->container->getSingleton(Annotator::class);
 
         // Get all the annotated commands from the list of handlers
         // Iterate through the commands

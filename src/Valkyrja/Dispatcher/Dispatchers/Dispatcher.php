@@ -195,15 +195,27 @@ class Dispatcher implements Contract
     protected function getDependencies(Dispatch $dispatch): ?array
     {
         $dependencies = [];
-        // $context      = $dispatch->getClass() ?? $dispatch->getFunction();
-        // $member       = $dispatch->getMethod();
 
         // If there are dependencies
         if ($dispatch->getDependencies()) {
+            $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? '';
+            $member  = $dispatch->getMethod();
+
+            $container        = $this->container;
+            $containerContext = $container->withContext($context, $member);
+
             // Iterate through all the dependencies
             foreach ($dispatch->getDependencies() as $dependency) {
-                // Set the dependency in the list
-                $dependencies[] = $this->container->get($dependency, []);
+                // If there is a context dependency
+                if ($containerContext->has($dependency)) {
+                    // Set the context dependency from the container
+                    $dependencies[] = $containerContext->get($dependency, []);
+
+                    continue;
+                }
+
+                // Set the dependency from the container
+                $dependencies[] = $container->get($dependency, []);
             }
         }
 

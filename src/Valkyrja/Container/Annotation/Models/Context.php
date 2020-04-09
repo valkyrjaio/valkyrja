@@ -13,18 +13,43 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Models;
 
-use Valkyrja\Annotation\Models\Annotation;
 use Valkyrja\Container\Annotation\Service\Context as Contract;
-use Valkyrja\Container\Models\Serviceable;
-use Valkyrja\Container\Models\ServiceContextable;
 
 /**
  * Class ServiceContext.
  *
  * @author Melech Mizrachi
  */
-class Context extends Annotation implements Contract
+class Context extends Service implements Contract
 {
-    use Serviceable;
-    use ServiceContextable;
+    /**
+     * The service.
+     *
+     * @var string|null
+     */
+    protected ?string $service = null;
+
+    /**
+     * Get the service.
+     *
+     * @return string|null
+     */
+    public function getService(): ?string
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set the service.
+     *
+     * @param string|null $service The service
+     *
+     * @return static
+     */
+    public function setService(string $service = null): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
 }

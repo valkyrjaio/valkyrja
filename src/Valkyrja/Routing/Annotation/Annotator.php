@@ -11,25 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Console\Annotation;
-
-use ReflectionException;
+namespace Valkyrja\Routing\Annotation;
 
 /**
- * Class CommandAnnotations.
+ * Interface RouteAnnotations.
  *
  * @author Melech Mizrachi
  */
-interface CommandAnnotator
+interface Annotator
 {
     /**
-     * Get the commands.
+     * Get routes.
      *
      * @param string ...$classes The classes
      *
-     * @throws ReflectionException
-     *
-     * @return \Valkyrja\Console\Command[]
+     * @return array
      */
-    public function getCommands(string ...$classes): array;
+    public function getRoutes(string ...$classes): array;
 }
