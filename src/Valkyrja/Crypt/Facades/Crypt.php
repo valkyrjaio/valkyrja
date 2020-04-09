@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Crypt\Crypt as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Crypt.
@@ -37,6 +38,6 @@ class Crypt extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\crypt();
+        return self::$container->getSingleton(Contract::class);
     }
 }

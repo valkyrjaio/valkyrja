@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Request.
@@ -68,6 +67,6 @@ class Request extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(Contract::class);
+        return self::$container->getSingleton(Contract::class);
     }
 }

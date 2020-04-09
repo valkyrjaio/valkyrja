@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Dispatcher\Dispatcher as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Dispatcher.
@@ -42,6 +42,6 @@ class Dispatcher extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->dispatcher();
+        return self::$container->getSingleton(Contract::class);
     }
 }

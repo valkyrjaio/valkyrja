@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\ORM\Adapter as AdapterContract;
 use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\Entity;
+use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\PDOConnection;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query as QueryContract;
@@ -24,6 +24,7 @@ use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class ORM.
@@ -61,6 +62,6 @@ class ORM extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\orm();
+        return self::$container->getSingleton(Contract::class);
     }
 }

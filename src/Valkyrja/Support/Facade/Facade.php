@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Facade\Facades;
+namespace Valkyrja\Support\Facade;
 
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Container\Container;
-use Valkyrja\Facade\Facade as FacadeContract;
 
 use function in_array;
 use function is_object;
@@ -27,7 +26,7 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-abstract class Facade implements FacadeContract
+abstract class Facade
 {
     /**
      * The instance.
@@ -41,7 +40,29 @@ abstract class Facade implements FacadeContract
      *
      * @var Container
      */
-    private static ?Container $container = null;
+    protected static Container $container;
+
+    /**
+     * Get the container.
+     *
+     * @return Container
+     */
+    public static function getContainer(): Container
+    {
+        return self::$container;
+    }
+
+    /**
+     * Set the container.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function setContainer(Container $container): void
+    {
+        self::$container = $container;
+    }
 
     /**
      * Get the instance.
@@ -60,7 +81,7 @@ abstract class Facade implements FacadeContract
     /**
      * Set the instance.
      *
-     * @param string|object $instance
+     * @param string|object $instance The instance
      *
      * @return void
      */
@@ -81,7 +102,7 @@ abstract class Facade implements FacadeContract
      * Handle dynamic, static calls to the instance.
      *
      * @param string $method The method to call
-     * @param array  $args   The argument
+     * @param array  $args   [optional] The argument
      *
      * @throws RuntimeException
      *
@@ -100,16 +121,6 @@ abstract class Facade implements FacadeContract
         }
 
         return $instance->$method(...$args);
-    }
-
-    /**
-     * Get the container.
-     *
-     * @return Container
-     */
-    protected static function getContainer(): Container
-    {
-        return self::$container ?? (self::$container = \Valkyrja\container());
     }
 
     /**

@@ -31,7 +31,6 @@ use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Events;
 use Valkyrja\Exception\ExceptionHandler;
@@ -78,7 +77,6 @@ final class Contract
     public const CONTAINER           = Container::class;
     public const CONTAINER_ANNOTATOR = ContainerAnnotator::class;
     public const DISPATCHER          = Dispatcher::class;
-    public const ENV                 = Env::class;
     public const EVENTS              = Events::class;
     public const FILESYSTEM          = Filesystem::class;
     public const INPUT               = Input::class;

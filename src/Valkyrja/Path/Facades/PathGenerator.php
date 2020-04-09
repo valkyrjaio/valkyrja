@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Path\PathGenerator as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class PathGenerator.
@@ -31,6 +32,6 @@ class PathGenerator extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\pathGenerator();
+        return self::$container->getSingleton(Contract::class);
     }
 }

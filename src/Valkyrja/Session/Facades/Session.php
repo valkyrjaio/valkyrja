@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Session\Session as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Session.
@@ -44,6 +45,6 @@ class Session extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\session();
+        return self::$container->getSingleton(Contract::class);
     }
 }

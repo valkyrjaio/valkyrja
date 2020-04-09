@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Facades;
 
+use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Store;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Cache.
@@ -32,6 +33,6 @@ class Cache extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\cache();
+        return self::$container->getSingleton(Contract::class);
     }
 }

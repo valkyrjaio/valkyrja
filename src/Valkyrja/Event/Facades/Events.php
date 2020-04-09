@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Event\Event;
+use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Events.
@@ -46,6 +46,6 @@ class Events extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->events();
+        return self::$container->getSingleton(Contract::class);
     }
 }

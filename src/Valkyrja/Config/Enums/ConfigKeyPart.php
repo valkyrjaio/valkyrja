@@ -65,6 +65,7 @@ final class ConfigKeyPart
     public const COLLECTION                  = 'collection';
     public const ALIASES                     = 'aliases';
     public const DEV_PROVIDERS               = 'devProviders';
+    public const SETUP_FACADE               = 'setupFacade';
     public const FILE_PATH                   = 'filePath';
     public const CACHE_DIR                   = 'cacheDir';
     public const CACHE_FILE_PATH             = 'cacheFilePath';

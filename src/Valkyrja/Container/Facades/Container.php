@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Container.
@@ -45,6 +44,6 @@ class Container extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container();
+        return self::$container;
     }
 }

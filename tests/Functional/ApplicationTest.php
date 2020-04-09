@@ -23,7 +23,6 @@ use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Dispatchers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Dispatchers\Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\JsonResponse;
@@ -175,9 +174,9 @@ class ApplicationTest extends TestCase
      */
     public function testSetEnv(): void
     {
-        $this->app::setEnv(Env::class);
+        $this->app::setEnv(null);
 
-        $this->assertEquals(Env::class, $this->app::getEnv());
+        $this->assertEquals(null, $this->app::getEnv());
 
         $this->app::setEnv(EnvTest::class);
     }

@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 use Valkyrja\View\Engine;
 use Valkyrja\View\View as Contract;
 
@@ -57,6 +56,6 @@ class View extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(Contract::class);
+        return self::$container->getSingleton(Contract::class);
     }
 }

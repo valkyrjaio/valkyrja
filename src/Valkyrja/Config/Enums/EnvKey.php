@@ -70,6 +70,7 @@ final class EnvKey
 
     public const CONTAINER_PROVIDERS                   = 'CONTAINER_PROVIDERS';
     public const CONTAINER_DEV_PROVIDERS               = 'CONTAINER_DEV_PROVIDERS';
+    public const CONTAINER_SETUP_FACADE               = 'CONTAINER_SETUP_FACADE';
     public const CONTAINER_USE_ANNOTATIONS             = 'CONTAINER_USE_ANNOTATIONS';
     public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = 'CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY';
     public const CONTAINER_ALIASES                     = 'CONTAINER_ALIASES';

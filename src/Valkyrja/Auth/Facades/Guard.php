@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Auth\Guard as Contract;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Guard.
@@ -31,6 +30,6 @@ class Guard extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(Contract::class);
+        return self::$container->getSingleton(Contract::class);
     }
 }

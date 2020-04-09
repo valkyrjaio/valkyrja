@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Http\ResponseFactory as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class ResponseFactory.
@@ -36,6 +37,6 @@ class ResponseFactory extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\responseFactory();
+        return self::$container->getSingleton(Contract::class);
     }
 }

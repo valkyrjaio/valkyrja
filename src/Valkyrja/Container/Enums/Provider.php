@@ -31,7 +31,6 @@ use Valkyrja\Crypt\Crypts\Crypt;
 use Valkyrja\Crypt\Decrypters\SodiumDecrypter;
 use Valkyrja\Crypt\Encrypters\SodiumEncrypter;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
-use Valkyrja\Env\Env;
 use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
 use Valkyrja\Exception\Handlers\ExceptionHandler;
@@ -74,7 +73,6 @@ final class Provider
     public const CONTAINER           = CacheableContainer::class;
     public const CONTAINER_ANNOTATOR = ContainerAnnotator::class;
     public const DISPATCHER          = Dispatcher::class;
-    public const ENV                 = Env::class;
     public const EVENTS              = CacheableEvents::class;
     public const FILESYSTEM          = Filesystem::class;
     public const INPUT               = Input::class;

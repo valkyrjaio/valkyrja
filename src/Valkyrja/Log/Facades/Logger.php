@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Log\Logger as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Logger.
@@ -40,6 +40,6 @@ class Logger extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\logger();
+        return self::$container->getSingleton(Contract::class);
     }
 }

@@ -16,6 +16,7 @@ namespace Valkyrja\Container\Dispatchers;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
+use Valkyrja\Support\Facade\Facade;
 use Valkyrja\Support\Providers\ProvidersAwareTrait;
 use Valkyrja\Support\Providers\Provides;
 use Valkyrja\Support\Type\Cls;
@@ -29,6 +30,13 @@ class Container implements Contract
 {
     use Provides;
     use ProvidersAwareTrait;
+
+    /**
+     * Has the Facade been setup?
+     *
+     * @var bool
+     */
+    protected static bool $facadeSetup = false;
 
     /**
      * The aliases.
@@ -103,6 +111,10 @@ class Container implements Contract
     {
         $this->config = $config;
         $this->debug  = $debug;
+
+        if (! self::$facadeSetup && $config['setupFacade']) {
+            Facade::setContainer($this);
+        }
     }
 
     /**

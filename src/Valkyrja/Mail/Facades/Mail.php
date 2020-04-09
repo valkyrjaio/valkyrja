@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Mail\Mail as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Mail.
@@ -41,6 +41,6 @@ class Mail extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\mail();
+        return self::$container->getSingleton(Contract::class);
     }
 }

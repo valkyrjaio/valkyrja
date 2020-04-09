@@ -71,6 +71,7 @@ final class ConfigKey
 
     public const CONTAINER_PROVIDERS                   = 'container.providers';
     public const CONTAINER_DEV_PROVIDERS               = 'container.devProviders';
+    public const CONTAINER_SETUP_FACADE               = 'container.setupFacade';
     public const CONTAINER_USE_ANNOTATIONS             = 'container.useAnnotations';
     public const CONTAINER_USE_ANNOTATIONS_EXCLUSIVELY = 'container.useAnnotationsExclusively';
     public const CONTAINER_SERVICES                    = 'container.services';

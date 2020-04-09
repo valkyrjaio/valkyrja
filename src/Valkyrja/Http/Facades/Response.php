@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
-use Valkyrja\Application\Applications\Valkyrja;
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\Http\Response as Contract;
 use Valkyrja\Http\Stream;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Response.
@@ -52,7 +51,7 @@ class Response extends Facade
      */
     public static function instance()
     {
-        return Valkyrja::app()->container()->getSingleton(Contract::class);
+        return self::$container->getSingleton(Contract::class);
     }
 
     /**

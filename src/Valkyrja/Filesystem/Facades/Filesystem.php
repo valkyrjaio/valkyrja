@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
+use Valkyrja\Filesystem\Filesystem as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Filesystem.
@@ -56,6 +57,6 @@ class Filesystem extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\filesystem();
+        return self::$container->getSingleton(Contract::class);
     }
 }

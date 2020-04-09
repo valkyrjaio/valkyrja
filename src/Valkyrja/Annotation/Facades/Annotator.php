@@ -20,7 +20,8 @@ use ReflectionProperty;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Annotation\Annotator as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Annotator.
@@ -53,6 +54,6 @@ class Annotator extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\annotator();
+        return self::$container->getSingleton(Contract::class);
     }
 }

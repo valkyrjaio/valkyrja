@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Path\Facades;
 
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Path\PathParser as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class PathParser.
@@ -31,6 +32,6 @@ class PathParser extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\pathParser();
+        return self::$container->getSingleton(Contract::class);
     }
 }

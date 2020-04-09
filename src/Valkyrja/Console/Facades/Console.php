@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Facades;
 
 use Valkyrja\Console\Command;
+use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Input as ConsoleInput;
 use Valkyrja\Console\Output as ConsoleOutput;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Console.
@@ -44,6 +45,6 @@ class Console extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\console();
+        return self::$container->getSingleton(Contract::class);
     }
 }

@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Facades;
 
+use Valkyrja\Console\Input as Contract;
 use Valkyrja\Console\Inputs\Option;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Input.
@@ -47,6 +48,6 @@ class Input extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\input();
+        return self::$container->getSingleton(Contract::class);
     }
 }

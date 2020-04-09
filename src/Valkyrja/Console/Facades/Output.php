@@ -15,7 +15,8 @@ namespace Valkyrja\Console\Facades;
 
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Console\Output as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Output.
@@ -35,6 +36,6 @@ class Output extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\output();
+        return self::$container->getSingleton(Contract::class);
     }
 }

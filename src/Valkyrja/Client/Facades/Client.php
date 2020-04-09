@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Facades;
 
 use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Client\Client as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Client.
@@ -38,6 +39,6 @@ class Client extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\client();
+        return self::$container->getSingleton(Contract::class);
     }
 }

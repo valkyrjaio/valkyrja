@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Facades;
 
 use Closure;
-use Valkyrja\Facade\Facades\Facade;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Router.
@@ -63,6 +63,6 @@ class Router extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\router();
+        return self::$container->getSingleton(Contract::class);
     }
 }

@@ -20,7 +20,8 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use Valkyrja\Facade\Facades\Facade;
+use Valkyrja\Reflection\Reflector as Contract;
+use Valkyrja\Support\Facade\Facade;
 
 /**
  * Class Reflector.
@@ -44,6 +45,6 @@ class Reflector extends Facade
      */
     public static function instance()
     {
-        return \Valkyrja\reflector();
+        return self::$container->getSingleton(Contract::class);
     }
 }
