@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum InputOption.
  *
  * @author Melech Mizrachi
  */
-final class OptionMode extends Enum
+final class OptionMode extends \Valkyrja\Support\Enum\Enum
 {
     public const NONE     = 'NONE';
     public const REQUIRED = 'REQUIRED';

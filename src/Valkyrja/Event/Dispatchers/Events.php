@@ -24,8 +24,7 @@ use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as ListenerModel;
-
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Support\Provider\Traits\Provides;
 
 use function get_class;
 use function is_array;

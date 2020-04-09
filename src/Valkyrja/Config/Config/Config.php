@@ -18,7 +18,9 @@ use Valkyrja\Api\Config\Config as Api;
 use Valkyrja\Application\Config\Config as App;
 use Valkyrja\Auth\Config\Config as Auth;
 use Valkyrja\Cache\Config\Config as Cache;
+use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Enums\EnvKey;
 use Valkyrja\Console\Config\Config as Console;
 use Valkyrja\Container\Config\Config as Container;
 use Valkyrja\Crypt\Config\Config as Crypt;
@@ -30,10 +32,8 @@ use Valkyrja\ORM\Config\Config as ORM;
 use Valkyrja\Path\Config\Config as Path;
 use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Session\Config\Config as Session;
+use Valkyrja\Support\Provider\Provider;
 use Valkyrja\View\Config\Config as View;
-use Valkyrja\Config\Enums\EnvKey;
-use Valkyrja\Config\Config as Model;
-use Valkyrja\Support\Providers\Provider;
 
 /**
  * Class Config.

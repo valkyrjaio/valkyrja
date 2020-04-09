@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Config;
 
 use ArrayAccess;
-use Valkyrja\Model\ModelTrait;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 use function Valkyrja\env;
 

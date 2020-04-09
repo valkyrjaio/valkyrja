@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Header Field Definitions.
  * This section defines the syntax and semantics of all standard HTTP/1.1
@@ -26,7 +24,7 @@ use Valkyrja\Enum\Enums\Enum;
  *
  * @link   https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
-final class Header extends Enum
+final class Header extends \Valkyrja\Support\Enum\Enum
 {
     /**
      * Accept Header.

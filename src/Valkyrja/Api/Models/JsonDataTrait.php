@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Models;
 
-use Valkyrja\Model\ModelTrait;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 /**
  * Trait JsonDataTrait.

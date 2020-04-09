@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Enum\Enums;
+namespace Valkyrja\Support\Enum;
 
 use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
-use Valkyrja\Enum\Enum as EnumContract;
 
 use function array_key_exists;
 use function defined;
@@ -31,7 +30,7 @@ use function sprintf;
  *
  * @author Melech Mizrachi
  */
-abstract class Enum implements EnumContract
+abstract class Enum
 {
     /**
      * The allowable enum values.
@@ -128,16 +127,6 @@ abstract class Enum implements EnumContract
         }
 
         return self::$cache[$className] ?? [];
-    }
-
-    /**
-     * Json serialize the enum.
-     *
-     * @return string
-     */
-    public function jsonSerialize(): string
-    {
-        return $this->getValue();
     }
 
     /**

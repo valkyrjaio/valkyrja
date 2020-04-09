@@ -20,7 +20,7 @@ use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Routing\Matcher;
-use Valkyrja\Support\Cacheables\Cacheable;
+use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
  * Class CacheableCollection.

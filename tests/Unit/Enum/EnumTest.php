@@ -15,15 +15,11 @@ namespace Valkyrja\Tests\Unit\Enum;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Enum\Enums\Enum;
+use Valkyrja\Support\Enum\Enum;
 
 use function array_diff;
 use function get_class;
-
-use function json_encode;
 use function method_exists;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Test the Enum abstract class.
@@ -58,7 +54,7 @@ class EnumTest extends TestCase
     /**
      * Get an enum to test with.
      *
-     * @return Enum
+     * @return \Valkyrja\Support\Enum\Enum
      */
     protected function getEnum(): Enum
     {
@@ -177,34 +173,11 @@ class EnumTest extends TestCase
     /**
      * Get an enum with no default values set to test with.
      *
-     * @return Enum
+     * @return \Valkyrja\Support\Enum\Enum
      */
     protected function getEnumEmpty(): Enum
     {
         return new EnumClassEmpty(EnumClassEmpty::FOO);
-    }
-
-    /**
-     * Ensure the json serialize method exists in the Enum abstract class.
-     *
-     * @return void
-     */
-    public function testJsonSerializeExists(): void
-    {
-        $this->assertEquals(true, method_exists(Enum::class, 'jsonSerialize'));
-    }
-
-    /**
-     * Test json serialization of the enum.
-     *
-     * @return void
-     */
-    public function testJsonSerialize(): void
-    {
-        $jsonSerialized = json_encode($this->getEnum(), JSON_THROW_ON_ERROR);
-        $serialized     = '"foo"';
-
-        $this->assertEquals($serialized, $jsonSerialized);
     }
 
     /**

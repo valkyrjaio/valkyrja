@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum ContentType.
  *
  * @author Melech Mizrachi
  */
-final class ContentType extends Enum
+final class ContentType extends \Valkyrja\Support\Enum\Enum
 {
     public const APPLICATION_JSON       = 'application/json';
     public const APPLICATION_JAVASCRIPT = 'application/javascript';

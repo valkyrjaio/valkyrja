@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum Status.
  *
  * @author Melech Mizrachi
  */
-final class Status extends Enum
+final class Status extends \Valkyrja\Support\Enum\Enum
 {
     public const SUCCESS = 'success';
     public const ERROR   = 'error';

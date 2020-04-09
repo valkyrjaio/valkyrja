@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Routing\Annotation\Models\Any;
 use Valkyrja\Routing\Annotation\Models\Connect;
 use Valkyrja\Routing\Annotation\Models\Delete;
@@ -28,6 +27,7 @@ use Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 use Valkyrja\Routing\Annotation\Models\Route;
 use Valkyrja\Routing\Annotation\Models\Secure;
 use Valkyrja\Routing\Annotation\Models\Trace;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Enum AnnotationClass.

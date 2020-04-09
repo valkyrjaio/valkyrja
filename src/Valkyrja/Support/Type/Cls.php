@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type;
 
-use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
+use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
 use function is_a;
 

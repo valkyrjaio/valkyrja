@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum SameSite.
  *
  * @author Melech Mizrachi
  */
-final class SameSite extends Enum
+final class SameSite extends \Valkyrja\Support\Enum\Enum
 {
     public const LAX    = 'lax';
     public const STRICT = 'strict';

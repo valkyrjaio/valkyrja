@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Support;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Support\Providers\Provider;
+use Valkyrja\Support\Provider\Provider;
 
 /**
  * Class to use to test the provider.

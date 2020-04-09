@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Models;
 
 use Closure;
-use Valkyrja\Model\ModelTrait;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 use function get_object_vars;
 use function json_decode;

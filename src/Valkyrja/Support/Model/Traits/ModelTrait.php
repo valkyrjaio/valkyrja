@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model;
+namespace Valkyrja\Support\Model\Traits;
 
 use function array_keys;
 use function get_object_vars;

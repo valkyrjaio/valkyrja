@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Exception\Handlers;
+namespace Valkyrja\Support\Exception\Classes;
 
-use Valkyrja\Exception\ExceptionHandler as ExceptionHandlerContract;
+use Valkyrja\Support\Exception\ExceptionHandler as Contract;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -26,7 +26,7 @@ use const E_ALL;
  *
  * @author Melech Mizrachi
  */
-class ExceptionHandler implements ExceptionHandlerContract
+class ExceptionHandler implements Contract
 {
     /**
      * Whether debug is enabled or not.

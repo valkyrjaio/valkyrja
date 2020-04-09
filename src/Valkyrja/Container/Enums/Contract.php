@@ -33,7 +33,6 @@ use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Events;
-use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
@@ -44,7 +43,6 @@ use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
-use Valkyrja\Model\Model;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Query;
@@ -56,6 +54,8 @@ use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\RouteAnnotator;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
+use Valkyrja\Support\Exception\ExceptionHandler;
+use Valkyrja\Support\Model\Model;
 use Valkyrja\View\View;
 
 /**

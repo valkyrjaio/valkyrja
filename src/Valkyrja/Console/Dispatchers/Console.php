@@ -30,7 +30,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 use Valkyrja\Event\Events;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Support\Providers\ProvidersAwareTrait;
+use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
 
 use function preg_match;
 

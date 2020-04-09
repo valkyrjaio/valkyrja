@@ -17,7 +17,7 @@ use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\ContainerAnnotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
-use Valkyrja\Support\Cacheables\Cacheable;
+use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
  * Class CacheableContainer.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container;
 
 use ArrayAccess;
-use Valkyrja\Support\Providers\ProvidersAware;
+use Valkyrja\Support\Provider\ProvidersAware;
 
 /**
  * Interface Container.

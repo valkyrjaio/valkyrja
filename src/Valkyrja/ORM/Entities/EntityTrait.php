@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\Model\ModelTrait;
 use Valkyrja\ORM\Enums\PropertyType;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 use function in_array;
 use function is_array;
 use function is_object;
-
 use function json_decode;
 use function json_encode;
 use function serialize;

@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum Statement.
  */
-final class Statement extends Enum
+final class Statement extends \Valkyrja\Support\Enum\Enum
 {
     public const SELECT    = 'SELECT';
     public const INSERT    = 'INSERT';

@@ -20,10 +20,10 @@ use Valkyrja\Console\Commands\CommandsListForBash;
 use Valkyrja\Console\Commands\ConsoleCache;
 use Valkyrja\Console\Commands\Optimize;
 use Valkyrja\Container\Commands\ContainerCache;
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Event\Commands\EventsCache;
 use Valkyrja\Routing\Commands\RoutesCache;
 use Valkyrja\Routing\Commands\RoutesList;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Enum Provider.

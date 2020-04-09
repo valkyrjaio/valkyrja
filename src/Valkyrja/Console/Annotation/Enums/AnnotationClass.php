@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotation\Enums;
 
 use Valkyrja\Console\Annotation\Models\Command;
-use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum AnnotationClass.
  *
  * @author Melech Mizrachi
  */
-final class AnnotationClass extends Enum
+final class AnnotationClass extends \Valkyrja\Support\Enum\Enum
 {
     public const COMMAND = Command::class;
 }

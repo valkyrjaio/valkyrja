@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Models;
 use Valkyrja\Api\Enums\Status;
 use Valkyrja\Api\JsonData;
 use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Model\ModelTrait;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 /**
  * Trait JsonTrait.

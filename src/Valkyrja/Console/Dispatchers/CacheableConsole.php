@@ -23,7 +23,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Support\Cacheables\Cacheable;
+use Valkyrja\Support\Cacheable\Cacheable;
 
 use function base64_decode;
 use function base64_encode;

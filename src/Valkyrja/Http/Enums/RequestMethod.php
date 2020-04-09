@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Method Definitions.

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum FacadeStaticMethod.
  *
  * @author Melech Mizrachi
  */
-final class FacadeStaticMethod extends Enum
+final class FacadeStaticMethod extends \Valkyrja\Support\Enum\Enum
 {
     public const MAKE            = 'make';
     public const CREATE_RESPONSE = 'createResponse';

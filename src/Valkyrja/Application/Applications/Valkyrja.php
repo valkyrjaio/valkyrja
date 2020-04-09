@@ -23,10 +23,10 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Exception\ExceptionHandler;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
-use Valkyrja\Support\Providers\Provider;
+use Valkyrja\Support\Exception\ExceptionHandler;
+use Valkyrja\Support\Provider\Provider;
 
 use function constant;
 use function date_default_timezone_set;

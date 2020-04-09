@@ -33,7 +33,6 @@ use Valkyrja\Crypt\Encrypters\SodiumEncrypter;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Event\Annotation\Annotators\ListenerAnnotator;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
-use Valkyrja\Exception\Handlers\ExceptionHandler;
 use Valkyrja\Filesystem\Filesystems\Filesystem;
 use Valkyrja\Http\Factories\ResponseFactory;
 use Valkyrja\Http\Requests\Request;
@@ -43,7 +42,6 @@ use Valkyrja\Http\Responses\Response;
 use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Providers\LoggerServiceProvider;
 use Valkyrja\Mail\Mailers\PHPMailerMail;
-use Valkyrja\Model\Models\Model;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\Managers\ORM;
 use Valkyrja\Path\Generators\PathGenerator;
@@ -52,6 +50,8 @@ use Valkyrja\Reflection\Reflectors\Reflector;
 use Valkyrja\Routing\Annotation\Annotators\RouteAnnotator;
 use Valkyrja\Routing\Dispatchers\CacheableRouter;
 use Valkyrja\Session\Sessions\Session;
+use Valkyrja\Support\Exception\Classes\ExceptionHandler;
+use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\View\Views\View;
 
 /**

@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Enums;
 
 use Valkyrja\Dispatcher\Enums\Property as DispatchProperty;
-use Valkyrja\Enum\Enums\Enum;
 
 /**
  * Enum Property.
  *
  * @author Melech Mizrachi
  */
-final class Property extends Enum
+final class Property extends \Valkyrja\Support\Enum\Enum
 {
     public const ID           = DispatchProperty::ID;
     public const NAME         = DispatchProperty::NAME;

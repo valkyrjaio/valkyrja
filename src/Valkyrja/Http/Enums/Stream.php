@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
-
 /**
  * Enum Stream.
  *
  * @author Melech Mizrachi
  */
-final class Stream extends Enum
+final class Stream extends \Valkyrja\Support\Enum\Enum
 {
     public const INPUT = 'php://input';
     public const TEMP  = 'php://temp';

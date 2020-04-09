@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Model\Models;
+namespace Valkyrja\Support\Model\Classes;
 
-use Valkyrja\Model\Model as Contract;
-use Valkyrja\Model\ModelTrait;
+use Valkyrja\Support\Model\Model as Contract;
+use Valkyrja\Support\Model\Traits\ModelTrait;
 
 /**
  * Class Model.

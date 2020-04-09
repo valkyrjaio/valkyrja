@@ -22,7 +22,7 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Support\Provider\Traits\Provides;
 
 /**
  * Class Dispatcher.

@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Support\Exceptions;
+namespace Valkyrja\Support\Provider;
 
-use InvalidArgumentException;
+use Valkyrja\Support\Provider\Traits\Provides;
 
 /**
- * Class InvalidClassProvidedException.
+ * Abstract Class Provider.
  *
  * @author Melech Mizrachi
  */
-class InvalidClassProvidedException extends InvalidArgumentException
+abstract class Provider
 {
+    use Provides;
 }

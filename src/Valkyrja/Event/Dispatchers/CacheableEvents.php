@@ -19,7 +19,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Annotation\ListenerAnnotator;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Config\Config as EventConfig;
-use Valkyrja\Support\Cacheables\Cacheable;
+use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
  * Class CacheableEvents.

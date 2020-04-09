@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
@@ -25,8 +26,7 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
-use Valkyrja\Support\Exceptions\InvalidClassProvidedException;
-use Valkyrja\Container\Support\Provides;
+use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
 use function get_class;
 

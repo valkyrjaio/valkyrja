@@ -15,9 +15,9 @@ namespace Valkyrja\Annotation\Enums;
 
 use Valkyrja\Console\Annotation\Enums\Annotation as ConsoleAnnotation;
 use Valkyrja\Container\Annotation\Enums\Annotation as ContainerAnnotation;
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Event\Annotation\Enums\Annotation as EventAnnotation;
 use Valkyrja\Routing\Annotation\Enums\Annotation as RoutingAnnotation;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Enum Annotation.

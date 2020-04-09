@@ -17,8 +17,8 @@ use Valkyrja\Application\Application;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Service;
 use Valkyrja\Support\Facade\Facade;
-use Valkyrja\Support\Providers\ProvidersAwareTrait;
-use Valkyrja\Support\Providers\Provides;
+use Valkyrja\Support\Provider\Traits\ProvidersAwareTrait;
+use Valkyrja\Support\Provider\Traits\Provides;
 use Valkyrja\Support\Type\Cls;
 
 /**

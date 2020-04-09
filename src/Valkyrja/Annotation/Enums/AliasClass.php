@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Enums;
 
-use Valkyrja\Enum\Enums\Enum;
 use Valkyrja\Http\Enums\RequestMethod;
 use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Support\Enum\Enum;
 
 /**
  * Enum AliasClass.
