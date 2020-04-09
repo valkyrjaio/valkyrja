@@ -342,8 +342,8 @@ class Annotator implements Contract
                     Property::FUNCTION => $function,
                 ],
                 ...$this->parser->getAnnotations(
-                (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-            )
+                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+                )
             );
     }
 
