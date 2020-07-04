@@ -16,7 +16,6 @@ namespace Valkyrja\Support\Enum;
 use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
-
 use RuntimeException;
 
 use function array_key_exists;
@@ -186,7 +185,7 @@ abstract class Enum
      */
     public static function __callStatic(string $method, array $args = [])
     {
-        return new static(constant( 'static::' . $method));
+        return new static(constant('static::' . $method));
     }
 
     /**
