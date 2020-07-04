@@ -15,9 +15,9 @@ namespace Valkyrja\Dispatcher\Dispatchers;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
 use Valkyrja\Dispatcher\Dispatcher as Contract;
-use Valkyrja\Dispatcher\Enums\Constant;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;

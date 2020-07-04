@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Dispatchers;
 
-use Valkyrja\Config\Enums\ConfigKeyPart;
+use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Console as Contract;
 use Valkyrja\Console\Exceptions\CommandNotFound;

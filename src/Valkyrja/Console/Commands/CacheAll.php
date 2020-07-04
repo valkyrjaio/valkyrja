@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Commands;
 
 use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Exceptions\CommandNotFound;
@@ -26,10 +26,10 @@ use Valkyrja\Routing\Commands\RoutesCache;
 
 use function copy;
 use function str_replace;
+use function Valkyrja\app;
 use function Valkyrja\config;
 use function Valkyrja\console;
 use function Valkyrja\output;
-use function Valkyrja\app;
 
 /**
  * Class CacheAllCommand.

@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Factories;
 
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Http\Enums\Stream as StreamEnum;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constants\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;

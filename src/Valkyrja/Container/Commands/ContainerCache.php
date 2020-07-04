@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Commands;
 
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
@@ -22,10 +22,10 @@ use function file_put_contents;
 use function Valkyrja\app;
 use function Valkyrja\config;
 use function Valkyrja\container;
-use function var_export;
-use const LOCK_EX;
-
 use function Valkyrja\output;
+use function var_export;
+
+use const LOCK_EX;
 
 /**
  * Class ContainerCache.

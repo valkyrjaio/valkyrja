@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
-use Valkyrja\ORM\Enums\PropertyType;
+use Valkyrja\ORM\Constants\PropertyType;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 
 use function in_array;

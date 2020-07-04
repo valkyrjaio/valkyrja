@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Models;
 
 use DateTime;
+use Valkyrja\Http\Constants\SameSite;
 use Valkyrja\Http\Cookie as CookieContract;
-use Valkyrja\Http\Enums\SameSite;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 

@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Repositories;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Authenticator;
-use Valkyrja\Auth\Enums\SessionId;
+use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;

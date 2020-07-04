@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Enums\Field;
+use Valkyrja\Auth\Constants\Field;
 
 /**
  * Trait LockableUserTrait.

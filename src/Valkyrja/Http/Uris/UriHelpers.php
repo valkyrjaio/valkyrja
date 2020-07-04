@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Uris;
 
-use Valkyrja\Http\Enums\Port as PortEnum;
-use Valkyrja\Http\Enums\Scheme as SchemeEnum;
+use Valkyrja\Http\Constants\Port as PortEnum;
+use Valkyrja\Http\Constants\Scheme as SchemeEnum;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
 use Valkyrja\Http\Exceptions\InvalidQuery;

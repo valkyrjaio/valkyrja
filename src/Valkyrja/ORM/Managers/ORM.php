@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Managers;
 
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
 use Valkyrja\ORM\Adapter;

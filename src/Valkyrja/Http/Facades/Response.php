@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Facades;
 
+use Valkyrja\Http\Constants\FacadeStaticMethod;
 use Valkyrja\Http\Cookie;
-use Valkyrja\Http\Enums\FacadeStaticMethod;
 use Valkyrja\Http\Response as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Support\Facade\Facade;

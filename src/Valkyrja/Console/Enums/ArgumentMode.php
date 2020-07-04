@@ -19,6 +19,10 @@ use Valkyrja\Support\Enum\Enum;
  * Enum InputArgument.
  *
  * @author Melech Mizrachi
+ *
+ * @method static ArgumentMode REQUIRED()
+ * @method static ArgumentMode OPTIONAL()
+ * @method static ArgumentMode IS_ARRAY()
  */
 final class ArgumentMode extends Enum
 {

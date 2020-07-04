@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Adapters;
 
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Connections\PDOConnection;

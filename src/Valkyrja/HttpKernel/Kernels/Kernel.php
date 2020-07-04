@@ -18,7 +18,7 @@ use Throwable;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
 use Valkyrja\Event\Events;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;

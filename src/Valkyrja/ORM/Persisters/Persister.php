@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Persisters;
 
 use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\DatedEntity;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Exceptions\ExecuteException;
 use Valkyrja\ORM\Persister as PersisterContract;
 use Valkyrja\ORM\Query;

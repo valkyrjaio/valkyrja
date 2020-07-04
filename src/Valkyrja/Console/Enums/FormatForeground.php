@@ -19,6 +19,24 @@ use Valkyrja\Support\Enum\Enum;
  * Enum FormatForeground.
  *
  * @author Melech Mizrachi
+ *
+ * @method static FormatForeground BLACK()
+ * @method static FormatForeground RED()
+ * @method static FormatForeground GREEN()
+ * @method static FormatForeground YELLOW()
+ * @method static FormatForeground BLUE()
+ * @method static FormatForeground MAGENTA()
+ * @method static FormatForeground CYAN()
+ * @method static FormatForeground WHITE()
+ * @method static FormatForeground DARK_GRAY()
+ * @method static FormatForeground LIGHT_RED()
+ * @method static FormatForeground LIGHT_GREEN()
+ * @method static FormatForeground LIGHT_YELLOW()
+ * @method static FormatForeground LIGHT_BLUE()
+ * @method static FormatForeground LIGHT_MAGENTA()
+ * @method static FormatForeground LIGHT_CYAN()
+ * @method static FormatForeground LIGHT_WHITE()
+ * @method static FormatForeground DEFAULT()
  */
 final class FormatForeground extends Enum
 {

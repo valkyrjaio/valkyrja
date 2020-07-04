@@ -16,11 +16,11 @@ namespace Valkyrja\Annotation\Annotators;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as Contract;
-use Valkyrja\Annotation\Enums\Property;
+use Valkyrja\Annotation\Constants\Property;
 use Valkyrja\Annotation\Parser;
 use Valkyrja\Container\Container;
-use Valkyrja\Reflection\Reflector;
 use Valkyrja\Container\Support\Provides;
+use Valkyrja\Reflection\Reflector;
 
 use function array_merge;
 

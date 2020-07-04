@@ -19,6 +19,15 @@ use Valkyrja\Support\Enum\Enum;
  * Enum LogLevel.
  *
  * @author Melech Mizrachi
+ *
+ * @method static LogLevel DEBUG()
+ * @method static LogLevel INFO()
+ * @method static LogLevel NOTICE()
+ * @method static LogLevel WARNING()
+ * @method static LogLevel ERROR()
+ * @method static LogLevel CRITICAL()
+ * @method static LogLevel ALERT()
+ * @method static LogLevel EMERGENCY()
  */
 final class LogLevel extends Enum
 {

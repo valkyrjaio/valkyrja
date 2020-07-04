@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Models;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constants\StatusCode;
 
 use function array_diff;
 use function strpos;
@@ -202,7 +202,7 @@ trait Routable
      */
     public function setMethods(array $methods): self
     {
-        if (array_diff($methods, RequestMethod::getValidValues())) {
+        if (array_diff($methods, RequestMethod::ANY)) {
             throw new InvalidArgumentException('Invalid request methods set');
         }
 

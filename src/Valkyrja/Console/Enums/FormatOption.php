@@ -19,6 +19,13 @@ use Valkyrja\Support\Enum\Enum;
  * Enum FormatOption.
  *
  * @author Melech Mizrachi
+ *
+ * @method static FormatOption BOLD()
+ * @method static FormatOption UNDERSCORE()
+ * @method static FormatOption BLINK()
+ * @method static FormatOption INVERSE()
+ * @method static FormatOption CONCEAL()
+ * @method static FormatOption DEFAULT()
  */
 final class FormatOption extends Enum
 {

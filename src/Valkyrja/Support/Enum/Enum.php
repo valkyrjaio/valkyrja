@@ -17,7 +17,10 @@ use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
 
+use RuntimeException;
+
 use function array_key_exists;
+use function constant;
 use function defined;
 use function get_class;
 use function in_array;
@@ -167,6 +170,23 @@ abstract class Enum
     public function __toString(): string
     {
         return (string) $this->getValue();
+    }
+
+    /**
+     * Handle creating a new enum instance for a given value via static call.
+     *
+     * @example `Enum::VALUE();` equivalent to `new Enum(Enum::VALUE);`
+     *
+     * @param string $method The method to call
+     * @param array  $args   [optional] The argument
+     *
+     * @throws RuntimeException
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args = [])
+    {
+        return new static(constant( 'static::' . $method));
     }
 
     /**

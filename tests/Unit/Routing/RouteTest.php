@@ -15,7 +15,7 @@ namespace Valkyrja\Tests\Unit\Routing;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Models\Route;
 
 use function get_class;

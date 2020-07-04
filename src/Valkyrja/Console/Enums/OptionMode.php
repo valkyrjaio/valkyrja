@@ -19,6 +19,11 @@ use Valkyrja\Support\Enum\Enum;
  * Enum InputOption.
  *
  * @author Melech Mizrachi
+ *
+ * @method static OptionMode NONE()
+ * @method static OptionMode REQUIRED()
+ * @method static OptionMode OPTIONAL()
+ * @method static OptionMode IS_ARRAY()
  */
 final class OptionMode extends Enum
 {

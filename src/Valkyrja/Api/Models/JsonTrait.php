@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Api\Models;
 
-use Valkyrja\Api\Enums\Status;
+use Valkyrja\Api\Constants\Status;
 use Valkyrja\Api\JsonData;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 
 /**

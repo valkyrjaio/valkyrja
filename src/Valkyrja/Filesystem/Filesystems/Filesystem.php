@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Filesystems;
 
 use League\Flysystem\AdapterInterface;
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class Filesystem.

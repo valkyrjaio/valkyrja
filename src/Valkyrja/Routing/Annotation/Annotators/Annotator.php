@@ -162,8 +162,6 @@ class Annotator implements Contract
      *
      * @param array $classes The classes
      *
-     * @throws ReflectionException
-     *
      * @return RouteContract[]
      */
     protected function getClassRoutes(array $classes): array

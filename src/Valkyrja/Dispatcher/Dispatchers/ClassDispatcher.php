@@ -15,8 +15,8 @@ namespace Valkyrja\Dispatcher\Dispatchers;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
+use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Dispatcher\Enums\Constant;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 

@@ -18,7 +18,7 @@ use Valkyrja\Annotation\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
 use Valkyrja\Config\Commands\ConfigCache;
-use Valkyrja\Config\Enums\ConfigKey;
+use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Dispatchers\Container;

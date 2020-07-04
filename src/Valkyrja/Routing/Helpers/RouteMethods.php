@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Helpers;
 
 use Closure;
 use InvalidArgumentException;
-use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;

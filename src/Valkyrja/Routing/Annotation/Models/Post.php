@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Models;
 
-use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Annotation\Route\Post as Contract;
 
 /**

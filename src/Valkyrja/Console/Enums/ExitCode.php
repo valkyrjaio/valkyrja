@@ -19,6 +19,10 @@ use Valkyrja\Support\Enum\Enum;
  * Enum ExitCode.
  *
  * @author Melech Mizrachi
+ *
+ * @method static ExitCode SUCCESS()
+ * @method static ExitCode FAILURE()
+ * @method static ExitCode AUTO_EXIT()
  */
 final class ExitCode extends Enum
 {

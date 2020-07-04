@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Enums\RequestMethod;
+use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Route;
 

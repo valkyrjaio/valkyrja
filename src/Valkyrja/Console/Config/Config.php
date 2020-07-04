@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Config;
 
 use Valkyrja\Config\Config as Model;
-use Valkyrja\Config\Enums\ConfigKeyPart as CKP;
-use Valkyrja\Config\Enums\EnvKey;
+use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Console\Support\Provider;
 
 /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Exceptions;
 
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 
 /**
  * Class NotFoundHttpException.

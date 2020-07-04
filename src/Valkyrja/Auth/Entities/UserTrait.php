@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Enums\Field;
-use Valkyrja\Auth\Enums\SessionId;
+use Valkyrja\Auth\Constants\Field;
+use Valkyrja\Auth\Constants\SessionId;
 
 /**
  * Trait UserTrait.

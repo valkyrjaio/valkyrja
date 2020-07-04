@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\Http\Enums\FacadeStaticMethod;
+use Valkyrja\Http\Constants\FacadeStaticMethod;
 use Valkyrja\ORM\Adapter as Contract;
 use Valkyrja\ORM\Connection as ConnectionContract;
 use Valkyrja\ORM\PDOConnection;

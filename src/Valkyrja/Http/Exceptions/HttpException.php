@@ -15,7 +15,7 @@ namespace Valkyrja\Http\Exceptions;
 
 use Exception;
 use RuntimeException;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Response;
 use Valkyrja\View\View;
 

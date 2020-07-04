@@ -15,17 +15,17 @@ namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
+use Valkyrja\Http\Constants\Header;
+use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Constants\Stream as StreamEnum;
 use Valkyrja\Http\Cookie;
-use Valkyrja\Http\Enums\Header;
-use Valkyrja\Http\Enums\StatusCode;
-use Valkyrja\Http\Enums\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Messages\MessageTrait;
 use Valkyrja\Http\Response as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\Streams\Stream as HttpStream;
-use Valkyrja\Container\Support\Provides;
 
 use function sprintf;
 

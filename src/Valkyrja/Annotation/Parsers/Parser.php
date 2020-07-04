@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Annotation\Parsers;
 
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Annotation\Enums\Part;
-use Valkyrja\Annotation\Enums\Regex;
+use Valkyrja\Annotation\Constants\Part;
+use Valkyrja\Annotation\Constants\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Parser as Contract;

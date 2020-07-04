@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Patch as ParentClass;
 use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Patch as Contract;
 

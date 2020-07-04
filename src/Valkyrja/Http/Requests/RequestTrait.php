@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Requests;
 
 use InvalidArgumentException;
-use Valkyrja\Http\Enums\RequestMethod;
-use Valkyrja\Http\Enums\Stream as StreamEnum;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Constants\Stream as StreamEnum;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
@@ -30,6 +30,7 @@ use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Http\Uri;
 use Valkyrja\Http\Uris\Uri as HttpUri;
 
+use function in_array;
 use function preg_match;
 use function sprintf;
 
@@ -276,7 +277,7 @@ trait RequestTrait
      */
     protected function validateMethod(string $method): void
     {
-        if (! RequestMethod::isValid($method)) {
+        if (! in_array($method, RequestMethod::ANY, true)) {
             throw new InvalidMethod(sprintf('Unsupported HTTP method "%s" provided', $method));
         }
     }

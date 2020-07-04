@@ -15,12 +15,12 @@ namespace Valkyrja\Api\Apis;
 
 use Exception;
 use Valkyrja\Api\Api as Contract;
-use Valkyrja\Api\Enums\Status;
+use Valkyrja\Api\Constants\Status;
 use Valkyrja\Api\Json;
 use Valkyrja\Api\JsonData;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\ORM\Entity;

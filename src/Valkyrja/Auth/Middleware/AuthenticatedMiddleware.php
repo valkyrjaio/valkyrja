@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Exception;
-use Valkyrja\Auth\Enums\ConfigValue;
-use Valkyrja\Auth\Enums\RouteName;
+use Valkyrja\Auth\Constants\ConfigValue;
+use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 

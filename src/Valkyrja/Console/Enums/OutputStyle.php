@@ -19,6 +19,10 @@ use Valkyrja\Support\Enum\Enum;
  * Enum OutputStyle.
  *
  * @author Melech Mizrachi
+ *
+ * @method static OptionMode NORMAL()
+ * @method static OptionMode PLAIN()
+ * @method static OptionMode RAW()
  */
 final class OutputStyle extends Enum
 {

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\QueryBuilders;
 
 use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Constants\Operator;
+use Valkyrja\ORM\Constants\OrderBy;
+use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
-use Valkyrja\ORM\Enums\Operator;
-use Valkyrja\ORM\Enums\OrderBy;
-use Valkyrja\ORM\Enums\Statement;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 

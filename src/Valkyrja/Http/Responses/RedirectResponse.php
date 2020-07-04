@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
-use Valkyrja\Http\Enums\Header;
-use Valkyrja\Http\Enums\StatusCode;
+use Valkyrja\Http\Constants\Header;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;

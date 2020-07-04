@@ -19,6 +19,9 @@ use Valkyrja\Support\Enum\Enum;
  * Enum Visibility.
  *
  * @author Melech Mizrachi
+ *
+ * @method static Visibility PUBLIC()
+ * @method static Visibility PRIVATE()
  */
 final class Visibility extends Enum
 {
