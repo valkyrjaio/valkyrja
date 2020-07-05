@@ -35,50 +35,50 @@ class MbStr extends Str
     /**
      * Get a substring from start position with a certain length.
      *
-     * @param string   $string
+     * @param string   $subject
      * @param int      $start
      * @param int|null $length
      *
      * @return string
      */
-    public static function substr(string $string, int $start, int $length = null): string
+    public static function substr(string $subject, int $start, int $length = null): string
     {
-        return mb_substr($string, $start, $length, static::$charset);
+        return mb_substr($subject, $start, $length, static::$charset);
     }
 
     /**
      * Convert a string to title case.
      *
-     * @param string $string
+     * @param string $subject
      *
      * @return string
      */
-    public static function toTitleCase(string $string): string
+    public static function toTitleCase(string $subject): string
     {
-        return mb_convert_case($string, MB_CASE_TITLE, static::$charset);
+        return mb_convert_case($subject, MB_CASE_TITLE, static::$charset);
     }
 
     /**
      * Convert a string to lower case.
      *
-     * @param string $string
+     * @param string $subject
      *
      * @return string
      */
-    public static function toLowerCase(string $string): string
+    public static function toLowerCase(string $subject): string
     {
-        return mb_strtolower($string, static::$charset);
+        return mb_strtolower($subject, static::$charset);
     }
 
     /**
      * Convert a string to upper case.
      *
-     * @param string $string
+     * @param string $subject
      *
      * @return string
      */
-    public static function toUpperCase(string $string): string
+    public static function toUpperCase(string $subject): string
     {
-        return mb_strtoupper($string, static::$charset);
+        return mb_strtoupper($subject, static::$charset);
     }
 }
