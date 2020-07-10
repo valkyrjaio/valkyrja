@@ -79,6 +79,8 @@ final class ConfigKeyPart
     public const CONTEXT_SERVICES            = 'contextServices';
     public const CONNECTION                  = 'connection';
     public const CONNECTIONS                 = 'connections';
+    public const RULE                        = 'rule';
+    public const RULES                       = 'rules';
     public const MYSQL                       = 'mysql';
     public const PGSQL                       = 'pgsql';
     public const SQLSRV                      = 'sqlsrv';

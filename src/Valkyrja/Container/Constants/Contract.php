@@ -56,6 +56,7 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Exception\ExceptionHandler;
 use Valkyrja\Support\Model\Model;
+use Valkyrja\Validation\Validator;
 use Valkyrja\View\View;
 
 /**
@@ -94,6 +95,7 @@ final class Contract
     public const ROUTER              = Router::class;
     public const ROUTE_ANNOTATOR     = RoutingAnnotator::class;
     public const SESSION             = Session::class;
+    public const VALIDATOR           = Validator::class;
     public const VIEW                = View::class;
     public const CLIENT              = Client::class;
     public const LOGGER_INTERFACE    = LoggerInterface::class;

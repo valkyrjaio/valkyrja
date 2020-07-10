@@ -154,6 +154,9 @@ final class EnvKey
     public const STORAGE_UPLOADS_DIR = 'STORAGE_UPLOADS_DIR';
     public const STORAGE_LOGS_DIR    = 'STORAGE_LOGS_DIR';
 
+    public const VALIDATOR_RULE  = 'VALIDATOR_RULE';
+    public const VALIDATOR_RULES = 'VALIDATOR_RULES';
+
     public const VIEW_DIR     = 'VIEW_DIR';
     public const VIEW_ENGINE  = 'VIEW_ENGINE';
     public const VIEW_ENGINES = 'VIEW_ENGINES';

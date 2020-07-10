@@ -58,6 +58,7 @@ final class ConfigValue
         Provider::ROUTER,
         Provider::ROUTE_ANNOTATOR,
         Provider::SESSION,
+        Provider::VALIDATOR,
         Provider::VIEW,
     ];
     public const DEV_PROVIDERS               = [];
