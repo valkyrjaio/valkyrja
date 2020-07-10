@@ -141,6 +141,25 @@ interface Request extends SimpleRequest
     public function withQueryParams(array $query): self;
 
     /**
+     * Retrieve a specific query param value.
+     * Retrieves a query param value sent by the client to the server.
+     *
+     * @param string $name The query param name to retrieve
+     *
+     * @return string|null
+     */
+    public function getQueryParam(string $name): ?string;
+
+    /**
+     * Determine if a specific query param exists.
+     *
+     * @param string $name The query param name to check for
+     *
+     * @return bool
+     */
+    public function hasQueryParam(string $name): bool;
+
+    /**
      * Retrieve normalized file upload data.
      * This method returns upload metadata in a normalized tree, with each leaf
      * an instance of Psr\Http\Message\UploadedFileInterface.
@@ -207,6 +226,25 @@ interface Request extends SimpleRequest
      * @return static
      */
     public function withParsedBody(array $data): self;
+
+    /**
+     * Retrieve a specific body param value.
+     * Retrieves a body param value sent by the client to the server.
+     *
+     * @param string $name The body param name to retrieve
+     *
+     * @return string|null
+     */
+    public function getParsedBodyParam(string $name): ?string;
+
+    /**
+     * Determine if a specific body param exists.
+     *
+     * @param string $name The body param name to check for
+     *
+     * @return bool
+     */
+    public function hasParsedBodyParam(string $name): bool;
 
     /**
      * Retrieve attributes derived from the request.

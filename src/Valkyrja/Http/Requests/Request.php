@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Requests;
 
 use InvalidArgumentException;
 use Valkyrja\Container\Container;
+use Valkyrja\Container\Support\Provides;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
@@ -28,9 +29,6 @@ use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
-use Valkyrja\Container\Support\Provides;
-
-use function is_array;
 
 /**
  * Representation of an incoming, server-side HTTP request.
@@ -101,7 +99,7 @@ class Request implements Contract
     /**
      * The parsed body.
      *
-     * @var array[]
+     * @var array
      */
     protected array $parsedBody = [];
 
@@ -157,30 +155,6 @@ class Request implements Contract
         $this->parsedBody = $parsedBody ?? [];
         $this->protocol   = $protocol ?? '1.1';
         $this->files      = $files ?? [];
-    }
-
-    /**
-     * Validate uploaded files.
-     *
-     * @param array $uploadedFiles The uploaded files
-     *
-     * @throws InvalidUploadedFile
-     *
-     * @return void
-     */
-    protected function validateUploadedFiles(array $uploadedFiles): void
-    {
-        foreach ($uploadedFiles as $file) {
-            if (is_array($file)) {
-                $this->validateUploadedFiles($file);
-
-                continue;
-            }
-
-            if (! $file instanceof UploadedFile) {
-                throw new InvalidUploadedFile('Invalid leaf in uploaded files structure');
-            }
-        }
     }
 
     /**
@@ -330,6 +304,31 @@ class Request implements Contract
     }
 
     /**
+     * Retrieve a specific query param value.
+     * Retrieves a query param value sent by the client to the server.
+     *
+     * @param string $name The query param name to retrieve
+     *
+     * @return string|null
+     */
+    public function getQueryParam(string $name): ?string
+    {
+        return $this->query[$name] ?? null;
+    }
+
+    /**
+     * Determine if a specific query param exists.
+     *
+     * @param string $name The query param name to check for
+     *
+     * @return bool
+     */
+    public function hasQueryParam(string $name): bool
+    {
+        return isset($this->query[$name]);
+    }
+
+    /**
      * Retrieve normalized file upload data.
      * This method returns upload metadata in a normalized tree, with each leaf
      * an instance of Psr\Http\Message\UploadedFileInterface.
@@ -413,6 +412,31 @@ class Request implements Contract
         $new->parsedBody = $data;
 
         return $new;
+    }
+
+    /**
+     * Retrieve a specific body param value.
+     * Retrieves a body param value sent by the client to the server.
+     *
+     * @param string $name The body param name to retrieve
+     *
+     * @return string|null
+     */
+    public function getParsedBodyParam(string $name): ?string
+    {
+        return $this->parsedBody[$name] ?? null;
+    }
+
+    /**
+     * Determine if a specific body param exists.
+     *
+     * @param string $name The body param name to check for
+     *
+     * @return bool
+     */
+    public function hasParsedBodyParam(string $name): bool
+    {
+        return isset($this->parsedBody[$name]);
     }
 
     /**
