@@ -51,7 +51,7 @@ class ORM
     public function __construct(Container $container, ORMManager $orm)
     {
         $this->container = $container;
-        $this->orm = $orm;
+        $this->orm       = $orm;
     }
 
     /**
@@ -97,7 +97,8 @@ class ORM
      */
     public function unique($subject, string $entity, string $field = null): void
     {
-        $field  ??= $entity::getIdField();
+        $field ??= $entity::getIdField();
+        // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
 
         // Set a singleton of the entity in the container for later retrieval
@@ -121,7 +122,8 @@ class ORM
      */
     public function exists($subject, string $entity, string $field = null): void
     {
-        $field  ??= $entity::getIdField();
+        $field ??= $entity::getIdField();
+        // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
 
         // Set a singleton of the entity in the container for later retrieval
