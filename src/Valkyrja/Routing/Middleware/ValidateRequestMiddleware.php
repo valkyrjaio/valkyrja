@@ -45,7 +45,7 @@ abstract class ValidateRequestMiddleware extends Middleware
             /** @var ResponseFactory $responseFactory */
             $responseFactory = $container->getSingleton(ResponseFactory::class);
 
-            return $responseFactory->createResponse($validator->getErrorMessage(), StatusCode::BAD_REQUEST);
+            return $responseFactory->createResponse($validator->getFirstErrorMessage(), StatusCode::BAD_REQUEST);
         }
 
         return $request;
@@ -57,7 +57,7 @@ abstract class ValidateRequestMiddleware extends Middleware
      * <code>
      *      $rules = [
      *          'title' => [
-     *              'subject' => $request->getParsedBody()['title'] ?? null,
+     *              'subject' => $request->getParsedBodyParam('title'),
      *              'rules' => [
      *                  'required' => [
      *                      'arguments'    => [],

@@ -81,6 +81,7 @@ final class ConfigKeyPart
     public const CONNECTIONS                 = 'connections';
     public const RULE                        = 'rule';
     public const RULES                       = 'rules';
+    public const RULES_MAP                   = 'rulesMap';
     public const MYSQL                       = 'mysql';
     public const PGSQL                       = 'pgsql';
     public const SQLSRV                      = 'sqlsrv';

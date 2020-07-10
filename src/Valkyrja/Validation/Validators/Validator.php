@@ -17,7 +17,6 @@ use Exception;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
-use Valkyrja\Validation\Exceptions\ValidationException;
 use Valkyrja\Validation\Validator as Contract;
 
 /**
@@ -58,18 +57,11 @@ class Validator implements Contract
     protected string $defaultRules;
 
     /**
-     * The default error message.
+     * The error messages if validation failed.
      *
-     * @var string
+     * @var array
      */
-    protected string $defaultErrorMessage = 'Validation failed.';
-
-    /**
-     * The error message if validation failed.
-     *
-     * @var string|null
-     */
-    protected ?string $errorMessage = null;
+    protected array $errorMessages = [];
 
     /**
      * The validation rules.
@@ -164,15 +156,9 @@ class Validator implements Contract
      */
     public function validateRules(array ...$rules): bool
     {
-        try {
-            $this->validateRuleSet($rules);
-        } catch (Exception $exception) {
-            $this->errorMessage = $exception->getMessage();
+        $this->validateRuleSet($rules);
 
-            return false;
-        }
-
-        return true;
+        return empty($this->errorMessages);
     }
 
     /**
@@ -188,33 +174,29 @@ class Validator implements Contract
     }
 
     /**
+     * Get the error messages.
+     *
+     * @return array
+     */
+    public function getErrorMessages(): array
+    {
+        return $this->errorMessages;
+    }
+
+    /**
      * Get the last error message thrown.
      *
      * @return string|null
      */
-    public function getErrorMessage(): ?string
+    public function getFirstErrorMessage(): ?string
     {
-        return $this->errorMessage;
-    }
-
-    /**
-     * Set the default error message.
-     *
-     * @param string $defaultErrorMessage The default error message
-     *
-     * @return void
-     */
-    public function setDefaultErrorMessage(string $defaultErrorMessage): void
-    {
-        $this->defaultErrorMessage = $defaultErrorMessage;
+        return $this->errorMessages[0] ?? null;
     }
 
     /**
      * Validate a rule set.
      *
      * @param array $ruleSet The rule set
-     *
-     * @throws ValidationException
      *
      * @return void
      */
@@ -228,14 +210,12 @@ class Validator implements Contract
     /**
      * Validate a subject item.
      *
-     * @param mixed|null $subject The subject
-     * @param array      $rules   The rules
-     *
-     * @throws ValidationException
+     * @param mixed $subject The subject
+     * @param array $rules   The rules
      *
      * @return void
      */
-    protected function validateSubject($subject = null, array $rules = []): void
+    protected function validateSubject($subject, array $rules = []): void
     {
         foreach ($rules as $name => $rule) {
             $this->validateRule($name, $subject, $rule);
@@ -249,20 +229,20 @@ class Validator implements Contract
      * @param mixed  $subject The subject
      * @param array  $rule    The rule
      *
-     * @throws ValidationException
-     *
      * @return void
      */
     protected function validateRule(string $name, $subject, array $rule): void
     {
         $arguments    = $rule['arguments'] ?? [];
-        $rulesName    = $rule['rules'] ?? null;
+        $rulesName    = $this->config[CKP::RULES_MAP][$name] ?? null;
         $errorMessage = $rule['errorMessage'] ?? null;
+        // Not in try catch to avoid swallowing an error if rule doesn't exist
+        $rules = $this->getRules($rulesName);
 
         try {
-            $this->getRules($rulesName)->{$name}($subject, ...$arguments);
+            $rules->{$name}($subject, ...$arguments);
         } catch (Exception $exception) {
-            throw new ValidationException($errorMessage ?? $this->defaultErrorMessage);
+            $this->errorMessages[] = $errorMessage ?? $exception->getMessage();
         }
     }
 }

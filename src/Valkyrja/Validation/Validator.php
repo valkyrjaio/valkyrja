@@ -78,10 +78,9 @@ interface Validator
      *                      'arguments'    => [500],
      *                      'errorMessage' => 'Title must be not be longer than 500 characters.',
      *                  ],
-     *                  'unique' => [
+     *                  'ORM:unique' => [
      *                      'arguments'    => [Entity::class, 'title'],
-     *                      'rules'        => 'ORM',
-     *                      'errorMessage' => 'Title must be not be longer than 500 characters.',
+     *                      'errorMessage' => 'Title must be not exist in Entity::class.',
      *                  ],
      *              ]
      *          ],
@@ -95,18 +94,16 @@ interface Validator
     public function setRules(array ...$rules): void;
 
     /**
-     * Get the last error message thrown.
+     * Get the error messages.
+     *
+     * @return array
+     */
+    public function getErrorMessages(): array;
+
+    /**
+     * Get the first error message thrown.
      *
      * @return string|null
      */
-    public function getErrorMessage(): ?string;
-
-    /**
-     * Set the default error message.
-     *
-     * @param string $defaultErrorMessage The default error message
-     *
-     * @return void
-     */
-    public function setDefaultErrorMessage(string $defaultErrorMessage): void;
+    public function getFirstErrorMessage(): ?string;
 }

@@ -32,6 +32,7 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::RULE,
         CKP::RULES,
+        CKP::RULES_MAP,
     ];
 
     /**
@@ -40,8 +41,9 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::RULE  => EnvKey::VALIDATOR_RULE,
-        CKP::RULES => EnvKey::VALIDATOR_RULES,
+        CKP::RULE      => EnvKey::VALIDATOR_RULE,
+        CKP::RULES     => EnvKey::VALIDATOR_RULES,
+        CKP::RULES_MAP => EnvKey::VALIDATOR_RULES_MAP,
     ];
 
     /**
@@ -57,4 +59,11 @@ class Config extends Model
      * @var string[]
      */
     public array $rules;
+
+    /**
+     * The rules map.
+     *
+     * @var string[]
+     */
+    public array $rulesMap;
 }
