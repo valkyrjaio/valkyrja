@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Requests;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
+use Valkyrja\Http\Request as RequestContract;
 use Valkyrja\Http\ValidateRequest as Contract;
 use Valkyrja\Validation\Validator;
-use Valkyrja\Http\Request as RequestContract;
 
 /**
  * Abstract Class ValidateRequest.
@@ -50,7 +50,7 @@ abstract class ValidateRequest implements Contract
      */
     public function __construct(RequestContract $request, Validator $validator)
     {
-        $this->request = $request;
+        $this->request   = $request;
         $this->validator = $validator;
     }
 
