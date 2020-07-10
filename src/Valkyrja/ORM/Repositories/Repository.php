@@ -176,14 +176,12 @@ class Repository implements RepositoryContract
     /**
      * Find by given criteria.
      *
-     * @param bool|null $getRelations
-     *
      * @return static
      */
-    public function find(bool $getRelations = false): self
+    public function find(): self
     {
-        $this->retriever    = $this->connection->createRetriever()->find($this->entity, $getRelations);
-        $this->getRelations = $getRelations;
+        $this->retriever    = $this->connection->createRetriever()->find($this->entity);
+        $this->getRelations = false;
 
         return $this;
     }
@@ -192,14 +190,13 @@ class Repository implements RepositoryContract
      * Find a single entity given its id.
      *
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return static
      */
-    public function findOne($id, bool $getRelations = false): self
+    public function findOne($id): self
     {
-        $this->retriever    = $this->connection->createRetriever()->findOne($this->entity, $id, $getRelations);
-        $this->getRelations = $getRelations;
+        $this->retriever    = $this->connection->createRetriever()->findOne($this->entity, $id);
+        $this->getRelations = false;
 
         return $this;
     }
@@ -303,6 +300,22 @@ class Repository implements RepositoryContract
     public function offset(int $offset): self
     {
         $this->retriever->offset($offset);
+
+        return $this;
+    }
+
+    /**
+     * Add relationships to include with the results.
+     *
+     * @param array|null $relationships [optional] The relationships to get
+     *
+     * @return static
+     */
+    public function withRelationships(array $relationships = null): self
+    {
+        $this->getRelations = true;
+
+        $this->retriever->withRelationships($relationships);
 
         return $this;
     }

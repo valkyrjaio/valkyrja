@@ -124,13 +124,12 @@ class CacheRepository extends Repository
      * Find a single entity given its id.
      *
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return static
      */
-    public function findOne($id, bool $getRelations = false): self
+    public function findOne($id): self
     {
-        parent::findOne($id, $getRelations);
+        parent::findOne($id);
 
         $this->id = $id;
 

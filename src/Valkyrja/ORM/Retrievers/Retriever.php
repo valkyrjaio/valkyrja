@@ -19,9 +19,10 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever as RetrieverContract;
+use Valkyrja\ORM\Retriever as Contract;
 use Valkyrja\Support\Type\Cls;
 
+use function is_array;
 use function is_int;
 use function is_string;
 
@@ -30,14 +31,14 @@ use function is_string;
  *
  * @author Melech Mizrachi
  */
-class Retriever implements RetrieverContract
+class Retriever implements Contract
 {
     /**
-     * The columns.
+     * The relationship columns.
      *
-     * @var string[]
+     * @var string[]|null
      */
-    protected array $columns = [];
+    protected ?array $relationshipColumns = null;
 
     /**
      * The values to bind.
@@ -91,14 +92,13 @@ class Retriever implements RetrieverContract
      *      $retriever->find(Entity::class, true | false)
      * </code>
      *
-     * @param string    $entity
-     * @param bool|null $getRelations
+     * @param string $entity
      *
      * @return static
      */
-    public function find(string $entity, bool $getRelations = false): self
+    public function find(string $entity): self
     {
-        $this->setQueryProperties($entity, null, $getRelations);
+        $this->setQueryProperties($entity, null);
 
         return $this;
     }
@@ -112,14 +112,13 @@ class Retriever implements RetrieverContract
      *
      * @param string     $entity
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return static
      */
-    public function findOne(string $entity, $id, bool $getRelations = false): self
+    public function findOne(string $entity, $id): self
     {
         $this->validateId($id);
-        $this->setQueryProperties($entity, null, $getRelations);
+        $this->setQueryProperties($entity, null);
         $this->limit(1);
 
         /** @var Entity $entity */
@@ -155,7 +154,6 @@ class Retriever implements RetrieverContract
      */
     public function columns(array $columns): self
     {
-        $this->columns      = $columns;
         $this->queryBuilder = $this->queryBuilder->select($columns);
 
         return $this;
@@ -240,6 +238,21 @@ class Retriever implements RetrieverContract
     }
 
     /**
+     * Add relationships to include with the results.
+     *
+     * @param array|null $relationships [optional] The relationships to get
+     *
+     * @return static
+     */
+    public function withRelationships(array $relationships = null): self
+    {
+        $this->getRelations        = true;
+        $this->relationshipColumns = $relationships;
+
+        return $this;
+    }
+
+    /**
      * Get results.
      *
      * @return Entity[]
@@ -250,8 +263,8 @@ class Retriever implements RetrieverContract
 
         $results = $this->query->getResult();
 
-        if ($this->getRelations) {
-            $this->setRelations($this->columns, ...$results);
+        if ($this->getRelations && is_array($results)) {
+            $this->setRelations($this->relationshipColumns, ...$results);
         }
 
         return $results;
@@ -301,31 +314,16 @@ class Retriever implements RetrieverContract
      * Set query builder and query.
      *
      * @param string        $entity
-     * @param string[]|null $columns      [optional]
-     * @param bool          $getRelations [optional]
+     * @param string[]|null $columns [optional]
      *
      * @return void
      */
-    protected function setQueryProperties(string $entity, array $columns = null, bool $getRelations = false): void
+    protected function setQueryProperties(string $entity, array $columns = null): void
     {
         Cls::validateInherits($entity, Entity::class);
 
         $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select($columns);
         $this->query        = $this->connection->createQuery('', $entity);
-
-        $this->setGetRelations($getRelations);
-    }
-
-    /**
-     * Set get relations flag.
-     *
-     * @param bool $getRelations
-     *
-     * @return void
-     */
-    protected function setGetRelations(bool $getRelations): void
-    {
-        $this->getRelations = $getRelations;
     }
 
     /**

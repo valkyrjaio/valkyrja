@@ -29,12 +29,11 @@ interface Retriever
      *      $retriever->bind(Entity::class, true | false)
      * </code>
      *
-     * @param string    $entity
-     * @param bool|null $getRelations
+     * @param string $entity
      *
      * @return static
      */
-    public function find(string $entity, bool $getRelations = false): self;
+    public function find(string $entity): self;
 
     /**
      * Find a single entity given its id.
@@ -45,11 +44,10 @@ interface Retriever
      *
      * @param string     $entity
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return static
      */
-    public function findOne(string $entity, $id, bool $getRelations = false): self;
+    public function findOne(string $entity, $id): self;
 
     /**
      * Count all the results of given criteria.
@@ -123,6 +121,15 @@ interface Retriever
      * @return static
      */
     public function offset(int $offset): self;
+
+    /**
+     * Add relationships to include with the results.
+     *
+     * @param array|null $relationships [optional] The relationships to get
+     *
+     * @return static
+     */
+    public function withRelationships(array $relationships = null): self;
 
     /**
      * Get results.

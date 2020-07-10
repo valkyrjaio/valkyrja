@@ -60,21 +60,18 @@ interface Repository
     /**
      * Find by given criteria.
      *
-     * @param bool|null $getRelations
-     *
      * @return static
      */
-    public function find(bool $getRelations = false): self;
+    public function find(): self;
 
     /**
      * Find a single entity given its id.
      *
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return static
      */
-    public function findOne($id, bool $getRelations = false): self;
+    public function findOne($id): self;
 
     /**
      * Count all the results of given criteria.
@@ -142,6 +139,15 @@ interface Repository
      * @return static
      */
     public function offset(int $offset): self;
+
+    /**
+     * Add relationships to include with the results.
+     *
+     * @param array|null $relationships [optional] The relationships to get
+     *
+     * @return static
+     */
+    public function withRelationships(array $relationships = null): self;
 
     /**
      * Get results.
