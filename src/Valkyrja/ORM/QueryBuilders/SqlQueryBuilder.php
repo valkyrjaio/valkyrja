@@ -318,6 +318,28 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
+     * Add an groupBy by to the query statement.
+     *
+     * <code>
+     *      $queryBuilder
+     *          ->select()
+     *          ->table('table')
+     *          ->where('column', '=', ':column')
+     *          ->groupBy('column');
+     * </code>
+     *
+     * @param string      $column
+     *
+     * @return static
+     */
+    public function groupBy(string $column): self
+    {
+        $this->groupBy[] = $column;
+
+        return $this;
+    }
+
+    /**
      * Add an order by without specifying the order to the query statement.
      *
      * <code>
@@ -614,6 +636,18 @@ class SqlQueryBuilder implements QueryBuilder
         return empty($this->where)
             ? ''
             : Statement::WHERE . ' ' . implode(' ', $this->where);
+    }
+
+    /**
+     * Get the GROUP BY part of a query statement.
+     *
+     * @return string
+     */
+    protected function getGroupByQuery(): string
+    {
+        return empty($this->orderBy)
+            ? ''
+            : Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
     }
 
     /**

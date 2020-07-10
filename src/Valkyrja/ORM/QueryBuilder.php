@@ -171,6 +171,23 @@ interface QueryBuilder
     public function orWhere(string $column, string $operator = null, $value = null): self;
 
     /**
+     * Add an groupBy by to the query statement.
+     *
+     * <code>
+     *      $queryBuilder
+     *          ->select()
+     *          ->table('table')
+     *          ->where('column', '=', ':column')
+     *          ->groupBy('column');
+     * </code>
+     *
+     * @param string      $column
+     *
+     * @return static
+     */
+    public function groupBy(string $column): self;
+
+    /**
      * Add an order by to the query statement.
      *
      * <code>

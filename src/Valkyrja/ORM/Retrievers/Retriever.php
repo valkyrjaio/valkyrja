@@ -195,6 +195,20 @@ class Retriever implements Contract
     }
 
     /**
+     * Set group by.
+     *
+     * @param string $column
+     *
+     * @return static
+     */
+    public function groupBy(string $column): self
+    {
+        $this->queryBuilder->groupBy($column);
+
+        return $this;
+    }
+
+    /**
      * Set order by.
      *
      * @param string      $column

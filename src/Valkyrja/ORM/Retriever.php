@@ -95,6 +95,15 @@ interface Retriever
     public function orWhere(string $column, string $operator = null, $value = null): self;
 
     /**
+     * Set group by.
+     *
+     * @param string $column
+     *
+     * @return static
+     */
+    public function groupBy(string $column): self;
+
+    /**
      * Set an order by.
      *
      * @param string      $column
