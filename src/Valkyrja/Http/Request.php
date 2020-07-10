@@ -61,6 +61,26 @@ interface Request extends SimpleRequest
     public function getServerParams(): array;
 
     /**
+     * Retrieve a specific server value.
+     * Retrieves a server value sent by the client to the server.
+     *
+     * @param string $name    The server name to retrieve
+     * @param mixed  $default [optional] Default value to return if the param does not exist
+     *
+     * @return mixed
+     */
+    public function getServerParam(string $name, $default = null);
+
+    /**
+     * Determine if a specific server exists.
+     *
+     * @param string $name The server name to check for
+     *
+     * @return bool
+     */
+    public function hasServerParam(string $name): bool;
+
+    /**
      * Retrieve cookies.
      * Retrieves cookies sent by the client to the server.
      * The data MUST be compatible with the structure of the $_COOKIE
@@ -91,11 +111,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific cookie value.
      * Retrieves a cookie value sent by the client to the server.
      *
-     * @param string $name The cookie name to retrieve
+     * @param string      $name    The cookie name to retrieve
+     * @param string|null $default [optional] Default value to return if the param does not exist
      *
      * @return string|null
      */
-    public function getCookieParam(string $name): ?string;
+    public function getCookieParam(string $name, string $default = null): ?string;
 
     /**
      * Determine if a specific cookie exists.
@@ -144,11 +165,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific query param value.
      * Retrieves a query param value sent by the client to the server.
      *
-     * @param string $name The query param name to retrieve
+     * @param string $name    The query param name to retrieve
+     * @param mixed  $default [optional] Default value to return if the param does not exist
      *
-     * @return string|null
+     * @return mixed
      */
-    public function getQueryParam(string $name): ?string;
+    public function getQueryParam(string $name, $default = null);
 
     /**
      * Determine if a specific query param exists.
@@ -231,11 +253,12 @@ interface Request extends SimpleRequest
      * Retrieve a specific body param value.
      * Retrieves a body param value sent by the client to the server.
      *
-     * @param string $name The body param name to retrieve
+     * @param string $name    The body param name to retrieve
+     * @param mixed  $default [optional] Default value to return if the param does not exist
      *
-     * @return string|null
+     * @return mixed
      */
-    public function getParsedBodyParam(string $name): ?string;
+    public function getParsedBodyParam(string $name, $default = null);
 
     /**
      * Determine if a specific body param exists.
