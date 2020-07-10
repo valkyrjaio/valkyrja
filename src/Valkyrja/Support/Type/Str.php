@@ -16,6 +16,7 @@ namespace Valkyrja\Support\Type;
 use Exception;
 
 use function base64_encode;
+use function filter_var;
 use function preg_replace;
 use function random_bytes;
 use function str_replace;
@@ -27,6 +28,8 @@ use function strtoupper;
 use function substr;
 use function trim;
 use function ucwords;
+
+use const FILTER_VALIDATE_EMAIL;
 
 /**
  * Class Str.
@@ -404,6 +407,18 @@ class Str
     public static function validateStrings(string ...$subjects): void
     {
         // Left empty on purpose. Validation happens due to PHP type hinting.
+    }
+
+    /**
+     * Check if a string is a valid email.
+     *
+     * @param string $subject The subject
+     *
+     * @return bool
+     */
+    public static function isEmail(string $subject): bool
+    {
+        return filter_var($subject, FILTER_VALIDATE_EMAIL);
     }
 
     /**
