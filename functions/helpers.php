@@ -40,6 +40,7 @@ use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\Message as MailMessage;
+use Valkyrja\Notification\Notify;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
@@ -291,6 +292,16 @@ function mail(): Mail
 function mailMessage(string $name = null): MailMessage
 {
     return \Valkyrja\mail()->createMessage($name);
+}
+
+/**
+ * Get notification manager.
+ *
+ * @return Notify
+ */
+function notify(): Notify
+{
+    return Valkyrja::app()->container()->getSingleton(Notify::class);
 }
 
 /**

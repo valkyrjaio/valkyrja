@@ -43,6 +43,7 @@ use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Providers\LoggerServiceProvider;
 use Valkyrja\Mail\Managers\Mail;
 use Valkyrja\Mail\Messages\PHPMailerMessage;
+use Valkyrja\Notification\Managers\Notify;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\Managers\ORM;
 use Valkyrja\Path\Generators\PathGenerator;
@@ -107,6 +108,7 @@ final class Provider
     public const CRYPT                = Crypt::class;
     public const CRYPT_ENCRYPTER      = SodiumEncrypter::class;
     public const CRYPT_DECRYPTER      = SodiumDecrypter::class;
+    public const NOTIFY               = Notify::class;
     public const MODEL                = Model::class;
     public const ENTITY               = Entity::class;
     public const ENTITY_MANAGER       = ORM::class;

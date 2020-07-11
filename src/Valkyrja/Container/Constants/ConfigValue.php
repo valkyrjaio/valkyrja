@@ -52,6 +52,7 @@ final class ConfigValue
         Provider::LOGGER,
         Provider::MAIL,
         Provider::MAIL_MESSAGE,
+        Provider::NOTIFY,
         Provider::SMS,
         Provider::SMS_MESSAGE,
         Provider::ENTITY_MANAGER,

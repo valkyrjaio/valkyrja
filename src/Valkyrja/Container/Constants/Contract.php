@@ -44,6 +44,7 @@ use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\Message as MailMessage;
+use Valkyrja\Notification\Notify;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Query;
@@ -110,6 +111,7 @@ final class Contract
     public const CRYPT               = Crypt::class;
     public const ENCRYPTER           = Encrypter::class;
     public const DECRYPTER           = Decrypter::class;
+    public const NOTIFY              = Notify::class;
     public const MODEL               = Model::class;
     public const ENTITY              = Entity::class;
     public const ENTITY_MANAGER      = ORM::class;
