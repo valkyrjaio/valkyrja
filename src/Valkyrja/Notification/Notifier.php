@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Notification;
 
 /**
- * Interface Notify.
+ * Interface Notifier.
  *
  * @author Melech Mizrachi
  */
-interface Notify
+interface Notifier
 {
     /**
      * Add a mail recipient to send a notification to.

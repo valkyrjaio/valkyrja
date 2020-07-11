@@ -17,14 +17,14 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
-use Valkyrja\Notification\Notify as Contract;
+use Valkyrja\Notification\Notifier as Contract;
 
 /**
- * Class Notify.
+ * Class Notifier.
  *
  * @author Melech Mizrachi
  */
-class Notify implements Contract
+class Notifier implements Contract
 {
     use Provides;
 

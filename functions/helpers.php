@@ -40,7 +40,9 @@ use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\Message as MailMessage;
-use Valkyrja\Notification\Notify;
+use Valkyrja\Notification\NotifiableUser;
+use Valkyrja\Notification\Notification;
+use Valkyrja\Notification\Notifier;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
@@ -49,8 +51,8 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Session\Session;
-use Valkyrja\SMS\SMS;
 use Valkyrja\SMS\Message as SMSMessage;
+use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;
 use Valkyrja\Validation\Validator;
 use Valkyrja\View\View;
@@ -297,11 +299,37 @@ function mailMessage(string $name = null): MailMessage
 /**
  * Get notification manager.
  *
- * @return Notify
+ * @return Notifier
  */
-function notify(): Notify
+function notifier(): Notifier
 {
-    return Valkyrja::app()->container()->getSingleton(Notify::class);
+    return Valkyrja::app()->container()->getSingleton(Notifier::class);
+}
+
+/**
+ * Notify a user.
+ *
+ * @param Notification   $notification The notification
+ * @param NotifiableUser $user         The user
+ *
+ * @return void
+ */
+function notifyUser(Notification $notification, NotifiableUser $user): void
+{
+    \Valkyrja\notifier()->notifyUser($notification, $user);
+}
+
+/**
+ * Notify users.
+ *
+ * @param Notification     $notification The notification
+ * @param NotifiableUser[] $users        The users
+ *
+ * @return void
+ */
+function notifyUsers(Notification $notification, NotifiableUser ...$users): void
+{
+    \Valkyrja\notifier()->notifyUsers($notification, ...$users);
 }
 
 /**
