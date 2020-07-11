@@ -120,6 +120,8 @@ trait ProvidersAwareTrait
         // The publish method for this provided item in the provider
         $publishMethod = self::$providedMethod[$itemId] ?? static::$defaultPublishMethod;
 
+        unset(self::$provided[$itemId]);
+
         // Publish the service provider
         $provider::$publishMethod($this);
     }
