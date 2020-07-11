@@ -39,6 +39,7 @@ use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
+use Valkyrja\Mail\Message as MailMessage;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
@@ -48,6 +49,7 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Session\Session;
 use Valkyrja\SMS\SMS;
+use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\Support\Directory;
 use Valkyrja\Validation\Validator;
 use Valkyrja\View\View;
@@ -280,6 +282,18 @@ function mail(): Mail
 }
 
 /**
+ * Get a new mail message.
+ *
+ * @param string|null $name [optional] The name
+ *
+ * @return MailMessage
+ */
+function mailMessage(string $name = null): MailMessage
+{
+    return \Valkyrja\mail()->createMessage($name);
+}
+
+/**
  * Get path generator.
  *
  * @return PathGenerator
@@ -483,6 +497,18 @@ function session(): Session
 function sms(): SMS
 {
     return Valkyrja::app()->container()->getSingleton(SMS::class);
+}
+
+/**
+ * Get a new SMS message.
+ *
+ * @param string|null $name [optional] The name
+ *
+ * @return SMSMessage
+ */
+function smsMessage(string $name = null): SMSMessage
+{
+    return \Valkyrja\sms()->createMessage($name);
 }
 
 /**

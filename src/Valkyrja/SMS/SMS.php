@@ -23,7 +23,9 @@ interface SMS
     /**
      * Create a new message.
      *
+     * @param string|null $name [optional] The name of the message
+     *
      * @return Message
      */
-    public function createMessage(): Message;
+    public function createMessage(string $name = null): Message;
 }
