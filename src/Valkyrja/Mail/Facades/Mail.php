@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Facades;
 
 use Valkyrja\Mail\Mail as Contract;
+use Valkyrja\Mail\Message;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -21,16 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static bool setFrom(string $address, string $name = '')
- * @method static bool addAddress(string $address, string $name = '')
- * @method static bool addReplyTo(string $address, string $name = '')
- * @method static bool addCC(string $address, string $name = '')
- * @method static bool addBCC(string $address, string $name = '')
- * @method static bool addAttachment(string $path, string $name = '')
- * @method static Contract setSubject(string $subject)
- * @method static Contract setBody(string $body)
- * @method static Contract setPlainBody(string $body)
- * @method static bool send()
+ * @method static Message createMessage()
  */
 class Mail extends Facade
 {

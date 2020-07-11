@@ -91,6 +91,9 @@ final class ConfigKeyPart
     public const DB                          = 'db';
     public const USERNAME                    = 'username';
     public const PASSWORD                    = 'password';
+    public const MESSAGE                     = 'message';
+    public const MESSAGES                    = 'messages';
+    public const PHP_MAILER                  = 'PHPMailer';
     public const UNIX_SOCKET                 = 'unix_socket';
     public const CHARSET                     = 'charset';
     public const COLLATION                   = 'collation';

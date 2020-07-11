@@ -51,6 +51,7 @@ final class ConfigValue
         Provider::RESPONSE_BUILDER,
         Provider::LOGGER,
         Provider::MAIL,
+        Provider::MAIL_MESSAGE,
         Provider::ENTITY_MANAGER,
         Provider::PATH_GENERATOR,
         Provider::PATH_PARSER,

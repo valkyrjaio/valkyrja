@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Mailers;
+namespace Valkyrja\Mail\Messages;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Container\Container;
-use Valkyrja\Mail\Mail;
 use Valkyrja\Container\Support\Provides;
+use Valkyrja\Mail\Message as Contract;
 
 /**
- * Class PHPMailerMail.
+ * Class PHPMailerMessage.
  *
  * @author Melech Mizrachi
  */
-class PHPMailerMail implements Mail
+class PHPMailerMessage implements Contract
 {
     use Provides;
 
@@ -53,7 +53,7 @@ class PHPMailerMail implements Mail
     public static function provides(): array
     {
         return [
-            Mail::class,
+            Contract::class,
         ];
     }
 
@@ -90,11 +90,21 @@ class PHPMailerMail implements Mail
         $PHPMailer->SMTPSecure = $mailConfig['encryption'];
 
         $container->setSingleton(
-            Mail::class,
+            Contract::class,
             new static(
                 $PHPMailer
             )
         );
+    }
+
+    /**
+     * Make a new message.
+     *
+     * @return static
+     */
+    public function make(): self
+    {
+        return new static(clone $this->phpMailer);
     }
 
     /**
@@ -105,11 +115,13 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function setFrom(string $address, string $name = ''): bool
+    public function setFrom(string $address, string $name = ''): self
     {
-        return $this->phpMailer->setFrom($address, $name);
+        $this->phpMailer->setFrom($address, $name);
+
+        return $this;
     }
 
     /**
@@ -120,11 +132,13 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function addAddress(string $address, string $name = ''): bool
+    public function addAddress(string $address, string $name = ''): self
     {
-        return $this->phpMailer->addAddress($address, $name);
+        $this->phpMailer->addAddress($address, $name);
+
+        return $this;
     }
 
     /**
@@ -135,11 +149,13 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function addReplyTo(string $address, string $name = ''): bool
+    public function addReplyTo(string $address, string $name = ''): self
     {
-        return $this->phpMailer->addReplyTo($address, $name);
+        $this->phpMailer->addReplyTo($address, $name);
+
+        return $this;
     }
 
     /**
@@ -150,11 +166,13 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function addCC(string $address, string $name = ''): bool
+    public function addCC(string $address, string $name = ''): self
     {
-        return $this->phpMailer->addCC($address, $name);
+        $this->phpMailer->addCC($address, $name);
+
+        return $this;
     }
 
     /**
@@ -165,11 +183,13 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function addBCC(string $address, string $name = ''): bool
+    public function addBCC(string $address, string $name = ''): self
     {
-        return $this->phpMailer->addBCC($address, $name);
+        $this->phpMailer->addBCC($address, $name);
+
+        return $this;
     }
 
     /**
@@ -180,17 +200,19 @@ class PHPMailerMail implements Mail
      *
      * @throws Exception
      *
-     * @return bool
+     * @return static
      */
-    public function addAttachment(string $path, string $name = ''): bool
+    public function addAttachment(string $path, string $name = ''): self
     {
-        return $this->phpMailer->addAttachment($path, $name);
+        $this->phpMailer->addAttachment($path, $name);
+
+        return $this;
     }
 
     /**
      * Set whether this is an html message.
      *
-     * @param bool $isHTML
+     * @param bool $isHTML Whether the body is html
      *
      * @return static
      */
@@ -204,7 +226,7 @@ class PHPMailerMail implements Mail
     /**
      * Set the subject.
      *
-     * @param string $subject
+     * @param string $subject The subject
      *
      * @return static
      */
@@ -218,7 +240,7 @@ class PHPMailerMail implements Mail
     /**
      * Set the body of the mail.
      *
-     * @param string $body
+     * @param string $body The body
      *
      * @return static
      */
@@ -232,13 +254,13 @@ class PHPMailerMail implements Mail
     /**
      * If sending html, add an alternative plain message body for clients without html support.
      *
-     * @param string $body
+     * @param string $plainBody The plain body message
      *
      * @return static
      */
-    public function setPlainBody(string $body): self
+    public function setPlainBody(string $plainBody): self
     {
-        $this->phpMailer->AltBody = $body;
+        $this->phpMailer->AltBody = $plainBody;
 
         return $this;
     }

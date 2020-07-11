@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Mail\Messages\PHPMailerMessage;
 
 /**
  * Constant ConfigValue.
@@ -29,6 +30,10 @@ final class ConfigValue
     public const ENCRYPTION   = 'tls';
     public const USERNAME     = '';
     public const PASSWORD     = '';
+    public const MESSAGE      = CKP::PHP_MAILER;
+    public const MESSAGES     = [
+        CKP::PHP_MAILER => PHPMailerMessage::class,
+    ];
 
     public static array $defaults = [
         CKP::HOST         => self::HOST,
@@ -38,5 +43,7 @@ final class ConfigValue
         CKP::ENCRYPTION   => self::ENCRYPTION,
         CKP::USERNAME     => self::USERNAME,
         CKP::PASSWORD     => self::PASSWORD,
+        CKP::MESSAGE      => self::MESSAGE,
+        CKP::MESSAGES     => self::MESSAGES,
     ];
 }

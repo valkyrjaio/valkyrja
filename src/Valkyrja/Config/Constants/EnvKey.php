@@ -133,6 +133,8 @@ final class EnvKey
     public const MAIL_ENCRYPTION   = 'MAIL_ENCRYPTION';
     public const MAIL_USERNAME     = 'MAIL_USERNAME';
     public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
+    public const MAIL_MESSAGE      = 'MAIL_MESSAGE';
+    public const MAIL_MESSAGES     = 'MAIL_MESSAGES';
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 

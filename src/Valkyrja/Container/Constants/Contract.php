@@ -43,6 +43,7 @@ use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Mail;
+use Valkyrja\Mail\Message as MailMessage;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Query;
@@ -101,6 +102,7 @@ final class Contract
     public const LOGGER_INTERFACE    = LoggerInterface::class;
     public const LOGGER              = Logger::class;
     public const MAIL                = Mail::class;
+    public const MAIL_MESSAGE        = MailMessage::class;
     public const CRYPT               = Crypt::class;
     public const ENCRYPTER           = Encrypter::class;
     public const DECRYPTER           = Decrypter::class;
