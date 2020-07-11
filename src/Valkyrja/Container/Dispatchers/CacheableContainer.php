@@ -18,7 +18,9 @@ use Valkyrja\Container\Annotation\Annotator;
 use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
+use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
+use Valkyrja\Container\Container as Contract;
 
 /**
  * Class CacheableContainer.
@@ -42,6 +44,10 @@ class CacheableContainer extends Container
 
         $app->setContainer($container);
 
+        $container->setSingleton(Application::class, $app);
+        $container->setSingleton('env', $app->env());
+        $container->setSingleton('config', $app->config());
+        $container->setSingleton(Contract::class, $container);
         $container->setup();
     }
 
@@ -97,6 +103,9 @@ class CacheableContainer extends Container
         self::$provided        = $cache['provided'];
         self::$services        = $cache['services'];
         self::$singletons      = $cache['singletons'];
+
+        // Setup service providers
+        $this->setupServiceProviders($config);
     }
 
     /**
@@ -160,8 +169,14 @@ class CacheableContainer extends Container
     protected function setupServiceProviders($config): void
     {
         // Iterate through all the providers
-        foreach ($config['providers'] as $provider) {
+        foreach ($config['providers'] as $key => $provider) {
             $this->register($provider);
+
+            /** @var Provider $provider */
+
+            if ($provider::deferred()) {
+                unset($config['providers'][$key]);
+            }
         }
 
         // If this is not a dev environment
@@ -170,8 +185,14 @@ class CacheableContainer extends Container
         }
 
         // Iterate through all the providers
-        foreach ($config['devProviders'] as $provider) {
-            $this->register($provider);
+        foreach ($config['devProviders'] as $key => $devProvider) {
+            $this->register($devProvider);
+
+            /** @var Provider $devProvider */
+
+            if ($devProvider::deferred()) {
+                unset($config['devProviders'][$key]);
+            }
         }
     }
 

@@ -506,29 +506,10 @@ class Valkyrja implements Application
 
         // Publish the container provider
         $container::publish($this);
-        // Bootstrap the container
-        $this->bootstrapContainer();
         // Publish the dispatcher provider
         $dispatcher::publish($this);
         // Publish the events provider
         $events::publish($this);
-    }
-
-    /**
-     * Bootstrap the container.
-     *
-     * @return void
-     */
-    protected function bootstrapContainer(): void
-    {
-        // Set the application instance in the container
-        self::$container->setSingleton(Application::class, $this);
-        // Set the events instance in the container
-        self::$container->setSingleton('env', self::$env);
-        // Set the events instance in the container
-        self::$container->setSingleton('config', self::$config);
-        // Set the container instance in the container
-        self::$container->setSingleton(Container::class, self::$container);
     }
 
     /**
