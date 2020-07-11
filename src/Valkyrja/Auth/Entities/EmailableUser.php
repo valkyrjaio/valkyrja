@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
+use Valkyrja\Auth\EmailableUser as Contract;
+use Valkyrja\ORM\Entities\EntityFields;
+
 /**
- * Trait VerifiableUserFields.
+ * Entity EmailableUser.
  *
  * @author Melech Mizrachi
  */
-trait VerifiableUserFields
+class EmailableUser implements Contract
 {
-    use VerifiableUserTrait;
-
-    /**
-     * The flag to determine whether a user is verified.
-     *
-     * @var bool
-     */
-    public bool $verified = false;
+    use EntityFields;
+    use UserFields;
+    use EmailableUserFields;
 }

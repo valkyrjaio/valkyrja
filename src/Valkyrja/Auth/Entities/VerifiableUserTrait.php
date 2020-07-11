@@ -23,28 +23,11 @@ use Valkyrja\Auth\Constants\Field;
 trait VerifiableUserTrait
 {
     /**
-     * The email field.
-     *
-     * @var string
-     */
-    protected static string $emailField = Field::EMAIL;
-
-    /**
      * The verified field.
      *
      * @var string
      */
     protected static string $verifiedField = Field::VERIFIED;
-
-    /**
-     * Get the email field.
-     *
-     * @return string
-     */
-    public static function getEmailField(): string
-    {
-        return static::$emailField;
-    }
 
     /**
      * Get the verified field.
@@ -54,28 +37,6 @@ trait VerifiableUserTrait
     public static function getVerifiedField(): string
     {
         return static::$verifiedField;
-    }
-
-    /**
-     * Get the email field value.
-     *
-     * @return string
-     */
-    public function getEmailFieldValue(): string
-    {
-        return $this->{static::$emailField};
-    }
-
-    /**
-     * Set the email field value.
-     *
-     * @param string $email The email
-     *
-     * @return void
-     */
-    public function setEmailFieldValue(string $email): void
-    {
-        $this->{static::$emailField} = $email;
     }
 
     /**

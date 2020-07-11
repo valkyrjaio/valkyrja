@@ -14,32 +14,32 @@ declare(strict_types=1);
 namespace Valkyrja\Auth;
 
 /**
- * Interface VerifiableUser.
+ * Interface EmailableUser.
  *
  * @author Melech Mizrachi
  */
-interface VerifiableUser extends EmailableUser
+interface EmailableUser extends User
 {
     /**
-     * Get the verified field.
+     * Get the email field.
      *
      * @return string
      */
-    public static function getVerifiedField(): string;
+    public static function getEmailField(): string;
 
     /**
-     * Get the verified field value.
+     * Get the email field value.
      *
-     * @return bool
+     * @return string
      */
-    public function getVerifiedFieldValue(): bool;
+    public function getEmailFieldValue(): string;
 
     /**
-     * Set the verified field value.
+     * Set the email field value.
      *
-     * @param bool $verified Whether the user is verified
+     * @param string $email The email
      *
      * @return void
      */
-    public function setVerifiedFieldValue(bool $verified): void;
+    public function setEmailFieldValue(string $email): void;
 }

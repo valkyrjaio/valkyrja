@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 /**
- * Trait VerifiableUserFields.
+ * Trait EmailableUserFields.
  *
  * @author Melech Mizrachi
  */
-trait VerifiableUserFields
+trait EmailableUserFields
 {
-    use VerifiableUserTrait;
+    use EmailableUserTrait;
 
     /**
-     * The flag to determine whether a user is verified.
+     * The email.
      *
-     * @var bool
+     * @var string
      */
-    public bool $verified = false;
+    public string $email = '';
 }
