@@ -40,6 +40,7 @@ final class ConfigKeyPart
     public const ROUTING     = 'routing';
     public const SESSION     = 'session';
     public const STORAGE     = 'storage';
+    public const VALIDATION  = 'validation';
     public const VIEW        = 'view';
     public const TWIG        = 'twig';
 

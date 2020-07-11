@@ -22,7 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Message createMessage()
+ * @method static Message createMessage(string $name = null)
  */
 class Mail extends Facade
 {

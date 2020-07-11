@@ -119,6 +119,8 @@ final class ConfigKey
     public const MAIL_ENCRYPTION   = 'mail.encryption';
     public const MAIL_USERNAME     = 'mail.username';
     public const MAIL_PASSWORD     = 'mail.password';
+    public const MAIL_MESSAGE      = 'mail.message';
+    public const MAIL_MESSAGES     = 'mail.messages';
 
     public const PATH_PATTERNS = 'path.patterns';
 
@@ -138,6 +140,10 @@ final class ConfigKey
 
     public const STORAGE_UPLOADS_DIR = 'storage.uploadsDir';
     public const STORAGE_LOGS_DIR    = 'storage.logsDir';
+
+    public const VALIDATION_RULE      = 'validation.rule';
+    public const VALIDATION_RULES     = 'validation.rules';
+    public const VALIDATION_RULES_MAP = 'validation.rulesMap';
 
     public const VIEW_DIR     = 'view.dir';
     public const VIEW_ENGINE  = 'view.engine';

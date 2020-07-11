@@ -41,9 +41,9 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::RULE      => EnvKey::VALIDATOR_RULE,
-        CKP::RULES     => EnvKey::VALIDATOR_RULES,
-        CKP::RULES_MAP => EnvKey::VALIDATOR_RULES_MAP,
+        CKP::RULE      => EnvKey::VALIDATION_RULE,
+        CKP::RULES     => EnvKey::VALIDATION_RULES,
+        CKP::RULES_MAP => EnvKey::VALIDATION_RULES_MAP,
     ];
 
     /**
