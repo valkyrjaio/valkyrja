@@ -32,6 +32,7 @@ use Valkyrja\ORM\Config\Config as ORM;
 use Valkyrja\Path\Config\Config as Path;
 use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Session\Config\Config as Session;
+use Valkyrja\SMS\Config\Config as SMS;
 use Valkyrja\Support\Provider\Provider;
 use Valkyrja\Validation\Config\Config as Validation;
 use Valkyrja\View\Config\Config as View;
@@ -176,6 +177,13 @@ class Config extends Model
      * @var Session
      */
     public Session $session;
+
+    /**
+     * The SMS module config.
+     *
+     * @var SMS
+     */
+    public SMS $sms;
 
     /**
      * The validation module config.

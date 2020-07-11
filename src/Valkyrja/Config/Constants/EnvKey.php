@@ -153,6 +153,11 @@ final class EnvKey
     public const SESSION_ID   = 'SESSION_ID';
     public const SESSION_NAME = 'SESSION_NAME';
 
+    public const SMS_USERNAME = 'SMS_USERNAME';
+    public const SMS_PASSWORD = 'SMS_PASSWORD';
+    public const SMS_MESSAGE  = 'SMS_MESSAGE';
+    public const SMS_MESSAGES = 'SMS_MESSAGES';
+
     public const STORAGE_UPLOADS_DIR = 'STORAGE_UPLOADS_DIR';
     public const STORAGE_LOGS_DIR    = 'STORAGE_LOGS_DIR';
 

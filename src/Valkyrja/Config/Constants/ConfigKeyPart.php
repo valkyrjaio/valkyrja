@@ -38,6 +38,7 @@ final class ConfigKeyPart
     public const ORM         = 'orm';
     public const PATH        = 'path';
     public const ROUTING     = 'routing';
+    public const SMS         = 'sms';
     public const SESSION     = 'session';
     public const STORAGE     = 'storage';
     public const VALIDATION  = 'validation';
@@ -95,6 +96,7 @@ final class ConfigKeyPart
     public const MESSAGE                     = 'message';
     public const MESSAGES                    = 'messages';
     public const PHP_MAILER                  = 'PHPMailer';
+    public const NEXMO                       = 'Nexmo';
     public const UNIX_SOCKET                 = 'unix_socket';
     public const CHARSET                     = 'charset';
     public const COLLATION                   = 'collation';

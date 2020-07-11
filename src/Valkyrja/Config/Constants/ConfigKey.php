@@ -138,6 +138,11 @@ final class ConfigKey
     public const SESSION_ID   = 'session.id';
     public const SESSION_NAME = 'session.name';
 
+    public const SMS_USERNAME = 'sms.username';
+    public const SMS_PASSWORD = 'sms.password';
+    public const SMS_MESSAGE  = 'sms.message';
+    public const SMS_MESSAGES = 'sms.messages';
+
     public const STORAGE_UPLOADS_DIR = 'storage.uploadsDir';
     public const STORAGE_LOGS_DIR    = 'storage.logsDir';
 

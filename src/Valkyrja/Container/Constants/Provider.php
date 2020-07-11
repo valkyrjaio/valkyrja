@@ -51,6 +51,8 @@ use Valkyrja\Reflection\Reflectors\Reflector;
 use Valkyrja\Routing\Annotation\Annotators\Annotator as RoutingAnnotator;
 use Valkyrja\Routing\Dispatchers\CacheableRouter;
 use Valkyrja\Session\Sessions\Session;
+use Valkyrja\SMS\Managers\SMS;
+use Valkyrja\SMS\Messages\NexmoMessage;
 use Valkyrja\Support\Exception\Classes\ExceptionHandler;
 use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\Validation\Rules\ORM as ORMValidationRules;
@@ -100,6 +102,8 @@ final class Provider
     public const LOGGER               = LoggerServiceProvider::class;
     public const MAIL                 = Mail::class;
     public const MAIL_MESSAGE         = PHPMailerMessage::class;
+    public const SMS                  = SMS::class;
+    public const SMS_MESSAGE          = NexmoMessage::class;
     public const CRYPT                = Crypt::class;
     public const CRYPT_ENCRYPTER      = SodiumEncrypter::class;
     public const CRYPT_DECRYPTER      = SodiumDecrypter::class;

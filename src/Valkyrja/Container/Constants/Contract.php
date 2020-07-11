@@ -55,6 +55,8 @@ use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator as RoutingAnnotator;
 use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
+use Valkyrja\SMS\Message as SMSMessage;
+use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Exception\ExceptionHandler;
 use Valkyrja\Support\Model\Model;
 use Valkyrja\Validation\Validator;
@@ -103,6 +105,8 @@ final class Contract
     public const LOGGER              = Logger::class;
     public const MAIL                = Mail::class;
     public const MAIL_MESSAGE        = MailMessage::class;
+    public const SMS                 = SMS::class;
+    public const SMS_MESSAGE         = SMSMessage::class;
     public const CRYPT               = Crypt::class;
     public const ENCRYPTER           = Encrypter::class;
     public const DECRYPTER           = Decrypter::class;
