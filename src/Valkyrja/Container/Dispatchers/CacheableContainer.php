@@ -128,7 +128,8 @@ class CacheableContainer extends Container
         foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
             // Set the service
             $this->withContext($context->getClass(), $context->getMethod())->bind(
-                $context->getId(), $context->getService()
+                $context->getId(),
+                $context->getService()
             );
         }
 
@@ -153,7 +154,6 @@ class CacheableContainer extends Container
             $this->register($provider);
 
             /** @var Provider $provider */
-
             if ($provider::deferred()) {
                 unset($config['providers'][$key]);
             }
@@ -169,7 +169,6 @@ class CacheableContainer extends Container
             $this->register($devProvider);
 
             /** @var Provider $devProvider */
-
             if ($devProvider::deferred()) {
                 unset($config['devProviders'][$key]);
             }
