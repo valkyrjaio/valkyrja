@@ -357,7 +357,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function orderBy(string $column, string $type = null): QueryBuilder
     {
-        $this->setOrderBy($column);
+        $this->orderBy[] = $column . ' ' . ((string) $type);
 
         return $this;
     }
@@ -533,19 +533,6 @@ class SqlQueryBuilder implements QueryBuilder
         }
 
         return '(:' . $column . implode(', :' . $column, array_keys($value)) . ')';
-    }
-
-    /**
-     * Set an order by condition.
-     *
-     * @param string      $column
-     * @param string|null $order
-     *
-     * @return void
-     */
-    protected function setOrderBy(string $column, string $order = null): void
-    {
-        $this->orderBy[] = $column . ' ' . ((string) $order);
     }
 
     /**
