@@ -130,9 +130,8 @@ class Valkyrja implements Application
     {
         self::$config = $config;
 
-        // Publish config providers
-        $this->publishProviders();
         $this->publishConfigProviders();
+        $this->publishProviders();
         $this->bootstrapAfterProviders();
 
         return $this;
