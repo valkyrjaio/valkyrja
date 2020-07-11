@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Mailers;
+namespace Valkyrja\Mail\Managers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provides;

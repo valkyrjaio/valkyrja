@@ -41,7 +41,7 @@ use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
 use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Providers\LoggerServiceProvider;
-use Valkyrja\Mail\Mailers\Mail;
+use Valkyrja\Mail\Managers\Mail;
 use Valkyrja\Mail\Messages\PHPMailerMessage;
 use Valkyrja\ORM\Entities\Entity;
 use Valkyrja\ORM\Managers\ORM;
