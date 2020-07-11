@@ -47,7 +47,9 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Session\Session;
+use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;
+use Valkyrja\Validation\Validator;
 use Valkyrja\View\View;
 
 use function func_num_args;
@@ -471,6 +473,26 @@ function redirectTo(
 function session(): Session
 {
     return Valkyrja::app()->container()->getSingleton(Session::class);
+}
+
+/**
+ * Get SMS.
+ *
+ * @return SMS
+ */
+function sms(): SMS
+{
+    return Valkyrja::app()->container()->getSingleton(SMS::class);
+}
+
+/**
+ * Get validator.
+ *
+ * @return Validator
+ */
+function validator(): Validator
+{
+    return Valkyrja::app()->container()->getSingleton(Validator::class);
 }
 
 /**
