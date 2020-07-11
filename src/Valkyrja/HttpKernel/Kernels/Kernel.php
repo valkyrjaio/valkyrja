@@ -196,13 +196,8 @@ class Kernel implements Contract
         // Dispatch the terminable middleware
         $this->terminableMiddleware($request, $response);
 
-        /* @var Route $route */
-        $route = $this->container->getSingleton(Route::class);
-
-        // If the dispatched route has middleware
-        if (null !== $route->getMiddleware()) {
-            // Terminate each middleware
-            $this->terminableMiddleware($request, $response, $route->getMiddleware());
+        if ($this->container->has(Route::class)) {
+            $this->terminateRoute($request, $response);
         }
 
         // Trigger an event for kernel handled
@@ -290,5 +285,25 @@ class Kernel implements Contract
         $logger = $this->container->getSingleton(Logger::class);
 
         $logger->error((string) $exception);
+    }
+
+    /**
+     * Terminate a route's middleware.
+     *
+     * @param Request  $request The request
+     * @param Response $response The response
+     *
+     * @return void
+     */
+    protected function terminateRoute(Request $request, Response $response): void
+    {
+        /* @var Route $route */
+        $route = $this->container->getSingleton(Route::class);
+
+        // If the dispatched route has middleware
+        if (null !== $route->getMiddleware()) {
+            // Terminate each middleware
+            $this->terminableMiddleware($request, $response, $route->getMiddleware());
+        }
     }
 }
