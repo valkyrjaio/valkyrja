@@ -88,15 +88,6 @@ interface Message
     public function addAttachment(string $path, string $name = ''): self;
 
     /**
-     * Set whether this is an html message.
-     *
-     * @param bool $isHTML Whether the body is html
-     *
-     * @return static
-     */
-    public function isHTML(bool $isHTML = true): self;
-
-    /**
      * Set the subject.
      *
      * @param string $subject The subject
@@ -113,6 +104,15 @@ interface Message
      * @return static
      */
     public function setBody(string $body): self;
+
+    /**
+     * Set the html body of the mail.
+     *
+     * @param string $html The html
+     *
+     * @return static
+     */
+    public function setHtml(string $html): self;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.

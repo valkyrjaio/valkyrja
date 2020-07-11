@@ -210,20 +210,6 @@ class PHPMailerMessage implements Contract
     }
 
     /**
-     * Set whether this is an html message.
-     *
-     * @param bool $isHTML Whether the body is html
-     *
-     * @return static
-     */
-    public function isHTML(bool $isHTML = true): self
-    {
-        $this->phpMailer->isHTML($isHTML);
-
-        return $this;
-    }
-
-    /**
      * Set the subject.
      *
      * @param string $subject The subject
@@ -247,6 +233,24 @@ class PHPMailerMessage implements Contract
     public function setBody(string $body): self
     {
         $this->phpMailer->Body = $body;
+
+        $this->phpMailer->isHTML(false);
+
+        return $this;
+    }
+
+    /**
+     * Set the html body of the mail.
+     *
+     * @param string $html The html
+     *
+     * @return static
+     */
+    public function setHtml(string $html): self
+    {
+        $this->phpMailer->Body = $html;
+
+        $this->phpMailer->isHTML(true);
 
         return $this;
     }
