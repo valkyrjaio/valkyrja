@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Constants\Field;
+use Valkyrja\Auth\Constants\UserField;
 
 /**
  * Trait EmailableUserTrait.
@@ -27,7 +27,7 @@ trait EmailableUserTrait
      *
      * @var string
      */
-    protected static string $emailField = Field::EMAIL;
+    protected static string $emailField = UserField::EMAIL;
 
     /**
      * Get the email field.

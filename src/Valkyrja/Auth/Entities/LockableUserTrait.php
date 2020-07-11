@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Constants\Field;
+use Valkyrja\Auth\Constants\UserField;
 
 /**
  * Trait LockableUserTrait.
@@ -34,14 +34,14 @@ trait LockableUserTrait
      *
      * @var string
      */
-    protected static string $loginAttemptsField = Field::LOGIN_ATTEMPTS;
+    protected static string $loginAttemptsField = UserField::LOGIN_ATTEMPTS;
 
     /**
      * The locked field.
      *
      * @var string
      */
-    protected static string $lockedField = Field::LOCKED;
+    protected static string $lockedField = UserField::LOCKED;
 
     /**
      * Get the max number login attempts before locking.

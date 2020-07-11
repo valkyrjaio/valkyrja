@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Constants\Field;
+use Valkyrja\Auth\Constants\UserField;
 
 /**
  * Trait VerifiableUserTrait.
@@ -27,7 +27,7 @@ trait VerifiableUserTrait
      *
      * @var string
      */
-    protected static string $verifiedField = Field::VERIFIED;
+    protected static string $verifiedField = UserField::VERIFIED;
 
     /**
      * Get the verified field.

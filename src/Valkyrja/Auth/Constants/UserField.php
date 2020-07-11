@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Constants;
 
 /**
- * Constant Field.
+ * Constant UserField.
  *
  * @author Melech Mizrachi
  */
-final class Field
+final class UserField
 {
     public const USERNAME       = 'username';
     public const PASSWORD       = 'password';

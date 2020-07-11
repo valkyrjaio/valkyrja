@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Constants\Field;
+use Valkyrja\Auth\Constants\UserField;
 use Valkyrja\Auth\Constants\SessionId;
 
 /**
@@ -42,21 +42,21 @@ trait UserTrait
      *
      * @var string
      */
-    protected static string $usernameField = Field::USERNAME;
+    protected static string $usernameField = UserField::USERNAME;
 
     /**
      * The hashed password field.
      *
      * @var string
      */
-    protected static string $passwordField = Field::PASSWORD;
+    protected static string $passwordField = UserField::PASSWORD;
 
     /**
      * The reset token field.
      *
      * @var string
      */
-    protected static string $resetTokenField = Field::RESET_TOKEN;
+    protected static string $resetTokenField = UserField::RESET_TOKEN;
 
     /**
      * Get the auth repository.
