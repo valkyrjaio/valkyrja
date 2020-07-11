@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Functional;
 
-use TypeError;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Client\Client;
@@ -38,9 +37,6 @@ use Valkyrja\Routing\Router;
 use Valkyrja\Session\Session;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\EnvTest;
-use Valkyrja\Tests\Unit\Container\InvalidContainerClass;
-use Valkyrja\Tests\Unit\Dispatcher\InvalidDispatcherClass;
-use Valkyrja\Tests\Unit\Events\InvalidEventsClass;
 use Valkyrja\Tests\Unit\Support\ProviderClass;
 use Valkyrja\View\View;
 
@@ -399,63 +395,6 @@ class ApplicationTest extends TestCase
         $this->app          = $this->app->withConfig($config);
 
         $this->assertEquals(true, $this->app->debug());
-    }
-
-    /**
-     * Test an invalid dispatcher class.
-     *
-     * @return void
-     */
-    public function testInvalidDispatcher(): void
-    {
-        try {
-            $config = new Config();
-
-            $config->app->dispatcher = InvalidDispatcherClass::class;
-            $this->app               = $this->app->withConfig($config);
-        } catch (TypeError $exception) {
-            $this->assertInstanceOf(TypeError::class, $exception);
-        }
-
-        $this->app = $this->app->withConfig(new Config());
-    }
-
-    /**
-     * Test an invalid container class.
-     *
-     * @return void
-     */
-    public function testInvalidContainer(): void
-    {
-        try {
-            $config = new Config();
-
-            $config->app->container = InvalidContainerClass::class;
-            $this->app              = $this->app->withConfig($config);
-        } catch (TypeError $exception) {
-            $this->assertInstanceOf(TypeError::class, $exception);
-        }
-
-        $this->app = $this->app->withConfig(new Config());
-    }
-
-    /**
-     * Test an invalid container class.
-     *
-     * @return void
-     */
-    public function testInvalidEvents(): void
-    {
-        try {
-            $config = new Config();
-
-            $config->app->events = InvalidEventsClass::class;
-            $this->app           = $this->app->withConfig($config);
-        } catch (TypeError $exception) {
-            $this->assertInstanceOf(TypeError::class, $exception);
-        }
-
-        $this->app = $this->app->withConfig(new Config());
     }
 
     /**

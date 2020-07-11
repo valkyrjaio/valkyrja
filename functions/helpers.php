@@ -27,6 +27,7 @@ use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Console\Output;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
+use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Filesystem\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
@@ -189,6 +190,16 @@ function container(): Container
 }
 
 /**
+ * Get dispatcher.
+ *
+ * @return Dispatcher
+ */
+function dispatcher(): Dispatcher
+{
+    return Valkyrja::app()->container()->getSingleton(Dispatcher::class);
+}
+
+/**
  * Get an environment variable.
  *
  * @param string $key     [optional] The variable to get
@@ -211,7 +222,7 @@ function env(string $key = null, $default = null)
  */
 function events(): Events
 {
-    return Valkyrja::app()->events();
+    return Valkyrja::app()->container()->getSingleton(Events::class);
 }
 
 /**

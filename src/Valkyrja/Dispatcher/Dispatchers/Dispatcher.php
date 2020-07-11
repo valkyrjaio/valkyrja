@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
@@ -22,7 +21,6 @@ use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
-use Valkyrja\Support\Provider\Traits\Provides;
 
 /**
  * Class Dispatcher.
@@ -33,7 +31,6 @@ class Dispatcher implements Contract
 {
     use CallableDispatcher;
     use ClassDispatcher;
-    use Provides;
 
     /**
      * Dispatcher constructor.
@@ -43,32 +40,6 @@ class Dispatcher implements Contract
     public function __construct(Container $container)
     {
         $this->container = $container;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $dispatcher = new static($app->container());
-
-        $app->setDispatcher($dispatcher);
     }
 
     /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Support;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Application\Application;
+use Valkyrja\Config\Config\Config;
 
 /**
  * Test the ServiceProvider support class.
@@ -29,9 +29,9 @@ class ServiceProviderTest extends TestCase
      */
     public function testServiceProvider(): void
     {
-        /** @var Application $app */
-        $app = $this->createMock(Application::class);
+        /** @var Config $config */
+        $config = $this->createMock(Config::class);
 
-        $this->assertEquals(null, ProviderClass::publish($app) ?? null);
+        $this->assertEquals(null, ProviderClass::publish($config) ?? null);
     }
 }

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Tests\Unit\Support;
 
-use Valkyrja\Application\Application;
-use Valkyrja\Support\Provider\Provider;
+use Valkyrja\Config\Config\Config;
+use Valkyrja\Config\Support\Provider;
 
 /**
  * Class to use to test the provider.
@@ -35,11 +35,11 @@ class ProviderClass extends Provider
     /**
      * Publish the service provider.
      *
-     * @param Application $app The application
+     * @param Config $config The config
      *
      * @return void
      */
-    public static function publish(Application $app): void
+    public static function publish(Config $config): void
     {
     }
 }

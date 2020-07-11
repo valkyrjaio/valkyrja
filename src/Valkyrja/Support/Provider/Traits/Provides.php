@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Provider\Traits;
 
-use Valkyrja\Application\Application;
-
 /**
  * Trait Provides.
  *
@@ -62,9 +60,9 @@ trait Provides
     /**
      * Publish the provider.
      *
-     * @param Application $app The application
+     * @param object $providerAware The providers aware class
      *
      * @return void
      */
-    abstract public static function publish(Application $app): void;
+    abstract public static function publish(object $providerAware): void;
 }

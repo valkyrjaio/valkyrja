@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Dispatchers;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -24,7 +23,6 @@ use Valkyrja\Event\Event;
 use Valkyrja\Event\Events as Contract;
 use Valkyrja\Event\Listener;
 use Valkyrja\Event\Models\Listener as ListenerModel;
-use Valkyrja\Support\Provider\Traits\Provides;
 
 use function get_class;
 use function is_array;
@@ -36,8 +34,6 @@ use function is_array;
  */
 class Events implements Contract
 {
-    use Provides;
-
     /**
      * The event listeners.
      *
@@ -69,32 +65,6 @@ class Events implements Contract
     {
         $this->dispatcher = $dispatcher;
         $this->config     = $config;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $events = new static($app->dispatcher(), (array) $app->config()['event']);
-
-        $app->setEvents($events);
     }
 
     /**

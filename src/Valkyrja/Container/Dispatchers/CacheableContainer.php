@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Dispatchers;
 
-use Valkyrja\Application\Application;
 use Valkyrja\Container\Annotation\Annotator;
 use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
-use Valkyrja\Container\Container as Contract;
 
 /**
  * Class CacheableContainer.
@@ -32,26 +30,6 @@ class CacheableContainer extends Container
     use Cacheable;
 
     /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
-     *
-     * @return void
-     */
-    public static function publish(Application $app): void
-    {
-        $container = new static((array) $app->config()['container'], $app->debug());
-
-        $app->setContainer($container);
-
-        $container->setSingleton(Application::class, $app);
-        $container->setSingleton('env', $app->env());
-        $container->setSingleton('config', $app->config());
-        $container->setSingleton(Contract::class, $container);
-        $container->setup();
-    }
-
-    /**
      * Get a cacheable representation of the service container.
      *
      * @return Cache|object
@@ -60,11 +38,11 @@ class CacheableContainer extends Container
     {
         $this->setup(true, false);
 
-        $config                  = new Cache();
-        $config->aliases         = self::$aliases;
-        $config->provided        = self::$provided;
-        $config->services        = self::$services;
-        $config->singletons      = self::$singletons;
+        $config             = new Cache();
+        $config->aliases    = self::$aliases;
+        $config->provided   = self::$provided;
+        $config->services   = self::$services;
+        $config->singletons = self::$singletons;
 
         return $config;
     }
@@ -99,10 +77,10 @@ class CacheableContainer extends Container
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$aliases         = $cache['aliases'];
-        self::$provided        = $cache['provided'];
-        self::$services        = $cache['services'];
-        self::$singletons      = $cache['singletons'];
+        self::$aliases    = $cache['aliases'];
+        self::$provided   = $cache['provided'];
+        self::$services   = $cache['services'];
+        self::$singletons = $cache['singletons'];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -117,11 +95,11 @@ class CacheableContainer extends Container
      */
     protected function setupNotCached($config): void
     {
-        self::$aliases         = [];
-        self::$registered      = [];
-        self::$provided        = [];
-        self::$services        = [];
-        self::$singletons      = [];
+        self::$aliases    = [];
+        self::$registered = [];
+        self::$provided   = [];
+        self::$services   = [];
+        self::$singletons = [];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -149,7 +127,9 @@ class CacheableContainer extends Container
         /** @var Context $context */
         foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
             // Set the service
-            $this->withContext($context->getClass(), $context->getMethod())->bind($context->getId(), $context->getService());
+            $this->withContext($context->getClass(), $context->getMethod())->bind(
+                $context->getId(), $context->getService()
+            );
         }
 
         // Get all the annotated services from the list of classes and iterate through the services

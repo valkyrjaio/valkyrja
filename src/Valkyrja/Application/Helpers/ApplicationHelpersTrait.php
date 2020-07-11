@@ -15,8 +15,6 @@ namespace Valkyrja\Application\Helpers;
 
 use RuntimeException;
 use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Event;
 
 /**
  * Trait ApplicationHelpersTrait.
@@ -77,16 +75,12 @@ trait ApplicationHelpersTrait
             return self::$config;
         }
 
+        if ($serviceId === 'env') {
+            return self::$env;
+        }
+
         if ($serviceId === Container::class) {
             return self::$container;
-        }
-
-        if ($serviceId === Dispatcher::class) {
-            return self::$dispatcher;
-        }
-
-        if ($serviceId === Event::class) {
-            return self::$events;
         }
 
         if (self::$container->isSingleton($serviceId)) {

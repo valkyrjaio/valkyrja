@@ -26,6 +26,8 @@ final class ConfigValue
     public const SERVICES                    = [];
     public const CONTEXT_SERVICES            = [];
     public const PROVIDERS                   = [
+        Provider::DISPATCHER,
+        Provider::EVENT,
         Provider::API,
         Provider::ANNOTATOR,
         Provider::ANNOTATION_PARSER,

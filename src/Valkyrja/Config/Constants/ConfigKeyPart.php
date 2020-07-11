@@ -31,6 +31,7 @@ final class ConfigKeyPart
     public const CONSOLE     = 'console';
     public const CONTAINER   = 'container';
     public const CRYPT       = 'crypt';
+    public const DISPATCHER  = 'dispatcher';
     public const EVENTS      = 'events';
     public const FILESYSTEM  = 'filesystem';
     public const LOG         = 'log';
@@ -53,7 +54,6 @@ final class ConfigKeyPart
     public const KEY                         = 'key';
     public const KEY_PATH                    = 'keyPath';
     public const HTTP_EXCEPTION              = 'httpException';
-    public const DISPATCHER                  = 'dispatcher';
     public const EXCEPTION_HANDLER           = 'exceptionHandler';
     public const PATTERNS                    = 'patterns';
     public const ENABLED                     = 'enabled';

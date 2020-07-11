@@ -15,6 +15,7 @@ namespace Valkyrja\Application\Applications;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
+use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Constants\ConfigKeyPart;
@@ -26,7 +27,6 @@ use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Exception\ExceptionHandler;
-use Valkyrja\Support\Provider\Provider;
 
 use function constant;
 use function date_default_timezone_set;
@@ -74,20 +74,6 @@ class Valkyrja implements Application
      * @var Container
      */
     protected static Container $container;
-
-    /**
-     * Get the instance of the dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected static Dispatcher $dispatcher;
-
-    /**
-     * Get the instance of the events.
-     *
-     * @var Events
-     */
-    protected static Events $events;
 
     /**
      * Whether the application was setup.
@@ -145,8 +131,9 @@ class Valkyrja implements Application
         self::$config = $config;
 
         // Publish config providers
+        $this->publishProviders();
         $this->publishConfigProviders();
-        $this->bootstrapAfterConfig();
+        $this->bootstrapAfterProviders();
 
         return $this;
     }
@@ -296,24 +283,7 @@ class Valkyrja implements Application
      */
     public function dispatcher(): Dispatcher
     {
-        return self::$dispatcher;
-    }
-
-    /**
-     * Set the dispatcher instance.
-     *
-     * @param Dispatcher $dispatcher The dispatcher instance
-     *
-     * @return static
-     */
-    public function setDispatcher(Dispatcher $dispatcher): self
-    {
-        self::$dispatcher = $dispatcher;
-
-        // Set the dispatcher instance in the container
-        self::$container->setSingleton(Dispatcher::class, $dispatcher);
-
-        return $this;
+        return self::$container->getSingleton(Dispatcher::class);
     }
 
     /**
@@ -323,24 +293,7 @@ class Valkyrja implements Application
      */
     public function events(): Events
     {
-        return self::$events;
-    }
-
-    /**
-     * Set the events instance.
-     *
-     * @param Events $events The events instance
-     *
-     * @return static
-     */
-    public function setEvents(Events $events): self
-    {
-        self::$events = $events;
-
-        // Set the events instance in the container
-        self::$container->setSingleton(Events::class, $events);
-
-        return $this;
+        return self::$container->getSingleton(Events::class);
     }
 
     /**
@@ -439,7 +392,22 @@ class Valkyrja implements Application
     {
         self::$config = require $cacheFilePath;
 
-        $this->bootstrapAfterConfig();
+        $this->publishProviders();
+        $this->bootstrapAfterProviders();
+    }
+
+    /**
+     * Publish app providers.
+     *
+     * @return void
+     */
+    protected function publishProviders(): void
+    {
+        foreach (self::$config['app']['providers'] as $provider) {
+            /** @var Provider $provider */
+            // App providers are NOT deferred
+            $provider::publish($this);
+        }
     }
 
     /**
@@ -449,9 +417,10 @@ class Valkyrja implements Application
      */
     protected function publishConfigProviders(): void
     {
-        foreach (self::$config->providers as $provider) {
-            // Config providers are NOT deferred and will not follow the deferred value
-            $provider::publish($this);
+        foreach (self::$config['providers'] as $provider) {
+            /** @var \Valkyrja\Config\Support\Provider $provider */
+            // Config providers are NOT deferred
+            $provider::publish(self::$config);
         }
     }
 
@@ -460,12 +429,10 @@ class Valkyrja implements Application
      *
      * @return void
      */
-    protected function bootstrapAfterConfig(): void
+    protected function bootstrapAfterProviders(): void
     {
         // Bootstrap debug capabilities
         $this->bootstrapExceptionHandler();
-        // Bootstrap core functionality
-        $this->bootstrapCore();
         // Bootstrap the timezone
         $this->bootstrapTimezone();
     }
@@ -485,31 +452,6 @@ class Valkyrja implements Application
             // Enable exception handling
             $exceptionHandler::enable(E_ALL, true);
         }
-    }
-
-    /**
-     * Bootstrap core functionality.
-     *
-     * @return void
-     */
-    protected function bootstrapCore(): void
-    {
-        // Get the container provider from config
-        /** @var Provider $container */
-        $container = self::$config['app']['container'];
-        // Get the dispatcher provider from config
-        /** @var Provider $dispatcher */
-        $dispatcher = self::$config['app']['dispatcher'];
-        // Get the events provider from config
-        /** @var Provider $events */
-        $events = self::$config['app']['events'];
-
-        // Publish the container provider
-        $container::publish($this);
-        // Publish the dispatcher provider
-        $dispatcher::publish($this);
-        // Publish the events provider
-        $events::publish($this);
     }
 
     /**

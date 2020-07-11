@@ -36,10 +36,8 @@ final class EnvKey
     public const APP_TIMEZONE          = 'APP_TIMEZONE';
     public const APP_VERSION           = 'APP_VERSION';
     public const APP_KEY               = 'APP_KEY';
-    public const APP_CONTAINER         = 'APP_CONTAINER';
-    public const APP_DISPATCHER        = 'APP_DISPATCHER';
-    public const APP_EVENTS            = 'APP_EVENTS';
     public const APP_EXCEPTION_HANDLER = 'APP_EXCEPTION_HANDLER';
+    public const APP_PROVIDERS         = 'APP_PROVIDERS';
 
     public const ANNOTATIONS_ENABLED   = 'ANNOTATIONS_ENABLED';
     public const ANNOTATIONS_CACHE_DIR = 'ANNOTATIONS_CACHE_DIR';

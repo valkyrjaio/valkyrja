@@ -16,6 +16,7 @@ namespace Valkyrja\Application\Constants;
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Container\Constants\Provider;
+use Valkyrja\Container\Providers\AppProvider as ContainerAppProvider;
 
 /**
  * Constant ConfigValue.
@@ -30,10 +31,10 @@ final class ConfigValue
     public const TIMEZONE          = 'UTC';
     public const VERSION           = Application::VERSION;
     public const KEY               = 'some_secret_app_key';
-    public const CONTAINER         = Provider::CONTAINER;
-    public const DISPATCHER        = Provider::DISPATCHER;
-    public const EVENTS            = Provider::EVENTS;
     public const EXCEPTION_HANDLER = Provider::EXCEPTION_HANDLER;
+    public const PROVIDERS         = [
+        ContainerAppProvider::class,
+    ];
 
     public static array $defaults = [
         CKP::ENV               => self::ENV,
@@ -42,9 +43,7 @@ final class ConfigValue
         CKP::TIMEZONE          => self::TIMEZONE,
         CKP::VERSION           => self::VERSION,
         CKP::KEY               => self::KEY,
-        CKP::CONTAINER         => self::CONTAINER,
-        CKP::DISPATCHER        => self::DISPATCHER,
-        CKP::EVENTS            => self::EVENTS,
         CKP::EXCEPTION_HANDLER => self::EXCEPTION_HANDLER,
+        CKP::PROVIDERS         => self::PROVIDERS,
     ];
 }

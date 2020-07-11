@@ -20,7 +20,6 @@ namespace Valkyrja\Config\Constants;
  */
 final class ConfigKey
 {
-    public const CONFIG_PROVIDERS       = 'providers';
     public const CONFIG_FILE_PATH       = 'filePath';
     public const CONFIG_CACHE_FILE_PATH = 'cacheFilePath';
     public const CONFIG_USE_CACHE_FILE  = 'useCache';
@@ -40,10 +39,8 @@ final class ConfigKey
     public const APP_VERSION              = 'app.version';
     public const APP_KEY                  = 'app.key';
     public const APP_HTTP_EXCEPTION_CLASS = 'app.httpExceptionClass';
-    public const APP_CONTAINER            = 'app.container';
-    public const APP_DISPATCHER           = 'app.dispatcher';
-    public const APP_EVENTS               = 'app.events';
     public const APP_EXCEPTION_HANDLER    = 'app.exceptionHandler';
+    public const APP_PROVIDERS            = 'app.providers';
 
     public const ANNOTATIONS_ENABLED   = 'annotation.enabled';
     public const ANNOTATIONS_CACHE_DIR = 'annotation.cacheDir';

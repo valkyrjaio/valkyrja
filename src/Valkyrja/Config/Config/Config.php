@@ -21,6 +21,7 @@ use Valkyrja\Cache\Config\Config as Cache;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
+use Valkyrja\Config\Support\Provider;
 use Valkyrja\Console\Config\Config as Console;
 use Valkyrja\Container\Config\Config as Container;
 use Valkyrja\Crypt\Config\Config as Crypt;
@@ -33,7 +34,6 @@ use Valkyrja\Path\Config\Config as Path;
 use Valkyrja\Routing\Config\Config as Routing;
 use Valkyrja\Session\Config\Config as Session;
 use Valkyrja\SMS\Config\Config as SMS;
-use Valkyrja\Support\Provider\Provider;
 use Valkyrja\Validation\Config\Config as Validation;
 use Valkyrja\View\Config\Config as View;
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Config;
 
+use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
@@ -36,10 +37,8 @@ class Config extends Model
         CKP::TIMEZONE,
         CKP::VERSION,
         CKP::KEY,
-        CKP::CONTAINER,
-        CKP::DISPATCHER,
-        CKP::EVENTS,
         CKP::EXCEPTION_HANDLER,
+        CKP::PROVIDERS,
     ];
 
     /**
@@ -54,10 +53,8 @@ class Config extends Model
         CKP::TIMEZONE          => EnvKey::APP_TIMEZONE,
         CKP::VERSION           => EnvKey::APP_VERSION,
         CKP::KEY               => EnvKey::APP_KEY,
-        CKP::CONTAINER         => EnvKey::APP_CONTAINER,
-        CKP::DISPATCHER        => EnvKey::APP_DISPATCHER,
-        CKP::EVENTS            => EnvKey::APP_EVENTS,
         CKP::EXCEPTION_HANDLER => EnvKey::APP_EXCEPTION_HANDLER,
+        CKP::PROVIDERS         => EnvKey::APP_PROVIDERS,
     ];
 
     /**
@@ -103,30 +100,17 @@ class Config extends Model
     public string $key;
 
     /**
-     * The container provider.
-     *
-     * @var string
-     */
-    public string $container;
-
-    /**
-     * The dispatcher provider.
-     *
-     * @var string
-     */
-    public string $dispatcher;
-
-    /**
-     * The events manager provider.
-     *
-     * @var string
-     */
-    public string $events;
-
-    /**
      * The exception handler class.
      *
      * @var string
      */
     public string $exceptionHandler;
+
+    /**
+     * Array of config providers.
+     *  NOTE: Provider::deferred() is disregarded.
+     *
+     * @var Provider[]|string[]
+     */
+    public array $providers;
 }
