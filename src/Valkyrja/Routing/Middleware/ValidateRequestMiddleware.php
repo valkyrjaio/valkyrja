@@ -39,7 +39,7 @@ abstract class ValidateRequestMiddleware extends Middleware
         $container = self::$container;
         /** @var Validator $validator */
         $validator = $container->getSingleton(Validator::class);
-        $validator->setRules(static::rules($request));
+        $validator->setRules(static::getRules($request));
 
         if (! $validator->validate()) {
             /** @var ResponseFactory $responseFactory */
@@ -52,7 +52,7 @@ abstract class ValidateRequestMiddleware extends Middleware
     }
 
     /**
-     * Get the rules.
+     * Get the validation rules.
      *
      * <code>
      *      $rules = [
@@ -84,5 +84,5 @@ abstract class ValidateRequestMiddleware extends Middleware
      *
      * @return array
      */
-    abstract protected static function rules(Request $request): array;
+    abstract protected static function getRules(Request $request): array;
 }

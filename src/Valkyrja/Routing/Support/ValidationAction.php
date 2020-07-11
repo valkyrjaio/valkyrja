@@ -11,29 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Requests;
+namespace Valkyrja\Routing\Support;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
-use Valkyrja\Http\Request as RequestContract;
-use Valkyrja\Http\ValidateRequest as Contract;
+use Valkyrja\Http\Request;
 use Valkyrja\Validation\Validator;
 
 /**
- * Abstract Class ValidateRequest.
+ * Abstract Class ValidationAction.
  *
  * @author Melech Mizrachi
  */
-abstract class ValidateRequest implements Contract
+abstract class ValidationAction
 {
-    use Provides;
-
     /**
      * The request.
      *
-     * @var RequestContract
+     * @var Request
      */
-    protected RequestContract $request;
+    protected Request $request;
 
     /**
      * The validator.
@@ -43,81 +38,31 @@ abstract class ValidateRequest implements Contract
     protected Validator $validator;
 
     /**
-     * ValidateRequest constructor.
+     * Action constructor.
      *
-     * @param RequestContract $request
-     * @param Validator       $validator
+     * @param Request   $request   The request
+     * @param Validator $validator The validator
      */
-    public function __construct(RequestContract $request, Validator $validator)
+    public function __construct(Request $request, Validator $validator)
     {
         $this->request   = $request;
         $this->validator = $validator;
     }
 
     /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(RequestContract::class),
-                $container->getSingleton(Validator::class)
-            )
-        );
-    }
-
-    /**
-     * Validate the request.
+     * Validate against a set of rules.
      *
      * @return bool
      */
-    public function validate(): bool
+    protected function validate(): bool
     {
-        $this->validator->setRules(static::rules());
+        $this->validator->setRules($this->getRules());
 
         return $this->validator->validate();
     }
 
     /**
-     * Get the request.
-     *
-     * @return RequestContract
-     */
-    public function getRequest(): RequestContract
-    {
-        return $this->request;
-    }
-
-    /**
-     * Get the validator.
-     *
-     * @return Validator
-     */
-    public function getValidator(): Validator
-    {
-        return $this->validator;
-    }
-
-    /**
-     * Get the rules.
+     * Get the validation rules.
      *
      * <code>
      *      $rules = [
@@ -147,5 +92,5 @@ abstract class ValidateRequest implements Contract
      *
      * @return array
      */
-    abstract protected function rules(): array;
+    abstract protected function getRules(): array;
 }
