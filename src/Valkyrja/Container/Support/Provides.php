@@ -35,7 +35,27 @@ trait Provides
     /**
      * The items provided by this provider.
      *
-     * @return array
+     * <code>
+     *      [
+     *          Provided::class => 'publish',
+     *          Provided::class => 'publishProvidedClass',
+     *      ]
+     *
+     * ...
+     *      public static function publishProvidedClass(Container $container): void
+     * </code>
+     *
+     * @return string[]
+     */
+    public static function publishers(): array
+    {
+        return [];
+    }
+
+    /**
+     * The items provided by this provider.
+     *
+     * @return string[]
      */
     abstract public static function provides(): array;
 

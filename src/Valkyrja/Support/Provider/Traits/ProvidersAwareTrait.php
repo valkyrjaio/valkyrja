@@ -28,11 +28,25 @@ trait ProvidersAwareTrait
     protected static array $provided = [];
 
     /**
+     * The custom publish handler for items provided by providers that are deferred.
+     *
+     * @var string[]
+     */
+    protected static array $providedMethod = [];
+
+    /**
      * The registered providers.
      *
      * @var array
      */
     protected static array $registered = [];
+
+    /**
+     * The default publish method.
+     *
+     * @var string
+     */
+    protected static string $defaultPublishMethod = 'publish';
 
     /**
      * Register a provider.
@@ -55,18 +69,16 @@ trait ProvidersAwareTrait
 
         // If the service provider is deferred
         // and its defined what services it provides
-        if (! $force && $provider::deferred() && $provider::provides()) {
-            // Add the services to the service providers list
-            foreach ($provider::provides() as $provided) {
-                self::$provided[$provided] = $provider;
-            }
+        if (! $force && $provider::deferred() && $provides = $provider::provides()) {
+            $this->registerDeferred($provider, ...$provides);
 
             return;
         }
 
         // Publish the service provider
-        $provider::publish($this);
+        $provider::{static::$defaultPublishMethod}($this);
 
+        // The provider is now registered
         self::$registered[$provider] = true;
     }
 
@@ -103,7 +115,38 @@ trait ProvidersAwareTrait
      */
     public function initializeProvided(string $itemId): void
     {
-        // Register the provider
-        $this->register(self::$provided[$itemId], true);
+        // The provider for this provided item
+        $provider = self::$provided[$itemId];
+        // The publish method for this provided item in the provider
+        $publishMethod = self::$providedMethod[$itemId] ?? static::$defaultPublishMethod;
+
+        // Publish the service provider
+        $provider::$publishMethod($this);
+    }
+
+    /**
+     * Register a deferred provider.
+     *
+     * @param string   $provider The provider
+     * @param string[] $provides The provided items
+     *
+     * @return void
+     */
+    protected function registerDeferred(string $provider, string ...$provides): void
+    {
+        /** @var Provides $provider */
+        $publishMethods = $provider::publishers();
+
+        // Add the services to the service providers list
+        foreach ($provides as $provided) {
+            self::$provided[$provided] = $provider;
+
+            if (isset($publishMethods[$provided])) {
+                self::$providedMethod[$provided] = $publishMethods[$provided];
+            }
+        }
+
+        // The provider is now registered
+        self::$registered[$provider] = true;
     }
 }

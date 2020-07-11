@@ -34,6 +34,26 @@ trait Provides
     }
 
     /**
+     * The items provided by this provider.
+     *
+     * <code>
+     *      [
+     *          Provided::class => 'publish',
+     *          Provided::class => 'publishProvidedClass',
+     *      ]
+     *
+     * ...
+     *      public static function publishProvidedClass(Console $console): void
+     * </code>
+     *
+     * @return string[]
+     */
+    public static function publishers(): array
+    {
+        return [];
+    }
+
+    /**
      * Get the provided command.
      *
      * @return array
