@@ -139,11 +139,8 @@ trait ProvidersAwareTrait
 
         // Add the services to the service providers list
         foreach ($provides as $provided) {
-            self::$provided[$provided] = $provider;
-
-            if (isset($publishMethods[$provided])) {
-                self::$providedMethod[$provided] = $publishMethods[$provided];
-            }
+            self::$provided[$provided]       = $provider;
+            self::$providedMethod[$provided] = $publishMethods[$provided] ?? static::$defaultPublishMethod;
         }
 
         // The provider is now registered
