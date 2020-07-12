@@ -15,8 +15,7 @@ namespace Valkyrja\Dispatcher\Providers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Dispatcher\Dispatcher as Contract;
-use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
+use Valkyrja\Dispatcher\Dispatcher;
 
 /**
  * Class ServiceProvider.
@@ -26,23 +25,15 @@ use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 class ServiceProvider extends Provider
 {
     /**
-     * Whether this provider is deferred.
-     *
-     * @return bool
-     */
-    public static function deferred(): bool
-    {
-        return false;
-    }
-
-    /**
      * The items provided by this provider.
      *
      * @return string[]
      */
     public static function provides(): array
     {
-        return [];
+        return [
+            Dispatcher::class,
+        ];
     }
 
     /**
@@ -55,8 +46,10 @@ class ServiceProvider extends Provider
     public static function publish(Container $container): void
     {
         $container->setSingleton(
-            Contract::class,
-            new Dispatcher($container)
+            Dispatcher::class,
+            new \Valkyrja\Dispatcher\Dispatchers\Dispatcher(
+                $container
+            )
         );
     }
 }
