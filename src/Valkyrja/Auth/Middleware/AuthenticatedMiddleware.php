@@ -18,6 +18,7 @@ use Valkyrja\Auth\Constants\ConfigValue;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Routing\Url;
 
 /**
  * Class AuthenticatedMiddleware.
@@ -70,8 +71,11 @@ class AuthenticatedMiddleware extends AuthMiddleware
             return static::getResponseFactory()->createJsonResponse();
         }
 
+        /** @var Url $url */
+        $url = self::$container->getSingleton(Url::class);
+
         return static::getResponseFactory()->createRedirectResponse(
-            self::$router->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE))
+            $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE))
         );
     }
 }

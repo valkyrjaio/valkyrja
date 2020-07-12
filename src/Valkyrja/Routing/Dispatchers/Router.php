@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Dispatchers;
 
 use InvalidArgumentException;
-use RuntimeException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
@@ -24,7 +23,6 @@ use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Path\PathGenerator;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
@@ -38,10 +36,6 @@ use Valkyrja\View\View;
 
 use function is_array;
 use function rawurldecode;
-use function str_replace;
-use function strlen;
-use function strpos;
-use function substr;
 
 /**
  * Class Router.
@@ -239,45 +233,6 @@ class Router implements Contract
     }
 
     /**
-     * Get a route url by name.
-     *
-     * @param string $name     The name of the route to get
-     * @param array  $data     [optional] The route data if dynamic
-     * @param bool   $absolute [optional] Whether this url should be absolute
-     *
-     * @throws InvalidRouteName
-     *
-     * @return string
-     */
-    public function getUrl(string $name, array $data = null, bool $absolute = null): string
-    {
-        // Get the matching route
-        $route = $this->getRoute($name);
-        // Set the host to use if this is an absolute url
-        // or the config is set to always use absolute urls
-        // or the route is secure (needs https:// appended)
-        $host = $absolute || $route->isSecure() || $this->config['useAbsoluteUrls']
-            ? $this->routeHost($route)
-            : '';
-        /** @var PathGenerator $pathGenerator */
-        $pathGenerator = $this->container->getSingleton(PathGenerator::class);
-        // Get the path from the generator
-        $path = $route->getSegments()
-            ? $pathGenerator->parse(
-                $route->getSegments(),
-                $data,
-                $route->getParams()
-            )
-            : $route->getPath();
-
-        if (null === $path) {
-            throw new RuntimeException('Invalid path for route with name: ' . $name);
-        }
-
-        return $host . $this->validateRouteUrl($path);
-    }
-
-    /**
      * Get a route from a request.
      *
      * @param Request $request The request
@@ -292,7 +247,7 @@ class Router implements Contract
         // Decode the request uri
         $requestUri = rawurldecode($request->getUri()->getPath());
         // Try to match the route
-        $route = $this->getRouteByPath($requestUri, $request->getMethod());
+        $route = self::$collection->matcher()->match($requestUri, $request->getMethod() ?? RequestMethod::GET);
 
         // If no route is found
         if (null === $route) {
@@ -301,89 +256,6 @@ class Router implements Contract
         }
 
         return $route;
-    }
-
-    /**
-     * Get a route by path.
-     *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    public function getRouteByPath(string $path, string $method = null): ?Route
-    {
-        return self::$collection->matcher()->match($path, $method ?? RequestMethod::GET);
-    }
-
-    /**
-     * Determine if a uri is internal.
-     *
-     * @param string $uri The uri to check
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return bool
-     */
-    public function isInternalUri(string $uri): bool
-    {
-        // Replace the scheme if it exists
-        $uri = str_replace(['http://', 'https://'], '', $uri);
-
-        // Get the host of the uri
-        $host = (string) substr($uri, 0, strpos($uri, '/'));
-
-        // If the host does not match the current request uri's host
-        if ($host && $host !== $this->request->getUri()->getHost()) {
-            // Return false immediately
-            return false;
-        }
-
-        // Get only the path (full string from the first slash to the end of the path)
-        $uri = (string) substr($uri, strpos($uri, '/'), strlen($uri));
-
-        // Try to match the route
-        $route = $this->getRouteByPath($uri);
-
-        return $route instanceof Route;
-    }
-
-    /**
-     * Get a route's host.
-     *
-     * @param Route $route The route
-     *
-     * @return string
-     */
-    protected function routeHost(Route $route): string
-    {
-        return 'http'
-            . ($route->isSecure() ? 's' : '')
-            . '://'
-            . $this->request->getUri()->getHostPort();
-    }
-
-    /**
-     * Validate the route url.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    protected function validateRouteUrl(string $path): string
-    {
-        // If the last character is not a slash and the config is set to
-        // ensure trailing slash
-        if ($path[-1] !== '/' && $this->config['useTrailingSlash']) {
-            // add a trailing slash
-            $path .= '/';
-        }
-
-        return $path;
     }
 
     /**

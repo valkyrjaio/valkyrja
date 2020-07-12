@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
+use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+
+use Valkyrja\Routing\Url;
 
 use function time;
 
@@ -69,8 +72,11 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
             return static::getResponseFactory()->createJsonResponse([], StatusCode::LOCKED);
         }
 
+        /** @var Url $url */
+        $url = self::$container->getSingleton(Url::class);
+
         return static::getResponseFactory()->createRedirectResponse(
-            self::$router->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
+            $url->getUrl((string) static::getConfig('passwordConfirmRoute', RouteName::PASSWORD_CONFIRM))
         );
     }
 }

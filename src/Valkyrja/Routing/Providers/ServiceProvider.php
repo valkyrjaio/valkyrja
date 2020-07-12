@@ -21,6 +21,7 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator;
@@ -28,6 +29,7 @@ use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Matchers\Matcher;
 use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Url;
 
 /**
  * Class ServiceProvider.
@@ -47,6 +49,7 @@ class ServiceProvider extends Provider
             Annotator::class => 'publishAnnotator',
             Router::class    => 'publishRouter',
             Collector::class => 'publishCollector',
+            Url::class       => 'publishUrl',
         ];
     }
 
@@ -61,6 +64,7 @@ class ServiceProvider extends Provider
             Annotator::class,
             Router::class,
             Collector::class,
+            Url::class,
         ];
     }
 
@@ -142,6 +146,28 @@ class ServiceProvider extends Provider
             new \Valkyrja\Routing\Collectors\Collector(
                 $container->getSingleton(PathParser::class),
                 $container->getSingleton(Router::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the url service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishUrl(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Url::class,
+            new \Valkyrja\Routing\Urls\Url(
+                $container->getSingleton(PathGenerator::class),
+                $container->getSingleton(Request::class),
+                $container->getSingleton(Router::class),
+                (array) $config['routing']
             )
         );
     }

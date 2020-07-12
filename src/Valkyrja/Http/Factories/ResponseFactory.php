@@ -19,7 +19,7 @@ use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as Contract;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Url;
 use Valkyrja\View\View;
 
 use function func_num_args;
@@ -151,11 +151,11 @@ class ResponseFactory implements Contract
         int $statusCode = null,
         array $headers = null
     ): RedirectResponse {
-        /** @var Router $router */
-        $router = $this->container->getSingleton(Router::class);
+        /** @var Url $url */
+        $url = $this->container->getSingleton(Url::class);
 
         // Get the uri from the router using the route and parameters
-        $uri = $router->getUrl($route, $parameters);
+        $uri = $url->getUrl($route, $parameters);
 
         return $this->createRedirectResponse($uri, $statusCode, $headers);
     }

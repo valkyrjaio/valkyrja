@@ -52,6 +52,7 @@ use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
+use Valkyrja\Routing\Url;
 use Valkyrja\Session\Session;
 use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\SMS\SMS;
@@ -425,6 +426,16 @@ function collector(): Collector
 }
 
 /**
+ * Get routing url service.
+ *
+ * @return Url
+ */
+function url(): Url
+{
+    return Valkyrja::app()->container()->getSingleton(Url::class);
+}
+
+/**
  * Get a route by name.
  *
  * @param string $name The name of the route to get
@@ -447,7 +458,7 @@ function route(string $name): Route
  */
 function routeUrl(string $name, array $data = null, bool $absolute = null): string
 {
-    return router()->getUrl($name, $data, $absolute);
+    return url()->getUrl($name, $data, $absolute);
 }
 
 /**

@@ -86,17 +86,6 @@ interface Router extends MiddlewareAware
     public function hasRoute(string $name): bool;
 
     /**
-     * Get a route url by name.
-     *
-     * @param string $name     The name of the route to get
-     * @param array  $data     [optional] The route data if dynamic
-     * @param bool   $absolute [optional] Whether this url should be absolute
-     *
-     * @return string
-     */
-    public function getUrl(string $name, array $data = null, bool $absolute = null): string;
-
-    /**
      * Get a route from a request.
      *
      * @param Request $request The request
@@ -104,27 +93,6 @@ interface Router extends MiddlewareAware
      * @return Route
      */
     public function getRouteFromRequest(Request $request): Route;
-
-    /**
-     * Get a route by path.
-     *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @return Route|null
-     *      The route if found or null when no static route is
-     *      found for the path and method combination specified
-     */
-    public function getRouteByPath(string $path, string $method = null): ?Route;
-
-    /**
-     * Determine if a uri is internal.
-     *
-     * @param string $uri The uri to check
-     *
-     * @return bool
-     */
-    public function isInternalUri(string $uri): bool;
 
     /**
      * Dispatch the route and find a match.
