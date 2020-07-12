@@ -248,13 +248,11 @@ trait CollectionHelpers
      */
     protected function ensureMethodRoutes(array $methodsArray): array
     {
-        $methods = [];
-
         foreach ($methodsArray as $key => $method) {
             $methodsArray[$key] = $this->ensureRoutes($method);
         }
 
-        return $methods;
+        return $methodsArray;
     }
 
     /**
