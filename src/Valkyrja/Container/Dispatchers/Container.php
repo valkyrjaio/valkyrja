@@ -280,7 +280,7 @@ class Container implements Contract
         }
 
         // Check if the service id is provided by a deferred service provider
-        if ($this->isProvided($serviceId)) {
+        if ($this->isProvided($serviceId) && ! $this->isPublished($serviceId)) {
             $this->initializeProvided($serviceId);
         }
 

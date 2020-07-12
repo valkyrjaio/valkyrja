@@ -38,15 +38,14 @@ class CacheableContainer extends Container
      */
     public function getCacheable(): object
     {
-        $this->setup(true, false);
+        // $this->setup(true, false);
 
-        $config             = new Cache();
-        $config->aliases    = self::$aliases;
-        $config->provided   = self::$provided;
-        $config->services   = self::$services;
-        $config->singletons = self::$singletons;
+        // Set app config
+        $config = new ContainerConfig($this->config);
+        $config->cache = $this->getCacheModel();
+        app()->config()->container = $config;
 
-        return $config;
+        return $config->cache;
     }
 
     /**
@@ -187,7 +186,21 @@ class CacheableContainer extends Container
      */
     protected function afterSetup(): void
     {
-        // Set app config
-        app()->config()->container = new ContainerConfig($this->config);
+    }
+
+    /**
+     * Get the cache model.
+     *
+     * @return Cache
+     */
+    protected function getCacheModel(): Cache
+    {
+        $config             = new Cache();
+        $config->aliases    = self::$aliases;
+        $config->provided   = self::$provided;
+        $config->services   = self::$services;
+        $config->singletons = self::$singletons;
+
+        return $config;
     }
 }

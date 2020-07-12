@@ -17,14 +17,15 @@ use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
 
-use function file_exists;
 use function file_put_contents;
+use function is_file;
 use function json_decode;
 use function json_encode;
 use function unlink;
 use function Valkyrja\config;
 use function Valkyrja\console;
 use function Valkyrja\container;
+use function Valkyrja\dd;
 use function Valkyrja\events;
 use function Valkyrja\output;
 use function Valkyrja\router;
@@ -60,7 +61,7 @@ class Optimize extends Commander
         $cacheFilePath = config()['cacheFilePath'];
 
         // If the cache file already exists, delete it
-        if (file_exists($cacheFilePath)) {
+        if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 

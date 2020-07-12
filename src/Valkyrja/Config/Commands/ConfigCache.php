@@ -16,18 +16,18 @@ namespace Valkyrja\Config\Commands;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Support\Provides;
 
-use function file_exists;
 use function file_put_contents;
+use function is_file;
 use function json_decode;
 use function json_encode;
 use function unlink;
 use function Valkyrja\config;
+use function Valkyrja\output;
 use function var_export;
+
 use const JSON_THROW_ON_ERROR;
 use const LOCK_EX;
 use const PHP_EOL;
-
-use function Valkyrja\output;
 
 /**
  * Class ConfigCache.
@@ -55,7 +55,7 @@ class ConfigCache extends Commander
         $cacheFilePath = config()['cacheFilePath'];
 
         // If the cache file already exists, delete it
-        if (file_exists($cacheFilePath)) {
+        if (is_file($cacheFilePath)) {
             unlink($cacheFilePath);
         }
 

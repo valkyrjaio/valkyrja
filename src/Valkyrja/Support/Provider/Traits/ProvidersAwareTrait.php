@@ -35,6 +35,13 @@ trait ProvidersAwareTrait
     protected static array $providedMethod = [];
 
     /**
+     * The items provided by providers that are published.
+     *
+     * @var string[]
+     */
+    protected static array $published = [];
+
+    /**
      * The registered providers.
      *
      * @var array
@@ -95,6 +102,18 @@ trait ProvidersAwareTrait
     }
 
     /**
+     * Check whether a given item is published.
+     *
+     * @param string $itemId The provided item id
+     *
+     * @return bool
+     */
+    public function isPublished(string $itemId): bool
+    {
+        return isset(self::$published[$itemId]);
+    }
+
+    /**
      * Determine whether a provider has been registered.
      *
      * @param string $provider The provider
@@ -119,8 +138,6 @@ trait ProvidersAwareTrait
         $provider = self::$provided[$itemId];
         // The publish method for this provided item in the provider
         $publishMethod = self::$providedMethod[$itemId] ?? static::$defaultPublishMethod;
-
-        unset(self::$provided[$itemId]);
 
         // Publish the service provider
         $provider::$publishMethod($this);
