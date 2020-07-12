@@ -20,6 +20,8 @@ use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
+use function Valkyrja\app;
+
 /**
  * Class CacheableContainer.
  *
@@ -173,6 +175,9 @@ class CacheableContainer extends Container
                 unset($config['devProviders'][$key]);
             }
         }
+
+        // Set the container config
+        $this->config = $config;
     }
 
     /**
@@ -182,5 +187,7 @@ class CacheableContainer extends Container
      */
     protected function afterSetup(): void
     {
+        // Set app config
+        app()->config()->container = new ContainerConfig($this->config);
     }
 }
