@@ -16,7 +16,6 @@ namespace Valkyrja\HttpKernel\Kernels;
 use RuntimeException;
 use Throwable;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
@@ -38,7 +37,6 @@ use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 class Kernel implements Contract
 {
     use MiddlewareAwareTrait;
-    use Provides;
 
     /**
      * The container.
@@ -99,41 +97,6 @@ class Kernel implements Contract
 
         self::$middleware       = $config['middleware'];
         self::$middlewareGroups = $config['middlewareGroups'];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container,
-                $container->getSingleton(Events::class),
-                $container->getSingleton(Router::class),
-                (array) $config['routing'],
-                $config['app']['debug']
-            )
-        );
     }
 
     /**
@@ -290,7 +253,7 @@ class Kernel implements Contract
     /**
      * Terminate a route's middleware.
      *
-     * @param Request  $request The request
+     * @param Request  $request  The request
      * @param Response $response The response
      *
      * @return void

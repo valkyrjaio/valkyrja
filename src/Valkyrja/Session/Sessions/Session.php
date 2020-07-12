@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Sessions;
 
 use Exception;
-use Valkyrja\Container\Container;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Session\Session as Contract;
-use Valkyrja\Container\Support\Provides;
 
 use function bin2hex;
 use function hash_equals;
@@ -41,8 +39,6 @@ use const PHP_SESSION_ACTIVE;
  */
 class Session implements Contract
 {
-    use Provides;
-
     /**
      * The config.
      *
@@ -88,37 +84,6 @@ class Session implements Contract
 
         // Start the session
         $this->start();
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                (array) $config['session']
-            )
-        );
     }
 
     /**

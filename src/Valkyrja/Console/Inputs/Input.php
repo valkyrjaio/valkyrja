@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Inputs;
 
 use Valkyrja\Console\Input as Contract;
-use Valkyrja\Container\Container;
 use Valkyrja\Http\Request;
-use Valkyrja\Container\Support\Provides;
 
 use function array_merge;
 use function array_shift;
@@ -33,8 +31,6 @@ use function strpos;
  */
 class Input implements Contract
 {
-    use Provides;
-
     /**
      * The request.
      *
@@ -123,35 +119,6 @@ class Input implements Contract
             // Set the key value pair
             $this->{$type}[$key] = $value;
         }
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Request::class)
-            )
-        );
     }
 
     /**

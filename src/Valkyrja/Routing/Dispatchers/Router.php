@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Dispatchers;
 use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Constants\RequestMethod;
@@ -26,15 +25,12 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collection;
-use Valkyrja\Routing\Collections\Collection as CollectionClass;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Helpers\RouteGroup;
 use Valkyrja\Routing\Helpers\RouteMethods;
 use Valkyrja\Routing\Matcher;
-use Valkyrja\Routing\Matchers\Matcher as MatcherClass;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
@@ -57,7 +53,6 @@ use function substr;
 class Router implements Contract
 {
     use MiddlewareAwareTrait;
-    use Provides;
     use RouteGroup;
     use RouteMethods;
 
@@ -161,49 +156,6 @@ class Router implements Contract
 
         Middleware::$container = $container;
         Middleware::$router    = $this;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Container::class),
-                $dispatcher = $container->getSingleton(Dispatcher::class),
-                $container->getSingleton(Events::class),
-                $container->getSingleton(PathGenerator::class),
-                $container->getSingleton(Request::class),
-                $container->getSingleton(ResponseFactory::class),
-                new CollectionClass(
-                    $dispatcher,
-                    new MatcherClass(),
-                    $container->getSingleton(PathParser::class)
-                ),
-                (array) $config['routing'],
-                $config['app']['debug']
-            )
-        );
     }
 
     /**

@@ -21,9 +21,7 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use Valkyrja\Container\Container;
 use Valkyrja\Reflection\Reflector as Contract;
-use Valkyrja\Container\Support\Provides;
 
 use function spl_object_id;
 
@@ -34,8 +32,6 @@ use function spl_object_id;
  */
 class Reflector implements Contract
 {
-    use Provides;
-
     /**
      * Cache index constants.
      */
@@ -51,33 +47,6 @@ class Reflector implements Contract
      * @var array
      */
     protected static array $reflections = [];
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
-    }
 
     /**
      * Get a class's reflection.

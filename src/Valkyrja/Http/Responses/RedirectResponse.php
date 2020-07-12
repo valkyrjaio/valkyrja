@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use Valkyrja\Container\Container;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
@@ -161,32 +160,5 @@ class RedirectResponse extends Response implements Contract
     public function throw(): void
     {
         throw new HttpRedirectException($this->statusCode, $this->uri, $this->getHeaders(), $this);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Validation\Rules;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as ORMManager;
 use Valkyrja\Validation\Exceptions\ValidationException;
@@ -26,8 +25,6 @@ use Valkyrja\Validation\Exceptions\ValidationException;
  */
 class ORM
 {
-    use Provides;
-
     /**
      * The container.
      *
@@ -52,36 +49,6 @@ class ORM
     {
         $this->container = $container;
         $this->orm       = $orm;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            self::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            self::class,
-            new static(
-                $container,
-                $container->getSingleton(ORMManager::class)
-            )
-        );
     }
 
     /**

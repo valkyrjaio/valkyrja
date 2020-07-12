@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Managers;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Notification\NotifiableUser;
 use Valkyrja\Notification\Notification;
 use Valkyrja\Notification\Notifier as Contract;
@@ -26,8 +24,6 @@ use Valkyrja\Notification\Notifier as Contract;
  */
 class Notifier implements Contract
 {
-    use Provides;
-
     /**
      * The mail recipients.
      *
@@ -48,33 +44,6 @@ class Notifier implements Contract
      * @var string[]
      */
     protected array $smsRecipients = [];
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
-    }
 
     /**
      * Add a mail recipient to send a notification to.

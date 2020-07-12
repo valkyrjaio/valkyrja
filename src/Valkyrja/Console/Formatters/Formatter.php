@@ -17,8 +17,6 @@ use Valkyrja\Console\Enums\FormatBackground;
 use Valkyrja\Console\Enums\FormatForeground;
 use Valkyrja\Console\Enums\FormatOption;
 use Valkyrja\Console\Formatter as Contract;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 
 use function count;
 use function implode;
@@ -33,7 +31,6 @@ class Formatter implements Contract
 {
     use FormatterColors;
     use FormatterOptions;
-    use Provides;
 
     /**
      * The foreground color.
@@ -55,33 +52,6 @@ class Formatter implements Contract
      * @var int[]
      */
     protected array $options = [];
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
-    }
 
     /**
      * Set the foreground.

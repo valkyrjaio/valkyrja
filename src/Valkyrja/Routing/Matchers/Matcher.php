@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Matchers;
 
 use Valkyrja\Routing\Collection;
-use Valkyrja\Routing\Matcher as RouteMatcherContract;
+use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
 
 use function preg_match;
@@ -25,7 +25,7 @@ use function trim;
  *
  * @author Melech Mizrachi
  */
-class Matcher implements RouteMatcherContract
+class Matcher implements Contract
 {
     /**
      * The route collection.

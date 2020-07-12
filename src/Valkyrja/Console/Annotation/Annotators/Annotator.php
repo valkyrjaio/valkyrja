@@ -20,9 +20,7 @@ use Valkyrja\Console\Annotation\Annotator as Contract;
 use Valkyrja\Console\Annotation\Models\Command;
 use Valkyrja\Console\Command as CommandContract;
 use Valkyrja\Console\Models\Command as CommandModel;
-use Valkyrja\Container\Container;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class CommandAnnotator.
@@ -31,8 +29,6 @@ use Valkyrja\Container\Support\Provides;
  */
 class Annotator implements Contract
 {
-    use Provides;
-
     /**
      * The filter.
      *
@@ -57,36 +53,6 @@ class Annotator implements Contract
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
-            )
-        );
     }
 
     /**

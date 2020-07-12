@@ -15,8 +15,8 @@ namespace Valkyrja\Application\Constants;
 
 use Valkyrja\Application\Application;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Container\Constants\Provider;
 use Valkyrja\Container\Providers\AppProvider as ContainerAppProvider;
+use Valkyrja\Support\Exception\Classes\ExceptionHandler;
 
 /**
  * Constant ConfigValue.
@@ -31,7 +31,7 @@ final class ConfigValue
     public const TIMEZONE          = 'UTC';
     public const VERSION           = Application::VERSION;
     public const KEY               = 'some_secret_app_key';
-    public const EXCEPTION_HANDLER = Provider::EXCEPTION_HANDLER;
+    public const EXCEPTION_HANDLER = ExceptionHandler::class;
     public const PROVIDERS         = [
         ContainerAppProvider::class,
     ];

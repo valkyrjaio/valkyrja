@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Path\Generators;
 
 use InvalidArgumentException;
-use Valkyrja\Container\Container;
 use Valkyrja\Path\PathGenerator as Contract;
-use Valkyrja\Container\Support\Provides;
 
 use function implode;
 use function is_array;
@@ -31,35 +29,6 @@ use function strpos;
  */
 class PathGenerator implements Contract
 {
-    use Provides;
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
-    }
-
     /**
      * Parse segments, data, and params into a path.
      *

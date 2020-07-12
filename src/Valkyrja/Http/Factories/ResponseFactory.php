@@ -20,7 +20,6 @@ use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as Contract;
 use Valkyrja\Routing\Router;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\View\View;
 
 use function func_num_args;
@@ -32,8 +31,6 @@ use function func_num_args;
  */
 class ResponseFactory implements Contract
 {
-    use Provides;
-
     /**
      * The container.
      *
@@ -49,35 +46,6 @@ class ResponseFactory implements Contract
     public function __construct(Container $container)
     {
         $this->container = $container;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container
-            )
-        );
     }
 
     /**

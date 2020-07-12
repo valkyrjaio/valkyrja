@@ -15,7 +15,7 @@ namespace Valkyrja\Routing\Collections;
 
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Path\PathParser;
-use Valkyrja\Routing\Collection as CollectionContract;
+use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 
@@ -30,7 +30,7 @@ use const JSON_THROW_ON_ERROR;
  *
  * @author Melech Mizrachi
  */
-class Collection implements CollectionContract
+class Collection implements Contract
 {
     use CollectionHelpers;
 

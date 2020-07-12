@@ -16,13 +16,11 @@ namespace Valkyrja\Event\Annotation\Annotators;
 use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Container\Container;
 use Valkyrja\Event\Annotation\Annotator as Contract;
 use Valkyrja\Event\Annotation\Models\Listener;
 use Valkyrja\Event\Listener as ListenerContract;
 use Valkyrja\Event\Models\Listener as ListenerModel;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class ListenerAnnotator.
@@ -31,8 +29,6 @@ use Valkyrja\Container\Support\Provides;
  */
 class Annotator implements Contract
 {
-    use Provides;
-
     /**
      * The filter.
      *
@@ -57,36 +53,6 @@ class Annotator implements Contract
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
-            )
-        );
     }
 
     /**

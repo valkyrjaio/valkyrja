@@ -15,9 +15,7 @@ namespace Valkyrja\Session\Sessions;
 
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
-use Valkyrja\Container\Container;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
-use Valkyrja\Session\Session as Contract;
 
 use function headers_sent;
 use function json_decode;
@@ -61,26 +59,6 @@ class CacheSession extends Session
 
         $this->cache      = $cache;
         $this->cacheStore = $cache->getStore();
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Cache::class),
-                (array) $config['session']
-            )
-        );
     }
 
     /**

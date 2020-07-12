@@ -18,8 +18,6 @@ use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator as Contract;
 use Valkyrja\Annotation\Constants\Property;
 use Valkyrja\Annotation\Parser;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Reflection\Reflector;
 
 use function array_merge;
@@ -31,8 +29,6 @@ use function array_merge;
  */
 class Annotator implements Contract
 {
-    use Provides;
-
     /**
      * Cache index constants.
      */
@@ -86,36 +82,6 @@ class Annotator implements Contract
     }
 
     /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Parser::class),
-                $container->getSingleton(Reflector::class)
-            )
-        );
-    }
-
-    /**
      * Get the parser.
      *
      * @return Parser
@@ -152,11 +118,11 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                ],
-                ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+            ],
+            ...$this->parser->getAnnotations((string) $this->reflector->getClassReflection($class)->getDocComment())
+        );
     }
 
     /**
@@ -174,9 +140,9 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->propertiesAnnotations($class),
-                $this->methodsAnnotations($class)
-            );
+            $this->propertiesAnnotations($class),
+            $this->methodsAnnotations($class)
+        );
     }
 
     /**
@@ -194,9 +160,9 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= array_merge(
-                $this->classAnnotations($class),
-                $this->classMembersAnnotations($class)
-            );
+            $this->classAnnotations($class),
+            $this->classMembersAnnotations($class)
+        );
     }
 
     /**
@@ -216,13 +182,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::PROPERTY   => $property,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::PROPERTY   => $property,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -278,13 +244,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::CLASS_NAME => $class,
-                    Property::METHOD     => $method,
-                    Property::STATIC     => $reflection->isStatic(),
-                ],
-                ...$this->parser->getAnnotations((string) $reflection->getDocComment())
-            );
+            [
+                Property::CLASS_NAME => $class,
+                Property::METHOD     => $method,
+                Property::STATIC     => $reflection->isStatic(),
+            ],
+            ...$this->parser->getAnnotations((string) $reflection->getDocComment())
+        );
     }
 
     /**
@@ -338,13 +304,13 @@ class Annotator implements Contract
 
         return self::$annotations[$index]
             ??= $this->setAnnotationValues(
-                [
-                    Property::FUNCTION => $function,
-                ],
-                ...$this->parser->getAnnotations(
-                    (string) $this->reflector->getFunctionReflection($function)->getDocComment()
-                )
-            );
+            [
+                Property::FUNCTION => $function,
+            ],
+            ...$this->parser->getAnnotations(
+            (string) $this->reflector->getFunctionReflection($function)->getDocComment()
+        )
+        );
     }
 
     /**

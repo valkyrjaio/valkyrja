@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\SMS as Contract;
 
@@ -25,8 +24,6 @@ use Valkyrja\SMS\SMS as Contract;
  */
 class SMS implements Contract
 {
-    use Provides;
-
     /**
      * The message clients.
      *
@@ -66,38 +63,6 @@ class SMS implements Contract
         $this->config         = $config;
         $this->container      = $container;
         $this->defaultMessage = $config['message'];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container,
-                (array) $config['sms']
-            )
-        );
     }
 
     /**

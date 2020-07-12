@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Providers;
 
+use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
+use Valkyrja\Event\Annotation\Annotator;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
-use Valkyrja\Event\Events as Contract;
+use Valkyrja\Event\Events;
+use Valkyrja\Reflection\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -27,13 +30,16 @@ use Valkyrja\Event\Events as Contract;
 class ServiceProvider extends Provider
 {
     /**
-     * Whether this provider is deferred.
+     * The items provided by this provider.
      *
-     * @return bool
+     * @return string[]
      */
-    public static function deferred(): bool
+    public static function publishers(): array
     {
-        return false;
+        return [
+            Annotator::class => 'publishAnnotator',
+            Events::class    => 'publishEvents',
+        ];
     }
 
     /**
@@ -43,22 +49,54 @@ class ServiceProvider extends Provider
      */
     public static function provides(): array
     {
-        return [];
+        return [
+            Annotator::class,
+            Events::class,
+        ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Container $container
+     * @param Container $container The container
      *
      * @return void
      */
     public static function publish(Container $container): void
     {
+    }
+
+    /**
+     * Publish the annotator service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAnnotator(Container $container): void
+    {
+        $container->setSingleton(
+            Annotator::class,
+            new \Valkyrja\Event\Annotation\Annotators\Annotator(
+                $container->getSingleton(Filter::class),
+                $container->getSingleton(Reflector::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the events service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishEvents(Container $container): void
+    {
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Contract::class,
+            Events::class,
             $events = new CacheableEvents(
                 $container,
                 $container->getSingleton(Dispatcher::class),

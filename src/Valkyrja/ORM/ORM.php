@@ -139,12 +139,11 @@ interface ORM
      *      $entityManager->find(Entity::class, true | false)
      * </code>
      *
-     * @param string    $entity
-     * @param bool|null $getRelations
+     * @param string $entity
      *
      * @return Retriever
      */
-    public function find(string $entity, bool $getRelations = false): Retriever;
+    public function find(string $entity): Retriever;
 
     /**
      * Find a single entity given its id.
@@ -155,11 +154,10 @@ interface ORM
      *
      * @param string     $entity
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return Retriever
      */
-    public function findOne(string $entity, $id, bool $getRelations = false): Retriever;
+    public function findOne(string $entity, $id): Retriever;
 
     /**
      * Count all the results of given criteria.

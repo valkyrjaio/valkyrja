@@ -19,8 +19,6 @@ use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Formatters\Formatter as FormatterClass;
 use Valkyrja\Console\Output as Contract;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 
 use function strip_tags;
 use function Valkyrja\config;
@@ -35,8 +33,6 @@ use const PHP_EOL;
  */
 class Output implements Contract
 {
-    use Provides;
-
     /**
      * Whether to use quiet console.
      *
@@ -59,33 +55,6 @@ class Output implements Contract
         $this->formatter = new FormatterClass();
 
         self::$quiet = config(ConfigKey::CONSOLE_QUIET) || input()->hasOption('--quiet');
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
     }
 
     /**

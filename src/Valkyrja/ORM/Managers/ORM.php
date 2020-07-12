@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
@@ -37,8 +35,6 @@ use function get_class;
  */
 class ORM implements Contract
 {
-    use Provides;
-
     /**
      * Adapters.
      *
@@ -76,37 +72,6 @@ class ORM implements Contract
     {
         $this->config         = $config;
         $this->defaultAdapter = $config['connections'][$config['connection']]['adapter'] ?? CKP::PDO;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                (array) $config['orm']
-            )
-        );
     }
 
     /**
@@ -291,14 +256,13 @@ class ORM implements Contract
      *      $entityManager->find(Entity::class, true | false)
      * </code>
      *
-     * @param string    $entity
-     * @param bool|null $getRelations
+     * @param string $entity
      *
      * @return Retriever
      */
-    public function find(string $entity, bool $getRelations = false): Retriever
+    public function find(string $entity): Retriever
     {
-        return $this->getConnection()->createRetriever()->find($entity, $getRelations);
+        return $this->getConnection()->createRetriever()->find($entity);
     }
 
     /**
@@ -310,13 +274,12 @@ class ORM implements Contract
      *
      * @param string     $entity
      * @param string|int $id
-     * @param bool|null  $getRelations
      *
      * @return Retriever
      */
-    public function findOne(string $entity, $id, bool $getRelations = false): Retriever
+    public function findOne(string $entity, $id): Retriever
     {
-        return $this->getConnection()->createRetriever()->findOne($entity, $id, $getRelations);
+        return $this->getConnection()->createRetriever()->findOne($entity, $id);
     }
 
     /**

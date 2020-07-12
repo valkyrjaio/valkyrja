@@ -25,7 +25,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Log\Logger;
-use Valkyrja\Container\Support\Provides;
 
 use function Valkyrja\dd;
 
@@ -36,8 +35,6 @@ use function Valkyrja\dd;
  */
 class Kernel implements Contract
 {
-    use Provides;
-
     /**
      * The console.
      *
@@ -71,37 +68,6 @@ class Kernel implements Contract
         $this->console   = $console;
         $this->container = $container;
         $this->events    = $events;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Console::class),
-                $container,
-                $container->getSingleton(Events::class)
-            )
-        );
     }
 
     /**

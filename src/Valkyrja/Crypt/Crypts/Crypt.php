@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
-use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Container\Support\Provides;
 
 use function file_exists;
 use function file_get_contents;
@@ -31,8 +29,6 @@ use function file_get_contents;
  */
 class Crypt implements Contract
 {
-    use Provides;
-
     /**
      * The encrypter.
      *
@@ -73,39 +69,6 @@ class Crypt implements Contract
         $this->encrypter = $encrypter;
         $this->decrypter = $decrypter;
         $this->config    = $config;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->get(Encrypter::class),
-                $container->get(Decrypter::class),
-                (array) $config['crypt']
-            )
-        );
     }
 
     /**

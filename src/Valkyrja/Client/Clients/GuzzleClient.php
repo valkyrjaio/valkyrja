@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Clients;
 
-use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Client as Contract;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class GuzzleClient.
@@ -28,8 +25,6 @@ use Valkyrja\Container\Support\Provides;
  */
 class GuzzleClient implements Contract
 {
-    use Provides;
-
     /**
      * The guzzle client.
      *
@@ -45,33 +40,6 @@ class GuzzleClient implements Contract
     public function __construct(ClientInterface $guzzle)
     {
         $this->guzzle = $guzzle;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(new Guzzle())
-        );
     }
 
     /**

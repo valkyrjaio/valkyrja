@@ -15,8 +15,6 @@ namespace Valkyrja\Mail\Messages;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Mail\Message as Contract;
 
 /**
@@ -26,8 +24,6 @@ use Valkyrja\Mail\Message as Contract;
  */
 class PHPMailerMessage implements Contract
 {
-    use Provides;
-
     /**
      * The PHP Mailer.
      *
@@ -43,58 +39,6 @@ class PHPMailerMessage implements Contract
     public function __construct(PHPMailer $phpMailer)
     {
         $this->phpMailer = $phpMailer;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail'];
-
-        // Create a new instance of the PHPMailer class
-        $PHPMailer = new PHPMailer(true);
-
-        // Enable verbose debug output
-        $PHPMailer->SMTPDebug = $config['app']['debug'] ? 2 : 0;
-        // Set mailer to use SMTP
-        $PHPMailer->isSMTP();
-        // Specify main and backup SMTP servers
-        $PHPMailer->Host = $mailConfig['host'];
-        // SMTP Port
-        $PHPMailer->Port = $mailConfig['port'];
-        // Enable SMTP authentication
-        $PHPMailer->SMTPAuth = true;
-        // SMTP username
-        $PHPMailer->Username = $mailConfig['username'];
-        // SMTP password
-        $PHPMailer->Password = $mailConfig['password'];
-        // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $mailConfig['encryption'];
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $PHPMailer
-            )
-        );
     }
 
     /**

@@ -16,8 +16,6 @@ namespace Valkyrja\Annotation\Filters;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Annotation\Filter as Contract;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 
 use function in_array;
 
@@ -28,8 +26,6 @@ use function in_array;
  */
 class Filter implements Contract
 {
-    use Provides;
-
     /**
      * The annotations.
      *
@@ -45,35 +41,6 @@ class Filter implements Contract
     public function __construct(Annotator $annotator)
     {
         $this->annotator = $annotator;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Annotator::class)
-            )
-        );
     }
 
     /**

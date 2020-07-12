@@ -21,7 +21,6 @@ use Valkyrja\Console\Input;
 use Valkyrja\Console\Output;
 use Valkyrja\Console\Support\Provider;
 use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidClosureException;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
@@ -44,7 +43,6 @@ class Console implements Contract
     use ProvidersAwareTrait {
         register as traitRegister;
     }
-    use Provides;
 
     /**
      * The run method to call within command handlers.
@@ -138,42 +136,6 @@ class Console implements Contract
         $this->pathParser = $pathParser;
         $this->config     = $config;
         $this->debug      = $debug;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container,
-                $container->getSingleton(Dispatcher::class),
-                $container->getSingleton(Events::class),
-                $container->getSingleton(PathParser::class),
-                (array) $config['console'],
-                $config['app']['debug'],
-            )
-        );
     }
 
     /**

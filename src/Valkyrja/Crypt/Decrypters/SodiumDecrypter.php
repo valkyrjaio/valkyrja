@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Decrypters;
 
-use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Decrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Container\Support\Provides;
 
 use function base64_decode;
 use function is_string;
@@ -35,32 +33,6 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
  */
 class SodiumDecrypter implements Decrypter
 {
-    use Provides;
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Decrypter::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(Decrypter::class, new static());
-    }
-
     /**
      * Determine if an encrypted message is valid.
      *

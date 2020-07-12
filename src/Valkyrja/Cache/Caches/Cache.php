@@ -18,8 +18,6 @@ use Predis\Client;
 use Valkyrja\Cache\Cache as Contract;
 use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Stores\RedisStore;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 
 use function method_exists;
 use function ucfirst;
@@ -31,8 +29,6 @@ use function ucfirst;
  */
 class Cache implements Contract
 {
-    use Provides;
-
     /**
      * The config.
      *
@@ -63,37 +59,6 @@ class Cache implements Contract
     {
         $this->config       = $config;
         $this->defaultStore = $config['default'];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                (array) $config['cache']
-            )
-        );
     }
 
     /**

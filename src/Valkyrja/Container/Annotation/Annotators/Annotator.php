@@ -20,9 +20,7 @@ use Valkyrja\Container\Annotation\Annotator as Contract;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Alias;
 use Valkyrja\Container\Annotation\Service\Context;
-use Valkyrja\Container\Container;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class ContainerAnnotator.
@@ -31,8 +29,6 @@ use Valkyrja\Container\Support\Provides;
  */
 class Annotator implements Contract
 {
-    use Provides;
-
     /**
      * The filter.
      *
@@ -78,36 +74,6 @@ class Annotator implements Contract
     {
         $this->filter    = $filter;
         $this->reflector = $reflector;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
-            )
-        );
     }
 
     /**

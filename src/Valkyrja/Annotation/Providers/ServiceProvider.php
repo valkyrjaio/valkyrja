@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Providers;
 
+use Valkyrja\Annotation\Annotator;
+use Valkyrja\Annotation\Filter;
+use Valkyrja\Annotation\Parser;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Reflection\Reflector;
 
 /**
  * Class ServiceProvider.
@@ -30,7 +34,11 @@ class ServiceProvider extends Provider
      */
     public static function publishers(): array
     {
-        return [];
+        return [
+            Annotator::class => 'publishAnnotator',
+            Filter::class    => 'publishFilter',
+            Parser::class    => 'publishParser',
+        ];
     }
 
     /**
@@ -40,17 +48,75 @@ class ServiceProvider extends Provider
      */
     public static function provides(): array
     {
-        return [];
+        return [
+            Annotator::class,
+            Filter::class,
+            Parser::class,
+        ];
     }
 
     /**
      * Publish the provider.
      *
-     * @param Container $container
+     * @param Container $container The container
      *
      * @return void
      */
     public static function publish(Container $container): void
     {
+    }
+
+    /**
+     * Publish the annotator service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAnnotator(Container $container): void
+    {
+        $container->setSingleton(
+            Annotator::class,
+            new \Valkyrja\Annotation\Annotators\Annotator(
+                $container->getSingleton(Parser::class),
+                $container->getSingleton(Reflector::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the filter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishFilter(Container $container): void
+    {
+        $container->setSingleton(
+            Filter::class,
+            new \Valkyrja\Annotation\Filters\Filter(
+                $container->getSingleton(Annotator::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the parser service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishParser(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Parser::class,
+            new \Valkyrja\Annotation\Parsers\Parser(
+                (array) $config['annotation']
+            )
+        );
     }
 }

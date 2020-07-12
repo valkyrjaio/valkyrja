@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Requests;
 
 use InvalidArgumentException;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
@@ -24,7 +22,6 @@ use Valkyrja\Http\Exceptions\InvalidQuery;
 use Valkyrja\Http\Exceptions\InvalidScheme;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\Exceptions\InvalidUploadedFile;
-use Valkyrja\Http\Factories\RequestFactory;
 use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\UploadedFile;
@@ -66,7 +63,6 @@ use Valkyrja\Http\Uri;
 class Request implements Contract
 {
     use RequestTrait;
-    use Provides;
 
     /**
      * The server params.
@@ -155,33 +151,6 @@ class Request implements Contract
         $this->parsedBody = $parsedBody ?? [];
         $this->protocol   = $protocol ?? '1.1';
         $this->files      = $files ?? [];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            RequestFactory::fromGlobals()
-        );
     }
 
     /**

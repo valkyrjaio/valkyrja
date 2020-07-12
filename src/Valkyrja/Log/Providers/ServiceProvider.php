@@ -26,11 +26,11 @@ use Valkyrja\Log\Loggers\MonologLogger;
 use function date;
 
 /**
- * Class LoggerServiceProvider.
+ * Class ServiceProvider.
  *
  * @author Melech Mizrachi
  */
-class LoggerServiceProvider extends Provider
+class ServiceProvider extends Provider
 {
     /**
      * What services are provided.

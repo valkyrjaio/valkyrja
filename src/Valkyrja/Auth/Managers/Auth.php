@@ -21,12 +21,10 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
-use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
-use Valkyrja\Container\Support\Provides;
 
 /**
  * Class Auth.
@@ -35,8 +33,6 @@ use Valkyrja\Container\Support\Provides;
  */
 class Auth implements Contract
 {
-    use Provides;
-
     /**
      * Adapters.
      *
@@ -116,40 +112,6 @@ class Auth implements Contract
         $this->session           = $session;
         $this->defaultAdapter    = $this->config['adapter'];
         $this->defaultUserEntity = $this->config['userEntity'];
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(Crypt::class),
-                $container->getSingleton(ORM::class),
-                $container->getSingleton(Session::class),
-                (array) $config['auth']
-            )
-        );
     }
 
     /**

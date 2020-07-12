@@ -15,11 +15,8 @@ namespace Valkyrja\SMS\Messages;
 
 use Exception;
 use Nexmo\Client as Nexmo;
-use Nexmo\Client\Credentials\Basic;
 use Nexmo\Exception\Request as RequestException;
 use Nexmo\Exception\Server as ServerException;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\SMS\Message as Contract;
 
 /**
@@ -29,8 +26,6 @@ use Valkyrja\SMS\Message as Contract;
  */
 class NexmoMessage implements Contract
 {
-    use Provides;
-
     /**
      * The Nexmo client.
      *
@@ -74,42 +69,6 @@ class NexmoMessage implements Contract
     public function __construct(Nexmo $nexmo)
     {
         $this->nexmo = $nexmo;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config    = $container->getSingleton('config');
-        $smsConfig = $config['sms'];
-
-        $nexmo = new Nexmo(
-            new Basic($smsConfig['username'], $smsConfig['password'])
-        );
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $nexmo
-            )
-        );
     }
 
     /**

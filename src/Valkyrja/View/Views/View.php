@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Views;
 
-use Valkyrja\Container\Container;
 use Valkyrja\Support\Directory;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\View as Contract;
@@ -33,8 +31,6 @@ use function trim;
  */
 class View implements Contract
 {
-    use Provides;
-
     /**
      * The engines.
      *
@@ -106,39 +102,6 @@ class View implements Contract
         $this->setVariables($variables);
         $this->setDir($this->config['dir']);
         $this->setTemplate($template ?? $this->template);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                (array) $config['view']
-            )
-        );
     }
 
     /**

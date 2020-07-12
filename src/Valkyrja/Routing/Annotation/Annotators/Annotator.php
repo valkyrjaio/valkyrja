@@ -17,8 +17,6 @@ use InvalidArgumentException;
 use ReflectionException;
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator as Contract;
 use Valkyrja\Routing\Annotation\Enums\AnnotationName;
@@ -37,8 +35,6 @@ use function trim;
  */
 class Annotator implements Contract
 {
-    use Provides;
-
     /**
      * The annotator.
      *
@@ -72,37 +68,6 @@ class Annotator implements Contract
         $this->annotator = $annotator;
         $this->filter    = $filter;
         $this->reflector = $reflector;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static(
-                $container->getSingleton(AnnotationAnnotator::class),
-                $container->getSingleton(Filter::class),
-                $container->getSingleton(Reflector::class)
-            )
-        );
     }
 
     /**

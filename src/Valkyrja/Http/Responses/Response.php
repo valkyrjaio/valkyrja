@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Constants\Stream as StreamEnum;
@@ -46,7 +44,6 @@ use function sprintf;
 class Response implements Contract
 {
     use MessageTrait;
-    use Provides;
 
     /**
      * The status code.
@@ -76,33 +73,6 @@ class Response implements Contract
     public function __construct(Stream $body = null, int $statusCode = null, array $headers = null)
     {
         $this->initialize($body, $statusCode, $headers);
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Contract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            Contract::class,
-            new static()
-        );
     }
 
     /**

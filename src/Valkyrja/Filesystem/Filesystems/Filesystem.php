@@ -15,8 +15,6 @@ namespace Valkyrja\Filesystem\Filesystems;
 
 use League\Flysystem\AdapterInterface;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
@@ -28,8 +26,6 @@ use Valkyrja\Filesystem\Filesystem as FilesystemContract;
  */
 class Filesystem implements FilesystemContract
 {
-    use Provides;
-
     /**
      * The adapters.
      *
@@ -52,35 +48,6 @@ class Filesystem implements FilesystemContract
     public function __construct(array $config)
     {
         $this->config = $config;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            FilesystemContract::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            FilesystemContract::class,
-            new static((array) $config['filesystem'])
-        );
     }
 
     /**

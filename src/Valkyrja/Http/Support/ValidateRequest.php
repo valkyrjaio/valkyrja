@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Support;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Container\Support\Provides;
 use Valkyrja\Http\Request;
 use Valkyrja\Validation\Validator;
 
@@ -25,8 +23,6 @@ use Valkyrja\Validation\Validator;
  */
 abstract class ValidateRequest
 {
-    use Provides;
-
     /**
      * The request.
      *
@@ -51,36 +47,6 @@ abstract class ValidateRequest
     {
         $this->request   = $request;
         $this->validator = $validator;
-    }
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            static::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(
-            static::class,
-            new static(
-                $container->getSingleton(Request::class),
-                $container->getSingleton(Validator::class)
-            )
-        );
     }
 
     /**

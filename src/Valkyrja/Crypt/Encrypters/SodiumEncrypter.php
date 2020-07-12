@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Encrypters;
 
 use Exception;
-use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Encrypter;
-use Valkyrja\Container\Support\Provides;
 
 use function base64_encode;
 use function json_encode;
@@ -34,32 +32,6 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
  */
 class SodiumEncrypter implements Encrypter
 {
-    use Provides;
-
-    /**
-     * The items provided by this provider.
-     *
-     * @return array
-     */
-    public static function provides(): array
-    {
-        return [
-            Encrypter::class,
-        ];
-    }
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $container->setSingleton(Encrypter::class, new static());
-    }
-
     /**
      * Encrypt a message.
      *

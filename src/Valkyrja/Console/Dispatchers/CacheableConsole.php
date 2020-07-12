@@ -18,11 +18,6 @@ use Valkyrja\Console\Annotation\Annotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Config\Config as ConsoleConfig;
-use Valkyrja\Console\Console as Contract;
-use Valkyrja\Container\Container;
-use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Events;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 use function base64_decode;
@@ -38,32 +33,6 @@ use function unserialize;
 class CacheableConsole extends Console
 {
     use Cacheable;
-
-    /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publish(Container $container): void
-    {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
-            Contract::class,
-            $console = new static(
-                $container,
-                $container->getSingleton(Dispatcher::class),
-                $container->getSingleton(Events::class),
-                $container->getSingleton(PathParser::class),
-                (array) $config['console'],
-                $config['app']['debug'],
-            )
-        );
-
-        $console->setup();
-    }
 
     /**
      * Get a cacheable representation of the commands.
