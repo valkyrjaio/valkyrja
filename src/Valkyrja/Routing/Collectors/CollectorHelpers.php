@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Collectors;
 
 use Closure;
 use InvalidArgumentException;
+use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
@@ -55,6 +56,13 @@ trait CollectorHelpers
      * @var Route|null
      */
     protected ?Route $route = null;
+
+    /**
+     * The path parser.
+     *
+     * @var PathParser
+     */
+    protected PathParser $pathParser;
 
     /**
      * The router.
@@ -246,6 +254,10 @@ trait CollectorHelpers
             $this->setDependencies($route);
         }
 
+        if ($route->isDynamic()) {
+            $this->parseDynamicRoute($route);
+        }
+
         $this->router->addRoute($route);
 
         return $route;
@@ -414,5 +426,23 @@ trait CollectorHelpers
         }
 
         return $dependencies;
+    }
+
+    /**
+     * Parse a dynamic route and set its properties.
+     *
+     * @param Route $route The route
+     *
+     * @return void
+     */
+    protected function parseDynamicRoute(Route $route): void
+    {
+        // Parse the path
+        $parsedRoute = $this->pathParser->parse($route->getPath() ?? '');
+
+        // Set the properties
+        $route->setRegex($parsedRoute['regex']);
+        $route->setParams($parsedRoute['params']);
+        $route->setSegments($parsedRoute['segments']);
     }
 }

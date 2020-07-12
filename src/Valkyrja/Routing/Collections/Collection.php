@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
@@ -339,8 +338,6 @@ class Collection implements Contract
     {
         // If this is a dynamic route
         if ($route->isDynamic()) {
-            // Set the dynamic route's properties through the path parser
-            $this->parseDynamicRoute($route);
             // Set the route in the dynamic routes list
             $this->dynamic[$requestMethod][$route->getRegex()] = $route;
         } // Otherwise set it in the static routes array
@@ -364,28 +361,6 @@ class Collection implements Contract
             // Set the route in the named routes list
             $this->named[$route->getName()] = $route;
         }
-    }
-
-    /**
-     * Parse a dynamic route and set its properties.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function parseDynamicRoute(Route $route): void
-    {
-        $this->verifyRoute($route);
-
-        /** @var PathParser $pathParser */
-        $pathParser = $this->container->getSingleton(PathParser::class);
-        // Parse the path
-        $parsedRoute = $pathParser->parse($route->getPath() ?? '');
-
-        // Set the properties
-        $route->setRegex($parsedRoute['regex']);
-        $route->setParams($parsedRoute['params']);
-        $route->setSegments($parsedRoute['segments']);
     }
 
     /**
