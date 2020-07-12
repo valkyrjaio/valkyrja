@@ -16,12 +16,66 @@ namespace Valkyrja\Routing;
 use Closure;
 
 /**
- * Interface RouteMethods.
+ * Interface Collector.
  *
  * @author Melech Mizrachi
  */
-interface RouteMethods
+interface Collector
 {
+    /**
+     * Get a router with a path context to group routes with.
+     *
+     * @param string $path The path
+     *
+     * @return static
+     */
+    public function withPath(string $path): self;
+
+    /**
+     * Get a router with a controller context to group routes with.
+     *
+     * @param string $controller The controller
+     *
+     * @return static
+     */
+    public function withController(string $controller): self;
+
+    /**
+     * Get a router with a name context to group routes with.
+     *
+     * @param string $name The name
+     *
+     * @return static
+     */
+    public function withName(string $name): self;
+
+    /**
+     * Get a router with middleware context to group routes with.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return static
+     */
+    public function withMiddleware(array $middleware): self;
+
+    /**
+     * Get a router with a secure context to group routes with.
+     *
+     * @param bool $secure [optional] Whether to be secure
+     *
+     * @return static
+     */
+    public function withSecure(bool $secure = true): self;
+
+    /**
+     * Group routes together.
+     *
+     * @param Closure $group The group
+     *
+     * @return static
+     */
+    public function group(Closure $group): self;
+
     /**
      * Helper method to set a GET route.
      * <code>

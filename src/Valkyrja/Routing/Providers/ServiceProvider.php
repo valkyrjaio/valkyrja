@@ -24,6 +24,7 @@ use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator;
 use Valkyrja\Routing\Collections\CacheableCollection;
+use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Matchers\Matcher;
 use Valkyrja\Routing\Router;
 
@@ -44,6 +45,7 @@ class ServiceProvider extends Provider
         return [
             Annotator::class => 'publishAnnotator',
             Router::class    => 'publishRouter',
+            Collector::class => 'publishCollector',
         ];
     }
 
@@ -57,6 +59,7 @@ class ServiceProvider extends Provider
         return [
             Annotator::class,
             Router::class,
+            Collector::class,
         ];
     }
 
@@ -120,6 +123,23 @@ class ServiceProvider extends Provider
                 $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflector::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the collector service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishCollector(Container $container): void
+    {
+        $container->setSingleton(
+            Collector::class,
+            new \Valkyrja\Routing\Collectors\Collector(
+                $container->getSingleton(Router::class)
             )
         );
     }

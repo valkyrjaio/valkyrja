@@ -21,7 +21,7 @@ use Valkyrja\Http\Response;
  *
  * @author Melech Mizrachi
  */
-interface Router extends MiddlewareAware, RouteGroup, RouteMethods
+interface Router extends MiddlewareAware
 {
     /**
      * Get the config.

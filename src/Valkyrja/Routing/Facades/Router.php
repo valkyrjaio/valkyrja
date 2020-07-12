@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Facades;
 
-use Closure;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Collection;
@@ -27,20 +26,6 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Route get(string $path, $handler, string $name = null)
- * @method static Route post(string $path, $handler, string $name = null)
- * @method static Route put(string $path, $handler, string $name = null)
- * @method static Route patch(string $path, $handler, string $name = null)
- * @method static Route delete(string $path, $handler, string $name = null)
- * @method static Route head(string $path, $handler, string $name = null)
- * @method static Route any(string $path, $handler, string $name = null)
- * @method static Route redirect(string $path, string $to, array $methods = null, string $name = null)
- * @method static Contract withPath(string $path)
- * @method static Contract withController(string $controller)
- * @method static Contract withName(string $name)
- * @method static Contract withMiddleware(array $middleware)
- * @method static Contract withSecure(bool $secure = true)
- * @method static Contract group(Closure $group)
  * @method static array getConfig()
  * @method static Collection getCollection()
  * @method static Matcher getMatcher()

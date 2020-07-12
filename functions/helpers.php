@@ -48,6 +48,7 @@ use Valkyrja\ORM\ORM;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
+use Valkyrja\Routing\Collector;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
@@ -411,6 +412,16 @@ function request(): Request
 function router(): Router
 {
     return Valkyrja::app()->container()->getSingleton(Router::class);
+}
+
+/**
+ * Get route collector.
+ *
+ * @return Collector
+ */
+function collector(): Collector
+{
+    return Valkyrja::app()->container()->getSingleton(Collector::class);
 }
 
 /**

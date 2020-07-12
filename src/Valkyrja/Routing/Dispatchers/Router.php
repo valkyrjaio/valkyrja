@@ -28,8 +28,6 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
-use Valkyrja\Routing\Helpers\RouteGroup;
-use Valkyrja\Routing\Helpers\RouteMethods;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
@@ -53,8 +51,6 @@ use function substr;
 class Router implements Contract
 {
     use MiddlewareAwareTrait;
-    use RouteGroup;
-    use RouteMethods;
 
     /**
      * The route collection.

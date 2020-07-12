@@ -11,40 +11,108 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Helpers;
+namespace Valkyrja\Routing\Collectors;
 
 use Closure;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Reflection\Facades\Reflector;
+use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
-
-use function explode;
-use function is_string;
-use function str_replace;
-use function strpos;
+use Valkyrja\Routing\Router;
 
 /**
- * Trait RouteMethods.
+ * Class Collector.
  *
  * @author Melech Mizrachi
  */
-trait RouteMethods
+class Collector implements Contract
 {
-    /**
-     * The static handler split.
-     *
-     * @var string
-     */
-    protected static string $staticHandlerSplit = '::';
+    use CollectorHelpers;
 
     /**
-     * The handler split.
+     * Collector constructor.
      *
-     * @var string
+     * @param Router $router The router
      */
-    protected static string $handlerSplit = '->';
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * Get a router with a path context to group routes with.
+     *
+     * @param string $path The path
+     *
+     * @return static
+     */
+    public function withPath(string $path): self
+    {
+        return $this->withGroupableSelf('setPath', $path);
+    }
+
+    /**
+     * Get a router with a controller context to group routes with.
+     *
+     * @param string $controller The controller
+     *
+     * @return static
+     */
+    public function withController(string $controller): self
+    {
+        return $this->withGroupableSelf('setClass', $controller);
+    }
+
+    /**
+     * Get a router with a name context to group routes with.
+     *
+     * @param string $name The name
+     *
+     * @return static
+     */
+    public function withName(string $name): self
+    {
+        return $this->withGroupableSelf('setName', $name);
+    }
+
+    /**
+     * Get a router with middleware context to group routes with.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return static
+     */
+    public function withMiddleware(array $middleware): self
+    {
+        return $this->withGroupableSelf('setMiddleware', $middleware);
+    }
+
+    /**
+     * Get a router with a secure context to group routes with.
+     *
+     * @param bool $secure [optional] Whether to be secure
+     *
+     * @return static
+     */
+    public function withSecure(bool $secure = true): self
+    {
+        return $this->withGroupableSelf('setSecure', $secure);
+    }
+
+    /**
+     * Group routes together.
+     *
+     * @param Closure $group The group
+     *
+     * @return static
+     */
+    public function group(Closure $group): self
+    {
+        $group($this);
+
+        return $this;
+    }
 
     /**
      * Helper method to set a GET route.
@@ -272,222 +340,4 @@ trait RouteMethods
             ->setName($name)
             ->setMethods($methods ?? [RequestMethod::GET, RequestMethod::HEAD]);
     }
-
-    /**
-     * Set a single route.
-     *
-     * @param Route $route
-     *
-     * @return void
-     */
-    abstract public function addRoute(Route $route): void;
-
-    /**
-     * Get a route for a helper method.
-     *
-     * @param string         $path            The path
-     * @param string|Closure $handler         The handler
-     * @param string|null    $name            [optional] The name of the route
-     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return Route
-     */
-    protected function getRouteForHelper(
-        string $path,
-        $handler,
-        string $name = null,
-        bool $setDependencies = true
-    ): Route {
-        $route = new RouteModel();
-
-        $route->setPath($path);
-        $route->setName($name);
-
-        $this->setRouteHandler($route, $handler);
-        $this->setGroupContextInRoute($route);
-
-        if ($setDependencies) {
-            $this->setDependencies($route);
-        }
-
-        $this->addRoute($route);
-
-        return $route;
-    }
-
-    /**
-     * Set the route handler.
-     *
-     * @param Route          $route   The route
-     * @param string|Closure $handler The handler
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    protected function setRouteHandler(Route $route, $handler): void
-    {
-        $this->verifyHandler($handler);
-
-        if ($handler instanceof Closure) {
-            $route->setClosure($handler);
-
-            return;
-        }
-
-        $this->setRouteHandlerFromString($route, $handler);
-    }
-
-    /**
-     * Verify a handler.
-     *
-     * @param mixed $handler The handler
-     *
-     * @return void
-     */
-    protected function verifyHandler($handler): void
-    {
-        if (! is_string($handler) && ! ($handler instanceof Closure)) {
-            throw new InvalidArgumentException('Invalid handler provided.');
-        }
-    }
-
-    /**
-     * Set the route handler from a string.
-     *
-     * @param Route  $route   The route
-     * @param string $handler The handler
-     *
-     * @return void
-     */
-    protected function setRouteHandlerFromString(Route $route, string $handler): void
-    {
-        if (strpos($handler, self::$handlerSplit) !== false) {
-            $this->setRouteInstanceHandler($route, $handler);
-
-            return;
-        }
-
-        if (strpos($handler, self::$staticHandlerSplit) !== false) {
-            $this->setRouteStaticHandler($route, $handler);
-            $route->setStatic();
-
-            return;
-        }
-
-        $route->setFunction($handler);
-    }
-
-    /**
-     * Set the instance route handler.
-     *
-     * @param Route  $route   The route
-     * @param string $handler The handler
-     *
-     * @return void
-     */
-    protected function setRouteInstanceHandler(Route $route, string $handler): void
-    {
-        $this->setRouteHandlerSplit($route, $handler, self::$handlerSplit);
-    }
-
-    /**
-     * Set the static route handler.
-     *
-     * @param Route  $route   The route
-     * @param string $handler The handler
-     *
-     * @return void
-     */
-    protected function setRouteStaticHandler(Route $route, string $handler): void
-    {
-        $this->setRouteHandlerSplit($route, $handler, self::$staticHandlerSplit);
-    }
-
-    /**
-     * Set the static route handler.
-     *
-     * @param Route  $route     The route
-     * @param string $handler   The handler
-     * @param string $delimiter The delimiter
-     *
-     * @return void
-     */
-    protected function setRouteHandlerSplit(Route $route, string $handler, string $delimiter): void
-    {
-        [$class, $member] = explode($delimiter, $handler);
-
-        $route->setClass($class);
-        $this->setRouteMember($route, $member);
-    }
-
-    /**
-     * Set the route handler member.
-     *
-     * @param Route  $route  The route
-     * @param string $member The member
-     *
-     * @return void
-     */
-    protected function setRouteMember(Route $route, string $member): void
-    {
-        if (strpos($member, '(') !== false) {
-            $member = str_replace('()', '', $member);
-
-            $route->setMethod($member);
-
-            return;
-        }
-
-        $route->setProperty($member);
-    }
-
-    /**
-     * Set a route's dependencies.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setDependencies(Route $route): void
-    {
-        if (null !== $route->getDependencies()) {
-            return;
-        }
-
-        $route->setDependencies($this->getDependencies($route));
-    }
-
-    /**
-     * Get a route's dependencies.
-     *
-     * @param Route $route The route
-     *
-     * @return array
-     */
-    protected function getDependencies(Route $route): array
-    {
-        $dependencies = [];
-
-        if (($class = $route->getClass()) && ($method = $route->getMethod())) {
-            $dependencies = Reflector::getDependencies(Reflector::getMethodReflection($class, $method));
-        } elseif ($function = $route->getFunction()) {
-            $dependencies = Reflector::getDependencies(Reflector::getFunctionReflection($function));
-        } elseif ($closure = $route->getClosure()) {
-            $dependencies = Reflector::getDependencies(Reflector::getClosureReflection($closure));
-        }
-
-        return $dependencies;
-    }
-
-    /**
-     * Set group context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    abstract protected function setGroupContextInRoute(Route $route): void;
 }
