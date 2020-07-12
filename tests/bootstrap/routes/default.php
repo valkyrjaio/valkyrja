@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Valkyrja\Routing\Facades\Router;
+use Valkyrja\Routing\Facades\Collector;
 
-Router::get(
+Collector::get(
     '/',
     static function () {
     },
