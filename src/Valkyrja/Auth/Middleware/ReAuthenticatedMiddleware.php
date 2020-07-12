@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
-use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-
 use Valkyrja\Routing\Url;
 
 use function time;
