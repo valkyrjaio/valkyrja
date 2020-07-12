@@ -44,6 +44,13 @@ class Cache extends Model
     public array $provided;
 
     /**
+     * The provided services' publish methods.
+     *
+     * @var string[]
+     */
+    public array $providedMethod;
+
+    /**
      * The services.
      *
      * @var string[]

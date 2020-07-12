@@ -337,7 +337,7 @@ class Container implements Contract
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
         // If the service isn't a singleton but is provided
-        if (! isset(self::$instances[$serviceId]) && $this->isProvided($serviceId)) {
+        if ($this->isProvided($serviceId) && ! $this->isPublished($serviceId)) {
             // Initialize the provided service
             $this->initializeProvided($serviceId);
         }

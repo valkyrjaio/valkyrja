@@ -25,7 +25,6 @@ use function unlink;
 use function Valkyrja\config;
 use function Valkyrja\console;
 use function Valkyrja\container;
-use function Valkyrja\dd;
 use function Valkyrja\events;
 use function Valkyrja\output;
 use function Valkyrja\router;
@@ -75,10 +74,10 @@ class Optimize extends Commander
         $eventsCache    = events()->getCacheable();
         $routesCache    = router()->getCollection()->getCacheable();
 
-        $configCache['container']['cache'] = $containerCache;
-        $configCache['console']['cache']   = $consoleCache;
-        $configCache['event']['cache']     = $eventsCache;
-        $configCache['routing']['cache']   = $routesCache;
+        $configCache['container']        = $containerCache;
+        $configCache['console']['cache'] = $consoleCache;
+        $configCache['event']['cache']   = $eventsCache;
+        $configCache['routing']['cache'] = $routesCache;
 
         $configCache['container']['useCache'] = true;
         $configCache['console']['useCache']   = true;

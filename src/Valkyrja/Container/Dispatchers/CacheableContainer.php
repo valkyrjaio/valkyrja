@@ -20,8 +20,6 @@ use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Support\Cacheable\Cacheable;
 
-use function Valkyrja\app;
-
 /**
  * Class CacheableContainer.
  *
@@ -38,14 +36,24 @@ class CacheableContainer extends Container
      */
     public function getCacheable(): object
     {
-        // $this->setup(true, false);
+        $this->setup(true, false);
 
         // Set app config
-        $config = new ContainerConfig($this->config);
+        $config        = new ContainerConfig($this->config);
         $config->cache = $this->getCacheModel();
-        app()->config()->container = $config;
+        $providers     = $config->providers;
 
-        return $config->cache;
+        // Iterate through all the providers
+        foreach ($providers as $key => $provider) {
+            /** @var Provider $provider */
+            if ($provider::deferred()) {
+                unset($providers[$key]);
+            }
+        }
+
+        $config->providers = $providers;
+
+        return $config;
     }
 
     /**
@@ -78,10 +86,11 @@ class CacheableContainer extends Container
     {
         $cache = $config['cache'] ?? require $config['cacheFilePath'];
 
-        self::$aliases    = $cache['aliases'];
-        self::$provided   = $cache['provided'];
-        self::$services   = $cache['services'];
-        self::$singletons = $cache['singletons'];
+        self::$aliases        = $cache['aliases'];
+        self::$provided       = $cache['provided'];
+        self::$providedMethod = $cache['providedMethod'];
+        self::$services       = $cache['services'];
+        self::$singletons     = $cache['singletons'];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -96,11 +105,12 @@ class CacheableContainer extends Container
      */
     protected function setupNotCached($config): void
     {
-        self::$aliases    = [];
-        self::$registered = [];
-        self::$provided   = [];
-        self::$services   = [];
-        self::$singletons = [];
+        self::$aliases        = [];
+        self::$registered     = [];
+        self::$provided       = [];
+        self::$providedMethod = [];
+        self::$services       = [];
+        self::$singletons     = [];
 
         // Setup service providers
         $this->setupServiceProviders($config);
@@ -153,11 +163,6 @@ class CacheableContainer extends Container
         // Iterate through all the providers
         foreach ($config['providers'] as $key => $provider) {
             $this->register($provider);
-
-            /** @var Provider $provider */
-            if ($provider::deferred()) {
-                unset($config['providers'][$key]);
-            }
         }
 
         // If this is not a dev environment
@@ -168,15 +173,7 @@ class CacheableContainer extends Container
         // Iterate through all the providers
         foreach ($config['devProviders'] as $key => $devProvider) {
             $this->register($devProvider);
-
-            /** @var Provider $devProvider */
-            if ($devProvider::deferred()) {
-                unset($config['devProviders'][$key]);
-            }
         }
-
-        // Set the container config
-        $this->config = $config;
     }
 
     /**
@@ -195,11 +192,12 @@ class CacheableContainer extends Container
      */
     protected function getCacheModel(): Cache
     {
-        $config             = new Cache();
-        $config->aliases    = self::$aliases;
-        $config->provided   = self::$provided;
-        $config->services   = self::$services;
-        $config->singletons = self::$singletons;
+        $config                 = new Cache();
+        $config->aliases        = self::$aliases;
+        $config->provided       = self::$provided;
+        $config->providedMethod = self::$providedMethod;
+        $config->services       = self::$services;
+        $config->singletons     = self::$singletons;
 
         return $config;
     }
