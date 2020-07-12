@@ -85,13 +85,6 @@ class Router implements Contract
     protected Events $events;
 
     /**
-     * The path generator.
-     *
-     * @var PathGenerator
-     */
-    protected PathGenerator $pathGenerator;
-
-    /**
      * The request.
      *
      * @var Request
@@ -125,7 +118,6 @@ class Router implements Contract
      * @param Container       $container
      * @param Dispatcher      $dispatcher
      * @param Events          $events
-     * @param PathGenerator   $pathParser
      * @param Request         $request
      * @param ResponseFactory $responseFactory
      * @param Collection      $collection
@@ -136,7 +128,6 @@ class Router implements Contract
         Container $container,
         Dispatcher $dispatcher,
         Events $events,
-        PathGenerator $pathParser,
         Request $request,
         ResponseFactory $responseFactory,
         Collection $collection,
@@ -146,7 +137,6 @@ class Router implements Contract
         $this->container       = $container;
         $this->dispatcher      = $dispatcher;
         $this->events          = $events;
-        $this->pathGenerator   = $pathParser;
         $this->request         = $request;
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
@@ -273,9 +263,11 @@ class Router implements Contract
         $host = $absolute || $route->isSecure() || $this->config['useAbsoluteUrls']
             ? $this->routeHost($route)
             : '';
+        /** @var PathGenerator $pathGenerator */
+        $pathGenerator = $this->container->getSingleton(PathGenerator::class);
         // Get the path from the generator
         $path = $route->getSegments()
-            ? $this->pathGenerator->parse(
+            ? $pathGenerator->parse(
                 $route->getSegments(),
                 $data,
                 $route->getParams()

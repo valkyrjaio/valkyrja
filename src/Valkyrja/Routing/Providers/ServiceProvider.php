@@ -21,8 +21,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator;
 use Valkyrja\Routing\Collections\CacheableCollection;
@@ -91,14 +89,12 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Container::class),
                 $dispatcher = $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
-                $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
                 $collection = new CacheableCollection(
                     $container,
                     $dispatcher,
                     new Matcher(),
-                    $container->getSingleton(PathParser::class),
                     $routingConfig
                 ),
                 $routingConfig,

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
+use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Path\PathParser;
@@ -64,11 +65,11 @@ class Collection implements Contract
     protected array $named = [];
 
     /**
-     * The path parser.
+     * The container.
      *
-     * @var PathParser
+     * @var Container
      */
-    protected PathParser $pathParser;
+    protected Container $container;
 
     /**
      * The dispatcher.
@@ -87,17 +88,17 @@ class Collection implements Contract
     /**
      * Collection constructor.
      *
+     * @param Container  $container
      * @param Dispatcher $dispatcher
      * @param Matcher    $matcher
-     * @param PathParser $pathParser
      */
-    public function __construct(Dispatcher $dispatcher, Matcher $matcher, PathParser $pathParser)
+    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher)
     {
         $matcher->setCollection($this);
 
+        $this->container  = $container;
         $this->dispatcher = $dispatcher;
         $this->matcher    = $matcher;
-        $this->pathParser = $pathParser;
     }
 
     /**
@@ -376,8 +377,10 @@ class Collection implements Contract
     {
         $this->verifyRoute($route);
 
+        /** @var PathParser $pathParser */
+        $pathParser = $this->container->getSingleton(PathParser::class);
         // Parse the path
-        $parsedRoute = $this->pathParser->parse($route->getPath() ?? '');
+        $parsedRoute = $pathParser->parse($route->getPath() ?? '');
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);
