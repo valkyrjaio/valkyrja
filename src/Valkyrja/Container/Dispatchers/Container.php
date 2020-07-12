@@ -232,6 +232,7 @@ class Container implements Contract
 
         self::$singletons[$serviceId] = $serviceId;
         self::$instances[$serviceId]  = $singleton;
+        self::$published[$serviceId]  = true;
 
         return $this;
     }
