@@ -144,8 +144,10 @@ final class EnvKey
     public const ROUTING_CACHE_FILE_PATH             = 'ROUTING_CACHE_FILE_PATH';
     public const ROUTING_USE_CACHE_FILE              = 'ROUTING_USE_CACHE_FILE';
 
-    public const SESSION_ID   = 'SESSION_ID';
-    public const SESSION_NAME = 'SESSION_NAME';
+    public const SESSION_ID       = 'SESSION_ID';
+    public const SESSION_NAME     = 'SESSION_NAME';
+    public const SESSION_ADAPTER  = 'SESSION_ADAPTER';
+    public const SESSION_ADAPTERS = 'SESSION_ADAPTERS';
 
     public const SMS_USERNAME = 'SMS_USERNAME';
     public const SMS_PASSWORD = 'SMS_PASSWORD';

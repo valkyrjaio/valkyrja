@@ -142,8 +142,10 @@ final class ConfigKey
     public const ROUTING_CACHE_FILE_PATH             = 'routing.cacheFilePath';
     public const ROUTING_USE_CACHE_FILE              = 'routing.useCache';
 
-    public const SESSION_ID   = 'session.id';
-    public const SESSION_NAME = 'session.name';
+    public const SESSION_ID       = 'session.id';
+    public const SESSION_NAME     = 'session.name';
+    public const SESSION_ADAPTER  = 'session.adapter';
+    public const SESSION_ADAPTERS = 'session.adapters';
 
     public const SMS_USERNAME = 'sms.username';
     public const SMS_PASSWORD = 'sms.password';

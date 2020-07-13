@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Session\Adapters\PHPAdapter;
 
 /**
  * Constant ConfigValue.
@@ -22,11 +23,17 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const SESSION_ID   = null;
-    public const SESSION_NAME = null;
+    public const ID       = null;
+    public const NAME     = null;
+    public const ADAPTER  = CKP::PHP;
+    public const ADAPTERS = [
+        CKP::PHP => PHPAdapter::class,
+    ];
 
     public static array $defaults = [
-        CKP::ID   => self::SESSION_ID,
-        CKP::NAME => self::SESSION_NAME,
+        CKP::ID       => self::ID,
+        CKP::NAME     => self::NAME,
+        CKP::ADAPTER  => self::ADAPTER,
+        CKP::ADAPTERS => self::ADAPTERS,
     ];
 }

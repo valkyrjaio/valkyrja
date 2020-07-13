@@ -18,9 +18,10 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
+use Valkyrja\Session\Adapters\CacheAdapter;
+use Valkyrja\Session\Adapters\CookieAdapter;
+use Valkyrja\Session\Adapters\PHPAdapter;
 use Valkyrja\Session\Session;
-use Valkyrja\Session\Sessions\CacheSession;
-use Valkyrja\Session\Sessions\CookieSession;
 
 /**
  * Class ServiceProvider.
@@ -37,7 +38,10 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class => 'publishSession',
+            Session::class       => 'publishSession',
+            CacheAdapter::class  => 'publishCacheAdapter',
+            CookieAdapter::class => 'publishCookieAdapter',
+            PHPAdapter::class    => 'publishPHPAdapter',
         ];
     }
 
@@ -78,25 +82,26 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Session::class,
             new \Valkyrja\Session\Sessions\Session(
+                $container,
                 (array) $config['session']
             )
         );
     }
 
     /**
-     * Publish the cache session service.
+     * Publish the cache adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishCacheSession(Container $container): void
+    public static function publishCacheAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Session::class,
-            new CacheSession(
+            CacheAdapter::class,
+            new CacheAdapter(
                 $container->getSingleton(Cache::class),
                 (array) $config['session']
             )
@@ -104,21 +109,40 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the cookie session service.
+     * Publish the cookie adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishCookieSession(Container $container): void
+    public static function publishCookieAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Session::class,
-            new CookieSession(
+            CookieAdapter::class,
+            new CookieAdapter(
                 $container->getSingleton(Crypt::class),
                 $container->getSingleton(Request::class),
+                (array) $config['session']
+            )
+        );
+    }
+
+    /**
+     * Publish the php adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPHPAdapter(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            PHPAdapter::class,
+            new PHPAdapter(
                 (array) $config['session']
             )
         );

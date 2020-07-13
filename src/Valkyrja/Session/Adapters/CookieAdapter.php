@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Sessions;
+namespace Valkyrja\Session\Adapters;
 
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
@@ -22,11 +22,11 @@ use function headers_sent;
 use function session_start;
 
 /**
- * Class CookieSession.
+ * Class CookieAdapter.
  *
  * @author Melech Mizrachi
  */
-class CookieSession extends Session
+class CookieAdapter extends PHPAdapter
 {
     /**
      * The crypt.

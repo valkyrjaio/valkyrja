@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Sessions;
+namespace Valkyrja\Session\Adapters;
 
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
@@ -25,11 +25,11 @@ use function session_start;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * Class CacheSession.
+ * Class CacheAdapter.
  *
  * @author Melech Mizrachi
  */
-class CacheSession extends Session
+class CacheAdapter extends PHPAdapter
 {
     /**
      * The cache.

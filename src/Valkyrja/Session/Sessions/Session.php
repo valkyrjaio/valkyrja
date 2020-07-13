@@ -13,24 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Sessions;
 
-use Exception;
-use Valkyrja\Session\Exceptions\InvalidSessionId;
-use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Container\Container;
+use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Session as Contract;
-
-use function bin2hex;
-use function hash_equals;
-use function headers_sent;
-use function is_string;
-use function preg_match;
-use function random_bytes;
-use function session_id;
-use function session_name;
-use function session_start;
-use function session_status;
-use function session_unset;
-
-use const PHP_SESSION_ACTIVE;
 
 /**
  * Class Session.
@@ -40,6 +25,20 @@ use const PHP_SESSION_ACTIVE;
 class Session implements Contract
 {
     /**
+     * The adapters.
+     *
+     * @var Adapter[]
+     */
+    protected static array $adapters = [];
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
      * The config.
      *
      * @var array
@@ -47,68 +46,50 @@ class Session implements Contract
     protected array $config;
 
     /**
-     * The session data.
+     * The default adapter.
      *
-     * @var array
+     * @var string
      */
-    protected array $data = [];
+    protected string $defaultAdapter;
 
     /**
      * Session constructor.
      *
-     * @param array  $config      The config
-     * @param string $sessionId   [optional] The session id
-     * @param string $sessionName [optional] The session name
-     *
-     * @throws InvalidSessionId
-     * @throws SessionStartFailure
+     * @param Container $container The container
+     * @param array     $config    The config
      */
-    public function __construct(array $config, string $sessionId = null, string $sessionName = null)
+    public function __construct(Container $container, array $config)
     {
-        $this->config = $config;
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->defaultAdapter = $config['adapter'];
+    }
 
-        $sessionId   = $sessionId ?? $config['id'];
-        $sessionName = $sessionName ?? $config['name'];
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter
+    {
+        $name ??= $this->defaultAdapter;
 
-        // If a session id is provided
-        if (null !== $sessionId) {
-            // Set the id
-            $this->setId($sessionId);
-        }
-
-        // If a session name is provided
-        if (null !== $sessionName) {
-            // Set the name
-            $this->setName($sessionName);
-        }
-
-        // Start the session
-        $this->start();
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->getSingleton(
+                $this->config['adapters'][$name]
+            );
     }
 
     /**
      * Start the session.
      *
-     * @throws SessionStartFailure
-     *
      * @return void
      */
     public function start(): void
     {
-        // If the session is already active
-        if ($this->isActive() || headers_sent()) {
-            // No need to reactivate
-            return;
-        }
-
-        // If the session failed to start
-        if (! session_start()) {
-            // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
-        }
-
-        // Set the data
-        $this->data = &$_SESSION;
+        $this->getAdapter()->start();
     }
 
     /**
@@ -118,29 +99,19 @@ class Session implements Contract
      */
     public function getId(): string
     {
-        return session_id();
+        return $this->getAdapter()->getId();
     }
 
     /**
      * Set the session id.
      *
-     * @param string $id The session id
-     *
-     * @throws InvalidSessionId
+     * @param string $id
      *
      * @return void
      */
     public function setId(string $id): void
     {
-        if (! preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $id)) {
-            throw new InvalidSessionId(
-                "The session id, '{$id}', is invalid! "
-                . 'Session id can only contain alpha numeric characters, dashes, commas, '
-                . 'and be at least 1 character in length but up to 128 characters long.'
-            );
-        }
-
-        session_id($id);
+        $this->getAdapter()->setId($id);
     }
 
     /**
@@ -150,7 +121,7 @@ class Session implements Contract
      */
     public function getName(): string
     {
-        return session_name();
+        return $this->getAdapter()->getName();
     }
 
     /**
@@ -162,7 +133,7 @@ class Session implements Contract
      */
     public function setName(string $name): void
     {
-        session_name($name);
+        $this->getAdapter()->setName($name);
     }
 
     /**
@@ -172,7 +143,7 @@ class Session implements Contract
      */
     public function isActive(): bool
     {
-        return PHP_SESSION_ACTIVE === session_status();
+        return $this->getAdapter()->isActive();
     }
 
     /**
@@ -184,7 +155,7 @@ class Session implements Contract
      */
     public function has(string $id): bool
     {
-        return isset($this->data[$id]);
+        return $this->getAdapter()->has($id);
     }
 
     /**
@@ -197,7 +168,7 @@ class Session implements Contract
      */
     public function get(string $id, $default = null)
     {
-        return $this->data[$id] ?? $default;
+        return $this->getAdapter()->get($id, $default);
     }
 
     /**
@@ -210,7 +181,7 @@ class Session implements Contract
      */
     public function set(string $id, string $value): void
     {
-        $this->data[$id] = $value;
+        $this->getAdapter()->set($id, $value);
     }
 
     /**
@@ -222,13 +193,7 @@ class Session implements Contract
      */
     public function remove(string $id): bool
     {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        unset($this->data[$id]);
-
-        return true;
+        return $this->getAdapter()->remove($id);
     }
 
     /**
@@ -238,7 +203,7 @@ class Session implements Contract
      */
     public function all(): array
     {
-        return $this->data;
+        return $this->getAdapter()->all();
     }
 
     /**
@@ -246,17 +211,11 @@ class Session implements Contract
      *
      * @param string $id The csrf unique token id
      *
-     * @throws Exception
-     *
      * @return string
      */
     public function csrf(string $id): string
     {
-        $token = bin2hex(random_bytes(64));
-
-        $this->set($id, $token);
-
-        return $token;
+        return $this->getAdapter()->csrf($id);
     }
 
     /**
@@ -269,19 +228,7 @@ class Session implements Contract
      */
     public function validateCsrf(string $id, string $token): bool
     {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        $sessionToken = $this->get($id);
-
-        if (! is_string($sessionToken)) {
-            return false;
-        }
-
-        $this->remove($id);
-
-        return hash_equals($token, $sessionToken);
+        return $this->getAdapter()->validateCsrf($id, $token);
     }
 
     /**
@@ -291,9 +238,7 @@ class Session implements Contract
      */
     public function clear(): void
     {
-        $this->data = [];
-
-        session_unset();
+        $this->getAdapter()->clear();
     }
 
     /**
@@ -303,8 +248,6 @@ class Session implements Contract
      */
     public function destroy(): void
     {
-        $this->data = [];
-
-        session_unset();
+        $this->getAdapter()->destroy();
     }
 }
