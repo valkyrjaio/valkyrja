@@ -86,7 +86,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             View::class,
-            new \Valkyrja\View\Views\View(
+            new \Valkyrja\View\Managers\View(
                 $container,
                 (array) $config['view']
             )

@@ -37,7 +37,7 @@ use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
-use Valkyrja\View\Views\View;
+use Valkyrja\View\Managers\View;
 
 use function get_class;
 use function is_string;

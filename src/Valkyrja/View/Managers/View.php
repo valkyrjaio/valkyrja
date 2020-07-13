@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\View\Views;
+namespace Valkyrja\View\Managers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Support\Directory;
