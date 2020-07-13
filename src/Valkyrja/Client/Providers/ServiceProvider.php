@@ -15,7 +15,7 @@ namespace Valkyrja\Client\Providers;
 
 use GuzzleHttp\Client as Guzzle;
 use Valkyrja\Client\Client;
-use Valkyrja\Client\Clients\GuzzleClient;
+use Valkyrja\Client\Clients\GuzzleAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
@@ -34,7 +34,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Client::class => 'publishClient',
+            Client::class        => 'publishClient',
+            GuzzleAdapter::class => 'publishGuzzleAdapter',
         ];
     }
 
@@ -70,9 +71,31 @@ class ServiceProvider extends Provider
      */
     public static function publishClient(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             Client::class,
-            new GuzzleClient(new Guzzle())
+            new \Valkyrja\Client\Managers\Client(
+                $container,
+                $config['client']
+            )
+        );
+    }
+
+    /**
+     * Publish the guzzle adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function GuzzleAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            GuzzleAdapter::class,
+            new GuzzleAdapter(
+                new Guzzle()
+            )
         );
     }
 }

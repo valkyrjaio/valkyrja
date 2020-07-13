@@ -54,6 +54,9 @@ final class ConfigKey
     public const CACHE_DEFAULT = 'cache.default';
     public const CACHE_STORES  = 'cache.stores';
 
+    public const CLIENT_ADAPTER  = 'client.adapter';
+    public const CLIENT_ADAPTERS = 'client.adapters';
+
     public const CONSOLE_PROVIDERS                   = 'console.providers';
     public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';
     public const CONSOLE_QUIET                       = 'console.quiet';

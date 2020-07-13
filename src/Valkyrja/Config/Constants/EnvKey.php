@@ -56,6 +56,9 @@ final class EnvKey
     public const CACHE_DEFAULT = 'CACHE_DEFAULT';
     public const CACHE_STORES  = 'CACHE_STORES';
 
+    public const CLIENT_ADAPTER  = 'CLIENT_ADAPTER';
+    public const CLIENT_ADAPTERS = 'CLIENT_ADAPTERS';
+
     public const CONSOLE_PROVIDERS                   = 'CONSOLE_PROVIDERS';
     public const CONSOLE_DEV_PROVIDERS               = 'CONSOLE_DEV_PROVIDERS';
     public const CONSOLE_QUIET                       = 'CONSOLE_QUIET';

@@ -18,6 +18,7 @@ use Valkyrja\Api\Config\Config as Api;
 use Valkyrja\Application\Config\Config as App;
 use Valkyrja\Auth\Config\Config as Auth;
 use Valkyrja\Cache\Config\Config as Cache;
+use Valkyrja\Client\Config\Config as Client;
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Config\Constants\EnvKey;
@@ -100,6 +101,13 @@ class Config extends Model
      * @var Cache
      */
     public Cache $cache;
+
+    /**
+     * The client module config.
+     *
+     * @var Client
+     */
+    public Client $client;
 
     /**
      * The console module config.

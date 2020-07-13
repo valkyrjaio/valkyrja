@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Facades;
 
 use Psr\Http\Message\ResponseInterface;
+use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Support\Facade\Facade;
 
@@ -22,6 +23,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
+ * @method static Adapter getAdapter(string $name = null)
  * @method static ResponseInterface request(string $method, string $uri, array $options = [])
  * @method static ResponseInterface get(string $uri, array $options = [])
  * @method static ResponseInterface post(string $uri, array $options = [])

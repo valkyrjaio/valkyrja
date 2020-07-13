@@ -23,6 +23,8 @@ use Valkyrja\Auth\Config\Config as Auth;
 use Valkyrja\Auth\Constants\ConfigValue as AuthConfigValue;
 use Valkyrja\Cache\Config\Config as Cache;
 use Valkyrja\Cache\Constants\ConfigValue as CacheConfigValue;
+use Valkyrja\Client\Config\Config as Client;
+use Valkyrja\Client\Constants\ConfigValue as ClientConfigValue;
 use Valkyrja\Config\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigValue;
 use Valkyrja\Console\Config\Config as Console;
@@ -68,6 +70,7 @@ class Config extends Model
         $this->app        = new App(AppConfigValue::$defaults, true);
         $this->auth       = new Auth(AuthConfigValue::$defaults, true);
         $this->cache      = new Cache(CacheConfigValue::$defaults, true);
+        $this->client     = new Client(ClientConfigValue::$defaults, true);
         $this->console    = new Console(ConsoleConfigValue::$defaults, true);
         $this->container  = new Container(ContainerConfigValue::$defaults, true);
         $this->crypt      = new Crypt(CryptConfigValue::$defaults, true);

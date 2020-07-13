@@ -11,25 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client;
+namespace Valkyrja\Client\Clients;
 
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Valkyrja\Client\Adapter as Contract;
 
 /**
- * Interface Client.
+ * Class GuzzleClient.
  *
  * @author Melech Mizrachi
  */
-interface Client
+class GuzzleAdapter implements Contract
 {
     /**
-     * Get an adapter by name.
+     * The guzzle client.
      *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
+     * @var ClientInterface
      */
-    public function getAdapter(string $name = null): Adapter;
+    protected ClientInterface $guzzle;
+
+    /**
+     * Client constructor.
+     *
+     * @param ClientInterface $guzzle The guzzle client
+     */
+    public function __construct(ClientInterface $guzzle)
+    {
+        $this->guzzle = $guzzle;
+    }
 
     /**
      * Make a request.
@@ -38,9 +49,14 @@ interface Client
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
+     * @throws GuzzleException
+     *
      * @return ResponseInterface
      */
-    public function request(string $method, string $uri, array $options = []): ResponseInterface;
+    public function request(string $method, string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->request($method, $uri, $options);
+    }
 
     /**
      * Make a get request.
@@ -50,7 +66,10 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function get(string $uri, array $options = []): ResponseInterface;
+    public function get(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->get($uri, $options);
+    }
 
     /**
      * Make a post request.
@@ -60,7 +79,10 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function post(string $uri, array $options = []): ResponseInterface;
+    public function post(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->post($uri, $options);
+    }
 
     /**
      * Make a head request.
@@ -70,7 +92,10 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function head(string $uri, array $options = []): ResponseInterface;
+    public function head(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->head($uri, $options);
+    }
 
     /**
      * Make a put request.
@@ -80,7 +105,10 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function put(string $uri, array $options = []): ResponseInterface;
+    public function put(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->put($uri, $options);
+    }
 
     /**
      * Make a patch request.
@@ -90,7 +118,10 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function patch(string $uri, array $options = []): ResponseInterface;
+    public function patch(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->patch($uri, $options);
+    }
 
     /**
      * Make a delete request.
@@ -100,5 +131,8 @@ interface Client
      *
      * @return ResponseInterface
      */
-    public function delete(string $uri, array $options = []): ResponseInterface;
+    public function delete(string $uri, array $options = []): ResponseInterface
+    {
+        return $this->guzzle->delete($uri, $options);
+    }
 }

@@ -11,35 +11,76 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Clients;
+namespace Valkyrja\Client\Managers;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
+use Valkyrja\Container\Container;
 
 /**
- * Class GuzzleClient.
+ * Class Client.
  *
  * @author Melech Mizrachi
  */
-class GuzzleClient implements Contract
+class Client implements Contract
 {
     /**
-     * The guzzle client.
+     * The adapters.
      *
-     * @var ClientInterface
+     * @var Adapter[]
      */
-    protected ClientInterface $guzzle;
+    protected static array $adapters = [];
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
 
     /**
      * Client constructor.
      *
-     * @param ClientInterface $guzzle The guzzle client
+     * @param Container $container The container
+     * @param array     $config    The config
      */
-    public function __construct(ClientInterface $guzzle)
+    public function __construct(Container $container, array $config)
     {
-        $this->guzzle = $guzzle;
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->defaultAdapter = $config['adapter'];
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter
+    {
+        $name ??= $this->defaultAdapter;
+
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->getSingleton(
+                $this->config['adapters'][$name]
+            );
     }
 
     /**
@@ -49,13 +90,11 @@ class GuzzleClient implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return ResponseInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->request($method, $uri, $options);
+        return $this->getAdapter()->request($method, $uri, $options);
     }
 
     /**
@@ -68,7 +107,7 @@ class GuzzleClient implements Contract
      */
     public function get(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->get($uri, $options);
+        return $this->getAdapter()->get($uri, $options);
     }
 
     /**
@@ -81,7 +120,7 @@ class GuzzleClient implements Contract
      */
     public function post(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->post($uri, $options);
+        return $this->getAdapter()->post($uri, $options);
     }
 
     /**
@@ -94,7 +133,7 @@ class GuzzleClient implements Contract
      */
     public function head(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->head($uri, $options);
+        return $this->getAdapter()->head($uri, $options);
     }
 
     /**
@@ -107,7 +146,7 @@ class GuzzleClient implements Contract
      */
     public function put(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->put($uri, $options);
+        return $this->getAdapter()->put($uri, $options);
     }
 
     /**
@@ -120,7 +159,7 @@ class GuzzleClient implements Contract
      */
     public function patch(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->patch($uri, $options);
+        return $this->getAdapter()->patch($uri, $options);
     }
 
     /**
@@ -133,6 +172,6 @@ class GuzzleClient implements Contract
      */
     public function delete(string $uri, array $options = []): ResponseInterface
     {
-        return $this->guzzle->delete($uri, $options);
+        return $this->getAdapter()->delete($uri, $options);
     }
 }
