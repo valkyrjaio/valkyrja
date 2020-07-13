@@ -18,6 +18,7 @@ use Throwable;
 use Valkyrja\Container\Container;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
@@ -232,6 +233,20 @@ class Kernel implements Contract
         /** @var ResponseFactory $responseFactory */
         $responseFactory = $this->container->getSingleton(ResponseFactory::class);
 
+        // If no response has been set and there is a template with the error code
+        if ($exception instanceof HttpException) {
+            try {
+                // Set the response as the error template
+                return $exception->getResponse()
+                    ?? $responseFactory->view(
+                        'errors/' . $exception->getStatusCode(),
+                        null,
+                        $exception->getStatusCode()
+                    );
+            } catch (Throwable $exception) {
+            }
+        }
+
         return $responseFactory->view('errors/500', null, StatusCode::INTERNAL_SERVER_ERROR);
     }
 
@@ -247,7 +262,7 @@ class Kernel implements Contract
         /** @var Logger $logger */
         $logger = $this->container->getSingleton(Logger::class);
 
-        $logger->error((string) $exception);
+        $logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
     }
 
     /**
