@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Facades;
 
+use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Support\Facade\Facade;
 
@@ -21,6 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
+ * @method static Adapter getAdapter(string $name = null)
  * @method static string getKey()
  * @method static string encrypt(string $message, string $key = null)
  * @method static string decrypt(string $encrypted, string $key = null)
