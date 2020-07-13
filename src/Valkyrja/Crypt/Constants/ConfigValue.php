@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Crypt\Decrypters\SodiumAdapter;
 
 /**
  * Constant ConfigValue.
@@ -24,9 +25,15 @@ final class ConfigValue
 {
     public const KEY      = 'some_secret_key';
     public const KEY_PATH = null;
+    public const ADAPTER  = CKP::SODIUM;
+    public const ADAPTERS = [
+        CKP::SODIUM => SodiumAdapter::class,
+    ];
 
     public static array $defaults = [
         CKP::KEY      => self::KEY,
         CKP::KEY_PATH => self::KEY_PATH,
+        CKP::ADAPTER  => self::ADAPTER,
+        CKP::ADAPTERS => self::ADAPTERS,
     ];
 }

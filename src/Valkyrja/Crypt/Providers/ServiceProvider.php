@@ -16,10 +16,7 @@ namespace Valkyrja\Crypt\Providers;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Decrypter;
-use Valkyrja\Crypt\Decrypters\SodiumDecrypter;
-use Valkyrja\Crypt\Encrypter;
-use Valkyrja\Crypt\Encrypters\SodiumEncrypter;
+use Valkyrja\Crypt\Decrypters\SodiumAdapter;
 
 /**
  * Class ServiceProvider.
@@ -36,9 +33,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Decrypter::class => 'publishCrypt',
-            Encrypter::class => 'publishEncrypter',
-            Crypt::class     => 'publishDecrypter',
+            Crypt::class         => 'publishCrypt',
+            SodiumAdapter::class => 'publishSodiumAdapter',
         ];
     }
 
@@ -50,9 +46,8 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Decrypter::class,
-            Encrypter::class,
             Crypt::class,
+            SodiumAdapter::class,
         ];
     }
 
@@ -81,40 +76,24 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Crypt::class,
             new \Valkyrja\Crypt\Crypts\Crypt(
-                $container->get(Encrypter::class),
-                $container->get(Decrypter::class),
+                $container,
                 (array) $config['crypt']
             )
         );
     }
 
     /**
-     * Publish the decrypter service.
+     * Publish the sodium adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishDecrypter(Container $container): void
+    public static function publishSodiumAdapter(Container $container): void
     {
         $container->setSingleton(
-            Decrypter::class,
-            new SodiumDecrypter()
-        );
-    }
-
-    /**
-     * Publish the encrypter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishEncrypter(Container $container): void
-    {
-        $container->setSingleton(
-            Encrypter::class,
-            new SodiumEncrypter()
+            SodiumAdapter::class,
+            new SodiumAdapter()
         );
     }
 }

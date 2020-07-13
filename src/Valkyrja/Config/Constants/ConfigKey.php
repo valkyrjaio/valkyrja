@@ -79,6 +79,8 @@ final class ConfigKey
 
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
+    public const CRYPT_ADAPTER  = 'crypt.adapter';
+    public const CRYPT_ADAPTERS = 'crypt.adapters';
 
     public const EVENTS_USE_ANNOTATIONS             = 'event.useAnnotations';
     public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'event.useAnnotationsExclusively';

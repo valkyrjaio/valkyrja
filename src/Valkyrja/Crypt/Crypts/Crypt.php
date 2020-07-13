@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Crypts;
 
 use Exception;
+use Valkyrja\Container\Container;
+use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
-use Valkyrja\Crypt\Decrypter;
-use Valkyrja\Crypt\Encrypter;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 use function file_exists;
@@ -30,18 +30,18 @@ use function file_get_contents;
 class Crypt implements Contract
 {
     /**
-     * The encrypter.
+     * The adapters.
      *
-     * @var Encrypter
+     * @var Adapter[]
      */
-    protected Encrypter $encrypter;
+    protected static array $adapters = [];
 
     /**
-     * The decrypter.
+     * The container.
      *
-     * @var Decrypter
+     * @var Container
      */
-    protected Decrypter $decrypter;
+    protected Container $container;
 
     /**
      * The config.
@@ -49,6 +49,13 @@ class Crypt implements Contract
      * @var array
      */
     protected array $config;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
 
     /**
      * The key
@@ -60,15 +67,31 @@ class Crypt implements Contract
     /**
      * SodiumCrypt constructor.
      *
-     * @param Encrypter $encrypter
-     * @param Decrypter $decrypter
-     * @param array     $config
+     * @param Container $container The container
+     * @param array     $config    The config
      */
-    public function __construct(Encrypter $encrypter, Decrypter $decrypter, array $config)
+    public function __construct(Container $container, array $config)
     {
-        $this->encrypter = $encrypter;
-        $this->decrypter = $decrypter;
-        $this->config    = $config;
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->defaultAdapter = $config['adapter'];
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter
+    {
+        $name ??= $this->defaultAdapter;
+
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->getSingleton(
+                $this->config['messages'][$name]
+            );
     }
 
     /**
@@ -90,7 +113,7 @@ class Crypt implements Contract
      */
     public function isValidEncryptedMessage(string $encrypted): bool
     {
-        return $this->decrypter->isValidEncryptedMessage($encrypted);
+        return $this->getAdapter()->isValidEncryptedMessage($encrypted);
     }
 
     /**
@@ -105,7 +128,7 @@ class Crypt implements Contract
      */
     public function encrypt(string $message, string $key = null): string
     {
-        return $this->encrypter->encrypt($message, $key ?? $this->getKey());
+        return $this->getAdapter()->encrypt($message, $key ?? $this->getKey());
     }
 
     /**
@@ -120,7 +143,7 @@ class Crypt implements Contract
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
-        return $this->decrypter->decrypt($encrypted, $key ?? $this->getKey());
+        return $this->getAdapter()->decrypt($encrypted, $key ?? $this->getKey());
     }
 
     /**
@@ -135,7 +158,7 @@ class Crypt implements Contract
      */
     public function encryptArray(array $array, string $key = null): string
     {
-        return $this->encrypter->encryptArray($array, $key ?? $this->getKey());
+        return $this->getAdapter()->encryptArray($array, $key ?? $this->getKey());
     }
 
     /**
@@ -150,7 +173,7 @@ class Crypt implements Contract
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
-        return $this->decrypter->decryptArray($encrypted, $key ?? $this->getKey());
+        return $this->getAdapter()->decryptArray($encrypted, $key ?? $this->getKey());
     }
 
     /**
@@ -165,7 +188,7 @@ class Crypt implements Contract
      */
     public function encryptObject(object $object, string $key = null): string
     {
-        return $this->encrypter->encryptObject($object, $key ?? $this->getKey());
+        return $this->getAdapter()->encryptObject($object, $key ?? $this->getKey());
     }
 
     /**
@@ -180,7 +203,7 @@ class Crypt implements Contract
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return $this->decrypter->decryptObject($encrypted, $key ?? $this->getKey());
+        return $this->getAdapter()->decryptObject($encrypted, $key ?? $this->getKey());
     }
 
     /**

@@ -23,6 +23,15 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 interface Crypt
 {
     /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter;
+
+    /**
      * Get the key.
      *
      * @return string

@@ -80,6 +80,8 @@ final class EnvKey
 
     public const CRYPT_KEY      = 'CRYPT_KEY';
     public const CRYPT_KEY_PATH = 'CRYPT_KEY_PATH';
+    public const CRYPT_ADAPTER  = 'CRYPT_ADAPTER';
+    public const CRYPT_ADAPTERS = 'CRYPT_ADAPTERS';
 
     public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
     public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
