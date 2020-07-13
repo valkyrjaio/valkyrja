@@ -38,7 +38,7 @@ final class ConfigValue
             CKP::DB       => '',
             CKP::CHARSET  => '',
             CKP::USERNAME => '',
-            CKP::PASSWORD => ''
+            CKP::PASSWORD => '',
         ],
     ];
 
