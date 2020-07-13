@@ -90,7 +90,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function GuzzleAdapter(Container $container): void
+    public static function publishGuzzleAdapter(Container $container): void
     {
         $container->setSingleton(
             GuzzleAdapter::class,
