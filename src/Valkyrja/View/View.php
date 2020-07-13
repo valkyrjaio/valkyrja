@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\View;
 
-use Valkyrja\View\Exceptions\InvalidConfigPath;
-
 /**
  * Interface View.
  *
@@ -25,12 +23,13 @@ interface View
     /**
      * Make a new View.
      *
-     * @param string|null $template  [optional] The template to set
+     * @param string|null $name      [optional] The template to set
      * @param array       $variables [optional] The variables to set
+     * @param string|null $engine    [optional] The engine to use
      *
-     * @return static
+     * @return Template
      */
-    public function make(string $template = null, array $variables = []): self;
+    public function createTemplate(string $name = null, array $variables = [], string $engine = null): Template;
 
     /**
      * Get a render engine.
@@ -42,114 +41,12 @@ interface View
     public function getEngine(string $name = null): Engine;
 
     /**
-     * Get the variables.
+     * Render a template
      *
-     * @return array
-     */
-    public function getVariables(): array;
-
-    /**
-     * Set the variables.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return static
-     */
-    public function setVariables(array $variables = []): self;
-
-    /**
-     * Get a variable.
-     *
-     * @param string $key The variable key to set
-     *
-     * @return mixed
-     */
-    public function variable(string $key);
-
-    /**
-     * Set a single variable.
-     *
-     * @param string $key   The variable key to set
-     * @param mixed  $value The value to set
-     *
-     * @return static
-     */
-    public function setVariable(string $key, $value): self;
-
-    /**
-     * Get the directory.
-     *
-     * @param string $path [optional] The path to append
+     * @param string $name      The name of the template to render
+     * @param array  $variables [optional] The variables to set
      *
      * @return string
      */
-    public function getDir(string $path = null): string;
-
-    /**
-     * Set the directory.
-     *
-     * @param string $path The path to set
-     *
-     * @return static
-     */
-    public function setDir(string $path): self;
-
-    /**
-     * Get the file extension.
-     *
-     * @return string
-     */
-    public function getFileExtension(): string;
-
-    /**
-     * Set the file extension.
-     *
-     * @param string $extension The extension to set
-     *
-     * @return static
-     */
-    public function setFileExtension(string $extension): self;
-
-    /**
-     * Get the template path.
-     *
-     * @return string
-     */
-    public function getTemplatePath(): string;
-
-    /**
-     * Set the template for the view.
-     *
-     * @param string $template The template
-     *
-     * @return static
-     */
-    public function setTemplate(string $template): self;
-
-    /**
-     * Get the full path for a given template.
-     *
-     * @param string $template The template
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return string
-     */
-    public function getFullPath(string $template): string;
-
-    /**
-     * Render the templates and view.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return string
-     */
-    public function render(array $variables = []): string;
-
-    /**
-     * Get the view as a string.
-     *
-     * @return string
-     */
-    public function __toString(): string;
+    public function render(string $name, array $variables = []): string;
 }

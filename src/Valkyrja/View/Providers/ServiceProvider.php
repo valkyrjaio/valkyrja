@@ -18,8 +18,8 @@ use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Twig\TwigEngine;
 use Valkyrja\View\Engines\PHPEngine;
+use Valkyrja\View\Engines\TwigEngine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
 use Valkyrja\View\View;
 
@@ -104,10 +104,12 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPEngine(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             PHPEngine::class,
             new PHPEngine(
-                $container->getSingleton(View::class)
+                (array) $config['view']
             )
         );
     }

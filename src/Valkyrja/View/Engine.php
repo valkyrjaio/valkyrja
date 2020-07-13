@@ -21,12 +21,26 @@ namespace Valkyrja\View;
 interface Engine
 {
     /**
-     * Render a template.
+     * Start rendering.
      *
-     * @param string $path      The path to render
-     * @param array  $variables [optional] The variables to set
+     * @return void
+     */
+    public function startRender(): void;
+
+    /**
+     * End rendering.
      *
      * @return string
      */
-    public function render(string $path, array $variables = []): string;
+    public function endRender(): string;
+
+    /**
+     * Render a file.
+     *
+     * @param string $name      The file name
+     * @param array  $variables [optional] The variables
+     *
+     * @return string
+     */
+    public function renderFile(string $name, array $variables = []): string;
 }

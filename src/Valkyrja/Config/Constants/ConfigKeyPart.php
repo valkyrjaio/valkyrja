@@ -153,4 +153,5 @@ final class ConfigKeyPart
     public const CLUSTER                     = 'cluster';
     public const USE_TLS                     = 'useTls';
     public const EXTENSIONS                  = 'extensions';
+    public const FILE_EXTENSION              = 'fileExtension';
 }

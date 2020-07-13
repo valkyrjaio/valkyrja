@@ -32,7 +32,7 @@ use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Support\MiddlewareAwareTrait;
-use Valkyrja\View\View;
+use Valkyrja\View\Template;
 
 use function is_array;
 use function rawurldecode;
@@ -354,7 +354,7 @@ class Router implements Contract
         }
 
         // If the dispatch is a View, render it then wrap it in a new response and return it
-        if ($dispatch instanceof View) {
+        if ($dispatch instanceof Template) {
             return $this->responseFactory->createResponse($dispatch->render());
         }
 

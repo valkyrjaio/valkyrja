@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Twig;
+namespace Valkyrja\View\Engines;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -34,7 +34,7 @@ class TwigEngine implements Engine
     protected Environment $twig;
 
     /**
-     * View constructor.
+     * TwigEngine constructor.
      *
      * @param Environment $twig The Twig environment
      */
@@ -44,10 +44,29 @@ class TwigEngine implements Engine
     }
 
     /**
-     * Render a template.
+     * Start rendering.
      *
-     * @param string $path      The path to render
-     * @param array  $variables [optional] The variables to set
+     * @return void
+     */
+    public function startRender(): void
+    {
+    }
+
+    /**
+     * End rendering.
+     *
+     * @return string
+     */
+    public function endRender(): string
+    {
+        return '';
+    }
+
+    /**
+     * Render a file.
+     *
+     * @param string $name      The file name
+     * @param array  $variables [optional] The variables
      *
      * @throws LoaderError  When the template cannot be found
      * @throws SyntaxError  When an error occurred during compilation
@@ -55,8 +74,8 @@ class TwigEngine implements Engine
      *
      * @return string
      */
-    public function render(string $path, array $variables = []): string
+    public function renderFile(string $name, array $variables = []): string
     {
-        return $this->twig->render($path, $variables);
+        return $this->twig->render($name, $variables);
     }
 }

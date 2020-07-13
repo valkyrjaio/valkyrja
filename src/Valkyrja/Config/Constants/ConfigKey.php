@@ -170,15 +170,12 @@ final class ConfigKey
     public const VALIDATION_RULES     = 'validation.rules';
     public const VALIDATION_RULES_MAP = 'validation.rulesMap';
 
-    public const VIEW_DIR     = 'view.dir';
-    public const VIEW_ENGINE  = 'view.engine';
-    public const VIEW_ENGINES = 'view.engines';
-    public const VIEW_PATHS   = 'view.paths';
-
-    public const TWIG_FILE_EXTENSION = 'twig.fileExtension';
-    public const TWIG_DIR            = 'twig.dir';
-    public const TWIG_DIR_NS         = 'twig.dirNs';
-    public const TWIG_DIRS           = 'twig.dirs';
-    public const TWIG_COMPILED_DIR   = 'twig.compiledDir';
-    public const TWIG_EXTENSIONS     = 'twig.extensions';
+    public const VIEW_DIR                = 'view.dir';
+    public const VIEW_ENGINE             = 'view.engine';
+    public const VIEW_ENGINES            = 'view.engines';
+    public const VIEW_PATHS              = 'view.paths';
+    public const VIEW_DISKS              = 'view.disks';
+    public const VIEW_PHP_FILE_EXTENSION = 'view.disks.php.fileExtension';
+    public const VIEW_TWIG_COMPILED_DIR  = 'view.disks.twig.compiledDir';
+    public const VIEW_TWIG_EXTENSIONS    = 'view.disks.twig.extensions';
 }

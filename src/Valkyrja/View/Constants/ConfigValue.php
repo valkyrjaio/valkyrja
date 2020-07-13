@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\View\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Twig\TwigEngine;
 use Valkyrja\View\Engines\PHPEngine;
+use Valkyrja\View\Engines\TwigEngine;
 
 /**
  * Constant ConfigValue.
@@ -32,6 +32,9 @@ final class ConfigValue
     ];
     public const PATHS   = [];
     public const DISKS   = [
+        CKP::PHP  => [
+            CKP::FILE_EXTENSION => '.phtml',
+        ],
         CKP::TWIG => [
             CKP::COMPILED_DIR => '',
             CKP::EXTENSIONS   => [],

@@ -177,18 +177,12 @@ final class EnvKey
     public const VALIDATION_RULES     = 'VALIDATION_RULES';
     public const VALIDATION_RULES_MAP = 'VALIDATION_RULES_MAP';
 
-    public const VIEW_DIR               = 'VIEW_DIR';
-    public const VIEW_ENGINE            = 'VIEW_ENGINE';
-    public const VIEW_ENGINES           = 'VIEW_ENGINES';
-    public const VIEW_PATHS             = 'VIEW_PATHS';
-    public const VIEW_DISKS             = 'VIEW_DISKS';
-    public const VIEW_TWIG_COMPILED_DIR = 'VIEW_TWIG_COMPILED_DIR';
-    public const VIEW_TWIG_EXTENSIONS   = 'VIEW_TWIG_EXTENSIONS';
-
-    public const TWIG_FILE_EXTENSION = 'TWIG_FILE_EXTENSION';
-    public const TWIG_DIR            = 'TWIG_DIR';
-    public const TWIG_DIR_NS         = 'TWIG_DIR_NS';
-    public const TWIG_DIRS           = 'TWIG_DIRS';
-    public const TWIG_COMPILED_DIR   = 'TWIG_COMPILED_DIR';
-    public const TWIG_EXTENSIONS     = 'TWIG_EXTENSIONS';
+    public const VIEW_DIR                = 'VIEW_DIR';
+    public const VIEW_ENGINE             = 'VIEW_ENGINE';
+    public const VIEW_ENGINES            = 'VIEW_ENGINES';
+    public const VIEW_PATHS              = 'VIEW_PATHS';
+    public const VIEW_DISKS              = 'VIEW_DISKS';
+    public const VIEW_PHP_FILE_EXTENSION = 'VIEW_PHP_FILE_EXTENSION';
+    public const VIEW_TWIG_COMPILED_DIR  = 'VIEW_TWIG_COMPILED_DIR';
+    public const VIEW_TWIG_EXTENSIONS    = 'VIEW_TWIG_EXTENSIONS';
 }

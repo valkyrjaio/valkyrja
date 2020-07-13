@@ -175,7 +175,7 @@ class ResponseFactory implements Contract
         /** @var View $view */
         $view = $this->container->getSingleton(View::class);
 
-        $content = $view->make($template, $data ?? [])->render();
+        $content = $view->createTemplate($template, $data ?? [])->render();
 
         return $this->createResponse($content, $statusCode, $headers);
     }

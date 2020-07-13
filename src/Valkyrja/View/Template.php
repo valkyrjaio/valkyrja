@@ -14,12 +14,37 @@ declare(strict_types=1);
 namespace Valkyrja\View;
 
 /**
- * Interface PHPEngine.
+ * Interface Template.
  *
  * @author Melech Mizrachi
  */
-interface PHPEngine extends Engine
+interface Template
 {
+    /**
+     * Create a new template.
+     *
+     * @param Engine $engine The engine
+     *
+     * @return static
+     */
+    public static function createTemplate(Engine $engine): self;
+
+    /**
+     * Get the template name.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * Set the template name.
+     *
+     * @param string $name The name
+     *
+     * @return static
+     */
+    public function setName(string $name): self;
+
     /**
      * Get the variables.
      *
@@ -138,4 +163,20 @@ interface PHPEngine extends Engine
      * @return void
      */
     public function endBlock(string $name): void;
+
+    /**
+     * Render the template.
+     *
+     * @param array $variables [optional] The variables to set
+     *
+     * @return string
+     */
+    public function render(array $variables = []): string;
+
+    /**
+     * Get the view as a string.
+     *
+     * @return string
+     */
+    public function __toString(): string;
 }

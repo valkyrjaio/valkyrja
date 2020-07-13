@@ -58,9 +58,9 @@ use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;
 use Valkyrja\Validation\Validator;
+use Valkyrja\View\Template;
 use Valkyrja\View\View;
 
-use function func_num_args;
 use function var_dump;
 
 /**
@@ -596,21 +596,27 @@ function validator(): Validator
 /**
  * Helper function to get a new view.
  *
+ * @return View
+ */
+function view(): View
+{
+    return Valkyrja::app()->container()->getSingleton(View::class);
+}
+
+/**
+ * Helper function to get a new template.
+ *
  * @param string|null $template  [optional] The template to use
  * @param array       $variables [optional] The variables to use
  *
- * @return View
+ * @return Template
  */
-function view(string $template = null, array $variables = []): View
+function template(string $template = null, array $variables = []): Template
 {
     /** @var View $view */
     $view = Valkyrja::app()->container()->getSingleton(View::class);
 
-    if (func_num_args() === 0) {
-        return $view;
-    }
-
-    return $view->make($template, $variables);
+    return $view->createTemplate($template, $variables);
 }
 
 /**

@@ -14,16 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\View\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Support\Directory;
 use Valkyrja\View\Engine;
-use Valkyrja\View\Exceptions\InvalidConfigPath;
+use Valkyrja\View\Template;
 use Valkyrja\View\View as Contract;
-
-use function array_merge;
-use function explode;
-use function implode;
-use function strpos;
-use function trim;
 
 /**
  * Class View.
@@ -61,18 +54,6 @@ class View implements Contract
     protected string $templatePath;
 
     /**
-     * The template directory.
-     *
-     * @var string
-     */
-    protected string $templateDir;
-
-    /**
-     * @var string
-     */
-    protected string $fileExtension = '.phtml';
-
-    /**
      * The view variables.
      *
      * @var array
@@ -96,35 +77,36 @@ class View implements Contract
     /**
      * View constructor.
      *
-     * @param Container   $container The container
-     * @param array       $config    The config
-     * @param string|null $template  [optional] The template to set
-     * @param array       $variables [optional] The variables to set
+     * @param Container $container The container
+     * @param array     $config    The config
      */
-    public function __construct(Container $container, array $config, string $template = null, array $variables = [])
+    public function __construct(Container $container, array $config)
     {
         $this->container = $container;
         $this->config    = $config;
         $this->engine    = $config['engine'];
-
-        $this->setVariables($variables);
-        $this->setDir($this->config['dir']);
-        $this->setTemplate($template ?? $this->template);
     }
 
     /**
      * Make a new View.
      *
-     * @param string|null $template  [optional] The template to set
-     * @param array       $variables [optional] The variables to set
+     * @param string|null $name      [optional] The template name
+     * @param array       $variables [optional] The variables
+     * @param string|null $engine    [optional] The engine to use
      *
-     * @throws InvalidConfigPath
-     *
-     * @return static
+     * @return Template
      */
-    public function make(string $template = null, array $variables = []): self
+    public function createTemplate(string $name = null, array $variables = [], string $engine = null): Template
     {
-        return new static($this->container, $this->config, $template, $variables);
+        $template = \Valkyrja\View\Templates\Template::createTemplate($this->getEngine($engine));
+
+        if (null !== $name) {
+            $template->setName($name);
+        }
+
+        $template->setVariables($variables);
+
+        return $template;
     }
 
     /**
@@ -145,198 +127,15 @@ class View implements Contract
     }
 
     /**
-     * Get the variables.
+     * Render a template.
      *
-     * @return array
-     */
-    public function getVariables(): array
-    {
-        return $this->variables;
-    }
-
-    /**
-     * Set the variables.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return static
-     */
-    public function setVariables(array $variables = []): self
-    {
-        $this->variables = array_merge($this->variables, $variables);
-
-        return $this;
-    }
-
-    /**
-     * Get a variable.
-     *
-     * @param string $key The variable key to set
-     *
-     * @return mixed
-     */
-    public function variable(string $key)
-    {
-        return $this->variables[$key] ?? null;
-    }
-
-    /**
-     * Set a single variable.
-     *
-     * @param string $key   The variable key to set
-     * @param mixed  $value The value to set
-     *
-     * @return static
-     */
-    public function setVariable(string $key, $value): self
-    {
-        $this->variables[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get the template directory.
-     *
-     * @param string $path [optional] The path to append
+     * @param string $name      The name of the template to render
+     * @param array  $variables [optional] The variables to set
      *
      * @return string
      */
-    public function getDir(string $path = null): string
+    public function render(string $name, array $variables = []): string
     {
-        return $this->templateDir . ($path
-                ? Directory::DIRECTORY_SEPARATOR . $path
-                : $path);
-    }
-
-    /**
-     * Set the template directory.
-     *
-     * @param string $path The path to set
-     *
-     * @return static
-     */
-    public function setDir(string $path): self
-    {
-        $this->templateDir = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get the file extension.
-     *
-     * @return string
-     */
-    public function getFileExtension(): string
-    {
-        return $this->fileExtension;
-    }
-
-    /**
-     * Set the file extension.
-     *
-     * @param string $extension The extension to set
-     *
-     * @return static
-     */
-    public function setFileExtension(string $extension): self
-    {
-        $this->fileExtension = $extension;
-
-        return $this;
-    }
-
-    /**
-     * Get the template path.
-     *
-     * @return string
-     */
-    public function getTemplatePath(): string
-    {
-        return $this->templatePath;
-    }
-
-    /**
-     * Set the template for the view.
-     *
-     * @param string $template The template
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return static
-     */
-    public function setTemplate(string $template): self
-    {
-        $this->template     = $template;
-        $this->templatePath = $this->getFullPath($template);
-
-        return $this;
-    }
-
-    /**
-     * Get the full path for a given template.
-     *
-     * @param string $template The template
-     *
-     * @throws InvalidConfigPath
-     *
-     * @return string
-     */
-    public function getFullPath(string $template): string
-    {
-        // If the first character of the template is an @ symbol
-        // Then this is a template from a path in the config
-        if (strpos($template, '@') === 0) {
-            $explodeOn = Directory::DIRECTORY_SEPARATOR;
-            $parts     = explode($explodeOn, $template);
-            $path      = $this->config['paths'][$parts[0]] ?? null;
-
-            // If there is no path
-            if ($path === null) {
-                // Then throw an exception
-                throw new InvalidConfigPath(
-                    'Invalid path '
-                    . $parts[0]
-                    . ' specified for template '
-                    . $template
-                );
-            }
-
-            // Remove any trailing slashes
-            $parts[0] = $explodeOn . trim($path, $explodeOn);
-
-            $path = implode($explodeOn, $parts);
-        } else {
-            $path = $this->getDir($template);
-        }
-
-        return $path . $this->getFileExtension();
-    }
-
-    /**
-     * Render the templates and view.
-     *
-     * @param array $variables [optional] The variables to set
-     *
-     * @return string
-     */
-    public function render(array $variables = []): string
-    {
-        // Set the variables with the new variables and this view instance
-        $this->variables = array_merge($this->variables, $variables);
-
-        // Render the template
-        return $this->getEngine()->render($this->templatePath, $this->variables);
-    }
-
-    /**
-     * Get the view as a string.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->render();
+        return $this->createTemplate($name, $variables)->render();
     }
 }
