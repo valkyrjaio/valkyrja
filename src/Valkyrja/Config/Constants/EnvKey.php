@@ -109,6 +109,8 @@ final class EnvKey
 
     public const LOG_NAME      = 'LOG_NAME';
     public const LOG_FILE_PATH = 'LOG_FILE_PATH';
+    public const LOG_ADAPTER   = 'LOG_ADAPTER';
+    public const LOG_ADAPTERS  = 'LOG_ADAPTERS';
 
     public const MAIL_HOST         = 'MAIL_HOST';
     public const MAIL_PORT         = 'MAIL_PORT';

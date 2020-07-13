@@ -109,6 +109,8 @@ final class ConfigKey
 
     public const LOG_NAME      = 'log.name';
     public const LOG_FILE_PATH = 'log.filePath';
+    public const LOG_ADAPTER   = 'log.adapter';
+    public const LOG_ADAPTERS  = 'log.adapters';
 
     public const MAIL_HOST         = 'mail.host';
     public const MAIL_PORT         = 'mail.port';

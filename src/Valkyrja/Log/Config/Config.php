@@ -32,6 +32,8 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::NAME,
         CKP::FILE_PATH,
+        CKP::ADAPTER,
+        CKP::ADAPTERS,
     ];
 
     /**
@@ -42,6 +44,8 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::NAME      => EnvKey::LOG_NAME,
         CKP::FILE_PATH => EnvKey::LOG_FILE_PATH,
+        CKP::ADAPTER   => EnvKey::LOG_ADAPTER,
+        CKP::ADAPTERS  => EnvKey::LOG_ADAPTERS,
     ];
 
     /**
@@ -57,4 +61,18 @@ class Config extends Model
      * @var string
      */
     public string $filePath;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    public string $adapter;
+
+    /**
+     * The adapters.
+     *
+     * @var array
+     */
+    public array $adapters;
 }

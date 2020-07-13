@@ -32,7 +32,7 @@ use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
 use Valkyrja\HttpKernel\Kernels\Kernel;
-use Valkyrja\Log\Loggers\MonologLogger;
+use Valkyrja\Log\Loggers\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;
@@ -233,7 +233,7 @@ class HelpersTest extends TestCase
      */
     public function testLogger(): void
     {
-        $this->assertEquals(true, logger() instanceof MonologLogger);
+        $this->assertEquals(true, logger() instanceof Logger);
     }
 
     /**

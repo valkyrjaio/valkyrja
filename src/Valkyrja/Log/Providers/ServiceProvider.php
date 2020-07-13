@@ -19,9 +19,9 @@ use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Log\Enums\LogLevel;
+use Valkyrja\Log\Adapters\PsrAdapter;
+use Valkyrja\Log\Constants\LogLevel;
 use Valkyrja\Log\Logger;
-use Valkyrja\Log\Loggers\MonologLogger;
 
 use function date;
 
@@ -33,6 +33,20 @@ use function date;
 class ServiceProvider extends Provider
 {
     /**
+     * The items provided by this provider.
+     *
+     * @return string[]
+     */
+    public static function publishers(): array
+    {
+        return [
+            LoggerInterface::class => 'publishLoggerInterface',
+            Logger::class          => 'publishLogger',
+            PsrAdapter::class      => 'publishPsrAdapter',
+        ];
+    }
+
+    /**
      * What services are provided.
      *
      * @var array
@@ -40,6 +54,7 @@ class ServiceProvider extends Provider
     public static array $provides = [
         LoggerInterface::class,
         Logger::class,
+        PsrAdapter::class,
     ];
 
     /**
@@ -63,8 +78,6 @@ class ServiceProvider extends Provider
      */
     public static function publish(Container $container): void
     {
-        static::bindLoggerInterface($container);
-        static::bindLogger($container);
     }
 
     /**
@@ -76,7 +89,7 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    protected static function bindLoggerInterface(Container $container): void
+    public static function publishLoggerInterface(Container $container): void
     {
         $config    = $container->getSingleton('config');
         $logConfig = $config['log'];
@@ -97,17 +110,37 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Bind the logger.
+     * Bind the logger service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    protected static function bindLogger(Container $container): void
+    public static function publishLogger(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             Logger::class,
-            new MonologLogger(
+            new \Valkyrja\Log\Loggers\Logger(
+                $container,
+                (array) $config['log']
+            )
+        );
+    }
+
+    /**
+     * Bind the psr adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPsrAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            PsrAdapter::class,
+            new PsrAdapter(
                 $container->getSingleton(LoggerInterface::class)
             )
         );

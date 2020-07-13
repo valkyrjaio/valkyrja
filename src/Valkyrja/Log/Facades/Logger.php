@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Facades;
 
+use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Logger as Contract;
 use Valkyrja\Support\Facade\Facade;
 
@@ -21,15 +22,16 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Contract debug(string $message, array $context = [])
- * @method static Contract info(string $message, array $context = [])
- * @method static Contract notice(string $message, array $context = [])
- * @method static Contract warning(string $message, array $context = [])
- * @method static Contract error(string $message, array $context = [])
- * @method static Contract critical(string $message, array $context = [])
- * @method static Contract alert(string $message, array $context = [])
- * @method static Contract emergency(string $message, array $context = [])
- * @method static Contract log(string $message, array $context = [])
+ * @method static Adapter getAdapter(string $name = null)
+ * @method static void debug(string $message, array $context = [])
+ * @method static void info(string $message, array $context = [])
+ * @method static void notice(string $message, array $context = [])
+ * @method static void warning(string $message, array $context = [])
+ * @method static void error(string $message, array $context = [])
+ * @method static void critical(string $message, array $context = [])
+ * @method static void alert(string $message, array $context = [])
+ * @method static void emergency(string $message, array $context = [])
+ * @method static void log(string $message, array $context = [])
  */
 class Logger extends Facade
 {

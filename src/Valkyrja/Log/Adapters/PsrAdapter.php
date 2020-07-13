@@ -11,18 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Loggers;
+namespace Valkyrja\Log\Adapters;
 
 use Psr\Log\LoggerInterface;
-use Valkyrja\Log\Enums\LogLevel;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Adapter as Contract;
 
 /**
- * Class MonologLogger.
+ * Class PsrAdapter.
  *
  * @author Melech Mizrachi
  */
-class MonologLogger implements Logger
+class PsrAdapter implements Contract
 {
     /**
      * The logger.
@@ -32,7 +31,7 @@ class MonologLogger implements Logger
     protected LoggerInterface $logger;
 
     /**
-     * MonologLogger constructor.
+     * PsrAdapter constructor.
      *
      * @param LoggerInterface $logger The logger
      */
@@ -47,13 +46,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function debug(string $message, array $context = []): Logger
+    public function debug(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::DEBUG}($message, $context);
-
-        return $this;
+        $this->logger->debug($message, $context);
     }
 
     /**
@@ -62,13 +59,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function info(string $message, array $context = []): Logger
+    public function info(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::INFO}($message, $context);
-
-        return $this;
+        $this->logger->info($message, $context);
     }
 
     /**
@@ -77,13 +72,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function notice(string $message, array $context = []): Logger
+    public function notice(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::NOTICE}($message, $context);
-
-        return $this;
+        $this->logger->notice($message, $context);
     }
 
     /**
@@ -92,13 +85,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function warning(string $message, array $context = []): Logger
+    public function warning(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::WARNING}($message, $context);
-
-        return $this;
+        $this->logger->warning($message, $context);
     }
 
     /**
@@ -107,13 +98,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function error(string $message, array $context = []): Logger
+    public function error(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::ERROR}($message, $context);
-
-        return $this;
+        $this->logger->error($message, $context);
     }
 
     /**
@@ -122,13 +111,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function critical(string $message, array $context = []): Logger
+    public function critical(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::CRITICAL}($message, $context);
-
-        return $this;
+        $this->logger->critical($message, $context);
     }
 
     /**
@@ -137,13 +124,11 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function alert(string $message, array $context = []): Logger
+    public function alert(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::ALERT}($message, $context);
-
-        return $this;
+        $this->logger->alert($message, $context);
     }
 
     /**
@@ -152,28 +137,24 @@ class MonologLogger implements Logger
      * @param string $message The message
      * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function emergency(string $message, array $context = []): Logger
+    public function emergency(string $message, array $context = []): void
     {
-        $this->logger->{LogLevel::EMERGENCY}($message, $context);
-
-        return $this;
+        $this->logger->emergency($message, $context);
     }
 
     /**
      * Log a message.
      *
-     * @param LogLevel $level   The log level
-     * @param string   $message The message
-     * @param array    $context [optional] The context
+     * @param string $level   The log level
+     * @param string $message The message
+     * @param array  $context [optional] The context
      *
-     * @return Logger
+     * @return void
      */
-    public function log(LogLevel $level, string $message, array $context = []): Logger
+    public function log(string $level, string $message, array $context = []): void
     {
-        $this->logger->{$level->getValue()}($message, $context);
-
-        return $this;
+        $this->logger->log($level, $message, $context);
     }
 }

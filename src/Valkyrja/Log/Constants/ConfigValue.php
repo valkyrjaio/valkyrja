@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Log\Adapters\PsrAdapter;
 
 /**
  * Constant ConfigValue.
@@ -24,9 +25,15 @@ final class ConfigValue
 {
     public const LOG_NAME      = 'application-log';
     public const LOG_FILE_PATH = '';
+    public const ADAPTER       = CKP::PSR;
+    public const ADAPTERS      = [
+        CKP::PSR => PsrAdapter::class,
+    ];
 
     public static array $defaults = [
         CKP::NAME      => self::LOG_NAME,
         CKP::FILE_PATH => self::LOG_FILE_PATH,
+        CKP::ADAPTER   => self::ADAPTER,
+        CKP::ADAPTERS  => self::ADAPTERS,
     ];
 }

@@ -14,21 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 /**
- * Interface Logger.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-interface Logger
+interface Adapter
 {
-    /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
-     */
-    public function getAdapter(string $name = null): Adapter;
-
     /**
      * Log a debug message.
      *

@@ -146,4 +146,5 @@ final class ConfigKeyPart
     public const JSON_DATA_MODEL             = 'jsonDataModel';
     public const SODIUM                      = 'sodium';
     public const GUZZLE                      = 'guzzle';
+    public const PSR                         = 'psr';
 }
