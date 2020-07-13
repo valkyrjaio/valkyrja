@@ -75,7 +75,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Crypt::class,
-            new \Valkyrja\Crypt\Crypts\Crypt(
+            new \Valkyrja\Crypt\Managers\Crypt(
                 $container,
                 (array) $config['crypt']
             )

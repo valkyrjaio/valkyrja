@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Crypts;
+namespace Valkyrja\Crypt\Managers;
 
 use Exception;
 use Valkyrja\Container\Container;

@@ -35,7 +35,7 @@ use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Loggers\MonologLogger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
-use Valkyrja\Session\Sessions\Session;
+use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Views\View;
 

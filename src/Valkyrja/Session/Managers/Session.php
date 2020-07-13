@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Sessions;
+namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Session\Adapter;
