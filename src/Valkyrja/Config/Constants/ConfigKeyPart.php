@@ -124,6 +124,7 @@ final class ConfigKeyPart
     public const LOCAL                       = 'local';
     public const S3                          = 's3';
     public const DIR                         = 'dir';
+    public const COMPILED_DIR                = 'compiledDir';
     public const SECRET                      = 'secret';
     public const REGION                      = 'region';
     public const BUCKET                      = 'bucket';
@@ -151,4 +152,5 @@ final class ConfigKeyPart
     public const NULL                        = 'null';
     public const CLUSTER                     = 'cluster';
     public const USE_TLS                     = 'useTls';
+    public const EXTENSIONS                  = 'extensions';
 }

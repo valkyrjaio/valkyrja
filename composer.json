@@ -36,6 +36,7 @@
         "php-coveralls/php-coveralls" : "^2.2.0",
         "predis/predis"               : "^1.1.1",
         "pusher/pusher-php-server"    : "^4.1.4",
+        "twig/twig"                   : "^3.0.4",
         "ext-pdo"                     : "*",
         "ext-sodium"                  : "*"
     },
@@ -60,7 +61,7 @@
         "phpmailer/phpmailer"        : "Required to use the default Mail message adapter (^6.1.6).",
         "predis/predis"              : "Required to use the Redis Cache store (^1.1.1).",
         "pusher/pusher-php-server"   : "Required to use the Pusher Broadcast adapter (^4.1.4).",
-        "valkyrja/valkyrja-twig"     : "Required to use the Twig View enging (^1.0.0).",
+        "twig/twig"                  : "Required to use the Twig View engine (^3.0.4).",
         "ext-pdo"                    : "Required to use the default ORM adapter (*)",
         "ext-redis"                  : "Required to use the default Cache store (^4.0|^5.0).",
         "ext-sodium"                 : "Required to use the default Crypt adapters (*)"

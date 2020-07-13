@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Views;
 
+use Valkyrja\Container\Container;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
@@ -37,6 +38,13 @@ class View implements Contract
      * @var Engine[]
      */
     protected static array $engines = [];
+
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
 
     /**
      * The body content template.
@@ -88,16 +96,17 @@ class View implements Contract
     /**
      * View constructor.
      *
+     * @param Container   $container The container
      * @param array       $config    The config
      * @param string|null $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
      *
-     * @throws InvalidConfigPath
      */
-    public function __construct(array $config, string $template = null, array $variables = [])
+    public function __construct(Container $container, array $config, string $template = null, array $variables = [])
     {
-        $this->config = $config;
-        $this->engine = $config['engine'];
+        $this->container = $container;
+        $this->config    = $config;
+        $this->engine    = $config['engine'];
 
         $this->setVariables($variables);
         $this->setDir($this->config['dir']);
@@ -116,7 +125,7 @@ class View implements Contract
      */
     public function make(string $template = null, array $variables = []): self
     {
-        return new static($this->config, $template, $variables);
+        return new static($this->container, $this->config, $template, $variables);
     }
 
     /**
@@ -130,14 +139,10 @@ class View implements Contract
     {
         $name ??= $this->config['engine'];
 
-        if (isset(self::$engines[$name])) {
-            return self::$engines[$name];
-        }
-
-        /** @var Engine $engine */
-        $engine = $this->config['engines'][$name];
-
-        return self::$engines[$name] = $engine::make($this);
+        return self::$engines[$name]
+            ?? self::$engines[$name] = $this->container->getSingleton(
+                $this->config['engines'][$name]
+            );
     }
 
     /**

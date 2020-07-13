@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Twig\TwigEngine;
 use Valkyrja\View\Engines\PHPEngine;
 
 /**
@@ -26,14 +27,22 @@ final class ConfigValue
     public const DIR     = '';
     public const ENGINE  = CKP::PHP;
     public const ENGINES = [
-        CKP::PHP => PHPEngine::class,
+        CKP::PHP  => PHPEngine::class,
+        CKP::TWIG => TwigEngine::class,
     ];
     public const PATHS   = [];
+    public const DISKS   = [
+        CKP::TWIG => [
+            CKP::COMPILED_DIR => '',
+            CKP::EXTENSIONS   => [],
+        ],
+    ];
 
     public static array $defaults = [
         CKP::DIR     => self::DIR,
         CKP::ENGINE  => self::ENGINE,
         CKP::ENGINES => self::ENGINES,
         CKP::PATHS   => self::PATHS,
+        CKP::DISKS   => self::DISKS,
     ];
 }

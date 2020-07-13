@@ -100,18 +100,6 @@ class PHPEngine implements PHPEngineContract
     }
 
     /**
-     * Make a new engine.
-     *
-     * @param View $view The view
-     *
-     * @return static
-     */
-    public static function make(View $view): self
-    {
-        return new static($view);
-    }
-
-    /**
      * Get the variables.
      *
      * @return array

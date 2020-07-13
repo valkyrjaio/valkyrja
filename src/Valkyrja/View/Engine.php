@@ -21,15 +21,6 @@ namespace Valkyrja\View;
 interface Engine
 {
     /**
-     * Make a new engine.
-     *
-     * @param View $view The view
-     *
-     * @return static
-     */
-    public static function make(View $view): self;
-
-    /**
      * Render a template.
      *
      * @param string $path      The path to render

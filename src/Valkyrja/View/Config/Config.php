@@ -34,6 +34,7 @@ class Config extends Model
         CKP::ENGINE,
         CKP::ENGINES,
         CKP::PATHS,
+        CKP::DISKS,
     ];
 
     /**
@@ -46,6 +47,7 @@ class Config extends Model
         CKP::ENGINE  => EnvKey::VIEW_ENGINE,
         CKP::ENGINES => EnvKey::VIEW_ENGINES,
         CKP::PATHS   => EnvKey::VIEW_PATHS,
+        CKP::DISKS   => EnvKey::VIEW_DISKS,
     ];
 
     /**
@@ -88,4 +90,11 @@ class Config extends Model
      * @var array
      */
     public array $paths;
+
+    /**
+     * The disks.
+     *
+     * @var array
+     */
+    public array $disks;
 }
