@@ -77,7 +77,7 @@ class ServiceProvider extends Provider
             Client::class,
             new \Valkyrja\Client\Managers\Client(
                 $container,
-                $config['client']
+                (array) $config['client']
             )
         );
     }
