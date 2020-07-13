@@ -24,11 +24,6 @@ final class ConfigKey
     public const CONFIG_CACHE_FILE_PATH = 'cacheFilePath';
     public const CONFIG_USE_CACHE_FILE  = 'useCache';
 
-    public const CACHE_CONTAINER = 'cache.container';
-    public const CACHE_EVENTS    = 'cache.events';
-    public const CACHE_CONSOLE   = 'cache.console';
-    public const CACHE_ROUTING   = 'cache.routing';
-
     public const API_JSON_MODEL      = 'api.jsonModel';
     public const API_JSON_DATA_MODEL = 'api.jsonDataModel';
 
@@ -56,6 +51,9 @@ final class ConfigKey
     public const AUTH_AUTHENTICATE_ROUTE     = 'auth.authenticateRoute';
     public const AUTH_PASSWORD_CONFIRM_ROUTE = 'auth.confirmPasswordRoute';
 
+    public const CACHE_DEFAULT = 'cache.default';
+    public const CACHE_STORES  = 'cache.stores';
+
     public const CONSOLE_PROVIDERS                   = 'console.providers';
     public const CONSOLE_DEV_PROVIDERS               = 'console.devProviders';
     public const CONSOLE_QUIET                       = 'console.quiet';
@@ -65,6 +63,7 @@ final class ConfigKey
     public const CONSOLE_FILE_PATH                   = 'console.filePath';
     public const CONSOLE_CACHE_FILE_PATH             = 'console.cacheFilePath';
     public const CONSOLE_USE_CACHE_FILE              = 'console.useCache';
+    public const CONSOLE_CACHE                       = 'console.cache';
 
     public const CONTAINER_PROVIDERS                   = 'container.providers';
     public const CONTAINER_DEV_PROVIDERS               = 'container.devProviders';
@@ -76,6 +75,7 @@ final class ConfigKey
     public const CONTAINER_FILE_PATH                   = 'container.filePath';
     public const CONTAINER_CACHE_FILE_PATH             = 'container.cacheFilePath';
     public const CONTAINER_USE_CACHE_FILE              = 'container.useCache';
+    public const CONTAINER_CACHE                       = 'container.cache';
 
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
@@ -88,6 +88,7 @@ final class ConfigKey
     public const EVENTS_FILE_PATH                   = 'event.filePath';
     public const EVENTS_CACHE_FILE_PATH             = 'event.cacheFilePath';
     public const EVENTS_USE_CACHE_FILE              = 'event.useCache';
+    public const EVENTS_CACHE                       = 'event.cache';
 
     public const FILESYSTEM_DEFAULT       = 'filesystem.default';
     public const FILESYSTEM_ADAPTERS      = 'filesystem.adapters';
@@ -141,6 +142,7 @@ final class ConfigKey
     public const ROUTING_FILE_PATH                   = 'routing.filePath';
     public const ROUTING_CACHE_FILE_PATH             = 'routing.cacheFilePath';
     public const ROUTING_USE_CACHE_FILE              = 'routing.useCache';
+    public const ROUTING_CACHE                       = 'routing.cache';
 
     public const SESSION_ID       = 'session.id';
     public const SESSION_NAME     = 'session.name';
