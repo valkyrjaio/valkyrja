@@ -65,7 +65,7 @@ class Crypt implements Contract
     protected ?string $key = null;
 
     /**
-     * SodiumCrypt constructor.
+     * Crypt constructor.
      *
      * @param Container $container The container
      * @param array     $config    The config
