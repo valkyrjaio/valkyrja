@@ -147,4 +147,8 @@ final class ConfigKeyPart
     public const SODIUM                      = 'sodium';
     public const GUZZLE                      = 'guzzle';
     public const PSR                         = 'psr';
+    public const PUSHER                      = 'pusher';
+    public const NULL                        = 'null';
+    public const CLUSTER                     = 'cluster';
+    public const USE_TLS                     = 'useTls';
 }

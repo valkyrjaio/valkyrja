@@ -31,6 +31,7 @@ final class ConfigValue
         Provider::ANNOTATION,
         Provider::API,
         Provider::AUTH,
+        Provider::BROADCAST,
         Provider::CACHE,
         Provider::CLIENT,
         Provider::CONSOLE,

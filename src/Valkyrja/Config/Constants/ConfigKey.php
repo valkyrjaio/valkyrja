@@ -51,6 +51,10 @@ final class ConfigKey
     public const AUTH_AUTHENTICATE_ROUTE     = 'auth.authenticateRoute';
     public const AUTH_PASSWORD_CONFIRM_ROUTE = 'auth.confirmPasswordRoute';
 
+    public const BROADCAST_ADAPTER  = 'broadcast.adapter';
+    public const BROADCAST_ADAPTERS = 'broadcast.adapters';
+    public const BROADCAST_DISKS    = 'broadcast.disks';
+
     public const CACHE_DEFAULT = 'cache.default';
     public const CACHE_STORES  = 'cache.stores';
 
