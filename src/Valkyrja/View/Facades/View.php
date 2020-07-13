@@ -15,6 +15,7 @@ namespace Valkyrja\View\Facades;
 
 use Valkyrja\Support\Facade\Facade;
 use Valkyrja\View\Engine;
+use Valkyrja\View\Template;
 use Valkyrja\View\View as Contract;
 
 /**
@@ -22,30 +23,9 @@ use Valkyrja\View\View as Contract;
  *
  * @author Melech Mizrachi
  *
- * @method static Contract make(string $template = null, array $variables = [])
+ * @method static Template createTemplate(string $template = null, array $variables = [], string $engine = null)
  * @method static Engine getEngine(string $name = null)
- * @method static array getVariables()
- * @method static Contract setVariables(array $variables = [])
- * @method static mixed variable(string $key)
- * @method static Contract setVariable(string $key, $value)
- * @method static string escape(string $value)
- * @method static string getTemplateDir(string $path = null)
- * @method static Contract setTemplateDir(string $path)
- * @method static string getFileExtension()
- * @method static Contract setFileExtension(string $extension)
- * @method static string getLayoutPath()
- * @method static string getTemplatePath()
- * @method static Contract setLayout(string $layout = null)
- * @method static Contract withoutLayout()
- * @method static Contract setTemplate(string $template)
- * @method static string getPartial(string $partial, array $variables = [])
- * @method static string getBlock(string $name)
- * @method static bool hasBlock(string $name)
- * @method static bool hasBlockEnded(string $name)
- * @method static void startBlock(string $name)
- * @method static string endBlock(string $name)
- * @method static string render(array $variables = [])
- * @method static string __toString()
+ * @method static string render(string $name, array $variables = [])
  */
 class View extends Facade
 {
