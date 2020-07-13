@@ -18,6 +18,7 @@ use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\View\Engines\OrkaEngine;
 use Valkyrja\View\Engines\PHPEngine;
 use Valkyrja\View\Engines\TwigEngine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
@@ -40,6 +41,7 @@ class ServiceProvider extends Provider
         return [
             View::class        => 'publishView',
             PHPEngine::class   => 'publishPHPEngine',
+            OrkaEngine::class  => 'publishOrkaEngine',
             TwigEngine::class  => 'publishTwigEngine',
             Environment::class => 'publishTwigEnvironment',
         ];
@@ -55,6 +57,7 @@ class ServiceProvider extends Provider
         return [
             View::class,
             PHPEngine::class,
+            OrkaEngine::class,
             TwigEngine::class,
             Environment::class,
         ];
@@ -98,8 +101,6 @@ class ServiceProvider extends Provider
      *
      * @param Container $container The container
      *
-     * @throws InvalidConfigPath
-     *
      * @return void
      */
     public static function publishPHPEngine(Container $container): void
@@ -109,6 +110,25 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             PHPEngine::class,
             new PHPEngine(
+                (array) $config['view']
+            )
+        );
+    }
+
+    /**
+     * Publish the Orka engine service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishOrkaEngine(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            OrkaEngine::class,
+            new OrkaEngine(
                 (array) $config['view']
             )
         );
@@ -136,7 +156,6 @@ class ServiceProvider extends Provider
      *
      * @param Container $container The container
      *
-     * @throws InvalidConfigPath
      * @throws LoaderError
      *
      * @return void

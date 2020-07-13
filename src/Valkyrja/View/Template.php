@@ -136,17 +136,6 @@ interface Template
     public function hasBlock(string $name): bool;
 
     /**
-     * Determine if a block has been ended.
-     *
-     * @param string $name The name of the block
-     *
-     * @return bool
-     *  True if the block has been ended
-     *  False if the block has not yet been ended
-     */
-    public function hasBlockEnded(string $name): bool;
-
-    /**
      * Start a block.
      *
      * @param string $name The name of the block
@@ -158,11 +147,9 @@ interface Template
     /**
      * End a block.
      *
-     * @param string $name The name of the block
-     *
      * @return void
      */
-    public function endBlock(string $name): void;
+    public function endBlock(): void;
 
     /**
      * Render the template.

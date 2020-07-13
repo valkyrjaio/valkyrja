@@ -104,11 +104,24 @@ class PHPEngine implements Engine
      */
     public function renderFile(string $name, array $variables = []): string
     {
+        return $this->renderFullPath($this->getFullPath($name), $variables);
+    }
+
+    /**
+     * Render a full file path.
+     *
+     * @param string $path      The file path
+     * @param array  $variables [optional] The variables
+     *
+     * @return string
+     */
+    protected function renderFullPath(string $path, array $variables = []): string
+    {
         extract($variables, EXTR_OVERWRITE);
 
         $this->startRender();
 
-        include $this->getFullPath($name);
+        include $path;
 
         return $this->endRender();
     }

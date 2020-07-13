@@ -154,4 +154,5 @@ final class ConfigKeyPart
     public const USE_TLS                     = 'useTls';
     public const EXTENSIONS                  = 'extensions';
     public const FILE_EXTENSION              = 'fileExtension';
+    public const ORKA                        = 'orka';
 }

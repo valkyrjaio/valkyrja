@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\View\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\View\Engines\OrkaEngine;
 use Valkyrja\View\Engines\PHPEngine;
 use Valkyrja\View\Engines\TwigEngine;
 
@@ -28,12 +29,16 @@ final class ConfigValue
     public const ENGINE  = CKP::PHP;
     public const ENGINES = [
         CKP::PHP  => PHPEngine::class,
+        CKP::ORKA => OrkaEngine::class,
         CKP::TWIG => TwigEngine::class,
     ];
     public const PATHS   = [];
     public const DISKS   = [
         CKP::PHP  => [
             CKP::FILE_EXTENSION => '.phtml',
+        ],
+        CKP::ORKA  => [
+            CKP::FILE_EXTENSION => '.orka.phtml',
         ],
         CKP::TWIG => [
             CKP::COMPILED_DIR => '',

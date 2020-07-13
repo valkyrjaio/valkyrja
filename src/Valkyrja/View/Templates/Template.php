@@ -18,6 +18,7 @@ use Valkyrja\View\Template as Contract;
 use Valkyrja\View\View;
 
 use function array_merge;
+use function count;
 use function htmlentities;
 
 use const ENT_QUOTES;
@@ -282,20 +283,6 @@ class Template implements Contract
     }
 
     /**
-     * Determine if a block has been ended.
-     *
-     * @param string $name
-     *
-     * @return bool
-     *  True if the block has been ended
-     *  False if the block has not yet been ended
-     */
-    public function hasBlockEnded(string $name): bool
-    {
-        return ! isset($this->blockStatus[$name]);
-    }
-
-    /**
      * Start a block.
      *
      * @param string $name The block's name
@@ -304,7 +291,7 @@ class Template implements Contract
      */
     public function startBlock(string $name): void
     {
-        $this->blockStatus[$name] = $name;
+        $this->blockStatus[] = $name;
 
         $this->engine->startRender();
     }
@@ -312,15 +299,20 @@ class Template implements Contract
     /**
      * End a block.
      *
-     * @param string $name The block's name
-     *
      * @return void
      */
-    public function endBlock(string $name): void
+    public function endBlock(): void
     {
-        unset($this->blockStatus[$name]);
+        $lastCount = count($this->blockStatus) - 1;
+        $block     = $this->blockStatus[$lastCount];
 
-        $this->blocks[$name] = $this->engine->endRender();
+        unset($this->blockStatus[$lastCount]);
+
+        if ($lastCount === 0) {
+            $this->blockStatus = [];
+        }
+
+        $this->blocks[$block] = $this->engine->endRender();
     }
 
     /**
