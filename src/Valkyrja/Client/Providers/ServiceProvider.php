@@ -48,6 +48,7 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class,
+            GuzzleAdapter::class,
         ];
     }
 
