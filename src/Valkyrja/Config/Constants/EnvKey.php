@@ -81,25 +81,6 @@ final class EnvKey
     public const CRYPT_KEY      = 'CRYPT_KEY';
     public const CRYPT_KEY_PATH = 'CRYPT_KEY_PATH';
 
-    public const DB_CONNECTION  = 'DB_CONNECTION';
-    public const DB_CONNECTIONS = 'DB_CONNECTIONS';
-    public const DB_HOST        = 'DB_HOST';
-    public const DB_PORT        = 'DB_PORT';
-    public const DB_DATABASE    = 'DB_DATABASE';
-    public const DB_USERNAME    = 'DB_USERNAME';
-    public const DB_PASSWORD    = 'DB_PASSWORD';
-    public const DB_SOCKET      = 'DB_SOCKET';
-    public const DB_CHARSET     = 'DB_CHARSET';
-    public const DB_COLLATION   = 'DB_COLLATION';
-    public const DB_PREFIX      = 'DB_PREFIX';
-    public const DB_STRICT      = 'DB_STRICT';
-    public const DB_ENGINE      = 'DB_ENGINE';
-    public const DB_SCHEMA      = 'DB_SCHEMA';
-    public const DB_SSL_MODE    = 'DB_SSL_MODE';
-    public const DB_ADAPTER     = 'DB_ADAPTER';
-    public const DB_ADAPTERS    = 'DB_ADAPTERS';
-    public const DB_REPOSITORY  = 'DB_REPOSITORY';
-
     public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
     public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
     public const EVENT_LISTENERS                   = 'EVENT_LISTENERS';
@@ -133,6 +114,19 @@ final class EnvKey
     public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
     public const MAIL_MESSAGE      = 'MAIL_MESSAGE';
     public const MAIL_MESSAGES     = 'MAIL_MESSAGES';
+
+    public const ORM_CONNECTION     = 'ORM_CONNECTION';
+    public const ORM_ADAPTERS       = 'ORM_ADAPTERS';
+    public const ORM_CONNECTIONS    = 'ORM_CONNECTIONS';
+    public const ORM_REPOSITORY     = 'ORM_REPOSITORY';
+    public const ORM_MYSQL_ADAPTER  = 'ORM_MYSQL_ADAPTER';
+    public const ORM_MYSQL_DRIVER   = 'ORM_MYSQL_DRIVER';
+    public const ORM_MYSQL_HOST     = 'ORM_MYSQL_HOST';
+    public const ORM_MYSQL_PORT     = 'ORM_MYSQL_PORT';
+    public const ORM_MYSQL_DB       = 'ORM_MYSQL_DB';
+    public const ORM_MYSQL_CHARSET  = 'ORM_MYSQL_CHARSET';
+    public const ORM_MYSQL_USERNAME = 'ORM_MYSQL_USERNAME';
+    public const ORM_MYSQL_PASSWORD = 'ORM_MYSQL_PASSWORD';
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 

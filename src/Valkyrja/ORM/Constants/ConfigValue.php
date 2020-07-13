@@ -31,7 +31,14 @@ final class ConfigValue
     public const REPOSITORY  = Repository::class;
     public const CONNECTIONS = [
         CKP::MYSQL => [
-            CKP::ADAPTER => CKP::PDO,
+            CKP::ADAPTER  => CKP::PDO,
+            CKP::DRIVER   => '',
+            CKP::HOST     => '',
+            CKP::PORT     => '',
+            CKP::DB       => '',
+            CKP::CHARSET  => '',
+            CKP::USERNAME => '',
+            CKP::PASSWORD => ''
         ],
     ];
 

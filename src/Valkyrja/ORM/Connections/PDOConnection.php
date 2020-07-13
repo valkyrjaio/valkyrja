@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Connections;
 
-use InvalidArgumentException;
 use PDO;
 use RuntimeException;
 use Valkyrja\Application\Application;
@@ -251,25 +250,5 @@ class PDOConnection implements ConnectionContract
             . ';charset=' . $this->config['charset'];
 
         return new PDO($dsn, $this->config['username'], $this->config['password'], []);
-    }
-
-    /**
-     * Get the store config.
-     *
-     * @param string|null $name
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return array
-     */
-    protected function getConnectionConfig(string $name): array
-    {
-        $config = $this->config[$name] ?? null;
-
-        if (null === $config) {
-            throw new InvalidArgumentException('Invalid connection name specified: ' . $name);
-        }
-
-        return $config;
     }
 }

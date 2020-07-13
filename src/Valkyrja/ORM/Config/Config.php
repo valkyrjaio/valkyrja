@@ -42,10 +42,10 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::CONNECTION  => EnvKey::DB_CONNECTION,
-        CKP::ADAPTERS    => EnvKey::DB_ADAPTERS,
-        CKP::REPOSITORY  => EnvKey::DB_REPOSITORY,
-        CKP::CONNECTIONS => EnvKey::DB_CONNECTIONS,
+        CKP::CONNECTION  => EnvKey::ORM_CONNECTION,
+        CKP::ADAPTERS    => EnvKey::ORM_ADAPTERS,
+        CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
+        CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
     ];
 
     /**

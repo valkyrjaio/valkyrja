@@ -80,11 +80,6 @@ final class ConfigKey
     public const CRYPT_KEY      = 'crypt.key';
     public const CRYPT_KEY_PATH = 'crypt.keyPath';
 
-    public const DB_CONNECTION  = 'orm.connection';
-    public const DB_ADAPTERS    = 'orm.adapters';
-    public const DB_CONNECTIONS = 'orm.connections';
-    public const DB_REPOSITORY  = 'orm.repository';
-
     public const EVENTS_USE_ANNOTATIONS             = 'event.useAnnotations';
     public const EVENTS_USE_ANNOTATIONS_EXCLUSIVELY = 'event.useAnnotationsExclusively';
     public const EVENTS_CLASSES                     = 'event.classes';
@@ -118,6 +113,19 @@ final class ConfigKey
     public const MAIL_PASSWORD     = 'mail.password';
     public const MAIL_MESSAGE      = 'mail.message';
     public const MAIL_MESSAGES     = 'mail.messages';
+
+    public const ORM_CONNECTION     = 'orm.connection';
+    public const ORM_ADAPTERS       = 'orm.adapters';
+    public const ORM_CONNECTIONS    = 'orm.connections';
+    public const ORM_REPOSITORY     = 'orm.repository';
+    public const ORM_MYSQL_ADAPTER  = 'orm.connections.mysql.adapter';
+    public const ORM_MYSQL_DRIVER   = 'orm.connections.mysql.driver';
+    public const ORM_MYSQL_HOST     = 'orm.connections.mysql.host';
+    public const ORM_MYSQL_PORT     = 'orm.connections.mysql.post';
+    public const ORM_MYSQL_DB       = 'orm.connections.mysql.db';
+    public const ORM_MYSQL_CHARSET  = 'orm.connections.mysql.charset';
+    public const ORM_MYSQL_USERNAME = 'orm.connections.mysql.username';
+    public const ORM_MYSQL_PASSWORD = 'orm.connections.mysql.password';
 
     public const PATH_PATTERNS = 'path.patterns';
 
