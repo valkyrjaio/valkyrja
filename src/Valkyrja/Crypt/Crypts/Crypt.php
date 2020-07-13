@@ -90,7 +90,7 @@ class Crypt implements Contract
 
         return self::$adapters[$name]
             ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['messages'][$name]
+                $this->config['adapters'][$name]
             );
     }
 
