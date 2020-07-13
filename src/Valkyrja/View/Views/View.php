@@ -100,7 +100,6 @@ class View implements Contract
      * @param array       $config    The config
      * @param string|null $template  [optional] The template to set
      * @param array       $variables [optional] The variables to set
-     *
      */
     public function __construct(Container $container, array $config, string $template = null, array $variables = [])
     {
