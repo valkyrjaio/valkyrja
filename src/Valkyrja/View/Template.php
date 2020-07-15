@@ -92,7 +92,7 @@ interface Template
     /**
      * Set the layout for the view template.
      *
-     * @param string $layout [optional]
+     * @param string|null $layout [optional] The layout
      *
      * @return static
      */

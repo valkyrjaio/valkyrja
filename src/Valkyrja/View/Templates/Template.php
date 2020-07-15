@@ -208,7 +208,7 @@ class Template implements Contract
     /**
      * Set the layout for the view template.
      *
-     * @param string $layout [optional] The layout to set
+     * @param string|null $layout [optional] The layout to set
      *
      * @return static
      */

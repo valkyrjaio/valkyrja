@@ -169,7 +169,7 @@ class PHPEngine implements Engine
     /**
      * Get the template directory.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
