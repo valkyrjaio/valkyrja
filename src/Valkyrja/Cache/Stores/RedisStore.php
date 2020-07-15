@@ -48,7 +48,7 @@ class RedisStore implements Store
     public function __construct(Client $client, string $prefix = null)
     {
         $this->predis = $client;
-        $this->prefix = $prefix;
+        $this->prefix = $prefix ?? '';
     }
 
     /**
