@@ -31,23 +31,25 @@ class OrkaEngine extends PHPEngine
 {
     protected static array $replace = [
         // @layout
-        '/@layout\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'     => '<?php $template->setLayout(\'${1}\'); ?>',
-        '/@block\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'      => '<?= $template->getBlock(\'${1}\'); ?>',
-        '/@startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x' => '<?php $template->startBlock(\'${1}\'); ?>',
-        '/@endblock/x'                               => '<?php $template->endBlock(); ?>',
+        '/@layout\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'          => '<?php $template->setLayout(\'${1}\'); ?>',
+        '/@block\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'           => '<?= $template->getBlock(\'${1}\'); ?>',
+        '/@startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'      => '<?php $template->startBlock(\'${1}\'); ?>',
+        '/@endblock/x'                                    => '<?php $template->endBlock(); ?>',
+        '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*\s*\)/x'      => '<?php $template->getPartial(\'${1}\'); ?>',
+        '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*,(.*)\s*\)/x' => '<?php $template->getPartial(\'${1}\', ${2}); ?>',
         // {{{ unescaped }}}
-        '/\{\{\{\s*(.*)\s*\}\}\}/x'                  => '<?= ${1}; ?>',
+        '/\{\{\{\s*(.*)\s*\}\}\}/x'                       => '<?= ${1}; ?>',
         // {{ escaped }}
-        '/\{\{\s*(.*)\s*\}\}/x'                      => '<?= $template->escape(${1}); ?>',
-        '/@if\(\s*(.*)\s*\)/x'                       => '<?php if (${1}) : ?>',
-        '/@elseif\(\s*(.*)\s*\)/x'                   => '<?php elseif (${1}) : ?>',
-        '/@else/x'                                   => '<?php else : ?>',
-        '/@endif/x'                                  => '<?php endif; ?>',
-        '/@unless\(\s*(.*)\s*\)/x'                   => '<?php if (! (${1})) : ?>',
-        '/@elseunless\(\s*(.*)\s*\)/x'               => '<?php elseif (! (${1})) : ?>',
-        '/@unless/x'                                 => '<?php endif; ?>',
-        '/@foreach\(\s*(.*)\s*\)/x'                  => '<?php foreach (${1}) : ?>',
-        '/@endforeach/x'                             => '<?php endforeach; ?>',
+        '/\{\{\s*(.*)\s*\}\}/x'                           => '<?= $template->escape(${1}); ?>',
+        '/@if\(\s*(.*)\s*\)/x'                            => '<?php if (${1}) : ?>',
+        '/@elseif\(\s*(.*)\s*\)/x'                        => '<?php elseif (${1}) : ?>',
+        '/@else/x'                                        => '<?php else : ?>',
+        '/@endif/x'                                       => '<?php endif; ?>',
+        '/@unless\(\s*(.*)\s*\)/x'                        => '<?php if (! (${1})) : ?>',
+        '/@elseunless\(\s*(.*)\s*\)/x'                    => '<?php elseif (! (${1})) : ?>',
+        '/@unless/x'                                      => '<?php endif; ?>',
+        '/@foreach\(\s*(.*)\s*\)/x'                       => '<?php foreach (${1}) : ?>',
+        '/@endforeach/x'                                  => '<?php endforeach; ?>',
     ];
 
     /**
