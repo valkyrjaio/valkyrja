@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Managers;
 
-use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Container\Container;
