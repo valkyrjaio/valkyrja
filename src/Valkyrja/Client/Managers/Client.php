@@ -17,6 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Container\Container;
+use Valkyrja\Http\Response;
 
 /**
  * Class Client.
@@ -90,9 +91,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): ResponseInterface
+    public function request(string $method, string $uri, array $options = []): Response
     {
         return $this->getAdapter()->request($method, $uri, $options);
     }
@@ -103,9 +104,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function get(string $uri, array $options = []): ResponseInterface
+    public function get(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->get($uri, $options);
     }
@@ -116,9 +117,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function post(string $uri, array $options = []): ResponseInterface
+    public function post(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->post($uri, $options);
     }
@@ -129,9 +130,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function head(string $uri, array $options = []): ResponseInterface
+    public function head(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->head($uri, $options);
     }
@@ -142,9 +143,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function put(string $uri, array $options = []): ResponseInterface
+    public function put(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->put($uri, $options);
     }
@@ -155,9 +156,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function patch(string $uri, array $options = []): ResponseInterface
+    public function patch(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->patch($uri, $options);
     }
@@ -168,9 +169,9 @@ class Client implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function delete(string $uri, array $options = []): ResponseInterface
+    public function delete(string $uri, array $options = []): Response
     {
         return $this->getAdapter()->delete($uri, $options);
     }
