@@ -209,7 +209,7 @@ class LogStore implements Store
      */
     public function flush(): bool
     {
-        $this->logger->info(self::class . " flush");
+        $this->logger->info(self::class . ' flush');
 
         return true;
     }
