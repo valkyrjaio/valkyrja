@@ -77,12 +77,12 @@ class Mail implements Contract
         $name ??= $this->defaultMessage;
 
         if (isset(self::$messages[$name])) {
-            return self::$messages[$name]->make();
+            return self::$messages[$name]->create();
         }
 
         $messageClass          = $this->config['messages'][$name];
         self::$messages[$name] = $this->container->getSingleton($messageClass);
 
-        return self::$messages[$name]->make();
+        return self::$messages[$name]->create();
     }
 }

@@ -13,32 +13,31 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Messages;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
+use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Message as Contract;
 
 /**
- * Class PHPMailerMessage.
+ * Class LogMessage.
  *
  * @author Melech Mizrachi
  */
-class PHPMailerMessage implements Contract
+class LogMessage implements Contract
 {
     /**
-     * The PHP Mailer.
+     * The logger.
      *
-     * @var PHPMailer
+     * @var Logger
      */
-    protected PHPMailer $phpMailer;
+    protected Logger $logger;
 
     /**
-     * PHPMailerMessage constructor.
+     * LogMessage constructor.
      *
-     * @param PHPMailer $phpMailer
+     * @param Logger $logger The logger
      */
-    public function __construct(PHPMailer $phpMailer)
+    public function __construct(Logger $logger)
     {
-        $this->phpMailer = $phpMailer;
+        $this->logger = $logger;
     }
 
     /**
@@ -48,7 +47,7 @@ class PHPMailerMessage implements Contract
      */
     public function create(): self
     {
-        return new static(clone $this->phpMailer);
+        return new static($this->logger);
     }
 
     /**
@@ -57,13 +56,11 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function setFrom(string $email, string $name = ''): self
     {
-        $this->phpMailer->setFrom($email, $name);
+        $this->logger->info(static::class . " addRecipient: ${email}, name ${name}");
 
         return $this;
     }
@@ -74,13 +71,11 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addAddress($email, $name);
+        $this->logger->info(static::class . " addRecipient: ${email}, name ${name}");
 
         return $this;
     }
@@ -91,13 +86,11 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addReplyTo(string $email, string $name = ''): self
     {
-        $this->phpMailer->addReplyTo($email, $name);
+        $this->logger->info(static::class . " addReplyTo: ${email}, name ${name}");
 
         return $this;
     }
@@ -108,13 +101,11 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addCopyRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addCC($email, $name);
+        $this->logger->info(static::class . " addCopyRecipient: ${email}, name ${name}");
 
         return $this;
     }
@@ -125,13 +116,11 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addBlindCopyRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addBCC($email, $name);
+        $this->logger->info(static::class . " addBlindCopyRecipient: ${email}, name ${name}");
 
         return $this;
     }
@@ -142,13 +131,11 @@ class PHPMailerMessage implements Contract
      * @param string $path The path
      * @param string $name [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addAttachment(string $path, string $name = ''): self
     {
-        $this->phpMailer->addAttachment($path, $name);
+        $this->logger->info(static::class . " addAttachment: ${path}, name ${name}");
 
         return $this;
     }
@@ -162,7 +149,7 @@ class PHPMailerMessage implements Contract
      */
     public function setSubject(string $subject): self
     {
-        $this->phpMailer->Subject = $subject;
+        $this->logger->info(static::class . " setSubject: ${subject}");
 
         return $this;
     }
@@ -176,9 +163,7 @@ class PHPMailerMessage implements Contract
      */
     public function setBody(string $body): self
     {
-        $this->phpMailer->Body = $body;
-
-        $this->phpMailer->isHTML(false);
+        $this->logger->info(static::class . " setBody: ${body}");
 
         return $this;
     }
@@ -192,9 +177,7 @@ class PHPMailerMessage implements Contract
      */
     public function setHtml(string $html): self
     {
-        $this->phpMailer->Body = $html;
-
-        $this->phpMailer->isHTML(true);
+        $this->logger->info(static::class . " setHtml: ${html}");
 
         return $this;
     }
@@ -208,7 +191,7 @@ class PHPMailerMessage implements Contract
      */
     public function setPlainBody(string $plainBody): self
     {
-        $this->phpMailer->AltBody = $plainBody;
+        $this->logger->info(static::class . " setPlainBody: ${plainBody}");
 
         return $this;
     }
@@ -216,12 +199,12 @@ class PHPMailerMessage implements Contract
     /**
      * Send the mail.
      *
-     * @throws Exception
-     *
      * @return bool
      */
     public function send(): bool
     {
-        return $this->phpMailer->send();
+        $this->logger->info(static::class . ' Send');
+
+        return true;
     }
 }

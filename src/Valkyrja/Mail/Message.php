@@ -21,67 +21,67 @@ namespace Valkyrja\Mail;
 interface Message
 {
     /**
-     * Make a new message.
+     * Create a new message.
      *
      * @return static
      */
-    public function make(): self;
+    public function create(): self;
 
     /**
      * Set the mail's sender information.
      *
-     * @param string $address
-     * @param string $name
+     * @param string $email The email
+     * @param string $name  [optional] The name
      *
      * @return static
      */
-    public function setFrom(string $address, string $name = ''): self;
+    public function setFrom(string $email, string $name = ''): self;
 
     /**
      * Add a recipient.
      *
-     * @param string $address
-     * @param string $name
+     * @param string $email The email
+     * @param string $name  [optional] The name
      *
      * @return static
      */
-    public function addAddress(string $address, string $name = ''): self;
+    public function addRecipient(string $email, string $name = ''): self;
 
     /**
-     * Add a Reply-To address.
+     * Add a Reply-To recipient.
      *
-     * @param string $address
-     * @param string $name
+     * @param string $email The email
+     * @param string $name  [optional] The name
      *
      * @return static
      */
-    public function addReplyTo(string $address, string $name = ''): self;
+    public function addReplyTo(string $email, string $name = ''): self;
 
     /**
-     * Add a copy recipient.
+     * Add a copy (CC) recipient.
      *
-     * @param string $address
-     * @param string $name
+     * @param string $email The email
+     * @param string $name  [optional] The name
      *
      * @return static
      */
-    public function addCC(string $address, string $name = ''): self;
+    public function addCopyRecipient(string $email, string $name = ''): self;
 
     /**
-     * Add a blind copy recipient.
+     * Add a blind copy (BCC) recipient.
      *
-     * @param string $address
-     * @param string $name
+     * @param string $email The email
+     * @param string $name  [optional] The name
      *
      * @return static
      */
-    public function addBCC(string $address, string $name = ''): self;
+    public function addBlindCopyRecipient(string $email, string $name = ''): self;
 
     /**
      * Add an attachment from the filesystem.
      *
-     * @param string $path
-     * @param string $name
+     * @param string $path The path
+     * @param string $name [optional] The name
      *
      * @return static
      */

@@ -71,7 +71,7 @@ class LogAdapter implements Contract
     {
         $optionsString = json_encode($options, JSON_THROW_ON_ERROR);
 
-        $this->logger->info(static::class . "Method: ${method}, uri ${uri}, options ${$optionsString}");
+        $this->logger->info(static::class . " request: ${method}, uri ${uri}, options ${$optionsString}");
 
         return $this->responseFactory->createResponse();
     }

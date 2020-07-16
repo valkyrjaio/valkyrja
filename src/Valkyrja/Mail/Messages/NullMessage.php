@@ -13,34 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Messages;
 
-use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Mail\Message as Contract;
 
 /**
- * Class PHPMailerMessage.
+ * Class NullMessage.
  *
  * @author Melech Mizrachi
  */
-class PHPMailerMessage implements Contract
+class NullMessage implements Contract
 {
-    /**
-     * The PHP Mailer.
-     *
-     * @var PHPMailer
-     */
-    protected PHPMailer $phpMailer;
-
-    /**
-     * PHPMailerMessage constructor.
-     *
-     * @param PHPMailer $phpMailer
-     */
-    public function __construct(PHPMailer $phpMailer)
-    {
-        $this->phpMailer = $phpMailer;
-    }
-
     /**
      * Create a new message.
      *
@@ -48,7 +29,7 @@ class PHPMailerMessage implements Contract
      */
     public function create(): self
     {
-        return new static(clone $this->phpMailer);
+        return new static();
     }
 
     /**
@@ -57,14 +38,10 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function setFrom(string $email, string $name = ''): self
     {
-        $this->phpMailer->setFrom($email, $name);
-
         return $this;
     }
 
@@ -74,14 +51,10 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addAddress($email, $name);
-
         return $this;
     }
 
@@ -91,14 +64,10 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addReplyTo(string $email, string $name = ''): self
     {
-        $this->phpMailer->addReplyTo($email, $name);
-
         return $this;
     }
 
@@ -108,14 +77,10 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addCopyRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addCC($email, $name);
-
         return $this;
     }
 
@@ -125,14 +90,10 @@ class PHPMailerMessage implements Contract
      * @param string $email The email
      * @param string $name  [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addBlindCopyRecipient(string $email, string $name = ''): self
     {
-        $this->phpMailer->addBCC($email, $name);
-
         return $this;
     }
 
@@ -142,14 +103,10 @@ class PHPMailerMessage implements Contract
      * @param string $path The path
      * @param string $name [optional] The name
      *
-     * @throws Exception
-     *
      * @return static
      */
     public function addAttachment(string $path, string $name = ''): self
     {
-        $this->phpMailer->addAttachment($path, $name);
-
         return $this;
     }
 
@@ -162,8 +119,6 @@ class PHPMailerMessage implements Contract
      */
     public function setSubject(string $subject): self
     {
-        $this->phpMailer->Subject = $subject;
-
         return $this;
     }
 
@@ -176,10 +131,6 @@ class PHPMailerMessage implements Contract
      */
     public function setBody(string $body): self
     {
-        $this->phpMailer->Body = $body;
-
-        $this->phpMailer->isHTML(false);
-
         return $this;
     }
 
@@ -192,10 +143,6 @@ class PHPMailerMessage implements Contract
      */
     public function setHtml(string $html): self
     {
-        $this->phpMailer->Body = $html;
-
-        $this->phpMailer->isHTML(true);
-
         return $this;
     }
 
@@ -208,20 +155,16 @@ class PHPMailerMessage implements Contract
      */
     public function setPlainBody(string $plainBody): self
     {
-        $this->phpMailer->AltBody = $plainBody;
-
         return $this;
     }
 
     /**
      * Send the mail.
      *
-     * @throws Exception
-     *
      * @return bool
      */
     public function send(): bool
     {
-        return $this->phpMailer->send();
+        return true;
     }
 }
