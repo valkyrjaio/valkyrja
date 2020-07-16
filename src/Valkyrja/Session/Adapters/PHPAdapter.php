@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapters;
 
-use Exception;
-use Valkyrja\Session\Adapter as Contract;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
-use function bin2hex;
 use function hash_equals;
 use function headers_sent;
 use function is_string;
 use function preg_match;
-use function random_bytes;
 use function session_id;
 use function session_name;
 use function session_start;
@@ -37,52 +33,8 @@ use const PHP_SESSION_ACTIVE;
  *
  * @author Melech Mizrachi
  */
-class PHPAdapter implements Contract
+class PHPAdapter extends NullAdapter
 {
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The session data.
-     *
-     * @var array
-     */
-    protected array $data = [];
-
-    /**
-     * PHPAdapter constructor.
-     *
-     * @param array       $config      The config
-     * @param string|null $sessionId   [optional] The session id
-     * @param string|null $sessionName [optional] The session name
-     */
-    public function __construct(array $config, string $sessionId = null, string $sessionName = null)
-    {
-        $this->config = $config;
-
-        $sessionId   = $sessionId ?? $config['id'];
-        $sessionName = $sessionName ?? $config['name'];
-
-        // If a session id is provided
-        if (null !== $sessionId) {
-            // Set the id
-            $this->setId($sessionId);
-        }
-
-        // If a session name is provided
-        if (null !== $sessionName) {
-            // Set the name
-            $this->setName($sessionName);
-        }
-
-        // Start the session
-        $this->start();
-    }
-
     /**
      * Start the session.
      *
@@ -173,90 +125,6 @@ class PHPAdapter implements Contract
     }
 
     /**
-     * Determine whether the session has an item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
-     */
-    public function has(string $id): bool
-    {
-        return isset($this->data[$id]);
-    }
-
-    /**
-     * Get an item from the session.
-     *
-     * @param string     $id      The item id
-     * @param mixed|null $default The default value
-     *
-     * @return mixed
-     */
-    public function get(string $id, $default = null)
-    {
-        return $this->data[$id] ?? $default;
-    }
-
-    /**
-     * Set an item into the session.
-     *
-     * @param string $id    The id
-     * @param string $value The value
-     *
-     * @return void
-     */
-    public function set(string $id, string $value): void
-    {
-        $this->data[$id] = $value;
-    }
-
-    /**
-     * Remove a session item.
-     *
-     * @param string $id The item id
-     *
-     * @return bool
-     */
-    public function remove(string $id): bool
-    {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        unset($this->data[$id]);
-
-        return true;
-    }
-
-    /**
-     * Get all items in the session.
-     *
-     * @return array
-     */
-    public function all(): array
-    {
-        return $this->data;
-    }
-
-    /**
-     * Get a csrf token for a unique token id.
-     *
-     * @param string $id The csrf unique token id
-     *
-     * @throws Exception
-     *
-     * @return string
-     */
-    public function csrf(string $id): string
-    {
-        $token = bin2hex(random_bytes(64));
-
-        $this->set($id, $token);
-
-        return $token;
-    }
-
-    /**
      * Validate a csrf token.
      *
      * @param string $id    The csrf unique token id
@@ -288,7 +156,7 @@ class PHPAdapter implements Contract
      */
     public function clear(): void
     {
-        $this->data = [];
+        parent::clear();
 
         session_unset();
     }
@@ -300,7 +168,7 @@ class PHPAdapter implements Contract
      */
     public function destroy(): void
     {
-        $this->data = [];
+        parent::destroy();
 
         session_unset();
     }
