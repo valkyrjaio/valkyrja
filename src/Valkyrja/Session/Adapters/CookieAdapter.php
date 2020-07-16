@@ -43,13 +43,13 @@ class CookieAdapter extends PHPAdapter
     protected Request $request;
 
     /**
-     * CookieSession constructor.
+     * CookieAdapter constructor.
      *
-     * @param Crypt   $crypt       The crypt
-     * @param Request $request     The request
-     * @param array   $config      The config
-     * @param string  $sessionId   [optional] The session id
-     * @param string  $sessionName [optional] The session name
+     * @param Crypt       $crypt       The crypt
+     * @param Request     $request     The request
+     * @param array       $config      The config
+     * @param string|null $sessionId   [optional] The session id
+     * @param string|null $sessionName [optional] The session name
      */
     public function __construct(
         Crypt $crypt,

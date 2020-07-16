@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Constants;
 
+use Valkyrja\Cache\Stores\LogStore;
+use Valkyrja\Cache\Stores\NullStore;
 use Valkyrja\Cache\Stores\RedisStore;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
@@ -26,6 +28,8 @@ final class ConfigValue
     public const STORE  = CKP::REDIS;
     public const STORES = [
         CKP::REDIS => RedisStore::class,
+        CKP::NULL  => NullStore::class,
+        CKP::LOG   => LogStore::class,
     ];
 
     public static array $defaults = [

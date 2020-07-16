@@ -32,7 +32,7 @@ use Valkyrja\Http\Responses\JsonResponse;
 use Valkyrja\Http\Responses\RedirectResponse;
 use Valkyrja\Http\Responses\Response;
 use Valkyrja\HttpKernel\Kernels\Kernel;
-use Valkyrja\Log\Loggers\Logger;
+use Valkyrja\Log\Managers\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;

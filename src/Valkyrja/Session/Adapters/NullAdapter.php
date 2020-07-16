@@ -19,25 +19,15 @@ use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
 use function bin2hex;
-use function hash_equals;
-use function headers_sent;
-use function is_string;
 use function preg_match;
 use function random_bytes;
-use function session_id;
-use function session_name;
-use function session_start;
-use function session_status;
-use function session_unset;
-
-use const PHP_SESSION_ACTIVE;
 
 /**
- * Class PHPAdapter.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-class PHPAdapter implements Contract
+class NullAdapter implements Contract
 {
     /**
      * The config.
@@ -47,6 +37,20 @@ class PHPAdapter implements Contract
     protected array $config;
 
     /**
+     * The session id.
+     *
+     * @var string
+     */
+    protected string $id;
+
+    /**
+     * The session name.
+     *
+     * @var string
+     */
+    protected string $name;
+
+    /**
      * The session data.
      *
      * @var array
@@ -54,11 +58,14 @@ class PHPAdapter implements Contract
     protected array $data = [];
 
     /**
-     * PHPAdapter constructor.
+     * NullAdapter constructor.
      *
      * @param array       $config      The config
      * @param string|null $sessionId   [optional] The session id
      * @param string|null $sessionName [optional] The session name
+     *
+     * @throws InvalidSessionId
+     * @throws SessionStartFailure
      */
     public function __construct(array $config, string $sessionId = null, string $sessionName = null)
     {
@@ -92,20 +99,6 @@ class PHPAdapter implements Contract
      */
     public function start(): void
     {
-        // If the session is already active
-        if ($this->isActive() || headers_sent()) {
-            // No need to reactivate
-            return;
-        }
-
-        // If the session failed to start
-        if (! session_start()) {
-            // Throw a new exception
-            throw new SessionStartFailure('The session failed to start!');
-        }
-
-        // Set the data
-        $this->data = &$_SESSION;
     }
 
     /**
@@ -115,7 +108,7 @@ class PHPAdapter implements Contract
      */
     public function getId(): string
     {
-        return session_id();
+        return $this->id;
     }
 
     /**
@@ -137,7 +130,7 @@ class PHPAdapter implements Contract
             );
         }
 
-        session_id($id);
+        $this->id = $id;
     }
 
     /**
@@ -147,7 +140,7 @@ class PHPAdapter implements Contract
      */
     public function getName(): string
     {
-        return session_name();
+        return $this->name;
     }
 
     /**
@@ -159,7 +152,7 @@ class PHPAdapter implements Contract
      */
     public function setName(string $name): void
     {
-        session_name($name);
+        $this->name = $name;
     }
 
     /**
@@ -169,7 +162,7 @@ class PHPAdapter implements Contract
      */
     public function isActive(): bool
     {
-        return PHP_SESSION_ACTIVE === session_status();
+        return true;
     }
 
     /**
@@ -272,13 +265,9 @@ class PHPAdapter implements Contract
 
         $sessionToken = $this->get($id);
 
-        if (! is_string($sessionToken)) {
-            return false;
-        }
-
         $this->remove($id);
 
-        return hash_equals($token, $sessionToken);
+        return $token === $sessionToken;
     }
 
     /**
@@ -289,8 +278,6 @@ class PHPAdapter implements Contract
     public function clear(): void
     {
         $this->data = [];
-
-        session_unset();
     }
 
     /**
@@ -301,7 +288,5 @@ class PHPAdapter implements Contract
     public function destroy(): void
     {
         $this->data = [];
-
-        session_unset();
     }
 }

@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Session\Adapters\CacheAdapter;
+use Valkyrja\Session\Adapters\CookieAdapter;
+use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
 
 /**
@@ -27,7 +30,10 @@ final class ConfigValue
     public const NAME     = null;
     public const ADAPTER  = CKP::PHP;
     public const ADAPTERS = [
-        CKP::PHP => PHPAdapter::class,
+        CKP::CACHE  => CacheAdapter::class,
+        CKP::COOKIE => CookieAdapter::class,
+        CKP::NULL   => NullAdapter::class,
+        CKP::PHP    => PHPAdapter::class,
     ];
 
     public static array $defaults = [

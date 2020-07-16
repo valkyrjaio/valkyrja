@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Constants;
 
-use Valkyrja\Client\Clients\GuzzleAdapter;
+use Valkyrja\Client\Adapters\GuzzleAdapter;
+use Valkyrja\Client\Adapters\LogAdapter;
+use Valkyrja\Client\Adapters\NullAdapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
 /**
@@ -26,6 +28,8 @@ final class ConfigValue
     public const ADAPTER  = CKP::GUZZLE;
     public const ADAPTERS = [
         CKP::GUZZLE => GuzzleAdapter::class,
+        CKP::NULL   => NullAdapter::class,
+        CKP::LOG    => LogAdapter::class,
     ];
 
     public static array $defaults = [

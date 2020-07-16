@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Cache\Taggers;
 
+use JsonException;
 use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Tagger as Contract;
 
@@ -72,6 +73,8 @@ class Tagger implements Contract
      *
      * @param string $key
      *
+     * @throws JsonException
+     *
      * @return mixed
      */
     public function has(string $key): bool
@@ -89,6 +92,8 @@ class Tagger implements Contract
      * Retrieve an item from the cache by key.
      *
      * @param string $key
+     *
+     * @throws JsonException
      *
      * @return string|null
      */
@@ -109,6 +114,8 @@ class Tagger implements Contract
      * Items not found in the cache will have a null value.
      *
      * @param string ...$keys
+     *
+     * @throws JsonException
      *
      * @return array
      */
@@ -136,6 +143,8 @@ class Tagger implements Contract
      * @param string $value
      * @param int    $minutes
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function put(string $key, string $value, int $minutes): void
@@ -161,6 +170,8 @@ class Tagger implements Contract
      * @param array $values
      * @param int   $minutes
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function putMany(array $values, int $minutes): void
@@ -175,6 +186,8 @@ class Tagger implements Contract
      *
      * @param string $key
      * @param int    $value
+     *
+     * @throws JsonException
      *
      * @return int
      */
@@ -191,6 +204,8 @@ class Tagger implements Contract
      * @param string $key
      * @param int    $value
      *
+     * @throws JsonException
+     *
      * @return int
      */
     public function decrement(string $key, int $value = 1): int
@@ -206,6 +221,8 @@ class Tagger implements Contract
      * @param string $key
      * @param string $value
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function forever(string $key, string $value): void
@@ -220,6 +237,8 @@ class Tagger implements Contract
      *
      * @param string $key
      *
+     * @throws JsonException
+     *
      * @return bool
      */
     public function forget(string $key): bool
@@ -231,6 +250,8 @@ class Tagger implements Contract
 
     /**
      * Remove all items from the cache.
+     *
+     * @throws JsonException
      *
      * @return bool
      */
@@ -249,6 +270,8 @@ class Tagger implements Contract
      * Tag a key.
      *
      * @param string $key
+     *
+     * @throws JsonException
      *
      * @return static
      */
@@ -270,6 +293,8 @@ class Tagger implements Contract
      *
      * @param string $key
      *
+     * @throws JsonException
+     *
      * @return static
      */
     public function untag(string $key): self
@@ -290,6 +315,8 @@ class Tagger implements Contract
      *
      * @param string ...$keys
      *
+     * @throws JsonException
+     *
      * @return static
      */
     public function tagMany(string ...$keys): self
@@ -306,6 +333,8 @@ class Tagger implements Contract
      *
      * @param string ...$keys
      *
+     * @throws JsonException
+     *
      * @return static
      */
     public function untagMany(string ...$keys): self
@@ -321,6 +350,8 @@ class Tagger implements Contract
      * Get a tag.
      *
      * @param string $tag
+     *
+     * @throws JsonException
      *
      * @return array
      */
@@ -340,6 +371,8 @@ class Tagger implements Contract
      *
      * @param string $tag
      * @param array  $keys
+     *
+     * @throws JsonException
      *
      * @return void
      */

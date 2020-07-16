@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Http\Helpers;
+namespace Valkyrja\Http\Support;
 
 use InvalidArgumentException;
 

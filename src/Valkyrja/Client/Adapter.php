@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
-use Psr\Http\Message\ResponseInterface;
+use Valkyrja\Http\Response;
 
 /**
  * Interface Adapter.
@@ -29,9 +29,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): ResponseInterface;
+    public function request(string $method, string $uri, array $options = []): Response;
 
     /**
      * Make a get request.
@@ -39,9 +39,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function get(string $uri, array $options = []): ResponseInterface;
+    public function get(string $uri, array $options = []): Response;
 
     /**
      * Make a post request.
@@ -49,9 +49,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function post(string $uri, array $options = []): ResponseInterface;
+    public function post(string $uri, array $options = []): Response;
 
     /**
      * Make a head request.
@@ -59,9 +59,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function head(string $uri, array $options = []): ResponseInterface;
+    public function head(string $uri, array $options = []): Response;
 
     /**
      * Make a put request.
@@ -69,9 +69,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function put(string $uri, array $options = []): ResponseInterface;
+    public function put(string $uri, array $options = []): Response;
 
     /**
      * Make a patch request.
@@ -79,9 +79,9 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function patch(string $uri, array $options = []): ResponseInterface;
+    public function patch(string $uri, array $options = []): Response;
 
     /**
      * Make a delete request.
@@ -89,7 +89,7 @@ interface Adapter
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function delete(string $uri, array $options = []): ResponseInterface;
+    public function delete(string $uri, array $options = []): Response;
 }

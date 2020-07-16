@@ -150,6 +150,7 @@ final class ConfigKeyPart
     public const PSR                         = 'psr';
     public const PUSHER                      = 'pusher';
     public const NULL                        = 'null';
+    public const COOKIE                      = 'cookie';
     public const CLUSTER                     = 'cluster';
     public const USE_TLS                     = 'useTls';
     public const EXTENSIONS                  = 'extensions';

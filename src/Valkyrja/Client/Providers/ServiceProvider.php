@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Providers;
 
 use GuzzleHttp\Client as Guzzle;
+use Valkyrja\Client\Adapters\GuzzleAdapter;
+use Valkyrja\Client\Adapters\LogAdapter;
+use Valkyrja\Client\Adapters\NullAdapter;
 use Valkyrja\Client\Client;
-use Valkyrja\Client\Clients\GuzzleAdapter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Log\Logger;
 
 /**
  * Class ServiceProvider.
@@ -36,6 +40,8 @@ class ServiceProvider extends Provider
         return [
             Client::class        => 'publishClient',
             GuzzleAdapter::class => 'publishGuzzleAdapter',
+            NullAdapter::class   => 'publishNullAdapter',
+            LogAdapter::class    => 'publishLogAdapter',
         ];
     }
 
@@ -49,6 +55,7 @@ class ServiceProvider extends Provider
         return [
             Client::class,
             GuzzleAdapter::class,
+            LogAdapter::class,
         ];
     }
 
@@ -95,7 +102,43 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             GuzzleAdapter::class,
             new GuzzleAdapter(
-                new Guzzle()
+                new Guzzle(),
+                $container->getSingleton(ResponseFactory::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            NullAdapter::class,
+            new NullAdapter(
+                $container->getSingleton(ResponseFactory::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the log adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLogAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            LogAdapter::class,
+            new LogAdapter(
+                $container->getSingleton(Logger::class),
+                $container->getSingleton(ResponseFactory::class)
             )
         );
     }

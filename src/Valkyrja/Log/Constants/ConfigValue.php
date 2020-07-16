@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Log\Adapters\NullAdapter;
 use Valkyrja\Log\Adapters\PsrAdapter;
 
 /**
@@ -27,7 +28,8 @@ final class ConfigValue
     public const LOG_FILE_PATH = '';
     public const ADAPTER       = CKP::PSR;
     public const ADAPTERS      = [
-        CKP::PSR => PsrAdapter::class,
+        CKP::NULL => NullAdapter::class,
+        CKP::PSR  => PsrAdapter::class,
     ];
 
     public static array $defaults = [

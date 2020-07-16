@@ -15,8 +15,8 @@ namespace Valkyrja\Http\Messages;
 
 use InvalidArgumentException;
 use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
-use Valkyrja\Http\Helpers\HeaderSecurity;
 use Valkyrja\Http\Stream;
+use Valkyrja\Http\Support\HeaderSecurity;
 
 use function array_merge;
 use function implode;

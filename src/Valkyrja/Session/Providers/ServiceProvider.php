@@ -20,6 +20,7 @@ use Valkyrja\Crypt\Crypt;
 use Valkyrja\Http\Request;
 use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
+use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
 use Valkyrja\Session\Session;
 
@@ -41,6 +42,7 @@ class ServiceProvider extends Provider
             Session::class       => 'publishSession',
             CacheAdapter::class  => 'publishCacheAdapter',
             CookieAdapter::class => 'publishCookieAdapter',
+            NullAdapter::class   => 'publishNullAdapter',
             PHPAdapter::class    => 'publishPHPAdapter',
         ];
     }
@@ -54,6 +56,10 @@ class ServiceProvider extends Provider
     {
         return [
             Session::class,
+            CacheAdapter::class,
+            CookieAdapter::class,
+            NullAdapter::class,
+            PHPAdapter::class,
         ];
     }
 
@@ -124,6 +130,25 @@ class ServiceProvider extends Provider
             new CookieAdapter(
                 $container->getSingleton(Crypt::class),
                 $container->getSingleton(Request::class),
+                (array) $config['session']
+            )
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            NullAdapter::class,
+            new NullAdapter(
                 (array) $config['session']
             )
         );

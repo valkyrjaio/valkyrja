@@ -13,26 +13,29 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Adapters;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
+use JsonException;
 use Valkyrja\Client\Adapter as Contract;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Log\Logger;
+
+use function json_encode;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
- * Class GuzzleAdapter.
+ * Class LogAdapter.
  *
  * @author Melech Mizrachi
  */
-class GuzzleAdapter implements Contract
+class LogAdapter implements Contract
 {
     /**
-     * The guzzle client.
+     * The logger.
      *
-     * @var ClientInterface
+     * @var Logger
      */
-    protected ClientInterface $guzzle;
+    protected Logger $logger;
 
     /**
      * The response factory.
@@ -42,14 +45,14 @@ class GuzzleAdapter implements Contract
     protected ResponseFactory $responseFactory;
 
     /**
-     * GuzzleAdapter constructor.
+     * LogAdapter constructor.
      *
-     * @param ClientInterface $guzzle          The guzzle client
+     * @param Logger          $logger          The logger
      * @param ResponseFactory $responseFactory The response factory
      */
-    public function __construct(ClientInterface $guzzle, ResponseFactory $responseFactory)
+    public function __construct(Logger $logger, ResponseFactory $responseFactory)
     {
-        $this->guzzle          = $guzzle;
+        $this->logger          = $logger;
         $this->responseFactory = $responseFactory;
     }
 
@@ -60,13 +63,17 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        return $this->fromPsr7($this->guzzle->request($method, $uri, $options));
+        $optionsString = json_encode($options, JSON_THROW_ON_ERROR);
+
+        $this->logger->info(static::class . "Method: ${method}, uri ${uri}, options ${$optionsString}");
+
+        return $this->responseFactory->createResponse();
     }
 
     /**
@@ -75,7 +82,7 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
@@ -90,7 +97,7 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
@@ -105,7 +112,7 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
@@ -120,7 +127,7 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
@@ -135,7 +142,7 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
@@ -150,28 +157,12 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
+     * @throws JsonException
      *
      * @return Response
      */
     public function delete(string $uri, array $options = []): Response
     {
         return $this->request('delete', $uri, $options);
-    }
-
-    /**
-     * Convert a Guzzle Response to Valkyrja Response.
-     *
-     * @param ResponseInterface $guzzleResponse The Guzzle Response
-     *
-     * @return Response
-     */
-    protected function fromPsr7(ResponseInterface $guzzleResponse): Response
-    {
-        return $this->responseFactory->createResponse(
-            $guzzleResponse->getBody()->getContents(),
-            $guzzleResponse->getStatusCode(),
-            $guzzleResponse->getHeaders()
-        );
     }
 }

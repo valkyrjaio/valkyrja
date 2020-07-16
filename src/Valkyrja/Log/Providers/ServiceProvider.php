@@ -19,6 +19,7 @@ use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Log\Adapters\NullAdapter;
 use Valkyrja\Log\Adapters\PsrAdapter;
 use Valkyrja\Log\Constants\LogLevel;
 use Valkyrja\Log\Logger;
@@ -42,6 +43,7 @@ class ServiceProvider extends Provider
         return [
             LoggerInterface::class => 'publishLoggerInterface',
             Logger::class          => 'publishLogger',
+            NullAdapter::class     => 'publishNullAdapter',
             PsrAdapter::class      => 'publishPsrAdapter',
         ];
     }
@@ -54,6 +56,7 @@ class ServiceProvider extends Provider
     public static array $provides = [
         LoggerInterface::class,
         Logger::class,
+        NullAdapter::class,
         PsrAdapter::class,
     ];
 
@@ -122,7 +125,7 @@ class ServiceProvider extends Provider
 
         $container->setSingleton(
             Logger::class,
-            new \Valkyrja\Log\Loggers\Logger(
+            new \Valkyrja\Log\Managers\Logger(
                 $container,
                 (array) $config['log']
             )
@@ -143,6 +146,21 @@ class ServiceProvider extends Provider
             new PsrAdapter(
                 $container->getSingleton(LoggerInterface::class)
             )
+        );
+    }
+
+    /**
+     * Bind the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            NullAdapter::class,
+            new NullAdapter()
         );
     }
 }

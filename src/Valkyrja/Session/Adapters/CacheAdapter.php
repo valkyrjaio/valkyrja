@@ -46,12 +46,12 @@ class CacheAdapter extends PHPAdapter
     protected Store $cacheStore;
 
     /**
-     * CacheSession constructor.
+     * CacheAdapter constructor.
      *
-     * @param Cache  $cache       The cache
-     * @param array  $config      The config
-     * @param string $sessionId   [optional] The session id
-     * @param string $sessionName [optional] The session name
+     * @param Cache       $cache       The cache
+     * @param array       $config      The config
+     * @param string|null $sessionId   [optional] The session id
+     * @param string|null $sessionName [optional] The session name
      */
     public function __construct(Cache $cache, array $config, string $sessionId = null, string $sessionName = null)
     {

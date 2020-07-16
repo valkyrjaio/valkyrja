@@ -13,27 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Adapters;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter as Contract;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 
 /**
- * Class GuzzleAdapter.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-class GuzzleAdapter implements Contract
+class NullAdapter implements Contract
 {
-    /**
-     * The guzzle client.
-     *
-     * @var ClientInterface
-     */
-    protected ClientInterface $guzzle;
-
     /**
      * The response factory.
      *
@@ -42,14 +32,12 @@ class GuzzleAdapter implements Contract
     protected ResponseFactory $responseFactory;
 
     /**
-     * GuzzleAdapter constructor.
+     * NullAdapter constructor.
      *
-     * @param ClientInterface $guzzle          The guzzle client
      * @param ResponseFactory $responseFactory The response factory
      */
-    public function __construct(ClientInterface $guzzle, ResponseFactory $responseFactory)
+    public function __construct(ResponseFactory $responseFactory)
     {
-        $this->guzzle          = $guzzle;
         $this->responseFactory = $responseFactory;
     }
 
@@ -60,13 +48,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        return $this->fromPsr7($this->guzzle->request($method, $uri, $options));
+        return $this->responseFactory->createResponse();
     }
 
     /**
@@ -74,8 +60,6 @@ class GuzzleAdapter implements Contract
      *
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
-     *
-     * @throws GuzzleException
      *
      * @return Response
      */
@@ -90,8 +74,6 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function post(string $uri, array $options = []): Response
@@ -104,8 +86,6 @@ class GuzzleAdapter implements Contract
      *
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
-     *
-     * @throws GuzzleException
      *
      * @return Response
      */
@@ -120,8 +100,6 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function put(string $uri, array $options = []): Response
@@ -134,8 +112,6 @@ class GuzzleAdapter implements Contract
      *
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
-     *
-     * @throws GuzzleException
      *
      * @return Response
      */
@@ -150,28 +126,10 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function delete(string $uri, array $options = []): Response
     {
         return $this->request('delete', $uri, $options);
-    }
-
-    /**
-     * Convert a Guzzle Response to Valkyrja Response.
-     *
-     * @param ResponseInterface $guzzleResponse The Guzzle Response
-     *
-     * @return Response
-     */
-    protected function fromPsr7(ResponseInterface $guzzleResponse): Response
-    {
-        return $this->responseFactory->createResponse(
-            $guzzleResponse->getBody()->getContents(),
-            $guzzleResponse->getStatusCode(),
-            $guzzleResponse->getHeaders()
-        );
     }
 }

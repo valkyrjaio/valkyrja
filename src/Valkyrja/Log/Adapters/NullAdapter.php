@@ -11,82 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Log\Loggers;
+namespace Valkyrja\Log\Adapters;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Log\Adapter;
-use Valkyrja\Log\Logger as Contract;
+use Valkyrja\Log\Adapter as Contract;
 
 /**
- * Class Logger.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-class Logger implements Contract
+class NullAdapter implements Contract
 {
     /**
-     * The adapters.
-     *
-     * @var Adapter[]
+     * NullAdapter constructor.
      */
-    protected static array $adapters = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    protected string $defaultAdapter;
-
-    /**
-     * The key
-     *
-     * @var string|null
-     */
-    protected ?string $key = null;
-
-    /**
-     * Crypt constructor.
-     *
-     * @param Container $container The container
-     * @param array     $config    The config
-     */
-    public function __construct(Container $container, array $config)
+    public function __construct()
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultAdapter = $config['adapter'];
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
-     */
-    public function getAdapter(string $name = null): Adapter
-    {
-        $name ??= $this->defaultAdapter;
-
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
-            );
     }
 
     /**
@@ -99,7 +39,6 @@ class Logger implements Contract
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->getAdapter()->debug($message, $context);
     }
 
     /**
@@ -112,7 +51,6 @@ class Logger implements Contract
      */
     public function info(string $message, array $context = []): void
     {
-        $this->getAdapter()->info($message, $context);
     }
 
     /**
@@ -125,7 +63,6 @@ class Logger implements Contract
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->getAdapter()->notice($message, $context);
     }
 
     /**
@@ -138,7 +75,6 @@ class Logger implements Contract
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->getAdapter()->warning($message, $context);
     }
 
     /**
@@ -151,7 +87,6 @@ class Logger implements Contract
      */
     public function error(string $message, array $context = []): void
     {
-        $this->getAdapter()->error($message, $context);
     }
 
     /**
@@ -164,7 +99,6 @@ class Logger implements Contract
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->getAdapter()->critical($message, $context);
     }
 
     /**
@@ -177,7 +111,6 @@ class Logger implements Contract
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->getAdapter()->alert($message, $context);
     }
 
     /**
@@ -190,7 +123,6 @@ class Logger implements Contract
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->getAdapter()->emergency($message, $context);
     }
 
     /**
@@ -204,6 +136,5 @@ class Logger implements Contract
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        $this->getAdapter()->log($level, $message, $context);
     }
 }
