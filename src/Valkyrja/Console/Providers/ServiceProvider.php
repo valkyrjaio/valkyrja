@@ -21,7 +21,6 @@ use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel;
 use Valkyrja\Console\Output;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;

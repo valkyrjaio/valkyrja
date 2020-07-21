@@ -16,7 +16,6 @@ namespace Valkyrja\View\Providers;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\View\Engines\OrkaEngine;
