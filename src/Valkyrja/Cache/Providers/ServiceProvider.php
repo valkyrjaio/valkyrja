@@ -18,6 +18,7 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Stores\LogStore;
 use Valkyrja\Cache\Stores\NullStore;
 use Valkyrja\Cache\Stores\RedisStore;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
@@ -85,7 +86,7 @@ class ServiceProvider extends Provider
             Cache::class,
             new \Valkyrja\Cache\Managers\Cache(
                 $container,
-                (array) $config['cache']
+                $config['cache']
             )
         );
     }

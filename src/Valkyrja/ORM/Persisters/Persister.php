@@ -258,6 +258,16 @@ class Persister implements PersisterContract
     }
 
     /**
+     * Get the formatted date.
+     *
+     * @return string
+     */
+    protected function getFormattedDate(): string
+    {
+        return date('y-m-d H:i:s');
+    }
+
+    /**
      * Save or create or delete a row.
      *
      * <code>
@@ -462,15 +472,5 @@ class Persister implements PersisterContract
             // delete the model
             $this->persistEntity(Statement::DELETE, $deleteEntity);
         }
-    }
-
-    /**
-     * Get the formatted date.
-     *
-     * @return string
-     */
-    protected function getFormattedDate(): string
-    {
-        return date('y-m-d H:i:s');
     }
 }

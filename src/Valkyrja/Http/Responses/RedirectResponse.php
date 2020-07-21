@@ -83,7 +83,7 @@ class RedirectResponse extends Response implements Contract
      *
      * @return static
      */
-    public static function createRedirectResponse(string $uri = null, int $status = null, array $headers = null): self
+    public static function createFromUri(string $uri = null, int $status = null, array $headers = null): self
     {
         $response = new static();
 

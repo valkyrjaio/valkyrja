@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Providers;
 
-use Valkyrja\Broadcast\Broadcaster;
-use Valkyrja\Broadcast\Clients\CacheAdapter;
-use Valkyrja\Broadcast\Clients\LogAdapter;
-use Valkyrja\Broadcast\Clients\NullAdapter;
-use Valkyrja\Broadcast\Clients\PusherAdapter;
+use Valkyrja\Broadcast\Adapters\CacheAdapter;
+use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
+use Valkyrja\Broadcast\Adapters\LogAdapter;
+use Valkyrja\Broadcast\Adapters\NullAdapter;
+use Valkyrja\Broadcast\Adapters\PusherAdapter;
+use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
@@ -36,11 +38,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Broadcaster::class   => 'publishBroadcaster',
-            CacheAdapter::class  => 'publishCacheAdapter',
-            LogAdapter::class    => 'publishLogAdapter',
-            NullAdapter::class   => 'publishNullAdapter',
-            PusherAdapter::class => 'publishPusherAdapter',
+            Broadcast::class          => 'publishBroadcaster',
+            CacheAdapter::class       => 'publishCacheAdapter',
+            CryptPusherAdapter::class => 'publishCryptPusherAdapter',
+            LogAdapter::class         => 'publishLogAdapter',
+            NullAdapter::class        => 'publishNullAdapter',
+            PusherAdapter::class      => 'publishPusherAdapter',
         ];
     }
 
@@ -52,8 +55,9 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Broadcaster::class,
+            Broadcast::class,
             CacheAdapter::class,
+            CryptPusherAdapter::class,
             LogAdapter::class,
             NullAdapter::class,
             PusherAdapter::class,
@@ -83,10 +87,10 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Broadcaster::class,
-            new \Valkyrja\Broadcast\Managers\Broadcaster(
+            Broadcast::class,
+            new \Valkyrja\Broadcast\Managers\Broadcast(
                 $container,
-                (array) $config['client']
+                $config['client']
             )
         );
     }
@@ -100,9 +104,28 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             CacheAdapter::class,
-            new CacheAdapter()
+            static function () use ($container) {
+                return new CacheAdapter();
+            }
+        );
+    }
+
+    /**
+     * Publish the crypt pusher adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishCryptPusherAdapter(Container $container): void
+    {
+        $container->setClosure(
+            CryptPusherAdapter::class,
+            static function () use ($container) {
+                return new CryptPusherAdapter();
+            }
         );
     }
 
@@ -115,9 +138,11 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             LogAdapter::class,
-            new LogAdapter()
+            static function () use ($container) {
+                return new LogAdapter();
+            }
         );
     }
 
@@ -130,9 +155,11 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             NullAdapter::class,
-            new NullAdapter()
+            static function () use ($container) {
+                return new NullAdapter();
+            }
         );
     }
 
@@ -145,9 +172,11 @@ class ServiceProvider extends Provider
      */
     public static function publishPusherAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             PusherAdapter::class,
-            new PusherAdapter()
+            static function () use ($container) {
+                return new PusherAdapter();
+            }
         );
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\HttpKernel\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Event\Events;
@@ -78,7 +79,7 @@ class ServiceProvider extends Provider
                 $container,
                 $container->getSingleton(Events::class),
                 $container->getSingleton(Router::class),
-                (array) $config['routing'],
+                $config['routing'],
                 $config['app']['debug']
             )
         );

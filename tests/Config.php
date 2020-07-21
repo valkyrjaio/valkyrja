@@ -41,6 +41,8 @@ use Valkyrja\Log\Config\Config as Log;
 use Valkyrja\Log\Constants\ConfigValue as LogConfigValue;
 use Valkyrja\Mail\Config\Config as Mail;
 use Valkyrja\Mail\Constants\ConfigValue as MailConfigValue;
+use Valkyrja\Notification\Config\Config as Notification;
+use Valkyrja\Notification\Constants\ConfigValue as NotificationConfigValue;
 use Valkyrja\ORM\Config\Config as ORM;
 use Valkyrja\ORM\Constants\ConfigValue as ORMConfigValue;
 use Valkyrja\Path\Config\Config as Path;
@@ -65,26 +67,27 @@ class Config extends Model
 {
     public function __construct()
     {
-        $this->annotation = new Annotation(AnnotationConfigValue::$defaults, true);
-        $this->api        = new Api(ApiConfigValue::$defaults, true);
-        $this->app        = new App(AppConfigValue::$defaults, true);
-        $this->auth       = new Auth(AuthConfigValue::$defaults, true);
-        $this->cache      = new Cache(CacheConfigValue::$defaults, true);
-        $this->client     = new Client(ClientConfigValue::$defaults, true);
-        $this->console    = new Console(ConsoleConfigValue::$defaults, true);
-        $this->container  = new Container(ContainerConfigValue::$defaults, true);
-        $this->crypt      = new Crypt(CryptConfigValue::$defaults, true);
-        $this->event      = new Event(EventConfigValue::$defaults, true);
-        $this->filesystem = new Filesystem(FilesystemConfigValue::$defaults, true);
-        $this->log        = new Log(LogConfigValue::$defaults, true);
-        $this->mail       = new Mail(MailConfigValue::$defaults, true);
-        $this->orm        = new ORM(ORMConfigValue::$defaults, true);
-        $this->path       = new Path(PathConfigValue::$defaults, true);
-        $this->routing    = new Routing(RoutingConfigValue::$defaults, true);
-        $this->session    = new Session(SessionConfigValue::$defaults, true);
-        $this->sms        = new SMS(SMSConfigValue::$defaults, true);
-        $this->validation = new Validation(ValidationConfigValue::$defaults, true);
-        $this->view       = new View(ViewConfigValue::$defaults, true);
+        $this->annotation   = new Annotation(AnnotationConfigValue::$defaults, true);
+        $this->api          = new Api(ApiConfigValue::$defaults, true);
+        $this->app          = new App(AppConfigValue::$defaults, true);
+        $this->auth         = new Auth(AuthConfigValue::$defaults, true);
+        $this->cache        = new Cache(CacheConfigValue::$defaults, true);
+        $this->client       = new Client(ClientConfigValue::$defaults, true);
+        $this->console      = new Console(ConsoleConfigValue::$defaults, true);
+        $this->container    = new Container(ContainerConfigValue::$defaults, true);
+        $this->crypt        = new Crypt(CryptConfigValue::$defaults, true);
+        $this->event        = new Event(EventConfigValue::$defaults, true);
+        $this->filesystem   = new Filesystem(FilesystemConfigValue::$defaults, true);
+        $this->log          = new Log(LogConfigValue::$defaults, true);
+        $this->mail         = new Mail(MailConfigValue::$defaults, true);
+        $this->notification = new Notification(NotificationConfigValue::$defaults, true);
+        $this->orm          = new ORM(ORMConfigValue::$defaults, true);
+        $this->path         = new Path(PathConfigValue::$defaults, true);
+        $this->routing      = new Routing(RoutingConfigValue::$defaults, true);
+        $this->session      = new Session(SessionConfigValue::$defaults, true);
+        $this->sms          = new SMS(SMSConfigValue::$defaults, true);
+        $this->validation   = new Validation(ValidationConfigValue::$defaults, true);
+        $this->view         = new View(ViewConfigValue::$defaults, true);
 
         parent::__construct(ConfigValue::$defaults, true);
     }

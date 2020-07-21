@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Responses;
 
 use InvalidArgumentException;
+use JsonException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
@@ -70,6 +71,7 @@ class JsonResponse extends Response implements Contract
      * @throws RuntimeException
      * @throws InvalidStatusCode
      * @throws InvalidStream
+     * @throws JsonException
      */
     public function __construct(
         array $data = null,
@@ -89,6 +91,8 @@ class JsonResponse extends Response implements Contract
      * @param int|null   $status          [optional] The status
      * @param array|null $headers         [optional] The headers
      * @param int|null   $encodingOptions [optional] The encoding options
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -120,9 +124,11 @@ class JsonResponse extends Response implements Contract
      * @param array|null $headers         [optional] The headers
      * @param int|null   $encodingOptions [optional] The encoding options
      *
+     * @throws JsonException
+     *
      * @return static
      */
-    public static function createJsonResponse(
+    public static function createFromData(
         array $data = null,
         int $status = null,
         array $headers = null,
@@ -154,6 +160,8 @@ class JsonResponse extends Response implements Contract
 
     /**
      * Without callback.
+     *
+     * @throws JsonException
      *
      * @return static
      */

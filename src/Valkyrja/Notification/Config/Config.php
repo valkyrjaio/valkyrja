@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\SMS\Config;
+namespace Valkyrja\Notification\Config;
 
 use Valkyrja\Config\Config as Model;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
@@ -30,10 +30,7 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::USERNAME,
-        CKP::PASSWORD,
-        CKP::MESSAGE,
-        CKP::MESSAGES,
+        CKP::NOTIFICATIONS,
     ];
 
     /**
@@ -42,37 +39,13 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::USERNAME => EnvKey::SMS_USERNAME,
-        CKP::PASSWORD => EnvKey::SMS_PASSWORD,
-        CKP::MESSAGE  => EnvKey::SMS_MESSAGE,
-        CKP::MESSAGES => EnvKey::SMS_MESSAGES,
+        CKP::NOTIFICATIONS => EnvKey::NOTIFICATION_NOTIFICATIONS,
     ];
 
     /**
-     * The username.
+     * The notifications.
      *
-     * @var string
+     * @var array
      */
-    public string $username;
-
-    /**
-     * The password.
-     *
-     * @var string
-     */
-    public string $password;
-
-    /**
-     * The default message.
-     *
-     * @var string
-     */
-    public string $message;
-
-    /**
-     * The message adapters.
-     *
-     * @var string[]
-     */
-    public array $messages;
+    public array $notifications;
 }

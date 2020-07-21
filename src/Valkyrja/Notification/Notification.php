@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
+use Valkyrja\Broadcast\Message as BroadcastMessage;
+use Valkyrja\Mail\Message as MailMessage;
+use Valkyrja\SMS\Message as SMSMessage;
+
 /**
  * Interface Notification.
  *
@@ -21,21 +25,92 @@ namespace Valkyrja\Notification;
 interface Notification
 {
     /**
+     * Get the broadcast adapter's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getBroadcastAdapterName(): ?string;
+
+    /**
+     * Get the broadcast message's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getBroadcastMessageName(): ?string;
+
+    /**
+     * Whether an broadcast message should be sent for this notification.
+     *
+     * @return bool
+     */
+    public function shouldSendBroadcastMessage(): bool;
+
+    /**
+     * Get the mail adapter's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getMailAdapterName(): ?string;
+
+    /**
+     * Get the mail message's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getMailMessageName(): ?string;
+
+    /**
+     * Whether a mail message should be sent for this notification.
+     *
+     * @return bool
+     */
+    public function shouldSendMailMessage(): bool;
+
+    /**
+     * Get the SMS adapter's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getSmsAdapterName(): ?string;
+
+    /**
+     * Get the SMS message's name to use for this notification.
+     *
+     * @return string|null
+     */
+    public function getSmsMessageName(): ?string;
+
+    /**
+     * Whether an SMS message should be sent for this notification.
+     *
+     * @return bool
+     */
+    public function shouldSendSmsMessage(): bool;
+
+    /**
+     * Notify by broadcast.
+     *
+     * @param BroadcastMessage $broadcastMessage The broadcast message
+     *
+     * @return BroadcastMessage
+     */
+    public function broadcast(BroadcastMessage $broadcastMessage): BroadcastMessage;
+
+    /**
      * Notify by mail.
      *
-     * @param string $email The email to notify
-     * @param string $name  [optional] The name of the person to notify
+     * @param MailMessage $mailMessage The mail message
      *
-     * @return void
+     * @return MailMessage
      */
-    public function mail(string $email, string $name = ''): void;
+    public function mail(MailMessage $mailMessage): MailMessage;
 
     /**
      * Notify by SMS.
      *
-     * @param string $phoneNumber The phone number to notify
+     * @param SMSMessage $message The SMS message
      *
-     * @return void
+     * @return SMSMessage
      */
-    public function sms(string $phoneNumber): void;
+    public function sms(SMSMessage $message): SMSMessage;
 }

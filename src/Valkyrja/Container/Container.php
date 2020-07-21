@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Container;
 
 use ArrayAccess;
+use Closure;
 use Valkyrja\Support\Provider\ProvidersAware;
 
 /**
@@ -26,8 +27,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a container instance with context.
      *
-     * @param string $context The context class or function name
-     * @param string $member  [optional] The context method name
+     * @param string      $context The context class or function name
+     * @param string|null $member  [optional] The context method name
      *
      * @return static
      */
@@ -43,7 +44,7 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service exists.
      *
-     * @param string $serviceId The service
+     * @param string $serviceId The service id
      *
      * @return bool
      */
@@ -60,6 +61,16 @@ interface Container extends ArrayAccess, ProvidersAware
     public function bind(string $serviceId, string $service): self;
 
     /**
+     * Bind a service to a closure in the container.
+     *
+     * @param string  $serviceId The service id
+     * @param Closure $closure   The closure
+     *
+     * @return static
+     */
+    public function bindClosure(string $serviceId, Closure $closure): self;
+
+    /**
      * Bind a singleton to the container.
      *
      * @param string $serviceId The service id
@@ -70,19 +81,29 @@ interface Container extends ArrayAccess, ProvidersAware
     public function bindSingleton(string $serviceId, string $singleton): self;
 
     /**
-     * Set an alias to the container.
+     * Set an alias in the container.
      *
      * @param string $alias     The alias
-     * @param string $serviceId The service to return
+     * @param string $serviceId The service id to alias
      *
      * @return static
      */
     public function setAlias(string $alias, string $serviceId): self;
 
     /**
-     * Bind a singleton to the container.
+     * Set a closure in the container.
      *
-     * @param string $serviceId The service
+     * @param string  $serviceId The service id
+     * @param Closure $closure   The closure
+     *
+     * @return static
+     */
+    public function setClosure(string $serviceId, Closure $closure): self;
+
+    /**
+     * Set a singleton in the container.
+     *
+     * @param string $serviceId The service id
      * @param mixed  $singleton The singleton
      *
      * @return static
@@ -92,16 +113,25 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Check whether a given service is an alias.
      *
-     * @param string $serviceId The service
+     * @param string $serviceId The service id
      *
      * @return bool
      */
     public function isAlias(string $serviceId): bool;
 
     /**
+     * Check whether a given service is bound to a closure.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isClosure(string $serviceId): bool;
+
+    /**
      * Check whether a given service is a singleton.
      *
-     * @param string $serviceId The service
+     * @param string $serviceId The service id
      *
      * @return bool
      */
@@ -110,12 +140,31 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a service from the container.
      *
-     * @param string $serviceId The service
+     * @param string $serviceId The service id
      * @param array  $arguments [optional] The arguments
      *
      * @return mixed
      */
     public function get(string $serviceId, array $arguments = []);
+
+    /**
+     * Get a service bound to a closure from the container.
+     *
+     * @param string $serviceId The service id
+     * @param array  $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function getClosure(string $serviceId, array $arguments = []);
+
+    /**
+     * Get a singleton from the container.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return mixed
+     */
+    public function getSingleton(string $serviceId);
 
     /**
      * Make a service.
@@ -128,22 +177,13 @@ interface Container extends ArrayAccess, ProvidersAware
     public function makeService(string $serviceId, array $arguments = []);
 
     /**
-     * Get a singleton from the container.
-     *
-     * @param string $serviceId The service
-     *
-     * @return mixed
-     */
-    public function getSingleton(string $serviceId);
-
-    /**
      * Get the context service id.
      *
      * @param string      $serviceId The service id
-     * @param string      $context   The context class or function name
+     * @param string|null $context   [optional] The context class or function name
      * @param string|null $member    [optional] The context member name
      *
      * @return string
      */
-    public function getContextServiceId(string $serviceId, string $context, string $member = null): string;
+    public function getContextServiceId(string $serviceId, string $context = null, string $member = null): string;
 }

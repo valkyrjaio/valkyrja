@@ -20,7 +20,7 @@ use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Kernel as ConsoleKernel;
-use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Event\Dispatchers\Events;
 use Valkyrja\Filesystem\Filesystem;

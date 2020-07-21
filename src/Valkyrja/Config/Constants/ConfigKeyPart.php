@@ -156,4 +156,5 @@ final class ConfigKeyPart
     public const EXTENSIONS                  = 'extensions';
     public const FILE_EXTENSION              = 'fileExtension';
     public const ORKA                        = 'orka';
+    public const NOTIFICATIONS               = 'notifications';
 }

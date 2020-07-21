@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Constants;
+namespace Valkyrja\Broadcast\Messages;
+
+use Valkyrja\Broadcast\Message as Contract;
 
 /**
- * Constant UserField.
+ * Class Message.
  *
  * @author Melech Mizrachi
  */
-final class UserField
+class Message implements Contract
 {
-    public const NAME         = 'name';
-    public const PHONE_NUMBER = 'phone_number';
-    public const SECRET_ID    = 'secret_id';
 }

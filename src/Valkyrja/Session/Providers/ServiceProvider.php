@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Providers;
 
 use Valkyrja\Cache\Cache;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -89,7 +90,7 @@ class ServiceProvider extends Provider
             Session::class,
             new \Valkyrja\Session\Managers\Session(
                 $container,
-                (array) $config['session']
+                $config['session']
             )
         );
     }
@@ -109,7 +110,7 @@ class ServiceProvider extends Provider
             CacheAdapter::class,
             new CacheAdapter(
                 $container->getSingleton(Cache::class),
-                (array) $config['session']
+                $config['session']
             )
         );
     }
@@ -130,7 +131,7 @@ class ServiceProvider extends Provider
             new CookieAdapter(
                 $container->getSingleton(Crypt::class),
                 $container->getSingleton(Request::class),
-                (array) $config['session']
+                $config['session']
             )
         );
     }
@@ -149,7 +150,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             NullAdapter::class,
             new NullAdapter(
-                (array) $config['session']
+                $config['session']
             )
         );
     }
@@ -168,7 +169,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             PHPAdapter::class,
             new PHPAdapter(
-                (array) $config['session']
+                $config['session']
             )
         );
     }

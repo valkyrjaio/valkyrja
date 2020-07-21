@@ -239,7 +239,7 @@ class Console implements Contract
                 // Check if this command is provided
                 if ($this->isProvided($commandPath)) {
                     // Initialize the provided command
-                    $this->initializeProvided($commandPath);
+                    $this->publishProvided($commandPath);
                 }
 
                 // Clone the command to avoid changing the one set in the master
@@ -323,7 +323,7 @@ class Console implements Contract
         // Iterate through all the command providers to set any deferred commands
         foreach (self::$provided as $provided => $provider) {
             // Initialize the provided command
-            $this->initializeProvided($provided);
+            $this->publishProvided($provided);
         }
 
         return self::$commands;

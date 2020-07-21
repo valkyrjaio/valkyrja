@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Valkyrja\Application\Application;
 use Valkyrja\Container\Config\Config;
 use Valkyrja\Container\Constants\ConfigValue;
-use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Dispatcher\Exceptions\InvalidDispatchCapabilityException;
 use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;

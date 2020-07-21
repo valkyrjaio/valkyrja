@@ -11,16 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Notification\Constants;
+namespace Valkyrja\SMS;
 
 /**
- * Constant UserField.
+ * Interface Adapter.
  *
  * @author Melech Mizrachi
  */
-final class UserField
+interface Adapter
 {
-    public const NAME         = 'name';
-    public const PHONE_NUMBER = 'phone_number';
-    public const SECRET_ID    = 'secret_id';
+    /**
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @return void
+     */
+    public function send(Message $message): void;
 }

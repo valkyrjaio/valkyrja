@@ -181,7 +181,7 @@ interface QueryBuilder
      *          ->groupBy('column');
      * </code>
      *
-     * @param string      $column
+     * @param string $column
      *
      * @return static
      */

@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Dispatchers;
+namespace Valkyrja\Container\Managers;
 
 use Valkyrja\Container\Annotation\Annotator;
-use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Container\Support\Provider;
@@ -135,7 +134,6 @@ class CacheableContainer extends Container
         }
 
         // Get all the annotated services from the list of controllers and iterate through the services
-        /** @var Context $context */
         foreach ($containerAnnotations->getContextServices(...$config['contextServices']) as $context) {
             // Set the service
             $this->withContext($context->getClass(), $context->getMethod())->bind(

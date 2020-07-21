@@ -34,6 +34,18 @@ use function date;
 class ServiceProvider extends Provider
 {
     /**
+     * What services are provided.
+     *
+     * @var array
+     */
+    public static array $provides = [
+        LoggerInterface::class,
+        Logger::class,
+        NullAdapter::class,
+        PsrAdapter::class,
+    ];
+
+    /**
      * The items provided by this provider.
      *
      * @return string[]
@@ -47,18 +59,6 @@ class ServiceProvider extends Provider
             PsrAdapter::class      => 'publishPsrAdapter',
         ];
     }
-
-    /**
-     * What services are provided.
-     *
-     * @var array
-     */
-    public static array $provides = [
-        LoggerInterface::class,
-        Logger::class,
-        NullAdapter::class,
-        PsrAdapter::class,
-    ];
 
     /**
      * The items provided by this provider.
@@ -127,7 +127,7 @@ class ServiceProvider extends Provider
             Logger::class,
             new \Valkyrja\Log\Managers\Logger(
                 $container,
-                (array) $config['log']
+                $config['log']
             )
         );
     }

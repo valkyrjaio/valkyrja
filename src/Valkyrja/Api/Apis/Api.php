@@ -236,6 +236,18 @@ class Api implements Contract
     }
 
     /**
+     * Get a JSON response from a JSON model.
+     *
+     * @param Json $json The json model
+     *
+     * @return JsonResponse
+     */
+    protected function getResponseFromModel(Json $json): JsonResponse
+    {
+        return $this->jsonResponse::createFromData($json->asArray());
+    }
+
+    /**
      * Get JSON model.
      *
      * @return Json
@@ -283,17 +295,5 @@ class Api implements Contract
         $classNameParts = explode('\\', get_class($object));
 
         return strtolower(end($classNameParts));
-    }
-
-    /**
-     * Get a JSON response from a JSON model.
-     *
-     * @param Json $json The json model
-     *
-     * @return JsonResponse
-     */
-    protected function getResponseFromModel(Json $json): JsonResponse
-    {
-        return $this->jsonResponse::createJsonResponse($json->asArray());
     }
 }

@@ -73,7 +73,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             ORM::class,
             new \Valkyrja\ORM\Managers\ORM(
-                (array) $config['orm']
+                $config['orm']
             )
         );
     }

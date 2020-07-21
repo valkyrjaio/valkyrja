@@ -15,6 +15,7 @@ namespace Valkyrja\Routing\Providers;
 
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -89,7 +90,7 @@ class ServiceProvider extends Provider
     public static function publishRouter(Container $container): void
     {
         $config        = $container->getSingleton('config');
-        $routingConfig = (array) $config['routing'];
+        $routingConfig = $config['routing'];
 
         $container->setSingleton(
             Router::class,
@@ -167,7 +168,7 @@ class ServiceProvider extends Provider
                 $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(Router::class),
-                (array) $config['routing']
+                $config['routing']
             )
         );
     }

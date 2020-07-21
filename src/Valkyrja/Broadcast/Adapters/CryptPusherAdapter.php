@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Constants;
+namespace Valkyrja\Broadcast\Adapters;
 
 /**
- * Constant UserField.
+ * Class CryptPusherAdapter.
  *
  * @author Melech Mizrachi
  */
-final class UserField
+class CryptPusherAdapter extends PusherAdapter
 {
 }

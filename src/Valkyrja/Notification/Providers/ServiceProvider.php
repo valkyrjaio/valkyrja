@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Providers;
 
+use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Mail\Mail;
 use Valkyrja\Notification\Notifier;
+use Valkyrja\SMS\SMS;
 
 /**
  * Class ServiceProvider.
@@ -68,9 +72,17 @@ class ServiceProvider extends Provider
      */
     public static function publishNotifier(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             Notifier::class,
-            new \Valkyrja\Notification\Managers\Notifier()
+            new \Valkyrja\Notification\Managers\Notifier(
+                $container,
+                $container->getSingleton(Broadcast::class),
+                $container->getSingleton(Mail::class),
+                $container->getSingleton(SMS::class),
+                $config['notification']
+            )
         );
     }
 }

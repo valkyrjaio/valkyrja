@@ -201,30 +201,6 @@ trait JsonDataTrait
     }
 
     /**
-     * Get the message.
-     *
-     * @return string|null
-     */
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    /**
-     * Set the error message.
-     *
-     * @param string|null $message
-     *
-     * @return static
-     */
-    public function setMessage(string $message = null): self
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
-    /**
      * Get the messages.
      *
      * @return array|null
@@ -268,6 +244,30 @@ trait JsonDataTrait
     public function setData(array $data = null): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get the message.
+     *
+     * @return string|null
+     */
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    /**
+     * Set the error message.
+     *
+     * @param string|null $message
+     *
+     * @return static
+     */
+    public function setMessage(string $message = null): self
+    {
+        $this->message = $message;
 
         return $this;
     }

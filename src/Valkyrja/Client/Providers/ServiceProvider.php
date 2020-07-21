@@ -18,6 +18,7 @@ use Valkyrja\Client\Adapters\GuzzleAdapter;
 use Valkyrja\Client\Adapters\LogAdapter;
 use Valkyrja\Client\Adapters\NullAdapter;
 use Valkyrja\Client\Client;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
@@ -85,7 +86,7 @@ class ServiceProvider extends Provider
             Client::class,
             new \Valkyrja\Client\Managers\Client(
                 $container,
-                (array) $config['client']
+                $config['client']
             )
         );
     }

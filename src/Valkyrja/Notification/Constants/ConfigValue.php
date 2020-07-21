@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification\Constants;
 
+use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+
 /**
- * Constant UserField.
+ * Constant ConfigValue.
  *
  * @author Melech Mizrachi
  */
-final class UserField
+final class ConfigValue
 {
-    public const NAME         = 'name';
-    public const PHONE_NUMBER = 'phone_number';
-    public const SECRET_ID    = 'secret_id';
+    public const NOTIFICATIONS = [];
+
+    public static array $defaults = [
+        CKP::NOTIFICATIONS => self::NOTIFICATIONS,
+    ];
 }

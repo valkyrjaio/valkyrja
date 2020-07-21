@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Providers;
 
 use Valkyrja\Auth\Auth;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -79,7 +80,7 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Crypt::class),
                 $container->getSingleton(ORM::class),
                 $container->getSingleton(Session::class),
-                (array) $config['auth']
+                $config['auth']
             )
         );
     }

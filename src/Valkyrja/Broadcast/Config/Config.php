@@ -32,6 +32,8 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::ADAPTER,
         CKP::ADAPTERS,
+        CKP::MESSAGE,
+        CKP::MESSAGES,
         CKP::DISKS,
     ];
 
@@ -43,6 +45,8 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::ADAPTER  => EnvKey::BROADCAST_ADAPTER,
         CKP::ADAPTERS => EnvKey::BROADCAST_ADAPTERS,
+        CKP::MESSAGE  => EnvKey::BROADCAST_ADAPTER,
+        CKP::MESSAGES => EnvKey::BROADCAST_ADAPTERS,
         CKP::DISKS    => EnvKey::BROADCAST_DISKS,
     ];
 
@@ -59,6 +63,20 @@ class Config extends Model
      * @var array
      */
     public array $adapters;
+
+    /**
+     * The default message.
+     *
+     * @var string
+     */
+    public string $message;
+
+    /**
+     * The messages.
+     *
+     * @var array
+     */
+    public array $messages;
 
     /**
      * The disks.

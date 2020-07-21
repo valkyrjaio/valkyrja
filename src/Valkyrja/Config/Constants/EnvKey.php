@@ -55,6 +55,8 @@ final class EnvKey
 
     public const BROADCAST_ADAPTER        = 'BROADCAST_ADAPTER';
     public const BROADCAST_ADAPTERS       = 'BROADCAST_ADAPTERS';
+    public const BROADCAST_MESSAGE        = 'BROADCAST_MESSAGE';
+    public const BROADCAST_MESSAGES       = 'BROADCAST_MESSAGES';
     public const BROADCAST_DISKS          = 'BROADCAST_DISKS';
     public const BROADCAST_CACHE_STORE    = 'BROADCAST_CACHE_STORE';
     public const BROADCAST_LOG_ADAPTER    = 'BROADCAST_LOG_ADAPTER';
@@ -132,6 +134,8 @@ final class EnvKey
     public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
     public const MAIL_MESSAGE      = 'MAIL_MESSAGE';
     public const MAIL_MESSAGES     = 'MAIL_MESSAGES';
+
+    public const NOTIFICATION_NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 
     public const ORM_CONNECTION     = 'ORM_CONNECTION';
     public const ORM_ADAPTERS       = 'ORM_ADAPTERS';

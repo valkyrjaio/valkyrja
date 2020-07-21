@@ -51,6 +51,20 @@ trait NotifiableUserTrait
     protected static string $phoneNumberField = UserField::PHONE_NUMBER;
 
     /**
+     * Does this user have a secret id field.
+     *
+     * @var bool
+     */
+    protected static bool $hasSecretIdField = true;
+
+    /**
+     * The secret id field.
+     *
+     * @var string
+     */
+    protected static string $secretIdField = UserField::SECRET_ID;
+
+    /**
      * Whether this user entity has a name field.
      *
      * @return bool
@@ -91,13 +105,35 @@ trait NotifiableUserTrait
     }
 
     /**
+     * Whether this user entity has a secret id field.
+     *
+     * @return bool
+     */
+    public static function hasSecretIdField(): bool
+    {
+        return static::$hasSecretIdField;
+    }
+
+    /**
+     * Get the secret id field.
+     *
+     * @return string
+     */
+    public static function getSecretIdField(): string
+    {
+        return static::$phoneNumberField;
+    }
+
+    /**
      * Get the name field value.
      *
      * @return string
      */
     public function getNameFieldValue(): string
     {
-        return $this->{static::$nameField};
+        return static::$hasNameField
+            ? $this->{static::$nameField}
+            : '';
     }
 
     /**
@@ -109,7 +145,9 @@ trait NotifiableUserTrait
      */
     public function setNameFieldValue(string $name): void
     {
-        $this->{static::$nameField} = $name;
+        if (static::$hasNameField) {
+            $this->{static::$nameField} = $name;
+        }
     }
 
     /**
@@ -119,7 +157,9 @@ trait NotifiableUserTrait
      */
     public function getPhoneNumberFieldValue(): string
     {
-        return $this->{static::$phoneNumberField};
+        return static::$hasPhoneNumberField
+            ? $this->{static::$phoneNumberField}
+            : '';
     }
 
     /**
@@ -131,6 +171,34 @@ trait NotifiableUserTrait
      */
     public function setPhoneNumberFieldValue(string $phoneNumber): void
     {
-        $this->{static::$phoneNumberField} = $phoneNumber;
+        if (static::$hasPhoneNumberField) {
+            $this->{static::$phoneNumberField} = $phoneNumber;
+        }
+    }
+
+    /**
+     * Get the secret id field value.
+     *
+     * @return string
+     */
+    public function getSecretIdFieldValue(): string
+    {
+        return static::$hasSecretIdField
+            ? $this->{static::$phoneNumberField}
+            : '';
+    }
+
+    /**
+     * Set the secret id field value.
+     *
+     * @param string $secretId The secret id
+     *
+     * @return void
+     */
+    public function setSecretIdFieldValue(string $secretId): void
+    {
+        if (static::$hasSecretIdField) {
+            $this->{static::$phoneNumberField} = $secretId;
+        }
     }
 }

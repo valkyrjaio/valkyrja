@@ -14,16 +14,25 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast;
 
 /**
- * Interface Broadcaster.
+ * Interface Broadcast.
  *
  * @author Melech Mizrachi
  */
-interface Broadcaster
+interface Broadcast
 {
+    /**
+     * Create a new message.
+     *
+     * @param string|null $name [optional] The name of the message
+     *
+     * @return Message
+     */
+    public function createMessage(string $name = null): Message;
+
     /**
      * Get an adapter by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name [optional] The name of the adapter
      *
      * @return Adapter
      */

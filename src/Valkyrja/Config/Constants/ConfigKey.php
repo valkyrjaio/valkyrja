@@ -53,6 +53,8 @@ final class ConfigKey
 
     public const BROADCAST_ADAPTER  = 'broadcast.adapter';
     public const BROADCAST_ADAPTERS = 'broadcast.adapters';
+    public const BROADCAST_MESSAGE  = 'broadcast.message';
+    public const BROADCAST_MESSAGES = 'broadcast.messages';
     public const BROADCAST_DISKS    = 'broadcast.disks';
 
     public const CACHE_DEFAULT = 'cache.default';
@@ -125,6 +127,8 @@ final class ConfigKey
     public const MAIL_PASSWORD     = 'mail.password';
     public const MAIL_MESSAGE      = 'mail.message';
     public const MAIL_MESSAGES     = 'mail.messages';
+
+    public const NOTIFICATION_NOTIFICATIONS = 'notification.notifications';
 
     public const ORM_CONNECTION     = 'orm.connection';
     public const ORM_ADAPTERS       = 'orm.adapters';

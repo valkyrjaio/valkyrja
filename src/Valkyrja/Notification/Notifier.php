@@ -21,6 +21,16 @@ namespace Valkyrja\Notification;
 interface Notifier
 {
     /**
+     * Create a new notification
+     *
+     * @param string $name The notification name
+     * @param array  $data [optional] The data to add to the notification
+     *
+     * @return Notification
+     */
+    public function createNotification(string $name, array $data = []): Notification;
+
+    /**
      * Add a mail recipient to send a notification to.
      *
      * @param string $email The email
@@ -38,6 +48,15 @@ interface Notifier
      * @return static
      */
     public function addSmsRecipient(string $phoneNumber): self;
+
+    /**
+     * Add a broadcast event to send a notification to.
+     *
+     * @param string $event The event
+     *
+     * @return static
+     */
+    public function addBroadcastEvent(string $event): self;
 
     /**
      * Add a User recipient to send a notification to.

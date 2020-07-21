@@ -38,7 +38,7 @@ interface Response extends Message
      *
      * @return static
      */
-    public static function createResponse(string $content = null, int $statusCode = null, array $headers = null): self;
+    public static function create(string $content = null, int $statusCode = null, array $headers = null): self;
 
     /**
      * Gets the response status code.

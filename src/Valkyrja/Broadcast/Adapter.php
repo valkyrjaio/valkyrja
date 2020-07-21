@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast;
 
+use InvalidArgumentException;
+use JsonException;
+
 /**
  * Interface Adapter.
  *
@@ -20,4 +23,27 @@ namespace Valkyrja\Broadcast;
  */
 interface Adapter
 {
+    /**
+     * Determine if a key/value pair exists and matches in a broadcast message.
+     *  Message is automatically decoded into an array.
+     *
+     * @param string $key     The key to look for in the message
+     * @param mixed  $value   The value to match (string || numeric)
+     * @param string $message The message
+     *
+     * @throws InvalidArgumentException When $value is neither a string or numeric
+     * @throws JsonException If a malformed message is provided
+     *
+     * @return bool
+     */
+    public function determineKeyValueMatch(string $key, $value, string $message): bool;
+
+    /**
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @return void
+     */
+    public function send(Message $message): void;
 }

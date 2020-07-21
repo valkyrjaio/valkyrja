@@ -55,5 +55,5 @@ interface ProvidersAware
      *
      * @return void
      */
-    public function initializeProvided(string $itemId): void;
+    public function publishProvided(string $itemId): void;
 }

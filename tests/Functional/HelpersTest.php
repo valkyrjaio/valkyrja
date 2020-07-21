@@ -21,7 +21,7 @@ use Valkyrja\Console\Dispatchers\Console;
 use Valkyrja\Console\Inputs\Input;
 use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
-use Valkyrja\Container\Dispatchers\Container;
+use Valkyrja\Container\Managers\Container;
 use Valkyrja\Event\Dispatchers\Events;
 use Valkyrja\Filesystem\Filesystems\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;

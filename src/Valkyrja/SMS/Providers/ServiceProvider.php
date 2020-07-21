@@ -15,6 +15,7 @@ namespace Valkyrja\SMS\Providers;
 
 use Nexmo\Client as Nexmo;
 use Nexmo\Client\Credentials\Basic;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\SMS\Messages\NexmoMessage;
@@ -36,7 +37,8 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class          => 'publishSMS',
-            NexmoMessage::class => 'publishXenmoMessage',
+            Nexmo::class        => 'publishNexmo',
+            NexmoMessage::class => 'publishNexmoMessage',
         ];
     }
 
@@ -49,6 +51,7 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class,
+            Nexmo::class,
             NexmoMessage::class,
         ];
     }
@@ -79,7 +82,7 @@ class ServiceProvider extends Provider
             SMS::class,
             new \Valkyrja\SMS\Managers\SMS(
                 $container,
-                (array) $config['sms']
+                $config['sms']
             )
         );
     }
@@ -91,19 +94,32 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishXenmoMessage(Container $container): void
+    public static function publishNexmo(Container $container): void
     {
         $config    = $container->getSingleton('config');
         $smsConfig = $config['sms'];
 
-        $nexmo = new Nexmo(
-            new Basic($smsConfig['username'], $smsConfig['password'])
+        $container->setSingleton(
+            Nexmo::class,
+            new Nexmo(
+                new Basic($smsConfig['username'], $smsConfig['password'])
+            )
         );
+    }
 
+    /**
+     * Publish the nexmo message service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNexmoMessage(Container $container): void
+    {
         $container->setSingleton(
             NexmoMessage::class,
             new NexmoMessage(
-                $nexmo
+                $container->getSingleton(Nexmo::class)
             )
         );
     }

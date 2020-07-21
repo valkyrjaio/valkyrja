@@ -51,6 +51,20 @@ interface NotifiableUser extends EmailableUser
     public static function getPhoneNumberField(): string;
 
     /**
+     * Whether this user entity has a secret id field.
+     *
+     * @return bool
+     */
+    public static function hasSecretIdField(): bool;
+
+    /**
+     * Get the secret id field.
+     *
+     * @return string
+     */
+    public static function getSecretIdField(): string;
+
+    /**
      * Get the name field value.
      *
      * @return string
@@ -81,4 +95,20 @@ interface NotifiableUser extends EmailableUser
      * @return void
      */
     public function setPhoneNumberFieldValue(string $phoneNumber): void;
+
+    /**
+     * Get the secret id field value.
+     *
+     * @return string
+     */
+    public function getSecretIdFieldValue(): string;
+
+    /**
+     * Set the secret id field value.
+     *
+     * @param string $secretId The secret id
+     *
+     * @return void
+     */
+    public function setSecretIdFieldValue(string $secretId): void;
 }

@@ -11,15 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Broadcast\Clients;
-
-use Valkyrja\Broadcast\Adapter as Contract;
+namespace Valkyrja\Broadcast\Adapters;
 
 /**
  * Class LogAdapter.
  *
  * @author Melech Mizrachi
  */
-class LogAdapter implements Contract
+class LogAdapter extends NullAdapter
 {
 }

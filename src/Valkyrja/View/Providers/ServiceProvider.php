@@ -16,6 +16,7 @@ namespace Valkyrja\View\Providers;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\View\Engines\OrkaEngine;
@@ -91,7 +92,7 @@ class ServiceProvider extends Provider
             View::class,
             new \Valkyrja\View\Managers\View(
                 $container,
-                (array) $config['view']
+                $config['view']
             )
         );
     }
@@ -110,7 +111,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             PHPEngine::class,
             new PHPEngine(
-                (array) $config['view']
+                $config['view']
             )
         );
     }
@@ -129,7 +130,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             OrkaEngine::class,
             new OrkaEngine(
-                (array) $config['view']
+                $config['view']
             )
         );
     }

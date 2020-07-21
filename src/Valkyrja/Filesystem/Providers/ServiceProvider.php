@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Filesystem;
@@ -73,7 +74,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Filesystem::class,
             new \Valkyrja\Filesystem\Filesystems\Filesystem(
-                (array) $config['filesystem']
+                $config['filesystem']
             )
         );
     }

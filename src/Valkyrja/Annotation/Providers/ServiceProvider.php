@@ -16,6 +16,7 @@ namespace Valkyrja\Annotation\Providers;
 use Valkyrja\Annotation\Annotator;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Annotation\Parser;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Reflection\Reflector;
@@ -115,7 +116,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Parser::class,
             new \Valkyrja\Annotation\Parsers\Parser(
-                (array) $config['annotation']
+                $config['annotation']
             )
         );
     }

@@ -75,7 +75,7 @@ class ServiceProvider extends Provider
             Api::class,
             new \Valkyrja\Api\Apis\Api(
                 $container->getSingleton(JsonResponse::class),
-                (array) $config['api'],
+                $config['api'],
                 $config['app']['debug']
             )
         );

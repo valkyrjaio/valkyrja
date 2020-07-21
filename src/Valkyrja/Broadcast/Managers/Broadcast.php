@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Broadcast\Managers;
 
 use Valkyrja\Broadcast\Adapter;
-use Valkyrja\Broadcast\Broadcaster as Contract;
+use Valkyrja\Broadcast\Broadcast as Contract;
+use Valkyrja\Broadcast\Message;
 use Valkyrja\Container\Container;
 
 /**
@@ -22,7 +23,7 @@ use Valkyrja\Container\Container;
  *
  * @author Melech Mizrachi
  */
-class Broadcaster implements Contract
+class Broadcast implements Contract
 {
     /**
      * The adapters.
@@ -53,6 +54,13 @@ class Broadcaster implements Contract
     protected string $defaultAdapter;
 
     /**
+     * The default message.
+     *
+     * @var string
+     */
+    protected string $defaultMessage;
+
+    /**
      * Broadcaster constructor.
      *
      * @param Container $container The container
@@ -63,6 +71,23 @@ class Broadcaster implements Contract
         $this->container      = $container;
         $this->config         = $config;
         $this->defaultAdapter = $config['adapter'];
+        $this->defaultMessage = $config['message'];
+    }
+
+    /**
+     * Create a new message.
+     *
+     * @param string|null $name [optional] The name of the message
+     * @param array       $data [optional] The data
+     *
+     * @return Message
+     */
+    public function createMessage(string $name = null, array $data = []): Message
+    {
+        return $this->container->get(
+            $this->config['messages'][$name ?? $this->defaultMessage] ?? $name,
+            $data
+        );
     }
 
     /**

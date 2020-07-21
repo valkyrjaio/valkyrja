@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Providers;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Mail\Mail;
@@ -78,7 +79,7 @@ class ServiceProvider extends Provider
             Mail::class,
             new \Valkyrja\Mail\Managers\Mail(
                 $container,
-                (array) $config['mail']
+                $config['mail']
             )
         );
     }

@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Constants;
 
-use Valkyrja\Broadcast\Clients\CacheAdapter;
-use Valkyrja\Broadcast\Clients\LogAdapter;
-use Valkyrja\Broadcast\Clients\NullAdapter;
-use Valkyrja\Broadcast\Clients\PusherAdapter;
+use Valkyrja\Broadcast\Adapters\CacheAdapter;
+use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
+use Valkyrja\Broadcast\Adapters\LogAdapter;
+use Valkyrja\Broadcast\Adapters\NullAdapter;
+use Valkyrja\Broadcast\Adapters\PusherAdapter;
+use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Cache\Constants\ConfigValue as CacheConfigValue;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Log\Constants\ConfigValue as LogConfigValue;
@@ -28,12 +30,17 @@ use Valkyrja\Log\Constants\ConfigValue as LogConfigValue;
  */
 final class ConfigValue
 {
-    public const ADAPTER  = CKP::PUSHER;
+    public const ADAPTER  = CKP::CRYPT;
     public const ADAPTERS = [
         CKP::CACHE  => CacheAdapter::class,
         CKP::NULL   => NullAdapter::class,
         CKP::LOG    => LogAdapter::class,
         CKP::PUSHER => PusherAdapter::class,
+        CKP::CRYPT  => CryptPusherAdapter::class,
+    ];
+    public const MESSAGE  = CKP::DEFAULT;
+    public const MESSAGES = [
+        CKP::DEFAULT => Message::class,
     ];
     public const DISKS    = [
         CKP::CACHE  => [
@@ -54,6 +61,8 @@ final class ConfigValue
     public static array $defaults = [
         CKP::ADAPTER  => self::ADAPTER,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::MESSAGE  => self::MESSAGE,
+        CKP::MESSAGES => self::MESSAGES,
         CKP::DISKS    => self::DISKS,
     ];
 }

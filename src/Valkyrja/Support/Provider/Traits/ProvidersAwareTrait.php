@@ -126,13 +126,13 @@ trait ProvidersAwareTrait
     }
 
     /**
-     * Initialize a provided item.
+     * Publish a provided item.
      *
      * @param string $itemId The provided item id
      *
      * @return void
      */
-    public function initializeProvided(string $itemId): void
+    public function publishProvided(string $itemId): void
     {
         // The provider for this provided item
         $provider = self::$provided[$itemId];

@@ -66,7 +66,7 @@ class ResponseFactory implements Contract
             return $response;
         }
 
-        return $response::createResponse($content, $statusCode, $headers);
+        return $response::create($content, $statusCode, $headers);
     }
 
     /**
@@ -87,7 +87,7 @@ class ResponseFactory implements Contract
             return $response;
         }
 
-        return $response::createJsonResponse($data, $statusCode, $headers);
+        return $response::createFromData($data, $statusCode, $headers);
     }
 
     /**
@@ -132,7 +132,7 @@ class ResponseFactory implements Contract
             return $response;
         }
 
-        return $response::createRedirectResponse($uri, $statusCode, $headers);
+        return $response::createFromUri($uri, $statusCode, $headers);
     }
 
     /**

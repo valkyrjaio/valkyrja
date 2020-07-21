@@ -16,7 +16,9 @@ namespace Valkyrja\Container\Providers;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Container\Container as Contract;
-use Valkyrja\Container\Dispatchers\CacheableContainer;
+use Valkyrja\Container\Managers\CacheableContainer;
+
+use function is_array;
 
 /**
  * Class AppProvider.
@@ -36,7 +38,11 @@ class AppProvider extends Provider
     {
         $config = $app->config();
 
-        $container = new CacheableContainer((array) $config['container'], $app->debug());
+        if (! is_array($config)) {
+            $config = (array) $config;
+        }
+
+        $container = new CacheableContainer($config['container'], $app->debug());
 
         $app->setContainer($container);
 

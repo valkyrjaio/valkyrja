@@ -21,6 +21,7 @@ use Valkyrja\Console\Formatter;
 use Valkyrja\Console\Input;
 use Valkyrja\Console\Kernel;
 use Valkyrja\Console\Output;
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -117,7 +118,7 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
                 $container->getSingleton(PathParser::class),
-                (array) $config['console'],
+                $config['console'],
                 $config['app']['debug'],
             )
         );

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Validation\Providers;
 
+use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\ORM as ORMManager;
@@ -78,7 +79,7 @@ class ServiceProvider extends Provider
             Validator::class,
             new \Valkyrja\Validation\Validators\Validator(
                 $container,
-                (array) $config['validation']
+                $config['validation']
             )
         );
     }

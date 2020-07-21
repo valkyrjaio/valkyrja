@@ -35,4 +35,11 @@ trait NotifiableUserFields
      * @var string
      */
     public string $phone_number = '';
+
+    /**
+     * The secret id.
+     *
+     * @var string
+     */
+    public string $secretId = '';
 }

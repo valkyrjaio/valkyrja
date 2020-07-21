@@ -30,6 +30,7 @@ use Valkyrja\Event\Config\Config as Event;
 use Valkyrja\Filesystem\Config\Config as Filesystem;
 use Valkyrja\Log\Config\Config as Log;
 use Valkyrja\Mail\Config\Config as Mail;
+use Valkyrja\Notification\Config\Config as Notification;
 use Valkyrja\ORM\Config\Config as ORM;
 use Valkyrja\Path\Config\Config as Path;
 use Valkyrja\Routing\Config\Config as Routing;
@@ -131,13 +132,6 @@ class Config extends Model
     public Crypt $crypt;
 
     /**
-     * The ORM module config.
-     *
-     * @var ORM
-     */
-    public ORM $orm;
-
-    /**
      * The event module config.
      *
      * @var Event
@@ -164,6 +158,20 @@ class Config extends Model
      * @var Mail
      */
     public Mail $mail;
+
+    /**
+     * The notification module config.
+     *
+     * @var Notification
+     */
+    public Notification $notification;
+
+    /**
+     * The ORM module config.
+     *
+     * @var ORM
+     */
+    public ORM $orm;
 
     /**
      * The path module config.
