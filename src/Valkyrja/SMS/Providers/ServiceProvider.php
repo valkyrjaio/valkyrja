@@ -15,7 +15,6 @@ namespace Valkyrja\SMS\Providers;
 
 use Nexmo\Client as Nexmo;
 use Nexmo\Client\Credentials\Basic;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\SMS\Messages\NexmoMessage;

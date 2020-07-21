@@ -15,7 +15,6 @@ namespace Valkyrja\Routing\Providers;
 
 use Valkyrja\Annotation\Annotator as AnnotationAnnotator;
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;

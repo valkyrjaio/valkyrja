@@ -21,14 +21,18 @@ namespace Valkyrja\Broadcast;
 interface Message
 {
     public function getChannel(): string;
+
     public function setChannel(string $channel): self;
 
     public function getEvent(): string;
+
     public function setEvent(string $event): self;
 
     public function getData(): ?array;
+
     public function setData(array $data = null): self;
 
     public function getMessage(): string;
+
     public function setMessage(string $message): self;
 }

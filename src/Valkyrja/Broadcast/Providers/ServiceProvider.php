@@ -19,7 +19,6 @@ use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
-use Valkyrja\Config\Config\Config;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
