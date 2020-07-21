@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Providers;
 
+use JsonException;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Managers\CacheableContainer;
 
 use function is_array;
+
+use function json_decode;
+use function json_encode;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Class AppProvider.
@@ -32,6 +38,8 @@ class AppProvider extends Provider
      *
      * @param Application $app The application
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public static function publish(Application $app): void
@@ -39,7 +47,7 @@ class AppProvider extends Provider
         $config = $app->config();
 
         if (! is_array($config)) {
-            $config = (array) $config;
+            $config = json_decode(json_encode($config, JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
         }
 
         $container = new CacheableContainer($config['container'], $app->debug());
