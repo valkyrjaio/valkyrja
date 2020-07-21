@@ -19,7 +19,6 @@ use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
 use Valkyrja\Config\Constants\ConfigKeyPart;
-use Valkyrja\Config\Constants\EnvKey;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -150,8 +149,8 @@ class Valkyrja implements Application
     /**
      * Get an environment variable.
      *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] The default value to return
+     * @param string|null $key     [optional] The variable to get
+     * @param mixed       $default [optional] The default value to return
      *
      * @return mixed
      */
@@ -192,7 +191,7 @@ class Valkyrja implements Application
     /**
      * Set the environment variables class.
      *
-     * @param string $env [optional] The env file to use
+     * @param string|null $env [optional] The env file to use
      *
      * @return void
      */
@@ -205,8 +204,8 @@ class Valkyrja implements Application
     /**
      * Get the config.
      *
-     * @param string $key     [optional] The key to get
-     * @param mixed  $default [optional] The default value if the key is not found
+     * @param string|null $key     [optional] The key to get
+     * @param mixed       $default [optional] The default value if the key is not found
      *
      * @return mixed|Config|null
      */
@@ -365,7 +364,7 @@ class Valkyrja implements Application
             return;
         }
 
-        $config ??= self::env(EnvKey::CONFIG_CLASS, Config::class);
+        $config ??= self::env('CONFIG_CLASS', Config::class);
 
         $this->withConfig(new $config());
     }
@@ -377,7 +376,7 @@ class Valkyrja implements Application
      */
     protected function getCacheFilePath(): string
     {
-        return self::env(EnvKey::CONFIG_CACHE_FILE_PATH, Directory::cachePath('config.php'));
+        return self::env('CONFIG_CACHE_FILE_PATH', Directory::cachePath('config.php'));
     }
 
     /**

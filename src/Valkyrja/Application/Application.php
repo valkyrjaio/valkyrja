@@ -46,8 +46,8 @@ interface Application extends ArrayAccess
     /**
      * Get an environment variable.
      *
-     * @param string $key     [optional] The variable to get
-     * @param mixed  $default [optional] The default value to return
+     * @param string|null $key     [optional] The variable to get
+     * @param mixed       $default [optional] The default value to return
      *
      * @return mixed
      */
@@ -63,7 +63,7 @@ interface Application extends ArrayAccess
     /**
      * Set the environment variables class.
      *
-     * @param string $env [optional] The env file to use
+     * @param string|null $env [optional] The env file to use
      *
      * @return void
      */
@@ -91,8 +91,8 @@ interface Application extends ArrayAccess
     /**
      * Get the config.
      *
-     * @param string $key     [optional] The key to get
-     * @param mixed  $default [optional] The default value if the key is not found
+     * @param string|null $key     [optional] The key to get
+     * @param mixed       $default [optional] The default value if the key is not found
      *
      * @return mixed|Config|null
      */
