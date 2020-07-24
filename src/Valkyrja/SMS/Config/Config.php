@@ -32,6 +32,8 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::USERNAME,
         CKP::PASSWORD,
+        CKP::ADAPTER,
+        CKP::ADAPTERS,
         CKP::MESSAGE,
         CKP::MESSAGES,
     ];
@@ -44,6 +46,8 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::USERNAME => EnvKey::SMS_USERNAME,
         CKP::PASSWORD => EnvKey::SMS_PASSWORD,
+        CKP::ADAPTER  => EnvKey::SMS_ADAPTER,
+        CKP::ADAPTERS => EnvKey::SMS_ADAPTERS,
         CKP::MESSAGE  => EnvKey::SMS_MESSAGE,
         CKP::MESSAGES => EnvKey::SMS_MESSAGES,
     ];
@@ -61,6 +65,20 @@ class Config extends Model
      * @var string
      */
     public string $password;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    public string $adapter;
+
+    /**
+     * The adapters.
+     *
+     * @var string[]
+     */
+    public array $adapters;
 
     /**
      * The default message.

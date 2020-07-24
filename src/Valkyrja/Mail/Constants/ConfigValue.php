@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Mail\Messages\PHPMailerMessage;
+use Valkyrja\Mail\Adapters\LogAdapter;
+use Valkyrja\Mail\Adapters\NullAdapter;
+use Valkyrja\Mail\Adapters\PHPMailerAdapter;
+use Valkyrja\Mail\Messages\Message;
 
 /**
  * Constant ConfigValue.
@@ -30,9 +33,15 @@ final class ConfigValue
     public const ENCRYPTION   = 'tls';
     public const USERNAME     = '';
     public const PASSWORD     = '';
-    public const MESSAGE      = CKP::PHP_MAILER;
+    public const ADAPTER      = CKP::PHP_MAILER;
+    public const ADAPTERS     = [
+        CKP::LOG        => LogAdapter::class,
+        CKP::NULL       => NullAdapter::class,
+        CKP::PHP_MAILER => PHPMailerAdapter::class,
+    ];
+    public const MESSAGE      = CKP::DEFAULT;
     public const MESSAGES     = [
-        CKP::PHP_MAILER => PHPMailerMessage::class,
+        CKP::DEFAULT => Message::class,
     ];
 
     public static array $defaults = [
@@ -43,6 +52,8 @@ final class ConfigValue
         CKP::ENCRYPTION   => self::ENCRYPTION,
         CKP::USERNAME     => self::USERNAME,
         CKP::PASSWORD     => self::PASSWORD,
+        CKP::ADAPTER      => self::ADAPTER,
+        CKP::ADAPTERS     => self::ADAPTERS,
         CKP::MESSAGE      => self::MESSAGE,
         CKP::MESSAGES     => self::MESSAGES,
     ];

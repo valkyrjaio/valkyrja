@@ -21,11 +21,18 @@ namespace Valkyrja\Mail;
 interface Message
 {
     /**
-     * Create a new message.
+     * Get the from email.
      *
-     * @return static
+     * @return string
      */
-    public function create(): self;
+    public function getFromEmail(): string;
+
+    /**
+     * Get the from name.
+     *
+     * @return string
+     */
+    public function getFromName(): string;
 
     /**
      * Set the mail's sender information.
@@ -38,6 +45,13 @@ interface Message
     public function setFrom(string $email, string $name = ''): self;
 
     /**
+     * Get the recipients.
+     *
+     * @return array
+     */
+    public function getRecipients(): array;
+
+    /**
      * Add a recipient.
      *
      * @param string $email The email
@@ -46,6 +60,13 @@ interface Message
      * @return static
      */
     public function addRecipient(string $email, string $name = ''): self;
+
+    /**
+     * Get the reply to recipients.
+     *
+     * @return array
+     */
+    public function getReplyToRecipients(): array;
 
     /**
      * Add a Reply-To recipient.
@@ -58,6 +79,13 @@ interface Message
     public function addReplyTo(string $email, string $name = ''): self;
 
     /**
+     * Get the copy recipients.
+     *
+     * @return array
+     */
+    public function getCopyRecipients(): array;
+
+    /**
      * Add a copy (CC) recipient.
      *
      * @param string $email The email
@@ -66,6 +94,13 @@ interface Message
      * @return static
      */
     public function addCopyRecipient(string $email, string $name = ''): self;
+
+    /**
+     * Get the blind copy recipients.
+     *
+     * @return array
+     */
+    public function getBlindCopyRecipients(): array;
 
     /**
      * Add a blind copy (BCC) recipient.
@@ -78,6 +113,13 @@ interface Message
     public function addBlindCopyRecipient(string $email, string $name = ''): self;
 
     /**
+     * Get the attachments.
+     *
+     * @return array
+     */
+    public function getAttachments(): array;
+
+    /**
      * Add an attachment from the filesystem.
      *
      * @param string $path The path
@@ -86,6 +128,13 @@ interface Message
      * @return static
      */
     public function addAttachment(string $path, string $name = ''): self;
+
+    /**
+     * Get the subject.
+     *
+     * @return string
+     */
+    public function getSubject(): string;
 
     /**
      * Set the subject.
@@ -97,6 +146,13 @@ interface Message
     public function setSubject(string $subject): self;
 
     /**
+     * Get the body.
+     *
+     * @return string
+     */
+    public function getBody(): string;
+
+    /**
      * Set the body of the mail.
      *
      * @param string $body The body
@@ -106,27 +162,34 @@ interface Message
     public function setBody(string $body): self;
 
     /**
-     * Set the html body of the mail.
+     * Get whether the message body is html.
      *
-     * @param string $html The html
+     * @return bool
+     */
+    public function isHtml(): bool;
+
+    /**
+     * Set whether the message body is html.
+     *
+     * @param bool $isHtml [optional] Whether the message body is html
      *
      * @return static
      */
-    public function setHtml(string $html): self;
+    public function setIsHtml(bool $isHtml = true): self;
+
+    /**
+     * Get the plain body.
+     *
+     * @return string|null
+     */
+    public function getPlainBody(): ?string;
 
     /**
      * If sending html, add an alternative plain message body for clients without html support.
      *
-     * @param string $plainBody The plain body
+     * @param string|null $plainBody The plain body
      *
      * @return static
      */
-    public function setPlainBody(string $plainBody): self;
-
-    /**
-     * Send the mail.
-     *
-     * @return bool
-     */
-    public function send(): bool;
+    public function setPlainBody(string $plainBody = null): self;
 }

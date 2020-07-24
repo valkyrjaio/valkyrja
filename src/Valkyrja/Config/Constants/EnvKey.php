@@ -132,6 +132,8 @@ final class EnvKey
     public const MAIL_ENCRYPTION   = 'MAIL_ENCRYPTION';
     public const MAIL_USERNAME     = 'MAIL_USERNAME';
     public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
+    public const MAIL_ADAPTER      = 'MAIL_ADAPTER';
+    public const MAIL_ADAPTERS     = 'MAIL_ADAPTERS';
     public const MAIL_MESSAGE      = 'MAIL_MESSAGE';
     public const MAIL_MESSAGES     = 'MAIL_MESSAGES';
 
@@ -171,6 +173,8 @@ final class EnvKey
 
     public const SMS_USERNAME = 'SMS_USERNAME';
     public const SMS_PASSWORD = 'SMS_PASSWORD';
+    public const SMS_ADAPTER  = 'SMS_ADAPTER';
+    public const SMS_ADAPTERS = 'SMS_ADAPTERS';
     public const SMS_MESSAGE  = 'SMS_MESSAGE';
     public const SMS_MESSAGES = 'SMS_MESSAGES';
 

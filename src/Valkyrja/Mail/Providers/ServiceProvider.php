@@ -16,8 +16,12 @@ namespace Valkyrja\Mail\Providers;
 use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Log\Logger;
+use Valkyrja\Mail\Adapters\LogAdapter;
+use Valkyrja\Mail\Adapters\NullAdapter;
+use Valkyrja\Mail\Adapters\PHPMailerAdapter;
 use Valkyrja\Mail\Mail;
-use Valkyrja\Mail\Messages\PHPMailerMessage;
+use Valkyrja\Mail\Messages\Message;
 
 /**
  * Class ServiceProvider.
@@ -35,7 +39,11 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class             => 'publishMail',
-            PHPMailerMessage::class => 'publishMailerMessage',
+            LogAdapter::class       => 'publishLogAdapter',
+            NullAdapter::class      => 'publishNullAdapter',
+            PHPMailer::class        => 'publishPHPMailer',
+            PHPMailerAdapter::class => 'publishPHPMailerAdapter',
+            Message::class          => 'publishMessage',
         ];
     }
 
@@ -48,7 +56,11 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class,
-            PHPMailerMessage::class,
+            LogAdapter::class,
+            NullAdapter::class,
+            PHPMailer::class,
+            PHPMailerAdapter::class,
+            Message::class,
         ];
     }
 
@@ -84,13 +96,45 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the PHP mailer message service.
+     * Publish the log adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishMailerMessage(Container $container): void
+    public static function publishLogAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            LogAdapter::class,
+            new LogAdapter(
+                $container->getSingleton(Logger::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            NullAdapter::class,
+            new NullAdapter()
+        );
+    }
+
+    /**
+     * Publish the PHP mailer service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPHPMailer(Container $container): void
     {
         $config     = $container->getSingleton('config');
         $mailConfig = $config['mail'];
@@ -116,10 +160,42 @@ class ServiceProvider extends Provider
         $PHPMailer->SMTPSecure = $mailConfig['encryption'];
 
         $container->setSingleton(
-            PHPMailerMessage::class,
-            new PHPMailerMessage(
-                $PHPMailer
+            PHPMailer::class,
+            $PHPMailer
+        );
+    }
+
+    /**
+     * Publish the PHP Mailer adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPHPMailerAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            PHPMailerAdapter::class,
+            new PHPMailerAdapter(
+                $container->getSingleton(PHPMailer::class)
             )
+        );
+    }
+
+    /**
+     * Publish the message service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMessage(Container $container): void
+    {
+        $container->setClosure(
+            Message::class,
+            static function () {
+                return new Message();
+            }
         );
     }
 }

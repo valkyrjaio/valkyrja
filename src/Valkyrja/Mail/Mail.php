@@ -28,4 +28,13 @@ interface Mail
      * @return Message
      */
     public function createMessage(string $name = null): Message;
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name [optional] The name of the adapter
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter;
 }

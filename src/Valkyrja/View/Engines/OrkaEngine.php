@@ -35,6 +35,10 @@ class OrkaEngine extends PHPEngine
         '/@block\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'           => '<?= $template->getBlock(\'${1}\'); ?>',
         '/@startblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'      => '<?php $template->startBlock(\'${1}\'); ?>',
         '/@endblock/x'                                    => '<?php $template->endBlock(); ?>',
+        '/@hasblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'        => '<?php if ($template->hasBlock(\'${1}\')) : ?>',
+        '/@endhasblock/x'                                 => '<?php endif; ?>',
+        '/@unlessblock\(\s*\'([a-zA-Z0-9]*)\'\s*\)/x'     => '<?php if (! $template->hasBlock(\'${1}\')) : ?>',
+        '/@endunlessblock/x'                              => '<?php endif; ?>',
         '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*\s*\)/x'      => '<?php $template->getPartial(\'${1}\'); ?>',
         '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*,(.*)\s*\)/x' => '<?php $template->getPartial(\'${1}\', ${2}); ?>',
         // {{{ unescaped }}}
@@ -47,7 +51,7 @@ class OrkaEngine extends PHPEngine
         '/@endif/x'                                       => '<?php endif; ?>',
         '/@unless\(\s*(.*)\s*\)/x'                        => '<?php if (! (${1})) : ?>',
         '/@elseunless\(\s*(.*)\s*\)/x'                    => '<?php elseif (! (${1})) : ?>',
-        '/@unless/x'                                      => '<?php endif; ?>',
+        '/@endunless/x'                                   => '<?php endif; ?>',
         '/@foreach\(\s*(.*)\s*\)/x'                       => '<?php foreach (${1}) : ?>',
         '/@endforeach/x'                                  => '<?php endforeach; ?>',
     ];

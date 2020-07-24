@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Application\Applications;
 
+use RuntimeException;
 use Valkyrja\Application\Application;
-use Valkyrja\Application\Helpers\ApplicationHelpersTrait;
 use Valkyrja\Application\Support\Provider;
 use Valkyrja\Config\Config as ConfigModel;
 use Valkyrja\Config\Config\Config;
-use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Console\Kernel as ConsoleKernel;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
@@ -26,12 +25,12 @@ use Valkyrja\Event\Events;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Support\Directory;
 use Valkyrja\Support\Exception\ExceptionHandler;
+use Valkyrja\Support\Type\Arr;
 
 use function constant;
 use function date_default_timezone_set;
 use function define;
 use function defined;
-use function explode;
 use function is_file;
 use function microtime;
 
@@ -44,8 +43,6 @@ use const E_ALL;
  */
 class Valkyrja implements Application
 {
-    use ApplicationHelpersTrait;
-
     /**
      * Get the instance of the application.
      *
@@ -211,29 +208,13 @@ class Valkyrja implements Application
      */
     public function config(string $key = null, $default = null)
     {
-        // Set the config to return
-        $config = self::$config;
-
         // If no key was specified
         if (null === $key) {
             // Return all the entire config
-            return $config;
+            return self::$config;
         }
 
-        // Explode the keys on period and iterate through the keys
-        foreach (explode(ConfigKeyPart::SEP, $key) as $configItem) {
-            // Trying to get the item from the config or set the default
-            $config = $config[$configItem] ?? $default;
-
-            // If the item was not found, might as well return out from here
-            // instead of continuing to iterate through the remaining keys
-            if ($default === $config) {
-                return $default;
-            }
-        }
-
-        // Return the found config
-        return $config;
+        return Arr::getValueDotNotation(self::$config, $key, $default);
     }
 
     /**
@@ -342,6 +323,71 @@ class Valkyrja implements Application
     public function version(): string
     {
         return static::VERSION;
+    }
+
+    /**
+     * Offset set.
+     *
+     * @param string|null $serviceId The service id
+     * @param mixed       $service   The service
+     *
+     * @return void
+     */
+    public function offsetSet($serviceId, $service): void
+    {
+        self::$container->bind($serviceId, $service);
+    }
+
+    /**
+     * Offset exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function offsetExists($serviceId): bool
+    {
+        return self::$container->has($serviceId);
+    }
+
+    /**
+     * Offset unset.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return void
+     */
+    public function offsetUnset($serviceId): void
+    {
+        throw new RuntimeException('Cannot unset service: ' . $serviceId);
+    }
+
+    /**
+     * Offset get.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return mixed
+     */
+    public function offsetGet($serviceId)
+    {
+        if ($serviceId === 'config') {
+            return self::$config;
+        }
+
+        if ($serviceId === 'env') {
+            return self::$env;
+        }
+
+        if ($serviceId === Container::class) {
+            return self::$container;
+        }
+
+        if (self::$container->isSingleton($serviceId)) {
+            return self::$container->getSingleton($serviceId);
+        }
+
+        return self::$container->get($serviceId);
     }
 
     /**

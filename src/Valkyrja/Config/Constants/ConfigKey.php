@@ -125,6 +125,8 @@ final class ConfigKey
     public const MAIL_ENCRYPTION   = 'mail.encryption';
     public const MAIL_USERNAME     = 'mail.username';
     public const MAIL_PASSWORD     = 'mail.password';
+    public const MAIL_ADAPTER      = 'mail.adapter';
+    public const MAIL_ADAPTERS     = 'mail.adapters';
     public const MAIL_MESSAGE      = 'mail.message';
     public const MAIL_MESSAGES     = 'mail.messages';
 
@@ -164,6 +166,8 @@ final class ConfigKey
 
     public const SMS_USERNAME = 'sms.username';
     public const SMS_PASSWORD = 'sms.password';
+    public const SMS_ADAPTER  = 'sms.adapter';
+    public const SMS_ADAPTERS = 'sms.adapters';
     public const SMS_MESSAGE  = 'sms.message';
     public const SMS_MESSAGES = 'sms.messages';
 

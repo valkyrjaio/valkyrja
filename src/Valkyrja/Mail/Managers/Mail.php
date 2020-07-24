@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
 
@@ -25,18 +26,11 @@ use Valkyrja\Mail\Message;
 class Mail implements Contract
 {
     /**
-     * The message clients.
+     * The adapters.
      *
-     * @var Message[]
+     * @var Adapter[]
      */
-    protected static array $messages = [];
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
+    protected static array $adapters = [];
 
     /**
      * The container.
@@ -46,7 +40,21 @@ class Mail implements Contract
     protected Container $container;
 
     /**
-     * The default message to use.
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
+
+    /**
+     * The default message.
      *
      * @var string
      */
@@ -62,6 +70,7 @@ class Mail implements Contract
     {
         $this->config         = $config;
         $this->container      = $container;
+        $this->defaultAdapter = $config['adapter'];
         $this->defaultMessage = $config['message'];
     }
 
@@ -69,20 +78,32 @@ class Mail implements Contract
      * Create a new message.
      *
      * @param string|null $name [optional] The name of the message
+     * @param array       $data [optional] The data
      *
      * @return Message
      */
-    public function createMessage(string $name = null): Message
+    public function createMessage(string $name = null, array $data = []): Message
     {
-        $name ??= $this->defaultMessage;
+        return $this->container->get(
+            $this->config['messages'][$name ?? $this->defaultMessage] ?? $name,
+            $data
+        );
+    }
 
-        if (isset(self::$messages[$name])) {
-            return self::$messages[$name]->create();
-        }
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter
+    {
+        $name ??= $this->defaultAdapter;
 
-        $messageClass          = $this->config['messages'][$name];
-        self::$messages[$name] = $this->container->getSingleton($messageClass);
-
-        return self::$messages[$name]->create();
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->getSingleton(
+                $this->config['adapters'][$name]
+            );
     }
 }

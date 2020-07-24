@@ -21,11 +21,11 @@ namespace Valkyrja\SMS;
 interface Message
 {
     /**
-     * Make a new message.
+     * Get the phone number to send to.
      *
-     * @return static
+     * @return string
      */
-    public function make(): self;
+    public function getTo(): string;
 
     /**
      * Set who to send to.
@@ -37,6 +37,13 @@ interface Message
     public function setTo(string $to): self;
 
     /**
+     * Get the phone number to set as sent from.
+     *
+     * @return string
+     */
+    public function getFrom(): string;
+
+    /**
      * Set the from.
      *
      * @param string $from The from
@@ -44,6 +51,13 @@ interface Message
      * @return static
      */
     public function setFrom(string $from): self;
+
+    /**
+     * Get the text.
+     *
+     * @return string
+     */
+    public function getText(): string;
 
     /**
      * Set the text.
@@ -55,18 +69,18 @@ interface Message
     public function setText(string $text): self;
 
     /**
-     * Set unicode text.
-     *
-     * @param string $unicodeText The unicode text
-     *
-     * @return static
-     */
-    public function setUnicodeText(string $unicodeText): self;
-
-    /**
-     * Send the mail.
+     * Get whether the text is unicode.
      *
      * @return bool
      */
-    public function send(): bool;
+    public function isUnicode(): bool;
+
+    /**
+     * Set whether the text is unicode.
+     *
+     * @param bool $isUnicode [optional] Whether the text is unicode
+     *
+     * @return static
+     */
+    public function setIsUnicode(bool $isUnicode = true): self;
 }

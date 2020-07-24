@@ -37,6 +37,8 @@ class Config extends Model
         CKP::ENCRYPTION,
         CKP::USERNAME,
         CKP::PASSWORD,
+        CKP::ADAPTER,
+        CKP::ADAPTERS,
         CKP::MESSAGE,
         CKP::MESSAGES,
     ];
@@ -54,6 +56,8 @@ class Config extends Model
         CKP::ENCRYPTION   => EnvKey::MAIL_ENCRYPTION,
         CKP::USERNAME     => EnvKey::MAIL_USERNAME,
         CKP::PASSWORD     => EnvKey::MAIL_PASSWORD,
+        CKP::ADAPTER      => EnvKey::MAIL_ADAPTER,
+        CKP::ADAPTERS     => EnvKey::MAIL_ADAPTERS,
         CKP::MESSAGE      => EnvKey::MAIL_MESSAGE,
         CKP::MESSAGES     => EnvKey::MAIL_MESSAGES,
     ];
@@ -106,6 +110,20 @@ class Config extends Model
      * @var string
      */
     public string $password;
+
+    /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    public string $adapter;
+
+    /**
+     * The adapters.
+     *
+     * @var string[]
+     */
+    public array $adapters;
 
     /**
      * The default message.

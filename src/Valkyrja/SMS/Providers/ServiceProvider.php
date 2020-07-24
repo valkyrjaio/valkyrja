@@ -17,7 +17,11 @@ use Nexmo\Client as Nexmo;
 use Nexmo\Client\Credentials\Basic;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\SMS\Messages\NexmoMessage;
+use Valkyrja\Log\Logger;
+use Valkyrja\SMS\Adapters\LogAdapter;
+use Valkyrja\SMS\Adapters\NexmoAdapter;
+use Valkyrja\SMS\Adapters\NullAdapter;
+use Valkyrja\SMS\Messages\Message;
 use Valkyrja\SMS\SMS;
 
 /**
@@ -36,8 +40,11 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class          => 'publishSMS',
+            LogAdapter::class   => 'publishLogAdapter',
+            Message::class      => 'publishMessage',
             Nexmo::class        => 'publishNexmo',
-            NexmoMessage::class => 'publishNexmoMessage',
+            NexmoAdapter::class => 'publishNexmoAdapter',
+            NullAdapter::class  => 'publishNullAdapter',
         ];
     }
 
@@ -50,8 +57,11 @@ class ServiceProvider extends Provider
     {
         return [
             SMS::class,
+            LogAdapter::class,
+            Message::class,
             Nexmo::class,
-            NexmoMessage::class,
+            NexmoAdapter::class,
+            NullAdapter::class,
         ];
     }
 
@@ -107,19 +117,68 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the nexmo message service.
+     * Publish the log adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishNexmoMessage(Container $container): void
+    public static function publishLogAdapter(Container $container): void
     {
         $container->setSingleton(
-            NexmoMessage::class,
-            new NexmoMessage(
+            LogAdapter::class,
+            new LogAdapter(
+                $container->getSingleton(Logger::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the nexmo adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNexmoAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            NexmoAdapter::class,
+            new NexmoAdapter(
                 $container->getSingleton(Nexmo::class)
             )
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        $container->setSingleton(
+            NullAdapter::class,
+            new NullAdapter()
+        );
+    }
+
+    /**
+     * Publish the message service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMessage(Container $container): void
+    {
+        $container->setClosure(
+            Message::class,
+            static function () {
+                return new Message();
+            }
         );
     }
 }
