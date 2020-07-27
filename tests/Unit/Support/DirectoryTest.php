@@ -57,7 +57,7 @@ class DirectoryTest extends TestCase
      */
     public function testBasePath(): void
     {
-        $this->assertEquals($this->basePath, Directory::basePath());
+        self::assertEquals($this->basePath, Directory::basePath());
     }
 
     /**
@@ -69,7 +69,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . $this->subPath;
 
-        $this->assertEquals($expected, Directory::basePath($this->subPath));
+        self::assertEquals($expected, Directory::basePath($this->subPath));
     }
 
     /**
@@ -81,7 +81,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$APP_PATH;
 
-        $this->assertEquals($expected, Directory::appPath());
+        self::assertEquals($expected, Directory::appPath());
     }
 
     /**
@@ -93,7 +93,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$APP_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::appPath($this->subPath));
+        self::assertEquals($expected, Directory::appPath($this->subPath));
     }
 
     /**
@@ -111,7 +111,7 @@ class DirectoryTest extends TestCase
             . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
-        $this->assertEquals($expected, Directory::cachePath());
+        self::assertEquals($expected, Directory::cachePath());
     }
 
     /**
@@ -130,7 +130,7 @@ class DirectoryTest extends TestCase
             . Directory::$CACHE_PATH
             . $this->subPath;
 
-        $this->assertEquals($expected, Directory::cachePath($this->subPath));
+        self::assertEquals($expected, Directory::cachePath($this->subPath));
     }
 
     /**
@@ -142,7 +142,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
 
-        $this->assertEquals($expected, Directory::configPath());
+        self::assertEquals($expected, Directory::configPath());
     }
 
     /**
@@ -154,7 +154,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::configPath($this->subPath));
+        self::assertEquals($expected, Directory::configPath($this->subPath));
     }
 
     /**
@@ -166,7 +166,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH;
 
-        $this->assertEquals($expected, Directory::publicPath());
+        self::assertEquals($expected, Directory::publicPath());
     }
 
     /**
@@ -178,7 +178,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::publicPath($this->subPath));
+        self::assertEquals($expected, Directory::publicPath($this->subPath));
     }
 
     /**
@@ -190,7 +190,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH;
 
-        $this->assertEquals($expected, Directory::resourcesPath());
+        self::assertEquals($expected, Directory::resourcesPath());
     }
 
     /**
@@ -202,7 +202,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::resourcesPath($this->subPath));
+        self::assertEquals($expected, Directory::resourcesPath($this->subPath));
     }
 
     /**
@@ -214,7 +214,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH;
 
-        $this->assertEquals($expected, Directory::storagePath());
+        self::assertEquals($expected, Directory::storagePath());
     }
 
     /**
@@ -226,7 +226,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::storagePath($this->subPath));
+        self::assertEquals($expected, Directory::storagePath($this->subPath));
     }
 
     /**
@@ -238,7 +238,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH;
 
-        $this->assertEquals($expected, Directory::testsPath());
+        self::assertEquals($expected, Directory::testsPath());
     }
 
     /**
@@ -250,7 +250,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::testsPath($this->subPath));
+        self::assertEquals($expected, Directory::testsPath($this->subPath));
     }
 
     /**
@@ -262,7 +262,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH;
 
-        $this->assertEquals($expected, Directory::vendorPath());
+        self::assertEquals($expected, Directory::vendorPath());
     }
 
     /**
@@ -274,7 +274,7 @@ class DirectoryTest extends TestCase
     {
         $expected = $this->basePath . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH . $this->subPath;
 
-        $this->assertEquals($expected, Directory::vendorPath($this->subPath));
+        self::assertEquals($expected, Directory::vendorPath($this->subPath));
     }
 
     /**
@@ -284,7 +284,7 @@ class DirectoryTest extends TestCase
      */
     public function testPath(): void
     {
-        $this->assertEquals($this->subPath, Directory::path($this->subPath));
+        self::assertEquals($this->subPath, Directory::path($this->subPath));
     }
 
     /**
@@ -294,7 +294,7 @@ class DirectoryTest extends TestCase
      */
     public function testPathNoForwardSlash(): void
     {
-        $this->assertEquals($this->subPath, Directory::path('sub/path'));
+        self::assertEquals($this->subPath, Directory::path('sub/path'));
     }
 
     /**
@@ -304,6 +304,6 @@ class DirectoryTest extends TestCase
      */
     public function testPathNull(): void
     {
-        $this->assertEquals(null, Directory::path());
+        self::assertEquals(null, Directory::path());
     }
 }

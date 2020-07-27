@@ -46,6 +46,6 @@ class NotFoundHttpExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getException() instanceof NotFoundHttpException);
+        self::assertEquals(true, $this->getException() instanceof NotFoundHttpException);
     }
 }

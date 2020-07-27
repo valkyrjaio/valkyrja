@@ -69,7 +69,7 @@ class CollectionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(Collection::class, new Collection());
+        self::assertInstanceOf(Collection::class, new Collection());
     }
 
     /**
@@ -79,7 +79,7 @@ class CollectionTest extends TestCase
      */
     public function testConstructWithData(): void
     {
-        $this->assertInstanceOf(Collection::class, new Collection(['test', 'test2']));
+        self::assertInstanceOf(Collection::class, new Collection(['test', 'test2']));
     }
 
     /**
@@ -89,7 +89,7 @@ class CollectionTest extends TestCase
      */
     public function testGet(): void
     {
-        $this->assertEquals($this->value['foo'], $this->class->get('foo', false));
+        self::assertEquals($this->value['foo'], $this->class->get('foo', false));
     }
 
     /**
@@ -99,7 +99,7 @@ class CollectionTest extends TestCase
      */
     public function testGetNonExistent(): void
     {
-        $this->assertEquals(null, $this->class->get('invalid'));
+        self::assertEquals(null, $this->class->get('invalid'));
     }
 
     /**
@@ -109,7 +109,7 @@ class CollectionTest extends TestCase
      */
     public function testGetNonExistentWithDefault(): void
     {
-        $this->assertEquals('default', $this->class->get('invalid', 'default'));
+        self::assertEquals('default', $this->class->get('invalid', 'default'));
     }
 
     /**
@@ -119,7 +119,7 @@ class CollectionTest extends TestCase
      */
     public function testHas(): void
     {
-        $this->assertEquals(true, $this->class->has('foo'));
+        self::assertEquals(true, $this->class->has('foo'));
     }
 
     /**
@@ -129,7 +129,7 @@ class CollectionTest extends TestCase
      */
     public function testHasNonExistent(): void
     {
-        $this->assertEquals(false, $this->class->has('invalid'));
+        self::assertEquals(false, $this->class->has('invalid'));
     }
 
     /**
@@ -139,7 +139,7 @@ class CollectionTest extends TestCase
      */
     public function testExists(): void
     {
-        $this->assertEquals(true, $this->class->exists('bar'));
+        self::assertEquals(true, $this->class->exists('bar'));
     }
 
     /**
@@ -149,7 +149,7 @@ class CollectionTest extends TestCase
      */
     public function testExistsNonExistent(): void
     {
-        $this->assertEquals(false, $this->class->exists('invalid'));
+        self::assertEquals(false, $this->class->exists('invalid'));
     }
 
     /**
@@ -159,7 +159,7 @@ class CollectionTest extends TestCase
      */
     public function testSet(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->class->set('bar', 'foo'));
+        self::assertInstanceOf(Collection::class, $this->class->set('bar', 'foo'));
     }
 
     /**
@@ -171,7 +171,7 @@ class CollectionTest extends TestCase
     {
         $this->class->set('bar', 'foo');
 
-        $this->assertEquals(true, $this->class->has('bar'));
+        self::assertEquals(true, $this->class->has('bar'));
     }
 
     /**
@@ -183,7 +183,7 @@ class CollectionTest extends TestCase
     {
         $this->class->set('bar', 'foo');
 
-        $this->assertEquals(true, $this->class->exists('foo'));
+        self::assertEquals(true, $this->class->exists('foo'));
     }
 
     /**
@@ -195,7 +195,7 @@ class CollectionTest extends TestCase
     {
         $this->class->set('bar', 'foo');
 
-        $this->assertInstanceOf(Collection::class, $this->class->remove('bar'));
+        self::assertInstanceOf(Collection::class, $this->class->remove('bar'));
     }
 
     /**
@@ -205,7 +205,7 @@ class CollectionTest extends TestCase
      */
     public function testRemoveNonExistent(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->class->remove('invalid'));
+        self::assertInstanceOf(Collection::class, $this->class->remove('invalid'));
     }
 
     /**
@@ -215,7 +215,7 @@ class CollectionTest extends TestCase
      */
     public function testAll(): void
     {
-        $this->assertEquals($this->value, $this->class->all());
+        self::assertEquals($this->value, $this->class->all());
     }
 
     /**
@@ -225,7 +225,7 @@ class CollectionTest extends TestCase
      */
     public function testSetAll(): void
     {
-        $this->assertInstanceOf(Collection::class, $this->class->setAll($this->valueAlt));
+        self::assertInstanceOf(Collection::class, $this->class->setAll($this->valueAlt));
     }
 
     /**
@@ -235,7 +235,7 @@ class CollectionTest extends TestCase
      */
     public function testKeys(): void
     {
-        $this->assertEquals(array_keys($this->value), $this->class->keys());
+        self::assertEquals(array_keys($this->value), $this->class->keys());
     }
 
     /**
@@ -245,7 +245,7 @@ class CollectionTest extends TestCase
      */
     public function testCount(): void
     {
-        $this->assertEquals(count($this->value), $this->class->count());
+        self::assertEquals(count($this->value), $this->class->count());
     }
 
     /**
@@ -255,7 +255,7 @@ class CollectionTest extends TestCase
      */
     public function testIsEmpty(): void
     {
-        $this->assertEquals(empty($this->value), $this->class->isEmpty());
+        self::assertEquals(empty($this->value), $this->class->isEmpty());
     }
 
     /**
@@ -267,7 +267,7 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        $this->assertEquals($this->valueAlt['bar'], $this->class->bar);
+        self::assertEquals($this->valueAlt['bar'], $this->class->bar);
     }
 
     /**
@@ -279,7 +279,7 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        $this->assertEquals(true, isset($this->class->bar));
+        self::assertEquals(true, isset($this->class->bar));
     }
 
     /**
@@ -291,7 +291,7 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        $this->assertEquals('test', $this->class->foo = 'test');
+        self::assertEquals('test', $this->class->foo = 'test');
     }
 
     /**
@@ -303,7 +303,7 @@ class CollectionTest extends TestCase
     {
         unset($this->class->foo);
 
-        $this->assertEquals(false, $this->class->has('foo'));
+        self::assertEquals(false, $this->class->has('foo'));
     }
 
     /**
@@ -315,6 +315,6 @@ class CollectionTest extends TestCase
     {
         $this->class->setAll($this->valueAlt);
 
-        $this->assertEquals(json_encode($this->valueAlt, JSON_THROW_ON_ERROR), (string) $this->class);
+        self::assertEquals(json_encode($this->valueAlt, JSON_THROW_ON_ERROR), (string) $this->class);
     }
 }

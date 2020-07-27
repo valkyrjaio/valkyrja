@@ -55,7 +55,7 @@ class CommandTest extends TestCase
      */
     public function testGetPathDefault(): void
     {
-        $this->assertEquals(null, $this->class->getPath());
+        self::assertEquals(null, $this->class->getPath());
     }
 
     /**
@@ -67,7 +67,7 @@ class CommandTest extends TestCase
     {
         $this->class->setPath($this->value);
 
-        $this->assertEquals($this->value, $this->class->getPath());
+        self::assertEquals($this->value, $this->class->getPath());
     }
 
     /**
@@ -79,7 +79,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setPath($this->value);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -89,7 +89,7 @@ class CommandTest extends TestCase
      */
     public function testGetRegexDefault(): void
     {
-        $this->assertEquals(null, $this->class->getRegex());
+        self::assertEquals(null, $this->class->getRegex());
     }
 
     /**
@@ -101,7 +101,7 @@ class CommandTest extends TestCase
     {
         $this->class->setRegex($this->value);
 
-        $this->assertEquals($this->value, $this->class->getRegex());
+        self::assertEquals($this->value, $this->class->getRegex());
     }
 
     /**
@@ -113,7 +113,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setRegex(null);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -125,7 +125,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setRegex($this->value);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -135,7 +135,7 @@ class CommandTest extends TestCase
      */
     public function testGetParamsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getParams());
+        self::assertEquals(null, $this->class->getParams());
     }
 
     /**
@@ -147,7 +147,7 @@ class CommandTest extends TestCase
     {
         $this->class->setParams([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getParams());
+        self::assertEquals([$this->value], $this->class->getParams());
     }
 
     /**
@@ -159,7 +159,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setParams(null);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -171,7 +171,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setParams([$this->value]);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -181,7 +181,7 @@ class CommandTest extends TestCase
      */
     public function testGetSegmentsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getSegments());
+        self::assertEquals(null, $this->class->getSegments());
     }
 
     /**
@@ -193,7 +193,7 @@ class CommandTest extends TestCase
     {
         $this->class->setSegments([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getSegments());
+        self::assertEquals([$this->value], $this->class->getSegments());
     }
 
     /**
@@ -205,7 +205,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setSegments(null);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -217,7 +217,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setSegments([$this->value]);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -227,7 +227,7 @@ class CommandTest extends TestCase
      */
     public function testGetDescriptionDefault(): void
     {
-        $this->assertEquals(null, $this->class->getDescription());
+        self::assertEquals(null, $this->class->getDescription());
     }
 
     /**
@@ -239,7 +239,7 @@ class CommandTest extends TestCase
     {
         $this->class->setDescription($this->value);
 
-        $this->assertEquals($this->value, $this->class->getDescription());
+        self::assertEquals($this->value, $this->class->getDescription());
     }
 
     /**
@@ -251,7 +251,7 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setDescription(null);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 
     /**
@@ -263,6 +263,6 @@ class CommandTest extends TestCase
     {
         $set = $this->class->setDescription($this->value);
 
-        $this->assertEquals(true, $set instanceof Command);
+        self::assertEquals(true, $set instanceof Command);
     }
 }

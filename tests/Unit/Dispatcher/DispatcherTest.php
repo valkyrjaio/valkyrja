@@ -119,7 +119,7 @@ class DispatcherTest extends TestCase
                     ->setMethod('validMethod')
             ) ?? null;
 
-        $this->assertEquals(null, $valid);
+        self::assertEquals(null, $valid);
     }
 
     /**
@@ -136,7 +136,7 @@ class DispatcherTest extends TestCase
                     ->setMethod('invalidMethod')
             );
         } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidMethodException);
+            self::assertEquals(true, $exception instanceof InvalidMethodException);
         }
     }
 
@@ -153,7 +153,7 @@ class DispatcherTest extends TestCase
                     ->setProperty('validProperty')
             ) ?? null;
 
-        $this->assertEquals(null, $valid);
+        self::assertEquals(null, $valid);
     }
 
     /**
@@ -170,7 +170,7 @@ class DispatcherTest extends TestCase
                     ->setProperty('invalidProperty')
             );
         } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidPropertyException);
+            self::assertEquals(true, $exception instanceof InvalidPropertyException);
         }
     }
 
@@ -186,7 +186,7 @@ class DispatcherTest extends TestCase
                     ->setFunction('\Valkyrja\routeUrl')
             ) ?? null;
 
-        $this->assertEquals(null, $valid);
+        self::assertEquals(null, $valid);
     }
 
     /**
@@ -202,7 +202,7 @@ class DispatcherTest extends TestCase
                     ->setFunction('invalidFunction')
             );
         } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidFunctionException);
+            self::assertEquals(true, $exception instanceof InvalidFunctionException);
         }
     }
 
@@ -221,7 +221,7 @@ class DispatcherTest extends TestCase
                     )
             ) ?? null;
 
-        $this->assertEquals(null, $valid);
+        self::assertEquals(null, $valid);
     }
 
     /**
@@ -236,7 +236,7 @@ class DispatcherTest extends TestCase
                 new Dispatch()
             );
         } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidDispatchCapabilityException);
+            self::assertEquals(true, $exception instanceof InvalidDispatchCapabilityException);
         }
     }
 
@@ -251,7 +251,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setMethod('validMethod');
 
-        $this->assertEquals($this->validMethod(), $this->class->dispatchClassMethod($dispatch));
+        self::assertEquals($this->validMethod(), $this->class->dispatchClassMethod($dispatch));
     }
 
     /**
@@ -265,7 +265,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setMethod('validMethod');
 
-        $this->assertEquals($this->validMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
+        self::assertEquals($this->validMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
     }
 
     /**
@@ -280,7 +280,7 @@ class DispatcherTest extends TestCase
             ->setMethod('validStaticMethod')
             ->setStatic(true);
 
-        $this->assertEquals(static::validStaticMethod(), $this->class->dispatchClassMethod($dispatch));
+        self::assertEquals(static::validStaticMethod(), $this->class->dispatchClassMethod($dispatch));
     }
 
     /**
@@ -295,7 +295,7 @@ class DispatcherTest extends TestCase
             ->setMethod('validStaticMethod')
             ->setStatic(true);
 
-        $this->assertEquals(static::validStaticMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
+        self::assertEquals(static::validStaticMethod('test'), $this->class->dispatchClassMethod($dispatch, ['test']));
     }
 
     /**
@@ -309,7 +309,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setProperty('validProperty');
 
-        $this->assertEquals($this->validProperty, $this->class->dispatchClassProperty($dispatch));
+        self::assertEquals($this->validProperty, $this->class->dispatchClassProperty($dispatch));
     }
 
     /**
@@ -324,7 +324,7 @@ class DispatcherTest extends TestCase
             ->setProperty('validStaticProperty')
             ->setStatic(true);
 
-        $this->assertEquals(static::$validStaticProperty, $this->class->dispatchClassProperty($dispatch));
+        self::assertEquals(static::$validStaticProperty, $this->class->dispatchClassProperty($dispatch));
     }
 
     /**
@@ -338,7 +338,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setId(static::class);
 
-        $this->assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
+        self::assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
     }
 
     /**
@@ -354,7 +354,7 @@ class DispatcherTest extends TestCase
 
         $app = $this->createMock(Application::class);
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             InvalidDispatcherClass::class,
             $this->class->dispatchClass(
                 $dispatch,
@@ -375,7 +375,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setClass(static::class);
 
-        $this->assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
+        self::assertInstanceOf(static::class, $this->class->dispatchClass($dispatch));
     }
 
     /**
@@ -388,7 +388,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setFunction('microtime');
 
-        $this->assertEquals(true, microtime() <= $this->class->dispatchFunction($dispatch));
+        self::assertEquals(true, microtime() <= $this->class->dispatchFunction($dispatch));
     }
 
     /**
@@ -402,7 +402,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setFunction('count');
 
-        $this->assertEquals(count($array), $this->class->dispatchFunction($dispatch, [$array]));
+        self::assertEquals(count($array), $this->class->dispatchFunction($dispatch, [$array]));
     }
 
     /**
@@ -419,7 +419,7 @@ class DispatcherTest extends TestCase
                 }
             );
 
-        $this->assertEquals('test', $this->class->dispatchClosure($dispatch));
+        self::assertEquals('test', $this->class->dispatchClosure($dispatch));
     }
 
     /**
@@ -437,7 +437,7 @@ class DispatcherTest extends TestCase
                 }
             );
 
-        $this->assertEquals(count($array), $this->class->dispatchClosure($dispatch, [$array]));
+        self::assertEquals(count($array), $this->class->dispatchClosure($dispatch, [$array]));
     }
 
     /**
@@ -449,7 +449,7 @@ class DispatcherTest extends TestCase
     {
         $dispatch = new Dispatch();
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch));
+        self::assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -463,7 +463,7 @@ class DispatcherTest extends TestCase
             ->setClass(static::class)
             ->setProperty('validPropertyNull');
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch));
+        self::assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -476,7 +476,7 @@ class DispatcherTest extends TestCase
         $array    = ['foo', 'bar'];
         $dispatch = new Dispatch();
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch, [$array]));
+        self::assertEquals(null, $this->class->dispatch($dispatch, [$array]));
     }
 
     /**
@@ -489,7 +489,7 @@ class DispatcherTest extends TestCase
         $dispatch = new Dispatch();
         $dispatch = (new Dispatch())->setArguments(['test', $dispatch]);
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch));
+        self::assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -502,7 +502,7 @@ class DispatcherTest extends TestCase
         $dispatch = (new Dispatch())
             ->setDependencies([static::class]);
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch));
+        self::assertEquals(null, $this->class->dispatch($dispatch));
     }
 
     /**
@@ -516,6 +516,6 @@ class DispatcherTest extends TestCase
             ->setStatic(true)
             ->setDependencies([static::class]);
 
-        $this->assertEquals(null, $this->class->dispatch($dispatch));
+        self::assertEquals(null, $this->class->dispatch($dispatch));
     }
 }

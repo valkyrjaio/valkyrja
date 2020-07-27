@@ -37,6 +37,7 @@ use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
 use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
+use Valkyrja\Tests\TestCase;
 use Valkyrja\View\Managers\View;
 
 use function get_class;
@@ -85,7 +86,7 @@ class HelpersTest extends TestCase
      */
     public function testApp(): void
     {
-        $this->assertEquals(true, app() instanceof Valkyrja);
+        self::assertEquals(true, app() instanceof Valkyrja);
     }
 
     /**
@@ -95,7 +96,7 @@ class HelpersTest extends TestCase
      */
     public function testContainer(): void
     {
-        $this->assertEquals(true, \Valkyrja\container() instanceof Container);
+        self::assertEquals(true, \Valkyrja\container() instanceof Container);
     }
 
     /**
@@ -105,7 +106,7 @@ class HelpersTest extends TestCase
      */
     public function testEvents(): void
     {
-        $this->assertEquals(true, \Valkyrja\events() instanceof Events);
+        self::assertEquals(true, \Valkyrja\events() instanceof Events);
     }
 
     /**
@@ -115,7 +116,7 @@ class HelpersTest extends TestCase
      */
     public function testEnv(): void
     {
-        $this->assertEquals(true, is_string(env()));
+        self::assertEquals(true, is_string(env()));
     }
 
     /**
@@ -125,7 +126,7 @@ class HelpersTest extends TestCase
      */
     public function testConfig(): void
     {
-        $this->assertEquals(true, (\Valkyrja\config() instanceof Config));
+        self::assertEquals(true, (\Valkyrja\config() instanceof Config));
     }
 
     /**
@@ -138,7 +139,7 @@ class HelpersTest extends TestCase
         try {
             abort();
         } catch (Exception $exception) {
-            $this->assertEquals(HttpException::class, get_class($exception));
+            self::assertEquals(HttpException::class, get_class($exception));
         }
     }
 
@@ -152,7 +153,7 @@ class HelpersTest extends TestCase
         try {
             redirectTo();
         } catch (Exception $exception) {
-            $this->assertEquals(HttpRedirectException::class, get_class($exception));
+            self::assertEquals(HttpRedirectException::class, get_class($exception));
         }
     }
 
@@ -163,7 +164,7 @@ class HelpersTest extends TestCase
      */
     public function testAnnotations(): void
     {
-        $this->assertEquals(true, \Valkyrja\annotator() instanceof Annotator);
+        self::assertEquals(true, \Valkyrja\annotator() instanceof Annotator);
     }
 
     /**
@@ -173,7 +174,7 @@ class HelpersTest extends TestCase
      */
     public function testClient(): void
     {
-        $this->assertEquals(true, \Valkyrja\client() instanceof Client);
+        self::assertEquals(true, \Valkyrja\client() instanceof Client);
     }
 
     /**
@@ -183,7 +184,7 @@ class HelpersTest extends TestCase
      */
     public function testConsole(): void
     {
-        $this->assertEquals(true, \Valkyrja\console() instanceof Console);
+        self::assertEquals(true, \Valkyrja\console() instanceof Console);
     }
 
     /**
@@ -193,7 +194,7 @@ class HelpersTest extends TestCase
      */
     public function testConsoleKernel(): void
     {
-        $this->assertEquals(true, \Valkyrja\consoleKernel() instanceof ConsoleKernel);
+        self::assertEquals(true, \Valkyrja\consoleKernel() instanceof ConsoleKernel);
     }
 
     /**
@@ -203,7 +204,7 @@ class HelpersTest extends TestCase
      */
     public function testFilesystem(): void
     {
-        $this->assertEquals(true, \Valkyrja\filesystem() instanceof Filesystem);
+        self::assertEquals(true, \Valkyrja\filesystem() instanceof Filesystem);
     }
 
     /**
@@ -213,7 +214,7 @@ class HelpersTest extends TestCase
      */
     public function testInput(): void
     {
-        $this->assertEquals(true, \Valkyrja\input() instanceof Input);
+        self::assertEquals(true, \Valkyrja\input() instanceof Input);
     }
 
     /**
@@ -223,7 +224,7 @@ class HelpersTest extends TestCase
      */
     public function testKernel(): void
     {
-        $this->assertEquals(true, \Valkyrja\kernel() instanceof Kernel);
+        self::assertEquals(true, \Valkyrja\kernel() instanceof Kernel);
     }
 
     /**
@@ -233,7 +234,7 @@ class HelpersTest extends TestCase
      */
     public function testLogger(): void
     {
-        $this->assertEquals(true, logger() instanceof Logger);
+        self::assertEquals(true, logger() instanceof Logger);
     }
 
     /**
@@ -243,7 +244,7 @@ class HelpersTest extends TestCase
      */
     public function testOutput(): void
     {
-        $this->assertEquals(true, \Valkyrja\output() instanceof Output);
+        self::assertEquals(true, \Valkyrja\output() instanceof Output);
     }
 
     /**
@@ -253,7 +254,7 @@ class HelpersTest extends TestCase
      */
     public function testRequest(): void
     {
-        $this->assertEquals(true, \Valkyrja\request() instanceof Request);
+        self::assertEquals(true, \Valkyrja\request() instanceof Request);
     }
 
     /**
@@ -263,7 +264,7 @@ class HelpersTest extends TestCase
      */
     public function testRouter(): void
     {
-        $this->assertEquals(true, \Valkyrja\router() instanceof Router);
+        self::assertEquals(true, \Valkyrja\router() instanceof Router);
     }
 
     /**
@@ -273,7 +274,7 @@ class HelpersTest extends TestCase
      */
     public function testRoute(): void
     {
-        $this->assertEquals(true, \Valkyrja\route('welcome') instanceof Route);
+        self::assertEquals(true, \Valkyrja\route('welcome') instanceof Route);
     }
 
     /**
@@ -283,7 +284,7 @@ class HelpersTest extends TestCase
      */
     public function testRouteUrl(): void
     {
-        $this->assertEquals('/', routeUrl('welcome'));
+        self::assertEquals('/', routeUrl('welcome'));
     }
 
     /**
@@ -293,7 +294,7 @@ class HelpersTest extends TestCase
      */
     public function testResponse(): void
     {
-        $this->assertEquals(true, \Valkyrja\response() instanceof Response);
+        self::assertEquals(true, \Valkyrja\response() instanceof Response);
     }
 
     /**
@@ -303,7 +304,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseWithArgs(): void
     {
-        $this->assertEquals(true, \Valkyrja\response('test') instanceof Response);
+        self::assertEquals(true, \Valkyrja\response('test') instanceof Response);
     }
 
     /**
@@ -313,7 +314,7 @@ class HelpersTest extends TestCase
      */
     public function testJson(): void
     {
-        $this->assertEquals(true, json() instanceof JsonResponse);
+        self::assertEquals(true, json() instanceof JsonResponse);
     }
 
     /**
@@ -323,7 +324,7 @@ class HelpersTest extends TestCase
      */
     public function testJsonWithArgs(): void
     {
-        $this->assertEquals(true, json(['test' => 'value']) instanceof JsonResponse);
+        self::assertEquals(true, json(['test' => 'value']) instanceof JsonResponse);
     }
 
     /**
@@ -333,7 +334,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirect(): void
     {
-        $this->assertEquals(true, redirect() instanceof RedirectResponse);
+        self::assertEquals(true, redirect() instanceof RedirectResponse);
     }
 
     /**
@@ -343,7 +344,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectWithArgs(): void
     {
-        $this->assertEquals(true, redirect('/') instanceof RedirectResponse);
+        self::assertEquals(true, redirect('/') instanceof RedirectResponse);
     }
 
     /**
@@ -353,7 +354,7 @@ class HelpersTest extends TestCase
      */
     public function testRedirectRoute(): void
     {
-        $this->assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
+        self::assertEquals(true, redirectRoute('welcome') instanceof RedirectResponse);
     }
 
     /**
@@ -363,7 +364,7 @@ class HelpersTest extends TestCase
      */
     public function testResponseBuilder(): void
     {
-        $this->assertEquals(true, responseFactory() instanceof ResponseFactory);
+        self::assertEquals(true, responseFactory() instanceof ResponseFactory);
     }
 
     /**
@@ -373,7 +374,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        $this->assertEquals(true, \Valkyrja\session() instanceof Session);
+        self::assertEquals(true, \Valkyrja\session() instanceof Session);
     }
 
     /**
@@ -383,7 +384,7 @@ class HelpersTest extends TestCase
      */
     public function testView(): void
     {
-        $this->assertEquals(true, view() instanceof View);
+        self::assertEquals(true, view() instanceof View);
     }
 
     /**
@@ -393,7 +394,7 @@ class HelpersTest extends TestCase
      */
     public function testBasePath(): void
     {
-        $this->assertEquals(Directory::$BASE_PATH, basePath());
+        self::assertEquals(Directory::$BASE_PATH, basePath());
     }
 
     /**
@@ -405,7 +406,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . $this->subPath;
 
-        $this->assertEquals($expected, basePath($this->subPath));
+        self::assertEquals($expected, basePath($this->subPath));
     }
 
     /**
@@ -417,7 +418,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$APP_PATH;
 
-        $this->assertEquals($expected, appPath());
+        self::assertEquals($expected, appPath());
     }
 
     /**
@@ -429,7 +430,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$APP_PATH . $this->subPath;
 
-        $this->assertEquals($expected, appPath($this->subPath));
+        self::assertEquals($expected, appPath($this->subPath));
     }
 
     /**
@@ -447,7 +448,7 @@ class HelpersTest extends TestCase
             . DIRECTORY_SEPARATOR
             . Directory::$CACHE_PATH;
 
-        $this->assertEquals($expected, cachePath());
+        self::assertEquals($expected, cachePath());
     }
 
     /**
@@ -466,7 +467,7 @@ class HelpersTest extends TestCase
             . Directory::$CACHE_PATH
             . $this->subPath;
 
-        $this->assertEquals($expected, cachePath($this->subPath));
+        self::assertEquals($expected, cachePath($this->subPath));
     }
 
     /**
@@ -478,7 +479,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH;
 
-        $this->assertEquals($expected, configPath());
+        self::assertEquals($expected, configPath());
     }
 
     /**
@@ -490,7 +491,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$CONFIG_PATH . $this->subPath;
 
-        $this->assertEquals($expected, configPath($this->subPath));
+        self::assertEquals($expected, configPath($this->subPath));
     }
 
     /**
@@ -502,7 +503,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH;
 
-        $this->assertEquals($expected, publicPath());
+        self::assertEquals($expected, publicPath());
     }
 
     /**
@@ -514,7 +515,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$PUBLIC_PATH . $this->subPath;
 
-        $this->assertEquals($expected, publicPath($this->subPath));
+        self::assertEquals($expected, publicPath($this->subPath));
     }
 
     /**
@@ -526,7 +527,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH;
 
-        $this->assertEquals($expected, resourcesPath());
+        self::assertEquals($expected, resourcesPath());
     }
 
     /**
@@ -538,7 +539,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$RESOURCES_PATH . $this->subPath;
 
-        $this->assertEquals($expected, resourcesPath($this->subPath));
+        self::assertEquals($expected, resourcesPath($this->subPath));
     }
 
     /**
@@ -550,7 +551,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH;
 
-        $this->assertEquals($expected, storagePath());
+        self::assertEquals($expected, storagePath());
     }
 
     /**
@@ -562,7 +563,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$STORAGE_PATH . $this->subPath;
 
-        $this->assertEquals($expected, storagePath($this->subPath));
+        self::assertEquals($expected, storagePath($this->subPath));
     }
 
     /**
@@ -574,7 +575,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH;
 
-        $this->assertEquals($expected, testsPath());
+        self::assertEquals($expected, testsPath());
     }
 
     /**
@@ -586,7 +587,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$TESTS_PATH . $this->subPath;
 
-        $this->assertEquals($expected, testsPath($this->subPath));
+        self::assertEquals($expected, testsPath($this->subPath));
     }
 
     /**
@@ -598,7 +599,7 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH;
 
-        $this->assertEquals($expected, vendorPath());
+        self::assertEquals($expected, vendorPath());
     }
 
     /**
@@ -610,6 +611,6 @@ class HelpersTest extends TestCase
     {
         $expected = Directory::$BASE_PATH . DIRECTORY_SEPARATOR . Directory::$VENDOR_PATH . $this->subPath;
 
-        $this->assertEquals($expected, vendorPath($this->subPath));
+        self::assertEquals($expected, vendorPath($this->subPath));
     }
 }

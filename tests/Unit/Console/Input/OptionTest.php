@@ -81,7 +81,7 @@ class OptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getClass() instanceof Option);
+        self::assertEquals(true, $this->getClass() instanceof Option);
     }
 
     /**
@@ -91,7 +91,7 @@ class OptionTest extends TestCase
      */
     public function testGetName(): void
     {
-        $this->assertEquals($this->name, $this->getClass()->getName());
+        self::assertEquals($this->name, $this->getClass()->getName());
     }
 
     /**
@@ -101,7 +101,7 @@ class OptionTest extends TestCase
      */
     public function testGetShortcut(): void
     {
-        $this->assertEquals($this->shortcut, $this->getClass()->getShortcut());
+        self::assertEquals($this->shortcut, $this->getClass()->getShortcut());
     }
 
     /**
@@ -111,7 +111,7 @@ class OptionTest extends TestCase
      */
     public function testGetDescription(): void
     {
-        $this->assertEquals($this->description, $this->getClass()->getDescription());
+        self::assertEquals($this->description, $this->getClass()->getDescription());
     }
 
     /**
@@ -121,7 +121,7 @@ class OptionTest extends TestCase
      */
     public function testGetDefault(): void
     {
-        $this->assertEquals($this->default, $this->getClass()->getDefault());
+        self::assertEquals($this->default, $this->getClass()->getDefault());
     }
 
     /**
@@ -131,6 +131,6 @@ class OptionTest extends TestCase
      */
     public function testGetMode(): void
     {
-        $this->assertEquals(OptionMode::NONE, $this->getClass()->getMode());
+        self::assertEquals(OptionMode::NONE, $this->getClass()->getMode());
     }
 }

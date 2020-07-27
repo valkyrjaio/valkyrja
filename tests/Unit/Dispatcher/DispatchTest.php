@@ -55,7 +55,7 @@ class DispatchTest extends TestCase
      */
     public function testGetIdDefault(): void
     {
-        $this->assertEquals(null, $this->class->getId());
+        self::assertEquals(null, $this->class->getId());
     }
 
     /**
@@ -67,7 +67,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setId($this->value);
 
-        $this->assertEquals($this->value, $this->class->getId());
+        self::assertEquals($this->value, $this->class->getId());
     }
 
     /**
@@ -79,7 +79,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setId(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -91,7 +91,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setId($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -101,7 +101,7 @@ class DispatchTest extends TestCase
      */
     public function testGetNameDefault(): void
     {
-        $this->assertEquals(null, $this->class->getName());
+        self::assertEquals(null, $this->class->getName());
     }
 
     /**
@@ -113,7 +113,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setName($this->value);
 
-        $this->assertEquals($this->value, $this->class->getName());
+        self::assertEquals($this->value, $this->class->getName());
     }
 
     /**
@@ -125,7 +125,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setName(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -137,7 +137,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setName($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -147,7 +147,7 @@ class DispatchTest extends TestCase
      */
     public function testGetClassDefault(): void
     {
-        $this->assertEquals(null, $this->class->getClass());
+        self::assertEquals(null, $this->class->getClass());
     }
 
     /**
@@ -159,7 +159,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setClass($this->value);
 
-        $this->assertEquals($this->value, $this->class->getClass());
+        self::assertEquals($this->value, $this->class->getClass());
     }
 
     /**
@@ -171,7 +171,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setClass(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -183,7 +183,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setClass($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -193,7 +193,7 @@ class DispatchTest extends TestCase
      */
     public function testGetPropertyDefault(): void
     {
-        $this->assertEquals(null, $this->class->getProperty());
+        self::assertEquals(null, $this->class->getProperty());
     }
 
     /**
@@ -205,7 +205,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setProperty($this->value);
 
-        $this->assertEquals($this->value, $this->class->getProperty());
+        self::assertEquals($this->value, $this->class->getProperty());
     }
 
     /**
@@ -217,7 +217,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setProperty(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -229,7 +229,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setProperty($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -239,7 +239,7 @@ class DispatchTest extends TestCase
      */
     public function testGetMethodDefault(): void
     {
-        $this->assertEquals(null, $this->class->getMethod());
+        self::assertEquals(null, $this->class->getMethod());
     }
 
     /**
@@ -251,7 +251,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setMethod($this->value);
 
-        $this->assertEquals($this->value, $this->class->getMethod());
+        self::assertEquals($this->value, $this->class->getMethod());
     }
 
     /**
@@ -263,7 +263,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setMethod(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -275,7 +275,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setMethod($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -285,7 +285,7 @@ class DispatchTest extends TestCase
      */
     public function testIsStaticDefault(): void
     {
-        $this->assertEquals(null, $this->class->isStatic());
+        self::assertEquals(null, $this->class->isStatic());
     }
 
     /**
@@ -297,7 +297,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setStatic(true);
 
-        $this->assertEquals(true, $this->class->isStatic());
+        self::assertEquals(true, $this->class->isStatic());
     }
 
     /**
@@ -309,7 +309,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setStatic(true);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -319,7 +319,7 @@ class DispatchTest extends TestCase
      */
     public function testGetFunctionDefault(): void
     {
-        $this->assertEquals(null, $this->class->getFunction());
+        self::assertEquals(null, $this->class->getFunction());
     }
 
     /**
@@ -331,7 +331,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setFunction($this->value);
 
-        $this->assertEquals($this->value, $this->class->getFunction());
+        self::assertEquals($this->value, $this->class->getFunction());
     }
 
     /**
@@ -343,7 +343,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setFunction(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -355,7 +355,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setFunction($this->value);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -365,7 +365,7 @@ class DispatchTest extends TestCase
      */
     public function testGetClosureDefault(): void
     {
-        $this->assertEquals(null, $this->class->getClosure());
+        self::assertEquals(null, $this->class->getClosure());
     }
 
     /**
@@ -379,7 +379,7 @@ class DispatchTest extends TestCase
         };
         $this->class->setClosure($value);
 
-        $this->assertEquals($value, $this->class->getClosure());
+        self::assertEquals($value, $this->class->getClosure());
     }
 
     /**
@@ -391,7 +391,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setClosure(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -406,7 +406,7 @@ class DispatchTest extends TestCase
             }
         );
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -416,7 +416,7 @@ class DispatchTest extends TestCase
      */
     public function testGetMatchesDefault(): void
     {
-        $this->assertEquals(null, $this->class->getMatches());
+        self::assertEquals(null, $this->class->getMatches());
     }
 
     /**
@@ -428,7 +428,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setMatches([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getMatches());
+        self::assertEquals([$this->value], $this->class->getMatches());
     }
 
     /**
@@ -440,7 +440,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setMatches(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -452,7 +452,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setMatches([$this->value]);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -462,7 +462,7 @@ class DispatchTest extends TestCase
      */
     public function testGetDependenciesDefault(): void
     {
-        $this->assertEquals(null, $this->class->getDependencies());
+        self::assertEquals(null, $this->class->getDependencies());
     }
 
     /**
@@ -474,7 +474,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setDependencies([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getDependencies());
+        self::assertEquals([$this->value], $this->class->getDependencies());
     }
 
     /**
@@ -486,7 +486,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setDependencies(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -498,7 +498,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setDependencies([$this->value]);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -508,7 +508,7 @@ class DispatchTest extends TestCase
      */
     public function testGetArgumentsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getArguments());
+        self::assertEquals(null, $this->class->getArguments());
     }
 
     /**
@@ -520,7 +520,7 @@ class DispatchTest extends TestCase
     {
         $this->class->setArguments([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getArguments());
+        self::assertEquals([$this->value], $this->class->getArguments());
     }
 
     /**
@@ -532,7 +532,7 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setArguments(null);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 
     /**
@@ -544,6 +544,6 @@ class DispatchTest extends TestCase
     {
         $set = $this->class->setArguments([$this->value]);
 
-        $this->assertEquals(true, $set instanceof Dispatch);
+        self::assertEquals(true, $set instanceof Dispatch);
     }
 }

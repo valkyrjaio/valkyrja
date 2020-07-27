@@ -49,7 +49,7 @@ class ModelTest extends TestCase
      */
     public function testMagicGet(): void
     {
-        $this->assertEquals(null, $this->getModel()->property);
+        self::assertEquals(null, $this->getModel()->property);
     }
 
     /**
@@ -59,7 +59,7 @@ class ModelTest extends TestCase
      */
     public function testMagicGetter(): void
     {
-        $this->assertEquals(null, $this->getModel()->prop);
+        self::assertEquals(null, $this->getModel()->prop);
     }
 
     /**
@@ -72,7 +72,7 @@ class ModelTest extends TestCase
         $value                      = 'test';
         $this->getModel()->property = $value;
 
-        $this->assertEquals($value, $this->getModel()->property);
+        self::assertEquals($value, $this->getModel()->property);
     }
 
     /**
@@ -85,7 +85,7 @@ class ModelTest extends TestCase
         $value                  = 'test';
         $this->getModel()->prop = $value;
 
-        $this->assertEquals($value, $this->getModel()->prop);
+        self::assertEquals($value, $this->getModel()->prop);
     }
 
     /**
@@ -97,7 +97,7 @@ class ModelTest extends TestCase
     {
         $this->getModel()->property = 'test';
 
-        $this->assertEquals(true, isset($this->getModel()->property));
+        self::assertEquals(true, isset($this->getModel()->property));
     }
 
     /**
@@ -109,7 +109,7 @@ class ModelTest extends TestCase
     {
         $this->getModel()->prop = 'test';
 
-        $this->assertEquals(true, isset($this->getModel()->prop));
+        self::assertEquals(true, isset($this->getModel()->prop));
     }
 
     /**
@@ -126,6 +126,6 @@ class ModelTest extends TestCase
             ], JSON_THROW_ON_ERROR
         );
 
-        $this->assertEquals($json, json_encode($this->getModel(), JSON_THROW_ON_ERROR));
+        self::assertEquals($json, json_encode($this->getModel(), JSON_THROW_ON_ERROR));
     }
 }

@@ -10,16 +10,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Tests\Functional;
+namespace Valkyrja\Tests;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Valkyrja\Application\Applications\Valkyrja;
 use Valkyrja\Support\Directory;
-use Valkyrja\Tests\Config;
-use Valkyrja\Tests\EnvTest;
 
 /**
- * Test case for functional tests.
+ * Test case for tests.
  *
  * @author Melech Mizrachi
  */

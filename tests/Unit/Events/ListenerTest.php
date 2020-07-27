@@ -55,7 +55,7 @@ class ListenerTest extends TestCase
      */
     public function testGetEventDefault(): void
     {
-        $this->assertEquals(null, $this->class->getEvent());
+        self::assertEquals(null, $this->class->getEvent());
     }
 
     /**
@@ -67,7 +67,7 @@ class ListenerTest extends TestCase
     {
         $this->class->setEvent($this->value);
 
-        $this->assertEquals($this->value, $this->class->getEvent());
+        self::assertEquals($this->value, $this->class->getEvent());
     }
 
     /**
@@ -79,7 +79,7 @@ class ListenerTest extends TestCase
     {
         $set = $this->class->setEvent(null);
 
-        $this->assertEquals(true, $set instanceof Listener);
+        self::assertEquals(true, $set instanceof Listener);
     }
 
     /**
@@ -91,6 +91,6 @@ class ListenerTest extends TestCase
     {
         $set = $this->class->setEvent($this->value);
 
-        $this->assertEquals(true, $set instanceof Listener);
+        self::assertEquals(true, $set instanceof Listener);
     }
 }

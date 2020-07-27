@@ -55,7 +55,7 @@ class ServiceTest extends TestCase
      */
     public function testIsSingletonDefault(): void
     {
-        $this->assertEquals(null, $this->class->isSingleton());
+        self::assertEquals(null, $this->class->isSingleton());
     }
 
     /**
@@ -67,7 +67,7 @@ class ServiceTest extends TestCase
     {
         $this->class->setSingleton(true);
 
-        $this->assertEquals(true, $this->class->isSingleton());
+        self::assertEquals(true, $this->class->isSingleton());
     }
 
     /**
@@ -77,7 +77,7 @@ class ServiceTest extends TestCase
      */
     public function testSetSingleton(): void
     {
-        $this->assertEquals($this->class, $this->class->setSingleton(true));
+        self::assertEquals($this->class, $this->class->setSingleton(true));
     }
 
     /**
@@ -87,7 +87,7 @@ class ServiceTest extends TestCase
      */
     public function testGetDefaultsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getDefaults());
+        self::assertEquals(null, $this->class->getDefaults());
     }
 
     /**
@@ -99,7 +99,7 @@ class ServiceTest extends TestCase
     {
         $this->class->setDefaults([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getDefaults());
+        self::assertEquals([$this->value], $this->class->getDefaults());
     }
 
     /**
@@ -109,7 +109,7 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaultsNull(): void
     {
-        $this->assertEquals($this->class, $this->class->setDefaults(null));
+        self::assertEquals($this->class, $this->class->setDefaults(null));
     }
 
     /**
@@ -119,6 +119,6 @@ class ServiceTest extends TestCase
      */
     public function testSetDefaults(): void
     {
-        $this->assertEquals($this->class, $this->class->setDefaults([$this->value]));
+        self::assertEquals($this->class, $this->class->setDefaults([$this->value]));
     }
 }

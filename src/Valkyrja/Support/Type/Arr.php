@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type;
 
+use ArrayAccess;
+use InvalidArgumentException;
+use Traversable;
 use Valkyrja\Config\Constants\ConfigKeyPart;
 
 use function explode;
+use function is_array;
 
 /**
  * Class Arr.
@@ -25,17 +29,23 @@ use function explode;
 class Arr
 {
     /**
-     * Get an array value by dot notation key.
+     * Get a subject value by dot notation key.
      *
-     * @param array      $array   The array to search
-     * @param string     $key     The dot notation to search for
-     * @param mixed|null $default The default value
+     * @param array|Traversable|ArrayAccess $subject      The subject to search
+     * @param string                        $key          The dot notation to search for
+     * @param mixed|null                    $defaultValue The default value
      *
      * @return mixed
      */
-    public static function getValueDotNotation(array $array, string $key, $default = null)
+    public static function getValueDotNotation($subject, string $key, $defaultValue = null)
     {
-        $value = $array;
+        if (! is_array($subject) && ! ($subject instanceof Traversable) && ! ($subject instanceof ArrayAccess)) {
+            throw new InvalidArgumentException(
+                'The subject must be either an array or implement the ArrayAccess, or Traversable, interface.'
+            );
+        }
+
+        $value = $subject;
 
         // Explode the keys on period and iterate through the keys
         foreach (explode(ConfigKeyPart::SEP, $key) as $item) {
@@ -44,7 +54,7 @@ class Arr
 
             // If the value is ull then the dot notation doesn't exist in this array so return the default
             if (null === $value) {
-                return $default;
+                return $defaultValue;
             }
         }
 

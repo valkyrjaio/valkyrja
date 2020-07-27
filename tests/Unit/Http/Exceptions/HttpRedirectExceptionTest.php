@@ -46,7 +46,7 @@ class HttpRedirectExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getException() instanceof HttpRedirectException);
+        self::assertEquals(true, $this->getException() instanceof HttpRedirectException);
     }
 
     /**
@@ -56,6 +56,6 @@ class HttpRedirectExceptionTest extends TestCase
      */
     public function testGetUri(): void
     {
-        $this->assertEquals('/', $this->getException()->getUri());
+        self::assertEquals('/', $this->getException()->getUri());
     }
 }

@@ -61,7 +61,7 @@ class ArgumentTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getClass() instanceof Argument);
+        self::assertEquals(true, $this->getClass() instanceof Argument);
     }
 
     /**
@@ -71,7 +71,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetName(): void
     {
-        $this->assertEquals($this->name, $this->getClass()->getName());
+        self::assertEquals($this->name, $this->getClass()->getName());
     }
 
     /**
@@ -81,7 +81,7 @@ class ArgumentTest extends TestCase
      */
     public function testGetDescription(): void
     {
-        $this->assertEquals($this->description, $this->getClass()->getDescription());
+        self::assertEquals($this->description, $this->getClass()->getDescription());
     }
 
     /**
@@ -91,6 +91,6 @@ class ArgumentTest extends TestCase
      */
     public function testGetMode(): void
     {
-        $this->assertEquals(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
+        self::assertEquals(ArgumentMode::OPTIONAL, $this->getClass()->getMode());
     }
 }

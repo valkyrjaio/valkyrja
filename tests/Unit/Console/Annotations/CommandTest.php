@@ -55,7 +55,7 @@ class CommandTest extends TestCase
      */
     public function testGetPathDefault(): void
     {
-        $this->assertEquals(null, $this->class->getPath());
+        self::assertEquals(null, $this->class->getPath());
     }
 
     /**
@@ -67,7 +67,7 @@ class CommandTest extends TestCase
     {
         $this->class->setPath($this->value);
 
-        $this->assertEquals($this->value, $this->class->getPath());
+        self::assertEquals($this->value, $this->class->getPath());
     }
 
     /**
@@ -77,7 +77,7 @@ class CommandTest extends TestCase
      */
     public function testSetPath(): void
     {
-        $this->assertEquals($this->class, $this->class->setPath($this->value));
+        self::assertEquals($this->class, $this->class->setPath($this->value));
     }
 
     /**
@@ -87,7 +87,7 @@ class CommandTest extends TestCase
      */
     public function testGetRegexDefault(): void
     {
-        $this->assertEquals(null, $this->class->getRegex());
+        self::assertEquals(null, $this->class->getRegex());
     }
 
     /**
@@ -99,7 +99,7 @@ class CommandTest extends TestCase
     {
         $this->class->setRegex($this->value);
 
-        $this->assertEquals($this->value, $this->class->getRegex());
+        self::assertEquals($this->value, $this->class->getRegex());
     }
 
     /**
@@ -109,7 +109,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegexNull(): void
     {
-        $this->assertEquals($this->class, $this->class->setRegex(null));
+        self::assertEquals($this->class, $this->class->setRegex(null));
     }
 
     /**
@@ -119,7 +119,7 @@ class CommandTest extends TestCase
      */
     public function testSetRegex(): void
     {
-        $this->assertEquals($this->class, $this->class->setRegex($this->value));
+        self::assertEquals($this->class, $this->class->setRegex($this->value));
     }
 
     /**
@@ -129,7 +129,7 @@ class CommandTest extends TestCase
      */
     public function testGetParamsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getParams());
+        self::assertEquals(null, $this->class->getParams());
     }
 
     /**
@@ -141,7 +141,7 @@ class CommandTest extends TestCase
     {
         $this->class->setParams([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getParams());
+        self::assertEquals([$this->value], $this->class->getParams());
     }
 
     /**
@@ -151,7 +151,7 @@ class CommandTest extends TestCase
      */
     public function testSetParamsNull(): void
     {
-        $this->assertEquals($this->class, $this->class->setParams(null));
+        self::assertEquals($this->class, $this->class->setParams(null));
     }
 
     /**
@@ -161,7 +161,7 @@ class CommandTest extends TestCase
      */
     public function testSetParams(): void
     {
-        $this->assertEquals($this->class, $this->class->setParams([$this->value]));
+        self::assertEquals($this->class, $this->class->setParams([$this->value]));
     }
 
     /**
@@ -171,7 +171,7 @@ class CommandTest extends TestCase
      */
     public function testGetSegmentsDefault(): void
     {
-        $this->assertEquals(null, $this->class->getSegments());
+        self::assertEquals(null, $this->class->getSegments());
     }
 
     /**
@@ -183,7 +183,7 @@ class CommandTest extends TestCase
     {
         $this->class->setSegments([$this->value]);
 
-        $this->assertEquals([$this->value], $this->class->getSegments());
+        self::assertEquals([$this->value], $this->class->getSegments());
     }
 
     /**
@@ -193,7 +193,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegmentsNull(): void
     {
-        $this->assertEquals($this->class, $this->class->setSegments(null));
+        self::assertEquals($this->class, $this->class->setSegments(null));
     }
 
     /**
@@ -203,7 +203,7 @@ class CommandTest extends TestCase
      */
     public function testSetSegments(): void
     {
-        $this->assertEquals($this->class, $this->class->setSegments([$this->value]));
+        self::assertEquals($this->class, $this->class->setSegments([$this->value]));
     }
 
     /**
@@ -213,7 +213,7 @@ class CommandTest extends TestCase
      */
     public function testGetDescriptionDefault(): void
     {
-        $this->assertEquals(null, $this->class->getDescription());
+        self::assertEquals(null, $this->class->getDescription());
     }
 
     /**
@@ -225,7 +225,7 @@ class CommandTest extends TestCase
     {
         $this->class->setDescription($this->value);
 
-        $this->assertEquals($this->value, $this->class->getDescription());
+        self::assertEquals($this->value, $this->class->getDescription());
     }
 
     /**
@@ -235,7 +235,7 @@ class CommandTest extends TestCase
      */
     public function testSetDescriptionNull(): void
     {
-        $this->assertEquals($this->class, $this->class->setDescription(null));
+        self::assertEquals($this->class, $this->class->setDescription(null));
     }
 
     /**
@@ -245,6 +245,6 @@ class CommandTest extends TestCase
      */
     public function testSetDescription(): void
     {
-        $this->assertEquals($this->class, $this->class->setDescription($this->value));
+        self::assertEquals($this->class, $this->class->setDescription($this->value));
     }
 }

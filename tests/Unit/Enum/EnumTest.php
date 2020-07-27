@@ -35,7 +35,7 @@ class EnumTest extends TestCase
      */
     public function testSetValueExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'setValue'));
+        self::assertEquals(true, method_exists(Enum::class, 'setValue'));
     }
 
     /**
@@ -48,7 +48,7 @@ class EnumTest extends TestCase
         $enum = $this->getEnum();
         $enum->setValue(EnumClass::FOO);
 
-        $this->assertEquals(EnumClass::FOO, $enum->getValue());
+        self::assertEquals(EnumClass::FOO, $enum->getValue());
     }
 
     /**
@@ -71,7 +71,7 @@ class EnumTest extends TestCase
         try {
             new EnumClass('invalid value');
         } catch (Exception $exception) {
-            $this->assertEquals(InvalidArgumentException::class, get_class($exception));
+            self::assertEquals(InvalidArgumentException::class, get_class($exception));
         }
     }
 
@@ -82,7 +82,7 @@ class EnumTest extends TestCase
      */
     public function testGetValueExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'getValue'));
+        self::assertEquals(true, method_exists(Enum::class, 'getValue'));
     }
 
     /**
@@ -92,7 +92,7 @@ class EnumTest extends TestCase
      */
     public function testGetValue(): void
     {
-        $this->assertEquals(EnumClass::BAR, $this->getEnum()->getValue());
+        self::assertEquals(EnumClass::BAR, $this->getEnum()->getValue());
     }
 
     /**
@@ -102,7 +102,7 @@ class EnumTest extends TestCase
      */
     public function testIsValidExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'isValid'));
+        self::assertEquals(true, method_exists(Enum::class, 'isValid'));
     }
 
     /**
@@ -112,7 +112,7 @@ class EnumTest extends TestCase
      */
     public function testIsValid(): void
     {
-        $this->assertEquals(true, $this->getEnum()->isValid(EnumClass::FOO));
+        self::assertEquals(true, $this->getEnum()->isValid(EnumClass::FOO));
     }
 
     /**
@@ -122,7 +122,7 @@ class EnumTest extends TestCase
      */
     public function testNotValid(): void
     {
-        $this->assertEquals(false, $this->getEnum()->isValid('invalid value'));
+        self::assertEquals(false, $this->getEnum()->isValid('invalid value'));
     }
 
     /**
@@ -132,7 +132,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, 'getValidValues'));
+        self::assertEquals(true, method_exists(Enum::class, 'getValidValues'));
     }
 
     /**
@@ -142,7 +142,7 @@ class EnumTest extends TestCase
      */
     public function testValidValues(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 EnumClass::FOO => EnumClass::FOO,
                 EnumClass::BAR => EnumClass::BAR,
@@ -158,7 +158,7 @@ class EnumTest extends TestCase
      */
     public function testValidValuesReflection(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             [],
             array_diff(
                 [
@@ -192,7 +192,7 @@ class EnumTest extends TestCase
         try {
             $enum->setValue('invalid');
         } catch (Exception $exception) {
-            $this->assertEquals(true, $exception instanceof InvalidArgumentException);
+            self::assertEquals(true, $exception instanceof InvalidArgumentException);
         }
     }
 
@@ -203,7 +203,7 @@ class EnumTest extends TestCase
      */
     public function testToStringExists(): void
     {
-        $this->assertEquals(true, method_exists(Enum::class, '__toString'));
+        self::assertEquals(true, method_exists(Enum::class, '__toString'));
     }
 
     /**
@@ -213,6 +213,6 @@ class EnumTest extends TestCase
      */
     public function testToString(): void
     {
-        $this->assertEquals('foo', (string) $this->getEnum());
+        self::assertEquals('foo', (string) $this->getEnum());
     }
 }

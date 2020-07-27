@@ -47,7 +47,7 @@ class HttpExceptionTest extends TestCase
      */
     public function testConstruct(): void
     {
-        $this->assertEquals(true, $this->getException() instanceof HttpException);
+        self::assertEquals(true, $this->getException() instanceof HttpException);
     }
 
     /**
@@ -57,7 +57,7 @@ class HttpExceptionTest extends TestCase
      */
     public function testGetStatusCode(): void
     {
-        $this->assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $this->getException()->getStatusCode());
+        self::assertEquals(StatusCode::INTERNAL_SERVER_ERROR, $this->getException()->getStatusCode());
     }
 
     /**
@@ -67,6 +67,6 @@ class HttpExceptionTest extends TestCase
      */
     public function testGetHeaders(): void
     {
-        $this->assertEquals([], $this->getException()->getHeaders());
+        self::assertEquals([], $this->getException()->getHeaders());
     }
 }
