@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Models;
 
 use Closure;
+use JsonException;
 use Valkyrja\Support\Model\Traits\ModelTrait;
+use Valkyrja\Support\Type\Arr;
 
 use function get_object_vars;
-use function json_decode;
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Trait Dispatchable.
@@ -121,7 +119,7 @@ trait Dispatchable
     /**
      * Set the id.
      *
-     * @param string $id The id
+     * @param string|null $id The id
      *
      * @return static
      */
@@ -145,7 +143,7 @@ trait Dispatchable
     /**
      * Set the name.
      *
-     * @param string $name The name
+     * @param string|null $name The name
      *
      * @return static
      */
@@ -169,7 +167,7 @@ trait Dispatchable
     /**
      * Set the class.
      *
-     * @param string $class The class
+     * @param string|null $class The class
      *
      * @return static
      */
@@ -193,7 +191,7 @@ trait Dispatchable
     /**
      * Set the property.
      *
-     * @param string $property The property
+     * @param string|null $property The property
      *
      * @return static
      */
@@ -217,7 +215,7 @@ trait Dispatchable
     /**
      * Set the method.
      *
-     * @param string $method The method
+     * @param string|null $method The method
      *
      * @return static
      */
@@ -263,7 +261,7 @@ trait Dispatchable
     /**
      * Set the function.
      *
-     * @param string $function The function
+     * @param string|null $function The function
      *
      * @return static
      */
@@ -287,7 +285,7 @@ trait Dispatchable
     /**
      * Set the closure.
      *
-     * @param Closure $closure The closure
+     * @param Closure|null $closure The closure
      *
      * @return static
      */
@@ -311,7 +309,7 @@ trait Dispatchable
     /**
      * Set the matches.
      *
-     * @param array $matches The matches
+     * @param array|null $matches The matches
      *
      * @return static
      */
@@ -335,7 +333,7 @@ trait Dispatchable
     /**
      * Set the arguments.
      *
-     * @param array $arguments The arguments
+     * @param array|null $arguments The arguments
      *
      * @return static
      */
@@ -359,7 +357,7 @@ trait Dispatchable
     /**
      * Set the dependencies.
      *
-     * @param array $dependencies The dependencies
+     * @param array|null $dependencies The dependencies
      *
      * @return static
      */
@@ -373,11 +371,13 @@ trait Dispatchable
     /**
      * Serialize properties for json_encode.
      *
+     * @throws JsonException
+     *
      * @return array
      */
     public function jsonSerialize(): array
     {
-        $array = json_decode(json_encode(get_object_vars($this), JSON_THROW_ON_ERROR), true, 512, JSON_THROW_ON_ERROR);
+        $array = Arr::fromString(Arr::toString(get_object_vars($this)));
 
         $array['closure'] = null;
 

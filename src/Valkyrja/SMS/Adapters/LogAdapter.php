@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS\Adapters;
 
+use Valkyrja\Log\Adapter as Log;
 use Valkyrja\Log\Logger;
 use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Message;
@@ -25,20 +26,29 @@ use Valkyrja\SMS\Message;
 class LogAdapter implements Adapter
 {
     /**
-     * The logger.
+     * The log adapter.
      *
-     * @var Logger
+     * @var Log
      */
-    protected Logger $logger;
+    protected Log $log;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
 
     /**
      * LogAdapter constructor.
      *
      * @param Logger $logger The logger
+     * @param array  $config The config
      */
-    public function __construct(Logger $logger)
+    public function __construct(Logger $logger, array $config)
     {
-        $this->logger = $logger;
+        $this->config = $config;
+        $this->log    = $logger->getAdapter($config['adapter']);
     }
 
     /**
@@ -50,6 +60,12 @@ class LogAdapter implements Adapter
      */
     public function send(Message $message): void
     {
-        $this->logger->info(static::class . ' Send');
+        $this->log->info(static::class . ' Send');
+        $this->log->info('From:');
+        $this->log->info($message->getFrom());
+        $this->log->info('To:');
+        $this->log->info($message->getTo());
+        $this->log->info('Text:');
+        $this->log->info($message->getText());
     }
 }

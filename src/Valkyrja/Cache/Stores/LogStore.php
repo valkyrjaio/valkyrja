@@ -18,10 +18,7 @@ use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
 use Valkyrja\Log\Logger;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
+use Valkyrja\Support\Type\Arr;
 
 /**
  * Class LogStore.
@@ -97,7 +94,7 @@ class LogStore implements Store
      */
     public function many(string ...$keys): array
     {
-        $keysString = json_encode($keys, JSON_THROW_ON_ERROR);
+        $keysString = Arr::toString($keys);
 
         $this->logger->info(self::class . " many: ${keysString}");
 
@@ -140,7 +137,7 @@ class LogStore implements Store
      */
     public function putMany(array $values, int $minutes): void
     {
-        $valuesString = json_encode($values, JSON_THROW_ON_ERROR);
+        $valuesString = Arr::toString($values);
 
         $this->logger->info(self::class . " putMany: ${valuesString}, minutes ${minutes}");
     }

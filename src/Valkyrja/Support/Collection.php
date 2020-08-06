@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
+use JsonException;
+use Valkyrja\Support\Type\Arr;
+
 use function array_keys;
 use function count;
 use function in_array;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Collection.
@@ -221,10 +220,12 @@ class Collection
     /**
      * Convert the collection to a string.
      *
+     * @throws JsonException
+     *
      * @return string
      */
     public function __toString(): string
     {
-        return (string) json_encode($this->collection, JSON_THROW_ON_ERROR);
+        return Arr::toString($this->collection);
     }
 }

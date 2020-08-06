@@ -22,6 +22,7 @@ use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Log\Logger;
 
 /**
  * Class ServiceProvider.
@@ -135,9 +136,14 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             LogAdapter::class,
-            new LogAdapter()
+            new LogAdapter(
+                $container->getSingleton(Logger::class),
+                $config['broadcast']['adapters']['log']
+            )
         );
     }
 

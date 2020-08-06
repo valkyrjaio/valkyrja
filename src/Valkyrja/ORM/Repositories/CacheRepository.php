@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Repositories;
 
+use JsonException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
 use Valkyrja\ORM\Entity;
@@ -20,17 +21,16 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Obj;
 
 use function get_class;
 use function is_array;
-use function json_encode;
 use function md5;
 use function serialize;
 use function spl_object_id;
 use function unserialize;
 use function Valkyrja\container;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class CacheRepository.
@@ -180,6 +180,8 @@ class CacheRepository extends Repository
     /**
      * Get results.
      *
+     * @throws JsonException
+     *
      * @return Entity[]
      */
     public function getResult(): array
@@ -202,6 +204,8 @@ class CacheRepository extends Repository
     /**
      * Get one or null.
      *
+     * @throws JsonException
+     *
      * @return Entity|null
      */
     public function getOneOrNull(): ?Entity
@@ -213,6 +217,8 @@ class CacheRepository extends Repository
      * Get one or fail.
      *
      * @throws EntityNotFoundException
+     *
+     * @throws JsonException
      *
      * @return Entity
      */
@@ -229,6 +235,8 @@ class CacheRepository extends Repository
 
     /**
      * Get count results.
+     *
+     * @throws JsonException
      *
      * @return int
      */
@@ -260,6 +268,7 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
+     * @throws JsonException
      *
      * @return void
      */
@@ -281,6 +290,7 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
+     * @throws JsonException
      *
      * @return void
      */
@@ -302,6 +312,7 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
+     * @throws JsonException
      *
      * @return void
      */
@@ -323,6 +334,7 @@ class CacheRepository extends Repository
      * @param bool             $defer [optional]
      *
      * @throws InvalidEntityException
+     * @throws JsonException
      *
      * @return void
      */
@@ -340,7 +352,7 @@ class CacheRepository extends Repository
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity $entity
+     * @param Entity|null $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -379,6 +391,8 @@ class CacheRepository extends Repository
     /**
      * Persist all entities.
      *
+     * @throws JsonException
+     *
      * @return bool
      */
     public function persist(): bool
@@ -395,11 +409,13 @@ class CacheRepository extends Repository
     /**
      * Get cache key.
      *
+     * @throws JsonException
+     *
      * @return string
      */
     protected function getCacheKey(): string
     {
-        return md5(json_encode($this->retriever, JSON_THROW_ON_ERROR) . $this->getRelations);
+        return md5(Obj::toString($this->retriever) . $this->getRelations);
     }
 
     /**
@@ -408,6 +424,8 @@ class CacheRepository extends Repository
      * @param string $type
      * @param Entity $entity
      * @param bool   $defer [optional]
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -471,6 +489,8 @@ class CacheRepository extends Repository
      *
      * @param Entity $entity
      *
+     * @throws JsonException
+     *
      * @return void
      */
     protected function storeEntity(Entity $entity): void
@@ -480,7 +500,7 @@ class CacheRepository extends Repository
         $tag = $this->store->getTagger($id);
 
         $tag->flush();
-        $tag->forever($id, json_encode($entity->asArray(), JSON_THROW_ON_ERROR));
+        $tag->forever($id, Arr::toString($entity->asArray()));
     }
 
     /**
@@ -508,6 +528,8 @@ class CacheRepository extends Repository
 
     /**
      * Persist entities to be saved.
+     *
+     * @throws JsonException
      *
      * @return void
      */

@@ -453,7 +453,7 @@ class Repository implements RepositoryContract
      *      $repository->clear(new Entity())
      * </code>
      *
-     * @param Entity $entity
+     * @param Entity|null $entity The entity
      *
      * @throws InvalidEntityException
      *

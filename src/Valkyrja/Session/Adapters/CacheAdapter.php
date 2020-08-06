@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Adapters;
 
+use JsonException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Store;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
+use Valkyrja\Support\Type\Arr;
 
 use function headers_sent;
-use function json_decode;
-use function json_encode;
 use function session_start;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class CacheAdapter.
@@ -64,6 +62,7 @@ class CacheAdapter extends PHPAdapter
     /**
      * Start the session.
      *
+     * @throws JsonException
      * @throws SessionStartFailure
      *
      * @return void
@@ -83,7 +82,7 @@ class CacheAdapter extends PHPAdapter
         }
 
         // Set the data
-        $this->data = json_decode($this->cacheStore->get($this->getCacheSessionId()), true, 512, JSON_THROW_ON_ERROR);
+        $this->data = Arr::fromString($this->cacheStore->get($this->getCacheSessionId()));
     }
 
     /**
@@ -91,6 +90,8 @@ class CacheAdapter extends PHPAdapter
      *
      * @param string $id    The id
      * @param string $value The value
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -105,6 +106,8 @@ class CacheAdapter extends PHPAdapter
      * Remove a session item.
      *
      * @param string $id The item id
+     *
+     * @throws JsonException
      *
      * @return bool
      */
@@ -124,6 +127,8 @@ class CacheAdapter extends PHPAdapter
     /**
      * Clear the local session.
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function clear(): void
@@ -135,6 +140,8 @@ class CacheAdapter extends PHPAdapter
 
     /**
      * Destroy the session.
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -158,10 +165,12 @@ class CacheAdapter extends PHPAdapter
     /**
      * Update the cache session.
      *
+     * @throws JsonException
+     *
      * @return void
      */
     protected function updateCacheSession(): void
     {
-        $this->cacheStore->forever($this->getCacheSessionId(), json_encode($this->data, JSON_THROW_ON_ERROR));
+        $this->cacheStore->forever($this->getCacheSessionId(), Arr::toString($this->data));
     }
 }

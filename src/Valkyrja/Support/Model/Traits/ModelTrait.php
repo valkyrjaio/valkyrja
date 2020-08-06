@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Model\Traits;
 
+use JsonException;
+use Valkyrja\Support\Type\Arr;
+
 use function array_keys;
 use function get_object_vars;
-use function json_decode;
-use function json_encode;
 use function method_exists;
 use function property_exists;
 use function str_replace;
 use function ucwords;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Trait ModelTrait.
@@ -157,6 +156,8 @@ trait ModelTrait
     /**
      * Get model as a deep array where all properties are also arrays.
      *
+     * @throws JsonException
+     *
      * @return array
      */
     public function asDeepArray(): array
@@ -168,7 +169,7 @@ trait ModelTrait
          *  ensure that we return a true array with all properties as arrays, and their properties we sort of
          *  need to do this.
          */
-        return json_decode($this->__toString(), true, 512, JSON_THROW_ON_ERROR);
+        return Arr::fromString($this->__toString());
     }
 
     /**
@@ -184,10 +185,12 @@ trait ModelTrait
     /**
      * To string.
      *
+     * @throws JsonException
+     *
      * @return string
      */
     public function __toString(): string
     {
-        return (string) json_encode($this->asArray(), JSON_THROW_ON_ERROR);
+        return Arr::toString($this->asArray());
     }
 }

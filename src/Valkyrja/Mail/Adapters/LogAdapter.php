@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Adapters;
 
+use JsonException;
+use Valkyrja\Log\Adapter as Log;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Message;
+use Valkyrja\Support\Type\Arr;
 
 /**
  * Class LogAdapter.
@@ -25,20 +28,29 @@ use Valkyrja\Mail\Message;
 class LogAdapter implements Adapter
 {
     /**
-     * The logger.
+     * The log adapter.
      *
-     * @var Logger
+     * @var Log
      */
-    protected Logger $logger;
+    protected Log $log;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
 
     /**
      * LogAdapter constructor.
      *
      * @param Logger $logger The logger
+     * @param array  $config The config
      */
-    public function __construct(Logger $logger)
+    public function __construct(Logger $logger, array $config)
     {
-        $this->logger = $logger;
+        $this->config = $config;
+        $this->log    = $logger->getAdapter($config['adapter']);
     }
 
     /**
@@ -46,10 +58,34 @@ class LogAdapter implements Adapter
      *
      * @param Message $message The message to send
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function send(Message $message): void
     {
-        $this->logger->info(static::class . ' Send');
+        $this->log->info(static::class . ' Send');
+        $this->log->info('From Name:');
+        $this->log->info($message->getFromName());
+        $this->log->info('From Email:');
+        $this->log->info($message->getFromEmail());
+        $this->log->info('Recipients:');
+        $this->log->info(Arr::toString($message->getRecipients()));
+        $this->log->info('ReplyTo Recipients:');
+        $this->log->info(Arr::toString($message->getReplyToRecipients()));
+        $this->log->info('Copy Recipients:');
+        $this->log->info(Arr::toString($message->getCopyRecipients()));
+        $this->log->info('Blind Copy Recipients:');
+        $this->log->info(Arr::toString($message->getBlindCopyRecipients()));
+        $this->log->info('Attachments:');
+        $this->log->info(Arr::toString($message->getAttachments()));
+        $this->log->info('Subject:');
+        $this->log->info($message->getSubject());
+        $this->log->info('Body:');
+        $this->log->info($message->getBody());
+        $this->log->info('Plain Body:');
+        $this->log->info($message->getPlainBody());
+        $this->log->info('Is HTML:');
+        $this->log->info((string) $message->isHtml());
     }
 }

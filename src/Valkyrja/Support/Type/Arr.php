@@ -15,11 +15,16 @@ namespace Valkyrja\Support\Type;
 
 use ArrayAccess;
 use InvalidArgumentException;
+use JsonException;
 use Traversable;
 use Valkyrja\Config\Constants\ConfigKeyPart;
 
 use function explode;
 use function is_array;
+use function json_decode;
+use function json_encode;
+
+use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Arr.
@@ -59,5 +64,33 @@ class Arr
         }
 
         return $value;
+    }
+
+    /**
+     * Convert an array to a string.
+     *
+     * @param array $subject The subject array
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    public static function toString(array $subject): string
+    {
+        return json_encode($subject, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Un-convert an array from a string.
+     *
+     * @param string $subject The subject array as a string
+     *
+     * @throws JsonException
+     *
+     * @return array
+     */
+    public static function fromString(string $subject): array
+    {
+        return json_decode($subject, true, 512, JSON_THROW_ON_ERROR);
     }
 }

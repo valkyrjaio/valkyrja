@@ -64,6 +64,8 @@ class ServiceProvider extends Provider
             NullAdapter::class,
             PHPMailer::class,
             PHPMailerAdapter::class,
+            Mailgun::class,
+            MailgunAdapter::class,
             Message::class,
         ];
     }
@@ -108,10 +110,13 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             LogAdapter::class,
             new LogAdapter(
-                $container->getSingleton(Logger::class)
+                $container->getSingleton(Logger::class),
+                $config['mail']['adapters']['log']
             )
         );
     }

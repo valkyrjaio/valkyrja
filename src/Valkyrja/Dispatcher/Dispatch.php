@@ -33,7 +33,7 @@ interface Dispatch extends Model
     /**
      * Set the id.
      *
-     * @param string $id The id
+     * @param string|null $id The id
      *
      * @return static
      */
@@ -49,7 +49,7 @@ interface Dispatch extends Model
     /**
      * Set the name.
      *
-     * @param string $name The name
+     * @param string|null $name The name
      *
      * @return static
      */
@@ -65,7 +65,7 @@ interface Dispatch extends Model
     /**
      * Set the class.
      *
-     * @param string $class The class
+     * @param string|null $class The class
      *
      * @return static
      */
@@ -81,7 +81,7 @@ interface Dispatch extends Model
     /**
      * Set the property.
      *
-     * @param string $property The property
+     * @param string|null $property The property
      *
      * @return static
      */
@@ -97,7 +97,7 @@ interface Dispatch extends Model
     /**
      * Set the method.
      *
-     * @param string $method The method
+     * @param string|null $method The method
      *
      * @return static
      */
@@ -127,7 +127,7 @@ interface Dispatch extends Model
     /**
      * Set the function.
      *
-     * @param string $function The function
+     * @param string|null $function The function
      *
      * @return static
      */
@@ -143,7 +143,7 @@ interface Dispatch extends Model
     /**
      * Set the closure.
      *
-     * @param Closure $closure The closure
+     * @param Closure|null $closure The closure
      *
      * @return static
      */
@@ -159,7 +159,7 @@ interface Dispatch extends Model
     /**
      * Set the matches.
      *
-     * @param array $matches The matches
+     * @param array|null $matches The matches
      *
      * @return static
      */
@@ -175,7 +175,7 @@ interface Dispatch extends Model
     /**
      * Set the arguments.
      *
-     * @param array $arguments The arguments
+     * @param array|null $arguments The arguments
      *
      * @return static
      */
@@ -191,7 +191,7 @@ interface Dispatch extends Model
     /**
      * Set the dependencies.
      *
-     * @param array $dependencies The dependencies
+     * @param array|null $dependencies The dependencies
      *
      * @return static
      */

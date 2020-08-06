@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Config\Commands;
 
+use JsonException;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Support\Provides;
 
@@ -47,6 +48,8 @@ class ConfigCache extends Commander
 
     /**
      * Run the command.
+     *
+     * @throws JsonException
      *
      * @return int
      */

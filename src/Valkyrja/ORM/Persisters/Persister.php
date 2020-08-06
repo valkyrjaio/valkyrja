@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Persisters;
 
+use JsonException;
 use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\DatedEntity;
@@ -22,16 +23,14 @@ use Valkyrja\ORM\Persister as PersisterContract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\Support\Type\Arr;
 
 use function date;
 use function is_array;
 use function is_object;
-use function json_encode;
 use function serialize;
 use function spl_object_id;
 use function strtolower;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Persister
@@ -89,6 +88,7 @@ class Persister implements PersisterContract
      * @param bool   $defer [optional]
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -121,6 +121,7 @@ class Persister implements PersisterContract
      * @param bool   $defer [optional]
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -152,6 +153,7 @@ class Persister implements PersisterContract
      * @param bool   $defer [optional]
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -179,6 +181,7 @@ class Persister implements PersisterContract
      * @param bool             $defer [optional]
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -241,6 +244,7 @@ class Persister implements PersisterContract
      * Persist all entities.
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return bool
      */
@@ -282,6 +286,7 @@ class Persister implements PersisterContract
      * @param Entity $entity
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -343,6 +348,8 @@ class Persister implements PersisterContract
      * @param string       $idField
      * @param array        $properties
      *
+     * @throws JsonException
+     *
      * @return Query
      */
     protected function getQuery(QueryBuilder $queryBuilder, string $type, string $idField, array $properties): Query
@@ -391,6 +398,8 @@ class Persister implements PersisterContract
      * @param Query $query
      * @param array $properties
      *
+     * @throws JsonException
+     *
      * @return void
      */
     protected function bindQueryProperties(Query $query, array $properties): void
@@ -406,7 +415,7 @@ class Persister implements PersisterContract
                 $property = serialize($property);
             } // Otherwise json encode if its an array
             elseif (is_array($property)) {
-                $property = json_encode($property, JSON_THROW_ON_ERROR);
+                $property = Arr::toString($property);
             }
 
             // Bind property
@@ -430,6 +439,7 @@ class Persister implements PersisterContract
      * Persist all entities for creation.
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -446,6 +456,7 @@ class Persister implements PersisterContract
      * Persist all entities for save.
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */
@@ -462,6 +473,7 @@ class Persister implements PersisterContract
      * Persist all entities for deletion.
      *
      * @throws ExecuteException
+     * @throws JsonException
      *
      * @return void
      */

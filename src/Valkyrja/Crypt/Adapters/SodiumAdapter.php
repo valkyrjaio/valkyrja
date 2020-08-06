@@ -11,18 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt\Decrypters;
+namespace Valkyrja\Crypt\Adapters;
 
 use Exception;
+use JsonException;
 use SodiumException;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Obj;
 
 use function base64_decode;
 use function base64_encode;
 use function is_string;
 use function json_decode;
-use function json_encode;
 use function random_bytes;
 use function sodium_crypto_secretbox;
 use function sodium_crypto_secretbox_open;
@@ -92,7 +94,7 @@ class SodiumAdapter implements Adapter
      */
     public function encryptArray(array $array, string $key): string
     {
-        return $this->encrypt(json_encode($array, JSON_THROW_ON_ERROR), $key);
+        return $this->encrypt(Arr::toString($array), $key);
     }
 
     /**
@@ -107,7 +109,7 @@ class SodiumAdapter implements Adapter
      */
     public function encryptObject(object $object, string $key): string
     {
-        return $this->encrypt(json_encode($object, JSON_THROW_ON_ERROR), $key);
+        return $this->encrypt(Obj::toString($object), $key);
     }
 
     /**
@@ -137,6 +139,7 @@ class SodiumAdapter implements Adapter
      * @param string $key       The encryption key
      *
      * @throws CryptException On any failure
+     * @throws JsonException
      * @throws SodiumException
      *
      * @return array
@@ -153,6 +156,7 @@ class SodiumAdapter implements Adapter
      * @param string $key       The encryption key
      *
      * @throws CryptException On any failure
+     * @throws JsonException
      * @throws SodiumException
      *
      * @return object

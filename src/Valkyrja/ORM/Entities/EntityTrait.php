@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Entities;
 
+use JsonException;
 use Valkyrja\ORM\Constants\PropertyType;
 use Valkyrja\Support\Model\Traits\ModelTrait;
+use Valkyrja\Support\Type\Arr;
 
 use function in_array;
 use function is_array;
 use function is_object;
-use function json_decode;
-use function json_encode;
 use function serialize;
 use function unserialize;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Trait EntityTrait.
@@ -166,6 +164,8 @@ trait EntityTrait
     /**
      * Get the entity as an array for saving to the data store.
      *
+     * @throws JsonException
+     *
      * @return array
      */
     public function forDataStore(): array
@@ -208,6 +208,8 @@ trait EntityTrait
      *
      * @param string $property
      *
+     * @throws JsonException
+     *
      * @return mixed
      */
     protected function getPropertyValueForDataStore(string $property)
@@ -227,7 +229,7 @@ trait EntityTrait
             $value = serialize($value);
         } // If the type is array and the property isn't already an array
         elseif ($type === PropertyType::ARRAY && is_array($value)) {
-            $value = json_encode($value, JSON_THROW_ON_ERROR);
+            $value = Arr::toString($value);
         }
 
         return $value;
@@ -237,6 +239,8 @@ trait EntityTrait
      * Set properties from an array of properties.
      *
      * @param array $properties
+     *
+     * @throws JsonException
      *
      * @return void
      */
@@ -254,6 +258,8 @@ trait EntityTrait
      *
      * @param string $property
      * @param mixed  $value
+     *
+     * @throws JsonException
      *
      * @return mixed
      */
@@ -273,7 +279,7 @@ trait EntityTrait
             $value = unserialize($value, ['allowed_classes' => static::$propertyAllowedClasses[$property] ?? []]);
         } // If the type is array and the property isn't already an array
         elseif ($type === PropertyType::ARRAY && ! is_array($value)) {
-            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            $value = Arr::fromString($value);
         }
 
         return $value;

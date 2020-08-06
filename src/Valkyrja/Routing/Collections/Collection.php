@@ -14,19 +14,18 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Collections;
 
 use InvalidArgumentException;
+use JsonException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
+use Valkyrja\Support\Type\Arr;
 
 use function array_merge;
 use function is_array;
-use function json_encode;
 use function md5;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Collection.
@@ -105,6 +104,8 @@ class Collection implements Contract
      *
      * @param Route $route The route
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function add(Route $route): void
@@ -121,7 +122,7 @@ class Collection implements Contract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[md5(json_encode($route, JSON_THROW_ON_ERROR))] = $route;
+        $this->routes[md5(Arr::toString($route->asArray()))] = $route;
     }
 
     /**

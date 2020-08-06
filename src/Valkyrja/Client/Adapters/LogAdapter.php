@@ -18,10 +18,7 @@ use Valkyrja\Client\Adapter as Contract;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
-
-use function json_encode;
-
-use const JSON_THROW_ON_ERROR;
+use Valkyrja\Support\Type\Arr;
 
 /**
  * Class LogAdapter.
@@ -69,7 +66,7 @@ class LogAdapter implements Contract
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        $optionsString = json_encode($options, JSON_THROW_ON_ERROR);
+        $optionsString = Arr::toString($options);
 
         $this->logger->info(static::class . " request: ${method}, uri ${uri}, options ${$optionsString}");
 

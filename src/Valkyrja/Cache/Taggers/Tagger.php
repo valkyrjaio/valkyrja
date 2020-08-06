@@ -16,9 +16,9 @@ namespace Valkyrja\Cache\Taggers;
 use JsonException;
 use Valkyrja\Cache\Store;
 use Valkyrja\Cache\Tagger as Contract;
+use Valkyrja\Support\Type\Arr;
 
 use function json_decode;
-use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -378,6 +378,6 @@ class Tagger implements Contract
      */
     protected function putKeys(string $tag, array $keys): void
     {
-        $this->store->forever($tag, json_encode($keys, JSON_THROW_ON_ERROR));
+        $this->store->forever($tag, Arr::toString($keys));
     }
 }
