@@ -17,7 +17,6 @@ use Valkyrja\Config\Commands\ConfigCache;
 use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
-use Valkyrja\Console\Exceptions\CommandNotFound;
 use Valkyrja\Console\Inputs\Option;
 use Valkyrja\Console\Support\Provides;
 use Valkyrja\Container\Commands\ContainerCache;

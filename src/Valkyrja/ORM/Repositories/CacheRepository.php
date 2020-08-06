@@ -217,7 +217,6 @@ class CacheRepository extends Repository
      * Get one or fail.
      *
      * @throws EntityNotFoundException
-     *
      * @throws JsonException
      *
      * @return Entity

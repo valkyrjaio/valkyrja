@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Crypt\Managers;
 
-use Exception;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
@@ -123,6 +122,7 @@ class Crypt implements Contract
      * @param string|null $key     The encryption key
      *
      * @throws CryptException
+     *
      * @return string
      */
     public function encrypt(string $message, string $key = null): string
@@ -137,6 +137,7 @@ class Crypt implements Contract
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
+     *
      * @return string
      */
     public function decrypt(string $encrypted, string $key = null): string
@@ -150,8 +151,9 @@ class Crypt implements Contract
      * @param array       $array The array to encrypt
      * @param string|null $key   The encryption key
      *
-     * @return string
      * @throws CryptException
+     *
+     * @return string
      */
     public function encryptArray(array $array, string $key = null): string
     {
@@ -164,8 +166,9 @@ class Crypt implements Contract
      * @param string      $encrypted The encrypted message
      * @param string|null $key       The encryption key
      *
-     * @return array
      * @throws CryptException On any failure
+     *
+     * @return array
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
@@ -178,8 +181,9 @@ class Crypt implements Contract
      * @param object      $object The object to encrypt
      * @param string|null $key    The encryption key
      *
-     * @return string
      * @throws CryptException
+     *
+     * @return string
      */
     public function encryptObject(object $object, string $key = null): string
     {
@@ -192,8 +196,9 @@ class Crypt implements Contract
      * @param string      $encrypted The encrypted message
      * @param string|null $key       The encryption key
      *
-     * @return object
      * @throws CryptException On any failure
+     *
+     * @return object
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
