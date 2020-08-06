@@ -129,7 +129,8 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             OrkaEngine::class,
             new OrkaEngine(
-                $config['view']
+                $config['view'],
+                $config['app']['debug']
             )
         );
     }

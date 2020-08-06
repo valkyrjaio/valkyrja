@@ -57,15 +57,24 @@ class OrkaEngine extends PHPEngine
     ];
 
     /**
+     * Whether to run in debug mode.
+     *
+     * @var bool
+     */
+    protected bool $isDebug = false;
+
+    /**
      * OrkaEngine constructor.
      *
-     * @param array $config The config
+     * @param array $config  The config
+     * @param bool  $isDebug Whether to run in debug mode
      */
-    public function __construct(array $config)
+    public function __construct(array $config, bool $isDebug)
     {
         parent::__construct($config);
 
         $this->fileExtension = $config['disks']['orka']['fileExtension'] ?? '.orka.phtml';
+        $this->isDebug       = $isDebug;
     }
 
     /**
@@ -80,7 +89,7 @@ class OrkaEngine extends PHPEngine
     {
         $cachedPath = $this->getCachedFilePath($name);
 
-        if (! is_file($cachedPath)) {
+        if (! is_file($cachedPath) && ! $this->isDebug) {
             $contents = $this->parseContent(file_get_contents($this->getFullPath($name)));
 
             file_put_contents($cachedPath, $contents);
