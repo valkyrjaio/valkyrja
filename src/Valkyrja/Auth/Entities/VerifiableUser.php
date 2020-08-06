@@ -25,6 +25,6 @@ class VerifiableUser implements Contract
 {
     use EntityFields;
     use UserFields;
-    use EmailableUserFields;
+    use MailableUserFields;
     use VerifiableUserFields;
 }

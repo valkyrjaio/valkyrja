@@ -11,28 +11,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth;
+namespace Valkyrja\Auth\Entities;
+
+use Valkyrja\Auth\Constants\UserField;
 
 /**
- * Interface EmailableUser.
+ * Trait MailableUserTrait.
  *
  * @author Melech Mizrachi
  */
-interface EmailableUser extends User
+trait MailableUserTrait
 {
+    /**
+     * The email field.
+     *
+     * @var string
+     */
+    protected static string $emailField = UserField::EMAIL;
+
     /**
      * Get the email field.
      *
      * @return string
      */
-    public static function getEmailField(): string;
+    public static function getEmailField(): string
+    {
+        return static::$emailField;
+    }
 
     /**
      * Get the email field value.
      *
      * @return string
      */
-    public function getEmailFieldValue(): string;
+    public function getEmailFieldValue(): string
+    {
+        return $this->{static::$emailField};
+    }
 
     /**
      * Set the email field value.
@@ -41,5 +56,8 @@ interface EmailableUser extends User
      *
      * @return void
      */
-    public function setEmailFieldValue(string $email): void;
+    public function setEmailFieldValue(string $email): void
+    {
+        $this->{static::$emailField} = $email;
+    }
 }

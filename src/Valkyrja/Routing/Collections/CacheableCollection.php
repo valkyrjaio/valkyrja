@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Collections;
 
+use JsonException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotation\Annotator;
@@ -120,6 +121,8 @@ class CacheableCollection extends Collection
      * Setup annotated routes.
      *
      * @param RoutingConfig|array $config
+     *
+     * @throws JsonException
      *
      * @return void
      */

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
+use JsonException;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\User;
 use Valkyrja\Broadcast\Broadcast;
@@ -40,6 +41,8 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      * Middleware handler for before a request is dispatched.
      *
      * @param Request $request The request
+     *
+     * @throws JsonException
      *
      * @return Request|Response
      */
@@ -119,6 +122,8 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      * @param User      $user             The logged in user
      * @param Broadcast $broadcaster      The broadcaster
      * @param string    $broadcastMessage The broadcast messages
+     *
+     * @throws JsonException
      *
      * @return bool
      */

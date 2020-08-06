@@ -62,9 +62,9 @@ interface ResponseFactory
     /**
      * Create a redirect response.
      *
-     * @param string $uri        [optional] The uri to redirect to
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string|null $uri        [optional] The uri to redirect to
+     * @param int|null    $statusCode [optional] The response status code
+     * @param array|null  $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
@@ -73,10 +73,10 @@ interface ResponseFactory
     /**
      * Redirect to a named route response builder.
      *
-     * @param string $route      The route to match
-     * @param array  $parameters [optional] Any parameters to set for dynamic routes
-     * @param int    $statusCode [optional] The response status code
-     * @param array  $headers    [optional] An array of response headers
+     * @param string     $route      The route to match
+     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param int|null   $statusCode [optional] The response status code
+     * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */

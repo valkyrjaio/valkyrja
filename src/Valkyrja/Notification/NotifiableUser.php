@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Notification;
 
-use Valkyrja\Auth\EmailableUser;
+use Valkyrja\Auth\MailableUser;
 
 /**
  * Interface NotifiableUser.
  *
  * @author Melech Mizrachi
  */
-interface NotifiableUser extends EmailableUser
+interface NotifiableUser extends MailableUser
 {
     /**
      * Whether this user entity has a name field.

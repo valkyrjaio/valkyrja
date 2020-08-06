@@ -207,12 +207,17 @@ class Kernel implements Contract
         $this->container->setSingleton(Request::class, $request);
 
         // Dispatch the before request handled middleware
-        $request = $this->requestMiddleware($request);
+        $requestAfterMiddleware = $this->requestMiddleware($request);
+
+        // If the return value after middleware is a response return it
+        if ($requestAfterMiddleware instanceof Response) {
+            return $requestAfterMiddleware;
+        }
 
         // Set the returned request in the container
-        $this->container->setSingleton(Request::class, $request);
+        $this->container->setSingleton(Request::class, $requestAfterMiddleware);
 
-        return $this->router->dispatch($request);
+        return $this->router->dispatch($requestAfterMiddleware);
     }
 
     /**

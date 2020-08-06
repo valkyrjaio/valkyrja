@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Connections;
+namespace Valkyrja\ORM\Statements;
 
 use PDO;
 use PDOStatement as Statement;

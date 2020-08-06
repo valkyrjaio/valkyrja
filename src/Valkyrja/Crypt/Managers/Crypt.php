@@ -119,11 +119,10 @@ class Crypt implements Contract
     /**
      * Encrypt a message.
      *
-     * @param string $message The message to encrypt
-     * @param string $key     The encryption key
+     * @param string      $message The message to encrypt
+     * @param string|null $key     The encryption key
      *
-     * @throws Exception Random Bytes Failure
-     *
+     * @throws CryptException
      * @return string
      */
     public function encrypt(string $message, string $key = null): string
@@ -134,11 +133,10 @@ class Crypt implements Contract
     /**
      * Decrypt a message.
      *
-     * @param string $encrypted The encrypted message to decrypt
-     * @param string $key       The encryption key
+     * @param string      $encrypted The encrypted message to decrypt
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
-     *
      * @return string
      */
     public function decrypt(string $encrypted, string $key = null): string
@@ -149,12 +147,11 @@ class Crypt implements Contract
     /**
      * Encrypt an array.
      *
-     * @param array  $array The array to encrypt
-     * @param string $key   The encryption key
-     *
-     * @throws Exception Random Bytes Failure
+     * @param array       $array The array to encrypt
+     * @param string|null $key   The encryption key
      *
      * @return string
+     * @throws CryptException
      */
     public function encryptArray(array $array, string $key = null): string
     {
@@ -164,12 +161,11 @@ class Crypt implements Contract
     /**
      * Decrypt a message originally encrypted from an array.
      *
-     * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
-     *
-     * @throws CryptException On any failure
+     * @param string      $encrypted The encrypted message
+     * @param string|null $key       The encryption key
      *
      * @return array
+     * @throws CryptException On any failure
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
@@ -179,12 +175,11 @@ class Crypt implements Contract
     /**
      * Encrypt a json array.
      *
-     * @param object $object The object to encrypt
-     * @param string $key    The encryption key
-     *
-     * @throws Exception Random Bytes Failure
+     * @param object      $object The object to encrypt
+     * @param string|null $key    The encryption key
      *
      * @return string
+     * @throws CryptException
      */
     public function encryptObject(object $object, string $key = null): string
     {
@@ -194,12 +189,11 @@ class Crypt implements Contract
     /**
      * Decrypt a message originally encrypted from an object.
      *
-     * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
-     *
-     * @throws CryptException On any failure
+     * @param string      $encrypted The encrypted message
+     * @param string|null $key       The encryption key
      *
      * @return object
+     * @throws CryptException On any failure
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {

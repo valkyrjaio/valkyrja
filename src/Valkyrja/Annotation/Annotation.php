@@ -32,7 +32,7 @@ interface Annotation extends Dispatch
     /**
      * Set the type.
      *
-     * @param string $annotationType The type
+     * @param string|null $annotationType The type
      *
      * @return static
      */
@@ -48,7 +48,7 @@ interface Annotation extends Dispatch
     /**
      * Set the annotation properties (within parentheses).
      *
-     * @param array $properties The annotation arguments
+     * @param array|null $properties The annotation arguments
      *
      * @return static
      */

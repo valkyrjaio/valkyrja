@@ -48,7 +48,7 @@ class CommandsList extends Commander
     /**
      * Run the command.
      *
-     * @param string $namespace [optional] The namespace to show commands for
+     * @param string|null $namespace [optional] The namespace to show commands for
      *
      * @return int
      */
@@ -70,7 +70,6 @@ class CommandsList extends Commander
 
         $this->sectionTitleMessage('Commands' . ($namespace ? " for the \"{$namespace}\" namespace" : ''));
 
-        /** @var Command $command */
         foreach ($commands as $command) {
             if (null === $namespace) {
                 $this->commandSection($command, $previousSection);
@@ -101,10 +100,10 @@ class CommandsList extends Commander
     /**
      * Filter the commands by type and name.
      *
-     * @param array  $commands      The commands
-     * @param int    $longestLength The longest length
-     * @param string $namespace     [optional] The namespace to show commands
-     *                              for
+     * @param array       $commands      The commands
+     * @param int         $longestLength The longest length
+     * @param string|null $namespace     [optional] The namespace to show commands
+     *                                   for
      *
      * @return void
      */

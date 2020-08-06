@@ -56,9 +56,7 @@ class ORM
      *
      * @param mixed         $subject The subject
      * @param string|Entity $entity  The entity to check for uniqueness
-     * @param string        $field   The field to ensure is unique
-     *
-     * @throws ValidationException
+     * @param string|null   $field   The field to ensure is unique
      *
      * @return void
      */
@@ -81,9 +79,7 @@ class ORM
      *
      * @param mixed         $subject The subject
      * @param string|Entity $entity  The entity to check for uniqueness
-     * @param string        $field   The field to ensure is unique
-     *
-     * @throws ValidationException
+     * @param string|null   $field   The field to ensure is unique
      *
      * @return void
      */

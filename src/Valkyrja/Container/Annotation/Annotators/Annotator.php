@@ -135,7 +135,6 @@ class Annotator implements Contract
         // Iterate through all the classes
         foreach ($classes as $class) {
             // Get all the annotations for each class and iterate through them
-            /** @var Annotation $annotation */
             foreach ($this->filter->classAndMembersAnnotationsByType($type, $class) as $annotation) {
                 $this->setServiceProperties($annotation);
 

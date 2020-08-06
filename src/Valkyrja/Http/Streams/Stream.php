@@ -291,12 +291,10 @@ class Stream implements StreamContract
      */
     public function getSize(): ?int
     {
-        $fstat = null;
-
         // If the stream isn't set
         if ($this->isValidStream()) {
             // Return without attempting to get the fstat
-            return $fstat;
+            return null;
         }
 
         // Get the stream's fstat

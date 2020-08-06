@@ -92,7 +92,7 @@ trait Commandable
     /**
      * Set the regex.
      *
-     * @param string $regex The regex
+     * @param string|null $regex The regex
      *
      * @return static
      */
@@ -116,7 +116,7 @@ trait Commandable
     /**
      * Set the params.
      *
-     * @param array $params The params
+     * @param array|null $params The params
      *
      * @return static
      */
@@ -140,7 +140,7 @@ trait Commandable
     /**
      * Set the segments.
      *
-     * @param array $segments The segments
+     * @param array|null $segments The segments
      *
      * @return static
      */
@@ -164,7 +164,7 @@ trait Commandable
     /**
      * Set the description.
      *
-     * @param string $description The description
+     * @param string|null $description The description
      *
      * @return static
      */

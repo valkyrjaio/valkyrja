@@ -47,7 +47,7 @@ interface MiddlewareAware
      * @param Request    $request    The request
      * @param array|null $middleware [optional] The middleware to dispatch
      *
-     * @return mixed
+     * @return Request|Response
      */
     public function requestMiddleware(Request $request, array $middleware = null);
 
@@ -58,9 +58,9 @@ interface MiddlewareAware
      * @param Response   $response   The response
      * @param array|null $middleware [optional] The middleware to dispatch
      *
-     * @return mixed
+     * @return Response
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null);
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response;
 
     /**
      * Dispatch terminable middleware.

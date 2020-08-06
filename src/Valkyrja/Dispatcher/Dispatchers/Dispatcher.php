@@ -65,8 +65,8 @@ class Dispatcher implements Contract
     /**
      * Dispatch a callable.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -128,8 +128,8 @@ class Dispatcher implements Contract
     /**
      * Get a dispatch's arguments.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return array
      */

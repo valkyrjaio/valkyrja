@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Filesystems;
 
-use League\Flysystem\AdapterInterface;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
@@ -29,7 +28,7 @@ class Filesystem implements FilesystemContract
     /**
      * The adapters.
      *
-     * @var AdapterInterface[]
+     * @var Adapter[]
      */
     protected static array $adapters = [];
 
@@ -314,8 +313,8 @@ class Filesystem implements FilesystemContract
     /**
      * List the contents of a directory.
      *
-     * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the directory
+     * @param string|null $directory [optional] The directory
+     * @param bool        $recursive [optional] Whether to recurse through the directory
      *
      * @return array
      */

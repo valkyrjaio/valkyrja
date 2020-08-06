@@ -18,7 +18,7 @@ namespace Valkyrja\Auth;
  *
  * @author Melech Mizrachi
  */
-interface VerifiableUser extends EmailableUser
+interface VerifiableUser extends MailableUser
 {
     /**
      * Get the verified field.

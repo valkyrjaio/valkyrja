@@ -47,11 +47,10 @@ interface Kernel
     /**
      * Run the kernel.
      *
-     * @param Input  $input  The input
-     * @param Output $output The output
+     * @param Input|null  $input  The input
+     * @param Output|null $output The output
      *
      * @throws HttpException
-     *
      * @return int
      */
     public function run(Input $input = null, Output $output = null): int;

@@ -505,7 +505,7 @@ class SqlQueryBuilder implements QueryBuilder
      *
      * @param string $column
      * @param string $operator
-     * @param string $value
+     * @param null   $value
      *
      * @return string
      */

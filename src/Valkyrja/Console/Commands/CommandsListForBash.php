@@ -43,7 +43,7 @@ class CommandsListForBash extends Commander
     /**
      * Run the command.
      *
-     * @param string $commandTyped The command typed
+     * @param string|null $commandTyped The command typed
      *
      * @return int
      */

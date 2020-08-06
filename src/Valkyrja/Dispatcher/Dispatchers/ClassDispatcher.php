@@ -84,8 +84,8 @@ trait ClassDispatcher
     /**
      * Dispatch a class method.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -128,8 +128,8 @@ trait ClassDispatcher
     /**
      * Dispatch a class.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed
      */

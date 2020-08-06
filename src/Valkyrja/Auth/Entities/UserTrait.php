@@ -26,7 +26,7 @@ trait UserTrait
     /**
      * The auth repository.
      *
-     * @var string
+     * @var string|null
      */
     protected static ?string $authRepository = null;
 

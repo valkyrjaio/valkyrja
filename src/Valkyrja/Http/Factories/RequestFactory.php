@@ -46,22 +46,11 @@ abstract class RequestFactory
      * The ServerRequest created is then passed to the fromServer() method in
      * order to marshal the request URI and headers.
      *
-     * @param array $server  $_SERVER superglobal
-     * @param array $query   $_GET superglobal
-     * @param array $body    $_POST superglobal
-     * @param array $cookies $_COOKIE superglobal
-     * @param array $files   $_FILES superglobal
-     *
-     * @throws InvalidArgumentException
-     * @throws UnexpectedValueException
-     * @throws InvalidUploadedFile
-     * @throws InvalidStream
-     * @throws InvalidScheme
-     * @throws InvalidQuery
-     * @throws InvalidProtocolVersion
-     * @throws InvalidPort
-     * @throws InvalidPath
-     * @throws InvalidMethod
+     * @param array|null $server  $_SERVER superglobal
+     * @param array|null $query   $_GET superglobal
+     * @param array|null $body    $_POST superglobal
+     * @param array|null $cookies $_COOKIE superglobal
+     * @param array|null $files   $_FILES superglobal
      *
      * @return Request
      *

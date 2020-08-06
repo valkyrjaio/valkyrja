@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Commands;
 
+use JsonException;
 use Valkyrja\Console\Commanders\Commander;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Support\Provides;
@@ -52,6 +53,8 @@ class Optimize extends Commander
 
     /**
      * Optimize the application.
+     *
+     * @throws JsonException
      *
      * @return int
      */

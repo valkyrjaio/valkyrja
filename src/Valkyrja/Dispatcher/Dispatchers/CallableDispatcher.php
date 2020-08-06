@@ -51,8 +51,8 @@ trait CallableDispatcher
     /**
      * Dispatch a function.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed
      */
@@ -73,8 +73,8 @@ trait CallableDispatcher
     /**
      * Dispatch a closure.
      *
-     * @param Dispatch $dispatch  The dispatch
-     * @param array    $arguments [optional] The arguments
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed
      */

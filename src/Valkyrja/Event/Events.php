@@ -108,8 +108,8 @@ interface Events
     /**
      * Trigger an event.
      *
-     * @param string $event     The event
-     * @param array  $arguments [optional] The arguments
+     * @param string     $event     The event
+     * @param array|null $arguments [optional] The arguments
      *
      * @return mixed[]
      */

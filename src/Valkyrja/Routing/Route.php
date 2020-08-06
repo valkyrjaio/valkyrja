@@ -96,7 +96,7 @@ interface Route extends Dispatch
     /**
      * Set the regex.
      *
-     * @param string $regex The regex
+     * @param string|null $regex The regex
      *
      * @return static
      */
@@ -112,7 +112,7 @@ interface Route extends Dispatch
     /**
      * Set the params.
      *
-     * @param array $params The params
+     * @param array|null $params The params
      *
      * @return static
      */
@@ -128,7 +128,7 @@ interface Route extends Dispatch
     /**
      * Set the segments.
      *
-     * @param array $segments The segments
+     * @param array|null $segments The segments
      *
      * @return static
      */
@@ -144,7 +144,7 @@ interface Route extends Dispatch
     /**
      * Set the middleware.
      *
-     * @param array $middleware The middleware
+     * @param array|null $middleware The middleware
      *
      * @return static
      */

@@ -60,7 +60,7 @@ class Directory
     /**
      * Get the app directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -72,7 +72,7 @@ class Directory
     /**
      * Get the base directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -84,7 +84,7 @@ class Directory
     /**
      * Construct a path with the directory separator prepended.
      *
-     * @param string $path The path
+     * @param string|null $path The path
      *
      * @return string
      */
@@ -98,7 +98,7 @@ class Directory
     /**
      * Get the commands config directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -110,7 +110,7 @@ class Directory
     /**
      * Get the bootstrap directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -122,7 +122,7 @@ class Directory
     /**
      * Get the events config directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -134,7 +134,7 @@ class Directory
     /**
      * Get the routes config directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -146,7 +146,7 @@ class Directory
     /**
      * Get the services config directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -158,7 +158,7 @@ class Directory
     /**
      * Get the config directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -170,7 +170,7 @@ class Directory
     /**
      * Get the env directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -182,7 +182,7 @@ class Directory
     /**
      * Get the public directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -194,7 +194,7 @@ class Directory
     /**
      * Get the resources directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -206,7 +206,7 @@ class Directory
     /**
      * Get the cache directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -218,7 +218,7 @@ class Directory
     /**
      * Get the framework storage directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -230,7 +230,7 @@ class Directory
     /**
      * Get the storage directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -242,7 +242,7 @@ class Directory
     /**
      * Get the tests directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */
@@ -254,7 +254,7 @@ class Directory
     /**
      * Get the vendor directory for the application.
      *
-     * @param string $path [optional] The path to append
+     * @param string|null $path [optional] The path to append
      *
      * @return string
      */

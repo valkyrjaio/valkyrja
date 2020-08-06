@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
+use Valkyrja\Auth\MailableUser as Contract;
+use Valkyrja\ORM\Entities\EntityFields;
+
 /**
- * Trait EmailableUserFields.
+ * Entity MailableUser.
  *
  * @author Melech Mizrachi
  */
-trait EmailableUserFields
+class MailableUser implements Contract
 {
-    use EmailableUserTrait;
-
-    /**
-     * The email.
-     *
-     * @var string
-     */
-    public string $email = '';
+    use EntityFields;
+    use UserFields;
+    use MailableUserFields;
 }

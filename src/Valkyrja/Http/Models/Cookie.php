@@ -361,14 +361,13 @@ class Cookie implements CookieContract
     }
 
     /**
-     * Set whether the cookie will be made accessible only through the HTTP
-     * protocol.
+     * Set whether the cookie will be made accessible only through the HTTP protocol.
      *
-     * @param bool|null $httpOnly
+     * @param bool $httpOnly [optional] The flag
      *
      * @return Cookie
      */
-    public function setHttpOnly(bool $httpOnly = null): self
+    public function setHttpOnly(bool $httpOnly = false): self
     {
         $this->httpOnly = $httpOnly;
 

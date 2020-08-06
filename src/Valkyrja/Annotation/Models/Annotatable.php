@@ -47,7 +47,7 @@ trait Annotatable
     /**
      * Set the type.
      *
-     * @param string $type The type
+     * @param string|null $type The type
      *
      * @return static
      */
@@ -71,7 +71,7 @@ trait Annotatable
     /**
      * Set the annotation properties (within parentheses).
      *
-     * @param array $properties The annotation arguments
+     * @param array|null $properties The annotation arguments
      *
      * @return static
      */

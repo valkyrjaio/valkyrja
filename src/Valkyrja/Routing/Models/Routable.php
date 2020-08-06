@@ -224,7 +224,7 @@ trait Routable
     /**
      * Set the regex.
      *
-     * @param string $regex The regex
+     * @param string|null $regex The regex
      *
      * @return static
      */
@@ -248,7 +248,7 @@ trait Routable
     /**
      * Set the params.
      *
-     * @param array $params The params
+     * @param array|null $params The params
      *
      * @return static
      */
@@ -272,7 +272,7 @@ trait Routable
     /**
      * Set the segments.
      *
-     * @param array $segments The segments
+     * @param array|null $segments The segments
      *
      * @return static
      */
@@ -296,7 +296,7 @@ trait Routable
     /**
      * Set the middleware.
      *
-     * @param array $middleware The middleware
+     * @param array|null $middleware The middleware
      *
      * @return static
      */

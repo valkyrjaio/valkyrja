@@ -32,11 +32,9 @@ class PathGenerator implements Contract
     /**
      * Parse segments, data, and params into a path.
      *
-     * @param array $segments The segments
-     * @param array $data     [optional] The data
-     * @param array $params   [optional] The params
-     *
-     * @throws InvalidArgumentException
+     * @param array      $segments The segments
+     * @param array|null $data     [optional] The data
+     * @param array|null $params   [optional] The params
      *
      * @return string
      */

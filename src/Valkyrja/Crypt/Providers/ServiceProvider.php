@@ -16,7 +16,7 @@ namespace Valkyrja\Crypt\Providers;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
-use Valkyrja\Crypt\Decrypters\SodiumAdapter;
+use Valkyrja\Crypt\Adapters\SodiumAdapter;
 
 /**
  * Class ServiceProvider.

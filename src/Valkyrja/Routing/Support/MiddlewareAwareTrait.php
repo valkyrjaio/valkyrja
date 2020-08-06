@@ -67,7 +67,7 @@ trait MiddlewareAwareTrait
      * @param Request    $request    The request
      * @param array|null $middleware [optional] The middleware to dispatch
      *
-     * @return mixed
+     * @return Request|Response
      */
     public function requestMiddleware(Request $request, array $middleware = null)
     {
@@ -81,7 +81,7 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
+                $modifiedRequest = $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
 
                 continue;
             }
@@ -90,7 +90,7 @@ trait MiddlewareAwareTrait
             $modifiedRequest = $item::before($request);
 
             if ($modifiedRequest instanceof Response) {
-                Abort::response($modifiedRequest);
+                return $modifiedRequest;
             }
         }
 
@@ -104,9 +104,9 @@ trait MiddlewareAwareTrait
      * @param Response   $response   The response
      * @param array|null $middleware [optional] The middleware to dispatch
      *
-     * @return mixed
+     * @return Response
      */
-    public function responseMiddleware(Request $request, Response $response, array $middleware = null)
+    public function responseMiddleware(Request $request, Response $response, array $middleware = null): Response
     {
         // Set the middleware to any middleware passed or the base middleware
         $middleware = $middleware ?? static::$middleware;
@@ -116,7 +116,7 @@ trait MiddlewareAwareTrait
             // If the middleware is a group
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
-                $this->responseMiddleware($request, $response, $this->getMiddlewareGroup($item));
+                $response = $this->responseMiddleware($request, $response, $this->getMiddlewareGroup($item));
 
                 continue;
             }

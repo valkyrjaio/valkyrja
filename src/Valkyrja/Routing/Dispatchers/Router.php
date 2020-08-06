@@ -277,10 +277,15 @@ class Router implements Contract
         // Determine if the route is secure and should be redirected
         $this->determineIsSecureRoute($request, $route);
         // Dispatch the route's before request handled middleware
-        $request = $this->routeRequestMiddleware($request, $route);
+        $requestAfterMiddleware = $this->requestMiddleware($request, $route->getMiddleware() ?? []);
+
+        // If the return value after middleware is a response return it
+        if ($requestAfterMiddleware instanceof Response) {
+            return $requestAfterMiddleware;
+        }
 
         // Trigger an event for route matched
-        $this->events->trigger(RouteMatched::class, [$route, $request]);
+        $this->events->trigger(RouteMatched::class, [$route, $requestAfterMiddleware]);
         // Set the found route in the service container
         $this->container->setSingleton(Route::class, $route);
 
@@ -290,7 +295,7 @@ class Router implements Contract
         $response = $this->getResponseFromDispatch($dispatch);
 
         // Dispatch the route's before request handled middleware and return the response
-        return $this->routeResponseMiddleware($request, $response, $route);
+        return $this->routeResponseMiddleware($requestAfterMiddleware, $response, $route);
     }
 
     /**
@@ -324,19 +329,6 @@ class Router implements Contract
             // Throw the redirect to the secure path
             $this->responseFactory->createRedirectResponse()->secure($request->getUri()->getPath(), $request)->throw();
         }
-    }
-
-    /**
-     * Dispatch a route's before request handled middleware.
-     *
-     * @param Request $request The request
-     * @param Route   $route   The route
-     *
-     * @return Request
-     */
-    protected function routeRequestMiddleware(Request $request, Route $route): Request
-    {
-        return $this->requestMiddleware($request, $route->getMiddleware() ?? []);
     }
 
     /**

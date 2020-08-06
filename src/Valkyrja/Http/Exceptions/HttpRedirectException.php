@@ -36,10 +36,10 @@ class HttpRedirectException extends HttpException
      *
      * @link http://php.net/manual/en/exception.construct.php
      *
-     * @param int      $statusCode [optional] The status code to use
-     * @param string   $uri        [optional] The Exception message to throw
-     * @param array    $headers    [optional] The headers to send
-     * @param Response $response   [optional] The Response
+     * @param int|null      $statusCode [optional] The status code to use
+     * @param string|null   $uri        [optional] The Exception message to throw
+     * @param array|null    $headers    [optional] The headers to send
+     * @param Response|null $response   [optional] The Response
      */
     public function __construct(
         int $statusCode = null,

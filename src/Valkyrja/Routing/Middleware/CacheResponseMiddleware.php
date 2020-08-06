@@ -21,10 +21,10 @@ use Valkyrja\Support\Directory;
 
 use function base64_decode;
 use function base64_encode;
-use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function filemtime;
+use function is_file;
 use function md5;
 use function serialize;
 use function time;
@@ -49,7 +49,7 @@ class CacheResponseMiddleware extends Middleware
     {
         $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
 
-        if (file_exists($filePath) && ! self::$router->debug()) {
+        if (is_file($filePath) && ! self::$router->debug()) {
             if (time() - filemtime($filePath) > self::$router->getConfig()['cacheMiddleWareTTL']) {
                 unlink($filePath);
 

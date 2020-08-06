@@ -81,9 +81,9 @@ class Url implements Contract
     /**
      * Get a route url by name.
      *
-     * @param string $name     The name of the route to get
-     * @param array  $data     [optional] The route data if dynamic
-     * @param bool   $absolute [optional] Whether this url should be absolute
+     * @param string     $name     The name of the route to get
+     * @param array|null $data     [optional] The route data if dynamic
+     * @param bool       $absolute [optional] Whether this url should be absolute
      *
      * @return string
      */
@@ -116,10 +116,8 @@ class Url implements Contract
     /**
      * Get a route by path.
      *
-     * @param string $path   The path
-     * @param string $method [optional] The method type of get
-     *
-     * @throws InvalidArgumentException
+     * @param string      $path   The path
+     * @param string|null $method [optional] The method type of get
      *
      * @return Route|null
      *      The route if found or null when no static route is

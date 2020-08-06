@@ -32,7 +32,7 @@ interface Listener extends Dispatch
     /**
      * Set the event.
      *
-     * @param string $event The event
+     * @param string|null $event The event
      *
      * @return static
      */

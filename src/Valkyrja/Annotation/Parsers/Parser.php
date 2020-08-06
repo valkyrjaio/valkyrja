@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Valkyrja\Annotation\Parsers;
 
+use JsonException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Constants\Part;
 use Valkyrja\Annotation\Constants\Regex;
 use Valkyrja\Annotation\Exceptions\InvalidAnnotationKeyArgument;
 use Valkyrja\Annotation\Models\Annotation as AnnotationModel;
 use Valkyrja\Annotation\Parser as Contract;
+use Valkyrja\Support\Type\Arr;
 
 use function array_key_exists;
 use function constant;
@@ -26,15 +28,12 @@ use function defined;
 use function explode;
 use function is_array;
 use function is_string;
-use function json_decode;
 use function method_exists;
 use function preg_match_all;
 use function property_exists;
 use function str_replace;
 use function strpos;
 use function trim;
-
-use const JSON_THROW_ON_ERROR;
 
 /**
  * Class Parser.
@@ -66,6 +65,7 @@ class Parser implements Contract
      * @param string $docString The doc string
      *
      * @throws InvalidAnnotationKeyArgument
+     * @throws JsonException
      *
      * @return Annotation[]
      */
@@ -90,20 +90,18 @@ class Parser implements Contract
     /**
      * Filter a string of properties into an key => value array.
      *
-     * @param string $properties The properties
+     * @param string|null $properties The properties
      *
-     * @throws InvalidAnnotationKeyArgument
+     * @throws JsonException
      *
      * @return array
      */
     public function getPropertiesAsArray(string $properties = null): ?array
     {
-        $propertiesList = null;
-
         // If a valid properties list was passed in
         if (null !== $properties && $properties) {
             $testArgs       = str_replace('=', ':', $properties);
-            $propertiesList = json_decode('{' . $testArgs . '}', true, 512, JSON_THROW_ON_ERROR);
+            $propertiesList = Arr::fromString('{' . $testArgs . '}');
 
             if (is_array($propertiesList)) {
                 foreach ($propertiesList as &$value) {
@@ -116,7 +114,7 @@ class Parser implements Contract
             return $propertiesList;
         }
 
-        return $propertiesList;
+        return null;
     }
 
     /**
@@ -195,7 +193,7 @@ class Parser implements Contract
     {
         preg_match_all($this->getRegex(), $docString, $matches);
 
-        return $matches ?? null;
+        return $matches;
     }
 
     /**
@@ -214,6 +212,7 @@ class Parser implements Contract
      * @param array $annotations    The annotations list
      *
      * @throws InvalidAnnotationKeyArgument
+     * @throws JsonException
      *
      * @return void
      */
@@ -301,7 +300,7 @@ class Parser implements Contract
     /**
      * Clean a part from asterisks and new lines.
      *
-     * @param string $match The match
+     * @param string|null $match The match
      *
      * @return string
      */

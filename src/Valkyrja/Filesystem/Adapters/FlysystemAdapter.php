@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem;
+namespace Valkyrja\Filesystem\Adapters;
 
 use InvalidArgumentException;
 use League\Flysystem\AdapterInterface;
@@ -19,6 +19,7 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem as FlySystem;
 use League\Flysystem\RootViolationException;
+use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 
 /**
@@ -368,8 +369,8 @@ abstract class FlysystemAdapter implements Adapter
     /**
      * List the contents of a directory.
      *
-     * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the directory
+     * @param string|null $directory [optional] The directory
+     * @param bool        $recursive [optional] Whether to recurse through the directory
      *
      * @return array
      */

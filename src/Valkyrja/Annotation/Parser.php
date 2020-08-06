@@ -32,7 +32,7 @@ interface Parser
     /**
      * Filter a string of arguments into an key => value array.
      *
-     * @param string $arguments The arguments
+     * @param string|null $arguments The arguments
      *
      * @return array
      */

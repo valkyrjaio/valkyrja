@@ -125,7 +125,7 @@ abstract class Commander implements HandlerContract
     /**
      * The usage message and description.
      *
-     * @param string $message [optional] The usage to use instead of default
+     * @param string|null $message [optional] The usage to use instead of default
      *
      * @return void
      */
@@ -262,9 +262,9 @@ abstract class Commander implements HandlerContract
     /**
      * The section message.
      *
-     * @param string $name          The name
-     * @param string $description   The description
-     * @param int    $longestLength The longest item length
+     * @param string   $name          The name
+     * @param string   $description   The description
+     * @param int|null $longestLength The longest item length
      *
      * @return void
      */

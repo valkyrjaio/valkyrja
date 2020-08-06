@@ -56,7 +56,7 @@ class Formatter implements Contract
     /**
      * Set the foreground.
      *
-     * @param FormatForeground $foreground The foreground color
+     * @param FormatForeground|null $foreground The foreground color
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class Formatter implements Contract
     /**
      * Set the background.
      *
-     * @param FormatBackground $background The background
+     * @param FormatBackground|null $background The background
      *
      * @return void
      */

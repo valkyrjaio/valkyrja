@@ -127,11 +127,11 @@ class Annotator implements Contract
      *
      * @param array $classes The classes
      *
-     * @return RouteContract[]
+     * @return Route[]
      */
     protected function getClassRoutes(array $classes): array
     {
-        /** @var RouteContract[] $routes */
+        /** @var Route[] $routes */
         $routes = [];
 
         // Iterate through all the classes

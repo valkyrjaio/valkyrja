@@ -50,9 +50,7 @@ class CacheAll extends Commander
     /**
      * Generate all cache files.
      *
-     * @param string $sync [optional] Whether to sync the cached files
-     *
-     * @throws CommandNotFound
+     * @param string|null $sync [optional] Whether to sync the cached files
      *
      * @return int
      */

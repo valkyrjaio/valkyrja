@@ -137,14 +137,13 @@ interface Cookie extends Model
     public function isHttpOnly(): bool;
 
     /**
-     * Set whether the cookie will be made accessible only through the HTTP
-     * protocol.
+     * Set whether the cookie will be made accessible only through the HTTP protocol.
      *
-     * @param bool|null $httpOnly
+     * @param bool $httpOnly [optional] The flag
      *
      * @return Cookie
      */
-    public function setHttpOnly(bool $httpOnly = null): self;
+    public function setHttpOnly(bool $httpOnly = false): self;
 
     /**
      * Whether the cookie value should be sent with no url encoding.

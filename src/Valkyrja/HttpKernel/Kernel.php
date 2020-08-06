@@ -55,7 +55,7 @@ interface Kernel extends MiddlewareAware
     /**
      * Run the kernel.
      *
-     * @param Request $request The request
+     * @param Request|null $request The request
      *
      * @return void
      */

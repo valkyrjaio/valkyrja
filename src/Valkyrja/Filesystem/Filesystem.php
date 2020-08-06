@@ -224,8 +224,8 @@ interface Filesystem
     /**
      * List the contents of a directory.
      *
-     * @param string $directory [optional] The directory
-     * @param bool   $recursive [optional] Whether to recurse through the directory
+     * @param string|null $directory [optional] The directory
+     * @param bool        $recursive [optional] Whether to recurse through the directory
      *
      * @return array
      */

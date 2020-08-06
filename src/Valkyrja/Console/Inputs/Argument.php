@@ -44,9 +44,9 @@ class Argument
     /**
      * Argument constructor.
      *
-     * @param string       $name        The name
-     * @param string       $description The description
-     * @param ArgumentMode $mode        [optional] The mode
+     * @param string            $name        The name
+     * @param string            $description The description
+     * @param ArgumentMode|null $mode        [optional] The mode
      */
     public function __construct(string $name, string $description, ArgumentMode $mode = null)
     {

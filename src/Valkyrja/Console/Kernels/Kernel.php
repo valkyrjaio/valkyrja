@@ -116,10 +116,8 @@ class Kernel implements Contract
     /**
      * Run the kernel.
      *
-     * @param Input  $input  The input
-     * @param Output $output The output
-     *
-     * @throws HttpException
+     * @param Input|null  $input  The input
+     * @param Output|null $output The output
      *
      * @return int
      */

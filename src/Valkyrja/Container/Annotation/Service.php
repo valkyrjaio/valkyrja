@@ -48,7 +48,7 @@ interface Service extends Annotation
     /**
      * Set defaults.
      *
-     * @param array $defaults The defaults.
+     * @param array|null $defaults The defaults.
      *
      * @return static
      */

@@ -60,11 +60,11 @@ class Option
     /**
      * Option constructor.
      *
-     * @param string     $name        The name
-     * @param string     $description The description
-     * @param string     $shortcut    [optional] The shortcut
-     * @param OptionMode $mode        [optional] The mode
-     * @param string     $default     [optional] The default value
+     * @param string          $name        The name
+     * @param string          $description The description
+     * @param string|null     $shortcut    [optional] The shortcut
+     * @param OptionMode|null $mode        [optional] The mode
+     * @param string|null     $default     [optional] The default value
      */
     public function __construct(
         string $name,

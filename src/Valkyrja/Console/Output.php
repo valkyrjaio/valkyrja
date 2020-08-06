@@ -41,9 +41,9 @@ interface Output
     /**
      * Write messages to the console.
      *
-     * @param array       $messages    The messages
-     * @param bool        $newLine     [optional] Whether to use new lines between each message
-     * @param OutputStyle $outputStyle [optional] The output style to use
+     * @param array            $messages    The messages
+     * @param bool             $newLine     [optional] Whether to use new lines between each message
+     * @param OutputStyle|null $outputStyle [optional] The output style to use
      *
      * @return void
      */
@@ -52,9 +52,9 @@ interface Output
     /**
      * Write a message to the console.
      *
-     * @param string      $message     The message
-     * @param bool        $newLine     [optional] Whether to use new lines between each message
-     * @param OutputStyle $outputStyle [optional] The output style to use
+     * @param string           $message     The message
+     * @param bool             $newLine     [optional] Whether to use new lines between each message
+     * @param OutputStyle|null $outputStyle [optional] The output style to use
      *
      * @return void
      */
