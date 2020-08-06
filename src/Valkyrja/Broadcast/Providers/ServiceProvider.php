@@ -44,7 +44,7 @@ class ServiceProvider extends Provider
             LogAdapter::class         => 'publishLogAdapter',
             NullAdapter::class        => 'publishNullAdapter',
             PusherAdapter::class      => 'publishPusherAdapter',
-            Message::class      => 'publishMessage',
+            Message::class            => 'publishMessage',
         ];
     }
 
@@ -182,7 +182,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function () use ($container) {
+            static function () {
                 return new Message();
             }
         );
