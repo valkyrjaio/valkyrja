@@ -630,7 +630,7 @@ function dd(...$args): void
 {
     var_dump($args);
 
-    die(1);
+    exit(1);
 }
 
 /**
