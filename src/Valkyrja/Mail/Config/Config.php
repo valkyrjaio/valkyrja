@@ -30,13 +30,8 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::HOST,
-        CKP::PORT,
         CKP::FROM_ADDRESS,
         CKP::FROM_NAME,
-        CKP::ENCRYPTION,
-        CKP::USERNAME,
-        CKP::PASSWORD,
         CKP::ADAPTER,
         CKP::ADAPTERS,
         CKP::MESSAGE,
@@ -49,32 +44,13 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::HOST         => EnvKey::MAIL_HOST,
-        CKP::PORT         => EnvKey::MAIL_PORT,
         CKP::FROM_ADDRESS => EnvKey::MAIL_FROM_ADDRESS,
         CKP::FROM_NAME    => EnvKey::MAIL_FROM_NAME,
-        CKP::ENCRYPTION   => EnvKey::MAIL_ENCRYPTION,
-        CKP::USERNAME     => EnvKey::MAIL_USERNAME,
-        CKP::PASSWORD     => EnvKey::MAIL_PASSWORD,
         CKP::ADAPTER      => EnvKey::MAIL_ADAPTER,
         CKP::ADAPTERS     => EnvKey::MAIL_ADAPTERS,
         CKP::MESSAGE      => EnvKey::MAIL_MESSAGE,
         CKP::MESSAGES     => EnvKey::MAIL_MESSAGES,
     ];
-
-    /**
-     * The host.
-     *
-     * @var string
-     */
-    public string $host;
-
-    /**
-     * The port.
-     *
-     * @var int
-     */
-    public int $port;
 
     /**
      * The from address.
@@ -89,27 +65,6 @@ class Config extends Model
      * @var string
      */
     public string $fromName;
-
-    /**
-     * The encryption.
-     *
-     * @var string
-     */
-    public string $encryption;
-
-    /**
-     * The username.
-     *
-     * @var string
-     */
-    public string $username;
-
-    /**
-     * The password.
-     *
-     * @var string
-     */
-    public string $password;
 
     /**
      * The default adapter.

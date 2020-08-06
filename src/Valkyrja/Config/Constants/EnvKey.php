@@ -57,14 +57,19 @@ final class EnvKey
     public const BROADCAST_ADAPTERS       = 'BROADCAST_ADAPTERS';
     public const BROADCAST_MESSAGE        = 'BROADCAST_MESSAGE';
     public const BROADCAST_MESSAGES       = 'BROADCAST_MESSAGES';
-    public const BROADCAST_DISKS          = 'BROADCAST_DISKS';
+    public const BROADCAST_CACHE_DRIVER   = 'BROADCAST_CACHE_DRIVER';
     public const BROADCAST_CACHE_STORE    = 'BROADCAST_CACHE_STORE';
+    public const BROADCAST_CRYPT_DRIVER   = 'BROADCAST_CRYPT_DRIVER';
+    public const BROADCAST_CRYPT_ADAPTER  = 'BROADCAST_CRYPT_ADAPTER';
+    public const BROADCAST_LOG_DRIVER     = 'BROADCAST_LOG_DRIVER';
     public const BROADCAST_LOG_ADAPTER    = 'BROADCAST_LOG_ADAPTER';
+    public const BROADCAST_NULL_DRIVER    = 'BROADCAST_NULL_DRIVER';
+    public const BROADCAST_PUSHER_DRIVER  = 'BROADCAST_PUSHER_DRIVER';
     public const BROADCAST_PUSHER_KEY     = 'BROADCAST_PUSHER_KEY';
     public const BROADCAST_PUSHER_SECRET  = 'BROADCAST_PUSHER_SECRET';
     public const BROADCAST_PUSHER_ID      = 'BROADCAST_PUSHER_ID';
-    public const BROADCAST_PUSHER_CLUSTER = 'BROADCAST_CLUSTER';
-    public const BROADCAST_PUSHER_USE_TLS = 'BROADCAST_USE_TLS';
+    public const BROADCAST_PUSHER_CLUSTER = 'BROADCAST_PUSHER_CLUSTER';
+    public const BROADCAST_PUSHER_USE_TLS = 'BROADCAST_PUSHER_USE_TLS';
 
     public const CACHE_DEFAULT = 'CACHE_DEFAULT';
     public const CACHE_STORES  = 'CACHE_STORES';
@@ -125,17 +130,24 @@ final class EnvKey
     public const LOG_ADAPTER   = 'LOG_ADAPTER';
     public const LOG_ADAPTERS  = 'LOG_ADAPTERS';
 
-    public const MAIL_HOST         = 'MAIL_HOST';
-    public const MAIL_PORT         = 'MAIL_PORT';
-    public const MAIL_FROM_ADDRESS = 'MAIL_FROM_ADDRESS';
-    public const MAIL_FROM_NAME    = 'MAIL_FROM_NAME';
-    public const MAIL_ENCRYPTION   = 'MAIL_ENCRYPTION';
-    public const MAIL_USERNAME     = 'MAIL_USERNAME';
-    public const MAIL_PASSWORD     = 'MAIL_PASSWORD';
-    public const MAIL_ADAPTER      = 'MAIL_ADAPTER';
-    public const MAIL_ADAPTERS     = 'MAIL_ADAPTERS';
-    public const MAIL_MESSAGE      = 'MAIL_MESSAGE';
-    public const MAIL_MESSAGES     = 'MAIL_MESSAGES';
+    public const MAIL_FROM_ADDRESS          = 'MAIL_FROM_ADDRESS';
+    public const MAIL_FROM_NAME             = 'MAIL_FROM_NAME';
+    public const MAIL_ADAPTER               = 'MAIL_ADAPTER';
+    public const MAIL_ADAPTERS              = 'MAIL_ADAPTERS';
+    public const MAIL_MESSAGE               = 'MAIL_MESSAGE';
+    public const MAIL_MESSAGES              = 'MAIL_MESSAGES';
+    public const MAIL_LOG_DRIVER            = 'MAIL_LOG_DRIVER';
+    public const MAIL_LOG_ADAPTER           = 'MAIL_LOG_ADAPTER';
+    public const MAIL_NULL_DRIVER           = 'MAIL_NULL_DRIVER';
+    public const MAIL_PHP_MAILER_DRIVER     = 'MAIL_PHP_MAILER_DRIVER';
+    public const MAIL_PHP_MAILER_HOST       = 'MAIL_PHP_MAILER_HOST';
+    public const MAIL_PHP_MAILER_PORT       = 'MAIL_PHP_MAILER_PORT';
+    public const MAIL_PHP_MAILER_ENCRYPTION = 'MAIL_PHP_MAILER_ENCRYPTION';
+    public const MAIL_PHP_MAILER_USERNAME   = 'MAIL_PHP_MAILER_USERNAME';
+    public const MAIL_PHP_MAILER_PASSWORD   = 'MAIL_PHP_MAILER_PASSWORD';
+    public const MAIL_MAILGUN_DRIVER        = 'MAIL_MAILGUN_DRIVER';
+    public const MAIL_MAILGUN_DOMAIN        = 'MAIL_MAILGUN_DOMAIN';
+    public const MAIL_MAILGUN_API_KEY       = 'MAIL_MAILGUN_API_KEY';
 
     public const NOTIFICATION_NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 
@@ -171,12 +183,16 @@ final class EnvKey
     public const SESSION_ADAPTER  = 'SESSION_ADAPTER';
     public const SESSION_ADAPTERS = 'SESSION_ADAPTERS';
 
-    public const SMS_USERNAME = 'SMS_USERNAME';
-    public const SMS_PASSWORD = 'SMS_PASSWORD';
-    public const SMS_ADAPTER  = 'SMS_ADAPTER';
-    public const SMS_ADAPTERS = 'SMS_ADAPTERS';
-    public const SMS_MESSAGE  = 'SMS_MESSAGE';
-    public const SMS_MESSAGES = 'SMS_MESSAGES';
+    public const SMS_ADAPTER        = 'SMS_ADAPTER';
+    public const SMS_ADAPTERS       = 'SMS_ADAPTERS';
+    public const SMS_MESSAGE        = 'SMS_MESSAGE';
+    public const SMS_MESSAGES       = 'SMS_MESSAGES';
+    public const SMS_LOG_DRIVER     = 'SMS_LOG_DRIVER';
+    public const SMS_LOG_ADAPTER    = 'SMS_LOG_ADAPTER';
+    public const SMS_NEXMO_DRIVER   = 'SMS_NEXMO_DRIVER';
+    public const SMS_NEXMO_USERNAME = 'SMS_NEXMO_USERNAME';
+    public const SMS_NEXMO_PASSWORD = 'SMS_NEXMO_PASSWORD';
+    public const SMS_NULL_DRIVER    = 'SMS_NULL_DRIVER';
 
     public const STORAGE_UPLOADS_DIR = 'STORAGE_UPLOADS_DIR';
     public const STORAGE_LOGS_DIR    = 'STORAGE_LOGS_DIR';

@@ -95,8 +95,9 @@ final class ConfigKeyPart
     public const PASSWORD                    = 'password';
     public const MESSAGE                     = 'message';
     public const MESSAGES                    = 'messages';
-    public const PHP_MAILER                  = 'PHPMailer';
-    public const NEXMO                       = 'Nexmo';
+    public const PHP_MAILER                  = 'phpMailer';
+    public const MAILGUN                     = 'mailgun';
+    public const NEXMO                       = 'nexmo';
     public const UNIX_SOCKET                 = 'unix_socket';
     public const CHARSET                     = 'charset';
     public const COLLATION                   = 'collation';
@@ -119,8 +120,8 @@ final class ConfigKeyPart
     public const KEEP_USER_FRESH             = 'keepUserFresh';
     public const AUTHENTICATE_ROUTE          = 'authenticateRoute';
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
-    public const PDO                         = 'PDO';
-    public const PHP                         = 'PHP';
+    public const PDO                         = 'pdo';
+    public const PHP                         = 'php';
     public const LOCAL                       = 'local';
     public const S3                          = 's3';
     public const DIR                         = 'dir';
@@ -157,4 +158,6 @@ final class ConfigKeyPart
     public const FILE_EXTENSION              = 'fileExtension';
     public const ORKA                        = 'orka';
     public const NOTIFICATIONS               = 'notifications';
+    public const DOMAIN                      = 'domain';
+    public const API_KEY                     = 'apiKey';
 }

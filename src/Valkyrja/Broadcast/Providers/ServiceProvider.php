@@ -19,6 +19,7 @@ use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Broadcast;
+use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 
@@ -43,6 +44,7 @@ class ServiceProvider extends Provider
             LogAdapter::class         => 'publishLogAdapter',
             NullAdapter::class        => 'publishNullAdapter',
             PusherAdapter::class      => 'publishPusherAdapter',
+            Message::class      => 'publishMessage',
         ];
     }
 
@@ -103,11 +105,9 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setSingleton(
             CacheAdapter::class,
-            static function () use ($container) {
-                return new CacheAdapter();
-            }
+            new CacheAdapter()
         );
     }
 
@@ -120,11 +120,9 @@ class ServiceProvider extends Provider
      */
     public static function publishCryptPusherAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setSingleton(
             CryptPusherAdapter::class,
-            static function () use ($container) {
-                return new CryptPusherAdapter();
-            }
+            new CryptPusherAdapter()
         );
     }
 
@@ -137,11 +135,9 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setSingleton(
             LogAdapter::class,
-            static function () use ($container) {
-                return new LogAdapter();
-            }
+            new LogAdapter()
         );
     }
 
@@ -154,11 +150,9 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setSingleton(
             NullAdapter::class,
-            static function () use ($container) {
-                return new NullAdapter();
-            }
+            new NullAdapter()
         );
     }
 
@@ -171,10 +165,25 @@ class ServiceProvider extends Provider
      */
     public static function publishPusherAdapter(Container $container): void
     {
-        $container->setClosure(
+        $container->setSingleton(
             PusherAdapter::class,
+            new PusherAdapter()
+        );
+    }
+
+    /**
+     * Publish the default message service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMessage(Container $container): void
+    {
+        $container->setClosure(
+            Message::class,
             static function () use ($container) {
-                return new PusherAdapter();
+                return new Message();
             }
         );
     }

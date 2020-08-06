@@ -26,13 +26,20 @@ use Valkyrja\SMS\Messages\Message;
  */
 final class ConfigValue
 {
-    public const USERNAME = '';
-    public const PASSWORD = '';
     public const ADAPTER  = CKP::NEXMO;
     public const ADAPTERS = [
-        CKP::LOG   => LogAdapter::class,
-        CKP::NULL  => NullAdapter::class,
-        CKP::NEXMO => NexmoAdapter::class,
+        CKP::LOG   => [
+            CKP::DRIVER  => LogAdapter::class,
+            CKP::ADAPTER => null,
+        ],
+        CKP::NEXMO => [
+            CKP::DRIVER   => NexmoAdapter::class,
+            CKP::USERNAME => '',
+            CKP::PASSWORD => '',
+        ],
+        CKP::NULL  => [
+            CKP::DRIVER => NullAdapter::class,
+        ],
     ];
     public const MESSAGE  = CKP::DEFAULT;
     public const MESSAGES = [
@@ -40,8 +47,6 @@ final class ConfigValue
     ];
 
     public static array $defaults = [
-        CKP::USERNAME => self::USERNAME,
-        CKP::PASSWORD => self::PASSWORD,
         CKP::ADAPTER  => self::ADAPTER,
         CKP::ADAPTERS => self::ADAPTERS,
         CKP::MESSAGE  => self::MESSAGE,

@@ -28,6 +28,7 @@
         "filp/whoops"                 : "^2.7.3",
         "fzaninotto/faker"            : "^1.9.1",
         "guzzlehttp/guzzle"           : "^6.5.5|^7.0.1",
+        "mailgun/mailgun-php"         : "^3.0.0",
         "mockery/mockery"             : "^1.4.1",
         "nexmo/client"                : "^2.0.0",
         "phpunit/phpcov"              : "^7.0.2",

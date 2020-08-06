@@ -34,7 +34,6 @@ class Config extends Model
         CKP::ADAPTERS,
         CKP::MESSAGE,
         CKP::MESSAGES,
-        CKP::DISKS,
     ];
 
     /**
@@ -47,7 +46,6 @@ class Config extends Model
         CKP::ADAPTERS => EnvKey::BROADCAST_ADAPTERS,
         CKP::MESSAGE  => EnvKey::BROADCAST_ADAPTER,
         CKP::MESSAGES => EnvKey::BROADCAST_ADAPTERS,
-        CKP::DISKS    => EnvKey::BROADCAST_DISKS,
     ];
 
     /**
@@ -77,11 +75,4 @@ class Config extends Model
      * @var array
      */
     public array $messages;
-
-    /**
-     * The disks.
-     *
-     * @var array
-     */
-    public array $disks;
 }

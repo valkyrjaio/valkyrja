@@ -103,7 +103,7 @@ class SMS implements Contract
 
         return self::$adapters[$name]
             ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
+                $this->config['adapters'][$name]['driver']
             );
     }
 }

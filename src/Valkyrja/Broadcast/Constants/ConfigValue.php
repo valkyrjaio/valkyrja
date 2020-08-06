@@ -19,9 +19,7 @@ use Valkyrja\Broadcast\Adapters\LogAdapter;
 use Valkyrja\Broadcast\Adapters\NullAdapter;
 use Valkyrja\Broadcast\Adapters\PusherAdapter;
 use Valkyrja\Broadcast\Messages\Message;
-use Valkyrja\Cache\Constants\ConfigValue as CacheConfigValue;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Log\Constants\ConfigValue as LogConfigValue;
 
 /**
  * Constant ConfigValue.
@@ -32,24 +30,22 @@ final class ConfigValue
 {
     public const ADAPTER  = CKP::CRYPT;
     public const ADAPTERS = [
-        CKP::CACHE  => CacheAdapter::class,
-        CKP::NULL   => NullAdapter::class,
-        CKP::LOG    => LogAdapter::class,
-        CKP::PUSHER => PusherAdapter::class,
-        CKP::CRYPT  => CryptPusherAdapter::class,
-    ];
-    public const MESSAGE  = CKP::DEFAULT;
-    public const MESSAGES = [
-        CKP::DEFAULT => Message::class,
-    ];
-    public const DISKS    = [
         CKP::CACHE  => [
-            CKP::STORE => CacheConfigValue::STORE,
+            CKP::DRIVER => CacheAdapter::class,
+            CKP::STORE  => null,
+        ],
+        CKP::CRYPT  => [
+            CKP::DRIVER  => CryptPusherAdapter::class,
+            CKP::ADAPTER => null,
         ],
         CKP::LOG    => [
-            CKP::ADAPTER => LogConfigValue::ADAPTER,
+            CKP::DRIVER => LogAdapter::class,
+        ],
+        CKP::NULL   => [
+            CKP::DRIVER => NullAdapter::class,
         ],
         CKP::PUSHER => [
+            CKP::DRIVER  => PusherAdapter::class,
             CKP::KEY     => '',
             CKP::SECRET  => '',
             CKP::ID      => '',
@@ -57,12 +53,15 @@ final class ConfigValue
             CKP::USE_TLS => true,
         ],
     ];
+    public const MESSAGE  = CKP::DEFAULT;
+    public const MESSAGES = [
+        CKP::DEFAULT => Message::class,
+    ];
 
     public static array $defaults = [
         CKP::ADAPTER  => self::ADAPTER,
         CKP::ADAPTERS => self::ADAPTERS,
         CKP::MESSAGE  => self::MESSAGE,
         CKP::MESSAGES => self::MESSAGES,
-        CKP::DISKS    => self::DISKS,
     ];
 }

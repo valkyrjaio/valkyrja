@@ -106,7 +106,7 @@ class ServiceProvider extends Provider
     public static function publishNexmo(Container $container): void
     {
         $config    = $container->getSingleton('config');
-        $smsConfig = $config['sms'];
+        $smsConfig = $config['sms']['adapters']['nexmo'];
 
         $container->setSingleton(
             Nexmo::class,

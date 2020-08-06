@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Providers;
 
+use Mailgun\Mailgun;
 use PHPMailer\PHPMailer\PHPMailer;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
 use Valkyrja\Mail\Adapters\LogAdapter;
+use Valkyrja\Mail\Adapters\MailgunAdapter;
 use Valkyrja\Mail\Adapters\NullAdapter;
 use Valkyrja\Mail\Adapters\PHPMailerAdapter;
 use Valkyrja\Mail\Mail;
@@ -43,6 +45,8 @@ class ServiceProvider extends Provider
             NullAdapter::class      => 'publishNullAdapter',
             PHPMailer::class        => 'publishPHPMailer',
             PHPMailerAdapter::class => 'publishPHPMailerAdapter',
+            Mailgun::class          => 'publishMailgun',
+            MailgunAdapter::class   => 'publishMailgunAdapter',
             Message::class          => 'publishMessage',
         ];
     }
@@ -137,7 +141,7 @@ class ServiceProvider extends Provider
     public static function publishPHPMailer(Container $container): void
     {
         $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail'];
+        $mailConfig = $config['mail']['adapters']['phpMailer'];
 
         // Create a new instance of the PHPMailer class
         $PHPMailer = new PHPMailer(true);
@@ -183,6 +187,45 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the Mailgun service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMailgun(Container $container): void
+    {
+        $config     = $container->getSingleton('config');
+        $mailConfig = $config['mail']['adapters']['mailgun'];
+
+        $container->setSingleton(
+            Mailgun::class,
+            new Mailgun($mailConfig['apiKey'])
+        );
+    }
+
+    /**
+     * Publish the Mailgun adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMailgunAdapter(Container $container): void
+    {
+        $config     = $container->getSingleton('config');
+        $mailConfig = $config['mail']['adapters']['mailgun'];
+
+        $container->setSingleton(
+            MailgunAdapter::class,
+            new MailgunAdapter(
+                $container->getSingleton(PHPMailer::class),
+                $mailConfig
+            )
+        );
+    }
+
+    /**
      * Publish the message service.
      *
      * @param Container $container The container
@@ -191,10 +234,13 @@ class ServiceProvider extends Provider
      */
     public static function publishMessage(Container $container): void
     {
+        $config     = $container->getSingleton('config');
+        $mailConfig = $config['mail'];
+
         $container->setClosure(
             Message::class,
-            static function () {
-                return new Message();
+            static function () use ($mailConfig): Message {
+                return (new Message())->setFrom($mailConfig['fromEmail'], $mailConfig['fromName']);
             }
         );
     }
