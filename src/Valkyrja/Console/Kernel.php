@@ -51,6 +51,7 @@ interface Kernel
      * @param Output|null $output The output
      *
      * @throws HttpException
+     *
      * @return int
      */
     public function run(Input $input = null, Output $output = null): int;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Outputs;
 
-use InvalidArgumentException;
 use Valkyrja\Config\Constants\ConfigKey;
 use Valkyrja\Console\Enums\OutputStyle;
 use Valkyrja\Console\Formatter;

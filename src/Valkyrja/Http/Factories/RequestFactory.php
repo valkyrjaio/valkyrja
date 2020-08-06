@@ -13,18 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Factories;
 
-use InvalidArgumentException;
 use UnexpectedValueException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\Stream as StreamEnum;
-use Valkyrja\Http\Exceptions\InvalidMethod;
-use Valkyrja\Http\Exceptions\InvalidPath;
-use Valkyrja\Http\Exceptions\InvalidPort;
-use Valkyrja\Http\Exceptions\InvalidProtocolVersion;
-use Valkyrja\Http\Exceptions\InvalidQuery;
-use Valkyrja\Http\Exceptions\InvalidScheme;
-use Valkyrja\Http\Exceptions\InvalidStream;
-use Valkyrja\Http\Exceptions\InvalidUploadedFile;
 use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Streams\Stream;
 
