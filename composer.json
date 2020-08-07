@@ -15,7 +15,7 @@
         }
     ],
     "require"           : {
-        "php"          : ">=7.4",
+        "php"          : "^7.4",
         "ext-json"     : "*",
         "ext-mbstring" : "*",
         "ext-openssl"  : "*"
@@ -73,7 +73,7 @@
     "prefer-stable"     : true,
     "extra"             : {
         "branch-alias" : {
-            "dev-master" : "1.0.0-dev"
+            "dev-master" : "1.x-dev"
         }
     }
 }
