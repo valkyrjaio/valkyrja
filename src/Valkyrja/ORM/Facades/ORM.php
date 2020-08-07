@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\ORM\Adapter as AdapterContract;
-use Valkyrja\ORM\Connection as ConnectionContract;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
-use Valkyrja\ORM\PDOConnection;
 use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query as QueryContract;
-use Valkyrja\ORM\QueryBuilder as QueryBuilderContract;
+use Valkyrja\ORM\Query;
+use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
@@ -31,10 +29,9 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static AdapterContract getAdapter(string $name = null)
- * @method static ConnectionContract|PDOConnection getConnection(string $connection = null)
- * @method static QueryBuilderContract createQueryBuilder(string $entity = null, string $alias = null)
- * @method static QueryContract createQuery(string $query = null, string $entity = null)
+ * @method static Adapter useConnection(string $name = null)
+ * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
+ * @method static Query createQuery(string $query = null, string $entity = null)
  * @method static Repository getRepository(string $entity)
  * @method static Retriever createRetriever()
  * @method static Persister getPersister()

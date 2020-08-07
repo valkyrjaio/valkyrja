@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\QueryBuilders;
 
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Constants\Operator;
 use Valkyrja\ORM\Constants\OrderBy;
 use Valkyrja\ORM\Constants\Statement;
@@ -33,11 +33,11 @@ use function is_array;
 class SqlQueryBuilder implements QueryBuilder
 {
     /**
-     * The connection.
+     * The adapter.
      *
-     * @var Connection
+     * @var Adapter
      */
-    protected Connection $connection;
+    protected Adapter $adapter;
 
     /**
      * The type of statement to build.
@@ -112,11 +112,11 @@ class SqlQueryBuilder implements QueryBuilder
     /**
      * SqlQueryBuilder constructor.
      *
-     * @param Connection $connection
+     * @param Adapter $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Adapter $connection)
     {
-        $this->connection = $connection;
+        $this->adapter = $connection;
     }
 
     /**
@@ -484,7 +484,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     public function createQuery(): Query
     {
-        return $this->connection->createQuery($this->getQueryString(), $this->entity);
+        return $this->adapter->createQuery($this->getQueryString(), $this->entity);
     }
 
     /**

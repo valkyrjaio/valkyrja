@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Queries;
 
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
@@ -29,11 +29,11 @@ use function is_array;
 class Query implements QueryContract
 {
     /**
-     * The connection.
+     * The adapter.
      *
-     * @var Connection
+     * @var Adapter
      */
-    protected Connection $connection;
+    protected Adapter $adapter;
 
     /**
      * The statement.
@@ -59,11 +59,11 @@ class Query implements QueryContract
     /**
      * PDOQuery constructor.
      *
-     * @param Connection $connection
+     * @param Adapter $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Adapter $connection)
     {
-        $this->connection = $connection;
+        $this->adapter = $connection;
     }
 
     /**
@@ -103,7 +103,7 @@ class Query implements QueryContract
      */
     public function prepare(string $query): self
     {
-        $this->statement = $this->connection->prepare($query);
+        $this->statement = $this->adapter->prepare($query);
 
         if (null !== $this->table) {
             $this->bindValue('table', $this->table);

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Persisters;
 
 use JsonException;
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\DatedEntity;
 use Valkyrja\ORM\Entity;
@@ -40,11 +40,11 @@ use function strtolower;
 class Persister implements PersisterContract
 {
     /**
-     * The entity manager.
+     * The adapter.
      *
-     * @var Connection
+     * @var Adapter
      */
-    protected Connection $connection;
+    protected Adapter $adapter;
 
     /**
      * The entities awaiting to be committed for creation.
@@ -70,11 +70,11 @@ class Persister implements PersisterContract
     /**
      * Persister constructor.
      *
-     * @param Connection $connection
+     * @param Adapter $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Adapter $connection)
     {
-        $this->connection = $connection;
+        $this->adapter = $connection;
     }
 
     /**
@@ -251,14 +251,14 @@ class Persister implements PersisterContract
     public function persist(): bool
     {
         // Ensure a transaction is in progress
-        $this->connection->ensureTransaction();
+        $this->adapter->ensureTransaction();
 
         $this->persistCreate();
         $this->persistSave();
         $this->persistDelete();
         $this->clearDeferred();
 
-        return $this->connection->commit();
+        return $this->adapter->commit();
     }
 
     /**
@@ -306,7 +306,7 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->setIdFieldValue($this->connection->lastInsertId());
+        $entity->setIdFieldValue($this->adapter->lastInsertId());
     }
 
     /**
@@ -321,7 +321,7 @@ class Persister implements PersisterContract
     protected function getQueryBuilder(string $type, Entity $entity, array $properties): QueryBuilder
     {
         // Create a new query
-        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder = $this->adapter->createQueryBuilder();
 
         $queryBuilder->table($entity::getEntityTable());
         $queryBuilder->{strtolower($type)}();
@@ -355,7 +355,7 @@ class Persister implements PersisterContract
     protected function getQuery(QueryBuilder $queryBuilder, string $type, string $idField, array $properties): Query
     {
         // Create a new query with the query builder
-        $query = $this->connection->createQuery($queryBuilder->getQueryString());
+        $query = $this->adapter->createQuery($queryBuilder->getQueryString());
 
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {

@@ -23,41 +23,6 @@ use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 interface Repository
 {
     /**
-     * Make a new repository.
-     *
-     * @param ORM    $manager
-     * @param string $entity
-     *
-     * @return static
-     */
-    public static function make(ORM $manager, string $entity): self;
-
-    /**
-     * Set the adapter to use.
-     *
-     * @param string $adapter
-     *
-     * @return static
-     */
-    public function setAdapter(string $adapter): self;
-
-    /**
-     * Get the connection.
-     *
-     * @return Connection
-     */
-    public function getConnection(): Connection;
-
-    /**
-     * Set the connection to use.
-     *
-     * @param string $connection
-     *
-     * @return static
-     */
-    public function setConnection(string $connection): self;
-
-    /**
      * Find by given criteria.
      *
      * @return static
@@ -254,6 +219,22 @@ interface Repository
      * @return bool
      */
     public function persist(): bool;
+
+    /**
+     * Get the adapter.
+     *
+     * @return Adapter
+     */
+    public function getAdapter(): Adapter;
+
+    /**
+     * Set the connection to use.
+     *
+     * @param string $connection
+     *
+     * @return static
+     */
+    public function setConnection(string $connection): self;
 
     /**
      * Get a new query builder instance.

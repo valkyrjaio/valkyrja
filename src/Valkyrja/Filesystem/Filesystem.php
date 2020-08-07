@@ -23,13 +23,13 @@ use Valkyrja\Filesystem\Enums\Visibility;
 interface Filesystem
 {
     /**
-     * Get an adapter by name.
+     * Use a disk by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name The disk name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter;
+    public function useDisk(string $name = null): Adapter;
 
     /**
      * Determine whether a path exists.

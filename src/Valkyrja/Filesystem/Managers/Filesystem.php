@@ -47,11 +47,11 @@ class Filesystem implements FilesystemContract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The default disk.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $defaultDisk;
 
     /**
      * FlyFilesystem constructor.
@@ -61,25 +61,28 @@ class Filesystem implements FilesystemContract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultAdapter = $config['default'];
+        $this->container   = $container;
+        $this->config      = $config;
+        $this->defaultDisk = $config['default'];
     }
 
     /**
-     * Get an adapter by name.
+     * Use a disk by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name The disk name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useDisk(string $name = null): Adapter
     {
-        $name ??= $this->defaultAdapter;
+        $name ??= $this->defaultDisk;
 
         return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]['driver']
+            ?? self::$adapters[$name] = $this->container->get(
+                $this->config['disks'][$name]['adapter'],
+                [
+                    $name,
+                ]
             );
     }
 
@@ -92,7 +95,7 @@ class Filesystem implements FilesystemContract
      */
     public function exists(string $path): bool
     {
-        return $this->getAdapter()->exists($path);
+        return $this->useDisk()->exists($path);
     }
 
     /**
@@ -104,7 +107,7 @@ class Filesystem implements FilesystemContract
      */
     public function read(string $path): ?string
     {
-        return $this->getAdapter()->read($path);
+        return $this->useDisk()->read($path);
     }
 
     /**
@@ -117,7 +120,7 @@ class Filesystem implements FilesystemContract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->getAdapter()->write($path, $contents);
+        return $this->useDisk()->write($path, $contents);
     }
 
     /**
@@ -130,7 +133,7 @@ class Filesystem implements FilesystemContract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->getAdapter()->writeStream($path, $resource);
+        return $this->useDisk()->writeStream($path, $resource);
     }
 
     /**
@@ -143,7 +146,7 @@ class Filesystem implements FilesystemContract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->getAdapter()->update($path, $contents);
+        return $this->useDisk()->update($path, $contents);
     }
 
     /**
@@ -156,7 +159,7 @@ class Filesystem implements FilesystemContract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->getAdapter()->updateStream($path, $resource);
+        return $this->useDisk()->updateStream($path, $resource);
     }
 
     /**
@@ -169,7 +172,7 @@ class Filesystem implements FilesystemContract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->getAdapter()->put($path, $contents);
+        return $this->useDisk()->put($path, $contents);
     }
 
     /**
@@ -182,7 +185,7 @@ class Filesystem implements FilesystemContract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->getAdapter()->putStream($path, $resource);
+        return $this->useDisk()->putStream($path, $resource);
     }
 
     /**
@@ -195,7 +198,7 @@ class Filesystem implements FilesystemContract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->getAdapter()->rename($path, $newPath);
+        return $this->useDisk()->rename($path, $newPath);
     }
 
     /**
@@ -208,7 +211,7 @@ class Filesystem implements FilesystemContract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->getAdapter()->copy($path, $newPath);
+        return $this->useDisk()->copy($path, $newPath);
     }
 
     /**
@@ -220,7 +223,7 @@ class Filesystem implements FilesystemContract
      */
     public function delete(string $path): bool
     {
-        return $this->getAdapter()->delete($path);
+        return $this->useDisk()->delete($path);
     }
 
     /**
@@ -232,7 +235,7 @@ class Filesystem implements FilesystemContract
      */
     public function metadata(string $path): ?array
     {
-        return $this->getAdapter()->metadata($path);
+        return $this->useDisk()->metadata($path);
     }
 
     /**
@@ -244,7 +247,7 @@ class Filesystem implements FilesystemContract
      */
     public function mimetype(string $path): ?string
     {
-        return $this->getAdapter()->mimetype($path);
+        return $this->useDisk()->mimetype($path);
     }
 
     /**
@@ -256,7 +259,7 @@ class Filesystem implements FilesystemContract
      */
     public function size(string $path): ?int
     {
-        return $this->getAdapter()->size($path);
+        return $this->useDisk()->size($path);
     }
 
     /**
@@ -268,7 +271,7 @@ class Filesystem implements FilesystemContract
      */
     public function timestamp(string $path): ?int
     {
-        return $this->getAdapter()->timestamp($path);
+        return $this->useDisk()->timestamp($path);
     }
 
     /**
@@ -280,7 +283,7 @@ class Filesystem implements FilesystemContract
      */
     public function visibility(string $path): ?string
     {
-        return $this->getAdapter()->visibility($path);
+        return $this->useDisk()->visibility($path);
     }
 
     /**
@@ -293,7 +296,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->getAdapter()->setVisibility($path, $visibility);
+        return $this->useDisk()->setVisibility($path, $visibility);
     }
 
     /**
@@ -305,7 +308,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->getAdapter()->setVisibilityPublic($path);
+        return $this->useDisk()->setVisibilityPublic($path);
     }
 
     /**
@@ -317,7 +320,7 @@ class Filesystem implements FilesystemContract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->getAdapter()->setVisibilityPrivate($path);
+        return $this->useDisk()->setVisibilityPrivate($path);
     }
 
     /**
@@ -329,7 +332,7 @@ class Filesystem implements FilesystemContract
      */
     public function createDir(string $path): bool
     {
-        return $this->getAdapter()->createDir($path);
+        return $this->useDisk()->createDir($path);
     }
 
     /**
@@ -341,7 +344,7 @@ class Filesystem implements FilesystemContract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->getAdapter()->deleteDir($path);
+        return $this->useDisk()->deleteDir($path);
     }
 
     /**
@@ -354,6 +357,6 @@ class Filesystem implements FilesystemContract
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {
-        return $this->getAdapter()->listContents($directory, $recursive);
+        return $this->useDisk()->listContents($directory, $recursive);
     }
 }

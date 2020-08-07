@@ -19,8 +19,7 @@ use League\Flysystem\AwsS3v3\AwsS3Adapter as FlysystemAwsS3Adapter;
 use League\Flysystem\Filesystem as Flysystem;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Filesystem\Adapters\LocalFlysystemAdapter;
-use Valkyrja\Filesystem\Adapters\S3FlysystemAdapter;
+use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
 use Valkyrja\Filesystem\Filesystem;
 
 /**
@@ -39,8 +38,9 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class            => 'publishFilesystem',
-            LocalFlysystemAdapter::class => 'publishLocalFlysystemAdapter',
-            S3FlysystemAdapter::class    => 'publishS3FlysystemAdapter',
+            FlysystemAdapter::class      => 'publishFlysystemAdapter',
+            FlysystemLocalAdapter::class => 'publishFlysystemLocalAdapter',
+            FlysystemAwsS3Adapter::class => 'publishFlysystemAwsS3Adapter',
         ];
     }
 
@@ -53,8 +53,9 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class,
-            LocalFlysystemAdapter::class,
-            S3FlysystemAdapter::class,
+            FlysystemAdapter::class,
+            FlysystemLocalAdapter::class,
+            FlysystemAwsS3Adapter::class,
         ];
     }
 
@@ -90,62 +91,87 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the filesystem service.
+     * Publish the flysystem adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLocalFlysystemAdapter(Container $container): void
+    public static function publishFlysystemAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
 
-        $container->setSingleton(
-            LocalFlysystemAdapter::class,
-            new LocalFlysystemAdapter(
-                new Flysystem(
-                    new FlysystemLocalAdapter(
-                        $config['filesystem']['adapters']['local']['dir']
+        $container->setClosure(
+            FlysystemAdapter::class,
+            static function (string $disk) use ($container, $config) {
+                return new FlysystemAdapter(
+                    new Flysystem(
+                        $container->get(
+                            $config['filesystem']['disks'][$disk]['flysystemAdapter'],
+                            [
+                                $disk
+                            ]
+                        )
                     )
-                )
-            )
+                );
+            }
         );
     }
 
     /**
-     * Publish the filesystem service.
+     * Publish the flysystem local adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishS3FlysystemAdapter(Container $container): void
+    public static function publishFlysystemLocalAdapter(Container $container): void
     {
-        $config       = $container->getSingleton('config');
-        $s3Config     = $config['filesystem']['adapters']['s3'];
-        $clientConfig = [
-            'credentials' => [
-                'key'    => $s3Config['key'],
-                'secret' => $s3Config['secret'],
-            ],
-            'region'      => $s3Config['region'],
-            'version'     => $s3Config['version'],
-        ];
+        $config = $container->getSingleton('config');
 
-        $container->setSingleton(
-            S3FlysystemAdapter::class,
-            new S3FlysystemAdapter(
-                new Flysystem(
-                    new FlysystemAwsS3Adapter(
-                        new AwsS3Client(
-                            $clientConfig
-                        ),
-                        $s3Config['bucket'],
-                        $s3Config['prefix'],
-                        $s3Config['options']
-                    )
-                )
-            )
+        $container->setClosure(
+            FlysystemLocalAdapter::class,
+            static function (string $disk) use ($config) {
+                return new FlysystemLocalAdapter(
+                    $config['filesystem']['disks'][$disk]['dir']
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the flysystem s3 adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishFlysystemAwsS3Adapter(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setClosure(
+            FlysystemAwsS3Adapter::class,
+            static function (string $disk) use ($config) {
+                $s3Config     = $config['filesystem']['disks'][$disk];
+                $clientConfig = [
+                    'credentials' => [
+                        'key'    => $s3Config['key'],
+                        'secret' => $s3Config['secret'],
+                    ],
+                    'region'      => $s3Config['region'],
+                    'version'     => $s3Config['version'],
+                ];
+
+                return new FlysystemAwsS3Adapter(
+                    new AwsS3Client(
+                        $clientConfig
+                    ),
+                    $s3Config['bucket'],
+                    $s3Config['prefix'],
+                    $s3Config['options']
+                );
+            }
         );
     }
 }

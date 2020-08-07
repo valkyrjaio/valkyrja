@@ -30,7 +30,7 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::CONNECTION,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
         CKP::REPOSITORY,
         CKP::CONNECTIONS,
@@ -42,18 +42,18 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::CONNECTION  => EnvKey::ORM_CONNECTION,
+        CKP::DEFAULT     => EnvKey::ORM_DEFAULT,
         CKP::ADAPTERS    => EnvKey::ORM_ADAPTERS,
         CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
         CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
     ];
 
     /**
-     * The default adapter.
+     * The default connection.
      *
      * @var string
      */
-    public string $connection;
+    public string $default;
 
     /**
      * The adapters.

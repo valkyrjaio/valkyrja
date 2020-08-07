@@ -15,7 +15,6 @@ namespace Valkyrja\ORM\Repositories;
 
 use InvalidArgumentException;
 use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
@@ -38,13 +37,6 @@ use function get_class;
 class Repository implements RepositoryContract
 {
     /**
-     * The adapter name to use.
-     *
-     * @var string|null
-     */
-    protected static ?string $adapterName = null;
-
-    /**
      * The connection name to use.
      *
      * @var string|null
@@ -52,18 +44,11 @@ class Repository implements RepositoryContract
     protected static ?string $connectionName = null;
 
     /**
-     * The adapter.
+     * The connection.
      *
      * @var Adapter
      */
     protected Adapter $adapter;
-
-    /**
-     * The connection.
-     *
-     * @var Connection
-     */
-    protected Connection $connection;
 
     /**
      * The entity manager.
@@ -112,65 +97,10 @@ class Repository implements RepositoryContract
     {
         Cls::validateInherits($entity, Entity::class);
 
-        $this->adapter    = $manager->getAdapter(static::$adapterName);
-        $this->connection = $this->adapter->getConnection(static::$connectionName);
-        $this->persister  = $this->connection->getPersister();
-        $this->manager    = $manager;
+        $this->adapter   = $manager->useConnection(static::$connectionName);
+        $this->persister = $this->adapter->getPersister();
+        $this->manager   = $manager;
         $this->entity     = $entity;
-    }
-
-    /**
-     * Make a new repository.
-     *
-     * @param ORM    $manager
-     * @param string $entity
-     *
-     * @return static
-     */
-    public static function make(ORM $manager, string $entity): self
-    {
-        return new static($manager, $entity);
-    }
-
-    /**
-     * Set the adapter to use.
-     *
-     * @param string $adapter
-     *
-     * @return static
-     */
-    public function setAdapter(string $adapter): self
-    {
-        $this->adapter    = $this->manager->getAdapter($adapter);
-        $this->connection = $this->adapter->getConnection();
-        $this->persister  = $this->connection->getPersister();
-
-        return $this;
-    }
-
-    /**
-     * Get the connection.
-     *
-     * @return Connection
-     */
-    public function getConnection(): Connection
-    {
-        return $this->connection;
-    }
-
-    /**
-     * Set the connection to use.
-     *
-     * @param string $connection
-     *
-     * @return static
-     */
-    public function setConnection(string $connection): self
-    {
-        $this->connection = $this->adapter->getConnection($connection);
-        $this->persister  = $this->connection->getPersister();
-
-        return $this;
     }
 
     /**
@@ -180,7 +110,7 @@ class Repository implements RepositoryContract
      */
     public function find(): self
     {
-        $this->retriever    = $this->connection->createRetriever()->find($this->entity);
+        $this->retriever    = $this->adapter->createRetriever()->find($this->entity);
         $this->getRelations = false;
 
         return $this;
@@ -195,7 +125,7 @@ class Repository implements RepositoryContract
      */
     public function findOne($id): self
     {
-        $this->retriever    = $this->connection->createRetriever()->findOne($this->entity, $id);
+        $this->retriever    = $this->adapter->createRetriever()->findOne($this->entity, $id);
         $this->getRelations = false;
 
         return $this;
@@ -208,7 +138,7 @@ class Repository implements RepositoryContract
      */
     public function count(): self
     {
-        $this->retriever    = $this->connection->createRetriever()->count($this->entity);
+        $this->retriever    = $this->adapter->createRetriever()->count($this->entity);
         $this->getRelations = false;
 
         return $this;
@@ -479,6 +409,31 @@ class Repository implements RepositoryContract
     }
 
     /**
+     * Get the adapter.
+     *
+     * @return Adapter
+     */
+    public function getAdapter(): Adapter
+    {
+        return $this->adapter;
+    }
+
+    /**
+     * Set the connection to use.
+     *
+     * @param string $name
+     *
+     * @return static
+     */
+    public function setConnection(string $name): self
+    {
+        $this->adapter   = $this->manager->useConnection($name);
+        $this->persister = $this->adapter->getPersister();
+
+        return $this;
+    }
+
+    /**
      * Get a new query builder instance.
      *
      * @param string|null $alias
@@ -487,7 +442,7 @@ class Repository implements RepositoryContract
      */
     public function createQueryBuilder(string $alias = null): QueryBuilder
     {
-        return $this->connection->createQueryBuilder($this->entity, $alias);
+        return $this->adapter->createQueryBuilder($this->entity, $alias);
     }
 
     /**
@@ -499,7 +454,7 @@ class Repository implements RepositoryContract
      */
     public function createQuery(string $query): Query
     {
-        return $this->connection->createQuery($query, $this->entity);
+        return $this->adapter->createQuery($query, $this->entity);
     }
 
     /**

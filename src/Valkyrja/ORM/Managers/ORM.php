@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Managers;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Connection;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\Persister;
@@ -50,6 +49,13 @@ class ORM implements Contract
     protected static array $repositories = [];
 
     /**
+     * The container service.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
      * The config.
      *
      * @var array
@@ -57,54 +63,51 @@ class ORM implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The default connection.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $defaultConnection;
+
+    /**
+     * The default repository.
+     *
+     * @var string
+     */
+    protected string $defaultRepository;
 
     /**
      * ORM constructor.
      *
-     * @param array $config
+     * @param Container $container The container service
+     * @param array     $config    The config
      */
-    public function __construct(array $config)
+    public function __construct(Container $container, array $config)
     {
-        $this->config         = $config;
-        $this->defaultAdapter = $config['connections'][$config['connection']]['adapter'] ?? CKP::PDO;
+        $this->container         = $container;
+        $this->config            = $config;
+        $this->defaultConnection = $config['default'];
+        $this->defaultRepository = $config['repository'];
     }
 
     /**
-     * Get an adapter.
+     * Use a connection by name.
      *
-     * @param string|null $name
+     * @param string|null $name The connection name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useConnection(string $name = null): Adapter
     {
-        $name ??= $this->defaultAdapter;
+        $name ??= $this->defaultConnection;
 
-        if (isset(self::$adapters[$name])) {
-            return self::$adapters[$name];
-        }
-
-        /** @var Adapter $adapter */
-        $adapter = $this->config['adapters'][$name];
-
-        return self::$adapters[$name] = $adapter::make($this->config);
-    }
-
-    /**
-     * Get a connection.
-     *
-     * @param string|null $connection
-     *
-     * @return Connection
-     */
-    public function getConnection(string $connection = null): Connection
-    {
-        return $this->getAdapter()->getConnection($connection);
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->get(
+                $this->config['connections'][$name]['adapter'],
+                [
+                    $name,
+                ]
+            );
     }
 
     /**
@@ -117,7 +120,7 @@ class ORM implements Contract
      */
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        return $this->getConnection()->createQueryBuilder($entity, $alias);
+        return $this->useConnection()->createQueryBuilder($entity, $alias);
     }
 
     /**
@@ -130,7 +133,7 @@ class ORM implements Contract
      */
     public function createQuery(string $query = null, string $entity = null): Query
     {
-        return $this->getConnection()->createQuery($query, $entity);
+        return $this->useConnection()->createQuery($query, $entity);
     }
 
     /**
@@ -140,7 +143,7 @@ class ORM implements Contract
      */
     public function createRetriever(): Retriever
     {
-        return $this->getConnection()->createRetriever();
+        return $this->useConnection()->createRetriever();
     }
 
     /**
@@ -150,7 +153,7 @@ class ORM implements Contract
      */
     public function getPersister(): Persister
     {
-        return $this->getConnection()->getPersister();
+        return $this->useConnection()->getPersister();
     }
 
     /**
@@ -164,15 +167,17 @@ class ORM implements Contract
      */
     public function getRepository(string $entity): Repository
     {
-        if (isset(self::$repositories[$entity])) {
-            return self::$repositories[$entity];
-        }
+        /** @var Entity $entity */
+        $name = $entity::getEntityRepository() ?? $this->defaultRepository;
 
-        /** @var Entity|string $entity */
-        /** @var Repository $repository */
-        $repository = $entity::getEntityRepository() ?? $this->config['repository'];
-
-        return self::$repositories[$entity] = $repository::make($this, $entity);
+        return self::$repositories[$name]
+            ?? self::$repositories[$name] = $this->container->get(
+                $name,
+                [
+                    $this,
+                    $entity,
+                ]
+            );
     }
 
     /**
@@ -196,7 +201,7 @@ class ORM implements Contract
      */
     public function beginTransaction(): bool
     {
-        return $this->getConnection()->beginTransaction();
+        return $this->useConnection()->beginTransaction();
     }
 
     /**
@@ -206,7 +211,7 @@ class ORM implements Contract
      */
     public function inTransaction(): bool
     {
-        return $this->getConnection()->inTransaction();
+        return $this->useConnection()->inTransaction();
     }
 
     /**
@@ -216,7 +221,7 @@ class ORM implements Contract
      */
     public function ensureTransaction(): void
     {
-        $this->getConnection()->ensureTransaction();
+        $this->useConnection()->ensureTransaction();
     }
 
     /**
@@ -226,7 +231,7 @@ class ORM implements Contract
      */
     public function persist(): bool
     {
-        return $this->getConnection()->getPersister()->persist();
+        return $this->useConnection()->getPersister()->persist();
     }
 
     /**
@@ -236,7 +241,7 @@ class ORM implements Contract
      */
     public function rollback(): bool
     {
-        return $this->getConnection()->rollback();
+        return $this->useConnection()->rollback();
     }
 
     /**
@@ -246,7 +251,7 @@ class ORM implements Contract
      */
     public function lastInsertId(): string
     {
-        return $this->getConnection()->lastInsertId();
+        return $this->useConnection()->lastInsertId();
     }
 
     /**
@@ -262,7 +267,7 @@ class ORM implements Contract
      */
     public function find(string $entity): Retriever
     {
-        return $this->getConnection()->createRetriever()->find($entity);
+        return $this->useConnection()->createRetriever()->find($entity);
     }
 
     /**
@@ -279,7 +284,7 @@ class ORM implements Contract
      */
     public function findOne(string $entity, $id): Retriever
     {
-        return $this->getConnection()->createRetriever()->findOne($entity, $id);
+        return $this->useConnection()->createRetriever()->findOne($entity, $id);
     }
 
     /**
@@ -295,7 +300,7 @@ class ORM implements Contract
      */
     public function count(string $entity): Retriever
     {
-        return $this->getConnection()->createRetriever()->count($entity);
+        return $this->useConnection()->createRetriever()->count($entity);
     }
 
     /**
@@ -312,7 +317,7 @@ class ORM implements Contract
      */
     public function create(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->create($entity, $defer);
+        $this->useConnection()->getPersister()->create($entity, $defer);
     }
 
     /**
@@ -329,7 +334,7 @@ class ORM implements Contract
      */
     public function save(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->save($entity, $defer);
+        $this->useConnection()->getPersister()->save($entity, $defer);
     }
 
     /**
@@ -346,7 +351,7 @@ class ORM implements Contract
      */
     public function delete(Entity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->delete($entity, $defer);
+        $this->useConnection()->getPersister()->delete($entity, $defer);
     }
 
     /**
@@ -363,7 +368,7 @@ class ORM implements Contract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $this->getConnection()->getPersister()->softDelete($entity, $defer);
+        $this->useConnection()->getPersister()->softDelete($entity, $defer);
     }
 
     /**
@@ -379,6 +384,6 @@ class ORM implements Contract
      */
     public function clear(Entity $entity = null): void
     {
-        $this->getConnection()->getPersister()->clear($entity);
+        $this->useConnection()->getPersister()->clear($entity);
     }
 }

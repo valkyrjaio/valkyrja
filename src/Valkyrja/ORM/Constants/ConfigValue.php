@@ -24,7 +24,7 @@ use Valkyrja\ORM\Repositories\Repository;
  */
 final class ConfigValue
 {
-    public const CONNECTION  = CKP::MYSQL;
+    public const DEFAULT     = CKP::MYSQL;
     public const ADAPTERS    = [
         CKP::PDO => PDOAdapter::class,
     ];
@@ -32,18 +32,19 @@ final class ConfigValue
     public const CONNECTIONS = [
         CKP::MYSQL => [
             CKP::ADAPTER  => CKP::PDO,
-            CKP::DRIVER   => '',
-            CKP::HOST     => '',
-            CKP::PORT     => '',
-            CKP::DB       => '',
-            CKP::CHARSET  => '',
-            CKP::USERNAME => '',
+            CKP::DRIVER   => CKP::MYSQL,
+            CKP::HOST     => '127.0.0.1',
+            CKP::PORT     => '3306',
+            CKP::DB       => CKP::VALHALLA,
+            CKP::USERNAME => CKP::VALHALLA,
             CKP::PASSWORD => '',
+            CKP::CHARSET  => 'utf8mb4',
+            CKP::OPTIONS  => [],
         ],
     ];
 
     public static array $defaults = [
-        CKP::CONNECTION  => self::CONNECTION,
+        CKP::DEFAULT     => self::DEFAULT,
         CKP::ADAPTERS    => self::ADAPTERS,
         CKP::REPOSITORY  => self::REPOSITORY,
         CKP::CONNECTIONS => self::CONNECTIONS,

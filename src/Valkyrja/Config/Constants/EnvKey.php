@@ -111,18 +111,21 @@ final class EnvKey
     public const EVENT_CACHE_FILE_PATH             = 'EVENT_CACHE_FILE_PATH';
     public const EVENT_USE_CACHE_FILE              = 'EVENT_USE_CACHE_FILE';
 
-    public const FILESYSTEM_DEFAULT      = 'FILESYSTEM_DEFAULT';
-    public const FILESYSTEM_ADAPTERS     = 'FILESYSTEM_ADAPTERS';
-    public const FILESYSTEM_LOCAL_DRIVER = 'FILESYSTEM_LOCAL_DRIVER';
-    public const FILESYSTEM_LOCAL_DIR    = 'FILESYSTEM_LOCAL_DIR';
-    public const FILESYSTEM_S3_DRIVER    = 'FILESYSTEM_S3_DRIVER';
-    public const FILESYSTEM_S3_KEY       = 'FILESYSTEM_S3_KEY';
-    public const FILESYSTEM_S3_SECRET    = 'FILESYSTEM_S3_SECRET';
-    public const FILESYSTEM_S3_REGION    = 'FILESYSTEM_S3_REGION';
-    public const FILESYSTEM_S3_VERSION   = 'FILESYSTEM_S3_VERSION';
-    public const FILESYSTEM_S3_BUCKET    = 'FILESYSTEM_S3_BUCKET';
-    public const FILESYSTEM_S3_PREFIX    = 'FILESYSTEM_S3_PREFIX';
-    public const FILESYSTEM_S3_OPTIONS   = 'FILESYSTEM_S3_OPTIONS';
+    public const FILESYSTEM_DEFAULT                 = 'FILESYSTEM_DEFAULT';
+    public const FILESYSTEM_ADAPTERS                = 'FILESYSTEM_ADAPTERS';
+    public const FILESYSTEM_DISKS                   = 'FILESYSTEM_DISKS';
+    public const FILESYSTEM_LOCAL_ADAPTER           = 'FILESYSTEM_LOCAL_ADAPTER';
+    public const FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER = 'FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER';
+    public const FILESYSTEM_LOCAL_DIR               = 'FILESYSTEM_LOCAL_DIR';
+    public const FILESYSTEM_S3_ADAPTER              = 'FILESYSTEM_S3_ADAPTER';
+    public const FILESYSTEM_S3_FLYSYSTEM_ADAPTER    = 'FILESYSTEM_S3_FLYSYSTEM_ADAPTER';
+    public const FILESYSTEM_S3_KEY                  = 'FILESYSTEM_S3_KEY';
+    public const FILESYSTEM_S3_SECRET               = 'FILESYSTEM_S3_SECRET';
+    public const FILESYSTEM_S3_REGION               = 'FILESYSTEM_S3_REGION';
+    public const FILESYSTEM_S3_VERSION              = 'FILESYSTEM_S3_VERSION';
+    public const FILESYSTEM_S3_BUCKET               = 'FILESYSTEM_S3_BUCKET';
+    public const FILESYSTEM_S3_PREFIX               = 'FILESYSTEM_S3_PREFIX';
+    public const FILESYSTEM_S3_OPTIONS              = 'FILESYSTEM_S3_OPTIONS';
 
     public const LOG_NAME      = 'LOG_NAME';
     public const LOG_FILE_PATH = 'LOG_FILE_PATH';
@@ -150,7 +153,7 @@ final class EnvKey
 
     public const NOTIFICATION_NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 
-    public const ORM_CONNECTION     = 'ORM_CONNECTION';
+    public const ORM_DEFAULT        = 'ORM_DEFAULT';
     public const ORM_ADAPTERS       = 'ORM_ADAPTERS';
     public const ORM_CONNECTIONS    = 'ORM_CONNECTIONS';
     public const ORM_REPOSITORY     = 'ORM_REPOSITORY';

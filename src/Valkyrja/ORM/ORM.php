@@ -21,22 +21,13 @@ namespace Valkyrja\ORM;
 interface ORM
 {
     /**
-     * Get an adapter.
+     * Use a connection by name.
      *
-     * @param string|null $name
+     * @param string|null $name The connection name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter;
-
-    /**
-     * Get a connection.
-     *
-     * @param string|null $connection
-     *
-     * @return Connection
-     */
-    public function getConnection(string $connection = null): Connection;
+    public function useConnection(string $name = null): Adapter;
 
     /**
      * Create a new query builder instance.

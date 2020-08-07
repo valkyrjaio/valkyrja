@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Constants;
 
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Filesystem\Adapters\LocalFlysystemAdapter;
-use Valkyrja\Filesystem\Adapters\S3FlysystemAdapter;
+use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
 
 /**
  * Constant ConfigValue.
@@ -26,24 +27,30 @@ final class ConfigValue
 {
     public const DEFAULT  = CKP::LOCAL;
     public const ADAPTERS = [
+        CKP::FLYSYSTEM => FlysystemAdapter::class,
+    ];
+    public const DISKS    = [
         CKP::LOCAL => [
-            CKP::DRIVER => LocalFlysystemAdapter::class,
-            CKP::DIR    => '/',
+            CKP::ADAPTER           => CKP::FLYSYSTEM,
+            CKP::FLYSYSTEM_ADAPTER => Local::class,
+            CKP::DIR               => '/',
         ],
         CKP::S3    => [
-            CKP::DRIVER  => S3FlysystemAdapter::class,
-            CKP::KEY     => '',
-            CKP::SECRET  => '',
-            CKP::REGION  => 'us1',
-            CKP::VERSION => 'latest',
-            CKP::BUCKET  => '',
-            CKP::PREFIX  => '',
-            CKP::OPTIONS => [],
+            CKP::ADAPTER           => CKP::FLYSYSTEM,
+            CKP::FLYSYSTEM_ADAPTER => AwsS3Adapter::class,
+            CKP::KEY               => '',
+            CKP::SECRET            => '',
+            CKP::REGION            => 'us1',
+            CKP::VERSION           => 'latest',
+            CKP::BUCKET            => '',
+            CKP::PREFIX            => '',
+            CKP::OPTIONS           => [],
         ],
     ];
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::DISKS    => self::DISKS,
     ];
 }

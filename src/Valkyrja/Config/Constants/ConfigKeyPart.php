@@ -122,6 +122,8 @@ final class ConfigKeyPart
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const PDO                         = 'pdo';
     public const PHP                         = 'php';
+    public const FLYSYSTEM                   = 'flysystem';
+    public const FLYSYSTEM_ADAPTER           = 'flysystemAdapter';
     public const LOCAL                       = 'local';
     public const S3                          = 's3';
     public const DIR                         = 'dir';

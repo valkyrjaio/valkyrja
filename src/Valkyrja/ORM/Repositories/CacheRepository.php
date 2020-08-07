@@ -30,7 +30,6 @@ use function md5;
 use function serialize;
 use function spl_object_id;
 use function unserialize;
-use function Valkyrja\container;
 
 /**
  * Class CacheRepository.
@@ -101,23 +100,6 @@ class CacheRepository extends Repository
         $this->store = $cache->getStore();
 
         parent::__construct($manager, $entity);
-    }
-
-    /**
-     * Make a new repository.
-     *
-     * @param ORM    $manager
-     * @param string $entity
-     *
-     * @return static
-     */
-    public static function make(ORM $manager, string $entity): self
-    {
-        return new static(
-            $manager,
-            container()->getSingleton(Cache::class),
-            $entity
-        );
     }
 
     /**

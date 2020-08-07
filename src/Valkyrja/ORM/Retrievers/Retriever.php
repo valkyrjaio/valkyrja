@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Retrievers;
 
 use InvalidArgumentException;
-use Valkyrja\ORM\Connection;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
@@ -33,6 +33,27 @@ use function is_string;
  */
 class Retriever implements Contract
 {
+    /**
+     * The adapter.
+     *
+     * @var Adapter
+     */
+    protected Adapter $adapter;
+
+    /**
+     * The query builder.
+     *
+     * @var QueryBuilder
+     */
+    protected QueryBuilder $queryBuilder;
+
+    /**
+     * The query.
+     *
+     * @var Query
+     */
+    protected Query $query;
+
     /**
      * The relationship columns.
      *
@@ -55,34 +76,13 @@ class Retriever implements Contract
     protected bool $getRelations = false;
 
     /**
-     * The connection.
-     *
-     * @var Connection
-     */
-    protected Connection $connection;
-
-    /**
-     * The query builder.
-     *
-     * @var QueryBuilder
-     */
-    protected QueryBuilder $queryBuilder;
-
-    /**
-     * The query.
-     *
-     * @var Query
-     */
-    protected Query $query;
-
-    /**
      * Retriever constructor.
      *
-     * @param Connection $connection
+     * @param Adapter $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(Adapter $connection)
     {
-        $this->connection = $connection;
+        $this->adapter = $connection;
     }
 
     /**
@@ -336,8 +336,8 @@ class Retriever implements Contract
     {
         Cls::validateInherits($entity, Entity::class);
 
-        $this->queryBuilder = $this->connection->createQueryBuilder($entity)->select($columns);
-        $this->query        = $this->connection->createQuery('', $entity);
+        $this->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
+        $this->query        = $this->adapter->createQuery('', $entity);
     }
 
     /**
@@ -374,7 +374,7 @@ class Retriever implements Contract
      */
     protected function prepareResults(): void
     {
-        $this->connection->ensureTransaction();
+        $this->adapter->ensureTransaction();
         $this->query->prepare($this->queryBuilder->getQueryString());
         $this->bindValues();
         $this->query->execute();
