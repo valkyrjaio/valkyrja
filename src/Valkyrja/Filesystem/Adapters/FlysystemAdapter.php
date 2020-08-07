@@ -29,7 +29,7 @@ use Valkyrja\Filesystem\Enums\Visibility;
 class FlysystemAdapter implements Adapter
 {
     /**
-     * The Fly Filesystem.
+     * The Flysystem filesystem.
      *
      * @var FlysystemInterface
      */
@@ -38,7 +38,7 @@ class FlysystemAdapter implements Adapter
     /**
      * FlysystemAdapter constructor.
      *
-     * @param FlysystemInterface $flysystem The flysystem adapter
+     * @param FlysystemInterface $flysystem The Flysystem filesystem
      */
     public function __construct(FlysystemInterface $flysystem)
     {
