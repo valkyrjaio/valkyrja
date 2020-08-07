@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Filesystem\FlysystemLocal;
-use Valkyrja\Filesystem\FlysystemS3;
+use Valkyrja\Filesystem\Adapters\LocalFlysystemAdapter;
+use Valkyrja\Filesystem\Adapters\S3FlysystemAdapter;
 
 /**
  * Constant ConfigValue.
@@ -26,17 +26,24 @@ final class ConfigValue
 {
     public const DEFAULT  = CKP::LOCAL;
     public const ADAPTERS = [
-        CKP::LOCAL => FlysystemLocal::class,
-        CKP::S3    => FlysystemS3::class,
-    ];
-    public const DISKS    = [
-        CKP::LOCAL => [],
-        CKP::S3    => [],
+        CKP::LOCAL => [
+            CKP::DRIVER => LocalFlysystemAdapter::class,
+            CKP::DIR    => '/',
+        ],
+        CKP::S3    => [
+            CKP::DRIVER  => S3FlysystemAdapter::class,
+            CKP::KEY     => '',
+            CKP::SECRET  => '',
+            CKP::REGION  => 'us1',
+            CKP::VERSION => 'latest',
+            CKP::BUCKET  => '',
+            CKP::PREFIX  => '',
+            CKP::OPTIONS => [],
+        ],
     ];
 
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
-        CKP::DISKS    => self::DISKS,
     ];
 }

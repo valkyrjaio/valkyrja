@@ -14,44 +14,36 @@ declare(strict_types=1);
 namespace Valkyrja\Filesystem\Adapters;
 
 use InvalidArgumentException;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
-use League\Flysystem\Filesystem as FlySystem;
+use League\Flysystem\FilesystemInterface as FlysystemInterface;
 use League\Flysystem\RootViolationException;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 
 /**
- * Abstract Class FlysystemAdapter.
+ * Class FlysystemAdapter.
  *
  * @author Melech Mizrachi
  */
-abstract class FlysystemAdapter implements Adapter
+class FlysystemAdapter implements Adapter
 {
     /**
      * The Fly Filesystem.
      *
-     * @var FlySystem
+     * @var FlysystemInterface
      */
-    protected FlySystem $flySystem;
+    protected FlysystemInterface $flysystem;
 
     /**
      * FlysystemAdapter constructor.
      *
-     * @param AdapterInterface $adapter The flysystem adapter
+     * @param FlysystemInterface $flysystem The flysystem adapter
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct(FlysystemInterface $flysystem)
     {
-        $this->flySystem = new FlySystem($adapter);
+        $this->flysystem = $flysystem;
     }
-
-    /**
-     * Make a new adapter instance.
-     *
-     * @return static
-     */
-    abstract public static function make(): self;
 
     /**
      * Determine whether a path exists.
@@ -62,7 +54,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function exists(string $path): bool
     {
-        return $this->flySystem->has($path);
+        return $this->flysystem->has($path);
     }
 
     /**
@@ -76,7 +68,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function read(string $path): ?string
     {
-        $read = $this->flySystem->read($path);
+        $read = $this->flysystem->read($path);
 
         return false !== $read ? $read : null;
     }
@@ -93,7 +85,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->flySystem->write($path, $contents);
+        return $this->flysystem->write($path, $contents);
     }
 
     /**
@@ -109,7 +101,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->flySystem->writeStream($path, $resource);
+        return $this->flysystem->writeStream($path, $resource);
     }
 
     /**
@@ -124,7 +116,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->flySystem->update($path, $contents);
+        return $this->flysystem->update($path, $contents);
     }
 
     /**
@@ -140,7 +132,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->flySystem->updateStream($path, $resource);
+        return $this->flysystem->updateStream($path, $resource);
     }
 
     /**
@@ -153,7 +145,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->flySystem->put($path, $contents);
+        return $this->flysystem->put($path, $contents);
     }
 
     /**
@@ -168,7 +160,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->flySystem->putStream($path, $resource);
+        return $this->flysystem->putStream($path, $resource);
     }
 
     /**
@@ -184,7 +176,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->flySystem->rename($path, $newPath);
+        return $this->flysystem->rename($path, $newPath);
     }
 
     /**
@@ -200,7 +192,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->flySystem->copy($path, $newPath);
+        return $this->flysystem->copy($path, $newPath);
     }
 
     /**
@@ -214,7 +206,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function delete(string $path): bool
     {
-        return $this->flySystem->delete($path);
+        return $this->flysystem->delete($path);
     }
 
     /**
@@ -228,7 +220,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function metadata(string $path): ?array
     {
-        $metadata = $this->flySystem->getMetadata($path);
+        $metadata = $this->flysystem->getMetadata($path);
 
         return false !== $metadata ? $metadata : null;
     }
@@ -244,7 +236,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function mimetype(string $path): ?string
     {
-        $mimetype = $this->flySystem->getMimetype($path);
+        $mimetype = $this->flysystem->getMimetype($path);
 
         return false !== $mimetype ? $mimetype : null;
     }
@@ -260,7 +252,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function size(string $path): ?int
     {
-        $size = $this->flySystem->getSize($path);
+        $size = $this->flysystem->getSize($path);
 
         return false !== $size ? $size : null;
     }
@@ -276,7 +268,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function timestamp(string $path): ?int
     {
-        $timestamp = $this->flySystem->getTimestamp($path);
+        $timestamp = $this->flysystem->getTimestamp($path);
 
         return false !== $timestamp ? (int) $timestamp : null;
     }
@@ -292,7 +284,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function visibility(string $path): ?string
     {
-        $visibility = $this->flySystem->getVisibility($path);
+        $visibility = $this->flysystem->getVisibility($path);
 
         return false !== $visibility ? $visibility : null;
     }
@@ -309,7 +301,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->flySystem->setVisibility($path, $visibility->getValue());
+        return $this->flysystem->setVisibility($path, $visibility->getValue());
     }
 
     /**
@@ -323,7 +315,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->flySystem->setVisibility($path, Visibility::PUBLIC);
+        return $this->flysystem->setVisibility($path, Visibility::PUBLIC);
     }
 
     /**
@@ -337,7 +329,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->flySystem->setVisibility($path, Visibility::PRIVATE);
+        return $this->flysystem->setVisibility($path, Visibility::PRIVATE);
     }
 
     /**
@@ -349,7 +341,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function createDir(string $path): bool
     {
-        return $this->flySystem->createDir($path);
+        return $this->flysystem->createDir($path);
     }
 
     /**
@@ -363,7 +355,7 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function deleteDir(string $path): bool
     {
-        return $this->flySystem->deleteDir($path);
+        return $this->flysystem->deleteDir($path);
     }
 
     /**
@@ -376,6 +368,6 @@ abstract class FlysystemAdapter implements Adapter
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {
-        return $this->flySystem->listContents($directory ?? '', $recursive);
+        return $this->flysystem->listContents($directory ?? '', $recursive);
     }
 }

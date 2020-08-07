@@ -32,7 +32,6 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::DEFAULT,
         CKP::ADAPTERS,
-        CKP::DISKS,
     ];
 
     /**
@@ -43,7 +42,6 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::DEFAULT  => EnvKey::FILESYSTEM_DEFAULT,
         CKP::ADAPTERS => EnvKey::FILESYSTEM_ADAPTERS,
-        CKP::DISKS    => EnvKey::FILESYSTEM_DISKS,
     ];
 
     /**
@@ -59,11 +57,4 @@ class Config extends Model
      * @var array
      */
     public array $adapters;
-
-    /**
-     * The disks.
-     *
-     * @var array
-     */
-    public array $disks;
 }

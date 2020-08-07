@@ -23,6 +23,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
+ * @method static Adapter getAdapter(string $adapter)
  * @method static bool exists(string $path)
  * @method static string|null read(string $path)
  * @method static bool write(string $path, string $contents)
@@ -44,9 +45,6 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool createDir(string $path)
  * @method static bool deleteDir(string $path)
  * @method static array listContents(string $directory = null, bool $recursive = false)
- * @method static Adapter getAdapter(string $adapter)
- * @method static Adapter local()
- * @method static Adapter s3()
  */
 class Filesystem extends Facade
 {

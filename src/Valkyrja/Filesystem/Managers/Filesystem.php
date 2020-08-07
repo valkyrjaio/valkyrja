@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Filesystems;
+namespace Valkyrja\Filesystem\Managers;
 
-use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
+use Valkyrja\Container\Container;
 use Valkyrja\Filesystem\Adapter;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as FilesystemContract;
@@ -33,6 +33,13 @@ class Filesystem implements FilesystemContract
     protected static array $adapters = [];
 
     /**
+     * The container service.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
      * The config.
      *
      * @var array
@@ -40,13 +47,40 @@ class Filesystem implements FilesystemContract
     protected array $config;
 
     /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
+
+    /**
      * FlyFilesystem constructor.
      *
-     * @param array $config The config
+     * @param Container $container The container service
+     * @param array     $config    The config
      */
-    public function __construct(array $config)
+    public function __construct(Container $container, array $config)
     {
-        $this->config = $config;
+        $this->container      = $container;
+        $this->config         = $config;
+        $this->defaultAdapter = $config['default'];
+    }
+
+    /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter
+    {
+        $name ??= $this->defaultAdapter;
+
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->container->getSingleton(
+                $this->config['adapters'][$name]['driver']
+            );
     }
 
     /**
@@ -321,46 +355,5 @@ class Filesystem implements FilesystemContract
     public function listContents(string $directory = null, bool $recursive = false): array
     {
         return $this->getAdapter()->listContents($directory, $recursive);
-    }
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
-     */
-    public function getAdapter(string $name = null): Adapter
-    {
-        $name ??= $this->config['disks'][$this->config['default']]['adapter'];
-
-        if (isset(self::$adapters[$name])) {
-            return self::$adapters[$name];
-        }
-
-        /** @var Adapter $adapter */
-        $adapter = $this->config['adapters'][$name];
-
-        return self::$adapters[$name] = $adapter::make();
-    }
-
-    /**
-     * Get the local filesystem.
-     *
-     * @return Adapter
-     */
-    public function local(): Adapter
-    {
-        return $this->getAdapter(CKP::LOCAL);
-    }
-
-    /**
-     * Get the s3 filesystem.
-     *
-     * @return Adapter
-     */
-    public function s3(): Adapter
-    {
-        return $this->getAdapter(CKP::S3);
     }
 }

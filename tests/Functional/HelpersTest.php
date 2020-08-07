@@ -23,7 +23,7 @@ use Valkyrja\Console\Kernels\Kernel as ConsoleKernel;
 use Valkyrja\Console\Outputs\Output;
 use Valkyrja\Container\Managers\Container;
 use Valkyrja\Event\Dispatchers\Events;
-use Valkyrja\Filesystem\Filesystems\Filesystem;
+use Valkyrja\Filesystem\Managers\Filesystem;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Factories\ResponseFactory;

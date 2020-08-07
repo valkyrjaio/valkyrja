@@ -23,13 +23,6 @@ use Valkyrja\Filesystem\Enums\Visibility;
 interface Adapter
 {
     /**
-     * Make a new adapter instance.
-     *
-     * @return static
-     */
-    public static function make(): self;
-
-    /**
      * Determine whether a path exists.
      *
      * @param string $path The path

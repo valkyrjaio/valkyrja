@@ -23,6 +23,15 @@ use Valkyrja\Filesystem\Enums\Visibility;
 interface Filesystem
 {
     /**
+     * Get an adapter by name.
+     *
+     * @param string|null $name The adapter name
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null): Adapter;
+
+    /**
      * Determine whether a path exists.
      *
      * @param string $path The path
@@ -230,27 +239,4 @@ interface Filesystem
      * @return array
      */
     public function listContents(string $directory = null, bool $recursive = false): array;
-
-    /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
-     */
-    public function getAdapter(string $name = null): Adapter;
-
-    /**
-     * Get the local filesystem.
-     *
-     * @return Adapter
-     */
-    public function local(): Adapter;
-
-    /**
-     * Get the s3 filesystem.
-     *
-     * @return Adapter
-     */
-    public function s3(): Adapter;
 }
