@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Providers;
 
+use Pusher\Pusher;
+use Pusher\PusherException;
 use Valkyrja\Broadcast\Adapters\CacheAdapter;
 use Valkyrja\Broadcast\Adapters\CryptPusherAdapter;
 use Valkyrja\Broadcast\Adapters\LogAdapter;
@@ -22,7 +24,11 @@ use Valkyrja\Broadcast\Broadcast;
 use Valkyrja\Broadcast\Messages\Message;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\Crypt\Crypt;
 use Valkyrja\Log\Logger;
+
+use const CURL_IPRESOLVE_V4;
+use const CURLOPT_IPRESOLVE;
 
 /**
  * Class ServiceProvider.
@@ -44,6 +50,7 @@ class ServiceProvider extends Provider
             CryptPusherAdapter::class => 'publishCryptPusherAdapter',
             LogAdapter::class         => 'publishLogAdapter',
             NullAdapter::class        => 'publishNullAdapter',
+            Pusher::class             => 'publishPusher',
             PusherAdapter::class      => 'publishPusherAdapter',
             Message::class            => 'publishMessage',
         ];
@@ -62,7 +69,9 @@ class ServiceProvider extends Provider
             CryptPusherAdapter::class,
             LogAdapter::class,
             NullAdapter::class,
+            Pusher::class,
             PusherAdapter::class,
+            Message::class,
         ];
     }
 
@@ -121,9 +130,15 @@ class ServiceProvider extends Provider
      */
     public static function publishCryptPusherAdapter(Container $container): void
     {
+        $config = $container->getSingleton('config');
+
         $container->setSingleton(
             CryptPusherAdapter::class,
-            new CryptPusherAdapter()
+            new CryptPusherAdapter(
+                $container->getSingleton(Pusher::class),
+                $container->getSingleton(Crypt::class),
+                $config['broadcast']['adapters']['crypt']
+            )
         );
     }
 
@@ -163,6 +178,37 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the Pusher service.
+     *
+     * @param Container $container The container
+     *
+     * @throws PusherException
+     *
+     * @return void
+     */
+    public static function publishPusher(Container $container): void
+    {
+        $config        = $container->getSingleton('config');
+        $adapterConfig = $config['broadcast']['adapters']['pusher'];
+
+        $container->setSingleton(
+            NullAdapter::class,
+            new Pusher(
+                $adapterConfig['key'],
+                $adapterConfig['secret'],
+                $adapterConfig['id'],
+                [
+                    'cluster'      => $adapterConfig['cluster'],
+                    'useTLS'       => $adapterConfig['useTLS'],
+                    'curl_options' => [
+                        CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+                    ],
+                ]
+            )
+        );
+    }
+
+    /**
      * Publish the pusher adapter service.
      *
      * @param Container $container The container
@@ -173,7 +219,9 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             PusherAdapter::class,
-            new PusherAdapter()
+            new PusherAdapter(
+                $container->getSingleton(Pusher::class)
+            )
         );
     }
 

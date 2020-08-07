@@ -39,7 +39,8 @@ final class ConfigValue
             CKP::ADAPTER => null,
         ],
         CKP::LOG    => [
-            CKP::DRIVER => LogAdapter::class,
+            CKP::DRIVER  => LogAdapter::class,
+            CKP::ADAPTER => null,
         ],
         CKP::NULL   => [
             CKP::DRIVER => NullAdapter::class,

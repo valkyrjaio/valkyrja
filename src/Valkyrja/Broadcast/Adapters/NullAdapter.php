@@ -17,10 +17,7 @@ use InvalidArgumentException;
 use JsonException;
 use Valkyrja\Broadcast\Adapter as Contract;
 use Valkyrja\Broadcast\Message;
-
-use function json_decode;
-
-use const JSON_THROW_ON_ERROR;
+use Valkyrja\Support\Type\Arr;
 
 /**
  * Class NullAdapter.
@@ -44,7 +41,7 @@ class NullAdapter implements Contract
      */
     public function determineKeyValueMatch(string $key, $value, string $message): bool
     {
-        $decodedMessage = json_decode($message, true, 512, JSON_THROW_ON_ERROR);
+        $decodedMessage = Arr::fromString($message);
 
         return isset($decodedMessage[$key]) && $decodedMessage[$key] === $value;
     }

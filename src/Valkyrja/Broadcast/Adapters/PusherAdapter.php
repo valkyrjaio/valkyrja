@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Adapters;
 
+use JsonException;
+use Pusher\Pusher;
+use Pusher\PusherException;
+use Valkyrja\Broadcast\Message;
+use Valkyrja\Support\Type\Arr;
+
 /**
  * Class PusherAdapter.
  *
@@ -20,4 +26,73 @@ namespace Valkyrja\Broadcast\Adapters;
  */
 class PusherAdapter extends NullAdapter
 {
+    /**
+     * The pusher service.
+     *
+     * @var Pusher
+     */
+    protected Pusher $pusher;
+
+    /**
+     * PusherAdapter constructor.
+     *
+     * @param Pusher $pusher The pusher service
+     */
+    public function __construct(Pusher $pusher)
+    {
+        $this->pusher = $pusher;
+    }
+
+    /**
+     * Send a message.
+     *
+     * @param Message $message The message to send
+     *
+     * @throws JsonException On json decode failure
+     * @throws PusherException On pusher error
+     *
+     * @return void
+     */
+    public function send(Message $message): void
+    {
+        $this->pusher->trigger(
+            $message->getChannel(),
+            $message->getEvent(),
+            $this->getMessageText($message)
+        );
+    }
+
+    /**
+     * Get the message text.
+     *
+     * @param Message $message The message
+     *
+     * @throws JsonException On json decode failure
+     *
+     * @return string
+     */
+    protected function getMessageText(Message $message): string
+    {
+        $this->prepareMessage($message);
+
+        return $message->getMessage();
+    }
+
+    /**
+     * Prepare a message that has data.
+     *
+     * @param Message $message The message
+     *
+     * @throws JsonException On json decode failure
+     *
+     * @return void
+     */
+    protected function prepareMessage(Message $message): void
+    {
+        $data = $message->getData();
+
+        if ($data) {
+            $message->setMessage(Arr::toString($data));
+        }
+    }
 }
