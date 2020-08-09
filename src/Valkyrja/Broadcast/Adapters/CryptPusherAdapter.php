@@ -43,13 +43,6 @@ class CryptPusherAdapter extends PusherAdapter
     protected array $config;
 
     /**
-     * The crypt key.
-     *
-     * @var string
-     */
-    protected string $key;
-
-    /**
      * CryptPusherAdapter constructor.
      *
      * @param Pusher $pusher The pusher service
@@ -61,8 +54,7 @@ class CryptPusherAdapter extends PusherAdapter
         parent::__construct($pusher);
 
         $this->config = $config;
-        $this->key    = $crypt->getKey();
-        $this->crypt  = $crypt->getAdapter($config['adapter']);
+        $this->crypt  = $crypt->useCrypt($config['adapter']);
     }
 
     /**
@@ -81,7 +73,7 @@ class CryptPusherAdapter extends PusherAdapter
      */
     public function determineKeyValueMatch(string $key, $value, string $message): bool
     {
-        $decryptedMessage = $this->crypt->decrypt($message, $this->key);
+        $decryptedMessage = $this->crypt->decrypt($message);
 
         return parent::determineKeyValueMatch($key, $value, $decryptedMessage);
     }
@@ -101,7 +93,7 @@ class CryptPusherAdapter extends PusherAdapter
         parent::prepareMessage($message);
 
         $message->setMessage(
-            $this->crypt->encrypt($message->getMessage(), $this->key)
+            $this->crypt->encrypt($message->getMessage())
         );
     }
 }

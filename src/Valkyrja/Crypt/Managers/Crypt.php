@@ -18,9 +18,6 @@ use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
-use function file_exists;
-use function file_get_contents;
-
 /**
  * Class Crypt.
  *
@@ -50,11 +47,11 @@ class Crypt implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The default crypt.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $defaultCrypt;
 
     /**
      * The key
@@ -71,9 +68,9 @@ class Crypt implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultAdapter = $config['adapter'];
+        $this->container    = $container;
+        $this->config       = $config;
+        $this->defaultCrypt = $config['default'];
     }
 
     /**
@@ -83,24 +80,14 @@ class Crypt implements Contract
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useCrypt(string $name = null): Adapter
     {
-        $name ??= $this->defaultAdapter;
+        $name ??= $this->defaultCrypt;
 
         return self::$adapters[$name]
             ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
+                $this->config['crypts'][$name]['adapter']
             );
-    }
-
-    /**
-     * Get the key.
-     *
-     * @return string
-     */
-    public function getKey(): string
-    {
-        return $this->key ?? ($this->key = $this->getKeyFromFilesystem() ?? $this->getKeyFromConfig());
     }
 
     /**
@@ -112,7 +99,7 @@ class Crypt implements Contract
      */
     public function isValidEncryptedMessage(string $encrypted): bool
     {
-        return $this->getAdapter()->isValidEncryptedMessage($encrypted);
+        return $this->useCrypt()->isValidEncryptedMessage($encrypted);
     }
 
     /**
@@ -127,7 +114,7 @@ class Crypt implements Contract
      */
     public function encrypt(string $message, string $key = null): string
     {
-        return $this->getAdapter()->encrypt($message, $key ?? $this->getKey());
+        return $this->useCrypt()->encrypt($message, $key);
     }
 
     /**
@@ -142,7 +129,7 @@ class Crypt implements Contract
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
-        return $this->getAdapter()->decrypt($encrypted, $key ?? $this->getKey());
+        return $this->useCrypt()->decrypt($encrypted, $key);
     }
 
     /**
@@ -157,7 +144,7 @@ class Crypt implements Contract
      */
     public function encryptArray(array $array, string $key = null): string
     {
-        return $this->getAdapter()->encryptArray($array, $key ?? $this->getKey());
+        return $this->useCrypt()->encryptArray($array, $key);
     }
 
     /**
@@ -172,7 +159,7 @@ class Crypt implements Contract
      */
     public function decryptArray(string $encrypted, string $key = null): array
     {
-        return $this->getAdapter()->decryptArray($encrypted, $key ?? $this->getKey());
+        return $this->useCrypt()->decryptArray($encrypted, $key);
     }
 
     /**
@@ -187,7 +174,7 @@ class Crypt implements Contract
      */
     public function encryptObject(object $object, string $key = null): string
     {
-        return $this->getAdapter()->encryptObject($object, $key ?? $this->getKey());
+        return $this->useCrypt()->encryptObject($object, $key);
     }
 
     /**
@@ -202,56 +189,6 @@ class Crypt implements Contract
      */
     public function decryptObject(string $encrypted, string $key = null): object
     {
-        return $this->getAdapter()->decryptObject($encrypted, $key ?? $this->getKey());
-    }
-
-    /**
-     * Get the key from config.
-     *
-     * @return string
-     */
-    protected function getKeyFromConfig(): string
-    {
-        return $this->config['key'];
-    }
-
-    /**
-     * Get the key path from config.
-     *
-     * @return string|null
-     */
-    protected function getKeyPathFromConfig(): ?string
-    {
-        return $this->config['keyPath'];
-    }
-
-    /**
-     * Get the key from a key path config.
-     *
-     * @return string|null
-     */
-    protected function getKeyFromFilesystem(): ?string
-    {
-        return $this->hasValidKeyPath() ? $this->getFileContentsFromKeyPath() : null;
-    }
-
-    /**
-     * Check if a valid key path exists in config.
-     *
-     * @return bool
-     */
-    protected function hasValidKeyPath(): bool
-    {
-        return null !== $this->getKeyPathFromConfig() && file_exists($this->getKeyPathFromConfig());
-    }
-
-    /**
-     * Get file contents from key path.
-     *
-     * @return string|null
-     */
-    protected function getFileContentsFromKeyPath(): ?string
-    {
-        return file_get_contents($this->getKeyPathFromConfig()) ?: null;
+        return $this->useCrypt()->decryptObject($encrypted, $key);
     }
 }

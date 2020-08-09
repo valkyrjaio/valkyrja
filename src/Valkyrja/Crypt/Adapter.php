@@ -35,71 +35,71 @@ interface Adapter
      * Encrypt a message.
      *
      * @param string $message The message to encrypt
-     * @param string $key     The encryption key
+     * @param string|null $key     The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return string
      */
-    public function encrypt(string $message, string $key): string;
+    public function encrypt(string $message, string $key = null): string;
 
     /**
      * Encrypt an array.
      *
      * @param array  $array The array to encrypt
-     * @param string $key   The encryption key
+     * @param string|null $key   The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return string
      */
-    public function encryptArray(array $array, string $key): string;
+    public function encryptArray(array $array, string $key = null): string;
 
     /**
      * Encrypt a json array.
      *
      * @param object $object The object to encrypt
-     * @param string $key    The encryption key
+     * @param string|null $key    The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return string
      */
-    public function encryptObject(object $object, string $key): string;
+    public function encryptObject(object $object, string $key = null): string;
 
     /**
      * Decrypt a message.
      *
      * @param string $encrypted The encrypted message to decrypt
-     * @param string $key       The encryption key
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return string
      */
-    public function decrypt(string $encrypted, string $key): string;
+    public function decrypt(string $encrypted, string $key = null): string;
 
     /**
      * Decrypt a message originally encrypted from an array.
      *
      * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return array
      */
-    public function decryptArray(string $encrypted, string $key): array;
+    public function decryptArray(string $encrypted, string $key = null): array;
 
     /**
      * Decrypt a message originally encrypted from an object.
      *
      * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      *
      * @return object
      */
-    public function decryptObject(string $encrypted, string $key): object;
+    public function decryptObject(string $encrypted, string $key = null): object;
 }

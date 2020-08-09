@@ -42,6 +42,31 @@ use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 class SodiumAdapter implements Adapter
 {
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
+     * The key.
+     *
+     * @var string
+     */
+    protected string $key;
+
+    /**
+     * SodiumAdapter constructor.
+     *
+     * @param array $config The config
+     */
+    public function __construct(array $config)
+    {
+        $this->config = $config;
+        $this->key    = $config['key'];
+    }
+
+    /**
      * Determine if an encrypted message is valid.
      *
      * @param string $encrypted
@@ -64,15 +89,16 @@ class SodiumAdapter implements Adapter
     /**
      * Encrypt a message.
      *
-     * @param string $message The message to encrypt
-     * @param string $key     The encryption key
+     * @param string      $message The message to encrypt
+     * @param string|null $key     The encryption key
      *
      * @throws Exception Random Bytes Failure
      *
      * @return string
      */
-    public function encrypt(string $message, string $key): string
+    public function encrypt(string $message, string $key = null): string
     {
+        $key    ??= $this->key;
         $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
 
@@ -85,14 +111,14 @@ class SodiumAdapter implements Adapter
     /**
      * Encrypt an array.
      *
-     * @param array  $array The array to encrypt
-     * @param string $key   The encryption key
+     * @param array       $array The array to encrypt
+     * @param string|null $key   The encryption key
      *
      * @throws Exception Random Bytes Failure
      *
      * @return string
      */
-    public function encryptArray(array $array, string $key): string
+    public function encryptArray(array $array, string $key = null): string
     {
         return $this->encrypt(Arr::toString($array), $key);
     }
@@ -100,14 +126,14 @@ class SodiumAdapter implements Adapter
     /**
      * Encrypt a json array.
      *
-     * @param object $object The object to encrypt
-     * @param string $key    The encryption key
+     * @param object      $object The object to encrypt
+     * @param string|null $key    The encryption key
      *
      * @throws Exception Random Bytes Failure
      *
      * @return string
      */
-    public function encryptObject(object $object, string $key): string
+    public function encryptObject(object $object, string $key = null): string
     {
         return $this->encrypt(Obj::toString($object), $key);
     }
@@ -115,16 +141,17 @@ class SodiumAdapter implements Adapter
     /**
      * Decrypt a message.
      *
-     * @param string $encrypted The encrypted message to decrypt
-     * @param string $key       The encryption key
+     * @param string      $encrypted The encrypted message to decrypt
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      * @throws SodiumException
      *
      * @return string
      */
-    public function decrypt(string $encrypted, string $key): string
+    public function decrypt(string $encrypted, string $key = null): string
     {
+        $key   ??= $this->key;
         $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
 
         sodium_memzero($key);
@@ -135,8 +162,8 @@ class SodiumAdapter implements Adapter
     /**
      * Decrypt a message originally encrypted from an array.
      *
-     * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
+     * @param string      $encrypted The encrypted message
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      * @throws JsonException
@@ -144,7 +171,7 @@ class SodiumAdapter implements Adapter
      *
      * @return array
      */
-    public function decryptArray(string $encrypted, string $key): array
+    public function decryptArray(string $encrypted, string $key = null): array
     {
         return json_decode($this->decrypt($encrypted, $key), true, 512, JSON_THROW_ON_ERROR);
     }
@@ -152,8 +179,8 @@ class SodiumAdapter implements Adapter
     /**
      * Decrypt a message originally encrypted from an object.
      *
-     * @param string $encrypted The encrypted message
-     * @param string $key       The encryption key
+     * @param string      $encrypted The encrypted message
+     * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure
      * @throws JsonException
@@ -161,7 +188,7 @@ class SodiumAdapter implements Adapter
      *
      * @return object
      */
-    public function decryptObject(string $encrypted, string $key): object
+    public function decryptObject(string $encrypted, string $key = null): object
     {
         return json_decode($this->decrypt($encrypted, $key), false, 512, JSON_THROW_ON_ERROR);
     }
@@ -258,15 +285,15 @@ class SodiumAdapter implements Adapter
     /**
      * Get plain text from decoded encrypted string.
      *
-     * @param string $decoded The decoded encrypted message
-     * @param string $key     The encryption key
+     * @param string      $decoded The decoded encrypted message
+     * @param string|null $key     The encryption key
      *
      * @throws CryptException
      * @throws SodiumException
      *
      * @return string
      */
-    protected function getDecodedPlain(string $decoded, string $key): string
+    protected function getDecodedPlain(string $decoded, string $key = null): string
     {
         $nonce      = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $cipherText = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');

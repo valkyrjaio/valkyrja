@@ -26,8 +26,16 @@ final class ConfigValue
     public const KEY      = 'some_secret_key';
     public const KEY_PATH = null;
     public const ADAPTER  = CKP::SODIUM;
+    public const DEFAULT  = CKP::DEFAULT;
     public const ADAPTERS = [
         CKP::SODIUM => SodiumAdapter::class,
+    ];
+    public const CRYPTS   = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER  => CKP::SODIUM,
+            CKP::KEY      => 'some_secret_key',
+            CKP::KEY_PATH => null,
+        ],
     ];
 
     public static array $defaults = [
@@ -35,5 +43,6 @@ final class ConfigValue
         CKP::KEY_PATH => self::KEY_PATH,
         CKP::ADAPTER  => self::ADAPTER,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::CRYPTS   => self::CRYPTS,
     ];
 }

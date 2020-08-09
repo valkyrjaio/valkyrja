@@ -23,20 +23,13 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 interface Crypt
 {
     /**
-     * Get an adapter by name.
+     * Use a crypt by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name The crypt name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter;
-
-    /**
-     * Get the key.
-     *
-     * @return string
-     */
-    public function getKey(): string;
+    public function useCrypt(string $name = null): Adapter;
 
     /**
      * Determine if an encrypted message is valid.

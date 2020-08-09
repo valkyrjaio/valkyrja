@@ -91,9 +91,15 @@ class ServiceProvider extends Provider
      */
     public static function publishSodiumAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $config = $container->getSingleton('config');
+
+        $container->setClosure(
             SodiumAdapter::class,
-            new SodiumAdapter()
+            static function ($name) use ($config) {
+                return new SodiumAdapter(
+                    $config['crypts'][$name]
+                );
+            }
         );
     }
 }

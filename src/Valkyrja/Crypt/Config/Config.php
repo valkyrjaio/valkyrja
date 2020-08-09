@@ -30,10 +30,9 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::KEY,
-        CKP::KEY_PATH,
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::CRYPTS,
     ];
 
     /**
@@ -42,32 +41,17 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::KEY      => EnvKey::CRYPT_KEY,
-        CKP::KEY_PATH => EnvKey::CRYPT_KEY_PATH,
-        CKP::ADAPTER  => EnvKey::CRYPT_ADAPTER,
+        CKP::DEFAULT  => EnvKey::CRYPT_DEFAULT,
         CKP::ADAPTERS => EnvKey::CRYPT_ADAPTERS,
+        CKP::CRYPTS   => EnvKey::CRYPT_CRYPTS,
     ];
 
     /**
-     * The key.
+     * The default crypt.
      *
      * @var string
      */
-    public string $key;
-
-    /**
-     * The optional key path (for a key on disk).
-     *
-     * @var string|null
-     */
-    public ?string $keyPath = null;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
@@ -75,4 +59,11 @@ class Config extends Model
      * @var array
      */
     public array $adapters;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    public array $crypts;
 }

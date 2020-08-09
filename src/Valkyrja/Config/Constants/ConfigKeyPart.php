@@ -162,4 +162,5 @@ final class ConfigKeyPart
     public const NOTIFICATIONS               = 'notifications';
     public const DOMAIN                      = 'domain';
     public const API_KEY                     = 'apiKey';
+    public const CRYPTS                      = 'crypts';
 }

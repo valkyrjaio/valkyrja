@@ -22,8 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $name = null)
- * @method static string getKey()
+ * @method static Adapter useCrypt(string $name = null)
  * @method static string encrypt(string $message, string $key = null)
  * @method static string decrypt(string $encrypted, string $key = null)
  * @method static string encryptArray(array $array, string $key = null)
