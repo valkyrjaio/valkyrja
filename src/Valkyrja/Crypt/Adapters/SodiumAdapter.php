@@ -98,7 +98,7 @@ class SodiumAdapter implements Adapter
      */
     public function encrypt(string $message, string $key = null): string
     {
-        $key    ??= $this->key;
+        $key ??= $this->key;
         $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
         $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
 
@@ -151,7 +151,7 @@ class SodiumAdapter implements Adapter
      */
     public function decrypt(string $encrypted, string $key = null): string
     {
-        $key   ??= $this->key;
+        $key ??= $this->key;
         $plain = $this->getDecodedPlain($this->getDecoded($encrypted), $key);
 
         sodium_memzero($key);

@@ -97,9 +97,9 @@ class Repository implements RepositoryContract
     {
         Cls::validateInherits($entity, Entity::class);
 
-        $this->adapter   = $manager->useConnection(static::$connectionName);
-        $this->persister = $this->adapter->getPersister();
-        $this->manager   = $manager;
+        $this->adapter    = $manager->useConnection(static::$connectionName);
+        $this->persister  = $this->adapter->getPersister();
+        $this->manager    = $manager;
         $this->entity     = $entity;
     }
 
