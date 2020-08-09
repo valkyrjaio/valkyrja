@@ -22,7 +22,6 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Driver as SessionContract;
 use Valkyrja\Session\Drivers\Driver;
 use Valkyrja\Session\Session;
 
@@ -41,13 +40,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class         => 'publishManager',
-            Driver::class          => 'publishDefaultSession',
-            SessionContract::class => 'publishDefaultSessionSingleton',
-            CacheAdapter::class    => 'publishCacheAdapter',
-            CookieAdapter::class   => 'publishCookieAdapter',
-            NullAdapter::class     => 'publishNullAdapter',
-            PHPAdapter::class      => 'publishPHPAdapter',
+            Session::class       => 'publishManager',
+            Driver::class        => 'publishDefaultDriver',
+            CacheAdapter::class  => 'publishCacheAdapter',
+            CookieAdapter::class => 'publishCookieAdapter',
+            NullAdapter::class   => 'publishNullAdapter',
+            PHPAdapter::class    => 'publishPHPAdapter',
         ];
     }
 
@@ -99,13 +97,13 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default session service.
+     * Publish the default driver service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishDefaultSession(Container $container): void
+    public static function publishDefaultDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
@@ -119,24 +117,6 @@ class ServiceProvider extends Provider
                     )
                 );
             }
-        );
-    }
-
-    /**
-     * Publish the default session as a singleton service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishDefaultSessionSingleton(Container $container): void
-    {
-        /** @var Session $manager */
-        $manager = $container->getSingleton(Session::class);
-
-        $container->setSingleton(
-            SessionContract::class,
-            $manager->useSession()
         );
     }
 
