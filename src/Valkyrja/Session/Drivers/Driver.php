@@ -17,7 +17,7 @@ use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Driver as Contract;
 
 /**
- * Class Session.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
@@ -31,7 +31,7 @@ class Driver implements Contract
     protected Adapter $adapter;
 
     /**
-     * Session constructor.
+     * Driver constructor.
      *
      * @param Adapter $adapter The adapter
      */
