@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Facades;
 
-use Valkyrja\Session\Manager as Contract;
+use Valkyrja\Session\SessionManager as Contract;
 use Valkyrja\Session\Session as SessionContract;
 use Valkyrja\Support\Facade\Facade;
 

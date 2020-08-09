@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 /**
- * Interface Manager.
+ * Interface SessionManager.
  *
  * @author Melech Mizrachi
  */
-interface Manager
+interface SessionManager
 {
     /**
      * Use a session by name.

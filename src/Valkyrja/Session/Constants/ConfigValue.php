@@ -18,7 +18,7 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Managers\Manager;
+use Valkyrja\Session\Managers\SessionManager;
 
 /**
  * Constant ConfigValue.
@@ -35,7 +35,7 @@ final class ConfigValue
         CKP::PHP    => PHPAdapter::class,
     ];
     public const DRIVERS  = [
-        CKP::DEFAULT => Manager::class,
+        CKP::DEFAULT => SessionManager::class,
     ];
     public const SESSIONS = [
         CKP::DEFAULT => [

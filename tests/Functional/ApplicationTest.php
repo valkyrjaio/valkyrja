@@ -34,7 +34,7 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\EnvTest;
 use Valkyrja\Tests\TestCase;

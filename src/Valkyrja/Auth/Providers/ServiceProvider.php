@@ -18,7 +18,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 
 /**
  * Class ServiceProvider.

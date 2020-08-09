@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Middleware;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 
 /**
  * Abstract Class AuthenticatedMiddleware.

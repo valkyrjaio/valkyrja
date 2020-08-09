@@ -25,7 +25,7 @@ use Valkyrja\Auth\Registrator;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 use Valkyrja\Support\Type\Cls;
 
 use function time;

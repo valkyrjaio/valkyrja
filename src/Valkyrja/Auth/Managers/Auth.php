@@ -24,7 +24,7 @@ use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 
 /**
  * Class Auth.

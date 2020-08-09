@@ -19,7 +19,7 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 
 /**
  * Interface Auth.

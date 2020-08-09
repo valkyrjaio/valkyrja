@@ -22,7 +22,8 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Manager;
+use Valkyrja\Session\SessionManager;
+use Valkyrja\Session\Session as SessionContract;
 use Valkyrja\Session\Sessions\Session;
 
 /**
@@ -40,12 +41,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Manager::class       => 'publishManager',
-            Session::class       => 'publishDefaultSession',
-            CacheAdapter::class  => 'publishCacheAdapter',
-            CookieAdapter::class => 'publishCookieAdapter',
-            NullAdapter::class   => 'publishNullAdapter',
-            PHPAdapter::class    => 'publishPHPAdapter',
+            SessionManager::class  => 'publishManager',
+            Session::class         => 'publishDefaultSession',
+            SessionContract::class => 'publishDefaultSessionSingleton',
+            CacheAdapter::class    => 'publishCacheAdapter',
+            CookieAdapter::class   => 'publishCookieAdapter',
+            NullAdapter::class     => 'publishNullAdapter',
+            PHPAdapter::class      => 'publishPHPAdapter',
         ];
     }
 
@@ -57,7 +59,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Manager::class,
+            SessionManager::class,
             CacheAdapter::class,
             CookieAdapter::class,
             NullAdapter::class,
@@ -88,8 +90,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Manager::class,
-            new \Valkyrja\Session\Managers\Manager(
+            SessionManager::class,
+            new \Valkyrja\Session\Managers\SessionManager(
                 $container,
                 $config['session']
             )
@@ -97,7 +99,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the session service.
+     * Publish the default session service.
      *
      * @param Container $container The container
      *
@@ -117,6 +119,24 @@ class ServiceProvider extends Provider
                     )
                 );
             }
+        );
+    }
+
+    /**
+     * Publish the default session as a singleton service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultSessionSingleton(Container $container): void
+    {
+        /** @var SessionManager $manager */
+        $manager = $container->getSingleton(SessionManager::class);
+
+        $container->setSingleton(
+            SessionContract::class,
+            $manager->useSession()
         );
     }
 

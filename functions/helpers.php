@@ -53,7 +53,7 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Url;
-use Valkyrja\Session\Manager as SessionManager;
+use Valkyrja\Session\SessionManager;
 use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;

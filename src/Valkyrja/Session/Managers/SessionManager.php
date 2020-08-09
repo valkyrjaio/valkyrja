@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Session\Manager as Contract;
+use Valkyrja\Session\SessionManager as Contract;
 use Valkyrja\Session\Session;
 
 /**
- * Class Manager.
+ * Class SessionManager.
  *
  * @author Melech Mizrachi
  */
-class Manager implements Contract
+class SessionManager implements Contract
 {
     /**
      * The sessions.
@@ -83,12 +83,15 @@ class Manager implements Contract
      */
     public function useSession(string $name = null, string $adapter = null): Session
     {
+        // The session to use
         $name ??= $this->defaultSession;
+        // The adapter to use
         $adapter ??= $this->sessionsConfig[$name]['adapter'];
-        $cacheName = $name . $adapter;
+        // The cache key to use
+        $cacheKey = $name . $adapter;
 
-        return self::$sessions[$cacheName]
-            ?? self::$sessions[$cacheName] = $this->container->get(
+        return self::$sessions[$cacheKey]
+            ?? self::$sessions[$cacheKey] = $this->container->get(
                 $this->sessionsConfig[$name]['driver'],
                 [
                     $name,
