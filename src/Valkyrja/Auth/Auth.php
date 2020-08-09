@@ -19,7 +19,7 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Sessions;
+use Valkyrja\Session\Session;
 
 /**
  * Interface Auth.
@@ -79,18 +79,18 @@ interface Auth
     /**
      * Get the session manager.
      *
-     * @return Sessions
+     * @return Session
      */
-    public function getSession(): Sessions;
+    public function getSession(): Session;
 
     /**
      * Set the session manager.
      *
-     * @param Sessions $session
+     * @param Session $session
      *
      * @return static
      */
-    public function setSession(Sessions $session): self;
+    public function setSession(Session $session): self;
 
     /**
      * Get an adapter by name.

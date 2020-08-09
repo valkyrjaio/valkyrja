@@ -21,6 +21,16 @@ namespace Valkyrja\Session;
 interface Session
 {
     /**
+     * Use a session by name.
+     *
+     * @param string|null $name    The session name
+     * @param string|null $adapter The adapter
+     *
+     * @return Driver
+     */
+    public function useSession(string $name = null, string $adapter = null): Driver;
+
+    /**
      * Start the session.
      *
      * @return void

@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Middleware;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
-use Valkyrja\Session\Sessions;
+use Valkyrja\Session\Session;
 
 /**
  * Abstract Class AuthenticatedMiddleware.
@@ -38,11 +38,11 @@ abstract class AuthMiddleware extends Middleware
     /**
      * Get the session manager.
      *
-     * @return Sessions
+     * @return Session
      */
-    protected static function getSession(): Sessions
+    protected static function getSession(): Session
     {
-        return self::$container->getSingleton(Sessions::class);
+        return self::$container->getSingleton(Session::class);
     }
 
     /**

@@ -18,7 +18,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Sessions;
+use Valkyrja\Session\Session;
 
 /**
  * Class ServiceProvider.
@@ -78,7 +78,7 @@ class ServiceProvider extends Provider
             new \Valkyrja\Auth\Managers\Auth(
                 $container->getSingleton(Crypt::class),
                 $container->getSingleton(ORM::class),
-                $container->getSingleton(Sessions::class),
+                $container->getSingleton(Session::class),
                 $config['auth']
             )
         );

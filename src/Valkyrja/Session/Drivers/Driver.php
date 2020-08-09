@@ -11,93 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session\Managers;
+namespace Valkyrja\Session\Drivers;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Session\Sessions as Contract;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Adapter;
+use Valkyrja\Session\Driver as Contract;
 
 /**
- * Class Sessions.
+ * Class Session.
  *
  * @author Melech Mizrachi
  */
-class Sessions implements Contract
+class Driver implements Contract
 {
     /**
-     * The sessions.
+     * The adapter.
      *
-     * @var Session[]
+     * @var Adapter
      */
-    protected static array $sessions = [];
-
-    /**
-     * The container.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The default session.
-     *
-     * @var string
-     */
-    protected string $defaultSession;
-
-    /**
-     * The sessions.
-     *
-     * @var array
-     */
-    protected array $sessionsConfig;
+    protected Adapter $adapter;
 
     /**
      * Session constructor.
      *
-     * @param Container $container The container
-     * @param array     $config    The config
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Adapter $adapter)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultSession = $config['default'];
-        $this->sessionsConfig = $config['sessions'];
-    }
-
-    /**
-     * Use a session by name.
-     *
-     * @param string|null $name    The session name
-     * @param string|null $adapter The adapter
-     *
-     * @return Session
-     */
-    public function useSession(string $name = null, string $adapter = null): Session
-    {
-        // The session to use
-        $name ??= $this->defaultSession;
-        // The adapter to use
-        $adapter ??= $this->sessionsConfig[$name]['adapter'];
-        // The cache key to use
-        $cacheKey = $name . $adapter;
-
-        return self::$sessions[$cacheKey]
-            ?? self::$sessions[$cacheKey] = $this->container->get(
-                $this->sessionsConfig[$name]['driver'],
-                [
-                    $name,
-                    $adapter,
-                ]
-            );
+        $this->adapter = $adapter;
     }
 
     /**
@@ -107,7 +47,7 @@ class Sessions implements Contract
      */
     public function start(): void
     {
-        $this->useSession()->start();
+        $this->adapter->start();
     }
 
     /**
@@ -117,7 +57,7 @@ class Sessions implements Contract
      */
     public function getId(): string
     {
-        return $this->useSession()->getId();
+        return $this->adapter->getId();
     }
 
     /**
@@ -129,7 +69,7 @@ class Sessions implements Contract
      */
     public function setId(string $id): void
     {
-        $this->useSession()->setId($id);
+        $this->adapter->setId($id);
     }
 
     /**
@@ -139,7 +79,7 @@ class Sessions implements Contract
      */
     public function getName(): string
     {
-        return $this->useSession()->getName();
+        return $this->adapter->getName();
     }
 
     /**
@@ -151,7 +91,7 @@ class Sessions implements Contract
      */
     public function setName(string $name): void
     {
-        $this->useSession()->setName($name);
+        $this->adapter->setName($name);
     }
 
     /**
@@ -161,7 +101,7 @@ class Sessions implements Contract
      */
     public function isActive(): bool
     {
-        return $this->useSession()->isActive();
+        return $this->adapter->isActive();
     }
 
     /**
@@ -173,7 +113,7 @@ class Sessions implements Contract
      */
     public function has(string $id): bool
     {
-        return $this->useSession()->has($id);
+        return $this->adapter->has($id);
     }
 
     /**
@@ -186,7 +126,7 @@ class Sessions implements Contract
      */
     public function get(string $id, $default = null)
     {
-        return $this->useSession()->get($id, $default);
+        return $this->adapter->get($id, $default);
     }
 
     /**
@@ -199,7 +139,7 @@ class Sessions implements Contract
      */
     public function set(string $id, string $value): void
     {
-        $this->useSession()->set($id, $value);
+        $this->adapter->set($id, $value);
     }
 
     /**
@@ -211,7 +151,7 @@ class Sessions implements Contract
      */
     public function remove(string $id): bool
     {
-        return $this->useSession()->remove($id);
+        return $this->adapter->remove($id);
     }
 
     /**
@@ -221,7 +161,7 @@ class Sessions implements Contract
      */
     public function all(): array
     {
-        return $this->useSession()->all();
+        return $this->adapter->all();
     }
 
     /**
@@ -233,7 +173,7 @@ class Sessions implements Contract
      */
     public function csrf(string $id): string
     {
-        return $this->useSession()->csrf($id);
+        return $this->adapter->csrf($id);
     }
 
     /**
@@ -246,7 +186,7 @@ class Sessions implements Contract
      */
     public function validateCsrf(string $id, string $token): bool
     {
-        return $this->useSession()->validateCsrf($id, $token);
+        return $this->adapter->validateCsrf($id, $token);
     }
 
     /**
@@ -256,7 +196,7 @@ class Sessions implements Contract
      */
     public function clear(): void
     {
-        $this->useSession()->clear();
+        $this->adapter->clear();
     }
 
     /**
@@ -266,6 +206,6 @@ class Sessions implements Contract
      */
     public function destroy(): void
     {
-        $this->useSession()->destroy();
+        $this->adapter->destroy();
     }
 }

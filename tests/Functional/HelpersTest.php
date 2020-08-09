@@ -35,7 +35,7 @@ use Valkyrja\HttpKernel\Kernels\Kernel;
 use Valkyrja\Log\Managers\Logger;
 use Valkyrja\Routing\Dispatchers\Router;
 use Valkyrja\Routing\Route;
-use Valkyrja\Session\Managers\Sessions;
+use Valkyrja\Session\Managers\Session;
 use Valkyrja\Support\Directory;
 use Valkyrja\Tests\TestCase;
 use Valkyrja\View\Managers\View;
@@ -374,7 +374,7 @@ class HelpersTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertEquals(true, \Valkyrja\session() instanceof Sessions);
+        self::assertEquals(true, \Valkyrja\session() instanceof Session);
     }
 
     /**

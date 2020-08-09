@@ -22,9 +22,9 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Sessions;
-use Valkyrja\Session\Session as SessionContract;
-use Valkyrja\Session\Sessions\Session;
+use Valkyrja\Session\Driver as SessionContract;
+use Valkyrja\Session\Drivers\Driver;
+use Valkyrja\Session\Session;
 
 /**
  * Class ServiceProvider.
@@ -41,8 +41,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Sessions::class        => 'publishManager',
-            Session::class         => 'publishDefaultSession',
+            Session::class         => 'publishManager',
+            Driver::class          => 'publishDefaultSession',
             SessionContract::class => 'publishDefaultSessionSingleton',
             CacheAdapter::class    => 'publishCacheAdapter',
             CookieAdapter::class   => 'publishCookieAdapter',
@@ -59,7 +59,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Sessions::class,
+            Session::class,
             CacheAdapter::class,
             CookieAdapter::class,
             NullAdapter::class,
@@ -90,8 +90,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            Sessions::class,
-            new \Valkyrja\Session\Managers\Sessions(
+            Session::class,
+            new \Valkyrja\Session\Managers\Session(
                 $container,
                 $config['session']
             )
@@ -108,9 +108,9 @@ class ServiceProvider extends Provider
     public static function publishDefaultSession(Container $container): void
     {
         $container->setClosure(
-            Session::class,
-            static function (string $session, string $adapter) use ($container): Session {
-                return new Session(
+            Driver::class,
+            static function (string $session, string $adapter) use ($container): Driver {
+                return new Driver(
                     $container->get(
                         $adapter,
                         [
@@ -131,8 +131,8 @@ class ServiceProvider extends Provider
      */
     public static function publishDefaultSessionSingleton(Container $container): void
     {
-        /** @var Sessions $manager */
-        $manager = $container->getSingleton(Sessions::class);
+        /** @var Session $manager */
+        $manager = $container->getSingleton(Session::class);
 
         $container->setSingleton(
             SessionContract::class,

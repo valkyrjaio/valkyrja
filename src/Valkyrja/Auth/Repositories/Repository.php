@@ -25,7 +25,7 @@ use Valkyrja\Auth\Registrator;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\Session\Sessions;
+use Valkyrja\Session\Session;
 use Valkyrja\Support\Type\Cls;
 
 use function time;
@@ -68,9 +68,9 @@ class Repository implements Contract
     /**
      * The session manager.
      *
-     * @var Sessions
+     * @var Session
      */
-    protected Sessions $session;
+    protected Session $session;
 
     /**
      * The user entity.
@@ -103,12 +103,12 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Sessions $session
-     * @param Adapter  $adapter
-     * @param array    $config
-     * @param string   $user
+     * @param Session $session
+     * @param Adapter $adapter
+     * @param array   $config
+     * @param string  $user
      */
-    public function __construct(Adapter $adapter, Sessions $session, array $config, string $user)
+    public function __construct(Adapter $adapter, Session $session, array $config, string $user)
     {
         Cls::validateInherits($user, User::class);
 

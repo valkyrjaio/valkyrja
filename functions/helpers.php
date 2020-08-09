@@ -53,7 +53,7 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Url;
-use Valkyrja\Session\Sessions;
+use Valkyrja\Session\Session;
 use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;
@@ -554,11 +554,11 @@ function redirectTo(
 /**
  * Return the session.
  *
- * @return Sessions
+ * @return Session
  */
-function session(): Sessions
+function session(): Session
 {
-    return Valkyrja::app()->container()->getSingleton(Sessions::class);
+    return Valkyrja::app()->container()->getSingleton(Session::class);
 }
 
 /**

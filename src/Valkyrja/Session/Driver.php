@@ -14,22 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Session;
 
 /**
- * Interface Sessions.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Sessions
+interface Driver
 {
-    /**
-     * Use a session by name.
-     *
-     * @param string|null $name    The session name
-     * @param string|null $adapter The adapter
-     *
-     * @return Session
-     */
-    public function useSession(string $name = null, string $adapter = null): Session;
-
     /**
      * Start the session.
      *
