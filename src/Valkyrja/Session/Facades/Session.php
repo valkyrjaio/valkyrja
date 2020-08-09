@@ -22,7 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $name = null)
+ * @method static Adapter useSession(string $name = null)
  * @method static void start()
  * @method static string getId()
  * @method static void setId(string $id)

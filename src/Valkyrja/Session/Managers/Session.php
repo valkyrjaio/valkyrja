@@ -46,11 +46,18 @@ class Session implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The default session.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $defaultSession;
+
+    /**
+     * The sessions.
+     *
+     * @var array
+     */
+    protected array $sessions;
 
     /**
      * Session constructor.
@@ -62,23 +69,27 @@ class Session implements Contract
     {
         $this->container      = $container;
         $this->config         = $config;
-        $this->defaultAdapter = $config['adapter'];
+        $this->defaultSession = $config['default'];
+        $this->sessions       = $config['sessions'];
     }
 
     /**
-     * Get an adapter by name.
+     * Use a session by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name The session name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useSession(string $name = null): Adapter
     {
-        $name ??= $this->defaultAdapter;
+        $name ??= $this->defaultSession;
 
         return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
+            ?? self::$adapters[$name] = $this->container->get(
+                $this->sessions[$name]['adapter'],
+                [
+                    $name,
+                ]
             );
     }
 
@@ -89,7 +100,7 @@ class Session implements Contract
      */
     public function start(): void
     {
-        $this->getAdapter()->start();
+        $this->useSession()->start();
     }
 
     /**
@@ -99,7 +110,7 @@ class Session implements Contract
      */
     public function getId(): string
     {
-        return $this->getAdapter()->getId();
+        return $this->useSession()->getId();
     }
 
     /**
@@ -111,7 +122,7 @@ class Session implements Contract
      */
     public function setId(string $id): void
     {
-        $this->getAdapter()->setId($id);
+        $this->useSession()->setId($id);
     }
 
     /**
@@ -121,7 +132,7 @@ class Session implements Contract
      */
     public function getName(): string
     {
-        return $this->getAdapter()->getName();
+        return $this->useSession()->getName();
     }
 
     /**
@@ -133,7 +144,7 @@ class Session implements Contract
      */
     public function setName(string $name): void
     {
-        $this->getAdapter()->setName($name);
+        $this->useSession()->setName($name);
     }
 
     /**
@@ -143,7 +154,7 @@ class Session implements Contract
      */
     public function isActive(): bool
     {
-        return $this->getAdapter()->isActive();
+        return $this->useSession()->isActive();
     }
 
     /**
@@ -155,7 +166,7 @@ class Session implements Contract
      */
     public function has(string $id): bool
     {
-        return $this->getAdapter()->has($id);
+        return $this->useSession()->has($id);
     }
 
     /**
@@ -168,7 +179,7 @@ class Session implements Contract
      */
     public function get(string $id, $default = null)
     {
-        return $this->getAdapter()->get($id, $default);
+        return $this->useSession()->get($id, $default);
     }
 
     /**
@@ -181,7 +192,7 @@ class Session implements Contract
      */
     public function set(string $id, string $value): void
     {
-        $this->getAdapter()->set($id, $value);
+        $this->useSession()->set($id, $value);
     }
 
     /**
@@ -193,7 +204,7 @@ class Session implements Contract
      */
     public function remove(string $id): bool
     {
-        return $this->getAdapter()->remove($id);
+        return $this->useSession()->remove($id);
     }
 
     /**
@@ -203,7 +214,7 @@ class Session implements Contract
      */
     public function all(): array
     {
-        return $this->getAdapter()->all();
+        return $this->useSession()->all();
     }
 
     /**
@@ -215,7 +226,7 @@ class Session implements Contract
      */
     public function csrf(string $id): string
     {
-        return $this->getAdapter()->csrf($id);
+        return $this->useSession()->csrf($id);
     }
 
     /**
@@ -228,7 +239,7 @@ class Session implements Contract
      */
     public function validateCsrf(string $id, string $token): bool
     {
-        return $this->getAdapter()->validateCsrf($id, $token);
+        return $this->useSession()->validateCsrf($id, $token);
     }
 
     /**
@@ -238,7 +249,7 @@ class Session implements Contract
      */
     public function clear(): void
     {
-        $this->getAdapter()->clear();
+        $this->useSession()->clear();
     }
 
     /**
@@ -248,6 +259,6 @@ class Session implements Contract
      */
     public function destroy(): void
     {
-        $this->getAdapter()->destroy();
+        $this->useSession()->destroy();
     }
 }

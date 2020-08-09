@@ -26,20 +26,24 @@ use Valkyrja\Session\Adapters\PHPAdapter;
  */
 final class ConfigValue
 {
-    public const ID       = null;
-    public const NAME     = null;
-    public const ADAPTER  = CKP::PHP;
+    public const DEFAULT  = CKP::DEFAULT;
     public const ADAPTERS = [
         CKP::CACHE  => CacheAdapter::class,
         CKP::COOKIE => CookieAdapter::class,
         CKP::NULL   => NullAdapter::class,
         CKP::PHP    => PHPAdapter::class,
     ];
+    public const SESSIONS = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER => CKP::PHP,
+            CKP::ID      => null,
+            CKP::NAME    => null,
+        ],
+    ];
 
     public static array $defaults = [
-        CKP::ID       => self::ID,
-        CKP::NAME     => self::NAME,
-        CKP::ADAPTER  => self::ADAPTER,
+        CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::SESSIONS => self::SESSIONS,
     ];
 }

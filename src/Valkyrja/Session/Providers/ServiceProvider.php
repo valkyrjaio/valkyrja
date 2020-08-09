@@ -103,14 +103,18 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $cache    = $container->getSingleton(Cache::class);
+        $config   = $container->getSingleton('config');
+        $sessions = $config['session']['sessions'];
 
-        $container->setSingleton(
+        $container->setClosure(
             CacheAdapter::class,
-            new CacheAdapter(
-                $container->getSingleton(Cache::class),
-                $config['session']
-            )
+            static function (string $session) use ($cache, $sessions): CacheAdapter {
+                return new CacheAdapter(
+                    $cache,
+                    $sessions[$session]
+                );
+            }
         );
     }
 
@@ -123,15 +127,20 @@ class ServiceProvider extends Provider
      */
     public static function publishCookieAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $crypt    = $container->getSingleton(Crypt::class);
+        $request  = $container->getSingleton(Request::class);
+        $config   = $container->getSingleton('config');
+        $sessions = $config['session']['sessions'];
 
-        $container->setSingleton(
+        $container->setClosure(
             CookieAdapter::class,
-            new CookieAdapter(
-                $container->getSingleton(Crypt::class),
-                $container->getSingleton(Request::class),
-                $config['session']
-            )
+            static function (string $session) use ($crypt, $request, $sessions): CookieAdapter {
+                return new CookieAdapter(
+                    $crypt,
+                    $request,
+                    $sessions[$session]
+                );
+            }
         );
     }
 
@@ -144,13 +153,16 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config   = $container->getSingleton('config');
+        $sessions = $config['session']['sessions'];
 
-        $container->setSingleton(
+        $container->setClosure(
             NullAdapter::class,
-            new NullAdapter(
-                $config['session']
-            )
+            static function (string $session) use ($sessions): NullAdapter {
+                return new NullAdapter(
+                    $sessions[$session]
+                );
+            }
         );
     }
 
@@ -163,13 +175,16 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config   = $container->getSingleton('config');
+        $sessions = $config['session']['sessions'];
 
-        $container->setSingleton(
+        $container->setClosure(
             PHPAdapter::class,
-            new PHPAdapter(
-                $config['session']
-            )
+            static function (string $session) use ($sessions): PHPAdapter {
+                return new PHPAdapter(
+                    $sessions[$session]
+                );
+            }
         );
     }
 }

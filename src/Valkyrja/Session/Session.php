@@ -21,13 +21,13 @@ namespace Valkyrja\Session;
 interface Session
 {
     /**
-     * Get an adapter by name.
+     * Use a session by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name The session name
      *
      * @return Adapter
      */
-    public function getAdapter(string $name = null): Adapter;
+    public function useSession(string $name = null): Adapter;
 
     /**
      * Start the session.

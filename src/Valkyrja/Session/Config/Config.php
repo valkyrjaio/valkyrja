@@ -30,10 +30,9 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::ID,
-        CKP::NAME,
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::SESSIONS,
     ];
 
     /**
@@ -42,32 +41,17 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::ID       => EnvKey::SESSION_ID,
-        CKP::NAME     => EnvKey::SESSION_NAME,
-        CKP::ADAPTER  => EnvKey::SESSION_ADAPTER,
+        CKP::DEFAULT  => EnvKey::SESSION_DEFAULT,
         CKP::ADAPTERS => EnvKey::SESSION_ADAPTERS,
+        CKP::SESSIONS => EnvKey::SESSION_SESSIONS,
     ];
 
     /**
-     * The optional id.
-     *
-     * @var string|null
-     */
-    public ?string $id = null;
-
-    /**
-     * The optional name.
-     *
-     * @var string|null
-     */
-    public ?string $name = null;
-
-    /**
-     * The default adapter.
+     * The default session.
      *
      * @var string
      */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
@@ -75,4 +59,11 @@ class Config extends Model
      * @var array
      */
     public array $adapters;
+
+    /**
+     * The sessions.
+     *
+     * @var array
+     */
+    public array $sessions;
 }
