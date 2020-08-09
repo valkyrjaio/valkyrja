@@ -83,8 +83,8 @@ class Manager implements Contract
      */
     public function useSession(string $name = null, string $adapter = null): Session
     {
-        $name      ??= $this->defaultSession;
-        $adapter   ??= $this->sessionsConfig[$name]['adapter'];
+        $name ??= $this->defaultSession;
+        $adapter ??= $this->sessionsConfig[$name]['adapter'];
         $cacheName = $name . $adapter;
 
         return self::$sessions[$cacheName]
