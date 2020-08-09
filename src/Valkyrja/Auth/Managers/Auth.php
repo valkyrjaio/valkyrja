@@ -24,7 +24,7 @@ use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
-use Valkyrja\Session\SessionManager;
+use Valkyrja\Session\Sessions;
 
 /**
  * Class Auth.
@@ -64,9 +64,9 @@ class Auth implements Contract
     /**
      * The session manager.
      *
-     * @var SessionManager
+     * @var Sessions
      */
-    protected SessionManager $session;
+    protected Sessions $session;
 
     /**
      * The config.
@@ -99,12 +99,12 @@ class Auth implements Contract
     /**
      * Manager constructor.
      *
-     * @param Crypt   $crypt
-     * @param ORM     $orm
-     * @param SessionManager $session
-     * @param array   $config
+     * @param Crypt    $crypt
+     * @param ORM      $orm
+     * @param Sessions $session
+     * @param array    $config
      */
-    public function __construct(Crypt $crypt, ORM $orm, SessionManager $session, array $config)
+    public function __construct(Crypt $crypt, ORM $orm, Sessions $session, array $config)
     {
         $this->crypt             = $crypt;
         $this->orm               = $orm;
@@ -189,9 +189,9 @@ class Auth implements Contract
     /**
      * Get the Session.
      *
-     * @return SessionManager
+     * @return Sessions
      */
-    public function getSession(): SessionManager
+    public function getSession(): Sessions
     {
         return $this->session;
     }
@@ -199,11 +199,11 @@ class Auth implements Contract
     /**
      * Set the session.
      *
-     * @param SessionManager $session
+     * @param Sessions $session
      *
      * @return static
      */
-    public function setSession(SessionManager $session): self
+    public function setSession(Sessions $session): self
     {
         $this->session = $session;
 

@@ -22,7 +22,7 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\SessionManager;
+use Valkyrja\Session\Sessions;
 use Valkyrja\Session\Session as SessionContract;
 use Valkyrja\Session\Sessions\Session;
 
@@ -41,7 +41,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            SessionManager::class  => 'publishManager',
+            Sessions::class        => 'publishManager',
             Session::class         => 'publishDefaultSession',
             SessionContract::class => 'publishDefaultSessionSingleton',
             CacheAdapter::class    => 'publishCacheAdapter',
@@ -59,7 +59,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            SessionManager::class,
+            Sessions::class,
             CacheAdapter::class,
             CookieAdapter::class,
             NullAdapter::class,
@@ -90,8 +90,8 @@ class ServiceProvider extends Provider
         $config = $container->getSingleton('config');
 
         $container->setSingleton(
-            SessionManager::class,
-            new \Valkyrja\Session\Managers\SessionManager(
+            Sessions::class,
+            new \Valkyrja\Session\Managers\Sessions(
                 $container,
                 $config['session']
             )
@@ -131,8 +131,8 @@ class ServiceProvider extends Provider
      */
     public static function publishDefaultSessionSingleton(Container $container): void
     {
-        /** @var SessionManager $manager */
-        $manager = $container->getSingleton(SessionManager::class);
+        /** @var Sessions $manager */
+        $manager = $container->getSingleton(Sessions::class);
 
         $container->setSingleton(
             SessionContract::class,

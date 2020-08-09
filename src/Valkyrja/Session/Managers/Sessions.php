@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Session\SessionManager as Contract;
+use Valkyrja\Session\Sessions as Contract;
 use Valkyrja\Session\Session;
 
 /**
- * Class SessionManager.
+ * Class Sessions.
  *
  * @author Melech Mizrachi
  */
-class SessionManager implements Contract
+class Sessions implements Contract
 {
     /**
      * The sessions.

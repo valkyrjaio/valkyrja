@@ -34,7 +34,7 @@ use Valkyrja\Log\Logger;
 use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Router;
-use Valkyrja\Session\SessionManager;
+use Valkyrja\Session\Sessions;
 use Valkyrja\Tests\Config;
 use Valkyrja\Tests\EnvTest;
 use Valkyrja\Tests\TestCase;
@@ -355,7 +355,7 @@ class ApplicationTest extends TestCase
      */
     public function testSession(): void
     {
-        self::assertEquals(true, $this->app[SessionManager::class] instanceof SessionManager);
+        self::assertEquals(true, $this->app[Sessions::class] instanceof Sessions);
     }
 
     /**
