@@ -40,7 +40,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class       => 'publishManager',
+            Session::class       => 'publishSession',
             Driver::class        => 'publishDefaultDriver',
             CacheAdapter::class  => 'publishCacheAdapter',
             CookieAdapter::class => 'publishCookieAdapter',
@@ -77,13 +77,13 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the manager service.
+     * Publish the session service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishManager(Container $container): void
+    public static function publishSession(Container $container): void
     {
         $config = $container->getSingleton('config');
 
