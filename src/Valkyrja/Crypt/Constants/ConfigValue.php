@@ -23,9 +23,6 @@ use Valkyrja\Crypt\Adapters\SodiumAdapter;
  */
 final class ConfigValue
 {
-    public const KEY      = 'some_secret_key';
-    public const KEY_PATH = null;
-    public const ADAPTER  = CKP::SODIUM;
     public const DEFAULT  = CKP::DEFAULT;
     public const ADAPTERS = [
         CKP::SODIUM => SodiumAdapter::class,
@@ -39,9 +36,7 @@ final class ConfigValue
     ];
 
     public static array $defaults = [
-        CKP::KEY      => self::KEY,
-        CKP::KEY_PATH => self::KEY_PATH,
-        CKP::ADAPTER  => self::ADAPTER,
+        CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
         CKP::CRYPTS   => self::CRYPTS,
     ];
