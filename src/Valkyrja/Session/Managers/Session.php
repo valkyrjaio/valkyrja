@@ -46,6 +46,20 @@ class Session implements Contract
     protected array $config;
 
     /**
+     * The adapters.
+     *
+     * @var array
+     */
+    protected array $adapters;
+
+    /**
+     * The drivers config.
+     *
+     * @var array
+     */
+    protected array $driversConfig;
+
+    /**
      * The default session.
      *
      * @var string
@@ -70,6 +84,8 @@ class Session implements Contract
         $this->container      = $container;
         $this->config         = $config;
         $this->defaultSession = $config['default'];
+        $this->adapters       = $config['drivers'];
+        $this->driversConfig  = $config['drivers'];
         $this->sessions       = $config['sessions'];
     }
 
@@ -85,17 +101,19 @@ class Session implements Contract
     {
         // The session to use
         $name ??= $this->defaultSession;
+        // The session to use
+        $session = $this->sessions[$name];
         // The adapter to use
-        $adapter ??= $this->sessions[$name]['adapter'];
+        $adapter ??= $session['adapter'];
         // The cache key to use
         $cacheKey = $name . $adapter;
 
         return self::$drivers[$cacheKey]
             ?? self::$drivers[$cacheKey] = $this->container->get(
-                $this->sessions[$name]['driver'],
+                $this->driversConfig[$session['driver']],
                 [
                     $name,
-                    $adapter,
+                    $this->adapters[$adapter],
                 ]
             );
     }
