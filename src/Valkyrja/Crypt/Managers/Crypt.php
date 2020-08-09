@@ -47,6 +47,13 @@ class Crypt implements Contract
     protected array $config;
 
     /**
+     * The crypts.
+     *
+     * @var array
+     */
+    protected array $crypts;
+
+    /**
      * The default crypt.
      *
      * @var string
@@ -70,6 +77,7 @@ class Crypt implements Contract
     {
         $this->container    = $container;
         $this->config       = $config;
+        $this->crypts       = $config['crypts'];
         $this->defaultCrypt = $config['default'];
     }
 
@@ -85,8 +93,11 @@ class Crypt implements Contract
         $name ??= $this->defaultCrypt;
 
         return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['crypts'][$name]['adapter']
+            ?? self::$adapters[$name] = $this->container->get(
+                $this->crypts[$name]['adapter'],
+                [
+                    $name,
+                ]
             );
     }
 

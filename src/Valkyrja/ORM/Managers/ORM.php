@@ -63,6 +63,13 @@ class ORM implements Contract
     protected array $config;
 
     /**
+     * The connections.
+     *
+     * @var array
+     */
+    protected array $connections;
+
+    /**
      * The default connection.
      *
      * @var string
@@ -86,6 +93,7 @@ class ORM implements Contract
     {
         $this->container         = $container;
         $this->config            = $config;
+        $this->connections       = $config['connections'];
         $this->defaultConnection = $config['default'];
         $this->defaultRepository = $config['repository'];
     }
@@ -103,7 +111,7 @@ class ORM implements Contract
 
         return self::$adapters[$name]
             ?? self::$adapters[$name] = $this->container->get(
-                $this->config['connections'][$name]['adapter'],
+                $this->connections[$name]['adapter'],
                 [
                     $name,
                 ]
@@ -174,7 +182,6 @@ class ORM implements Contract
             ?? self::$repositories[$name] = $this->container->get(
                 $name,
                 [
-                    $this,
                     $entity,
                 ]
             );

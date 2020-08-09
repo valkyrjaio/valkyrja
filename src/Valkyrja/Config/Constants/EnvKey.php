@@ -183,8 +183,9 @@ final class EnvKey
 
     public const SESSION_ID       = 'SESSION_ID';
     public const SESSION_NAME     = 'SESSION_NAME';
-    public const SESSION_ADAPTER  = 'SESSION_ADAPTER';
+    public const SESSION_DEFAULT  = 'SESSION_DEFAULT';
     public const SESSION_ADAPTERS = 'SESSION_ADAPTERS';
+    public const SESSION_SESSIONS = 'SESSION_SESSIONS';
 
     public const SMS_ADAPTER        = 'SMS_ADAPTER';
     public const SMS_ADAPTERS       = 'SMS_ADAPTERS';

@@ -96,12 +96,13 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config      = $container->getSingleton('config');
+        $connections = $config['connections'];
 
         $container->setClosure(
             PDOAdapter::class,
-            static function (string $connection) use ($config) {
-                $connectionConfig = $config['connections'][$connection];
+            static function (string $connection) use ($connections) {
+                $connectionConfig = $connections[$connection];
 
                 return new PDOAdapter(
                     new PDO(

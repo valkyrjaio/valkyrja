@@ -163,4 +163,5 @@ final class ConfigKeyPart
     public const DOMAIN                      = 'domain';
     public const API_KEY                     = 'apiKey';
     public const CRYPTS                      = 'crypts';
+    public const SESSIONS                    = 'sessions';
 }

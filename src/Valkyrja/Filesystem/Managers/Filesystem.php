@@ -47,6 +47,13 @@ class Filesystem implements FilesystemContract
     protected array $config;
 
     /**
+     * The disks.
+     *
+     * @var array
+     */
+    protected array $disks;
+
+    /**
      * The default disk.
      *
      * @var string
@@ -63,6 +70,7 @@ class Filesystem implements FilesystemContract
     {
         $this->container   = $container;
         $this->config      = $config;
+        $this->disks       = $config['disks'];
         $this->defaultDisk = $config['default'];
     }
 
@@ -79,7 +87,7 @@ class Filesystem implements FilesystemContract
 
         return self::$adapters[$name]
             ?? self::$adapters[$name] = $this->container->get(
-                $this->config['disks'][$name]['adapter'],
+                $this->disks[$name]['adapter'],
                 [
                     $name,
                 ]

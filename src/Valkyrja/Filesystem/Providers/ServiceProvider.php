@@ -100,16 +100,17 @@ class ServiceProvider extends Provider
     public static function publishFlysystemAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
+        $disks  = $config['filesystem']['disks'];
 
         $container->setClosure(
             FlysystemAdapter::class,
-            static function (string $disk) use ($container, $config) {
+            static function (string $disk) use ($container, $disks) {
                 return new FlysystemAdapter(
                     new Flysystem(
                         $container->get(
-                            $config['filesystem']['disks'][$disk]['flysystemAdapter'],
+                            $disks[$disk]['flysystemAdapter'],
                             [
-                                $disk
+                                $disk,
                             ]
                         )
                     )
@@ -128,12 +129,13 @@ class ServiceProvider extends Provider
     public static function publishFlysystemLocalAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
+        $disks  = $config['filesystem']['disks'];
 
         $container->setClosure(
             FlysystemLocalAdapter::class,
-            static function (string $disk) use ($config) {
+            static function (string $disk) use ($disks) {
                 return new FlysystemLocalAdapter(
-                    $config['filesystem']['disks'][$disk]['dir']
+                    $disks[$disk]['dir']
                 );
             }
         );
@@ -149,11 +151,12 @@ class ServiceProvider extends Provider
     public static function publishFlysystemAwsS3Adapter(Container $container): void
     {
         $config = $container->getSingleton('config');
+        $disks  = $config['filesystem']['disks'];
 
         $container->setClosure(
             FlysystemAwsS3Adapter::class,
-            static function (string $disk) use ($config) {
-                $s3Config     = $config['filesystem']['disks'][$disk];
+            static function (string $disk) use ($disks) {
+                $s3Config     = $disks[$disk];
                 $clientConfig = [
                     'credentials' => [
                         'key'    => $s3Config['key'],

@@ -40,8 +40,8 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::ADAPTER  => EnvKey::CRYPT_ADAPTER,
-        CKP::ADAPTERS => EnvKey::CRYPT_ADAPTERS,
+        CKP::ADAPTER  => EnvKey::CLIENT_ADAPTER,
+        CKP::ADAPTERS => EnvKey::CLIENT_ADAPTERS,
     ];
 
     /**

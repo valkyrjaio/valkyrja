@@ -15,8 +15,8 @@ namespace Valkyrja\Crypt\Providers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Adapters\SodiumAdapter;
+use Valkyrja\Crypt\Crypt;
 
 /**
  * Class ServiceProvider.
@@ -92,12 +92,13 @@ class ServiceProvider extends Provider
     public static function publishSodiumAdapter(Container $container): void
     {
         $config = $container->getSingleton('config');
+        $crypts = $config['crypt']['crypts'];
 
         $container->setClosure(
             SodiumAdapter::class,
-            static function ($name) use ($config) {
+            static function (string $crypt) use ($crypts): SodiumAdapter {
                 return new SodiumAdapter(
-                    $config['crypts'][$name]
+                    $crypts[$crypt]
                 );
             }
         );
