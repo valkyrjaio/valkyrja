@@ -22,7 +22,8 @@ use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
 use Valkyrja\Session\Adapters\PHPAdapter;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Manager;
+use Valkyrja\Session\Sessions\Session;
 
 /**
  * Class ServiceProvider.
@@ -39,7 +40,8 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Session::class       => 'publishSession',
+            Manager::class       => 'publishManager',
+            Session::class       => 'publishDefaultSession',
             CacheAdapter::class  => 'publishCacheAdapter',
             CookieAdapter::class => 'publishCookieAdapter',
             NullAdapter::class   => 'publishNullAdapter',
@@ -55,7 +57,7 @@ class ServiceProvider extends Provider
     public static function provides(): array
     {
         return [
-            Session::class,
+            Manager::class,
             CacheAdapter::class,
             CookieAdapter::class,
             NullAdapter::class,
@@ -75,22 +77,46 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the manager service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishManager(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Manager::class,
+            new \Valkyrja\Session\Managers\Manager(
+                $container,
+                $config['session']
+            )
+        );
+    }
+
+    /**
      * Publish the session service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishSession(Container $container): void
+    public static function publishDefaultSession(Container $container): void
     {
-        $config = $container->getSingleton('config');
-
-        $container->setSingleton(
+        $container->setClosure(
             Session::class,
-            new \Valkyrja\Session\Managers\Session(
-                $container,
-                $config['session']
-            )
+            static function (string $session, string $adapter) use ($container): Session {
+                return new Session(
+                    $container->get(
+                        $adapter,
+                        [
+                            $session,
+                        ]
+                    )
+                );
+            }
         );
     }
 

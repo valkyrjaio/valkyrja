@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Facades;
 
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\Session as Contract;
+use Valkyrja\Session\Manager as Contract;
+use Valkyrja\Session\Session as SessionContract;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter useSession(string $name = null)
+ * @method static SessionContract useSession(string $name = null, string $adapter = null)
  * @method static void start()
  * @method static string getId()
  * @method static void setId(string $id)

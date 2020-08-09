@@ -11,44 +11,76 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Session;
+namespace Valkyrja\Session\Sessions;
+
+use Valkyrja\Session\Adapter;
+use Valkyrja\Session\Session as Contract;
 
 /**
- * Interface Session.
+ * Class Session.
  *
  * @author Melech Mizrachi
  */
-interface Session
+class Session implements Contract
 {
+    /**
+     * The adapter.
+     *
+     * @var Adapter
+     */
+    protected Adapter $adapter;
+
+    /**
+     * Session constructor.
+     *
+     * @param Adapter $adapter The adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
+
     /**
      * Start the session.
      *
      * @return void
      */
-    public function start(): void;
+    public function start(): void
+    {
+        $this->adapter->start();
+    }
 
     /**
      * Get the session id.
      *
      * @return string
      */
-    public function getId(): string;
+    public function getId(): string
+    {
+        return $this->adapter->getId();
+    }
 
     /**
      * Set the session id.
      *
-     * @param string $id The session id
+     * @param string $id
      *
      * @return void
      */
-    public function setId(string $id): void;
+    public function setId(string $id): void
+    {
+        $this->adapter->setId($id);
+    }
 
     /**
      * Get the session name.
      *
      * @return string
      */
-    public function getName(): string;
+    public function getName(): string
+    {
+        return $this->adapter->getName();
+    }
 
     /**
      * Set the session name.
@@ -57,14 +89,20 @@ interface Session
      *
      * @return void
      */
-    public function setName(string $name): void;
+    public function setName(string $name): void
+    {
+        $this->adapter->setName($name);
+    }
 
     /**
      * Is a session active?
      *
      * @return bool
      */
-    public function isActive(): bool;
+    public function isActive(): bool
+    {
+        return $this->adapter->isActive();
+    }
 
     /**
      * Determine whether the session has an item.
@@ -73,7 +111,10 @@ interface Session
      *
      * @return bool
      */
-    public function has(string $id): bool;
+    public function has(string $id): bool
+    {
+        return $this->adapter->has($id);
+    }
 
     /**
      * Get an item from the session.
@@ -83,7 +124,10 @@ interface Session
      *
      * @return mixed
      */
-    public function get(string $id, $default = null);
+    public function get(string $id, $default = null)
+    {
+        return $this->adapter->get($id, $default);
+    }
 
     /**
      * Set an item into the session.
@@ -93,7 +137,10 @@ interface Session
      *
      * @return void
      */
-    public function set(string $id, string $value): void;
+    public function set(string $id, string $value): void
+    {
+        $this->adapter->set($id, $value);
+    }
 
     /**
      * Remove a session item.
@@ -102,14 +149,20 @@ interface Session
      *
      * @return bool
      */
-    public function remove(string $id): bool;
+    public function remove(string $id): bool
+    {
+        return $this->adapter->remove($id);
+    }
 
     /**
      * Get all items in the session.
      *
      * @return array
      */
-    public function all(): array;
+    public function all(): array
+    {
+        return $this->adapter->all();
+    }
 
     /**
      * Get a csrf token for a unique token id.
@@ -118,7 +171,10 @@ interface Session
      *
      * @return string
      */
-    public function csrf(string $id): string;
+    public function csrf(string $id): string
+    {
+        return $this->adapter->csrf($id);
+    }
 
     /**
      * Validate a csrf token.
@@ -128,19 +184,28 @@ interface Session
      *
      * @return bool
      */
-    public function validateCsrf(string $id, string $token): bool;
+    public function validateCsrf(string $id, string $token): bool
+    {
+        return $this->adapter->validateCsrf($id, $token);
+    }
 
     /**
      * Clear the local session.
      *
      * @return void
      */
-    public function clear(): void;
+    public function clear(): void
+    {
+        $this->adapter->clear();
+    }
 
     /**
      * Destroy the session.
      *
      * @return void
      */
-    public function destroy(): void;
+    public function destroy(): void
+    {
+        $this->adapter->destroy();
+    }
 }

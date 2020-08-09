@@ -88,6 +88,7 @@ final class ConfigKeyPart
     public const PGSQL                       = 'pgsql';
     public const SQLSRV                      = 'sqlsrv';
     public const DRIVER                      = 'driver';
+    public const DRIVERS                     = 'drivers';
     public const HOST                        = 'host';
     public const PORT                        = 'port';
     public const DB                          = 'db';

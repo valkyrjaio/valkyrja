@@ -32,6 +32,7 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::DRIVERS,
         CKP::SESSIONS,
     ];
 
@@ -43,6 +44,7 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::DEFAULT  => EnvKey::SESSION_DEFAULT,
         CKP::ADAPTERS => EnvKey::SESSION_ADAPTERS,
+        CKP::DRIVERS  => EnvKey::SESSION_ADAPTERS,
         CKP::SESSIONS => EnvKey::SESSION_SESSIONS,
     ];
 
@@ -59,6 +61,13 @@ class Config extends Model
      * @var array
      */
     public array $adapters;
+
+    /**
+     * The drivers.
+     *
+     * @var array
+     */
+    public array $drivers;
 
     /**
      * The sessions.

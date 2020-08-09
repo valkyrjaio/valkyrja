@@ -14,22 +14,22 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Session\Adapter;
-use Valkyrja\Session\Session as Contract;
+use Valkyrja\Session\Manager as Contract;
+use Valkyrja\Session\Session;
 
 /**
- * Class Session.
+ * Class Manager.
  *
  * @author Melech Mizrachi
  */
-class Session implements Contract
+class Manager implements Contract
 {
     /**
-     * The adapters.
+     * The sessions.
      *
-     * @var Adapter[]
+     * @var Session[]
      */
-    protected static array $adapters = [];
+    protected static array $sessions = [];
 
     /**
      * The container.
@@ -57,7 +57,7 @@ class Session implements Contract
      *
      * @var array
      */
-    protected array $sessions;
+    protected array $sessionsConfig;
 
     /**
      * Session constructor.
@@ -70,25 +70,29 @@ class Session implements Contract
         $this->container      = $container;
         $this->config         = $config;
         $this->defaultSession = $config['default'];
-        $this->sessions       = $config['sessions'];
+        $this->sessionsConfig = $config['sessions'];
     }
 
     /**
      * Use a session by name.
      *
-     * @param string|null $name The session name
+     * @param string|null $name    The session name
+     * @param string|null $adapter The adapter
      *
-     * @return Adapter
+     * @return Session
      */
-    public function useSession(string $name = null): Adapter
+    public function useSession(string $name = null, string $adapter = null): Session
     {
-        $name ??= $this->defaultSession;
+        $name      ??= $this->defaultSession;
+        $adapter   ??= $this->sessionsConfig[$name]['adapter'];
+        $cacheName = $name . $adapter;
 
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->get(
-                $this->sessions[$name]['adapter'],
+        return self::$sessions[$cacheName]
+            ?? self::$sessions[$cacheName] = $this->container->get(
+                $this->sessionsConfig[$name]['driver'],
                 [
                     $name,
+                    $adapter,
                 ]
             );
     }

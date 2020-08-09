@@ -53,7 +53,7 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Routing\Url;
-use Valkyrja\Session\Session;
+use Valkyrja\Session\Manager as SessionManager;
 use Valkyrja\SMS\Message as SMSMessage;
 use Valkyrja\SMS\SMS;
 use Valkyrja\Support\Directory;
@@ -161,8 +161,8 @@ function client(): Client
 /**
  * Get the config.
  *
- * @param string $key     [optional] The key to get
- * @param mixed  $default [optional] The default value if the key is not found
+ * @param string|null $key     [optional] The key to get
+ * @param mixed       $default [optional] The default value if the key is not found
  *
  * @return mixed|Config|null
  */
@@ -204,8 +204,8 @@ function dispatcher(): Dispatcher
 /**
  * Get an environment variable.
  *
- * @param string $key     [optional] The variable to get
- * @param mixed  $default [optional] The default value to return
+ * @param string|null $key     [optional] The variable to get
+ * @param mixed       $default [optional] The default value to return
  *
  * @return mixed
  */
@@ -450,9 +450,9 @@ function route(string $name): Route
 /**
  * Get a route url by name.
  *
- * @param string $name     The name of the route to get
- * @param array  $data     [optional] The route data if dynamic
- * @param bool   $absolute [optional] Whether this url should be absolute
+ * @param string     $name     The name of the route to get
+ * @param array|null $data     [optional] The route data if dynamic
+ * @param bool       $absolute [optional] Whether this url should be absolute
  *
  * @return string
  */
@@ -554,11 +554,11 @@ function redirectTo(
 /**
  * Return the session.
  *
- * @return Session
+ * @return SessionManager
  */
-function session(): Session
+function session(): SessionManager
 {
-    return Valkyrja::app()->container()->getSingleton(Session::class);
+    return Valkyrja::app()->container()->getSingleton(SessionManager::class);
 }
 
 /**
@@ -636,7 +636,7 @@ function dd(...$args): void
 /**
  * Helper function to get base path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -648,7 +648,7 @@ function basePath(string $path = null): string
 /**
  * Helper function to get app path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -660,7 +660,7 @@ function appPath(string $path = null): string
 /**
  * Helper function to get bootstrap path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -672,7 +672,7 @@ function bootstrapPath(string $path = null): string
 /**
  * Helper function to get env path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -684,7 +684,7 @@ function envPath(string $path = null): string
 /**
  * Helper function to get config path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -696,7 +696,7 @@ function configPath(string $path = null): string
 /**
  * Helper function to get commands path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -708,7 +708,7 @@ function commandsPath(string $path = null): string
 /**
  * Helper function to get events path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -720,7 +720,7 @@ function eventsPath(string $path = null): string
 /**
  * Helper function to get routes path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -732,7 +732,7 @@ function routesPath(string $path = null): string
 /**
  * Helper function to get services path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -744,7 +744,7 @@ function servicesPath(string $path = null): string
 /**
  * Helper function to get public path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -756,7 +756,7 @@ function publicPath(string $path = null): string
 /**
  * Helper function to get resources path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -768,7 +768,7 @@ function resourcesPath(string $path = null): string
 /**
  * Helper function to get storage path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -780,7 +780,7 @@ function storagePath(string $path = null): string
 /**
  * Helper function to get framework storage path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -792,7 +792,7 @@ function frameworkStoragePath(string $path = null): string
 /**
  * Helper function to get cache path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -804,7 +804,7 @@ function cachePath(string $path = null): string
 /**
  * Helper function to get tests path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
@@ -816,7 +816,7 @@ function testsPath(string $path = null): string
 /**
  * Helper function to get vendor path.
  *
- * @param string $path [optional] The path to append
+ * @param string|null $path [optional] The path to append
  *
  * @return string
  */
