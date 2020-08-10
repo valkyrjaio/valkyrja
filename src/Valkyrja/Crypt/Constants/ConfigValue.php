@@ -15,6 +15,7 @@ namespace Valkyrja\Crypt\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Crypt\Adapters\SodiumAdapter;
+use Valkyrja\Crypt\Drivers\Driver;
 
 /**
  * Constant ConfigValue.
@@ -27,9 +28,13 @@ final class ConfigValue
     public const ADAPTERS = [
         CKP::SODIUM => SodiumAdapter::class,
     ];
+    public const DRIVERS  = [
+        CKP::DEFAULT => Driver::class,
+    ];
     public const CRYPTS   = [
         CKP::DEFAULT => [
             CKP::ADAPTER  => CKP::SODIUM,
+            CKP::DRIVER   => CKP::DEFAULT,
             CKP::KEY      => 'some_secret_key',
             CKP::KEY_PATH => null,
         ],
@@ -38,6 +43,7 @@ final class ConfigValue
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::DRIVERS  => self::DRIVERS,
         CKP::CRYPTS   => self::CRYPTS,
     ];
 }

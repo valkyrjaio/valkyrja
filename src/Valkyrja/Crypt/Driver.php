@@ -16,22 +16,12 @@ namespace Valkyrja\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
- * Interface Crypt.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Crypt
+interface Driver
 {
-    /**
-     * Use a crypt by name.
-     *
-     * @param string|null $name    The crypt name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
-     */
-    public function useCrypt(string $name = null, string $adapter = null): Driver;
-
     /**
      * Determine if an encrypted message is valid.
      *
@@ -44,7 +34,7 @@ interface Crypt
     /**
      * Encrypt a message.
      *
-     * @param string      $message The message to encrypt
+     * @param string $message The message to encrypt
      * @param string|null $key     The encryption key
      *
      * @throws CryptException On any failure
@@ -54,21 +44,9 @@ interface Crypt
     public function encrypt(string $message, string $key = null): string;
 
     /**
-     * Decrypt a message.
-     *
-     * @param string      $encrypted The encrypted message to decrypt
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return string
-     */
-    public function decrypt(string $encrypted, string $key = null): string;
-
-    /**
      * Encrypt an array.
      *
-     * @param array       $array The array to encrypt
+     * @param array  $array The array to encrypt
      * @param string|null $key   The encryption key
      *
      * @throws CryptException On any failure
@@ -78,21 +56,9 @@ interface Crypt
     public function encryptArray(array $array, string $key = null): string;
 
     /**
-     * Decrypt a message originally encrypted from an array.
-     *
-     * @param string      $encrypted The encrypted message
-     * @param string|null $key       The encryption key
-     *
-     * @throws CryptException On any failure
-     *
-     * @return array
-     */
-    public function decryptArray(string $encrypted, string $key = null): array;
-
-    /**
      * Encrypt a json array.
      *
-     * @param object      $object The object to encrypt
+     * @param object $object The object to encrypt
      * @param string|null $key    The encryption key
      *
      * @throws CryptException On any failure
@@ -102,9 +68,33 @@ interface Crypt
     public function encryptObject(object $object, string $key = null): string;
 
     /**
+     * Decrypt a message.
+     *
+     * @param string $encrypted The encrypted message to decrypt
+     * @param string|null $key       The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return string
+     */
+    public function decrypt(string $encrypted, string $key = null): string;
+
+    /**
+     * Decrypt a message originally encrypted from an array.
+     *
+     * @param string $encrypted The encrypted message
+     * @param string|null $key       The encryption key
+     *
+     * @throws CryptException On any failure
+     *
+     * @return array
+     */
+    public function decryptArray(string $encrypted, string $key = null): array;
+
+    /**
      * Decrypt a message originally encrypted from an object.
      *
-     * @param string      $encrypted The encrypted message
+     * @param string $encrypted The encrypted message
      * @param string|null $key       The encryption key
      *
      * @throws CryptException On any failure

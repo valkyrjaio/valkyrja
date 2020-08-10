@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Crypt\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Crypt\Adapter;
 use Valkyrja\Crypt\Crypt as Contract;
+use Valkyrja\Crypt\Driver;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
@@ -26,11 +26,11 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 class Crypt implements Contract
 {
     /**
-     * The adapters.
+     * The drivers.
      *
-     * @var Adapter[]
+     * @var Driver[]
      */
-    protected static array $adapters = [];
+    protected static array $driversCache = [];
 
     /**
      * The container.
@@ -47,11 +47,25 @@ class Crypt implements Contract
     protected array $config;
 
     /**
+     * The adapters.
+     *
+     * @var array
+     */
+    protected array $adapters;
+
+    /**
      * The crypts.
      *
      * @var array
      */
     protected array $crypts;
+
+    /**
+     * The drivers config.
+     *
+     * @var array
+     */
+    protected array $drivers;
 
     /**
      * The default crypt.
@@ -75,28 +89,39 @@ class Crypt implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container    = $container;
-        $this->config       = $config;
-        $this->crypts       = $config['crypts'];
-        $this->defaultCrypt = $config['default'];
+        $this->container     = $container;
+        $this->config        = $config;
+        $this->crypts        = $config['crypts'];
+        $this->adapters      = $config['drivers'];
+        $this->drivers = $config['drivers'];
+        $this->defaultCrypt  = $config['default'];
     }
 
     /**
-     * Get an adapter by name.
+     * Use a crypt by name.
      *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
+     * @param string|null $name    The crypt name
+     * @param string|null $adapter The adapter
+     *b bh
+     * @return Driver
      */
-    public function useCrypt(string $name = null): Adapter
+    public function useCrypt(string $name = null, string $adapter = null): Driver
     {
+        // The session to use
         $name ??= $this->defaultCrypt;
+        // The crypt to use
+        $crypt = $this->crypts[$name];
+        // The adapter to use
+        $adapter ??= $crypt['adapter'];
+        // The cache key to use
+        $cacheKey = $name . $adapter;
 
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->get(
-                $this->crypts[$name]['adapter'],
+        return self::$driversCache[$cacheKey]
+            ?? self::$driversCache[$cacheKey] = $this->container->get(
+                $this->drivers[$crypt['driver']],
                 [
                     $name,
+                    $this->adapters[$adapter],
                 ]
             );
     }

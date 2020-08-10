@@ -11,26 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Crypt;
+namespace Valkyrja\Crypt\Drivers;
 
+use Valkyrja\Crypt\Adapter;
+use Valkyrja\Crypt\Driver as Contract;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
- * Interface Crypt.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
-interface Crypt
+class Driver implements Contract
 {
     /**
-     * Use a crypt by name.
+     * The adapter.
      *
-     * @param string|null $name    The crypt name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
+     * @var Adapter
      */
-    public function useCrypt(string $name = null, string $adapter = null): Driver;
+    protected Adapter $adapter;
+
+    /**
+     * Driver constructor.
+     *
+     * @param Adapter $adapter The adapter
+     */
+    public function __construct(Adapter $adapter)
+    {
+        $this->adapter = $adapter;
+    }
 
     /**
      * Determine if an encrypted message is valid.
@@ -39,7 +48,10 @@ interface Crypt
      *
      * @return bool
      */
-    public function isValidEncryptedMessage(string $encrypted): bool;
+    public function isValidEncryptedMessage(string $encrypted): bool
+    {
+        return $this->adapter->isValidEncryptedMessage($encrypted);
+    }
 
     /**
      * Encrypt a message.
@@ -47,11 +59,14 @@ interface Crypt
      * @param string      $message The message to encrypt
      * @param string|null $key     The encryption key
      *
-     * @throws CryptException On any failure
+     * @throws CryptException
      *
      * @return string
      */
-    public function encrypt(string $message, string $key = null): string;
+    public function encrypt(string $message, string $key = null): string
+    {
+        return $this->adapter->encrypt($message, $key);
+    }
 
     /**
      * Decrypt a message.
@@ -63,7 +78,10 @@ interface Crypt
      *
      * @return string
      */
-    public function decrypt(string $encrypted, string $key = null): string;
+    public function decrypt(string $encrypted, string $key = null): string
+    {
+        return $this->adapter->decrypt($encrypted, $key);
+    }
 
     /**
      * Encrypt an array.
@@ -71,11 +89,14 @@ interface Crypt
      * @param array       $array The array to encrypt
      * @param string|null $key   The encryption key
      *
-     * @throws CryptException On any failure
+     * @throws CryptException
      *
      * @return string
      */
-    public function encryptArray(array $array, string $key = null): string;
+    public function encryptArray(array $array, string $key = null): string
+    {
+        return $this->adapter->encryptArray($array, $key);
+    }
 
     /**
      * Decrypt a message originally encrypted from an array.
@@ -87,7 +108,10 @@ interface Crypt
      *
      * @return array
      */
-    public function decryptArray(string $encrypted, string $key = null): array;
+    public function decryptArray(string $encrypted, string $key = null): array
+    {
+        return $this->adapter->decryptArray($encrypted, $key);
+    }
 
     /**
      * Encrypt a json array.
@@ -95,11 +119,14 @@ interface Crypt
      * @param object      $object The object to encrypt
      * @param string|null $key    The encryption key
      *
-     * @throws CryptException On any failure
+     * @throws CryptException
      *
      * @return string
      */
-    public function encryptObject(object $object, string $key = null): string;
+    public function encryptObject(object $object, string $key = null): string
+    {
+        return $this->adapter->encryptObject($object, $key);
+    }
 
     /**
      * Decrypt a message originally encrypted from an object.
@@ -111,5 +138,8 @@ interface Crypt
      *
      * @return object
      */
-    public function decryptObject(string $encrypted, string $key = null): object;
+    public function decryptObject(string $encrypted, string $key = null): object
+    {
+        return $this->adapter->decryptObject($encrypted, $key);
+    }
 }
