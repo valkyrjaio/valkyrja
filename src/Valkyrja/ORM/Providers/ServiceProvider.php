@@ -18,6 +18,7 @@ use Valkyrja\Cache\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapters\PDOAdapter;
+use Valkyrja\ORM\Drivers\Driver;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Repositories\CacheRepository;
 use Valkyrja\ORM\Repositories\Repository;
@@ -38,6 +39,7 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class             => 'publishORM',
+            Driver::class          => 'publishDefaultDriver',
             PDOAdapter::class      => 'publishPdoAdapter',
             Repository::class      => 'publishRepository',
             CacheRepository::class => 'publishCacheRepository',
@@ -53,6 +55,10 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class,
+            Driver::class,
+            PDOAdapter::class,
+            Repository::class,
+            CacheRepository::class,
         ];
     }
 
@@ -88,6 +94,30 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (string $connection, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $connection,
+                        ]
+                    )
+                );
+            }
+        );
+    }
+
+    /**
      * Publish a PDO adapter service.
      *
      * @param Container $container The container
@@ -106,7 +136,7 @@ class ServiceProvider extends Provider
 
                 return new PDOAdapter(
                     new PDO(
-                        $connectionConfig['driver']
+                        $connectionConfig['pdoDriver']
                         . ':host=' . $connectionConfig['host']
                         . ';port=' . $connectionConfig['port']
                         . ';dbname=' . $connectionConfig['db']

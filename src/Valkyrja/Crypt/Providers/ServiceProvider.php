@@ -96,12 +96,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $session, string $adapter) use ($container): Driver {
+            static function (string $crypt, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $session,
+                            $crypt,
                         ]
                     )
                 );

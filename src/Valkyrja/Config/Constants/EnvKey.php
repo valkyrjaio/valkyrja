@@ -160,18 +160,20 @@ final class EnvKey
 
     public const NOTIFICATION_NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 
-    public const ORM_DEFAULT        = 'ORM_DEFAULT';
-    public const ORM_ADAPTERS       = 'ORM_ADAPTERS';
-    public const ORM_CONNECTIONS    = 'ORM_CONNECTIONS';
-    public const ORM_REPOSITORY     = 'ORM_REPOSITORY';
-    public const ORM_MYSQL_ADAPTER  = 'ORM_MYSQL_ADAPTER';
-    public const ORM_MYSQL_DRIVER   = 'ORM_MYSQL_DRIVER';
-    public const ORM_MYSQL_HOST     = 'ORM_MYSQL_HOST';
-    public const ORM_MYSQL_PORT     = 'ORM_MYSQL_PORT';
-    public const ORM_MYSQL_DB       = 'ORM_MYSQL_DB';
-    public const ORM_MYSQL_CHARSET  = 'ORM_MYSQL_CHARSET';
-    public const ORM_MYSQL_USERNAME = 'ORM_MYSQL_USERNAME';
-    public const ORM_MYSQL_PASSWORD = 'ORM_MYSQL_PASSWORD';
+    public const ORM_DEFAULT          = 'ORM_DEFAULT';
+    public const ORM_ADAPTERS         = 'ORM_ADAPTERS';
+    public const ORM_DRIVERS          = 'ORM_DRIVERS';
+    public const ORM_CONNECTIONS      = 'ORM_CONNECTIONS';
+    public const ORM_REPOSITORY       = 'ORM_REPOSITORY';
+    public const ORM_MYSQL_ADAPTER    = 'ORM_MYSQL_ADAPTER';
+    public const ORM_MYSQL_DRIVER     = 'ORM_MYSQL_DRIVER';
+    public const ORM_MYSQL_PDO_DRIVER = 'ORM_MYSQL_PDO_DRIVER';
+    public const ORM_MYSQL_HOST       = 'ORM_MYSQL_HOST';
+    public const ORM_MYSQL_PORT       = 'ORM_MYSQL_PORT';
+    public const ORM_MYSQL_DB         = 'ORM_MYSQL_DB';
+    public const ORM_MYSQL_CHARSET    = 'ORM_MYSQL_CHARSET';
+    public const ORM_MYSQL_USERNAME   = 'ORM_MYSQL_USERNAME';
+    public const ORM_MYSQL_PASSWORD   = 'ORM_MYSQL_PASSWORD';
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 

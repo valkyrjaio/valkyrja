@@ -23,11 +23,12 @@ interface ORM
     /**
      * Use a connection by name.
      *
-     * @param string|null $name The connection name
+     * @param string|null $name    The connection name
+     * @param string|null $adapter The adapter
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function useConnection(string $name = null): Adapter;
+    public function useConnection(string $name = null, string $adapter = null): Driver;
 
     /**
      * Create a new query builder instance.

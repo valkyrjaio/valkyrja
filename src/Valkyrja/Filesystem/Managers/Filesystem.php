@@ -100,8 +100,9 @@ class Filesystem implements Contract
      */
     public function useDisk(string $name = null, string $adapter = null): Driver
     {
-        $name ??= $this->defaultDisk;
         // The disk to use
+        $name ??= $this->defaultDisk;
+        // The disk config to use
         $disk = $this->disks[$name];
         // The adapter to use
         $adapter ??= $disk['adapter'];

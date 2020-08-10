@@ -84,7 +84,7 @@ class Session implements Contract
         $this->container      = $container;
         $this->config         = $config;
         $this->defaultSession = $config['default'];
-        $this->adapters       = $config['drivers'];
+        $this->adapters       = $config['adapters'];
         $this->drivers        = $config['drivers'];
         $this->sessions       = $config['sessions'];
     }

@@ -122,6 +122,7 @@ final class ConfigKeyPart
     public const AUTHENTICATE_ROUTE          = 'authenticateRoute';
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const PDO                         = 'pdo';
+    public const PDO_DRIVER                  = 'pdoDriver';
     public const PHP                         = 'php';
     public const FLYSYSTEM                   = 'flysystem';
     public const FLYSYSTEM_ADAPTER           = 'flysystemAdapter';

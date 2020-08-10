@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\Persister;
@@ -35,11 +35,11 @@ use function get_class;
 class ORM implements Contract
 {
     /**
-     * Adapters.
+     * The drivers.
      *
-     * @var Adapter[]
+     * @var Driver[]
      */
-    protected static array $adapters = [];
+    protected static array $driversCache = [];
 
     /**
      * Repositories.
@@ -61,6 +61,20 @@ class ORM implements Contract
      * @var array
      */
     protected array $config;
+
+    /**
+     * The adapters.
+     *
+     * @var array
+     */
+    protected array $adapters;
+
+    /**
+     * The drivers config.
+     *
+     * @var array
+     */
+    protected array $drivers;
 
     /**
      * The connections.
@@ -94,6 +108,8 @@ class ORM implements Contract
         $this->container         = $container;
         $this->config            = $config;
         $this->connections       = $config['connections'];
+        $this->adapters          = $config['adapters'];
+        $this->drivers           = $config['drivers'];
         $this->defaultConnection = $config['default'];
         $this->defaultRepository = $config['repository'];
     }
@@ -101,19 +117,28 @@ class ORM implements Contract
     /**
      * Use a connection by name.
      *
-     * @param string|null $name The connection name
+     * @param string|null $name    The connection name
+     * @param string|null $adapter The adapter
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function useConnection(string $name = null): Adapter
+    public function useConnection(string $name = null, string $adapter = null): Driver
     {
+        // The connection to use
         $name ??= $this->defaultConnection;
+        // The connection config to use
+        $connection = $this->connections[$name];
+        // The adapter to use
+        $adapter ??= $connection['adapter'];
+        // The cache key to use
+        $cacheKey = $name . $adapter;
 
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->get(
-                $this->connections[$name]['adapter'],
+        return self::$driversCache[$cacheKey]
+            ?? self::$driversCache[$cacheKey] = $this->container->get(
+                $this->drivers[$connection['driver']],
                 [
                     $name,
+                    $this->adapters[$adapter],
                 ]
             );
     }

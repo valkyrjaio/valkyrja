@@ -58,14 +58,14 @@ class Config extends Model
     /**
      * The adapters.
      *
-     * @var array
+     * @var string[]
      */
     public array $adapters;
 
     /**
      * The drivers.
      *
-     * @var array
+     * @var string[]
      */
     public array $drivers;
 

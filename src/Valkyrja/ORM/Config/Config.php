@@ -32,6 +32,7 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::DRIVERS,
         CKP::REPOSITORY,
         CKP::CONNECTIONS,
     ];
@@ -44,6 +45,7 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::DEFAULT     => EnvKey::ORM_DEFAULT,
         CKP::ADAPTERS    => EnvKey::ORM_ADAPTERS,
+        CKP::DRIVERS    => EnvKey::ORM_DRIVERS,
         CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
         CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
     ];
@@ -61,6 +63,13 @@ class Config extends Model
      * @var string[]
      */
     public array $adapters;
+
+    /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
 
     /**
      * The default repository to use for all entities.

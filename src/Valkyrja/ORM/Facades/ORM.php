@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Facades;
 
-use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
 use Valkyrja\ORM\Persister;
@@ -29,7 +29,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter useConnection(string $name = null)
+ * @method static Driver useConnection(string $name = null, string $adapter = null)
  * @method static QueryBuilder createQueryBuilder(string $entity = null, string $alias = null)
  * @method static Query createQuery(string $query = null, string $entity = null)
  * @method static Repository getRepository(string $entity)

@@ -107,9 +107,9 @@ class Crypt implements Contract
      */
     public function useCrypt(string $name = null, string $adapter = null): Driver
     {
-        // The session to use
-        $name ??= $this->defaultCrypt;
         // The crypt to use
+        $name ??= $this->defaultCrypt;
+        // The crypt config to use
         $crypt = $this->crypts[$name];
         // The adapter to use
         $adapter ??= $crypt['adapter'];
