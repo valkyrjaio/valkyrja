@@ -17,6 +17,7 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3v3\AwsS3Adapter;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
+use Valkyrja\Filesystem\Drivers\Driver;
 
 /**
  * Constant ConfigValue.
@@ -29,14 +30,19 @@ final class ConfigValue
     public const ADAPTERS = [
         CKP::FLYSYSTEM => FlysystemAdapter::class,
     ];
+    public const DRIVERS  = [
+        CKP::DEFAULT => Driver::class,
+    ];
     public const DISKS    = [
         CKP::LOCAL => [
             CKP::ADAPTER           => CKP::FLYSYSTEM,
+            CKP::DRIVER            => CKP::DEFAULT,
             CKP::FLYSYSTEM_ADAPTER => Local::class,
             CKP::DIR               => '/',
         ],
         CKP::S3    => [
             CKP::ADAPTER           => CKP::FLYSYSTEM,
+            CKP::DRIVER            => CKP::DEFAULT,
             CKP::FLYSYSTEM_ADAPTER => AwsS3Adapter::class,
             CKP::KEY               => '',
             CKP::SECRET            => '',
@@ -51,6 +57,7 @@ final class ConfigValue
     public static array $defaults = [
         CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::DRIVERS  => self::DRIVERS,
         CKP::DISKS    => self::DISKS,
     ];
 }

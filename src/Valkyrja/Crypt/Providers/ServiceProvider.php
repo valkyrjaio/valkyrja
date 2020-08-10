@@ -17,6 +17,7 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Adapters\SodiumAdapter;
 use Valkyrja\Crypt\Crypt;
+use Valkyrja\Crypt\Drivers\Driver;
 
 /**
  * Class ServiceProvider.
@@ -34,6 +35,7 @@ class ServiceProvider extends Provider
     {
         return [
             Crypt::class         => 'publishCrypt',
+            Driver::class        => 'publishDefaultDriver',
             SodiumAdapter::class => 'publishSodiumAdapter',
         ];
     }
@@ -47,6 +49,7 @@ class ServiceProvider extends Provider
     {
         return [
             Crypt::class,
+            Driver::class,
             SodiumAdapter::class,
         ];
     }
@@ -79,6 +82,30 @@ class ServiceProvider extends Provider
                 $container,
                 $config['crypt']
             )
+        );
+    }
+
+    /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (string $session, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $session,
+                        ]
+                    )
+                );
+            }
         );
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Filesystem\Facades;
 
-use Valkyrja\Filesystem\Adapter;
+use Valkyrja\Filesystem\Driver;
 use Valkyrja\Filesystem\Enums\Visibility;
 use Valkyrja\Filesystem\Filesystem as Contract;
 use Valkyrja\Support\Facade\Facade;
@@ -23,7 +23,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $adapter)
+ * @method static Driver useDisk(string $name = null, string $adapter = null)
  * @method static bool exists(string $path)
  * @method static string|null read(string $path)
  * @method static bool write(string $path, string $contents)

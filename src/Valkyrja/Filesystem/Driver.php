@@ -16,22 +16,12 @@ namespace Valkyrja\Filesystem;
 use Valkyrja\Filesystem\Enums\Visibility;
 
 /**
- * Interface Filesystem.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Filesystem
+interface Driver
 {
-    /**
-     * Use a disk by name.
-     *
-     * @param string|null $name The disk name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
-     */
-    public function useDisk(string $name = null, string $adapter = null): Driver;
-
     /**
      * Determine whether a path exists.
      *

@@ -11,111 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Filesystem\Managers;
+namespace Valkyrja\Filesystem\Drivers;
 
-use Valkyrja\Container\Container;
-use Valkyrja\Filesystem\Driver;
+use Valkyrja\Filesystem\Adapter;
+use Valkyrja\Filesystem\Driver as Contract;
 use Valkyrja\Filesystem\Enums\Visibility;
-use Valkyrja\Filesystem\Filesystem as Contract;
 
 /**
- * Class Filesystem.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
-class Filesystem implements Contract
+class Driver implements Contract
 {
     /**
-     * The drivers.
+     * The adapter.
      *
-     * @var Driver[]
+     * @var Adapter
      */
-    protected static array $driversCache = [];
+    protected Adapter $adapter;
 
     /**
-     * The container service.
+     * Driver constructor.
      *
-     * @var Container
+     * @param Adapter $adapter The adapter
      */
-    protected Container $container;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * The adapters.
-     *
-     * @var array
-     */
-    protected array $adapters;
-
-    /**
-     * The disks.
-     *
-     * @var array
-     */
-    protected array $disks;
-
-    /**
-     * The drivers config.
-     *
-     * @var array
-     */
-    protected array $drivers;
-
-    /**
-     * The default disk.
-     *
-     * @var string
-     */
-    protected string $defaultDisk;
-
-    /**
-     * Filesystem constructor.
-     *
-     * @param Container $container The container service
-     * @param array     $config    The config
-     */
-    public function __construct(Container $container, array $config)
+    public function __construct(Adapter $adapter)
     {
-        $this->container   = $container;
-        $this->config      = $config;
-        $this->disks       = $config['disks'];
-        $this->adapters    = $config['adapters'];
-        $this->drivers     = $config['drivers'];
-        $this->defaultDisk = $config['default'];
-    }
-
-    /**
-     * Use a disk by name.
-     *
-     * @param string|null $name    The disk name
-     * @param string|null $adapter The adapter
-     *
-     * @return Driver
-     */
-    public function useDisk(string $name = null, string $adapter = null): Driver
-    {
-        $name ??= $this->defaultDisk;
-        // The disk to use
-        $disk = $this->disks[$name];
-        // The adapter to use
-        $adapter ??= $disk['adapter'];
-        // The cache key to use
-        $cacheKey = $name . $adapter;
-
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$disk['driver']],
-                [
-                    $name,
-                    $this->adapters[$adapter],
-                ]
-            );
+        $this->adapter = $adapter;
     }
 
     /**
@@ -127,7 +50,7 @@ class Filesystem implements Contract
      */
     public function exists(string $path): bool
     {
-        return $this->useDisk()->exists($path);
+        return $this->adapter->exists($path);
     }
 
     /**
@@ -139,7 +62,7 @@ class Filesystem implements Contract
      */
     public function read(string $path): ?string
     {
-        return $this->useDisk()->read($path);
+        return $this->adapter->read($path);
     }
 
     /**
@@ -152,7 +75,7 @@ class Filesystem implements Contract
      */
     public function write(string $path, string $contents): bool
     {
-        return $this->useDisk()->write($path, $contents);
+        return $this->adapter->write($path, $contents);
     }
 
     /**
@@ -165,7 +88,7 @@ class Filesystem implements Contract
      */
     public function writeStream(string $path, $resource): bool
     {
-        return $this->useDisk()->writeStream($path, $resource);
+        return $this->adapter->writeStream($path, $resource);
     }
 
     /**
@@ -178,7 +101,7 @@ class Filesystem implements Contract
      */
     public function update(string $path, string $contents): bool
     {
-        return $this->useDisk()->update($path, $contents);
+        return $this->adapter->update($path, $contents);
     }
 
     /**
@@ -191,7 +114,7 @@ class Filesystem implements Contract
      */
     public function updateStream(string $path, $resource): bool
     {
-        return $this->useDisk()->updateStream($path, $resource);
+        return $this->adapter->updateStream($path, $resource);
     }
 
     /**
@@ -204,7 +127,7 @@ class Filesystem implements Contract
      */
     public function put(string $path, string $contents): bool
     {
-        return $this->useDisk()->put($path, $contents);
+        return $this->adapter->put($path, $contents);
     }
 
     /**
@@ -217,7 +140,7 @@ class Filesystem implements Contract
      */
     public function putStream(string $path, $resource): bool
     {
-        return $this->useDisk()->putStream($path, $resource);
+        return $this->adapter->putStream($path, $resource);
     }
 
     /**
@@ -230,7 +153,7 @@ class Filesystem implements Contract
      */
     public function rename(string $path, string $newPath): bool
     {
-        return $this->useDisk()->rename($path, $newPath);
+        return $this->adapter->rename($path, $newPath);
     }
 
     /**
@@ -243,7 +166,7 @@ class Filesystem implements Contract
      */
     public function copy(string $path, string $newPath): bool
     {
-        return $this->useDisk()->copy($path, $newPath);
+        return $this->adapter->copy($path, $newPath);
     }
 
     /**
@@ -255,7 +178,7 @@ class Filesystem implements Contract
      */
     public function delete(string $path): bool
     {
-        return $this->useDisk()->delete($path);
+        return $this->adapter->delete($path);
     }
 
     /**
@@ -267,7 +190,7 @@ class Filesystem implements Contract
      */
     public function metadata(string $path): ?array
     {
-        return $this->useDisk()->metadata($path);
+        return $this->adapter->metadata($path);
     }
 
     /**
@@ -279,7 +202,7 @@ class Filesystem implements Contract
      */
     public function mimetype(string $path): ?string
     {
-        return $this->useDisk()->mimetype($path);
+        return $this->adapter->mimetype($path);
     }
 
     /**
@@ -291,7 +214,7 @@ class Filesystem implements Contract
      */
     public function size(string $path): ?int
     {
-        return $this->useDisk()->size($path);
+        return $this->adapter->size($path);
     }
 
     /**
@@ -303,7 +226,7 @@ class Filesystem implements Contract
      */
     public function timestamp(string $path): ?int
     {
-        return $this->useDisk()->timestamp($path);
+        return $this->adapter->timestamp($path);
     }
 
     /**
@@ -315,7 +238,7 @@ class Filesystem implements Contract
      */
     public function visibility(string $path): ?string
     {
-        return $this->useDisk()->visibility($path);
+        return $this->adapter->visibility($path);
     }
 
     /**
@@ -328,7 +251,7 @@ class Filesystem implements Contract
      */
     public function setVisibility(string $path, Visibility $visibility): bool
     {
-        return $this->useDisk()->setVisibility($path, $visibility);
+        return $this->adapter->setVisibility($path, $visibility);
     }
 
     /**
@@ -340,7 +263,7 @@ class Filesystem implements Contract
      */
     public function setVisibilityPublic(string $path): bool
     {
-        return $this->useDisk()->setVisibilityPublic($path);
+        return $this->adapter->setVisibilityPublic($path);
     }
 
     /**
@@ -352,7 +275,7 @@ class Filesystem implements Contract
      */
     public function setVisibilityPrivate(string $path): bool
     {
-        return $this->useDisk()->setVisibilityPrivate($path);
+        return $this->adapter->setVisibilityPrivate($path);
     }
 
     /**
@@ -364,7 +287,7 @@ class Filesystem implements Contract
      */
     public function createDir(string $path): bool
     {
-        return $this->useDisk()->createDir($path);
+        return $this->adapter->createDir($path);
     }
 
     /**
@@ -376,7 +299,7 @@ class Filesystem implements Contract
      */
     public function deleteDir(string $path): bool
     {
-        return $this->useDisk()->deleteDir($path);
+        return $this->adapter->deleteDir($path);
     }
 
     /**
@@ -389,6 +312,6 @@ class Filesystem implements Contract
      */
     public function listContents(string $directory = null, bool $recursive = false): array
     {
-        return $this->useDisk()->listContents($directory, $recursive);
+        return $this->adapter->listContents($directory, $recursive);
     }
 }

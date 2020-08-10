@@ -20,6 +20,7 @@ use League\Flysystem\Filesystem as Flysystem;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Filesystem\Adapters\FlysystemAdapter;
+use Valkyrja\Filesystem\Drivers\Driver;
 use Valkyrja\Filesystem\Filesystem;
 
 /**
@@ -38,6 +39,7 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class            => 'publishFilesystem',
+            Driver::class                => 'publishDefaultDriver',
             FlysystemAdapter::class      => 'publishFlysystemAdapter',
             FlysystemLocalAdapter::class => 'publishFlysystemLocalAdapter',
             FlysystemAwsS3Adapter::class => 'publishFlysystemAwsS3Adapter',
@@ -53,6 +55,7 @@ class ServiceProvider extends Provider
     {
         return [
             Filesystem::class,
+            Driver::class,
             FlysystemAdapter::class,
             FlysystemLocalAdapter::class,
             FlysystemAwsS3Adapter::class,
@@ -87,6 +90,30 @@ class ServiceProvider extends Provider
                 $container,
                 $config['filesystem']
             )
+        );
+    }
+
+    /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (string $session, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $session,
+                        ]
+                    )
+                );
+            }
         );
     }
 

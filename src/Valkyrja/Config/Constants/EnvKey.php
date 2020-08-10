@@ -99,12 +99,14 @@ final class EnvKey
     public const CONTAINER_CACHE_FILE_PATH             = 'CONTAINER_CACHE_FILE_PATH';
     public const CONTAINER_USE_CACHE_FILE              = 'CONTAINER_USE_CACHE_FILE';
 
-    public const CRYPT_KEY      = 'CRYPT_KEY';
-    public const CRYPT_KEY_PATH = 'CRYPT_KEY_PATH';
-    public const CRYPT_DEFAULT  = 'CRYPT_DEFAULT';
-    public const CRYPT_ADAPTERS = 'CRYPT_ADAPTERS';
-    public const CRYPT_DRIVERS  = 'CRYPT_DRIVERS';
-    public const CRYPT_CRYPTS   = 'CRYPT_CRYPTS';
+    public const CRYPT_KEY             = 'CRYPT_KEY';
+    public const CRYPT_KEY_PATH        = 'CRYPT_KEY_PATH';
+    public const CRYPT_DEFAULT         = 'CRYPT_DEFAULT';
+    public const CRYPT_ADAPTERS        = 'CRYPT_ADAPTERS';
+    public const CRYPT_DRIVERS         = 'CRYPT_DRIVERS';
+    public const CRYPT_CRYPTS          = 'CRYPT_CRYPTS';
+    public const CRYPT_DEFAULT_ADAPTER = 'CRYPT_DEFAULT_ADAPTER';
+    public const CRYPT_DEFAULT_DRIVER  = 'CRYPT_DEFAULT_DRIVER';
 
     public const EVENT_USE_ANNOTATIONS             = 'EVENT_USE_ANNOTATIONS';
     public const EVENT_USE_ANNOTATIONS_EXCLUSIVELY = 'EVENT_USE_ANNOTATIONS_EXCLUSIVELY';
@@ -115,11 +117,14 @@ final class EnvKey
 
     public const FILESYSTEM_DEFAULT                 = 'FILESYSTEM_DEFAULT';
     public const FILESYSTEM_ADAPTERS                = 'FILESYSTEM_ADAPTERS';
+    public const FILESYSTEM_DRIVERS                 = 'FILESYSTEM_DRIVERS';
     public const FILESYSTEM_DISKS                   = 'FILESYSTEM_DISKS';
     public const FILESYSTEM_LOCAL_ADAPTER           = 'FILESYSTEM_LOCAL_ADAPTER';
+    public const FILESYSTEM_LOCAL_DRIVER            = 'FILESYSTEM_LOCAL_DRIVER';
     public const FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER = 'FILESYSTEM_LOCAL_FLYSYSTEM_ADAPTER';
     public const FILESYSTEM_LOCAL_DIR               = 'FILESYSTEM_LOCAL_DIR';
     public const FILESYSTEM_S3_ADAPTER              = 'FILESYSTEM_S3_ADAPTER';
+    public const FILESYSTEM_S3_DRIVER               = 'FILESYSTEM_S3_DRIVER';
     public const FILESYSTEM_S3_FLYSYSTEM_ADAPTER    = 'FILESYSTEM_S3_FLYSYSTEM_ADAPTER';
     public const FILESYSTEM_S3_KEY                  = 'FILESYSTEM_S3_KEY';
     public const FILESYSTEM_S3_SECRET               = 'FILESYSTEM_S3_SECRET';

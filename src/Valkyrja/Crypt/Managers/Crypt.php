@@ -89,12 +89,12 @@ class Crypt implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container     = $container;
-        $this->config        = $config;
-        $this->crypts        = $config['crypts'];
-        $this->adapters      = $config['drivers'];
-        $this->drivers = $config['drivers'];
-        $this->defaultCrypt  = $config['default'];
+        $this->container    = $container;
+        $this->config       = $config;
+        $this->crypts       = $config['crypts'];
+        $this->adapters     = $config['adapters'];
+        $this->drivers      = $config['drivers'];
+        $this->defaultCrypt = $config['default'];
     }
 
     /**
@@ -102,7 +102,7 @@ class Crypt implements Contract
      *
      * @param string|null $name    The crypt name
      * @param string|null $adapter The adapter
-     *b bh
+     *
      * @return Driver
      */
     public function useCrypt(string $name = null, string $adapter = null): Driver
