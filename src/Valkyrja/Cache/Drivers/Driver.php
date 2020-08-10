@@ -11,34 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Stores;
+namespace Valkyrja\Cache\Drivers;
 
-use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Adapter;
+use Valkyrja\Cache\Driver as Contract;
 use Valkyrja\Cache\Tagger;
-use Valkyrja\Cache\Taggers\Tagger as TagClass;
 
 /**
- * Class NullStore.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
-class NullStore implements Store
+class Driver implements Contract
 {
     /**
-     * The prefix to use for all keys.
+     * The adapter.
      *
-     * @var string
+     * @var Adapter
      */
-    protected string $prefix;
+    protected Adapter $adapter;
 
     /**
-     * NullStore constructor.
+     * Driver constructor.
      *
-     * @param string|null $prefix [optional] The prefix
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(string $prefix = null)
+    public function __construct(Adapter $adapter)
     {
-        $this->prefix = $prefix ?? '';
+        $this->adapter = $adapter;
     }
 
     /**
@@ -50,7 +50,7 @@ class NullStore implements Store
      */
     public function has(string $key): bool
     {
-        return true;
+        return $this->adapter->has($key);
     }
 
     /**
@@ -62,7 +62,7 @@ class NullStore implements Store
      */
     public function get(string $key): ?string
     {
-        return '';
+        return $this->adapter->get($key);
     }
 
     /**
@@ -76,7 +76,7 @@ class NullStore implements Store
      */
     public function many(string ...$keys): array
     {
-        return [];
+        return $this->adapter->many(...$keys);
     }
 
     /**
@@ -90,6 +90,7 @@ class NullStore implements Store
      */
     public function put(string $key, string $value, int $minutes): void
     {
+        $this->adapter->put($key, $value, $minutes);
     }
 
     /**
@@ -105,13 +106,14 @@ class NullStore implements Store
      *      )
      * </code>
      *
-     * @param string[] $values
-     * @param int      $minutes
+     * @param array $values
+     * @param int   $minutes
      *
      * @return void
      */
     public function putMany(array $values, int $minutes): void
     {
+        $this->adapter->putMany($values, $minutes);
     }
 
     /**
@@ -124,7 +126,7 @@ class NullStore implements Store
      */
     public function increment(string $key, int $value = 1): int
     {
-        return $value;
+        return $this->adapter->increment($key, $value);
     }
 
     /**
@@ -137,19 +139,20 @@ class NullStore implements Store
      */
     public function decrement(string $key, int $value = 1): int
     {
-        return $value;
+        return $this->adapter->decrement($key, $value);
     }
 
     /**
      * Store an item in the cache indefinitely.
      *
      * @param string $key
-     * @param mixed  $value
+     * @param string $value
      *
      * @return void
      */
-    public function forever(string $key, $value): void
+    public function forever(string $key, string $value): void
     {
+        $this->adapter->forever($key, $value);
     }
 
     /**
@@ -161,7 +164,7 @@ class NullStore implements Store
      */
     public function forget(string $key): bool
     {
-        return true;
+        return $this->adapter->forget($key);
     }
 
     /**
@@ -171,7 +174,7 @@ class NullStore implements Store
      */
     public function flush(): bool
     {
-        return true;
+        return $this->adapter->flush();
     }
 
     /**
@@ -181,11 +184,11 @@ class NullStore implements Store
      */
     public function getPrefix(): string
     {
-        return $this->prefix ?? '';
+        return $this->adapter->getPrefix();
     }
 
     /**
-     * Get tagger.
+     * Get the tagger.
      *
      * @param string ...$tags
      *
@@ -193,18 +196,6 @@ class NullStore implements Store
      */
     public function getTagger(string ...$tags): Tagger
     {
-        return TagClass::make($this, ...$tags);
-    }
-
-    /**
-     * Get key.
-     *
-     * @param string $key
-     *
-     * @return string
-     */
-    protected function getKey(string $key): string
-    {
-        return $this->getPrefix() . $key;
+        return $this->adapter->getTagger(...$tags);
     }
 }

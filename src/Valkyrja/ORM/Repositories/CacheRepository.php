@@ -15,7 +15,7 @@ namespace Valkyrja\ORM\Repositories;
 
 use JsonException;
 use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Driver as CacheDriver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
@@ -62,9 +62,9 @@ class CacheRepository extends Repository
     /**
      * The cache store.
      *
-     * @var Store
+     * @var CacheDriver
      */
-    protected Store $store;
+    protected CacheDriver $store;
 
     /**
      * The id of a findOne (to tag if null returned).
@@ -97,7 +97,7 @@ class CacheRepository extends Repository
     public function __construct(ORM $manager, Cache $cache, string $entity)
     {
         $this->cache = $cache;
-        $this->store = $cache->getStore();
+        $this->store = $cache->useStore();
 
         parent::__construct($manager, $entity);
     }

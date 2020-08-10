@@ -23,12 +23,12 @@ interface Tagger
     /**
      * Make a new Tag Store.
      *
-     * @param Store  $store
-     * @param string ...$tags
+     * @param Adapter $store
+     * @param string  ...$tags
      *
      * @return static
      */
-    public static function make(Store $store, string ...$tags): self;
+    public static function make(Adapter $store, string ...$tags): self;
 
     /**
      * Determine if an item exists in the cache.

@@ -11,28 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache;
+namespace Valkyrja\Cache\Adapters;
 
-use InvalidArgumentException;
+use Valkyrja\Cache\Adapter;
+use Valkyrja\Cache\Tagger;
+use Valkyrja\Cache\Taggers\Tagger as TagClass;
 
 /**
- * Interface Cache.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-interface Cache
+class NullAdapter implements Adapter
 {
     /**
-     * Use a store by name.
+     * The prefix to use for all keys.
      *
-     * @param string|null $name    [optional] The store name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @throws InvalidArgumentException If the name doesn't exist
-     *
-     * @return Driver
+     * @var string
      */
-    public function useStore(string $name = null, string $adapter = null): Driver;
+    protected string $prefix;
+
+    /**
+     * NullAdapter constructor.
+     *
+     * @param string|null $prefix [optional] The prefix
+     */
+    public function __construct(string $prefix = null)
+    {
+        $this->prefix = $prefix ?? '';
+    }
 
     /**
      * Determine if an item exists in the cache.
@@ -41,7 +48,10 @@ interface Cache
      *
      * @return mixed
      */
-    public function has(string $key): bool;
+    public function has(string $key): bool
+    {
+        return true;
+    }
 
     /**
      * Retrieve an item from the cache by key.
@@ -50,7 +60,10 @@ interface Cache
      *
      * @return string|null
      */
-    public function get(string $key): ?string;
+    public function get(string $key): ?string
+    {
+        return '';
+    }
 
     /**
      * Retrieve multiple items from the cache by key.
@@ -61,7 +74,10 @@ interface Cache
      *
      * @return array
      */
-    public function many(string ...$keys): array;
+    public function many(string ...$keys): array
+    {
+        return [];
+    }
 
     /**
      * Store an item in the cache for a given number of minutes.
@@ -72,7 +88,9 @@ interface Cache
      *
      * @return void
      */
-    public function put(string $key, string $value, int $minutes): void;
+    public function put(string $key, string $value, int $minutes): void
+    {
+    }
 
     /**
      * Store multiple items in the cache for a given number of minutes.
@@ -87,12 +105,14 @@ interface Cache
      *      )
      * </code>
      *
-     * @param array $values
-     * @param int   $minutes
+     * @param string[] $values
+     * @param int      $minutes
      *
      * @return void
      */
-    public function putMany(array $values, int $minutes): void;
+    public function putMany(array $values, int $minutes): void
+    {
+    }
 
     /**
      * Increment the value of an item in the cache.
@@ -102,7 +122,10 @@ interface Cache
      *
      * @return int
      */
-    public function increment(string $key, int $value = 1): int;
+    public function increment(string $key, int $value = 1): int
+    {
+        return $value;
+    }
 
     /**
      * Decrement the value of an item in the cache.
@@ -112,17 +135,22 @@ interface Cache
      *
      * @return int
      */
-    public function decrement(string $key, int $value = 1): int;
+    public function decrement(string $key, int $value = 1): int
+    {
+        return $value;
+    }
 
     /**
      * Store an item in the cache indefinitely.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed  $value
      *
      * @return void
      */
-    public function forever(string $key, string $value): void;
+    public function forever(string $key, $value): void
+    {
+    }
 
     /**
      * Remove an item from the cache.
@@ -131,28 +159,52 @@ interface Cache
      *
      * @return bool
      */
-    public function forget(string $key): bool;
+    public function forget(string $key): bool
+    {
+        return true;
+    }
 
     /**
      * Remove all items from the cache.
      *
      * @return bool
      */
-    public function flush(): bool;
+    public function flush(): bool
+    {
+        return true;
+    }
 
     /**
      * Get the cache key prefix.
      *
      * @return string
      */
-    public function getPrefix(): string;
+    public function getPrefix(): string
+    {
+        return $this->prefix ?? '';
+    }
 
     /**
-     * Get the tagger.
+     * Get tagger.
      *
      * @param string ...$tags
      *
      * @return Tagger
      */
-    public function getTagger(string ...$tags): Tagger;
+    public function getTagger(string ...$tags): Tagger
+    {
+        return TagClass::make($this, ...$tags);
+    }
+
+    /**
+     * Get key.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    protected function getKey(string $key): string
+    {
+        return $this->getPrefix() . $key;
+    }
 }

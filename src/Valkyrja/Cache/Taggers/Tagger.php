@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Taggers;
 
 use JsonException;
-use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Tagger as Contract;
 use Valkyrja\Support\Type\Arr;
 
@@ -32,9 +32,9 @@ class Tagger implements Contract
     /**
      * The cache store.
      *
-     * @var Store
+     * @var Adapter
      */
-    protected Store $store;
+    protected Adapter $adapter;
 
     /**
      * The tags.
@@ -46,24 +46,24 @@ class Tagger implements Contract
     /**
      * Tag constructor.
      *
-     * @param Store  $store
-     * @param string ...$tags
+     * @param Adapter $store
+     * @param string  ...$tags
      */
-    public function __construct(Store $store, string ...$tags)
+    public function __construct(Adapter $store, string ...$tags)
     {
-        $this->store = $store;
-        $this->tags  = $tags;
+        $this->adapter = $store;
+        $this->tags    = $tags;
     }
 
     /**
      * Make a new Tag Store.
      *
-     * @param Store  $store
-     * @param string ...$tags
+     * @param Adapter $store
+     * @param string  ...$tags
      *
      * @return static
      */
-    public static function make(Store $store, string ...$tags): self
+    public static function make(Adapter $store, string ...$tags): self
     {
         return new static($store, ...$tags);
     }
@@ -80,7 +80,7 @@ class Tagger implements Contract
     public function has(string $key): bool
     {
         foreach ($this->tags as $tag) {
-            if (isset($this->getKeys($tag)[$key]) && $this->store->has($key)) {
+            if (isset($this->getKeys($tag)[$key]) && $this->adapter->has($key)) {
                 return true;
             }
         }
@@ -101,7 +101,7 @@ class Tagger implements Contract
     {
         foreach ($this->tags as $tag) {
             if (isset($this->getKeys($tag)[$key])) {
-                return $this->store->get($key);
+                return $this->adapter->get($key);
             }
         }
 
@@ -128,7 +128,7 @@ class Tagger implements Contract
 
             foreach ($keys as $key) {
                 if (isset($cachedKeys[$key])) {
-                    $items[] = $this->store->get($key);
+                    $items[] = $this->adapter->get($key);
                 }
             }
         }
@@ -151,7 +151,7 @@ class Tagger implements Contract
     {
         $this->tag($key);
 
-        $this->store->put($key, $value, $minutes);
+        $this->adapter->put($key, $value, $minutes);
     }
 
     /**
@@ -195,7 +195,7 @@ class Tagger implements Contract
     {
         $this->tag($key);
 
-        return $this->store->increment($key, $value);
+        return $this->adapter->increment($key, $value);
     }
 
     /**
@@ -212,7 +212,7 @@ class Tagger implements Contract
     {
         $this->tag($key);
 
-        return $this->store->decrement($key, $value);
+        return $this->adapter->decrement($key, $value);
     }
 
     /**
@@ -229,7 +229,7 @@ class Tagger implements Contract
     {
         $this->tag($key);
 
-        $this->store->forever($key, $value);
+        $this->adapter->forever($key, $value);
     }
 
     /**
@@ -245,7 +245,7 @@ class Tagger implements Contract
     {
         $this->untag($key);
 
-        return $this->store->forget($key);
+        return $this->adapter->forget($key);
     }
 
     /**
@@ -259,7 +259,7 @@ class Tagger implements Contract
     {
         foreach ($this->tags as $tag) {
             foreach ($this->getKeys($tag) as $key) {
-                $this->store->forget($key);
+                $this->adapter->forget($key);
             }
         }
 
@@ -357,7 +357,7 @@ class Tagger implements Contract
      */
     protected function getKeys(string $tag): array
     {
-        $keys = $this->store->get($tag);
+        $keys = $this->adapter->get($tag);
 
         if ($keys) {
             return json_decode($keys, true, 512, JSON_THROW_ON_ERROR);
@@ -378,6 +378,6 @@ class Tagger implements Contract
      */
     protected function putKeys(string $tag, array $keys): void
     {
-        $this->store->forever($tag, Arr::toString($keys));
+        $this->adapter->forever($tag, Arr::toString($keys));
     }
 }

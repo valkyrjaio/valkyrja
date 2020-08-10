@@ -15,7 +15,7 @@ namespace Valkyrja\Session\Adapters;
 
 use JsonException;
 use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Driver as CacheDriver;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 use Valkyrja\Support\Type\Arr;
 
@@ -39,9 +39,9 @@ class CacheAdapter extends PHPAdapter
     /**
      * The cache store.
      *
-     * @var Store
+     * @var CacheDriver
      */
-    protected Store $cacheStore;
+    protected CacheDriver $cacheStore;
 
     /**
      * CacheAdapter constructor.
@@ -56,7 +56,7 @@ class CacheAdapter extends PHPAdapter
         parent::__construct($config, $sessionId, $sessionName);
 
         $this->cache      = $cache;
-        $this->cacheStore = $cache->getStore();
+        $this->cacheStore = $cache->useStore();
     }
 
     /**

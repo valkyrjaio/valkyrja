@@ -11,19 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Stores;
+namespace Valkyrja\Cache\Adapters;
 
-use Predis\ClientInterface as Client;
-use Valkyrja\Cache\Store;
+use JsonException;
+use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
+use Valkyrja\Log\Logger;
+use Valkyrja\Support\Type\Arr;
 
 /**
- * Class RedisStore.
+ * Class LogAdapter.
  *
  * @author Melech Mizrachi
  */
-class RedisStore implements Store
+class LogAdapter implements Adapter
 {
     /**
      * The prefix to use for all keys.
@@ -33,21 +35,21 @@ class RedisStore implements Store
     protected string $prefix;
 
     /**
-     * The predis client.
+     * The logger.
      *
-     * @var Client
+     * @var Logger
      */
-    protected Client $predis;
+    protected Logger $logger;
 
     /**
-     * RedisStore constructor.
+     * LogAdapter constructor.
      *
-     * @param Client      $client
-     * @param string|null $prefix
+     * @param Logger      $logger The logger service
+     * @param string|null $prefix [optional] The prefix
      */
-    public function __construct(Client $client, string $prefix = null)
+    public function __construct(Logger $logger, string $prefix = null)
     {
-        $this->predis = $client;
+        $this->logger = $logger;
         $this->prefix = $prefix ?? '';
     }
 
@@ -60,7 +62,9 @@ class RedisStore implements Store
      */
     public function has(string $key): bool
     {
-        return (bool) $this->predis->exists($this->getKey($key));
+        $this->logger->info(self::class . " has: ${key}");
+
+        return true;
     }
 
     /**
@@ -72,7 +76,9 @@ class RedisStore implements Store
      */
     public function get(string $key): ?string
     {
-        return $this->predis->get($this->getKey($key)) ?: null;
+        $this->logger->info(self::class . " get: ${key}");
+
+        return '';
     }
 
     /**
@@ -82,17 +88,17 @@ class RedisStore implements Store
      *
      * @param string ...$keys
      *
+     * @throws JsonException
+     *
      * @return array
      */
     public function many(string ...$keys): array
     {
-        $prefixedKeys = [];
+        $keysString = Arr::toString($keys);
 
-        foreach ($keys as $key) {
-            $prefixedKeys[] = $this->getKey($key);
-        }
+        $this->logger->info(self::class . " many: ${keysString}");
 
-        return $this->predis->mget($prefixedKeys);
+        return [];
     }
 
     /**
@@ -106,7 +112,7 @@ class RedisStore implements Store
      */
     public function put(string $key, string $value, int $minutes): void
     {
-        $this->predis->setex($this->getKey($key), $minutes * 60, $value);
+        $this->logger->info(self::class . " put: ${key}, value ${value}, minutes ${minutes}");
     }
 
     /**
@@ -125,20 +131,15 @@ class RedisStore implements Store
      * @param string[] $values
      * @param int      $minutes
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function putMany(array $values, int $minutes): void
     {
-        $seconds = $minutes * 60;
+        $valuesString = Arr::toString($values);
 
-        $this->predis->transaction(
-            function ($client) use ($values, $seconds) {
-                /** @var Client $client */
-                foreach ($values as $key => $value) {
-                    $client->setex($this->getKey($key), $seconds, $value);
-                }
-            }
-        );
+        $this->logger->info(self::class . " putMany: ${valuesString}, minutes ${minutes}");
     }
 
     /**
@@ -151,7 +152,9 @@ class RedisStore implements Store
      */
     public function increment(string $key, int $value = 1): int
     {
-        return (int) $this->predis->incrby($this->getKey($key), $value);
+        $this->logger->info(self::class . " increment: ${key}, value ${value}");
+
+        return $value;
     }
 
     /**
@@ -164,7 +167,9 @@ class RedisStore implements Store
      */
     public function decrement(string $key, int $value = 1): int
     {
-        return (int) $this->predis->decrby($this->getKey($key), $value);
+        $this->logger->info(self::class . " decrement: ${key}, value ${value}");
+
+        return $value;
     }
 
     /**
@@ -177,7 +182,7 @@ class RedisStore implements Store
      */
     public function forever(string $key, $value): void
     {
-        $this->predis->set($this->getKey($key), $value);
+        $this->logger->info(self::class . " forever: ${key}, value ${value}");
     }
 
     /**
@@ -189,7 +194,9 @@ class RedisStore implements Store
      */
     public function forget(string $key): bool
     {
-        return (bool) $this->predis->del([$this->getKey($key)]);
+        $this->logger->info(self::class . " forget: ${key}");
+
+        return true;
     }
 
     /**
@@ -199,7 +206,9 @@ class RedisStore implements Store
      */
     public function flush(): bool
     {
-        return (bool) $this->predis->flushdb();
+        $this->logger->info(self::class . ' flush');
+
+        return true;
     }
 
     /**

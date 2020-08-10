@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Facades;
 
 use Valkyrja\Cache\Cache as Contract;
-use Valkyrja\Cache\Store;
+use Valkyrja\Cache\Driver;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -22,7 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Store getStore(string $name = null)
+ * @method static Driver useStore(string $name = null, string $adapter = null)
  */
 class Cache extends Facade
 {

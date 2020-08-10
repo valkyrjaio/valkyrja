@@ -166,4 +166,6 @@ final class ConfigKeyPart
     public const API_KEY                     = 'apiKey';
     public const CRYPTS                      = 'crypts';
     public const SESSIONS                    = 'sessions';
+    public const LOGGER                      = 'logger';
+    public const LOGGERS                     = 'loggers';
 }

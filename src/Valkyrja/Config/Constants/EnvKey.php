@@ -71,8 +71,22 @@ final class EnvKey
     public const BROADCAST_PUSHER_CLUSTER = 'BROADCAST_PUSHER_CLUSTER';
     public const BROADCAST_PUSHER_USE_TLS = 'BROADCAST_PUSHER_USE_TLS';
 
-    public const CACHE_DEFAULT = 'CACHE_DEFAULT';
-    public const CACHE_STORES  = 'CACHE_STORES';
+    public const CACHE_DEFAULT       = 'CACHE_DEFAULT';
+    public const CACHE_ADAPTERS      = 'CACHE_ADAPTERS';
+    public const CACHE_DRIVERS       = 'CACHE_DRIVERS';
+    public const CACHE_STORES        = 'CACHE_STORES';
+    public const CACHE_REDIS_ADAPTER = 'CACHE_REDIS_ADAPTER';
+    public const CACHE_REDIS_DRIVER  = 'CACHE_REDIS_DRIVER';
+    public const CACHE_REDIS_HOST    = 'CACHE_REDIS_HOST';
+    public const CACHE_REDIS_PORT    = 'CACHE_REDIS_PORT';
+    public const CACHE_REDIS_PREFIX  = 'CACHE_REDIS_PREFIX';
+    public const CACHE_NULL_ADAPTER  = 'CACHE_NULL_ADAPTER';
+    public const CACHE_NULL_DRIVER   = 'CACHE_NULL_DRIVER';
+    public const CACHE_NULL_PREFIX   = 'CACHE_NULL_PREFIX';
+    public const CACHE_LOG_ADAPTER   = 'CACHE_LOG_ADAPTER';
+    public const CACHE_LOG_DRIVER    = 'CACHE_LOG_DRIVER';
+    public const CACHE_LOG_LOG       = 'CACHE_LOG_LOG';
+    public const CACHE_LOG_PREFIX    = 'CACHE_LOG_PREFIX';
 
     public const CLIENT_ADAPTER  = 'CLIENT_ADAPTER';
     public const CLIENT_ADAPTERS = 'CLIENT_ADAPTERS';

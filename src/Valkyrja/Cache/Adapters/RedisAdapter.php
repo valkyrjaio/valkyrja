@@ -11,21 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Cache\Stores;
+namespace Valkyrja\Cache\Adapters;
 
-use JsonException;
-use Valkyrja\Cache\Store;
+use Predis\ClientInterface as Client;
+use Valkyrja\Cache\Adapter;
 use Valkyrja\Cache\Tagger;
 use Valkyrja\Cache\Taggers\Tagger as TagClass;
-use Valkyrja\Log\Logger;
-use Valkyrja\Support\Type\Arr;
 
 /**
- * Class LogStore.
+ * Class RedisAdapter.
  *
  * @author Melech Mizrachi
  */
-class LogStore implements Store
+class RedisAdapter implements Adapter
 {
     /**
      * The prefix to use for all keys.
@@ -35,21 +33,21 @@ class LogStore implements Store
     protected string $prefix;
 
     /**
-     * The logger.
+     * The predis client.
      *
-     * @var Logger
+     * @var Client
      */
-    protected Logger $logger;
+    protected Client $predis;
 
     /**
-     * LogStore constructor.
+     * RedisAdapter constructor.
      *
-     * @param Logger      $logger The logger service
-     * @param string|null $prefix [optional] The prefix
+     * @param Client      $client The predis client
+     * @param string|null $prefix The prefix
      */
-    public function __construct(Logger $logger, string $prefix = null)
+    public function __construct(Client $client, string $prefix = null)
     {
-        $this->logger = $logger;
+        $this->predis = $client;
         $this->prefix = $prefix ?? '';
     }
 
@@ -62,9 +60,7 @@ class LogStore implements Store
      */
     public function has(string $key): bool
     {
-        $this->logger->info(self::class . " has: ${key}");
-
-        return true;
+        return (bool) $this->predis->exists($this->getKey($key));
     }
 
     /**
@@ -76,9 +72,7 @@ class LogStore implements Store
      */
     public function get(string $key): ?string
     {
-        $this->logger->info(self::class . " get: ${key}");
-
-        return '';
+        return $this->predis->get($this->getKey($key)) ?: null;
     }
 
     /**
@@ -88,17 +82,17 @@ class LogStore implements Store
      *
      * @param string ...$keys
      *
-     * @throws JsonException
-     *
      * @return array
      */
     public function many(string ...$keys): array
     {
-        $keysString = Arr::toString($keys);
+        $prefixedKeys = [];
 
-        $this->logger->info(self::class . " many: ${keysString}");
+        foreach ($keys as $key) {
+            $prefixedKeys[] = $this->getKey($key);
+        }
 
-        return [];
+        return $this->predis->mget($prefixedKeys);
     }
 
     /**
@@ -112,7 +106,7 @@ class LogStore implements Store
      */
     public function put(string $key, string $value, int $minutes): void
     {
-        $this->logger->info(self::class . " put: ${key}, value ${value}, minutes ${minutes}");
+        $this->predis->setex($this->getKey($key), $minutes * 60, $value);
     }
 
     /**
@@ -131,15 +125,20 @@ class LogStore implements Store
      * @param string[] $values
      * @param int      $minutes
      *
-     * @throws JsonException
-     *
      * @return void
      */
     public function putMany(array $values, int $minutes): void
     {
-        $valuesString = Arr::toString($values);
+        $seconds = $minutes * 60;
 
-        $this->logger->info(self::class . " putMany: ${valuesString}, minutes ${minutes}");
+        $this->predis->transaction(
+            function ($client) use ($values, $seconds) {
+                /** @var Client $client */
+                foreach ($values as $key => $value) {
+                    $client->setex($this->getKey($key), $seconds, $value);
+                }
+            }
+        );
     }
 
     /**
@@ -152,9 +151,7 @@ class LogStore implements Store
      */
     public function increment(string $key, int $value = 1): int
     {
-        $this->logger->info(self::class . " increment: ${key}, value ${value}");
-
-        return $value;
+        return (int) $this->predis->incrby($this->getKey($key), $value);
     }
 
     /**
@@ -167,9 +164,7 @@ class LogStore implements Store
      */
     public function decrement(string $key, int $value = 1): int
     {
-        $this->logger->info(self::class . " decrement: ${key}, value ${value}");
-
-        return $value;
+        return (int) $this->predis->decrby($this->getKey($key), $value);
     }
 
     /**
@@ -182,7 +177,7 @@ class LogStore implements Store
      */
     public function forever(string $key, $value): void
     {
-        $this->logger->info(self::class . " forever: ${key}, value ${value}");
+        $this->predis->set($this->getKey($key), $value);
     }
 
     /**
@@ -194,9 +189,7 @@ class LogStore implements Store
      */
     public function forget(string $key): bool
     {
-        $this->logger->info(self::class . " forget: ${key}");
-
-        return true;
+        return (bool) $this->predis->del([$this->getKey($key)]);
     }
 
     /**
@@ -206,9 +199,7 @@ class LogStore implements Store
      */
     public function flush(): bool
     {
-        $this->logger->info(self::class . ' flush');
-
-        return true;
+        return (bool) $this->predis->flushdb();
     }
 
     /**

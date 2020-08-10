@@ -31,6 +31,8 @@ class Config extends Model
      */
     protected static array $modelProperties = [
         CKP::DEFAULT,
+        CKP::ADAPTERS,
+        CKP::DRIVERS,
         CKP::STORES,
     ];
 
@@ -40,8 +42,10 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::DEFAULT => EnvKey::CACHE_DEFAULT,
-        CKP::STORES  => EnvKey::CACHE_STORES,
+        CKP::DEFAULT  => EnvKey::CACHE_DEFAULT,
+        CKP::ADAPTERS => EnvKey::CACHE_ADAPTERS,
+        CKP::DRIVERS  => EnvKey::CACHE_DRIVERS,
+        CKP::STORES   => EnvKey::CACHE_STORES,
     ];
 
     /**
@@ -50,6 +54,20 @@ class Config extends Model
      * @var string
      */
     public string $default;
+
+    /**
+     * The adapters.
+     *
+     * @var string[]
+     */
+    public array $adapters;
+
+    /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
 
     /**
      * The cache stores.

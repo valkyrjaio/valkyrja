@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache;
 
 /**
- * Interface Store.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Store
+interface Driver
 {
     /**
      * Determine if an item exists in the cache.

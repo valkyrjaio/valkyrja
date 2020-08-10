@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Cache\Providers;
 
 use Predis\Client;
+use Valkyrja\Cache\Adapters\LogAdapter;
+use Valkyrja\Cache\Adapters\NullAdapter;
+use Valkyrja\Cache\Adapters\RedisAdapter;
 use Valkyrja\Cache\Cache;
-use Valkyrja\Cache\Stores\LogStore;
-use Valkyrja\Cache\Stores\NullStore;
-use Valkyrja\Cache\Stores\RedisStore;
+use Valkyrja\Cache\Drivers\Driver;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Logger;
@@ -37,10 +38,11 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Cache::class      => 'publishCache',
-            LogStore::class   => 'publishLogStore',
-            NullStore::class  => 'publishNullStore',
-            RedisStore::class => 'publishRedisStore',
+            Cache::class        => 'publishCache',
+            Driver::class       => 'publishDefaultDriver',
+            LogAdapter::class   => 'publishLogAdapter',
+            NullAdapter::class  => 'publishNullAdapter',
+            RedisAdapter::class => 'publishRedisAdapter',
         ];
     }
 
@@ -53,9 +55,10 @@ class ServiceProvider extends Provider
     {
         return [
             Cache::class,
-            LogStore::class,
-            NullStore::class,
-            RedisStore::class,
+            Driver::class,
+            LogAdapter::class,
+            NullAdapter::class,
+            RedisAdapter::class,
         ];
     }
 
@@ -91,23 +94,50 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (string $store, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $store,
+                        ]
+                    )
+                );
+            }
+        );
+    }
+
+    /**
      * Publish the log store service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishLogStore(Container $container): void
+    public static function publishLogAdapter(Container $container): void
     {
-        $config      = $container->getSingleton('config');
-        $cacheConfig = $config['cache'];
+        $config = $container->getSingleton('config');
+        $logger = $container->getSingleton(Logger::class);
+        $stores = $config['cache']['stores'];
 
-        $container->setSingleton(
-            LogStore::class,
-            new LogStore(
-                $container->getSingleton(Logger::class),
-                $cacheConfig['prefix']
-            )
+        $container->setClosure(
+            LogAdapter::class,
+            static function (string $crypt) use ($stores, $logger): LogAdapter {
+                return new LogAdapter(
+                    $logger,
+                    $stores[$crypt]['prefix'] ?? null
+                );
+            }
         );
     }
 
@@ -118,16 +148,18 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishNullStore(Container $container): void
+    public static function publishNullAdapter(Container $container): void
     {
-        $config      = $container->getSingleton('config');
-        $cacheConfig = $config['cache'];
+        $config = $container->getSingleton('config');
+        $stores = $config['cache']['stores'];
 
-        $container->setSingleton(
-            NullStore::class,
-            new NullStore(
-                $cacheConfig['prefix']
-            )
+        $container->setClosure(
+            NullAdapter::class,
+            static function (string $crypt) use ($stores): NullAdapter {
+                return new NullAdapter(
+                    $stores[$crypt]['prefix'] ?? null
+                );
+            }
         );
     }
 
@@ -138,18 +170,22 @@ class ServiceProvider extends Provider
      *
      * @return void
      */
-    public static function publishRedisStore(Container $container): void
+    public static function publishRedisAdapter(Container $container): void
     {
-        $config      = $container->getSingleton('config');
-        $cacheConfig = $config['cache'];
-        $predis      = new Client($config['connections']['redis']);
+        $config = $container->getSingleton('config');
+        $stores = $config['cache']['stores'];
 
-        $container->setSingleton(
-            RedisStore::class,
-            new RedisStore(
-                $predis,
-                $cacheConfig['prefix']
-            )
+        $container->setClosure(
+            RedisAdapter::class,
+            static function (string $crypt) use ($stores): RedisAdapter {
+                $config = $stores[$crypt];
+                $predis = new Client($config);
+
+                return new RedisAdapter(
+                    $predis,
+                    $config['prefix'] ?? null
+                );
+            }
         );
     }
 }
