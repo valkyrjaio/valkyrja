@@ -107,12 +107,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $session, string $adapter) use ($container): Driver {
+            static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $session,
+                            $config,
                         ]
                     )
                 );
@@ -129,16 +129,14 @@ class ServiceProvider extends Provider
      */
     public static function publishCacheAdapter(Container $container): void
     {
-        $cache    = $container->getSingleton(Cache::class);
-        $config   = $container->getSingleton('config');
-        $sessions = $config['session']['sessions'];
+        $cache = $container->getSingleton(Cache::class);
 
         $container->setClosure(
             CacheAdapter::class,
-            static function (string $session) use ($cache, $sessions): CacheAdapter {
+            static function (array $config) use ($cache): CacheAdapter {
                 return new CacheAdapter(
                     $cache,
-                    $sessions[$session]
+                    $config
                 );
             }
         );
@@ -153,18 +151,16 @@ class ServiceProvider extends Provider
      */
     public static function publishCookieAdapter(Container $container): void
     {
-        $crypt    = $container->getSingleton(Crypt::class);
-        $request  = $container->getSingleton(Request::class);
-        $config   = $container->getSingleton('config');
-        $sessions = $config['session']['sessions'];
+        $crypt   = $container->getSingleton(Crypt::class);
+        $request = $container->getSingleton(Request::class);
 
         $container->setClosure(
             CookieAdapter::class,
-            static function (string $session) use ($crypt, $request, $sessions): CookieAdapter {
+            static function (array $config) use ($crypt, $request): CookieAdapter {
                 return new CookieAdapter(
                     $crypt,
                     $request,
-                    $sessions[$session]
+                    $config
                 );
             }
         );
@@ -179,14 +175,11 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $config   = $container->getSingleton('config');
-        $sessions = $config['session']['sessions'];
-
         $container->setClosure(
             NullAdapter::class,
-            static function (string $session) use ($sessions): NullAdapter {
+            static function (array $config): NullAdapter {
                 return new NullAdapter(
-                    $sessions[$session]
+                    $config
                 );
             }
         );
@@ -201,14 +194,11 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPAdapter(Container $container): void
     {
-        $config   = $container->getSingleton('config');
-        $sessions = $config['session']['sessions'];
-
         $container->setClosure(
             PHPAdapter::class,
-            static function (string $session) use ($sessions): PHPAdapter {
+            static function (array $config): PHPAdapter {
                 return new PHPAdapter(
-                    $sessions[$session]
+                    $config
                 );
             }
         );

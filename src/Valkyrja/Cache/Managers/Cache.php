@@ -116,7 +116,7 @@ class Cache implements Contract
             ?? self::$driversCache[$cacheKey] = $this->container->get(
                 $this->drivers[$store['driver']],
                 [
-                    $name,
+                    $store,
                     $this->adapters[$adapter],
                 ]
             );

@@ -96,12 +96,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $crypt, string $adapter) use ($container): Driver {
+            static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $crypt,
+                            $config,
                         ]
                     )
                 );
@@ -118,14 +118,11 @@ class ServiceProvider extends Provider
      */
     public static function publishSodiumAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $crypts = $config['crypt']['crypts'];
-
         $container->setClosure(
             SodiumAdapter::class,
-            static function (string $crypt) use ($crypts): SodiumAdapter {
+            static function (array $config): SodiumAdapter {
                 return new SodiumAdapter(
-                    $crypts[$crypt]
+                    $config
                 );
             }
         );

@@ -113,7 +113,7 @@ class Filesystem implements Contract
             ?? self::$driversCache[$cacheKey] = $this->container->get(
                 $this->drivers[$disk['driver']],
                 [
-                    $name,
+                    $disk,
                     $this->adapters[$adapter],
                 ]
             );

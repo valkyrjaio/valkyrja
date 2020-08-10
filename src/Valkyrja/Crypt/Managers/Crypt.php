@@ -120,7 +120,7 @@ class Crypt implements Contract
             ?? self::$driversCache[$cacheKey] = $this->container->get(
                 $this->drivers[$crypt['driver']],
                 [
-                    $name,
+                    $crypt,
                     $this->adapters[$adapter],
                 ]
             );

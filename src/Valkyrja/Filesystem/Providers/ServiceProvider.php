@@ -104,12 +104,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $disk, string $adapter) use ($container): Driver {
+            static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $disk,
+                            $config,
                         ]
                     )
                 );
@@ -126,18 +126,15 @@ class ServiceProvider extends Provider
      */
     public static function publishFlysystemAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $disks  = $config['filesystem']['disks'];
-
         $container->setClosure(
             FlysystemAdapter::class,
-            static function (string $disk) use ($container, $disks) {
+            static function (array $config) use ($container) {
                 return new FlysystemAdapter(
                     new Flysystem(
                         $container->get(
-                            $disks[$disk]['flysystemAdapter'],
+                            $config['flysystemAdapter'],
                             [
-                                $disk,
+                                $config,
                             ]
                         )
                     )
@@ -155,14 +152,11 @@ class ServiceProvider extends Provider
      */
     public static function publishFlysystemLocalAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $disks  = $config['filesystem']['disks'];
-
         $container->setClosure(
             FlysystemLocalAdapter::class,
-            static function (string $disk) use ($disks) {
+            static function (array $config) {
                 return new FlysystemLocalAdapter(
-                    $disks[$disk]['dir']
+                    $config['dir']
                 );
             }
         );
@@ -177,29 +171,25 @@ class ServiceProvider extends Provider
      */
     public static function publishFlysystemAwsS3Adapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $disks  = $config['filesystem']['disks'];
-
         $container->setClosure(
             FlysystemAwsS3Adapter::class,
-            static function (string $disk) use ($disks) {
-                $s3Config     = $disks[$disk];
+            static function (array $config) {
                 $clientConfig = [
                     'credentials' => [
-                        'key'    => $s3Config['key'],
-                        'secret' => $s3Config['secret'],
+                        'key'    => $config['key'],
+                        'secret' => $config['secret'],
                     ],
-                    'region'      => $s3Config['region'],
-                    'version'     => $s3Config['version'],
+                    'region'      => $config['region'],
+                    'version'     => $config['version'],
                 ];
 
                 return new FlysystemAwsS3Adapter(
                     new AwsS3Client(
                         $clientConfig
                     ),
-                    $s3Config['bucket'],
-                    $s3Config['prefix'],
-                    $s3Config['options']
+                    $config['bucket'],
+                    $config['prefix'],
+                    $config['options']
                 );
             }
         );

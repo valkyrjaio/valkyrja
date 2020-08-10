@@ -104,12 +104,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $connection, string $adapter) use ($container): Driver {
+            static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $connection,
+                            $config,
                         ]
                     )
                 );
@@ -126,24 +126,19 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
-        $config      = $container->getSingleton('config');
-        $connections = $config['connections'];
-
         $container->setClosure(
             PDOAdapter::class,
-            static function (string $connection) use ($connections) {
-                $connectionConfig = $connections[$connection];
-
+            static function (array $config) {
                 return new PDOAdapter(
                     new PDO(
-                        $connectionConfig['pdoDriver']
-                        . ':host=' . $connectionConfig['host']
-                        . ';port=' . $connectionConfig['port']
-                        . ';dbname=' . $connectionConfig['db']
-                        . ';charset=' . $connectionConfig['charset'],
-                        $connectionConfig['username'],
-                        $connectionConfig['password'],
-                        $connectionConfig['options']
+                        $config['pdoDriver']
+                        . ':host=' . $config['host']
+                        . ';port=' . $config['port']
+                        . ';dbname=' . $config['db']
+                        . ';charset=' . $config['charset'],
+                        $config['username'],
+                        $config['password'],
+                        $config['options']
                     )
                 );
             }

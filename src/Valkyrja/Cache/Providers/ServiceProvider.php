@@ -104,12 +104,12 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $store, string $adapter) use ($container): Driver {
+            static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
                     $container->get(
                         $adapter,
                         [
-                            $store,
+                            $config,
                         ]
                     )
                 );
@@ -126,16 +126,14 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
         $logger = $container->getSingleton(Logger::class);
-        $stores = $config['cache']['stores'];
 
         $container->setClosure(
             LogAdapter::class,
-            static function (string $crypt) use ($stores, $logger): LogAdapter {
+            static function (array $config) use ($logger): LogAdapter {
                 return new LogAdapter(
                     $logger,
-                    $stores[$crypt]['prefix'] ?? null
+                    $config['prefix'] ?? null
                 );
             }
         );
@@ -150,14 +148,11 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $stores = $config['cache']['stores'];
-
         $container->setClosure(
             NullAdapter::class,
-            static function (string $crypt) use ($stores): NullAdapter {
+            static function (array $config): NullAdapter {
                 return new NullAdapter(
-                    $stores[$crypt]['prefix'] ?? null
+                    $config['prefix'] ?? null
                 );
             }
         );
@@ -172,13 +167,9 @@ class ServiceProvider extends Provider
      */
     public static function publishRedisAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
-        $stores = $config['cache']['stores'];
-
         $container->setClosure(
             RedisAdapter::class,
-            static function (string $crypt) use ($stores): RedisAdapter {
-                $config = $stores[$crypt];
+            static function (array $config): RedisAdapter {
                 $predis = new Client($config);
 
                 return new RedisAdapter(

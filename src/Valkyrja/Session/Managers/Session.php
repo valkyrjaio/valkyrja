@@ -112,7 +112,7 @@ class Session implements Contract
             ?? self::$driversCache[$cacheKey] = $this->container->get(
                 $this->drivers[$session['driver']],
                 [
-                    $name,
+                    $session,
                     $this->adapters[$adapter],
                 ]
             );
