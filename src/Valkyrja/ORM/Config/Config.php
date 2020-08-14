@@ -45,7 +45,7 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::DEFAULT     => EnvKey::ORM_DEFAULT,
         CKP::ADAPTERS    => EnvKey::ORM_ADAPTERS,
-        CKP::DRIVERS    => EnvKey::ORM_DRIVERS,
+        CKP::DRIVERS     => EnvKey::ORM_DRIVERS,
         CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
         CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
     ];
