@@ -122,9 +122,9 @@ class Kernel implements Contract
 
         // Dispatch the after request handled middleware and return the response
         $response = $this->responseMiddleware($request, $response);
+
         // Set the returned response in the container
         $this->container->setSingleton(Response::class, $response);
-
         // Trigger an event for kernel handled
         $this->events->trigger(HttpKernelHandled::class, [$request, $response]);
 
@@ -160,7 +160,9 @@ class Kernel implements Contract
         // Dispatch the terminable middleware
         $this->terminableMiddleware($request, $response);
 
+        // If a route was dispatched
         if ($this->container->has(Route::class)) {
+            // Terminate the route middleware
             $this->terminateRoute($request, $response);
         }
 
@@ -171,25 +173,19 @@ class Kernel implements Contract
     /**
      * Run the kernel.
      *
-     * @param Request|null $request The request
+     * @param Request $request The request
      *
      * @throws Throwable
      *
      * @return void
      */
-    public function run(Request $request = null): void
+    public function run(Request $request): void
     {
-        // If no request was passed get the bootstrapped definition
-        if (null === $request) {
-            $request = $this->container->getSingleton(Request::class);
-        }
-
         // Handle the request, dispatch the after request middleware
         $response = $this->handle($request);
 
         // Send the response
         $this->send($response);
-
         // Terminate the application
         $this->terminate($request, $response);
     }
