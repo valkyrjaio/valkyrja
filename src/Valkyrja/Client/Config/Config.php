@@ -30,8 +30,10 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::DRIVERS,
+        CKP::CLIENTS,
     ];
 
     /**
@@ -40,21 +42,37 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::ADAPTER  => EnvKey::CLIENT_ADAPTER,
+        CKP::DEFAULT  => EnvKey::CLIENT_DEFAULT,
         CKP::ADAPTERS => EnvKey::CLIENT_ADAPTERS,
+        CKP::DRIVERS  => EnvKey::CLIENT_DRIVERS,
+        CKP::CLIENTS  => EnvKey::CLIENT_CLIENTS,
     ];
 
     /**
-     * The default adapter.
+     * The default client connection.
      *
      * @var string
      */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
      *
-     * @var array
+     * @var string[]
      */
     public array $adapters;
+
+    /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
+
+    /**
+     * The client connections.
+     *
+     * @var array
+     */
+    public array $clients;
 }

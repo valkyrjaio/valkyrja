@@ -25,15 +25,26 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
  */
 final class ConfigValue
 {
-    public const ADAPTER  = CKP::GUZZLE;
+    public const DEFAULT  = CKP::DEFAULT;
     public const ADAPTERS = [
         CKP::GUZZLE => GuzzleAdapter::class,
         CKP::NULL   => NullAdapter::class,
         CKP::LOG    => LogAdapter::class,
     ];
+    public const DRIVERS  = [
+        CKP::DEFAULT => GuzzleAdapter::class,
+    ];
+    public const CLIENTS  = [
+        CKP::DEFAULT => [
+            CKP::ADAPTER => CKP::GUZZLE,
+            CKP::DRIVER  => CKP::DEFAULT,
+        ],
+    ];
 
     public static array $defaults = [
-        CKP::ADAPTER  => self::ADAPTER,
+        CKP::DEFAULT  => self::DEFAULT,
         CKP::ADAPTERS => self::ADAPTERS,
+        CKP::DRIVERS  => self::DRIVERS,
+        CKP::CLIENTS  => self::CLIENTS,
     ];
 }

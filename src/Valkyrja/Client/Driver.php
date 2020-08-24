@@ -16,22 +16,12 @@ namespace Valkyrja\Client;
 use Valkyrja\Http\Response;
 
 /**
- * Interface Client.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Client
+interface Driver
 {
-    /**
-     * Use a client by name.
-     *
-     * @param string|null $name    [optional] The connection name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
-     */
-    public function useClient(string $name = null, string $adapter = null): Driver;
-
     /**
      * Make a request.
      *

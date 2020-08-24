@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Facades;
 
-use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
+use Valkyrja\Client\Driver;
+use Valkyrja\Http\Response;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -23,14 +23,14 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $name = null)
- * @method static ResponseInterface request(string $method, string $uri, array $options = [])
- * @method static ResponseInterface get(string $uri, array $options = [])
- * @method static ResponseInterface post(string $uri, array $options = [])
- * @method static ResponseInterface head(string $uri, array $options = [])
- * @method static ResponseInterface put(string $uri, array $options = [])
- * @method static ResponseInterface patch(string $uri, array $options = [])
- * @method static ResponseInterface delete(string $uri, array $options = [])
+ * @method static Driver useClient(string $name = null, string $adapter = null)
+ * @method static Response request(string $method, string $uri, array $options = [])
+ * @method static Response get(string $uri, array $options = [])
+ * @method static Response post(string $uri, array $options = [])
+ * @method static Response head(string $uri, array $options = [])
+ * @method static Response put(string $uri, array $options = [])
+ * @method static Response patch(string $uri, array $options = [])
+ * @method static Response delete(string $uri, array $options = [])
  */
 class Client extends Facade
 {

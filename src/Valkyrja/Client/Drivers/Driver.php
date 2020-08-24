@@ -11,57 +11,35 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Client\Adapters;
+namespace Valkyrja\Client\Drivers;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
-use Valkyrja\Client\Adapter as Contract;
+use Valkyrja\Client\Adapter;
+use Valkyrja\Client\Driver as Contract;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
 
 /**
- * Class GuzzleAdapter.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
-class GuzzleAdapter implements Contract
+class Driver implements Contract
 {
     /**
-     * The guzzle client.
+     * The adapter.
      *
-     * @var ClientInterface
+     * @var Adapter
      */
-    protected ClientInterface $guzzle;
+    protected Adapter $adapter;
 
     /**
-     * The response factory.
+     * Driver constructor.
      *
-     * @var ResponseFactory
+     * @param Adapter $adapter The adapter
      */
-    protected ResponseFactory $responseFactory;
-
-    /**
-     * The client config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
-     * GuzzleAdapter constructor.
-     *
-     * @param ClientInterface $guzzle          The guzzle client
-     * @param ResponseFactory $responseFactory The response factory
-     * @param array           $config          The client config
-     */
-    public function __construct(ClientInterface $guzzle, ResponseFactory $responseFactory, array $config)
+    public function __construct(Adapter $adapter)
     {
-        $this->guzzle          = $guzzle;
-        $this->responseFactory = $responseFactory;
-        $this->config          = $config;
+        $this->adapter = $adapter;
     }
-
     /**
      * Make a request.
      *
@@ -69,13 +47,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        return $this->fromPsr7($this->guzzle->request($method, $uri, $options));
+        return $this->adapter->request($method, $uri, $options);
     }
 
     /**
@@ -84,13 +60,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function get(string $uri, array $options = []): Response
     {
-        return $this->request('get', $uri, $options);
+        return $this->adapter->get($uri, $options);
     }
 
     /**
@@ -99,13 +73,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function post(string $uri, array $options = []): Response
     {
-        return $this->request('post', $uri, $options);
+        return $this->adapter->post($uri, $options);
     }
 
     /**
@@ -114,13 +86,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function head(string $uri, array $options = []): Response
     {
-        return $this->request('head', $uri, $options);
+        return $this->adapter->head($uri, $options);
     }
 
     /**
@@ -129,13 +99,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function put(string $uri, array $options = []): Response
     {
-        return $this->request('put', $uri, $options);
+        return $this->adapter->put($uri, $options);
     }
 
     /**
@@ -144,13 +112,11 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function patch(string $uri, array $options = []): Response
     {
-        return $this->request('patch', $uri, $options);
+        return $this->adapter->patch($uri, $options);
     }
 
     /**
@@ -159,28 +125,10 @@ class GuzzleAdapter implements Contract
      * @param string $uri     The uri to request
      * @param array  $options [optional] Custom options for request
      *
-     * @throws GuzzleException
-     *
      * @return Response
      */
     public function delete(string $uri, array $options = []): Response
     {
-        return $this->request('delete', $uri, $options);
-    }
-
-    /**
-     * Convert a Guzzle Response to Valkyrja Response.
-     *
-     * @param ResponseInterface $guzzleResponse The Guzzle Response
-     *
-     * @return Response
-     */
-    protected function fromPsr7(ResponseInterface $guzzleResponse): Response
-    {
-        return $this->responseFactory->createResponse(
-            $guzzleResponse->getBody()->getContents(),
-            $guzzleResponse->getStatusCode(),
-            $guzzleResponse->getHeaders()
-        );
+        return $this->adapter->delete($uri, $options);
     }
 }

@@ -88,8 +88,10 @@ final class EnvKey
     public const CACHE_LOG_LOG       = 'CACHE_LOG_LOG';
     public const CACHE_LOG_PREFIX    = 'CACHE_LOG_PREFIX';
 
-    public const CLIENT_ADAPTER  = 'CLIENT_ADAPTER';
+    public const CLIENT_DEFAULT  = 'CLIENT_DEFAULT';
     public const CLIENT_ADAPTERS = 'CLIENT_ADAPTERS';
+    public const CLIENT_DRIVERS  = 'CLIENT_DRIVERS';
+    public const CLIENT_CLIENTS  = 'CLIENT_CLIENTS';
 
     public const CONSOLE_PROVIDERS                   = 'CONSOLE_PROVIDERS';
     public const CONSOLE_DEV_PROVIDERS               = 'CONSOLE_DEV_PROVIDERS';

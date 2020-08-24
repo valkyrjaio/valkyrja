@@ -32,13 +32,22 @@ class NullAdapter implements Contract
     protected ResponseFactory $responseFactory;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * NullAdapter constructor.
      *
      * @param ResponseFactory $responseFactory The response factory
+     * @param array           $config          The config
      */
-    public function __construct(ResponseFactory $responseFactory)
+    public function __construct(ResponseFactory $responseFactory, array $config)
     {
         $this->responseFactory = $responseFactory;
+        $this->config          = $config;
     }
 
     /**

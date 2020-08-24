@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client\Managers;
 
-use Valkyrja\Client\Adapter;
 use Valkyrja\Client\Client as Contract;
+use Valkyrja\Client\Driver;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Response;
 
@@ -26,11 +26,11 @@ use Valkyrja\Http\Response;
 class Client implements Contract
 {
     /**
-     * The adapters.
+     * The drivers.
      *
-     * @var Adapter[]
+     * @var Driver[]
      */
-    protected static array $adapters = [];
+    protected static array $driversCache = [];
 
     /**
      * The container.
@@ -47,11 +47,32 @@ class Client implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The adapters.
+     *
+     * @var array
+     */
+    protected array $adapters;
+
+    /**
+     * The crypts.
+     *
+     * @var array
+     */
+    protected array $clients;
+
+    /**
+     * The drivers config.
+     *
+     * @var array
+     */
+    protected array $drivers;
+
+    /**
+     * The default client.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $default;
 
     /**
      * Client constructor.
@@ -61,25 +82,40 @@ class Client implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultAdapter = $config['adapter'];
+        $this->container = $container;
+        $this->config    = $config;
+        $this->clients   = $config['clients'];
+        $this->adapters  = $config['adapters'];
+        $this->drivers   = $config['drivers'];
+        $this->default   = $config['default'];
     }
 
     /**
-     * Get an adapter by name.
+     * Use a client by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name    [optional] The connection name
+     * @param string|null $adapter [optional] The adapter
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useClient(string $name = null, string $adapter = null): Driver
     {
-        $name ??= $this->defaultAdapter;
+        // The client to use
+        $name ??= $this->default;
+        // The client config to use
+        $config = $this->clients[$name];
+        // The adapter to use
+        $adapter ??= $config['adapter'];
+        // The cache key to use
+        $cacheKey = $name . $adapter;
 
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
+        return self::$driversCache[$cacheKey]
+            ?? self::$driversCache[$cacheKey] = $this->container->get(
+                $this->drivers[$config['driver']],
+                [
+                    $config,
+                    $this->adapters[$adapter],
+                ]
             );
     }
 
@@ -94,7 +130,7 @@ class Client implements Contract
      */
     public function request(string $method, string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->request($method, $uri, $options);
+        return $this->useClient()->request($method, $uri, $options);
     }
 
     /**
@@ -107,7 +143,7 @@ class Client implements Contract
      */
     public function get(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->get($uri, $options);
+        return $this->useClient()->get($uri, $options);
     }
 
     /**
@@ -120,7 +156,7 @@ class Client implements Contract
      */
     public function post(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->post($uri, $options);
+        return $this->useClient()->post($uri, $options);
     }
 
     /**
@@ -133,7 +169,7 @@ class Client implements Contract
      */
     public function head(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->head($uri, $options);
+        return $this->useClient()->head($uri, $options);
     }
 
     /**
@@ -146,7 +182,7 @@ class Client implements Contract
      */
     public function put(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->put($uri, $options);
+        return $this->useClient()->put($uri, $options);
     }
 
     /**
@@ -159,7 +195,7 @@ class Client implements Contract
      */
     public function patch(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->patch($uri, $options);
+        return $this->useClient()->patch($uri, $options);
     }
 
     /**
@@ -172,6 +208,6 @@ class Client implements Contract
      */
     public function delete(string $uri, array $options = []): Response
     {
-        return $this->getAdapter()->delete($uri, $options);
+        return $this->useClient()->delete($uri, $options);
     }
 }

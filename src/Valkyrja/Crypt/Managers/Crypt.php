@@ -72,7 +72,7 @@ class Crypt implements Contract
      *
      * @var string
      */
-    protected string $defaultCrypt;
+    protected string $default;
 
     /**
      * The key
@@ -89,38 +89,38 @@ class Crypt implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container    = $container;
-        $this->config       = $config;
-        $this->crypts       = $config['crypts'];
-        $this->adapters     = $config['adapters'];
-        $this->drivers      = $config['drivers'];
-        $this->defaultCrypt = $config['default'];
+        $this->container = $container;
+        $this->config    = $config;
+        $this->crypts    = $config['crypts'];
+        $this->adapters  = $config['adapters'];
+        $this->drivers   = $config['drivers'];
+        $this->default   = $config['default'];
     }
 
     /**
      * Use a crypt by name.
      *
-     * @param string|null $name    The crypt name
-     * @param string|null $adapter The adapter
+     * @param string|null $name    [optional] The crypt name
+     * @param string|null $adapter [optional] The adapter
      *
      * @return Driver
      */
     public function useCrypt(string $name = null, string $adapter = null): Driver
     {
         // The crypt to use
-        $name ??= $this->defaultCrypt;
-        // The crypt config to use
-        $crypt = $this->crypts[$name];
+        $name ??= $this->default;
+        // The config to use
+        $config = $this->crypts[$name];
         // The adapter to use
-        $adapter ??= $crypt['adapter'];
+        $adapter ??= $config['adapter'];
         // The cache key to use
         $cacheKey = $name . $adapter;
 
         return self::$driversCache[$cacheKey]
             ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$crypt['driver']],
+                $this->drivers[$config['driver']],
                 [
-                    $crypt,
+                    $config,
                     $this->adapters[$adapter],
                 ]
             );

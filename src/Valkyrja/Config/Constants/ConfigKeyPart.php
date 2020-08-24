@@ -168,4 +168,5 @@ final class ConfigKeyPart
     public const SESSIONS                    = 'sessions';
     public const LOGGER                      = 'logger';
     public const LOGGERS                     = 'loggers';
+    public const CLIENTS                     = 'clients';
 }

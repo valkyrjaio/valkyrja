@@ -18,6 +18,7 @@ use Valkyrja\Client\Adapters\GuzzleAdapter;
 use Valkyrja\Client\Adapters\LogAdapter;
 use Valkyrja\Client\Adapters\NullAdapter;
 use Valkyrja\Client\Client;
+use Valkyrja\Client\Drivers\Driver;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Http\ResponseFactory;
@@ -39,9 +40,10 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class        => 'publishClient',
+            Driver::class        => 'publishDefaultDriver',
             GuzzleAdapter::class => 'publishGuzzleAdapter',
-            NullAdapter::class   => 'publishNullAdapter',
             LogAdapter::class    => 'publishLogAdapter',
+            NullAdapter::class   => 'publishNullAdapter',
         ];
     }
 
@@ -54,8 +56,10 @@ class ServiceProvider extends Provider
     {
         return [
             Client::class,
+            Driver::class,
             GuzzleAdapter::class,
             LogAdapter::class,
+            NullAdapter::class,
         ];
     }
 
@@ -91,6 +95,30 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (array $config, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $config,
+                        ]
+                    )
+                );
+            }
+        );
+    }
+
+    /**
      * Publish the guzzle adapter service.
      *
      * @param Container $container The container
@@ -99,29 +127,18 @@ class ServiceProvider extends Provider
      */
     public static function publishGuzzleAdapter(Container $container): void
     {
-        $container->setSingleton(
-            GuzzleAdapter::class,
-            new GuzzleAdapter(
-                new Guzzle(),
-                $container->getSingleton(ResponseFactory::class)
-            )
-        );
-    }
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = $container->getSingleton(ResponseFactory::class);
 
-    /**
-     * Publish the null adapter service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishNullAdapter(Container $container): void
-    {
-        $container->setSingleton(
-            NullAdapter::class,
-            new NullAdapter(
-                $container->getSingleton(ResponseFactory::class)
-            )
+        $container->setClosure(
+            GuzzleAdapter::class,
+            static function (array $config) use ($responseFactory): GuzzleAdapter {
+                return new GuzzleAdapter(
+                    new Guzzle(),
+                    $responseFactory,
+                    $config
+                );
+            }
         );
     }
 
@@ -134,12 +151,43 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $container->setSingleton(
+        /** @var Logger $logger */
+        $logger = $container->getSingleton(Logger::class);
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = $container->getSingleton(ResponseFactory::class);
+
+        $container->setClosure(
             LogAdapter::class,
-            new LogAdapter(
-                $container->getSingleton(Logger::class),
-                $container->getSingleton(ResponseFactory::class)
-            )
+            static function (array $config) use ($logger, $responseFactory): LogAdapter {
+                return new LogAdapter(
+                    $logger,
+                    $responseFactory,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the null adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishNullAdapter(Container $container): void
+    {
+        /** @var ResponseFactory $responseFactory */
+        $responseFactory = $container->getSingleton(ResponseFactory::class);
+
+        $container->setClosure(
+            NullAdapter::class,
+            static function (array $config) use ($responseFactory): NullAdapter {
+                return new NullAdapter(
+                    $responseFactory,
+                    $config
+                );
+            }
         );
     }
 }
