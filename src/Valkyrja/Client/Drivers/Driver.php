@@ -40,6 +40,7 @@ class Driver implements Contract
     {
         $this->adapter = $adapter;
     }
+
     /**
      * Make a request.
      *
