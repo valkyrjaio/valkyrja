@@ -50,7 +50,7 @@ class LogAdapter implements Adapter
     public function __construct(Logger $logger, array $config)
     {
         $this->config = $config;
-        $this->log    = $logger->getAdapter($config['adapter']);
+        $this->log    = $logger->useLogger($config['adapter']);
     }
 
     /**

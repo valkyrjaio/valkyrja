@@ -152,8 +152,10 @@ final class EnvKey
 
     public const LOG_NAME      = 'LOG_NAME';
     public const LOG_FILE_PATH = 'LOG_FILE_PATH';
-    public const LOG_ADAPTER   = 'LOG_ADAPTER';
+    public const LOG_DEFAULT   = 'LOG_DEFAULT';
     public const LOG_ADAPTERS  = 'LOG_ADAPTERS';
+    public const LOG_DRIVERS   = 'LOG_DRIVERS';
+    public const LOG_LOGGERS   = 'LOG_LOGGERS';
 
     public const MAIL_FROM_ADDRESS          = 'MAIL_FROM_ADDRESS';
     public const MAIL_FROM_NAME             = 'MAIL_FROM_NAME';

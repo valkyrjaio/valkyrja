@@ -31,12 +31,21 @@ class PsrAdapter implements Contract
     protected LoggerInterface $logger;
 
     /**
+     * The config.
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * PsrAdapter constructor.
      *
      * @param LoggerInterface $logger The logger
+     * @param array           $config The config
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, array $config)
     {
+        $this->config = $config;
         $this->logger = $logger;
     }
 

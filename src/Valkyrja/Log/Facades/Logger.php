@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Facades;
 
-use Valkyrja\Log\Adapter;
+use Valkyrja\Log\Driver;
 use Valkyrja\Log\Logger as Contract;
 use Valkyrja\Support\Facade\Facade;
 
@@ -22,7 +22,7 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
- * @method static Adapter getAdapter(string $name = null)
+ * @method static Driver useLogger(string $name = null, string $adapter = null)
  * @method static void debug(string $message, array $context = [])
  * @method static void info(string $message, array $context = [])
  * @method static void notice(string $message, array $context = [])

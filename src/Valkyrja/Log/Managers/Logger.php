@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\Log\Adapter;
+use Valkyrja\Log\Driver;
 use Valkyrja\Log\Logger as Contract;
 
 /**
@@ -25,11 +25,11 @@ use Valkyrja\Log\Logger as Contract;
 class Logger implements Contract
 {
     /**
-     * The adapters.
+     * The drivers.
      *
-     * @var Adapter[]
+     * @var Driver[]
      */
-    protected static array $adapters = [];
+    protected static array $driversCache = [];
 
     /**
      * The container.
@@ -46,11 +46,32 @@ class Logger implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The adapters.
+     *
+     * @var array
+     */
+    protected array $adapters;
+
+    /**
+     * The crypts.
+     *
+     * @var array
+     */
+    protected array $loggers;
+
+    /**
+     * The drivers config.
+     *
+     * @var array
+     */
+    protected array $drivers;
+
+    /**
+     * The default crypt.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $default;
 
     /**
      * The key
@@ -67,25 +88,40 @@ class Logger implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->defaultAdapter = $config['adapter'];
+        $this->container = $container;
+        $this->config    = $config;
+        $this->loggers   = $config['loggers'];
+        $this->adapters  = $config['adapters'];
+        $this->drivers   = $config['drivers'];
+        $this->default   = $config['default'];
     }
 
     /**
-     * Get an adapter by name.
+     * Use a logger by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name    [optional] The logger name
+     * @param string|null $adapter [optional] The adapter
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function getAdapter(string $name = null): Adapter
+    public function useLogger(string $name = null, string $adapter = null): Driver
     {
-        $name ??= $this->defaultAdapter;
+        // The logger to use
+        $name ??= $this->default;
+        // The config to use
+        $config = $this->loggers[$name];
+        // The adapter to use
+        $adapter ??= $config['adapter'];
+        // The cache key to use
+        $cacheKey = $name . $adapter;
 
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]
+        return self::$driversCache[$cacheKey]
+            ?? self::$driversCache[$cacheKey] = $this->container->get(
+                $this->drivers[$config['driver']],
+                [
+                    $config,
+                    $this->adapters[$adapter],
+                ]
             );
     }
 
@@ -99,7 +135,7 @@ class Logger implements Contract
      */
     public function debug(string $message, array $context = []): void
     {
-        $this->getAdapter()->debug($message, $context);
+        $this->useLogger()->debug($message, $context);
     }
 
     /**
@@ -112,7 +148,7 @@ class Logger implements Contract
      */
     public function info(string $message, array $context = []): void
     {
-        $this->getAdapter()->info($message, $context);
+        $this->useLogger()->info($message, $context);
     }
 
     /**
@@ -125,7 +161,7 @@ class Logger implements Contract
      */
     public function notice(string $message, array $context = []): void
     {
-        $this->getAdapter()->notice($message, $context);
+        $this->useLogger()->notice($message, $context);
     }
 
     /**
@@ -138,7 +174,7 @@ class Logger implements Contract
      */
     public function warning(string $message, array $context = []): void
     {
-        $this->getAdapter()->warning($message, $context);
+        $this->useLogger()->warning($message, $context);
     }
 
     /**
@@ -151,7 +187,7 @@ class Logger implements Contract
      */
     public function error(string $message, array $context = []): void
     {
-        $this->getAdapter()->error($message, $context);
+        $this->useLogger()->error($message, $context);
     }
 
     /**
@@ -164,7 +200,7 @@ class Logger implements Contract
      */
     public function critical(string $message, array $context = []): void
     {
-        $this->getAdapter()->critical($message, $context);
+        $this->useLogger()->critical($message, $context);
     }
 
     /**
@@ -177,7 +213,7 @@ class Logger implements Contract
      */
     public function alert(string $message, array $context = []): void
     {
-        $this->getAdapter()->alert($message, $context);
+        $this->useLogger()->alert($message, $context);
     }
 
     /**
@@ -190,7 +226,7 @@ class Logger implements Contract
      */
     public function emergency(string $message, array $context = []): void
     {
-        $this->getAdapter()->emergency($message, $context);
+        $this->useLogger()->emergency($message, $context);
     }
 
     /**
@@ -204,6 +240,6 @@ class Logger implements Contract
      */
     public function log(string $level, string $message, array $context = []): void
     {
-        $this->getAdapter()->log($level, $message, $context);
+        $this->useLogger()->log($level, $message, $context);
     }
 }

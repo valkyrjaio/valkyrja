@@ -30,10 +30,10 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::NAME,
-        CKP::FILE_PATH,
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
+        CKP::DRIVERS,
+        CKP::LOGGERS,
     ];
 
     /**
@@ -42,37 +42,37 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::NAME      => EnvKey::LOG_NAME,
-        CKP::FILE_PATH => EnvKey::LOG_FILE_PATH,
-        CKP::ADAPTER   => EnvKey::LOG_ADAPTER,
+        CKP::DEFAULT   => EnvKey::LOG_DEFAULT,
         CKP::ADAPTERS  => EnvKey::LOG_ADAPTERS,
+        CKP::DRIVERS   => EnvKey::LOG_DRIVERS,
+        CKP::LOGGERS   => EnvKey::LOG_LOGGERS,
     ];
 
     /**
-     * The log name.
+     * The default logger.
      *
      * @var string
      */
-    public string $name;
-
-    /**
-     * The file path.
-     *
-     * @var string
-     */
-    public string $filePath;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
      *
-     * @var array
+     * @var string[]
      */
     public array $adapters;
+
+    /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
+
+    /**
+     * The loggers.
+     *
+     * @var array[]
+     */
+    public array $loggers;
 }

@@ -22,6 +22,7 @@ use Valkyrja\Container\Support\Provider;
 use Valkyrja\Log\Adapters\NullAdapter;
 use Valkyrja\Log\Adapters\PsrAdapter;
 use Valkyrja\Log\Constants\LogLevel;
+use Valkyrja\Log\Drivers\Driver;
 use Valkyrja\Log\Logger;
 
 use function date;
@@ -39,10 +40,11 @@ class ServiceProvider extends Provider
      * @var array
      */
     public static array $provides = [
-        LoggerInterface::class,
         Logger::class,
+        Driver::class,
         NullAdapter::class,
         PsrAdapter::class,
+        LoggerInterface::class,
     ];
 
     /**
@@ -53,10 +55,11 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            LoggerInterface::class => 'publishLoggerInterface',
             Logger::class          => 'publishLogger',
+            Driver::class          => 'publishDefaultDriver',
             NullAdapter::class     => 'publishNullAdapter',
             PsrAdapter::class      => 'publishPsrAdapter',
+            LoggerInterface::class => 'publishLoggerInterface',
         ];
     }
 
@@ -84,35 +87,6 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Bind the logger interface.
-     *
-     * @param Container $container The container
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public static function publishLoggerInterface(Container $container): void
-    {
-        $config    = $container->getSingleton('config');
-        $logConfig = $config['log'];
-        $handler   = new StreamHandler(
-            $logConfig['filePath'] . '/' . $logConfig['name'] . date('-Y-m-d') . '.log',
-            LogLevel::DEBUG
-        );
-
-        $container->setSingleton(
-            LoggerInterface::class,
-            new Monolog(
-                $logConfig['name'] . date('-Y-m-d'),
-                [
-                    $handler,
-                ]
-            )
-        );
-    }
-
-    /**
      * Bind the logger service.
      *
      * @param Container $container The container
@@ -133,6 +107,30 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (array $config, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $config,
+                        ]
+                    )
+                );
+            }
+        );
+    }
+
+    /**
      * Bind the psr adapter service.
      *
      * @param Container $container The container
@@ -141,11 +139,19 @@ class ServiceProvider extends Provider
      */
     public static function publishPsrAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             PsrAdapter::class,
-            new PsrAdapter(
-                $container->getSingleton(LoggerInterface::class)
-            )
+            static function (array $config) use ($container): PsrAdapter {
+                return new PsrAdapter(
+                    $container->get(
+                        LoggerInterface::class,
+                        [
+                            $config,
+                        ]
+                    ),
+                    $config
+                );
+            }
         );
     }
 
@@ -158,9 +164,43 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             NullAdapter::class,
-            new NullAdapter()
+            static function (array $config): NullAdapter {
+                return new NullAdapter(
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Bind the logger interface.
+     *
+     * @param Container $container The container
+     *
+     * @throws Exception
+     *
+     * @return void
+     */
+    public static function publishLoggerInterface(Container $container): void
+    {
+        $container->setClosure(
+            LoggerInterface::class,
+            static function (array $config): LoggerInterface {
+                $filePath = $config['filePath'];
+                $name     = $config['name'] . date('-Y-m-d');
+
+                return new Monolog(
+                    $name,
+                    [
+                        new StreamHandler(
+                            "${filePath}/${name}.log",
+                            LogLevel::DEBUG
+                        ),
+                    ]
+                );
+            }
         );
     }
 }

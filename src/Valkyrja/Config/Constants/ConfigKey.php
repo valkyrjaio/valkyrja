@@ -113,10 +113,10 @@ final class ConfigKey
     public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
     public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
-    public const LOG_NAME      = 'log.name';
-    public const LOG_FILE_PATH = 'log.filePath';
-    public const LOG_ADAPTER   = 'log.adapter';
+    public const LOG_DEFAULT   = 'log.default';
     public const LOG_ADAPTERS  = 'log.adapters';
+    public const LOG_DRIVERS   = 'log.drivers';
+    public const LOG_LOGGERS   = 'log.loggers';
 
     public const MAIL_HOST         = 'mail.host';
     public const MAIL_PORT         = 'mail.port';

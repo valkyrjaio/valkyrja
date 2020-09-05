@@ -23,10 +23,20 @@ use Valkyrja\Log\Adapter as Contract;
 class NullAdapter implements Contract
 {
     /**
-     * NullAdapter constructor.
+     * The config.
+     *
+     * @var array
      */
-    public function __construct()
+    protected array $config;
+
+    /**
+     * NullAdapter constructor.
+     *
+     * @param array $config The config
+     */
+    public function __construct(array $config)
     {
+        $this->config = $config;
     }
 
     /**

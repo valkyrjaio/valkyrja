@@ -14,22 +14,12 @@ declare(strict_types=1);
 namespace Valkyrja\Log;
 
 /**
- * Interface Logger.
+ * Interface Driver.
  *
  * @author Melech Mizrachi
  */
-interface Logger
+interface Driver
 {
-    /**
-     * Use a logger by name.
-     *
-     * @param string|null $name    [optional] The logger name
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Driver
-     */
-    public function useLogger(string $name = null, string $adapter = null): Driver;
-
     /**
      * Log a debug message.
      *
