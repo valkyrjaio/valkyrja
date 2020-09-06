@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Mail\Adapters;
 
 use JsonException;
-use Valkyrja\Log\Adapter as Log;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Driver as Logger;
 use Valkyrja\Mail\Adapter;
 use Valkyrja\Mail\Message;
 use Valkyrja\Support\Type\Arr;
@@ -28,11 +27,11 @@ use Valkyrja\Support\Type\Arr;
 class LogAdapter implements Adapter
 {
     /**
-     * The log adapter.
+     * The log driver.
      *
-     * @var Log
+     * @var Logger
      */
-    protected Log $log;
+    protected Logger $log;
 
     /**
      * The config.
@@ -50,7 +49,7 @@ class LogAdapter implements Adapter
     public function __construct(Logger $logger, array $config)
     {
         $this->config = $config;
-        $this->log    = $logger->useLogger($config['adapter']);
+        $this->log    = $logger;
     }
 
     /**

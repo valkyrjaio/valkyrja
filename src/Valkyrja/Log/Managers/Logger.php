@@ -48,26 +48,26 @@ class Logger implements Contract
     /**
      * The adapters.
      *
-     * @var array
+     * @var string[]
      */
     protected array $adapters;
 
     /**
-     * The crypts.
-     *
-     * @var array
-     */
-    protected array $loggers;
-
-    /**
      * The drivers config.
      *
-     * @var array
+     * @var string[]
      */
     protected array $drivers;
 
     /**
-     * The default crypt.
+     * The loggers.
+     *
+     * @var array[]
+     */
+    protected array $loggers;
+
+    /**
+     * The default logger.
      *
      * @var string
      */
@@ -81,7 +81,7 @@ class Logger implements Contract
     protected ?string $key = null;
 
     /**
-     * Crypt constructor.
+     * Logger constructor.
      *
      * @param Container $container The container
      * @param array     $config    The config
@@ -90,9 +90,9 @@ class Logger implements Contract
     {
         $this->container = $container;
         $this->config    = $config;
-        $this->loggers   = $config['loggers'];
         $this->adapters  = $config['adapters'];
         $this->drivers   = $config['drivers'];
+        $this->loggers   = $config['loggers'];
         $this->default   = $config['default'];
     }
 

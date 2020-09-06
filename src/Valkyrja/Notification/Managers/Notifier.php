@@ -334,7 +334,7 @@ class Notifier implements Contract
     protected function notifyByMail(Notification $notification): void
     {
         $mail        = $this->mail;
-        $mailAdapter = $mail->getAdapter($notification->getMailAdapterName());
+        $mailAdapter = $mail->useMailer($notification->getMailAdapterName());
         $mailMessage = $notification->getMailMessageName();
 
         foreach ($this->mailRecipients as $mailRecipient) {

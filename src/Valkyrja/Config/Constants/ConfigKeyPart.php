@@ -95,6 +95,8 @@ final class ConfigKeyPart
     public const USERNAME                    = 'username';
     public const PASSWORD                    = 'password';
     public const MESSAGE                     = 'message';
+    public const DEFAULT_MESSAGE             = 'defaultMessage';
+    public const MESSAGE_ADAPTERS            = 'messageAdapters';
     public const MESSAGES                    = 'messages';
     public const PHP_MAILER                  = 'phpMailer';
     public const MAILGUN                     = 'mailgun';
@@ -169,4 +171,5 @@ final class ConfigKeyPart
     public const LOGGER                      = 'logger';
     public const LOGGERS                     = 'loggers';
     public const CLIENTS                     = 'clients';
+    public const MAILERS                     = 'mailers';
 }

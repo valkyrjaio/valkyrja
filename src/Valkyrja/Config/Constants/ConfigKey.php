@@ -113,22 +113,18 @@ final class ConfigKey
     public const FILESYSTEM_S3_OPTIONS    = 'filesystem.disks.s3.options';
     public const FILESYSTEM_S3_ADAPTER    = 'filesystem.disks.s3.adapter';
 
-    public const LOG_DEFAULT   = 'log.default';
-    public const LOG_ADAPTERS  = 'log.adapters';
-    public const LOG_DRIVERS   = 'log.drivers';
-    public const LOG_LOGGERS   = 'log.loggers';
+    public const LOG_DEFAULT  = 'log.default';
+    public const LOG_ADAPTERS = 'log.adapters';
+    public const LOG_DRIVERS  = 'log.drivers';
+    public const LOG_LOGGERS  = 'log.loggers';
 
-    public const MAIL_HOST         = 'mail.host';
-    public const MAIL_PORT         = 'mail.port';
-    public const MAIL_FROM_ADDRESS = 'mail.from.address';
-    public const MAIL_FROM_NAME    = 'mail.from.name';
-    public const MAIL_ENCRYPTION   = 'mail.encryption';
-    public const MAIL_USERNAME     = 'mail.username';
-    public const MAIL_PASSWORD     = 'mail.password';
-    public const MAIL_ADAPTER      = 'mail.adapter';
-    public const MAIL_ADAPTERS     = 'mail.adapters';
-    public const MAIL_MESSAGE      = 'mail.message';
-    public const MAIL_MESSAGES     = 'mail.messages';
+    public const MAIL_DEFAULT          = 'mail.default';
+    public const MAIL_ADAPTERS         = 'mail.adapters';
+    public const MAIL_DRIVERS          = 'mail.drivers';
+    public const MAIL_MAILERS          = 'mail.mailers';
+    public const MAIL_DEFAULT_MESSAGE  = 'mail.defaultMessage';
+    public const MAIL_MESSAGE_ADAPTERS = 'mail.messageAdapters';
+    public const MAIL_MESSAGES         = 'mail.messages';
 
     public const NOTIFICATION_NOTIFICATIONS = 'notification.notifications';
 

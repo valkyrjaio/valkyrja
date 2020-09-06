@@ -30,11 +30,12 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::FROM_ADDRESS,
-        CKP::FROM_NAME,
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
-        CKP::MESSAGE,
+        CKP::DRIVERS,
+        CKP::MAILERS,
+        CKP::DEFAULT_MESSAGE,
+        CKP::MESSAGE_ADAPTERS,
         CKP::MESSAGES,
     ];
 
@@ -44,34 +45,21 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::FROM_ADDRESS => EnvKey::MAIL_FROM_ADDRESS,
-        CKP::FROM_NAME    => EnvKey::MAIL_FROM_NAME,
-        CKP::ADAPTER      => EnvKey::MAIL_ADAPTER,
-        CKP::ADAPTERS     => EnvKey::MAIL_ADAPTERS,
-        CKP::MESSAGE      => EnvKey::MAIL_MESSAGE,
-        CKP::MESSAGES     => EnvKey::MAIL_MESSAGES,
+        CKP::DEFAULT          => EnvKey::MAIL_DEFAULT,
+        CKP::ADAPTERS         => EnvKey::MAIL_ADAPTERS,
+        CKP::DRIVERS          => EnvKey::MAIL_DRIVERS,
+        CKP::MAILERS          => EnvKey::MAIL_MAILERS,
+        CKP::DEFAULT_MESSAGE  => EnvKey::MAIL_DEFAULT_MESSAGE,
+        CKP::MESSAGE_ADAPTERS => EnvKey::MAIL_MESSAGE_ADAPTERS,
+        CKP::MESSAGES         => EnvKey::MAIL_MESSAGES,
     ];
 
     /**
-     * The from address.
+     * The default mailer.
      *
      * @var string
      */
-    public string $fromAddress;
-
-    /**
-     * The from name.
-     *
-     * @var string
-     */
-    public string $fromName;
-
-    /**
-     * The default adapter.
-     *
-     * @var string
-     */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
@@ -81,16 +69,37 @@ class Config extends Model
     public array $adapters;
 
     /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
+
+    /**
+     * The mailers.
+     *
+     * @var array[]
+     */
+    public array $mailers;
+
+    /**
      * The default message.
      *
      * @var string
      */
-    public string $message;
+    public string $defaultMessage;
 
     /**
      * The message adapters.
      *
      * @var string[]
+     */
+    public array $messageAdapters;
+
+    /**
+     * The messages.
+     *
+     * @var array[]
      */
     public array $messages;
 }

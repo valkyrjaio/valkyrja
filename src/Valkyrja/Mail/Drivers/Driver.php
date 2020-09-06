@@ -11,33 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Mail\Adapters;
+namespace Valkyrja\Mail\Drivers;
 
 use Valkyrja\Mail\Adapter;
+use Valkyrja\Mail\Driver as Contract;
 use Valkyrja\Mail\Message;
 
 /**
- * Class NullAdapter.
+ * Class Driver.
  *
  * @author Melech Mizrachi
  */
-class NullAdapter implements Adapter
+class Driver implements Contract
 {
     /**
-     * The config.
+     * The adapter.
      *
-     * @var array
+     * @var Adapter
      */
-    protected array $config;
+    protected Adapter $adapter;
 
     /**
-     * NullAdapter constructor.
+     * Driver constructor.
      *
-     * @param array $config The config
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(array $config)
+    public function __construct(Adapter $adapter)
     {
-        $this->config = $config;
+        $this->adapter = $adapter;
     }
 
     /**
@@ -49,5 +50,6 @@ class NullAdapter implements Adapter
      */
     public function send(Message $message): void
     {
+        $this->adapter->send($message);
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Mail\Facades;
 
+use Valkyrja\Mail\Driver;
 use Valkyrja\Mail\Mail as Contract;
 use Valkyrja\Mail\Message;
 use Valkyrja\Support\Facade\Facade;
@@ -22,7 +23,9 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
+ * @method static Driver useMailer(string $name = null, string $adapter = null)
  * @method static Message createMessage(string $name = null)
+ * @method static void send(Message $message)
  */
 class Mail extends Facade
 {

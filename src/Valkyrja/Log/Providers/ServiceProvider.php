@@ -35,19 +35,6 @@ use function date;
 class ServiceProvider extends Provider
 {
     /**
-     * What services are provided.
-     *
-     * @var array
-     */
-    public static array $provides = [
-        Logger::class,
-        Driver::class,
-        NullAdapter::class,
-        PsrAdapter::class,
-        LoggerInterface::class,
-    ];
-
-    /**
      * The items provided by this provider.
      *
      * @return string[]
@@ -70,7 +57,13 @@ class ServiceProvider extends Provider
      */
     public static function provides(): array
     {
-        return static::$provides;
+        return [
+            Logger::class,
+            Driver::class,
+            NullAdapter::class,
+            PsrAdapter::class,
+            LoggerInterface::class,
+        ];
     }
 
     /**

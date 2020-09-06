@@ -22,6 +22,7 @@ use Valkyrja\Mail\Adapters\LogAdapter;
 use Valkyrja\Mail\Adapters\MailgunAdapter;
 use Valkyrja\Mail\Adapters\NullAdapter;
 use Valkyrja\Mail\Adapters\PHPMailerAdapter;
+use Valkyrja\Mail\Drivers\Driver;
 use Valkyrja\Mail\Mail;
 use Valkyrja\Mail\Messages\Message;
 
@@ -41,6 +42,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class             => 'publishMail',
+            Driver::class           => 'publishDefaultDriver',
             LogAdapter::class       => 'publishLogAdapter',
             NullAdapter::class      => 'publishNullAdapter',
             PHPMailer::class        => 'publishPHPMailer',
@@ -60,6 +62,7 @@ class ServiceProvider extends Provider
     {
         return [
             Mail::class,
+            Driver::class,
             LogAdapter::class,
             NullAdapter::class,
             PHPMailer::class,
@@ -102,6 +105,30 @@ class ServiceProvider extends Provider
     }
 
     /**
+     * Publish the default driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishDefaultDriver(Container $container): void
+    {
+        $container->setClosure(
+            Driver::class,
+            static function (array $config, string $adapter) use ($container): Driver {
+                return new Driver(
+                    $container->get(
+                        $adapter,
+                        [
+                            $config,
+                        ]
+                    )
+                );
+            }
+        );
+    }
+
+    /**
      * Publish the log adapter service.
      *
      * @param Container $container The container
@@ -110,14 +137,17 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        /** @var Logger $logger */
+        $logger = $container->getSingleton(Logger::class);
 
-        $container->setSingleton(
+        $container->setClosure(
             LogAdapter::class,
-            new LogAdapter(
-                $container->getSingleton(Logger::class),
-                $config['mail']['adapters']['log']
-            )
+            static function (array $config) use ($logger): LogAdapter {
+                return new LogAdapter(
+                    $logger->useLogger($config['logger'] ?? null),
+                    $config
+                );
+            }
         );
     }
 
@@ -130,9 +160,13 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             NullAdapter::class,
-            new NullAdapter()
+            static function (array $config): NullAdapter {
+                return new NullAdapter(
+                    $config
+                );
+            }
         );
     }
 
@@ -145,32 +179,34 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailer(Container $container): void
     {
-        $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail']['adapters']['phpMailer'];
+        $globalConfig = $container->getSingleton('config');
+        $appDebug     = $globalConfig['app']['debug'] ?? null;
 
-        // Create a new instance of the PHPMailer class
-        $PHPMailer = new PHPMailer(true);
-
-        // Enable verbose debug output
-        $PHPMailer->SMTPDebug = $config['app']['debug'] ? 2 : 0;
-        // Set mailer to use SMTP
-        $PHPMailer->isSMTP();
-        // Specify main and backup SMTP servers
-        $PHPMailer->Host = $mailConfig['host'];
-        // SMTP Port
-        $PHPMailer->Port = $mailConfig['port'];
-        // Enable SMTP authentication
-        $PHPMailer->SMTPAuth = true;
-        // SMTP username
-        $PHPMailer->Username = $mailConfig['username'];
-        // SMTP password
-        $PHPMailer->Password = $mailConfig['password'];
-        // Enable TLS encryption, `ssl` also accepted
-        $PHPMailer->SMTPSecure = $mailConfig['encryption'];
-
-        $container->setSingleton(
+        $container->setClosure(
             PHPMailer::class,
-            $PHPMailer
+            static function (array $config) use ($appDebug): PHPMailer {
+                // Create a new instance of the PHPMailer class
+                $mailer = new PHPMailer(true);
+
+                // Enable verbose debug output
+                $mailer->SMTPDebug = $appDebug ? 2 : 0;
+                // Set mailer to use SMTP
+                $mailer->isSMTP();
+                // Specify main and backup SMTP servers
+                $mailer->Host = $config['host'];
+                // SMTP Port
+                $mailer->Port = $config['port'];
+                // Enable SMTP authentication
+                $mailer->SMTPAuth = true;
+                // SMTP username
+                $mailer->Username = $config['username'];
+                // SMTP password
+                $mailer->Password = $config['password'];
+                // Enable TLS encryption, `ssl` also accepted
+                $mailer->SMTPSecure = $config['encryption'];
+
+                return $mailer;
+            }
         );
     }
 
@@ -183,11 +219,13 @@ class ServiceProvider extends Provider
      */
     public static function publishPHPMailerAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             PHPMailerAdapter::class,
-            new PHPMailerAdapter(
-                $container->getSingleton(PHPMailer::class)
-            )
+            static function (array $config) use ($container): PHPMailerAdapter {
+                return new PHPMailerAdapter(
+                    $container->get(PHPMailer::class, [$config])
+                );
+            }
         );
     }
 
@@ -200,12 +238,13 @@ class ServiceProvider extends Provider
      */
     public static function publishMailgun(Container $container): void
     {
-        $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail']['adapters']['mailgun'];
-
-        $container->setSingleton(
+        $container->setClosure(
             Mailgun::class,
-            new Mailgun($mailConfig['apiKey'])
+            static function (array $config): Mailgun {
+                return new Mailgun(
+                    $config['apiKey']
+                );
+            }
         );
     }
 
@@ -218,15 +257,14 @@ class ServiceProvider extends Provider
      */
     public static function publishMailgunAdapter(Container $container): void
     {
-        $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail']['adapters']['mailgun'];
-
-        $container->setSingleton(
+        $container->setClosure(
             MailgunAdapter::class,
-            new MailgunAdapter(
-                $container->getSingleton(PHPMailer::class),
-                $mailConfig
-            )
+            static function (array $config) use ($container): MailgunAdapter {
+                return new MailgunAdapter(
+                    $container->get(Mailgun::class, [$config]),
+                    $config
+                );
+            }
         );
     }
 
@@ -239,13 +277,10 @@ class ServiceProvider extends Provider
      */
     public static function publishMessage(Container $container): void
     {
-        $config     = $container->getSingleton('config');
-        $mailConfig = $config['mail'];
-
         $container->setClosure(
             Message::class,
-            static function () use ($mailConfig): Message {
-                return (new Message())->setFrom($mailConfig['fromEmail'], $mailConfig['fromName']);
+            static function (array $config): Message {
+                return (new Message())->setFrom($config['fromEmail'], $config['fromName']);
             }
         );
     }
