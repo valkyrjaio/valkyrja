@@ -160,7 +160,7 @@ class Mail implements Contract
             $message['adapter'],
             [
                 $message,
-                $data
+                $data,
             ]
         );
     }
