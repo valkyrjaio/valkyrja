@@ -61,18 +61,25 @@ class Mail implements Contract
     protected array $drivers;
 
     /**
-     * The messages config.
-     *
-     * @var string[]
-     */
-    protected array $messages;
-
-    /**
      * The mailers.
      *
      * @var array[]
      */
     protected array $mailers;
+
+    /**
+     * The message adapters.
+     *
+     * @var string[]
+     */
+    protected array $messageAdapters;
+
+    /**
+     * The messages config.
+     *
+     * @var array[]
+     */
+    protected array $messages;
 
     /**
      * The default mailer.
@@ -103,20 +110,21 @@ class Mail implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container      = $container;
-        $this->config         = $config;
-        $this->adapters       = $config['adapters'];
-        $this->drivers        = $config['drivers'];
-        $this->messages       = $config['messages'];
-        $this->mailers        = $config['mailers'];
-        $this->default        = $config['default'];
-        $this->defaultMessage = $config['message'];
+        $this->container       = $container;
+        $this->config          = $config;
+        $this->adapters        = $config['adapters'];
+        $this->drivers         = $config['drivers'];
+        $this->mailers         = $config['mailers'];
+        $this->default         = $config['default'];
+        $this->defaultMessage  = $config['defaultMessage'];
+        $this->messageAdapters = $config['messageAdapters'];
+        $this->messages        = $config['messages'];
     }
 
     /**
-     * Use a logger by name.
+     * Use a mailer by name.
      *
-     * @param string|null $name    [optional] The logger name
+     * @param string|null $name    [optional] The mailer name
      * @param string|null $adapter [optional] The adapter
      *
      * @return Driver
@@ -152,14 +160,17 @@ class Mail implements Contract
      */
     public function createMessage(string $name = null, array $data = []): Message
     {
-        // The message to use
+        // The name of the message to use
         $name ??= $this->defaultMessage;
-        $message = $this->messages[$name];
+        // The message config
+        $config = $this->messages[$name];
+        // The adapter to use
+        $adapter = $config['adapter'];
 
         return $this->container->get(
-            $message['adapter'],
+            $this->messageAdapters[$adapter],
             [
-                $message,
+                $config,
                 $data,
             ]
         );

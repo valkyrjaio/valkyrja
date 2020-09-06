@@ -21,9 +21,9 @@ namespace Valkyrja\Mail;
 interface Mail
 {
     /**
-     * Use a logger by name.
+     * Use a mailer by name.
      *
-     * @param string|null $name    [optional] The logger name
+     * @param string|null $name    [optional] The mailer name
      * @param string|null $adapter [optional] The adapter
      *
      * @return Driver
