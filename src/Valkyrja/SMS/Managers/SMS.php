@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\SMS\Managers;
 
 use Valkyrja\Container\Container;
-use Valkyrja\SMS\Adapter;
+use Valkyrja\SMS\Driver;
 use Valkyrja\SMS\Message;
 use Valkyrja\SMS\SMS as Contract;
 
@@ -26,11 +26,11 @@ use Valkyrja\SMS\SMS as Contract;
 class SMS implements Contract
 {
     /**
-     * The adapters.
+     * The drivers.
      *
-     * @var Adapter[]
+     * @var Driver[]
      */
-    protected static array $adapters = [];
+    protected static array $driversCache = [];
 
     /**
      * The container.
@@ -47,11 +47,46 @@ class SMS implements Contract
     protected array $config;
 
     /**
-     * The default adapter.
+     * The adapters.
+     *
+     * @var string[]
+     */
+    protected array $adapters;
+
+    /**
+     * The drivers config.
+     *
+     * @var string[]
+     */
+    protected array $drivers;
+
+    /**
+     * The messengers.
+     *
+     * @var array[]
+     */
+    protected array $messengers;
+
+    /**
+     * The message adapters.
+     *
+     * @var string[]
+     */
+    protected array $messageAdapters;
+
+    /**
+     * The messages config.
+     *
+     * @var array[]
+     */
+    protected array $messages;
+
+    /**
+     * The default messenger.
      *
      * @var string
      */
-    protected string $defaultAdapter;
+    protected string $default;
 
     /**
      * The default message.
@@ -61,17 +96,58 @@ class SMS implements Contract
     protected string $defaultMessage;
 
     /**
-     * SMS constructor.
+     * The key
      *
-     * @param Container $container
-     * @param array     $config The SMS config
+     * @var string|null
+     */
+    protected ?string $key = null;
+
+    /**
+     * Mail constructor.
+     *
+     * @param Container $container The container
+     * @param array     $config    The config
      */
     public function __construct(Container $container, array $config)
     {
-        $this->config         = $config;
-        $this->container      = $container;
-        $this->defaultAdapter = $config['adapter'];
-        $this->defaultMessage = $config['message'];
+        $this->container       = $container;
+        $this->config          = $config;
+        $this->adapters        = $config['adapters'];
+        $this->drivers         = $config['drivers'];
+        $this->messengers      = $config['messengers'];
+        $this->default         = $config['default'];
+        $this->defaultMessage  = $config['defaultMessage'];
+        $this->messageAdapters = $config['messageAdapters'];
+        $this->messages        = $config['messages'];
+    }
+
+    /**
+     * Use a messenger by name.
+     *
+     * @param string|null $name    [optional] The messenger name
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Driver
+     */
+    public function useMessenger(string $name = null, string $adapter = null): Driver
+    {
+        // The messenger to use
+        $name ??= $this->default;
+        // The config to use
+        $config = $this->messengers[$name];
+        // The adapter to use
+        $adapter ??= $config['adapter'];
+        // The cache key to use
+        $cacheKey = $name . $adapter;
+
+        return self::$driversCache[$cacheKey]
+            ?? self::$driversCache[$cacheKey] = $this->container->get(
+                $this->drivers[$config['driver']],
+                [
+                    $config,
+                    $this->adapters[$adapter],
+                ]
+            );
     }
 
     /**
@@ -84,26 +160,31 @@ class SMS implements Contract
      */
     public function createMessage(string $name = null, array $data = []): Message
     {
+        // The name of the message to use
+        $name ??= $this->defaultMessage;
+        // The message config
+        $config = $this->messages[$name];
+        // The adapter to use
+        $adapter = $config['adapter'];
+
         return $this->container->get(
-            $this->config['messages'][$name ?? $this->defaultMessage] ?? $name,
-            $data
+            $this->messageAdapters[$adapter],
+            [
+                $config,
+                $data,
+            ]
         );
     }
 
     /**
-     * Get an adapter by name.
+     * Send a message.
      *
-     * @param string|null $name The adapter name
+     * @param Message $message The message to send
      *
-     * @return Adapter
+     * @return void
      */
-    public function getAdapter(string $name = null): Adapter
+    public function send(Message $message): void
     {
-        $name ??= $this->defaultAdapter;
-
-        return self::$adapters[$name]
-            ?? self::$adapters[$name] = $this->container->getSingleton(
-                $this->config['adapters'][$name]['driver']
-            );
+        $this->useMessenger()->send($message);
     }
 }

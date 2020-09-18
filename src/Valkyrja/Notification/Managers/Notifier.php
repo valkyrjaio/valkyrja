@@ -357,7 +357,7 @@ class Notifier implements Contract
     protected function notifyBySms(Notification $notification): void
     {
         $sms        = $this->sms;
-        $smsAdapter = $sms->getAdapter($notification->getSmsAdapterName());
+        $smsAdapter = $sms->useMessenger($notification->getSmsAdapterName());
         $smsMessage = $notification->getSmsMessageName();
 
         foreach ($this->smsRecipients as $smsRecipient) {

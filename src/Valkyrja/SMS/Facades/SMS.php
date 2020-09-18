@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS\Facades;
 
+use Valkyrja\SMS\Driver;
 use Valkyrja\SMS\SMS as Contract;
 use Valkyrja\SMS\Message;
 use Valkyrja\Support\Facade\Facade;
@@ -22,7 +23,9 @@ use Valkyrja\Support\Facade\Facade;
  *
  * @author Melech Mizrachi
  *
+ * @method static Driver useMessenger(string $name = null, string $adapter = null)
  * @method static Message createMessage(string $name = null)
+ * @method static void send(Message $message)
  */
 class SMS extends Facade
 {

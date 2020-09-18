@@ -221,16 +221,23 @@ final class EnvKey
     public const SESSION_DRIVERS  = 'SESSION_DRIVERS';
     public const SESSION_SESSIONS = 'SESSION_SESSIONS';
 
-    public const SMS_ADAPTER        = 'SMS_ADAPTER';
-    public const SMS_ADAPTERS       = 'SMS_ADAPTERS';
-    public const SMS_MESSAGE        = 'SMS_MESSAGE';
-    public const SMS_MESSAGES       = 'SMS_MESSAGES';
-    public const SMS_LOG_DRIVER     = 'SMS_LOG_DRIVER';
-    public const SMS_LOG_ADAPTER    = 'SMS_LOG_ADAPTER';
-    public const SMS_NEXMO_DRIVER   = 'SMS_NEXMO_DRIVER';
-    public const SMS_NEXMO_USERNAME = 'SMS_NEXMO_USERNAME';
-    public const SMS_NEXMO_PASSWORD = 'SMS_NEXMO_PASSWORD';
-    public const SMS_NULL_DRIVER    = 'SMS_NULL_DRIVER';
+    public const SMS_DEFAULT          = 'SMS_DEFAULT';
+    public const SMS_ADAPTERS         = 'SMS_ADAPTERS';
+    public const SMS_DRIVERS          = 'SMS_DRIVERS';
+    public const SMS_MESSENGERS       = 'SMS_MESSENGERS';
+    public const SMS_DEFAULT_MESSAGE  = 'SMS_DEFAULT_MESSAGE';
+    public const SMS_MESSAGE_ADAPTERS = 'SMS_MESSAGE_ADAPTERS';
+    public const SMS_MESSAGES         = 'SMS_MESSAGES';
+    public const SMS_FROM_NAME        = 'SMS_FROM_NAME';
+    public const SMS_LOG_ADAPTER      = 'SMS_LOG_ADAPTER';
+    public const SMS_LOG_DRIVER       = 'SMS_LOG_DRIVER';
+    public const SMS_LOG_LOGGER       = 'SMS_LOG_LOGGER';
+    public const SMS_NEXMO_ADAPTER    = 'SMS_NEXMO_ADAPTER';
+    public const SMS_NEXMO_DRIVER     = 'SMS_NEXMO_DRIVER';
+    public const SMS_NEXMO_USERNAME   = 'SMS_NEXMO_USERNAME';
+    public const SMS_NEXMO_PASSWORD   = 'SMS_NEXMO_PASSWORD';
+    public const SMS_NULL_ADAPTER     = 'SMS_NULL_ADAPTER';
+    public const SMS_NULL_DRIVER      = 'SMS_NULL_DRIVER';
 
     public const STORAGE_UPLOADS_DIR = 'STORAGE_UPLOADS_DIR';
     public const STORAGE_LOGS_DIR    = 'STORAGE_LOGS_DIR';

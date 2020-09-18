@@ -30,9 +30,12 @@ class Config extends Model
      * @var array
      */
     protected static array $modelProperties = [
-        CKP::ADAPTER,
+        CKP::DEFAULT,
         CKP::ADAPTERS,
-        CKP::MESSAGE,
+        CKP::DRIVERS,
+        CKP::MESSENGERS,
+        CKP::DEFAULT_MESSAGE,
+        CKP::MESSAGE_ADAPTERS,
         CKP::MESSAGES,
     ];
 
@@ -42,18 +45,21 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::ADAPTER  => EnvKey::SMS_ADAPTER,
-        CKP::ADAPTERS => EnvKey::SMS_ADAPTERS,
-        CKP::MESSAGE  => EnvKey::SMS_MESSAGE,
-        CKP::MESSAGES => EnvKey::SMS_MESSAGES,
+        CKP::DEFAULT          => EnvKey::SMS_DEFAULT,
+        CKP::ADAPTERS         => EnvKey::SMS_ADAPTERS,
+        CKP::DRIVERS          => EnvKey::SMS_DRIVERS,
+        CKP::MESSENGERS       => EnvKey::SMS_MESSENGERS,
+        CKP::DEFAULT_MESSAGE  => EnvKey::SMS_DEFAULT_MESSAGE,
+        CKP::MESSAGE_ADAPTERS => EnvKey::SMS_MESSAGE_ADAPTERS,
+        CKP::MESSAGES         => EnvKey::SMS_MESSAGES,
     ];
 
     /**
-     * The default adapter.
+     * The default messenger.
      *
      * @var string
      */
-    public string $adapter;
+    public string $default;
 
     /**
      * The adapters.
@@ -63,16 +69,37 @@ class Config extends Model
     public array $adapters;
 
     /**
+     * The drivers.
+     *
+     * @var string[]
+     */
+    public array $drivers;
+
+    /**
+     * The messengers.
+     *
+     * @var array[]
+     */
+    public array $messengers;
+
+    /**
      * The default message.
      *
      * @var string
      */
-    public string $message;
+    public string $defaultMessage;
 
     /**
      * The message adapters.
      *
      * @var string[]
+     */
+    public array $messageAdapters;
+
+    /**
+     * The messages.
+     *
+     * @var array[]
      */
     public array $messages;
 }

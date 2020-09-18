@@ -21,6 +21,16 @@ namespace Valkyrja\SMS;
 interface SMS
 {
     /**
+     * Use a messenger by name.
+     *
+     * @param string|null $name    [optional] The messenger name
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Driver
+     */
+    public function useMessenger(string $name = null, string $adapter = null): Driver;
+
+    /**
      * Create a new message.
      *
      * @param string|null $name [optional] The name of the message
@@ -30,11 +40,11 @@ interface SMS
     public function createMessage(string $name = null): Message;
 
     /**
-     * Get an adapter by name.
+     * Send a message.
      *
-     * @param string|null $name [optional] The name of the adapter
+     * @param Message $message The message to send
      *
-     * @return Adapter
+     * @return void
      */
-    public function getAdapter(string $name = null): Adapter;
+    public function send(Message $message): void;
 }

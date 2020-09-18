@@ -160,12 +160,13 @@ final class ConfigKey
     public const SESSION_ADAPTER  = 'session.adapter';
     public const SESSION_ADAPTERS = 'session.adapters';
 
-    public const SMS_USERNAME = 'sms.username';
-    public const SMS_PASSWORD = 'sms.password';
-    public const SMS_ADAPTER  = 'sms.adapter';
-    public const SMS_ADAPTERS = 'sms.adapters';
-    public const SMS_MESSAGE  = 'sms.message';
-    public const SMS_MESSAGES = 'sms.messages';
+    public const SMS_DEFAULT          = 'mail.default';
+    public const SMS_ADAPTERS         = 'mail.adapters';
+    public const SMS_DRIVERS          = 'mail.drivers';
+    public const SMS_MESSENGERS       = 'mail.messengers';
+    public const SMS_DEFAULT_MESSAGE  = 'mail.defaultMessage';
+    public const SMS_MESSAGE_ADAPTERS = 'mail.messageAdapters';
+    public const SMS_MESSAGES         = 'mail.messages';
 
     public const STORAGE_UPLOADS_DIR = 'storage.uploadsDir';
     public const STORAGE_LOGS_DIR    = 'storage.logsDir';

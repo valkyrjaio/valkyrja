@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\SMS\Adapters;
 
-use Valkyrja\Log\Adapter as Log;
-use Valkyrja\Log\Logger;
+use Valkyrja\Log\Driver as Logger;
 use Valkyrja\SMS\Adapter;
 use Valkyrja\SMS\Message;
 
@@ -28,9 +27,9 @@ class LogAdapter implements Adapter
     /**
      * The log adapter.
      *
-     * @var Log
+     * @var Logger
      */
-    protected Log $log;
+    protected Logger $log;
 
     /**
      * The config.
@@ -48,7 +47,7 @@ class LogAdapter implements Adapter
     public function __construct(Logger $logger, array $config)
     {
         $this->config = $config;
-        $this->log    = $logger->useLogger($config['adapter']);
+        $this->log    = $logger;
     }
 
     /**

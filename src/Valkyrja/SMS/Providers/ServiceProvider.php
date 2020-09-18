@@ -105,14 +105,13 @@ class ServiceProvider extends Provider
      */
     public static function publishNexmo(Container $container): void
     {
-        $config    = $container->getSingleton('config');
-        $smsConfig = $config['sms']['adapters']['nexmo'];
-
-        $container->setSingleton(
+        $container->setClosure(
             Nexmo::class,
-            new Nexmo(
-                new Basic($smsConfig['username'], $smsConfig['password'])
-            )
+            static function (array $config): Nexmo {
+                return new Nexmo(
+                    new Basic($config['username'], $config['password'])
+                );
+            }
         );
     }
 
@@ -125,14 +124,17 @@ class ServiceProvider extends Provider
      */
     public static function publishLogAdapter(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        /** @var Logger $logger */
+        $logger = $container->getSingleton(Logger::class);
 
-        $container->setSingleton(
+        $container->setClosure(
             LogAdapter::class,
-            new LogAdapter(
-                $container->getSingleton(Logger::class),
-                $config['sms']['adapters']['log']
-            )
+            static function (array $config) use ($logger): LogAdapter {
+                return new LogAdapter(
+                    $logger->useLogger($config['logger'] ?? null),
+                    $config
+                );
+            }
         );
     }
 
@@ -145,11 +147,13 @@ class ServiceProvider extends Provider
      */
     public static function publishNexmoAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             NexmoAdapter::class,
-            new NexmoAdapter(
-                $container->getSingleton(Nexmo::class)
-            )
+            static function (array $config) use ($container): NexmoAdapter {
+                return new NexmoAdapter(
+                    $container->get(Nexmo::class, [$config])
+                );
+            }
         );
     }
 
@@ -162,9 +166,13 @@ class ServiceProvider extends Provider
      */
     public static function publishNullAdapter(Container $container): void
     {
-        $container->setSingleton(
+        $container->setClosure(
             NullAdapter::class,
-            new NullAdapter()
+            static function (array $config): NullAdapter {
+                return new NullAdapter(
+                    $config
+                );
+            }
         );
     }
 
@@ -179,8 +187,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Message::class,
-            static function () {
-                return new Message();
+            static function (array $config): Message {
+                return (new Message())->setFrom($config['fromName']);
             }
         );
     }

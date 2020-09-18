@@ -172,4 +172,5 @@ final class ConfigKeyPart
     public const LOGGERS                     = 'loggers';
     public const CLIENTS                     = 'clients';
     public const MAILERS                     = 'mailers';
+    public const MESSENGERS                  = 'messengers';
 }
