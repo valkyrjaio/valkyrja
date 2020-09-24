@@ -21,48 +21,48 @@ namespace Valkyrja\ORM;
 interface DatedEntity extends Entity
 {
     /**
-     * Get the created at field.
+     * Get the date created field.
      *
      * @return string
      */
-    public static function getCreatedAtField(): string;
+    public static function getDateCreatedField(): string;
 
     /**
-     * Get the updated at field.
+     * Get the date modified field.
      *
      * @return string
      */
-    public static function getUpdatedAtField(): string;
+    public static function getDateModifiedField(): string;
 
     /**
-     * Get the created at field value.
+     * Get the date created field value.
      *
      * @return string
      */
-    public function getCreatedAtFieldValue(): string;
+    public function getDateCreatedFieldValue(): string;
 
     /**
-     * Set the created at field value.
+     * Set the date created field value.
      *
      * @param string $createdAt
      *
      * @return void
      */
-    public function setCreatedAtFieldValue(string $createdAt): void;
+    public function setDateCreatedFieldValue(string $createdAt): void;
 
     /**
-     * Get the updated at field value.
+     * Get the date modified field value.
      *
      * @return string
      */
-    public function getUpdatedAtFieldValue(): string;
+    public function getDateModifiedFieldValue(): string;
 
     /**
-     * Set the updated at field value.
+     * Set the date modified field value.
      *
      * @param string $updatedAt
      *
      * @return void
      */
-    public function setUpdatedAtFieldValue(string $updatedAt): void;
+    public function setDateModifiedFieldValue(string $updatedAt): void;
 }

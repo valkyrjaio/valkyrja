@@ -28,11 +28,11 @@ interface SoftDeleteEntity extends Entity
     public static function getDeletedField(): string;
 
     /**
-     * Get the deleted at field.
+     * Get the date deleted field.
      *
      * @return string
      */
-    public static function getDeletedAtField(): string;
+    public static function getDateDeletedField(): string;
 
     /**
      * Get the deleted field value.
@@ -51,18 +51,18 @@ interface SoftDeleteEntity extends Entity
     public function setDeletedFieldValue(bool $deleted): void;
 
     /**
-     * Get the deleted at field value.
+     * Get the date deleted field value.
      *
      * @return string|null
      */
-    public function getDeletedAtFieldValue(): ?string;
+    public function getDateDeletedFieldValue(): ?string;
 
     /**
-     * Set the deleted at field value.
+     * Set the date deleted field value.
      *
      * @param string|null $deletedAt
      *
      * @return void
      */
-    public function setDeletedAtFieldValue(string $deletedAt = null): void;
+    public function setDateDeletedFieldValue(string $deletedAt = null): void;
 }

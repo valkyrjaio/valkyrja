@@ -28,11 +28,11 @@ trait SoftDeleteEntityTrait
     protected static string $deletedField = 'deleted';
 
     /**
-     * The deleted at field.
+     * The date deleted field.
      *
      * @var string
      */
-    protected static string $deletedAtField = 'deleted_at';
+    protected static string $dateDeletedField = 'date_deleted';
 
     /**
      * Get the deleted field.
@@ -45,13 +45,13 @@ trait SoftDeleteEntityTrait
     }
 
     /**
-     * Get the deleted at field.
+     * Get the date deleted field.
      *
      * @return string
      */
-    public static function getDeletedAtField(): string
+    public static function getDateDeletedField(): string
     {
-        return static::$deletedAtField;
+        return static::$dateDeletedField;
     }
 
     /**
@@ -77,24 +77,24 @@ trait SoftDeleteEntityTrait
     }
 
     /**
-     * Get the deleted at field value.
+     * Get the date deleted field value.
      *
      * @return string|null
      */
-    public function getDeletedAtFieldValue(): ?string
+    public function getDateDeletedFieldValue(): ?string
     {
-        return (string) $this->{static::$deletedAtField};
+        return (string) $this->{static::$dateDeletedField};
     }
 
     /**
-     * Set the deleted at field value.
+     * Set the date deleted field value.
      *
      * @param string|null $deletedAt
      *
      * @return void
      */
-    public function setDeletedAtFieldValue(string $deletedAt = null): void
+    public function setDateDeletedFieldValue(string $deletedAt = null): void
     {
-        $this->{static::$deletedAtField} = $deletedAt;
+        $this->{static::$dateDeletedField} = $deletedAt;
     }
 }

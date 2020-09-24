@@ -95,8 +95,8 @@ class Persister implements PersisterContract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->setCreatedAtFieldValue($this->getFormattedDate());
-            $entity->setUpdatedAtFieldValue($this->getFormattedDate());
+            $entity->setDateCreatedFieldValue($this->getFormattedDate());
+            $entity->setDateModifiedFieldValue($this->getFormattedDate());
         }
 
         if (! $defer) {
@@ -128,7 +128,7 @@ class Persister implements PersisterContract
     public function save(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->setUpdatedAtFieldValue($this->getFormattedDate());
+            $entity->setDateModifiedFieldValue($this->getFormattedDate());
         }
 
         if (! $defer) {
@@ -188,7 +188,7 @@ class Persister implements PersisterContract
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
         $entity->setDeletedFieldValue(true);
-        $entity->setDeletedAtFieldValue($this->getFormattedDate());
+        $entity->setDateDeletedFieldValue($this->getFormattedDate());
 
         $this->save($entity, $defer);
     }

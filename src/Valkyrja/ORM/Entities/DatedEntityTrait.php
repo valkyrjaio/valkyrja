@@ -21,80 +21,80 @@ namespace Valkyrja\ORM\Entities;
 trait DatedEntityTrait
 {
     /**
-     * The created at field.
+     * The date created field.
      *
      * @var string
      */
-    protected static string $createdAtField = 'created_at';
+    protected static string $dateCreatedField = 'date_created';
 
     /**
-     * The updated at field.
+     * The date modified field.
      *
      * @var string
      */
-    protected static string $updatedAtField = 'deleted_at';
+    protected static string $dateModifiedField = 'date_modified';
 
     /**
-     * Get the created at field.
+     * Get the date created field.
      *
      * @return string
      */
-    public static function getCreatedAtField(): string
+    public static function getDateCreatedField(): string
     {
-        return static::$createdAtField;
+        return static::$dateCreatedField;
     }
 
     /**
-     * Get the updated at field.
+     * Get the date modified field.
      *
      * @return string
      */
-    public static function getUpdatedAtField(): string
+    public static function getDateModifiedField(): string
     {
-        return static::$updatedAtField;
+        return static::$dateModifiedField;
     }
 
     /**
-     * Get the created at field value.
+     * Get the date created field value.
      *
      * @return string
      */
-    public function getCreatedAtFieldValue(): string
+    public function getDateCreatedFieldValue(): string
     {
-        return $this->{static::$createdAtField};
+        return $this->{static::$dateCreatedField};
     }
 
     /**
-     * Set the created at field value.
+     * Set the date created field value.
      *
      * @param string $createdAt
      *
      * @return void
      */
-    public function setCreatedAtFieldValue(string $createdAt): void
+    public function setDateCreatedFieldValue(string $createdAt): void
     {
-        $this->{static::$createdAtField} = $createdAt;
+        $this->{static::$dateCreatedField} = $createdAt;
     }
 
     /**
-     * Get the updated at field value.
+     * Get the date modified field value.
      *
      * @return string
      */
-    public function getUpdatedAtFieldValue(): string
+    public function getDateModifiedFieldValue(): string
     {
-        return $this->{static::$updatedAtField};
+        return $this->{static::$dateModifiedField};
     }
 
     /**
-     * Set the updated at field value.
+     * Set the date modified field value.
      *
      * @param string $updatedAt
      *
      * @return void
      */
-    public function setUpdatedAtFieldValue(string $updatedAt): void
+    public function setDateModifiedFieldValue(string $updatedAt): void
     {
-        $this->{static::$updatedAtField} = $updatedAt;
+        $this->{static::$dateModifiedField} = $updatedAt;
     }
 }

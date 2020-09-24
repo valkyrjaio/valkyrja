@@ -30,9 +30,9 @@ trait SoftDeleteEntityFields
     public bool $deleted = false;
 
     /**
-     * The deleted at date.
+     * The date deleted date.
      *
      * @var string|null
      */
-    public ?string $deleted_at = null;
+    public ?string $date_deleted = null;
 }

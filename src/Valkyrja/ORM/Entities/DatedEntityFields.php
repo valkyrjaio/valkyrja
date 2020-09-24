@@ -23,16 +23,16 @@ trait DatedEntityFields
     use DatedEntityTrait;
 
     /**
-     * The created at date.
+     * The date created date.
      *
      * @var bool
      */
-    public bool $created_at;
+    public bool $date_created;
 
     /**
-     * The updated at date.
+     * The date modified date.
      *
      * @var string
      */
-    public string $updated_at;
+    public string $date_modified;
 }
