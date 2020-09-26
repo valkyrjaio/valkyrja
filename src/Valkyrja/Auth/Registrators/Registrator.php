@@ -87,7 +87,7 @@ class Registrator implements Contract
 
         if ($repository->find()->where($usernameField, null, $user->{$usernameField})->getOneOrNull()) {
             return true;
-        };
+        }
 
         if ($user instanceof MailableUser) {
             $emailField = $user::getEmailField();

@@ -72,16 +72,16 @@ class Authenticator implements Contract
      */
     public function authenticate(User $user): bool
     {
-        $repository = $this->orm->getRepositoryFromClass($user);
+        $repository    = $this->orm->getRepositoryFromClass($user);
         $usernameField = $user::getUsernameField();
-        $dbUser = $repository
+        $dbUser        = $repository
             ->find()
             ->where($usernameField, null, $user->{$usernameField})
             ->getOneOrNull();
 
         if ($dbUser === null && $user instanceof MailableUser) {
             $emailField = $user::getEmailField();
-            $dbUser = $repository
+            $dbUser     = $repository
                 ->find()
                 ->where($emailField, null, $user->{$emailField})
                 ->getOneOrNull();

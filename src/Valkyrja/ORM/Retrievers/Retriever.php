@@ -27,7 +27,6 @@ use Valkyrja\Support\Type\Str;
 use function is_array;
 use function is_int;
 use function is_string;
-use function ucwords;
 
 /**
  * Class Retriever
