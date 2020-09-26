@@ -21,13 +21,13 @@ namespace Valkyrja\ORM\Entities;
 trait SoftDeleteEntityTrait
 {
     /**
-     * Get the deleted field.
+     * Get the deleted flag field.
      *
      * @return string
      */
-    public static function getDeletedField(): string
+    public static function getIsDeletedField(): string
     {
-        return 'deleted';
+        return 'is_deleted';
     }
 
     /**

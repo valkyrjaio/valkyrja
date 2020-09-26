@@ -21,9 +21,9 @@ namespace Valkyrja\Auth;
 interface VerifiableUser extends MailableUser
 {
     /**
-     * Get the verified field.
+     * Get the verified flag field.
      *
      * @return string
      */
-    public static function getVerifiedField(): string;
+    public static function getIsVerifiedField(): string;
 }

@@ -43,12 +43,12 @@ trait LockableUserTrait
     }
 
     /**
-     * Get the locked field.
+     * Get the locked flag field.
      *
      * @return string
      */
-    public static function getLockedField(): string
+    public static function getIsLockedField(): string
     {
-        return UserField::LOCKED;
+        return UserField::IS_LOCKED;
     }
 }

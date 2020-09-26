@@ -248,7 +248,7 @@ class Authenticator implements Contract
      */
     protected function lockUnlock(LockableUser $user, bool $lock): void
     {
-        $user->{$user::getLockedField()} = $lock;
+        $user->{$user::getIsLockedField()} = $lock;
 
         $this->saveUser($user);
     }

@@ -35,9 +35,9 @@ interface LockableUser extends User
     public static function getLoginAttemptsField(): string;
 
     /**
-     * Get the locked field.
+     * Get the locked flag field.
      *
      * @return string
      */
-    public static function getLockedField(): string;
+    public static function getIsLockedField(): string;
 }

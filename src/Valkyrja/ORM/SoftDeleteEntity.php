@@ -21,11 +21,11 @@ namespace Valkyrja\ORM;
 interface SoftDeleteEntity extends Entity
 {
     /**
-     * Get the deleted field.
+     * Get the deleted flag field.
      *
      * @return string
      */
-    public static function getDeletedField(): string;
+    public static function getIsDeletedField(): string;
 
     /**
      * Get the date deleted field.

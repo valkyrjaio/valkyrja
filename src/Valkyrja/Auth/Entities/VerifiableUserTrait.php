@@ -23,12 +23,12 @@ use Valkyrja\Auth\Constants\UserField;
 trait VerifiableUserTrait
 {
     /**
-     * Get the verified field.
+     * Get the verified flag field.
      *
      * @return string
      */
-    public static function getVerifiedField(): string
+    public static function getIsVerifiedField(): string
     {
-        return UserField::VERIFIED;
+        return UserField::IS_VERIFIED;
     }
 }

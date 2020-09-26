@@ -187,7 +187,7 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->{$entity::getDeletedField()}     = true;
+        $entity->{$entity::getIsDeletedField()}   = true;
         $entity->{$entity::getDateDeletedField()} = $this->getFormattedDate();
 
         $this->save($entity, $defer);

@@ -22,9 +22,9 @@ final class UserField
 {
     public const USERNAME       = 'username';
     public const PASSWORD       = 'password';
+    public const EMAIL          = 'email';
     public const RESET_TOKEN    = 'reset_token';
     public const LOGIN_ATTEMPTS = 'login_attempts';
-    public const LOCKED         = 'locked';
-    public const EMAIL          = 'email';
-    public const VERIFIED       = 'verified';
+    public const IS_LOCKED      = 'is_locked';
+    public const IS_VERIFIED    = 'is_verified';
 }
