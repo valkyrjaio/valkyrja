@@ -424,9 +424,8 @@ class Retriever implements Contract
     {
         // Iterate through the rows found
         foreach ($relationships as $relationship) {
-            $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
             // Set the entity relations
-            $entity->{$methodName}($this->adapter->createRetriever());
+            $entity->__set($relationship, $this->adapter->createRetriever());
         }
     }
 }
