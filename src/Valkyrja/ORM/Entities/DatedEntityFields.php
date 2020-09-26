@@ -25,9 +25,9 @@ trait DatedEntityFields
     /**
      * The date created date.
      *
-     * @var bool
+     * @var string
      */
-    public bool $date_created;
+    public string $date_created;
 
     /**
      * The date modified date.
