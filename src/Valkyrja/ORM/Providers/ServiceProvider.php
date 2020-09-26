@@ -129,13 +129,18 @@ class ServiceProvider extends Provider
         $container->setClosure(
             PDOAdapter::class,
             static function (array $config) {
+                $schema = $config['schema'];
+                $schemaDsn = $schema ? ';schema=' . $schema : '';
+                $charset = $config['charset'] ?? 'utf8';
+
                 return new PDOAdapter(
                     new PDO(
                         $config['pdoDriver']
                         . ':host=' . $config['host']
                         . ';port=' . $config['port']
                         . ';dbname=' . $config['db']
-                        . ';charset=' . $config['charset'],
+                        . ';charset=' . $charset
+                        . $schemaDsn,
                         $config['username'],
                         $config['password'],
                         $config['options'] ?? []
