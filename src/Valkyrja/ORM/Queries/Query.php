@@ -110,7 +110,7 @@ class Query implements QueryContract
         }
 
         if (null !== $this->entity) {
-            $this->statement->bindValue($this->entity, $this->entity::getEntityTable());
+            $this->statement->bindValue($this->entity, $this->entity::getTableName());
         }
 
         return $this;

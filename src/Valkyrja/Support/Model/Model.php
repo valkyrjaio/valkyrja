@@ -60,11 +60,11 @@ interface Model extends JsonSerializable
     public function __isset(string $name): bool;
 
     /**
-     * Get the properties.
+     * Get the property names.
      *
      * @return string[]
      */
-    public function getModelProperties(): array;
+    public function _getPropertyNames(): array;
 
     /**
      * Set properties from an array of properties.
@@ -73,21 +73,21 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function setModelProperties(array $properties): void;
+    public function _setProperties(array $properties): void;
 
     /**
      * Get model as an array.
      *
      * @return array
      */
-    public function asArray(): array;
+    public function toArray(): array;
 
     /**
      * Get model as a deep array where all properties are also arrays.
      *
      * @return array
      */
-    public function asDeepArray(): array;
+    public function toDeepArray(): array;
 
     /**
      * Serialize properties for json_encode.

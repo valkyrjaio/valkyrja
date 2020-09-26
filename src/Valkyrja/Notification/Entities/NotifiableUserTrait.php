@@ -23,55 +23,13 @@ use Valkyrja\Notification\Constants\UserField;
 trait NotifiableUserTrait
 {
     /**
-     * Does this user have a name field.
-     *
-     * @var bool
-     */
-    protected static bool $hasNameField = true;
-
-    /**
-     * The name field.
-     *
-     * @var string
-     */
-    protected static string $nameField = UserField::NAME;
-
-    /**
-     * Does this user have a phone number field.
-     *
-     * @var bool
-     */
-    protected static bool $hasPhoneNumberField = true;
-
-    /**
-     * The phone number field.
-     *
-     * @var string
-     */
-    protected static string $phoneNumberField = UserField::PHONE_NUMBER;
-
-    /**
-     * Does this user have a secret id field.
-     *
-     * @var bool
-     */
-    protected static bool $hasSecretIdField = true;
-
-    /**
-     * The secret id field.
-     *
-     * @var string
-     */
-    protected static string $secretIdField = UserField::SECRET_ID;
-
-    /**
      * Whether this user entity has a name field.
      *
      * @return bool
      */
     public static function hasNameField(): bool
     {
-        return static::$hasNameField;
+        return true;
     }
 
     /**
@@ -81,7 +39,7 @@ trait NotifiableUserTrait
      */
     public static function getNameField(): string
     {
-        return static::$nameField;
+        return UserField::NAME;
     }
 
     /**
@@ -91,7 +49,7 @@ trait NotifiableUserTrait
      */
     public static function hasPhoneNumberField(): bool
     {
-        return static::$hasPhoneNumberField;
+        return true;
     }
 
     /**
@@ -101,7 +59,7 @@ trait NotifiableUserTrait
      */
     public static function getPhoneNumberField(): string
     {
-        return static::$phoneNumberField;
+        return UserField::PHONE_NUMBER;
     }
 
     /**
@@ -111,7 +69,7 @@ trait NotifiableUserTrait
      */
     public static function hasSecretIdField(): bool
     {
-        return static::$hasSecretIdField;
+        return true;
     }
 
     /**
@@ -121,7 +79,7 @@ trait NotifiableUserTrait
      */
     public static function getSecretIdField(): string
     {
-        return static::$phoneNumberField;
+        return UserField::SECRET_ID;
     }
 
     /**
@@ -131,8 +89,8 @@ trait NotifiableUserTrait
      */
     public function getNameFieldValue(): string
     {
-        return static::$hasNameField
-            ? $this->{static::$nameField}
+        return static::hasNameField()
+            ? $this->{static::getNameField()}
             : '';
     }
 
@@ -145,8 +103,8 @@ trait NotifiableUserTrait
      */
     public function setNameFieldValue(string $name): void
     {
-        if (static::$hasNameField) {
-            $this->{static::$nameField} = $name;
+        if (static::hasNameField()) {
+            $this->{static::getNameField()} = $name;
         }
     }
 
@@ -157,8 +115,8 @@ trait NotifiableUserTrait
      */
     public function getPhoneNumberFieldValue(): string
     {
-        return static::$hasPhoneNumberField
-            ? $this->{static::$phoneNumberField}
+        return static::hasPhoneNumberField()
+            ? $this->{static::getPhoneNumberField()}
             : '';
     }
 
@@ -171,8 +129,8 @@ trait NotifiableUserTrait
      */
     public function setPhoneNumberFieldValue(string $phoneNumber): void
     {
-        if (static::$hasPhoneNumberField) {
-            $this->{static::$phoneNumberField} = $phoneNumber;
+        if (static::hasPhoneNumberField()) {
+            $this->{static::getPhoneNumberField()} = $phoneNumber;
         }
     }
 
@@ -183,8 +141,8 @@ trait NotifiableUserTrait
      */
     public function getSecretIdFieldValue(): string
     {
-        return static::$hasSecretIdField
-            ? $this->{static::$phoneNumberField}
+        return static::hasSecretIdField()
+            ? $this->{static::getSecretIdField()}
             : '';
     }
 
@@ -197,8 +155,8 @@ trait NotifiableUserTrait
      */
     public function setSecretIdFieldValue(string $secretId): void
     {
-        if (static::$hasSecretIdField) {
-            $this->{static::$phoneNumberField} = $secretId;
+        if (static::hasSecretIdField()) {
+            $this->{static::getSecretIdField()} = $secretId;
         }
     }
 }

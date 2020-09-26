@@ -24,48 +24,13 @@ use Valkyrja\Auth\Constants\SessionId;
 trait UserTrait
 {
     /**
-     * The auth repository.
-     *
-     * @var string|null
-     */
-    protected static ?string $authRepository = null;
-
-    /**
-     * The session id.
-     *
-     * @var string
-     */
-    protected static string $sessionId = SessionId::USER;
-
-    /**
-     * The username field.
-     *
-     * @var string
-     */
-    protected static string $usernameField = UserField::USERNAME;
-
-    /**
-     * The hashed password field.
-     *
-     * @var string
-     */
-    protected static string $passwordField = UserField::PASSWORD;
-
-    /**
-     * The reset token field.
-     *
-     * @var string
-     */
-    protected static string $resetTokenField = UserField::RESET_TOKEN;
-
-    /**
      * Get the auth repository.
      *
      * @return string|null
      */
     public static function getAuthRepository(): ?string
     {
-        return static::$authRepository;
+        return null;
     }
 
     /**
@@ -75,7 +40,7 @@ trait UserTrait
      */
     public static function getSessionId(): string
     {
-        return static::$sessionId;
+        return SessionId::USER;
     }
 
     /**
@@ -85,7 +50,7 @@ trait UserTrait
      */
     public static function getUsernameField(): string
     {
-        return static::$usernameField;
+        return UserField::USERNAME;
     }
 
     /**
@@ -95,7 +60,7 @@ trait UserTrait
      */
     public static function getPasswordField(): string
     {
-        return static::$passwordField;
+        return UserField::PASSWORD;
     }
 
     /**
@@ -105,7 +70,7 @@ trait UserTrait
      */
     public static function getResetTokenField(): string
     {
-        return static::$resetTokenField;
+        return UserField::RESET_TOKEN;
     }
 
     /**
@@ -115,7 +80,7 @@ trait UserTrait
      */
     public function getUsernameFieldValue(): string
     {
-        return $this->{static::$usernameField};
+        return $this->{static::getUsernameField()};
     }
 
     /**
@@ -127,7 +92,7 @@ trait UserTrait
      */
     public function setUsernameFieldValue(string $username): void
     {
-        $this->{static::$usernameField} = $username;
+        $this->{static::getUsernameField()} = $username;
     }
 
     /**
@@ -137,7 +102,7 @@ trait UserTrait
      */
     public function getPasswordFieldValue(): string
     {
-        return $this->{static::$passwordField};
+        return $this->{static::getPasswordField()};
     }
 
     /**
@@ -149,7 +114,7 @@ trait UserTrait
      */
     public function setPasswordFieldValue(string $password): void
     {
-        $this->{static::$passwordField} = $password;
+        $this->{static::getPasswordField()} = $password;
     }
 
     /**
@@ -159,7 +124,7 @@ trait UserTrait
      */
     public function getResetTokenFieldValue(): ?string
     {
-        return $this->{static::$resetTokenField};
+        return $this->{static::getResetTokenField()};
     }
 
     /**
@@ -171,7 +136,7 @@ trait UserTrait
      */
     public function setResetTokenFieldValue(string $resetToken = null): void
     {
-        $this->{static::$resetTokenField} = $resetToken;
+        $this->{static::getResetTokenField()} = $resetToken;
     }
 
     /**

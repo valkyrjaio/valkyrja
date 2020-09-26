@@ -21,27 +21,13 @@ namespace Valkyrja\ORM\Entities;
 trait SoftDeleteEntityTrait
 {
     /**
-     * The deleted field.
-     *
-     * @var string
-     */
-    protected static string $deletedField = 'deleted';
-
-    /**
-     * The date deleted field.
-     *
-     * @var string
-     */
-    protected static string $dateDeletedField = 'date_deleted';
-
-    /**
      * Get the deleted field.
      *
      * @return string
      */
     public static function getDeletedField(): string
     {
-        return static::$deletedField;
+        return 'deleted';
     }
 
     /**
@@ -51,7 +37,7 @@ trait SoftDeleteEntityTrait
      */
     public static function getDateDeletedField(): string
     {
-        return static::$dateDeletedField;
+        return 'date_deleted';
     }
 
     /**
@@ -61,7 +47,7 @@ trait SoftDeleteEntityTrait
      */
     public function getDeletedFieldValue(): bool
     {
-        return (bool) $this->{static::$deletedField};
+        return (bool) $this->{static::getDeletedField()};
     }
 
     /**
@@ -73,7 +59,7 @@ trait SoftDeleteEntityTrait
      */
     public function setDeletedFieldValue(bool $deleted): void
     {
-        $this->{static::$deletedField} = $deleted;
+        $this->{static::getDeletedField()} = $deleted;
     }
 
     /**
@@ -83,18 +69,18 @@ trait SoftDeleteEntityTrait
      */
     public function getDateDeletedFieldValue(): ?string
     {
-        return (string) $this->{static::$dateDeletedField};
+        return (string) $this->{static::getDateDeletedField()};
     }
 
     /**
      * Set the date deleted field value.
      *
-     * @param string|null $deletedAt
+     * @param string|null $dateDeleted
      *
      * @return void
      */
-    public function setDateDeletedFieldValue(string $deletedAt = null): void
+    public function setDateDeletedFieldValue(string $dateDeleted = null): void
     {
-        $this->{static::$dateDeletedField} = $deletedAt;
+        $this->{static::getDateDeletedField()} = $dateDeleted;
     }
 }

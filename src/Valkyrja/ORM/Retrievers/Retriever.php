@@ -55,11 +55,11 @@ class Retriever implements Contract
     protected Query $query;
 
     /**
-     * The relationship columns.
+     * The relationships to get with each result.
      *
      * @var string[]|null
      */
-    protected ?array $relationshipColumns = null;
+    protected ?array $relationships = null;
 
     /**
      * The values to bind.
@@ -98,7 +98,7 @@ class Retriever implements Contract
      */
     public function find(string $entity): self
     {
-        $this->setQueryProperties($entity, null);
+        $this->setQueryProperties($entity);
 
         return $this;
     }
@@ -118,7 +118,7 @@ class Retriever implements Contract
     public function findOne(string $entity, $id): self
     {
         $this->validateId($id);
-        $this->setQueryProperties($entity, null);
+        $this->setQueryProperties($entity);
         $this->limit(1);
 
         /** @var Entity $entity */
@@ -260,8 +260,8 @@ class Retriever implements Contract
      */
     public function withRelationships(array $relationships = null): self
     {
-        $this->getRelations        = true;
-        $this->relationshipColumns = $relationships;
+        $this->getRelations  = true;
+        $this->relationships = $relationships;
 
         return $this;
     }
@@ -278,7 +278,7 @@ class Retriever implements Contract
         $results = $this->query->getResult();
 
         if ($this->getRelations && is_array($results)) {
-            $this->setRelations($this->relationshipColumns, ...$results);
+            $this->setRelations($this->relationships, ...$results);
         }
 
         return $results;
@@ -395,17 +395,17 @@ class Retriever implements Contract
     /**
      * Set result relations.
      *
-     * @param array|null $columns
-     * @param Entity     ...$entities
+     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
+     * @param Entity     ...$entities The entities to add relationships to
      *
      * @return void
      */
-    protected function setRelations(array $columns = null, Entity ...$entities): void
+    protected function setRelations(array $relationships = null, Entity ...$entities): void
     {
         // Iterate through the rows found
         foreach ($entities as $entity) {
             // Get the entity relations
-            $entity->setEntityRelations($columns);
+            $entity->withRelationships($relationships);
         }
     }
 }

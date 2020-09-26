@@ -122,7 +122,7 @@ class Collection implements Contract
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[md5(Arr::toString($route->asArray()))] = $route;
+        $this->routes[md5(Arr::toString($route->toArray()))] = $route;
     }
 
     /**

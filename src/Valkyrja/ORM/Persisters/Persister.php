@@ -323,7 +323,7 @@ class Persister implements PersisterContract
         // Create a new query
         $queryBuilder = $this->adapter->createQueryBuilder();
 
-        $queryBuilder->table($entity::getEntityTable());
+        $queryBuilder->table($entity::getTableName());
         $queryBuilder->{strtolower($type)}();
 
         // If this type isn't an insert

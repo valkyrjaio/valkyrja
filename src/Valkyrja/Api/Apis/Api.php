@@ -244,7 +244,7 @@ class Api implements Contract
      */
     protected function getResponseFromModel(Json $json): JsonResponse
     {
-        return $this->jsonResponse::createFromData($json->asArray());
+        return $this->jsonResponse::createFromData($json->toArray());
     }
 
     /**

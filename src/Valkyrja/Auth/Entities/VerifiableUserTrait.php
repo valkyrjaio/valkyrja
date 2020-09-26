@@ -23,20 +23,13 @@ use Valkyrja\Auth\Constants\UserField;
 trait VerifiableUserTrait
 {
     /**
-     * The verified field.
-     *
-     * @var string
-     */
-    protected static string $verifiedField = UserField::VERIFIED;
-
-    /**
      * Get the verified field.
      *
      * @return string
      */
     public static function getVerifiedField(): string
     {
-        return static::$verifiedField;
+        return UserField::VERIFIED;
     }
 
     /**
@@ -46,7 +39,7 @@ trait VerifiableUserTrait
      */
     public function getVerifiedFieldValue(): bool
     {
-        return $this->{static::$verifiedField};
+        return $this->{static::getVerifiedField()};
     }
 
     /**
@@ -58,6 +51,6 @@ trait VerifiableUserTrait
      */
     public function setVerifiedFieldValue(bool $verified): void
     {
-        $this->{static::$verifiedField} = $verified;
+        $this->{static::getVerifiedField()} = $verified;
     }
 }

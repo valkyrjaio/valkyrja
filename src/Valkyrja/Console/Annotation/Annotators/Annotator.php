@@ -129,6 +129,6 @@ class Annotator implements Contract
      */
     protected function getCommandFromAnnotation(Command $command): CommandContract
     {
-        return CommandModel::fromArray($command->asArray());
+        return CommandModel::fromArray($command->toArray());
     }
 }

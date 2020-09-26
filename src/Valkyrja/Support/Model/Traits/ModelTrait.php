@@ -15,12 +15,12 @@ namespace Valkyrja\Support\Model\Traits;
 
 use JsonException;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Str;
 
 use function array_keys;
 use function get_object_vars;
 use function method_exists;
 use function property_exists;
-use function str_replace;
 use function ucwords;
 
 /**
@@ -48,7 +48,7 @@ trait ModelTrait
     {
         $model = new static();
 
-        $model->setModelProperties($properties);
+        $model->_setProperties($properties);
 
         return $model;
     }
@@ -62,8 +62,7 @@ trait ModelTrait
      */
     public function __get(string $name)
     {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'get' . $methodName;
+        $methodName = 'get' . ucwords(Str::toStudlyCase($name));
 
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -82,8 +81,7 @@ trait ModelTrait
      */
     public function __set(string $name, $value): void
     {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'set' . $methodName;
+        $methodName = 'set' . ucwords(Str::toStudlyCase($name));
 
         if (method_exists($this, $methodName)) {
             $this->$methodName($value);
@@ -103,8 +101,7 @@ trait ModelTrait
      */
     public function __isset(string $name): bool
     {
-        $methodName = str_replace('_', '', ucwords($name, '_'));
-        $methodName = 'isset' . $methodName;
+        $methodName = 'isset' . ucwords(Str::toStudlyCase($name));
 
         if (method_exists($this, $methodName)) {
             return $this->$methodName();
@@ -118,10 +115,10 @@ trait ModelTrait
      *
      * @return string[]
      */
-    public function getModelProperties(): array
+    public function _getPropertyNames(): array
     {
         if (empty(static::$modelProperties)) {
-            static::$modelProperties = array_keys(get_object_vars($this));
+            static::$modelProperties = array_keys($this->jsonSerialize());
         }
 
         return static::$modelProperties;
@@ -134,7 +131,7 @@ trait ModelTrait
      *
      * @return void
      */
-    public function setModelProperties(array $properties): void
+    public function _setProperties(array $properties): void
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -148,7 +145,7 @@ trait ModelTrait
      *
      * @return array
      */
-    public function asArray(): array
+    public function toArray(): array
     {
         return $this->jsonSerialize();
     }
@@ -160,7 +157,7 @@ trait ModelTrait
      *
      * @return array
      */
-    public function asDeepArray(): array
+    public function toDeepArray(): array
     {
         /**
          * Why?!...
@@ -191,6 +188,6 @@ trait ModelTrait
      */
     public function __toString(): string
     {
-        return Arr::toString($this->asArray());
+        return Arr::toString($this->toArray());
     }
 }

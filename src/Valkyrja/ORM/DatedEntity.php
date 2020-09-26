@@ -44,11 +44,11 @@ interface DatedEntity extends Entity
     /**
      * Set the date created field value.
      *
-     * @param string $createdAt
+     * @param string $dateCreated
      *
      * @return void
      */
-    public function setDateCreatedFieldValue(string $createdAt): void;
+    public function setDateCreatedFieldValue(string $dateCreated): void;
 
     /**
      * Get the date modified field value.
@@ -60,9 +60,9 @@ interface DatedEntity extends Entity
     /**
      * Set the date modified field value.
      *
-     * @param string $updatedAt
+     * @param string $dateModified
      *
      * @return void
      */
-    public function setDateModifiedFieldValue(string $updatedAt): void;
+    public function setDateModifiedFieldValue(string $dateModified): void;
 }

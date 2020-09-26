@@ -23,20 +23,13 @@ use Valkyrja\Auth\Constants\UserField;
 trait MailableUserTrait
 {
     /**
-     * The email field.
-     *
-     * @var string
-     */
-    protected static string $emailField = UserField::EMAIL;
-
-    /**
      * Get the email field.
      *
      * @return string
      */
     public static function getEmailField(): string
     {
-        return static::$emailField;
+        return UserField::EMAIL;
     }
 
     /**
@@ -46,7 +39,7 @@ trait MailableUserTrait
      */
     public function getEmailFieldValue(): string
     {
-        return $this->{static::$emailField};
+        return $this->{static::getEmailField()};
     }
 
     /**
@@ -58,6 +51,6 @@ trait MailableUserTrait
      */
     public function setEmailFieldValue(string $email): void
     {
-        $this->{static::$emailField} = $email;
+        $this->{static::getEmailField()} = $email;
     }
 }

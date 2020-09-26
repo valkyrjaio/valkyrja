@@ -60,9 +60,9 @@ interface SoftDeleteEntity extends Entity
     /**
      * Set the date deleted field value.
      *
-     * @param string|null $deletedAt
+     * @param string|null $dateDeleted
      *
      * @return void
      */
-    public function setDateDeletedFieldValue(string $deletedAt = null): void;
+    public function setDateDeletedFieldValue(string $dateDeleted = null): void;
 }

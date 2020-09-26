@@ -210,7 +210,7 @@ class Annotator implements Contract
      */
     protected function getRouteFromAnnotation(Route $route): RouteContract
     {
-        return RouteModel::fromArray($route->asArray());
+        return RouteModel::fromArray($route->toArray());
     }
 
     /**

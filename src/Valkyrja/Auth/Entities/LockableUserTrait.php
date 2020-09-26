@@ -23,34 +23,13 @@ use Valkyrja\Auth\Constants\UserField;
 trait LockableUserTrait
 {
     /**
-     * The max number of login attempts before locking.
-     *
-     * @var int
-     */
-    protected static int $maxLoginAttempts = 3;
-
-    /**
-     * The login attempts field.
-     *
-     * @var string
-     */
-    protected static string $loginAttemptsField = UserField::LOGIN_ATTEMPTS;
-
-    /**
-     * The locked field.
-     *
-     * @var string
-     */
-    protected static string $lockedField = UserField::LOCKED;
-
-    /**
      * Get the max number login attempts before locking.
      *
      * @return int
      */
     public static function getMaxLoginAttempts(): int
     {
-        return static::$maxLoginAttempts;
+        return 3;
     }
 
     /**
@@ -60,7 +39,7 @@ trait LockableUserTrait
      */
     public static function getLoginAttemptsField(): string
     {
-        return static::$loginAttemptsField;
+        return UserField::LOGIN_ATTEMPTS;
     }
 
     /**
@@ -70,7 +49,7 @@ trait LockableUserTrait
      */
     public static function getLockedField(): string
     {
-        return static::$lockedField;
+        return UserField::LOCKED;
     }
 
     /**
@@ -80,7 +59,7 @@ trait LockableUserTrait
      */
     public function getLoginAttemptsFieldValue(): int
     {
-        return $this->{static::$maxLoginAttempts};
+        return $this->{static::getLoginAttemptsField()};
     }
 
     /**
@@ -92,7 +71,7 @@ trait LockableUserTrait
      */
     public function setLoginAttemptsFieldValue(int $loginAttempts): void
     {
-        $this->{static::$maxLoginAttempts} = $loginAttempts;
+        $this->{static::getLoginAttemptsField()} = $loginAttempts;
     }
 
     /**
@@ -102,7 +81,7 @@ trait LockableUserTrait
      */
     public function getLockedFieldValue(): bool
     {
-        return $this->{static::$lockedField};
+        return $this->{static::getLockedField()};
     }
 
     /**
@@ -114,6 +93,6 @@ trait LockableUserTrait
      */
     public function setLockedFieldValue(bool $locked): void
     {
-        $this->{static::$lockedField} = $locked;
+        $this->{static::getLockedField()} = $locked;
     }
 }

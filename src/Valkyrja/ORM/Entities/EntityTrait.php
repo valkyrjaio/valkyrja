@@ -17,11 +17,14 @@ use JsonException;
 use Valkyrja\ORM\Constants\PropertyType;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Obj;
+use Valkyrja\Support\Type\Str;
 
 use function in_array;
-use function is_array;
-use function is_object;
+use function is_string;
+use function method_exists;
 use function serialize;
+use function ucwords;
 use function unserialize;
 
 /**
@@ -34,25 +37,34 @@ trait EntityTrait
     use ModelTrait;
 
     /**
-     * The table name.
+     * Get the table.
      *
-     * @var string
+     * @return string
      */
-    protected static string $table = self::class;
+    public static function getTableName(): string
+    {
+        return static::class;
+    }
 
     /**
-     * The id field.
+     * Get the id field.
      *
-     * @var string
+     * @return string
      */
-    protected static string $idField = 'id';
+    public static function getIdField(): string
+    {
+        return 'id';
+    }
 
     /**
-     * The ORM repository to use.
+     * Get the repository to use for this entity.
      *
-     * @var string|null
+     * @return string|null
      */
-    protected static ?string $repository = null;
+    public static function getEntityRepository(): ?string
+    {
+        return null;
+    }
 
     /**
      * Types for attributes that differs from what they were saved into the database as.
@@ -66,9 +78,12 @@ trait EntityTrait
      *      ]
      * </code>
      *
-     * @var array
+     * @return array
      */
-    protected static array $propertyTypes = [];
+    public static function getPropertyTypes(): array
+    {
+        return [];
+    }
 
     /**
      * Allowed classes for serialization of object type properties.
@@ -80,9 +95,12 @@ trait EntityTrait
      *      ]
      * </code>
      *
-     * @var array
+     * @return array
      */
-    protected static array $propertyAllowedClasses = [];
+    public static function getPropertyAllowedClasses(): array
+    {
+        return [];
+    }
 
     /**
      * Entity relationship properties.
@@ -95,48 +113,11 @@ trait EntityTrait
      *      ]
      * </code>
      *
-     * @var array
-     */
-    protected static array $relationshipProperties = [];
-
-    /**
-     * Get the table.
-     *
-     * @return string
-     */
-    public static function getEntityTable(): string
-    {
-        return static::$table;
-    }
-
-    /**
-     * Get the id field.
-     *
-     * @return string
-     */
-    public static function getIdField(): string
-    {
-        return static::$idField;
-    }
-
-    /**
-     * Get the repository to use for this entity.
-     *
-     * @return string|null
-     */
-    public static function getEntityRepository(): ?string
-    {
-        return static::$repository;
-    }
-
-    /**
-     * Get the property types map.
-     *
      * @return array
      */
-    public static function getPropertyTypes(): array
+    public static function getRelationshipProperties(): array
     {
-        return static::$propertyTypes;
+        return [];
     }
 
     /**
@@ -146,7 +127,7 @@ trait EntityTrait
      */
     public function getIdFieldValue(): string
     {
-        return (string) $this->{static::$idField};
+        return (string) $this->{static::getIdField()};
     }
 
     /**
@@ -158,7 +139,7 @@ trait EntityTrait
      */
     public function setIdFieldValue(string $id): void
     {
-        $this->{static::$idField} = $id;
+        $this->{static::getIdField()} = $id;
     }
 
     /**
@@ -170,15 +151,17 @@ trait EntityTrait
      */
     public function forDataStore(): array
     {
-        $properties = [];
+        $properties             = [];
+        $propertyTypes          = static::getPropertyTypes();
+        $relationshipProperties = static::getRelationshipProperties();
 
         // Otherwise iterate through the properties array
-        foreach ($this->getModelProperties() as $property) {
-            if (isset(static::$relationshipProperties[$property])) {
+        foreach ($this->_getPropertyNames() as $property) {
+            if (isset($relationshipProperties[$property])) {
                 continue;
             }
 
-            $properties[$property] = $this->getPropertyValueForDataStore($property);
+            $properties[$property] = $this->getPropertyValueForDataStore($propertyTypes, $property);
         }
 
         return $properties;
@@ -187,52 +170,24 @@ trait EntityTrait
     /**
      * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
      *
-     * @param array|null $columns
+     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
      *
      * @return void
      */
-    public function setEntityRelations(array $columns = null): void
+    public function withRelationships(array $relationships = null): void
     {
         // Iterate through the property types
-        foreach (static::$relationshipProperties as $property) {
-            if (null !== $columns && ! in_array($property, $columns, true)) {
+        foreach (static::getRelationshipProperties() as $property) {
+            if (null !== $relationships && ! in_array($property, $relationships, true)) {
                 continue;
             }
 
-            $this->__get($property);
+            $methodName = 'set' . ucwords(Str::toStudlyCase($property)) . 'Relationship';
+
+            if (method_exists($this, $methodName)) {
+                $this->$methodName();
+            }
         }
-    }
-
-    /**
-     * Get a property's value for data store.
-     *
-     * @param string $property
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function getPropertyValueForDataStore(string $property)
-    {
-        $value = $this->{$property};
-        // Check if a type was set for this attribute
-        $type = static::$propertyTypes[$property] ?? null;
-
-        // If there is no type specified just return the value
-        if (null === $type) {
-            return $value;
-        }
-
-        // If the type is object and the property isn't already an object
-        if ($type === PropertyType::OBJECT && is_object($value)) {
-            // Unserialize the object
-            $value = serialize($value);
-        } // If the type is array and the property isn't already an array
-        elseif ($type === PropertyType::ARRAY && is_array($value)) {
-            $value = Arr::toString($value);
-        }
-
-        return $value;
     }
 
     /**
@@ -244,42 +199,96 @@ trait EntityTrait
      *
      * @return void
      */
-    public function setModelProperties(array $properties): void
+    public function _setProperties(array $properties): void
     {
+        $propertyTypes          = static::getPropertyTypes();
+        $propertyAllowedClasses = static::getPropertyAllowedClasses();
+
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             // Set the property
-            $this->{$property} = $this->getPropertyValueByType($property, $value);
+            $this->{$property} = $this->getPropertyValueByType(
+                $propertyTypes,
+                $propertyAllowedClasses,
+                $property,
+                $value
+            );
         }
     }
 
     /**
-     * Get a property's value by the type (if type is set).
+     * Get a property's value for data store.
      *
-     * @param string $property
-     * @param mixed  $value
+     * @param array  $propertyTypes The property types
+     * @param string $property      The property name
      *
      * @throws JsonException
      *
      * @return mixed
      */
-    protected function getPropertyValueByType(string $property, $value)
+    protected function getPropertyValueForDataStore(array $propertyTypes, string $property)
     {
+        $value = $this->{$property};
         // Check if a type was set for this attribute
-        $type = static::$propertyTypes[$property] ?? null;
+        $type = $propertyTypes[$property] ?? null;
 
         // If there is no type specified just return the value
         if (null === $type) {
             return $value;
         }
 
-        // If the type is object and the property isn't already an object
-        if ($type === PropertyType::OBJECT && ! is_object($value)) {
+        // If the type is object
+        if ($type === PropertyType::OBJECT) {
             // Unserialize the object
-            $value = unserialize($value, ['allowed_classes' => static::$propertyAllowedClasses[$property] ?? []]);
-        } // If the type is array and the property isn't already an array
-        elseif ($type === PropertyType::ARRAY && ! is_array($value)) {
+            $value = serialize($value);
+        } // If the type is array
+        elseif ($type === PropertyType::ARRAY) {
+            $value = Arr::toString($value);
+        } // If the type is json
+        elseif ($type === PropertyType::JSON) {
+            $value = Obj::toString($value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Get a property's value by the type (if type is set).
+     *
+     * @param array  $propertyTypes          The property types
+     * @param array  $propertyAllowedClasses The property allowed classes
+     * @param string $property               The property name
+     * @param mixed  $value                  The property value
+     *
+     * @throws JsonException
+     * @return mixed
+     */
+    protected function getPropertyValueByType(
+        array $propertyTypes,
+        array $propertyAllowedClasses,
+        string $property,
+        $value
+    ) {
+        // Check if a type was set for this attribute
+        $type = $propertyTypes[$property] ?? null;
+
+        // If there is no type specified just return the value
+        if (null === $type || ! is_string($value)) {
+            return $value;
+        }
+
+        // If the type is object
+        if ($type === PropertyType::OBJECT) {
+            // Unserialize the object
+            $value = unserialize($value, ['allowed_classes' => $propertyAllowedClasses[$property] ?? []]);
+        } // If the type is array
+        elseif ($type === PropertyType::ARRAY) {
+            // Create a new array from the json string
             $value = Arr::fromString($value);
+        } // If the type is json
+        elseif ($type === PropertyType::JSON) {
+            // Create a new object from the json string
+            $value = Obj::fromString($value);
         }
 
         return $value;

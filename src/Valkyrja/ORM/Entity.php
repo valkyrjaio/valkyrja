@@ -27,7 +27,7 @@ interface Entity extends Model
      *
      * @return string
      */
-    public static function getEntityTable(): string;
+    public static function getTableName(): string;
 
     /**
      * Get the id field.
@@ -44,11 +44,49 @@ interface Entity extends Model
     public static function getEntityRepository(): ?string;
 
     /**
-     * Get the property types map.
+     * Types for attributes that differs from what they were saved into the database as.
+     *
+     * <code>
+     *      [
+     *          // An array to be json_encoded/decoded to/from the db
+     *          'property_name' => 'array',
+     *          // An object to be serialized and unserialized to/from the db
+     *          'property_name' => 'object',
+     *      ]
+     * </code>
      *
      * @return array
      */
     public static function getPropertyTypes(): array;
+
+    /**
+     * Allowed classes for serialization of object type properties.
+     *
+     * <code>
+     *      [
+     *          // An array of allowed classes for serialization for object types
+     *          'property_name' => [ClassName::class],
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    public static function getPropertyAllowedClasses(): array;
+
+    /**
+     * Entity relationship properties.
+     *
+     * <code>
+     *      [
+     *          'property_name',
+     *          'property_name_alt',
+     *          ...
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    public static function getRelationshipProperties(): array;
 
     /**
      * Get the id field value.
@@ -76,9 +114,9 @@ interface Entity extends Model
     /**
      * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
      *
-     * @param array|null $columns
+     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
      *
      * @return void
      */
-    public function setEntityRelations(array $columns = null): void;
+    public function withRelationships(array $relationships = null): void;
 }
