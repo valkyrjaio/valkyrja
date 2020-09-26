@@ -89,6 +89,16 @@ interface Entity extends Model
     public static function getRelationshipProperties(): array;
 
     /**
+     * Set a relationship property.
+     *
+     * @param string    $relationship The relationship to set
+     * @param Retriever $retriever    The ORM retriever
+     *
+     * @return void
+     */
+    public function __setRelationship(string $relationship, Retriever $retriever): void;
+
+    /**
      * Get the entity as an array for saving to the data store.
      *
      * @return array

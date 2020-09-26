@@ -22,8 +22,6 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as Contract;
 use Valkyrja\Support\Type\Cls;
 
-use Valkyrja\Support\Type\Str;
-
 use function is_array;
 use function is_int;
 use function is_string;
@@ -398,7 +396,7 @@ class Retriever implements Contract
      * Set relationships on the entities from results.
      *
      * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
-     * @param Entity     ...$entities The entities to add relationships to
+     * @param Entity     ...$entities   The entities to add relationships to
      *
      * @return void
      */
@@ -416,7 +414,7 @@ class Retriever implements Contract
      * Set relationships on an entity.
      *
      * @param array  $relationships The relationships to set
-     * @param Entity $entity The entity
+     * @param Entity $entity        The entity
      *
      * @return void
      */
@@ -425,7 +423,7 @@ class Retriever implements Contract
         // Iterate through the rows found
         foreach ($relationships as $relationship) {
             // Set the entity relations
-            $entity->__set($relationship, $this->adapter->createRetriever());
+            $entity->__setRelationship($relationship, $this->adapter->createRetriever());
         }
     }
 }

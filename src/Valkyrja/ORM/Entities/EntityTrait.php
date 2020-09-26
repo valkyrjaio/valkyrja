@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Entities;
 
 use JsonException;
 use Valkyrja\ORM\Constants\PropertyType;
+use Valkyrja\ORM\Retriever;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
@@ -114,6 +115,19 @@ trait EntityTrait
     public static function getRelationshipProperties(): array
     {
         return [];
+    }
+
+    /**
+     * Set a relationship property.
+     *
+     * @param string    $relationship The relationship to set
+     * @param Retriever $retriever    The ORM retriever
+     *
+     * @return void
+     */
+    public function __setRelationship(string $relationship, Retriever $retriever): void
+    {
+        $this->__set($relationship, $retriever);
     }
 
     /**
