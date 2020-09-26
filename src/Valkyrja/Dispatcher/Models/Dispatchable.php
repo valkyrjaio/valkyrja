@@ -16,9 +16,6 @@ namespace Valkyrja\Dispatcher\Models;
 use Closure;
 use JsonException;
 use Valkyrja\Support\Model\Traits\ModelTrait;
-use Valkyrja\Support\Type\Arr;
-
-use function get_object_vars;
 
 /**
  * Trait Dispatchable.
@@ -377,7 +374,7 @@ trait Dispatchable
      */
     public function jsonSerialize(): array
     {
-        $array = Arr::fromString(Arr::toString(get_object_vars($this)));
+        $array = $this->toDeepArray();
 
         $array['closure'] = null;
 

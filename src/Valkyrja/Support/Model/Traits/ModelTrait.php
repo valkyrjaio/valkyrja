@@ -22,6 +22,7 @@ use function get_object_vars;
 use function method_exists;
 use function property_exists;
 use function ucwords;
+use function Valkyrja\dd;
 
 /**
  * Trait ModelTrait.
@@ -135,8 +136,11 @@ trait ModelTrait
     {
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            // Set the property
-            $this->{$property} = $value;
+            // Ensure the property exists before blindly setting
+            if (property_exists($this, $property)) {
+                // Set the property
+                $this->{$property} = $value;
+            }
         }
     }
 

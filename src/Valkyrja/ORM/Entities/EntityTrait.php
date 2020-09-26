@@ -156,7 +156,7 @@ trait EntityTrait
         $relationshipProperties = static::getRelationshipProperties();
 
         // Otherwise iterate through the properties array
-        foreach ($this->_getPropertyNames() as $property) {
+        foreach ($this as $property => $value) {
             if (isset($relationshipProperties[$property])) {
                 continue;
             }
