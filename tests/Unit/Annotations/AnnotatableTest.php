@@ -499,46 +499,4 @@ class AnnotatableTest extends TestCase
     {
         self::assertEquals($this->class, $this->class->setDependencies([$this->value]) );
     }
-
-    /**
-     * Test the getAnnotationArguments method's default value.
-     *
-     * @return void
-     */
-    public function testGetAnnotationArgumentsDefault(): void
-    {
-        self::assertEquals(null, $this->class->getProperties());
-    }
-
-    /**
-     * Test the getAnnotationArguments method.
-     *
-     * @return void
-     */
-    public function testGetAnnotationArguments(): void
-    {
-        $this->class->setProperties([$this->value]);
-
-        self::assertEquals([$this->value], $this->class->getProperties());
-    }
-
-    /**
-     * Test the setAnnotationArguments method with null value.
-     *
-     * @return void
-     */
-    public function testSetAnnotationArgumentsNull(): void
-    {
-        self::assertEquals($this->class, $this->class->setProperties(null) );
-    }
-
-    /**
-     * Test the setAnnotationArguments method.
-     *
-     * @return void
-     */
-    public function testSetAnnotationArguments(): void
-    {
-        self::assertEquals($this->class, $this->class->setProperties([$this->value]) );
-    }
 }

@@ -90,17 +90,17 @@ class Parser implements Contract
     /**
      * Filter a string of properties into an key => value array.
      *
-     * @param string|null $properties The properties
+     * @param string|null $arguments The arguments
      *
      * @throws JsonException
      *
      * @return array
      */
-    public function getPropertiesAsArray(string $properties = null): ?array
+    public function getPropertiesAsArray(string $arguments = null): ?array
     {
         // If a valid properties list was passed in
-        if (null !== $properties && $properties) {
-            $testArgs       = str_replace('=', ':', $properties);
+        if (null !== $arguments && $arguments) {
+            $testArgs       = str_replace('=', ':', $arguments);
             $propertiesList = Arr::fromString('{' . $testArgs . '}');
 
             if (is_array($propertiesList)) {
@@ -228,15 +228,12 @@ class Parser implements Contract
 
         // If there are properties
         if (null !== $parts[Part::PROPERTIES] && $parts[Part::PROPERTIES]) {
-            // Filter the properties and set them in the annotation
-            $annotation->setProperties($this->getPropertiesAsArray($parts[Part::PROPERTIES]));
+            // Set the annotation's properties to setters if they exist
+            $annotation->_setProperties($this->getPropertiesAsArray($parts[Part::PROPERTIES]) ?? []);
 
             // Having set the properties there's no need to retain this key in
             // the properties
             unset($parts[Part::PROPERTIES]);
-
-            // Set the annotation's properties to setters if they exist
-            $annotation->_setProperties($annotation->getProperties() ?? []);
         }
 
         // Set all the matches

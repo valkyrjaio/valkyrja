@@ -37,20 +37,4 @@ interface Annotation extends Dispatch
      * @return static
      */
     public function setType(string $annotationType = null): self;
-
-    /**
-     * Get the annotation properties (within parentheses).
-     *
-     * @return array
-     */
-    public function getProperties(): ?array;
-
-    /**
-     * Set the annotation properties (within parentheses).
-     *
-     * @param array|null $properties The annotation arguments
-     *
-     * @return static
-     */
-    public function setProperties(array $properties = null): self;
 }

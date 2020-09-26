@@ -28,13 +28,6 @@ trait Annotatable
     protected ?string $type = null;
 
     /**
-     * The annotation properties (within parenthesis).
-     *
-     * @var array|null
-     */
-    protected ?array $properties = null;
-
-    /**
      * Get the type.
      *
      * @return string
@@ -54,30 +47,6 @@ trait Annotatable
     public function setType(string $type = null): self
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get the annotation properties (within parentheses).
-     *
-     * @return array
-     */
-    public function getProperties(): ?array
-    {
-        return $this->properties;
-    }
-
-    /**
-     * Set the annotation properties (within parentheses).
-     *
-     * @param array|null $properties The annotation arguments
-     *
-     * @return static
-     */
-    public function setProperties(array $properties = null): self
-    {
-        $this->properties = $properties;
 
         return $this;
     }
