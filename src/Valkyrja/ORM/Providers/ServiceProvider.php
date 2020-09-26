@@ -138,7 +138,7 @@ class ServiceProvider extends Provider
                         . ';charset=' . $config['charset'],
                         $config['username'],
                         $config['password'],
-                        $config['options']
+                        $config['options'] ?? []
                     )
                 );
             }

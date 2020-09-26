@@ -199,6 +199,7 @@ final class EnvKey
     public const ORM_MYSQL_CHARSET    = 'ORM_MYSQL_CHARSET';
     public const ORM_MYSQL_USERNAME   = 'ORM_MYSQL_USERNAME';
     public const ORM_MYSQL_PASSWORD   = 'ORM_MYSQL_PASSWORD';
+    public const ORM_MYSQL_OPTIONS    = 'ORM_MYSQL_OPTIONS';
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 
