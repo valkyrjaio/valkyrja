@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Authenticators;
 use Exception;
 use Valkyrja\Auth\Authenticator as Contract;
 use Valkyrja\Auth\LockableUser;
+use Valkyrja\Auth\MailableUser;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
@@ -72,18 +73,21 @@ class Authenticator implements Contract
     public function authenticate(User $user): bool
     {
         $repository = $this->orm->getRepositoryFromClass($user);
+        $usernameField = $user::getUsernameField();
+        $dbUser = $repository
+            ->find()
+            ->where($usernameField, null, $user->{$usernameField})
+            ->getOneOrNull();
 
-        try {
-            /** @var User $dbUser */
+        if ($dbUser === null && $user instanceof MailableUser) {
+            $emailField = $user::getEmailField();
             $dbUser = $repository
                 ->find()
-                ->where($user::getUsernameField(), null, $user->{$user::getUsernameField()})
-                ->getOneOrFail();
-        } catch (Exception $exception) {
-            return false;
+                ->where($emailField, null, $user->{$emailField})
+                ->getOneOrNull();
         }
 
-        return $this->isPassword($dbUser, $user->{$user::getPasswordField()});
+        return $dbUser ? $this->isPassword($dbUser, $user->{$user::getPasswordField()}) : false;
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Registrators;
 
 use Exception;
+use Valkyrja\Auth\MailableUser;
 use Valkyrja\Auth\Registrator as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\ORM\ORM;
@@ -55,7 +56,7 @@ class Registrator implements Contract
      */
     public function register(User $user): bool
     {
-        $repository = $this->orm->getRepositoryFromClass($user);
+        $repository    = $this->orm->getRepositoryFromClass($user);
         $passwordField = $user::getPasswordField();
 
         try {
@@ -81,14 +82,19 @@ class Registrator implements Contract
      */
     public function isRegistered(User $user): bool
     {
-        $repository = $this->orm->getRepositoryFromClass($user);
+        $repository    = $this->orm->getRepositoryFromClass($user);
+        $usernameField = $user::getUsernameField();
 
-        try {
-            $repository->findOne($user->{$user::getUsernameField()})->getOneOrFail();
-
+        if ($repository->find()->where($usernameField, null, $user->{$usernameField})->getOneOrNull()) {
             return true;
-        } catch (Exception $exception) {
-            // Left empty to default to false
+        };
+
+        if ($user instanceof MailableUser) {
+            $emailField = $user::getEmailField();
+
+            if ($repository->find()->where($emailField, null, $user->{$emailField})->getOneOrNull()) {
+                return true;
+            }
         }
 
         return false;
