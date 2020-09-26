@@ -51,48 +51,4 @@ trait LockableUserTrait
     {
         return UserField::LOCKED;
     }
-
-    /**
-     * Get the login attempts field value.
-     *
-     * @return int
-     */
-    public function getLoginAttemptsFieldValue(): int
-    {
-        return $this->{static::getLoginAttemptsField()};
-    }
-
-    /**
-     * Set the login attempts field value.
-     *
-     * @param int $loginAttempts
-     *
-     * @return void
-     */
-    public function setLoginAttemptsFieldValue(int $loginAttempts): void
-    {
-        $this->{static::getLoginAttemptsField()} = $loginAttempts;
-    }
-
-    /**
-     * Get the locked field value.
-     *
-     * @return bool
-     */
-    public function getLockedFieldValue(): bool
-    {
-        return $this->{static::getLockedField()};
-    }
-
-    /**
-     * Set the locked field value.
-     *
-     * @param bool $locked
-     *
-     * @return void
-     */
-    public function setLockedFieldValue(bool $locked): void
-    {
-        $this->{static::getLockedField()} = $locked;
-    }
 }

@@ -95,8 +95,8 @@ class Persister implements PersisterContract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->setDateCreatedFieldValue($this->getFormattedDate());
-            $entity->setDateModifiedFieldValue($this->getFormattedDate());
+            $entity->{$entity::getDateCreatedField()} = $this->getFormattedDate();
+            $entity->{$entity::getDateModifiedField()} = $this->getFormattedDate();
         }
 
         if (! $defer) {
@@ -128,7 +128,7 @@ class Persister implements PersisterContract
     public function save(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->setDateModifiedFieldValue($this->getFormattedDate());
+            $entity->{$entity::getDateModifiedField()} = $this->getFormattedDate();
         }
 
         if (! $defer) {
@@ -187,8 +187,8 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->setDeletedFieldValue(true);
-        $entity->setDateDeletedFieldValue($this->getFormattedDate());
+        $entity->{$entity::getDeletedField()} = true;
+        $entity->{$entity::getDateDeletedField()} = $this->getFormattedDate();
 
         $this->save($entity, $defer);
     }
@@ -293,7 +293,7 @@ class Persister implements PersisterContract
     protected function persistEntity(string $type, Entity $entity): void
     {
         $idField    = $entity::getIdField();
-        $properties = $entity->forDataStore();
+        $properties = $entity->__storable();
 
         // Get the query builder
         $queryBuilder = $this->getQueryBuilder($type, $entity, $properties);
@@ -306,7 +306,7 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->setIdFieldValue($this->adapter->lastInsertId());
+        $entity->{$idField} = $this->adapter->lastInsertId();
     }
 
     /**

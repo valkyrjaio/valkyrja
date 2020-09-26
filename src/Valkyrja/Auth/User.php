@@ -58,57 +58,9 @@ interface User extends Entity
     public static function getResetTokenField(): string;
 
     /**
-     * Get the username field value.
-     *
-     * @return string
-     */
-    public function getUsernameFieldValue(): string;
-
-    /**
-     * Set the username field value.
-     *
-     * @param string $username
-     *
-     * @return void
-     */
-    public function setUsernameFieldValue(string $username): void;
-
-    /**
-     * Get the hashed password field value.
-     *
-     * @return string
-     */
-    public function getPasswordFieldValue(): string;
-
-    /**
-     * Set the password field value.
-     *
-     * @param string $password
-     *
-     * @return void
-     */
-    public function setPasswordFieldValue(string $password): void;
-
-    /**
-     * Get the reset token field value.
-     *
-     * @return string|null
-     */
-    public function getResetTokenFieldValue(): ?string;
-
-    /**
-     * Set the reset token field value.
-     *
-     * @param string|null $resetToken
-     *
-     * @return void
-     */
-    public function setResetTokenFieldValue(string $resetToken = null): void;
-
-    /**
      * Get user as an array for storing in a token.
      *
      * @return array
      */
-    public function asArrayForToken(): array;
+    public function __tokenized(): array;
 }

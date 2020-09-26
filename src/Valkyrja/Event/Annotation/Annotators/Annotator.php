@@ -121,6 +121,6 @@ class Annotator implements Contract
      */
     protected function getListenerFromAnnotation(Listener $listener): ListenerContract
     {
-        return ListenerModel::fromArray($listener->toArray());
+        return ListenerModel::fromArray($listener->__toArray());
     }
 }

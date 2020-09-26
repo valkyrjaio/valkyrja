@@ -40,36 +40,4 @@ interface LockableUser extends User
      * @return string
      */
     public static function getLockedField(): string;
-
-    /**
-     * Get the login attempts field value.
-     *
-     * @return int
-     */
-    public function getLoginAttemptsFieldValue(): int;
-
-    /**
-     * Set the login attempts field value.
-     *
-     * @param int $loginAttempts
-     *
-     * @return void
-     */
-    public function setLoginAttemptsFieldValue(int $loginAttempts): void;
-
-    /**
-     * Get the locked field value.
-     *
-     * @return bool
-     */
-    public function getLockedFieldValue(): bool;
-
-    /**
-     * Set the locked field value.
-     *
-     * @param bool $locked
-     *
-     * @return void
-     */
-    public function setLockedFieldValue(bool $locked): void;
 }

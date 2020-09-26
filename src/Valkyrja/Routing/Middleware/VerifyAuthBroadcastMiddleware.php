@@ -129,9 +129,11 @@ class VerifyAuthBroadcastMiddleware extends Middleware
      */
     protected static function determineCanRead(User $user, Broadcast $broadcaster, string $broadcastMessage): bool
     {
+        $idField = $user::getIdField();
+
         return $broadcaster->getAdapter()->determineKeyValueMatch(
-            $user::getIdField(),
-            $user->getIdFieldValue(),
+            $idField,
+            $user->{$idField},
             $broadcastMessage
         );
     }

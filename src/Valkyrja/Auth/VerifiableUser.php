@@ -26,20 +26,4 @@ interface VerifiableUser extends MailableUser
      * @return string
      */
     public static function getVerifiedField(): string;
-
-    /**
-     * Get the verified field value.
-     *
-     * @return bool
-     */
-    public function getVerifiedFieldValue(): bool;
-
-    /**
-     * Set the verified field value.
-     *
-     * @param bool $verified Whether the user is verified
-     *
-     * @return void
-     */
-    public function setVerifiedFieldValue(bool $verified): void;
 }

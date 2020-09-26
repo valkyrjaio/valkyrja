@@ -260,9 +260,9 @@ class Notifier implements Contract
      */
     protected function addBroadcastUserRecipient(NotifiableUser $user): void
     {
-        if ($secretId = $user->getSecretIdFieldValue()) {
+        if ($user::hasSecretIdField()) {
             $this->broadcastEvents[] = [
-                'event' => $secretId,
+                'event' => $user->{$user::getSecretIdField()},
                 'user'  => $user,
             ];
         }
@@ -278,8 +278,8 @@ class Notifier implements Contract
     protected function addMailUserRecipient(NotifiableUser $user): void
     {
         $this->mailRecipients[] = [
-            'email' => $user->getEmailFieldValue(),
-            'name'  => $user->getNameFieldValue(),
+            'email' => $user->{$user::getEmailField()},
+            'name'  => $user::hasNameField() ? $user->{$user::getNameField()} : '',
             'user'  => $user,
         ];
     }
@@ -293,9 +293,9 @@ class Notifier implements Contract
      */
     protected function addSmsUserRecipient(NotifiableUser $user): void
     {
-        if ($phoneNumber = $user->getPhoneNumberFieldValue()) {
+        if ($user::hasPhoneNumberField()) {
             $this->smsRecipients[] = [
-                'to'   => $phoneNumber,
+                'to'   => $user->{$user::getPhoneNumberField()},
                 'user' => $user,
             ];
         }

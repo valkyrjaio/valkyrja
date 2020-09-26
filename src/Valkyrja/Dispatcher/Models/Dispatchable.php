@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Dispatcher\Models;
 
 use Closure;
-use JsonException;
 use Valkyrja\Support\Model\Traits\ModelTrait;
+
+use function get_object_vars;
 
 /**
  * Trait Dispatchable.
@@ -92,7 +93,7 @@ trait Dispatchable
     /**
      * The dependencies.
      *
-     * @var array|null
+     * @var string[]|null
      */
     protected ?array $dependencies = null;
 
@@ -344,7 +345,7 @@ trait Dispatchable
     /**
      * Get the dependencies.
      *
-     * @return array
+     * @return string[]
      */
     public function getDependencies(): ?array
     {
@@ -354,7 +355,7 @@ trait Dispatchable
     /**
      * Set the dependencies.
      *
-     * @param array|null $dependencies The dependencies
+     * @param string[]|null $dependencies The dependencies
      *
      * @return static
      */
@@ -368,15 +369,14 @@ trait Dispatchable
     /**
      * Serialize properties for json_encode.
      *
-     * @throws JsonException
-     *
      * @return array
      */
     public function jsonSerialize(): array
     {
-        $array = $this->toDeepArray();
+        $array = get_object_vars($this);
 
-        $array['closure'] = null;
+        $array['arguments'] = null;
+        $array['closure']   = null;
 
         return $array;
     }

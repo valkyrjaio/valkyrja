@@ -33,36 +33,4 @@ interface DatedEntity extends Entity
      * @return string
      */
     public static function getDateModifiedField(): string;
-
-    /**
-     * Get the date created field value.
-     *
-     * @return string
-     */
-    public function getDateCreatedFieldValue(): string;
-
-    /**
-     * Set the date created field value.
-     *
-     * @param string $dateCreated
-     *
-     * @return void
-     */
-    public function setDateCreatedFieldValue(string $dateCreated): void;
-
-    /**
-     * Get the date modified field value.
-     *
-     * @return string
-     */
-    public function getDateModifiedFieldValue(): string;
-
-    /**
-     * Set the date modified field value.
-     *
-     * @param string $dateModified
-     *
-     * @return void
-     */
-    public function setDateModifiedFieldValue(string $dateModified): void;
 }

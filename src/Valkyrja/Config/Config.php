@@ -43,7 +43,7 @@ abstract class Config implements ArrayAccess
     public function __construct(array $properties = null, bool $setupFromEnv = false)
     {
         if (null !== $properties) {
-            $this->_setProperties($properties);
+            $this->__setProperties($properties);
         }
 
         if ($setupFromEnv) {
@@ -100,7 +100,7 @@ abstract class Config implements ArrayAccess
      */
     protected function setPropertiesFromEnv(): void
     {
-        foreach (static::$envKeys as $property) {
+        foreach (static::$envKeys as $property => $value) {
             $this->{$property} = env(static::$envKeys[$property], $this->{$property});
         }
     }

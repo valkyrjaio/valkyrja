@@ -292,6 +292,35 @@ class Str
     }
 
     /**
+     * Convert a string to capitalized.
+     *
+     * @param string      $subject The subject
+     * @param string|null $delimiter [optional] The delimiter
+     *
+     * @return string
+     */
+    public static function toCapitalized(string $subject, string $delimiter = null): string
+    {
+        if ($delimiter) {
+            return ucwords($subject, $delimiter);
+        }
+
+        return ucwords($subject);
+    }
+
+    /**
+     * Convert all strings to capitalized.
+     *
+     * @param string ...$subjects The subjects
+     *
+     * @return array
+     */
+    public static function allToCapitalized(string ...$subjects): array
+    {
+        return static::allTo('toUpperCase', ...$subjects);
+    }
+
+    /**
      * Convert a string to snake case.
      *
      * @param string $subject The subject
@@ -342,7 +371,7 @@ class Str
             return self::$studlyCache[$key];
         }
 
-        $subject = static::toUpperCase(static::replaceAllWith($subject, ['-', '_'], ' '));
+        $subject = static::toCapitalized(static::replaceAllWith($subject, ['-', '_'], ' '));
 
         return self::$studlyCache[$key] = static::replace($subject, ' ', '');
     }

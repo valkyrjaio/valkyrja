@@ -22,9 +22,12 @@ use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as Contract;
 use Valkyrja\Support\Type\Cls;
 
+use Valkyrja\Support\Type\Str;
+
 use function is_array;
 use function is_int;
 use function is_string;
+use function ucwords;
 
 /**
  * Class Retriever
@@ -278,7 +281,7 @@ class Retriever implements Contract
         $results = $this->query->getResult();
 
         if ($this->getRelations && is_array($results)) {
-            $this->setRelations($this->relationships, ...$results);
+            $this->setRelationshipsOnEntities($this->relationships, ...$results);
         }
 
         return $results;
@@ -393,19 +396,38 @@ class Retriever implements Contract
     }
 
     /**
-     * Set result relations.
+     * Set relationships on the entities from results.
      *
      * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
      * @param Entity     ...$entities The entities to add relationships to
      *
      * @return void
      */
-    protected function setRelations(array $relationships = null, Entity ...$entities): void
+    protected function setRelationshipsOnEntities(array $relationships = null, Entity ...$entities): void
     {
         // Iterate through the rows found
         foreach ($entities as $entity) {
+            $relationships = $relationships ?? $entity::getRelationshipProperties();
             // Get the entity relations
-            $entity->withRelationships($relationships);
+            $this->setRelationshipsOnEntity($relationships, $entity);
+        }
+    }
+
+    /**
+     * Set relationships on an entity.
+     *
+     * @param array  $relationships The relationships to set
+     * @param Entity $entity The entity
+     *
+     * @return void
+     */
+    protected function setRelationshipsOnEntity(array $relationships, Entity $entity): void
+    {
+        // Iterate through the rows found
+        foreach ($relationships as $relationship) {
+            $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
+            // Set the entity relations
+            $entity->{$methodName}($this->adapter->createRetriever());
         }
     }
 }

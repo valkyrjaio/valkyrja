@@ -18,13 +18,9 @@ use Valkyrja\ORM\Constants\PropertyType;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
-use Valkyrja\Support\Type\Str;
 
-use function in_array;
 use function is_string;
-use function method_exists;
 use function serialize;
-use function ucwords;
 use function unserialize;
 
 /**
@@ -121,35 +117,13 @@ trait EntityTrait
     }
 
     /**
-     * Get the id field value.
-     *
-     * @return string
-     */
-    public function getIdFieldValue(): string
-    {
-        return (string) $this->{static::getIdField()};
-    }
-
-    /**
-     * Set the id field value.
-     *
-     * @param string $id
-     *
-     * @return void
-     */
-    public function setIdFieldValue(string $id): void
-    {
-        $this->{static::getIdField()} = $id;
-    }
-
-    /**
      * Get the entity as an array for saving to the data store.
      *
      * @throws JsonException
      *
      * @return array
      */
-    public function forDataStore(): array
+    public function __storable(): array
     {
         $properties             = [];
         $propertyTypes          = static::getPropertyTypes();
@@ -168,29 +142,6 @@ trait EntityTrait
     }
 
     /**
-     * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
-     *
-     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
-     *
-     * @return void
-     */
-    public function withRelationships(array $relationships = null): void
-    {
-        // Iterate through the property types
-        foreach (static::getRelationshipProperties() as $property) {
-            if (null !== $relationships && ! in_array($property, $relationships, true)) {
-                continue;
-            }
-
-            $methodName = 'set' . ucwords(Str::toStudlyCase($property)) . 'Relationship';
-
-            if (method_exists($this, $methodName)) {
-                $this->$methodName();
-            }
-        }
-    }
-
-    /**
      * Set properties from an array of properties.
      *
      * @param array $properties
@@ -199,7 +150,7 @@ trait EntityTrait
      *
      * @return void
      */
-    public function _setProperties(array $properties): void
+    public function __setProperties(array $properties): void
     {
         $propertyTypes          = static::getPropertyTypes();
         $propertyAllowedClasses = static::getPropertyAllowedClasses();

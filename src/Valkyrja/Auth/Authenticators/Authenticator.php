@@ -77,13 +77,13 @@ class Authenticator implements Contract
             /** @var User $dbUser */
             $dbUser = $repository
                 ->find()
-                ->where($user::getUsernameField(), null, $user->getUsernameFieldValue())
+                ->where($user::getUsernameField(), null, $user->{$user::getUsernameField()})
                 ->getOneOrFail();
         } catch (Exception $exception) {
             return false;
         }
 
-        return $this->isPassword($dbUser, $user->getPasswordFieldValue());
+        return $this->isPassword($dbUser, $user->{$user::getPasswordField()});
     }
 
     /**
@@ -149,7 +149,7 @@ class Authenticator implements Contract
     public function getFreshUser(User $user): User
     {
         /** @var User $freshUser */
-        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->getIdFieldValue())->getOneOrFail();
+        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->{$user::getIdField()})->getOneOrFail();
 
         return $freshUser;
     }
@@ -164,7 +164,7 @@ class Authenticator implements Contract
      */
     public function isPassword(User $user, string $password): bool
     {
-        return password_verify($password, $user->getPasswordFieldValue());
+        return password_verify($password, $user->{$user::getPasswordField()});
     }
 
     /**
@@ -177,7 +177,7 @@ class Authenticator implements Contract
      */
     public function updatePassword(User $user, string $password): void
     {
-        $user->setPasswordFieldValue($this->hashPassword($password));
+        $user->{$user::getPasswordField()} = $this->hashPassword($password);
 
         $this->saveUser($user);
     }
@@ -193,7 +193,7 @@ class Authenticator implements Contract
      */
     public function resetPassword(User $user): void
     {
-        $user->setResetTokenFieldValue(Str::random());
+        $user->{$user::getResetTokenField()} = Str::random();
 
         $this->saveUser($user);
     }
@@ -244,7 +244,7 @@ class Authenticator implements Contract
      */
     protected function lockUnlock(LockableUser $user, bool $lock): void
     {
-        $user->setLockedFieldValue($lock);
+        $user->{$user::getLockedField()} = $lock;
 
         $this->saveUser($user);
     }

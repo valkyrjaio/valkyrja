@@ -31,26 +31,4 @@ trait MailableUserTrait
     {
         return UserField::EMAIL;
     }
-
-    /**
-     * Get the email field value.
-     *
-     * @return string
-     */
-    public function getEmailFieldValue(): string
-    {
-        return $this->{static::getEmailField()};
-    }
-
-    /**
-     * Set the email field value.
-     *
-     * @param string $email The email
-     *
-     * @return void
-     */
-    public function setEmailFieldValue(string $email): void
-    {
-        $this->{static::getEmailField()} = $email;
-    }
 }

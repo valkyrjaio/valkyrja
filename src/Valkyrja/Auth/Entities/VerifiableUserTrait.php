@@ -31,26 +31,4 @@ trait VerifiableUserTrait
     {
         return UserField::VERIFIED;
     }
-
-    /**
-     * Get the verified field value.
-     *
-     * @return bool
-     */
-    public function getVerifiedFieldValue(): bool
-    {
-        return $this->{static::getVerifiedField()};
-    }
-
-    /**
-     * Set the verified field value.
-     *
-     * @param bool $verified Whether the user is verified
-     *
-     * @return void
-     */
-    public function setVerifiedFieldValue(bool $verified): void
-    {
-        $this->{static::getVerifiedField()} = $verified;
-    }
 }

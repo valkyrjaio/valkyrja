@@ -74,79 +74,13 @@ trait UserTrait
     }
 
     /**
-     * Get the username field value.
-     *
-     * @return string
-     */
-    public function getUsernameFieldValue(): string
-    {
-        return $this->{static::getUsernameField()};
-    }
-
-    /**
-     * Set the username field value.
-     *
-     * @param string $username
-     *
-     * @return void
-     */
-    public function setUsernameFieldValue(string $username): void
-    {
-        $this->{static::getUsernameField()} = $username;
-    }
-
-    /**
-     * Get the hashed password field value.
-     *
-     * @return string
-     */
-    public function getPasswordFieldValue(): string
-    {
-        return $this->{static::getPasswordField()};
-    }
-
-    /**
-     * Set the password field value.
-     *
-     * @param string $password
-     *
-     * @return void
-     */
-    public function setPasswordFieldValue(string $password): void
-    {
-        $this->{static::getPasswordField()} = $password;
-    }
-
-    /**
-     * Get the reset token field value.
-     *
-     * @return string|null
-     */
-    public function getResetTokenFieldValue(): ?string
-    {
-        return $this->{static::getResetTokenField()};
-    }
-
-    /**
-     * Set the reset token field value.
-     *
-     * @param string|null $resetToken
-     *
-     * @return void
-     */
-    public function setResetTokenFieldValue(string $resetToken = null): void
-    {
-        $this->{static::getResetTokenField()} = $resetToken;
-    }
-
-    /**
      * Get user as an array for storing in a token.
      *
      * @return array
      */
-    public function asArrayForToken(): array
+    public function __tokenized(): array
     {
-        return $this->forDataStore();
+        return $this->__storable();
     }
 
     /**
@@ -154,5 +88,5 @@ trait UserTrait
      *
      * @return array
      */
-    abstract public function forDataStore(): array;
+    abstract public function __storable(): array;
 }

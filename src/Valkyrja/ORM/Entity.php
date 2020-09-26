@@ -89,34 +89,9 @@ interface Entity extends Model
     public static function getRelationshipProperties(): array;
 
     /**
-     * Get the id field value.
-     *
-     * @return string
-     */
-    public function getIdFieldValue(): string;
-
-    /**
-     * Set the id field value.
-     *
-     * @param string $id
-     *
-     * @return void
-     */
-    public function setIdFieldValue(string $id): void;
-
-    /**
      * Get the entity as an array for saving to the data store.
      *
      * @return array
      */
-    public function forDataStore(): array;
-
-    /**
-     * Get all the relations for the entity as defined in getPropertyTypes and getPropertyMapper.
-     *
-     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
-     *
-     * @return void
-     */
-    public function withRelationships(array $relationships = null): void;
+    public function __storable(): array;
 }

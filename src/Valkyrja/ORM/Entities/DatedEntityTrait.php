@@ -39,48 +39,4 @@ trait DatedEntityTrait
     {
         return 'date_modified';
     }
-
-    /**
-     * Get the date created field value.
-     *
-     * @return string
-     */
-    public function getDateCreatedFieldValue(): string
-    {
-        return $this->{static::getDateCreatedField()};
-    }
-
-    /**
-     * Set the date created field value.
-     *
-     * @param string $dateCreated
-     *
-     * @return void
-     */
-    public function setDateCreatedFieldValue(string $dateCreated): void
-    {
-        $this->{static::getDateCreatedField()} = $dateCreated;
-    }
-
-    /**
-     * Get the date modified field value.
-     *
-     * @return string
-     */
-    public function getDateModifiedFieldValue(): string
-    {
-        return $this->{static::getDateModifiedField()};
-    }
-
-    /**
-     * Set the date modified field value.
-     *
-     * @param string $dateModified
-     *
-     * @return void
-     */
-    public function setDateModifiedFieldValue(string $dateModified): void
-    {
-        $this->{static::getDateModifiedField()} = $dateModified;
-    }
 }

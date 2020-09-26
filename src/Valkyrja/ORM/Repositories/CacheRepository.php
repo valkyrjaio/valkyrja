@@ -481,7 +481,7 @@ class CacheRepository extends Repository
         $tag = $this->store->getTagger($id);
 
         $tag->flush();
-        $tag->forever($id, Arr::toString($entity->toArray()));
+        $tag->forever($id, Arr::toString($entity->__toArray()));
     }
 
     /**
@@ -493,7 +493,7 @@ class CacheRepository extends Repository
      */
     protected function getEntityCacheKey(Entity $entity): string
     {
-        return get_class($entity) . $entity->getIdFieldValue();
+        return get_class($entity) . $entity->{$entity::getIdField()};
     }
 
     /**

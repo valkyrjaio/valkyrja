@@ -26,20 +26,4 @@ interface MailableUser extends User
      * @return string
      */
     public static function getEmailField(): string;
-
-    /**
-     * Get the email field value.
-     *
-     * @return string
-     */
-    public function getEmailFieldValue(): string;
-
-    /**
-     * Set the email field value.
-     *
-     * @param string $email The email
-     *
-     * @return void
-     */
-    public function setEmailFieldValue(string $email): void;
 }

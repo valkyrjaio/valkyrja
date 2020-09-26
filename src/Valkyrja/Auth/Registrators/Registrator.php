@@ -56,9 +56,10 @@ class Registrator implements Contract
     public function register(User $user): bool
     {
         $repository = $this->orm->getRepositoryFromClass($user);
+        $passwordField = $user::getPasswordField();
 
         try {
-            $user->setPasswordFieldValue($this->hashPassword($user->getPasswordFieldValue()));
+            $user->{$passwordField} = $this->hashPassword($user->{$passwordField});
 
             $repository->save($user, false);
             $repository->persist();

@@ -39,48 +39,4 @@ trait SoftDeleteEntityTrait
     {
         return 'date_deleted';
     }
-
-    /**
-     * Get the deleted field value.
-     *
-     * @return bool
-     */
-    public function getDeletedFieldValue(): bool
-    {
-        return (bool) $this->{static::getDeletedField()};
-    }
-
-    /**
-     * Set the deleted field value.
-     *
-     * @param bool $deleted
-     *
-     * @return void
-     */
-    public function setDeletedFieldValue(bool $deleted): void
-    {
-        $this->{static::getDeletedField()} = $deleted;
-    }
-
-    /**
-     * Get the date deleted field value.
-     *
-     * @return string|null
-     */
-    public function getDateDeletedFieldValue(): ?string
-    {
-        return (string) $this->{static::getDateDeletedField()};
-    }
-
-    /**
-     * Set the date deleted field value.
-     *
-     * @param string|null $dateDeleted
-     *
-     * @return void
-     */
-    public function setDateDeletedFieldValue(string $dateDeleted = null): void
-    {
-        $this->{static::getDateDeletedField()} = $dateDeleted;
-    }
 }
