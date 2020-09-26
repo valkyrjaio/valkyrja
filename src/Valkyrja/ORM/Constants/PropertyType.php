@@ -20,7 +20,7 @@ namespace Valkyrja\ORM\Constants;
  */
 final class PropertyType
 {
-    public const JSON  = 'json';
+    public const JSON   = 'json';
     public const ARRAY  = 'array';
     public const OBJECT = 'object';
 }

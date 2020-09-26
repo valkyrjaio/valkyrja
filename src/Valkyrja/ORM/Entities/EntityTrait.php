@@ -212,6 +212,7 @@ trait EntityTrait
      * @param mixed  $value                  The property value
      *
      * @throws JsonException
+     *
      * @return mixed
      */
     protected function getPropertyValueByType(

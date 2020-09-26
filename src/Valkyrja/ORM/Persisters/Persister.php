@@ -95,7 +95,7 @@ class Persister implements PersisterContract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->{$entity::getDateCreatedField()} = $this->getFormattedDate();
+            $entity->{$entity::getDateCreatedField()}  = $this->getFormattedDate();
             $entity->{$entity::getDateModifiedField()} = $this->getFormattedDate();
         }
 
@@ -187,7 +187,7 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->{$entity::getDeletedField()} = true;
+        $entity->{$entity::getDeletedField()}     = true;
         $entity->{$entity::getDateDeletedField()} = $this->getFormattedDate();
 
         $this->save($entity, $defer);
