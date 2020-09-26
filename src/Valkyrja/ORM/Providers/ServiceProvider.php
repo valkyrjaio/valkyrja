@@ -129,8 +129,10 @@ class ServiceProvider extends Provider
         $container->setClosure(
             PDOAdapter::class,
             static function (array $config) {
-                $schema = $config['schema'];
+                $schema = $config['schema'] ?? null;
                 $schemaDsn = $schema ? ';schema=' . $schema : '';
+                $sslmode = $config['sslmode'] ?? null;
+                $sslmodeDsn = $sslmode ? ';sslmode=' . $sslmode : '';
                 $charset = $config['charset'] ?? 'utf8';
 
                 return new PDOAdapter(
@@ -140,6 +142,7 @@ class ServiceProvider extends Provider
                         . ';port=' . $config['port']
                         . ';dbname=' . $config['db']
                         . ';charset=' . $charset
+                        . $sslmodeDsn
                         . $schemaDsn,
                         $config['username'],
                         $config['password'],
