@@ -74,7 +74,7 @@ abstract class SmartMigration extends Migration
      *
      * @return void
      */
-    public static function runFailure(ORM $orm): void
+    protected static function runFailure(ORM $orm): void
     {
     }
 
@@ -85,7 +85,7 @@ abstract class SmartMigration extends Migration
      *
      * @return void
      */
-    public static function rollbackFailure(ORM $orm): void
+    protected static function rollbackFailure(ORM $orm): void
     {
     }
 
@@ -96,7 +96,7 @@ abstract class SmartMigration extends Migration
      *
      * @return void
      */
-    abstract public static function runMigration(ORM $orm): void;
+    abstract protected static function runMigration(ORM $orm): void;
 
     /**
      * Rollback the migration.
@@ -105,5 +105,5 @@ abstract class SmartMigration extends Migration
      *
      * @return void
      */
-    abstract public static function rollbackMigration(ORM $orm): void;
+    abstract protected static function rollbackMigration(ORM $orm): void;
 }

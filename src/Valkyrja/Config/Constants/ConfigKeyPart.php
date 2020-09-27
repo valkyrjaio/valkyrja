@@ -81,6 +81,7 @@ final class ConfigKeyPart
     public const CONTEXT_SERVICES            = 'contextServices';
     public const CONNECTION                  = 'connection';
     public const CONNECTIONS                 = 'connections';
+    public const MIGRATIONS                  = 'migrations';
     public const RULE                        = 'rule';
     public const RULES                       = 'rules';
     public const RULES_MAP                   = 'rulesMap';

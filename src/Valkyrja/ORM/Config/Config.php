@@ -35,6 +35,7 @@ class Config extends Model
         CKP::DRIVERS,
         CKP::REPOSITORY,
         CKP::CONNECTIONS,
+        CKP::MIGRATIONS,
     ];
 
     /**
@@ -48,6 +49,7 @@ class Config extends Model
         CKP::DRIVERS     => EnvKey::ORM_DRIVERS,
         CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
         CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
+        CKP::MIGRATIONS  => EnvKey::ORM_MIGRATIONS,
     ];
 
     /**
@@ -84,4 +86,11 @@ class Config extends Model
      * @var array
      */
     public array $connections;
+
+    /**
+     * The migrations.
+     *
+     * @var string[]
+     */
+    public array $migrations;
 }

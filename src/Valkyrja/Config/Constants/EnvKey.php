@@ -189,6 +189,7 @@ final class EnvKey
     public const ORM_ADAPTERS         = 'ORM_ADAPTERS';
     public const ORM_DRIVERS          = 'ORM_DRIVERS';
     public const ORM_CONNECTIONS      = 'ORM_CONNECTIONS';
+    public const ORM_MIGRATIONS       = 'ORM_MIGRATIONS';
     public const ORM_REPOSITORY       = 'ORM_REPOSITORY';
     public const ORM_MYSQL_ADAPTER    = 'ORM_MYSQL_ADAPTER';
     public const ORM_MYSQL_DRIVER     = 'ORM_MYSQL_DRIVER';
