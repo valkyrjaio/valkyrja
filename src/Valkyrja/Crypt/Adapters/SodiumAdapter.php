@@ -346,6 +346,6 @@ class SodiumAdapter implements Adapter
     {
         $key ??= $this->key;
 
-        return base64_decode($key);
+        return base64_decode($key, true);
     }
 }
