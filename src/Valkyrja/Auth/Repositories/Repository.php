@@ -397,6 +397,6 @@ class Repository implements Contract
     protected function resetAfterLogout(): void
     {
         $this->isAuthenticated = false;
-        $this->session->remove($this->user::getSessionId());
+        $this->session->remove($this->userEntity::getSessionId());
     }
 }
