@@ -58,6 +58,7 @@ class ServiceProvider extends Provider
     {
         return [
             Session::class,
+            Driver::class,
             CacheAdapter::class,
             CookieAdapter::class,
             NullAdapter::class,

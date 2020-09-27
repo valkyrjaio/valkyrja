@@ -286,7 +286,7 @@ class ORM implements Contract
      */
     public function lastInsertId(string $table = null, string $idField = null): string
     {
-        return $this->useConnection()->lastInsertId($name);
+        return $this->useConnection()->lastInsertId($table, $idField);
     }
 
     /**

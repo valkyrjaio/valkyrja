@@ -117,7 +117,7 @@ class Driver implements Contract
      */
     public function lastInsertId(string $table = null, string $idField = null): string
     {
-        return $this->adapter->lastInsertId($name);
+        return $this->adapter->lastInsertId($table, $idField);
     }
 
     /**

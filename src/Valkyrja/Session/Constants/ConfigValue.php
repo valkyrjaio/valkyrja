@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Session\Constants;
 
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
-use Valkyrja\Filesystem\Drivers\Driver;
+use Valkyrja\Session\Drivers\Driver;
 use Valkyrja\Session\Adapters\CacheAdapter;
 use Valkyrja\Session\Adapters\CookieAdapter;
 use Valkyrja\Session\Adapters\NullAdapter;
