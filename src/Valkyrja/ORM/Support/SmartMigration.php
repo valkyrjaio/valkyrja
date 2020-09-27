@@ -41,7 +41,9 @@ abstract class SmartMigration extends Migration
         } catch (Exception $exception) {
             $orm->rollback();
 
-            static::runFailure($orm);
+            static::runFailure($orm, $exception);
+
+            throw $exception;
         }
     }
 
@@ -63,29 +65,33 @@ abstract class SmartMigration extends Migration
         } catch (Exception $exception) {
             $orm->rollback();
 
-            static::rollbackFailure($orm);
+            static::rollbackFailure($orm, $exception);
+
+            throw $exception;
         }
     }
 
     /**
      * Do on run failure.
      *
-     * @param ORM $orm The ORM
+     * @param ORM       $orm       The ORM
+     * @param Exception $exception The exception
      *
      * @return void
      */
-    protected static function runFailure(ORM $orm): void
+    protected static function runFailure(ORM $orm, Exception $exception): void
     {
     }
 
     /**
      * Do on rollback failure.
      *
-     * @param ORM $orm The ORM
+     * @param ORM       $orm       The ORM
+     * @param Exception $exception The exception
      *
      * @return void
      */
-    protected static function rollbackFailure(ORM $orm): void
+    protected static function rollbackFailure(ORM $orm, Exception $exception): void
     {
     }
 
