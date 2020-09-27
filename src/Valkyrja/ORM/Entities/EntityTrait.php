@@ -171,6 +171,10 @@ trait EntityTrait
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {
+            if (! property_exists($this, $property)) {
+                continue;
+            }
+
             // Set the property
             $this->{$property} = $this->getPropertyValueByType(
                 $propertyTypes,

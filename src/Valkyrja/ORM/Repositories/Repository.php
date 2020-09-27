@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Repositories;
 
 use InvalidArgumentException;
-use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
@@ -22,7 +22,7 @@ use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Repository as RepositoryContract;
+use Valkyrja\ORM\Repository as Contract;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Type\Cls;
@@ -34,7 +34,7 @@ use function get_class;
  *
  * @author Melech Mizrachi
  */
-class Repository implements RepositoryContract
+class Repository implements Contract
 {
     /**
      * The connection name to use.
@@ -44,11 +44,11 @@ class Repository implements RepositoryContract
     protected static ?string $connectionName = null;
 
     /**
-     * The connection.
+     * The connection driver.
      *
-     * @var Adapter
+     * @var Driver
      */
-    protected Adapter $adapter;
+    protected Driver $driver;
 
     /**
      * The entity manager.
@@ -97,10 +97,10 @@ class Repository implements RepositoryContract
     {
         Cls::validateInherits($entity, Entity::class);
 
-        $this->adapter    = $manager->useConnection(static::$connectionName);
-        $this->persister  = $this->adapter->getPersister();
-        $this->manager    = $manager;
-        $this->entity     = $entity;
+        $this->driver    = $manager->useConnection(static::$connectionName);
+        $this->persister = $this->driver->getPersister();
+        $this->manager   = $manager;
+        $this->entity    = $entity;
     }
 
     /**
@@ -110,7 +110,7 @@ class Repository implements RepositoryContract
      */
     public function find(): self
     {
-        $this->retriever    = $this->adapter->createRetriever()->find($this->entity);
+        $this->retriever    = $this->driver->createRetriever()->find($this->entity);
         $this->getRelations = false;
 
         return $this;
@@ -125,7 +125,7 @@ class Repository implements RepositoryContract
      */
     public function findOne($id): self
     {
-        $this->retriever    = $this->adapter->createRetriever()->findOne($this->entity, $id);
+        $this->retriever    = $this->driver->createRetriever()->findOne($this->entity, $id);
         $this->getRelations = false;
 
         return $this;
@@ -138,7 +138,7 @@ class Repository implements RepositoryContract
      */
     public function count(): self
     {
-        $this->retriever    = $this->adapter->createRetriever()->count($this->entity);
+        $this->retriever    = $this->driver->createRetriever()->count($this->entity);
         $this->getRelations = false;
 
         return $this;
@@ -409,13 +409,13 @@ class Repository implements RepositoryContract
     }
 
     /**
-     * Get the adapter.
+     * Get the driver.
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function getAdapter(): Adapter
+    public function getDriver(): Driver
     {
-        return $this->adapter;
+        return $this->driver;
     }
 
     /**
@@ -427,8 +427,8 @@ class Repository implements RepositoryContract
      */
     public function setConnection(string $name): self
     {
-        $this->adapter   = $this->manager->useConnection($name);
-        $this->persister = $this->adapter->getPersister();
+        $this->driver    = $this->manager->useConnection($name);
+        $this->persister = $this->driver->getPersister();
 
         return $this;
     }
@@ -442,7 +442,7 @@ class Repository implements RepositoryContract
      */
     public function createQueryBuilder(string $alias = null): QueryBuilder
     {
-        return $this->adapter->createQueryBuilder($this->entity, $alias);
+        return $this->driver->createQueryBuilder($this->entity, $alias);
     }
 
     /**
@@ -454,7 +454,7 @@ class Repository implements RepositoryContract
      */
     public function createQuery(string $query): Query
     {
-        return $this->adapter->createQuery($query, $this->entity);
+        return $this->driver->createQuery($query, $this->entity);
     }
 
     /**

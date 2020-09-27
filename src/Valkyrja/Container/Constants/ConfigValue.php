@@ -36,6 +36,7 @@ final class ConfigValue
         Provider::CLIENT,
         Provider::CONSOLE,
         Provider::CONTAINER,
+        Provider::CRYPT,
         Provider::FILESYSTEM,
         Provider::HTTP,
         Provider::HTTP_KERNEL,

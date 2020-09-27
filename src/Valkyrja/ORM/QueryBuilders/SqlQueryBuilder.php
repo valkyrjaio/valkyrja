@@ -233,7 +233,7 @@ class SqlQueryBuilder implements QueryBuilder
     {
         $this->entity = $entity;
 
-        $this->table(':' . $entity, $alias);
+        $this->table($entity, $alias);
 
         return $this;
     }

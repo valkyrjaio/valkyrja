@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
+
 /**
  * Interface Guard.
  *
@@ -24,6 +26,8 @@ interface Registrator
      * Register a new user.
      *
      * @param User $user
+     *
+     * @throws InvalidRegistrationException
      *
      * @return bool
      */

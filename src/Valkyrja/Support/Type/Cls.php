@@ -15,6 +15,8 @@ namespace Valkyrja\Support\Type;
 
 use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
+use function count;
+use function explode;
 use function is_a;
 
 /**
@@ -52,5 +54,31 @@ class Cls
     public static function inherits(string $object, string $inherits): bool
     {
         return is_a($object, $inherits, true);
+    }
+
+    /**
+     * Get a class nice name.
+     *
+     * @param string $name The class object name
+     *
+     * @return string
+     */
+    public static function getNiceName(string $name): string
+    {
+        return Str::replace($name, '\\', '');
+    }
+
+    /**
+     * Get a class nice name.
+     *
+     * @param string $name The class object name
+     *
+     * @return string
+     */
+    public static function getName(string $name): string
+    {
+        $parts = explode('\\', $name);
+
+        return $parts[count($parts) - 1];
     }
 }

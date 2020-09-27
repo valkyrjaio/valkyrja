@@ -67,11 +67,13 @@ class PDOAdapter implements Contract
     /**
      * PDOAdapter constructor.
      *
-     * @param PDO $pdo The PDO service
+     * @param PDO   $pdo    The PDO service
+     * @param array $config The config
      */
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $pdo, array $config)
     {
         $this->pdo       = $pdo;
+        $this->config    = $config;
         $this->persister = new PersisterClass($this);
     }
 
@@ -149,11 +151,20 @@ class PDOAdapter implements Contract
     /**
      * Get the last inserted id.
      *
+     * @param string|null $table   [optional] The table last inserted into
+     * @param string|null $idField [optional] The id field of the table last inserted into
+     *
      * @return string
      */
-    public function lastInsertId(): string
+    public function lastInsertId(string $table = null, string $idField = null): string
     {
-        return $this->pdo->lastInsertId();
+        $name = null;
+
+        if ($this->config['pdoDriver'] === 'pgsql' && $table && $idField) {
+            $name = "{$table}_{$idField}_seq";
+        }
+
+        return (string) $this->pdo->lastInsertId($name);
     }
 
     /**

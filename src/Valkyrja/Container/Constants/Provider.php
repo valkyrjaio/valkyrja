@@ -21,6 +21,7 @@ use Valkyrja\Cache\Providers\ServiceProvider as CacheServiceProvider;
 use Valkyrja\Client\Providers\ServiceProvider as ClientServiceProvider;
 use Valkyrja\Console\Providers\ServiceProvider as ConsoleServiceProvider;
 use Valkyrja\Container\Providers\ServiceProvider as ContainerServiceProvider;
+use Valkyrja\Crypt\Providers\ServiceProvider as CryptServiceProvider;
 use Valkyrja\Dispatcher\Providers\ServiceProvider as DispatcherServiceProvider;
 use Valkyrja\Event\Providers\ServiceProvider as EventServiceProvider;
 use Valkyrja\Filesystem\Providers\ServiceProvider as FilesystemServiceProvider;
@@ -53,6 +54,7 @@ final class Provider
     public const CLIENT       = ClientServiceProvider::class;
     public const CONSOLE      = ConsoleServiceProvider::class;
     public const CONTAINER    = ContainerServiceProvider::class;
+    public const CRYPT        = CryptServiceProvider::class;
     public const DISPATCHER   = DispatcherServiceProvider::class;
     public const EVENT        = EventServiceProvider::class;
     public const FILESYSTEM   = FilesystemServiceProvider::class;

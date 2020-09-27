@@ -268,7 +268,7 @@ class Persister implements PersisterContract
      */
     protected function getFormattedDate(): string
     {
-        return date('y-m-d H:i:s');
+        return date('Y-m-d H:i:s T');
     }
 
     /**
@@ -306,7 +306,7 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->{$idField} = $this->adapter->lastInsertId();
+        $entity->{$idField} = $this->adapter->lastInsertId($entity::getTableName(), $idField);
     }
 
     /**

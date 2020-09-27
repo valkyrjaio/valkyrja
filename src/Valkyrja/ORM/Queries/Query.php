@@ -18,6 +18,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
+use Valkyrja\Support\Type\Str;
 
 use function is_array;
 
@@ -103,14 +104,14 @@ class Query implements QueryContract
      */
     public function prepare(string $query): self
     {
+        if (null !== $this->entity) {
+            $query = Str::replace($query, $this->entity, $this->entity::getTableName());
+        }
+
         $this->statement = $this->adapter->prepare($query);
 
         if (null !== $this->table) {
             $this->bindValue('table', $this->table);
-        }
-
-        if (null !== $this->entity) {
-            $this->statement->bindValue($this->entity, $this->entity::getTableName());
         }
 
         return $this;

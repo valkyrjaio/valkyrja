@@ -27,7 +27,7 @@ trait SoftDeleteEntityFields
      *
      * @var bool
      */
-    public bool $deleted = false;
+    public bool $is_deleted = false;
 
     /**
      * The date deleted date.

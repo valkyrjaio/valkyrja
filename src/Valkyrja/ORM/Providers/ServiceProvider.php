@@ -129,25 +129,50 @@ class ServiceProvider extends Provider
         $container->setClosure(
             PDOAdapter::class,
             static function (array $config) {
-                $schema = $config['schema'] ?? null;
-                $schemaDsn = $schema ? ';schema=' . $schema : '';
-                $sslmode = $config['sslmode'] ?? null;
-                $sslmodeDsn = $sslmode ? ';sslmode=' . $sslmode : '';
-                $charset = $config['charset'] ?? 'utf8';
+                $pdoDriver   = $config['pdoDriver'] ?? 'mysql';
+                $dbNameDsn   = ":dbname={$config['db']}";
+                $host        = $config['host'] ?? null;
+                $hostDsn     = $host ? ";host={$host}" : '';
+                $port        = $config['port'] ?? null;
+                $portDsn     = $port ? ";port={$port}" : '';
+                $user        = $config['username'] ?? null;
+                $userDsn     = $user ? ";user={$user}" : '';
+                $password    = $config['password'] ?? null;
+                $passwordDsn = $password ? ";password={$password}" : '';
+                $schema      = $config['schema'] ?? null;
+                $schemaDsn   = $schema ? ";schema={$schema}" : '';
+                $sslmode     = $config['sslmode'] ?? null;
+                $sslmodeDsn  = $sslmode ? ";sslmode={$sslmode}" : '';
+                $charset     = $config['charset'] ?? 'utf8';
+                $charsetDsn  = ";charset={$charset}";
+
+                $dsn = $pdoDriver
+                    . $dbNameDsn
+                    . $hostDsn
+                    . $portDsn
+                    . $userDsn
+                    . $passwordDsn
+                    . $sslmodeDsn;
+
+                if ($pdoDriver !== 'pgsql') {
+                    $dsn .= $charsetDsn
+                        . $schemaDsn;
+                }
+
+                $pdo = new PDO(
+                    $dsn,
+                    null,
+                    null,
+                    $config['options'] ?? []
+                );
+
+                if ($pdoDriver === 'pgsql' && $schema) {
+                    $pdo->prepare("set search_path to {$schema}")->execute();
+                }
 
                 return new PDOAdapter(
-                    new PDO(
-                        $config['pdoDriver']
-                        . ':host=' . $config['host']
-                        . ';port=' . $config['port']
-                        . ';dbname=' . $config['db']
-                        . ';charset=' . $charset
-                        . $sslmodeDsn
-                        . $schemaDsn,
-                        $config['username'],
-                        $config['password'],
-                        $config['options'] ?? []
-                    )
+                    $pdo,
+                    $config
                 );
             }
         );

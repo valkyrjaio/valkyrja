@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Registrators;
 
 use Exception;
+use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\MailableUser;
 use Valkyrja\Auth\Registrator as Contract;
 use Valkyrja\Auth\User;
@@ -52,6 +53,8 @@ class Registrator implements Contract
      *
      * @param User $user
      *
+     * @throws InvalidRegistrationException
+     *
      * @return bool
      */
     public function register(User $user): bool
@@ -67,10 +70,8 @@ class Registrator implements Contract
 
             return true;
         } catch (Exception $exception) {
-            // Left empty to default to false
+            throw new InvalidRegistrationException($exception->getMessage());
         }
-
-        return false;
     }
 
     /**

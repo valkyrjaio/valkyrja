@@ -221,11 +221,11 @@ interface Repository
     public function persist(): bool;
 
     /**
-     * Get the adapter.
+     * Get the driver.
      *
-     * @return Adapter
+     * @return Driver
      */
-    public function getAdapter(): Adapter;
+    public function getDriver(): Driver;
 
     /**
      * Set the connection to use.

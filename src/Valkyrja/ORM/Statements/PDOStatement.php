@@ -112,7 +112,7 @@ class PDOStatement implements Contract
      */
     public function fetchAll(): array
     {
-        return $this->statement->fetchAll();
+        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**

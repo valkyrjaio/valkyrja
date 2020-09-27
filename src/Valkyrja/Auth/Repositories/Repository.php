@@ -284,9 +284,7 @@ class Repository implements Contract
      */
     public function register(User $user): self
     {
-        if (! $this->registrator->register($user)) {
-            throw new InvalidRegistrationException('Registration failed.');
-        }
+        $this->registrator->register($user);
 
         return $this;
     }

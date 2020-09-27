@@ -279,11 +279,14 @@ class ORM implements Contract
     /**
      * Get the last inserted id.
      *
+     * @param string|null $table [optional] The table last inserted into
+     * @param string|null $idField [optional] The id field of the table last inserted into
+     *
      * @return string
      */
-    public function lastInsertId(): string
+    public function lastInsertId(string $table = null, string $idField = null): string
     {
-        return $this->useConnection()->lastInsertId();
+        return $this->useConnection()->lastInsertId($name);
     }
 
     /**

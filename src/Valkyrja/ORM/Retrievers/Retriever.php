@@ -337,7 +337,7 @@ class Retriever implements Contract
         Cls::validateInherits($entity, Entity::class);
 
         $this->queryBuilder = $this->adapter->createQueryBuilder($entity)->select($columns);
-        $this->query        = $this->adapter->createQuery('', $entity);
+        $this->query        = $this->adapter->createQuery(null, $entity);
     }
 
     /**

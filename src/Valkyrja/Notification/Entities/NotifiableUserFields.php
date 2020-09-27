@@ -41,5 +41,5 @@ trait NotifiableUserFields
      *
      * @var string
      */
-    public string $secretId = '';
+    public string $secret_id = '';
 }
