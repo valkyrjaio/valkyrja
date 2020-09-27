@@ -75,7 +75,7 @@ class Repository implements Contract
     /**
      * The user entity.
      *
-     * @var string
+     * @var string|User
      */
     protected string $userEntity;
 
@@ -212,7 +212,7 @@ class Repository implements Contract
      */
     public function loginFromSession(): self
     {
-        if (! $token = $this->session->get($this->user::getSessionId())) {
+        if (! $token = $this->session->get($this->userEntity::getSessionId())) {
             $this->resetAfterLogout();
 
             throw new InvalidAuthenticationException('No user session exists.');

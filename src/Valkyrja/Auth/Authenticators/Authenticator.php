@@ -25,8 +25,6 @@ use Valkyrja\Support\Type\Str;
 
 use function password_hash;
 use function password_verify;
-use function serialize;
-use function unserialize;
 
 use const PASSWORD_DEFAULT;
 
@@ -75,7 +73,7 @@ class Authenticator implements Contract
         $repository    = $this->orm->getRepositoryFromClass($user);
         $usernameField = $user::getUsernameField();
         /** @var User $dbUser */
-        $dbUser        = $repository
+        $dbUser = $repository
             ->find()
             ->where($usernameField, null, $user->{$usernameField})
             ->getOneOrNull();
@@ -88,7 +86,13 @@ class Authenticator implements Contract
                 ->getOneOrNull();
         }
 
-        return $dbUser ? $this->isPassword($dbUser, $user->{$user::getPasswordField()}) : false;
+        if ($dbUser && $this->isPassword($dbUser, $user->{$user::getPasswordField()})) {
+            $user->__setProperties($dbUser->__storable());
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -102,7 +106,7 @@ class Authenticator implements Contract
      */
     public function getToken(User $user): string
     {
-        return $this->crypt->encrypt(serialize($user));
+        return $this->crypt->encryptObject($user);
     }
 
     /**
@@ -128,15 +132,10 @@ class Authenticator implements Contract
     public function getUserFromToken(string $user, string $token): ?User
     {
         try {
+            $userProperties = $this->crypt->decryptObject($token);
+            /** @var User $user */
             /** @var User $userModel */
-            $userModel = unserialize(
-                $this->crypt->decrypt($token),
-                [
-                    'allowed_classes' => [
-                        $user,
-                    ],
-                ]
-            );
+            $userModel = $user::fromArray((array) $userProperties);
         } catch (Exception $exception) {
             return null;
         }
