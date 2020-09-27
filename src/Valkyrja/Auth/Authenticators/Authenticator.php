@@ -74,6 +74,7 @@ class Authenticator implements Contract
     {
         $repository    = $this->orm->getRepositoryFromClass($user);
         $usernameField = $user::getUsernameField();
+        /** @var User $dbUser */
         $dbUser        = $repository
             ->find()
             ->where($usernameField, null, $user->{$usernameField})

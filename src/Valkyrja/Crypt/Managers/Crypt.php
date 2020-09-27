@@ -75,13 +75,6 @@ class Crypt implements Contract
     protected string $default;
 
     /**
-     * The key
-     *
-     * @var string|null
-     */
-    protected ?string $key = null;
-
-    /**
      * Crypt constructor.
      *
      * @param Container $container The container
