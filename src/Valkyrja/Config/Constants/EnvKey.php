@@ -200,6 +200,18 @@ final class EnvKey
     public const ORM_MYSQL_USERNAME   = 'ORM_MYSQL_USERNAME';
     public const ORM_MYSQL_PASSWORD   = 'ORM_MYSQL_PASSWORD';
     public const ORM_MYSQL_OPTIONS    = 'ORM_MYSQL_OPTIONS';
+    public const ORM_PGSQL_ADAPTER    = 'ORM_PGSQL_ADAPTER';
+    public const ORM_PGSQL_DRIVER     = 'ORM_PGSQL_DRIVER';
+    public const ORM_PGSQL_PDO_DRIVER = 'ORM_PGSQL_PDO_DRIVER';
+    public const ORM_PGSQL_HOST       = 'ORM_PGSQL_HOST';
+    public const ORM_PGSQL_PORT       = 'ORM_PGSQL_PORT';
+    public const ORM_PGSQL_DB         = 'ORM_PGSQL_DB';
+    public const ORM_PGSQL_USERNAME   = 'ORM_PGSQL_USERNAME';
+    public const ORM_PGSQL_PASSWORD   = 'ORM_PGSQL_PASSWORD';
+    public const ORM_PGSQL_CHARSET    = 'ORM_PGSQL_CHARSET';
+    public const ORM_PGSQL_OPTIONS    = 'ORM_PGSQL_OPTIONS';
+    public const ORM_PGSQL_SSL_MODE   = 'ORM_PGSQL_SSL_MODE';
+    public const ORM_PGSQL_SCHEMA     = 'ORM_PGSQL_SCHEMA';
 
     public const PATH_PATTERNS = 'PATH_PATTERNS';
 
