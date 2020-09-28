@@ -122,7 +122,7 @@ trait ModelTrait
             // Ensure the property exists before blindly setting
             if (property_exists($this, $property)) {
                 // Set the property
-                $this->{$property} = $value;
+                $this->__set($property, $value);
             }
         }
     }
@@ -139,7 +139,7 @@ trait ModelTrait
 
         // Iterate through properties to expose
         foreach (static::$exposed as $exposedProperty => $value) {
-            $properties[$exposedProperty] = $this->{$exposedProperty};
+            $properties[$exposedProperty] = $this->__get($exposedProperty);
         }
 
         return $properties;

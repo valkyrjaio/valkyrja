@@ -136,7 +136,7 @@ final class ConfigKeyPart
     public const SECRET                      = 'secret';
     public const REGION                      = 'region';
     public const BUCKET                      = 'bucket';
-    public const OPTIONS                     = 'option';
+    public const OPTIONS                     = 'options';
     public const ADDRESS                     = 'address';
     public const ENCRYPTION                  = 'encryption';
     public const CONTROLLERS                 = 'controllers';

@@ -202,7 +202,7 @@ class Repository implements Contract
         $dbUser = $this->authenticator->getFreshUser($user);
 
         // If the db password does not match the tokenized user password the token is no longer valid
-        if ($dbUser->{$passwordField} !== $user->{$passwordField}) {
+        if ($dbUser->__get($passwordField) !== $user->__get($passwordField)) {
             $this->resetAfterLogout();
 
             throw new InvalidAuthenticationException('User token is no longer valid.');

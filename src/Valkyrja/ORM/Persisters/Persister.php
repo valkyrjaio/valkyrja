@@ -95,8 +95,8 @@ class Persister implements PersisterContract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->{$entity::getDateCreatedField()}  = $this->getFormattedDate();
-            $entity->{$entity::getDateModifiedField()} = $this->getFormattedDate();
+            $entity->__set($entity::getDateCreatedField(), $this->getFormattedDate());
+            $entity->__set($entity::getDateModifiedField(), $this->getFormattedDate());
         }
 
         if (! $defer) {
@@ -128,7 +128,7 @@ class Persister implements PersisterContract
     public function save(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->{$entity::getDateModifiedField()} = $this->getFormattedDate();
+            $entity->__set($entity::getDateModifiedField(), $this->getFormattedDate());
         }
 
         if (! $defer) {
@@ -187,8 +187,8 @@ class Persister implements PersisterContract
      */
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
-        $entity->{$entity::getIsDeletedField()}   = true;
-        $entity->{$entity::getDateDeletedField()} = $this->getFormattedDate();
+        $entity->__set($entity::getIsDeletedField(), true);
+        $entity->__set($entity::getDateDeletedField(), $this->getFormattedDate());
 
         $this->save($entity, $defer);
     }
@@ -306,10 +306,8 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField);
-
-        if ($lastInsertId && ! $entity->__isset($idField)) {
-            $entity->{$idField} = $lastInsertId;
+        if (! $entity->__isset($idField) && $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField)) {
+            $entity->__set($idField, $lastInsertId);
         }
     }
 

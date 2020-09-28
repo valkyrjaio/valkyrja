@@ -21,6 +21,8 @@ use Valkyrja\ORM\ORM;
 
 use function password_hash;
 
+use function Valkyrja\dd;
+
 use const PASSWORD_DEFAULT;
 
 /**
@@ -62,9 +64,11 @@ class Registrator implements Contract
         $passwordField = $user::getPasswordField();
 
         try {
-            $user->{$passwordField} = $this->hashPassword($user->{$passwordField});
+            $user->__set($passwordField, $this->hashPassword($user->__get($passwordField)));
 
-            $repository->create($user, false);
+            $this->orm->ensureTransaction();
+            $repository->create($user, true);
+            // dd($repository->persist());
             $repository->persist();
 
             return true;
@@ -89,7 +93,7 @@ class Registrator implements Contract
         // Iterate through the login fields
         foreach ($loginFields as $loginField) {
             // Find a user with any of the login fields
-            $find->orWhere($loginField, null, $user->{$loginField});
+            $find->orWhere($loginField, null, $user->__get($loginField));
         }
 
         // If a user is found a user is registered with one of the login fields

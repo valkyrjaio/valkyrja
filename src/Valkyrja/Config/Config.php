@@ -64,7 +64,7 @@ abstract class Config implements ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return $this->{$offset};
+        return $this->__get($offset);
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class Config implements ArrayAccess
      */
     public function offsetSet($offset, $value): void
     {
-        $this->{$offset} = $value;
+        $this->__set($offset, $value);
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class Config implements ArrayAccess
     protected function setPropertiesFromEnv(): void
     {
         foreach (static::$envKeys as $property => $value) {
-            $this->{$property} = env(static::$envKeys[$property], $this->{$property});
+            $this->__set($property, env(static::$envKeys[$property], $this->__get($property)));
         }
     }
 }

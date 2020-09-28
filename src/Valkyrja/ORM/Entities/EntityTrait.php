@@ -173,11 +173,14 @@ trait EntityTrait
             }
 
             // Set the property
-            $this->{$property} = $this->__getPropertyValueByType(
-                $propertyTypes,
-                $propertyAllowedClasses,
+            $this->__set(
                 $property,
-                $value
+                $this->__getPropertyValueByType(
+                    $propertyTypes,
+                    $propertyAllowedClasses,
+                    $property,
+                    $value
+                )
             );
         }
     }
@@ -206,7 +209,7 @@ trait EntityTrait
      */
     protected function __getPropertyValueForDataStore(array $propertyTypes, string $property)
     {
-        $value = $this->{$property};
+        $value = $this->__get($property);
         // Check if a type was set for this attribute
         $type = $propertyTypes[$property] ?? null;
 
@@ -337,6 +340,6 @@ trait EntityTrait
             return;
         }
 
-        $properties[$property] = $this->{$property};
+        $properties[$property] = $this->__get($property);
     }
 }

@@ -133,7 +133,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
 
         return $broadcaster->getAdapter()->determineKeyValueMatch(
             $idField,
-            $user->{$idField},
+            $user->__get($idField),
             $broadcastMessage
         );
     }

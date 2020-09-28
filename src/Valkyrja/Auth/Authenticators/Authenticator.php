@@ -76,14 +76,14 @@ class Authenticator implements Contract
         // Iterate through the login fields
         foreach ($loginFields as $loginField) {
             // Set a where clause for each field
-            $find->where($loginField, null, $user->{$loginField});
+            $find->where($loginField, null, $user->__get($loginField));
         }
 
         /** @var User $dbUser */
         $dbUser = $find->getOneOrNull();
 
         // If there is a user and the password matches
-        if ($dbUser && $this->isPassword($dbUser, $user->{$user::getPasswordField()})) {
+        if ($dbUser && $this->isPassword($dbUser, $user->__get($user::getPasswordField()))) {
             // Update the user model with all the properties from the database
             $user->__setProperties($dbUser->__storable());
 
@@ -160,7 +160,7 @@ class Authenticator implements Contract
     public function getFreshUser(User $user): User
     {
         /** @var User $freshUser */
-        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->{$user::getIdField()})->getOneOrFail();
+        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->__get($user::getIdField()))->getOneOrFail();
 
         return $freshUser;
     }
@@ -175,7 +175,7 @@ class Authenticator implements Contract
      */
     public function isPassword(User $user, string $password): bool
     {
-        return password_verify($password, $user->{$user::getPasswordField()});
+        return password_verify($password, $user->__get($user::getPasswordField()));
     }
 
     /**
@@ -188,8 +188,8 @@ class Authenticator implements Contract
      */
     public function updatePassword(User $user, string $password): void
     {
-        $user->{$user::getResetTokenField()} = null;
-        $user->{$user::getPasswordField()}   = $this->hashPassword($password);
+        $user->__set($user::getResetTokenField(), null);
+        $user->__set($user::getPasswordField(), $this->hashPassword($password));
 
         $this->saveUser($user);
     }
@@ -205,7 +205,7 @@ class Authenticator implements Contract
      */
     public function resetPassword(User $user): void
     {
-        $user->{$user::getResetTokenField()} = Str::random();
+        $user->__set($user::getResetTokenField(), Str::random());
 
         $this->saveUser($user);
     }
@@ -256,7 +256,7 @@ class Authenticator implements Contract
      */
     protected function lockUnlock(LockableUser $user, bool $lock): void
     {
-        $user->{$user::getIsLockedField()} = $lock;
+        $user->__set($user::getIsLockedField(), $lock);
 
         $this->saveUser($user);
     }
