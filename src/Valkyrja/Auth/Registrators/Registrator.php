@@ -64,7 +64,7 @@ class Registrator implements Contract
         try {
             $user->{$passwordField} = $this->hashPassword($user->{$passwordField});
 
-            $repository->save($user, false);
+            $repository->create($user, false);
             $repository->persist();
 
             return true;
