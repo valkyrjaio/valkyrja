@@ -285,7 +285,7 @@ trait EntityTrait
     protected function __toArrayOrStorable(bool $storable = false): array
     {
         $array                  = [];
-        $properties             = array_merge(Obj::getProperties($this),  static::$exposed);
+        $properties             = array_merge(Obj::getProperties($this), static::$exposed);
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
         $propertyTypes          = static::getPropertyTypes();
         $relationshipProperties = static::getRelationshipProperties();
