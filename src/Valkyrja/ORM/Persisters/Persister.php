@@ -100,7 +100,7 @@ class Persister implements PersisterContract
         }
 
         if (! $defer) {
-            $this->persistEntity(Statement::UPDATE, $entity);
+            $this->persistEntity(Statement::INSERT, $entity);
 
             return;
         }
@@ -132,7 +132,7 @@ class Persister implements PersisterContract
         }
 
         if (! $defer) {
-            $this->persistEntity(Statement::INSERT, $entity);
+            $this->persistEntity(Statement::UPDATE, $entity);
 
             return;
         }
@@ -306,7 +306,11 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        $entity->{$idField} = $this->adapter->lastInsertId($entity::getTableName(), $idField);
+        $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField);
+
+        if ($lastInsertId && ! $entity->__isset($idField)) {
+            $entity->{$idField} = $lastInsertId;
+        }
     }
 
     /**
@@ -448,7 +452,7 @@ class Persister implements PersisterContract
         // Iterate through the models awaiting creation
         foreach ($this->createEntities as $createEntity) {
             // Create the model
-            $this->persistEntity(Statement::UPDATE, $createEntity);
+            $this->persistEntity(Statement::INSERT, $createEntity);
         }
     }
 
@@ -465,7 +469,7 @@ class Persister implements PersisterContract
         // Iterate through the models awaiting save
         foreach ($this->saveEntities as $saveEntity) {
             // Save the model
-            $this->persistEntity(Statement::INSERT, $saveEntity);
+            $this->persistEntity(Statement::UPDATE, $saveEntity);
         }
     }
 
