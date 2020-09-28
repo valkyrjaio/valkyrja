@@ -58,6 +58,13 @@ interface User extends Entity
     public static function getResetTokenField(): string;
 
     /**
+     * Get the login fields to use.
+     *
+     * @return string[]
+     */
+    public static function getLoginFields(): array;
+
+    /**
      * Get user as an array for storing in a token.
      *
      * @return array

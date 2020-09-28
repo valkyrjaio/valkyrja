@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
-use Valkyrja\Auth\Constants\UserField;
 use Valkyrja\Auth\Constants\SessionId;
+use Valkyrja\Auth\Constants\UserField;
 
 /**
  * Trait UserTrait.
@@ -23,6 +23,18 @@ use Valkyrja\Auth\Constants\SessionId;
  */
 trait UserTrait
 {
+    /**
+     * Get a list of hidden fields we can expose for storage.
+     *
+     * @return string[]
+     */
+    public static function getStorableHiddenFields(): array
+    {
+        return [
+            static::getPasswordField(),
+        ];
+    }
+
     /**
      * Get the auth repository.
      *
@@ -71,6 +83,18 @@ trait UserTrait
     public static function getResetTokenField(): string
     {
         return UserField::RESET_TOKEN;
+    }
+
+    /**
+     * Get the login fields to use.
+     *
+     * @return string[]
+     */
+    public static function getLoginFields(): array
+    {
+        return [
+            static::getUsernameField(),
+        ];
     }
 
     /**

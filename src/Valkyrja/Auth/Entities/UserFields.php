@@ -34,12 +34,12 @@ trait UserFields
      *
      * @var string
      */
-    public string $password;
+    protected string $password;
 
     /**
      * The password reset token.
      *
      * @var string|null
      */
-    public ?string $reset_token = null;
+    protected ?string $reset_token = null;
 }

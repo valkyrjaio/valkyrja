@@ -16,7 +16,6 @@ namespace Valkyrja\Auth\Authenticators;
 use Exception;
 use Valkyrja\Auth\Authenticator as Contract;
 use Valkyrja\Auth\LockableUser;
-use Valkyrja\Auth\MailableUser;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
@@ -70,23 +69,22 @@ class Authenticator implements Contract
      */
     public function authenticate(User $user): bool
     {
-        $repository    = $this->orm->getRepositoryFromClass($user);
-        $usernameField = $user::getUsernameField();
-        /** @var User $dbUser */
-        $dbUser = $repository
-            ->find()
-            ->where($usernameField, null, $user->{$usernameField})
-            ->getOneOrNull();
+        $repository  = $this->orm->getRepositoryFromClass($user);
+        $loginFields = $user::getLoginFields();
+        $find        = $repository->find();
 
-        if ($dbUser === null && $user instanceof MailableUser) {
-            $emailField = $user::getEmailField();
-            $dbUser     = $repository
-                ->find()
-                ->where($emailField, null, $user->{$emailField})
-                ->getOneOrNull();
+        // Iterate through the login fields
+        foreach ($loginFields as $loginField) {
+            // Set a where clause for each field
+            $find->where($loginField, null, $user->{$loginField});
         }
 
+        /** @var User $dbUser */
+        $dbUser = $find->getOneOrNull();
+
+        // If there is a user and the password matches
         if ($dbUser && $this->isPassword($dbUser, $user->{$user::getPasswordField()})) {
+            // Update the user model with all the properties from the database
             $user->__setProperties($dbUser->__storable());
 
             return true;
@@ -106,7 +104,16 @@ class Authenticator implements Contract
      */
     public function getToken(User $user): string
     {
-        return $this->crypt->encryptObject($user);
+        // Get the password field
+        $passwordField = $user::getPasswordField();
+
+        $user->__expose($passwordField);
+
+        $token = $this->crypt->encryptObject($user);
+
+        $user->__unexpose($passwordField);
+
+        return $token;
     }
 
     /**
@@ -181,7 +188,8 @@ class Authenticator implements Contract
      */
     public function updatePassword(User $user, string $password): void
     {
-        $user->{$user::getPasswordField()} = $this->hashPassword($password);
+        $user->{$user::getResetTokenField()} = null;
+        $user->{$user::getPasswordField()}   = $this->hashPassword($password);
 
         $this->saveUser($user);
     }
@@ -262,6 +270,7 @@ class Authenticator implements Contract
      */
     protected function saveUser(User $user): void
     {
+        // Get the ORM repository
         $repository = $this->orm->getRepositoryFromClass($user);
 
         $repository->save($user, false);

@@ -129,6 +129,28 @@ interface Auth
     public function login(User $user): self;
 
     /**
+     * Ensure a token is still valid.
+     *
+     * @param string $token The token
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function ensureTokenValidity(string $token): self;
+
+    /**
+     * Ensure a tokenized user is still valid.
+     *
+     * @param User $user The tokenized user
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function ensureUserValidity(User $user): self;
+
+    /**
      * Log a user in via token.
      *
      * @param string $token

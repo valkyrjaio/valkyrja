@@ -17,6 +17,7 @@ use JsonException;
 
 use function count;
 use function explode;
+use function get_object_vars;
 use function json_decode;
 use function json_encode;
 
@@ -58,14 +59,31 @@ class Obj
     }
 
     /**
-     * Convert an object to an array.
+     * Get the object's publicly accessible properties.
      *
      * @param object $subject The subject object
      *
+     * @return string[]
+     */
+    public static function getProperties(object $subject): array
+    {
+        return get_object_vars($subject);
+    }
+
+    /**
+     * Get all object's properties regardless of visibility.
+     *
+     * @param object    $subject          The subject object
+     * @param bool|null $includeProtected [optional] Whether to include protected members
+     * @param bool|null $includePrivate   [optional] Whether to include private members
+     *
      * @return array
      */
-    public static function toArray(object $subject): array
-    {
+    public static function getAllProperties(
+        object $subject,
+        bool $includeProtected = null,
+        bool $includePrivate = null
+    ): array {
         // The subject cast as an array
         $castSubject = (array) $subject;
         // The array to return
@@ -79,9 +97,21 @@ class Obj
              * Protected members: \0*\0member_name
              * Private members: \0Class_name\0member_name
              */
-            $keyParts = explode("\0", $key);
+            $keyParts      = explode("\0", $key);
+            $keyPartsCount = count($keyParts);
+
+            if ($keyPartsCount > 1) {
+                if ($includeProtected === false && $keyParts[0] === '*') {
+                    continue;
+                }
+
+                if ($includePrivate === false && $keyParts[0] !== '*') {
+                    continue;
+                }
+            }
+
             // Use the last key part as the property name
-            $property = $keyParts[count($keyParts) - 1];
+            $property = $keyParts[$keyPartsCount - 1];
             // Set the property and value
             $array[$property] = $value;
         }

@@ -15,7 +15,6 @@ namespace Valkyrja\Auth\Registrators;
 
 use Exception;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Auth\MailableUser;
 use Valkyrja\Auth\Registrator as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\ORM\ORM;
@@ -83,19 +82,19 @@ class Registrator implements Contract
      */
     public function isRegistered(User $user): bool
     {
-        $repository    = $this->orm->getRepositoryFromClass($user);
-        $usernameField = $user::getUsernameField();
+        $repository  = $this->orm->getRepositoryFromClass($user);
+        $loginFields = $user::getLoginFields();
+        $find        = $repository->find();
 
-        if ($repository->find()->where($usernameField, null, $user->{$usernameField})->getOneOrNull()) {
-            return true;
+        // Iterate through the login fields
+        foreach ($loginFields as $loginField) {
+            // Find a user with any of the login fields
+            $find->orWhere($loginField, null, $user->{$loginField});
         }
 
-        if ($user instanceof MailableUser) {
-            $emailField = $user::getEmailField();
-
-            if ($repository->find()->where($emailField, null, $user->{$emailField})->getOneOrNull()) {
-                return true;
-            }
+        // If a user is found a user is registered with one of the login fields
+        if ($find->getOneOrNull()) {
+            return true;
         }
 
         return false;

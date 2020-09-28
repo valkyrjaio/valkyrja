@@ -118,6 +118,16 @@ trait EntityTrait
     }
 
     /**
+     * Get a list of hidden fields we can expose for storage.
+     *
+     * @return string[]
+     */
+    public static function getStorableHiddenFields(): array
+    {
+        return [];
+    }
+
+    /**
      * Set a relationship property.
      *
      * @param string    $relationship The relationship to set
@@ -139,20 +149,7 @@ trait EntityTrait
      */
     public function __storable(): array
     {
-        $properties             = [];
-        $propertyTypes          = static::getPropertyTypes();
-        $relationshipProperties = static::getRelationshipProperties();
-
-        // Otherwise iterate through the properties array
-        foreach ($this as $property => $value) {
-            if (isset($relationshipProperties[$property])) {
-                continue;
-            }
-
-            $properties[$property] = $this->getPropertyValueForDataStore($propertyTypes, $property);
-        }
-
-        return $properties;
+        return $this->__toArrayOrStorable(true);
     }
 
     /**
@@ -176,13 +173,25 @@ trait EntityTrait
             }
 
             // Set the property
-            $this->{$property} = $this->getPropertyValueByType(
+            $this->{$property} = $this->__getPropertyValueByType(
                 $propertyTypes,
                 $propertyAllowedClasses,
                 $property,
                 $value
             );
         }
+    }
+
+    /**
+     * Get model as an array.
+     *
+     * @throws JsonException
+     *
+     * @return array
+     */
+    public function __toArray(): array
+    {
+        return $this->__toArrayOrStorable();
     }
 
     /**
@@ -195,7 +204,7 @@ trait EntityTrait
      *
      * @return mixed
      */
-    protected function getPropertyValueForDataStore(array $propertyTypes, string $property)
+    protected function __getPropertyValueForDataStore(array $propertyTypes, string $property)
     {
         $value = $this->{$property};
         // Check if a type was set for this attribute
@@ -233,7 +242,7 @@ trait EntityTrait
      *
      * @return mixed
      */
-    protected function getPropertyValueByType(
+    protected function __getPropertyValueByType(
         array $propertyTypes,
         array $propertyAllowedClasses,
         string $property,
@@ -262,5 +271,72 @@ trait EntityTrait
         }
 
         return $value;
+    }
+
+    /**
+     * Convert the entity to an array or storable array.
+     *
+     * @param bool $storable [optional] Whether to get as a storable array.
+     *
+     * @throws JsonException
+     *
+     * @return array
+     */
+    protected function __toArrayOrStorable(bool $storable = false): array
+    {
+        $array                  = [];
+        $properties             = array_merge(Obj::getProperties($this),  static::$exposed);
+        $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
+        $propertyTypes          = static::getPropertyTypes();
+        $relationshipProperties = static::getRelationshipProperties();
+
+        // Iterate through the storable hidden fields
+        foreach ($storableHiddenFields as $key => $storableHiddenField) {
+            // Add them to the properties array
+            $properties[$storableHiddenField] = true;
+        }
+
+        // Iterate through the properties to return
+        foreach ($properties as $property => $value) {
+            // If this property is a relationship and we're going for storage
+            if ($storable && isset($relationshipProperties[$property])) {
+                // Skip it
+                continue;
+            }
+
+            // Get the value
+            $this->__setPropertyInArray($array, $propertyTypes, $property, $storable);
+        }
+
+        return $array;
+    }
+
+    /**
+     * Set a property in an array.
+     *
+     * @param array  $properties    The properties array to set into
+     * @param array  $propertyTypes The property types
+     * @param string $property      The property
+     * @param bool   $storable      [optional] Whether to get as a storable array.
+     *
+     * @throws JsonException
+     *
+     * @return void
+     */
+    protected function __setPropertyInArray(
+        array &$properties,
+        array $propertyTypes,
+        string $property,
+        bool $storable = false
+    ): void {
+        // If this is a storable array we're building
+        if ($storable) {
+            // Get the value for the data store
+            $properties[$property] = $this->__getPropertyValueForDataStore($propertyTypes, $property);
+
+            return;
+        }
+
+        $properties[$property] = $this->{$property};
     }
 }

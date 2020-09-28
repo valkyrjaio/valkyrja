@@ -15,9 +15,9 @@ namespace Valkyrja\Support\Model\Traits;
 
 use JsonException;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
-use function get_object_vars;
 use function method_exists;
 use function property_exists;
 
@@ -28,6 +28,13 @@ use function property_exists;
  */
 trait ModelTrait
 {
+    /**
+     * The properties to expose.
+     *
+     * @var string[]
+     */
+    protected static array $exposed = [];
+
     /**
      * Set properties from an array of properties.
      *
@@ -127,7 +134,15 @@ trait ModelTrait
      */
     public function __toArray(): array
     {
-        return $this->jsonSerialize();
+        // Get the public properties
+        $properties = Obj::getProperties($this);
+
+        // Iterate through properties to expose
+        foreach (static::$exposed as $exposedProperty => $value) {
+            $properties[$exposedProperty] = $this->{$exposedProperty};
+        }
+
+        return $properties;
     }
 
     /**
@@ -137,7 +152,7 @@ trait ModelTrait
      */
     public function jsonSerialize(): array
     {
-        return get_object_vars($this);
+        return $this->__toArray();
     }
 
     /**
@@ -150,5 +165,39 @@ trait ModelTrait
     public function __toString(): string
     {
         return Arr::toString($this->jsonSerialize());
+    }
+
+    /**
+     * Expose hidden fields or all fields.
+     *
+     * @param string ...$properties The field(s) to expose
+     *
+     * @return void
+     */
+    public function __expose(string ...$properties): void
+    {
+        foreach ($properties as $property) {
+            static::$exposed[$property] = true;
+        }
+    }
+
+    /**
+     * Un-expose hidden fields or all fields.
+     *
+     * @param string ...$properties The field(s) to expose
+     *
+     * @return void
+     */
+    public function __unexpose(string ...$properties): void
+    {
+        if (empty($properties)) {
+            static::$exposed = [];
+
+            return;
+        }
+
+        foreach ($properties as $property) {
+            unset(static::$exposed[$property]);
+        }
     }
 }

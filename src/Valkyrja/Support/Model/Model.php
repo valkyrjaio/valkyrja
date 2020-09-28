@@ -88,4 +88,22 @@ interface Model extends JsonSerializable
      * @return string
      */
     public function __toString(): string;
+
+    /**
+     * Expose hidden properties or all properties.
+     *
+     * @param string ...$properties The properties to expose
+     *
+     * @return void
+     */
+    public function __expose(string ...$properties): void;
+
+    /**
+     * Unexpose hidden properties or all properties.
+     *
+     * @param string ...$properties The properties to expose
+     *
+     * @return void
+     */
+    public function __unexpose(string ...$properties): void;
 }

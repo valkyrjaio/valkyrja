@@ -169,6 +169,53 @@ class Repository implements Contract
     }
 
     /**
+     * Ensure a token is still valid.
+     *
+     * @param string $token The token
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function ensureTokenValidity(string $token): self
+    {
+        $user = $this->getUserFromToken($token);
+
+        $this->ensureUserValidity($user);
+
+        return $this;
+    }
+
+    /**
+     * Ensure a tokenized user is still valid.
+     *
+     * @param User $user The tokenized user
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function ensureUserValidity(User $user): self
+    {
+        $passwordField = $user::getPasswordField();
+        // Get a fresh user from the database
+        $dbUser = $this->authenticator->getFreshUser($user);
+
+        // If the db password does not match the tokenized user password the token is no longer valid
+        if ($dbUser->{$passwordField} !== $user->{$passwordField}) {
+            $this->resetAfterLogout();
+
+            throw new InvalidAuthenticationException('User token is no longer valid.');
+        }
+
+        if ($this->config['keepUserFresh']) {
+            $this->setAuthenticatedUser($dbUser);
+        }
+
+        return $this;
+    }
+
+    /**
      * Log a user in via token.
      *
      * @param string $token
@@ -179,23 +226,16 @@ class Repository implements Contract
      */
     public function loginWithToken(string $token): self
     {
-        if (
-            ! $this->authenticator->isValidToken($token)
-            || null === $user = $this->authenticator->getUserFromToken($this->userEntity, $token)
-        ) {
-            $this->resetAfterLogout();
-
-            throw new InvalidAuthenticationException('Invalid user token.');
-        }
+        $user = $this->getUserFromToken($token);
 
         if ($this->config['alwaysAuthenticate']) {
-            $this->login($user);
+            $this->ensureUserValidity($user);
 
             return $this;
         }
 
         if ($this->config['keepUserFresh']) {
-            $this->authenticator->getFreshUser($user);
+            $user = $this->authenticator->getFreshUser($user);
         }
 
         $this->setAuthenticatedUser($user);
@@ -398,5 +438,26 @@ class Repository implements Contract
     {
         $this->isAuthenticated = false;
         $this->session->remove($this->userEntity::getSessionId());
+    }
+
+    /**
+     * Get a user from a token.
+     *
+     * @param string $token The token
+     *
+     * @return User
+     */
+    protected function getUserFromToken(string $token): User
+    {
+        if (
+            ! $this->authenticator->isValidToken($token)
+            || null === $user = $this->authenticator->getUserFromToken($this->userEntity, $token)
+        ) {
+            $this->resetAfterLogout();
+
+            throw new InvalidAuthenticationException('Invalid user token.');
+        }
+
+        return $user;
     }
 }

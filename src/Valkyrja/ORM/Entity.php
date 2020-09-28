@@ -89,6 +89,13 @@ interface Entity extends Model
     public static function getRelationshipProperties(): array;
 
     /**
+     * Get a list of hidden fields we can expose for storage.
+     *
+     * @return string[]
+     */
+    public static function getStorableHiddenFields(): array;
+
+    /**
      * Set a relationship property.
      *
      * @param string    $relationship The relationship to set
