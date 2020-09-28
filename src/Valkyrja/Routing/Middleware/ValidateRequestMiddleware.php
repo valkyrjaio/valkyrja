@@ -45,10 +45,23 @@ abstract class ValidateRequestMiddleware extends Middleware
             /** @var ResponseFactory $responseFactory */
             $responseFactory = $container->getSingleton(ResponseFactory::class);
 
-            return $responseFactory->createResponse($validator->getFirstErrorMessage(), StatusCode::BAD_REQUEST);
+            return static::getResponse($responseFactory, $validator);
         }
 
         return $request;
+    }
+
+    /**
+     * Get the response on validation failure.
+     *
+     * @param ResponseFactory $responseFactory The request factory
+     * @param Validator       $validator       The validator
+     *
+     * @return Response
+     */
+    protected static function getResponse(ResponseFactory $responseFactory, Validator $validator): Response
+    {
+        return $responseFactory->createResponse($validator->getFirstErrorMessage(), StatusCode::BAD_REQUEST);
     }
 
     /**
