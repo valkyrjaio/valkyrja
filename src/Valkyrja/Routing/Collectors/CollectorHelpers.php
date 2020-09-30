@@ -95,7 +95,7 @@ trait CollectorHelpers
         $self = clone $this;
         $self->ensureRoute();
 
-        $route  = clone $self->route;
+        $route = clone $self->route;
         $route->{$method}($value);
 
         $method = "{$method}InRoute";
@@ -226,6 +226,10 @@ trait CollectorHelpers
             return $value . $glue . $routeValue;
         }
 
+        if ($value && ! $routeValue) {
+            return $value;
+        }
+
         return $routeValue;
     }
 
@@ -262,6 +266,29 @@ trait CollectorHelpers
         if ($route->isDynamic()) {
             $this->parseDynamicRoute($route);
         }
+
+        return $route;
+    }
+
+    /**
+     * @param array          $methods         The methods to set
+     * @param string         $path            The path
+     * @param string|Closure $handler         The handler
+     * @param string|null    $name            [optional] The name of the route
+     * @param bool           $setDependencies [optional] Whether to dynamically set dependencies
+     *
+     * @return Route
+     */
+    protected function setMethodsAndAddRoute(
+        array $methods,
+        string $path,
+        $handler,
+        string $name = null,
+        bool $setDependencies = true
+    ): Route {
+        $route = $this->getRouteForHelper($path, $handler, $name, $setDependencies);
+
+        $route->setMethods($methods);
 
         $this->router->addRoute($route);
 
