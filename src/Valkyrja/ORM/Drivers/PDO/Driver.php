@@ -16,8 +16,6 @@ namespace Valkyrja\ORM\Drivers\PDO;
 use PDO;
 use Valkyrja\Container\Container;
 
-use function Valkyrja\dd;
-
 /**
  * Class Driver.
  *
