@@ -45,6 +45,13 @@ class AuthenticatedMiddleware extends AuthMiddleware
     protected static string $errorMessage = 'Must be logged in.';
 
     /**
+     * Whether to force a JSON response on failure.
+     *
+     * @var bool
+     */
+    protected static bool $forceJson = false;
+
+    /**
      * Middleware handler for before a request is dispatched.
      *
      * @param Request $request The request
@@ -77,7 +84,7 @@ class AuthenticatedMiddleware extends AuthMiddleware
      */
     protected static function getFailedAuthenticationResponse(Request $request): Response
     {
-        if ($request->isXmlHttpRequest()) {
+        if (static::$forceJson || $request->isXmlHttpRequest()) {
             /** @var Api $api */
             $api  = static::$container->getSingleton(Api::class);
             $json = $api->jsonFromArray([]);
