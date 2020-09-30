@@ -15,15 +15,13 @@ namespace Valkyrja\ORM\Adapters;
 
 use PDO;
 use RuntimeException;
+use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter as Contract;
+use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Persisters\Persister as PersisterClass;
-use Valkyrja\ORM\Queries\Query as QueryClass;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Retrievers\Retriever as RetrieverClass;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\Statements\PDOStatement;
 
@@ -42,6 +40,20 @@ class PDOAdapter implements Contract
      * @var PDO[]
      */
     protected static array $connections = [];
+
+    /**
+     * The container service.
+     *
+     * @var Container
+     */
+    protected Container $container;
+
+    /**
+     * The ORM service.
+     *
+     * @var ORM
+     */
+    protected ORM $orm;
 
     /**
      * The pdo service.
@@ -67,14 +79,18 @@ class PDOAdapter implements Contract
     /**
      * PDOAdapter constructor.
      *
-     * @param PDO   $pdo    The PDO service
-     * @param array $config The config
+     * @param Container $container The container
+     * @param ORM       $orm       The ORM
+     * @param PDO       $pdo       The PDO service
+     * @param array     $config    The config
      */
-    public function __construct(PDO $pdo, array $config)
+    public function __construct(Container $container, ORM $orm, PDO $pdo, array $config)
     {
+        $this->container = $container;
+        $this->orm       = $orm;
         $this->pdo       = $pdo;
         $this->config    = $config;
-        $this->persister = new PersisterClass($this);
+        $this->persister = $container->get(Persister::class, [$this]);
     }
 
     /**
@@ -177,7 +193,8 @@ class PDOAdapter implements Contract
      */
     public function createQuery(string $query = null, string $entity = null): Query
     {
-        $pdoQuery = new QueryClass($this);
+        /** @var Query $pdoQuery */
+        $pdoQuery = $this->container->get(Query::class, [$this]);
 
         if (null !== $entity) {
             $pdoQuery->entity($entity);
@@ -200,7 +217,8 @@ class PDOAdapter implements Contract
      */
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
-        $queryBuilder = new SqlQueryBuilder($this);
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->container->get(QueryBuilder::class, [$this]);
 
         if (null !== $entity) {
             $queryBuilder->entity($entity, $alias);
@@ -216,7 +234,7 @@ class PDOAdapter implements Contract
      */
     public function createRetriever(): Retriever
     {
-        return new RetrieverClass($this);
+        return $this->container->get(Retriever::class, [$this]);
     }
 
     /**
@@ -227,5 +245,15 @@ class PDOAdapter implements Contract
     public function getPersister(): Persister
     {
         return $this->persister;
+    }
+
+    /**
+     * Get the ORM.
+     *
+     * @return ORM
+     */
+    public function getOrm(): ORM
+    {
+        return $this->orm;
     }
 }

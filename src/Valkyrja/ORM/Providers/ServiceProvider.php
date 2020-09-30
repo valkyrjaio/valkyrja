@@ -17,11 +17,20 @@ use PDO;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Adapters\PDOAdapter;
 use Valkyrja\ORM\Drivers\Driver;
+use Valkyrja\ORM\Drivers\PDO\Driver as PDODriver;
+use Valkyrja\ORM\Drivers\PDO\MySqlDriver;
+use Valkyrja\ORM\Drivers\PDO\PgSqlDriver;
 use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Persister;
+use Valkyrja\ORM\Query;
+use Valkyrja\ORM\QueryBuilder;
+use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\CacheRepository;
 use Valkyrja\ORM\Repositories\Repository;
+use Valkyrja\ORM\Retriever;
 
 /**
  * Class ServiceProvider.
@@ -40,9 +49,16 @@ class ServiceProvider extends Provider
         return [
             ORM::class             => 'publishORM',
             Driver::class          => 'publishDefaultDriver',
+            PDODriver::class       => 'publishPdoDriver',
+            MySqlDriver::class     => 'publishPdoMySqlDriver',
+            PgSqlDriver::class     => 'publishPdoPgSqlDriver',
             PDOAdapter::class      => 'publishPdoAdapter',
             Repository::class      => 'publishRepository',
             CacheRepository::class => 'publishCacheRepository',
+            Persister::class       => 'publishPersister',
+            Retriever::class       => 'publishRetriever',
+            Query::class           => 'publishQuery',
+            QueryBuilder::class    => 'publishQueryBuilder',
         ];
     }
 
@@ -56,9 +72,16 @@ class ServiceProvider extends Provider
         return [
             ORM::class,
             Driver::class,
+            PDODriver::class,
+            MySqlDriver::class,
+            PgSqlDriver::class,
             PDOAdapter::class,
             Repository::class,
             CacheRepository::class,
+            Persister::class,
+            Retriever::class,
+            Query::class,
+            QueryBuilder::class,
         ];
     }
 
@@ -106,12 +129,72 @@ class ServiceProvider extends Provider
             Driver::class,
             static function (array $config, string $adapter) use ($container): Driver {
                 return new Driver(
-                    $container->get(
-                        $adapter,
-                        [
-                            $config,
-                        ]
-                    )
+                    $container,
+                    $adapter,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the PDO driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPdoDriver(Container $container): void
+    {
+        $container->setClosure(
+            PDODriver::class,
+            static function (array $config, string $adapter) use ($container): PDODriver {
+                return new PDODriver(
+                    $container,
+                    $adapter,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the MySQL PDO driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPdoMySqlDriver(Container $container): void
+    {
+        $container->setClosure(
+            MySqlDriver::class,
+            static function (array $config, string $adapter) use ($container): MySqlDriver {
+                return new MySqlDriver(
+                    $container,
+                    $adapter,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the MySQL PDO driver service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPdoPgSqlDriver(Container $container): void
+    {
+        $container->setClosure(
+            PgSqlDriver::class,
+            static function (array $config, string $adapter) use ($container): PgSqlDriver {
+                return new PgSqlDriver(
+                    $container,
+                    $adapter,
+                    $config
                 );
             }
         );
@@ -126,52 +209,20 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
+        $orm = $container->getSingleton(ORM::class);
+
         $container->setClosure(
             PDOAdapter::class,
-            static function (array $config) {
-                $pdoDriver   = $config['pdoDriver'] ?? 'mysql';
-                $dbNameDsn   = ":dbname={$config['db']}";
-                $host        = $config['host'] ?? null;
-                $hostDsn     = $host ? ";host={$host}" : '';
-                $port        = $config['port'] ?? null;
-                $portDsn     = $port ? ";port={$port}" : '';
-                $user        = $config['username'] ?? null;
-                $userDsn     = $user ? ";user={$user}" : '';
-                $password    = $config['password'] ?? null;
-                $passwordDsn = $password ? ";password={$password}" : '';
-                $schema      = $config['schema'] ?? null;
-                $schemaDsn   = $schema ? ";schema={$schema}" : '';
-                $sslmode     = $config['sslmode'] ?? null;
-                $sslmodeDsn  = $sslmode ? ";sslmode={$sslmode}" : '';
-                $charset     = $config['charset'] ?? 'utf8';
-                $charsetDsn  = ";charset={$charset}";
-
-                $dsn = $pdoDriver
-                    . $dbNameDsn
-                    . $hostDsn
-                    . $portDsn
-                    . $userDsn
-                    . $passwordDsn
-                    . $sslmodeDsn;
-
-                if ($pdoDriver !== 'pgsql') {
-                    $dsn .= $charsetDsn
-                        . $schemaDsn;
-                }
-
-                $pdo = new PDO(
-                    $dsn,
-                    null,
-                    null,
-                    $config['options'] ?? []
-                );
-
-                if ($pdoDriver === 'pgsql' && $schema) {
-                    $pdo->prepare("set search_path to {$schema}")->execute();
-                }
-
+            static function (array $config) use ($container, $orm) {
                 return new PDOAdapter(
-                    $pdo,
+                    $container,
+                    $orm,
+                    new PDO(
+                        $config['dsn'],
+                        null,
+                        null,
+                        $config['options'] ?? []
+                    ),
                     $config
                 );
             }
@@ -191,7 +242,7 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Repository::class,
-            static function (string $entity) use ($orm) {
+            static function (string $entity) use ($orm): Repository {
                 return new Repository(
                     $orm,
                     $entity
@@ -214,11 +265,87 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheRepository::class,
-            static function (string $entity) use ($orm, $cache) {
+            static function (string $entity) use ($orm, $cache): CacheRepository {
                 return new CacheRepository(
                     $orm,
                     $cache,
                     $entity
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a persister service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPersister(Container $container): void
+    {
+        $container->setClosure(
+            Persister::class,
+            static function (Adapter $adapter): Persister {
+                return new \Valkyrja\ORM\Persisters\Persister(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a retriever service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishRetriever(Container $container): void
+    {
+        $container->setClosure(
+            Retriever::class,
+            static function (Adapter $adapter): Retriever {
+                return new \Valkyrja\ORM\Retrievers\Retriever(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a query service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishQuery(Container $container): void
+    {
+        $container->setClosure(
+            Query::class,
+            static function (Adapter $adapter): Query {
+                return new \Valkyrja\ORM\Queries\Query(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a query builder service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishQueryBuilder(Container $container): void
+    {
+        $container->setClosure(
+            QueryBuilder::class,
+            static function (Adapter $adapter): QueryBuilder {
+                return new SqlQueryBuilder(
+                    $adapter
                 );
             }
         );

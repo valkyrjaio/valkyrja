@@ -29,56 +29,56 @@ trait JsonDataTrait
      *
      * @var object|null
      */
-    protected ?object $item = null;
+    public ?object $item = null;
 
     /**
      * The item key.
      *
      * @var string
      */
-    protected string $itemKey = 'item';
+    public string $itemKey = 'item';
 
     /**
      * The items.
      *
      * @var object[]|null
      */
-    protected ?array $items = null;
+    public ?array $items = null;
 
     /**
      * The items key
      *
      * @var string
      */
-    protected string $itemsKey = 'items';
+    public string $itemsKey = 'items';
 
     /**
      * The total.
      *
      * @var int|null
      */
-    protected ?int $total = null;
+    public ?int $total = null;
 
     /**
      * The message.
      *
      * @var string|null
      */
-    protected ?string $message = null;
+    public ?string $message = null;
 
     /**
      * The messages.
      *
      * @var array|null
      */
-    protected ?array $messages = null;
+    public ?array $messages = null;
 
     /**
      * The data.
      *
      * @var array|null
      */
-    protected ?array $data = null;
+    public ?array $data = null;
 
     /**
      * Get the item.

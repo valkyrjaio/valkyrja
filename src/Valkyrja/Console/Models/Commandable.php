@@ -25,40 +25,40 @@ trait Commandable
      *
      * @var string|null
      */
-    protected ?string $path = null;
+    public ?string $path = null;
 
     /**
      * The regex for dynamic routes.
      *
      * @var string|null
      */
-    protected ?string $regex = null;
+    public ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    protected ?array $params = null;
+    public ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    protected ?array $segments = null;
+    public ?array $segments = null;
 
     /**
      * The description.
      *
      * @var string|null
      */
-    protected ?string $description = null;
+    public ?string $description = null;
 
     /**
      * Get the path.
      *
-     * @return string
+     * @return string|null
      */
     public function getPath(): ?string
     {
@@ -82,7 +82,7 @@ trait Commandable
     /**
      * Get the regex.
      *
-     * @return string
+     * @return string|null
      */
     public function getRegex(): ?string
     {
@@ -106,7 +106,7 @@ trait Commandable
     /**
      * Get the params.
      *
-     * @return array
+     * @return array|null
      */
     public function getParams(): ?array
     {
@@ -130,7 +130,7 @@ trait Commandable
     /**
      * Get the segments.
      *
-     * @return array
+     * @return array|null
      */
     public function getSegments(): ?array
     {
@@ -154,7 +154,7 @@ trait Commandable
     /**
      * Get the description.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescription(): ?string
     {

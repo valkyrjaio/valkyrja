@@ -107,4 +107,11 @@ interface Adapter
      * @return Persister
      */
     public function getPersister(): Persister;
+
+    /**
+     * Get the ORM.
+     *
+     * @return ORM
+     */
+    public function getOrm(): ORM;
 }

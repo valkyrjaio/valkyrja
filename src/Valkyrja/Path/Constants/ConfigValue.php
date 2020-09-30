@@ -25,6 +25,7 @@ final class ConfigValue
     public const PATTERNS = [
         'num'                  => '(\d+)',
         'slug'                 => '([a-zA-Z0-9-]+)',
+        'uuid'                 => '([a-zA-Z0-9-]+)',
         'alpha'                => '([a-zA-Z]+)',
         'alpha-lowercase'      => '([a-z]+)',
         'alpha-uppercase'      => '([A-Z]+)',

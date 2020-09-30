@@ -29,8 +29,9 @@ final class Rule
     public const STARTS_WITH  = 'startsWith';
     public const ENDS_WITH    = 'endsWith';
     public const CONTAINS     = 'contains';
+    public const CONTAINS_ANY = 'containsAny';
     public const EMAIL        = 'email';
-    public const NUMERICAL    = 'numerical';
+    public const NUMERIC      = 'numeric';
     public const LESS_THAN    = 'lessThan';
     public const GREATER_THAN = 'greaterThan';
     public const ORM_UNIQUE   = 'ORM:unique';

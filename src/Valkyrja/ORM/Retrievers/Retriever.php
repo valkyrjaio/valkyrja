@@ -78,11 +78,11 @@ class Retriever implements Contract
     /**
      * Retriever constructor.
      *
-     * @param Adapter $connection
+     * @param Adapter $adapter The adapter
      */
-    public function __construct(Adapter $connection)
+    public function __construct(Adapter $adapter)
     {
-        $this->adapter = $connection;
+        $this->adapter = $adapter;
     }
 
     /**
@@ -92,7 +92,7 @@ class Retriever implements Contract
      *      $retriever->find(Entity::class, true | false)
      * </code>
      *
-     * @param string $entity
+     * @param string $entity The entity
      *
      * @return static
      */
@@ -110,8 +110,8 @@ class Retriever implements Contract
      *      $retriever->findOne(Entity::class, 1, true | false)
      * </code>
      *
-     * @param string     $entity
-     * @param string|int $id
+     * @param string     $entity The entity
+     * @param string|int $id     The id to find
      *
      * @return static
      */
@@ -134,7 +134,7 @@ class Retriever implements Contract
      *      $retriever->count(Entity::class)
      * </code>
      *
-     * @param string $entity
+     * @param string $entity The entity
      *
      * @return static
      */
@@ -148,7 +148,7 @@ class Retriever implements Contract
     /**
      * Set columns.
      *
-     * @param array $columns
+     * @param array $columns The columns to return
      *
      * @return static
      */
@@ -163,9 +163,9 @@ class Retriever implements Contract
      * Add a where condition.
      * - Each additional use will add an `AND` where condition.
      *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
+     * @param string      $column   The column
+     * @param string|null $operator [optional] The operator
+     * @param mixed|null  $value    [optional] The value to find
      *
      * @return static
      */
@@ -180,9 +180,9 @@ class Retriever implements Contract
     /**
      * Add an additional `OR` where condition.
      *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
+     * @param string      $column   The column
+     * @param string|null $operator [optional] The operator
+     * @param mixed|null  $value    [optional] The value to find
      *
      * @return static
      */
@@ -197,7 +197,7 @@ class Retriever implements Contract
     /**
      * Set group by.
      *
-     * @param string $column
+     * @param string $column The column to group by
      *
      * @return static
      */
@@ -211,8 +211,8 @@ class Retriever implements Contract
     /**
      * Set order by.
      *
-     * @param string      $column
-     * @param string|null $type
+     * @param string      $column The column to order by
+     * @param string|null $type   [optional] Ascending or descending order by type
      *
      * @return static
      */
@@ -226,7 +226,7 @@ class Retriever implements Contract
     /**
      * Set limit.
      *
-     * @param int $limit
+     * @param int $limit The limit of rows to return
      *
      * @return static
      */
@@ -240,7 +240,7 @@ class Retriever implements Contract
     /**
      * Set offset.
      *
-     * @param int $offset
+     * @param int $offset The offset
      *
      * @return static
      */
@@ -327,8 +327,8 @@ class Retriever implements Contract
     /**
      * Set query builder and query.
      *
-     * @param string        $entity
-     * @param string[]|null $columns [optional]
+     * @param string        $entity  The entity
+     * @param string[]|null $columns [optional] The columns
      *
      * @return void
      */
@@ -357,8 +357,8 @@ class Retriever implements Contract
     /**
      * Set a value to bind later.
      *
-     * @param string $column
-     * @param mixed  $value
+     * @param string $column The column to bind
+     * @param mixed  $value  [optional] The value to bind
      *
      * @return void
      */
@@ -423,7 +423,7 @@ class Retriever implements Contract
         // Iterate through the rows found
         foreach ($relationships as $relationship) {
             // Set the entity relations
-            $entity->__setRelationship($relationship, $this->adapter->createRetriever());
+            $entity->__setRelationship($this->adapter->getOrm(), $relationship);
         }
     }
 }

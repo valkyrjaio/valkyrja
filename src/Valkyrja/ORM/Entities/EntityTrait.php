@@ -15,10 +15,11 @@ namespace Valkyrja\ORM\Entities;
 
 use JsonException;
 use Valkyrja\ORM\Constants\PropertyType;
-use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\ORM;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
+use Valkyrja\Support\Type\Str;
 
 use function is_string;
 use function serialize;
@@ -77,7 +78,7 @@ trait EntityTrait
      *
      * @return array
      */
-    public static function getPropertyTypes(): array
+    public static function getFieldCastings(): array
     {
         return [];
     }
@@ -94,7 +95,7 @@ trait EntityTrait
      *
      * @return array
      */
-    public static function getPropertyAllowedClasses(): array
+    public static function getCastingAllowedClasses(): array
     {
         return [];
     }
@@ -130,14 +131,20 @@ trait EntityTrait
     /**
      * Set a relationship property.
      *
-     * @param string    $relationship The relationship to set
-     * @param Retriever $retriever    The ORM retriever
+     * @param ORM    $orm          The ORM
+     * @param string $relationship The relationship to set
      *
      * @return void
      */
-    public function __setRelationship(string $relationship, Retriever $retriever): void
+    public function __setRelationship(ORM $orm, string $relationship): void
     {
-        $this->__set($relationship, $retriever);
+        $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
+
+        if (method_exists($this, $methodName)) {
+            $this->$methodName($orm);
+
+            return;
+        }
     }
 
     /**
@@ -163,8 +170,8 @@ trait EntityTrait
      */
     public function __setProperties(array $properties): void
     {
-        $propertyTypes          = static::getPropertyTypes();
-        $propertyAllowedClasses = static::getPropertyAllowedClasses();
+        $propertyTypes          = static::getFieldCastings();
+        $propertyAllowedClasses = static::getCastingAllowedClasses();
 
         // Iterate through the properties
         foreach ($properties as $property => $value) {
@@ -290,7 +297,7 @@ trait EntityTrait
         $array                  = [];
         $properties             = array_merge(Obj::getProperties($this), static::$exposed);
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
-        $propertyTypes          = static::getPropertyTypes();
+        $propertyTypes          = static::getFieldCastings();
         $relationshipProperties = static::getRelationshipProperties();
 
         // Iterate through the storable hidden fields

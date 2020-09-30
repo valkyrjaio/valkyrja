@@ -25,12 +25,12 @@ trait Listenable
      *
      * @var string|null
      */
-    protected ?string $event = null;
+    public ?string $event = null;
 
     /**
      * Get the event.
      *
-     * @return string
+     * @return string|null
      */
     public function getEvent(): ?string
     {

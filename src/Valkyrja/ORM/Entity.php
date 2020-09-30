@@ -44,34 +44,36 @@ interface Entity extends Model
     public static function getEntityRepository(): ?string;
 
     /**
-     * Types for attributes that differs from what they were saved into the database as.
+     * Types for attributes that differ from what they were saved into the database as.
      *
      * <code>
      *      [
-     *          // An array to be json_encoded/decoded to/from the db
-     *          'property_name' => 'array',
      *          // An object to be serialized and unserialized to/from the db
-     *          'property_name' => 'object',
+     *          'a_serialized_object' => PropertyType::OBJECT,
+     *          // An array to be json_encoded/decoded to/from the db
+     *          'a_stringified_array' => PropertyType::ARRAY,
+     *          // Data object to be json_encoded/decoded to/from the db
+     *          'data_as_json_string' => PropertyType::JSON,
      *      ]
      * </code>
      *
      * @return array
      */
-    public static function getPropertyTypes(): array;
+    public static function getFieldCastings(): array;
 
     /**
-     * Allowed classes for serialization of object type properties.
+     * Allowed classes for serialization of object cast properties.
      *
      * <code>
      *      [
      *          // An array of allowed classes for serialization for object types
-     *          'property_name' => [ClassName::class],
+     *          'a_serialized_object' => [ClassName::class],
      *      ]
      * </code>
      *
      * @return array
      */
-    public static function getPropertyAllowedClasses(): array;
+    public static function getCastingAllowedClasses(): array;
 
     /**
      * Entity relationship properties.
@@ -98,12 +100,12 @@ interface Entity extends Model
     /**
      * Set a relationship property.
      *
-     * @param string    $relationship The relationship to set
-     * @param Retriever $retriever    The ORM retriever
+     * @param ORM    $orm          The ORM
+     * @param string $relationship The relationship to set
      *
      * @return void
      */
-    public function __setRelationship(string $relationship, Retriever $retriever): void;
+    public function __setRelationship(ORM $orm, string $relationship): void;
 
     /**
      * Get the entity as an array for saving to the data store.

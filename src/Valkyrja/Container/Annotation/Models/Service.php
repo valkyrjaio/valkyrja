@@ -28,14 +28,14 @@ class Service extends Annotation implements ServiceContract
      *
      * @var bool
      */
-    protected bool $singleton = false;
+    public bool $singleton = false;
 
     /**
      * Default arguments.
      *
      * @var array|null
      */
-    protected ?array $defaults = null;
+    public ?array $defaults = null;
 
     /**
      * Get whether this is a singleton.

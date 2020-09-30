@@ -79,6 +79,24 @@ interface Api
     public function jsonResponseFromObjects(object ...$objects): JsonResponse;
 
     /**
+     * Make a new JSON model from an array.
+     *
+     * @param array $array
+     *
+     * @return Json
+     */
+    public function jsonFromArray(array $array): Json;
+
+    /**
+     * Make a new JSON model from an array.
+     *
+     * @param array $array
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromArray(array $array): JsonResponse;
+
+    /**
      * Make a new JSON model from an entity.
      *
      * @param Entity $entity

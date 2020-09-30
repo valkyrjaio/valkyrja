@@ -93,6 +93,7 @@ final class ConfigKeyPart
     public const HOST                        = 'host';
     public const PORT                        = 'port';
     public const DB                          = 'db';
+    public const USER                        = 'user';
     public const USERNAME                    = 'username';
     public const PASSWORD                    = 'password';
     public const MESSAGE                     = 'message';
@@ -111,6 +112,9 @@ final class ConfigKeyPart
     public const ENGINE                      = 'engine';
     public const SCHEMA                      = 'schema';
     public const SSL_MODE                    = 'sslmode';
+    public const SSL_CERT                    = 'sslcert';
+    public const SSL_KEY                     = 'sslkey';
+    public const SSL_ROOT_CERT               = 'sslrootcert';
     public const CLASSES                     = 'classes';
     public const STORE                       = 'store';
     public const STORES                      = 'stores';
@@ -126,6 +130,8 @@ final class ConfigKeyPart
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const PDO                         = 'pdo';
     public const PDO_DRIVER                  = 'pdoDriver';
+    public const PDO_MYSQL_DRIVER            = 'pdoMySqlDriver';
+    public const PDO_PGSQL_DRIVER            = 'pdoPgSqlDriver';
     public const PHP                         = 'php';
     public const FLYSYSTEM                   = 'flysystem';
     public const FLYSYSTEM_ADAPTER           = 'flysystemAdapter';

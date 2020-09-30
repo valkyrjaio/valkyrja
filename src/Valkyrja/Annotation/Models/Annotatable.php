@@ -25,12 +25,12 @@ trait Annotatable
      *
      * @var string|null
      */
-    protected ?string $type = null;
+    public ?string $type = null;
 
     /**
      * Get the type.
      *
-     * @return string
+     * @return string|null
      */
     public function getType(): ?string
     {

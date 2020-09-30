@@ -21,8 +21,6 @@ use Valkyrja\ORM\ORM;
 
 use function password_hash;
 
-use function Valkyrja\dd;
-
 use const PASSWORD_DEFAULT;
 
 /**
@@ -68,7 +66,6 @@ class Registrator implements Contract
 
             $this->orm->ensureTransaction();
             $repository->create($user, true);
-            // dd($repository->persist());
             $repository->persist();
 
             return true;

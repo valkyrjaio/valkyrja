@@ -27,7 +27,7 @@ class Context extends Service implements Contract
      *
      * @var string|null
      */
-    protected ?string $service = null;
+    public ?string $service = null;
 
     /**
      * Get the service.

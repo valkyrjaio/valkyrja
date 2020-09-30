@@ -32,82 +32,82 @@ trait Dispatchable
      *
      * @var string|null
      */
-    protected ?string $id = null;
+    public ?string $id = null;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    protected ?string $name = null;
+    public ?string $name = null;
 
     /**
      * The class.
      *
      * @var string|null
      */
-    protected ?string $class = null;
+    public ?string $class = null;
 
     /**
      * The property.
      *
      * @var string|null
      */
-    protected ?string $property = null;
+    public ?string $property = null;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    protected ?string $method = null;
+    public ?string $method = null;
 
     /**
      * Whether the property or method is static.
      *
      * @var bool
      */
-    protected bool $static = false;
+    public bool $static = false;
 
     /**
      * The function.
      *
      * @var string|null
      */
-    protected ?string $function = null;
+    public ?string $function = null;
 
     /**
      * The matches.
      *
      * @var array|null
      */
-    protected ?array $matches = null;
+    public ?array $matches = null;
 
     /**
      * The closure.
      *
      * @var Closure|null
      */
-    protected ?Closure $closure = null;
+    public ?Closure $closure = null;
 
     /**
      * The dependencies.
      *
      * @var string[]|null
      */
-    protected ?array $dependencies = null;
+    public ?array $dependencies = null;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    protected ?array $arguments = null;
+    public ?array $arguments = null;
 
     /**
      * Get the id.
      *
-     * @return string
+     * @return string|null
      */
     public function getId(): ?string
     {
@@ -131,7 +131,7 @@ trait Dispatchable
     /**
      * Get the name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -155,7 +155,7 @@ trait Dispatchable
     /**
      * Get the class.
      *
-     * @return string
+     * @return string|null
      */
     public function getClass(): ?string
     {
@@ -179,7 +179,7 @@ trait Dispatchable
     /**
      * Get the property.
      *
-     * @return string
+     * @return string|null
      */
     public function getProperty(): ?string
     {
@@ -203,7 +203,7 @@ trait Dispatchable
     /**
      * Get the method.
      *
-     * @return string
+     * @return string|null
      */
     public function getMethod(): ?string
     {
@@ -249,7 +249,7 @@ trait Dispatchable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFunction(): ?string
     {
@@ -273,7 +273,7 @@ trait Dispatchable
     /**
      * Get the closure.
      *
-     * @return Closure
+     * @return Closure|null
      */
     public function getClosure(): ?Closure
     {
@@ -297,7 +297,7 @@ trait Dispatchable
     /**
      * Get the matches.
      *
-     * @return array
+     * @return array|null
      */
     public function getMatches(): ?array
     {
@@ -321,7 +321,7 @@ trait Dispatchable
     /**
      * Get the arguments.
      *
-     * @return array
+     * @return array|null
      */
     public function getArguments(): ?array
     {
@@ -345,7 +345,7 @@ trait Dispatchable
     /**
      * Get the dependencies.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getDependencies(): ?array
     {

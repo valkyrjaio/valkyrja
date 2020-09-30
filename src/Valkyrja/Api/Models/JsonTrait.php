@@ -32,28 +32,28 @@ trait JsonTrait
      *
      * @var string|null
      */
-    protected ?string $message = null;
+    public ?string $message = null;
 
     /**
      * The data.
      *
      * @var JsonData|null
      */
-    protected ?JsonData $data = null;
+    public ?JsonData $data = null;
 
     /**
      * The status code.
      *
      * @var int
      */
-    protected int $statusCode = StatusCode::OK;
+    public int $statusCode = StatusCode::OK;
 
     /**
      * The status.
      *
      * @var string
      */
-    protected string $status = Status::SUCCESS;
+    public string $status = Status::SUCCESS;
 
     /**
      * Get the message.

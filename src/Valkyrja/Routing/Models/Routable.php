@@ -32,28 +32,28 @@ trait Routable
      *
      * @var string|null
      */
-    protected ?string $path = null;
+    public ?string $path = null;
 
     /**
      * The redirect path for this route.
      *
      * @var string|null
      */
-    protected ?string $to = null;
+    public ?string $to = null;
 
     /**
      * The redirect status code for this route.
      *
      * @var int
      */
-    protected int $code = StatusCode::FOUND;
+    public int $code = StatusCode::FOUND;
 
     /**
      * The request methods for this route.
      *
      * @var array
      */
-    protected array $methods = [
+    public array $methods = [
         RequestMethod::GET,
         RequestMethod::HEAD,
     ];
@@ -63,54 +63,54 @@ trait Routable
      *
      * @var string|null
      */
-    protected ?string $regex = null;
+    public ?string $regex = null;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    protected ?array $params = null;
+    public ?array $params = null;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    protected ?array $segments = null;
+    public ?array $segments = null;
 
     /**
      * The middleware for this route.
      *
      * @var array|null
      */
-    protected ?array $middleware = null;
+    public ?array $middleware = null;
 
     /**
      * Whether the route is dynamic.
      *
      * @var bool
      */
-    protected bool $dynamic = false;
+    public bool $dynamic = false;
 
     /**
      * Whether the route is secure.
      *
      * @var bool
      */
-    protected bool $secure = false;
+    public bool $secure = false;
 
     /**
      * Whether the route is a redirect.
      *
      * @var bool
      */
-    protected bool $redirect = false;
+    public bool $redirect = false;
 
     /**
      * Get the route's path.
      *
-     * @return string
+     * @return string|null
      */
     public function getPath(): ?string
     {
@@ -136,7 +136,7 @@ trait Routable
     /**
      * Get the redirect path.
      *
-     * @return string
+     * @return string|null
      */
     public function getTo(): ?string
     {
@@ -214,7 +214,7 @@ trait Routable
     /**
      * Get the regex.
      *
-     * @return string
+     * @return string|null
      */
     public function getRegex(): ?string
     {
@@ -238,7 +238,7 @@ trait Routable
     /**
      * Get the params.
      *
-     * @return array
+     * @return array|null
      */
     public function getParams(): ?array
     {
@@ -262,7 +262,7 @@ trait Routable
     /**
      * Get the segments.
      *
-     * @return array
+     * @return array|null
      */
     public function getSegments(): ?array
     {
@@ -286,7 +286,7 @@ trait Routable
     /**
      * Get the middleware.
      *
-     * @return array
+     * @return array|null
      */
     public function getMiddleware(): ?array
     {

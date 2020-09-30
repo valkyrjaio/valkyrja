@@ -188,6 +188,37 @@ class Api implements Contract
     }
 
     /**
+     * Make a new JSON model from an array.
+     *
+     * @param array $array
+     *
+     * @return Json
+     */
+    public function jsonFromArray(array $array): Json
+    {
+        $json     = $this->getJsonModel();
+        $jsonData = $this->getJsonDataModel();
+
+        $json->setData($jsonData);
+
+        $jsonData->setData($array);
+
+        return $json;
+    }
+
+    /**
+     * Make a new JSON model from an array.
+     *
+     * @param array $array
+     *
+     * @return JsonResponse
+     */
+    public function jsonResponseFromArray(array $array): JsonResponse
+    {
+        return $this->getResponseFromModel($this->jsonFromArray($array));
+    }
+
+    /**
      * Make a new JSON model from an entity.
      *
      * @param Entity $entity

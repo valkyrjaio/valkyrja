@@ -19,7 +19,6 @@ use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
-
 use Valkyrja\Routing\Router;
 
 use function array_merge;
@@ -94,9 +93,15 @@ trait CollectorHelpers
     protected function withGroupableSelf(string $method, $value): self
     {
         $self = clone $this;
-
         $self->ensureRoute();
-        $self->route->{$method}($value);
+
+        $route  = clone $self->route;
+        $route->{$method}($value);
+
+        $method = "{$method}InRoute";
+        $this->{$method}($route);
+
+        $self->route = $route;
 
         return $self;
     }
@@ -111,7 +116,7 @@ trait CollectorHelpers
     protected function setGroupContextInRoute(Route $route): void
     {
         $this->setPathInRoute($route);
-        $this->setControllerInRoute($route);
+        $this->setClassInRoute($route);
         $this->setNameInRoute($route);
         $this->setMiddlewareInRoute($route);
         $this->setSecureInRoute($route);
@@ -136,7 +141,7 @@ trait CollectorHelpers
      *
      * @return void
      */
-    protected function setControllerInRoute(Route $route): void
+    protected function setClassInRoute(Route $route): void
     {
         $this->setPropertyInRoute($route, 'Class');
     }

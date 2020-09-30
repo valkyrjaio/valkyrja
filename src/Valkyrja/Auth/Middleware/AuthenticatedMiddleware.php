@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Exception;
+use Valkyrja\Api\Api;
+use Valkyrja\Api\Constants\Status;
 use Valkyrja\Auth\Constants\ConfigValue;
 use Valkyrja\Auth\Constants\RouteName;
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Url;
@@ -33,6 +36,13 @@ class AuthenticatedMiddleware extends AuthMiddleware
      * @var string
      */
     protected static string $user = ConfigValue::USER_ENTITY;
+
+    /**
+     * The error message to use.
+     *
+     * @var string
+     */
+    protected static string $errorMessage = 'Must be logged in.';
 
     /**
      * Middleware handler for before a request is dispatched.
@@ -68,14 +78,26 @@ class AuthenticatedMiddleware extends AuthMiddleware
     protected static function getFailedAuthenticationResponse(Request $request): Response
     {
         if ($request->isXmlHttpRequest()) {
-            return static::getResponseFactory()->createJsonResponse();
+            /** @var Api $api */
+            $api  = static::$container->getSingleton(Api::class);
+            $json = $api->jsonFromArray([]);
+            $json->setData();
+            $json->setMessage(static::$errorMessage);
+            $json->setStatusCode(StatusCode::UNAUTHORIZED);
+            $json->setStatus(Status::ERROR);
+
+            return static::getResponseFactory()->createJsonResponse(
+                $json->__toArray(),
+                StatusCode::UNAUTHORIZED
+            );
         }
 
         /** @var Url $url */
         $url = self::$container->getSingleton(Url::class);
 
         return static::getResponseFactory()->createRedirectResponse(
-            $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE))
+            $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE)),
+            StatusCode::UNAUTHORIZED
         );
     }
 }

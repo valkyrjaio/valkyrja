@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Drivers;
 
+use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Driver as Contract;
 use Valkyrja\ORM\Persister;
@@ -29,6 +30,13 @@ use Valkyrja\ORM\Statement;
 class Driver implements Contract
 {
     /**
+     * The default options.
+     *
+     * @var array
+     */
+    protected static array $defaultOptions = [];
+
+    /**
      * The adapter.
      *
      * @var Adapter
@@ -38,11 +46,20 @@ class Driver implements Contract
     /**
      * Driver constructor.
      *
-     * @param Adapter $adapter The adapter
+     * @param Container $container The container
+     * @param string    $adapter   The adapter
+     * @param array     $config    The config
      */
-    public function __construct(Adapter $adapter)
+    public function __construct(Container $container, string $adapter, array $config)
     {
-        $this->adapter = $adapter;
+        $config['options'] = $config['options'] ?? static::$defaultOptions;
+
+        $this->adapter = $container->get(
+            $adapter,
+            [
+                $config,
+            ]
+        );
     }
 
     /**
@@ -110,7 +127,7 @@ class Driver implements Contract
     /**
      * Get the last inserted id.
      *
-     * @param string|null $table [optional] The table last inserted into
+     * @param string|null $table   [optional] The table last inserted into
      * @param string|null $idField [optional] The id field of the table last inserted into
      *
      * @return string

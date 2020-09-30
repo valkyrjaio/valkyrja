@@ -54,14 +54,15 @@ class ORM
     /**
      * Ensure that a subject is unique in the database for a field.
      *
-     * @param mixed         $subject The subject
-     * @param string|Entity $entity  The entity to check for uniqueness
-     * @param string|null   $field   The field to ensure is unique
+     * @param mixed       $subject The subject
+     * @param string      $entity  The entity to check for uniqueness
+     * @param string|null $field   The field to ensure is unique
      *
      * @return void
      */
     public function unique($subject, string $entity, string $field = null): void
     {
+        /** @var Entity|string $entity */
         $field ??= $entity::getIdField();
         // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
@@ -70,21 +71,22 @@ class ORM
         $this->container->setSingleton($entity, $result);
 
         if (null !== $result) {
-            throw new ValidationException("${subject} must be a unique value in ${entity} for field ${field}");
+            throw new ValidationException("{$subject} must be a unique value in {$entity} for field {$field}");
         }
     }
 
     /**
      * Ensure that a subject exists in the database for a field.
      *
-     * @param mixed         $subject The subject
-     * @param string|Entity $entity  The entity to check for uniqueness
-     * @param string|null   $field   The field to ensure is unique
+     * @param mixed       $subject The subject
+     * @param string      $entity  The entity to check for uniqueness
+     * @param string|null $field   The field to ensure is unique
      *
      * @return void
      */
     public function exists($subject, string $entity, string $field = null): void
     {
+        /** @var Entity $entity */
         $field ??= $entity::getIdField();
         // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
@@ -93,7 +95,7 @@ class ORM
         $this->container->setSingleton($entity, $result);
 
         if (null === $result) {
-            throw new ValidationException("${subject} must exist in ${entity} for field ${field}");
+            throw new ValidationException("{$subject} must exist in {$entity} for field {$field}");
         }
     }
 }

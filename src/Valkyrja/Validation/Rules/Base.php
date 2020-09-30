@@ -38,7 +38,7 @@ class Base
     public function required($subject): void
     {
         if (! $subject) {
-            throw new ValidationException("${subject} is required");
+            throw new ValidationException("{$subject} is required");
         }
     }
 
@@ -55,7 +55,7 @@ class Base
     public function equals($subject, $value): void
     {
         if ($subject !== $value) {
-            throw new ValidationException("${subject} must equal ${value}");
+            throw new ValidationException("{$subject} must equal {$value}");
         }
     }
 
@@ -71,7 +71,7 @@ class Base
     public function empty(string $subject = null): void
     {
         if ($subject || ! empty($subject)) {
-            throw new ValidationException("${subject} must be empty");
+            throw new ValidationException("{$subject} must be empty");
         }
     }
 
@@ -87,7 +87,7 @@ class Base
     public function notEmpty(string $subject): void
     {
         if (! $subject) {
-            throw new ValidationException("${subject} must not be empty");
+            throw new ValidationException("{$subject} must not be empty");
         }
     }
 
@@ -104,7 +104,7 @@ class Base
     public function min(string $subject, int $min = 0): void
     {
         if (! Str::min($subject, $min)) {
-            throw new ValidationException("${subject} must be longer than ${min}");
+            throw new ValidationException("{$subject} must be longer than {$min}");
         }
     }
 
@@ -121,7 +121,7 @@ class Base
     public function max(string $subject, int $max = 255): void
     {
         if (! Str::max($subject, $max)) {
-            throw new ValidationException("${subject} must not be longer than ${max}");
+            throw new ValidationException("{$subject} must not be longer than {$max}");
         }
     }
 
@@ -138,7 +138,7 @@ class Base
     public function startsWith(string $subject, string $needle): void
     {
         if (! Str::startsWith($subject, $needle)) {
-            throw new ValidationException("${subject} must start with ${needle}");
+            throw new ValidationException("{$subject} must start with {$needle}");
         }
     }
 
@@ -155,25 +155,50 @@ class Base
     public function endsWith(string $subject, string $needle): void
     {
         if (! Str::endsWith($subject, $needle)) {
-            throw new ValidationException("${subject} must end with ${needle}");
+            throw new ValidationException("{$subject} must end with {$needle}");
         }
     }
 
     /**
-     * Subject contains a substring.
+     * Subject contains given substrings.
      *
-     * @param string $subject The subject
-     * @param string $needle  The needle contained in the subject
+     * @param string         $subject The subject
+     * @param string[]|int[] $needles The needles contained in the subject
      *
      * @throws ValidationException
      *
      * @return void
      */
-    public function contains(string $subject, string $needle): void
+    public function contains(string $subject, ...$needles): void
     {
-        if (! Str::contains($subject, $needle)) {
-            throw new ValidationException("${subject} must contain ${needle}");
+        foreach ($needles as $needle) {
+            if (! Str::contains($subject, $needle)) {
+                throw new ValidationException("{$subject} must contain {$needle}");
+            }
         }
+    }
+
+    /**
+     * Subject contains any given substring.
+     *
+     * @param string         $subject The subject
+     * @param string[]|int[] $needles The needles contained in the subject
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function containsAny(string $subject, ...$needles): void
+    {
+        foreach ($needles as $needle) {
+            if (Str::contains($subject, $needle)) {
+                return;
+            }
+        }
+
+        $needlesString = implode(', ', $needles);
+
+        throw new ValidationException("{$subject} must one of: {$needlesString}");
     }
 
     /**
@@ -188,12 +213,12 @@ class Base
     public function email(string $subject): void
     {
         if (! Str::isEmail($subject)) {
-            throw new ValidationException("${subject} is not a valid email");
+            throw new ValidationException("{$subject} is not a valid email");
         }
     }
 
     /**
-     * Subject is numerical.
+     * Subject is numeric.
      *
      * @param mixed $subject The subject
      *
@@ -201,10 +226,10 @@ class Base
      *
      * @return void
      */
-    public function numerical($subject): void
+    public function numeric($subject): void
     {
         if (! is_numeric($subject)) {
-            throw new ValidationException("${subject} must be numeric");
+            throw new ValidationException("{$subject} must be numeric");
         }
     }
 
@@ -221,7 +246,7 @@ class Base
     public function lessThan(int $subject, int $max = 0): void
     {
         if (! Integer::lessThan($subject, $max)) {
-            throw new ValidationException("${subject} must be less than ${max}");
+            throw new ValidationException("{$subject} must be less than {$max}");
         }
     }
 
@@ -238,7 +263,7 @@ class Base
     public function greaterThan(int $subject, int $min = 0): void
     {
         if (! Integer::greaterThan($subject, $min)) {
-            throw new ValidationException("${subject} must be greater than ${min}");
+            throw new ValidationException("{$subject} must be greater than {$min}");
         }
     }
 }

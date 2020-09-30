@@ -40,63 +40,63 @@ class Cookie implements CookieContract
      *
      * @var string
      */
-    protected string $name;
+    public string $name;
 
     /**
      * The cookie value.
      *
      * @var string|null
      */
-    protected ?string $value = null;
+    public ?string $value = null;
 
     /**
      * The cookie expire time.
      *
      * @var int
      */
-    protected int $expire;
+    public int $expire;
 
     /**
      * The cookie path.
      *
      * @var string
      */
-    protected string $path;
+    public string $path;
 
     /**
      * The cookie domain.
      *
      * @var string|null
      */
-    protected ?string $domain = null;
+    public ?string $domain = null;
 
     /**
      * Whether the cookie is secure.
      *
      * @var bool
      */
-    protected bool $secure;
+    public bool $secure;
 
     /**
      * Whether the cookie is http only.
      *
      * @var bool
      */
-    protected bool $httpOnly;
+    public bool $httpOnly;
 
     /**
      * Whether the cookie is raw.
      *
      * @var bool
      */
-    protected bool $raw;
+    public bool $raw;
 
     /**
      * Whether the cookie will be available for cross-site requests.
      *
      * @var string|null
      */
-    protected ?string $sameSite = null;
+    public ?string $sameSite = null;
 
     /**
      * Cookie constructor.
