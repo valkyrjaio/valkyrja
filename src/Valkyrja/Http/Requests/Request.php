@@ -144,7 +144,6 @@ class Request implements Contract
     ) {
         $this->initialize($uri, $method, $body, $headers);
 
-        $this->headers    = $headers ?? [];
         $this->server     = $server ?? [];
         $this->cookies    = $cookies ?? [];
         $this->query      = $query ?? [];

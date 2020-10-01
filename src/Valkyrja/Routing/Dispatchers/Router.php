@@ -75,13 +75,6 @@ class Router implements Contract
     protected Events $events;
 
     /**
-     * The request.
-     *
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
      * The response factory.
      *
      * @var ResponseFactory
@@ -108,7 +101,6 @@ class Router implements Contract
      * @param Container       $container
      * @param Dispatcher      $dispatcher
      * @param Events          $events
-     * @param Request         $request
      * @param ResponseFactory $responseFactory
      * @param Collection      $collection
      * @param array           $config
@@ -118,7 +110,6 @@ class Router implements Contract
         Container $container,
         Dispatcher $dispatcher,
         Events $events,
-        Request $request,
         ResponseFactory $responseFactory,
         Collection $collection,
         array $config,
@@ -127,7 +118,6 @@ class Router implements Contract
         $this->container       = $container;
         $this->dispatcher      = $dispatcher;
         $this->events          = $events;
-        $this->request         = $request;
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
         $this->debug           = $debug;

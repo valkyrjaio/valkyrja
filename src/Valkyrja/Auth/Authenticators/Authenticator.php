@@ -109,7 +109,7 @@ class Authenticator implements Contract
 
         $user->__expose($passwordField);
 
-        $token = $this->crypt->encryptObject($user);
+        $token = $this->crypt->encryptArray($user->__tokenized());
 
         $user->__unexpose($passwordField);
 
@@ -139,10 +139,10 @@ class Authenticator implements Contract
     public function getUserFromToken(string $user, string $token): ?User
     {
         try {
-            $userProperties = $this->crypt->decryptObject($token);
+            $userProperties = $this->crypt->decryptArray($token);
             /** @var User $user */
             /** @var User $userModel */
-            $userModel = $user::fromArray((array) $userProperties);
+            $userModel = $user::fromArray($userProperties);
         } catch (Exception $exception) {
             return null;
         }

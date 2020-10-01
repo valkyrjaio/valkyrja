@@ -97,7 +97,6 @@ class ServiceProvider extends Provider
                 $container->getSingleton(Container::class),
                 $dispatcher = $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
-                $container->getSingleton(Request::class),
                 $container->getSingleton(ResponseFactory::class),
                 $collection = new CacheableCollection(
                     $container,

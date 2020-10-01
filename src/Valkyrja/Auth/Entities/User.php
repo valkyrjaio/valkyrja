@@ -26,9 +26,12 @@ class User extends Entity implements Contract
     use UserFields;
 
     /**
-     * The table name.
+     * Get the table.
      *
-     * @var string
+     * @return string
      */
-    protected static string $table = 'user';
+    public static function getTableName(): string
+    {
+        return 'users';
+    }
 }
