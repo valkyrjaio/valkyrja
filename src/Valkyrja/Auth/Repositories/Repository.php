@@ -249,28 +249,39 @@ class Repository implements Contract
      * Log a user in via token.
      *
      * @param string $token The token
+     * @param bool   $store [optional] Whether to store the token in session
      *
+     * @throws CryptException
      * @throws InvalidAuthenticationException
+     * @throws JsonException
      *
      * @return static
      */
-    public function loginWithToken(string $token): self
+    public function loginWithToken(string $token, bool $store = false): self
     {
         $user = $this->getUserFromToken($token);
 
-        return $this->loginWithUser($user);
+        $this->loginWithUser($user, $store);
+
+        if ($store) {
+            $this->storeToken($token);
+        }
+
+        return $this;
     }
 
     /**
      * Log in with a specific user.
      *
-     * @param User $user The user
+     * @param User $user  The user
+     * @param bool $store [optional] Whether to store the user in session
      *
      * @throws InvalidAuthenticationException
+     * @throws JsonException
      *
      * @return static
      */
-    public function loginWithUser(User $user): self
+    public function loginWithUser(User $user, bool $store = false): self
     {
         if ($this->config['alwaysAuthenticate']) {
             $this->ensureUserValidity($user);
@@ -284,13 +295,19 @@ class Repository implements Contract
 
         $this->setAuthenticatedUser($user);
 
+        if ($store) {
+            $this->storeUser();
+        }
+
         return $this;
     }
 
     /**
      * Log a user in via tokenized session.
      *
+     * @throws CryptException
      * @throws InvalidAuthenticationException
+     * @throws JsonException
      *
      * @return static
      */

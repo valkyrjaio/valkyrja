@@ -339,14 +339,16 @@ class Auth implements Contract
      * Log a user in via token.
      *
      * @param string $token The token
+     * @param bool   $store [optional] Whether to store the token in session
      *
+     * @throws CryptException
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function loginWithToken(string $token): self
+    public function loginWithToken(string $token, bool $store = false): self
     {
-        $this->getRepository()->loginWithToken($token);
+        $this->getRepository()->loginWithToken($token, $store);
 
         return $this;
     }
@@ -354,15 +356,16 @@ class Auth implements Contract
     /**
      * Log in with a specific user.
      *
-     * @param User $user The user
+     * @param User $user  The user
+     * @param bool $store [optional] Whether to store the user in session
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function loginWithUser(User $user): self
+    public function loginWithUser(User $user, bool $store = false): self
     {
-        $this->getRepository()->loginWithUser($user);
+        $this->getRepository()->loginWithUser($user, $store);
 
         return $this;
     }
