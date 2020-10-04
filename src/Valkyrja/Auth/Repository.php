@@ -114,20 +114,20 @@ interface Repository
     public function loginWithUser(User $user): self;
 
     /**
-     * Log a user in via session.
+     * Log a user in via tokenized session.
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function loginFromSession(): self;
+    public function loginFromTokenizedSession(): self;
 
     /**
      * Log a user in via a user session.
      *
      * @return static
      */
-    public function loginFromUserSession(): self;
+    public function loginFromSession(): self;
 
     /**
      * Get the user token.

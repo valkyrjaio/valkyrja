@@ -18,14 +18,14 @@ use Valkyrja\Auth\Repository;
 use Valkyrja\Http\Request;
 
 /**
- * Class TokenAuthenticatedMiddleware.
+ * Class TokenSessionAuthenticatedMiddleware.
  *
  * @author Melech Mizrachi
  */
-class TokenAuthenticatedMiddleware extends AuthenticatedMiddleware
+class TokenSessionAuthenticatedMiddleware extends AuthenticatedMiddleware
 {
     /**
-     * Try logging in.
+     * Try logging in with a token stored in session.
      *
      * @param Repository $repository The auth repository
      * @param Request    $request    The request
@@ -34,9 +34,7 @@ class TokenAuthenticatedMiddleware extends AuthenticatedMiddleware
      */
     protected static function tryLogin(Repository $repository, Request $request): void
     {
-        // Get the token header value
-        $token = $request->getHeaderLine(Header::AUTH_TOKEN);
-        // Try to login with the token passed as a header
-        $repository->loginWithToken($token);
+        // Try to login with the token from session
+        $repository->loginFromTokenizedSession();
     }
 }

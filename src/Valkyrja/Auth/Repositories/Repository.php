@@ -288,13 +288,13 @@ class Repository implements Contract
     }
 
     /**
-     * Log a user in via session.
+     * Log a user in via tokenized session.
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function loginFromSession(): self
+    public function loginFromTokenizedSession(): self
     {
         if (! $token = $this->getTokenFromSession()) {
             $this->resetAfterLogout();
@@ -314,7 +314,7 @@ class Repository implements Contract
      *
      * @return static
      */
-    public function loginFromUserSession(): self
+    public function loginFromSession(): self
     {
         if (! $user = $this->getUserFromSession()) {
             $this->resetAfterLogout();

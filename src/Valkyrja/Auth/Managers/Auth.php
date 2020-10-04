@@ -368,15 +368,15 @@ class Auth implements Contract
     }
 
     /**
-     * Log a user in via session.
+     * Log a user in via tokenized session.
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function loginFromSession(): self
+    public function loginFromTokenizedSession(): self
     {
-        $this->getRepository()->loginFromSession();
+        $this->getRepository()->loginFromTokenizedSession();
 
         return $this;
     }
@@ -386,9 +386,9 @@ class Auth implements Contract
      *
      * @return static
      */
-    public function loginFromUserSession(): self
+    public function loginFromSession(): self
     {
-        $this->getRepository()->loginFromUserSession();
+        $this->getRepository()->loginFromSession();
 
         return $this;
     }

@@ -18,6 +18,7 @@ use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Auth\Constants\ConfigValue;
 use Valkyrja\Auth\Constants\RouteName;
+use Valkyrja\Auth\Repository;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -65,14 +66,27 @@ class AuthenticatedMiddleware extends AuthMiddleware
         // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {
             try {
-                // Try to login with the session
-                $repository->loginFromSession();
+                static::tryLogin($repository, $request);
             } catch (Exception $exception) {
                 return static::getFailedAuthenticationResponse($request);
             }
         }
 
         return $request;
+    }
+
+    /**
+     * Try logging in.
+     *
+     * @param Repository $repository The auth repository
+     * @param Request    $request    The request
+     *
+     * @return void
+     */
+    protected static function tryLogin(Repository $repository, Request $request): void
+    {
+        // Try to login from the user session
+        $repository->loginFromSession();
     }
 
     /**
