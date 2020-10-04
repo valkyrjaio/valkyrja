@@ -213,7 +213,7 @@ class Auth implements Contract
     /**
      * Get an adapter by name.
      *
-     * @param string|null $name
+     * @param string|null $name The adapter
      *
      * @return Adapter
      */
@@ -234,7 +234,7 @@ class Auth implements Contract
     /**
      * Get a repository by user entity name.
      *
-     * @param string|null $user
+     * @param string|null $user The user
      *
      * @return Repository
      */
@@ -264,9 +264,33 @@ class Auth implements Contract
     }
 
     /**
+     * Set the logged in user.
+     *
+     * @param User $user The user
+     *
+     * @return static
+     */
+    public function setUser(User $user): self
+    {
+        $this->getRepository()->setUser($user);
+
+        return $this;
+    }
+
+    /**
+     * Get the user stored in session.
+     *
+     * @return User
+     */
+    public function getUserFromSession(): User
+    {
+        return $this->getRepository()->getUserFromSession();
+    }
+
+    /**
      * Log a user in.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidAuthenticationException
      *
@@ -314,7 +338,7 @@ class Auth implements Contract
     /**
      * Log a user in via token.
      *
-     * @param string $token
+     * @param string $token The token
      *
      * @throws InvalidAuthenticationException
      *
@@ -323,6 +347,22 @@ class Auth implements Contract
     public function loginWithToken(string $token): self
     {
         $this->getRepository()->loginWithToken($token);
+
+        return $this;
+    }
+
+    /**
+     * Log in with a specific user.
+     *
+     * @param User $user The user
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function loginWithUser(User $user): self
+    {
+        $this->getRepository()->loginWithUser($user);
 
         return $this;
     }
@@ -342,6 +382,18 @@ class Auth implements Contract
     }
 
     /**
+     * Log a user in via a user session.
+     *
+     * @return static
+     */
+    public function loginFromUserSession(): self
+    {
+        $this->getRepository()->loginFromUserSession();
+
+        return $this;
+    }
+
+    /**
      * Get the user token.
      *
      * @throws CryptException
@@ -354,15 +406,41 @@ class Auth implements Contract
     }
 
     /**
+     * Get the user token from session.
+     *
+     * @return string
+     */
+    public function getTokenFromSession(): string
+    {
+        return $this->getRepository()->getTokenFromSession();
+    }
+
+    /**
      * Store the user token in session.
+     *
+     * @param string|null $token [optional] The token to store
      *
      * @throws CryptException
      *
      * @return static
      */
-    public function storeToken(): self
+    public function storeToken(string $token = null): self
     {
-        $this->getRepository()->storeToken();
+        $this->getRepository()->storeToken($token);
+
+        return $this;
+    }
+
+    /**
+     * Store the user in session.
+     *
+     * @param User|null $user [optional] The user to store
+     *
+     * @return static
+     */
+    public function storeUser(User $user = null): self
+    {
+        $this->getRepository()->storeUser($user);
 
         return $this;
     }
@@ -392,7 +470,7 @@ class Auth implements Contract
     /**
      * Register a new user.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidRegistrationException
      *
@@ -408,7 +486,7 @@ class Auth implements Contract
     /**
      * Forgot password.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @return static
      */
@@ -422,8 +500,8 @@ class Auth implements Contract
     /**
      * Reset a user's password.
      *
-     * @param User   $user
-     * @param string $password
+     * @param User   $user     The user
+     * @param string $password The password
      *
      * @return static
      */
@@ -437,7 +515,7 @@ class Auth implements Contract
     /**
      * Lock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -451,7 +529,7 @@ class Auth implements Contract
     /**
      * Unlock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -465,7 +543,7 @@ class Auth implements Contract
     /**
      * Confirm the current user's password.
      *
-     * @param string $password
+     * @param string $password The password
      *
      * @throws InvalidPasswordConfirmationException
      *

@@ -50,7 +50,17 @@ trait UserTrait
      *
      * @return string
      */
-    public static function getSessionId(): string
+    public static function getTokenSessionId(): string
+    {
+        return SessionId::USER_TOKEN;
+    }
+
+    /**
+     * Get the user session id.
+     *
+     * @return string
+     */
+    public static function getUserSessionId(): string
     {
         return SessionId::USER;
     }

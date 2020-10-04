@@ -70,7 +70,7 @@ interface Auth
     /**
      * Set the ORM.
      *
-     * @param ORM $orm
+     * @param ORM $orm The orm
      *
      * @return static
      */
@@ -86,7 +86,7 @@ interface Auth
     /**
      * Set the session manager.
      *
-     * @param Session $session
+     * @param Session $session The session
      *
      * @return static
      */
@@ -95,7 +95,7 @@ interface Auth
     /**
      * Get an adapter by name.
      *
-     * @param string|null $name
+     * @param string|null $name The adapter name
      *
      * @return Adapter
      */
@@ -104,7 +104,7 @@ interface Auth
     /**
      * Get a repository by user entity name.
      *
-     * @param string|null $user
+     * @param string|null $user The user
      *
      * @return Repository
      */
@@ -118,9 +118,25 @@ interface Auth
     public function getUser(): User;
 
     /**
+     * Set the logged in user.
+     *
+     * @param User $user The user
+     *
+     * @return static
+     */
+    public function setUser(User $user): self;
+
+    /**
+     * Get the user stored in session.
+     *
+     * @return User
+     */
+    public function getUserFromSession(): User;
+
+    /**
      * Log a user in.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidAuthenticationException
      *
@@ -153,13 +169,24 @@ interface Auth
     /**
      * Log a user in via token.
      *
-     * @param string $token
+     * @param string $token The token
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
     public function loginWithToken(string $token): self;
+
+    /**
+     * Log in with a specific user.
+     *
+     * @param User $user The user
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function loginWithUser(User $user): self;
 
     /**
      * Log a user in via session.
@@ -171,6 +198,13 @@ interface Auth
     public function loginFromSession(): self;
 
     /**
+     * Log a user in via a user session.
+     *
+     * @return static
+     */
+    public function loginFromUserSession(): self;
+
+    /**
      * Get the user token.
      *
      * @throws CryptException
@@ -180,13 +214,31 @@ interface Auth
     public function getToken(): string;
 
     /**
+     * Get the user token from session.
+     *
+     * @return string
+     */
+    public function getTokenFromSession(): string;
+
+    /**
      * Store the user token in session.
+     *
+     * @param string|null $token [optional] The token to store
      *
      * @throws CryptException
      *
      * @return static
      */
-    public function storeToken(): self;
+    public function storeToken(string $token = null): self;
+
+    /**
+     * Store the user in session.
+     *
+     * @param User|null $user [optional] The user to store
+     *
+     * @return static
+     */
+    public function storeUser(User $user = null): self;
 
     /**
      * Determine if a user is logged in.
@@ -205,7 +257,7 @@ interface Auth
     /**
      * Register a new user.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidRegistrationException
      *
@@ -216,7 +268,7 @@ interface Auth
     /**
      * Forgot password.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @return static
      */
@@ -225,8 +277,8 @@ interface Auth
     /**
      * Reset a user's password.
      *
-     * @param User   $user
-     * @param string $password
+     * @param User   $user     The user
+     * @param string $password The password
      *
      * @return static
      */
@@ -235,7 +287,7 @@ interface Auth
     /**
      * Lock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -244,7 +296,7 @@ interface Auth
     /**
      * Unlock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -253,7 +305,7 @@ interface Auth
     /**
      * Confirm the current user's password.
      *
-     * @param string $password
+     * @param string $password The password
      *
      * @throws InvalidPasswordConfirmationException
      *

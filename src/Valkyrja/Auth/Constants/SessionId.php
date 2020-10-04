@@ -20,6 +20,9 @@ namespace Valkyrja\Auth\Constants;
  */
 final class SessionId
 {
+    public const USER_TOKEN                   = 'auth.user.token';
+    public const USER_TOKENS                  = 'auth.users.tokens';
     public const USER                         = 'auth.user';
+    public const USERS                        = 'auth.users';
     public const PASSWORD_CONFIRMED_TIMESTAMP = 'auth.passwordConfirmedTimestamp';
 }

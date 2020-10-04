@@ -34,7 +34,14 @@ interface User extends Entity
      *
      * @return string
      */
-    public static function getSessionId(): string;
+    public static function getTokenSessionId(): string;
+
+    /**
+     * Get the user session id.
+     *
+     * @return string
+     */
+    public static function getUserSessionId(): string;
 
     /**
      * Get the username field.

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Repositories;
 
+use JsonException;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Authenticator;
@@ -26,6 +27,7 @@ use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Session\Session;
+use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Cls;
 
 use function time;
@@ -149,9 +151,37 @@ class Repository implements Contract
     }
 
     /**
+     * Set the logged in user.
+     *
+     * @param User $user The user
+     *
+     * @return static
+     */
+    public function setUser(User $user): self
+    {
+        $this->setAuthenticatedUser($user);
+
+        return $this;
+    }
+
+    /**
+     * Get the user stored in session.
+     *
+     * @throws JsonException
+     *
+     * @return User
+     */
+    public function getUserFromSession(): User
+    {
+        $userData = Arr::fromString($this->session->get($this->userEntity::getUserSessionId()));
+
+        return User::fromArray($userData);
+    }
+
+    /**
      * Log a user in.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidAuthenticationException
      *
@@ -218,7 +248,7 @@ class Repository implements Contract
     /**
      * Log a user in via token.
      *
-     * @param string $token
+     * @param string $token The token
      *
      * @throws InvalidAuthenticationException
      *
@@ -228,6 +258,20 @@ class Repository implements Contract
     {
         $user = $this->getUserFromToken($token);
 
+        return $this->loginWithUser($user);
+    }
+
+    /**
+     * Log in with a specific user.
+     *
+     * @param User $user The user
+     *
+     * @throws InvalidAuthenticationException
+     *
+     * @return static
+     */
+    public function loginWithUser(User $user): self
+    {
         if ($this->config['alwaysAuthenticate']) {
             $this->ensureUserValidity($user);
 
@@ -252,15 +296,33 @@ class Repository implements Contract
      */
     public function loginFromSession(): self
     {
-        if (! $token = $this->session->get($this->userEntity::getSessionId())) {
+        if (! $token = $this->getTokenFromSession()) {
             $this->resetAfterLogout();
 
-            throw new InvalidAuthenticationException('No user session exists.');
+            throw new InvalidAuthenticationException('No user token session exists.');
         }
 
         $this->loginWithToken($token);
 
         return $this;
+    }
+
+    /**
+     * Log a user in via a user session.
+     *
+     * @throws JsonException
+     *
+     * @return static
+     */
+    public function loginFromUserSession(): self
+    {
+        if (! $user = $this->getUserFromSession()) {
+            $this->resetAfterLogout();
+
+            throw new InvalidAuthenticationException('No user session exists.');
+        }
+
+        return $this->loginWithUser($user);
     }
 
     /**
@@ -276,15 +338,45 @@ class Repository implements Contract
     }
 
     /**
+     * Get the user token from session.
+     *
+     * @return string
+     */
+    public function getTokenFromSession(): string
+    {
+        return $this->session->get($this->userEntity::getTokenSessionId());
+    }
+
+    /**
      * Store the user token in session.
+     *
+     * @param string|null $token [optional] The token to store
      *
      * @throws CryptException
      *
      * @return static
      */
-    public function storeToken(): self
+    public function storeToken(string $token = null): self
     {
-        $this->session->set($this->user::getSessionId(), $this->getToken());
+        $this->session->set($this->user::getTokenSessionId(), $token ?? $this->getToken());
+
+        return $this;
+    }
+
+    /**
+     * Store the user in session.
+     *
+     * @param User|null $user [optional] The user to store
+     *
+     * @throws JsonException
+     *
+     * @return static
+     */
+    public function storeUser(User $user = null): self
+    {
+        $user = $user ?? $this->getUser();
+
+        $this->session->set($this->user::getUserSessionId(), Arr::toString($user->__tokenized()));
 
         return $this;
     }
@@ -316,7 +408,7 @@ class Repository implements Contract
     /**
      * Register a new user.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @throws InvalidRegistrationException
      *
@@ -332,7 +424,7 @@ class Repository implements Contract
     /**
      * Forgot password.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @return static
      */
@@ -346,8 +438,8 @@ class Repository implements Contract
     /**
      * Reset a user's password.
      *
-     * @param User   $user
-     * @param string $password
+     * @param User   $user     The user
+     * @param string $password The password
      *
      * @return static
      */
@@ -361,7 +453,7 @@ class Repository implements Contract
     /**
      * Lock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -375,7 +467,7 @@ class Repository implements Contract
     /**
      * Unlock a user.
      *
-     * @param LockableUser $user
+     * @param LockableUser $user The user
      *
      * @return static
      */
@@ -389,7 +481,7 @@ class Repository implements Contract
     /**
      * Confirm the current user's password.
      *
-     * @param string $password
+     * @param string $password The password
      *
      * @throws InvalidPasswordConfirmationException
      *
@@ -419,7 +511,7 @@ class Repository implements Contract
     /**
      * Set the authenticated user.
      *
-     * @param User $user
+     * @param User $user The user
      *
      * @return void
      */
@@ -437,7 +529,7 @@ class Repository implements Contract
     protected function resetAfterLogout(): void
     {
         $this->isAuthenticated = false;
-        $this->session->remove($this->userEntity::getSessionId());
+        $this->session->remove($this->userEntity::getTokenSessionId());
     }
 
     /**
