@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Authenticators;
+namespace Valkyrja\Auth\Adapters;
 
 use Exception;
-use Valkyrja\Auth\Authenticator as Contract;
+use Valkyrja\Auth\Adapter as Contract;
+use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
@@ -22,37 +23,34 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Support\Type\Str;
 
-use function password_hash;
-use function password_verify;
-
 use const PASSWORD_DEFAULT;
 
 /**
- * Class Authenticator.
+ * Class Adapter.
  *
  * @author Melech Mizrachi
  */
-class Authenticator implements Contract
+class ORMAdapter implements Contract
 {
     /**
-     * The Crypt.
+     * The crypt.
      *
      * @var Crypt
      */
     protected Crypt $crypt;
 
     /**
-     * The ORM.
+     * The orm
      *
      * @var ORM
      */
     protected ORM $orm;
 
     /**
-     * Authenticator constructor.
+     * Adapter constructor.
      *
-     * @param Crypt $crypt
-     * @param ORM   $orm
+     * @param Crypt $crypt The crypt
+     * @param ORM   $orm   The orm
      */
     public function __construct(Crypt $crypt, ORM $orm)
     {
@@ -160,7 +158,9 @@ class Authenticator implements Contract
     public function getFreshUser(User $user): User
     {
         /** @var User $freshUser */
-        $freshUser = $this->orm->getRepositoryFromClass($user)->findOne($user->__get($user::getIdField()))->getOneOrFail();
+        $freshUser = $this->orm->getRepositoryFromClass($user)
+                               ->findOne($user->__get($user::getIdField()))
+                               ->getOneOrFail();
 
         return $freshUser;
     }
@@ -232,6 +232,60 @@ class Authenticator implements Contract
     public function unlock(LockableUser $user): void
     {
         $this->lockUnlock($user, false);
+    }
+
+    /**
+     * Register a new user.
+     *
+     * @param User $user
+     *
+     * @throws InvalidRegistrationException
+     *
+     * @return bool
+     */
+    public function register(User $user): bool
+    {
+        $repository    = $this->orm->getRepositoryFromClass($user);
+        $passwordField = $user::getPasswordField();
+
+        try {
+            $user->__set($passwordField, $this->hashPassword($user->__get($passwordField)));
+
+            $this->orm->ensureTransaction();
+            $repository->create($user, true);
+            $repository->persist();
+
+            return true;
+        } catch (Exception $exception) {
+            throw new InvalidRegistrationException($exception->getMessage());
+        }
+    }
+
+    /**
+     * Determine if a user is registered.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isRegistered(User $user): bool
+    {
+        $repository  = $this->orm->getRepositoryFromClass($user);
+        $loginFields = $user::getLoginFields();
+        $find        = $repository->find();
+
+        // Iterate through the login fields
+        foreach ($loginFields as $loginField) {
+            // Find a user with any of the login fields
+            $find->orWhere($loginField, null, $user->__get($loginField));
+        }
+
+        // If a user is found a user is registered with one of the login fields
+        if ($find->getOneOrNull()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

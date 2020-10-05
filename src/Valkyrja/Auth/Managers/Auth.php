@@ -21,10 +21,8 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
-use Valkyrja\Crypt\Crypt;
+use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Session;
 
 /**
  * Class Auth.
@@ -34,11 +32,11 @@ use Valkyrja\Session\Session;
 class Auth implements Contract
 {
     /**
-     * Adapters.
+     * The adapters.
      *
      * @var Adapter[]
      */
-    protected static array $adapters = [];
+    protected static array $adaptersCache = [];
 
     /**
      * Repositories.
@@ -48,25 +46,11 @@ class Auth implements Contract
     protected static array $repositories = [];
 
     /**
-     * The Crypt.
+     * The container service.
      *
-     * @var Crypt
+     * @var Container
      */
-    protected Crypt $crypt;
-
-    /**
-     * The ORM.
-     *
-     * @var ORM
-     */
-    protected ORM $orm;
-
-    /**
-     * The session manager.
-     *
-     * @var Session
-     */
-    protected Session $session;
+    protected Container $container;
 
     /**
      * The config.
@@ -76,41 +60,46 @@ class Auth implements Contract
     protected array $config = [];
 
     /**
-     * The current user.
+     * The adapters.
      *
-     * @var User|null
+     * @var array
      */
-    protected ?User $user = null;
+    protected array $adapters = [];
 
     /**
      * The default adapter.
      *
-     * @var mixed|string
+     * @var string
      */
     protected string $defaultAdapter;
 
     /**
+     * The default repository.
+     *
+     * @var string
+     */
+    protected string $defaultRepository;
+
+    /**
      * The default user entity.
      *
-     * @var mixed|string
+     * @var string
      */
     protected string $defaultUserEntity;
 
     /**
-     * Manager constructor.
+     * Auth constructor.
      *
-     * @param Crypt   $crypt
-     * @param ORM     $orm
-     * @param Session $session
-     * @param array   $config
+     * @param Container $container The container
+     * @param array     $config    The config
      */
-    public function __construct(Crypt $crypt, ORM $orm, Session $session, array $config)
+    public function __construct(Container $container, array $config)
     {
-        $this->crypt             = $crypt;
-        $this->orm               = $orm;
+        $this->container         = $container;
         $this->config            = $config;
-        $this->session           = $session;
+        $this->adapters          = $this->config['adapters'];
         $this->defaultAdapter    = $this->config['adapter'];
+        $this->defaultRepository = $this->config['repository'];
         $this->defaultUserEntity = $this->config['userEntity'];
     }
 
@@ -139,81 +128,9 @@ class Auth implements Contract
     }
 
     /**
-     * Get the Crypt.
-     *
-     * @return Crypt
-     */
-    public function getCrypt(): Crypt
-    {
-        return $this->crypt;
-    }
-
-    /**
-     * Set the Crypt.
-     *
-     * @param Crypt $crypt
-     *
-     * @return static
-     */
-    public function setCrypt(Crypt $crypt): self
-    {
-        $this->crypt = $crypt;
-
-        return $this;
-    }
-
-    /**
-     * Get the ORM.
-     *
-     * @return ORM
-     */
-    public function getOrm(): ORM
-    {
-        return $this->orm;
-    }
-
-    /**
-     * Set the ORM.
-     *
-     * @param ORM $orm
-     *
-     * @return static
-     */
-    public function setOrm(ORM $orm): self
-    {
-        $this->orm = $orm;
-
-        return $this;
-    }
-
-    /**
-     * Get the Session.
-     *
-     * @return Session
-     */
-    public function getSession(): Session
-    {
-        return $this->session;
-    }
-
-    /**
-     * Set the session.
-     *
-     * @param Session $session
-     *
-     * @return static
-     */
-    public function setSession(Session $session): self
-    {
-        $this->session = $session;
-
-        return $this;
-    }
-
-    /**
      * Get an adapter by name.
      *
-     * @param string|null $name The adapter
+     * @param string|null $name [optional] The adapter
      *
      * @return Adapter
      */
@@ -221,36 +138,39 @@ class Auth implements Contract
     {
         $name ??= $this->defaultAdapter;
 
-        if (isset(self::$adapters[$name])) {
-            return self::$adapters[$name];
-        }
-
-        /** @var Adapter $adapter */
-        $adapter = $this->config['adapters'][$name];
-
-        return self::$adapters[$name] = $adapter::make($this);
+        return self::$adaptersCache[$name]
+            ?? self::$adaptersCache[$name] = $this->container->get(
+                $this->adapters[$name],
+                [
+                    $this->config,
+                ]
+            );
     }
 
     /**
      * Get a repository by user entity name.
      *
-     * @param string|null $user The user
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
      *
      * @return Repository
      */
-    public function getRepository(string $user = null): Repository
+    public function getRepository(string $user = null, string $adapter = null): Repository
     {
-        $user ??= $this->defaultUserEntity;
-
-        if (isset(self::$repositories[$user])) {
-            return self::$repositories[$user];
-        }
-
         /** @var User|string $user */
         /** @var Repository $repository */
-        $repository = $user::getAuthRepository() ?? $this->config['repository'];
+        $user ??= $this->defaultUserEntity;
+        $name = $user::getEntityRepository() ?? $this->defaultRepository;
 
-        return self::$repositories[$user] = $repository::make($this, $user);
+        return self::$repositories[$name]
+            ?? self::$repositories[$name] = $this->container->get(
+                $name,
+                [
+                    $this->getAdapter($adapter),
+                    $user,
+                    $this->config,
+                ]
+            );
     }
 
     /**

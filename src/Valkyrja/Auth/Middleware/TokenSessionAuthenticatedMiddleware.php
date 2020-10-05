@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
-use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Http\Request;
 

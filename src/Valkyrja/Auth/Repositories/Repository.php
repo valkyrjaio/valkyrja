@@ -15,14 +15,11 @@ namespace Valkyrja\Auth\Repositories;
 
 use JsonException;
 use Valkyrja\Auth\Adapter;
-use Valkyrja\Auth\Auth;
-use Valkyrja\Auth\Authenticator;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
-use Valkyrja\Auth\Registrator;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Exceptions\CryptException;
@@ -54,20 +51,6 @@ class Repository implements Contract
     protected Adapter $adapter;
 
     /**
-     * The authenticator.
-     *
-     * @var Authenticator
-     */
-    protected Authenticator $authenticator;
-
-    /**
-     * The registrator.
-     *
-     * @var Registrator
-     */
-    protected Registrator $registrator;
-
-    /**
      * The session manager.
      *
      * @var Session
@@ -79,7 +62,7 @@ class Repository implements Contract
      *
      * @var string|User
      */
-    protected string $userEntity;
+    protected string $userEntityName;
 
     /**
      * The current authenticated user.
@@ -114,30 +97,10 @@ class Repository implements Contract
     {
         Cls::validateInherits($user, User::class);
 
-        $this->config        = $config;
-        $this->adapter       = $adapter;
-        $this->authenticator = $adapter->getAuthenticator();
-        $this->registrator   = $adapter->getRegistrator();
-        $this->session       = $session;
-        $this->userEntity    = $user;
-    }
-
-    /**
-     * Make a new repository.
-     *
-     * @param Auth   $auth
-     * @param string $user
-     *
-     * @return static
-     */
-    public static function make(Auth $auth, string $user): self
-    {
-        return new static(
-            $auth->getAdapter(static::$adapterName),
-            $auth->getSession(),
-            $auth->getConfig(),
-            $user
-        );
+        $this->config         = $config;
+        $this->adapter        = $adapter;
+        $this->session        = $session;
+        $this->userEntityName = $user;
     }
 
     /**
@@ -173,7 +136,7 @@ class Repository implements Contract
      */
     public function getUserFromSession(): User
     {
-        $userData = Arr::fromString($this->session->get($this->userEntity::getUserSessionId()));
+        $userData = Arr::fromString($this->session->get($this->userEntityName::getUserSessionId()));
 
         return User::fromArray($userData);
     }
@@ -189,7 +152,7 @@ class Repository implements Contract
      */
     public function login(User $user): self
     {
-        if (! $this->authenticator->authenticate($user)) {
+        if (! $this->adapter->authenticate($user)) {
             throw new InvalidAuthenticationException('Invalid user credentials.');
         }
 
@@ -229,13 +192,13 @@ class Repository implements Contract
     {
         $passwordField = $user::getPasswordField();
         // Get a fresh user from the database
-        $dbUser = $this->authenticator->getFreshUser($user);
+        $dbUser = $this->adapter->getFreshUser($user);
 
         // If the db password does not match the tokenized user password the token is no longer valid
         if ($dbUser->__get($passwordField) !== $user->__get($passwordField)) {
             $this->resetAfterLogout();
 
-            throw new InvalidAuthenticationException('User token is no longer valid.');
+            throw new InvalidAuthenticationException('User is no longer valid.');
         }
 
         if ($this->config['keepUserFresh']) {
@@ -290,7 +253,7 @@ class Repository implements Contract
         }
 
         if ($this->config['keepUserFresh']) {
-            $user = $this->authenticator->getFreshUser($user);
+            $user = $this->adapter->getFreshUser($user);
         }
 
         $this->setAuthenticatedUser($user);
@@ -351,7 +314,7 @@ class Repository implements Contract
      */
     public function getToken(): string
     {
-        return $this->authenticator->getToken($this->user);
+        return $this->adapter->getToken($this->user);
     }
 
     /**
@@ -361,7 +324,7 @@ class Repository implements Contract
      */
     public function getTokenFromSession(): string
     {
-        return $this->session->get($this->userEntity::getTokenSessionId());
+        return $this->session->get($this->userEntityName::getTokenSessionId());
     }
 
     /**
@@ -433,7 +396,7 @@ class Repository implements Contract
      */
     public function register(User $user): self
     {
-        $this->registrator->register($user);
+        $this->adapter->register($user);
 
         return $this;
     }
@@ -447,7 +410,7 @@ class Repository implements Contract
      */
     public function forgot(User $user): self
     {
-        $this->authenticator->resetPassword($user);
+        $this->adapter->resetPassword($user);
 
         return $this;
     }
@@ -462,7 +425,7 @@ class Repository implements Contract
      */
     public function reset(User $user, string $password): self
     {
-        $this->authenticator->updatePassword($user, $password);
+        $this->adapter->updatePassword($user, $password);
 
         return $this;
     }
@@ -476,7 +439,7 @@ class Repository implements Contract
      */
     public function lock(LockableUser $user): self
     {
-        $this->authenticator->lock($user);
+        $this->adapter->lock($user);
 
         return $this;
     }
@@ -490,7 +453,7 @@ class Repository implements Contract
      */
     public function unlock(LockableUser $user): self
     {
-        $this->authenticator->unlock($user);
+        $this->adapter->unlock($user);
 
         return $this;
     }
@@ -506,7 +469,7 @@ class Repository implements Contract
      */
     public function confirmPassword(string $password): self
     {
-        if (! $this->authenticator->isPassword($this->user, $password)) {
+        if (! $this->adapter->isPassword($this->user, $password)) {
             throw new InvalidPasswordConfirmationException('Invalid password confirmation.');
         }
 
@@ -546,7 +509,7 @@ class Repository implements Contract
     protected function resetAfterLogout(): void
     {
         $this->isAuthenticated = false;
-        $this->session->remove($this->userEntity::getTokenSessionId());
+        $this->session->remove($this->userEntityName::getTokenSessionId());
     }
 
     /**
@@ -559,8 +522,8 @@ class Repository implements Contract
     protected function getUserFromToken(string $token): User
     {
         if (
-            ! $this->authenticator->isValidToken($token)
-            || null === $user = $this->authenticator->getUserFromToken($this->userEntity, $token)
+            ! $this->adapter->isValidToken($token)
+            || null === $user = $this->adapter->getUserFromToken($this->userEntityName, $token)
         ) {
             $this->resetAfterLogout();
 

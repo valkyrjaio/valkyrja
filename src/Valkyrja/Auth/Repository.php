@@ -26,16 +26,6 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 interface Repository
 {
     /**
-     * Make a new repository.
-     *
-     * @param Auth   $auth
-     * @param string $user
-     *
-     * @return static
-     */
-    public static function make(Auth $auth, string $user): self;
-
-    /**
      * Get the logged in user.
      *
      * @return User

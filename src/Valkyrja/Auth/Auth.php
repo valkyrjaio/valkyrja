@@ -16,10 +16,7 @@ namespace Valkyrja\Auth;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Session;
 
 /**
  * Interface Auth.
@@ -45,57 +42,9 @@ interface Auth
     public function setConfig(array $config): self;
 
     /**
-     * Get the Crypt.
-     *
-     * @return Crypt
-     */
-    public function getCrypt(): Crypt;
-
-    /**
-     * Set the Crypt.
-     *
-     * @param Crypt $crypt
-     *
-     * @return static
-     */
-    public function setCrypt(Crypt $crypt): self;
-
-    /**
-     * Get the ORM.
-     *
-     * @return ORM
-     */
-    public function getOrm(): ORM;
-
-    /**
-     * Set the ORM.
-     *
-     * @param ORM $orm The orm
-     *
-     * @return static
-     */
-    public function setOrm(ORM $orm): self;
-
-    /**
-     * Get the session manager.
-     *
-     * @return Session
-     */
-    public function getSession(): Session;
-
-    /**
-     * Set the session manager.
-     *
-     * @param Session $session The session
-     *
-     * @return static
-     */
-    public function setSession(Session $session): self;
-
-    /**
      * Get an adapter by name.
      *
-     * @param string|null $name The adapter name
+     * @param string|null $name [optional] The adapter name
      *
      * @return Adapter
      */
@@ -104,11 +53,12 @@ interface Auth
     /**
      * Get a repository by user entity name.
      *
-     * @param string|null $user The user
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
      *
      * @return Repository
      */
-    public function getRepository(string $user = null): Repository;
+    public function getRepository(string $user = null, string $adapter = null): Repository;
 
     /**
      * Get the logged in user.

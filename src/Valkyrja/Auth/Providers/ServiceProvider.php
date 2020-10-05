@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Providers;
 
+use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -35,7 +38,9 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class => 'publishAuth',
+            Auth::class       => 'publishAuth',
+            Repository::class => 'publishRepository',
+            ORMAdapter::class => 'publishAdapter',
         ];
     }
 
@@ -48,6 +53,8 @@ class ServiceProvider extends Provider
     {
         return [
             Auth::class,
+            Repository::class,
+            ORMAdapter::class,
         ];
     }
 
@@ -76,11 +83,51 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Auth::class,
             new \Valkyrja\Auth\Managers\Auth(
-                $container->getSingleton(Crypt::class),
-                $container->getSingleton(ORM::class),
-                $container->getSingleton(Session::class),
+                $container,
                 $config['auth']
             )
+        );
+    }
+
+    /**
+     * Publish the default adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            ORMAdapter::class,
+            static function (array $config) use ($container): ORMAdapter {
+                return new ORMAdapter(
+                    $container->getSingleton(Crypt::class),
+                    $container->getSingleton(ORM::class),
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the default repository service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishRepository(Container $container): void
+    {
+        $container->setClosure(
+            Repository::class,
+            static function (Adapter $adapter, string $user, array $config) use ($container): Repository {
+                return new Repository(
+                    $adapter,
+                    $container->getSingleton(Session::class),
+                    $config,
+                    $user
+                );
+            }
         );
     }
 }

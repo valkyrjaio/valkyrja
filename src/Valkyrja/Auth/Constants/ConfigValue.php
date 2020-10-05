@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Constants;
 
-use Valkyrja\Auth\Adapters\Adapter;
+use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Entities\User;
 use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
@@ -33,7 +33,7 @@ final class ConfigValue
     public const AUTHENTICATE_ROUTE     = RouteName::AUTHENTICATE;
     public const PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
     public const ADAPTERS               = [
-        CKP::DEFAULT => Adapter::class,
+        CKP::DEFAULT => ORMAdapter::class,
     ];
 
     public static array $defaults = [

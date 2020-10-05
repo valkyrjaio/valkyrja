@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
+use Valkyrja\Crypt\Exceptions\CryptException;
+
 /**
  * Interface Adapter.
  *
@@ -21,25 +24,117 @@ namespace Valkyrja\Auth;
 interface Adapter
 {
     /**
-     * Make a new adapter.
+     * Attempt to authenticate a user.
      *
-     * @param Auth $auth
+     * @param User $user
      *
-     * @return static
+     * @return bool
      */
-    public static function make(Auth $auth): self;
+    public function authenticate(User $user): bool;
 
     /**
-     * Get the authenticator.
+     * Get the user token.
      *
-     * @return Authenticator
+     * @param User $user
+     *
+     * @throws CryptException
+     *
+     * @return string
      */
-    public function getAuthenticator(): Authenticator;
+    public function getToken(User $user): string;
 
     /**
-     * Get the registrator.
+     * Determine if a token is valid.
      *
-     * @return Registrator
+     * @param string $token
+     *
+     * @return bool
      */
-    public function getRegistrator(): Registrator;
+    public function isValidToken(string $token): bool;
+
+    /**
+     * Get a user from token.
+     *
+     * @param string $user
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function getUserFromToken(string $user, string $token): ?User;
+
+    /**
+     * Refresh a user from the data store.
+     *
+     * @param User $user
+     *
+     * @return User
+     */
+    public function getFreshUser(User $user): User;
+
+    /**
+     * Determine if a password verifies against the user's password.
+     *
+     * @param User   $user
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function isPassword(User $user, string $password): bool;
+
+    /**
+     * Update a user's password.
+     *
+     * @param User   $user
+     * @param string $password
+     *
+     * @return void
+     */
+    public function updatePassword(User $user, string $password): void;
+
+    /**
+     * Reset a user's password.
+     *
+     * @param User $user
+     *
+     * @return void
+     */
+    public function resetPassword(User $user): void;
+
+    /**
+     * Lock a user.
+     *
+     * @param LockableUser $user
+     *
+     * @return void
+     */
+    public function lock(LockableUser $user): void;
+
+    /**
+     * Unlock a user.
+     *
+     * @param LockableUser $user
+     *
+     * @return void
+     */
+    public function unlock(LockableUser $user): void;
+
+    /**
+     * Register a new user.
+     *
+     * @param User $user
+     *
+     * @throws InvalidRegistrationException
+     *
+     * @return bool
+     */
+    public function register(User $user): bool;
+
+    /**
+     * Determine if a user is registered.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function isRegistered(User $user): bool;
 }
