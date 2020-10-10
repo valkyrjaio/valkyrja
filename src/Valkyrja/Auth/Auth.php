@@ -17,6 +17,7 @@ use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Http\Request;
 
 /**
  * Interface Auth.
@@ -59,6 +60,28 @@ interface Auth
      * @return Repository
      */
     public function getRepository(string $user = null, string $adapter = null): Repository;
+
+    /**
+     * Get a request with auth token header.
+     *
+     * @param Request     $request The request
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @throws CryptException
+     *
+     * @return Request
+     */
+    public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request;
+
+    /**
+     * Get a request without auth token header.
+     *
+     * @param Request $request The request
+     *
+     * @return Request
+     */
+    public function requestWithoutAuthToken(Request $request): Request;
 
     /**
      * Get the logged in user.

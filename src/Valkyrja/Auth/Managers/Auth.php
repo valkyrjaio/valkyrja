@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Managers;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
+use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
@@ -23,6 +24,7 @@ use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
 use Valkyrja\Container\Container;
 use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Http\Request;
 
 /**
  * Class Auth.
@@ -171,6 +173,34 @@ class Auth implements Contract
                     $this->config,
                 ]
             );
+    }
+
+    /**
+     * Get a request with auth token header.
+     *
+     * @param Request     $request The request
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @throws CryptException
+     *
+     * @return Request
+     */
+    public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
+    {
+        return $request->withHeader(Header::AUTH_TOKEN, $this->getRepository($user, $adapter)->getToken());
+    }
+
+    /**
+     * Get a request without auth token header.
+     *
+     * @param Request $request The request
+     *
+     * @return Request
+     */
+    public function requestWithoutAuthToken(Request $request): Request
+    {
+        return $request->withoutHeader(Header::AUTH_TOKEN);
     }
 
     /**
