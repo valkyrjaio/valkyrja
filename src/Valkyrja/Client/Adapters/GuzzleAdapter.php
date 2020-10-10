@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Client\Adapters;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Valkyrja\Client\Adapter as Contract;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 
@@ -65,107 +69,179 @@ class GuzzleAdapter implements Contract
     /**
      * Make a request.
      *
-     * @param string $method  The request method
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): Response
+    public function request(Request $request): Response
     {
-        return $this->fromPsr7($this->guzzle->request($method, $uri, $options));
+        return $this->fromPsr7($this->getGuzzleResponse($request));
     }
 
     /**
      * Make a get request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function get(string $uri, array $options = []): Response
+    public function get(Request $request): Response
     {
-        return $this->request('get', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a post request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function post(string $uri, array $options = []): Response
+    public function post(Request $request): Response
     {
-        return $this->request('post', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a head request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function head(string $uri, array $options = []): Response
+    public function head(Request $request): Response
     {
-        return $this->request('head', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a put request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function put(string $uri, array $options = []): Response
+    public function put(Request $request): Response
     {
-        return $this->request('put', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a patch request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function patch(string $uri, array $options = []): Response
+    public function patch(Request $request): Response
     {
-        return $this->request('patch', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a delete request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws GuzzleException
      *
      * @return Response
      */
-    public function delete(string $uri, array $options = []): Response
+    public function delete(Request $request): Response
     {
-        return $this->request('delete', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
+    }
+
+    /**
+     * Get a Guzzle response from a Valkyrja request.
+     *
+     * @param Request $request The request
+     *
+     * @throws GuzzleException
+     *
+     * @return ResponseInterface
+     */
+    protected function getGuzzleResponse(Request $request): ResponseInterface
+    {
+        $options = [];
+
+        $this->setGuzzleHeaders($request, $options);
+        $this->setGuzzleCookies($request, $options);
+        $this->setGuzzleFormParams($request, $options);
+
+        return $this->guzzle->request($request->getMethod(), $request->getUri()->__toString(), $options);
+    }
+
+    /**
+     * Set the Guzzle headers.
+     *
+     * @param Request  $request The request
+     * @param array   &$options The options
+     *
+     * @return void
+     */
+    protected function setGuzzleHeaders(Request $request, array &$options): void
+    {
+        if ($headers = $request->getHeaders()) {
+            $options['headers'] = [];
+
+            foreach ($headers as $header) {
+                $options['headers'][] = $header;
+            }
+        }
+    }
+
+    /**
+     * Set the Guzzle cookies.
+     *
+     * @param Request  $request The request
+     * @param array   &$options The options
+     *
+     * @return void
+     */
+    protected function setGuzzleCookies(Request $request, array &$options): void
+    {
+        if ($cookies = $request->getCookieParams()) {
+            $jar = new CookieJar();
+
+            foreach ($cookies as $name => $value) {
+                $guzzleCookie = new SetCookie();
+
+                $guzzleCookie->setName($name);
+                $guzzleCookie->setValue($value);
+
+                $jar->setCookie($guzzleCookie);
+            }
+
+            $options['cookies'] = $jar;
+        }
+    }
+
+    /**
+     * Set the Guzzle form params.
+     *
+     * @param Request  $request The request
+     * @param array   &$options The options
+     *
+     * @return void
+     */
+    protected function setGuzzleFormParams(Request $request, array &$options): void
+    {
+        if ($body = $request->getParsedBody()) {
+            $options['form_params'] = $body;
+        }
     }
 
     /**

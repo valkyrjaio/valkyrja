@@ -16,6 +16,7 @@ namespace Valkyrja\Client\Managers;
 use Valkyrja\Client\Client as Contract;
 use Valkyrja\Client\Driver;
 use Valkyrja\Container\Container;
+use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
 /**
@@ -122,92 +123,84 @@ class Client implements Contract
     /**
      * Make a request.
      *
-     * @param string $method  The request method
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): Response
+    public function request(Request $request): Response
     {
-        return $this->useClient()->request($method, $uri, $options);
+        return $this->useClient()->request($request);
     }
 
     /**
      * Make a get request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function get(string $uri, array $options = []): Response
+    public function get(Request $request): Response
     {
-        return $this->useClient()->get($uri, $options);
+        return $this->useClient()->get($request);
     }
 
     /**
      * Make a post request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function post(string $uri, array $options = []): Response
+    public function post(Request $request): Response
     {
-        return $this->useClient()->post($uri, $options);
+        return $this->useClient()->post($request);
     }
 
     /**
      * Make a head request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function head(string $uri, array $options = []): Response
+    public function head(Request $request): Response
     {
-        return $this->useClient()->head($uri, $options);
+        return $this->useClient()->head($request);
     }
 
     /**
      * Make a put request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function put(string $uri, array $options = []): Response
+    public function put(Request $request): Response
     {
-        return $this->useClient()->put($uri, $options);
+        return $this->useClient()->put($request);
     }
 
     /**
      * Make a patch request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function patch(string $uri, array $options = []): Response
+    public function patch(Request $request): Response
     {
-        return $this->useClient()->patch($uri, $options);
+        return $this->useClient()->patch($request);
     }
 
     /**
      * Make a delete request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function delete(string $uri, array $options = []): Response
+    public function delete(Request $request): Response
     {
-        return $this->useClient()->delete($uri, $options);
+        return $this->useClient()->delete($request);
     }
 }

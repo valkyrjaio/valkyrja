@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Client;
 
+use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
 /**
@@ -35,71 +36,63 @@ interface Client
     /**
      * Make a request.
      *
-     * @param string $method  The request method
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): Response;
+    public function request(Request $request): Response;
 
     /**
      * Make a get request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function get(string $uri, array $options = []): Response;
+    public function get(Request $request): Response;
 
     /**
      * Make a post request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function post(string $uri, array $options = []): Response;
+    public function post(Request $request): Response;
 
     /**
      * Make a head request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function head(string $uri, array $options = []): Response;
+    public function head(Request $request): Response;
 
     /**
      * Make a put request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function put(string $uri, array $options = []): Response;
+    public function put(Request $request): Response;
 
     /**
      * Make a patch request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function patch(string $uri, array $options = []): Response;
+    public function patch(Request $request): Response;
 
     /**
      * Make a delete request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @return Response
      */
-    public function delete(string $uri, array $options = []): Response;
+    public function delete(Request $request): Response;
 }

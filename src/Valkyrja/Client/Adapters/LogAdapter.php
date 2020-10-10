@@ -15,10 +15,12 @@ namespace Valkyrja\Client\Adapters;
 
 use JsonException;
 use Valkyrja\Client\Adapter as Contract;
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Log\Logger;
-use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Obj;
 
 /**
  * Class LogAdapter.
@@ -65,19 +67,19 @@ class LogAdapter implements Contract
     /**
      * Make a request.
      *
-     * @param string $method  The request method
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function request(string $method, string $uri, array $options = []): Response
+    public function request(Request $request): Response
     {
-        $optionsString = Arr::toString($options);
+        $optionsString = Obj::toString($request);
 
-        $this->logger->info(static::class . " request: ${method}, uri ${uri}, options ${$optionsString}");
+        $this->logger->info(
+            static::class . " request: {$request->getMethod()}, uri {$request->getUri()->__toString()}, options ${$optionsString}"
+        );
 
         return $this->responseFactory->createResponse();
     }
@@ -85,90 +87,84 @@ class LogAdapter implements Contract
     /**
      * Make a get request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function get(string $uri, array $options = []): Response
+    public function get(Request $request): Response
     {
-        return $this->request('get', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::GET));
     }
 
     /**
      * Make a post request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function post(string $uri, array $options = []): Response
+    public function post(Request $request): Response
     {
-        return $this->request('post', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::POST));
     }
 
     /**
      * Make a head request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function head(string $uri, array $options = []): Response
+    public function head(Request $request): Response
     {
-        return $this->request('head', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::HEAD));
     }
 
     /**
      * Make a put request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function put(string $uri, array $options = []): Response
+    public function put(Request $request): Response
     {
-        return $this->request('put', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::PUT));
     }
 
     /**
      * Make a patch request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function patch(string $uri, array $options = []): Response
+    public function patch(Request $request): Response
     {
-        return $this->request('patch', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::PATCH));
     }
 
     /**
      * Make a delete request.
      *
-     * @param string $uri     The uri to request
-     * @param array  $options [optional] Custom options for request
+     * @param Request $request The request
      *
      * @throws JsonException
      *
      * @return Response
      */
-    public function delete(string $uri, array $options = []): Response
+    public function delete(Request $request): Response
     {
-        return $this->request('delete', $uri, $options);
+        return $this->request($request->withMethod(RequestMethod::DELETE));
     }
 }
