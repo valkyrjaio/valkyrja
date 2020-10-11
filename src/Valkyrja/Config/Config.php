@@ -101,7 +101,7 @@ abstract class Config implements ArrayAccess
     protected function setPropertiesFromEnv(): void
     {
         foreach (static::$envKeys as $property => $value) {
-            $this->__set($property, env(static::$envKeys[$property], $this->__get($property)));
+            $this->__set($property, env(static::$envKeys[$property]) ?? $this->__get($property));
         }
     }
 }
