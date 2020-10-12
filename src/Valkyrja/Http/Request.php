@@ -270,6 +270,37 @@ interface Request extends SimpleRequest
     public function hasParsedBodyParam(string $name): bool;
 
     /**
+     * Retrieve any parameters provided in the request body.
+     * If the request Content-Type is either application/json
+     * and the request method is POST, this method MUST
+     * return the decoded contents of the body.
+     *
+     * @return array The decoded json, if any.
+     *               These will typically be an array or object.
+     */
+    public function getParsedJson(): array;
+
+    /**
+     * Retrieve a specific json param value.
+     * Retrieves a json param value sent by the client to the server.
+     *
+     * @param string $name    The json param name to retrieve
+     * @param mixed  $default [optional] Default value to return if the param does not exist
+     *
+     * @return mixed
+     */
+    public function getParsedJsonParam(string $name, $default = null);
+
+    /**
+     * Determine if a specific json param exists.
+     *
+     * @param string $name The json param name to check for
+     *
+     * @return bool
+     */
+    public function hasParsedJsonParam(string $name): bool;
+
+    /**
      * Retrieve attributes derived from the request.
      * The request "attributes" may be used to allow injection of any
      * parameters derived from the request: e.g., the results of path

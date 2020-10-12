@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Requests;
 
 use InvalidArgumentException;
+use JsonException;
+use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
 use Valkyrja\Http\Exceptions\InvalidPort;
@@ -26,6 +28,8 @@ use Valkyrja\Http\Request as Contract;
 use Valkyrja\Http\Stream;
 use Valkyrja\Http\UploadedFile;
 use Valkyrja\Http\Uri;
+use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Str;
 
 /**
  * Representation of an incoming, server-side HTTP request.
@@ -100,6 +104,13 @@ class Request implements Contract
     protected array $parsedBody = [];
 
     /**
+     * The parsed json.
+     *
+     * @var array
+     */
+    protected array $parsedJson = [];
+
+    /**
      * The files.
      *
      * @var array
@@ -129,6 +140,7 @@ class Request implements Contract
      * @throws InvalidScheme
      * @throws InvalidStream
      * @throws InvalidUploadedFile
+     * @throws JsonException
      */
     public function __construct(
         Uri $uri = null,
@@ -143,6 +155,13 @@ class Request implements Contract
         UploadedFile ...$files
     ) {
         $this->initialize($uri, $method, $body, $headers);
+
+        if (
+            $this->hasHeader(Header::CONTENT_TYPE)
+            && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), 'application/json')
+        ) {
+            $this->parsedJson = Arr::fromString((string) $this->stream);
+        }
 
         $this->server     = $server ?? [];
         $this->cookies    = $cookies ?? [];
@@ -434,6 +453,46 @@ class Request implements Contract
     public function hasParsedBodyParam(string $name): bool
     {
         return isset($this->parsedBody[$name]);
+    }
+
+    /**
+     * Retrieve any parameters provided in the request body.
+     * If the request Content-Type is either application/json
+     * and the request method is POST, this method MUST
+     * return the decoded contents of the body.
+     *
+     * @return array The decoded json, if any.
+     *               These will typically be an array or object.
+     */
+    public function getParsedJson(): array
+    {
+        return $this->parsedJson;
+    }
+
+    /**
+     * Retrieve a specific json param value.
+     * Retrieves a json param value sent by the client to the server.
+     *
+     * @param string $name    The json param name to retrieve
+     * @param mixed  $default [optional] Default value to return if the param does not exist
+     *
+     * @return mixed
+     */
+    public function getParsedJsonParam(string $name, $default = null)
+    {
+        return $this->parsedJson[$name] ?? $default;
+    }
+
+    /**
+     * Determine if a specific json param exists.
+     *
+     * @param string $name The json param name to check for
+     *
+     * @return bool
+     */
+    public function hasParsedJsonParam(string $name): bool
+    {
+        return isset($this->parsedJson[$name]);
     }
 
     /**

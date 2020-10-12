@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Http\Factories;
 
+use JsonException;
 use UnexpectedValueException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\Stream as StreamEnum;
@@ -42,6 +43,8 @@ abstract class RequestFactory
      * @param array|null $body    $_POST superglobal
      * @param array|null $cookies $_COOKIE superglobal
      * @param array|null $files   $_FILES superglobal
+     *
+     * @throws JsonException
      *
      * @return Request
      *
