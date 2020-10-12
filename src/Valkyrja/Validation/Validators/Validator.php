@@ -106,7 +106,7 @@ class Validator implements Contract
         $validated = true;
 
         if ($this->validationRules) {
-            $validated = $this->validateRules(...$this->validationRules);
+            $validated = $this->validateRules($this->validationRules);
         }
 
         return $validated;
@@ -119,7 +119,7 @@ class Validator implements Contract
      *
      * @return bool
      */
-    public function validateRules(array ...$rules): bool
+    public function validateRules(array $rules): bool
     {
         $this->validateRuleSet($rules);
 
@@ -133,7 +133,7 @@ class Validator implements Contract
      *
      * @return void
      */
-    public function setRules(array ...$rules): void
+    public function setRules(array $rules): void
     {
         $this->validationRules = $rules;
     }
@@ -155,7 +155,11 @@ class Validator implements Contract
      */
     public function getFirstErrorMessage(): ?string
     {
-        return $this->errorMessages[0] ?? null;
+        if (! empty($errorMessages = $this->errorMessages)) {
+            return $errorMessages[array_key_first($errorMessages)];
+        }
+
+        return null;
     }
 
     /**
@@ -207,7 +211,7 @@ class Validator implements Contract
         try {
             $rules->{$name}($subject, ...$arguments);
         } catch (Exception $exception) {
-            $this->errorMessages[] = $errorMessage ?? $exception->getMessage();
+            $this->errorMessages[$name] = $errorMessage ?? $exception->getMessage();
         }
     }
 }

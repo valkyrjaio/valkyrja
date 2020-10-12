@@ -39,11 +39,11 @@ interface Validator
     /**
      * Validate a set of rules.
      *
-     * @param array ...$rules The rules
+     * @param array $rules The rules
      *
      * @return bool
      */
-    public function validateRules(array ...$rules): bool;
+    public function validateRules(array $rules): bool;
 
     /**
      * Set the rules to validate.
@@ -87,11 +87,11 @@ interface Validator
      *      ]
      * </code>
      *
-     * @param array ...$rules The rules
+     * @param array $rules The rules
      *
      * @return void
      */
-    public function setRules(array ...$rules): void;
+    public function setRules(array $rules): void;
 
     /**
      * Get the error messages.
