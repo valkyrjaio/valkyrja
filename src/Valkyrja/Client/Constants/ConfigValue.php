@@ -39,6 +39,7 @@ final class ConfigValue
         CKP::DEFAULT => [
             CKP::ADAPTER => CKP::GUZZLE,
             CKP::DRIVER  => CKP::DEFAULT,
+            CKP::OPTIONS => [],
         ],
     ];
 

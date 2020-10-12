@@ -175,7 +175,7 @@ class GuzzleAdapter implements Contract
      */
     protected function getGuzzleResponse(Request $request): ResponseInterface
     {
-        $options = [];
+        $options = $this->config['options'] ?? [];
 
         $this->setGuzzleHeaders($request, $options);
         $this->setGuzzleCookies($request, $options);
