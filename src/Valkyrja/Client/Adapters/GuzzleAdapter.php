@@ -197,8 +197,8 @@ class GuzzleAdapter implements Contract
         if ($headers = $request->getHeaders()) {
             $options['headers'] = [];
 
-            foreach ($headers as $header) {
-                $options['headers'][] = $header;
+            foreach ($headers as $header => $value) {
+                $options['headers'][$header] = $value;
             }
         }
     }
