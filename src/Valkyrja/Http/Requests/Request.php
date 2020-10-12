@@ -161,6 +161,10 @@ class Request implements Contract
             && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), 'application/json')
         ) {
             $this->parsedJson = Arr::fromString((string) $this->stream);
+
+            if (! $parsedBody) {
+                $parsedBody = $this->parsedJson;
+            }
         }
 
         $this->server     = $server ?? [];
