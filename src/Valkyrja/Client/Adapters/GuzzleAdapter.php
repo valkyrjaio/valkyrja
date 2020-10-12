@@ -256,6 +256,7 @@ class GuzzleAdapter implements Contract
     protected function setGuzzleBody(Request $request, array &$options): void
     {
         $body = $request->getBody();
+        $body->rewind();
 
         if ($body && $contents = $body->getContents()) {
             $options['body'] = $contents;
