@@ -180,6 +180,7 @@ class GuzzleAdapter implements Contract
         $this->setGuzzleHeaders($request, $options);
         $this->setGuzzleCookies($request, $options);
         $this->setGuzzleFormParams($request, $options);
+        $this->setGuzzleBody($request, $options);
 
         return $this->guzzle->request($request->getMethod(), $request->getUri()->__toString(), $options);
     }
@@ -241,6 +242,23 @@ class GuzzleAdapter implements Contract
     {
         if ($body = $request->getParsedBody()) {
             $options['form_params'] = $body;
+        }
+    }
+
+    /**
+     * Set the Guzzle body.
+     *
+     * @param Request  $request The request
+     * @param array   &$options The options
+     *
+     * @return void
+     */
+    protected function setGuzzleBody(Request $request, array &$options): void
+    {
+        $body = $request->getBody();
+
+        if ($body && $contents = $body->getContents()) {
+            $options['body'] = $contents;
         }
     }
 
