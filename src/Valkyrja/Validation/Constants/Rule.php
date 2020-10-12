@@ -34,6 +34,6 @@ final class Rule
     public const NUMERIC      = 'numeric';
     public const LESS_THAN    = 'lessThan';
     public const GREATER_THAN = 'greaterThan';
-    public const ORM_UNIQUE   = 'ORM:unique';
-    public const ORM_EXISTS   = 'ORM:exists';
+    public const ORM_UNIQUE   = 'ormUnique';
+    public const ORM_EXISTS   = 'ormExists';
 }

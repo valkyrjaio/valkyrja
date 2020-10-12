@@ -60,7 +60,7 @@ class ORM
      *
      * @return void
      */
-    public function unique($subject, string $entity, string $field = null): void
+    public function ormUnique($subject, string $entity, string $field = null): void
     {
         /** @var Entity|string $entity */
         $field ??= $entity::getIdField();
@@ -84,9 +84,9 @@ class ORM
      *
      * @return void
      */
-    public function exists($subject, string $entity, string $field = null): void
+    public function ormExists($subject, string $entity, string $field = null): void
     {
-        /** @var Entity $entity */
+        /** @var Entity|string $entity */
         $field ??= $entity::getIdField();
         // Check for a result
         $result = $this->orm->getRepository($entity)->find()->where($field, null, $subject)->getOneOrNull();
