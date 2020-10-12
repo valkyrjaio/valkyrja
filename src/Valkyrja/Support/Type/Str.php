@@ -447,7 +447,7 @@ class Str
      */
     public static function isEmail(string $subject): bool
     {
-        return filter_var($subject, FILTER_VALIDATE_EMAIL);
+        return (bool) filter_var($subject, FILTER_VALIDATE_EMAIL);
     }
 
     /**
