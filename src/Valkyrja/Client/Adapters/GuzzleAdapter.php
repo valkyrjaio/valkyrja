@@ -240,7 +240,7 @@ class GuzzleAdapter implements Contract
      */
     protected function setGuzzleFormParams(Request $request, array &$options): void
     {
-        if ($body = $request->getParsedBody()) {
+        if (($body = $request->getParsedBody()) && ! $request->getParsedJson()) {
             $options['form_params'] = $body;
         }
     }
