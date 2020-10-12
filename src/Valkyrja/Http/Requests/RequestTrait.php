@@ -80,13 +80,6 @@ trait RequestTrait
     protected ?string $requestTarget = null;
 
     /**
-     * The body.
-     *
-     * @var Stream
-     */
-    protected Stream $body;
-
-    /**
      * Retrieves the message's request target.
      * Retrieves the message's request-target either as it will appear (for
      * clients), as it appeared at request (for servers), or as it was
@@ -309,7 +302,7 @@ trait RequestTrait
     ): void {
         $this->uri     = $uri ?? new HttpUri();
         $this->method  = $method ?? RequestMethod::GET;
-        $this->body    = $body ?? new HttpStream(StreamEnum::INPUT);
+        $this->stream  = $body ?? new HttpStream(StreamEnum::INPUT);
         $this->headers = $headers ?? [];
 
         $this->setHeaders($this->headers);
