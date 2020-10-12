@@ -172,35 +172,41 @@ class Validator implements Contract
     protected function validateRuleSet(array $ruleSet): void
     {
         foreach ($ruleSet as $key => $item) {
-            $this->validateSubject($item['subject'] ?? null, $item['rules'] ?? []);
+            $this->validateSubject($key, $item['subject'] ?? null, $item['rules'] ?? []);
         }
     }
 
     /**
      * Validate a subject item.
      *
-     * @param mixed $subject The subject
-     * @param array $rules   The rules
+     * @param string $subjectName The subject name
+     * @param mixed  $subject     The subject
+     * @param array  $rules       The rules
      *
      * @return void
      */
-    protected function validateSubject($subject, array $rules = []): void
+    protected function validateSubject(string $subjectName, $subject, array $rules = []): void
     {
         foreach ($rules as $name => $rule) {
-            $this->validateRule($name, $subject, $rule);
+            if (isset($this->errorMessages[$subjectName])) {
+                continue;
+            }
+
+            $this->validateRule($subjectName, $name, $subject, $rule);
         }
     }
 
     /**
      * Validate a rule.
      *
-     * @param string $name    The rule name
-     * @param mixed  $subject The subject
-     * @param array  $rule    The rule
+     * @param string $subjectName The subject name
+     * @param string $name        The rule name
+     * @param mixed  $subject     The subject
+     * @param array  $rule        The rule
      *
      * @return void
      */
-    protected function validateRule(string $name, $subject, array $rule): void
+    protected function validateRule(string $subjectName, string $name, $subject, array $rule): void
     {
         $arguments    = $rule['arguments'] ?? [];
         $rulesName    = $this->config[CKP::RULES_MAP][$name] ?? null;
@@ -211,7 +217,7 @@ class Validator implements Contract
         try {
             $rules->{$name}($subject, ...$arguments);
         } catch (Exception $exception) {
-            $this->errorMessages[$name] = $errorMessage ?? $exception->getMessage();
+            $this->errorMessages[$subjectName] = $errorMessage ?? $exception->getMessage();
         }
     }
 }
