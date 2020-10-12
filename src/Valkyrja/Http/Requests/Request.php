@@ -15,6 +15,7 @@ namespace Valkyrja\Http\Requests;
 
 use InvalidArgumentException;
 use JsonException;
+use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Exceptions\InvalidMethod;
 use Valkyrja\Http\Exceptions\InvalidPath;
@@ -158,7 +159,7 @@ class Request implements Contract
 
         if (
             $this->hasHeader(Header::CONTENT_TYPE)
-            && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), 'application/json')
+            && Str::contains($this->getHeaderLine(Header::CONTENT_TYPE), ContentType::APPLICATION_JSON)
         ) {
             $this->parsedJson = Arr::fromString((string) $this->stream);
 
