@@ -89,7 +89,7 @@ class OrkaEngine extends PHPEngine
     {
         $cachedPath = $this->getCachedFilePath($name);
 
-        if (! $this->isDebug && ! is_file($cachedPath)) {
+        if ($this->isDebug || ! is_file($cachedPath)) {
             $contents = $this->parseContent(file_get_contents($this->getFullPath($name)));
 
             file_put_contents($cachedPath, $contents);
