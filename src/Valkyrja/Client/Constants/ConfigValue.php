@@ -16,6 +16,7 @@ namespace Valkyrja\Client\Constants;
 use Valkyrja\Client\Adapters\GuzzleAdapter;
 use Valkyrja\Client\Adapters\LogAdapter;
 use Valkyrja\Client\Adapters\NullAdapter;
+use Valkyrja\Client\Drivers\Driver;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
 /**
@@ -32,7 +33,7 @@ final class ConfigValue
         CKP::LOG    => LogAdapter::class,
     ];
     public const DRIVERS  = [
-        CKP::DEFAULT => GuzzleAdapter::class,
+        CKP::DEFAULT => Driver::class,
     ];
     public const CLIENTS  = [
         CKP::DEFAULT => [
