@@ -233,12 +233,18 @@ final class EnvKey
     public const ROUTING_CACHE_FILE_PATH             = 'ROUTING_CACHE_FILE_PATH';
     public const ROUTING_USE_CACHE_FILE              = 'ROUTING_USE_CACHE_FILE';
 
-    public const SESSION_ID       = 'SESSION_ID';
-    public const SESSION_NAME     = 'SESSION_NAME';
-    public const SESSION_DEFAULT  = 'SESSION_DEFAULT';
-    public const SESSION_ADAPTERS = 'SESSION_ADAPTERS';
-    public const SESSION_DRIVERS  = 'SESSION_DRIVERS';
-    public const SESSION_SESSIONS = 'SESSION_SESSIONS';
+    public const SESSION_ID               = 'SESSION_ID';
+    public const SESSION_NAME             = 'SESSION_NAME';
+    public const SESSION_COOKIE_LIFETIME  = 'SESSION_COOKIE_LIFETIME';
+    public const SESSION_COOKIE_PATH      = 'SESSION_COOKIE_PATH';
+    public const SESSION_COOKIE_DOMAIN    = 'SESSION_COOKIE_DOMAIN';
+    public const SESSION_COOKIE_SECURE    = 'SESSION_COOKIE_SECURE';
+    public const SESSION_COOKIE_HTTP_ONLY = 'SESSION_COOKIE_HTTP_ONLY';
+    public const SESSION_COOKIE_SAME_SITE = 'SESSION_COOKIE_SAME_SITE';
+    public const SESSION_DEFAULT          = 'SESSION_DEFAULT';
+    public const SESSION_ADAPTERS         = 'SESSION_ADAPTERS';
+    public const SESSION_DRIVERS          = 'SESSION_DRIVERS';
+    public const SESSION_SESSIONS         = 'SESSION_SESSIONS';
 
     public const SMS_DEFAULT          = 'SMS_DEFAULT';
     public const SMS_ADAPTERS         = 'SMS_ADAPTERS';
@@ -271,7 +277,7 @@ final class EnvKey
     public const VIEW_PATHS               = 'VIEW_PATHS';
     public const VIEW_DISKS               = 'VIEW_DISKS';
     public const VIEW_PHP_FILE_EXTENSION  = 'VIEW_PHP_FILE_EXTENSION';
-    public const VIEW_OKRA_FILE_EXTENSION = 'VIEW_OKRA_FILE_EXTENSION';
+    public const VIEW_ORKA_FILE_EXTENSION = 'VIEW_ORKA_FILE_EXTENSION';
     public const VIEW_TWIG_COMPILED_DIR   = 'VIEW_TWIG_COMPILED_DIR';
     public const VIEW_TWIG_EXTENSIONS     = 'VIEW_TWIG_EXTENSIONS';
 }

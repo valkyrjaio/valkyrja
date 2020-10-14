@@ -50,6 +50,9 @@ class PHPAdapter extends NullAdapter
             return;
         }
 
+        // Set the session cookie parameters
+        session_set_cookie_params($this->config['cookieParams'] ?? []);
+
         // If the session failed to start
         if (! session_start()) {
             // Throw a new exception

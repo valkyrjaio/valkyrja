@@ -39,10 +39,22 @@ final class ConfigValue
     ];
     public const SESSIONS = [
         CKP::DEFAULT => [
-            CKP::ADAPTER => CKP::PHP,
-            CKP::DRIVER  => CKP::DEFAULT,
-            CKP::ID      => null,
-            CKP::NAME    => null,
+            CKP::ADAPTER       => CKP::PHP,
+            CKP::DRIVER        => CKP::DEFAULT,
+            CKP::ID            => null,
+            CKP::NAME          => null,
+            /**
+             * @example
+             *  [
+             *      'lifetime' => 600,
+             *      'path'     => '/',
+             *      'domain'   => 'example.com',
+             *      'secure'   => true,
+             *      'httponly' => true,
+             *      'samesite' => 'lax',
+             *  ]
+             */
+            CKP::COOKIE_PARAMS => null,
         ],
     ];
 

@@ -180,4 +180,5 @@ final class ConfigKeyPart
     public const CLIENTS                     = 'clients';
     public const MAILERS                     = 'mailers';
     public const MESSENGERS                  = 'messengers';
+    public const COOKIE_PARAMS               = 'cookieParams';
 }
