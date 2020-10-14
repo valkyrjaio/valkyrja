@@ -14,17 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 use Valkyrja\Auth\VerifiableUser as Contract;
-use Valkyrja\ORM\Entities\EntityFields;
 
 /**
  * Entity VerifiableUser.
  *
  * @author Melech Mizrachi
  */
-class VerifiableUser implements Contract
+class VerifiableUser extends User implements Contract
 {
-    use EntityFields;
-    use UserFields;
     use MailableUserFields;
     use VerifiableUserFields;
 }

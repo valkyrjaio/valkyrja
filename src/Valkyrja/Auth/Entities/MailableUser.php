@@ -14,16 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 use Valkyrja\Auth\MailableUser as Contract;
-use Valkyrja\ORM\Entities\EntityFields;
 
 /**
  * Entity MailableUser.
  *
  * @author Melech Mizrachi
  */
-class MailableUser implements Contract
+class MailableUser extends User implements Contract
 {
-    use EntityFields;
-    use UserFields;
     use MailableUserFields;
 }

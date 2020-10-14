@@ -14,16 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Entities;
 
 use Valkyrja\Auth\LockableUser as Contract;
-use Valkyrja\ORM\Entities\EntityFields;
 
 /**
  * Entity LockableUser.
  *
  * @author Melech Mizrachi
  */
-class LockableUser implements Contract
+class LockableUser extends User implements Contract
 {
-    use EntityFields;
-    use UserFields;
     use LockableUserFields;
 }
