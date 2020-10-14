@@ -423,6 +423,20 @@ class Str
      */
     public static function random(int $length = 20): string
     {
+        return trim(md5(random_bytes($length)), " \t\n\r\0\x0B/");
+    }
+
+    /**
+     * Get a base64 random string.
+     *
+     * @param int $length [optional] The length
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public static function randomBase64(int $length = 20): string
+    {
         return trim(base64_encode(random_bytes($length)), " \t\n\r\0\x0B/");
     }
 
