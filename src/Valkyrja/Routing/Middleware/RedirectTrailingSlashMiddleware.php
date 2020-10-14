@@ -17,10 +17,7 @@ use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
-
 use Valkyrja\Support\Type\Str;
-
-use function substr;
 
 /**
  * Class RedirectTrailingSlashMiddleware.
@@ -38,11 +35,12 @@ class RedirectTrailingSlashMiddleware extends Middleware
      */
     public static function before(Request $request)
     {
+        $slash = '/';
         $path = $request->getUri()->getPath();
 
-        if ($path !== '/' && Str::endsWith($path, '/')) {
+        if ($path !== $slash && Str::endsWith($path, $slash)) {
             $query = $request->getUri()->getQuery();
-            $uri   = substr($path, 0, -1) . ($query ? '?' . $query : '');
+            $uri   = '/' . trim($path, $slash) . ($query ? '?' . $query : '');
             /** @var ResponseFactory $responseFactory */
             $responseFactory = self::$container->getSingleton(ResponseFactory::class);
 
