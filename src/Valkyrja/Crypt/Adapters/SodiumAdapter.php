@@ -21,8 +21,8 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 
-use function base64_decode;
-use function base64_encode;
+use function bin2hex;
+use function hex2bin;
 use function is_string;
 use function json_decode;
 use function random_bytes;
@@ -100,7 +100,7 @@ class SodiumAdapter implements Adapter
     {
         $key    = $this->getKeyAsBytes($key);
         $nonce  = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
+        $cipher = bin2hex($nonce . sodium_crypto_secretbox($message, $nonce, $key));
 
         sodium_memzero($message);
         sodium_memzero($key);
@@ -204,7 +204,7 @@ class SodiumAdapter implements Adapter
      */
     protected function getDecoded(string $encrypted): string
     {
-        $decoded = base64_decode($encrypted, true);
+        $decoded = hex2bin($encrypted);
 
         $this->validateDecoded($decoded);
 
@@ -346,6 +346,6 @@ class SodiumAdapter implements Adapter
     {
         $key ??= $this->key;
 
-        return base64_decode($key, true);
+        return hex2bin($key);
     }
 }

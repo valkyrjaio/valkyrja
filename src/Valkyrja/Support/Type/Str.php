@@ -16,6 +16,7 @@ namespace Valkyrja\Support\Type;
 use Exception;
 
 use function base64_encode;
+use function bin2hex;
 use function filter_var;
 use function preg_replace;
 use function random_bytes;
@@ -423,7 +424,21 @@ class Str
      */
     public static function random(int $length = 20): string
     {
-        return trim(md5(random_bytes($length)), " \t\n\r\0\x0B/");
+        return trim(bin2hex(random_bytes($length)), " \t\n\r\0\x0B/");
+    }
+
+    /**
+     * Get a md5 random string.
+     *
+     * @param int $length [optional] The length
+     *
+     * @throws Exception
+     *
+     * @return string
+     */
+    public static function randomMd5(int $length = 20): string
+    {
+        return md5(static::random($length));
     }
 
     /**
@@ -437,7 +452,7 @@ class Str
      */
     public static function randomBase64(int $length = 20): string
     {
-        return trim(base64_encode(random_bytes($length)), " \t\n\r\0\x0B/");
+        return base64_encode(static::random($length));
     }
 
     /**
