@@ -18,7 +18,7 @@ namespace Valkyrja\Http\Constants;
  *
  * @author Melech Mizrachi
  */
-final class Stream
+final class StreamType
 {
     public const INPUT = 'php://input';
     public const TEMP  = 'php://temp';

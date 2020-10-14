@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
-use Valkyrja\Http\Constants\Stream as StreamEnum;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\HtmlResponse as Contract;
@@ -33,9 +33,9 @@ class HtmlResponse extends Response implements Contract
     /**
      * NativeHtmlResponse constructor.
      *
-     * @param string     $html       The html
-     * @param int|null   $statusCode [optional] The status
-     * @param array|null $headers    [optional] The headers
+     * @param string   $html       The html
+     * @param int|null $statusCode [optional] The status
+     * @param array    $headers    [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws RuntimeException
@@ -44,7 +44,7 @@ class HtmlResponse extends Response implements Contract
      */
     public function __construct(string $html = '', int $statusCode = null, array $headers = [])
     {
-        $body = new Stream(StreamEnum::TEMP, 'wb+');
+        $body = new Stream(StreamType::TEMP, 'wb+');
 
         $body->write($html);
         $body->rewind();

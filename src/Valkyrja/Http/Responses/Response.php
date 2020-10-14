@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Responses;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\Header;
 use Valkyrja\Http\Constants\StatusCode;
-use Valkyrja\Http\Constants\Stream as StreamEnum;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Cookie;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
@@ -86,7 +86,7 @@ class Response implements Contract
      */
     protected function initialize(Stream $body = null, int $statusCode = null, array $headers = null): void
     {
-        $this->stream       = $body ?? new HttpStream(StreamEnum::INPUT, 'rw');
+        $this->stream       = $body ?? new HttpStream(StreamType::INPUT, 'rw');
         $this->statusCode   = $this->validateStatusCode($statusCode ?? StatusCode::OK);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
@@ -130,7 +130,7 @@ class Response implements Contract
     {
         $response = new static();
 
-        $stream = new HttpStream(StreamEnum::TEMP, 'wb+');
+        $stream = new HttpStream(StreamType::TEMP, 'wb+');
         $stream->write($content ?? '');
         $stream->rewind();
 

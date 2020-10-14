@@ -18,7 +18,7 @@ use JsonException;
 use RuntimeException;
 use Valkyrja\Http\Constants\ContentType;
 use Valkyrja\Http\Constants\Header;
-use Valkyrja\Http\Constants\Stream as StreamEnum;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Exceptions\InvalidStatusCode;
 use Valkyrja\Http\Exceptions\InvalidStream;
 use Valkyrja\Http\JsonResponse as Contract;
@@ -105,7 +105,7 @@ class JsonResponse extends Response implements Contract
         $this->data            = $data ?? [];
         $this->encodingOptions = $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS;
 
-        $body = new Stream(StreamEnum::TEMP, 'wb+');
+        $body = new Stream(StreamType::TEMP, 'wb+');
         $body->write(json_encode($this->data, JSON_THROW_ON_ERROR | $this->encodingOptions));
         $body->rewind();
 

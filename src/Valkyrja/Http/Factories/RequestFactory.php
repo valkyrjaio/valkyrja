@@ -16,7 +16,7 @@ namespace Valkyrja\Http\Factories;
 use JsonException;
 use UnexpectedValueException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Constants\Stream as StreamEnum;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\Requests\Request;
 use Valkyrja\Http\Streams\Stream;
 
@@ -68,7 +68,7 @@ abstract class RequestFactory
         return new Request(
             UriFactory::marshalUriFromServer($server, $headers),
             static::get('REQUEST_METHOD', $server, RequestMethod::GET),
-            new Stream(StreamEnum::INPUT),
+            new Stream(StreamType::INPUT),
             $headers,
             $server,
             $cookies ?? $_COOKIE,
