@@ -118,6 +118,8 @@ interface Repository
     /**
      * Log a user in via a user session.
      *
+     * @throws InvalidAuthenticationException
+     *
      * @return static
      */
     public function loginFromSession(): self;

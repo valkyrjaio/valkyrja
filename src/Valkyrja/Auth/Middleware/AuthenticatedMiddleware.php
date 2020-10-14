@@ -16,7 +16,6 @@ namespace Valkyrja\Auth\Middleware;
 use Exception;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
-use Valkyrja\Auth\Constants\ConfigValue;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Http\Constants\StatusCode;
@@ -34,9 +33,9 @@ class AuthenticatedMiddleware extends AuthMiddleware
     /**
      * The user to use.
      *
-     * @var string
+     * @var string|null
      */
-    protected static string $user = ConfigValue::USER_ENTITY;
+    protected static ?string $user = null;
 
     /**
      * The error message to use.
@@ -61,7 +60,9 @@ class AuthenticatedMiddleware extends AuthMiddleware
      */
     public static function before(Request $request)
     {
-        $repository = static::getAuth()->getRepository(static::$user);
+        $auth       = static::getAuth();
+        $user       = static::$user ?? $auth->getConfig()['userEntity'];
+        $repository = $auth->getRepository($user);
 
         // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {

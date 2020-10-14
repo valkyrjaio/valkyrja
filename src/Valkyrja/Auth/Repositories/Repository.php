@@ -130,15 +130,22 @@ class Repository implements Contract
     /**
      * Get the user stored in session.
      *
+     * @throws InvalidAuthenticationException
      * @throws JsonException
      *
      * @return User
      */
     public function getUserFromSession(): User
     {
-        $userData = Arr::fromString($this->session->get($this->userEntityName::getUserSessionId()));
+        $sessionUser = $this->session->get($this->userEntityName::getUserSessionId());
 
-        return User::fromArray($userData);
+        if (! $sessionUser) {
+            throw new InvalidAuthenticationException('No logged in user.');
+        }
+
+        $userData = Arr::fromString($sessionUser);
+
+        return $this->userEntityName::fromArray($userData);
     }
 
     /**

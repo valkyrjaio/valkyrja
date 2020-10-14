@@ -139,7 +139,9 @@ trait ModelTrait
 
         // Iterate through properties to expose
         foreach (static::$exposed as $exposedProperty => $value) {
-            $properties[$exposedProperty] = $this->__get($exposedProperty);
+            if (isset($this->{$exposedProperty})) {
+                $properties[$exposedProperty] = $this->__get($exposedProperty);
+            }
         }
 
         return $properties;
