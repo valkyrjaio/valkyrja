@@ -122,7 +122,6 @@ class ModelTest extends TestCase
         $json = json_encode(
             [
                 'property' => null,
-                'prop'     => null,
             ], JSON_THROW_ON_ERROR
         );
 
