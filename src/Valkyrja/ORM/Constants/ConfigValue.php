@@ -70,6 +70,7 @@ final class ConfigValue
             CKP::OPTIONS       => null,
         ],
     ];
+    public const MIGRATIONS = [];
 
     public static array $defaults = [
         CKP::DEFAULT     => self::DEFAULT,
@@ -77,5 +78,6 @@ final class ConfigValue
         CKP::DRIVERS     => self::DRIVERS,
         CKP::REPOSITORY  => self::REPOSITORY,
         CKP::CONNECTIONS => self::CONNECTIONS,
+        CKP::MIGRATIONS  => self::MIGRATIONS,
     ];
 }
