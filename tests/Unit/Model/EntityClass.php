@@ -25,11 +25,20 @@ class EntityClass implements Entity
     use EntityTrait;
 
     /**
+     * The properties to expose.
+     *
+     * @var string[]
+     */
+    protected static array $exposed = [
+        'prop',
+    ];
+
+    /**
      * A property to test with.
      *
      * @var string|null
      */
-    protected ?string $property = null;
+    public ?string $property = null;
 
     /**
      * A property to test with using getter/setter.
