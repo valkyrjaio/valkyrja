@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Entities;
 
 use Valkyrja\Auth\Entities\MailableUserFields;
-use Valkyrja\Auth\Entities\UserFields;
+use Valkyrja\Auth\Entities\User;
 use Valkyrja\Notification\NotifiableUser as Contract;
-use Valkyrja\ORM\Entities\EntityFields;
 
 /**
  * Entity NotifiableUser.
  *
  * @author Melech Mizrachi
  */
-class NotifiableUser implements Contract
+class NotifiableUser extends User implements Contract
 {
-    use EntityFields;
-    use UserFields;
     use MailableUserFields;
     use NotifiableUserFields;
 }
