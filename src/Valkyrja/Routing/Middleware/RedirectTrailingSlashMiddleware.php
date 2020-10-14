@@ -15,11 +15,12 @@ namespace Valkyrja\Routing\Middleware;
 
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
+use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
 
-use function strlen;
+use Valkyrja\Support\Type\Str;
+
 use function substr;
-use function Valkyrja\redirectTo;
 
 /**
  * Class RedirectTrailingSlashMiddleware.
@@ -39,11 +40,13 @@ class RedirectTrailingSlashMiddleware extends Middleware
     {
         $path = $request->getUri()->getPath();
 
-        if ($path !== '/' && $path[strlen($path) - 1] === '/') {
+        if ($path !== '/' && Str::endsWith($path, '/')) {
             $query = $request->getUri()->getQuery();
+            $uri   = substr($path, 0, -1) . ($query ? '?' . $query : '');
+            /** @var ResponseFactory $responseFactory */
+            $responseFactory = self::$container->getSingleton(ResponseFactory::class);
 
-            // TODO: Remove this in favor of something not using a global helper
-            redirectTo(substr($path, 0, -1) . ($query ? '?' . $query : ''));
+            return $responseFactory->createRedirectResponse($uri);
         }
 
         return $request;
