@@ -36,7 +36,7 @@ class RedirectTrailingSlashMiddleware extends Middleware
     public static function before(Request $request)
     {
         $slash = '/';
-        $path = $request->getUri()->getPath();
+        $path  = $request->getUri()->getPath();
 
         if ($path !== $slash && Str::endsWith($path, $slash)) {
             $query = $request->getUri()->getQuery();
