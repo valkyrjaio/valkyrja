@@ -108,7 +108,7 @@ class AuthenticatedMiddleware extends AuthMiddleware
             $json->setStatusCode(StatusCode::UNAUTHORIZED);
             $json->setStatus(Status::ERROR);
 
-            return static::getResponseFactory()->createJsonResponse(
+            return self::$responseFactory->createJsonResponse(
                 $json->__toArray(),
                 StatusCode::UNAUTHORIZED
             );
@@ -117,7 +117,7 @@ class AuthenticatedMiddleware extends AuthMiddleware
         /** @var Url $url */
         $url = self::$container->getSingleton(Url::class);
 
-        return static::getResponseFactory()->createRedirectResponse(
+        return self::$responseFactory->createRedirectResponse(
             $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE)),
             StatusCode::UNAUTHORIZED
         );
