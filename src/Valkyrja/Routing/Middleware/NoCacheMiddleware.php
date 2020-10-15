@@ -34,10 +34,9 @@ class NoCacheMiddleware extends Middleware
      */
     public static function after(Request $request, Response $response): Response
     {
-        $response->withHeader('Expires', 'Sun, 01 Jan 2014 00:00:00 GMT');
-        $response->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0');
-        $response->withHeader('Pragma', 'no-cache');
-
-        return $response;
+        return $response
+            ->withHeader('Expires', 'Sun, 01 Jan 2014 00:00:00 GMT')
+            ->withHeader('Cache-Control', 'no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0')
+            ->withHeader('Pragma', 'no-cache');
     }
 }
