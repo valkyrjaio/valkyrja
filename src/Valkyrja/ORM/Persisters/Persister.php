@@ -70,7 +70,7 @@ class Persister implements Contract
     /**
      * Persister constructor.
      *
-     * @param Adapter $connection
+     * @param Adapter $connection The adapter
      */
     public function __construct(Adapter $connection)
     {
