@@ -69,6 +69,15 @@ interface Model extends JsonSerializable
     public function __setProperties(array $properties): void;
 
     /**
+     * Get a new model with new properties.
+     *
+     * @param array $properties The properties to modify
+     *
+     * @return $this
+     */
+    public function __withProperties(array $properties): self;
+
+    /**
      * Get model as an array.
      *
      * @return array

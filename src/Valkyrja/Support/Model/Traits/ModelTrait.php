@@ -128,12 +128,30 @@ trait ModelTrait
         foreach ($properties as $property => $value) {
             // Ensure the property exists before blindly setting
             if (property_exists($this, $property)) {
-                static::$originalProperties[$property] = $value;
+                if (! isset(static::$originalProperties[$property])) {
+                    static::$originalProperties[$property] = $value;
+                }
 
                 // Set the property
                 $this->__set($property, $value);
             }
         }
+    }
+
+    /**
+     * Get a new model with new properties.
+     *
+     * @param array $properties The properties to modify
+     *
+     * @return $this
+     */
+    public function __withProperties(array $properties): self
+    {
+        $model = clone $this;
+
+        $model->__setProperties($properties);
+
+        return $model;
     }
 
     /**

@@ -176,7 +176,9 @@ trait EntityTrait
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             if (property_exists($this, $property)) {
-                static::$originalProperties[$property] = $value;
+                if (! isset(static::$originalProperties[$property])) {
+                    static::$originalProperties[$property] = $value;
+                }
 
                 // Set the property
                 $this->__set(
