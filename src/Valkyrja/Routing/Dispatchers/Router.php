@@ -270,6 +270,8 @@ class Router implements Contract
         $this->determineRedirectRoute($route);
         // Determine if the route is secure and should be redirected
         $this->determineIsSecureRoute($request, $route);
+        // Set the route in the route middleware
+        RouteMiddleware::$route = $route;
         // Dispatch the route's before request handled middleware
         $requestAfterMiddleware = $this->requestMiddleware($request, $route->getMiddleware() ?? []);
 
@@ -285,8 +287,8 @@ class Router implements Contract
 
         // Set the request in the abstract controller
         Controller::$request = $request;
-        // Set the route in the abstract controller and the route middleware
-        Controller::$route = RouteMiddleware::$route = $route;
+        // Set the route in the abstract controller
+        Controller::$route = $route;
 
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->dispatcher->dispatch($route, $route->getMatches());
