@@ -20,13 +20,13 @@ use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
+use Valkyrja\Support\Type\Str;
 
 use function array_merge;
 use function explode;
 use function is_array;
 use function is_string;
 use function str_replace;
-use function strpos;
 
 /**
  * Trait CollectorHelpers.
@@ -107,22 +107,6 @@ trait CollectorHelpers
     }
 
     /**
-     * Set group context in a route.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function setGroupContextInRoute(Route $route): void
-    {
-        $this->setPathInRoute($route);
-        $this->setClassInRoute($route);
-        $this->setNameInRoute($route);
-        $this->setMiddlewareInRoute($route);
-        $this->setSecureInRoute($route);
-    }
-
-    /**
      * Set a controller context in a route.
      *
      * @param Route $route The route
@@ -143,7 +127,7 @@ trait CollectorHelpers
      */
     protected function setClassInRoute(Route $route): void
     {
-        $this->setPropertyInRoute($route, 'Class');
+        // $this->setPropertyInRoute($route, 'Class');
     }
 
     /**
@@ -179,7 +163,7 @@ trait CollectorHelpers
      */
     protected function setSecureInRoute(Route $route): void
     {
-        $this->setPropertyInRoute($route, 'Secure');
+        // $this->setPropertyInRoute($route, 'Secure');
     }
 
     /**
@@ -197,13 +181,11 @@ trait CollectorHelpers
             return;
         }
 
-        $getMethod = $method === 'Secure' ? "is$method" : "get$method";
-        $setMethod = "set$method";
+        $getMethod = $method === 'Secure' ? "is{$method}" : "get{$method}";
+        $setMethod = "set{$method}";
 
-        if ($value = $this->route->{$getMethod}()) {
-            if ($merge) {
-                $value = $this->mergePropertiesForRoute($value, $route->{$getMethod}(), $method === 'Name' ? '.' : '');
-            }
+        if ($merge && $value = $this->route->{$getMethod}()) {
+            $value = $this->mergePropertiesForRoute($value, $route->{$getMethod}(), $method === 'Name' ? '.' : '');
 
             $route->{$setMethod}($value);
         }
@@ -251,13 +233,14 @@ trait CollectorHelpers
         string $name = null,
         bool $setDependencies = true
     ): Route {
-        $route = new RouteModel();
+        $route = $this->route ? clone $this->route : new RouteModel();
 
         $route->setPath($path);
         $route->setName($name);
 
         $this->setRouteHandler($route, $handler);
-        $this->setGroupContextInRoute($route);
+        $this->setPathInRoute($route);
+        $this->setNameInRoute($route);
 
         if ($setDependencies) {
             $this->setDependencies($route);
@@ -342,13 +325,13 @@ trait CollectorHelpers
      */
     protected function setRouteHandlerFromString(Route $route, string $handler): void
     {
-        if (strpos($handler, self::$handlerSplit) !== false) {
+        if (Str::contains($handler, static::$handlerSplit)) {
             $this->setRouteInstanceHandler($route, $handler);
 
             return;
         }
 
-        if (strpos($handler, self::$staticHandlerSplit) !== false) {
+        if (Str::contains($handler, static::$staticHandlerSplit)) {
             $this->setRouteStaticHandler($route, $handler);
             $route->setStatic();
 
@@ -397,7 +380,10 @@ trait CollectorHelpers
     {
         [$class, $member] = explode($delimiter, $handler);
 
-        $route->setClass($class);
+        if ($class) {
+            $route->setClass($class);
+        }
+
         $this->setRouteMember($route, $member);
     }
 
@@ -411,7 +397,7 @@ trait CollectorHelpers
      */
     protected function setRouteMember(Route $route, string $member): void
     {
-        if (strpos($member, '(') !== false) {
+        if (Str::contains($member, '(')) {
             $member = str_replace('()', '', $member);
 
             $route->setMethod($member);
