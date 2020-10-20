@@ -95,8 +95,10 @@ class Persister implements Contract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->__set($entity::getDateCreatedField(), $this->getFormattedDate());
-            $entity->__set($entity::getDateModifiedField(), $this->getFormattedDate());
+            $date = $this->getFormattedDate();
+
+            $entity->__set($entity::getDateCreatedField(), $date);
+            $entity->__set($entity::getDateModifiedField(), $date);
         }
 
         if (! $defer) {
