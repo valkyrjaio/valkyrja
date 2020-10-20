@@ -16,9 +16,9 @@ namespace Valkyrja\Routing\Models;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Support\Type\Str;
 
 use function array_diff;
-use function strpos;
 
 /**
  * Trait Routable.
@@ -126,7 +126,7 @@ trait Routable
      */
     public function setPath(string $path): self
     {
-        $this->dynamic = strpos($path, '{') !== false;
+        $this->dynamic = Str::contains($path, '{');
 
         $this->path = $path;
 
@@ -303,6 +303,20 @@ trait Routable
     public function setMiddleware(array $middleware = null): self
     {
         $this->middleware = $middleware;
+
+        return $this;
+    }
+
+    /**
+     * Route with added middleware.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return static
+     */
+    public function withMiddleware(array $middleware): self
+    {
+        $this->middleware = array_merge($this->middleware ?? [], $middleware);
 
         return $this;
     }

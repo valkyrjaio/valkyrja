@@ -25,7 +25,7 @@ interface Route extends Dispatch
     /**
      * Get the route's path.
      *
-     * @return string
+     * @return string|null
      */
     public function getPath(): ?string;
 
@@ -41,7 +41,7 @@ interface Route extends Dispatch
     /**
      * Get the redirect path.
      *
-     * @return string
+     * @return string|null
      */
     public function getTo(): ?string;
 
@@ -89,7 +89,7 @@ interface Route extends Dispatch
     /**
      * Get the regex.
      *
-     * @return string
+     * @return string|null
      */
     public function getRegex(): ?string;
 
@@ -105,7 +105,7 @@ interface Route extends Dispatch
     /**
      * Get the params.
      *
-     * @return array
+     * @return array|null
      */
     public function getParams(): ?array;
 
@@ -121,7 +121,7 @@ interface Route extends Dispatch
     /**
      * Get the segments.
      *
-     * @return array
+     * @return array|null
      */
     public function getSegments(): ?array;
 
@@ -137,7 +137,7 @@ interface Route extends Dispatch
     /**
      * Get the middleware.
      *
-     * @return array
+     * @return array|null
      */
     public function getMiddleware(): ?array;
 
@@ -149,6 +149,15 @@ interface Route extends Dispatch
      * @return static
      */
     public function setMiddleware(array $middleware = null): self;
+
+    /**
+     * Route with added middleware.
+     *
+     * @param array $middleware The middleware
+     *
+     * @return static
+     */
+    public function withMiddleware(array $middleware): self;
 
     /**
      * Check whether the route is dynamic.
