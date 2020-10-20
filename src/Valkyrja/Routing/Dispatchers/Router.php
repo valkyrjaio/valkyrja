@@ -27,6 +27,7 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Matcher;
+use Valkyrja\Routing\Middleware\RouteMiddleware;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
@@ -284,8 +285,8 @@ class Router implements Contract
 
         // Set the request in the abstract controller
         Controller::$request = $request;
-        // Set the route in the abstract controller
-        Controller::$route = $route;
+        // Set the route in the abstract controller and the route middleware
+        Controller::$route = RouteMiddleware::$route = $route;
 
         // Attempt to dispatch the route using any one of the callable options
         $dispatch = $this->dispatcher->dispatch($route, $route->getMatches());
