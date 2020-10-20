@@ -76,6 +76,13 @@ interface Model extends JsonSerializable
     public function __toArray(): array;
 
     /**
+     * Get an array of changed properties.
+     *
+     * @return array
+     */
+    public function __changed(): array;
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array

@@ -36,6 +36,13 @@ trait ModelTrait
     protected static array $exposed = [];
 
     /**
+     * The original properties.
+     *
+     * @var array
+     */
+    protected static array $originalProperties = [];
+
+    /**
      * Set properties from an array of properties.
      *
      * @param array $properties
@@ -121,6 +128,8 @@ trait ModelTrait
         foreach ($properties as $property => $value) {
             // Ensure the property exists before blindly setting
             if (property_exists($this, $property)) {
+                static::$originalProperties[$property] = $value;
+
                 // Set the property
                 $this->__set($property, $value);
             }
@@ -145,6 +154,27 @@ trait ModelTrait
         }
 
         return $properties;
+    }
+
+    /**
+     * Get an array of changed properties.
+     *
+     * @return array
+     */
+    public function __changed(): array
+    {
+        $originalProperties = static::$originalProperties;
+        $changed = [];
+
+        foreach ($this->__toArray() as $property => $value) {
+            $originalProperty = $originalProperties[$property] ?? $value;
+
+            if ($originalProperty !== $value) {
+                $changed[$property] = $value;
+            }
+        }
+
+        return $changed;
     }
 
     /**

@@ -27,8 +27,8 @@ interface Persister
      *      $persister->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to create
+     * @param bool   $defer  [optional] Whether to defer the creation
      *
      * @return void
      */
@@ -41,8 +41,8 @@ interface Persister
      *      $persister->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to save
+     * @param bool   $defer  [optional] Whether to defer the save
      *
      * @return void
      */
@@ -55,8 +55,8 @@ interface Persister
      *      $persister->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to delete
+     * @param bool   $defer  [optional] Whether to defer the deletion
      *
      * @return void
      */
@@ -69,8 +69,8 @@ interface Persister
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
+     * @param SoftDeleteEntity $entity The entity to soft delete
+     * @param bool             $defer  [optional] Whether to defer the soft deletion
      *
      * @return void
      */
@@ -83,7 +83,7 @@ interface Persister
      *      $persister->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * @param Entity|null $entity [optional] The entity instance to remove.
      *
      * @return void
      */

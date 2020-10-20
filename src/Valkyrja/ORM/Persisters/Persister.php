@@ -19,7 +19,7 @@ use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\DatedEntity;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\ExecuteException;
-use Valkyrja\ORM\Persister as PersisterContract;
+use Valkyrja\ORM\Persister as Contract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
@@ -37,7 +37,7 @@ use function strtolower;
  *
  * @author Melech Mizrachi
  */
-class Persister implements PersisterContract
+class Persister implements Contract
 {
     /**
      * The adapter.
@@ -84,8 +84,8 @@ class Persister implements PersisterContract
      *      $persister->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to create
+     * @param bool   $defer  [optional] Whether to defer the creation
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -100,7 +100,7 @@ class Persister implements PersisterContract
         }
 
         if (! $defer) {
-            $this->persistEntity(Statement::INSERT, $entity);
+            $this->persistEntity(Statement::INSERT, $entity, $entity->__storable());
 
             return;
         }
@@ -117,8 +117,8 @@ class Persister implements PersisterContract
      *      $persister->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to save
+     * @param bool   $defer  [optional] Whether to defer the save
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -132,7 +132,7 @@ class Persister implements PersisterContract
         }
 
         if (! $defer) {
-            $this->persistEntity(Statement::UPDATE, $entity);
+            $this->persistEntity(Statement::UPDATE, $entity, $entity->__changed());
 
             return;
         }
@@ -149,8 +149,8 @@ class Persister implements PersisterContract
      *      $persister->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity to delete
+     * @param bool   $defer  [optional] Whether to defer the deletion
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -177,8 +177,8 @@ class Persister implements PersisterContract
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
+     * @param SoftDeleteEntity $entity The entity to soft delete
+     * @param bool             $defer  [optional] Whether to defer the soft deletion
      *
      * @throws ExecuteException
      * @throws JsonException
@@ -200,7 +200,7 @@ class Persister implements PersisterContract
      *      $persister->clear(new Entity())
      * </code>
      *
-     * @param Entity|null $entity The entity instance to remove.
+     * @param Entity|null $entity [optional] The entity instance to remove.
      *
      * @return void
      */
@@ -282,23 +282,23 @@ class Persister implements PersisterContract
      *          )
      * </code>
      *
-     * @param string $type
-     * @param Entity $entity
+     * @param string $type       The type of persist
+     * @param Entity $entity     The entity to persist
+     * @param array  $properties [optional] The properties to persist
      *
      * @throws ExecuteException
      * @throws JsonException
      *
      * @return void
      */
-    protected function persistEntity(string $type, Entity $entity): void
+    protected function persistEntity(string $type, Entity $entity, array $properties = []): void
     {
-        $idField    = $entity::getIdField();
-        $properties = $entity->__storable();
+        $idField = $entity::getIdField();
 
         // Get the query builder
         $queryBuilder = $this->getQueryBuilder($type, $entity, $properties);
         // Get the query
-        $query = $this->getQuery($queryBuilder, $type, $idField, $properties);
+        $query = $this->getQuery($queryBuilder, $type, $idField, $entity->{$idField}, $properties);
 
         // If the execute failed
         if (! $query->execute()) {
@@ -306,7 +306,10 @@ class Persister implements PersisterContract
             throw new ExecuteException($query->getError());
         }
 
-        if (! $entity->__isset($idField) && $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField)) {
+        if (
+            ! $entity->__isset($idField)
+            && $lastInsertId = $this->adapter->lastInsertId($entity::getTableName(), $idField)
+        ) {
             $entity->__set($idField, $lastInsertId);
         }
     }
@@ -314,9 +317,9 @@ class Persister implements PersisterContract
     /**
      * Get the query builder.
      *
-     * @param string $type
-     * @param Entity $entity
-     * @param array  $properties
+     * @param string $type       The type of persist
+     * @param Entity $entity     The entity to persist
+     * @param array  $properties The properties to persist
      *
      * @return QueryBuilder
      */
@@ -345,24 +348,30 @@ class Persister implements PersisterContract
     /**
      * Get the query.
      *
-     * @param QueryBuilder $queryBuilder
-     * @param string       $type
-     * @param string       $idField
-     * @param array        $properties
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param string       $type         The type of persist
+     * @param string       $idField      The id field
+     * @param string|int   $id           The id
+     * @param array        $properties   The properties to persist
      *
      * @throws JsonException
      *
      * @return Query
      */
-    protected function getQuery(QueryBuilder $queryBuilder, string $type, string $idField, array $properties): Query
-    {
+    protected function getQuery(
+        QueryBuilder $queryBuilder,
+        string $type,
+        string $idField,
+        $id,
+        array $properties
+    ): Query {
         // Create a new query with the query builder
         $query = $this->adapter->createQuery($queryBuilder->getQueryString());
 
         // If this type isn't an insert
         if ($type !== Statement::INSERT) {
             // Set the id value for the where clause
-            $query->bindValue($idField, $properties[$idField]);
+            $query->bindValue($idField, $id);
         }
 
         if ($type !== Statement::DELETE) {
@@ -376,8 +385,8 @@ class Persister implements PersisterContract
     /**
      * Set properties for save, delete, or create queries.
      *
-     * @param QueryBuilder $queryBuilder
-     * @param array        $properties
+     * @param QueryBuilder $queryBuilder The query builder
+     * @param array        $properties   The properties to persist
      *
      * @return void
      */
@@ -397,8 +406,8 @@ class Persister implements PersisterContract
     /**
      * Set properties for save, create, or delete statements.
      *
-     * @param Query $query
-     * @param array $properties
+     * @param Query $query      The query
+     * @param array $properties The properties to persist
      *
      * @throws JsonException
      *
@@ -450,7 +459,7 @@ class Persister implements PersisterContract
         // Iterate through the models awaiting creation
         foreach ($this->createEntities as $createEntity) {
             // Create the model
-            $this->persistEntity(Statement::INSERT, $createEntity);
+            $this->persistEntity(Statement::INSERT, $createEntity, $createEntity->__storable());
         }
     }
 
@@ -467,7 +476,7 @@ class Persister implements PersisterContract
         // Iterate through the models awaiting save
         foreach ($this->saveEntities as $saveEntity) {
             // Save the model
-            $this->persistEntity(Statement::UPDATE, $saveEntity);
+            $this->persistEntity(Statement::UPDATE, $saveEntity, $saveEntity->__changed());
         }
     }
 
