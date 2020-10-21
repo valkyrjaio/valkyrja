@@ -181,12 +181,16 @@ trait ModelTrait
      */
     public function __changed(): array
     {
+        // The original properties set on the model
         $originalProperties = static::$originalProperties;
+        // The changed properties
         $changed = [];
 
+        // Iterate through the model's properties
         foreach ($this->__toArray() as $property => $value) {
             $originalProperty = $originalProperties[$property] ?? $value;
 
+            // Determine if the property changed
             if ($originalProperty !== $value) {
                 $changed[$property] = $value;
             }
