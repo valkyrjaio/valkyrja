@@ -31,11 +31,11 @@ use Valkyrja\Routing\Url;
 class AuthenticatedMiddleware extends AuthMiddleware
 {
     /**
-     * The user to use.
+     * The user class to use.
      *
-     * @var string|null
+     * @var string
      */
-    protected static ?string $user = null;
+    protected static string $user;
 
     /**
      * The error message to use.
