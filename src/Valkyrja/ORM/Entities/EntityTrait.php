@@ -304,7 +304,7 @@ trait EntityTrait
 
         // Iterate through the storable hidden fields
         foreach ($storableHiddenFields as $key => $storableHiddenField) {
-            if (isset($this->{$key})) {
+            if (isset($this->{$storableHiddenField})) {
                 // Add them to the properties array
                 $properties[$storableHiddenField] = true;
             }
