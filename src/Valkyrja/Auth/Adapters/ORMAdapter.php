@@ -15,12 +15,14 @@ namespace Valkyrja\Auth\Adapters;
 
 use Exception;
 use Valkyrja\Auth\Adapter as Contract;
+use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\Repository;
 use Valkyrja\Support\Type\Str;
 
 use const PASSWORD_DEFAULT;
@@ -67,18 +69,7 @@ class ORMAdapter implements Contract
      */
     public function authenticate(User $user): bool
     {
-        $repository  = $this->orm->getRepositoryFromClass($user);
-        $loginFields = $user::getLoginFields();
-        $find        = $repository->find();
-
-        // Iterate through the login fields
-        foreach ($loginFields as $loginField) {
-            // Set a where clause for each field
-            $find->where($loginField, null, $user->__get($loginField));
-        }
-
-        /** @var User $dbUser */
-        $dbUser = $find->getOneOrNull();
+        $dbUser = $this->getUserViaLoginFields($user);
 
         // If there is a user and the password matches
         if ($dbUser && $this->isPassword($dbUser, $user->__get($user::getPasswordField()))) {
@@ -158,9 +149,9 @@ class ORMAdapter implements Contract
     public function getFreshUser(User $user): User
     {
         /** @var User $freshUser */
-        $freshUser = $this->orm->getRepositoryFromClass($user)
-                               ->findOne($user->__get($user::getIdField()))
-                               ->getOneOrFail();
+        $freshUser = $this->getUserRepository($user)
+                          ->findOne($user->__get($user::getIdField()))
+                          ->getOneOrFail();
 
         return $freshUser;
     }
@@ -184,14 +175,27 @@ class ORMAdapter implements Contract
      * @param User   $user
      * @param string $password
      *
+     * @throws Exception
+     *
      * @return void
      */
     public function updatePassword(User $user, string $password): void
     {
-        $user->__set($user::getResetTokenField(), null);
-        $user->__set($user::getPasswordField(), $this->hashPassword($password));
+        $resetTokenField = $user::getResetTokenField();
+        /** @var User $dbUser */
+        $dbUser = $this->getUserRepository($user)
+                       ->find()
+                       ->where($resetTokenField, null, $user->__get($resetTokenField))
+                       ->getOneOrNull();
 
-        $this->saveUser($user);
+        if (! $dbUser) {
+            throw new InvalidAuthenticationException('Invalid reset token.');
+        }
+
+        $dbUser->__set($resetTokenField, null);
+        $dbUser->__set($user::getPasswordField(), $this->hashPassword($password));
+
+        $this->saveUser($dbUser);
     }
 
     /**
@@ -205,9 +209,15 @@ class ORMAdapter implements Contract
      */
     public function resetPassword(User $user): void
     {
-        $user->__set($user::getResetTokenField(), Str::random());
+        $dbUser = $this->getUserViaLoginFields($user);
 
-        $this->saveUser($user);
+        if (! $dbUser) {
+            throw new InvalidAuthenticationException('No user found.');
+        }
+
+        $dbUser->__set($user::getResetTokenField(), Str::random());
+
+        $this->saveUser($dbUser);
     }
 
     /**
@@ -245,7 +255,7 @@ class ORMAdapter implements Contract
      */
     public function register(User $user): bool
     {
-        $repository    = $this->orm->getRepositoryFromClass($user);
+        $repository    = $this->getUserRepository($user);
         $passwordField = $user::getPasswordField();
 
         try {
@@ -270,9 +280,8 @@ class ORMAdapter implements Contract
      */
     public function isRegistered(User $user): bool
     {
-        $repository  = $this->orm->getRepositoryFromClass($user);
         $loginFields = $user::getLoginFields();
-        $find        = $repository->find();
+        $find        = $this->getUserRepository($user)->find();
 
         // Iterate through the login fields
         foreach ($loginFields as $loginField) {
@@ -325,9 +334,45 @@ class ORMAdapter implements Contract
     protected function saveUser(User $user): void
     {
         // Get the ORM repository
-        $repository = $this->orm->getRepositoryFromClass($user);
+        $repository = $this->getUserRepository($user);
 
         $repository->save($user, false);
         $repository->persist();
+    }
+
+    /**
+     * Get a user from the DB via login fields.
+     *
+     * @param User $user The user to try and get from the db
+     *
+     * @return User|null
+     */
+    protected function getUserViaLoginFields(User $user): ?User
+    {
+        $loginFields = $user::getLoginFields();
+        $find        = $this->getUserRepository($user)->find();
+
+        // Iterate through the login fields
+        foreach ($loginFields as $loginField) {
+            // Set a where clause for each field
+            $find->where($loginField, null, $user->__get($loginField));
+        }
+
+        /** @var User $dbUser */
+        $dbUser = $find->getOneOrNull();
+
+        return $dbUser;
+    }
+
+    /**
+     * Get an ORM repository for the user.
+     *
+     * @param User $user The user
+     *
+     * @return Repository
+     */
+    protected function getUserRepository(User $user): Repository
+    {
+        return $this->orm->getRepositoryFromClass($user);
     }
 }

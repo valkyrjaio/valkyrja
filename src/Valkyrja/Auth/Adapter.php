@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Exception;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Crypt\Exceptions\CryptException;
 
@@ -87,6 +88,8 @@ interface Adapter
      * @param User   $user
      * @param string $password
      *
+     * @throws Exception
+     *
      * @return void
      */
     public function updatePassword(User $user, string $password): void;
@@ -95,6 +98,8 @@ interface Adapter
      * Reset a user's password.
      *
      * @param User $user
+     *
+     * @throws Exception
      *
      * @return void
      */
