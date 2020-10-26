@@ -18,7 +18,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
@@ -246,7 +245,7 @@ class Router implements Contract
         // If no route is found
         if (null === $route) {
             // Abort with 404
-            Abort::abort(StatusCode::NOT_FOUND);
+            Abort::abort404();
         }
 
         return $route;

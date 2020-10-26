@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Support;
 
+use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\Exceptions\HttpRedirectException;
 use Valkyrja\Http\Response;
@@ -25,12 +26,25 @@ use Valkyrja\Http\Response;
 class Abort
 {
     /**
+     * Abort with a 404.
+     *
+     * @param array|null    $headers  [optional] The headers
+     * @param Response|null $response [optional] The response to send
+     *
+     * @return void
+     */
+    public static function abort404(array $headers = null, Response $response = null): void
+    {
+        static::abort(StatusCode::NOT_FOUND, '404', $headers, $response);
+    }
+
+    /**
      * Abort.
      *
-     * @param int|null      $statusCode [optional]
-     * @param string|null   $message    [optional]
-     * @param array|null    $headers    [optional]
-     * @param Response|null $response   [optional]
+     * @param int|null      $statusCode [optional] The status code
+     * @param string|null   $message    [optional] The message
+     * @param array|null    $headers    [optional] The headers
+     * @param Response|null $response   [optional] The response to send
      *
      * @return void
      */
