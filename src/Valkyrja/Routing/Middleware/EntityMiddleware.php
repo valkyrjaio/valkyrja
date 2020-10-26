@@ -212,6 +212,6 @@ class EntityMiddleware extends RouteMiddleware
      */
     protected static function entityNotFound(string $entity, $value): void
     {
-        Abort::abort();
+        Abort::abort404();
     }
 }

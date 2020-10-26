@@ -25,13 +25,20 @@ use Valkyrja\Session\Session;
 abstract class AuthMiddleware extends Middleware
 {
     /**
+     * The auth service.
+     *
+     * @var Auth
+     */
+    protected static Auth $auth;
+
+    /**
      * Get auth.
      *
      * @return Auth
      */
     protected static function getAuth(): Auth
     {
-        return self::$container->getSingleton(Auth::class);
+        return self::$auth ?? self::$auth = self::$container->getSingleton(Auth::class);
     }
 
     /**
