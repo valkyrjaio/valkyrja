@@ -181,4 +181,7 @@ final class ConfigKeyPart
     public const MAILERS                     = 'mailers';
     public const MESSENGERS                  = 'messengers';
     public const COOKIE_PARAMS               = 'cookieParams';
+    public const BUNDLE                      = 'bundle';
+    public const BUNDLES                     = 'bundles';
+    public const MANIFEST                    = 'manifest';
 }

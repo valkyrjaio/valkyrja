@@ -44,6 +44,13 @@ final class EnvKey
     public const ANNOTATIONS_MAP       = 'ANNOTATIONS_MAP';
     public const ANNOTATIONS_ALIASES   = 'ANNOTATIONS_ALIASES';
 
+    public const ASSET_DEFAULT          = 'ASSET_DEFAULT';
+    public const ASSET_ADAPTERS         = 'ASSET_ADAPTERS';
+    public const ASSET_BUNDLES          = 'ASSET_BUNDLES';
+    public const ASSET_DEFAULT_HOST     = 'ASSET_DEFAULT_HOST';
+    public const ASSET_DEFAULT_PATH     = 'ASSET_DEFAULT_PATH';
+    public const ASSET_DEFAULT_MANIFEST = 'ASSET_DEFAULT_MANIFEST';
+
     public const AUTH_ADAPTER                = 'AUTH_ADAPTER';
     public const AUTH_USER_ENTITY            = 'AUTH_USER_ENTITY';
     public const AUTH_REPOSITORY             = 'AUTH_REPOSITORY';
