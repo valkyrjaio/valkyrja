@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Log\Providers;
 
 use Exception;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as Monolog;
 use Psr\Log\LoggerInterface;
@@ -183,14 +184,23 @@ class ServiceProvider extends Provider
             static function (array $config): LoggerInterface {
                 $filePath = $config['filePath'];
                 $name     = $config['name'] . date('-Y-m-d');
+                $handler  = new StreamHandler(
+                    "${filePath}/${name}.log",
+                    LogLevel::DEBUG
+                );
+                $formatter = new LineFormatter(
+                    null,
+                    null,
+                    true,
+                    true
+                );
+
+                $handler->setFormatter($formatter);
 
                 return new Monolog(
                     $name,
                     [
-                        new StreamHandler(
-                            "${filePath}/${name}.log",
-                            LogLevel::DEBUG
-                        ),
+                        $handler,
                     ]
                 );
             }
