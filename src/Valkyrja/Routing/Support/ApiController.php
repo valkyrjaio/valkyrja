@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Support;
 
+use Exception;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\JsonResponse;
+use Valkyrja\Log\Facades\Logger;
 
 /**
  * Abstract Class ApiController.
@@ -65,5 +67,38 @@ abstract class ApiController extends Controller
         $json->setStatusCode($statusCode ?? StatusCode::OK);
 
         return self::$responseFactory->createJsonResponse($json->__toArray(), $statusCode);
+    }
+
+    /**
+     * Get an exception response.
+     *
+     * @param Exception   $exception  The exception
+     * @param string|null $message    [optional] The message to override
+     * @param string|null $status     [optional] The status
+     * @param int|null    $statusCode [optional] The status code
+     *
+     * @return JsonResponse
+     */
+    protected static function getExceptionResponse(
+        Exception $exception,
+        string $message = null,
+        string $status = null,
+        int $statusCode = null
+    ): JsonResponse {
+        $traceCode  = md5(serialize($exception));
+        $logMessage = "{$traceCode} - {$exception->getMessage()} - {$message} \n{$exception->getTraceAsString()}";
+
+        Logger::error($logMessage);
+
+        $message ??= $exception->getMessage();
+
+        return self::createApiJsonResponse(
+            [
+                'traceCode' => $traceCode,
+            ],
+            $message,
+            $status ?? Status::ERROR,
+            $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR
+        );
     }
 }
