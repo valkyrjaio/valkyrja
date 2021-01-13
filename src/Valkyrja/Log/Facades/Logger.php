@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Facades;
 
+use Throwable;
 use Valkyrja\Log\Driver;
 use Valkyrja\Log\Logger as Contract;
 use Valkyrja\Support\Facade\Facade;
@@ -32,6 +33,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static void alert(string $message, array $context = [])
  * @method static void emergency(string $message, array $context = [])
  * @method static void log(string $message, array $context = [])
+ * @method static void exception(Throwable $exception, string $message, array $context = [])
  */
 class Logger extends Facade
 {

@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Adapters;
 
+use Throwable;
 use Psr\Log\LoggerInterface;
+use Valkyrja\Http\Facades\Request;
 use Valkyrja\Log\Adapter as Contract;
+use Valkyrja\Log\Facades\Logger;
+use Valkyrja\Support\Exception\Facades\ExceptionHandler;
 
 /**
  * Class PsrAdapter.
@@ -165,5 +169,40 @@ class PsrAdapter implements Contract
     public function log(string $level, string $message, array $context = []): void
     {
         $this->logger->log($level, $message, $context);
+    }
+
+    /**
+     * Log an exception or throwable.
+     *
+     * @param Throwable $exception The exception
+     * @param string    $message   The message
+     * @param array     $context   [optional] The context
+     *
+     * @return void
+     */
+    public function exception(Throwable $exception, string $message, array $context = []): void
+    {
+        $traceCode  = $this->getExceptionTraceCode($exception);
+        $logMessage = "\nTrace Code: {$traceCode}" .
+            "\nException Message: {$exception->getMessage()}" .
+            "\nMessage: {$message}" .
+            "\nStack Trace:" .
+            "\n==================================" .
+            "\n{$exception->getTraceAsString()}" .
+            "\n==================================\n";
+
+        $this->error($logMessage, $context);
+    }
+
+    /**
+     * Get exception trace code.
+     *
+     * @param Throwable $exception The exception
+     *
+     * @return string
+     */
+    protected function getExceptionTraceCode(Throwable $exception): string
+    {
+        return md5(serialize($exception));
     }
 }

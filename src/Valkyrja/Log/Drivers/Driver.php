@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Drivers;
 
+use Throwable;
 use Valkyrja\Log\Adapter;
 use Valkyrja\Log\Driver as Contract;
 
@@ -156,5 +157,19 @@ class Driver implements Contract
     public function log(string $level, string $message, array $context = []): void
     {
         $this->adapter->log($level, $message, $context);
+    }
+
+    /**
+     * Log an exception or throwable.
+     *
+     * @param Throwable $exception The exception
+     * @param string    $message   The message
+     * @param array     $context   [optional] The context
+     *
+     * @return void
+     */
+    public function exception(Throwable $exception, string $message, array $context = []): void
+    {
+        $this->adapter->exception($exception, $message);
     }
 }

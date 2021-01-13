@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Log\Adapters;
 
+use Throwable;
 use Valkyrja\Log\Adapter as Contract;
 
 /**
@@ -145,6 +146,19 @@ class NullAdapter implements Contract
      * @return void
      */
     public function log(string $level, string $message, array $context = []): void
+    {
+    }
+
+    /**
+     * Log an exception or throwable.
+     *
+     * @param Throwable $exception The exception
+     * @param string    $message   The message
+     * @param array     $context   [optional] The context
+     *
+     * @return void
+     */
+    public function exception(Throwable $exception, string $message, array $context = []): void
     {
     }
 }
