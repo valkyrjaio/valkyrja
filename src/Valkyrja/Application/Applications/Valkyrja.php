@@ -488,16 +488,17 @@ class Valkyrja implements Application
      */
     protected function bootstrapExceptionHandler(): void
     {
+        /** @var ExceptionHandler $exceptionHandler */
+        $exceptionHandler = self::$config->app->exceptionHandler;
+
+        // Set exception handler in the service container
+        self::$container->setSingleton(ExceptionHandler::class, $exceptionHandler);
+
         // If debug is on, enable debug handling
         if ($this->debug()) {
-            /** @var ExceptionHandler $exceptionHandler */
-            $exceptionHandler = self::$config->app->exceptionHandler;
 
             // Enable exception handling
             $exceptionHandler::enable(E_ALL, true);
-
-            // Set exception handler in the service container
-            self::$container->setSingleton(ExceptionHandler::class, $exceptionHandler);
         }
     }
 
