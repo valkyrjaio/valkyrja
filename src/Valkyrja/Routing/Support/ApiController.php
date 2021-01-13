@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Support;
 
-use Exception;
+use Throwable;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Http\Constants\StatusCode;
@@ -54,7 +54,7 @@ abstract class ApiController extends Controller
      *
      * @return JsonResponse
      */
-    protected static function createApiJsonResponse(
+    public static function createApiJsonResponse(
         array $data,
         string $message = null,
         string $status = null,
@@ -72,15 +72,15 @@ abstract class ApiController extends Controller
     /**
      * Get an exception response.
      *
-     * @param Exception   $exception  The exception
+     * @param Throwable   $exception  The exception
      * @param string|null $message    [optional] The message to override
      * @param string|null $status     [optional] The status
      * @param int|null    $statusCode [optional] The status code
      *
      * @return JsonResponse
      */
-    protected static function getExceptionResponse(
-        Exception $exception,
+    public static function getExceptionResponse(
+        Throwable $exception,
         string $message = null,
         string $status = null,
         int $statusCode = null
