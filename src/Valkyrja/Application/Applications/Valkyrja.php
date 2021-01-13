@@ -495,6 +495,9 @@ class Valkyrja implements Application
 
             // Enable exception handling
             $exceptionHandler::enable(E_ALL, true);
+
+            // Set exception handler in the service container
+            self::$container->setSingleton(ExceptionHandler::class, $exceptionHandler);
         }
     }
 
