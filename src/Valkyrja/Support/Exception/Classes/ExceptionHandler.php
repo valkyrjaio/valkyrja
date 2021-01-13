@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Exception\Classes;
 
+use Throwable;
 use Valkyrja\Support\Exception\ExceptionHandler as Contract;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
@@ -80,5 +81,17 @@ class ExceptionHandler implements Contract
 
         // That's it! Register Whoops and throw a dummy exception:
         $run->register();
+    }
+
+    /**
+     * Get trace code for a throwable/exception.
+     *
+     * @param Throwable $exception The exception/throwable
+     *
+     * @return string
+     */
+    public static function getTraceCode(Throwable $exception): string
+    {
+        return md5(serialize($exception));
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Exception;
 
+use Throwable;
+
 use const E_ALL;
 
 /**
@@ -31,4 +33,13 @@ interface ExceptionHandler
      * @return void
      */
     public static function enable(int $errorReportingLevel = E_ALL, bool $displayErrors = false): void;
+
+    /**
+     * Get trace code for a throwable/exception.
+     *
+     * @param Throwable $exception The exception/throwable
+     *
+     * @return string
+     */
+    public static function getTraceCode(Throwable $exception): string;
 }
