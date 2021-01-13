@@ -54,6 +54,13 @@ class Kernel implements Contract
     protected Events $events;
 
     /**
+     * The request.
+     *
+     * @var Request
+     */
+    protected Request $request;
+
+    /**
      * The router.
      *
      * @var Router
@@ -111,6 +118,8 @@ class Kernel implements Contract
      */
     public function handle(Request $request): Response
     {
+        $this->request = $request;
+
         try {
             $response = $this->dispatchRouter($request);
         } catch (Throwable $exception) {
@@ -261,9 +270,11 @@ class Kernel implements Contract
     protected function logException(Throwable $exception): void
     {
         /** @var Logger $logger */
-        $logger = $this->container->getSingleton(Logger::class);
+        $logger     = $this->container->getSingleton(Logger::class);
+        $url        = $this->request->getUri()->getPath();
+        $logMessage = "Kernel Error\nUrl: {$url}";
 
-        $logger->error($exception->getMessage(), ['trace' => $exception->getTraceAsString()]);
+        $logger->exception($exception, $logMessage);
     }
 
     /**

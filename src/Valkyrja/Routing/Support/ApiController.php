@@ -17,6 +17,7 @@ use Throwable;
 use Valkyrja\Api\Api;
 use Valkyrja\Api\Constants\Status;
 use Valkyrja\Http\Constants\StatusCode;
+use Valkyrja\Http\Facades\Request;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Log\Facades\Logger;
 
@@ -85,20 +86,30 @@ abstract class ApiController extends Controller
         string $status = null,
         int $statusCode = null
     ): JsonResponse {
-        $traceCode  = md5(serialize($exception));
-        $logMessage = "{$traceCode} - {$exception->getMessage()} - {$message} \n{$exception->getTraceAsString()}";
+        $url        = Request::getUri()->getPath();
+        $logMessage = "{$message}\nUrl: {$url}";
 
-        Logger::error($logMessage);
-
-        $message ??= $exception->getMessage();
+        Logger::exception($exception, $logMessage);
 
         return self::createApiJsonResponse(
             [
-                'traceCode' => $traceCode,
+                'traceCode' => static::getExceptionTraceCode($exception),
             ],
-            $message,
+            $message ?? $exception->getMessage(),
             $status ?? Status::ERROR,
             $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR
         );
+    }
+
+    /**
+     * Get exception trace code.
+     *
+     * @param Throwable $exception The exception
+     *
+     * @return string
+     */
+    protected static function getExceptionTraceCode(Throwable $exception): string
+    {
+        return md5(serialize($exception));
     }
 }

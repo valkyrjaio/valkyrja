@@ -15,10 +15,7 @@ namespace Valkyrja\Log\Adapters;
 
 use Throwable;
 use Psr\Log\LoggerInterface;
-use Valkyrja\Http\Facades\Request;
 use Valkyrja\Log\Adapter as Contract;
-use Valkyrja\Log\Facades\Logger;
-use Valkyrja\Support\Exception\Facades\ExceptionHandler;
 
 /**
  * Class PsrAdapter.
