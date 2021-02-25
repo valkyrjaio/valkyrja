@@ -85,7 +85,7 @@ class CacheableCollection extends Collection
     /**
      * Before setup.
      *
-     * @param mixed $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */
@@ -96,7 +96,7 @@ class CacheableCollection extends Collection
     /**
      * Set not cached.
      *
-     * @param mixed $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */
@@ -146,7 +146,7 @@ class CacheableCollection extends Collection
     /**
      * After setup.
      *
-     * @param mixed $config
+     * @param RoutingConfig|array $config
      *
      * @return void
      */
