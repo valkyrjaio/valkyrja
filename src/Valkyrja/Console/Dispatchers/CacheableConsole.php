@@ -65,7 +65,7 @@ class CacheableConsole extends Console
     /**
      * Before setup.
      *
-     * @param mixed $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
@@ -164,7 +164,7 @@ class CacheableConsole extends Console
     /**
      * After setup.
      *
-     * @param mixed $config
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */
