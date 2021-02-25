@@ -65,6 +65,8 @@ class CacheableConsole extends Console
     /**
      * Before setup.
      *
+     * @param ConsoleConfig|array $config
+     *
      * @return void
      */
     protected function beforeSetup($config): void
@@ -161,6 +163,8 @@ class CacheableConsole extends Console
 
     /**
      * After setup.
+     *
+     * @param ConsoleConfig|array $config
      *
      * @return void
      */

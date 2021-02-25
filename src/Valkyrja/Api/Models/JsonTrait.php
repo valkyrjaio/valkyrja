@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Api\Models;
 
 use Valkyrja\Api\Constants\Status;
-use Valkyrja\Api\JsonData;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 
@@ -130,6 +129,7 @@ trait JsonTrait
 
         return $this;
     }
+
     /**
      * Get the warnings.
      *
