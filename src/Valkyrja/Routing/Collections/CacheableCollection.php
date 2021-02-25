@@ -85,6 +85,8 @@ class CacheableCollection extends Collection
     /**
      * Before setup.
      *
+     * @param mixed $config
+     *
      * @return void
      */
     protected function beforeSetup($config): void
@@ -93,6 +95,8 @@ class CacheableCollection extends Collection
 
     /**
      * Set not cached.
+     *
+     * @param mixed $config
      *
      * @return void
      */
@@ -141,6 +145,8 @@ class CacheableCollection extends Collection
 
     /**
      * After setup.
+     *
+     * @param mixed $config
      *
      * @return void
      */
