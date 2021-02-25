@@ -68,7 +68,7 @@ class CacheableContainer extends Container
     /**
      * Before setup.
      *
-     * @param mixed $config
+     * @param ContainerConfig|array $config
      *
      * @return void
      */
@@ -179,7 +179,7 @@ class CacheableContainer extends Container
     /**
      * After setup.
      *
-     * @param mixed $config
+     * @param ContainerConfig|array $config
      *
      * @return void
      */
