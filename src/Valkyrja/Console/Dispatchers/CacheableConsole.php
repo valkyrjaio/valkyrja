@@ -67,7 +67,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function beforeSetup(): void
+    protected function beforeSetup($config): void
     {
     }
 
@@ -164,7 +164,7 @@ class CacheableConsole extends Console
      *
      * @return void
      */
-    protected function afterSetup(): void
+    protected function afterSetup($config): void
     {
     }
 }

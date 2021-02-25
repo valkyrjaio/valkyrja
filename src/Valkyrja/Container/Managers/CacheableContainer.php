@@ -70,7 +70,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function beforeSetup(): void
+    protected function beforeSetup($config): void
     {
     }
 
@@ -179,7 +179,7 @@ class CacheableContainer extends Container
      *
      * @return void
      */
-    protected function afterSetup(): void
+    protected function afterSetup($config): void
     {
     }
 

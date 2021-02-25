@@ -80,7 +80,7 @@ class CacheableEvents extends Events
      *
      * @return void
      */
-    protected function beforeSetup(): void
+    protected function beforeSetup($config): void
     {
     }
 
@@ -89,7 +89,7 @@ class CacheableEvents extends Events
      *
      * @return void
      */
-    protected function setupNotCached(): void
+    protected function setupNotCached($config): void
     {
         self::$events = [];
     }
@@ -133,7 +133,7 @@ class CacheableEvents extends Events
      *
      * @return void
      */
-    protected function afterSetup(): void
+    protected function afterSetup($config): void
     {
     }
 }

@@ -87,7 +87,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function beforeSetup(): void
+    protected function beforeSetup($config): void
     {
     }
 
@@ -96,7 +96,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function setupNotCached(): void
+    protected function setupNotCached($config): void
     {
     }
 
@@ -144,7 +144,7 @@ class CacheableCollection extends Collection
      *
      * @return void
      */
-    protected function afterSetup(): void
+    protected function afterSetup($config): void
     {
     }
 }
