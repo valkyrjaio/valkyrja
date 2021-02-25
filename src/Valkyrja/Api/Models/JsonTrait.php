@@ -37,9 +37,23 @@ trait JsonTrait
     /**
      * The data.
      *
-     * @var JsonData|null
+     * @var array|null
      */
-    public ?JsonData $data = null;
+    public ?array $data = null;
+
+    /**
+     * The errors.
+     *
+     * @var string[]
+     */
+    public array $errors = [];
+
+    /**
+     * The warnings.
+     *
+     * @var string[]
+     */
+    public array $warnings = [];
 
     /**
      * The status code.
@@ -80,11 +94,86 @@ trait JsonTrait
     }
 
     /**
+     * Get the errors.
+     *
+     * @return string[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Set the errors.
+     *
+     * @param string[] $errors The errors
+     *
+     * @return static
+     */
+    public function setErrors(array $errors): self
+    {
+        $this->errors = $errors;
+
+        return $this;
+    }
+
+    /**
+     * Set an error.
+     *
+     * @param string $error The error
+     *
+     * @return static
+     */
+    public function setError(string $error): self
+    {
+        $this->errors[] = $error;
+
+        return $this;
+    }
+    /**
+     * Get the warnings.
+     *
+     * @return string[]
+     */
+    public function getWarnings(): array
+    {
+        return $this->warnings;
+    }
+
+    /**
+     * Set the warnings.
+     *
+     * @param string[] $warnings The warnings
+     *
+     * @return static
+     */
+    public function setWarnings(array $warnings): self
+    {
+        $this->warnings = $warnings;
+
+        return $this;
+    }
+
+    /**
+     * Set an warning.
+     *
+     * @param string $warning The warning
+     *
+     * @return static
+     */
+    public function setWarning(string $warning): self
+    {
+        $this->warnings[] = $warning;
+
+        return $this;
+    }
+
+    /**
      * Get the data.
      *
-     * @return JsonData|null
+     * @return array|null
      */
-    public function getData(): ?JsonData
+    public function getData(): ?array
     {
         return $this->data;
     }
@@ -92,11 +181,11 @@ trait JsonTrait
     /**
      * Set the data.
      *
-     * @param JsonData|null $data
+     * @param array|null $data
      *
      * @return static
      */
-    public function setData(JsonData $data = null): self
+    public function setData(array $data = null): self
     {
         $this->data = $data;
 

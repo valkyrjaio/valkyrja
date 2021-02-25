@@ -80,9 +80,6 @@ class Api implements Contract
     public function jsonFromException(Exception $exception): Json
     {
         $json     = $this->getJsonModel();
-        $jsonData = $this->getJsonDataModel();
-
-        $json->setData($jsonData);
 
         $data = [
             'code' => $exception->getCode(),
@@ -98,7 +95,7 @@ class Api implements Contract
             $data['trace'] = $exception->getTrace();
         }
 
-        $jsonData->setData($data);
+        $json->setData($data);
 
         if ($exception instanceof HttpException) {
             $json->setStatusCode($exception->getStatusCode());
@@ -131,11 +128,9 @@ class Api implements Contract
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
 
-        $json->setData($jsonData);
-
         $jsonData->setItem($object);
-
         $this->setItemKeysFromObject($object, $jsonData);
+        $json->setData($jsonData->__toArray());
 
         return $json;
     }
@@ -164,13 +159,13 @@ class Api implements Contract
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
 
-        $json->setData($jsonData);
-
         $jsonData->setItems($objects);
 
         if (! empty($objects)) {
             $this->setItemKeysFromObject($objects[0], $jsonData);
         }
+
+        $json->setData($jsonData->__toArray());
 
         return $json;
     }
@@ -199,9 +194,9 @@ class Api implements Contract
         $json     = $this->getJsonModel();
         $jsonData = $this->getJsonDataModel();
 
-        $json->setData($jsonData);
-
         $jsonData->setData($array);
+
+        $json->setData($jsonData->__toArray());
 
         return $json;
     }

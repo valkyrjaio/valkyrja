@@ -48,10 +48,12 @@ abstract class ApiController extends Controller
     /**
      * Create an Api JsonResponse.
      *
-     * @param array       $data       The json data
-     * @param string|null $message    [optional] The message
-     * @param string|null $status     [optional] The json status
-     * @param int|null    $statusCode [optional] The status code
+     * @param array         $data       The json data
+     * @param string|null   $message    [optional] The message
+     * @param string|null   $status     [optional] The json status
+     * @param int|null      $statusCode [optional] The status code
+     * @param string[]|null $errors     [optional] The errors
+     * @param string[]|null $warnings   [optional] The warnings
      *
      * @return JsonResponse
      */
@@ -59,13 +61,17 @@ abstract class ApiController extends Controller
         array $data,
         string $message = null,
         string $status = null,
-        int $statusCode = null
+        int $statusCode = null,
+        array $errors = null,
+        array $warnings = null
     ): JsonResponse {
         $json = self::getApi()->jsonFromArray($data);
 
         $json->setMessage($message);
         $json->setStatus($status ?? Status::SUCCESS);
         $json->setStatusCode($statusCode ?? StatusCode::OK);
+        $json->setErrors($errors ?? []);
+        $json->setWarnings($warnings ?? []);
 
         return self::$responseFactory->createJsonResponse($json->__toArray(), $statusCode);
     }
@@ -77,6 +83,8 @@ abstract class ApiController extends Controller
      * @param string|null $message    [optional] The message to override
      * @param string|null $status     [optional] The status
      * @param int|null    $statusCode [optional] The status code
+     * @param string[]|null $errors     [optional] The errors
+     * @param string[]|null $warnings   [optional] The warnings
      *
      * @return JsonResponse
      */
@@ -84,7 +92,9 @@ abstract class ApiController extends Controller
         Throwable $exception,
         string $message = null,
         string $status = null,
-        int $statusCode = null
+        int $statusCode = null,
+        array $errors = null,
+        array $warnings = null
     ): JsonResponse {
         $url        = Request::getUri()->getPath();
         $logMessage = "{$message}\nUrl: {$url}";
@@ -97,7 +107,9 @@ abstract class ApiController extends Controller
             ],
             $message ?? $exception->getMessage(),
             $status ?? Status::ERROR,
-            $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR
+            $statusCode ?? StatusCode::INTERNAL_SERVER_ERROR,
+            $errors,
+            $warnings
         );
     }
 

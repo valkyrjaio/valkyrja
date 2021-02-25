@@ -273,11 +273,11 @@ trait JsonDataTrait
     }
 
     /**
-     * Serialize properties for json_encode.
+     * Get model as an array.
      *
      * @return array
      */
-    public function jsonSerialize(): array
+    public function __toArray(): array
     {
         $data = $this->data ?? [];
 
