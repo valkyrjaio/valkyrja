@@ -78,7 +78,7 @@ class CacheableEvents extends Events
     /**
      * Before setup.
      *
-     * @param mixed $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
@@ -89,7 +89,7 @@ class CacheableEvents extends Events
     /**
      * Set not cached.
      *
-     * @param mixed $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
@@ -135,7 +135,7 @@ class CacheableEvents extends Events
     /**
      * After setup.
      *
-     * @param mixed $config
+     * @param EventConfig|array $config
      *
      * @return void
      */
