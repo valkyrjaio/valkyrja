@@ -21,7 +21,6 @@ use Valkyrja\ORM\Statement;
 use Valkyrja\Support\Type\Str;
 
 use function is_array;
-use function Valkyrja\dd;
 
 /**
  * Class Query.

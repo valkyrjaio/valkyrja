@@ -25,7 +25,6 @@ use Valkyrja\Support\Type\Cls;
 use function is_array;
 use function is_int;
 use function is_string;
-use function Valkyrja\dd;
 
 /**
  * Class Retriever
