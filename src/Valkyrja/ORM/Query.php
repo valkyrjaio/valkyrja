@@ -52,12 +52,12 @@ interface Query
     /**
      * Bind a value.
      *
-     * @param string $column
-     * @param mixed  $property
+     * @param string $property
+     * @param mixed  $value
      *
      * @return static
      */
-    public function bindValue(string $column, $property): self;
+    public function bindValue(string $property, $value): self;
 
     /**
      * Execute the query.

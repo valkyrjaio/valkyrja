@@ -21,6 +21,7 @@ use Valkyrja\ORM\Statement;
 use Valkyrja\Support\Type\Str;
 
 use function is_array;
+use function Valkyrja\dd;
 
 /**
  * Class Query.
@@ -220,7 +221,7 @@ class Query implements QueryContract
     {
         $results = $this->statement->fetchAll();
 
-        return (int) ($results[0]['COUNT(*)'] ?? 0);
+        return (int) ($results[0]['COUNT(*)'] ?? $results[0]['count'] ?? 0);
     }
 
     /**
