@@ -300,9 +300,15 @@ trait EntityTrait
     protected function __toArrayOrStorable(bool $storable = false, string ...$properties): array
     {
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
-        $allProperties          = array_merge(Obj::getProperties($this), static::$exposed, $storableHiddenFields);
+        $allProperties          = array_merge(Obj::getProperties($this), static::$exposed);
         $propertyTypes          = static::getFieldCastings();
         $relationshipProperties = static::getRelationshipProperties();
+
+        // Iterate through all the storable hidden fields
+        foreach ($storableHiddenFields as $storableHiddenField) {
+            // Add the storable field to the all properties array
+            $allProperties[$storableHiddenField] = true;
+        }
 
         // If a list of properties was specified
         if (! empty($properties)) {
