@@ -197,13 +197,15 @@ trait EntityTrait
     /**
      * Get model as an array.
      *
+     * @param string ...$properties [optional] An array of properties to return
+     *
      * @throws JsonException
      *
      * @return array
      */
-    public function __toArray(): array
+    public function __toArray(string ...$properties): array
     {
-        return $this->__toArrayOrStorable();
+        return $this->__toArrayOrStorable(false, ...$properties);
     }
 
     /**
@@ -288,30 +290,28 @@ trait EntityTrait
     /**
      * Convert the entity to an array or storable array.
      *
-     * @param bool $storable [optional] Whether to get as a storable array.
+     * @param bool   $storable      [optional] Whether to get as a storable array.
+     * @param string ...$properties [optional] An array of properties to return
      *
      * @throws JsonException
      *
      * @return array
      */
-    protected function __toArrayOrStorable(bool $storable = false): array
+    protected function __toArrayOrStorable(bool $storable = false, string ...$properties): array
     {
-        $array                  = [];
-        $properties             = array_merge(Obj::getProperties($this), static::$exposed);
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
+        $allProperties          = array_merge(Obj::getProperties($this), static::$exposed, $storableHiddenFields);
         $propertyTypes          = static::getFieldCastings();
         $relationshipProperties = static::getRelationshipProperties();
 
-        // Iterate through the storable hidden fields
-        foreach ($storableHiddenFields as $key => $storableHiddenField) {
-            if (isset($this->{$storableHiddenField})) {
-                // Add them to the properties array
-                $properties[$storableHiddenField] = true;
-            }
+        // If a list of properties was specified
+        if (! empty($properties)) {
+            // Let's only return those properties
+            $allProperties = $this->__onlyProperties($allProperties, $properties);
         }
 
         // Iterate through the properties to return
-        foreach ($properties as $property => $value) {
+        foreach ($allProperties as $property => $value) {
             // If this property is a relationship and we're going for storage
             if ($storable && isset($relationshipProperties[$property])) {
                 // Skip it
@@ -319,10 +319,10 @@ trait EntityTrait
             }
 
             // Get the value
-            $this->__setPropertyInArray($array, $propertyTypes, $property, $storable);
+            $this->__setPropertyInArray($allProperties, $propertyTypes, $property, $storable);
         }
 
-        return $array;
+        return $allProperties;
     }
 
     /**

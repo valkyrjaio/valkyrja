@@ -157,21 +157,25 @@ trait ModelTrait
     /**
      * Get model as an array.
      *
+     * @param string ...$properties [optional] An array of properties to return
+     *
      * @return array
      */
-    public function __toArray(): array
+    public function __toArray(string ...$properties): array
     {
         // Get the public properties
-        $properties = Obj::getProperties($this);
+        $allProperties = array_merge(Obj::getProperties($this), static::$exposed);
 
-        // Iterate through properties to expose
-        foreach (static::$exposed as $exposedProperty => $value) {
-            if (isset($this->{$exposedProperty})) {
-                $properties[$exposedProperty] = $this->__get($exposedProperty);
-            }
+        if (! empty($properties)) {
+            $allProperties = $this->__onlyProperties($allProperties, $properties);
         }
 
-        return $properties;
+        // Ensure for each property we use the magic __get method so as to go through any magic get{Property} methods
+        foreach ($allProperties as $property => $value) {
+            $allProperties[$property] = $this->__get($property);
+        }
+
+        return $allProperties;
     }
 
     /**
@@ -188,7 +192,7 @@ trait ModelTrait
 
         // Iterate through the model's properties
         foreach ($this->__toArray() as $property => $value) {
-            $originalProperty = $originalProperties[$property] ?? $value;
+            $originalProperty = $originalProperties[$property] ?? null;
 
             // Determine if the property changed
             if ($originalProperty !== $value) {
@@ -224,7 +228,7 @@ trait ModelTrait
     /**
      * Expose hidden fields or all fields.
      *
-     * @param string ...$properties The field(s) to expose
+     * @param string ...$properties The properties to expose
      *
      * @return void
      */
@@ -238,7 +242,7 @@ trait ModelTrait
     /**
      * Un-expose hidden fields or all fields.
      *
-     * @param string ...$properties The field(s) to expose
+     * @param string ...$properties [optional] The properties to unexpose
      *
      * @return void
      */
@@ -253,5 +257,28 @@ trait ModelTrait
         foreach ($properties as $property) {
             unset(static::$exposed[$property]);
         }
+    }
+
+    /**
+     * Get an array subset of properties to return from a given list out of the returnable properties.
+     *
+     * @param array $allProperties All the properties returnable
+     * @param array $properties    The properties we wish to return
+     *
+     * @return array
+     */
+    protected function __onlyProperties(array $allProperties, array $properties): array
+    {
+        $onlyProperties = [];
+
+        // Iterate through the list and set only those properties
+        foreach ($properties as $onlyProperty) {
+            if (isset($allProperties[$onlyProperty])) {
+                $onlyProperties[$onlyProperty] = true;
+            }
+        }
+
+        // Return the properties requested
+        return $onlyProperties;
     }
 }

@@ -80,9 +80,11 @@ interface Model extends JsonSerializable
     /**
      * Get model as an array.
      *
+     * @param string ...$properties [optional] An array of properties to return
+     *
      * @return array
      */
-    public function __toArray(): array;
+    public function __toArray(string ...$properties): array;
 
     /**
      * Get an array of changed properties.
@@ -117,7 +119,7 @@ interface Model extends JsonSerializable
     /**
      * Unexpose hidden properties or all properties.
      *
-     * @param string ...$properties The properties to expose
+     * @param string ...$properties [optional] The properties to unexpose
      *
      * @return void
      */
