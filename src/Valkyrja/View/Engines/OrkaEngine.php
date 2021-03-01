@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Engines;
 
+use Valkyrja\Auth\Facades\Auth;
 use Valkyrja\Support\Directory;
 
 use function array_keys;
@@ -41,6 +42,10 @@ class OrkaEngine extends PHPEngine
         '/@endunlessblock/x'                              => '<?php endif; ?>',
         '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*\s*\)/x'      => '<?php $template->getPartial(\'${1}\'); ?>',
         '/@partial\(\s*\'([a-zA-Z0-9]*)\'\s*,(.*)\s*\)/x' => '<?php $template->getPartial(\'${1}\', ${2}); ?>',
+        // {{{ unescaped Auth::
+        '/\{\{\{\s*Auth::/x'                              => '{{{ ' . Auth::class . '::',
+        // {{ escaped Auth::
+        '/\{\{\s*Auth::/x'                                => '{{ ' . Auth::class . '::',
         // {{{ unescaped }}}
         '/\{\{\{\s*(.*)\s*\}\}\}/x'                       => '<?= ${1}; ?>',
         // {{ escaped }}
