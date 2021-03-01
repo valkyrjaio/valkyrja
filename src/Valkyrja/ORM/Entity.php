@@ -110,7 +110,9 @@ interface Entity extends Model
     /**
      * Get the entity as an array for saving to the data store.
      *
+     * @param string ...$properties [optional] An array of properties to return
+     *
      * @return array
      */
-    public function __storable(): array;
+    public function __storable(string ...$properties): array;
 }
