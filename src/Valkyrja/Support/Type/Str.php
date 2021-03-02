@@ -480,6 +480,42 @@ class Str
     }
 
     /**
+     * Check if a string is alphabetic.
+     *
+     * @param string $subject The subject
+     *
+     * @return bool
+     */
+    public static function isAlphabetic(string $subject): bool
+    {
+        return (bool) ctype_alpha($subject);
+    }
+
+    /**
+     * Check if a string is alphabetic and lowercase.
+     *
+     * @param string $subject The subject
+     *
+     * @return bool
+     */
+    public static function isLowercase(string $subject): bool
+    {
+        return (bool) ctype_lower($subject);
+    }
+
+    /**
+     * Check if a string is alphabetic and uppercase.
+     *
+     * @param string $subject The subject
+     *
+     * @return bool
+     */
+    public static function isUppercase(string $subject): bool
+    {
+        return (bool) ctype_upper($subject);
+    }
+
+    /**
      * Convert all strings to a method output.
      *
      * @param string $method      The method to call for each subject

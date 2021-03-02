@@ -24,6 +24,9 @@ final class Rule
     public const EQUALS       = 'equals';
     public const EMPTY        = 'empty';
     public const NOT_EMPTY    = 'notEmpty';
+    public const ALPHA        = 'alpha';
+    public const LOWERCASE    = 'lowercase';
+    public const UPPERCASE    = 'uppercase';
     public const MIN          = 'min';
     public const MAX          = 'max';
     public const STARTS_WITH  = 'startsWith';

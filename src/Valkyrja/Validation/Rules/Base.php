@@ -92,6 +92,54 @@ class Base
     }
 
     /**
+     * Subject must be alphabetic.
+     *
+     * @param mixed $subject The subject
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function alpha(mixed $subject): void
+    {
+        if (! Str::isAlphabetic((string) $subject)) {
+            throw new ValidationException("{$subject} must be alphabetic");
+        }
+    }
+
+    /**
+     * Subject must be lowercase.
+     *
+     * @param mixed $subject The subject
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function lowercase(mixed $subject): void
+    {
+        if (! Str::isLowercase((string) $subject)) {
+            throw new ValidationException("{$subject} must be lowercase");
+        }
+    }
+
+    /**
+     * Subject must be uppercase.
+     *
+     * @param mixed $subject The subject
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function uppercase(mixed $subject): void
+    {
+        if (! Str::isUppercase((string) $subject)) {
+            throw new ValidationException("{$subject} must be uppercase");
+        }
+    }
+
+    /**
      * Subject must be above a minimum length.
      *
      * @param string $subject The subject
