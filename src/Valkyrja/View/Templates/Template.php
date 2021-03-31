@@ -324,7 +324,7 @@ class Template implements Contract
      */
     public function render(array $variables = []): string
     {
-        return $this->renderFile($this->name, $variables);
+        return $this->renderFile($this->name, $variables, true);
     }
 
     /**
@@ -340,12 +340,13 @@ class Template implements Contract
     /**
      * Render a file.
      *
-     * @param string $name      The file name
-     * @param array  $variables [optional] The variables to set
+     * @param string $name         The file name
+     * @param array  $variables    [optional] The variables to set
+     * @param bool   $renderLayout [optional] Whether to render the layout
      *
      * @return string
      */
-    protected function renderFile(string $name, array $variables = []): string
+    protected function renderFile(string $name, array $variables = [], bool $renderLayout = false): string
     {
         // Set the variables with the new variables and this view instance
         $this->variables = array_merge($this->variables, $variables, ['template' => $this]);
@@ -354,7 +355,7 @@ class Template implements Contract
         $template = $this->renderTemplate($name);
 
         // Check if a layout has been set
-        if (null === $this->layout) {
+        if (null === $this->layout || ! $renderLayout) {
             return $template;
         }
 
