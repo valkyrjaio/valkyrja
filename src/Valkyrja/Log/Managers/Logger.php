@@ -255,6 +255,6 @@ class Logger implements Contract
      */
     public function exception(Throwable $exception, string $message, array $context = []): void
     {
-        $this->useLogger()->exception($exception, $message);
+        $this->useLogger()->exception($exception, $message, $context);
     }
 }
