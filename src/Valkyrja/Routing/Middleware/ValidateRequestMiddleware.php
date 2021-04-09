@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Middleware;
 
-use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Validation\Validator;
 
@@ -42,10 +40,7 @@ abstract class ValidateRequestMiddleware extends Middleware
         $validator->setRules(static::getRules($request));
 
         if (! $validator->validate()) {
-            /** @var ResponseFactory $responseFactory */
-            $responseFactory = $container->getSingleton(ResponseFactory::class);
-
-            return static::getResponse($responseFactory, $validator);
+            return static::getResponse($request, $validator);
         }
 
         return $request;
@@ -54,15 +49,12 @@ abstract class ValidateRequestMiddleware extends Middleware
     /**
      * Get the response on validation failure.
      *
-     * @param ResponseFactory $responseFactory The request factory
-     * @param Validator       $validator       The validator
+     * @param Request   $request   The request
+     * @param Validator $validator The validator
      *
      * @return Response
      */
-    protected static function getResponse(ResponseFactory $responseFactory, Validator $validator): Response
-    {
-        return $responseFactory->createResponse($validator->getFirstErrorMessage(), StatusCode::BAD_REQUEST);
-    }
+    abstract protected static function getResponse(Request $request, Validator $validator): Response;
 
     /**
      * Get the validation rules.
