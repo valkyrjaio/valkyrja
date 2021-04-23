@@ -46,7 +46,8 @@ class Helpers
 
         if (! empty($relationships)) {
             $relationshipsString = implode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
-            $fieldAddition       .= "{$withRelationshipsSeparator}{$relationshipsString}";
+
+            $fieldAddition .= "{$withRelationshipsSeparator}{$relationshipsString}";
         }
 
         return "{$param}{$fieldAddition}{$classSeparator}{$entity}";
