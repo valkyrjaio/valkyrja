@@ -39,7 +39,7 @@ class PathParser implements Contract
      */
     protected const VARIABLE_REGEX = <<<'REGEX'
 \{
-    \s* ([a-zA-Z0-9\_\-\\\@]*) \s*
+    \s* ([a-zA-Z0-9\_\-\\\@\|]*) \s*
     (?:
         : \s* ([^{}]*(?:\{(?-1)\}[^{}]*)*)
     )?

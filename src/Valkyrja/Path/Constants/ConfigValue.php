@@ -23,14 +23,15 @@ use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 final class ConfigValue
 {
     public const PATTERNS = [
-        'num'                  => '(\d+)',
-        'slug'                 => '([a-zA-Z0-9-]+)',
-        'uuid'                 => '([a-zA-Z0-9-]+)',
-        'alpha'                => '([a-zA-Z]+)',
-        'alpha-lowercase'      => '([a-z]+)',
-        'alpha-uppercase'      => '([A-Z]+)',
-        'alpha-num'            => '([a-zA-Z0-9]+)',
-        'alpha-num-underscore' => '(\w+)',
+        PathPattern::NUM                  => '(\d+)',
+        PathPattern::ID                   => '(\d+)',
+        PathPattern::SLUG                 => '([a-zA-Z0-9-]+)',
+        PathPattern::UUID                 => '([a-zA-Z0-9-]+)',
+        PathPattern::ALPHA                => '([a-zA-Z]+)',
+        PathPattern::ALPHA_LOWERCASE      => '([a-z]+)',
+        PathPattern::ALPHA_UPPERCASE      => '([A-Z]+)',
+        PathPattern::ALPHA_NUM            => '([a-zA-Z0-9]+)',
+        PathPattern::ALPHA_NUM_UNDERSCORE => '(\w+)',
     ];
 
     public static array $defaults = [

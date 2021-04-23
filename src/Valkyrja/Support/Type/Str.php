@@ -358,6 +358,42 @@ class Str
     }
 
     /**
+     * Convert a string to slug.
+     *
+     * @param string $subject The subject
+     *
+     * @return string
+     */
+    public static function toSlug(string $subject): string
+    {
+        $key = $subject;
+
+        if (isset(static::$snakeCache[$key])) {
+            return static::$snakeCache[$key];
+        }
+
+        if (! ctype_lower($subject)) {
+            $subject = preg_replace('/\s+/u', '', ucwords($subject));
+
+            $subject = static::toLowerCase(preg_replace('/(.)(?=[A-Z])/u', '$1-', $subject));
+        }
+
+        return static::$snakeCache[$key] = $subject;
+    }
+
+    /**
+     * Convert all string to slug.
+     *
+     * @param string ...$subjects The subjects
+     *
+     * @return array
+     */
+    public static function allToSlug(string ...$subjects): array
+    {
+        return static::allTo('toSlug', ...$subjects);
+    }
+
+    /**
      * Convert a string to studly case.
      *
      * @param string $subject The subject

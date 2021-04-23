@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Support;
 
+use Valkyrja\Path\Constants\PathSeparator;
+
 /**
  * Class Helpers.
  *
@@ -23,29 +25,37 @@ class Helpers
     /**
      * Get an entity param for a route.
      *
-     * @param string $param  The param name
-     * @param string $entity The entity class
+     * @param string      $param  The param name
+     * @param string      $entity The entity class
+     * @param string|null $field  [optional] The field to query on
      *
      * @return string
      */
-    public static function getEntityParam(string $param, string $entity): string
+    public static function getEntityParam(string $param, string $entity, string $field = null): string
     {
-        return "{$param}@{$entity}";
+        $entityClassSeparator = PathSeparator::ENTITY_CLASS;
+        $entityFieldSeparator = PathSeparator::ENTITY_FIELD;
+
+        $fieldAddition = $field ? "{$entityFieldSeparator}{$field}" : '';
+
+        return "{$param}{$fieldAddition}{$entityClassSeparator}{$entity}";
     }
 
     /**
      * Get an entity path for a route.
      *
-     * @param string $param  The param name
-     * @param string $entity The entity class
-     * @param string $regex  The regex
+     * @param string      $param  The param name
+     * @param string      $entity The entity class
+     * @param string      $regex  The regex
+     * @param string|null $field  [optional] The field to query on
      *
      * @return string
      */
-    public static function getEntityPath(string $param, string $entity, string $regex): string
+    public static function getEntityPath(string $param, string $entity, string $regex, string $field = null): string
     {
-        $entityRouteParam = static::getEntityParam($param, $entity);
+        $entityRouteParam = static::getEntityParam($param, $entity, $field);
+        $regexSeparator   = PathSeparator::REGEX;
 
-        return "/{{$entityRouteParam}:{$regex}}";
+        return "/{{$entityRouteParam}{$regexSeparator}{$regex}}";
     }
 }

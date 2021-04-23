@@ -18,10 +18,13 @@ use Valkyrja\Http\Response;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Repository;
+use Valkyrja\Path\Constants\PathSeparator;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Str;
+
+use function Valkyrja\dd;
 
 /**
  * Class EntityMiddleware.
@@ -111,16 +114,16 @@ class EntityMiddleware extends RouteMiddleware
         array &$matches,
         int $counter
     ): void {
-        if (! Str::contains($param, '@')) {
+        if (! Str::contains($param, PathSeparator::ENTITY_CLASS)) {
             return;
         }
 
         // Get the class
-        [, $class] = explode('@', $param);
+        [$matchName, $class] = explode(PathSeparator::ENTITY_CLASS, $param);
 
         // Check if a param
         if ($class && Cls::inherits($class, Entity::class)) {
-            static::checkDependenciesForEntities($param, $routeDependencies, $matches, $class, $counter);
+            static::checkDependenciesForEntities($param, $routeDependencies, $matches, $matchName, $class, $counter);
         }
     }
 
@@ -130,6 +133,7 @@ class EntityMiddleware extends RouteMiddleware
      * @param string $param             The params
      * @param array  $routeDependencies The route dependencies
      * @param array  $matches           The matches
+     * @param string $matchName         The match name
      * @param string $class             The entity class
      * @param int    $counter           The counter
      *
@@ -139,6 +143,7 @@ class EntityMiddleware extends RouteMiddleware
         string $param,
         array &$routeDependencies,
         array &$matches,
+        string $matchName,
         string $class,
         int $counter
     ): void {
@@ -148,7 +153,7 @@ class EntityMiddleware extends RouteMiddleware
 
         foreach ($routeDependencies as $dependencyKey => $dependency) {
             if (! $found && $class === $dependency) {
-                static::findAndSetEntity($class, $param, $matches[$counter]);
+                static::findAndSetEntity($matchName, $class, $param, $matches[$counter]);
 
                 // Set found to true in case another dependency is also the same class
                 $found = true;
@@ -165,16 +170,17 @@ class EntityMiddleware extends RouteMiddleware
     /**
      * Find and set an entity.
      *
-     * @param string $class The entity class
-     * @param string $param The param name
-     * @param mixed  $value [optional] The value
+     * @param string $matchName The match name
+     * @param string $class     The entity class
+     * @param string $param     The param name
+     * @param mixed  $value     [optional] The value
      *
      * @return void
      */
-    protected static function findAndSetEntity(string $class, string $param, &$value): void
+    protected static function findAndSetEntity(string $matchName, string $class, string $param, &$value): void
     {
         // Attempt to get the entity from the ORM repository
-        $entity = static::findEntity($class, $value);
+        $entity = static::findEntity($matchName, $class, $value);
 
         if (! $entity) {
             static::entityNotFound($class, $value);
@@ -190,13 +196,25 @@ class EntityMiddleware extends RouteMiddleware
     /**
      * Find an entity.
      *
-     * @param string $entity The entity class
-     * @param mixed  $value  [optional] The value
+     * @param string $matchName The match name
+     * @param string $entity    The entity class
+     * @param mixed  $value     [optional] The value
      *
      * @return Entity|null
      */
-    protected static function findEntity(string $entity, $value): ?Entity
+    protected static function findEntity(string $matchName, string $entity, $value): ?Entity
     {
+        // If there is a field specified to use
+        if (Str::contains($matchName, PathSeparator::ENTITY_FIELD)) {
+            // Let's split the match name and use the field name
+            [, $field] = explode(PathSeparator::ENTITY_FIELD, $matchName);
+
+            return static::getOrmRepository($entity)
+                         ->find()
+                         ->where($field, null, $value)
+                         ->getOneOrNull();
+        }
+
         return static::getOrmRepository($entity)
                      ->findOne($value)
                      ->getOneOrNull();
