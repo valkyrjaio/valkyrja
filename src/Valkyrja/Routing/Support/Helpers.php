@@ -25,35 +25,52 @@ class Helpers
     /**
      * Get an entity param for a route.
      *
-     * @param string      $param  The param name
-     * @param string      $entity The entity class
-     * @param string|null $field  [optional] The field to query on
+     * @param string      $param         The param name
+     * @param string      $entity        The entity class
+     * @param string|null $field         [optional] The field to query on
+     * @param string[]    $relationships [optional] The relationships to include
      *
      * @return string
      */
-    public static function getEntityParam(string $param, string $entity, string $field = null): string
-    {
-        $entityClassSeparator = PathSeparator::ENTITY_CLASS;
-        $entityFieldSeparator = PathSeparator::ENTITY_FIELD;
+    public static function getEntityParam(
+        string $param,
+        string $entity,
+        string $field = null,
+        string ...$relationships
+    ): string {
+        $classSeparator = PathSeparator::ENTITY_CLASS;
+        $fieldSeparator = PathSeparator::ENTITY_FIELD;
+        $withRelationshipsSeparator = PathSeparator::ENTITY_WITH_RELATIONSHIPS;
 
-        $fieldAddition = $field ? "{$entityFieldSeparator}{$field}" : '';
+        $fieldAddition = $field ? "{$fieldSeparator}{$field}" : '';
 
-        return "{$param}{$fieldAddition}{$entityClassSeparator}{$entity}";
+        if (! empty($relationships)) {
+            $relationshipsString = implode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
+            $fieldAddition .= "{$withRelationshipsSeparator}{$relationshipsString}";
+        }
+
+        return "{$param}{$fieldAddition}{$classSeparator}{$entity}";
     }
 
     /**
      * Get an entity path for a route.
      *
-     * @param string      $param  The param name
-     * @param string      $entity The entity class
-     * @param string      $regex  The regex
-     * @param string|null $field  [optional] The field to query on
+     * @param string      $param         The param name
+     * @param string      $entity        The entity class
+     * @param string      $regex         The regex
+     * @param string|null $field         [optional] The field to query on
+     * @param string[]    $relationships [optional] The relationships to include
      *
      * @return string
      */
-    public static function getEntityPath(string $param, string $entity, string $regex, string $field = null): string
-    {
-        $entityRouteParam = static::getEntityParam($param, $entity, $field);
+    public static function getEntityPath(
+        string $param,
+        string $entity,
+        string $regex,
+        string $field = null,
+        string ...$relationships
+    ): string {
+        $entityRouteParam = static::getEntityParam($param, $entity, $field, ...$relationships);
         $regexSeparator   = PathSeparator::REGEX;
 
         return "/{{$entityRouteParam}{$regexSeparator}{$regex}}";

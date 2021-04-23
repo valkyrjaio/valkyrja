@@ -202,6 +202,11 @@ class EntityMiddleware extends RouteMiddleware
      */
     protected static function findEntity(string $matchName, string $entity, $value): ?Entity
     {
+        if (Str::contains($matchName, PathSeparator::ENTITY_WITH_RELATIONSHIPS)) {
+            [$matchName, $relationships] = explode(PathSeparator::ENTITY_WITH_RELATIONSHIPS, $matchName);
+            $relationships = explode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
+        }
+
         // If there is a field specified to use
         if (Str::contains($matchName, PathSeparator::ENTITY_FIELD)) {
             // Let's split the match name and use the field name
@@ -210,11 +215,13 @@ class EntityMiddleware extends RouteMiddleware
             return static::getOrmRepository($entity)
                          ->find()
                          ->where($field, null, $value)
+                         ->withRelationships($relationships ?? null)
                          ->getOneOrNull();
         }
 
         return static::getOrmRepository($entity)
                      ->findOne($value)
+                     ->withRelationships($relationships ?? null)
                      ->getOneOrNull();
     }
 

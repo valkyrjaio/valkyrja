@@ -20,7 +20,9 @@ namespace Valkyrja\Path\Constants;
  */
 final class PathSeparator
 {
-    public const ENTITY_FIELD = '|';
-    public const ENTITY_CLASS = '@';
-    public const REGEX        = ':';
+    public const ENTITY_CLASS              = '@';
+    public const ENTITY_FIELD              = '|';
+    public const ENTITY_WITH_RELATIONSHIPS = '+';
+    public const ENTITY_RELATIONSHIPS      = ',';
+    public const REGEX                     = ':';
 }
