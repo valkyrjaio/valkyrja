@@ -24,8 +24,6 @@ use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Support\Type\Cls;
 use Valkyrja\Support\Type\Str;
 
-use function Valkyrja\dd;
-
 /**
  * Class EntityMiddleware.
  *
