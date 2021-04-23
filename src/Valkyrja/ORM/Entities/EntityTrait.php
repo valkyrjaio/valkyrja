@@ -178,8 +178,8 @@ trait EntityTrait
         // Iterate through the properties
         foreach ($properties as $property => $value) {
             if (property_exists($this, $property)) {
-                if (! isset(static::$originalProperties[$property])) {
-                    static::$originalProperties[$property] = $value;
+                if (! isset($this->__originalProperties[$property])) {
+                    $this->__originalProperties[$property] = $value;
                 }
 
                 // Set the property
@@ -302,7 +302,7 @@ trait EntityTrait
     protected function __toArrayOrStorable(bool $storable = false, string ...$properties): array
     {
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
-        $allProperties          = array_merge(Obj::getProperties($this), static::$exposed);
+        $allProperties          = array_merge(Obj::getProperties($this), $this->__exposed);
         $propertyTypes          = static::getFieldCastings();
         $relationshipProperties = static::getRelationshipProperties();
 

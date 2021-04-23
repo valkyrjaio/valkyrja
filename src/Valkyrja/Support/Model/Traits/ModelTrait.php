@@ -33,14 +33,14 @@ trait ModelTrait
      *
      * @var string[]
      */
-    protected static array $exposed = [];
+    protected array $__exposed = [];
 
     /**
      * The original properties.
      *
      * @var array
      */
-    protected static array $originalProperties = [];
+    protected array $__originalProperties = [];
 
     /**
      * Set properties from an array of properties.
@@ -128,8 +128,8 @@ trait ModelTrait
         foreach ($properties as $property => $value) {
             // Ensure the property exists before blindly setting
             if (property_exists($this, $property)) {
-                if (! isset(static::$originalProperties[$property])) {
-                    static::$originalProperties[$property] = $value;
+                if (! isset($this->__originalProperties[$property])) {
+                    $this->__originalProperties[$property] = $value;
                 }
 
                 // Set the property
@@ -164,7 +164,7 @@ trait ModelTrait
     public function __toArray(string ...$properties): array
     {
         // Get the public properties
-        $allProperties = array_merge(Obj::getProperties($this), static::$exposed);
+        $allProperties = array_merge(Obj::getProperties($this), $this->__exposed);
 
         if (! empty($properties)) {
             $allProperties = $this->__onlyProperties($allProperties, $properties);
@@ -186,7 +186,7 @@ trait ModelTrait
     public function __changed(): array
     {
         // The original properties set on the model
-        $originalProperties = static::$originalProperties;
+        $originalProperties = $this->__originalProperties;
         // The changed properties
         $changed = [];
 
@@ -235,7 +235,7 @@ trait ModelTrait
     public function __expose(string ...$properties): void
     {
         foreach ($properties as $property) {
-            static::$exposed[$property] = true;
+            $this->__exposed[$property] = true;
         }
     }
 
@@ -249,13 +249,13 @@ trait ModelTrait
     public function __unexpose(string ...$properties): void
     {
         if (empty($properties)) {
-            static::$exposed = [];
+            $this->__exposed = [];
 
             return;
         }
 
         foreach ($properties as $property) {
-            unset(static::$exposed[$property]);
+            unset($this->__exposed[$property]);
         }
     }
 
