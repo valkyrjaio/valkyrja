@@ -38,15 +38,15 @@ class Helpers
         string $field = null,
         string ...$relationships
     ): string {
-        $classSeparator = PathSeparator::ENTITY_CLASS;
-        $fieldSeparator = PathSeparator::ENTITY_FIELD;
+        $classSeparator             = PathSeparator::ENTITY_CLASS;
+        $fieldSeparator             = PathSeparator::ENTITY_FIELD;
         $withRelationshipsSeparator = PathSeparator::ENTITY_WITH_RELATIONSHIPS;
 
         $fieldAddition = $field ? "{$fieldSeparator}{$field}" : '';
 
         if (! empty($relationships)) {
             $relationshipsString = implode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
-            $fieldAddition .= "{$withRelationshipsSeparator}{$relationshipsString}";
+            $fieldAddition       .= "{$withRelationshipsSeparator}{$relationshipsString}";
         }
 
         return "{$param}{$fieldAddition}{$classSeparator}{$entity}";

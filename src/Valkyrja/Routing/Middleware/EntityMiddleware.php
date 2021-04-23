@@ -204,6 +204,7 @@ class EntityMiddleware extends RouteMiddleware
     {
         if (Str::contains($matchName, PathSeparator::ENTITY_WITH_RELATIONSHIPS)) {
             [$matchName, $relationships] = explode(PathSeparator::ENTITY_WITH_RELATIONSHIPS, $matchName);
+
             $relationships = explode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
         }
 
