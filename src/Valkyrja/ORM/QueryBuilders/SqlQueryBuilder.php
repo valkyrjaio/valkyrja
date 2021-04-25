@@ -511,7 +511,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getWhereString(string $column, string $operator, $value = null): string
     {
-        return $column . $operator . $this->getWhereValue($column, $value);
+        return $column . ' ' . $operator . ' ' . $this->getWhereValue($column, $value);
     }
 
     /**
