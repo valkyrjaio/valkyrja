@@ -17,6 +17,7 @@ use Valkyrja\Support\Type\Integer;
 use Valkyrja\Support\Type\Str;
 use Valkyrja\Validation\Exceptions\ValidationException;
 
+use function is_bool;
 use function is_numeric;
 
 /**
@@ -78,13 +79,13 @@ class Base
     /**
      * Subject must not be empty.
      *
-     * @param string $subject The subject
+     * @param mixed $subject The subject
      *
      * @throws ValidationException
      *
      * @return void
      */
-    public function notEmpty(string $subject): void
+    public function notEmpty($subject): void
     {
         if (! $subject) {
             throw new ValidationException("{$subject} must not be empty");
@@ -262,6 +263,22 @@ class Base
     {
         if (! Str::isEmail($subject)) {
             throw new ValidationException("{$subject} is not a valid email");
+        }
+    }
+
+    /**
+     * Subject is a boolean.
+     *
+     * @param mixed $subject The subject
+     *
+     * @throws ValidationException
+     *
+     * @return void
+     */
+    public function boolean($subject): void
+    {
+        if (! is_bool($subject)) {
+            throw new ValidationException("{$subject} must be a boolean");
         }
     }
 

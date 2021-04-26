@@ -45,6 +45,7 @@ final class ConfigValue
         Rule::CONTAINS_ANY => CKP::DEFAULT,
         Rule::EMAIL        => CKP::DEFAULT,
         Rule::NUMERIC      => CKP::DEFAULT,
+        Rule::BOOLEAN      => CKP::DEFAULT,
         Rule::LESS_THAN    => CKP::DEFAULT,
         Rule::GREATER_THAN => CKP::DEFAULT,
         Rule::ORM_UNIQUE   => CKP::ORM,

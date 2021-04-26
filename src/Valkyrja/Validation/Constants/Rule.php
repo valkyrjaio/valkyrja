@@ -35,6 +35,7 @@ final class Rule
     public const CONTAINS_ANY = 'containsAny';
     public const EMAIL        = 'email';
     public const NUMERIC      = 'numeric';
+    public const BOOLEAN      = 'boolean';
     public const LESS_THAN    = 'lessThan';
     public const GREATER_THAN = 'greaterThan';
     public const ORM_UNIQUE   = 'ormUnique';
