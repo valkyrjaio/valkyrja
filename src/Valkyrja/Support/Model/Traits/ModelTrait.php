@@ -191,7 +191,7 @@ trait ModelTrait
         $changed = [];
 
         // Iterate through the model's properties
-        foreach ($this->__toArray() as $property => $value) {
+        foreach ($this->__asArrayForChangedComparison() as $property => $value) {
             $originalProperty = $originalProperties[$property] ?? null;
 
             // Determine if the property changed
@@ -257,6 +257,16 @@ trait ModelTrait
         foreach ($properties as $property) {
             unset($this->__exposed[$property]);
         }
+    }
+
+    /**
+     * The model as an array to compare with original properties to determine what changed.
+     *
+     * @return array
+     */
+    protected function __asArrayForChangedComparison(): array
+    {
+        return $this->__toArray();
     }
 
     /**

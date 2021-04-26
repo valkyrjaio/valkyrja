@@ -211,6 +211,16 @@ trait EntityTrait
     }
 
     /**
+     * @inheritDoc
+     *
+     * @throws JsonException
+     */
+    protected function __asArrayForChangedComparison(): array
+    {
+        return $this->__storable();
+    }
+
+    /**
      * Get a property's value for data store.
      *
      * @param array  $propertyTypes The property types
