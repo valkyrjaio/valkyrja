@@ -193,13 +193,13 @@ class Template implements Contract
     /**
      * Escape a value for output.
      *
-     * @param string $value The value to escape
+     * @param mixed $value The value to escape
      *
      * @return string
      */
-    public function escape(string $value): string
+    public function escape($value): string
     {
-        $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+        $value = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
         $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
 
         return $value;

@@ -48,15 +48,6 @@ class OrkaEngine extends PHPEngine
         '/@trimpartial\s*\(\s*(.*)\s*,(.*)\s*\)/x' => '<?= trim($template->getPartial(${1}, ${2})); ?>',
         '/@setvariables\s*\(\s*(.*)\s*\s*\)/x'     => '<?php $template->setVariables(${1}); ?>',
         '/@setvariable\s*\(\s*(.*)\s*,(.*)\s*\)/x' => '<?php $template->setVariable(${1}, ${2}); ?>',
-        '/@dd\s*\(\s*(.*)\s*\s*\)/x'               => '<?php \Valkyrja\dd(${1}); ?>',
-        // {{{ unescaped Auth::
-        '/\{\{\{\s*Auth::/x'                       => '{{{ ' . Auth::class . '::',
-        // {{ escaped Auth::
-        '/\{\{\s*Auth::/x'                         => '{{ ' . Auth::class . '::',
-        // {{{ unescaped }}}
-        '/\{\{\{\s*(.*)\s*\}\}\}/x'                => '<?= ${1}; ?>',
-        // {{ escaped }}
-        '/\{\{\s*(.*)\s*\}\}/x'                    => '<?= $template->escape(${1}); ?>',
         '/@if\s*\(\s*(.*)\s*\)/x'                  => '<?php if (${1}) : ?>',
         '/@elseif\s*\(\s*(.*)\s*\)/x'              => '<?php elseif (${1}) : ?>',
         '/@else/x'                                 => '<?php else : ?>',
@@ -68,6 +59,17 @@ class OrkaEngine extends PHPEngine
         '/@endunless/x'                            => '<?php endif; ?>',
         '/@foreach\s*\(\s*(.*)\s*\)/x'             => '<?php foreach (${1}) : ?>',
         '/@endforeach/x'                           => '<?php endforeach; ?>',
+        '/@for\s*\(\s*(.*)\s*\)/x'                 => '<?php for (${1}) : ?>',
+        '/@endfor/x'                               => '<?php endfor; ?>',
+        '/@dd\s*\(\s*(.*)\s*\s*\)/x'               => '<?php \Valkyrja\dd(${1}); ?>',
+        // {{{ unescaped Auth::
+        '/\{\{\{\s*Auth::/x'                       => '{{{ ' . Auth::class . '::',
+        // {{ escaped Auth::
+        '/\{\{\s*Auth::/x'                         => '{{ ' . Auth::class . '::',
+        // {{{ unescaped }}}
+        '/\{\{\{\s*(.*?)\s*\}\}\}/x'       => '<?= ${1}; ?>',
+        // {{ escaped }}
+        '/\{\{\s*(.*?)\s*\}\}/x'             => '<?= $template->escape(${1}); ?>',
     ];
 
     /**
