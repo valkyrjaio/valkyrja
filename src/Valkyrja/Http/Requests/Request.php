@@ -294,6 +294,30 @@ class Request implements Contract
     }
 
     /**
+     * Retrieve only the specified query string arguments.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyQueryParams(array $names): array
+    {
+        return $this->onlyParams($this->query, $names);
+    }
+
+    /**
+     * Retrieve all query string arguments except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptQueryParams(array $names): array
+    {
+        return $this->exceptParams($this->query, $names);
+    }
+
+    /**
      * Return an instance with the specified query string arguments.
      * These values SHOULD remain immutable over the course of the incoming
      * request. They MAY be injected during instantiation, such as from PHP's
@@ -402,6 +426,30 @@ class Request implements Contract
     }
 
     /**
+     * Retrieve only the specified request body params.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyParsedBody(array $names): array
+    {
+        return $this->onlyParams($this->parsedBody, $names);
+    }
+
+    /**
+     * Retrieve all request body params except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptParsedBody(array $names): array
+    {
+        return $this->exceptParams($this->parsedBody, $names);
+    }
+
+    /**
      * Return an instance with the specified body parameters.
      * These MAY be injected during instantiation.
      * If the request Content-Type is either application/x-www-form-urlencoded
@@ -475,6 +523,30 @@ class Request implements Contract
     }
 
     /**
+     * Retrieve only the specified request body params.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyParsedJson(array $names): array
+    {
+        return $this->onlyParams($this->parsedJson, $names);
+    }
+
+    /**
+     * Retrieve all request body params except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptParsedJson(array $names): array
+    {
+        return $this->exceptParams($this->parsedJson, $names);
+    }
+
+    /**
      * Retrieve a specific json param value.
      * Retrieves a json param value sent by the client to the server.
      *
@@ -513,6 +585,30 @@ class Request implements Contract
     public function getAttributes(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * Retrieve only the specified attributes.
+     *
+     * @param string[] $names The attribute names to retrieve
+     *
+     * @return array
+     */
+    public function onlyAttributes(array $names): array
+    {
+        return $this->onlyParams($this->attributes, $names);
+    }
+
+    /**
+     * Retrieve all attributes except the ones specified.
+     *
+     * @param string[] $names The attribute names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptAttributes(array $names): array
+    {
+        return $this->exceptParams($this->attributes, $names);
     }
 
     /**
@@ -591,5 +687,45 @@ class Request implements Contract
     public function isXmlHttpRequest(): bool
     {
         return 'XMLHttpRequest' === $this->getHeaderLine('X-Requested-With');
+    }
+
+    /**
+     * Retrieve only the specified params.
+     *
+     * @param array    $params The params to sort through
+     * @param string[] $names  The query param names to retrieve
+     *
+     * @return array
+     */
+    protected function onlyParams(array $params, array $names): array
+    {
+        $onlyParams = [];
+
+        foreach ($names as $name) {
+            if (isset($params[$name])) {
+                $onlyParams[$name] = $params[$name];
+            }
+        }
+
+        return $onlyParams;
+    }
+
+    /**
+     * Retrieve all params except the ones specified.
+     *
+     * @param array    $params The params to sort through
+     * @param string[] $names  The query param names to not retrieve
+     *
+     * @return array
+     */
+    protected function exceptParams(array $params, array $names): array
+    {
+        foreach ($names as $name) {
+            if (isset($params[$name])) {
+                unset($params[$name]);
+            }
+        }
+
+        return $params;
     }
 }

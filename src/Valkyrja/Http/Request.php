@@ -140,6 +140,24 @@ interface Request extends SimpleRequest
     public function getQueryParams(): array;
 
     /**
+     * Retrieve only the specified query string arguments.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyQueryParams(array $names): array;
+
+    /**
+     * Retrieve all query string arguments except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptQueryParams(array $names): array;
+
+    /**
      * Return an instance with the specified query string arguments.
      * These values SHOULD remain immutable over the course of the incoming
      * request. They MAY be injected during instantiation, such as from PHP's
@@ -224,6 +242,24 @@ interface Request extends SimpleRequest
     public function getParsedBody(): array;
 
     /**
+     * Retrieve only the specified request body params.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyParsedBody(array $names): array;
+
+    /**
+     * Retrieve all request body params except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptParsedBody(array $names): array;
+
+    /**
      * Return an instance with the specified body parameters.
      * These MAY be injected during instantiation.
      * If the request Content-Type is either application/x-www-form-urlencoded
@@ -281,6 +317,24 @@ interface Request extends SimpleRequest
     public function getParsedJson(): array;
 
     /**
+     * Retrieve only the specified request body params.
+     *
+     * @param string[] $names The param names to retrieve
+     *
+     * @return array
+     */
+    public function onlyParsedJson(array $names): array;
+
+    /**
+     * Retrieve all request body params except the ones specified.
+     *
+     * @param string[] $names The param names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptParsedJson(array $names): array;
+
+    /**
      * Retrieve a specific json param value.
      * Retrieves a json param value sent by the client to the server.
      *
@@ -311,6 +365,24 @@ interface Request extends SimpleRequest
      * @return array Attributes derived from the request.
      */
     public function getAttributes(): array;
+
+    /**
+     * Retrieve only the specified attributes.
+     *
+     * @param string[] $names The attribute names to retrieve
+     *
+     * @return array
+     */
+    public function onlyAttributes(array $names): array;
+
+    /**
+     * Retrieve all attributes except the ones specified.
+     *
+     * @param string[] $names The attribute names to not retrieve
+     *
+     * @return array
+     */
+    public function exceptAttributes(array $names): array;
 
     /**
      * Retrieve a single derived request attribute.
