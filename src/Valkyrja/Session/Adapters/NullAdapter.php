@@ -15,10 +15,13 @@ namespace Valkyrja\Session\Adapters;
 
 use Exception;
 use Valkyrja\Session\Adapter as Contract;
+use Valkyrja\Session\Exceptions\InvalidCsrfToken;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
 use function bin2hex;
+use function hash_equals;
+use function is_string;
 use function preg_match;
 use function random_bytes;
 
@@ -232,7 +235,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Get a csrf token for a unique token id.
+     * Generate a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id
      *
@@ -240,7 +243,7 @@ class NullAdapter implements Contract
      *
      * @return string
      */
-    public function csrf(string $id): string
+    public function generateCsrfToken(string $id): string
     {
         $token = bin2hex(random_bytes(64));
 
@@ -255,9 +258,26 @@ class NullAdapter implements Contract
      * @param string $id    The csrf unique token id
      * @param string $token The token to validate
      *
+     * @throws InvalidCsrfToken
+     *
+     * @return void
+     */
+    public function validateCsrfToken(string $id, string $token): void
+    {
+        if (! $this->isCsrfTokenValid($id, $token)) {
+            throw new InvalidCsrfToken("CSRF token id: `{$id}` has invalid token of `{$token}` provided");
+        }
+    }
+
+    /**
+     * Determine if a csrf token is valid.
+     *
+     * @param string $id    The csrf unique token id
+     * @param string $token The token to validate
+     *
      * @return bool
      */
-    public function validateCsrf(string $id, string $token): bool
+    public function isCsrfTokenValid(string $id, string $token): bool
     {
         if (! $this->has($id)) {
             return false;
@@ -265,9 +285,13 @@ class NullAdapter implements Contract
 
         $sessionToken = $this->get($id);
 
-        $this->remove($id);
+        if (is_string($sessionToken) && hash_equals($token, $sessionToken)) {
+            $this->remove($id);
 
-        return $token === $sessionToken;
+            return true;
+        }
+
+        return false;
     }
 
     /**

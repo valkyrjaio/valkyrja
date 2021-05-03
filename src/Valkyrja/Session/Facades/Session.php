@@ -33,8 +33,9 @@ use Valkyrja\Support\Facade\Facade;
  * @method static mixed get(string $id)
  * @method static void set(string $id, string $value)
  * @method static bool remove(string $id)
- * @method static string csrf(string $id)
- * @method static bool validateCsrf(string $id, string $token)
+ * @method static string generateCsrfToken(string $id)
+ * @method static void validateCsrfToken(string $id, string $token)
+ * @method static bool isCsrfTokenValid(string $id, string $token)
  * @method static void clear()
  * @method static void destroy()
  */

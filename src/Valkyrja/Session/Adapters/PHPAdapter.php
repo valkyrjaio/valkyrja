@@ -16,9 +16,7 @@ namespace Valkyrja\Session\Adapters;
 use Valkyrja\Session\Exceptions\InvalidSessionId;
 use Valkyrja\Session\Exceptions\SessionStartFailure;
 
-use function hash_equals;
 use function headers_sent;
-use function is_string;
 use function preg_match;
 use function session_id;
 use function session_name;
@@ -125,31 +123,6 @@ class PHPAdapter extends NullAdapter
     public function isActive(): bool
     {
         return PHP_SESSION_ACTIVE === session_status();
-    }
-
-    /**
-     * Validate a csrf token.
-     *
-     * @param string $id    The csrf unique token id
-     * @param string $token The token to validate
-     *
-     * @return bool
-     */
-    public function validateCsrf(string $id, string $token): bool
-    {
-        if (! $this->has($id)) {
-            return false;
-        }
-
-        $sessionToken = $this->get($id);
-
-        if (! is_string($sessionToken)) {
-            return false;
-        }
-
-        $this->remove($id);
-
-        return hash_equals($token, $sessionToken);
     }
 
     /**

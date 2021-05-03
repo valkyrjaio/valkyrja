@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session;
 
+use Valkyrja\Session\Exceptions\InvalidCsrfToken;
+
 /**
  * Interface Session.
  *
@@ -122,13 +124,13 @@ interface Session
     public function all(): array;
 
     /**
-     * Get a csrf token for a unique token id.
+     * Generate a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id
      *
      * @return string
      */
-    public function csrf(string $id): string;
+    public function generateCsrfToken(string $id): string;
 
     /**
      * Validate a csrf token.
@@ -136,9 +138,21 @@ interface Session
      * @param string $id    The csrf unique token id
      * @param string $token The token to validate
      *
+     * @throws InvalidCsrfToken
+     *
+     * @return void
+     */
+    public function validateCsrfToken(string $id, string $token): void;
+
+    /**
+     * Determine if a csrf token is valid.
+     *
+     * @param string $id    The csrf unique token id
+     * @param string $token The token to validate
+     *
      * @return bool
      */
-    public function validateCsrf(string $id, string $token): bool;
+    public function isCsrfTokenValid(string $id, string $token): bool;
 
     /**
      * Clear the local session.

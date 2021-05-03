@@ -15,6 +15,7 @@ namespace Valkyrja\Session\Drivers;
 
 use Valkyrja\Session\Adapter;
 use Valkyrja\Session\Driver as Contract;
+use Valkyrja\Session\Exceptions\InvalidCsrfToken;
 
 /**
  * Class Driver.
@@ -165,15 +166,15 @@ class Driver implements Contract
     }
 
     /**
-     * Get a csrf token for a unique token id.
+     * Generate a csrf token for a unique token id.
      *
      * @param string $id The csrf unique token id
      *
      * @return string
      */
-    public function csrf(string $id): string
+    public function generateCsrfToken(string $id): string
     {
-        return $this->adapter->csrf($id);
+        return $this->adapter->generateCsrfToken($id);
     }
 
     /**
@@ -182,11 +183,26 @@ class Driver implements Contract
      * @param string $id    The csrf unique token id
      * @param string $token The token to validate
      *
+     * @throws InvalidCsrfToken
+     *
+     * @return void
+     */
+    public function validateCsrfToken(string $id, string $token): void
+    {
+        $this->adapter->validateCsrfToken($id, $token);
+    }
+
+    /**
+     * Determine if a csrf token is valid.
+     *
+     * @param string $id    The csrf unique token id
+     * @param string $token The token to validate
+     *
      * @return bool
      */
-    public function validateCsrf(string $id, string $token): bool
+    public function isCsrfTokenValid(string $id, string $token): bool
     {
-        return $this->adapter->validateCsrf($id, $token);
+        return $this->adapter->isCsrfTokenValid($id, $token);
     }
 
     /**
