@@ -309,6 +309,7 @@ trait EntityTrait
                         'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
                     ]
                 );
+
                 break;
             case PropertyType::ARRAY :
                 $value = Arr::fromString($value);
