@@ -241,15 +241,31 @@ trait EntityTrait
             return $value;
         }
 
-        return match ($type) {
-            PropertyType::OBJECT => serialize($value),
-            PropertyType::ARRAY => Arr::toString($value),
-            PropertyType::JSON => Obj::toString($value),
-            PropertyType::STRING => (string) $value,
-            PropertyType::INT => (int) $value,
-            PropertyType::FLOAT => (float) $value,
-            PropertyType::BOOL => (bool) $value,
-        };
+        switch ($type) {
+            case PropertyType::OBJECT :
+                $value = serialize($value);
+                break;
+            case PropertyType::ARRAY :
+                $value = Arr::toString($value);
+                break;
+            case PropertyType::JSON :
+                $value = Obj::toString($value);
+                break;
+            case PropertyType::STRING :
+                $value = (string) $value;
+                break;
+            case PropertyType::INT :
+                $value = (int) $value;
+                break;
+            case PropertyType::FLOAT :
+                $value = (float) $value;
+                break;
+            case PropertyType::BOOL :
+                $value = (bool) $value;
+                break;
+        }
+
+        return $value;
     }
 
     /**
@@ -278,20 +294,36 @@ trait EntityTrait
             return $value;
         }
 
-        return match ($type) {
-            PropertyType::OBJECT => unserialize(
-                $value,
-                [
-                    'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
-                ]
-            ),
-            PropertyType::ARRAY => Arr::fromString($value),
-            PropertyType::JSON => Obj::fromString($value),
-            PropertyType::STRING => (string) $value,
-            PropertyType::INT => (int) $value,
-            PropertyType::FLOAT => (float) $value,
-            PropertyType::BOOL => (bool) $value,
-        };
+        switch ($type) {
+            case PropertyType::OBJECT :
+                $value = unserialize(
+                    $value,
+                    [
+                        'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
+                    ]
+                );
+                break;
+            case PropertyType::ARRAY :
+                $value = Arr::fromString($value);
+                break;
+            case PropertyType::JSON :
+                $value = Obj::fromString($value);
+                break;
+            case PropertyType::STRING :
+                $value = (string) $value;
+                break;
+            case PropertyType::INT :
+                $value = (int) $value;
+                break;
+            case PropertyType::FLOAT :
+                $value = (float) $value;
+                break;
+            case PropertyType::BOOL :
+                $value = (bool) $value;
+                break;
+        }
+
+        return $value;
     }
 
     /**
