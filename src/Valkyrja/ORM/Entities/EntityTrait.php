@@ -244,24 +244,31 @@ trait EntityTrait
         switch ($type) {
             case PropertyType::OBJECT :
                 $value = serialize($value);
+
                 break;
             case PropertyType::ARRAY :
                 $value = Arr::toString($value);
+
                 break;
             case PropertyType::JSON :
                 $value = Obj::toString($value);
+
                 break;
             case PropertyType::STRING :
                 $value = (string) $value;
+
                 break;
             case PropertyType::INT :
                 $value = (int) $value;
+
                 break;
             case PropertyType::FLOAT :
                 $value = (float) $value;
+
                 break;
             case PropertyType::BOOL :
                 $value = (bool) $value;
+
                 break;
         }
 
@@ -305,21 +312,27 @@ trait EntityTrait
                 break;
             case PropertyType::ARRAY :
                 $value = Arr::fromString($value);
+
                 break;
             case PropertyType::JSON :
                 $value = Obj::fromString($value);
+
                 break;
             case PropertyType::STRING :
                 $value = (string) $value;
+
                 break;
             case PropertyType::INT :
                 $value = (int) $value;
+
                 break;
             case PropertyType::FLOAT :
                 $value = (float) $value;
+
                 break;
             case PropertyType::BOOL :
                 $value = (bool) $value;
+
                 break;
         }
 
