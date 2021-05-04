@@ -23,4 +23,7 @@ final class PropertyType
     public const JSON   = 'json';
     public const ARRAY  = 'array';
     public const OBJECT = 'object';
+    public const STRING = 'string';
+    public const INT    = 'int';
+    public const FLOAT  = 'float';
 }

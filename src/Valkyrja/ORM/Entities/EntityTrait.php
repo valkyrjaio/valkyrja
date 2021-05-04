@@ -241,19 +241,14 @@ trait EntityTrait
             return $value;
         }
 
-        // If the type is object
-        if ($type === PropertyType::OBJECT) {
-            // Unserialize the object
-            $value = serialize($value);
-        } // If the type is array
-        elseif ($type === PropertyType::ARRAY) {
-            $value = Arr::toString($value);
-        } // If the type is json
-        elseif ($type === PropertyType::JSON) {
-            $value = Obj::toString($value);
-        }
-
-        return $value;
+        return match ($type) {
+            PropertyType::OBJECT => serialize($value),
+            PropertyType::ARRAY => Arr::toString($value),
+            PropertyType::JSON => Obj::toString($value),
+            PropertyType::STRING => (string) $value,
+            PropertyType::INT => (int) $value,
+            PropertyType::FLOAT => (float) $value,
+        };
     }
 
     /**
@@ -282,21 +277,19 @@ trait EntityTrait
             return $value;
         }
 
-        // If the type is object
-        if ($type === PropertyType::OBJECT) {
-            // Unserialize the object
-            $value = unserialize($value, ['allowed_classes' => $propertyAllowedClasses[$property] ?? []]);
-        } // If the type is array
-        elseif ($type === PropertyType::ARRAY) {
-            // Create a new array from the json string
-            $value = Arr::fromString($value);
-        } // If the type is json
-        elseif ($type === PropertyType::JSON) {
-            // Create a new object from the json string
-            $value = Obj::fromString($value);
-        }
-
-        return $value;
+        return match ($type) {
+            PropertyType::OBJECT => unserialize(
+                $value,
+                [
+                    'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
+                ]
+            ),
+            PropertyType::ARRAY => Arr::fromString($value),
+            PropertyType::JSON => Obj::fromString($value),
+            PropertyType::STRING => (string) $value,
+            PropertyType::INT => (int) $value,
+            PropertyType::FLOAT => (float) $value,
+        };
     }
 
     /**
