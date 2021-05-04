@@ -26,6 +26,7 @@ disabled:
   - phpdoc_summary
   - no_blank_lines_between_imports
   - alpha_ordered_imports
+  - switch_case_space
 
 finder:
   exclude:
