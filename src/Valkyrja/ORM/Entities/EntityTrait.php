@@ -248,6 +248,7 @@ trait EntityTrait
             PropertyType::STRING => (string) $value,
             PropertyType::INT => (int) $value,
             PropertyType::FLOAT => (float) $value,
+            PropertyType::BOOL => (bool) $value,
         };
     }
 
@@ -289,6 +290,7 @@ trait EntityTrait
             PropertyType::STRING => (string) $value,
             PropertyType::INT => (int) $value,
             PropertyType::FLOAT => (float) $value,
+            PropertyType::BOOL => (bool) $value,
         };
     }
 

@@ -26,4 +26,5 @@ final class PropertyType
     public const STRING = 'string';
     public const INT    = 'int';
     public const FLOAT  = 'float';
+    public const BOOL   = 'bool';
 }
