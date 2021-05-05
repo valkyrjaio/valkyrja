@@ -389,14 +389,6 @@ class Retriever implements Contract
      */
     protected function setValue(string $column, $value): void
     {
-        if (is_array($value)) {
-            foreach ($value as $key => $item) {
-                $this->values[$column . $key] = $item;
-            }
-
-            return;
-        }
-
         $this->values[$column] = $value;
     }
 
