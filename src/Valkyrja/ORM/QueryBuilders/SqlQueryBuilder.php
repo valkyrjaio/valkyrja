@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\QueryBuilders;
 
 use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Constants\JoinType;
 use Valkyrja\ORM\Constants\Operator;
 use Valkyrja\ORM\Constants\OrderBy;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
+
+use Valkyrja\ORM\Support\Helpers;
 
 use function array_keys;
 use function implode;
@@ -73,6 +76,13 @@ class SqlQueryBuilder implements QueryBuilder
      * @var array
      */
     protected array $values = [];
+
+    /**
+     * Joins for the query statement.
+     *
+     * @var array
+     */
+    protected array $joins = [];
 
     /**
      * Order by conditions for the query statement.
@@ -318,6 +328,40 @@ class SqlQueryBuilder implements QueryBuilder
     }
 
     /**
+     * Join with another table.
+     *
+     * @param string      $table    The table to join on
+     * @param string      $column1  The column to join on
+     * @param string      $column2  The secondary column to join on
+     * @param string|null $operator [optional] The operator
+     * @param string|null $type     [optional] The type of join
+     * @param bool|null   $isWhere  [optional] Whether this is a where join
+     *
+     * @return static
+     */
+    public function join(
+        string $table,
+        string $column1,
+        string $column2,
+        string $operator = null,
+        string $type = null,
+        bool $isWhere = null
+    ): self {
+        // The operator defaulting to =
+        $operator ??= Operator::EQUALS;
+        // WHERE or ON for the join
+        $statementType = $isWhere ? Statement::WHERE : Statement::ON;
+        // Get the type defaulting to inner
+        $type ??= JoinType::INNER;
+        // Get the join wording
+        $join = Statement::JOIN;
+
+        $this->joins[] = "{$type} {$join} {$table} {$statementType} {$column1} {$operator} {$column2}";
+
+        return $this;
+    }
+
+    /**
      * Add an groupBy by to the query statement.
      *
      * <code>
@@ -525,14 +569,16 @@ class SqlQueryBuilder implements QueryBuilder
     protected function getWhereValue(string $column, $value): string
     {
         if (null === $value) {
-            return ':' . $column;
+            return Helpers::getColumnForValueBind($column);
         }
 
         if (! is_array($value)) {
             return (string) $value;
         }
 
-        return '(:' . $column . implode(', :' . $column, array_keys($value)) . ')';
+        $columnValueBind = Helpers::getColumnForValueBind($column);
+
+        return '(' . $columnValueBind . implode(', ' . $columnValueBind, array_keys($value)) . ')';
     }
 
     /**
@@ -546,6 +592,7 @@ class SqlQueryBuilder implements QueryBuilder
             . ' ' . implode(', ', $this->columns)
             . ' ' . Statement::FROM
             . ' ' . $this->table
+            . ' ' . $this->getJoinQuery()
             . ' ' . $this->getWhereQuery()
             . ' ' . $this->getOrderByQuery()
             . ' ' . $this->getLimitQuery()
@@ -611,6 +658,18 @@ class SqlQueryBuilder implements QueryBuilder
         }
 
         return Statement::SET . ' ' . implode(', ', $values);
+    }
+
+    /**
+     * Get the JOINs of a query statement.
+     *
+     * @return string
+     */
+    protected function getJoinQuery(): string
+    {
+        return empty($this->joins)
+            ? ''
+            : ' ' . implode(' ', $this->joins);
     }
 
     /**

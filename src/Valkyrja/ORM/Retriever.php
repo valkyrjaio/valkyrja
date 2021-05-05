@@ -95,6 +95,27 @@ interface Retriever
     public function orWhere(string $column, string $operator = null, $value = null): self;
 
     /**
+     * Join with another table.
+     *
+     * @param string      $table    The table to join on
+     * @param string      $column1  The column to join on
+     * @param string      $column2  The secondary column to join on
+     * @param string|null $operator [optional] The operator
+     * @param string|null $type     [optional] The type of join
+     * @param bool|null   $isWhere  [optional] Whether this is a where join
+     *
+     * @return static
+     */
+    public function join(
+        string $table,
+        string $column1,
+        string $column2,
+        string $operator = null,
+        string $type = null,
+        bool $isWhere = null
+    ): self;
+
+    /**
      * Set group by.
      *
      * @param string $column

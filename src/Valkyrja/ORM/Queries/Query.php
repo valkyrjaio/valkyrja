@@ -18,6 +18,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\NotFoundException;
 use Valkyrja\ORM\Query as QueryContract;
 use Valkyrja\ORM\Statement;
+use Valkyrja\ORM\Support\Helpers;
 use Valkyrja\Support\Type\Str;
 
 use function is_array;
@@ -136,7 +137,7 @@ class Query implements QueryContract
         }
 
         // And bind each value to the column
-        $this->statement->bindValue($this->propertyBind($property), $value);
+        $this->statement->bindValue(Helpers::getColumnForValueBind($property), $value);
 
         return $this;
     }
@@ -231,17 +232,5 @@ class Query implements QueryContract
     public function getError(): string
     {
         return $this->statement->errorMessage() ?? 'An unknown error occurred.';
-    }
-
-    /**
-     * Get a property name to bind a value to.
-     *
-     * @param string $property
-     *
-     * @return string
-     */
-    protected function propertyBind(string $property): string
-    {
-        return ':' . $property;
     }
 }
