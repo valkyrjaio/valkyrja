@@ -20,7 +20,9 @@ namespace Valkyrja\ORM\Constants;
  */
 final class JoinType
 {
-    public const RIGHT  = 'RIGHT';
-    public const LEFT = 'LEFT';
-    public const INNER = 'INNER';
+    public const RIGHT      = 'RIGHT';
+    public const LEFT       = 'LEFT';
+    public const INNER      = 'INNER';
+    public const OUTER      = 'OUTER';
+    public const FULL_OUTER = 'FULL OUTER';
 }
