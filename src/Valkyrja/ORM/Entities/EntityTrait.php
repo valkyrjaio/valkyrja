@@ -162,41 +162,6 @@ trait EntityTrait
     }
 
     /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties
-     *
-     * @throws JsonException
-     *
-     * @return void
-     */
-    public function __setProperties(array $properties): void
-    {
-        $propertyTypes          = static::getFieldCastings();
-        $propertyAllowedClasses = static::getCastingAllowedClasses();
-
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            if (property_exists($this, $property)) {
-                if (! isset($this->__originalProperties[$property])) {
-                    $this->__originalProperties[$property] = $value;
-                }
-
-                // Set the property
-                $this->__set(
-                    $property,
-                    $this->__getPropertyValueByType(
-                        $propertyTypes,
-                        $propertyAllowedClasses,
-                        $property,
-                        $value
-                    )
-                );
-            }
-        }
-    }
-
-    /**
      * Get model as an array.
      *
      * @param string ...$properties [optional] An array of properties to return
@@ -411,5 +376,41 @@ trait EntityTrait
         }
 
         $properties[$property] = $this->__get($property);
+    }
+
+    /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties            The properties to set
+     * @param bool  $setOriginalProperties [optional] Whether to set the original properties
+     *
+     * @throws JsonException
+     *
+     * @return void
+     */
+    protected function __setPropertiesInternal(array $properties, bool $setOriginalProperties = false): void
+    {
+        $propertyTypes          = static::getFieldCastings();
+        $propertyAllowedClasses = static::getCastingAllowedClasses();
+
+        // Iterate through the properties
+        foreach ($properties as $property => $value) {
+            if (property_exists($this, $property)) {
+                if ($setOriginalProperties && ! isset($this->__originalProperties[$property])) {
+                    $this->__originalProperties[$property] = $value;
+                }
+
+                // Set the property
+                $this->__set(
+                    $property,
+                    $this->__getPropertyValueByType(
+                        $propertyTypes,
+                        $propertyAllowedClasses,
+                        $property,
+                        $value
+                    )
+                );
+            }
+        }
     }
 }

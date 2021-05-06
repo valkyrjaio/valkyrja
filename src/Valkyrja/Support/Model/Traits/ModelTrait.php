@@ -53,7 +53,7 @@ trait ModelTrait
     {
         $model = new static();
 
-        $model->__setProperties($properties);
+        $model->__setPropertiesInternal($properties, true);
 
         return $model;
     }
@@ -124,18 +124,7 @@ trait ModelTrait
      */
     public function __setProperties(array $properties): void
     {
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            // Ensure the property exists before blindly setting
-            if (property_exists($this, $property)) {
-                if (! isset($this->__originalProperties[$property])) {
-                    $this->__originalProperties[$property] = $value;
-                }
-
-                // Set the property
-                $this->__set($property, $value);
-            }
-        }
+        $this->__setPropertiesInternal($properties);
     }
 
     /**
@@ -143,13 +132,13 @@ trait ModelTrait
      *
      * @param array $properties The properties to modify
      *
-     * @return $this
+     * @return static
      */
     public function __withProperties(array $properties): self
     {
         $model = clone $this;
 
-        $model->__setProperties($properties);
+        $model->__setPropertiesInternal($properties);
 
         return $model;
     }
@@ -291,4 +280,29 @@ trait ModelTrait
         // Return the properties requested
         return $onlyProperties;
     }
+
+    /**
+     * Set properties from an array of properties.
+     *
+     * @param array $properties            The properties to set
+     * @param bool  $setOriginalProperties [optional] Whether to set the original properties
+     *
+     * @return void
+     */
+    protected function __setPropertiesInternal(array $properties, bool $setOriginalProperties = false): void
+    {
+        // Iterate through the properties
+        foreach ($properties as $property => $value) {
+            // Ensure the property exists before blindly setting
+            if (property_exists($this, $property)) {
+                if ($setOriginalProperties && ! isset($this->__originalProperties[$property])) {
+                    $this->__originalProperties[$property] = $value;
+                }
+
+                // Set the property
+                $this->__set($property, $value);
+            }
+        }
+    }
+
 }
