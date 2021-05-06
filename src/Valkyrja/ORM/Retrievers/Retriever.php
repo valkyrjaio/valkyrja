@@ -427,6 +427,10 @@ class Retriever implements Contract
      */
     protected function setRelationshipsOnEntities(array $relationships = null, Entity ...$entities): void
     {
+        if (empty($relationships)) {
+            return;
+        }
+
         // Iterate through the rows found
         foreach ($entities as $entity) {
             $relationships = $relationships ?? $entity::getRelationshipProperties();

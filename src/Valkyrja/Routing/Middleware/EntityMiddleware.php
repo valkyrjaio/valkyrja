@@ -216,13 +216,13 @@ class EntityMiddleware extends RouteMiddleware
             return static::getOrmRepository($entity)
                          ->find()
                          ->where($field, null, $value)
-                         ->withRelationships($relationships ?? null)
+                         ->withRelationships($relationships ?? [])
                          ->getOneOrNull();
         }
 
         return static::getOrmRepository($entity)
                      ->findOne($value)
-                     ->withRelationships($relationships ?? null)
+                     ->withRelationships($relationships ?? [])
                      ->getOneOrNull();
     }
 
