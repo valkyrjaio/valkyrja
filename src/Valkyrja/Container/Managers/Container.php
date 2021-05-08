@@ -168,7 +168,7 @@ class Container implements Contract
     {
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
-        return isset(self::$services[$serviceId]) || isset(self::$aliases[$serviceId]) || isset(self::$closures[$serviceId]);
+        return isset(self::$services[$serviceId]) || isset(self::$singletons[$serviceId]) || isset(self::$aliases[$serviceId]) || isset(self::$closures[$serviceId]);
     }
 
     /**
