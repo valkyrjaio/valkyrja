@@ -54,7 +54,7 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
     {
         $confirmedAt = time() - ((int) static::getSession()->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
 
-        return $confirmedAt > static::getConfig('password_timeout', 10800);
+        return $confirmedAt > (int) static::getConfig('password_timeout', 10800);
     }
 
     /**

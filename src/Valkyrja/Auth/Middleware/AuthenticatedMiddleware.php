@@ -14,14 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Exception;
-use Valkyrja\Api\Api;
-use Valkyrja\Api\Constants\Status;
-use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Repository;
-use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
-use Valkyrja\Routing\Url;
 
 /**
  * Class AuthenticatedMiddleware.
@@ -31,25 +26,11 @@ use Valkyrja\Routing\Url;
 class AuthenticatedMiddleware extends AuthMiddleware
 {
     /**
-     * The user class to use.
-     *
-     * @var string
-     */
-    protected static string $user;
-
-    /**
      * The error message to use.
      *
      * @var string
      */
     protected static string $errorMessage = 'Must be logged in.';
-
-    /**
-     * Whether to force a JSON response on failure.
-     *
-     * @var bool
-     */
-    protected static bool $forceJson = false;
 
     /**
      * Middleware handler for before a request is dispatched.
@@ -60,16 +41,14 @@ class AuthenticatedMiddleware extends AuthMiddleware
      */
     public static function before(Request $request)
     {
-        $auth       = static::getAuth();
-        $user       = static::$user ?? $auth->getConfig()['userEntity'];
-        $repository = $auth->getRepository($user);
+        $repository = static::getRepository();
 
         // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {
             try {
                 static::tryLogin($repository, $request);
             } catch (Exception $exception) {
-                return static::getFailedAuthenticationResponse($request);
+                return static::getFailedResponse($request);
             }
         }
 
@@ -88,38 +67,5 @@ class AuthenticatedMiddleware extends AuthMiddleware
     {
         // Try to login from the user session
         $repository->loginFromSession();
-    }
-
-    /**
-     * Get the failed authentication response.
-     *
-     * @param Request $request The request
-     *
-     * @return Response
-     */
-    protected static function getFailedAuthenticationResponse(Request $request): Response
-    {
-        if (static::$forceJson || $request->isXmlHttpRequest()) {
-            /** @var Api $api */
-            $api  = static::$container->getSingleton(Api::class);
-            $json = $api->jsonFromArray([]);
-            $json->setData();
-            $json->setMessage(static::$errorMessage);
-            $json->setStatusCode(StatusCode::UNAUTHORIZED);
-            $json->setStatus(Status::ERROR);
-
-            return self::$responseFactory->createJsonResponse(
-                $json->__toArray(),
-                StatusCode::UNAUTHORIZED
-            );
-        }
-
-        /** @var Url $url */
-        $url = self::$container->getSingleton(Url::class);
-
-        return self::$responseFactory->createRedirectResponse(
-            $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE)),
-            StatusCode::UNAUTHORIZED
-        );
     }
 }

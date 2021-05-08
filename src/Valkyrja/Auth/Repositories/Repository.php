@@ -110,7 +110,7 @@ class Repository implements Contract
      */
     public function getUser(): User
     {
-        return $this->user;
+        return $this->user ?? new $this->userEntityName();
     }
 
     /**
