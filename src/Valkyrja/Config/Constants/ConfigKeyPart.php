@@ -122,6 +122,10 @@ final class ConfigKeyPart
     public const DISK                        = 'disk';
     public const ADAPTERS                    = 'adapters';
     public const ADAPTER                     = 'adapter';
+    public const RETRIEVER                   = 'retriever';
+    public const PERSISTER                   = 'persister';
+    public const QUERY                       = 'query';
+    public const QUERY_BUILDER               = 'queryBuilder';
     public const USER_ENTITY                 = 'userEntity';
     public const REPOSITORY                  = 'repository';
     public const ALWAYS_AUTHENTICATE         = 'alwaysAuthenticate';
@@ -129,6 +133,7 @@ final class ConfigKeyPart
     public const AUTHENTICATE_ROUTE          = 'authenticateRoute';
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const PDO                         = 'pdo';
+    public const PDO_CACHE                   = 'pdoCache';
     public const PDO_DRIVER                  = 'pdoDriver';
     public const PDO_MYSQL_DRIVER            = 'pdoMySqlDriver';
     public const PDO_PGSQL_DRIVER            = 'pdoPgSqlDriver';

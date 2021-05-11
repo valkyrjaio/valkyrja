@@ -199,6 +199,10 @@ final class EnvKey
     public const ORM_MIGRATIONS          = 'ORM_MIGRATIONS';
     public const ORM_REPOSITORY          = 'ORM_REPOSITORY';
     public const ORM_MYSQL_ADAPTER       = 'ORM_MYSQL_ADAPTER';
+    public const ORM_MYSQL_QUERY         = 'ORM_MYSQL_QUERY';
+    public const ORM_MYSQL_QUERY_BUILDER = 'ORM_MYSQL_QUERY_BUILDER';
+    public const ORM_MYSQL_PERSISTER     = 'ORM_MYSQL_PERSISTER';
+    public const ORM_MYSQL_RETRIEVER     = 'ORM_MYSQL_RETRIEVER';
     public const ORM_MYSQL_DRIVER        = 'ORM_MYSQL_DRIVER';
     public const ORM_MYSQL_PDO_DRIVER    = 'ORM_MYSQL_PDO_DRIVER';
     public const ORM_MYSQL_HOST          = 'ORM_MYSQL_HOST';
@@ -211,6 +215,10 @@ final class EnvKey
     public const ORM_MYSQL_ENGINE        = 'ORM_MYSQL_ENGINE';
     public const ORM_MYSQL_OPTIONS       = 'ORM_MYSQL_OPTIONS';
     public const ORM_PGSQL_ADAPTER       = 'ORM_PGSQL_ADAPTER';
+    public const ORM_PGSQL_QUERY         = 'ORM_PGSQL_QUERY';
+    public const ORM_PGSQL_QUERY_BUILDER = 'ORM_PGSQL_QUERY_BUILDER';
+    public const ORM_PGSQL_PERSISTER     = 'ORM_PGSQL_PERSISTER';
+    public const ORM_PGSQL_RETRIEVER     = 'ORM_PGSQL_RETRIEVER';
     public const ORM_PGSQL_DRIVER        = 'ORM_PGSQL_DRIVER';
     public const ORM_PGSQL_PDO_DRIVER    = 'ORM_PGSQL_PDO_DRIVER';
     public const ORM_PGSQL_HOST          = 'ORM_PGSQL_HOST';

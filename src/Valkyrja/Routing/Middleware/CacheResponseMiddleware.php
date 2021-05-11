@@ -50,7 +50,7 @@ class CacheResponseMiddleware extends Middleware
         $filePath = Directory::cachePath('response/' . static::getHashedPath($request));
 
         if (is_file($filePath) && ! self::$router->debug()) {
-            if (time() - filemtime($filePath) > self::$router->getConfig()['cacheMiddleWareTTL']) {
+            if (time() - filemtime($filePath) > static::getTtl()) {
                 unlink($filePath);
 
                 return $request;
@@ -73,6 +73,16 @@ class CacheResponseMiddleware extends Middleware
         }
 
         return $request;
+    }
+
+    /**
+     * Get the ttl.
+     *
+     * @return int
+     */
+    protected static function getTtl(): int
+    {
+        return 1800;
     }
 
     /**

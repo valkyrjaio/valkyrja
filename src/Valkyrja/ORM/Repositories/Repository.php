@@ -79,13 +79,6 @@ class Repository implements Contract
     protected string $entity;
 
     /**
-     * Whether to get relations.
-     *
-     * @var bool
-     */
-    protected bool $getRelations = false;
-
-    /**
      * Repository constructor.
      *
      * @param ORM    $manager
@@ -110,8 +103,7 @@ class Repository implements Contract
      */
     public function find(): self
     {
-        $this->retriever    = $this->driver->createRetriever()->find($this->entity);
-        $this->getRelations = false;
+        $this->retriever = $this->driver->createRetriever()->find($this->entity);
 
         return $this;
     }
@@ -125,8 +117,7 @@ class Repository implements Contract
      */
     public function findOne($id): self
     {
-        $this->retriever    = $this->driver->createRetriever()->findOne($this->entity, $id);
-        $this->getRelations = false;
+        $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
 
         return $this;
     }
@@ -138,8 +129,7 @@ class Repository implements Contract
      */
     public function count(): self
     {
-        $this->retriever    = $this->driver->createRetriever()->count($this->entity);
-        $this->getRelations = false;
+        $this->retriever = $this->driver->createRetriever()->count($this->entity);
 
         return $this;
     }
@@ -268,8 +258,6 @@ class Repository implements Contract
      */
     public function withRelationships(array $relationships = null): self
     {
-        $this->getRelations = true;
-
         $this->retriever->withRelationships($relationships);
 
         return $this;

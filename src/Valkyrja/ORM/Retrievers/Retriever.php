@@ -350,6 +350,26 @@ class Retriever implements Contract
     }
 
     /**
+     * Get the query builder.
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder(): QueryBuilder
+    {
+        return $this->queryBuilder;
+    }
+
+    /**
+     * Get the query.
+     *
+     * @return Query
+     */
+    public function getQuery(): Query
+    {
+        return $this->query;
+    }
+
+    /**
      * Set query builder and query.
      *
      * @param string        $entity  The entity

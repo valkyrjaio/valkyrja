@@ -18,8 +18,6 @@ use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
-use function Valkyrja\dd;
-
 /**
  * Abstract Class AuthorizedMiddleware.
  *

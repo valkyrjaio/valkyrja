@@ -31,6 +31,7 @@ use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\CacheRepository;
 use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\Retrievers\CacheRetriever;
 
 /**
  * Class ServiceProvider.
@@ -57,6 +58,7 @@ class ServiceProvider extends Provider
             CacheRepository::class => 'publishCacheRepository',
             Persister::class       => 'publishPersister',
             Retriever::class       => 'publishRetriever',
+            CacheRetriever::class  => 'publishCacheRetriever',
             Query::class           => 'publishQuery',
             QueryBuilder::class    => 'publishQueryBuilder',
         ];
@@ -307,6 +309,27 @@ class ServiceProvider extends Provider
             Retriever::class,
             static function (Adapter $adapter): Retriever {
                 return new \Valkyrja\ORM\Retrievers\Retriever(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a cache retriever service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishCacheRetriever(Container $container): void
+    {
+        $cache = $container->getSingleton(Cache::class);
+
+        $container->setClosure(
+            CacheRetriever::class,
+            static function (Adapter $adapter) use ($cache): CacheRetriever {
+                return new CacheRetriever(
                     $adapter
                 );
             }

@@ -171,7 +171,7 @@ class CacheRepository extends Repository
         $cacheKey = $this->getCacheKey();
 
         if ($results = $this->store->get($cacheKey)) {
-            return unserialize($results, ['allowed_classes' => [Entity::class]]);
+            return unserialize(base64_decode($results), ['allowed_classes' => true]);
         }
 
         $results = parent::getResult();
@@ -225,7 +225,7 @@ class CacheRepository extends Repository
     {
         $cacheKey = $this->getCacheKey();
 
-        if ($results = $this->store->has($cacheKey)) {
+        if ($results = $this->store->get($cacheKey)) {
             return (int) $results;
         }
 
@@ -249,7 +249,6 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
-     * @throws JsonException
      *
      * @return void
      */
@@ -271,7 +270,6 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
-     * @throws JsonException
      *
      * @return void
      */
@@ -293,7 +291,6 @@ class CacheRepository extends Repository
      * @param bool   $defer [optional]
      *
      * @throws InvalidEntityException
-     * @throws JsonException
      *
      * @return void
      */
@@ -315,7 +312,6 @@ class CacheRepository extends Repository
      * @param bool             $defer [optional]
      *
      * @throws InvalidEntityException
-     * @throws JsonException
      *
      * @return void
      */
@@ -364,15 +360,11 @@ class CacheRepository extends Repository
         if (isset($this->forgetEntities[$id])) {
             // Unset it
             unset($this->forgetEntities[$id]);
-
-            return;
         }
     }
 
     /**
      * Persist all entities.
-     *
-     * @throws JsonException
      *
      * @return bool
      */
@@ -396,7 +388,7 @@ class CacheRepository extends Repository
      */
     protected function getCacheKey(): string
     {
-        return md5(Obj::toString($this->retriever) . $this->getRelations);
+        return md5(Arr::toString(Obj::getAllProperties($this->retriever)) . Arr::toString(Obj::getAllProperties($this->retriever->getQueryBuilder())));
     }
 
     /**
@@ -405,8 +397,6 @@ class CacheRepository extends Repository
      * @param string $type
      * @param Entity $entity
      * @param bool   $defer [optional]
-     *
-     * @throws JsonException
      *
      * @return void
      */
@@ -418,13 +408,7 @@ class CacheRepository extends Repository
             return;
         }
 
-        if ($type === self::$forgetType) {
-            $this->forgetEntity($entity);
-
-            return;
-        }
-
-        $this->storeEntity($entity);
+        $this->forgetEntity($entity);
     }
 
     /**
@@ -466,25 +450,6 @@ class CacheRepository extends Repository
     }
 
     /**
-     * Store entity in cache.
-     *
-     * @param Entity $entity
-     *
-     * @throws JsonException
-     *
-     * @return void
-     */
-    protected function storeEntity(Entity $entity): void
-    {
-        $id = $this->getEntityCacheKey($entity);
-
-        $tag = $this->store->getTagger($id);
-
-        $tag->flush();
-        $tag->forever($id, Arr::toString($entity->__toArray()));
-    }
-
-    /**
      * Get entity cache key.
      *
      * @param Entity $entity
@@ -510,14 +475,12 @@ class CacheRepository extends Repository
     /**
      * Persist entities to be saved.
      *
-     * @throws JsonException
-     *
      * @return void
      */
     protected function persistSave(): void
     {
         foreach ($this->storeEntities as $sid => $entity) {
-            $this->storeEntity($entity);
+            $this->forgetEntity($entity);
 
             unset($this->storeEntities[$sid]);
         }
@@ -558,7 +521,7 @@ class CacheRepository extends Repository
             }
         }
 
-        $this->store->forever($cacheKey, serialize($results));
+        $this->store->forever($cacheKey, base64_encode(serialize($results)));
 
         $this->store->getTagger(...$tags)->tag($cacheKey);
     }

@@ -137,8 +137,8 @@ class ORM implements Contract
             ?? self::$driversCache[$cacheKey] = $this->container->get(
                 $this->drivers[$connection['driver']],
                 [
-                    $connection,
-                    $this->adapters[$adapter],
+                    array_merge($this->adapters[$adapter], $connection),
+                    $this->adapters[$adapter]['name'],
                 ]
             );
     }

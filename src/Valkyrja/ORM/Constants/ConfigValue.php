@@ -20,6 +20,7 @@ use Valkyrja\ORM\Drivers\PDO\Driver as PDODriver;
 use Valkyrja\ORM\Drivers\PDO\MySqlDriver;
 use Valkyrja\ORM\Drivers\PDO\PgSqlDriver;
 use Valkyrja\ORM\Repositories\Repository;
+use Valkyrja\ORM\Retrievers\CacheRetriever;
 
 /**
  * Constant ConfigValue.
@@ -30,7 +31,20 @@ final class ConfigValue
 {
     public const DEFAULT     = CKP::MYSQL;
     public const ADAPTERS    = [
-        CKP::PDO => PDOAdapter::class,
+        CKP::PDO => [
+            CKP::NAME          => PDOAdapter::class,
+            CKP::QUERY         => null,
+            CKP::QUERY_BUILDER => null,
+            CKP::PERSISTER     => null,
+            CKP::RETRIEVER     => null,
+        ],
+        CKP::PDO_CACHE => [
+            CKP::NAME          => PDOAdapter::class,
+            CKP::QUERY         => null,
+            CKP::QUERY_BUILDER => null,
+            CKP::PERSISTER     => null,
+            CKP::RETRIEVER     => CacheRetriever::class,
+        ],
     ];
     public const DRIVERS     = [
         CKP::DEFAULT          => Driver::class,
@@ -41,21 +55,29 @@ final class ConfigValue
     public const REPOSITORY  = Repository::class;
     public const CONNECTIONS = [
         CKP::MYSQL => [
-            CKP::ADAPTER  => CKP::PDO,
-            CKP::DRIVER   => CKP::PDO_MYSQL_DRIVER,
-            CKP::HOST     => '127.0.0.1',
-            CKP::PORT     => '3306',
-            CKP::DB       => CKP::VALHALLA,
-            CKP::USER     => CKP::VALHALLA,
-            CKP::PASSWORD => '',
-            CKP::CHARSET  => 'utf8mb4',
-            CKP::STRICT   => true,
-            CKP::ENGINE   => null,
-            CKP::OPTIONS  => null,
+            CKP::ADAPTER       => CKP::PDO,
+            CKP::DRIVER        => CKP::PDO_MYSQL_DRIVER,
+            CKP::QUERY         => null,
+            CKP::QUERY_BUILDER => null,
+            CKP::PERSISTER     => null,
+            CKP::RETRIEVER     => null,
+            CKP::HOST          => '127.0.0.1',
+            CKP::PORT          => '3306',
+            CKP::DB            => CKP::VALHALLA,
+            CKP::USER          => CKP::VALHALLA,
+            CKP::PASSWORD      => '',
+            CKP::CHARSET       => 'utf8mb4',
+            CKP::STRICT        => true,
+            CKP::ENGINE        => null,
+            CKP::OPTIONS       => null,
         ],
         CKP::PGSQL => [
             CKP::ADAPTER       => CKP::PDO,
             CKP::DRIVER        => CKP::PDO_PGSQL_DRIVER,
+            CKP::QUERY         => null,
+            CKP::QUERY_BUILDER => null,
+            CKP::PERSISTER     => null,
+            CKP::RETRIEVER     => null,
             CKP::HOST          => '127.0.0.1',
             CKP::PORT          => '3306',
             CKP::DB            => CKP::VALHALLA,
@@ -70,7 +92,7 @@ final class ConfigValue
             CKP::OPTIONS       => null,
         ],
     ];
-    public const MIGRATIONS = [];
+    public const MIGRATIONS  = [];
 
     public static array $defaults = [
         CKP::DEFAULT     => self::DEFAULT,

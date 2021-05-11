@@ -70,6 +70,34 @@ class PDOAdapter implements Contract
     protected Persister $persister;
 
     /**
+     * The query service to use.
+     *
+     * @var string
+     */
+    protected string $queryClass = Query::class;
+
+    /**
+     * The query builder service to use.
+     *
+     * @var string
+     */
+    protected string $queryBuilderClass = QueryBuilder::class;
+
+    /**
+     * The persister service to use.
+     *
+     * @var string
+     */
+    protected string $persisterClass = Persister::class;
+
+    /**
+     * The retriever service to use.
+     *
+     * @var string
+     */
+    protected string $retrieverClass = Retriever::class;
+
+    /**
      * The config.
      *
      * @var array
@@ -90,7 +118,13 @@ class PDOAdapter implements Contract
         $this->orm       = $orm;
         $this->pdo       = $pdo;
         $this->config    = $config;
-        $this->persister = $container->get(Persister::class, [$this]);
+
+        $this->queryClass        = $this->config['query'] ?? $this->queryClass;
+        $this->queryBuilderClass = $this->config['queryBuilder'] ?? $this->queryBuilderClass;
+        $this->persisterClass    = $this->config['persister'] ?? $this->persisterClass;
+        $this->retrieverClass    = $this->config['retriever'] ?? $this->retrieverClass;
+
+        $this->persister = $container->get($this->persisterClass, [$this]);
     }
 
     /**
@@ -194,7 +228,7 @@ class PDOAdapter implements Contract
     public function createQuery(string $query = null, string $entity = null): Query
     {
         /** @var Query $pdoQuery */
-        $pdoQuery = $this->container->get(Query::class, [$this]);
+        $pdoQuery = $this->container->get($this->queryClass, [$this]);
 
         if (null !== $entity) {
             $pdoQuery->entity($entity);
@@ -218,7 +252,7 @@ class PDOAdapter implements Contract
     public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
     {
         /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->container->get(QueryBuilder::class, [$this]);
+        $queryBuilder = $this->container->get($this->queryBuilderClass, [$this]);
 
         if (null !== $entity) {
             $queryBuilder->entity($entity, $alias);
@@ -234,7 +268,7 @@ class PDOAdapter implements Contract
      */
     public function createRetriever(): Retriever
     {
-        return $this->container->get(Retriever::class, [$this]);
+        return $this->container->get($this->retrieverClass, [$this]);
     }
 
     /**

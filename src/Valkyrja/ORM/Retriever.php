@@ -190,4 +190,18 @@ interface Retriever
      * @return int
      */
     public function getCount(): int;
+
+    /**
+     * Get the query builder.
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder(): QueryBuilder;
+
+    /**
+     * Get the query.
+     *
+     * @return Query
+     */
+    public function getQuery(): Query;
 }
