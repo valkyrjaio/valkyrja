@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Retrievers;
 
+use Valkyrja\Cache\Cache;
+use Valkyrja\ORM\Adapter;
+
 /**
  * Class CacheRetriever
  *
@@ -20,4 +23,23 @@ namespace Valkyrja\ORM\Retrievers;
  */
 class CacheRetriever extends Retriever
 {
+    /**
+     * The cache service
+     *
+     * @var Cache
+     */
+    protected Cache $cache;
+
+    /**
+     * CacheRetriever constructor.
+     *
+     * @param Adapter $adapter The adapter
+     * @param Cache   $cache   The service
+     */
+    public function __construct(Adapter $adapter, Cache $cache)
+    {
+        parent::__construct($adapter);
+
+        $this->cache = $cache;
+    }
 }

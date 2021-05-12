@@ -330,7 +330,8 @@ class ServiceProvider extends Provider
             CacheRetriever::class,
             static function (Adapter $adapter) use ($cache): CacheRetriever {
                 return new CacheRetriever(
-                    $adapter
+                    $adapter,
+                    $cache
                 );
             }
         );
