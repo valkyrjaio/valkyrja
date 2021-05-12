@@ -171,7 +171,7 @@ class CacheRepository extends Repository
         $cacheKey = $this->getCacheKey();
 
         if ($results = $this->store->get($cacheKey)) {
-            return unserialize(base64_decode($results), ['allowed_classes' => true]);
+            return unserialize(base64_decode($results, true), ['allowed_classes' => true]);
         }
 
         $results = parent::getResult();
