@@ -38,10 +38,11 @@ class OrkaEngine extends PHPEngine
         '/@startblock\s*\(\s*(.*)\s*\)/x'          => '<?php $template->startBlock(${1}); ?>',
         '/@endblock/x'                             => '<?php $template->endBlock(); ?>',
         '/@hasblock\s*\(\s*(.*)\s*\)/x'            => '<?php if ($template->hasBlock(${1})) : ?>',
-        '/@elsehasblock\s*\(\s*(.*)\s*\)/x'        => '<?php elseif ($template->hasBlock(${1})) : ?>',
-        '/@endhasblock/x'                          => '<?php endif; ?>',
+        '/@elsehasblock/x'                         => '<?php else : ?>',
+        '/@elseifhasblock\s*\(\s*(.*)\s*\)/x'      => '<?php elseif ($template->hasBlock(${1})) : ?>',
+        '/@endhasblock/x'                          => '<?php endif ?>',
         '/@unlessblock\s*\(\s*(.*)\s*\)/x'         => '<?php if (! $template->hasBlock(${1})) : ?>',
-        '/@endunlessblock/x'                       => '<?php endif; ?>',
+        '/@endunlessblock/x'                       => '<?php endif ?>',
         '/@partial\s*\(\s*(.*)\s*\s*\)/x'          => '<?= $template->getPartial(${1}); ?>',
         '/@partial\s*\(\s*(.*)\s*,(.*)\s*\)/x'     => '<?= $template->getPartial(${1}, ${2}); ?>',
         '/@trimpartial\s*\(\s*(.*)\s*\s*\)/x'      => '<?= trim($template->getPartial(${1})); ?>',
@@ -51,25 +52,25 @@ class OrkaEngine extends PHPEngine
         '/@if\s*\(\s*(.*)\s*\)/x'                  => '<?php if (${1}) : ?>',
         '/@elseif\s*\(\s*(.*)\s*\)/x'              => '<?php elseif (${1}) : ?>',
         '/@else/x'                                 => '<?php else : ?>',
-        '/@endif/x'                                => '<?php endif; ?>',
+        '/@endif/x'                                => '<?php endif ?>',
         '/@isset\s*\(\s*(.*)\s*\)/x'               => '<?php if (isset(${1})) : ?>',
-        '/@endisset/x'                             => '<?php endif; ?>',
+        '/@endisset/x'                             => '<?php endif ?>',
         '/@unless\s*\(\s*(.*)\s*\)/x'              => '<?php if (! (${1})) : ?>',
         '/@elseunless\s*\(\s*(.*)\s*\)/x'          => '<?php elseif (! (${1})) : ?>',
-        '/@endunless/x'                            => '<?php endif; ?>',
+        '/@endunless/x'                            => '<?php endif ?>',
         '/@foreach\s*\(\s*(.*)\s*\)/x'             => '<?php foreach (${1}) : ?>',
-        '/@endforeach/x'                           => '<?php endforeach; ?>',
+        '/@endforeach/x'                           => '<?php endforeach ?>',
         '/@for\s*\(\s*(.*)\s*\)/x'                 => '<?php for (${1}) : ?>',
-        '/@endfor/x'                               => '<?php endfor; ?>',
+        '/@endfor/x'                               => '<?php endfor ?>',
         '/@dd\s*\(\s*(.*)\s*\s*\)/x'               => '<?php \Valkyrja\dd(${1}); ?>',
         // {{{ unescaped Auth::
         '/\{\{\{\s*Auth::/x'                       => '{{{ ' . Auth::class . '::',
         // {{ escaped Auth::
         '/\{\{\s*Auth::/x'                         => '{{ ' . Auth::class . '::',
         // {{{ unescaped }}}
-        '/\{\{\{\s*(.*?)\s*\}\}\}/x'       => '<?= ${1}; ?>',
+        '/\{\{\{\s*(.*?)\s*\}\}\}/x'               => '<?= ${1}; ?>',
         // {{ escaped }}
-        '/\{\{\s*(.*?)\s*\}\}/x'             => '<?= $template->escape(${1}); ?>',
+        '/\{\{\s*(.*?)\s*\}\}/x'                   => '<?= $template->escape(${1}); ?>',
     ];
 
     /**
