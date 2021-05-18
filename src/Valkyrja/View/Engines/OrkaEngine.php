@@ -63,6 +63,10 @@ class OrkaEngine extends PHPEngine
         '/@for\s*\(\s*(.*)\s*\)/x'                 => '<?php for (${1}) : ?>',
         '/@endfor/x'                               => '<?php endfor ?>',
         '/@dd\s*\(\s*(.*)\s*\s*\)/x'               => '<?php \Valkyrja\dd(${1}); ?>',
+        // {{--
+        '/\{\{\-\-/x'                              => '<?php /** ?>',
+        // --}}
+        '/\-\-\}\}/x'                              => '<?php */ ?>',
         // {{{ unescaped Auth::
         '/\{\{\{\s*Auth::/x'                       => '{{{ ' . Auth::class . '::',
         // {{ escaped Auth::
