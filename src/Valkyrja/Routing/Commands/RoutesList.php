@@ -67,12 +67,14 @@ class RoutesList extends Commander
             'Path',
             'Name',
             'Dispatch',
+            'Regex',
         ];
         $lengths      = [
             strlen($headerTexts[0]),
             strlen($headerTexts[1]),
             strlen($headerTexts[2]),
             strlen($headerTexts[3]),
+            strlen($headerTexts[4]),
         ];
 
         // Sort routes by path
@@ -102,6 +104,9 @@ class RoutesList extends Commander
                 . ' | '
                 . $route[3]
                 . str_repeat(' ', $lengths[3] - strlen($route[3]))
+                . ' | '
+                . $route[4]
+                . str_repeat(' ', $lengths[4] - strlen($route[4]))
                 . ' |';
 
             $odd          = $key % 2 > 0;
@@ -130,6 +135,7 @@ class RoutesList extends Commander
     {
         $requestMethod = implode(' | ', $route->getMethods());
         $dispatch      = 'Closure';
+        $regex         = $route->getRegex() ?? '';
 
         if ($requestMethod === 'GET | HEAD | POST | PUT | PATCH | CONNECT | OPTIONS | TRACE | DELETE') {
             $requestMethod = 'ANY';
@@ -149,12 +155,14 @@ class RoutesList extends Commander
         $lengths[1] = max($lengths[1], strlen($route->getPath()));
         $lengths[2] = max($lengths[2], strlen($route->getName()));
         $lengths[3] = max($lengths[3], strlen($dispatch));
+        $lengths[4] = max($lengths[4], strlen($regex));
 
         $routes[] = [
             $requestMethod,
             $route->getPath(),
             $route->getName() ?? '',
             $dispatch,
+            $regex,
         ];
     }
 
@@ -171,6 +179,7 @@ class RoutesList extends Commander
             . '-+-' . str_repeat('-', $lengths[1])
             . '-+-' . str_repeat('-', $lengths[2])
             . '-+-' . str_repeat('-', $lengths[3])
+            . '-+-' . str_repeat('-', $lengths[4])
             . '-+';
     }
 
@@ -206,6 +215,8 @@ class RoutesList extends Commander
             . str_repeat(' ', $lengths[2] - strlen($headerTexts[2]))
             . ' | ' . $headerTexts[3]
             . str_repeat(' ', $lengths[3] - strlen($headerTexts[3]))
+            . ' | ' . $headerTexts[4]
+            . str_repeat(' ', $lengths[4] - strlen($headerTexts[4]))
             . ' |';
 
         output()->writeMessage($headerMessage, true);

@@ -456,7 +456,7 @@ trait CollectorHelpers
     protected function parseDynamicRoute(Route $route): void
     {
         // Parse the path
-        $parsedRoute = $this->pathParser->parse($route->getPath() ?? '');
+        $parsedRoute = $this->pathParser->parse('/' . trim($route->getPath() ?? '', '/'));
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);
