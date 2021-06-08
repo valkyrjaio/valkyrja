@@ -199,7 +199,7 @@ class Template implements Contract
      */
     public function escape($value): string
     {
-        $value = mb_convert_encoding((string) $value, 'UTF-8', 'UTF-8');
+        $value = mb_convert_encoding((string)$value, 'UTF-8', 'UTF-8');
         $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
 
         return $value;
@@ -349,10 +349,10 @@ class Template implements Contract
     protected function renderFile(string $name, array $variables = [], bool $renderLayout = false): string
     {
         // Set the variables with the new variables and this view instance
-        $this->variables = array_merge($this->variables, $variables, ['template' => $this]);
+        $variables = array_merge($this->variables, $variables, ['template' => $this]);
 
         // Render the template
-        $template = $this->renderTemplate($name);
+        $template = $this->renderTemplate($name, $variables);
 
         // Check if a layout has been set
         if (null === $this->layout || ! $renderLayout) {
@@ -362,27 +362,28 @@ class Template implements Contract
         // Begin tracking layout changes for recursive layout
         $this->trackLayoutChanges = true;
 
-        return $this->renderLayout($this->layout);
+        return $this->renderLayout($this->layout, $variables);
     }
 
     /**
      * Render a layout.
      *
-     * @param string $layout The layout
+     * @param string $layout    The layout
+     * @param array  $variables [optional] The variables to set
      *
      * @return string
      */
-    protected function renderLayout(string $layout): string
+    protected function renderLayout(string $layout, array $variables = []): string
     {
         // Render the layout
-        $renderedLayout = $this->renderTemplate($layout);
+        $renderedLayout = $this->renderTemplate($layout, $variables);
 
         // Check if the layout has changed
         if ($this->trackLayoutChanges && $this->hasLayoutChanged && null !== $this->layout) {
             // Reset the flag
             $this->hasLayoutChanged = false;
             // Render the new layout
-            $renderedLayout = $this->renderLayout($this->layout);
+            $renderedLayout = $this->renderLayout($this->layout, $variables);
         }
 
         return $renderedLayout;

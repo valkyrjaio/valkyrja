@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\View\Engines;
 
+use RuntimeException;
 use Valkyrja\Support\Directory;
 use Valkyrja\View\Engine;
 use Valkyrja\View\Exceptions\InvalidConfigPath;
@@ -25,7 +26,7 @@ use function ob_start;
 use function strpos;
 use function trim;
 
-use const EXTR_OVERWRITE;
+use const EXTR_SKIP;
 
 /**
  * Class PHPEngine.
@@ -117,13 +118,31 @@ class PHPEngine implements Engine
      */
     protected function renderFullPath(string $path, array $variables = []): string
     {
-        extract($variables, EXTR_OVERWRITE);
-
         $this->startRender();
-
-        include $path;
+        $this->requirePath($path, $variables);
 
         return $this->endRender();
+    }
+
+    /**
+     * Require a path to generate its contents with provided variables.
+     *
+     * @param string $path      The file path
+     * @param array  $variables [optional] The variables
+     *
+     * @return void
+     */
+    protected function requirePath(string $path, array $variables = []): void
+    {
+        if (is_file($path)) {
+            extract($variables, EXTR_SKIP);
+
+            require $path;
+
+            return;
+        }
+
+        throw new RuntimeException("Path does not exist at {$path}");
     }
 
     /**
