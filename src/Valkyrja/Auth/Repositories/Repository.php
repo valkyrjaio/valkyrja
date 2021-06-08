@@ -137,6 +137,10 @@ class Repository implements Contract
      */
     public function getUserFromSession(): User
     {
+        if (isset($this->user)) {
+            return $this->user;
+        }
+
         $sessionUser = $this->session->get($this->userEntityName::getUserSessionId());
 
         if (! $sessionUser) {
@@ -145,7 +149,7 @@ class Repository implements Contract
 
         $userData = Arr::fromString($sessionUser);
 
-        return $this->userEntityName::fromArray($userData);
+        return $this->user = $this->userEntityName::fromArray($userData);
     }
 
     /**
