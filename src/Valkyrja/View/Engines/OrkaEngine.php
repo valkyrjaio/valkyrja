@@ -49,6 +49,8 @@ class OrkaEngine extends PHPEngine
         '/@trimpartial\s*\(\s*(.*)\s*,(.*)\s*\)/x' => '<?= trim($template->getPartial(${1}, ${2})); ?>',
         '/@setvariables\s*\(\s*(.*)\s*\s*\)/x'     => '<?php $template->setVariables(${1}); ?>',
         '/@setvariable\s*\(\s*(.*)\s*,(.*)\s*\)/x' => '<?php $template->setVariable(${1}, ${2}); ?>',
+        '/@empty\s*\(\s*(.*)\s*\)/x'               => '<?php if (empty(${1})) : ?>',
+        '/@notempty\s*\(\s*(.*)\s*\)/x'            => '<?php if (! empty(${1})) : ?>',
         '/@if\s*\(\s*(.*)\s*\)/x'                  => '<?php if (${1}) : ?>',
         '/@elseif\s*\(\s*(.*)\s*\)/x'              => '<?php elseif (${1}) : ?>',
         '/@else/x'                                 => '<?php else : ?>',
