@@ -44,38 +44,6 @@ interface Entity extends Model
     public static function getEntityRepository(): ?string;
 
     /**
-     * Types for attributes that differ from what they were saved into the database as.
-     *
-     * <code>
-     *      [
-     *          // An object to be serialized and unserialized to/from the db
-     *          'a_serialized_object' => PropertyType::OBJECT,
-     *          // An array to be json_encoded/decoded to/from the db
-     *          'a_stringified_array' => PropertyType::ARRAY,
-     *          // Data object to be json_encoded/decoded to/from the db
-     *          'data_as_json_string' => PropertyType::JSON,
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public static function getFieldCastings(): array;
-
-    /**
-     * Allowed classes for serialization of object cast properties.
-     *
-     * <code>
-     *      [
-     *          // An array of allowed classes for serialization for object types
-     *          'a_serialized_object' => [ClassName::class],
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public static function getCastingAllowedClasses(): array;
-
-    /**
      * Entity relationship properties.
      *
      * <code>

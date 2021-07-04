@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Entities;
 
 use JsonException;
-use Valkyrja\ORM\Constants\PropertyType;
 use Valkyrja\ORM\ORM;
+use Valkyrja\Support\Model\Constants\PropertyType;
+use Valkyrja\Support\Model\Model;
 use Valkyrja\Support\Model\Traits\ModelTrait;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
@@ -23,7 +24,6 @@ use Valkyrja\Support\Type\Str;
 
 use function is_string;
 use function serialize;
-use function unserialize;
 
 /**
  * Trait EntityTrait.
@@ -62,42 +62,6 @@ trait EntityTrait
     public static function getEntityRepository(): ?string
     {
         return null;
-    }
-
-    /**
-     * Types for attributes that differs from what they were saved into the database as.
-     *
-     * <code>
-     *      [
-     *          // An array to be json_encoded/decoded to/from the db
-     *          'property_name' => 'array',
-     *          // An object to be serialized and unserialized to/from the db
-     *          'property_name' => 'object',
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public static function getFieldCastings(): array
-    {
-        return [];
-    }
-
-    /**
-     * Allowed classes for serialization of object type properties.
-     *
-     * <code>
-     *      [
-     *          // An array of allowed classes for serialization for object types
-     *          'property_name' => [ClassName::class],
-     *      ]
-     * </code>
-     *
-     * @return array
-     */
-    public static function getCastingAllowedClasses(): array
-    {
-        return [];
     }
 
     /**
@@ -142,8 +106,6 @@ trait EntityTrait
 
         if (method_exists($this, $methodName)) {
             $this->$methodName($orm);
-
-            return;
         }
     }
 
@@ -208,15 +170,21 @@ trait EntityTrait
 
         switch ($type) {
             case PropertyType::OBJECT :
-                $value = serialize($value);
+                if (! is_string($value)) {
+                    $value = serialize($value);
+                }
 
                 break;
             case PropertyType::ARRAY :
-                $value = Arr::toString($value);
+                if (! is_string($value)) {
+                    $value = Arr::toString($value);
+                }
 
                 break;
             case PropertyType::JSON :
-                $value = Obj::toString($value);
+                if (! is_string($value)) {
+                    $value = Obj::toString($value);
+                }
 
                 break;
             case PropertyType::STRING :
@@ -235,69 +203,10 @@ trait EntityTrait
                 $value = (bool) $value;
 
                 break;
-        }
-
-        return $value;
-    }
-
-    /**
-     * Get a property's value by the type (if type is set).
-     *
-     * @param array  $propertyTypes          The property types
-     * @param array  $propertyAllowedClasses The property allowed classes
-     * @param string $property               The property name
-     * @param mixed  $value                  The property value
-     *
-     * @throws JsonException
-     *
-     * @return mixed
-     */
-    protected function __getPropertyValueByType(
-        array $propertyTypes,
-        array $propertyAllowedClasses,
-        string $property,
-        $value
-    ) {
-        // Check if a type was set for this attribute
-        $type = $propertyTypes[$property] ?? null;
-
-        // If there is no type specified just return the value
-        if (null === $type || ! is_string($value)) {
-            return $value;
-        }
-
-        switch ($type) {
-            case PropertyType::OBJECT :
-                $value = unserialize(
-                    $value,
-                    [
-                        'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
-                    ]
-                );
-
-                break;
-            case PropertyType::ARRAY :
-                $value = Arr::fromString($value);
-
-                break;
-            case PropertyType::JSON :
-                $value = Obj::fromString($value);
-
-                break;
-            case PropertyType::STRING :
-                $value = (string) $value;
-
-                break;
-            case PropertyType::INT :
-                $value = (int) $value;
-
-                break;
-            case PropertyType::FLOAT :
-                $value = (float) $value;
-
-                break;
-            case PropertyType::BOOL :
-                $value = (bool) $value;
+            default :
+                if ($value instanceof Model) {
+                    $value = $value->__toString();
+                }
 
                 break;
         }
@@ -319,7 +228,7 @@ trait EntityTrait
     {
         $storableHiddenFields   = $storable ? static::getStorableHiddenFields() : [];
         $allProperties          = array_merge(Obj::getProperties($this), $this->__exposed);
-        $propertyTypes          = static::getFieldCastings();
+        $propertyTypes          = static::__getPropertyCastings();
         $relationshipProperties = static::getRelationshipProperties();
 
         // Iterate through all the storable hidden fields
@@ -376,41 +285,5 @@ trait EntityTrait
         }
 
         $properties[$property] = $this->__get($property);
-    }
-
-    /**
-     * Set properties from an array of properties.
-     *
-     * @param array $properties            The properties to set
-     * @param bool  $setOriginalProperties [optional] Whether to set the original properties
-     *
-     * @throws JsonException
-     *
-     * @return void
-     */
-    protected function __setPropertiesInternal(array $properties, bool $setOriginalProperties = false): void
-    {
-        $propertyTypes          = static::getFieldCastings();
-        $propertyAllowedClasses = static::getCastingAllowedClasses();
-
-        // Iterate through the properties
-        foreach ($properties as $property => $value) {
-            if (property_exists($this, $property)) {
-                if ($setOriginalProperties && ! isset($this->__originalProperties[$property])) {
-                    $this->__originalProperties[$property] = $value;
-                }
-
-                // Set the property
-                $this->__set(
-                    $property,
-                    $this->__getPropertyValueByType(
-                        $propertyTypes,
-                        $propertyAllowedClasses,
-                        $property,
-                        $value
-                    )
-                );
-            }
-        }
     }
 }

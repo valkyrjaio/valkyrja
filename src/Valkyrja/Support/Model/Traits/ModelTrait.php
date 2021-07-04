@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Model\Traits;
 
 use JsonException;
+use Valkyrja\Support\Model\Constants\PropertyType;
+use Valkyrja\Support\Model\Model;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
+use function is_array;
+use function is_object;
+use function is_string;
 use function method_exists;
 use function property_exists;
 
@@ -47,6 +52,8 @@ trait ModelTrait
      *
      * @param array $properties
      *
+     * @throws JsonException
+     *
      * @return static
      */
     public static function fromArray(array $properties): self
@@ -56,6 +63,54 @@ trait ModelTrait
         $model->__setPropertiesInternal($properties, true);
 
         return $model;
+    }
+
+    /**
+     * Property castings used for mass property sets to avoid needing individual setters for simple type casting.
+     *
+     * <code>
+     *      [
+     *          // An property to be json_decoded to an array
+     *          'property_name' => 'array',
+     *          // An property to be unserialized to an object
+     *          'property_name' => 'object',
+     *          // An property to be json_decoded to an object
+     *          'property_name' => 'json',
+     *          // An property to be cast to an string
+     *          'property_name' => 'string',
+     *          // An property to be cast to an int
+     *          'property_name' => 'int',
+     *          // An property to be cast to an float
+     *          'property_name' => 'float',
+     *          // An property to be cast to an bool
+     *          'property_name' => 'bool',
+     *          // An property to be cast to a model
+     *          'property_name' => Model::class,
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    protected static function __getPropertyCastings(): array
+    {
+        return [];
+    }
+
+    /**
+     * Allowed classes for serialization of object type properties.
+     *
+     * <code>
+     *      [
+     *          // An array of allowed classes for serialization for object types
+     *          'property_name' => [ClassName::class],
+     *      ]
+     * </code>
+     *
+     * @return array
+     */
+    protected static function __getCastingAllowedClasses(): array
+    {
+        return [];
     }
 
     /**
@@ -120,6 +175,8 @@ trait ModelTrait
      *
      * @param array $properties
      *
+     * @throws JsonException
+     *
      * @return void
      */
     public function __setProperties(array $properties): void
@@ -131,6 +188,8 @@ trait ModelTrait
      * Get a new model with new properties.
      *
      * @param array $properties The properties to modify
+     *
+     * @throws JsonException
      *
      * @return static
      */
@@ -287,21 +346,169 @@ trait ModelTrait
      * @param array $properties            The properties to set
      * @param bool  $setOriginalProperties [optional] Whether to set the original properties
      *
+     * @throws JsonException
+     *
      * @return void
      */
     protected function __setPropertiesInternal(array $properties, bool $setOriginalProperties = false): void
     {
+        $propertyTypes          = static::__getPropertyCastings();
+        $propertyAllowedClasses = static::__getCastingAllowedClasses();
+
         // Iterate through the properties
         foreach ($properties as $property => $value) {
-            // Ensure the property exists before blindly setting
             if (property_exists($this, $property)) {
                 if ($setOriginalProperties && ! isset($this->__originalProperties[$property])) {
                     $this->__originalProperties[$property] = $value;
                 }
 
                 // Set the property
-                $this->__set($property, $value);
+                $this->__set(
+                    $property,
+                    $this->__getPropertyValueByType(
+                        $propertyTypes,
+                        $propertyAllowedClasses,
+                        $property,
+                        $value
+                    )
+                );
             }
         }
+    }
+
+    /**
+     * Get a property's value by the type (if type is set).
+     *
+     * @param array  $propertyTypes          The property types
+     * @param array  $propertyAllowedClasses The property allowed classes
+     * @param string $property               The property name
+     * @param mixed  $value                  The property value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getPropertyValueByType(
+        array $propertyTypes,
+        array $propertyAllowedClasses,
+        string $property,
+        $value
+    ) {
+        // Check if a type was set for this attribute
+        $type = $propertyTypes[$property] ?? null;
+
+        // If there is no type specified just return the value
+        if (null === $type) {
+            return $value;
+        }
+
+        switch ($type) {
+            case PropertyType::OBJECT :
+                if (is_string($value)) {
+                    $value = unserialize(
+                        $value,
+                        [
+                            'allowed_classes' => $propertyAllowedClasses[$property] ?? [],
+                        ]
+                    );
+                }
+
+                break;
+            case PropertyType::ARRAY :
+                if (is_string($value)) {
+                    $value = Arr::fromString($value);
+                }
+
+                break;
+            case PropertyType::JSON :
+                if (is_string($value)) {
+                    $value = Obj::fromString($value);
+                }
+
+                break;
+            case PropertyType::STRING :
+                $value = (string) $value;
+
+                break;
+            case PropertyType::INT :
+                $value = (int) $value;
+
+                break;
+            case PropertyType::FLOAT :
+                $value = (float) $value;
+
+                break;
+            case PropertyType::BOOL :
+                $value = (bool) $value;
+
+                break;
+            default :
+                $value = $this->__getModelFromValueType($property, $type, $value);
+
+                break;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Get a model from value given a type not identified prior.
+     *
+     * @param string       $property The property name
+     * @param string|array $type     The type of the property
+     * @param mixed        $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getModelFromValueType(string $property, $type, $value)
+    {
+        if (is_array($type)) {
+            $type = $type[0];
+
+            foreach ($value as &$item) {
+                $item = $this->__getModelFromValue($property, $type, $item);
+            }
+
+            unset($item);
+
+            return $value;
+        }
+
+        return $this->__getModelFromValue($property, $type, $value);
+    }
+
+    /**
+     * Get a model from value.
+     *
+     * @param string $property The property name
+     * @param string $type     The type of the property
+     * @param mixed  $value    The value
+     *
+     * @throws JsonException
+     *
+     * @return mixed
+     */
+    protected function __getModelFromValue(string $property, string $type, $value)
+    {
+        if ($value instanceof Model) {
+            $value = $value->jsonSerialize();
+        } elseif (is_object($value) || is_array($value)) {
+            $value = (array) $value;
+        } elseif (is_string($value)) {
+            $value = Arr::fromString($value);
+        } else {
+            // Return the value as is since it does not seem to match what we're expecting if we were to get a model
+            // from the value data
+            return $value;
+        }
+
+        if (isset($this->$property)) {
+            $value = array_merge($this->$property->__toArray(), $value);
+        }
+
+        /** @var static $type */
+        return $type::fromArray((array) $value);
     }
 }

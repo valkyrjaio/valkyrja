@@ -102,7 +102,12 @@ class Persister implements Contract
         }
 
         if (! $defer) {
+            // Ensure a transaction is in progress
+            $this->adapter->ensureTransaction();
+
             $this->persistEntity(Statement::INSERT, $entity, $entity->__storable());
+
+            $this->adapter->commit();
 
             return;
         }
@@ -134,7 +139,12 @@ class Persister implements Contract
         }
 
         if (! $defer) {
+            // Ensure a transaction is in progress
+            $this->adapter->ensureTransaction();
+
             $this->persistEntity(Statement::UPDATE, $entity, $entity->__changed());
+
+            $this->adapter->commit();
 
             return;
         }
@@ -162,7 +172,12 @@ class Persister implements Contract
     public function delete(Entity $entity, bool $defer = true): void
     {
         if (! $defer) {
+            // Ensure a transaction is in progress
+            $this->adapter->ensureTransaction();
+
             $this->persistEntity(Statement::DELETE, $entity);
+
+            $this->adapter->commit();
 
             return;
         }
