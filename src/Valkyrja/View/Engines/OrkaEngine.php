@@ -62,6 +62,12 @@ class OrkaEngine extends PHPEngine
         '/@endforeach/x'                           => '<?php endforeach ?>',
         '/@for\s*\(\s*(.*)\s*\)/x'                 => '<?php for (${1}) : ?>',
         '/@endfor/x'                               => '<?php endfor ?>',
+        '/@switch\s*\(\s*(.*)\s*\)/x'              => '<?php switch (${1}) :',
+        '/@firstcase\s*\(\s*(.*)\s*\)/x'           => 'case ${1} : ?>',
+        '/@case\s*\(\s*(.*)\s*\)/x'                => '<?php case ${1} : ?>',
+        '/@break/x'                                => '<?php break; ?>',
+        '/@default/x'                              => '<?php default : ?>',
+        '/@endswitch/x'                            => '<?php endswitch ?>',
         '/@dd\s*\(\s*(.*)\s*\s*\)/x'               => '<?php \Valkyrja\dd(${1}); ?>',
         // {{--
         '/\{\{\-\-/x'                              => '<?php /** ?>',
