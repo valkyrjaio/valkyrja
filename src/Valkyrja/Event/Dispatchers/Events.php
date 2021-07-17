@@ -234,7 +234,11 @@ class Events implements Contract
             return $responses;
         }
 
-        // TODO: if ($arguments !== null && $event is class) $arguments = new $event(...$arguments)
+        // If there are arguments and the event is a class, override the arguments with a new instance of the event
+        // class with the arguments as parameters
+        if ($arguments !== null && class_exists($event)) {
+            $arguments = new $event(...$arguments);
+        }
 
         // Iterate through all the event's listeners
         foreach ($this->getListeners($event) as $listener) {
