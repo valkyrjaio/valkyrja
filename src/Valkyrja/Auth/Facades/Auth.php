@@ -48,7 +48,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Contract logout()
  * @method static Contract register(User $user)
  * @method static Contract forgot(User $user)
- * @method static Contract reset(User $user, string $password)
+ * @method static Contract reset(string $resetToken, string $password)
  * @method static Contract lock(LockableUser $user)
  * @method static Contract unlock(LockableUser $user)
  * @method static Contract confirmPassword(string $password)

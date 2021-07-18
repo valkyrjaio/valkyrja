@@ -197,12 +197,12 @@ interface Repository
     /**
      * Reset a user's password.
      *
-     * @param User   $user     The user
-     * @param string $password The password
+     * @param string $resetToken The reset token
+     * @param string $password   The password
      *
      * @return static
      */
-    public function reset(User $user, string $password): self;
+    public function reset(string $resetToken, string $password): self;
 
     /**
      * Lock a user.

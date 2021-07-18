@@ -54,6 +54,15 @@ interface Adapter
     public function isValidToken(string $token): bool;
 
     /**
+     * Get a user via login fields.
+     *
+     * @param User $user
+     *
+     * @return User|null
+     */
+    public function getUserViaLoginFields(User $user): ?User;
+
+    /**
      * Get a user from token.
      *
      * @param string $user
@@ -64,6 +73,16 @@ interface Adapter
     public function getUserFromToken(string $user, string $token): ?User;
 
     /**
+     * Get a user from token.
+     *
+     * @param string $user
+     * @param string $resetToken
+     *
+     * @return User|null
+     */
+    public function getUserFromResetToken(string $user, string $resetToken): ?User;
+
+    /**
      * Refresh a user from the data store.
      *
      * @param User $user
@@ -71,6 +90,15 @@ interface Adapter
      * @return User
      */
     public function getFreshUser(User $user): User;
+
+    /**
+     * Save a user.
+     *
+     * @param User $user
+     *
+     * @return void
+     */
+    public function saveUser(User $user): void;
 
     /**
      * Determine if a password verifies against the user's password.
@@ -95,7 +123,7 @@ interface Adapter
     public function updatePassword(User $user, string $password): void;
 
     /**
-     * Reset a user's password.
+     * Generate a reset token for a user.
      *
      * @param User $user
      *
@@ -103,7 +131,7 @@ interface Adapter
      *
      * @return void
      */
-    public function resetPassword(User $user): void;
+    public function generateResetToken(User $user): void;
 
     /**
      * Lock a user.

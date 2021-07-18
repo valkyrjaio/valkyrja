@@ -15,7 +15,6 @@ namespace Valkyrja\Auth\Adapters;
 
 use Exception;
 use Valkyrja\Auth\Adapter as Contract;
-use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\User;
@@ -118,6 +117,30 @@ class ORMAdapter implements Contract
     }
 
     /**
+     * Get a user via login fields.
+     *
+     * @param User $user
+     *
+     * @return User|null
+     */
+    public function getUserViaLoginFields(User $user): ?User
+    {
+        $loginFields = $user::getLoginFields();
+        $find        = $this->getUserRepository($user)->find();
+
+        // Iterate through the login fields
+        foreach ($loginFields as $loginField) {
+            // Set a where clause for each field
+            $find->where($loginField, null, $user->__get($loginField));
+        }
+
+        /** @var User $dbUser */
+        $dbUser = $find->getOneOrNull();
+
+        return $dbUser;
+    }
+
+    /**
      * Get a user from token.
      *
      * @param string $user
@@ -140,6 +163,27 @@ class ORMAdapter implements Contract
     }
 
     /**
+     * Get a user from a reset token.
+     *
+     * @param string $user
+     * @param string $resetToken
+     *
+     * @return User|null
+     */
+    public function getUserFromResetToken(string $user, string $resetToken): ?User
+    {
+        /** @var User|string $user */
+        $resetTokenField = $user::getResetTokenField();
+        /** @var User $dbUser */
+        $dbUser = $this->getUserRepository($user)
+            ->find()
+            ->where($resetTokenField, null, $user->__get($resetTokenField))
+            ->getOneOrNull();
+
+        return $dbUser;
+    }
+
+    /**
      * Refresh a user from the data store.
      *
      * @param User $user
@@ -150,10 +194,26 @@ class ORMAdapter implements Contract
     {
         /** @var User $freshUser */
         $freshUser = $this->getUserRepository($user)
-                          ->findOne($user->__get($user::getIdField()))
-                          ->getOneOrFail();
+            ->findOne($user->__get($user::getIdField()))
+            ->getOneOrFail();
 
         return $freshUser;
+    }
+
+    /**
+     * Save a user.
+     *
+     * @param User $user
+     *
+     * @return void
+     */
+    public function saveUser(User $user): void
+    {
+        // Get the ORM repository
+        $repository = $this->getUserRepository($user);
+
+        $repository->save($user, false);
+        $repository->persist();
     }
 
     /**
@@ -175,31 +235,20 @@ class ORMAdapter implements Contract
      * @param User   $user
      * @param string $password
      *
-     * @throws Exception
-     *
      * @return void
      */
     public function updatePassword(User $user, string $password): void
     {
         $resetTokenField = $user::getResetTokenField();
-        /** @var User $dbUser */
-        $dbUser = $this->getUserRepository($user)
-                       ->find()
-                       ->where($resetTokenField, null, $user->__get($resetTokenField))
-                       ->getOneOrNull();
 
-        if (! $dbUser) {
-            throw new InvalidAuthenticationException('Invalid reset token.');
-        }
+        $user->__set($resetTokenField, null);
+        $user->__set($user::getPasswordField(), $this->hashPassword($password));
 
-        $dbUser->__set($resetTokenField, null);
-        $dbUser->__set($user::getPasswordField(), $this->hashPassword($password));
-
-        $this->saveUser($dbUser);
+        $this->saveUser($user);
     }
 
     /**
-     * Reset a user's password.
+     * Generate a reset token for a user.
      *
      * @param User $user
      *
@@ -207,17 +256,11 @@ class ORMAdapter implements Contract
      *
      * @return void
      */
-    public function resetPassword(User $user): void
+    public function generateResetToken(User $user): void
     {
-        $dbUser = $this->getUserViaLoginFields($user);
+        $user->__set($user::getResetTokenField(), Str::random());
 
-        if (! $dbUser) {
-            throw new InvalidAuthenticationException('No user found.');
-        }
-
-        $dbUser->__set($user::getResetTokenField(), Str::random());
-
-        $this->saveUser($dbUser);
+        $this->saveUser($user);
     }
 
     /**
@@ -322,46 +365,6 @@ class ORMAdapter implements Contract
         $user->__set($user::getIsLockedField(), $lock);
 
         $this->saveUser($user);
-    }
-
-    /**
-     * Save a user.
-     *
-     * @param User $user
-     *
-     * @return void
-     */
-    protected function saveUser(User $user): void
-    {
-        // Get the ORM repository
-        $repository = $this->getUserRepository($user);
-
-        $repository->save($user, false);
-        $repository->persist();
-    }
-
-    /**
-     * Get a user from the DB via login fields.
-     *
-     * @param User $user The user to try and get from the db
-     *
-     * @return User|null
-     */
-    protected function getUserViaLoginFields(User $user): ?User
-    {
-        $loginFields = $user::getLoginFields();
-        $find        = $this->getUserRepository($user)->find();
-
-        // Iterate through the login fields
-        foreach ($loginFields as $loginField) {
-            // Set a where clause for each field
-            $find->where($loginField, null, $user->__get($loginField));
-        }
-
-        /** @var User $dbUser */
-        $dbUser = $find->getOneOrNull();
-
-        return $dbUser;
     }
 
     /**

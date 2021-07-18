@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Repositories;
 
+use Exception;
 use JsonException;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Constants\SessionId;
@@ -417,11 +418,19 @@ class Repository implements Contract
      *
      * @param User $user The user
      *
+     * @throws Exception
+     *
      * @return static
      */
     public function forgot(User $user): self
     {
-        $this->adapter->resetPassword($user);
+        $dbUser = $this->adapter->getUserViaLoginFields($user);
+
+        if (! $dbUser) {
+            throw new InvalidAuthenticationException('No user found.');
+        }
+
+        $this->adapter->generateResetToken($dbUser);
 
         return $this;
     }
@@ -429,14 +438,21 @@ class Repository implements Contract
     /**
      * Reset a user's password.
      *
-     * @param User   $user     The user
-     * @param string $password The password
+     * @param string $resetToken The reset token
+     * @param string $password   The password
+     *
+     * @throws Exception
      *
      * @return static
      */
-    public function reset(User $user, string $password): self
+    public function reset(string $resetToken, string $password): self
     {
+        if (! $user = $this->adapter->getUserFromResetToken($this->userEntityName, $resetToken)) {
+            throw new InvalidAuthenticationException('Invalid reset token.');
+        }
+
         $this->adapter->updatePassword($user, $password);
+        $this->setUser($user);
 
         return $this;
     }
