@@ -252,6 +252,28 @@ trait ModelTrait
     }
 
     /**
+     * Get an original property value by name.
+     *
+     * @param string $name The original property to get
+     *
+     * @return mixed
+     */
+    public function __getOriginalProperty(string $name)
+    {
+        return $this->__originalProperties[$name] ?? null;
+    }
+
+    /**
+     * Get all original properties.
+     *
+     * @return array
+     */
+    public function __getOriginalProperties(): array
+    {
+        return $this->__originalProperties;
+    }
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array

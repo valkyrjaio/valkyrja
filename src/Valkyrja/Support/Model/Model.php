@@ -94,6 +94,22 @@ interface Model extends JsonSerializable
     public function __changed(): array;
 
     /**
+     * Get an original property value by name.
+     *
+     * @param string $name The original property to get
+     *
+     * @return mixed
+     */
+    public function __getOriginalProperty(string $name);
+
+    /**
+     * Get all original properties.
+     *
+     * @return array
+     */
+    public function __getOriginalProperties(): array;
+
+    /**
      * Serialize properties for json_encode.
      *
      * @return array
