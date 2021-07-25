@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Support;
 
+use function date;
+use function str_replace;
+
 /**
  * Class Helpers.
  *
@@ -52,5 +55,15 @@ class Helpers
                 '',
                 $column
             );
+    }
+
+    /**
+     * Get the formatted date.
+     *
+     * @return string
+     */
+    public static function getFormattedDate(): string
+    {
+        return date('Y-m-d H:i:s T');
     }
 }

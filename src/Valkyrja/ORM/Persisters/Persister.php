@@ -23,9 +23,9 @@ use Valkyrja\ORM\Persister as Contract;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\SoftDeleteEntity;
+use Valkyrja\ORM\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
 
-use function date;
 use function is_array;
 use function is_object;
 use function serialize;
@@ -95,7 +95,7 @@ class Persister implements Contract
     public function create(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $date = $this->getFormattedDate();
+            $date = Helpers::getFormattedDate();
 
             $entity->__set($entity::getDateCreatedField(), $date);
             $entity->__set($entity::getDateModifiedField(), $date);
@@ -135,7 +135,7 @@ class Persister implements Contract
     public function save(Entity $entity, bool $defer = true): void
     {
         if ($entity instanceof DatedEntity) {
-            $entity->__set($entity::getDateModifiedField(), $this->getFormattedDate());
+            $entity->__set($entity::getDateModifiedField(), Helpers::getFormattedDate());
         }
 
         if (! $defer) {
@@ -205,7 +205,7 @@ class Persister implements Contract
     public function softDelete(SoftDeleteEntity $entity, bool $defer = true): void
     {
         $entity->__set($entity::getIsDeletedField(), true);
-        $entity->__set($entity::getDateDeletedField(), $this->getFormattedDate());
+        $entity->__set($entity::getDateDeletedField(), Helpers::getFormattedDate());
 
         $this->save($entity, $defer);
     }
@@ -276,16 +276,6 @@ class Persister implements Contract
         $this->clearDeferred();
 
         return $this->adapter->commit();
-    }
-
-    /**
-     * Get the formatted date.
-     *
-     * @return string
-     */
-    protected function getFormattedDate(): string
-    {
-        return date('Y-m-d H:i:s T');
     }
 
     /**
