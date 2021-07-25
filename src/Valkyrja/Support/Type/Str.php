@@ -143,7 +143,7 @@ class Str
      */
     public static function min(string $subject, int $min = 0): bool
     {
-        return strlen($subject) > $min;
+        return strlen($subject) >= $min;
     }
 
     /**
@@ -154,9 +154,9 @@ class Str
      *
      * @return bool
      */
-    public static function max(string $subject, int $max = 255): bool
+    public static function max(string $subject, int $max = 256): bool
     {
-        return strlen($subject) < $max;
+        return strlen($subject) <= $max;
     }
 
     /**
@@ -318,7 +318,32 @@ class Str
      */
     public static function allToCapitalized(string ...$subjects): array
     {
-        return static::allTo('toUpperCase', ...$subjects);
+        return static::allTo('toCapitalized', ...$subjects);
+    }
+
+    /**
+     * Convert a string to capitalized.
+     *
+     * @param string      $subject The subject
+     * @param string|null $delimiter [optional] The delimiter
+     *
+     * @return string
+     */
+    public static function toCapitalizedWords(string $subject, string $delimiter = null): string
+    {
+        return static::toCapitalized(static::replaceAllWith($subject, ['-', '_'], ' '), $delimiter);
+    }
+
+    /**
+     * Convert all strings to capitalized.
+     *
+     * @param string ...$subjects The subjects
+     *
+     * @return array
+     */
+    public static function allToCapitalizedWords(string ...$subjects): array
+    {
+        return static::allTo('toCapitalizedWords', ...$subjects);
     }
 
     /**
@@ -402,15 +427,8 @@ class Str
      */
     public static function toStudlyCase(string $subject): string
     {
-        $key = $subject;
-
-        if (isset(self::$studlyCache[$key])) {
-            return self::$studlyCache[$key];
-        }
-
-        $subject = static::toCapitalized(static::replaceAllWith($subject, ['-', '_'], ' '));
-
-        return self::$studlyCache[$key] = static::replace($subject, ' ', '');
+        return self::$studlyCache[$subject]
+            ?? (self::$studlyCache[$subject] = static::replace(static::toCapitalizedWords($subject), ' ', ''));
     }
 
     /**
