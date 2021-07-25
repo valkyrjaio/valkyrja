@@ -432,6 +432,9 @@ class Repository implements Contract
 
         $this->adapter->generateResetToken($dbUser);
 
+        $user->__set($user::getResetTokenField(), $dbUser->__get($dbUser::getResetTokenField()));
+        $user->__set($user::getIdField(), $dbUser->__get($dbUser::getIdField()));
+
         return $this;
     }
 
