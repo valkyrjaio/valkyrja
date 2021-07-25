@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support;
 
+use Valkyrja\Support\Type\Str;
+
 use const DIRECTORY_SEPARATOR;
 
 /**
- * class Directory.
+ * Class Directory.
  *
  * @author Melech Mizrachi
  */
@@ -66,7 +68,7 @@ class Directory
      */
     public static function appPath(string $path = null): string
     {
-        return static::basePath(static::$APP_PATH . static::path($path));
+        return static::__basePath(static::$APP_PATH . static::path($path));
     }
 
     /**
@@ -86,13 +88,25 @@ class Directory
      *
      * @param string|null $path The path
      *
-     * @return string
+     * @return string|null
      */
     public static function path(string $path = null): ?string
     {
         return $path && $path[0] !== static::DIRECTORY_SEPARATOR
             ? static::DIRECTORY_SEPARATOR . $path
             : $path;
+    }
+
+    /**
+     * Get the bootstrap directory for the application.
+     *
+     * @param string|null $path [optional] The path to append
+     *
+     * @return string
+     */
+    public static function bootstrapPath(string $path = null): string
+    {
+        return static::__basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
 
     /**
@@ -105,18 +119,6 @@ class Directory
     public static function commandsPath(string $path = null): string
     {
         return static::bootstrapPath(static::$COMMANDS_PATH . static::path($path));
-    }
-
-    /**
-     * Get the bootstrap directory for the application.
-     *
-     * @param string|null $path [optional] The path to append
-     *
-     * @return string
-     */
-    public static function bootstrapPath(string $path = null): string
-    {
-        return static::basePath(static::$BOOTSTRAP_PATH . static::path($path));
     }
 
     /**
@@ -164,7 +166,7 @@ class Directory
      */
     public static function configPath(string $path = null): string
     {
-        return static::basePath(static::$CONFIG_PATH . static::path($path));
+        return static::__basePath(static::$CONFIG_PATH . static::path($path));
     }
 
     /**
@@ -176,7 +178,7 @@ class Directory
      */
     public static function envPath(string $path = null): string
     {
-        return static::basePath(static::$ENV_PATH . static::path($path));
+        return static::__basePath(static::$ENV_PATH . static::path($path));
     }
 
     /**
@@ -188,7 +190,7 @@ class Directory
      */
     public static function publicPath(string $path = null): string
     {
-        return static::basePath(static::$PUBLIC_PATH . static::path($path));
+        return static::__basePath(static::$PUBLIC_PATH . static::path($path));
     }
 
     /**
@@ -200,19 +202,19 @@ class Directory
      */
     public static function resourcesPath(string $path = null): string
     {
-        return static::basePath(static::$RESOURCES_PATH . static::path($path));
+        return static::__basePath(static::$RESOURCES_PATH . static::path($path));
     }
 
     /**
-     * Get the cache directory for the application.
+     * Get the storage directory for the application.
      *
      * @param string|null $path [optional] The path to append
      *
      * @return string
      */
-    public static function cachePath(string $path = null): string
+    public static function storagePath(string $path = null): string
     {
-        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
+        return static::__basePath(static::$STORAGE_PATH . static::path($path));
     }
 
     /**
@@ -228,15 +230,15 @@ class Directory
     }
 
     /**
-     * Get the storage directory for the application.
+     * Get the cache directory for the application.
      *
      * @param string|null $path [optional] The path to append
      *
      * @return string
      */
-    public static function storagePath(string $path = null): string
+    public static function cachePath(string $path = null): string
     {
-        return static::basePath(static::$STORAGE_PATH . static::path($path));
+        return static::frameworkStoragePath(static::$CACHE_PATH . static::path($path));
     }
 
     /**
@@ -248,7 +250,7 @@ class Directory
      */
     public static function testsPath(string $path = null): string
     {
-        return static::basePath(static::$TESTS_PATH . static::path($path));
+        return static::__basePath(static::$TESTS_PATH . static::path($path));
     }
 
     /**
@@ -260,6 +262,23 @@ class Directory
      */
     public static function vendorPath(string $path = null): string
     {
-        return static::basePath(static::$VENDOR_PATH . static::path($path));
+        return static::__basePath(static::$VENDOR_PATH . static::path($path));
+    }
+
+    /**
+     * Internal get the base directory for the application unless the path starts with a directory separator (since
+     *  if it does then it is already an absolute path and shouldn't be prepended with the base path).
+     *
+     * @param string|null $path [optional] The path to append
+     *
+     * @return string
+     */
+    protected static function __basePath(string $path = null): string
+    {
+        if (Str::startsWith($path, self::DIRECTORY_SEPARATOR)) {
+            return $path;
+        }
+
+        return static::$BASE_PATH . static::path($path);
     }
 }
