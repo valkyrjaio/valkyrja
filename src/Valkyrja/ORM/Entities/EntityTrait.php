@@ -22,6 +22,7 @@ use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
 use Valkyrja\Support\Type\Str;
 
+use function in_array;
 use function is_string;
 use function serialize;
 
@@ -246,8 +247,9 @@ trait EntityTrait
         // Iterate through the properties to return
         foreach ($allProperties as $property => $value) {
             // If this property is a relationship and we're going for storage
-            if ($storable && isset($relationshipProperties[$property])) {
-                // Skip it
+            if ($storable && in_array($property, $relationshipProperties, true)) {
+                unset($allProperties[$property]);
+
                 continue;
             }
 
