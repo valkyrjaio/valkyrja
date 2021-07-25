@@ -30,6 +30,15 @@ use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Support\MiddlewareAwareTrait;
 
+use function count;
+use function defined;
+use function function_exists;
+
+use const PHP_OUTPUT_HANDLER_CLEANABLE;
+use const PHP_OUTPUT_HANDLER_FLUSHABLE;
+use const PHP_OUTPUT_HANDLER_REMOVABLE;
+use const PHP_SAPI;
+
 /**
  * Class Kernel.
  *
@@ -153,6 +162,9 @@ class Kernel implements Contract
     {
         $response->send();
 
+        $this->finishSession();
+        $this->finishRequest();
+
         return $this;
     }
 
@@ -166,8 +178,12 @@ class Kernel implements Contract
      */
     public function terminate(Request $request, Response $response): void
     {
-        // Dispatch the terminable middleware
-        $this->terminableMiddleware($request, $response);
+        try {
+            // Dispatch the terminable middleware
+            $this->terminableMiddleware($request, $response);
+        } catch (Throwable $exception) {
+            $this->logException($exception);
+        }
 
         // If a route was dispatched
         if ($this->container->has(Route::class)) {
@@ -175,8 +191,12 @@ class Kernel implements Contract
             $this->terminateRoute($request, $response);
         }
 
-        // Trigger an event for kernel handled
-        $this->events->trigger(HttpKernelTerminate::class, [$request, $response]);
+        try {
+            // Trigger an event for kernel handled
+            $this->events->trigger(HttpKernelTerminate::class, [$request, $response]);
+        } catch (Throwable $exception) {
+            $this->logException($exception);
+        }
     }
 
     /**
@@ -287,13 +307,81 @@ class Kernel implements Contract
      */
     protected function terminateRoute(Request $request, Response $response): void
     {
-        /* @var Route $route */
-        $route = $this->container->getSingleton(Route::class);
+        try {
+            /* @var Route $route */
+            $route = $this->container->getSingleton(Route::class);
 
-        // If the dispatched route has middleware
-        if (null !== $route->getMiddleware()) {
-            // Terminate each middleware
-            $this->terminableMiddleware($request, $response, $route->getMiddleware());
+            // If the dispatched route has middleware
+            if (null !== $route->getMiddleware()) {
+                // Terminate each middleware
+                $this->terminableMiddleware($request, $response, $route->getMiddleware());
+            }
+        } catch (Throwable $exception) {
+            $this->logException($exception);
+        }
+    }
+
+    /**
+     * Finish a session if it is active.
+     *
+     * @return void
+     */
+    protected function finishSession(): void
+    {
+        if (session_id()) {
+            session_write_close();
+        }
+    }
+
+    /**
+     * Finish the request.
+     *
+     * @return void
+     */
+    protected function finishRequest(): void
+    {
+        // If fastcgi is enabled
+        if (function_exists('fastcgi_finish_request')) {
+            // Use it to finish the request
+            fastcgi_finish_request();
+        } // Otherwise if this isn't a cli request
+        elseif ('cli' !== PHP_SAPI) {
+            // Use an internal method to finish the request
+            $this->closeOutputBuffers(0, true);
+        }
+    }
+
+    /**
+     * Cleans or flushes output buffers up to target level.
+     * Resulting level can be greater than target level if a non-removable
+     * buffer has been encountered.
+     *
+     * @param int  $targetLevel The target output buffering level
+     * @param bool $flush       Whether to flush or clean the buffers
+     *
+     * @return void
+     */
+    protected function closeOutputBuffers(int $targetLevel, bool $flush): void
+    {
+        $status = ob_get_status(true);
+        $level  = count($status);
+        // PHP_OUTPUT_HANDLER_* are not defined on HHVM 3.3
+        $flags = defined('PHP_OUTPUT_HANDLER_REMOVABLE')
+            ? PHP_OUTPUT_HANDLER_REMOVABLE | ($flush
+                ? PHP_OUTPUT_HANDLER_FLUSHABLE
+                : PHP_OUTPUT_HANDLER_CLEANABLE)
+            : -1;
+
+        while (
+            $level-- > $targetLevel
+            && ($s = $status[$level])
+            && ($s['del'] ?? (! isset($s['flags']) || $flags === ($s['flags'] & $flags)))
+        ) {
+            if ($flush) {
+                ob_end_flush();
+            } else {
+                ob_end_clean();
+            }
         }
     }
 }
