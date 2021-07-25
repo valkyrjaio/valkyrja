@@ -257,6 +257,9 @@ class Kernel implements Contract
     protected function getExceptionResponse(Throwable $exception): Response
     {
         if ($this->debug) {
+            // Log the error
+            $this->logException($exception);
+
             throw $exception;
         }
 
