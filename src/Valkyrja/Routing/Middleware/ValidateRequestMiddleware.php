@@ -34,9 +34,8 @@ abstract class ValidateRequestMiddleware extends Middleware
      */
     public static function before(Request $request)
     {
-        $container = self::$container;
         /** @var Validator $validator */
-        $validator = $container->getSingleton(Validator::class);
+        $validator = self::$container->getSingleton(Validator::class);
         $validator->setRules(static::getRules($request));
 
         if (! $validator->validate()) {
