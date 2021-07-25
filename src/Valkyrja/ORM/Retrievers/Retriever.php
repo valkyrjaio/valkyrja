@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Retrievers;
 
 use InvalidArgumentException;
+use JsonException;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\Retriever as Contract;
+use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Cls;
 
 use function is_array;
@@ -33,6 +35,13 @@ use function is_string;
  */
 class Retriever implements Contract
 {
+    /**
+     * Local cache for results in case same query is made multiple times within the same session.
+     *
+     * @var array
+     */
+    protected static array $cache = [];
+
     /**
      * The adapter.
      *
@@ -298,6 +307,12 @@ class Retriever implements Contract
      */
     public function getResult(): array
     {
+        $cacheKey = $this->getCacheKey();
+
+        if (isset(self::$cache[$cacheKey])) {
+            return self::$cache[$cacheKey];
+        }
+
         $this->prepareResults();
 
         $results = $this->query->getResult();
@@ -305,6 +320,8 @@ class Retriever implements Contract
         if ($this->getRelations && is_array($results)) {
             $this->setRelationshipsOnEntities($this->relationships, ...$results);
         }
+
+        self::$cache[$cacheKey] = $results;
 
         return $results;
     }
@@ -344,9 +361,19 @@ class Retriever implements Contract
      */
     public function getCount(): int
     {
+        $cacheKey = $this->getCacheKey();
+
+        if (isset(self::$cache[$cacheKey])) {
+            return self::$cache[$cacheKey];
+        }
+
         $this->prepareResults();
 
-        return $this->query->getCount();
+        $count = $this->query->getCount();
+
+        self::$cache[$cacheKey] = $count;
+
+        return $count;
     }
 
     /**
@@ -474,5 +501,17 @@ class Retriever implements Contract
             // Set the entity relations
             $entity->__setRelationship($this->adapter->getOrm(), $relationship);
         }
+    }
+
+    /**
+     * Get the cache key.
+     *
+     * @throws JsonException
+     *
+     * @return string
+     */
+    protected function getCacheKey(): string
+    {
+        return $this->queryBuilder->getQueryString() . Arr::toString($this->values);
     }
 }
