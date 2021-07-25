@@ -33,11 +33,7 @@ class ProviderClass extends Provider
     }
 
     /**
-     * Publish the service provider.
-     *
-     * @param Config $config The config
-     *
-     * @return void
+     * @inheritDoc
      */
     public static function publish(Config $config): void
     {

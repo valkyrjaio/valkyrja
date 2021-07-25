@@ -31,13 +31,9 @@ use function is_array;
 class AppProvider extends Provider
 {
     /**
-     * Publish the provider.
-     *
-     * @param Application $app The application
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public static function publish(Application $app): void
     {

@@ -26,9 +26,7 @@ use Valkyrja\Http\JsonResponse;
 class ServiceProvider extends Provider
 {
     /**
-     * The items provided by this provider.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public static function publishers(): array
     {
@@ -38,9 +36,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * The items provided by this provider.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public static function provides(): array
     {
@@ -50,11 +46,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the provider.
-     *
-     * @param Container $container The container
-     *
-     * @return void
+     * @inheritDoc
      */
     public static function publish(Container $container): void
     {
