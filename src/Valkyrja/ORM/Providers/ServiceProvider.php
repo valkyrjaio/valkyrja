@@ -32,6 +32,7 @@ use Valkyrja\ORM\Repositories\CacheRepository;
 use Valkyrja\ORM\Repositories\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\Retrievers\CacheRetriever;
+use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
 
 /**
  * Class ServiceProvider.
@@ -48,19 +49,20 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            ORM::class             => 'publishORM',
-            Driver::class          => 'publishDefaultDriver',
-            PDODriver::class       => 'publishPdoDriver',
-            MySqlDriver::class     => 'publishPdoMySqlDriver',
-            PgSqlDriver::class     => 'publishPdoPgSqlDriver',
-            PDOAdapter::class      => 'publishPdoAdapter',
-            Repository::class      => 'publishRepository',
-            CacheRepository::class => 'publishCacheRepository',
-            Persister::class       => 'publishPersister',
-            Retriever::class       => 'publishRetriever',
-            CacheRetriever::class  => 'publishCacheRetriever',
-            Query::class           => 'publishQuery',
-            QueryBuilder::class    => 'publishQueryBuilder',
+            ORM::class                 => 'publishORM',
+            Driver::class              => 'publishDefaultDriver',
+            PDODriver::class           => 'publishPdoDriver',
+            MySqlDriver::class         => 'publishPdoMySqlDriver',
+            PgSqlDriver::class         => 'publishPdoPgSqlDriver',
+            PDOAdapter::class          => 'publishPdoAdapter',
+            Repository::class          => 'publishRepository',
+            CacheRepository::class     => 'publishCacheRepository',
+            Persister::class           => 'publishPersister',
+            Retriever::class           => 'publishRetriever',
+            LocalCacheRetriever::class => 'publishLocalCacheRetriever',
+            CacheRetriever::class      => 'publishCacheRetriever',
+            Query::class               => 'publishQuery',
+            QueryBuilder::class        => 'publishQueryBuilder',
         ];
     }
 
@@ -309,6 +311,25 @@ class ServiceProvider extends Provider
             Retriever::class,
             static function (Adapter $adapter): Retriever {
                 return new \Valkyrja\ORM\Retrievers\Retriever(
+                    $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a local cache retriever service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishLocalCacheRetriever(Container $container): void
+    {
+        $container->setClosure(
+            LocalCacheRetriever::class,
+            static function (Adapter $adapter): Retriever {
+                return new LocalCacheRetriever(
                     $adapter
                 );
             }

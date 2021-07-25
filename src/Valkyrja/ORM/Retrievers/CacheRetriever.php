@@ -21,7 +21,7 @@ use Valkyrja\ORM\Adapter;
  *
  * @author Melech Mizrachi
  */
-class CacheRetriever extends Retriever
+class CacheRetriever extends LocalCacheRetriever
 {
     /**
      * The cache service
