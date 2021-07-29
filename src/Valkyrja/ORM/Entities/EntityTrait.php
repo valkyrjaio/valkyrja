@@ -257,6 +257,8 @@ trait EntityTrait
             $this->__setPropertyInArray($allProperties, $propertyTypes, $property, $storable);
         }
 
+        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
+
         return $allProperties;
     }
 

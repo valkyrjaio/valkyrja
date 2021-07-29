@@ -223,6 +223,8 @@ trait ModelTrait
             $allProperties[$property] = $this->__get($property);
         }
 
+        unset($allProperties['__exposed'], $allProperties['__originalProperties']);
+
         return $allProperties;
     }
 
