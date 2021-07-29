@@ -17,9 +17,10 @@ use Closure;
 use InvalidArgumentException;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Facades\Reflector;
+use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Router;
+use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Str;
 
 use function array_merge;
@@ -57,18 +58,18 @@ trait CollectorHelpers
     protected ?Route $route = null;
 
     /**
+     * The collection service.
+     *
+     * @var Collection
+     */
+    protected Collection $collection;
+
+    /**
      * The path parser.
      *
      * @var PathParser
      */
     protected PathParser $pathParser;
-
-    /**
-     * The router.
-     *
-     * @var Router
-     */
-    protected Router $router;
 
     /**
      * Ensure a route context is set so we can chain 'with' group methods.
@@ -273,7 +274,7 @@ trait CollectorHelpers
 
         $route->setMethods($methods);
 
-        $this->router->addRoute($route);
+        $this->collection->add($route);
 
         return $route;
     }
@@ -456,7 +457,7 @@ trait CollectorHelpers
     protected function parseDynamicRoute(Route $route): void
     {
         // Parse the path
-        $parsedRoute = $this->pathParser->parse('/' . trim($route->getPath() ?? '', '/'));
+        $parsedRoute = $this->pathParser->parse(Helpers::trimPath($route->getPath() ?? ''));
 
         // Set the properties
         $route->setRegex($parsedRoute['regex']);

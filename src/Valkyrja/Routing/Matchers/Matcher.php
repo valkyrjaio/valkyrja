@@ -17,11 +17,12 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
 
+use Valkyrja\Routing\Support\Helpers;
+
 use function preg_match;
-use function trim;
 
 /**
- * Class RouteMatcher.
+ * Class Matcher.
  *
  * @author Melech Mizrachi
  */
@@ -35,27 +36,13 @@ class Matcher implements Contract
     protected Collection $collection;
 
     /**
-     * Set the collection.
+     * Matcher constructor.
      *
      * @param Collection $collection The collection
-     *
-     * @return void
      */
-    public function setCollection(Collection $collection): void
+    public function __construct(Collection $collection)
     {
         $this->collection = $collection;
-    }
-
-    /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    public function trimPath(string $path): string
-    {
-        return '/' . trim($path, '/');
     }
 
     /**
@@ -70,7 +57,7 @@ class Matcher implements Contract
      */
     public function match(string $path, string $method): ?Route
     {
-        $path = $this->trimPath($path);
+        $path = Helpers::trimPath($path);
 
         if (null !== $route = $this->matchStatic($path, $method)) {
             return $route;

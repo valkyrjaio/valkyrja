@@ -76,6 +76,13 @@ class Router implements Contract
     protected Events $events;
 
     /**
+     * The matcher.
+     *
+     * @var Matcher
+     */
+    protected Matcher $matcher;
+
+    /**
      * The response factory.
      *
      * @var ResponseFactory
@@ -99,26 +106,29 @@ class Router implements Contract
     /**
      * Router constructor.
      *
+     * @param Collection      $collection
      * @param Container       $container
      * @param Dispatcher      $dispatcher
      * @param Events          $events
+     * @param Matcher         $matcher
      * @param ResponseFactory $responseFactory
-     * @param Collection      $collection
      * @param array           $config
      * @param bool            $debug
      */
     public function __construct(
+        Collection $collection,
         Container $container,
         Dispatcher $dispatcher,
         Events $events,
+        Matcher $matcher,
         ResponseFactory $responseFactory,
-        Collection $collection,
         array $config,
         bool $debug = false
     ) {
         $this->container       = $container;
         $this->dispatcher      = $dispatcher;
         $this->events          = $events;
+        $this->matcher         = $matcher;
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
         $this->debug           = $debug;
@@ -168,7 +178,7 @@ class Router implements Contract
      */
     public function getMatcher(): Matcher
     {
-        return self::$collection->matcher();
+        return $this->matcher;
     }
 
     /**
@@ -240,7 +250,7 @@ class Router implements Contract
         // Decode the request uri
         $requestUri = rawurldecode($request->getUri()->getPath());
         // Try to match the route
-        $route = self::$collection->matcher()->match($requestUri, $request->getMethod() ?? RequestMethod::GET);
+        $route = $this->matcher->match($requestUri, $request->getMethod() ?? RequestMethod::GET);
 
         // If no route is found
         if (null === $route) {

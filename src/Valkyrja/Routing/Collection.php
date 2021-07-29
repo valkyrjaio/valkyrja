@@ -153,11 +153,4 @@ interface Collection
      * @return string[]
      */
     public function allNamed(): array;
-
-    /**
-     * Get the route matcher.
-     *
-     * @return Matcher
-     */
-    public function matcher(): Matcher;
 }

@@ -19,7 +19,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Routing\Annotation\Annotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
-use Valkyrja\Routing\Matcher;
 use Valkyrja\Support\Cacheable\Cacheable;
 
 /**
@@ -43,12 +42,11 @@ class CacheableCollection extends Collection
      *
      * @param Container  $container
      * @param Dispatcher $dispatcher
-     * @param Matcher    $matcher
      * @param array      $config
      */
-    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher, array $config)
+    public function __construct(Container $container, Dispatcher $dispatcher, array $config)
     {
-        parent::__construct($container, $dispatcher, $matcher);
+        parent::__construct($container, $dispatcher);
 
         $this->container = $container;
         $this->config    = $config;
@@ -64,10 +62,14 @@ class CacheableCollection extends Collection
         $this->setup(true, false);
 
         $config          = new Cache();
-        $config->routes  = $this->routes;
+        $config->routes  = [];
         $config->static  = $this->static;
         $config->dynamic = $this->dynamic;
         $config->named   = $this->named;
+
+        foreach ($this->routes as $id => $route) {
+            $config->routes[$id] = $route->__toArray();
+        }
 
         return $config;
     }

@@ -21,24 +21,6 @@ namespace Valkyrja\Routing;
 interface Matcher
 {
     /**
-     * Set the collection.
-     *
-     * @param Collection $collection The collection
-     *
-     * @return void
-     */
-    public function setCollection(Collection $collection): void;
-
-    /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    public function trimPath(string $path): string;
-
-    /**
      * Match a route by path.
      *
      * @param string $path   The path

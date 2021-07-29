@@ -23,6 +23,18 @@ use Valkyrja\Path\Constants\PathSeparator;
 class Helpers
 {
     /**
+     * Trim a path.
+     *
+     * @param string $path The path
+     *
+     * @return string
+     */
+    public static function trimPath(string $path): string
+    {
+        return '/' . trim($path, '/');
+    }
+
+    /**
      * Get an entity param for a route.
      *
      * @param string      $paramName     The param name

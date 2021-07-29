@@ -21,10 +21,12 @@ use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Collection as Contract;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
+use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
 
 use function array_merge;
 use function is_array;
+use function is_string;
 use function md5;
 
 /**
@@ -88,15 +90,11 @@ class Collection implements Contract
      *
      * @param Container  $container
      * @param Dispatcher $dispatcher
-     * @param Matcher    $matcher
      */
-    public function __construct(Container $container, Dispatcher $dispatcher, Matcher $matcher)
+    public function __construct(Container $container, Dispatcher $dispatcher)
     {
-        $matcher->setCollection($this);
-
         $this->container  = $container;
         $this->dispatcher = $dispatcher;
-        $this->matcher    = $matcher;
     }
 
     /**
@@ -115,14 +113,16 @@ class Collection implements Contract
         // Verify the dispatch
         $this->dispatcher->verifyDispatch($route);
 
+        // Set the id to an md5 hash of the route
+        $route->setId(md5(Arr::toString($route->__toArray())));
         // Set the path to the validated cleaned path (/some/path)
-        $route->setPath($this->matcher->trimPath($route->getPath() ?? ''));
+        $route->setPath(Helpers::trimPath($route->getPath() ?? ''));
         // Set the route to its request methods
         $this->setRouteToRequestMethods($route);
         // Set the route to the named
         $this->setRouteToNamed($route);
 
-        $this->routes[md5(Arr::toString($route->__toArray()))] = $route;
+        $this->routes[$route->getId()] = $route;
     }
 
     /**
@@ -290,16 +290,6 @@ class Collection implements Contract
     }
 
     /**
-     * Get the route matcher.
-     *
-     * @return Matcher
-     */
-    public function matcher(): Matcher
-    {
-        return $this->matcher;
-    }
-
-    /**
      * Verify a route.
      *
      * @param Route $route The route
@@ -340,11 +330,11 @@ class Collection implements Contract
         // If this is a dynamic route
         if ($route->isDynamic()) {
             // Set the route in the dynamic routes list
-            $this->dynamic[$requestMethod][$route->getRegex()] = $route;
+            $this->dynamic[$requestMethod][$route->getRegex()] = $route->getId();
         } // Otherwise set it in the static routes array
         else {
             // Set the route in the static routes list
-            $this->static[$requestMethod][$route->getPath()] = $route;
+            $this->static[$requestMethod][$route->getPath()] = $route->getId();
         }
     }
 
@@ -360,7 +350,7 @@ class Collection implements Contract
         // If this route has a name set
         if ($route->getName()) {
             // Set the route in the named routes list
-            $this->named[$route->getName()] = $route;
+            $this->named[$route->getName()] = $route->getId();
         }
     }
 
@@ -491,12 +481,16 @@ class Collection implements Contract
     /**
      * Ensure a route, or null, is returned.
      *
-     * @param Route|array|null $route The route
+     * @param Route|string|array|null $route The route
      *
      * @return Route|null
      */
     protected function ensureRoute($route = null): ?Route
     {
+        if (is_string($route)) {
+            $route = $this->routes[$route];
+        }
+
         if (is_array($route)) {
             return \Valkyrja\Routing\Models\Route::fromArray($route);
         }

@@ -25,9 +25,10 @@ use Valkyrja\Path\PathGenerator;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator;
+use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
-use Valkyrja\Routing\Matchers\Matcher;
+use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Url;
 
@@ -44,10 +45,12 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Annotator::class => 'publishAnnotator',
-            Router::class    => 'publishRouter',
-            Collector::class => 'publishCollector',
-            Url::class       => 'publishUrl',
+            Annotator::class  => 'publishAnnotator',
+            Router::class     => 'publishRouter',
+            Collector::class  => 'publishCollector',
+            Collection::class => 'publishCollection',
+            Matcher::class => 'publishMatcher',
+            Url::class        => 'publishUrl',
         ];
     }
 
@@ -60,6 +63,8 @@ class ServiceProvider extends Provider
             Annotator::class,
             Router::class,
             Collector::class,
+            Collection::class,
+            Matcher::class,
             Url::class,
         ];
     }
@@ -80,28 +85,21 @@ class ServiceProvider extends Provider
      */
     public static function publishRouter(Container $container): void
     {
-        $config        = $container->getSingleton('config');
-        $routingConfig = $config['routing'];
+        $config = $container->getSingleton('config');
 
         $container->setSingleton(
             Router::class,
             new \Valkyrja\Routing\Dispatchers\Router(
+                $container->getSingleton(Collection::class),
                 $container->getSingleton(Container::class),
-                $dispatcher = $container->getSingleton(Dispatcher::class),
+                $container->getSingleton(Dispatcher::class),
                 $container->getSingleton(Events::class),
+                $container->getSingleton(Matcher::class),
                 $container->getSingleton(ResponseFactory::class),
-                $collection = new CacheableCollection(
-                    $container,
-                    $dispatcher,
-                    new Matcher(),
-                    $routingConfig
-                ),
-                $routingConfig,
+                $config['routing'],
                 $config['app']['debug']
             )
         );
-
-        $collection->setup();
     }
 
     /**
@@ -135,8 +133,48 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new \Valkyrja\Routing\Collectors\Collector(
-                $container->getSingleton(PathParser::class),
-                $container->getSingleton(Router::class)
+                $container->getSingleton(Collection::class),
+                $container->getSingleton(PathParser::class)
+            )
+        );
+    }
+
+    /**
+     * Publish the collection service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishCollection(Container $container): void
+    {
+        $config = $container->getSingleton('config');
+
+        $container->setSingleton(
+            Collection::class,
+            $collection = new CacheableCollection(
+                $container,
+                $container->getSingleton(Dispatcher::class),
+                $config['routing']
+            )
+        );
+
+        $collection->setup();
+    }
+
+    /**
+     * Publish the matcher service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishMatcher(Container $container): void
+    {
+        $container->setSingleton(
+            Matcher::class,
+            new \Valkyrja\Routing\Matchers\Matcher(
+                $container->getSingleton(Collection::class)
             )
         );
     }
