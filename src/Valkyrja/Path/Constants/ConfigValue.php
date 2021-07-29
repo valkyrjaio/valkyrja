@@ -26,7 +26,7 @@ final class ConfigValue
         PathPattern::NUM                  => '(\d+)',
         PathPattern::ID                   => '(\d+)',
         PathPattern::SLUG                 => '([a-zA-Z0-9-]+)',
-        PathPattern::UUID                 => '([a-zA-Z0-9-]+)',
+        PathPattern::UUID                 => '([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',
         PathPattern::ALPHA                => '([a-zA-Z]+)',
         PathPattern::ALPHA_LOWERCASE      => '([a-z]+)',
         PathPattern::ALPHA_UPPERCASE      => '([A-Z]+)',
