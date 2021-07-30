@@ -52,7 +52,7 @@ class Router implements Contract
      *
      * @var Collection
      */
-    protected static Collection $collection;
+    protected Collection $collection;
 
     /**
      * The container.
@@ -116,15 +116,16 @@ class Router implements Contract
      * @param bool            $debug
      */
     public function __construct(
-        Collection $collection,
-        Container $container,
-        Dispatcher $dispatcher,
-        Events $events,
-        Matcher $matcher,
+        Collection      $collection,
+        Container       $container,
+        Dispatcher      $dispatcher,
+        Events          $events,
+        Matcher         $matcher,
         ResponseFactory $responseFactory,
-        array $config,
-        bool $debug = false
+        array           $config,
+        bool            $debug = false
     ) {
+        $this->collection      = $collection;
         $this->container       = $container;
         $this->dispatcher      = $dispatcher;
         $this->events          = $events;
@@ -132,8 +133,6 @@ class Router implements Contract
         $this->responseFactory = $responseFactory;
         $this->config          = $config;
         $this->debug           = $debug;
-
-        self::$collection = $collection;
 
         Controller::$container       = Middleware::$container = $container;
         Controller::$events          = Middleware::$events = $events;
@@ -168,7 +167,7 @@ class Router implements Contract
      */
     public function getCollection(): Collection
     {
-        return self::$collection;
+        return $this->collection;
     }
 
     /**
@@ -191,7 +190,7 @@ class Router implements Contract
     public function addRoute(Route $route): void
     {
         // Set the route in the collection
-        self::$collection->add($route);
+        $this->collection->add($route);
     }
 
     /**
@@ -201,7 +200,7 @@ class Router implements Contract
      */
     public function getRoutes(): array
     {
-        return self::$collection->allFlattened();
+        return $this->collection->allFlattened();
     }
 
     /**
@@ -216,7 +215,7 @@ class Router implements Contract
     public function getRoute(string $name): Route
     {
         // If no route was found
-        if (! $this->hasRoute($name) || ! $route = self::$collection->getNamed($name)) {
+        if (! $this->hasRoute($name) || ! $route = $this->collection->getNamed($name)) {
             throw new InvalidRouteName($name);
         }
 
@@ -232,7 +231,7 @@ class Router implements Contract
      */
     public function hasRoute(string $name): bool
     {
-        return self::$collection->hasNamed($name);
+        return $this->collection->hasNamed($name);
     }
 
     /**
