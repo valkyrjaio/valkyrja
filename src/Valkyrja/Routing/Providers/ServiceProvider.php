@@ -49,7 +49,7 @@ class ServiceProvider extends Provider
             Router::class     => 'publishRouter',
             Collector::class  => 'publishCollector',
             Collection::class => 'publishCollection',
-            Matcher::class => 'publishMatcher',
+            Matcher::class    => 'publishMatcher',
             Url::class        => 'publishUrl',
         ];
     }

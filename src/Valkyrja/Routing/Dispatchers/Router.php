@@ -116,14 +116,14 @@ class Router implements Contract
      * @param bool            $debug
      */
     public function __construct(
-        Collection      $collection,
-        Container       $container,
-        Dispatcher      $dispatcher,
-        Events          $events,
-        Matcher         $matcher,
+        Collection $collection,
+        Container $container,
+        Dispatcher $dispatcher,
+        Events $events,
+        Matcher $matcher,
         ResponseFactory $responseFactory,
-        array           $config,
-        bool            $debug = false
+        array $config,
+        bool $debug = false
     ) {
         $this->collection      = $collection;
         $this->container       = $container;
