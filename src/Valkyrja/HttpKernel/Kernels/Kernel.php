@@ -91,6 +91,13 @@ class Kernel implements Contract
     protected bool $debug;
 
     /**
+     * The errors template directory.
+     *
+     * @var string
+     */
+    protected string $errorsTemplateDir = 'errors';
+
+    /**
      * Kernel constructor.
      *
      * @param Container $container The container
@@ -272,7 +279,7 @@ class Kernel implements Contract
                 // Set the response as the error template
                 return $exception->getResponse()
                     ?? $responseFactory->view(
-                        'errors/' . $exception->getStatusCode(),
+                        $this->errorsTemplateDir . '/' . $exception->getStatusCode(),
                         null,
                         $exception->getStatusCode()
                     );
@@ -280,7 +287,7 @@ class Kernel implements Contract
             }
         }
 
-        return $responseFactory->view('errors/500', null, StatusCode::INTERNAL_SERVER_ERROR);
+        return $responseFactory->view("{$this->errorsTemplateDir}/500", null, StatusCode::INTERNAL_SERVER_ERROR);
     }
 
     /**
