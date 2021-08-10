@@ -167,7 +167,7 @@ trait ModelTrait
             return $this->$methodName();
         }
 
-        return property_exists($this, $name);
+        return isset($this->$name);
     }
 
     /**
