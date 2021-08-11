@@ -82,13 +82,12 @@ trait MiddlewareAwareTrait
             if ($this->isMiddlewareGroup($item)) {
                 // Recurse into that middleware group
                 $modifiedRequest = $this->requestMiddleware($request, $this->getMiddlewareGroup($item));
-
-                continue;
+            } else {
+                /* @var Middleware $item */
+                $modifiedRequest = $item::before($request);
             }
 
-            /* @var Middleware $item */
-            $modifiedRequest = $item::before($request);
-
+            // Check if the modified request is a response
             if ($modifiedRequest instanceof Response) {
                 return $modifiedRequest;
             }
