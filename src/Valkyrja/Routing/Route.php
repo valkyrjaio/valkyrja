@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 use Valkyrja\Dispatcher\Dispatch;
+use Valkyrja\Routing\Models\RouteParameter;
 
 /**
  * Interface Route.
@@ -117,6 +118,54 @@ interface Route extends Dispatch
      * @return static
      */
     public function setParams(array $params = null): self;
+
+    /**
+     * Get the parameters.
+     *
+     * @return RouteParameter[]|null
+     */
+    public function getParameters(): ?array;
+
+    /**
+     * Set the parameters.
+     *
+     * @param RouteParameter[]|null $parameters The parameters
+     *
+     * @return static
+     */
+    public function setParameters(array $parameters = null): self;
+
+    /**
+     * Set a parameter.
+     *
+     * @param RouteParameter $parameter The parameter
+     *
+     * @return static
+     */
+    public function setParameter(RouteParameter $parameter): self;
+
+    /**
+     * Add a parameter.
+     *
+     * @param string      $name                The name
+     * @param string      $regex               The regex
+     * @param string|null $entity              [optional] The entity class name
+     * @param string|null $entityColumn        [optional] The entity column to query against
+     * @param array|null  $entityRelationships [optional] The entity relationships
+     * @param bool        $isOptional          [optional] Whether the parameter is optional
+     * @param bool        $shouldCapture       [optional] Whether this parameter should be captured
+     *
+     * @return static
+     */
+    public function addParameter(
+        string $name,
+        string $regex,
+        string $entity = null,
+        string $entityColumn = null,
+        array $entityRelationships = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true
+    ): self;
 
     /**
      * Get the segments.

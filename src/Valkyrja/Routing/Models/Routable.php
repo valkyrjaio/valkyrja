@@ -73,6 +73,13 @@ trait Routable
     public ?array $params = null;
 
     /**
+     * The dynamic parameters
+     *
+     * @var RouteParameter[]|null
+     */
+    public ?array $parameters = null;
+
+    /**
      * Any segments for optional parts of path.
      *
      * @var array|null
@@ -106,6 +113,16 @@ trait Routable
      * @var bool
      */
     public bool $redirect = false;
+
+    // /**
+    //  * @inheritDoc
+    //  */
+    // protected static function __getPropertyCastings(): array
+    // {
+    //     return [
+    //         'parameters' => [RouteParameter::class],
+    //     ];
+    // }
 
     /**
      * Get the route's path.
@@ -260,6 +277,101 @@ trait Routable
     }
 
     /**
+     * Get the parameters.
+     *
+     * @return RouteParameter[]|null
+     */
+    public function getParameters(): ?array
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Set the parameters.
+     *
+     * @param RouteParameter[]|array[]|null $parameters The parameters
+     *
+     * @return static
+     */
+    public function setParameters(array $parameters = null): self
+    {
+        if ($parameters === null) {
+            return $this;
+        }
+
+        foreach ($parameters as &$parameter) {
+            if (! ($parameter instanceof RouteParameter)) {
+                $parameter = RouteParameter::fromArray($parameter);
+            }
+        }
+
+        unset($parameter);
+
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * Set a parameter.
+     *
+     * @param RouteParameter $parameter The parameter
+     *
+     * @return static
+     */
+    public function setParameter(RouteParameter $parameter): self
+    {
+        $this->parameters ??= [];
+
+        $this->parameters[$parameter->getName()] = $parameter;
+
+        return $this;
+    }
+
+    /**
+     * Add a parameter.
+     *
+     * @param string      $name                The name
+     * @param string      $regex               The regex
+     * @param string|null $entity              [optional] The entity class name
+     * @param string|null $entityColumn        [optional] The entity column to query against
+     * @param array|null  $entityRelationships [optional] The entity relationships
+     * @param bool        $isOptional          [optional] Whether the parameter is optional
+     * @param bool        $shouldCapture       [optional] Whether this parameter should be captured
+     *
+     * @return static
+     */
+    public function addParameter(
+        string $name,
+        string $regex,
+        string $entity = null,
+        string $entityColumn = null,
+        array $entityRelationships = null,
+        bool $isOptional = false,
+        bool $shouldCapture = true
+    ): self {
+        $parameter = new RouteParameter();
+        $parameter->setName($name);
+        $parameter->setRegex($regex);
+        $parameter->setIsOptional($isOptional);
+        $parameter->setShouldCapture($shouldCapture);
+
+        if ($entity) {
+            $parameter->setEntity($entity);
+        }
+
+        if ($entityColumn) {
+            $parameter->setEntityColumn($entityColumn);
+        }
+
+        if ($entityRelationships) {
+            $parameter->setEntityRelationships($entityRelationships);
+        }
+
+        return $this->setParameter($parameter);
+    }
+
+    /**
      * Get the segments.
      *
      * @return array|null
@@ -391,5 +503,17 @@ trait Routable
         $this->redirect = $redirect;
 
         return $this;
+    }
+
+    /**
+     * Set the parameters.
+     *
+     * @param RouteParameter[] $parameters The parameters
+     *
+     * @return void
+     */
+    protected function __setParameters(RouteParameter ...$parameters): void
+    {
+        $this->parameters = $parameters;
     }
 }

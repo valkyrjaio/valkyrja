@@ -154,5 +154,10 @@ class CacheableCollection extends Collection
      */
     protected function afterSetup($config): void
     {
+        $this->dynamic = [];
+
+        foreach ($this->routes as $route) {
+            $this->setRouteToRequestMethods($route);
+        }
     }
 }

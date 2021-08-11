@@ -19,10 +19,12 @@ use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Routing\Collection as Contract;
+use Valkyrja\Routing\Constants\Regex;
 use Valkyrja\Routing\Matcher;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Arr;
+use Valkyrja\Support\Type\Str;
 
 use function array_merge;
 use function is_array;
@@ -329,6 +331,8 @@ class Collection implements Contract
     {
         // If this is a dynamic route
         if ($route->isDynamic()) {
+            $this->createRouteRegex($route);
+
             // Set the route in the dynamic routes list
             $this->dynamic[$requestMethod][$route->getRegex()] = $route->getId();
         } // Otherwise set it in the static routes array
@@ -336,6 +340,34 @@ class Collection implements Contract
             // Set the route in the static routes list
             $this->static[$requestMethod][$route->getPath()] = $route->getId();
         }
+    }
+
+    /**
+     * Create the regex for a route.
+     *
+     * @param Route $route
+     *
+     * @return void
+     */
+    protected function createRouteRegex(Route $route): void
+    {
+        $regex = $route->getPath();
+
+        foreach ($route->getParameters() ?? [] as $parameter) {
+            $nameReplacement = "{{$parameter->getName()}}";
+
+            if (! Str::contains($regex, $nameReplacement)) {
+                continue;
+            }
+
+            $paramRegex = (! $parameter->shouldCapture() ? Regex::START_NON_CAPTURE_GROUP : Regex::START_CAPTURE_GROUP)
+                . $parameter->getRegex()
+                . ($parameter->isOptional() ? Regex::END_OPTIONAL_CAPTURE_GROUP : Regex::END_CAPTURE_GROUP);
+
+            $regex = Str::replace($regex, $nameReplacement, $paramRegex);
+        }
+
+        $route->setRegex(Regex::START . Str::replace($regex, '/', '\/') . Regex::END);
     }
 
     /**

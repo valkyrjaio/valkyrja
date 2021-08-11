@@ -86,6 +86,8 @@ trait ModelTrait
      *          'property_name' => 'bool',
      *          // An property to be cast to a model
      *          'property_name' => Model::class,
+     *          // An property to be cast to an array of models
+     *          'property_name' => [Model::class],
      *      ]
      * </code>
      *
