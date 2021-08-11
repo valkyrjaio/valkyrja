@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Matchers;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Matcher as Contract;
 use Valkyrja\Routing\Route;
-
 use Valkyrja\Routing\Support\Helpers;
 
 use function preg_match;
@@ -137,7 +136,7 @@ class Matcher implements Contract
         // Clone the route to avoid changing the one set in the master array
         $dynamicRoute = clone $this->collection->getDynamic($path, $method);
         // The first match is the path itself
-        unset($matches[0]);
+        array_shift($matches);
 
         // Iterate through the matches
         foreach ($matches as $key => $match) {

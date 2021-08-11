@@ -345,17 +345,24 @@ class Collection implements Contract
     /**
      * Create the regex for a route.
      *
-     * @param Route $route
+     * @param Route $route The route
      *
      * @return void
      */
     protected function createRouteRegex(Route $route): void
     {
+        // If the regex has already been set then don't do anything
+        if ($route->getRegex()) {
+            return;
+        }
+
         $regex = $route->getPath();
 
+        // Iterate through the route's parameters
         foreach ($route->getParameters() as $parameter) {
             $nameReplacement = "{{$parameter->getName()}}";
 
+            // Check if the path doesn't contain the parameter's name
             if (! Str::contains($regex, $nameReplacement)) {
                 continue;
             }
@@ -367,6 +374,7 @@ class Collection implements Contract
             $regex = Str::replace($regex, $nameReplacement, $paramRegex);
         }
 
+        // Set the regex
         $route->setRegex(Regex::START . Str::replace($regex, '/', '\/') . Regex::END);
     }
 

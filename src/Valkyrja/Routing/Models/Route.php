@@ -307,7 +307,7 @@ class Route extends Dispatch implements RouteContract
     {
         $this->parameters ??= [];
 
-        $this->parameters[$parameter->getName()] = $parameter;
+        $this->parameters[] = $parameter;
 
         return $this;
     }

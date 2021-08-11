@@ -19,6 +19,7 @@ use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Repository;
 use Valkyrja\Path\Constants\PathSeparator;
+use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
 use Valkyrja\Support\Type\Cls;
@@ -81,19 +82,112 @@ class EntityMiddleware extends RouteMiddleware
      */
     protected static function checkParamsForEntities(Route $route, array $matches): void
     {
-        $params       = $route->getParams() ?? [];
+        $parameters   = $route->getParameters();
         $dependencies = $route->getDependencies() ?? [];
-        $counter      = 0;
 
-        // Iterate through the params
-        foreach ($params as $param => $paramValue) {
-            $counter++;
+        if (! empty($parameters)) {
+            // Iterate through the params
+            foreach ($parameters as $index => $parameter) {
+                static::checkParameterForEntity($index, $parameter, $dependencies, $matches);
+            }
+        } else {
+            $params  = $route->getParams() ?? [];
+            $counter = 0;
 
-            static::checkParamForEntity($param, $dependencies, $matches, $counter);
+            // Iterate through the params
+            foreach ($params as $param => $paramValue) {
+                $counter++;
+
+                static::checkParamForEntity($param, $dependencies, $matches, $counter);
+            }
         }
 
         $route->setMatches($matches);
         $route->setDependencies($dependencies);
+    }
+
+    /**
+     * Check a route's parameters for an entity.
+     *
+     * @param int       $index        The index
+     * @param Parameter $parameter    The parameter
+     * @param array     $dependencies The route dependencies
+     * @param array     $matches      The matches
+     *
+     * @return void
+     */
+    protected static function checkParameterForEntity(int $index, Parameter $parameter, array &$dependencies, array &$matches): void
+    {
+        if ($parameter->getEntity() === null) {
+            return;
+        }
+
+        static::findAndSetEntityFromParameter($index, $parameter, $dependencies, $matches[$index]);
+    }
+
+    /**
+     * Try to find and set a route's entity dependency.
+     *
+     * @param int       $index        The index
+     * @param Parameter $parameter    The parameter
+     * @param array     $dependencies The dependencies
+     * @param mixed     $value        The value
+     *
+     * @return void
+     */
+    protected static function findAndSetEntityFromParameter(int $index, Parameter $parameter, array &$dependencies, &$value): void
+    {
+        $entityName = $parameter->getEntity();
+        // Attempt to get the entity from the ORM repository
+        $entity = static::findEntityFromParameter($parameter, $value);
+
+        if (! $entity) {
+            static::entityNotFound($entityName, $value);
+        }
+
+        // Set the entity with the param name as the service id into the container
+        self::$container->setSingleton($entityName . $index, $entity);
+
+        // Replace the route match with this entity
+        $value = $entity;
+
+        $updatedDependencies = [];
+
+        foreach ($dependencies as $dependency) {
+            if ($dependency !== $entityName) {
+                $updatedDependencies[] = $dependency;
+            }
+        }
+
+        $dependencies = $updatedDependencies;
+    }
+
+    /**
+     * Try to find a route's entity dependency.
+     *
+     * @param Parameter $parameter The parameter
+     * @param mixed     $value     The value
+     *
+     * @return Entity
+     */
+    protected static function findEntityFromParameter(Parameter $parameter, $value): Entity
+    {
+        $entityName    = $parameter->getEntity();
+        $relationships = $parameter->getEntityRelationships() ?? [];
+
+        // If there is a field specified to use
+        if ($field = $parameter->getEntityColumn()) {
+            return static::getOrmRepository($entityName)
+                ->find()
+                ->where($field, null, $value)
+                ->withRelationships($relationships)
+                ->getOneOrNull();
+        }
+
+        return static::getOrmRepository($entityName)
+            ->findOne($value)
+            ->withRelationships($relationships)
+            ->getOneOrNull();
     }
 
     /**
@@ -214,16 +308,16 @@ class EntityMiddleware extends RouteMiddleware
             [, $field] = explode(PathSeparator::ENTITY_FIELD, $matchName);
 
             return static::getOrmRepository($entity)
-                         ->find()
-                         ->where($field, null, $value)
-                         ->withRelationships($relationships ?? [])
-                         ->getOneOrNull();
+                ->find()
+                ->where($field, null, $value)
+                ->withRelationships($relationships ?? [])
+                ->getOneOrNull();
         }
 
         return static::getOrmRepository($entity)
-                     ->findOne($value)
-                     ->withRelationships($relationships ?? [])
-                     ->getOneOrNull();
+            ->findOne($value)
+            ->withRelationships($relationships ?? [])
+            ->getOneOrNull();
     }
 
     /**
