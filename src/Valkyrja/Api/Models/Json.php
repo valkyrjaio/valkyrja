@@ -18,7 +18,6 @@ use Valkyrja\Api\Json as Contract;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Support\Model\Classes\Model;
 
-
 /**
  * Class Json.
  *
