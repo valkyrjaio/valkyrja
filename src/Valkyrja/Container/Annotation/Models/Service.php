@@ -13,16 +13,19 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Models;
 
-use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Container\Annotation\Service as ServiceContract;
+use Valkyrja\Annotation\Models\Annotatable;
+use Valkyrja\Container\Annotation\Service as Contract;
+use Valkyrja\Dispatcher\Models\Dispatch;
 
 /**
  * Class Service.
  *
  * @author Melech Mizrachi
  */
-class Service extends Annotation implements ServiceContract
+class Service extends Dispatch implements Contract
 {
+    use Annotatable;
+
     /**
      * Whether this service is a singleton.
      *
@@ -35,7 +38,7 @@ class Service extends Annotation implements ServiceContract
      *
      * @var array|null
      */
-    public ?array $defaults = null;
+    public ?array $defaults;
 
     /**
      * Get whether this is a singleton.
@@ -68,7 +71,7 @@ class Service extends Annotation implements ServiceContract
      */
     public function getDefaults(): ?array
     {
-        return $this->defaults;
+        return $this->defaults ?? null;
     }
 
     /**

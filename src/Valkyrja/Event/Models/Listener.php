@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Event\Models;
 
-use Valkyrja\Dispatcher\Models\Dispatchable;
+use Valkyrja\Dispatcher\Models\Dispatch;
 use Valkyrja\Event\Listener as ListenerContract;
 
 /**
@@ -21,8 +21,36 @@ use Valkyrja\Event\Listener as ListenerContract;
  *
  * @author Melech Mizrachi
  */
-class Listener implements ListenerContract
+class Listener extends Dispatch implements ListenerContract
 {
-    use Dispatchable;
-    use Listenable;
+    /**
+     * The event to listen to.
+     *
+     * @var string|null
+     */
+    public ?string $event;
+
+    /**
+     * Get the event.
+     *
+     * @return string|null
+     */
+    public function getEvent(): ?string
+    {
+        return $this->event ?? null;
+    }
+
+    /**
+     * Set the event.
+     *
+     * @param string|null $event The event
+     *
+     * @return static
+     */
+    public function setEvent(string $event = null): self
+    {
+        $this->event = $event;
+
+        return $this;
+    }
 }

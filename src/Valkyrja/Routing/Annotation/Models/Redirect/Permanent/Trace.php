@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Trace as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Trace as Contract;
 
 /**
  * Class Trace.
  *
  * @author Melech Mizrachi
  */
-class Trace extends ParentClass implements Contract
+class Trace extends ParentClass
 {
     /**
      * Trace constructor.

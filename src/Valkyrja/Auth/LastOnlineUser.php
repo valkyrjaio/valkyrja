@@ -11,15 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Annotation\Route\Redirect;
-
-use Valkyrja\Routing\Annotation\Route\Redirect as RouteAnnotation;
+namespace Valkyrja\Auth;
 
 /**
- * Interface Any.
+ * Interface LastOnlineUser.
  *
  * @author Melech Mizrachi
  */
-interface Any extends RouteAnnotation
+interface LastOnlineUser extends User
 {
+    /**
+     * Get the date last online field.
+     *
+     * @return string
+     */
+    public static function getDateLastOnlineField(): string;
 }

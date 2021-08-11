@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent as Contract;
 
 /**
  * Class Permanent.
  *
  * @author Melech Mizrachi
  */
-class Permanent extends ParentClass implements Contract
+class Permanent extends ParentClass
 {
     /**
      * Any constructor.

@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Put as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Put as Contract;
 
 /**
  * Class Put.
  *
  * @author Melech Mizrachi
  */
-class Put extends ParentClass implements Contract
+class Put extends ParentClass
 {
     /**
      * Put constructor.

@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Annotation;
 
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Console\Command as CommandModel;
+use Valkyrja\Console\Command as Contract;
 
 /**
  * Interface Command.
  *
  * @author Melech Mizrachi
  */
-interface Command extends Annotation, CommandModel
+interface Command extends Annotation, Contract
 {
 }

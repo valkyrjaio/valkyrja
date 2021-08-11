@@ -24,14 +24,10 @@ use Valkyrja\ORM\Entities\Entity;
 class User extends Entity implements Contract
 {
     use UserFields;
+    use UserTrait;
 
     /**
-     * Get the table.
-     *
-     * @return string
+     * @inheritDoc
      */
-    public static function getTableName(): string
-    {
-        return 'users';
-    }
+    protected static string $tableName = 'users';
 }

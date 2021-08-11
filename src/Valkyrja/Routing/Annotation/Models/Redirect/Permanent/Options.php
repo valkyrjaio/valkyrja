@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Options as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Options as Contract;
 
 /**
  * Class Options.
  *
  * @author Melech Mizrachi
  */
-class Options extends ParentClass implements Contract
+class Options extends ParentClass
 {
     /**
      * Options constructor.

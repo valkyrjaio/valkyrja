@@ -353,7 +353,7 @@ class Collection implements Contract
     {
         $regex = $route->getPath();
 
-        foreach ($route->getParameters() ?? [] as $parameter) {
+        foreach ($route->getParameters() as $parameter) {
             $nameReplacement = "{{$parameter->getName()}}";
 
             if (! Str::contains($regex, $nameReplacement)) {

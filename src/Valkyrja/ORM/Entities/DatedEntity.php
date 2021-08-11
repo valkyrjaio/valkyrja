@@ -20,8 +20,7 @@ use Valkyrja\ORM\DatedEntity as EntityContract;
  *
  * @author Melech Mizrachi
  */
-class DatedEntity implements EntityContract
+class DatedEntity extends Entity implements EntityContract
 {
-    use EntityTrait;
     use DatedEntityFields;
 }

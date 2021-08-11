@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Routing\Annotation\Models\Connect as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Connect as Contract;
 
 /**
  * Class Connect.
  *
  * @author Melech Mizrachi
  */
-class Connect extends ParentClass implements Contract
+class Connect extends ParentClass
 {
     /**
      * Connect constructor.

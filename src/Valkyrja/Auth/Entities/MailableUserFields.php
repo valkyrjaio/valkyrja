@@ -20,12 +20,10 @@ namespace Valkyrja\Auth\Entities;
  */
 trait MailableUserFields
 {
-    use MailableUserTrait;
-
     /**
      * The email.
      *
      * @var string
      */
-    public string $email = '';
+    public string $email;
 }

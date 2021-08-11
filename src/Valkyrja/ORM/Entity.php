@@ -41,7 +41,7 @@ interface Entity extends Model
      *
      * @return string|null
      */
-    public static function getEntityRepository(): ?string;
+    public static function getRepository(): ?string;
 
     /**
      * Entity relationship properties.
@@ -54,7 +54,7 @@ interface Entity extends Model
      *      ]
      * </code>
      *
-     * @return array
+     * @return string[]
      */
     public static function getRelationshipProperties(): array;
 

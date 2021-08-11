@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Patch as Contract;
 
 /**
  * Class Patch.
  *
  * @author Melech Mizrachi
  */
-class Patch extends Route implements Contract
+class Patch extends Route
 {
     /**
      * Patch constructor.

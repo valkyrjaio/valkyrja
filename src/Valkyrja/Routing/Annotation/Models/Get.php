@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Get as Contract;
 
 /**
  * Class Get.
  *
  * @author Melech Mizrachi
  */
-class Get extends Route implements Contract
+class Get extends Route
 {
     /**
      * Get constructor.

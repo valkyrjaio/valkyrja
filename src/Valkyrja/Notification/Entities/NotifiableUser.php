@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Notification\Entities;
 
 use Valkyrja\Auth\Entities\MailableUserFields;
+use Valkyrja\Auth\Entities\MailableUserTrait;
 use Valkyrja\Auth\Entities\User;
 use Valkyrja\Notification\NotifiableUser as Contract;
 
@@ -25,5 +26,7 @@ use Valkyrja\Notification\NotifiableUser as Contract;
 class NotifiableUser extends User implements Contract
 {
     use MailableUserFields;
+    use MailableUserTrait;
     use NotifiableUserFields;
+    use NotifiableUserTrait;
 }

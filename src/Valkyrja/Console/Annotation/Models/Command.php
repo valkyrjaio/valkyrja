@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Valkyrja\Console\Annotation\Models;
 
-use Valkyrja\Annotation\Models\Annotation;
+use Valkyrja\Annotation\Models\Annotatable;
 use Valkyrja\Console\Annotation\Command as Contract;
-use Valkyrja\Console\Models\Commandable;
 
 /**
  * Class Command.
  *
  * @author Melech Mizrachi
  */
-class Command extends Annotation implements Contract
+class Command extends \Valkyrja\Console\Models\Command implements Contract
 {
-    use Commandable;
+    use Annotatable;
 }

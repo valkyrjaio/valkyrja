@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Head as Contract;
 
 /**
  * Class Head.
  *
  * @author Melech Mizrachi
  */
-class Head extends Route implements Contract
+class Head extends Route
 {
     /**
      * Head constructor.

@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Patch as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Patch as Contract;
 
 /**
  * Class Patch.
  *
  * @author Melech Mizrachi
  */
-class Patch extends ParentClass implements Contract
+class Patch extends ParentClass
 {
     /**
      * Patch constructor.

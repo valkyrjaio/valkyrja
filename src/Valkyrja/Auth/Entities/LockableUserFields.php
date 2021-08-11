@@ -20,8 +20,6 @@ namespace Valkyrja\Auth\Entities;
  */
 trait LockableUserFields
 {
-    use LockableUserTrait;
-
     /**
      * The number of login attempts.
      *

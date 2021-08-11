@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Delete as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Delete as Contract;
 
 /**
  * Class Delete.
  *
  * @author Melech Mizrachi
  */
-class Delete extends ParentClass implements Contract
+class Delete extends ParentClass
 {
     /**
      * Delete constructor.

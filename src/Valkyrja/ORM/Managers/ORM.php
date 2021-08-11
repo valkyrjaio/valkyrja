@@ -201,7 +201,7 @@ class ORM implements Contract
     public function getRepository(string $entity): Repository
     {
         /** @var Entity $entity */
-        $name     = $entity::getEntityRepository() ?? $this->defaultRepository;
+        $name     = $entity::getRepository() ?? $this->defaultRepository;
         $cacheKey = $name . $entity;
 
         return self::$repositories[$cacheKey]

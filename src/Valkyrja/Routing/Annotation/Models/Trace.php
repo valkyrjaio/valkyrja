@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Trace as Contract;
 
 /**
  * Class Trace.
  *
  * @author Melech Mizrachi
  */
-class Trace extends Route implements Contract
+class Trace extends Route
 {
     /**
      * Trace constructor.

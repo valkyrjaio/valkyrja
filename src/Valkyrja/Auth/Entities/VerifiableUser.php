@@ -23,5 +23,7 @@ use Valkyrja\Auth\VerifiableUser as Contract;
 class VerifiableUser extends User implements Contract
 {
     use MailableUserFields;
+    use MailableUserTrait;
     use VerifiableUserFields;
+    use VerifiableUserTrait;
 }

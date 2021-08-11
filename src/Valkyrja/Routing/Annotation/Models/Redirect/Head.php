@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Routing\Annotation\Models\Head as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Head as Contract;
 
 /**
  * Class Head.
  *
  * @author Melech Mizrachi
  */
-class Head extends ParentClass implements Contract
+class Head extends ParentClass
 {
     /**
      * Head constructor.

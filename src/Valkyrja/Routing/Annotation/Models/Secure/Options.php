@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Secure;
 
 use Valkyrja\Routing\Annotation\Models\Options as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Secure\Options as Contract;
 
 /**
  * Class Options.
  *
  * @author Melech Mizrachi
  */
-class Options extends ParentClass implements Contract
+class Options extends ParentClass
 {
     /**
      * Options constructor.

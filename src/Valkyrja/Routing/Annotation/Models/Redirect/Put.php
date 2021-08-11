@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Routing\Annotation\Models\Put as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Put as Contract;
 
 /**
  * Class Put.
  *
  * @author Melech Mizrachi
  */
-class Put extends ParentClass implements Contract
+class Put extends ParentClass
 {
     /**
      * Put constructor.

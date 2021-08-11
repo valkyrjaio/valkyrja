@@ -23,4 +23,5 @@ use Valkyrja\Auth\MailableUser as Contract;
 class MailableUser extends User implements Contract
 {
     use MailableUserFields;
+    use MailableUserTrait;
 }

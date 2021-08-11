@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Post as Contract;
 
 /**
  * Class Post.
  *
  * @author Melech Mizrachi
  */
-class Post extends Route implements Contract
+class Post extends Route
 {
     /**
      * Post constructor.

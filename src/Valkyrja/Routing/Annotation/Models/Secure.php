@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Models;
 
-use Valkyrja\Routing\Annotation\Route\Secure as Contract;
-
 /**
  * Class Secure.
  *
  * @author Melech Mizrachi
  */
-class Secure extends Route implements Contract
+class Secure extends Route
 {
     /**
      * Secure constructor.

@@ -15,9 +15,9 @@ namespace Valkyrja\Http\Models;
 
 use DateTime;
 use Valkyrja\Http\Constants\SameSite;
-use Valkyrja\Http\Cookie as CookieContract;
+use Valkyrja\Http\Cookie as Contract;
 use Valkyrja\Http\Exceptions\InvalidSameSiteTypeException;
-use Valkyrja\Support\Model\Traits\ModelTrait;
+use Valkyrja\Support\Model\Classes\Model;
 
 use function gmdate;
 use function in_array;
@@ -29,10 +29,8 @@ use function urlencode;
  *
  * @author Melech Mizrachi
  */
-class Cookie implements CookieContract
+class Cookie extends Model implements Contract
 {
-    use ModelTrait;
-
     protected const DELETED = 'deleted';
 
     /**

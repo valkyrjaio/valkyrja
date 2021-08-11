@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Secure;
 
 use Valkyrja\Routing\Annotation\Models\Post as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Secure\Post as Contract;
 
 /**
  * Class Post.
  *
  * @author Melech Mizrachi
  */
-class Post extends ParentClass implements Contract
+class Post extends ParentClass
 {
     /**
      * Post constructor.

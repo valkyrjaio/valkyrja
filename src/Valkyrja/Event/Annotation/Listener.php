@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Event\Annotation;
 
 use Valkyrja\Annotation\Annotation;
-use Valkyrja\Event\Listener as ListenerModel;
+use Valkyrja\Event\Listener as Contract;
 
 /**
  * Interface Listener.
  *
  * @author Melech Mizrachi
  */
-interface Listener extends Annotation, ListenerModel
+interface Listener extends Annotation, Contract
 {
 }

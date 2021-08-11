@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Container\Annotation\Service;
-
-use Valkyrja\Container\Annotation\Service;
+namespace Valkyrja\Container\Annotation;
 
 /**
  * Interface Context.

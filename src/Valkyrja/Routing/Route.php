@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Routing;
 
 use Valkyrja\Dispatcher\Dispatch;
-use Valkyrja\Routing\Models\RouteParameter;
+use Valkyrja\Routing\Models\Parameter;
 
 /**
  * Interface Route.
@@ -58,18 +58,18 @@ interface Route extends Dispatch
     /**
      * Get the redirect status code.
      *
-     * @return int
+     * @return int|null
      */
-    public function getCode(): int;
+    public function getCode(): ?int;
 
     /**
      * Set the redirect status code.
      *
-     * @param int $redirectCode
+     * @param int|null $code
      *
      * @return static
      */
-    public function setCode(int $redirectCode): self;
+    public function setCode(int $code = null): self;
 
     /**
      * Get the request methods.
@@ -122,27 +122,27 @@ interface Route extends Dispatch
     /**
      * Get the parameters.
      *
-     * @return RouteParameter[]|null
+     * @return Parameter[]
      */
-    public function getParameters(): ?array;
+    public function getParameters(): array;
 
     /**
      * Set the parameters.
      *
-     * @param RouteParameter[]|null $parameters The parameters
+     * @param Parameter[] $parameters The parameters
      *
      * @return static
      */
-    public function setParameters(array $parameters = null): self;
+    public function setParameters(array $parameters): self;
 
     /**
      * Set a parameter.
      *
-     * @param RouteParameter $parameter The parameter
+     * @param Parameter $parameter The parameter
      *
      * @return static
      */
-    public function setParameter(RouteParameter $parameter): self;
+    public function setParameter(Parameter $parameter): self;
 
     /**
      * Add a parameter.

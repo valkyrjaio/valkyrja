@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Head as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Head as Contract;
 
 /**
  * Class Head.
  *
  * @author Melech Mizrachi
  */
-class Head extends ParentClass implements Contract
+class Head extends ParentClass
 {
     /**
      * Head constructor.

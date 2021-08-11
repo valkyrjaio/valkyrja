@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Connect as Contract;
 
 /**
  * Class Connect.
  *
  * @author Melech Mizrachi
  */
-class Connect extends Route implements Contract
+class Connect extends Route
 {
     /**
      * Connect constructor.

@@ -20,8 +20,6 @@ namespace Valkyrja\Auth\Entities;
  */
 trait UserFields
 {
-    use UserTrait;
-
     /**
      * The username.
      *

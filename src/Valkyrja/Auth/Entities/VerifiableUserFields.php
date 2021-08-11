@@ -20,8 +20,6 @@ namespace Valkyrja\Auth\Entities;
  */
 trait VerifiableUserFields
 {
-    use VerifiableUserTrait;
-
     /**
      * The flag to determine whether a user is verified.
      *

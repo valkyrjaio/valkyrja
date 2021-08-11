@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Models;
 
-use Valkyrja\Routing\Annotation\Route\Redirect as Contract;
-
 /**
  * Class Redirect.
  *
  * @author Melech Mizrachi
  */
-class Redirect extends Route implements Contract
+class Redirect extends Route
 {
     /**
      * Redirect constructor.

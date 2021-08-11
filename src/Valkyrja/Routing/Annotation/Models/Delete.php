@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Delete as Contract;
 
 /**
  * Class Delete.
  *
  * @author Melech Mizrachi
  */
-class Delete extends Route implements Contract
+class Delete extends Route
 {
     /**
      * Delete constructor.

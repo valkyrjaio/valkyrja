@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Models;
 
-use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Routing\Annotation\Route as RouteContract;
-use Valkyrja\Routing\Models\Routable;
+use Valkyrja\Annotation\Models\Annotatable;
+use Valkyrja\Routing\Annotation\Route as Contract;
+use Valkyrja\Routing\Models\Route as RouteModel;
 
 /**
  * Class Route.
  *
  * @author Melech Mizrachi
  */
-class Route extends Annotation implements RouteContract
+class Route extends RouteModel implements Contract
 {
-    use Routable;
+    use Annotatable;
 }

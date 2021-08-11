@@ -23,4 +23,5 @@ use Valkyrja\Auth\LockableUser as Contract;
 class LockableUser extends User implements Contract
 {
     use LockableUserFields;
+    use LockableUserTrait;
 }

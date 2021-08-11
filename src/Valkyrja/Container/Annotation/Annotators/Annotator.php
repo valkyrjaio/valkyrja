@@ -17,9 +17,9 @@ use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Annotation\Annotator as Contract;
+use Valkyrja\Container\Annotation\Context;
 use Valkyrja\Container\Annotation\Service;
 use Valkyrja\Container\Annotation\Service\Alias;
-use Valkyrja\Container\Annotation\Service\Context;
 use Valkyrja\Reflection\Reflector;
 
 /**
@@ -111,7 +111,7 @@ class Annotator implements Contract
      *
      * @throws ReflectionException
      *
-     * @return Context[]
+     * @return \Valkyrja\Container\Annotation\Context[]
      */
     public function getContextServices(string ...$classes): array
     {

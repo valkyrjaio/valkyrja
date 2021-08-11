@@ -25,7 +25,7 @@ trait Annotatable
      *
      * @var string|null
      */
-    public ?string $type = null;
+    public ?string $type;
 
     /**
      * Get the type.
@@ -34,7 +34,7 @@ trait Annotatable
      */
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type ?? null;
     }
 
     /**

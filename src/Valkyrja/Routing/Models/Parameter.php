@@ -16,11 +16,11 @@ namespace Valkyrja\Routing\Models;
 use Valkyrja\Support\Model\Classes\Model;
 
 /**
- * Class RouteParameter.
+ * Class Parameter.
  *
  * @author Melech Mizrachi
  */
-class RouteParameter extends Model
+class Parameter extends Model
 {
     /**
      * The name.

@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Secure;
 
 use Valkyrja\Routing\Annotation\Models\Get as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Secure\Get as Contract;
 
 /**
  * Class Get.
  *
  * @author Melech Mizrachi
  */
-class Get extends ParentClass implements Contract
+class Get extends ParentClass
 {
     /**
      * Get constructor.

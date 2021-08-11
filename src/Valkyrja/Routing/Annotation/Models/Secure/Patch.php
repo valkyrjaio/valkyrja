@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Secure;
 
 use Valkyrja\Routing\Annotation\Models\Patch as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Secure\Patch as Contract;
 
 /**
  * Class Patch.
  *
  * @author Melech Mizrachi
  */
-class Patch extends ParentClass implements Contract
+class Patch extends ParentClass
 {
     /**
      * Patch constructor.

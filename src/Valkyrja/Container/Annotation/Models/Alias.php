@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Models;
 
-use Valkyrja\Annotation\Models\Annotation;
-use Valkyrja\Container\Annotation\Service\Alias as Contract;
-
 /**
- * Class ServiceAlias.
+ * Class Alias.
  *
  * @author Melech Mizrachi
  */
-class Alias extends Annotation implements Contract
+class Alias extends Service
 {
 }

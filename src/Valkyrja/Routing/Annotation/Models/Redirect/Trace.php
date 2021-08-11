@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Routing\Annotation\Models\Trace as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Trace as Contract;
 
 /**
  * Class Trace.
  *
  * @author Melech Mizrachi
  */
-class Trace extends ParentClass implements Contract
+class Trace extends ParentClass
 {
     /**
      * Trace constructor.

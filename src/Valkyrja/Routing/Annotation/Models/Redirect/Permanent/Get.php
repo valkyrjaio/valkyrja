@@ -15,14 +15,13 @@ namespace Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
 
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Routing\Annotation\Models\Redirect\Get as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Permanent\Get as Contract;
 
 /**
  * Class Get.
  *
  * @author Melech Mizrachi
  */
-class Get extends ParentClass implements Contract
+class Get extends ParentClass
 {
     /**
      * Get constructor.

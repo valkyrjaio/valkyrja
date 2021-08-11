@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models;
 
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Route\Any as Contract;
 
 /**
  * Class Any.
  *
  * @author Melech Mizrachi
  */
-class Any extends Route implements Contract
+class Any extends Route
 {
     /**
      * Any constructor.

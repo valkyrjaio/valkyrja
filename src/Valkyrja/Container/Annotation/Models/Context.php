@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Annotation\Models;
 
-use Valkyrja\Container\Annotation\Service\Context as Contract;
+use Valkyrja\Container\Annotation\Context as Contract;
 
 /**
- * Class ServiceContext.
+ * Class Context.
  *
  * @author Melech Mizrachi
  */
@@ -27,7 +27,7 @@ class Context extends Service implements Contract
      *
      * @var string|null
      */
-    public ?string $service = null;
+    public ?string $service;
 
     /**
      * Get the service.
@@ -36,7 +36,7 @@ class Context extends Service implements Contract
      */
     public function getService(): ?string
     {
-        return $this->service;
+        return $this->service ?? null;
     }
 
     /**

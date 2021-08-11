@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Valkyrja\Routing\Annotation\Models\Redirect;
 
 use Valkyrja\Routing\Annotation\Models\Any as ParentClass;
-use Valkyrja\Routing\Annotation\Route\Redirect\Any as Contract;
 
 /**
  * Class Any.
  *
  * @author Melech Mizrachi
  */
-class Any extends ParentClass implements Contract
+class Any extends ParentClass
 {
     /**
      * Any constructor.
