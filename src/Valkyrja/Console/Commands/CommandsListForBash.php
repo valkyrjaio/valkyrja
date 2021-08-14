@@ -25,7 +25,7 @@ use function Valkyrja\console;
 use function Valkyrja\output;
 
 /**
- * Class ConsoleCommands.
+ * Class CommandsListForBash.
  *
  * @author Melech Mizrachi
  */

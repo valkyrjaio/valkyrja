@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Commanders;
 
 use Valkyrja\Application\Application;
-use Valkyrja\Console\Commander as HandlerContract;
+use Valkyrja\Console\Commander as Contract;
 use Valkyrja\Console\Enums\ArgumentMode;
 use Valkyrja\Console\Enums\ExitCode;
 use Valkyrja\Console\Inputs\Argument;
@@ -30,7 +30,7 @@ use function Valkyrja\output;
  *
  * @author Melech Mizrachi
  */
-abstract class Commander implements HandlerContract
+abstract class Commander implements Contract
 {
     /**
      * The command.

@@ -29,7 +29,7 @@ use function Valkyrja\input;
 use function Valkyrja\output;
 
 /**
- * Class ConsoleCommands.
+ * Class CommandsList.
  *
  * @author Melech Mizrachi
  */

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Constants;
 
 use Valkyrja\Config\Commands\ConfigCache;
+use Valkyrja\Config\Commands\ConfigClear;
 use Valkyrja\Console\Commands\CacheAll;
+use Valkyrja\Console\Commands\ClearCache;
 use Valkyrja\Console\Commands\CommandsList;
 use Valkyrja\Console\Commands\CommandsListForBash;
 use Valkyrja\Console\Commands\ConsoleCache;
@@ -31,7 +33,9 @@ use Valkyrja\Routing\Commands\RoutesList;
  */
 final class Provider
 {
+    public const CLEAR_CACHE_COMMAND            = ClearCache::class;
     public const CONFIG_CACHE_COMMAND           = ConfigCache::class;
+    public const CONFIG_CLEAR_COMMAND           = ConfigClear::class;
     public const CONFIG_ALL_COMMAND             = CacheAll::class;
     public const COMMANDS_LIST_COMMAND          = CommandsList::class;
     public const CONSOLE_CACHE_COMMAND          = ConsoleCache::class;

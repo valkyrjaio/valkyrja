@@ -24,7 +24,9 @@ final class ConfigValue
 {
     public const HANDLERS                    = [];
     public const PROVIDERS                   = [
+        Provider::CLEAR_CACHE_COMMAND,
         Provider::CONFIG_CACHE_COMMAND,
+        Provider::CONFIG_CLEAR_COMMAND,
         Provider::CONFIG_ALL_COMMAND,
         Provider::COMMANDS_LIST_COMMAND,
         Provider::CONSOLE_CACHE_COMMAND,
