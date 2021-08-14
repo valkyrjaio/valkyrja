@@ -352,7 +352,7 @@ class Collection implements Contract
     protected function createRouteRegex(Route $route): void
     {
         // If the regex has already been set then don't do anything
-        if ($route->getRegex()) {
+        if ($route->getRegex() || empty($route->getParameters())) {
             return;
         }
 
