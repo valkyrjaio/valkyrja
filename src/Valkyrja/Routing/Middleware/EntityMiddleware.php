@@ -96,9 +96,9 @@ class EntityMiddleware extends RouteMiddleware
 
             // Iterate through the params
             foreach ($params as $param => $paramValue) {
-                $counter++;
-
                 static::checkParamForEntity($param, $dependencies, $matches, $counter);
+
+                $counter++;
             }
         }
 
