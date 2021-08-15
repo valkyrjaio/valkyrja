@@ -16,7 +16,7 @@ namespace Valkyrja\Routing\Collections;
 use JsonException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Routing\Annotation\Annotator;
+use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Config\Cache;
 use Valkyrja\Routing\Config\Config as RoutingConfig;
 use Valkyrja\Support\Cacheable\Cacheable;

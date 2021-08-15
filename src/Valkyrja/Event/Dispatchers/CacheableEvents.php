@@ -15,7 +15,7 @@ namespace Valkyrja\Event\Dispatchers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Annotation\Annotator;
+use Valkyrja\Event\Annotator;
 use Valkyrja\Event\Config\Cache;
 use Valkyrja\Event\Config\Config as EventConfig;
 use Valkyrja\Support\Cacheable\Cacheable;

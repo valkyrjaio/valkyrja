@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Events\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Event\Annotation\Models\Listener;
+use Valkyrja\Event\Annotations\Listener;
 
 /**
  * Test the listener model.

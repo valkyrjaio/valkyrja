@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Dispatchers;
 
 use ReflectionException;
-use Valkyrja\Console\Annotation\Annotator;
+use Valkyrja\Console\Annotator;
 use Valkyrja\Console\Command;
 use Valkyrja\Console\Config\Cache;
 use Valkyrja\Console\Config\Config as ConsoleConfig;

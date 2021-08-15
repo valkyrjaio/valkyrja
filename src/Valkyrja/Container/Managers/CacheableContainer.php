@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Container\Managers;
 
-use Valkyrja\Container\Annotation\Annotator;
+use Valkyrja\Container\Annotator;
 use Valkyrja\Container\Config\Cache;
 use Valkyrja\Container\Config\Config as ContainerConfig;
 use Valkyrja\Container\Support\Provider;

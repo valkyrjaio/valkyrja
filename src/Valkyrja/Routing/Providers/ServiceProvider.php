@@ -22,7 +22,7 @@ use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\Reflection\Reflector;
-use Valkyrja\Routing\Annotation\Annotator;
+use Valkyrja\Routing\Annotator;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collections\CacheableCollection;
 use Valkyrja\Routing\Collector;
@@ -111,7 +111,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Annotator::class,
-            new \Valkyrja\Routing\Annotation\Annotators\Annotator(
+            new \Valkyrja\Routing\Annotators\Annotator(
                 $container->getSingleton(AnnotationAnnotator::class),
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflector::class)

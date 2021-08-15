@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Providers;
 
 use Valkyrja\Annotation\Filter;
-use Valkyrja\Console\Annotation\Annotator;
+use Valkyrja\Console\Annotator;
 use Valkyrja\Console\Console;
 use Valkyrja\Console\Dispatchers\CacheableConsole;
 use Valkyrja\Console\Formatter;
@@ -84,7 +84,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Annotator::class,
-            new \Valkyrja\Console\Annotation\Annotators\Annotator(
+            new \Valkyrja\Console\Annotators\Annotator(
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflector::class)
             )

@@ -17,16 +17,15 @@ use ReflectionClass;
 use ReflectionException;
 use Valkyrja\Annotation\Annotation;
 use Valkyrja\Annotation\Config\Config;
-use Valkyrja\Annotation\Constants\Annotation as AnnotationEnum;
+use Valkyrja\Annotation\Constants\AnnotationName;
 use Valkyrja\Annotation\Constants\ConfigValue;
 use Valkyrja\Annotation\Constants\Regex;
 use Valkyrja\Annotation\Parsers\Parser;
-use Valkyrja\Console\Annotation\Models\Command;
-use Valkyrja\Container\Annotation\Models\Alias;
-use Valkyrja\Container\Annotation\Models\Context;
-use Valkyrja\Container\Annotation\Models\Service;
-use Valkyrja\Event\Annotation\Models\Listener;
-use Valkyrja\Routing\Annotation\Route;
+use Valkyrja\Console\Annotations\Command;
+use Valkyrja\Container\Annotations\Service;
+use Valkyrja\Container\Annotations\Service\Context;
+use Valkyrja\Event\Annotations\Listener;
+use Valkyrja\Routing\Annotations\Route;
 
 /**
  * Test the AnnotationsParser class.
@@ -168,7 +167,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetCommandAnnotationFromMap(): void
     {
-        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::COMMAND) instanceof Command);
+        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationName::COMMAND) instanceof Command);
     }
 
     /**
@@ -178,7 +177,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetListenerAnnotationFromMap(): void
     {
-        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::LISTENER) instanceof Listener);
+        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationName::LISTENER) instanceof Listener);
     }
 
     /**
@@ -188,7 +187,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetRouteAnnotationFromMap(): void
     {
-        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::ROUTE) instanceof Route);
+        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationName::ROUTE) instanceof Route);
     }
 
     /**
@@ -198,7 +197,7 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAnnotationFromMap(): void
     {
-        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE) instanceof Service);
+        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationName::SERVICE) instanceof Service);
     }
 
     /**
@@ -208,7 +207,8 @@ class AnnotationsParserTest extends TestCase
      */
     public function testGetServiceAliasAnnotationFromMap(): void
     {
-        self::assertEquals(true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_ALIAS) instanceof Alias);
+        self::assertEquals(true,
+            $this->class->getAnnotationFromMap(AnnotationName::SERVICE_ALIAS) instanceof Service\Alias);
     }
 
     /**
@@ -220,7 +220,7 @@ class AnnotationsParserTest extends TestCase
     {
         self::assertEquals(
             true,
-            $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_CONTEXT) instanceof Context
+            $this->class->getAnnotationFromMap(AnnotationName::SERVICE_CONTEXT) instanceof Context
         );
     }
 }

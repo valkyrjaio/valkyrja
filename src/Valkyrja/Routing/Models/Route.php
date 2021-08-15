@@ -135,7 +135,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param string $path The route path
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setPath(string $path): self
     {
@@ -161,7 +161,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param string|null $to
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setTo(string $to = null): self
     {
@@ -185,7 +185,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param int|null $code
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setCode(int $code = null): self
     {
@@ -211,7 +211,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @throws InvalidArgumentException
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setMethods(array $methods): self
     {
@@ -239,7 +239,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param string|null $regex The regex
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setRegex(string $regex = null): self
     {
@@ -263,7 +263,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param array|null $params The params
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setParams(array $params = null): self
     {
@@ -287,7 +287,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param Parameter[]|array[] $parameters The parameters
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setParameters(array $parameters): self
     {
@@ -301,7 +301,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param Parameter $parameter The parameter
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setParameter(Parameter $parameter): self
     {
@@ -323,7 +323,7 @@ class Route extends Dispatch implements RouteContract
      * @param bool        $isOptional          [optional] Whether the parameter is optional
      * @param bool        $shouldCapture       [optional] Whether this parameter should be captured
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function addParameter(
         string $name,
@@ -370,7 +370,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param array|null $segments The segments
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setSegments(array $segments = null): self
     {
@@ -394,7 +394,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param array|null $middleware The middleware
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setMiddleware(array $middleware = null): self
     {
@@ -408,7 +408,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param array $middleware The middleware
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function withMiddleware(array $middleware): self
     {
@@ -432,7 +432,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param bool $dynamic Whether the route it dynamic
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setDynamic(bool $dynamic = true): self
     {
@@ -456,7 +456,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param bool $secure Whether the route is secure
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setSecure(bool $secure = true): self
     {
@@ -480,7 +480,7 @@ class Route extends Dispatch implements RouteContract
      *
      * @param bool $redirect
      *
-     * @return \Valkyrja\Routing\Annotation\static
+     * @return static
      */
     public function setRedirect(bool $redirect): self
     {

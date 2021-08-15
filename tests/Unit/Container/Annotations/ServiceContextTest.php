@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Container\Annotations;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Container\Annotation\Models\Context;
+use Valkyrja\Container\Annotations\Service\Context;
 
 /**
  * Test the service context model.

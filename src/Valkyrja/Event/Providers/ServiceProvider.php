@@ -17,7 +17,7 @@ use Valkyrja\Annotation\Filter;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
-use Valkyrja\Event\Annotation\Annotator;
+use Valkyrja\Event\Annotator;
 use Valkyrja\Event\Dispatchers\CacheableEvents;
 use Valkyrja\Event\Events;
 use Valkyrja\Reflection\Reflector;
@@ -69,7 +69,7 @@ class ServiceProvider extends Provider
     {
         $container->setSingleton(
             Annotator::class,
-            new \Valkyrja\Event\Annotation\Annotators\Annotator(
+            new \Valkyrja\Event\Annotators\Annotator(
                 $container->getSingleton(Filter::class),
                 $container->getSingleton(Reflector::class)
             )
