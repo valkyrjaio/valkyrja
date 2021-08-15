@@ -21,8 +21,6 @@ use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Path\PathGenerator;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 use Valkyrja\Routing\Annotation\Annotator;
 use Valkyrja\Routing\Collection;
@@ -133,8 +131,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Collector::class,
             new \Valkyrja\Routing\Collectors\Collector(
-                $container->getSingleton(Collection::class),
-                $container->getSingleton(PathParser::class)
+                $container->getSingleton(Collection::class)
             )
         );
     }
@@ -193,7 +190,6 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Url::class,
             new \Valkyrja\Routing\Urls\Url(
-                $container->getSingleton(PathGenerator::class),
                 $container->getSingleton(Request::class),
                 $container->getSingleton(Router::class),
                 $config['routing']

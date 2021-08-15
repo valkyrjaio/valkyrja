@@ -26,7 +26,7 @@ use Valkyrja\Container\Annotation\Models\Alias;
 use Valkyrja\Container\Annotation\Models\Context;
 use Valkyrja\Container\Annotation\Models\Service;
 use Valkyrja\Event\Annotation\Models\Listener;
-use Valkyrja\Routing\Annotation\Models\Route;
+use Valkyrja\Routing\Annotation\Route;
 
 /**
  * Test the AnnotationsParser class.
@@ -219,7 +219,8 @@ class AnnotationsParserTest extends TestCase
     public function testGetServiceContextAnnotationFromMap(): void
     {
         self::assertEquals(
-            true, $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_CONTEXT) instanceof Context
+            true,
+            $this->class->getAnnotationFromMap(AnnotationEnum::SERVICE_CONTEXT) instanceof Context
         );
     }
 }

@@ -11,24 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Annotation\Route;
+
+use Valkyrja\Http\Constants\RequestMethod;
+use Valkyrja\Routing\Annotation\Route;
 
 /**
- * Class Helpers.
+ * Class Connect.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+class Connect extends Route
 {
     /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
+     * Connect constructor.
      */
-    public static function trimPath(string $path): string
+    public function __construct()
     {
-        return '/' . trim($path, '/');
+        $this->methods = [
+            RequestMethod::CONNECT,
+        ];
     }
 }

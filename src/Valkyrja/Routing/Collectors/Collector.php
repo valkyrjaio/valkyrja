@@ -16,7 +16,6 @@ namespace Valkyrja\Routing\Collectors;
 use Closure;
 use InvalidArgumentException;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Collector as Contract;
 use Valkyrja\Routing\Models\Route as RouteModel;
@@ -35,12 +34,10 @@ class Collector implements Contract
      * Collector constructor.
      *
      * @param Collection $collection The collection
-     * @param PathParser $pathParser The path parser
      */
-    public function __construct(Collection $collection, PathParser $pathParser)
+    public function __construct(Collection $collection)
     {
         $this->collection = $collection;
-        $this->pathParser = $pathParser;
     }
 
     /**

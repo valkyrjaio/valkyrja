@@ -11,24 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Constants;
 
 /**
- * Class Helpers.
+ * Constant HandleSplit.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+final class HandleSplit
 {
-    /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
-     */
-    public static function trimPath(string $path): string
-    {
-        return '/' . trim($path, '/');
-    }
+    public const DEFAULT = '->';
+    public const STATIC  = '::';
 }

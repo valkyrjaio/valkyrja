@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use RuntimeException;
 use Valkyrja\Http\Constants\RequestMethod;
 use Valkyrja\Http\Request;
-use Valkyrja\Path\PathGenerator;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 use Valkyrja\Routing\Url as Contract;
@@ -34,13 +33,6 @@ use function substr;
  */
 class Url implements Contract
 {
-    /**
-     * The path generator.
-     *
-     * @var PathGenerator
-     */
-    protected PathGenerator $pathGenerator;
-
     /**
      * The request.
      *
@@ -65,17 +57,15 @@ class Url implements Contract
     /**
      * Router constructor.
      *
-     * @param PathGenerator $pathGenerator The path generator
-     * @param Request       $request       The request
-     * @param Router        $router        The router
-     * @param array         $config        The routing config
+     * @param Request $request The request
+     * @param Router  $router  The router
+     * @param array   $config  The routing config
      */
-    public function __construct(PathGenerator $pathGenerator, Request $request, Router $router, array $config)
+    public function __construct(Request $request, Router $router, array $config)
     {
-        $this->pathGenerator = $pathGenerator;
-        $this->request       = $request;
-        $this->router        = $router;
-        $this->config        = $config;
+        $this->request = $request;
+        $this->router  = $router;
+        $this->config  = $config;
     }
 
     /**
@@ -98,16 +88,19 @@ class Url implements Contract
             ? $this->routeHost($route)
             : '';
         // Get the path from the generator
-        $path = $route->getSegments()
-            ? $this->pathGenerator->parse(
-                $route->getSegments(),
-                $data,
-                $route->getParams()
-            )
-            : $route->getPath();
+        $path = $route->getPath();
 
+        // Ensure a valid path exists for this route
         if (null === $path) {
             throw new RuntimeException('Invalid path for route with name: ' . $name);
+        }
+
+        // If any data was passed
+        if ($data) {
+            // Iterate through the data and replace it in the path
+            foreach ($data as $datumName => $datum) {
+                $path = str_replace("{{$datumName}}", $datum, $path);
+            }
         }
 
         return $host . $this->validateRouteUrl($path);
@@ -143,7 +136,7 @@ class Url implements Contract
         $uri = str_replace(['http://', 'https://'], '', $uri);
 
         // Get the host of the uri
-        $host = (string) substr($uri, 0, strpos($uri, '/'));
+        $host = substr($uri, 0, strpos($uri, '/'));
 
         // If the host does not match the current request uri's host
         if ($host && $host !== $this->request->getUri()->getHost()) {
@@ -152,12 +145,12 @@ class Url implements Contract
         }
 
         // Get only the path (full string from the first slash to the end of the path)
-        $uri = (string) substr($uri, strpos($uri, '/'), strlen($uri));
+        $uri = substr($uri, strpos($uri, '/'), strlen($uri));
 
         // Try to match the route
         $route = $this->getRouteByPath($uri);
 
-        return $route instanceof Route;
+        return $route !== null;
     }
 
     /**

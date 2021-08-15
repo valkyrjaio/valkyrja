@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Annotation\Route\Redirect;
+
+use Valkyrja\Routing\Annotation\Route\Delete as ParentClass;
 
 /**
- * Class Helpers.
+ * Class Delete.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+class Delete extends ParentClass
 {
     /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
+     * Delete constructor.
      */
-    public static function trimPath(string $path): string
+    public function __construct()
     {
-        return '/' . trim($path, '/');
+        $this->redirect = true;
+
+        parent::__construct();
     }
 }

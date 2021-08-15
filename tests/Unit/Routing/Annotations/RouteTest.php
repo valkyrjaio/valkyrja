@@ -16,7 +16,7 @@ use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Valkyrja\Http\Constants\RequestMethod;
-use Valkyrja\Routing\Annotation\Models\Route;
+use Valkyrja\Routing\Annotation\Route;
 
 use function get_class;
 
@@ -185,98 +185,6 @@ class RouteTest extends TestCase
     }
 
     /**
-     * Test the getParams getter method default value.
-     *
-     * @return void
-     */
-    public function testGetParamsDefault(): void
-    {
-        self::assertEquals(null, $this->getRoute()->getParams());
-    }
-
-    /**
-     * Test the setParams setter method.
-     *
-     * @return void
-     */
-    public function testSetParams(): void
-    {
-        $set = $this->getRoute()->setParams([$this->stringValue]);
-
-        self::assertEquals($this->getRoute(), $set);
-    }
-
-    /**
-     * Test the setParams setter method using null.
-     *
-     * @return void
-     */
-    public function testSetParamsNull(): void
-    {
-        $set = $this->getRoute()->setParams(null);
-
-        self::assertEquals($this->getRoute(), $set);
-    }
-
-    /**
-     * Test the getParams getter method.
-     *
-     * @return void
-     */
-    public function testGetParams(): void
-    {
-        $this->getRoute()->setParams([$this->stringValue]);
-
-        self::assertEquals([$this->stringValue], $this->getRoute()->getParams());
-    }
-
-    /**
-     * Test the getSegments getter method default value.
-     *
-     * @return void
-     */
-    public function testGetSegmentsDefault(): void
-    {
-        self::assertEquals(null, $this->getRoute()->getSegments());
-    }
-
-    /**
-     * Test the setSegments setter method.
-     *
-     * @return void
-     */
-    public function testSetSegments(): void
-    {
-        $set = $this->getRoute()->setSegments([$this->stringValue]);
-
-        self::assertEquals($this->getRoute(), $set);
-    }
-
-    /**
-     * Test the setSegments setter method using null.
-     *
-     * @return void
-     */
-    public function testSetSegmentsNull(): void
-    {
-        $set = $this->getRoute()->setSegments(null);
-
-        self::assertEquals($this->getRoute(), $set);
-    }
-
-    /**
-     * Test the getSegments getter method.
-     *
-     * @return void
-     */
-    public function testGetSegments(): void
-    {
-        $this->getRoute()->setSegments([$this->stringValue]);
-
-        self::assertEquals([$this->stringValue], $this->getRoute()->getSegments());
-    }
-
-    /**
      * Test the getMiddleware getter method default value.
      *
      * @return void
@@ -305,7 +213,7 @@ class RouteTest extends TestCase
      */
     public function testSetMiddlewareNull(): void
     {
-        $set = $this->getRoute()->setMiddleware(null) ;
+        $set = $this->getRoute()->setMiddleware(null);
 
         self::assertEquals($this->getRoute(), $set);
     }

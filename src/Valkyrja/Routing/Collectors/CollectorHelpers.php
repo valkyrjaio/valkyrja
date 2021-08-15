@@ -15,12 +15,11 @@ namespace Valkyrja\Routing\Collectors;
 
 use Closure;
 use InvalidArgumentException;
-use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Facades\Reflector;
 use Valkyrja\Routing\Collection;
+use Valkyrja\Routing\Constants\HandleSplit;
 use Valkyrja\Routing\Models\Route as RouteModel;
 use Valkyrja\Routing\Route;
-use Valkyrja\Routing\Support\Helpers;
 use Valkyrja\Support\Type\Str;
 
 use function array_merge;
@@ -37,20 +36,6 @@ use function str_replace;
 trait CollectorHelpers
 {
     /**
-     * The static handler split.
-     *
-     * @var string
-     */
-    protected static string $staticHandlerSplit = '::';
-
-    /**
-     * The handler split.
-     *
-     * @var string
-     */
-    protected static string $handlerSplit = '->';
-
-    /**
      * The route context.
      *
      * @var Route|null
@@ -63,13 +48,6 @@ trait CollectorHelpers
      * @var Collection
      */
     protected Collection $collection;
-
-    /**
-     * The path parser.
-     *
-     * @var PathParser
-     */
-    protected PathParser $pathParser;
 
     /**
      * Ensure a route context is set so we can chain 'with' group methods.
@@ -247,10 +225,6 @@ trait CollectorHelpers
             $this->setDependencies($route);
         }
 
-        if ($route->isDynamic()) {
-            $this->parseDynamicRoute($route);
-        }
-
         return $route;
     }
 
@@ -326,13 +300,13 @@ trait CollectorHelpers
      */
     protected function setRouteHandlerFromString(Route $route, string $handler): void
     {
-        if (Str::contains($handler, static::$handlerSplit)) {
+        if (Str::contains($handler, HandleSplit::DEFAULT)) {
             $this->setRouteInstanceHandler($route, $handler);
 
             return;
         }
 
-        if (Str::contains($handler, static::$staticHandlerSplit)) {
+        if (Str::contains($handler, HandleSplit::STATIC)) {
             $this->setRouteStaticHandler($route, $handler);
             $route->setStatic();
 
@@ -352,7 +326,7 @@ trait CollectorHelpers
      */
     protected function setRouteInstanceHandler(Route $route, string $handler): void
     {
-        $this->setRouteHandlerSplit($route, $handler, self::$handlerSplit);
+        $this->setRouteHandlerSplit($route, $handler, HandleSplit::DEFAULT);
     }
 
     /**
@@ -365,7 +339,7 @@ trait CollectorHelpers
      */
     protected function setRouteStaticHandler(Route $route, string $handler): void
     {
-        $this->setRouteHandlerSplit($route, $handler, self::$staticHandlerSplit);
+        $this->setRouteHandlerSplit($route, $handler, HandleSplit::STATIC);
     }
 
     /**
@@ -445,30 +419,5 @@ trait CollectorHelpers
         }
 
         return $dependencies;
-    }
-
-    /**
-     * Parse a dynamic route and set its properties.
-     *
-     * @param Route $route The route
-     *
-     * @return void
-     */
-    protected function parseDynamicRoute(Route $route): void
-    {
-        $path = Helpers::trimPath($route->getPath() ?? '');
-
-        // Don't parse a path that has no regex part
-        if (! Str::contains($path, ':')) {
-            return;
-        }
-
-        // Parse the path
-        $parsedRoute = $this->pathParser->parse($path);
-
-        // Set the properties
-        $route->setRegex($parsedRoute['regex']);
-        $route->setParams($parsedRoute['params']);
-        $route->setSegments($parsedRoute['segments']);
     }
 }

@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Annotation\Route\Secure;
+
+use Valkyrja\Routing\Annotation\Route\Head as ParentClass;
 
 /**
- * Class Helpers.
+ * Class Head.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+class Head extends ParentClass
 {
     /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
+     * Head constructor.
      */
-    public static function trimPath(string $path): string
+    public function __construct()
     {
-        return '/' . trim($path, '/');
+        $this->secure = true;
+
+        parent::__construct();
     }
 }

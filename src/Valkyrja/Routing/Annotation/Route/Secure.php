@@ -11,24 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Routing\Support;
+namespace Valkyrja\Routing\Annotation\Route;
+
+use Valkyrja\Routing\Annotation\Route;
 
 /**
- * Class Helpers.
+ * Class Secure.
  *
  * @author Melech Mizrachi
  */
-class Helpers
+class Secure extends Route
 {
     /**
-     * Trim a path.
-     *
-     * @param string $path The path
-     *
-     * @return string
+     * Secure constructor.
      */
-    public static function trimPath(string $path): string
+    public function __construct()
     {
-        return '/' . trim($path, '/');
+        $this->secure = true;
     }
 }

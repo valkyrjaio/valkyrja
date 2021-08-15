@@ -104,22 +104,6 @@ interface Route extends Dispatch
     public function setRegex(string $regex = null): self;
 
     /**
-     * Get the params.
-     *
-     * @return array|null
-     */
-    public function getParams(): ?array;
-
-    /**
-     * Set the params.
-     *
-     * @param array|null $params The params
-     *
-     * @return static
-     */
-    public function setParams(array $params = null): self;
-
-    /**
      * Get the parameters.
      *
      * @return Parameter[]
@@ -166,22 +150,6 @@ interface Route extends Dispatch
         bool $isOptional = false,
         bool $shouldCapture = true
     ): self;
-
-    /**
-     * Get the segments.
-     *
-     * @return array|null
-     */
-    public function getSegments(): ?array;
-
-    /**
-     * Set the segments.
-     *
-     * @param array|null $segments The segments
-     *
-     * @return static
-     */
-    public function setSegments(array $segments = null): self;
 
     /**
      * Get the middleware.

@@ -15,7 +15,6 @@ namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\User;
 use Valkyrja\ORM\Entity;
-use Valkyrja\Routing\Support\Helpers;
 
 /**
  * Abstract Class EntityAuthorizedMiddleware.
@@ -82,7 +81,7 @@ abstract class EntityAuthorizedMiddleware extends AuthorizedMiddleware
      */
     protected static function getEntityServiceId(): string
     {
-        return Helpers::getEntityRouteParam(static::getEntityRouteParamName(), static::getEntityName());
+        return static::getEntityName() . '0';
     }
 
     /**

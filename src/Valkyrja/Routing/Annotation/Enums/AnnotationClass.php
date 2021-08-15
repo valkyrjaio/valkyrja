@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Valkyrja\Routing\Annotation\Enums;
 
-use Valkyrja\Routing\Annotation\Models\Any;
-use Valkyrja\Routing\Annotation\Models\Connect;
-use Valkyrja\Routing\Annotation\Models\Delete;
-use Valkyrja\Routing\Annotation\Models\Get;
-use Valkyrja\Routing\Annotation\Models\Head;
-use Valkyrja\Routing\Annotation\Models\Options;
-use Valkyrja\Routing\Annotation\Models\Patch;
-use Valkyrja\Routing\Annotation\Models\Post;
-use Valkyrja\Routing\Annotation\Models\Put;
-use Valkyrja\Routing\Annotation\Models\Redirect;
-use Valkyrja\Routing\Annotation\Models\Redirect\Permanent;
-use Valkyrja\Routing\Annotation\Models\Route;
-use Valkyrja\Routing\Annotation\Models\Secure;
-use Valkyrja\Routing\Annotation\Models\Trace;
+use Valkyrja\Routing\Annotation\Route;
+use Valkyrja\Routing\Annotation\Route\Any;
+use Valkyrja\Routing\Annotation\Route\Connect;
+use Valkyrja\Routing\Annotation\Route\Delete;
+use Valkyrja\Routing\Annotation\Route\Get;
+use Valkyrja\Routing\Annotation\Route\Head;
+use Valkyrja\Routing\Annotation\Route\Options;
+use Valkyrja\Routing\Annotation\Route\Patch;
+use Valkyrja\Routing\Annotation\Route\Post;
+use Valkyrja\Routing\Annotation\Route\Put;
+use Valkyrja\Routing\Annotation\Route\Redirect;
+use Valkyrja\Routing\Annotation\Route\Redirect\Permanent;
+use Valkyrja\Routing\Annotation\Route\Secure;
+use Valkyrja\Routing\Annotation\Route\Trace;
 use Valkyrja\Support\Enum\Enum;
 
 /**

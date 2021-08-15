@@ -18,12 +18,9 @@ use Valkyrja\Http\Response;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Repository;
-use Valkyrja\Path\Constants\PathSeparator;
 use Valkyrja\Routing\Models\Parameter;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Support\Abort;
-use Valkyrja\Support\Type\Cls;
-use Valkyrja\Support\Type\Str;
 
 /**
  * Class EntityMiddleware.
@@ -82,28 +79,19 @@ class EntityMiddleware extends RouteMiddleware
      */
     protected static function checkParamsForEntities(Route $route, array $matches): void
     {
-        $parameters   = $route->getParameters();
-        $dependencies = $route->getDependencies() ?? [];
+        $parameters = $route->getParameters();
 
         if (! empty($parameters)) {
+            $dependencies = $route->getDependencies() ?? [];
+
             // Iterate through the params
             foreach ($parameters as $index => $parameter) {
                 static::checkParameterForEntity($index, $parameter, $dependencies, $matches);
             }
-        } else {
-            $params  = $route->getParams() ?? [];
-            $counter = 0;
 
-            // Iterate through the params
-            foreach ($params as $param => $paramValue) {
-                static::checkParamForEntity($param, $dependencies, $matches, $counter);
-
-                $counter++;
-            }
+            $route->setMatches($matches);
+            $route->setDependencies($dependencies);
         }
-
-        $route->setMatches($matches);
-        $route->setDependencies($dependencies);
     }
 
     /**
@@ -187,136 +175,6 @@ class EntityMiddleware extends RouteMiddleware
         return static::getOrmRepository($entityName)
             ->findOne($value)
             ->withRelationships($relationships)
-            ->getOneOrNull();
-    }
-
-    /**
-     * Check a route param for entity.
-     *
-     * @param string $param             The params
-     * @param array  $routeDependencies The route dependencies
-     * @param array  $matches           The matches
-     * @param int    $counter           The counter
-     *
-     * @return void
-     */
-    protected static function checkParamForEntity(
-        string $param,
-        array &$routeDependencies,
-        array &$matches,
-        int $counter
-    ): void {
-        if (! Str::contains($param, PathSeparator::ENTITY_CLASS)) {
-            return;
-        }
-
-        // Get the class
-        [$matchName, $class] = explode(PathSeparator::ENTITY_CLASS, $param);
-
-        // Check if a param
-        if ($class && Cls::inherits($class, Entity::class)) {
-            static::checkDependenciesForEntities($param, $routeDependencies, $matches, $matchName, $class, $counter);
-        }
-    }
-
-    /**
-     * Check dependencies for entities.
-     *
-     * @param string $param             The params
-     * @param array  $routeDependencies The route dependencies
-     * @param array  $matches           The matches
-     * @param string $matchName         The match name
-     * @param string $class             The entity class
-     * @param int    $counter           The counter
-     *
-     * @return void
-     */
-    protected static function checkDependenciesForEntities(
-        string $param,
-        array &$routeDependencies,
-        array &$matches,
-        string $matchName,
-        string $class,
-        int $counter
-    ): void {
-        $dependencies = [];
-        // Set found to false for this param
-        $found = false;
-
-        foreach ($routeDependencies as $dependencyKey => $dependency) {
-            if (! $found && $class === $dependency) {
-                static::findAndSetEntity($matchName, $class, $param, $matches[$counter]);
-
-                // Set found to true in case another dependency is also the same class
-                $found = true;
-
-                continue;
-            }
-
-            $dependencies[] = $dependency;
-        }
-
-        $routeDependencies = $dependencies;
-    }
-
-    /**
-     * Find and set an entity.
-     *
-     * @param string $matchName The match name
-     * @param string $class     The entity class
-     * @param string $param     The param name
-     * @param mixed  $value     [optional] The value
-     *
-     * @return void
-     */
-    protected static function findAndSetEntity(string $matchName, string $class, string $param, &$value): void
-    {
-        // Attempt to get the entity from the ORM repository
-        $entity = static::findEntity($matchName, $class, $value);
-
-        if (! $entity) {
-            static::entityNotFound($class, $value);
-        }
-
-        // Set the entity with the param name as the service id into the container
-        self::$container->setSingleton($param, $entity);
-
-        // Replace the route match with this entity
-        $value = $entity;
-    }
-
-    /**
-     * Find an entity.
-     *
-     * @param string $matchName The match name
-     * @param string $entity    The entity class
-     * @param mixed  $value     [optional] The value
-     *
-     * @return Entity|null
-     */
-    protected static function findEntity(string $matchName, string $entity, $value): ?Entity
-    {
-        if (Str::contains($matchName, PathSeparator::ENTITY_WITH_RELATIONSHIPS)) {
-            [$matchName, $relationships] = explode(PathSeparator::ENTITY_WITH_RELATIONSHIPS, $matchName);
-
-            $relationships = explode(PathSeparator::ENTITY_RELATIONSHIPS, $relationships);
-        }
-
-        // If there is a field specified to use
-        if (Str::contains($matchName, PathSeparator::ENTITY_FIELD)) {
-            // Let's split the match name and use the field name
-            [, $field] = explode(PathSeparator::ENTITY_FIELD, $matchName);
-
-            return static::getOrmRepository($entity)
-                ->find()
-                ->where($field, null, $value)
-                ->withRelationships($relationships ?? [])
-                ->getOneOrNull();
-        }
-
-        return static::getOrmRepository($entity)
-            ->findOne($value)
-            ->withRelationships($relationships ?? [])
             ->getOneOrNull();
     }
 
