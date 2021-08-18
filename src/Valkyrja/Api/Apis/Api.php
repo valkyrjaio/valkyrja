@@ -21,6 +21,7 @@ use Valkyrja\Api\JsonData;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Exceptions\HttpException;
 use Valkyrja\Http\JsonResponse;
+use Valkyrja\Http\ResponseFactory;
 use Valkyrja\ORM\Entity;
 
 use function end;
@@ -36,11 +37,11 @@ use function strtolower;
 class Api implements Contract
 {
     /**
-     * The json response.
+     * The response factory.
      *
-     * @var JsonResponse
+     * @var ResponseFactory
      */
-    protected JsonResponse $jsonResponse;
+    protected ResponseFactory $responseFactory;
 
     /**
      * The config.
@@ -59,15 +60,15 @@ class Api implements Contract
     /**
      * Api constructor.
      *
-     * @param JsonResponse $jsonResponse
-     * @param array        $config
-     * @param bool         $debug [optional]
+     * @param ResponseFactory $responseFactory
+     * @param array           $config
+     * @param bool            $debug [optional]
      */
-    public function __construct(JsonResponse $jsonResponse, array $config, bool $debug = false)
+    public function __construct(ResponseFactory $responseFactory, array $config, bool $debug = false)
     {
-        $this->jsonResponse = $jsonResponse;
-        $this->config       = $config;
-        $this->debug        = $debug;
+        $this->responseFactory = $responseFactory;
+        $this->config          = $config;
+        $this->debug           = $debug;
     }
 
     /**
@@ -79,7 +80,7 @@ class Api implements Contract
      */
     public function jsonFromException(Exception $exception): Json
     {
-        $json     = $this->getJsonModel();
+        $json = $this->getJsonModel();
 
         $data = [
             'code' => $exception->getCode(),
@@ -270,7 +271,7 @@ class Api implements Contract
      */
     protected function getResponseFromModel(Json $json): JsonResponse
     {
-        return $this->jsonResponse::createFromData($json->__toArray());
+        return $this->responseFactory->createJsonResponse($json->__toArray());
     }
 
     /**

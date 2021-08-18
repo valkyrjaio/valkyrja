@@ -72,71 +72,11 @@ class Response implements Contract
      */
     public function __construct(Stream $body = null, int $statusCode = null, array $headers = null)
     {
-        $this->initialize($body, $statusCode, $headers);
-    }
-
-    /**
-     * Initialize a response.
-     *
-     * @param Stream|null $body       [optional] The body
-     * @param int|null    $statusCode [optional] The status
-     * @param array|null  $headers    [optional] The headers
-     *
-     * @return void
-     */
-    protected function initialize(Stream $body = null, int $statusCode = null, array $headers = null): void
-    {
         $this->stream       = $body ?? new HttpStream(StreamType::INPUT, 'rw');
         $this->statusCode   = $this->validateStatusCode($statusCode ?? StatusCode::OK);
         $this->statusPhrase = StatusCode::TEXTS[$this->statusCode];
 
         $this->setHeaders($headers ?? []);
-    }
-
-    /**
-     * Validate a status code.
-     *
-     * @param int $code The code
-     *
-     * @throws InvalidStatusCode
-     *
-     * @return int
-     */
-    protected function validateStatusCode(int $code): int
-    {
-        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
-            throw new InvalidStatusCode(
-                sprintf(
-                    'Invalid status code "%d"; must adhere to values set in the %s enum class.',
-                    $code,
-                    StatusCode::class
-                )
-            );
-        }
-
-        return $code;
-    }
-
-    /**
-     * Create a response.
-     *
-     * @param string|null $content    [optional] The body
-     * @param int|null    $statusCode [optional] The status
-     * @param array|null  $headers    [optional] The headers
-     *
-     * @return static
-     */
-    public static function create(string $content = null, int $statusCode = null, array $headers = null): self
-    {
-        $response = new static();
-
-        $stream = new HttpStream(StreamType::TEMP, 'wb+');
-        $stream->write($content ?? '');
-        $stream->rewind();
-
-        $response->initialize($stream, $statusCode, $headers);
-
-        return $response;
     }
 
     /**
@@ -312,5 +252,29 @@ class Response implements Contract
         $this->sendBody();
 
         return $this;
+    }
+
+    /**
+     * Validate a status code.
+     *
+     * @param int $code The code
+     *
+     * @throws InvalidStatusCode
+     *
+     * @return int
+     */
+    protected function validateStatusCode(int $code): int
+    {
+        if (StatusCode::MIN > $code || $code > StatusCode::MAX) {
+            throw new InvalidStatusCode(
+                sprintf(
+                    'Invalid status code "%d"; must adhere to values set in the %s enum class.',
+                    $code,
+                    StatusCode::class
+                )
+            );
+        }
+
+        return $code;
     }
 }

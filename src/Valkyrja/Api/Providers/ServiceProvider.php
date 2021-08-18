@@ -16,7 +16,7 @@ namespace Valkyrja\Api\Providers;
 use Valkyrja\Api\Api;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\JsonResponse;
+use Valkyrja\Http\ResponseFactory;
 
 /**
  * Class ServiceProvider.
@@ -66,7 +66,7 @@ class ServiceProvider extends Provider
         $container->setSingleton(
             Api::class,
             new \Valkyrja\Api\Apis\Api(
-                $container->getSingleton(JsonResponse::class),
+                $container->getSingleton(ResponseFactory::class),
                 $config['api'],
                 $config['app']['debug']
             )

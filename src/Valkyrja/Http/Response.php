@@ -30,17 +30,6 @@ use InvalidArgumentException;
 interface Response extends Message
 {
     /**
-     * Create a response.
-     *
-     * @param string|null $content    [optional] The body
-     * @param int|null    $statusCode [optional] The status
-     * @param array|null  $headers    [optional] The headers
-     *
-     * @return static
-     */
-    public static function create(string $content = null, int $statusCode = null, array $headers = null): self;
-
-    /**
      * Gets the response status code.
      * The status code is a 3-digit integer result code of the server's attempt
      * to understand and satisfy the request.

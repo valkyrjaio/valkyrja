@@ -14,15 +14,16 @@ declare(strict_types=1);
 namespace Valkyrja\Http\Factories;
 
 use InvalidArgumentException;
+use JsonException;
 use Valkyrja\Container\Container;
+use Valkyrja\Http\Constants\StreamType;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\RedirectResponse;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory as Contract;
+use Valkyrja\Http\Streams\Stream as HttpStream;
 use Valkyrja\Routing\Url;
 use Valkyrja\View\View;
-
-use function func_num_args;
 
 /**
  * Class ResponseFactory.
@@ -59,14 +60,11 @@ class ResponseFactory implements Contract
      */
     public function createResponse(string $content = null, int $statusCode = null, array $headers = null): Response
     {
-        /** @var Response $response */
-        $response = $this->container->getSingleton(Response::class);
+        $stream = new HttpStream(StreamType::TEMP, 'wb+');
+        $stream->write($content ?? '');
+        $stream->rewind();
 
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        return $response::create($content, $statusCode, $headers);
+        return new \Valkyrja\Http\Responses\Response($stream, $statusCode, $headers);
     }
 
     /**
@@ -76,18 +74,13 @@ class ResponseFactory implements Contract
      * @param int|null   $statusCode [optional] The response status code
      * @param array|null $headers    [optional] An array of response headers
      *
+     * @throws JsonException
+     *
      * @return JsonResponse
      */
     public function createJsonResponse(array $data = null, int $statusCode = null, array $headers = null): JsonResponse
     {
-        /** @var JsonResponse $response */
-        $response = $this->container->getSingleton(JsonResponse::class);
-
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        return $response::createFromData($data, $statusCode, $headers);
+        return new  \Valkyrja\Http\Responses\JsonResponse($data, $statusCode, $headers);
     }
 
     /**
@@ -99,15 +92,12 @@ class ResponseFactory implements Contract
      * @param array|null $headers    [optional] An array of response headers
      *
      * @throws InvalidArgumentException
+     * @throws JsonException
      *
      * @return JsonResponse
      */
-    public function createJsonpResponse(
-        string $callback,
-        array $data = null,
-        int $statusCode = null,
-        array $headers = null
-    ): JsonResponse {
+    public function createJsonpResponse(string $callback, array $data = null, int $statusCode = null, array $headers = null): JsonResponse
+    {
         return $this->createJsonResponse($data, $statusCode, $headers)->withCallback($callback);
     }
 
@@ -120,42 +110,28 @@ class ResponseFactory implements Contract
      *
      * @return RedirectResponse
      */
-    public function createRedirectResponse(
-        string $uri = null,
-        int $statusCode = null,
-        array $headers = null
-    ): RedirectResponse {
-        /** @var RedirectResponse $response */
-        $response = $this->container->getSingleton(RedirectResponse::class);
-
-        if (func_num_args() === 0) {
-            return $response;
-        }
-
-        return $response::createFromUri($uri, $statusCode, $headers);
+    public function createRedirectResponse(string $uri = null, int $statusCode = null, array $headers = null): RedirectResponse
+    {
+        return new \Valkyrja\Http\Responses\RedirectResponse($uri, $statusCode, $headers);
     }
 
     /**
      * Redirect to a named route response builder.
      *
-     * @param string     $route      The route to match
-     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param string     $name       The name of the route
+     * @param array|null $data       [optional] The data for dynamic routes
      * @param int|null   $statusCode [optional] The response status code
      * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    public function route(
-        string $route,
-        array $parameters = null,
-        int $statusCode = null,
-        array $headers = null
-    ): RedirectResponse {
+    public function route(string $name, array $data = null, int $statusCode = null, array $headers = null): RedirectResponse
+    {
         /** @var Url $url */
         $url = $this->container->getSingleton(Url::class);
 
         // Get the uri from the router using the route and parameters
-        $uri = $url->getUrl($route, $parameters);
+        $uri = $url->getUrl($name, $data);
 
         return $this->createRedirectResponse($uri, $statusCode, $headers);
     }

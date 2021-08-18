@@ -49,47 +49,13 @@ class RedirectResponse extends Response implements Contract
      */
     public function __construct(string $uri = null, int $statusCode = null, array $headers = null)
     {
-        parent::__construct();
-
-        $this->initializeRedirect($uri, $statusCode, $headers);
-    }
-
-    /**
-     * Initialize a redirect response.
-     *
-     * @param string|null $uri     [optional] The uri
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
-     *
-     * @return void
-     */
-    protected function initializeRedirect(string $uri = null, int $status = null, array $headers = null): void
-    {
         $this->uri = $uri ?? '/';
 
         parent::__construct(
             null,
-            $status ?? StatusCode::FOUND,
+            $statusCode ?? StatusCode::FOUND,
             $this->injectHeader(Header::LOCATION, $this->uri, $headers, true)
         );
-    }
-
-    /**
-     * Create a redirect response.
-     *
-     * @param string|null $uri     [optional] The uri
-     * @param int|null    $status  [optional] The status
-     * @param array|null  $headers [optional] The headers
-     *
-     * @return static
-     */
-    public static function createFromUri(string $uri = null, int $status = null, array $headers = null): self
-    {
-        $response = new static();
-
-        $response->initializeRedirect($uri, $status, $headers);
-
-        return $response;
     }
 
     /**

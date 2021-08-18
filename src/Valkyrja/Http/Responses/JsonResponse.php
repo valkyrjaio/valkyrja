@@ -79,29 +79,6 @@ class JsonResponse extends Response implements Contract
         array $headers = null,
         int $encodingOptions = null
     ) {
-        parent::__construct();
-
-        $this->initializeJson($data, $statusCode, $headers, $encodingOptions);
-    }
-
-    /**
-     * Initialize a json response.
-     *
-     * @param array|null $data            [optional] The data
-     * @param int|null   $status          [optional] The status
-     * @param array|null $headers         [optional] The headers
-     * @param int|null   $encodingOptions [optional] The encoding options
-     *
-     * @throws JsonException
-     *
-     * @return void
-     */
-    protected function initializeJson(
-        array $data = null,
-        int $status = null,
-        array $headers = null,
-        int $encodingOptions = null
-    ): void {
         $this->data            = $data ?? [];
         $this->encodingOptions = $encodingOptions ?? static::DEFAULT_ENCODING_OPTIONS;
 
@@ -111,34 +88,9 @@ class JsonResponse extends Response implements Contract
 
         parent::__construct(
             $body,
-            $status,
+            $statusCode,
             $this->injectHeader(Header::CONTENT_TYPE, ContentType::APPLICATION_JSON, $headers)
         );
-    }
-
-    /**
-     * Create a JSON response.
-     *
-     * @param array|null $data            [optional] The data
-     * @param int|null   $status          [optional] The status
-     * @param array|null $headers         [optional] The headers
-     * @param int|null   $encodingOptions [optional] The encoding options
-     *
-     * @throws JsonException
-     *
-     * @return static
-     */
-    public static function createFromData(
-        array $data = null,
-        int $status = null,
-        array $headers = null,
-        int $encodingOptions = null
-    ): self {
-        $response = new static();
-
-        $response->initializeJson($data, $status, $headers, $encodingOptions);
-
-        return $response;
     }
 
     /**

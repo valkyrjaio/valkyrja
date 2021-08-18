@@ -15,15 +15,7 @@ namespace Valkyrja\Http\Providers;
 
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
-use Valkyrja\Http\EmptyResponse;
-use Valkyrja\Http\Factories\RequestFactory;
-use Valkyrja\Http\HtmlResponse;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
-use Valkyrja\Http\TextResponse;
 
 /**
  * Class ServiceProvider.
@@ -38,14 +30,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            ResponseFactory::class  => 'publishResponseFactory',
-            Request::class          => 'publishRequest',
-            Response::class         => 'publishResponse',
-            EmptyResponse::class    => 'publishEmptyResponse',
-            HtmlResponse::class     => 'publishHtmlResponse',
-            JsonResponse::class     => 'publishJsonResponse',
-            RedirectResponse::class => 'publishRedirectResponse',
-            TextResponse::class     => 'publishTextResponse',
+            ResponseFactory::class => 'publishResponseFactory',
         ];
     }
 
@@ -56,13 +41,6 @@ class ServiceProvider extends Provider
     {
         return [
             ResponseFactory::class,
-            Request::class,
-            Response::class,
-            EmptyResponse::class,
-            HtmlResponse::class,
-            JsonResponse::class,
-            RedirectResponse::class,
-            TextResponse::class,
         ];
     }
 
@@ -87,111 +65,6 @@ class ServiceProvider extends Provider
             new \Valkyrja\Http\Factories\ResponseFactory(
                 $container
             )
-        );
-    }
-
-    /**
-     * Publish the request service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRequest(Container $container): void
-    {
-        $container->setSingleton(
-            Request::class,
-            RequestFactory::fromGlobals()
-        );
-    }
-
-    /**
-     * Publish the response service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishResponse(Container $container): void
-    {
-        $container->setSingleton(
-            Response::class,
-            new \Valkyrja\Http\Responses\Response()
-        );
-    }
-
-    /**
-     * Publish the empty response service.
-     *
-     * @param Container $container
-     *
-     * @return void
-     */
-    public static function publishEmptyResponse(Container $container): void
-    {
-        $container->setSingleton(
-            EmptyResponse::class,
-            new \Valkyrja\Http\Responses\EmptyResponse()
-        );
-    }
-
-    /**
-     * Publish the html response service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishHtmlResponse(Container $container): void
-    {
-        $container->setSingleton(
-            HtmlResponse::class,
-            new \Valkyrja\Http\Responses\HtmlResponse()
-        );
-    }
-
-    /**
-     * Publish the json response service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishJsonResponse(Container $container): void
-    {
-        $container->setSingleton(
-            JsonResponse::class,
-            new \Valkyrja\Http\Responses\JsonResponse()
-        );
-    }
-
-    /**
-     * Publish the redirect response service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishRedirectResponse(Container $container): void
-    {
-        $container->setSingleton(
-            RedirectResponse::class,
-            new \Valkyrja\Http\Responses\RedirectResponse()
-        );
-    }
-
-    /**
-     * Publish the text response service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishTextResponse(Container $container): void
-    {
-        $container->setSingleton(
-            TextResponse::class,
-            new \Valkyrja\Http\Responses\TextResponse()
         );
     }
 }

@@ -29,7 +29,7 @@ class EmptyResponse extends Response implements Contract
     /**
      * NativeEmptyResponse constructor.
      *
-     * @param array|null $headers [optional] The headers
+     * @param array $headers [optional] The headers
      *
      * @throws InvalidArgumentException
      * @throws InvalidStatusCode

@@ -52,12 +52,7 @@ interface ResponseFactory
      *
      * @return JsonResponse
      */
-    public function createJsonpResponse(
-        string $callback,
-        array $data = null,
-        int $statusCode = null,
-        array $headers = null
-    ): JsonResponse;
+    public function createJsonpResponse(string $callback, array $data = null, int $statusCode = null, array $headers = null): JsonResponse;
 
     /**
      * Create a redirect response.
@@ -73,19 +68,14 @@ interface ResponseFactory
     /**
      * Redirect to a named route response builder.
      *
-     * @param string     $route      The route to match
-     * @param array|null $parameters [optional] Any parameters to set for dynamic routes
+     * @param string     $name       The name of the route
+     * @param array|null $data       [optional] The data for dynamic routes
      * @param int|null   $statusCode [optional] The response status code
      * @param array|null $headers    [optional] An array of response headers
      *
      * @return RedirectResponse
      */
-    public function route(
-        string $route,
-        array $parameters = null,
-        int $statusCode = null,
-        array $headers = null
-    ): RedirectResponse;
+    public function route(string $name, array $data = null, int $statusCode = null, array $headers = null): RedirectResponse;
 
     /**
      * View response builder.
