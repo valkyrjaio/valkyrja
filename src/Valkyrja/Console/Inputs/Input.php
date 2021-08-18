@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Valkyrja\Console\Inputs;
 
 use Valkyrja\Console\Input as Contract;
-use Valkyrja\Http\Request;
 
 use function array_merge;
-use function array_shift;
 use function explode;
 use function implode;
 use function in_array;
@@ -32,18 +30,11 @@ use function strpos;
 class Input implements Contract
 {
     /**
-     * The request.
-     *
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
      * The request arguments.
      *
-     * @var array|null
+     * @var array
      */
-    protected ?array $requestArguments = null;
+    protected array $inputArguments = [];
 
     /**
      * The arguments.
@@ -69,56 +60,13 @@ class Input implements Contract
     /**
      * Input constructor.
      *
-     * @param Request $request The request
+     * @param array $arguments [optional] The input arguments
      */
-    public function __construct(Request $request)
+    public function __construct(array $arguments = [])
     {
-        $this->request = $request;
+        $this->inputArguments = $arguments;
 
         $this->parseRequestArguments();
-    }
-
-    /**
-     * Parse request arguments to split by options and arguments.
-     *
-     * @return void
-     */
-    protected function parseRequestArguments(): void
-    {
-        // Iterate through the request arguments
-        foreach ($this->getRequestArguments() as $argument) {
-            // Split the string on an equal sign
-            $exploded = explode('=', $argument);
-
-            $key   = $exploded[0];
-            $value = $exploded[1] ?? true;
-            $type  = 'arguments';
-
-            // If the key has double dash it is a long option
-            if (strpos($key, '--') !== false) {
-                $type = 'longOptions';
-            } // If the key has a single dash it is a short option
-            elseif (strpos($key, '-') !== false) {
-                $type = 'shortOptions';
-            }
-
-            // If the key is already set
-            if (isset($this->{$type}[$key])) {
-                // If the key isn't already an array
-                if (! is_array($this->{$type}[$key])) {
-                    // Make it an array with the current value
-                    $this->{$type}[$key] = [$this->{$type}[$key]];
-                }
-
-                // Add the next value to the array
-                $this->{$type}[$key][] = $value;
-
-                continue;
-            }
-
-            // Set the key value pair
-            $this->{$type}[$key] = $value;
-        }
     }
 
     /**
@@ -168,7 +116,7 @@ class Input implements Contract
      */
     public function getStringArguments(): string
     {
-        $arguments       = $this->getRequestArguments();
+        $arguments       = $this->inputArguments;
         $globalArguments = $this->getGlobalOptionsFlat();
 
         foreach ($arguments as $key => $argument) {
@@ -181,22 +129,13 @@ class Input implements Contract
     }
 
     /**
-     * Get the arguments from the request.
+     * Get the input arguments.
      *
      * @return array
      */
-    public function getRequestArguments(): array
+    public function getInputArguments(): array
     {
-        if (null !== $this->requestArguments) {
-            return $this->requestArguments;
-        }
-
-        $arguments = $this->request->getServerParams()['argv'] ?? [];
-
-        // strip the application name
-        array_shift($arguments);
-
-        return $this->requestArguments = $arguments;
+        return $this->inputArguments;
     }
 
     /**
@@ -324,5 +263,48 @@ class Input implements Contract
             '-V',
             '--version',
         ];
+    }
+
+    /**
+     * Parse request arguments to split by options and arguments.
+     *
+     * @return void
+     */
+    protected function parseRequestArguments(): void
+    {
+        // Iterate through the request arguments
+        foreach ($this->inputArguments as $argument) {
+            // Split the string on an equal sign
+            $exploded = explode('=', $argument);
+
+            $key   = $exploded[0];
+            $value = $exploded[1] ?? true;
+            $type  = 'arguments';
+
+            // If the key has double dash it is a long option
+            if (strpos($key, '--') !== false) {
+                $type = 'longOptions';
+            } // If the key has a single dash it is a short option
+            elseif (strpos($key, '-') !== false) {
+                $type = 'shortOptions';
+            }
+
+            // If the key is already set
+            if (isset($this->{$type}[$key])) {
+                // If the key isn't already an array
+                if (! is_array($this->{$type}[$key])) {
+                    // Make it an array with the current value
+                    $this->{$type}[$key] = [$this->{$type}[$key]];
+                }
+
+                // Add the next value to the array
+                $this->{$type}[$key][] = $value;
+
+                continue;
+            }
+
+            // Set the key value pair
+            $this->{$type}[$key] = $value;
+        }
     }
 }

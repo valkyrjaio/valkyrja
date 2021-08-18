@@ -58,11 +58,11 @@ interface Input
     public function getStringArguments(): string;
 
     /**
-     * Get the arguments from the request.
+     * Get the input arguments.
      *
      * @return array
      */
-    public function getRequestArguments(): array;
+    public function getInputArguments(): array;
 
     /**
      * Get an argument.

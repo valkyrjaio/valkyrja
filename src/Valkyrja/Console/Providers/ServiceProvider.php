@@ -25,7 +25,6 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Dispatcher\Dispatcher;
 use Valkyrja\Event\Events;
-use Valkyrja\Http\Request;
 use Valkyrja\Path\PathParser;
 use Valkyrja\Reflection\Reflector;
 
@@ -141,11 +140,14 @@ class ServiceProvider extends Provider
      */
     public static function publishInput(Container $container): void
     {
+        $arguments = $_SERVER['argv'] ?? [];
+
+        // Strip the application name
+        array_shift($arguments);
+
         $container->setSingleton(
             Input::class,
-            new \Valkyrja\Console\Inputs\Input(
-                $container->getSingleton(Request::class)
-            )
+            new \Valkyrja\Console\Inputs\Input($arguments)
         );
     }
 
