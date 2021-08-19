@@ -24,10 +24,6 @@ use Valkyrja\Container\Managers\Container;
 use Valkyrja\Dispatcher\Dispatchers\Dispatcher;
 use Valkyrja\Event\Dispatchers\Events;
 use Valkyrja\Filesystem\Filesystem;
-use Valkyrja\Http\JsonResponse;
-use Valkyrja\Http\RedirectResponse;
-use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
 use Valkyrja\HttpKernel\Kernel;
 use Valkyrja\Log\Logger;
@@ -289,16 +285,6 @@ class ApplicationTest extends TestCase
     }
 
     /**
-     * Test the request() helper method.
-     *
-     * @return void
-     */
-    public function testRequest(): void
-    {
-        self::assertEquals(true, $this->app[Request::class] instanceof Request);
-    }
-
-    /**
      * Test the router() helper method.
      *
      * @return void
@@ -306,36 +292,6 @@ class ApplicationTest extends TestCase
     public function testRouter(): void
     {
         self::assertEquals(true, $this->app[Router::class] instanceof Router);
-    }
-
-    /**
-     * Test the response() helper method.
-     *
-     * @return void
-     */
-    public function testResponse(): void
-    {
-        self::assertEquals(true, $this->app[Response::class] instanceof Response);
-    }
-
-    /**
-     * Test the json() helper method.
-     *
-     * @return void
-     */
-    public function testJson(): void
-    {
-        self::assertEquals(true, $this->app[JsonResponse::class] instanceof JsonResponse);
-    }
-
-    /**
-     * Test the redirect() helper method.
-     *
-     * @return void
-     */
-    public function testRedirect(): void
-    {
-        self::assertEquals(true, $this->app[RedirectResponse::class] instanceof RedirectResponse);
     }
 
     /**
