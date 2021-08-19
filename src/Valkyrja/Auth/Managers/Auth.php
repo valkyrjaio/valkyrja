@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Managers;
 
+use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\Constants\Header;
@@ -55,6 +56,13 @@ class Auth implements Contract
     protected Container $container;
 
     /**
+     * The request.
+     *
+     * @var Request
+     */
+    protected Request $request;
+
+    /**
      * The config.
      *
      * @var array
@@ -93,16 +101,20 @@ class Auth implements Contract
      * Auth constructor.
      *
      * @param Container $container The container
+     * @param Request   $request   The request
      * @param array     $config    The config
      */
-    public function __construct(Container $container, array $config)
+    public function __construct(Container $container, Request $request, array $config)
     {
         $this->container         = $container;
+        $this->request           = $request;
         $this->config            = $config;
         $this->adapters          = $this->config['adapters'];
         $this->defaultAdapter    = $this->config['adapter'];
         $this->defaultRepository = $this->config['repository'];
         $this->defaultUserEntity = $this->config['userEntity'];
+
+        $this->tryAuthenticating();
     }
 
     /**
@@ -519,5 +531,85 @@ class Auth implements Contract
         $this->getRepository()->storeConfirmedPassword();
 
         return $this;
+    }
+
+    /**
+     * Try authenticating.
+     *
+     * @return void
+     */
+    protected function tryAuthenticating(): void
+    {
+        try {
+            if ($this->config['useToken']) {
+                if ($this->config['useSession']) {
+                    // Try to login with the token from session
+                    $this->tryAuthenticatingFromTokenizedSession();
+
+                    return;
+                }
+
+                if (! $token = $this->getTokenForAuthenticationAttempt()) {
+                    return;
+                }
+
+                // Try to login with the token passed as a header
+                $this->tryAuthenticatingFromToken($token);
+
+                return;
+            }
+
+            // Try to login from the user session
+            $this->tryAuthenticatingFromSession();
+        } catch (Exception $exception) {
+        }
+    }
+
+    /**
+     * Try authenticating from session
+     *
+     * @return void
+     */
+    protected function tryAuthenticatingFromSession(): void
+    {
+        // Try to login from the user session
+        $this->getRepository()->loginFromSession();
+    }
+
+    /**
+     * Try authenticating from a tokenized session.
+     *
+     * @return void
+     */
+    protected function tryAuthenticatingFromTokenizedSession(): void
+    {
+        // Try to login with the token from session
+        $this->getRepository()->loginFromTokenizedSession();
+    }
+
+    /**
+     * Get the token for an authentication attempt.
+     *
+     * @return string
+     */
+    protected function getTokenForAuthenticationAttempt(): string
+    {
+        // Get the token header value
+        return $this->request->getHeaderLine(Header::AUTH_TOKEN);
+    }
+
+    /**
+     * Try authenticating from a token header.
+     *
+     * @param string $token The token
+     *
+     * @throws CryptException
+     *
+     * @return void
+     */
+    protected function tryAuthenticatingFromToken(string $token): void
+    {
+        // Try to login with the token passed as a header
+        $this->getRepository()->loginWithToken($token);
     }
 }

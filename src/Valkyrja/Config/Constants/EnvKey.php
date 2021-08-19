@@ -59,6 +59,8 @@ final class EnvKey
     public const AUTH_KEEP_USER_FRESH        = 'AUTH_KEEP_USER_FRESH';
     public const AUTH_AUTHENTICATE_ROUTE     = 'AUTH_AUTHENTICATE_ROUTE';
     public const AUTH_PASSWORD_CONFIRM_ROUTE = 'AUTH_PASSWORD_CONFIRM_ROUTE';
+    public const AUTH_USE_SESSION            = 'AUTH_USE_SESSION';
+    public const AUTH_USE_TOKEN              = 'AUTH_USE_TOKEN';
 
     public const BROADCAST_ADAPTER        = 'BROADCAST_ADAPTER';
     public const BROADCAST_ADAPTERS       = 'BROADCAST_ADAPTERS';

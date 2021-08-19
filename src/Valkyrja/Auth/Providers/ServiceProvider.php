@@ -20,6 +20,7 @@ use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
+use Valkyrja\Http\Request;
 use Valkyrja\ORM\ORM;
 use Valkyrja\Session\Session;
 
@@ -36,7 +37,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class       => 'publishAuth',
+            Auth::class => 'publishAuth',
             Repository::class => 'publishRepository',
             ORMAdapter::class => 'publishAdapter',
         ];
@@ -76,6 +77,7 @@ class ServiceProvider extends Provider
             Auth::class,
             new \Valkyrja\Auth\Managers\Auth(
                 $container,
+                $container->getSingleton(Request::class),
                 $config['auth']
             )
         );

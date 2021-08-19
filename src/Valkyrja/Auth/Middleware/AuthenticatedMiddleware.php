@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Middleware;
 
-use Exception;
-use Valkyrja\Auth\Repository;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 
@@ -43,29 +41,10 @@ class AuthenticatedMiddleware extends AuthMiddleware
     {
         $repository = static::getRepository();
 
-        // Just in case we authenticated already
         if (! $repository->isLoggedIn()) {
-            try {
-                static::tryLogin($repository, $request);
-            } catch (Exception $exception) {
-                return static::getFailedResponse($request);
-            }
+            return static::getFailedResponse($request);
         }
 
         return $request;
-    }
-
-    /**
-     * Try logging in.
-     *
-     * @param Repository $repository The auth repository
-     * @param Request    $request    The request
-     *
-     * @return void
-     */
-    protected static function tryLogin(Repository $repository, Request $request): void
-    {
-        // Try to login from the user session
-        $repository->loginFromSession();
     }
 }

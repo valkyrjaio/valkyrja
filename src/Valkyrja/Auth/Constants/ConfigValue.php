@@ -32,6 +32,8 @@ final class ConfigValue
     public const KEEP_USER_FRESH        = false;
     public const AUTHENTICATE_ROUTE     = RouteName::AUTHENTICATE;
     public const PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
+    public const USE_SESSION            = true;
+    public const USE_TOKEN              = false;
     public const ADAPTERS               = [
         CKP::DEFAULT => ORMAdapter::class,
     ];
@@ -45,5 +47,7 @@ final class ConfigValue
         CKP::KEEP_USER_FRESH        => self::KEEP_USER_FRESH,
         CKP::AUTHENTICATE_ROUTE     => self::AUTHENTICATE_ROUTE,
         CKP::PASSWORD_CONFIRM_ROUTE => self::PASSWORD_CONFIRM_ROUTE,
+        CKP::USE_SESSION            => self::USE_SESSION,
+        CKP::USE_TOKEN              => self::USE_TOKEN,
     ];
 }
