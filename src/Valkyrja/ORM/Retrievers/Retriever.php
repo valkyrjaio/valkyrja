@@ -15,6 +15,7 @@ namespace Valkyrja\ORM\Retrievers;
 
 use InvalidArgumentException;
 use Valkyrja\ORM\Adapter;
+use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Query;
@@ -140,7 +141,7 @@ class Retriever implements Contract
      */
     public function count(string $entity): self
     {
-        $this->setQueryProperties($entity, ['COUNT(*)']);
+        $this->setQueryProperties($entity, [Statement::COUNT_ALL]);
 
         return $this;
     }
@@ -344,6 +345,8 @@ class Retriever implements Contract
      */
     public function getCount(): int
     {
+        $this->columns([Statement::COUNT_ALL]);
+
         $this->prepareResults();
 
         return $this->query->getCount();

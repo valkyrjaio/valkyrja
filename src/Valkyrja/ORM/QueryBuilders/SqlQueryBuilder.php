@@ -21,7 +21,6 @@ use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-
 use Valkyrja\ORM\Support\Helpers;
 
 use function array_keys;
@@ -691,7 +690,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getGroupByQuery(): string
     {
-        return empty($this->orderBy)
+        return empty($this->orderBy) || $this->isCount()
             ? ''
             : Statement::GROUP_BY . ' ' . implode(', ', $this->groupBy);
     }
@@ -703,7 +702,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getOrderByQuery(): string
     {
-        return empty($this->orderBy)
+        return empty($this->orderBy) || $this->isCount()
             ? ''
             : Statement::ORDER_BY . ' ' . implode(', ', $this->orderBy);
     }
@@ -715,7 +714,7 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getLimitQuery(): string
     {
-        return null === $this->limit
+        return null === $this->limit || $this->isCount()
             ? ''
             : Statement::LIMIT . ' ' . $this->limit;
     }
@@ -727,8 +726,18 @@ class SqlQueryBuilder implements QueryBuilder
      */
     protected function getOffsetQuery(): string
     {
-        return null === $this->offset
+        return null === $this->offset || $this->isCount()
             ? ''
             : Statement::OFFSET . ' ' . $this->offset;
+    }
+
+    /**
+     * Determine whether this is a count statement.
+     *
+     * @return bool
+     */
+    protected function isCount(): bool
+    {
+        return $this->columns[0] === Statement::COUNT_ALL;
     }
 }

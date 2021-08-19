@@ -44,4 +44,5 @@ final class Statement
     public const ORDER_BY  = 'ORDER BY';
     public const LIMIT     = 'LIMIT';
     public const OFFSET    = 'OFFSET';
+    public const COUNT_ALL = 'COUNT(*)';
 }

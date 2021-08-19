@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Retrievers;
 
 use JsonException;
+use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\Support\Type\Arr;
 
 use function is_array;
@@ -65,6 +66,8 @@ class LocalCacheRetriever extends Retriever
      */
     public function getCount(): int
     {
+        $this->columns([Statement::COUNT_ALL]);
+
         $localCacheKey = $this->getCacheKey();
 
         if (isset(self::$localCache[$localCacheKey])) {
