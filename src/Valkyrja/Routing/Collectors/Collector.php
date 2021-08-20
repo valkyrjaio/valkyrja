@@ -136,7 +136,16 @@ class Collector implements Contract
      */
     public function get(string $path, $handler, string $name = null, bool $setDependencies = true): Route
     {
-        return $this->setMethodsAndAddRoute([RequestMethod::GET], $path, $handler, $name, $setDependencies);
+        return $this->setMethodsAndAddRoute(
+            [
+                RequestMethod::GET,
+                RequestMethod::HEAD,
+            ],
+            $path,
+            $handler,
+            $name,
+            $setDependencies
+        );
     }
 
     /**
