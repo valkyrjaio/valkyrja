@@ -37,7 +37,7 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class => 'publishAuth',
+            Auth::class       => 'publishAuth',
             Repository::class => 'publishRepository',
             ORMAdapter::class => 'publishAdapter',
         ];
