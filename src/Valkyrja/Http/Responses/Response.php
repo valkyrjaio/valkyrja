@@ -237,6 +237,9 @@ class Response implements Contract
 
         echo $stream->getContents();
 
+        ob_flush();
+        flush();
+
         return $this;
     }
 
