@@ -49,6 +49,9 @@ final class ConfigKey
     public const AUTH_ALWAYS_AUTHENTICATE    = 'auth.alwaysAuthenticate';
     public const AUTH_KEEP_USER_FRESH        = 'auth.keepUserFresh';
     public const AUTH_AUTHENTICATE_ROUTE     = 'auth.authenticateRoute';
+    public const AUTH_AUTHENTICATE_URL       = 'auth.authenticateUrl';
+    public const AUTH_NOT_AUTHENTICATE_ROUTE = 'auth.notAuthenticateRoute';
+    public const AUTH_NOT_AUTHENTICATE_URL   = 'auth.notAuthenticateUrl';
     public const AUTH_PASSWORD_CONFIRM_ROUTE = 'auth.confirmPasswordRoute';
 
     public const BROADCAST_ADAPTER  = 'broadcast.adapter';

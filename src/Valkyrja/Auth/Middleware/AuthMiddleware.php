@@ -20,6 +20,7 @@ use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Constants\RouteName;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
+use Valkyrja\Config\Constants\ConfigKeyPart;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\JsonResponse;
 use Valkyrja\Http\Request;
@@ -170,11 +171,18 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getFailedRegularResponse(): Response
     {
+        if ($authenticateUrl = static::getConfig(ConfigKeyPart::AUTHENTICATE_URL)) {
+            return self::$responseFactory->createRedirectResponse(
+                $authenticateUrl,
+                StatusCode::UNAUTHORIZED
+            );
+        }
+
         /** @var Url $url */
         $url = self::$container->getSingleton(Url::class);
 
         return self::$responseFactory->createRedirectResponse(
-            $url->getUrl((string) static::getConfig('authenticateRoute', RouteName::AUTHENTICATE)),
+            $url->getUrl((string) static::getConfig(ConfigKeyPart::AUTHENTICATE_ROUTE, RouteName::AUTHENTICATE)),
             StatusCode::UNAUTHORIZED
         );
     }

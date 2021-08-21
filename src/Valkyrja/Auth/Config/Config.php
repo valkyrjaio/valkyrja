@@ -110,6 +110,27 @@ class Config extends Model
     public string $authenticateRoute;
 
     /**
+     * The authenticate url.
+     *
+     * @var string|null
+     */
+    public ?string $authenticateUrl;
+
+    /**
+     * The not authenticated route name.
+     *
+     * @var string
+     */
+    public string $notAuthenticateRoute;
+
+    /**
+     * The not authenticated url.
+     *
+     * @var string|null
+     */
+    public ?string $notAuthenticateUrl;
+
+    /**
      * The password confirm route name.
      *
      * @var string

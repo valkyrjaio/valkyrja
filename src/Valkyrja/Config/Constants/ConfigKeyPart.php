@@ -131,6 +131,9 @@ final class ConfigKeyPart
     public const ALWAYS_AUTHENTICATE         = 'alwaysAuthenticate';
     public const KEEP_USER_FRESH             = 'keepUserFresh';
     public const AUTHENTICATE_ROUTE          = 'authenticateRoute';
+    public const AUTHENTICATE_URL            = 'authenticateUrl';
+    public const NOT_AUTHENTICATE_ROUTE      = 'notAuthenticateRoute';
+    public const NOT_AUTHENTICATE_URL        = 'notAuthenticateUrl';
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const USE_SESSION                 = 'useSession';
     public const USE_TOKEN                   = 'useToken';
