@@ -29,7 +29,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static array getConfig()
  * @method static Adapter getAdapter(string $name = null)
  * @method static Repository getRepository(string $user = null, string $adapter = null)
- * @method static Gate getGuard(string $name, string $user = null, string $adapter = null)
+ * @method static Gate getGate(string $name, string $user = null, string $adapter = null)
  * @method static Contract setUser(User $user)
  * @method static User getUser()
  * @method static Contract login(User $user)

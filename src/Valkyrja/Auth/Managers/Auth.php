@@ -50,7 +50,7 @@ class Auth implements Contract
     protected static array $repositories = [];
 
     /**
-     * The Guards cache.
+     * The gates cache.
      *
      * @var Gate[]
      */
