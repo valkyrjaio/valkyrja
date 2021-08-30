@@ -48,7 +48,7 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
      */
     protected static function checkAuthorized(User $user): bool
     {
-        return self::$auth->getGate(static::$gate, static::$userEntity, static::$adapter)
+        return self::$auth->getGate(static::$gate, static::$userEntity, static::$adapterName)
             ->isAuthorized(static:: $action, static::$policy);
     }
 }
