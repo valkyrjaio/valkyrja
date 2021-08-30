@@ -28,7 +28,6 @@ use Valkyrja\Http\Response;
 use Valkyrja\Log\Facades\Logger;
 use Valkyrja\Routing\Support\Middleware;
 use Valkyrja\Routing\Url;
-use Valkyrja\Session\Session;
 
 /**
  * Abstract Class AuthenticatedMiddleware.
@@ -42,14 +41,35 @@ abstract class AuthMiddleware extends Middleware
      *
      * @var Auth
      */
-    protected static Auth $auth;
+    public static Auth $auth;
+
+    /**
+     * The repository.
+     *
+     * @var Repository
+     */
+    public static Repository $repository;
+
+    /**
+     * The config.
+     *
+     * @var array
+     */
+    public static array $config;
+
+    /**
+     * The adapter to use
+     *
+     * @var string|null
+     */
+    protected static ?string $adapterName = null;
 
     /**
      * The user class to use.
      *
-     * @var string
+     * @var string|null
      */
-    protected static string $userEntity;
+    protected static ?string $userEntity = null;
 
     /**
      * The error message to use.
@@ -72,17 +92,7 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getAuth(): Auth
     {
-        return self::$auth ?? self::$auth = self::$container->getSingleton(Auth::class);
-    }
-
-    /**
-     * Get the session manager.
-     *
-     * @return Session
-     */
-    protected static function getSession(): Session
-    {
-        return self::$container->getSingleton(Session::class);
+        return self::$auth ??= self::$container->getSingleton(Auth::class);
     }
 
     /**
@@ -95,7 +105,7 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getConfig(string $key = null, $default = null)
     {
-        $config = static::getAuth()->getConfig();
+        $config = self::$config ??= static::getAuth()->getConfig();
 
         if (null !== $key) {
             return $config[$key] ?? $default;
@@ -111,10 +121,7 @@ abstract class AuthMiddleware extends Middleware
      */
     protected static function getRepository(): Repository
     {
-        $auth       = static::getAuth();
-        $userEntity = static::$userEntity ?? $auth->getConfig()['userEntity'];
-
-        return $auth->getRepository($userEntity);
+        return self::$repository ??= static::getAuth()->getRepository(static::$userEntity, static::$adapterName);
     }
 
     /**

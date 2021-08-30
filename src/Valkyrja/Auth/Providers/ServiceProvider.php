@@ -16,6 +16,8 @@ namespace Valkyrja\Auth\Providers;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\Gates\Gate;
+use Valkyrja\Auth\Gates\UserPermissiblePolicy;
 use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -37,9 +39,11 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class       => 'publishAuth',
-            Repository::class => 'publishRepository',
-            ORMAdapter::class => 'publishAdapter',
+            Auth::class                  => 'publishAuth',
+            Gate::class                  => 'publishGate',
+            Repository::class            => 'publishRepository',
+            ORMAdapter::class            => 'publishAdapter',
+            UserPermissiblePolicy::class => 'publishPolicy',
         ];
     }
 
@@ -50,8 +54,10 @@ class ServiceProvider extends Provider
     {
         return [
             Auth::class,
+            Gate::class,
             Repository::class,
             ORMAdapter::class,
+            UserPermissiblePolicy::class,
         ];
     }
 
@@ -98,6 +104,46 @@ class ServiceProvider extends Provider
                 return new ORMAdapter(
                     $container->getSingleton(Crypt::class),
                     $container->getSingleton(ORM::class),
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the default adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishGate(Container $container): void
+    {
+        $container->setClosure(
+            Gate::class,
+            static function (\Valkyrja\Auth\Repository $repository, array $config) use ($container): Gate {
+                return new Gate(
+                    $container,
+                    $repository,
+                    $config,
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the default adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPolicy(Container $container): void
+    {
+        $container->setClosure(
+            UserPermissiblePolicy::class,
+            static function (\Valkyrja\Auth\Repository $repository): UserPermissiblePolicy {
+                return new UserPermissiblePolicy(
+                    $repository,
                 );
             }
         );

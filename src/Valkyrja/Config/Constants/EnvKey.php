@@ -54,6 +54,10 @@ final class EnvKey
     public const AUTH_ADAPTER                = 'AUTH_ADAPTER';
     public const AUTH_USER_ENTITY            = 'AUTH_USER_ENTITY';
     public const AUTH_REPOSITORY             = 'AUTH_REPOSITORY';
+    public const AUTH_GATE                   = 'AUTH_GATE';
+    public const AUTH_GATES                  = 'AUTH_GATES';
+    public const AUTH_POLICY                 = 'AUTH_POLICY';
+    public const AUTH_POLICIES               = 'AUTH_POLICIES';
     public const AUTH_ADAPTERS               = 'AUTH_ADAPTERS';
     public const AUTH_ALWAYS_AUTHENTICATE    = 'AUTH_ALWAYS_AUTHENTICATE';
     public const AUTH_KEEP_USER_FRESH        = 'AUTH_KEEP_USER_FRESH';

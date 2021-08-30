@@ -239,4 +239,11 @@ interface Repository
      * @return static
      */
     public function storeConfirmedPassword(): self;
+
+    /**
+     * Determine if a re-authentication needs to occur.
+     *
+     * @return bool
+     */
+    public function shouldReAuthenticate(): bool;
 }

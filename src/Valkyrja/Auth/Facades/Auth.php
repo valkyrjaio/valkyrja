@@ -15,12 +15,10 @@ namespace Valkyrja\Auth\Facades;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
+use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
-use Valkyrja\Crypt\Crypt;
-use Valkyrja\ORM\ORM;
-use Valkyrja\Session\Session;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -29,15 +27,10 @@ use Valkyrja\Support\Facade\Facade;
  * @author Melech Mizrachi
  *
  * @method static array getConfig()
- * @method static Contract setConfig(array $config)
- * @method static Crypt getCrypt()
- * @method static Contract setCrypt(Crypt $crypt)
- * @method static ORM getOrm()
- * @method static Contract setOrm(ORM $orm)
- * @method static Session getSession()
- * @method static Contract setSession(Session $session)
  * @method static Adapter getAdapter(string $name = null)
- * @method static Repository getRepository(string $user = null)
+ * @method static Repository getRepository(string $user = null, string $adapter = null)
+ * @method static Gate getGuard(string $name, string $user = null, string $adapter = null)
+ * @method static Contract setUser(User $user)
  * @method static User getUser()
  * @method static Contract login(User $user)
  * @method static Contract loginWithToken(string $token)

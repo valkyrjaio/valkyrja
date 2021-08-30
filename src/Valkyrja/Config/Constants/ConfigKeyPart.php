@@ -128,6 +128,10 @@ final class ConfigKeyPart
     public const QUERY_BUILDER               = 'queryBuilder';
     public const USER_ENTITY                 = 'userEntity';
     public const REPOSITORY                  = 'repository';
+    public const GATE                        = 'gate';
+    public const GATES                       = 'gates';
+    public const POLICY                      = 'policy';
+    public const POLICIES                    = 'policies';
     public const ALWAYS_AUTHENTICATE         = 'alwaysAuthenticate';
     public const KEEP_USER_FRESH             = 'keepUserFresh';
     public const AUTHENTICATE_ROUTE          = 'authenticateRoute';

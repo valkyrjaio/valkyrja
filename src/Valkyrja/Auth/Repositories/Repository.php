@@ -519,6 +519,18 @@ class Repository implements Contract
     }
 
     /**
+     * Determine if a re-authentication needs to occur.
+     *
+     * @return bool
+     */
+    public function shouldReAuthenticate(): bool
+    {
+        $confirmedAt = time() - ((int) $this->session->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
+
+        return $confirmedAt > (int) ($this->config['passwordTimeout'] ?? 10800);
+    }
+
+    /**
      * Set the authenticated user.
      *
      * @param User $user The user

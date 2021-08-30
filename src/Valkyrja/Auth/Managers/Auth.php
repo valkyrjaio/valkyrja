@@ -20,6 +20,7 @@ use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
+use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
@@ -47,6 +48,13 @@ class Auth implements Contract
      * @var Repository[]
      */
     protected static array $repositories = [];
+
+    /**
+     * The Guards cache.
+     *
+     * @var Gate[]
+     */
+    protected static array $gatesCache = [];
 
     /**
      * The container service.
@@ -77,6 +85,13 @@ class Auth implements Contract
     protected array $adapters = [];
 
     /**
+     * The gates.
+     *
+     * @var array
+     */
+    protected array $gates = [];
+
+    /**
      * The default adapter.
      *
      * @var string
@@ -89,6 +104,13 @@ class Auth implements Contract
      * @var string
      */
     protected string $defaultRepository;
+
+    /**
+     * The default gate.
+     *
+     * @var string
+     */
+    protected string $defaultGate;
 
     /**
      * The default user entity.
@@ -110,8 +132,10 @@ class Auth implements Contract
         $this->request           = $request;
         $this->config            = $config;
         $this->adapters          = $this->config['adapters'];
+        $this->gates             = $this->config['gates'] ?? [];
         $this->defaultAdapter    = $this->config['adapter'];
         $this->defaultRepository = $this->config['repository'];
+        $this->defaultGate       = $this->config['gate'];
         $this->defaultUserEntity = $this->config['userEntity'];
 
         $this->tryAuthenticating();
@@ -125,20 +149,6 @@ class Auth implements Contract
     public function getConfig(): array
     {
         return $this->config;
-    }
-
-    /**
-     * Set the config.
-     *
-     * @param array $config
-     *
-     * @return static
-     */
-    public function setConfig(array $config): self
-    {
-        $this->config = $config;
-
-        return $this;
     }
 
     /**
@@ -182,6 +192,29 @@ class Auth implements Contract
                 [
                     $this->getAdapter($adapter),
                     $user,
+                    $this->config,
+                ]
+            );
+    }
+
+    /**
+     * Get a gate by name.
+     *
+     * @param string|null $name    [optional] The name
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Gate
+     */
+    public function getGate(string $name = null, string $user = null, string $adapter = null): Gate
+    {
+        $name ??= $this->defaultGate;
+
+        return self::$gatesCache[$name]
+            ?? self::$gatesCache[$name] = $this->container->get(
+                $this->gates[$name],
+                [
+                    $this->getRepository($user, $adapter),
                     $this->config,
                 ]
             );

@@ -15,6 +15,8 @@ namespace Valkyrja\Auth\Constants;
 
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Entities\User;
+use Valkyrja\Auth\Gates\Gate;
+use Valkyrja\Auth\Gates\UserPermissiblePolicy;
 use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
@@ -28,6 +30,8 @@ final class ConfigValue
     public const ADAPTER                = CKP::DEFAULT;
     public const USER_ENTITY            = User::class;
     public const REPOSITORY             = Repository::class;
+    public const GATE                   = CKP::DEFAULT;
+    public const POLICY                 = CKP::DEFAULT;
     public const ALWAYS_AUTHENTICATE    = false;
     public const KEEP_USER_FRESH        = false;
     public const AUTHENTICATE_ROUTE     = RouteName::AUTHENTICATE;
@@ -40,12 +44,22 @@ final class ConfigValue
     public const ADAPTERS               = [
         CKP::DEFAULT => ORMAdapter::class,
     ];
+    public const GATES                  = [
+        CKP::DEFAULT => Gate::class,
+    ];
+    public const POLICIES               = [
+        CKP::DEFAULT => UserPermissiblePolicy::class,
+    ];
 
     public static array $defaults = [
         CKP::ADAPTER                => self::ADAPTER,
         CKP::USER_ENTITY            => self::USER_ENTITY,
         CKP::ADAPTERS               => self::ADAPTERS,
         CKP::REPOSITORY             => self::REPOSITORY,
+        CKP::GATE                   => self::GATE,
+        CKP::GATES                  => self::GATES,
+        CKP::POLICY                 => self::POLICY,
+        CKP::POLICIES               => self::POLICIES,
         CKP::ALWAYS_AUTHENTICATE    => self::ALWAYS_AUTHENTICATE,
         CKP::KEEP_USER_FRESH        => self::KEEP_USER_FRESH,
         CKP::AUTHENTICATE_ROUTE     => self::AUTHENTICATE_ROUTE,

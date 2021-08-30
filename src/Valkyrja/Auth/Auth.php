@@ -34,15 +34,6 @@ interface Auth
     public function getConfig(): array;
 
     /**
-     * Set the config.
-     *
-     * @param array $config
-     *
-     * @return static
-     */
-    public function setConfig(array $config): self;
-
-    /**
      * Get an adapter by name.
      *
      * @param string|null $name [optional] The adapter name
@@ -60,6 +51,17 @@ interface Auth
      * @return Repository
      */
     public function getRepository(string $user = null, string $adapter = null): Repository;
+
+    /**
+     * Get a gate by name.
+     *
+     * @param string|null $name    [optional] The name
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Gate
+     */
+    public function getGate(string $name = null, string $user = null, string $adapter = null): Gate;
 
     /**
      * Get a request with auth token header.

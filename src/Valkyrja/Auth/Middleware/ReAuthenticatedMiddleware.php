@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Auth\Constants\RouteName;
-use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Http\Constants\StatusCode;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Routing\Url;
-
-use function time;
 
 /**
  * Class ReAuthenticatedMiddleware.
@@ -38,23 +35,11 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
      */
     public static function before(Request $request)
     {
-        if (static::shouldReAuthenticate()) {
+        if (static::getRepository()->shouldReAuthenticate()) {
             return static::getFailedAuthenticationResponse($request);
         }
 
         return $request;
-    }
-
-    /**
-     * Determine if a re-authentication needs to occur.
-     *
-     * @return bool
-     */
-    protected static function shouldReAuthenticate(): bool
-    {
-        $confirmedAt = time() - ((int) static::getSession()->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
-
-        return $confirmedAt > (int) static::getConfig('password_timeout', 10800);
     }
 
     /**
