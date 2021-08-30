@@ -73,16 +73,16 @@ abstract class ApiController extends Controller
         $json->setErrors($errors ?? []);
         $json->setWarnings($warnings ?? []);
 
-        return self::$responseFactory->createJsonResponse($json->__toArray(), $statusCode);
+        return self::$responseFactory->createJsonResponse($json->asArray(), $statusCode);
     }
 
     /**
      * Get an exception response.
      *
-     * @param Throwable   $exception  The exception
-     * @param string|null $message    [optional] The message to override
-     * @param string|null $status     [optional] The status
-     * @param int|null    $statusCode [optional] The status code
+     * @param Throwable     $exception  The exception
+     * @param string|null   $message    [optional] The message to override
+     * @param string|null   $status     [optional] The status
+     * @param int|null      $statusCode [optional] The status code
      * @param string[]|null $errors     [optional] The errors
      * @param string[]|null $warnings   [optional] The warnings
      *

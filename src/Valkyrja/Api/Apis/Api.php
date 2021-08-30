@@ -131,7 +131,7 @@ class Api implements Contract
 
         $jsonData->setItem($object);
         $this->setItemKeysFromObject($object, $jsonData);
-        $json->setData($jsonData->__toArray());
+        $json->setData($jsonData->asArray());
 
         return $json;
     }
@@ -166,7 +166,7 @@ class Api implements Contract
             $this->setItemKeysFromObject($objects[0], $jsonData);
         }
 
-        $json->setData($jsonData->__toArray());
+        $json->setData($jsonData->asArray());
 
         return $json;
     }
@@ -197,7 +197,7 @@ class Api implements Contract
 
         $jsonData->setData($array);
 
-        $json->setData($jsonData->__toArray());
+        $json->setData($jsonData->asArray());
 
         return $json;
     }
@@ -271,7 +271,7 @@ class Api implements Contract
      */
     protected function getResponseFromModel(Json $json): JsonResponse
     {
-        return $this->responseFactory->createJsonResponse($json->__toArray());
+        return $this->responseFactory->createJsonResponse($json->asArray());
     }
 
     /**

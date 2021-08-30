@@ -71,6 +71,8 @@ interface Entity extends Model
      * @param ORM    $orm          The ORM
      * @param string $relationship The relationship to set
      *
+     * TODO: Move to Repository
+     *
      * @return void
      */
     public function __setRelationship(ORM $orm, string $relationship): void;
@@ -82,5 +84,5 @@ interface Entity extends Model
      *
      * @return array
      */
-    public function __storable(string ...$properties): array;
+    public function asStorableArray(string ...$properties): array;
 }

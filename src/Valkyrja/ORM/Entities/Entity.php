@@ -131,6 +131,8 @@ abstract class Entity extends Model implements EntityContract
      * @param ORM    $orm          The ORM
      * @param string $relationship The relationship to set
      *
+     * TODO: Move to Repository
+     *
      * @return void
      */
     public function __setRelationship(ORM $orm, string $relationship): void
@@ -151,7 +153,7 @@ abstract class Entity extends Model implements EntityContract
      *
      * @return array
      */
-    public function __storable(string ...$properties): array
+    public function asStorableArray(string ...$properties): array
     {
         return $this->__toArrayOrStorable(true, ...$properties);
     }
@@ -165,7 +167,7 @@ abstract class Entity extends Model implements EntityContract
      *
      * @return array
      */
-    public function __toArray(string ...$properties): array
+    public function asArray(string ...$properties): array
     {
         return $this->__toArrayOrStorable(false, ...$properties);
     }
@@ -177,7 +179,7 @@ abstract class Entity extends Model implements EntityContract
      */
     protected function __asArrayForChangedComparison(): array
     {
-        return $this->__storable();
+        return $this->asStorableArray();
     }
 
     /**

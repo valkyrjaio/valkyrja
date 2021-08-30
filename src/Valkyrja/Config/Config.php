@@ -44,7 +44,7 @@ abstract class Config extends Model implements ArrayAccess
     public function __construct(array $properties = null, bool $setupFromEnv = false)
     {
         if (null !== $properties) {
-            $this->__setProperties($properties);
+            $this->updateProperties($properties);
         }
 
         if ($setupFromEnv) {

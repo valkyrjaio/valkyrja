@@ -116,7 +116,7 @@ class Collection implements Contract
         $this->dispatcher->verifyDispatch($route);
 
         // Set the id to an md5 hash of the route
-        $route->setId(md5(Arr::toString($route->__toArray())));
+        $route->setId(md5(Arr::toString($route->asArray())));
         // Set the path to the validated cleaned path (/some/path)
         $route->setPath(Helpers::trimPath($route->getPath() ?? ''));
         // Set the route to its request methods

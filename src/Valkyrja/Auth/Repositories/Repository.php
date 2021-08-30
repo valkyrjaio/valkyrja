@@ -368,7 +368,7 @@ class Repository implements Contract
     {
         $user = $user ?? $this->getUser();
 
-        $this->session->set($this->user::getUserSessionId(), Arr::toString($user->__tokenized()));
+        $this->session->set($this->user::getUserSessionId(), Arr::toString($user->asTokenizableArray()));
 
         return $this;
     }

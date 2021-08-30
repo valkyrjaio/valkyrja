@@ -68,7 +68,7 @@ class CacheableCollection extends Collection
         $config->named   = $this->named;
 
         foreach ($this->routes as $id => $route) {
-            $config->routes[$id] = $route->__toArray();
+            $config->routes[$id] = $route->asArray();
         }
 
         return $config;

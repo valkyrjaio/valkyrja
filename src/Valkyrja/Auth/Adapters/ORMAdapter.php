@@ -73,7 +73,7 @@ class ORMAdapter implements Contract
         // If there is a user and the password matches
         if ($dbUser && $this->isPassword($dbUser, $user->__get($user::getPasswordField()))) {
             // Update the user model with all the properties from the database
-            $user->__setProperties($dbUser->__storable());
+            $user->updateProperties($dbUser->asStorableArray());
 
             return true;
         }
@@ -95,11 +95,11 @@ class ORMAdapter implements Contract
         // Get the password field
         $passwordField = $user::getPasswordField();
 
-        $user->__expose($passwordField);
+        $user->expose($passwordField);
 
-        $token = $this->crypt->encryptArray($user->__tokenized());
+        $token = $this->crypt->encryptArray($user->asTokenizableArray());
 
-        $user->__unexpose($passwordField);
+        $user->unexpose($passwordField);
 
         return $token;
     }

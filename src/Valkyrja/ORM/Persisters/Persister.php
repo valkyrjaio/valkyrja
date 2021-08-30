@@ -105,7 +105,7 @@ class Persister implements Contract
             // Ensure a transaction is in progress
             $this->adapter->ensureTransaction();
 
-            $this->persistEntity(Statement::INSERT, $entity, $entity->__storable());
+            $this->persistEntity(Statement::INSERT, $entity, $entity->asStorableArray());
 
             $this->adapter->commit();
 
@@ -142,7 +142,7 @@ class Persister implements Contract
             // Ensure a transaction is in progress
             $this->adapter->ensureTransaction();
 
-            $this->persistEntity(Statement::UPDATE, $entity, $entity->__changed());
+            $this->persistEntity(Statement::UPDATE, $entity, $entity->asChangedArray());
 
             $this->adapter->commit();
 
@@ -466,7 +466,7 @@ class Persister implements Contract
         // Iterate through the models awaiting creation
         foreach ($this->createEntities as $createEntity) {
             // Create the model
-            $this->persistEntity(Statement::INSERT, $createEntity, $createEntity->__storable());
+            $this->persistEntity(Statement::INSERT, $createEntity, $createEntity->asStorableArray());
         }
     }
 
@@ -483,7 +483,7 @@ class Persister implements Contract
         // Iterate through the models awaiting save
         foreach ($this->saveEntities as $saveEntity) {
             // Save the model
-            $this->persistEntity(Statement::UPDATE, $saveEntity, $saveEntity->__changed());
+            $this->persistEntity(Statement::UPDATE, $saveEntity, $saveEntity->asChangedArray());
         }
     }
 

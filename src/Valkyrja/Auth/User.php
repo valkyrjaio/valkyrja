@@ -76,5 +76,5 @@ interface User extends Entity
      *
      * @return array
      */
-    public function __tokenized(): array;
+    public function asTokenizableArray(): array;
 }

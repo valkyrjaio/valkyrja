@@ -229,7 +229,7 @@ class Parser implements Contract
         // If there are properties
         if (null !== $parts[Part::PROPERTIES] && $parts[Part::PROPERTIES]) {
             // Set the annotation's properties to setters if they exist
-            $annotation->__setProperties($this->getPropertiesAsArray($parts[Part::PROPERTIES]) ?? []);
+            $annotation->updateProperties($this->getPropertiesAsArray($parts[Part::PROPERTIES]) ?? []);
 
             // Having set the properties there's no need to retain this key in
             // the properties

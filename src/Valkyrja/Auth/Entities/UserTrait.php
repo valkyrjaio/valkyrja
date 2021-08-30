@@ -112,9 +112,9 @@ trait UserTrait
      *
      * @return array
      */
-    public function __tokenized(): array
+    public function asTokenizableArray(): array
     {
-        return $this->__storable();
+        return $this->asStorableArray();
     }
 
     /**
@@ -122,5 +122,5 @@ trait UserTrait
      *
      * @return array
      */
-    abstract public function __storable(): array;
+    abstract public function asStorableArray(): array;
 }

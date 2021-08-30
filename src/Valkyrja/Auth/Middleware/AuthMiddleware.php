@@ -166,7 +166,7 @@ abstract class AuthMiddleware extends Middleware
         $json->setStatus(Status::ERROR);
 
         return self::$responseFactory->createJsonResponse(
-            $json->__toArray(),
+            $json->asArray(),
             StatusCode::UNAUTHORIZED
         );
     }

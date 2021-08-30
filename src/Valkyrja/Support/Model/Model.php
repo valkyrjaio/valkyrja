@@ -66,7 +66,7 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function __setProperties(array $properties): void;
+    public function updateProperties(array $properties): void;
 
     /**
      * Get a new model with new properties.
@@ -75,7 +75,7 @@ interface Model extends JsonSerializable
      *
      * @return $this
      */
-    public function __withProperties(array $properties): self;
+    public function withProperties(array $properties): self;
 
     /**
      * Get model as an array.
@@ -84,14 +84,14 @@ interface Model extends JsonSerializable
      *
      * @return array
      */
-    public function __toArray(string ...$properties): array;
+    public function asArray(string ...$properties): array;
 
     /**
-     * Get an array of changed properties.
+     * Get model as an array including only changed properties.
      *
      * @return array
      */
-    public function __changed(): array;
+    public function asChangedArray(): array;
 
     /**
      * Get an original property value by name.
@@ -100,14 +100,14 @@ interface Model extends JsonSerializable
      *
      * @return mixed
      */
-    public function __getOriginalProperty(string $name);
+    public function getOriginalPropertyValue(string $name);
 
     /**
      * Get all original properties.
      *
      * @return array
      */
-    public function __getOriginalProperties(): array;
+    public function asOriginalArray(): array;
 
     /**
      * Serialize properties for json_encode.
@@ -130,7 +130,7 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function __expose(string ...$properties): void;
+    public function expose(string ...$properties): void;
 
     /**
      * Unexpose hidden properties or all properties.
@@ -139,5 +139,5 @@ interface Model extends JsonSerializable
      *
      * @return void
      */
-    public function __unexpose(string ...$properties): void;
+    public function unexpose(string ...$properties): void;
 }

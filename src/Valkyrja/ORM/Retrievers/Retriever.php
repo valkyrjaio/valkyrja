@@ -303,6 +303,7 @@ class Retriever implements Contract
 
         $results = $this->query->getResult();
 
+        // TODO: move to repository
         if ($this->getRelations && is_array($results)) {
             $this->setRelationshipsOnEntities($this->relationships, ...$results);
         }

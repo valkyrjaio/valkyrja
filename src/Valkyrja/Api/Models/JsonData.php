@@ -278,7 +278,7 @@ class JsonData extends Model implements Contract
      *
      * @return array
      */
-    public function __toArray(string ...$properties): array
+    public function asArray(string ...$properties): array
     {
         $data = $this->data ?? [];
 

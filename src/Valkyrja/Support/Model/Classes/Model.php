@@ -104,7 +104,7 @@ abstract class Model implements Contract
     {
         $model = new static();
 
-        $model->__setPropertiesInternal($properties, true);
+        $model->__setProperties($properties, true);
 
         return $model;
     }
@@ -175,9 +175,9 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    public function __setProperties(array $properties): void
+    public function updateProperties(array $properties): void
     {
-        $this->__setPropertiesInternal($properties);
+        $this->__setProperties($properties);
     }
 
     /**
@@ -189,11 +189,11 @@ abstract class Model implements Contract
      *
      * @return static
      */
-    public function __withProperties(array $properties): self
+    public function withProperties(array $properties): self
     {
         $model = clone $this;
 
-        $model->__setPropertiesInternal($properties);
+        $model->__setProperties($properties);
 
         return $model;
     }
@@ -205,7 +205,7 @@ abstract class Model implements Contract
      *
      * @return array
      */
-    public function __toArray(string ...$properties): array
+    public function asArray(string ...$properties): array
     {
         // Get the public properties
         $allProperties = array_merge(Obj::getProperties($this), $this->__exposed);
@@ -225,11 +225,11 @@ abstract class Model implements Contract
     }
 
     /**
-     * Get an array of changed properties.
+     * Get model as an array including only changed properties.
      *
      * @return array
      */
-    public function __changed(): array
+    public function asChangedArray(): array
     {
         // The original properties set on the model
         $originalProperties = $this->__originalProperties;
@@ -256,7 +256,7 @@ abstract class Model implements Contract
      *
      * @return mixed
      */
-    public function __getOriginalProperty(string $name)
+    public function getOriginalPropertyValue(string $name)
     {
         return $this->__originalProperties[$name] ?? null;
     }
@@ -266,7 +266,7 @@ abstract class Model implements Contract
      *
      * @return array
      */
-    public function __getOriginalProperties(): array
+    public function asOriginalArray(): array
     {
         return $this->__originalProperties;
     }
@@ -278,7 +278,7 @@ abstract class Model implements Contract
      */
     public function jsonSerialize(): array
     {
-        return $this->__toArray();
+        return $this->asArray();
     }
 
     /**
@@ -300,7 +300,7 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    public function __expose(string ...$properties): void
+    public function expose(string ...$properties): void
     {
         foreach ($properties as $property) {
             $this->__exposed[$property] = true;
@@ -314,7 +314,7 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    public function __unexpose(string ...$properties): void
+    public function unexpose(string ...$properties): void
     {
         if (empty($properties)) {
             $this->__exposed = [];
@@ -334,7 +334,7 @@ abstract class Model implements Contract
      */
     protected function __asArrayForChangedComparison(): array
     {
-        return $this->__toArray();
+        return $this->asArray();
     }
 
     /**
@@ -370,7 +370,7 @@ abstract class Model implements Contract
      *
      * @return void
      */
-    protected function __setPropertiesInternal(array $properties, bool $setOriginalProperties = false): void
+    protected function __setProperties(array $properties, bool $setOriginalProperties = false): void
     {
         $propertyTypes          = static::$propertyCastings;
         $propertyAllowedClasses = static::$castingsAllowedClasses;
@@ -525,7 +525,7 @@ abstract class Model implements Contract
         }
 
         if (isset($this->$property)) {
-            $value = array_merge($this->$property->__toArray(), $value);
+            $value = array_merge($this->$property->asArray(), $value);
         }
 
         /** @var static $type */
