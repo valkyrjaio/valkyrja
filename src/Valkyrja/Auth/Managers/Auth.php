@@ -184,7 +184,7 @@ class Auth implements Contract
         /** @var User|string $user */
         /** @var Repository $repository */
         $user ??= $this->defaultUserEntity;
-        $name = $user::getRepository() ?? $this->defaultRepository;
+        $name = $user::getAuthRepository() ?? $this->defaultRepository;
 
         return self::$repositories[$name]
             ?? self::$repositories[$name] = $this->container->get(
