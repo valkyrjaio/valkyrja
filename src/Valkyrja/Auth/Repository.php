@@ -134,6 +134,15 @@ interface Repository
     public function getToken(): string;
 
     /**
+     * Determine if a token is valid.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function isTokenValid(string $token): bool;
+
+    /**
      * Get the user token from session.
      *
      * @return string
@@ -245,5 +254,5 @@ interface Repository
      *
      * @return bool
      */
-    public function shouldReAuthenticate(): bool;
+    public function isReAuthenticationRequired(): bool;
 }

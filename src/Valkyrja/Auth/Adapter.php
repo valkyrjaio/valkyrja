@@ -15,7 +15,6 @@ namespace Valkyrja\Auth;
 
 use Exception;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
  * Interface Adapter.
@@ -34,53 +33,23 @@ interface Adapter
     public function authenticate(User $user): bool;
 
     /**
-     * Get the user token.
-     *
-     * @param User $user
-     *
-     * @throws CryptException
-     *
-     * @return string
-     */
-    public function getToken(User $user): string;
-
-    /**
-     * Determine if a token is valid.
-     *
-     * @param string $token
-     *
-     * @return bool
-     */
-    public function isValidToken(string $token): bool;
-
-    /**
      * Get a user via login fields.
      *
      * @param User $user
      *
      * @return User|null
      */
-    public function getUserViaLoginFields(User $user): ?User;
+    public function retrieve(User $user): ?User;
 
     /**
      * Get a user from token.
      *
-     * @param string $user
-     * @param string $token
-     *
-     * @return User|null
-     */
-    public function getUserFromToken(string $user, string $token): ?User;
-
-    /**
-     * Get a user from token.
-     *
-     * @param string $user
+     * @param User   $user
      * @param string $resetToken
      *
      * @return User|null
      */
-    public function getUserFromResetToken(string $user, string $resetToken): ?User;
+    public function retrieveByResetToken(User $user, string $resetToken): ?User;
 
     /**
      * Refresh a user from the data store.
@@ -89,7 +58,7 @@ interface Adapter
      *
      * @return User
      */
-    public function getFreshUser(User $user): User;
+    public function retrieveById(User $user): User;
 
     /**
      * Save a user.
@@ -98,7 +67,7 @@ interface Adapter
      *
      * @return void
      */
-    public function saveUser(User $user): void;
+    public function save(User $user): void;
 
     /**
      * Determine if a password verifies against the user's password.
@@ -108,7 +77,7 @@ interface Adapter
      *
      * @return bool
      */
-    public function isPassword(User $user, string $password): bool;
+    public function verifyPassword(User $user, string $password): bool;
 
     /**
      * Update a user's password.
@@ -131,25 +100,7 @@ interface Adapter
      *
      * @return void
      */
-    public function generateResetToken(User $user): void;
-
-    /**
-     * Lock a user.
-     *
-     * @param LockableUser $user
-     *
-     * @return void
-     */
-    public function lock(LockableUser $user): void;
-
-    /**
-     * Unlock a user.
-     *
-     * @param LockableUser $user
-     *
-     * @return void
-     */
-    public function unlock(LockableUser $user): void;
+    public function updateResetToken(User $user): void;
 
     /**
      * Register a new user.
@@ -160,14 +111,5 @@ interface Adapter
      *
      * @return bool
      */
-    public function register(User $user): bool;
-
-    /**
-     * Determine if a user is registered.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function isRegistered(User $user): bool;
+    public function create(User $user): bool;
 }

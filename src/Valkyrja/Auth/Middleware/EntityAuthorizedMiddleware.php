@@ -19,6 +19,8 @@ use Valkyrja\ORM\Entity;
 /**
  * Abstract Class EntityAuthorizedMiddleware.
  *
+ * TODO: Deprecate in favor of EntityPolicy and GatedMiddleware
+ *
  * @author Melech Mizrachi
  */
 abstract class EntityAuthorizedMiddleware extends AuthorizedMiddleware

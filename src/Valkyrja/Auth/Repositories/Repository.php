@@ -23,6 +23,7 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository as Contract;
 use Valkyrja\Auth\User;
+use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Session\Session;
 use Valkyrja\Support\Type\Arr;
@@ -50,6 +51,13 @@ class Repository implements Contract
      * @var Adapter
      */
     protected Adapter $adapter;
+
+    /**
+     * The crypt service.
+     *
+     * @var Crypt
+     */
+    protected Crypt $crypt;
 
     /**
      * The session manager.
@@ -89,17 +97,19 @@ class Repository implements Contract
     /**
      * Repository constructor.
      *
-     * @param Session $session
      * @param Adapter $adapter
+     * @param Crypt   $crypt The crypt
+     * @param Session $session
      * @param array   $config
      * @param string  $user
      */
-    public function __construct(Adapter $adapter, Session $session, array $config, string $user)
+    public function __construct(Adapter $adapter, Crypt $crypt, Session $session, array $config, string $user)
     {
         Cls::validateInherits($user, User::class);
 
         $this->config         = $config;
         $this->adapter        = $adapter;
+        $this->crypt          = $crypt;
         $this->session        = $session;
         $this->userEntityName = $user;
     }
@@ -204,7 +214,7 @@ class Repository implements Contract
     {
         $passwordField = $user::getPasswordField();
         // Get a fresh user from the database
-        $dbUser = $this->adapter->getFreshUser($user);
+        $dbUser = $this->adapter->retrieveById($user);
 
         // If the db password does not match the tokenized user password the token is no longer valid
         if ($dbUser->__get($passwordField) !== $user->__get($passwordField)) {
@@ -265,7 +275,7 @@ class Repository implements Contract
         }
 
         if ($this->config['keepUserFresh']) {
-            $user = $this->adapter->getFreshUser($user);
+            $user = $this->adapter->retrieveById($user);
         }
 
         $this->setAuthenticatedUser($user);
@@ -326,7 +336,29 @@ class Repository implements Contract
      */
     public function getToken(): string
     {
-        return $this->adapter->getToken($this->user);
+        $user = $this->user;
+        // Get the password field
+        $passwordField = $user::getPasswordField();
+
+        $user->expose($passwordField);
+
+        $token = $this->crypt->encryptArray($user->asTokenizableArray());
+
+        $user->unexpose($passwordField);
+
+        return $token;
+    }
+
+    /**
+     * Determine if a token is valid.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function isTokenValid(string $token): bool
+    {
+        return $this->crypt->isValidEncryptedMessage($token);
     }
 
     /**
@@ -408,7 +440,7 @@ class Repository implements Contract
      */
     public function register(User $user): self
     {
-        $this->adapter->register($user);
+        $this->adapter->create($user);
 
         return $this;
     }
@@ -424,13 +456,13 @@ class Repository implements Contract
      */
     public function forgot(User $user): self
     {
-        $dbUser = $this->adapter->getUserViaLoginFields($user);
+        $dbUser = $this->adapter->retrieve($user);
 
         if (! $dbUser) {
             throw new InvalidAuthenticationException('No user found.');
         }
 
-        $this->adapter->generateResetToken($dbUser);
+        $this->adapter->updateResetToken($dbUser);
 
         $user->__set($user::getResetTokenField(), $dbUser->__get($dbUser::getResetTokenField()));
         $user->__set($user::getIdField(), $dbUser->__get($dbUser::getIdField()));
@@ -450,7 +482,7 @@ class Repository implements Contract
      */
     public function reset(string $resetToken, string $password): self
     {
-        if (! $user = $this->adapter->getUserFromResetToken($this->userEntityName, $resetToken)) {
+        if (! $user = $this->adapter->retrieveByResetToken(new $this->userEntityName(), $resetToken)) {
             throw new InvalidAuthenticationException('Invalid reset token.');
         }
 
@@ -469,7 +501,7 @@ class Repository implements Contract
      */
     public function lock(LockableUser $user): self
     {
-        $this->adapter->lock($user);
+        $this->lockUnlock($user, true);
 
         return $this;
     }
@@ -483,7 +515,7 @@ class Repository implements Contract
      */
     public function unlock(LockableUser $user): self
     {
-        $this->adapter->unlock($user);
+        $this->lockUnlock($user, false);
 
         return $this;
     }
@@ -499,7 +531,7 @@ class Repository implements Contract
      */
     public function confirmPassword(string $password): self
     {
-        if (! $this->adapter->isPassword($this->user, $password)) {
+        if (! $this->adapter->verifyPassword($this->user, $password)) {
             throw new InvalidPasswordConfirmationException('Invalid password confirmation.');
         }
 
@@ -523,7 +555,7 @@ class Repository implements Contract
      *
      * @return bool
      */
-    public function shouldReAuthenticate(): bool
+    public function isReAuthenticationRequired(): bool
     {
         $confirmedAt = time() - ((int) $this->session->get(SessionId::PASSWORD_CONFIRMED_TIMESTAMP, 0));
 
@@ -555,6 +587,21 @@ class Repository implements Contract
     }
 
     /**
+     * Lock or unlock a user.
+     *
+     * @param LockableUser $user
+     * @param bool         $lock
+     *
+     * @return void
+     */
+    protected function lockUnlock(LockableUser $user, bool $lock): void
+    {
+        $user->__set($user::getIsLockedField(), $lock);
+
+        $this->adapter->save($user);
+    }
+
+    /**
      * Get a user from a token.
      *
      * @param string $token The token
@@ -564,8 +611,8 @@ class Repository implements Contract
     protected function getUserFromToken(string $token): User
     {
         if (
-            ! $this->adapter->isValidToken($token)
-            || null === $user = $this->adapter->getUserFromToken($this->userEntityName, $token)
+            ! $this->isTokenValid($token)
+            || null === $user = $this->tryGettingUserFromToken($token)
         ) {
             $this->resetAfterLogout();
 
@@ -573,5 +620,25 @@ class Repository implements Contract
         }
 
         return $user;
+    }
+
+    /**
+     * Attempt to get a user from token.
+     *
+     * @param string $token The token
+     *
+     * @return User|null
+     */
+    protected function tryGettingUserFromToken(string $token): ?User
+    {
+        try {
+            $userProperties = $this->crypt->decryptArray($token);
+            /** @var User $userModel */
+            $userModel = $this->userEntityName::fromArray($userProperties);
+        } catch (Exception $exception) {
+            return null;
+        }
+
+        return $userModel;
     }
 }

@@ -35,7 +35,7 @@ class ReAuthenticatedMiddleware extends AuthMiddleware
      */
     public static function before(Request $request)
     {
-        if (static::getRepository()->shouldReAuthenticate()) {
+        if (static::getRepository()->isReAuthenticationRequired()) {
             return static::getFailedAuthenticationResponse($request);
         }
 

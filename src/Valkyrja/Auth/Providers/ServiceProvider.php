@@ -17,7 +17,7 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Gates\Gate;
-use Valkyrja\Auth\Gates\UserPermissiblePolicy;
+use Valkyrja\Auth\Policies\UserPermissiblePolicy;
 use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
@@ -102,7 +102,6 @@ class ServiceProvider extends Provider
             ORMAdapter::class,
             static function (array $config) use ($container): ORMAdapter {
                 return new ORMAdapter(
-                    $container->getSingleton(Crypt::class),
                     $container->getSingleton(ORM::class),
                 );
             }
@@ -163,6 +162,7 @@ class ServiceProvider extends Provider
             static function (Adapter $adapter, string $user, array $config) use ($container): Repository {
                 return new Repository(
                     $adapter,
+                    $container->getSingleton(Crypt::class),
                     $container->getSingleton(Session::class),
                     $config,
                     $user
