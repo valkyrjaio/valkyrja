@@ -32,7 +32,7 @@ interface Repository
     /**
      * Find a single entity given its id.
      *
-     * @param string|int $id
+     * @param string|int $id The id
      *
      * @return static
      */
@@ -48,7 +48,7 @@ interface Repository
     /**
      * Set columns.
      *
-     * @param array $columns
+     * @param array $columns The columns
      *
      * @return static
      */
@@ -58,9 +58,9 @@ interface Repository
      * Add a where condition.
      * - Each additional use will add an `AND` where condition.
      *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
+     * @param string      $column   The column
+     * @param string|null $operator [optional] The operator
+     * @param mixed|null  $value    [optional] The value
      *
      * @return static
      */
@@ -69,9 +69,9 @@ interface Repository
     /**
      * Add an additional `OR` where condition.
      *
-     * @param string      $column
-     * @param string|null $operator
-     * @param mixed|null  $value
+     * @param string      $column   The column
+     * @param string|null $operator [optional] The operator
+     * @param mixed|null  $value    [optional] The value
      *
      * @return static
      */
@@ -101,17 +101,17 @@ interface Repository
     /**
      * Set an order by.
      *
-     * @param string      $column
-     * @param string|null $type
+     * @param string      $column    The column
+     * @param string|null $direction [optional] The order direction
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): self;
+    public function orderBy(string $column, string $direction = null): self;
 
     /**
      * Set limit.
      *
-     * @param int $limit
+     * @param int $limit The limit
      *
      * @return static
      */
@@ -120,7 +120,7 @@ interface Repository
     /**
      * Set offset.
      *
-     * @param int $offset
+     * @param int $offset The offset
      *
      * @return static
      */
@@ -172,8 +172,8 @@ interface Repository
      *      $repository->create(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to defer creation or create immediately
      *
      * @return void
      */
@@ -186,8 +186,8 @@ interface Repository
      *      $repository->save(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to defer save or save immediately
      *
      * @return void
      */
@@ -200,8 +200,8 @@ interface Repository
      *      $repository->delete(new Entity(), true | false)
      * </code>
      *
-     * @param Entity $entity
-     * @param bool   $defer [optional]
+     * @param Entity $entity The entity
+     * @param bool   $defer  [optional] Whether to deletion creation or delete immediately
      *
      * @return void
      */
@@ -214,8 +214,8 @@ interface Repository
      *      $persister->softDelete(new SoftDeleteEntity(), true | false)
      * </code>
      *
-     * @param SoftDeleteEntity $entity
-     * @param bool             $defer [optional]
+     * @param SoftDeleteEntity $entity The entity
+     * @param bool             $defer  [optional] Whether to defer deletion or delete immediately
      *
      * @return void
      */
@@ -251,16 +251,16 @@ interface Repository
     /**
      * Set the connection to use.
      *
-     * @param string $connection
+     * @param string $name The connection name
      *
      * @return static
      */
-    public function setConnection(string $connection): self;
+    public function setConnection(string $name): self;
 
     /**
      * Get a new query builder instance.
      *
-     * @param string|null $alias
+     * @param string|null $alias The alias to use
      *
      * @return QueryBuilder
      */
@@ -269,7 +269,7 @@ interface Repository
     /**
      * Create a new query.
      *
-     * @param string $query
+     * @param string $query The query string
      *
      * @return Query
      */

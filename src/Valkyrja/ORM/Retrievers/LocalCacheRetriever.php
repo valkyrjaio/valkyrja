@@ -17,8 +17,6 @@ use JsonException;
 use Valkyrja\ORM\Constants\Statement;
 use Valkyrja\Support\Type\Arr;
 
-use function is_array;
-
 /**
  * Class Retriever
  *
@@ -49,10 +47,6 @@ class LocalCacheRetriever extends Retriever
         $this->prepareResults();
 
         $results = $this->query->getResult();
-
-        if ($this->getRelations && is_array($results)) {
-            $this->setRelationshipsOnEntities($this->relationships, ...$results);
-        }
 
         self::$localCache[$localCacheKey] = $results;
 

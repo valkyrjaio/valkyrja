@@ -205,14 +205,11 @@ class ServiceProvider extends Provider
      */
     public static function publishPdoAdapter(Container $container): void
     {
-        $orm = $container->getSingleton(ORM::class);
-
         $container->setClosure(
             PDOAdapter::class,
-            static function (array $config) use ($container, $orm) {
+            static function (array $config) use ($container) {
                 return new PDOAdapter(
                     $container,
-                    $orm,
                     new PDO(
                         $config['dsn'],
                         null,

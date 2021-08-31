@@ -56,25 +56,11 @@ class Retriever implements Contract
     protected Query $query;
 
     /**
-     * The relationships to get with each result.
-     *
-     * @var string[]|null
-     */
-    protected ?array $relationships = null;
-
-    /**
      * The values to bind.
      *
      * @var array
      */
     protected array $values = [];
-
-    /**
-     * Whether to get relations.
-     *
-     * @var bool
-     */
-    protected bool $getRelations = false;
 
     /**
      * Retriever constructor.
@@ -278,21 +264,6 @@ class Retriever implements Contract
     }
 
     /**
-     * Add relationships to include with the results.
-     *
-     * @param array|null $relationships [optional] The relationships to get
-     *
-     * @return static
-     */
-    public function withRelationships(array $relationships = null): self
-    {
-        $this->getRelations  = true;
-        $this->relationships = $relationships;
-
-        return $this;
-    }
-
-    /**
      * Get results.
      *
      * @return Entity[]
@@ -301,14 +272,7 @@ class Retriever implements Contract
     {
         $this->prepareResults();
 
-        $results = $this->query->getResult();
-
-        // TODO: move to repository
-        if ($this->getRelations && is_array($results)) {
-            $this->setRelationshipsOnEntities($this->relationships, ...$results);
-        }
-
-        return $results;
+        return $this->query->getResult();
     }
 
     /**
@@ -438,45 +402,6 @@ class Retriever implements Contract
     {
         foreach ($this->values as $column => $value) {
             $this->query->bindValue($column, $value);
-        }
-    }
-
-    /**
-     * Set relationships on the entities from results.
-     *
-     * @param array|null $relationships [optional] The relationships to get (null will get all relationships)
-     * @param Entity     ...$entities   The entities to add relationships to
-     *
-     * @return void
-     */
-    protected function setRelationshipsOnEntities(array $relationships = null, Entity ...$entities): void
-    {
-        if (empty($relationships)) {
-            return;
-        }
-
-        // Iterate through the rows found
-        foreach ($entities as $entity) {
-            $relationships = $relationships ?? $entity::getRelationshipProperties();
-            // Get the entity relations
-            $this->setRelationshipsOnEntity($relationships, $entity);
-        }
-    }
-
-    /**
-     * Set relationships on an entity.
-     *
-     * @param array  $relationships The relationships to set
-     * @param Entity $entity        The entity
-     *
-     * @return void
-     */
-    protected function setRelationshipsOnEntity(array $relationships, Entity $entity): void
-    {
-        // Iterate through the rows found
-        foreach ($relationships as $relationship) {
-            // Set the entity relations
-            $entity->__setRelationship($this->adapter->getOrm(), $relationship);
         }
     }
 }

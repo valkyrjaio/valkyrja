@@ -171,12 +171,18 @@ class CacheRepository extends Repository
         $cacheKey = $this->getCacheKey();
 
         if ($results = $this->store->get($cacheKey)) {
-            return unserialize(base64_decode($results, true), ['allowed_classes' => true]);
+            $results = unserialize(base64_decode($results, true), ['allowed_classes' => true]);
+
+            $this->setRelationshipsOnEntities(...$results);
+
+            return $results;
         }
 
-        $results = parent::getResult();
+        $results = $this->retriever->getResult();
 
         $this->cacheResults($cacheKey, $results);
+
+        $this->setRelationshipsOnEntities(...$results);
 
         $this->id = null;
 
@@ -184,22 +190,9 @@ class CacheRepository extends Repository
     }
 
     /**
-     * Get one or null.
-     *
-     * @throws JsonException
-     *
-     * @return Entity|null
-     */
-    public function getOneOrNull(): ?Entity
-    {
-        return $this->getResult()[0] ?? null;
-    }
-
-    /**
      * Get one or fail.
      *
      * @throws EntityNotFoundException
-     * @throws JsonException
      *
      * @return Entity
      */
@@ -388,7 +381,10 @@ class CacheRepository extends Repository
      */
     protected function getCacheKey(): string
     {
-        return md5(Arr::toString(Obj::getAllProperties($this->retriever)) . Arr::toString(Obj::getAllProperties($this->retriever->getQueryBuilder())));
+        return md5(
+            Arr::toString(Obj::getAllProperties($this->retriever))
+            . Arr::toString(Obj::getAllProperties($this->retriever->getQueryBuilder()))
+        );
     }
 
     /**

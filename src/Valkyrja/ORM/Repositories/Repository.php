@@ -26,6 +26,7 @@ use Valkyrja\ORM\Repository as Contract;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\SoftDeleteEntity;
 use Valkyrja\Support\Type\Cls;
+use Valkyrja\Support\Type\Str;
 
 use function get_class;
 
@@ -55,7 +56,7 @@ class Repository implements Contract
      *
      * @var ORM
      */
-    protected ORM $manager;
+    protected ORM $orm;
 
     /**
      * The persister.
@@ -79,10 +80,24 @@ class Repository implements Contract
     protected string $entity;
 
     /**
+     * The relationships to get with each result.
+     *
+     * @var string[]|null
+     */
+    protected ?array $relationships = null;
+
+    /**
+     * Whether to get relations.
+     *
+     * @var bool
+     */
+    protected bool $getRelations = false;
+
+    /**
      * Repository constructor.
      *
-     * @param ORM    $manager
-     * @param string $entity
+     * @param ORM    $manager The orm manager
+     * @param string $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
@@ -92,7 +107,7 @@ class Repository implements Contract
 
         $this->driver    = $manager->useConnection(static::$connectionName);
         $this->persister = $this->driver->getPersister();
-        $this->manager   = $manager;
+        $this->orm       = $manager;
         $this->entity    = $entity;
     }
 
@@ -104,6 +119,7 @@ class Repository implements Contract
     public function find(): self
     {
         $this->retriever = $this->driver->createRetriever()->find($this->entity);
+        $this->resetRelationships();
 
         return $this;
     }
@@ -111,13 +127,14 @@ class Repository implements Contract
     /**
      * Find a single entity given its id.
      *
-     * @param string|int $id
+     * @param string|int $id The id
      *
      * @return static
      */
     public function findOne($id): self
     {
         $this->retriever = $this->driver->createRetriever()->findOne($this->entity, $id);
+        $this->resetRelationships();
 
         return $this;
     }
@@ -130,6 +147,7 @@ class Repository implements Contract
     public function count(): self
     {
         $this->retriever = $this->driver->createRetriever()->count($this->entity);
+        $this->resetRelationships();
 
         return $this;
     }
@@ -210,13 +228,13 @@ class Repository implements Contract
      * Set an order by.
      *
      * @param string      $column
-     * @param string|null $type
+     * @param string|null $direction
      *
      * @return static
      */
-    public function orderBy(string $column, string $type = null): self
+    public function orderBy(string $column, string $direction = null): self
     {
-        $this->retriever->orderBy($column, $type);
+        $this->retriever->orderBy($column, $direction);
 
         return $this;
     }
@@ -258,7 +276,8 @@ class Repository implements Contract
      */
     public function withRelationships(array $relationships = null): self
     {
-        $this->retriever->withRelationships($relationships);
+        $this->getRelations  = true;
+        $this->relationships = $relationships;
 
         return $this;
     }
@@ -270,7 +289,11 @@ class Repository implements Contract
      */
     public function getResult(): array
     {
-        return $this->retriever->getResult();
+        $results = $this->retriever->getResult();
+
+        $this->setRelationshipsOnEntities(...$results);
+
+        return $results;
     }
 
     /**
@@ -280,7 +303,7 @@ class Repository implements Contract
      */
     public function getOneOrNull(): ?Entity
     {
-        return $this->retriever->getOneOrNull();
+        return $this->getResult()[0] ?? null;
     }
 
     /**
@@ -434,13 +457,13 @@ class Repository implements Contract
     /**
      * Set the connection to use.
      *
-     * @param string $name
+     * @param string $name The connection name
      *
      * @return static
      */
     public function setConnection(string $name): self
     {
-        $this->driver    = $this->manager->useConnection($name);
+        $this->driver    = $this->orm->useConnection($name);
         $this->persister = $this->driver->getPersister();
 
         return $this;
@@ -449,7 +472,7 @@ class Repository implements Contract
     /**
      * Get a new query builder instance.
      *
-     * @param string|null $alias
+     * @param string|null $alias The alias to use
      *
      * @return QueryBuilder
      */
@@ -461,7 +484,7 @@ class Repository implements Contract
     /**
      * Create a new query.
      *
-     * @param string $query
+     * @param string $query The query string
      *
      * @return Query
      */
@@ -473,7 +496,7 @@ class Repository implements Contract
     /**
      * Validate the passed entity.
      *
-     * @param Entity $entity
+     * @param Entity $entity The entity
      *
      * @throws InvalidEntityException
      *
@@ -489,6 +512,74 @@ class Repository implements Contract
                 . get_class($entity)
                 . ' provided instead.'
             );
+        }
+    }
+
+    /**
+     * Reset the relationship properties.
+     *
+     * @return void
+     */
+    protected function resetRelationships(): void
+    {
+        $this->getRelations  = false;
+        $this->relationships = null;
+    }
+
+    /**
+     * Set relationships on the entities from results.
+     *
+     * @param Entity ...$entities The entities to add relationships to
+     *
+     * @return void
+     */
+    protected function setRelationshipsOnEntities(Entity ...$entities): void
+    {
+        $relationships = $this->relationships;
+
+        if (empty($relationships) || ! $this->getRelations || empty($entities)) {
+            return;
+        }
+
+        // Iterate through the rows found
+        foreach ($entities as $entity) {
+            $relationships = $relationships ?? $entity::getRelationshipProperties();
+            // Get the entity relations
+            $this->setRelationshipsOnEntity($relationships, $entity);
+        }
+    }
+
+    /**
+     * Set relationships on an entity.
+     *
+     * @param array  $relationships The relationships to set
+     * @param Entity $entity        The entity
+     *
+     * @return void
+     */
+    protected function setRelationshipsOnEntity(array $relationships, Entity $entity): void
+    {
+        // Iterate through the rows found
+        foreach ($relationships as $relationship) {
+            // Set the entity relations
+            $this->setRelationship($entity, $relationship);
+        }
+    }
+
+    /**
+     * Set a relationship property.
+     *
+     * @param Entity $entity       The entity
+     * @param string $relationship The relationship to set
+     *
+     * @return void
+     */
+    public function setRelationship(Entity $entity, string $relationship): void
+    {
+        $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
+
+        if (method_exists($this, $methodName)) {
+            $this->$methodName($entity);
         }
     }
 }

@@ -15,12 +15,10 @@ namespace Valkyrja\ORM\Entities;
 
 use JsonException;
 use Valkyrja\ORM\Entity as EntityContract;
-use Valkyrja\ORM\ORM;
 use Valkyrja\Support\Model\Classes\Model;
 use Valkyrja\Support\Model\Constants\PropertyType;
 use Valkyrja\Support\Type\Arr;
 use Valkyrja\Support\Type\Obj;
-use Valkyrja\Support\Type\Str;
 
 use function in_array;
 use function is_string;
@@ -123,25 +121,6 @@ abstract class Entity extends Model implements EntityContract
     public static function getStorableHiddenFields(): array
     {
         return static::$storableHiddenFields;
-    }
-
-    /**
-     * Set a relationship property.
-     *
-     * @param ORM    $orm          The ORM
-     * @param string $relationship The relationship to set
-     *
-     * TODO: Move to Repository
-     *
-     * @return void
-     */
-    public function __setRelationship(ORM $orm, string $relationship): void
-    {
-        $methodName = 'set' . Str::toStudlyCase($relationship) . 'Relationship';
-
-        if (method_exists($this, $methodName)) {
-            $this->$methodName($orm);
-        }
     }
 
     /**

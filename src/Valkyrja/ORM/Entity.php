@@ -66,18 +66,6 @@ interface Entity extends Model
     public static function getStorableHiddenFields(): array;
 
     /**
-     * Set a relationship property.
-     *
-     * @param ORM    $orm          The ORM
-     * @param string $relationship The relationship to set
-     *
-     * TODO: Move to Repository
-     *
-     * @return void
-     */
-    public function __setRelationship(ORM $orm, string $relationship): void;
-
-    /**
      * Get the entity as an array for saving to the data store.
      *
      * @param string ...$properties [optional] An array of properties to return

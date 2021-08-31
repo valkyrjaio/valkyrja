@@ -17,7 +17,6 @@ use PDO;
 use RuntimeException;
 use Valkyrja\Container\Container;
 use Valkyrja\ORM\Adapter as Contract;
-use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
@@ -47,13 +46,6 @@ class PDOAdapter implements Contract
      * @var Container
      */
     protected Container $container;
-
-    /**
-     * The ORM service.
-     *
-     * @var ORM
-     */
-    protected ORM $orm;
 
     /**
      * The pdo service.
@@ -108,14 +100,12 @@ class PDOAdapter implements Contract
      * PDOAdapter constructor.
      *
      * @param Container $container The container
-     * @param ORM       $orm       The ORM
      * @param PDO       $pdo       The PDO service
      * @param array     $config    The config
      */
-    public function __construct(Container $container, ORM $orm, PDO $pdo, array $config)
+    public function __construct(Container $container, PDO $pdo, array $config)
     {
         $this->container = $container;
-        $this->orm       = $orm;
         $this->pdo       = $pdo;
         $this->config    = $config;
 
@@ -279,15 +269,5 @@ class PDOAdapter implements Contract
     public function getPersister(): Persister
     {
         return $this->persister;
-    }
-
-    /**
-     * Get the ORM.
-     *
-     * @return ORM
-     */
-    public function getOrm(): ORM
-    {
-        return $this->orm;
     }
 }

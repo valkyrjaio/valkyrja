@@ -67,7 +67,7 @@ interface Adapter
     /**
      * Get the last inserted id.
      *
-     * @param string|null $table [optional] The table last inserted into
+     * @param string|null $table   [optional] The table last inserted into
      * @param string|null $idField [optional] The id field of the table last inserted into
      *
      * @return string
@@ -107,11 +107,4 @@ interface Adapter
      * @return Persister
      */
     public function getPersister(): Persister;
-
-    /**
-     * Get the ORM.
-     *
-     * @return ORM
-     */
-    public function getOrm(): ORM;
 }
