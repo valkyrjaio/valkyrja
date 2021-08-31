@@ -16,7 +16,7 @@ namespace Valkyrja\Auth\Constants;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Entities\User;
 use Valkyrja\Auth\Gates\Gate;
-use Valkyrja\Auth\Gates\UserPermissiblePolicy;
+use Valkyrja\Auth\Policies\UserPermissiblePolicy;
 use Valkyrja\Auth\Repositories\Repository;
 use Valkyrja\Config\Constants\ConfigKeyPart as CKP;
 
