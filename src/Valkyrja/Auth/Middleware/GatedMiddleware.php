@@ -39,9 +39,9 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
     /**
      * The action to check for.
      *
-     * @var string
+     * @var string|null
      */
-    protected static string $action;
+    protected static ?string $action = null;
 
     /**
      * @inheritDoc
@@ -49,6 +49,6 @@ abstract class GatedMiddleware extends AuthorizedMiddleware
     protected static function checkAuthorized(User $user): bool
     {
         return self::$auth->getGate(static::$gate, static::$userEntity, static::$adapterName)
-            ->isAuthorized(static:: $action, static::$policy);
+            ->isAuthorized(static::$action ?? self::$request->getMethod(), static::$policy);
     }
 }
