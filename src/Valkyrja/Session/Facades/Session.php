@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Session\Facades;
 
-use Valkyrja\Session\Session as Contract;
 use Valkyrja\Session\Driver as SessionContract;
+use Valkyrja\Session\Session as Contract;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -31,7 +31,7 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool isActive()
  * @method static bool has(string $id)
  * @method static mixed get(string $id)
- * @method static void set(string $id, string $value)
+ * @method static void set(string $id, mixed $value)
  * @method static bool remove(string $id)
  * @method static string generateCsrfToken(string $id)
  * @method static void validateCsrfToken(string $id, string $token)

@@ -134,11 +134,11 @@ class Driver implements Contract
      * Set an item into the session.
      *
      * @param string $id    The id
-     * @param string $value The value
+     * @param mixed  $value The value
      *
      * @return void
      */
-    public function set(string $id, string $value): void
+    public function set(string $id, $value): void
     {
         $this->adapter->set($id, $value);
     }
