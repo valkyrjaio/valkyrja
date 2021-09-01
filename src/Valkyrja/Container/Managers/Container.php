@@ -168,7 +168,11 @@ class Container implements Contract
     {
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
-        return isset(self::$services[$serviceId]) || isset(self::$singletons[$serviceId]) || isset(self::$aliases[$serviceId]) || isset(self::$closures[$serviceId]);
+        return $this->isProvided($serviceId)
+            || isset(self::$services[$serviceId])
+            || isset(self::$singletons[$serviceId])
+            || isset(self::$aliases[$serviceId])
+            || isset(self::$closures[$serviceId]);
     }
 
     /**
@@ -324,6 +328,20 @@ class Container implements Contract
     }
 
     /**
+     * Check whether a given service exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isService(string $serviceId): bool
+    {
+        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+
+        return isset(self::$services[$serviceId]);
+    }
+
+    /**
      * Get a service from the container.
      *
      * @param string $serviceId The service id
@@ -333,10 +351,8 @@ class Container implements Contract
      */
     public function get(string $serviceId, array $arguments = [])
     {
-        // If this service is an alias
-        if ($this->isAlias($serviceId)) {
-            $serviceId = self::$aliases[$serviceId];
-        }
+        // Get an aliased service id if it exists
+        $serviceId = $this->getAliasedServiceId($serviceId);
 
         // Ensure the service has been published if it is provided
         $this->ensureProvidedServiceIsPublished($serviceId);
@@ -354,7 +370,7 @@ class Container implements Contract
         }
 
         // If the service is in the container
-        if ($this->has($serviceId)) {
+        if ($this->isService($serviceId)) {
             // Return the made service
             return $this->makeService($serviceId, $arguments);
         }
@@ -373,6 +389,8 @@ class Container implements Contract
      */
     public function getClosure(string $serviceId, array $arguments = [])
     {
+        // Get an aliased service id if it exists
+        $serviceId = $this->getAliasedServiceId($serviceId);
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
         $this->ensureProvidedServiceIsPublished($serviceId);
@@ -391,6 +409,8 @@ class Container implements Contract
      */
     public function getSingleton(string $serviceId)
     {
+        // Get an aliased service id if it exists
+        $serviceId = $this->getAliasedServiceId($serviceId);
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
         $this->ensureProvidedServiceIsPublished($serviceId);
@@ -408,6 +428,8 @@ class Container implements Contract
      */
     public function makeService(string $serviceId, array $arguments = [])
     {
+        // Get an aliased service id if it exists
+        $serviceId = $this->getAliasedServiceId($serviceId);
         $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
 
         if (! isset(self::$services[$serviceId])) {
@@ -509,5 +531,17 @@ class Container implements Contract
             // Publish the service provider
             $this->publishProvided($serviceId);
         }
+    }
+
+    /**
+     * Get an aliased service id if it exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return string
+     */
+    protected function getAliasedServiceId(string $serviceId): string
+    {
+        return self::$aliases[$serviceId] ?? $serviceId;
     }
 }

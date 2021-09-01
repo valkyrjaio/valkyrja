@@ -138,6 +138,15 @@ interface Container extends ArrayAccess, ProvidersAware
     public function isSingleton(string $serviceId): bool;
 
     /**
+     * Check whether a given service exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isService(string $serviceId): bool;
+
+    /**
      * Get a service from the container.
      *
      * @param string $serviceId The service id
