@@ -256,6 +256,8 @@ final class EnvKey
 
     public const SESSION_ID               = 'SESSION_ID';
     public const SESSION_NAME             = 'SESSION_NAME';
+    public const SESSION_ADAPTER          = 'SESSION_ADAPTER';
+    public const SESSION_DRIVER           = 'SESSION_DRIVER';
     public const SESSION_COOKIE_LIFETIME  = 'SESSION_COOKIE_LIFETIME';
     public const SESSION_COOKIE_PATH      = 'SESSION_COOKIE_PATH';
     public const SESSION_COOKIE_DOMAIN    = 'SESSION_COOKIE_DOMAIN';
