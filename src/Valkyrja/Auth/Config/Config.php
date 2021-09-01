@@ -43,7 +43,6 @@ class Config extends Model
         CKP::AUTHENTICATE_ROUTE,
         CKP::PASSWORD_CONFIRM_ROUTE,
         CKP::USE_SESSION,
-        CKP::USE_TOKEN,
     ];
 
     /**
@@ -65,7 +64,6 @@ class Config extends Model
         CKP::AUTHENTICATE_ROUTE     => EnvKey::AUTH_AUTHENTICATE_ROUTE,
         CKP::PASSWORD_CONFIRM_ROUTE => EnvKey::AUTH_PASSWORD_CONFIRM_ROUTE,
         CKP::USE_SESSION            => EnvKey::AUTH_USE_SESSION,
-        CKP::USE_TOKEN              => EnvKey::AUTH_USE_TOKEN,
     ];
 
     /**
@@ -179,11 +177,4 @@ class Config extends Model
      * @var bool
      */
     public bool $useSession;
-
-    /**
-     * Whether to authenticate using a token.
-     *
-     * @var bool
-     */
-    public bool $useToken;
 }

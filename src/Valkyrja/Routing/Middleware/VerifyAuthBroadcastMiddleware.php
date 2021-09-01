@@ -64,7 +64,7 @@ class VerifyAuthBroadcastMiddleware extends Middleware
         }
 
         // Ensure a user is logged in
-        if (! $auth->isLoggedIn()) {
+        if (! $auth->isAuthenticated()) {
             return static::getNoAuthUserResponse($responseFactory);
         }
 

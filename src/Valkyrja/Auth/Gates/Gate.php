@@ -122,11 +122,33 @@ class Gate implements Contract
         $name ??= $this->defaultPolicy;
 
         return static::$policiesCache[$name]
-            ?? static::$policiesCache[$name] = $this->container->get(
-                $this->policies[$name],
+            ?? static::$policiesCache[$name] = $this->__getPolicy($this->policies[$name]);
+    }
+
+    /**
+     * Get a policy by name.
+     *
+     * @param string $name The policy name
+     *
+     * @return Policy
+     */
+    protected function __getPolicy(string $name): Policy
+    {
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
                 [
                     $this->repository,
                 ]
             );
+        }
+
+        return $this->container->get(
+            Policy::class,
+            [
+                $name,
+                $this->repository,
+            ]
+        );
     }
 }

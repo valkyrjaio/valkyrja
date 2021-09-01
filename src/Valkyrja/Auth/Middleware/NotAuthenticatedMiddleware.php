@@ -45,7 +45,7 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     {
         $repository = static::getRepository();
 
-        if ($repository->isLoggedIn()) {
+        if ($repository->isAuthenticated()) {
             return static::getFailedResponse($request);
         }
 

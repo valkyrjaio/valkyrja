@@ -16,9 +16,10 @@ namespace Valkyrja\Auth\Providers;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
-use Valkyrja\Auth\Gates\Gate;
-use Valkyrja\Auth\Policies\UserPermissiblePolicy;
-use Valkyrja\Auth\Repositories\Repository;
+use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\Policy;
+use Valkyrja\Auth\Repositories\TokenizedRepository;
+use Valkyrja\Auth\Repository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -39,11 +40,13 @@ class ServiceProvider extends Provider
     public static function publishers(): array
     {
         return [
-            Auth::class                  => 'publishAuth',
-            Gate::class                  => 'publishGate',
-            Repository::class            => 'publishRepository',
-            ORMAdapter::class            => 'publishAdapter',
-            UserPermissiblePolicy::class => 'publishPolicy',
+            Auth::class                => 'publishAuth',
+            Gate::class                => 'publishGate',
+            Repository::class          => 'publishRepository',
+            TokenizedRepository::class => 'publishTokenizedRepository',
+            Adapter::class             => 'publishAdapter',
+            ORMAdapter::class          => 'publishOrmAdapter',
+            Policy::class              => 'publishPolicy',
         ];
     }
 
@@ -56,8 +59,10 @@ class ServiceProvider extends Provider
             Auth::class,
             Gate::class,
             Repository::class,
+            TokenizedRepository::class,
+            Adapter::class,
             ORMAdapter::class,
-            UserPermissiblePolicy::class,
+            Policy::class,
         ];
     }
 
@@ -90,13 +95,32 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default adapter service.
+     * Publish an adapter service.
      *
      * @param Container $container The container
      *
      * @return void
      */
     public static function publishAdapter(Container $container): void
+    {
+        $container->setClosure(
+            Adapter::class,
+            static function (string $name, array $config): Adapter {
+                return new $name(
+                    $config,
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the orm adapter service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishOrmAdapter(Container $container): void
     {
         $container->setClosure(
             ORMAdapter::class,
@@ -109,7 +133,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default adapter service.
+     * Publish a gate service.
      *
      * @param Container $container The container
      *
@@ -119,8 +143,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Gate::class,
-            static function (\Valkyrja\Auth\Repository $repository, array $config) use ($container): Gate {
-                return new Gate(
+            static function (string $name, Repository $repository, array $config) use ($container): Gate {
+                return new $name(
                     $container,
                     $repository,
                     $config,
@@ -130,7 +154,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default adapter service.
+     * Publish a policy service.
      *
      * @param Container $container The container
      *
@@ -139,9 +163,9 @@ class ServiceProvider extends Provider
     public static function publishPolicy(Container $container): void
     {
         $container->setClosure(
-            UserPermissiblePolicy::class,
-            static function (\Valkyrja\Auth\Repository $repository): UserPermissiblePolicy {
-                return new UserPermissiblePolicy(
+            Policy::class,
+            static function (string $name, Repository $repository): Policy {
+                return new $name(
                     $repository,
                 );
             }
@@ -149,7 +173,7 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default repository service.
+     * Publish a repository service.
      *
      * @param Container $container The container
      *
@@ -159,8 +183,30 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Repository::class,
-            static function (Adapter $adapter, string $user, array $config) use ($container): Repository {
-                return new Repository(
+            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): Repository {
+                return new $name(
+                    $adapter,
+                    $container->getSingleton(Session::class),
+                    $config,
+                    $user
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish the tokenized repository service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishTokenizedRepository(Container $container): void
+    {
+        $container->setClosure(
+            TokenizedRepository::class,
+            static function (Adapter $adapter, string $user, array $config) use ($container): TokenizedRepository {
+                return new TokenizedRepository(
                     $adapter,
                     $container->getSingleton(Crypt::class),
                     $container->getSingleton(Session::class),

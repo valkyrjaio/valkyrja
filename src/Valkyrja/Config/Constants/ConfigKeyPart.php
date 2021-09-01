@@ -140,7 +140,6 @@ final class ConfigKeyPart
     public const NOT_AUTHENTICATE_URL        = 'notAuthenticateUrl';
     public const PASSWORD_CONFIRM_ROUTE      = 'passwordConfirmRoute';
     public const USE_SESSION                 = 'useSession';
-    public const USE_TOKEN                   = 'useToken';
     public const PDO                         = 'pdo';
     public const PDO_CACHE                   = 'pdoCache';
     public const PDO_DRIVER                  = 'pdoDriver';

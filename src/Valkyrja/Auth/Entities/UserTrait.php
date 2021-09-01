@@ -46,16 +46,6 @@ trait UserTrait
     }
 
     /**
-     * Get the session id.
-     *
-     * @return string
-     */
-    public static function getTokenSessionId(): string
-    {
-        return SessionId::USER_TOKEN;
-    }
-
-    /**
      * Get the user session id.
      *
      * @return string
@@ -100,27 +90,10 @@ trait UserTrait
      *
      * @return string[]
      */
-    public static function getLoginFields(): array
+    public static function getAuthenticationFields(): array
     {
         return [
             static::getUsernameField(),
         ];
     }
-
-    /**
-     * Get user as an array for storing in a token.
-     *
-     * @return array
-     */
-    public function asTokenizableArray(): array
-    {
-        return $this->asStorableArray();
-    }
-
-    /**
-     * Get the entity as an array for saving to the data store.
-     *
-     * @return array
-     */
-    abstract public function asStorableArray(): array;
 }

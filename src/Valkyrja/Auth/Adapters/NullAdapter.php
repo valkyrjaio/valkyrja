@@ -17,34 +17,27 @@ use Exception;
 use Valkyrja\Auth\Adapter as Contract;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\User;
-use Valkyrja\ORM\ORM;
-use Valkyrja\ORM\Repository;
 use Valkyrja\Support\Type\Str;
 
 use const PASSWORD_DEFAULT;
 
 /**
- * Class Adapter.
+ * Class NullAdapter.
  *
  * @author Melech Mizrachi
  */
-class ORMAdapter implements Contract
+class NullAdapter implements Contract
 {
-    /**
-     * The orm
-     *
-     * @var ORM
-     */
-    protected ORM $orm;
+    protected array $config;
 
     /**
-     * Adapter constructor.
+     * NullAdapter constructor.
      *
-     * @param ORM $orm The orm
+     * @param array $config The config
      */
-    public function __construct(ORM $orm)
+    public function __construct(array $config)
     {
-        $this->orm = $orm;
+        $this->config = $config;
     }
 
     /**
@@ -56,17 +49,7 @@ class ORMAdapter implements Contract
      */
     public function authenticate(User $user): bool
     {
-        $dbUser = $this->retrieve($user);
-
-        // If there is a user and the password matches
-        if ($dbUser && $this->verifyPassword($dbUser, $user->__get($user::getPasswordField()))) {
-            // Update the user model with all the properties from the database
-            $user->updateProperties($dbUser->asStorableArray());
-
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     /**
@@ -78,19 +61,7 @@ class ORMAdapter implements Contract
      */
     public function retrieve(User $user): ?User
     {
-        $loginFields = $user::getAuthenticationFields();
-        $find        = $this->getUserRepository($user)->find();
-
-        // Iterate through the login fields
-        foreach ($loginFields as $loginField) {
-            // Set a where clause for each field
-            $find->where($loginField, null, $user->__get($loginField));
-        }
-
-        /** @var User $dbUser */
-        $dbUser = $find->getOneOrNull();
-
-        return $dbUser;
+        return $user;
     }
 
     /**
@@ -103,14 +74,7 @@ class ORMAdapter implements Contract
      */
     public function retrieveByResetToken(User $user, string $resetToken): ?User
     {
-        $resetTokenField = $user::getResetTokenField();
-        /** @var User $dbUser */
-        $dbUser = $this->getUserRepository($user)
-            ->find()
-            ->where($resetTokenField, null, $user->__get($resetTokenField))
-            ->getOneOrNull();
-
-        return $dbUser;
+        return $user;
     }
 
     /**
@@ -122,12 +86,7 @@ class ORMAdapter implements Contract
      */
     public function retrieveById(User $user): User
     {
-        /** @var User $freshUser */
-        $freshUser = $this->getUserRepository($user)
-            ->findOne($user->__get($user::getIdField()))
-            ->getOneOrFail();
-
-        return $freshUser;
+        return $user;
     }
 
     /**
@@ -139,11 +98,6 @@ class ORMAdapter implements Contract
      */
     public function save(User $user): void
     {
-        // Get the ORM repository
-        $repository = $this->getUserRepository($user);
-
-        $repository->save($user, false);
-        $repository->persist();
     }
 
     /**
@@ -173,8 +127,6 @@ class ORMAdapter implements Contract
 
         $user->__set($resetTokenField, null);
         $user->__set($user::getPasswordField(), $this->hashPassword($password));
-
-        $this->save($user);
     }
 
     /**
@@ -189,8 +141,6 @@ class ORMAdapter implements Contract
     public function updateResetToken(User $user): void
     {
         $user->__set($user::getResetTokenField(), Str::random());
-
-        $this->save($user);
     }
 
     /**
@@ -204,24 +154,7 @@ class ORMAdapter implements Contract
      */
     public function create(User $user): bool
     {
-        $repository    = $this->getUserRepository($user);
-        $passwordField = $user::getPasswordField();
-
-        try {
-            if ($this->retrieve($user)) {
-                return false;
-            }
-
-            $user->__set($passwordField, $this->hashPassword($user->__get($passwordField)));
-
-            $this->orm->ensureTransaction();
-            $repository->create($user, true);
-            $repository->persist();
-
-            return true;
-        } catch (Exception $exception) {
-            throw new InvalidRegistrationException($exception->getMessage());
-        }
+        return true;
     }
 
     /**
@@ -234,17 +167,5 @@ class ORMAdapter implements Contract
     protected function hashPassword(string $password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);
-    }
-
-    /**
-     * Get an ORM repository for the user.
-     *
-     * @param User $user The user
-     *
-     * @return Repository
-     */
-    protected function getUserRepository(User $user): Repository
-    {
-        return $this->orm->getRepositoryFromClass($user);
     }
 }

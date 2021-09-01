@@ -25,7 +25,6 @@ use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
 use Valkyrja\Container\Container;
-use Valkyrja\Crypt\Exceptions\CryptException;
 use Valkyrja\Http\Request;
 
 /**
@@ -163,12 +162,7 @@ class Auth implements Contract
         $name ??= $this->defaultAdapter;
 
         return self::$adaptersCache[$name]
-            ?? self::$adaptersCache[$name] = $this->container->get(
-                $this->adapters[$name],
-                [
-                    $this->config,
-                ]
-            );
+            ?? self::$adaptersCache[$name] = $this->__getAdapter($this->adapters[$name]);
     }
 
     /**
@@ -187,14 +181,7 @@ class Auth implements Contract
         $name = $user::getAuthRepository() ?? $this->defaultRepository;
 
         return self::$repositories[$name]
-            ?? self::$repositories[$name] = $this->container->get(
-                $name,
-                [
-                    $this->getAdapter($adapter),
-                    $user,
-                    $this->config,
-                ]
-            );
+            ?? self::$repositories[$name] = $this->__getRepository($name, $user, $adapter);
     }
 
     /**
@@ -211,13 +198,7 @@ class Auth implements Contract
         $name ??= $this->defaultGate;
 
         return self::$gatesCache[$name]
-            ?? self::$gatesCache[$name] = $this->container->get(
-                $this->gates[$name],
-                [
-                    $this->getRepository($user, $adapter),
-                    $this->config,
-                ]
-            );
+            ?? self::$gatesCache[$name] = $this->__getGate($this->gates[$name], $user, $adapter);
     }
 
     /**
@@ -227,13 +208,14 @@ class Auth implements Contract
      * @param string|null $user    [optional] The user
      * @param string|null $adapter [optional] The adapter
      *
-     * @throws CryptException
-     *
      * @return Request
      */
     public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
     {
-        return $request->withHeader(Header::AUTH_TOKEN, $this->getRepository($user, $adapter)->getToken());
+        return $request->withHeader(
+            Header::AUTH_TOKEN,
+            $this->getRepository($user, $adapter)->getUser()::asTokenized()
+        );
     }
 
     /**
@@ -246,6 +228,16 @@ class Auth implements Contract
     public function requestWithoutAuthToken(Request $request): Request
     {
         return $request->withoutHeader(Header::AUTH_TOKEN);
+    }
+
+    /**
+     * Determine if a user is logged in.
+     *
+     * @return bool
+     */
+    public function isAuthenticated(): bool
+    {
+        return $this->getRepository()->isAuthenticated();
     }
 
     /**
@@ -273,16 +265,6 @@ class Auth implements Contract
     }
 
     /**
-     * Get the user stored in session.
-     *
-     * @return User
-     */
-    public function getUserFromSession(): User
-    {
-        return $this->getRepository()->getUserFromSession();
-    }
-
-    /**
      * Log a user in.
      *
      * @param User $user The user
@@ -291,90 +273,9 @@ class Auth implements Contract
      *
      * @return static
      */
-    public function login(User $user): self
+    public function authenticate(User $user): self
     {
-        $this->getRepository()->login($user);
-
-        return $this;
-    }
-
-    /**
-     * Ensure a token is still valid.
-     *
-     * @param string $token The token
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function ensureTokenValidity(string $token): self
-    {
-        $this->getRepository()->ensureTokenValidity($token);
-
-        return $this;
-    }
-
-    /**
-     * Ensure a tokenized user is still valid.
-     *
-     * @param User $user The tokenized user
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function ensureUserValidity(User $user): self
-    {
-        $this->getRepository()->ensureUserValidity($user);
-
-        return $this;
-    }
-
-    /**
-     * Log a user in via token.
-     *
-     * @param string $token The token
-     * @param bool   $store [optional] Whether to store the token in session
-     *
-     * @throws CryptException
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function loginWithToken(string $token, bool $store = false): self
-    {
-        $this->getRepository()->loginWithToken($token, $store);
-
-        return $this;
-    }
-
-    /**
-     * Log in with a specific user.
-     *
-     * @param User $user  The user
-     * @param bool $store [optional] Whether to store the user in session
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function loginWithUser(User $user, bool $store = false): self
-    {
-        $this->getRepository()->loginWithUser($user, $store);
-
-        return $this;
-    }
-
-    /**
-     * Log a user in via tokenized session.
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function loginFromTokenizedSession(): self
-    {
-        $this->getRepository()->loginFromTokenizedSession();
+        $this->getRepository()->authenticate($user);
 
         return $this;
     }
@@ -384,73 +285,27 @@ class Auth implements Contract
      *
      * @return static
      */
-    public function loginFromSession(): self
+    public function authenticateFromSession(): self
     {
-        $this->getRepository()->loginFromSession();
+        $this->getRepository()->authenticateFromSession();
 
         return $this;
     }
 
     /**
-     * Get the user token.
+     * Authenticate a user from a request.
      *
-     * @throws CryptException
+     * @param Request $request The request
      *
-     * @return string
-     */
-    public function getToken(): string
-    {
-        return $this->getRepository()->getToken();
-    }
-
-    /**
-     * Get the user token from session.
-     *
-     * @return string
-     */
-    public function getTokenFromSession(): string
-    {
-        return $this->getRepository()->getTokenFromSession();
-    }
-
-    /**
-     * Store the user token in session.
-     *
-     * @param string|null $token [optional] The token to store
-     *
-     * @throws CryptException
+     * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function storeToken(string $token = null): self
+    public function authenticateFromRequest(Request $request): self
     {
-        $this->getRepository()->storeToken($token);
+        $this->getRepository()->authenticateFromRequest($request);
 
         return $this;
-    }
-
-    /**
-     * Store the user in session.
-     *
-     * @param User|null $user [optional] The user to store
-     *
-     * @return static
-     */
-    public function storeUser(User $user = null): self
-    {
-        $this->getRepository()->storeUser($user);
-
-        return $this;
-    }
-
-    /**
-     * Determine if a user is logged in.
-     *
-     * @return bool
-     */
-    public function isLoggedIn(): bool
-    {
-        return $this->getRepository()->isLoggedIn();
     }
 
     /**
@@ -458,9 +313,33 @@ class Auth implements Contract
      *
      * @return static
      */
-    public function logout(): self
+    public function unAuthenticate(): self
     {
-        $this->getRepository()->logout();
+        $this->getRepository()->unAuthenticate();
+
+        return $this;
+    }
+
+    /**
+     * Store the user in session.
+     *
+     * @return static
+     */
+    public function setSession(): self
+    {
+        $this->getRepository()->setSession();
+
+        return $this;
+    }
+
+    /**
+     * Unset the authenticated user from the session.
+     *
+     * @return static
+     */
+    public function unsetSession(): self
+    {
+        $this->getRepository()->unsetSession();
 
         return $this;
     }
@@ -555,15 +434,13 @@ class Auth implements Contract
     }
 
     /**
-     * Store the confirmed password timestamp in session.
+     * Determine if a re-authentication needs to occur.
      *
-     * @return static
+     * @return bool
      */
-    public function storeConfirmedPassword(): self
+    public function isReAuthenticationRequired(): bool
     {
-        $this->getRepository()->storeConfirmedPassword();
-
-        return $this;
+        return $this->getRepository()->isReAuthenticationRequired();
     }
 
     /**
@@ -574,75 +451,109 @@ class Auth implements Contract
     protected function tryAuthenticating(): void
     {
         try {
-            if ($this->config['useToken']) {
-                if ($this->config['useSession']) {
-                    // Try to login with the token from session
-                    $this->tryAuthenticatingFromTokenizedSession();
+            $repository = $this->getRepository();
 
-                    return;
-                }
-
-                if (! $token = $this->getTokenForAuthenticationAttempt()) {
-                    return;
-                }
-
-                // Try to login with the token passed as a header
-                $this->tryAuthenticatingFromToken($token);
+            if ($this->config['useSession']) {
+                // Try to authenticate from session
+                $repository->authenticateFromSession();
 
                 return;
             }
 
             // Try to login from the user session
-            $this->tryAuthenticatingFromSession();
+            $repository->authenticateFromRequest($this->request);
         } catch (Exception $exception) {
         }
     }
 
     /**
-     * Try authenticating from session
+     * Get an adapter by name.
      *
-     * @return void
+     * @param string $name The adapter
+     *
+     * @return Adapter
      */
-    protected function tryAuthenticatingFromSession(): void
+    protected function __getAdapter(string $name): Adapter
     {
-        // Try to login from the user session
-        $this->getRepository()->loginFromSession();
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
+                [
+                    $this->config,
+                ]
+            );
+        }
+
+        return $this->container->get(
+            Adapter::class,
+            [
+                $name,
+                $this->config,
+            ]
+        );
     }
 
     /**
-     * Try authenticating from a tokenized session.
+     * Get a repository by user entity name.
      *
-     * @return void
+     * @param string      $name    The name
+     * @param string      $user    The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Repository
      */
-    protected function tryAuthenticatingFromTokenizedSession(): void
+    protected function __getRepository(string $name, string $user, string $adapter = null): Repository
     {
-        // Try to login with the token from session
-        $this->getRepository()->loginFromTokenizedSession();
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
+                [
+                    $this->getAdapter($adapter),
+                    $user,
+                    $this->config,
+                ]
+            );
+        }
+
+        return $this->container->get(
+            Repository::class,
+            [
+                $name,
+                $this->getAdapter($adapter),
+                $user,
+                $this->config,
+            ]
+        );
     }
 
     /**
-     * Get the token for an authentication attempt.
+     * Get a gate by name.
      *
-     * @return string
+     * @param string      $name    The name
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Gate
      */
-    protected function getTokenForAuthenticationAttempt(): string
+    protected function __getGate(string $name, string $user = null, string $adapter = null): Gate
     {
-        // Get the token header value
-        return $this->request->getHeaderLine(Header::AUTH_TOKEN);
-    }
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
+                [
+                    $this->getRepository($user, $adapter),
+                    $this->config,
+                ]
+            );
+        }
 
-    /**
-     * Try authenticating from a token header.
-     *
-     * @param string $token The token
-     *
-     * @throws CryptException
-     *
-     * @return void
-     */
-    protected function tryAuthenticatingFromToken(string $token): void
-    {
-        // Try to login with the token passed as a header
-        $this->getRepository()->loginWithToken($token);
+        return $this->container->get(
+            Gate::class,
+            [
+                $name,
+                $this->getRepository($user, $adapter),
+                $this->config,
+            ]
+        );
     }
 }

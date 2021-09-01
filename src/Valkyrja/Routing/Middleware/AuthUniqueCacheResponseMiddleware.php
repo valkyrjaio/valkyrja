@@ -36,7 +36,7 @@ class AuthUniqueCacheResponseMiddleware extends CacheResponseMiddleware
     {
         $userPart = '';
 
-        if (Auth::isLoggedIn()) {
+        if (Auth::isAuthenticated()) {
             $userPart = md5(Auth::getUser()->__toString());
         }
 

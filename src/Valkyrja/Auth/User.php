@@ -30,13 +30,6 @@ interface User extends Entity
     public static function getAuthRepository(): ?string;
 
     /**
-     * Get the session id.
-     *
-     * @return string
-     */
-    public static function getTokenSessionId(): string;
-
-    /**
      * Get the user session id.
      *
      * @return string
@@ -69,12 +62,5 @@ interface User extends Entity
      *
      * @return string[]
      */
-    public static function getLoginFields(): array;
-
-    /**
-     * Get user as an array for storing in a token.
-     *
-     * @return array
-     */
-    public function asTokenizableArray(): array;
+    public static function getAuthenticationFields(): array;
 }

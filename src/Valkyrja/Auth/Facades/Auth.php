@@ -19,6 +19,7 @@ use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\User;
+use Valkyrja\Http\Request;
 use Valkyrja\Support\Facade\Facade;
 
 /**
@@ -30,22 +31,22 @@ use Valkyrja\Support\Facade\Facade;
  * @method static Adapter getAdapter(string $name = null)
  * @method static Repository getRepository(string $user = null, string $adapter = null)
  * @method static Gate getGate(string $name, string $user = null, string $adapter = null)
+ * @method static bool isAuthenticated()
  * @method static Contract setUser(User $user)
  * @method static User getUser()
- * @method static Contract login(User $user)
- * @method static Contract loginWithToken(string $token)
- * @method static Contract loginFromSession()
- * @method static string getToken()
- * @method static Contract storeToken()
- * @method static bool isLoggedIn()
- * @method static Contract logout()
+ * @method static Contract authenticate(User $user)
+ * @method static Contract authenticateFromSession()
+ * @method static Contract authenticateFromRequest(Request $request)
+ * @method static Contract unAuthenticate()
+ * @method static Contract setSession()
+ * @method static Contract unsetSession()
  * @method static Contract register(User $user)
  * @method static Contract forgot(User $user)
  * @method static Contract reset(string $resetToken, string $password)
  * @method static Contract lock(LockableUser $user)
  * @method static Contract unlock(LockableUser $user)
  * @method static Contract confirmPassword(string $password)
- * @method static Contract storeConfirmedPassword()
+ * @method static bool isReAuthenticationRequired()
  */
 class Auth extends Facade
 {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Constants;
 
+use Valkyrja\Auth\Adapters\NullAdapter;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Entities\User;
 use Valkyrja\Auth\Gates\Gate;
@@ -40,9 +41,9 @@ final class ConfigValue
     public const NOT_AUTHENTICATE_URL   = null;
     public const PASSWORD_CONFIRM_ROUTE = RouteName::PASSWORD_CONFIRM;
     public const USE_SESSION            = true;
-    public const USE_TOKEN              = false;
     public const ADAPTERS               = [
         CKP::DEFAULT => ORMAdapter::class,
+        CKP::NULL    => NullAdapter::class,
     ];
     public const GATES                  = [
         CKP::DEFAULT => Gate::class,
@@ -68,6 +69,5 @@ final class ConfigValue
         CKP::NOT_AUTHENTICATE_URL   => self::NOT_AUTHENTICATE_URL,
         CKP::PASSWORD_CONFIRM_ROUTE => self::PASSWORD_CONFIRM_ROUTE,
         CKP::USE_SESSION            => self::USE_SESSION,
-        CKP::USE_TOKEN              => self::USE_TOKEN,
     ];
 }

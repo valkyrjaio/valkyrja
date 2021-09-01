@@ -16,7 +16,7 @@ namespace Valkyrja\Auth;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Crypt\Exceptions\CryptException;
+use Valkyrja\Http\Request;
 
 /**
  * Interface Repository.
@@ -26,14 +26,21 @@ use Valkyrja\Crypt\Exceptions\CryptException;
 interface Repository
 {
     /**
-     * Get the logged in user.
+     * Determine if a user is authenticated.
+     *
+     * @return bool
+     */
+    public function isAuthenticated(): bool;
+
+    /**
+     * Get the authenticated user.
      *
      * @return User
      */
     public function getUser(): User;
 
     /**
-     * Set the logged in user.
+     * Set the authenticated user.
      *
      * @param User $user The user
      *
@@ -42,14 +49,7 @@ interface Repository
     public function setUser(User $user): self;
 
     /**
-     * Get the user stored in session.
-     *
-     * @return User
-     */
-    public function getUserFromSession(): User;
-
-    /**
-     * Log a user in.
+     * Authenticate a user with credentials.
      *
      * @param User $user The user
      *
@@ -57,131 +57,48 @@ interface Repository
      *
      * @return static
      */
-    public function login(User $user): self;
+    public function authenticate(User $user): self;
 
     /**
-     * Ensure a token is still valid.
-     *
-     * @param string $token The token
+     * Authenticate a user from an active session.
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function ensureTokenValidity(string $token): self;
+    public function authenticateFromSession(): self;
 
     /**
-     * Ensure a tokenized user is still valid.
+     * Authenticate a user from a request.
      *
-     * @param User $user The tokenized user
+     * @param Request $request The request
      *
      * @throws InvalidAuthenticationException
      *
      * @return static
      */
-    public function ensureUserValidity(User $user): self;
+    public function authenticateFromRequest(Request $request): self;
 
     /**
-     * Log a user in via token.
-     *
-     * @param string $token The token
-     * @param bool   $store [optional] Whether to store the token in session
-     *
-     * @throws CryptException
-     * @throws InvalidAuthenticationException
+     * Un-authenticate any active users.
      *
      * @return static
      */
-    public function loginWithToken(string $token, bool $store = false): self;
+    public function unAuthenticate(): self;
 
     /**
-     * Log in with a specific user.
-     *
-     * @param User $user  The user
-     * @param bool $store [optional] Whether to store the user in session
-     *
-     * @throws InvalidAuthenticationException
+     * Set the authenticated user in the session.
      *
      * @return static
      */
-    public function loginWithUser(User $user, bool $store = false): self;
+    public function setSession(): self;
 
     /**
-     * Log a user in via tokenized session.
-     *
-     * @throws InvalidAuthenticationException
+     * Unset the authenticated user from the session.
      *
      * @return static
      */
-    public function loginFromTokenizedSession(): self;
-
-    /**
-     * Log a user in via a user session.
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
-     */
-    public function loginFromSession(): self;
-
-    /**
-     * Get the user token.
-     *
-     * @throws CryptException
-     *
-     * @return string
-     */
-    public function getToken(): string;
-
-    /**
-     * Determine if a token is valid.
-     *
-     * @param string $token
-     *
-     * @return bool
-     */
-    public function isTokenValid(string $token): bool;
-
-    /**
-     * Get the user token from session.
-     *
-     * @return string
-     */
-    public function getTokenFromSession(): string;
-
-    /**
-     * Store the user token in session.
-     *
-     * @param string|null $token [optional] The token to store
-     *
-     * @throws CryptException
-     *
-     * @return static
-     */
-    public function storeToken(string $token = null): self;
-
-    /**
-     * Store the user in session.
-     *
-     * @param User|null $user [optional] The user to store
-     *
-     * @return static
-     */
-    public function storeUser(User $user = null): self;
-
-    /**
-     * Determine if a user is logged in.
-     *
-     * @return bool
-     */
-    public function isLoggedIn(): bool;
-
-    /**
-     * Log the current user out.
-     *
-     * @return static
-     */
-    public function logout(): self;
+    public function unsetSession(): self;
 
     /**
      * Register a new user.
@@ -241,13 +158,6 @@ interface Repository
      * @return static
      */
     public function confirmPassword(string $password): self;
-
-    /**
-     * Store the confirmed password timestamp in session.
-     *
-     * @return static
-     */
-    public function storeConfirmedPassword(): self;
 
     /**
      * Determine if a re-authentication needs to occur.
