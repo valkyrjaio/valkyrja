@@ -89,13 +89,13 @@ class CacheAdapter extends PHPAdapter
      * Set an item into the session.
      *
      * @param string $id    The id
-     * @param string $value The value
+     * @param mixed  $value The value
      *
      * @throws JsonException
      *
      * @return void
      */
-    public function set(string $id, string $value): void
+    public function set(string $id, $value): void
     {
         $this->data[$id] = $value;
 
