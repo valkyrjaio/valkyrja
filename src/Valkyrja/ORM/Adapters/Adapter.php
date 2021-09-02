@@ -93,7 +93,12 @@ abstract class Adapter implements Contract
         $this->persisterClass = $this->config['persister'];
         $this->retrieverClass = $this->config['retriever'];
 
-        $this->persister = Cls::getDefaultableService($container, $this->persisterClass, Persister::class, [$this]);
+        $this->persister = Cls::getDefaultableService(
+            $container,
+            $this->persisterClass,
+            Persister::class,
+            [$this]
+        );
     }
 
     /**
@@ -107,7 +112,12 @@ abstract class Adapter implements Contract
     public function createQuery(string $query = null, string $entity = null): Query
     {
         /** @var Query $queryInstance */
-        $queryInstance = Cls::getDefaultableService($this->container, $this->queryClass, Query::class, [$this]);
+        $queryInstance = Cls::getDefaultableService(
+            $this->container,
+            $this->queryClass,
+            Query::class,
+            [$this]
+        );
 
         if (null !== $entity) {
             $queryInstance->entity($entity);
@@ -152,7 +162,12 @@ abstract class Adapter implements Contract
      */
     public function createRetriever(): Retriever
     {
-        return Cls::getDefaultableService($this->container, $this->retrieverClass, Retriever::class, [$this]);
+        return Cls::getDefaultableService(
+            $this->container,
+            $this->retrieverClass,
+            Retriever::class,
+            [$this]
+        );
     }
 
     /**

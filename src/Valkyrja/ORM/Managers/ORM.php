@@ -428,6 +428,7 @@ class ORM implements Contract
     /**
      * Use a connection by name.
      *
+     * @param string      $name    The name
      * @param array       $config  The connection config
      * @param string|null $adapter [optional] The adapter
      *
@@ -448,7 +449,7 @@ class ORM implements Contract
             Driver::class,
             [
                 $this->getAdapter($adapter, $name),
-                $config
+                $config,
             ]
         );
     }
@@ -477,7 +478,7 @@ class ORM implements Contract
             $name,
             Cls::inherits($name, PDOAdapter::class) ? PDOAdapter::class : Adapter::class,
             [
-                $config
+                $config,
             ]
         );
     }
