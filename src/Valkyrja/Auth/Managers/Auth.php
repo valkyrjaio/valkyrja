@@ -41,7 +41,7 @@ class Auth implements Contract
      *
      * @var Adapter[]
      */
-    protected static array $adaptersCache = [];
+    protected static array $adapters = [];
 
     /**
      * Repositories.
@@ -55,7 +55,7 @@ class Auth implements Contract
      *
      * @var Gate[]
      */
-    protected static array $gatesCache = [];
+    protected static array $gates = [];
 
     /**
      * The container service.
@@ -77,20 +77,6 @@ class Auth implements Contract
      * @var array
      */
     protected array $config = [];
-
-    /**
-     * The adapters.
-     *
-     * @var array
-     */
-    protected array $adapters = [];
-
-    /**
-     * The gates.
-     *
-     * @var array
-     */
-    protected array $gates = [];
 
     /**
      * The default adapter.
@@ -132,12 +118,10 @@ class Auth implements Contract
         $this->container         = $container;
         $this->request           = $request;
         $this->config            = $config;
-        $this->adapters          = $this->config['adapters'];
-        $this->gates             = $this->config['gates'] ?? [];
-        $this->defaultAdapter    = $this->config['adapter'];
-        $this->defaultRepository = $this->config['repository'];
-        $this->defaultGate       = $this->config['gate'];
-        $this->defaultUserEntity = $this->config['userEntity'];
+        $this->defaultAdapter    = $config['adapter'];
+        $this->defaultRepository = $config['repository'];
+        $this->defaultGate       = $config['gate'];
+        $this->defaultUserEntity = $config['userEntity'];
 
         $this->tryAuthenticating();
     }
@@ -163,8 +147,8 @@ class Auth implements Contract
     {
         $name ??= $this->defaultAdapter;
 
-        return self::$adaptersCache[$name]
-            ?? self::$adaptersCache[$name] = $this->__getAdapter($this->adapters[$name]);
+        return self::$adapters[$name]
+            ?? self::$adapters[$name] = $this->__getAdapter($name);
     }
 
     /**
@@ -199,8 +183,8 @@ class Auth implements Contract
     {
         $name ??= $this->defaultGate;
 
-        return self::$gatesCache[$name]
-            ?? self::$gatesCache[$name] = $this->__getGate($this->gates[$name], $user, $adapter);
+        return self::$gates[$name]
+            ?? self::$gates[$name] = $this->__getGate($name, $user, $adapter);
     }
 
     /**

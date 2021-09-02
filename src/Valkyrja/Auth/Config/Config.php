@@ -32,12 +32,9 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::ADAPTER,
         CKP::USER_ENTITY,
-        CKP::ADAPTERS,
         CKP::REPOSITORY,
         CKP::GATE,
-        CKP::GATES,
         CKP::POLICY,
-        CKP::POLICIES,
         CKP::ALWAYS_AUTHENTICATE,
         CKP::KEEP_USER_FRESH,
         CKP::AUTHENTICATE_ROUTE,
@@ -53,12 +50,9 @@ class Config extends Model
     protected static array $envKeys = [
         CKP::ADAPTER                => EnvKey::AUTH_ADAPTER,
         CKP::USER_ENTITY            => EnvKey::AUTH_USER_ENTITY,
-        CKP::ADAPTERS               => EnvKey::AUTH_ADAPTERS,
         CKP::REPOSITORY             => EnvKey::AUTH_REPOSITORY,
         CKP::GATE                   => EnvKey::AUTH_GATE,
-        CKP::GATES                  => EnvKey::AUTH_GATES,
         CKP::POLICY                 => EnvKey::AUTH_POLICY,
-        CKP::POLICIES               => EnvKey::AUTH_POLICIES,
         CKP::ALWAYS_AUTHENTICATE    => EnvKey::AUTH_ALWAYS_AUTHENTICATE,
         CKP::KEEP_USER_FRESH        => EnvKey::AUTH_KEEP_USER_FRESH,
         CKP::AUTHENTICATE_ROUTE     => EnvKey::AUTH_AUTHENTICATE_ROUTE,
@@ -81,13 +75,6 @@ class Config extends Model
     public string $userEntity;
 
     /**
-     * The adapters.
-     *
-     * @var string[]
-     */
-    public array $adapters;
-
-    /**
      * The default repository to use for all entities.
      *
      * @var string
@@ -102,25 +89,11 @@ class Config extends Model
     public string $gate;
 
     /**
-     * The gates.
-     *
-     * @var string[]
-     */
-    public array $gates;
-
-    /**
      * The default policy to use for authorization checks.
      *
      * @var string
      */
     public string $policy;
-
-    /**
-     * The policies.
-     *
-     * @var string[]
-     */
-    public array $policies;
 
     /**
      * Whether to always authenticate a user (regardless if a session exists).

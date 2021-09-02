@@ -31,7 +31,7 @@ class Gate implements Contract
      *
      * @var Policy[]
      */
-    protected static array $policiesCache = [];
+    protected static array $policies = [];
 
     /**
      * The container.
@@ -46,13 +46,6 @@ class Gate implements Contract
      * @var Repository
      */
     protected Repository $repository;
-
-    /**
-     * The policies.
-     *
-     * @var array
-     */
-    protected array $policies = [];
 
     /**
      * The default policy.
@@ -73,7 +66,6 @@ class Gate implements Contract
         $this->container     = $container;
         $this->repository    = $repository;
         $this->defaultPolicy = $config['policy'];
-        $this->policies      = $config['policies'];
     }
 
     /**
@@ -122,8 +114,8 @@ class Gate implements Contract
     {
         $name ??= $this->defaultPolicy;
 
-        return static::$policiesCache[$name]
-            ?? static::$policiesCache[$name] = $this->__getPolicy($this->policies[$name]);
+        return static::$policies[$name]
+            ?? static::$policies[$name] = $this->__getPolicy($name);
     }
 
     /**
