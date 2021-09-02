@@ -17,6 +17,7 @@ use Valkyrja\Auth\Gate as Contract;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Container\Container;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Gate.
@@ -134,19 +135,11 @@ class Gate implements Contract
      */
     protected function __getPolicy(string $name): Policy
     {
-        if ($this->container->has($name)) {
-            return $this->container->get(
-                $name,
-                [
-                    $this->repository,
-                ]
-            );
-        }
-
-        return $this->container->get(
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
             Policy::class,
             [
-                $name,
                 $this->repository,
             ]
         );

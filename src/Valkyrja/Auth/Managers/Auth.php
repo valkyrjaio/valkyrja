@@ -477,19 +477,11 @@ class Auth implements Contract
      */
     protected function __getAdapter(string $name): Adapter
     {
-        if ($this->container->has($name)) {
-            return $this->container->get(
-                $name,
-                [
-                    $this->config,
-                ]
-            );
-        }
-
-        return $this->container->get(
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
             Adapter::class,
             [
-                $name,
                 $this->config,
             ]
         );
@@ -506,21 +498,11 @@ class Auth implements Contract
      */
     protected function __getRepository(string $name, string $user, string $adapter = null): Repository
     {
-        if ($this->container->has($name)) {
-            return $this->container->get(
-                $name,
-                [
-                    $this->getAdapter($adapter),
-                    $user,
-                    $this->config,
-                ]
-            );
-        }
-
-        return $this->container->get(
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
             Cls::inherits($name, TokenizedRepository::class) ? TokenizedRepository::class : Repository::class,
             [
-                $name,
                 $this->getAdapter($adapter),
                 $user,
                 $this->config,
@@ -539,20 +521,11 @@ class Auth implements Contract
      */
     protected function __getGate(string $name, string $user = null, string $adapter = null): Gate
     {
-        if ($this->container->has($name)) {
-            return $this->container->get(
-                $name,
-                [
-                    $this->getRepository($user, $adapter),
-                    $this->config,
-                ]
-            );
-        }
-
-        return $this->container->get(
+        return Cls::getDefaultableService(
+            $this->container,
+            $name,
             Gate::class,
             [
-                $name,
                 $this->getRepository($user, $adapter),
                 $this->config,
             ]
