@@ -42,14 +42,14 @@ class ORM implements Contract
      *
      * @var Adapter[]
      */
-    protected static array $adaptersCache = [];
+    protected static array $adapters = [];
 
     /**
      * The drivers.
      *
      * @var Driver[]
      */
-    protected static array $driversCache = [];
+    protected static array $drivers = [];
 
     /**
      * The container service.
@@ -128,8 +128,8 @@ class ORM implements Contract
         // The cache key to use
         $cacheKey = $name . $adapter;
 
-        return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->__useConnection($name, $config, $adapter);
+        return self::$drivers[$cacheKey]
+            ?? self::$drivers[$cacheKey] = $this->__useConnection($name, $config, $adapter);
     }
 
     /**
@@ -151,8 +151,8 @@ class ORM implements Contract
         // The cache key to use
         $cacheKey = $name . $connection;
 
-        return self::$adaptersCache[$cacheKey]
-            ?? self::$adaptersCache[$cacheKey] = $this->__getAdapter($name, $config);
+        return self::$adapters[$cacheKey]
+            ?? self::$adapters[$cacheKey] = $this->__getAdapter($name, $config);
     }
 
     /**
