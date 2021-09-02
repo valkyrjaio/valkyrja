@@ -18,6 +18,7 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\TokenizableUser;
+use Valkyrja\Auth\TokenizedRepository as Contract;
 use Valkyrja\Auth\User;
 use Valkyrja\Crypt\Crypt;
 use Valkyrja\Crypt\Exceptions\CryptException;
@@ -29,7 +30,7 @@ use Valkyrja\Session\Session;
  *
  * @author Melech Mizrachi
  */
-class TokenizedRepository extends Repository
+class TokenizedRepository extends Repository implements Contract
 {
     /**
      * The crypt service.

@@ -23,9 +23,11 @@ use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
+use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Auth\User;
 use Valkyrja\Container\Container;
 use Valkyrja\Http\Request;
+use Valkyrja\Support\Type\Cls;
 
 /**
  * Class Auth.
@@ -516,7 +518,7 @@ class Auth implements Contract
         }
 
         return $this->container->get(
-            Repository::class,
+            Cls::inherits($name, TokenizedRepository::class) ? TokenizedRepository::class : Repository::class,
             [
                 $name,
                 $this->getAdapter($adapter),

@@ -18,8 +18,8 @@ use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\Policy;
-use Valkyrja\Auth\Repositories\TokenizedRepository;
 use Valkyrja\Auth\Repository;
+use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\Crypt\Crypt;
@@ -205,8 +205,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             TokenizedRepository::class,
-            static function (Adapter $adapter, string $user, array $config) use ($container): TokenizedRepository {
-                return new TokenizedRepository(
+            static function (string $name, Adapter $adapter, string $user, array $config) use ($container): TokenizedRepository {
+                return new $name(
                     $adapter,
                     $container->getSingleton(Crypt::class),
                     $container->getSingleton(Session::class),
