@@ -62,11 +62,12 @@ class ServiceProvider extends Provider
      */
     public static function publishKernel(Container $container): void
     {
-        $config = $container->getSingleton('config');
+        $config     = $container->getSingleton('config');
+        $httpKernel = $config['app']['httpKernel'] ?? \Valkyrja\HttpKernel\Kernels\Kernel::class;
 
         $container->setSingleton(
             Kernel::class,
-            new \Valkyrja\HttpKernel\Kernels\Kernel(
+            new $httpKernel(
                 $container,
                 $container->getSingleton(Events::class),
                 $container->getSingleton(Router::class),

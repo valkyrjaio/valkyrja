@@ -55,6 +55,7 @@ final class ConfigKeyPart
     public const KEY_PATH                    = 'keyPath';
     public const HTTP_EXCEPTION              = 'httpException';
     public const EXCEPTION_HANDLER           = 'exceptionHandler';
+    public const HTTP_KERNEL                 = 'httpKernel';
     public const PATTERNS                    = 'patterns';
     public const ENABLED                     = 'enabled';
     public const MAP                         = 'map';

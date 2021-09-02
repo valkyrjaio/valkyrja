@@ -38,6 +38,7 @@ class Config extends Model
         CKP::VERSION,
         CKP::KEY,
         CKP::EXCEPTION_HANDLER,
+        CKP::HTTP_KERNEL,
         CKP::PROVIDERS,
     ];
 
@@ -54,6 +55,7 @@ class Config extends Model
         CKP::VERSION           => EnvKey::APP_VERSION,
         CKP::KEY               => EnvKey::APP_KEY,
         CKP::EXCEPTION_HANDLER => EnvKey::APP_EXCEPTION_HANDLER,
+        CKP::HTTP_KERNEL       => EnvKey::APP_HTTP_KERNEL,
         CKP::PROVIDERS         => EnvKey::APP_PROVIDERS,
     ];
 
@@ -105,6 +107,13 @@ class Config extends Model
      * @var string
      */
     public string $exceptionHandler;
+
+    /**
+     * The http kernel class.
+     *
+     * @var string
+     */
+    public string $httpKernel;
 
     /**
      * Array of config providers.

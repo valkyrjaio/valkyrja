@@ -37,6 +37,7 @@ final class EnvKey
     public const APP_VERSION           = 'APP_VERSION';
     public const APP_KEY               = 'APP_KEY';
     public const APP_EXCEPTION_HANDLER = 'APP_EXCEPTION_HANDLER';
+    public const APP_HTTP_KERNEL       = 'APP_HTTP_KERNEL';
     public const APP_PROVIDERS         = 'APP_PROVIDERS';
 
     public const ANNOTATIONS_ENABLED   = 'ANNOTATIONS_ENABLED';
