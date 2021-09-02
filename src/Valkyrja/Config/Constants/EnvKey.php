@@ -198,6 +198,7 @@ final class EnvKey
     public const NOTIFICATION_NOTIFICATIONS = 'NOTIFICATION_NOTIFICATIONS';
 
     public const ORM_DEFAULT             = 'ORM_DEFAULT';
+    public const ORM_ADAPTER             = 'ORM_ADAPTER';
     public const ORM_ADAPTERS            = 'ORM_ADAPTERS';
     public const ORM_DRIVERS             = 'ORM_DRIVERS';
     public const ORM_CONNECTIONS         = 'ORM_CONNECTIONS';

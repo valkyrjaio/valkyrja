@@ -19,17 +19,14 @@ use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Adapters\PDOAdapter;
-use Valkyrja\ORM\Drivers\Driver;
-use Valkyrja\ORM\Drivers\PDO\Driver as PDODriver;
-use Valkyrja\ORM\Drivers\PDO\MySqlDriver;
-use Valkyrja\ORM\Drivers\PDO\PgSqlDriver;
+use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\ORM;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
 use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
 use Valkyrja\ORM\Repositories\CacheRepository;
-use Valkyrja\ORM\Repositories\Repository;
+use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
 use Valkyrja\ORM\Retrievers\CacheRetriever;
 use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
@@ -48,10 +45,7 @@ class ServiceProvider extends Provider
     {
         return [
             ORM::class                 => 'publishORM',
-            Driver::class              => 'publishDefaultDriver',
-            PDODriver::class           => 'publishPdoDriver',
-            MySqlDriver::class         => 'publishPdoMySqlDriver',
-            PgSqlDriver::class         => 'publishPdoPgSqlDriver',
+            Driver::class              => 'publishDriver',
             PDOAdapter::class          => 'publishPdoAdapter',
             Repository::class          => 'publishRepository',
             CacheRepository::class     => 'publishCacheRepository',
@@ -72,9 +66,6 @@ class ServiceProvider extends Provider
         return [
             ORM::class,
             Driver::class,
-            PDODriver::class,
-            MySqlDriver::class,
-            PgSqlDriver::class,
             PDOAdapter::class,
             Repository::class,
             CacheRepository::class,
@@ -113,81 +104,18 @@ class ServiceProvider extends Provider
     }
 
     /**
-     * Publish the default driver service.
+     * Publish a driver service.
      *
      * @param Container $container The container
      *
      * @return void
      */
-    public static function publishDefaultDriver(Container $container): void
+    public static function publishDriver(Container $container): void
     {
         $container->setClosure(
             Driver::class,
-            static function (array $config, string $adapter) use ($container): Driver {
-                return new Driver(
-                    $container,
-                    $adapter,
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the PDO driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPdoDriver(Container $container): void
-    {
-        $container->setClosure(
-            PDODriver::class,
-            static function (array $config, string $adapter) use ($container): PDODriver {
-                return new PDODriver(
-                    $container,
-                    $adapter,
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the MySQL PDO driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPdoMySqlDriver(Container $container): void
-    {
-        $container->setClosure(
-            MySqlDriver::class,
-            static function (array $config, string $adapter) use ($container): MySqlDriver {
-                return new MySqlDriver(
-                    $container,
-                    $adapter,
-                    $config
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish the MySQL PDO driver service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishPdoPgSqlDriver(Container $container): void
-    {
-        $container->setClosure(
-            PgSqlDriver::class,
-            static function (array $config, string $adapter) use ($container): PgSqlDriver {
-                return new PgSqlDriver(
+            static function (string $name, array $config, string $adapter) use ($container): Driver {
+                return new $name(
                     $container,
                     $adapter,
                     $config
@@ -235,8 +163,8 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Repository::class,
-            static function (string $entity) use ($orm): Repository {
-                return new Repository(
+            static function (string $name, string $entity) use ($orm): Repository {
+                return new $name(
                     $orm,
                     $entity
                 );

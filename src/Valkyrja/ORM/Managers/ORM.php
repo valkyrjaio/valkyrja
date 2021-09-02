@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Valkyrja\ORM\Managers;
 
 use Valkyrja\Container\Container;
+use Valkyrja\ORM\Adapter;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\ORM as Contract;
@@ -34,6 +35,13 @@ use function get_class;
  */
 class ORM implements Contract
 {
+    /**
+     * The adapters.
+     *
+     * @var Adapter[]
+     */
+    protected static array $adaptersCache = [];
+
     /**
      * The drivers.
      *
@@ -91,6 +99,13 @@ class ORM implements Contract
     protected string $defaultConnection;
 
     /**
+     * The default adapter.
+     *
+     * @var string
+     */
+    protected string $defaultAdapter;
+
+    /**
      * The default repository.
      *
      * @var string
@@ -111,6 +126,7 @@ class ORM implements Contract
         $this->adapters          = $config['adapters'];
         $this->drivers           = $config['drivers'];
         $this->defaultConnection = $config['default'];
+        $this->defaultAdapter    = $config['adapter'];
         $this->defaultRepository = $config['repository'];
     }
 
@@ -127,20 +143,35 @@ class ORM implements Contract
         // The connection to use
         $name ??= $this->defaultConnection;
         // The connection config to use
-        $connection = $this->connections[$name];
+        $connectionConfig = $this->connections[$name];
         // The adapter to use
-        $adapter ??= $connection['adapter'];
+        $adapter ??= $connectionConfig['adapter'];
         // The cache key to use
         $cacheKey = $name . $adapter;
 
         return self::$driversCache[$cacheKey]
-            ?? self::$driversCache[$cacheKey] = $this->container->get(
-                $this->drivers[$connection['driver']],
-                [
-                    array_merge($this->adapters[$adapter], $connection),
-                    $this->adapters[$adapter]['name'],
-                ]
-            );
+            ?? self::$driversCache[$cacheKey] = $this->__useConnection($connectionConfig, $adapter);
+    }
+
+    /**
+     * Get an adapter.
+     *
+     * @param string|null $name       [optional] The adapter name
+     * @param string|null $connection [optional] The connection
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null, string $connection = null): Adapter
+    {
+        // The adapter to use
+        $name ??= $this->defaultAdapter;
+        // The connection to use
+        $connection ??= $this->defaultConnection;
+        // The cache key to use
+        $cacheKey = $name . $connection;
+
+        return self::$adaptersCache[$cacheKey]
+            ?? self::$adaptersCache[$cacheKey] = $this->__getAdapter($name, $connection);
     }
 
     /**
@@ -205,12 +236,7 @@ class ORM implements Contract
         $cacheKey = $name . $entity;
 
         return self::$repositories[$cacheKey]
-            ?? self::$repositories[$cacheKey] = $this->container->get(
-                $name,
-                [
-                    $entity,
-                ]
-            );
+            ?? self::$repositories[$cacheKey] = $this->__getRepository($name, $entity);
     }
 
     /**
@@ -421,5 +447,101 @@ class ORM implements Contract
     public function clear(Entity $entity = null): void
     {
         $this->useConnection()->getPersister()->clear($entity);
+    }
+
+    /**
+     * Use a connection by name.
+     *
+     * @param array       $connectionConfig The connection config
+     * @param string|null $adapter          [optional] The adapter
+     *
+     * @return Driver
+     */
+    protected function __useConnection(array $connectionConfig, string $adapter = null): Driver
+    {
+        // The adapter config
+        $adapterConfig  = $this->adapters[$adapter ?? $this->defaultAdapter];
+        $combinedConfig = array_merge($adapterConfig, $connectionConfig);
+        $driver         = $this->drivers[$connectionConfig['driver']];
+
+        if ($this->container->has($driver)) {
+            return $this->container->get(
+                $driver,
+                [
+                    $combinedConfig,
+                    $adapterConfig['name'],
+                ]
+            );
+        }
+
+        return $this->container->get(
+            Driver::class,
+            [
+                $driver,
+                $combinedConfig,
+                $adapterConfig['name'],
+            ]
+        );
+    }
+
+    /**
+     * Get an adapter.
+     *
+     * @param string $name       The adapter name
+     * @param string $connection The connection
+     *
+     * @return Adapter
+     */
+    protected function __getAdapter(string $name, string $connection): Adapter
+    {
+        $connectionConfig = $this->connections[$connection];
+        $adaptersConfig   = $this->adapters[$name];
+
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
+                [
+                    array_merge($adaptersConfig, $connectionConfig),
+                ]
+            );
+        }
+
+        return $this->container->get(
+            Adapter::class,
+            [
+                $name,
+                array_merge($adaptersConfig, $connectionConfig),
+            ]
+        );
+    }
+
+    /**
+     * Get a repository by name.
+     *
+     * @param string $name   The name
+     * @param string $entity The entity
+     *
+     * @throws InvalidClassProvidedException
+     *
+     * @return Repository
+     */
+    protected function __getRepository(string $name, string $entity): Repository
+    {
+        if ($this->container->has($name)) {
+            return $this->container->get(
+                $name,
+                [
+                    $entity,
+                ]
+            );
+        }
+
+        return $this->container->get(
+            Repository::class,
+            [
+                $name,
+                $entity,
+            ]
+        );
     }
 }

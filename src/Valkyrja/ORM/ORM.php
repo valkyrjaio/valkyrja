@@ -31,6 +31,16 @@ interface ORM
     public function useConnection(string $name = null, string $adapter = null): Driver;
 
     /**
+     * Get an adapter.
+     *
+     * @param string|null $name       [optional] The adapter name
+     * @param string|null $connection [optional] The connection
+     *
+     * @return Adapter
+     */
+    public function getAdapter(string $name = null, string $connection = null): Adapter;
+
+    /**
      * Create a new query builder instance.
      *
      * @param string|null $entity
@@ -120,7 +130,7 @@ interface ORM
     /**
      * Get the last inserted id.
      *
-     * @param string|null $table [optional] The table last inserted into
+     * @param string|null $table   [optional] The table last inserted into
      * @param string|null $idField [optional] The id field of the table last inserted into
      *
      * @return string

@@ -105,6 +105,7 @@ class Repository implements Contract
     {
         Cls::validateInherits($entity, Entity::class);
 
+        // TODO: Change ORM::getRepository to take in $connection and pass here as Driver $driver
         $this->driver    = $manager->useConnection(static::$connectionName);
         $this->persister = $this->driver->getPersister();
         $this->orm       = $manager;

@@ -30,8 +30,9 @@ use Valkyrja\ORM\Retrievers\CacheRetriever;
 final class ConfigValue
 {
     public const DEFAULT     = CKP::MYSQL;
+    public const ADAPTER     = CKP::PDO;
     public const ADAPTERS    = [
-        CKP::PDO => [
+        CKP::PDO       => [
             CKP::NAME          => PDOAdapter::class,
             CKP::QUERY         => null,
             CKP::QUERY_BUILDER => null,
@@ -96,6 +97,7 @@ final class ConfigValue
 
     public static array $defaults = [
         CKP::DEFAULT     => self::DEFAULT,
+        CKP::ADAPTER     => self::ADAPTER,
         CKP::ADAPTERS    => self::ADAPTERS,
         CKP::DRIVERS     => self::DRIVERS,
         CKP::REPOSITORY  => self::REPOSITORY,
