@@ -200,18 +200,22 @@ final class EnvKey
 
     public const ORM_DEFAULT             = 'ORM_DEFAULT';
     public const ORM_ADAPTER             = 'ORM_ADAPTER';
-    public const ORM_ADAPTERS            = 'ORM_ADAPTERS';
-    public const ORM_DRIVERS             = 'ORM_DRIVERS';
+    public const ORM_DRIVER              = 'ORM_DRIVER';
+    public const ORM_QUERY               = 'ORM_QUERY';
+    public const ORM_QUERY_BUILDER       = 'ORM_QUERY_BUILDER';
+    public const ORM_PERSISTER           = 'ORM_PERSISTER';
+    public const ORM_RETRIEVER           = 'ORM_RETRIEVER';
+    public const ORM_REPOSITORY          = 'ORM_REPOSITORY';
     public const ORM_CONNECTIONS         = 'ORM_CONNECTIONS';
     public const ORM_MIGRATIONS          = 'ORM_MIGRATIONS';
-    public const ORM_REPOSITORY          = 'ORM_REPOSITORY';
     public const ORM_MYSQL_ADAPTER       = 'ORM_MYSQL_ADAPTER';
     public const ORM_MYSQL_QUERY         = 'ORM_MYSQL_QUERY';
     public const ORM_MYSQL_QUERY_BUILDER = 'ORM_MYSQL_QUERY_BUILDER';
     public const ORM_MYSQL_PERSISTER     = 'ORM_MYSQL_PERSISTER';
     public const ORM_MYSQL_RETRIEVER     = 'ORM_MYSQL_RETRIEVER';
     public const ORM_MYSQL_DRIVER        = 'ORM_MYSQL_DRIVER';
-    public const ORM_MYSQL_PDO_DRIVER    = 'ORM_MYSQL_PDO_DRIVER';
+    public const ORM_MYSQL_REPOSITORY    = 'ORM_MYSQL_REPOSITORY';
+    public const ORM_MYSQL_PDO           = 'ORM_MYSQL_PDO';
     public const ORM_MYSQL_HOST          = 'ORM_MYSQL_HOST';
     public const ORM_MYSQL_PORT          = 'ORM_MYSQL_PORT';
     public const ORM_MYSQL_DB            = 'ORM_MYSQL_DB';
@@ -227,7 +231,8 @@ final class EnvKey
     public const ORM_PGSQL_PERSISTER     = 'ORM_PGSQL_PERSISTER';
     public const ORM_PGSQL_RETRIEVER     = 'ORM_PGSQL_RETRIEVER';
     public const ORM_PGSQL_DRIVER        = 'ORM_PGSQL_DRIVER';
-    public const ORM_PGSQL_PDO_DRIVER    = 'ORM_PGSQL_PDO_DRIVER';
+    public const ORM_PGSQL_REPOSITORY    = 'ORM_PGSQL_REPOSITORY';
+    public const ORM_PGSQL_PDO           = 'ORM_PGSQL_PDO';
     public const ORM_PGSQL_HOST          = 'ORM_PGSQL_HOST';
     public const ORM_PGSQL_PORT          = 'ORM_PGSQL_PORT';
     public const ORM_PGSQL_DB            = 'ORM_PGSQL_DB';

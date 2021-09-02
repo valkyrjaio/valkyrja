@@ -242,22 +242,6 @@ interface Repository
     public function persist(): bool;
 
     /**
-     * Get the driver.
-     *
-     * @return Driver
-     */
-    public function getDriver(): Driver;
-
-    /**
-     * Set the connection to use.
-     *
-     * @param string $name The connection name
-     *
-     * @return static
-     */
-    public function setConnection(string $name): self;
-
-    /**
      * Get a new query builder instance.
      *
      * @param string|null $alias The alias to use

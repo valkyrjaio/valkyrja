@@ -143,9 +143,6 @@ final class ConfigKeyPart
     public const USE_SESSION                 = 'useSession';
     public const PDO                         = 'pdo';
     public const PDO_CACHE                   = 'pdoCache';
-    public const PDO_DRIVER                  = 'pdoDriver';
-    public const PDO_MYSQL_DRIVER            = 'pdoMySqlDriver';
-    public const PDO_PGSQL_DRIVER            = 'pdoPgSqlDriver';
     public const PHP                         = 'php';
     public const FLYSYSTEM                   = 'flysystem';
     public const FLYSYSTEM_ADAPTER           = 'flysystemAdapter';

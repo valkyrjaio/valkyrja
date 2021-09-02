@@ -38,13 +38,6 @@ use function get_class;
 class Repository implements Contract
 {
     /**
-     * The connection name to use.
-     *
-     * @var string|null
-     */
-    protected static ?string $connectionName = null;
-
-    /**
      * The connection driver.
      *
      * @var Driver
@@ -97,16 +90,16 @@ class Repository implements Contract
      * Repository constructor.
      *
      * @param ORM    $manager The orm manager
+     * @param Driver $driver  The driver
      * @param string $entity  The entity class name
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(ORM $manager, string $entity)
+    public function __construct(ORM $manager, Driver $driver, string $entity)
     {
         Cls::validateInherits($entity, Entity::class);
 
-        // TODO: Change ORM::getRepository to take in $connection and pass here as Driver $driver
-        $this->driver    = $manager->useConnection(static::$connectionName);
+        $this->driver    = $driver;
         $this->persister = $this->driver->getPersister();
         $this->orm       = $manager;
         $this->entity    = $entity;
@@ -443,31 +436,6 @@ class Repository implements Contract
     public function persist(): bool
     {
         return $this->persister->persist();
-    }
-
-    /**
-     * Get the driver.
-     *
-     * @return Driver
-     */
-    public function getDriver(): Driver
-    {
-        return $this->driver;
-    }
-
-    /**
-     * Set the connection to use.
-     *
-     * @param string $name The connection name
-     *
-     * @return static
-     */
-    public function setConnection(string $name): self
-    {
-        $this->driver    = $this->orm->useConnection($name);
-        $this->persister = $this->driver->getPersister();
-
-        return $this;
     }
 
     /**

@@ -11,17 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Drivers\PDO;
+namespace Valkyrja\ORM\PDOs;
 
-use PDO;
-use Valkyrja\Container\Container;
+use PDO as BasePDO;
 
 /**
- * Class Driver.
+ * Class DefaultPDO.
  *
  * @author Melech Mizrachi
  */
-class Driver extends \Valkyrja\ORM\Drivers\Driver
+abstract class PDO extends BasePDO
 {
     /**
      * The default options.
@@ -29,25 +28,21 @@ class Driver extends \Valkyrja\ORM\Drivers\Driver
      * @var array
      */
     protected static array $defaultOptions = [
-        PDO::ATTR_CASE              => PDO::CASE_NATURAL,
-        PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-        PDO::ATTR_STRINGIFY_FETCHES => false,
-        PDO::ATTR_EMULATE_PREPARES  => false,
+        BasePDO::ATTR_CASE              => BasePDO::CASE_NATURAL,
+        BasePDO::ATTR_ERRMODE           => BasePDO::ERRMODE_EXCEPTION,
+        BasePDO::ATTR_ORACLE_NULLS      => BasePDO::NULL_NATURAL,
+        BasePDO::ATTR_STRINGIFY_FETCHES => false,
+        BasePDO::ATTR_EMULATE_PREPARES  => false,
     ];
 
     /**
-     * Driver constructor.
+     * PDO constructor.
      *
-     * @param Container   $container The container
-     * @param string      $adapter   The adapter
-     * @param array       $config    The config
-     * @param string|null $driver    [optional] The driver
-     * @param string|null $dsn       [optional] The added dsn
+     * @param array       $config The config
+     * @param string|null $driver [optional] The driver
+     * @param string|null $dsn    [optional] The added dsn
      */
     public function __construct(
-        Container $container,
-        string $adapter,
         array $config,
         string $driver = null,
         string $dsn = null
@@ -60,7 +55,12 @@ class Driver extends \Valkyrja\ORM\Drivers\Driver
             . $this->getDsnPart($config, 'password')
             . ($dsn ?? '');
 
-        parent::__construct($container, $adapter, $config);
+        parent::__construct(
+            $config['dsn'],
+            null,
+            null,
+            $config['options'] ?? static::$defaultOptions
+        );
     }
 
     /**

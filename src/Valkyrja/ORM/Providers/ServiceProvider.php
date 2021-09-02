@@ -13,23 +13,24 @@ declare(strict_types=1);
 
 namespace Valkyrja\ORM\Providers;
 
-use PDO;
+use RuntimeException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Container\Container;
 use Valkyrja\Container\Support\Provider;
 use Valkyrja\ORM\Adapter;
-use Valkyrja\ORM\Adapters\PDOAdapter;
+use Valkyrja\ORM\CacheRepository;
 use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\ORM;
+use Valkyrja\ORM\PDOAdapter;
+use Valkyrja\ORM\PDOs\PDO;
+use Valkyrja\ORM\PDOStatement;
 use Valkyrja\ORM\Persister;
 use Valkyrja\ORM\Query;
 use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\QueryBuilders\SqlQueryBuilder;
-use Valkyrja\ORM\Repositories\CacheRepository;
 use Valkyrja\ORM\Repository;
 use Valkyrja\ORM\Retriever;
-use Valkyrja\ORM\Retrievers\CacheRetriever;
 use Valkyrja\ORM\Retrievers\LocalCacheRetriever;
+use Valkyrja\ORM\Statement;
 
 /**
  * Class ServiceProvider.
@@ -52,9 +53,11 @@ class ServiceProvider extends Provider
             Persister::class           => 'publishPersister',
             Retriever::class           => 'publishRetriever',
             LocalCacheRetriever::class => 'publishLocalCacheRetriever',
-            CacheRetriever::class      => 'publishCacheRetriever',
             Query::class               => 'publishQuery',
             QueryBuilder::class        => 'publishQueryBuilder',
+            Statement::class           => 'publishStatement',
+            PDOStatement::class        => 'publishPdoStatement',
+            PDO::class                 => 'publishPDO',
         ];
     }
 
@@ -73,6 +76,9 @@ class ServiceProvider extends Provider
             Retriever::class,
             Query::class,
             QueryBuilder::class,
+            Statement::class,
+            PDOStatement::class,
+            PDO::class,
         ];
     }
 
@@ -114,7 +120,7 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Driver::class,
-            static function (string $name, array $config, string $adapter) use ($container): Driver {
+            static function (string $name, Adapter $adapter, array $config) use ($container): Driver {
                 return new $name(
                     $container,
                     $adapter,
@@ -135,15 +141,46 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             PDOAdapter::class,
-            static function (array $config) use ($container) {
-                return new PDOAdapter(
+            static function (string $name, array $config) use ($container) {
+                $pdoConfig = $config['config'];
+                $pdoClass  = $pdoConfig['pdo'] ?? \PDO::class;
+
+                if ($container->has($pdoClass)) {
+                    $pdo = $container->get($pdoClass, [$pdoConfig]);
+                } else {
+                    $pdo = $container->get(PDO::class, [$pdoClass, $pdoConfig]);
+                }
+
+                return new $name(
                     $container,
-                    new PDO(
-                        $config['dsn'],
-                        null,
-                        null,
-                        $config['options'] ?? []
-                    ),
+                    $pdo,
+                    $config
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a PDO service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPDO(Container $container): void
+    {
+        $container->setClosure(
+            PDO::class,
+            static function (string $name, array $config): PDO {
+                if ($name === \PDO::class) {
+                    // If we got here then that means the developer has opted to use the default PDO
+                    // but has not defined a PDO in the service container. The reason for this requirement
+                    // is that the Valkyrja PDO constructors take in a config array, whereas the default
+                    // PDO takes in a DSN as the first param.
+                    throw new RuntimeException('Default PDO service not found in container.');
+                }
+
+                return new $name(
                     $config
                 );
             }
@@ -163,9 +200,10 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             Repository::class,
-            static function (string $name, string $entity) use ($orm): Repository {
+            static function (string $name, Driver $driver, string $entity) use ($orm): Repository {
                 return new $name(
                     $orm,
+                    $driver,
                     $entity
                 );
             }
@@ -186,9 +224,10 @@ class ServiceProvider extends Provider
 
         $container->setClosure(
             CacheRepository::class,
-            static function (string $entity) use ($orm, $cache): CacheRepository {
-                return new CacheRepository(
+            static function (string $name, Driver $driver, string $entity) use ($orm, $cache): CacheRepository {
+                return new $name(
                     $orm,
+                    $driver,
                     $cache,
                     $entity
                 );
@@ -207,8 +246,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Persister::class,
-            static function (Adapter $adapter): Persister {
-                return new \Valkyrja\ORM\Persisters\Persister(
+            static function (string $name, Adapter $adapter): Persister {
+                return new $name(
                     $adapter
                 );
             }
@@ -226,50 +265,9 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Retriever::class,
-            static function (Adapter $adapter): Retriever {
-                return new \Valkyrja\ORM\Retrievers\Retriever(
+            static function (string $name, Adapter $adapter): Retriever {
+                return new $name(
                     $adapter
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish a local cache retriever service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishLocalCacheRetriever(Container $container): void
-    {
-        $container->setClosure(
-            LocalCacheRetriever::class,
-            static function (Adapter $adapter): Retriever {
-                return new LocalCacheRetriever(
-                    $adapter
-                );
-            }
-        );
-    }
-
-    /**
-     * Publish a cache retriever service.
-     *
-     * @param Container $container The container
-     *
-     * @return void
-     */
-    public static function publishCacheRetriever(Container $container): void
-    {
-        $cache = $container->getSingleton(Cache::class);
-
-        $container->setClosure(
-            CacheRetriever::class,
-            static function (Adapter $adapter) use ($cache): CacheRetriever {
-                return new CacheRetriever(
-                    $adapter,
-                    $cache
                 );
             }
         );
@@ -286,8 +284,8 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             Query::class,
-            static function (Adapter $adapter): Query {
-                return new \Valkyrja\ORM\Queries\Query(
+            static function (string $name, Adapter $adapter): Query {
+                return new $name(
                     $adapter
                 );
             }
@@ -305,9 +303,45 @@ class ServiceProvider extends Provider
     {
         $container->setClosure(
             QueryBuilder::class,
-            static function (Adapter $adapter): QueryBuilder {
-                return new SqlQueryBuilder(
+            static function (string $name, Adapter $adapter): QueryBuilder {
+                return new $name(
                     $adapter
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish a statement service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishStatement(Container $container): void
+    {
+        $container->setClosure(
+            Statement::class,
+            static function (string $name): Statement {
+                return new $name();
+            }
+        );
+    }
+
+    /**
+     * Publish a pdo statement service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishPdoStatement(Container $container): void
+    {
+        $container->setClosure(
+            PDOStatement::class,
+            static function (string $name, \PDOStatement $statement): PDOStatement {
+                return new $name(
+                    $statement
                 );
             }
         );

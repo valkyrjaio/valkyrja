@@ -32,8 +32,11 @@ class Config extends Model
     protected static array $modelProperties = [
         CKP::DEFAULT,
         CKP::ADAPTER,
-        CKP::ADAPTERS,
-        CKP::DRIVERS,
+        CKP::DRIVER,
+        CKP::QUERY,
+        CKP::QUERY_BUILDER,
+        CKP::PERSISTER,
+        CKP::RETRIEVER,
         CKP::REPOSITORY,
         CKP::CONNECTIONS,
         CKP::MIGRATIONS,
@@ -45,13 +48,16 @@ class Config extends Model
      * @var array
      */
     protected static array $envKeys = [
-        CKP::DEFAULT     => EnvKey::ORM_DEFAULT,
-        CKP::ADAPTER     => EnvKey::ORM_ADAPTER,
-        CKP::ADAPTERS    => EnvKey::ORM_ADAPTERS,
-        CKP::DRIVERS     => EnvKey::ORM_DRIVERS,
-        CKP::REPOSITORY  => EnvKey::ORM_REPOSITORY,
-        CKP::CONNECTIONS => EnvKey::ORM_CONNECTIONS,
-        CKP::MIGRATIONS  => EnvKey::ORM_MIGRATIONS,
+        CKP::DEFAULT       => EnvKey::ORM_DEFAULT,
+        CKP::ADAPTER       => EnvKey::ORM_ADAPTER,
+        CKP::DRIVER        => EnvKey::ORM_DRIVER,
+        CKP::QUERY         => EnvKey::ORM_QUERY,
+        CKP::QUERY_BUILDER => EnvKey::ORM_QUERY_BUILDER,
+        CKP::PERSISTER     => EnvKey::ORM_PERSISTER,
+        CKP::RETRIEVER     => EnvKey::ORM_RETRIEVER,
+        CKP::REPOSITORY    => EnvKey::ORM_REPOSITORY,
+        CKP::CONNECTIONS   => EnvKey::ORM_CONNECTIONS,
+        CKP::MIGRATIONS    => EnvKey::ORM_MIGRATIONS,
     ];
 
     /**
@@ -69,18 +75,39 @@ class Config extends Model
     public string $adapter;
 
     /**
-     * The adapters.
+     * The default driver.
      *
-     * @var string[]
+     * @var string
      */
-    public array $adapters;
+    public string $driver;
 
     /**
-     * The drivers.
+     * The default query.
      *
-     * @var string[]
+     * @var string
      */
-    public array $drivers;
+    public string $query;
+
+    /**
+     * The default query builder.
+     *
+     * @var string
+     */
+    public string $queryBuilder;
+
+    /**
+     * The default persister.
+     *
+     * @var string
+     */
+    public string $persister;
+
+    /**
+     * The default retriever.
+     *
+     * @var string
+     */
+    public string $retriever;
 
     /**
      * The default repository to use for all entities.

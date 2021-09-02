@@ -16,6 +16,8 @@ namespace Valkyrja\ORM\Repositories;
 use JsonException;
 use Valkyrja\Cache\Cache;
 use Valkyrja\Cache\Driver as CacheDriver;
+use Valkyrja\ORM\CacheRepository as Contract;
+use Valkyrja\ORM\Driver;
 use Valkyrja\ORM\Entity;
 use Valkyrja\ORM\Exceptions\EntityNotFoundException;
 use Valkyrja\ORM\Exceptions\InvalidEntityException;
@@ -36,7 +38,7 @@ use function unserialize;
  *
  * @author Melech Mizrachi
  */
-class CacheRepository extends Repository
+class CacheRepository extends Repository implements Contract
 {
     /**
      * Store type.
@@ -90,16 +92,17 @@ class CacheRepository extends Repository
     /**
      * Repository constructor.
      *
-     * @param ORM    $manager
-     * @param Cache  $cache
-     * @param string $entity
+     * @param ORM    $manager The orm manager
+     * @param Driver $driver  The driver
+     * @param Cache  $cache   The cache service
+     * @param string $entity  The entity class name
      */
-    public function __construct(ORM $manager, Cache $cache, string $entity)
+    public function __construct(ORM $manager, Driver $driver, Cache $cache, string $entity)
     {
         $this->cache = $cache;
         $this->store = $cache->useStore();
 
-        parent::__construct($manager, $entity);
+        parent::__construct($manager, $driver, $entity);
     }
 
     /**

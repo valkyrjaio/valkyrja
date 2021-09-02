@@ -16,13 +16,10 @@ namespace Valkyrja\ORM\Adapters;
 use PDO;
 use RuntimeException;
 use Valkyrja\Container\Container;
-use Valkyrja\ORM\Adapter as Contract;
-use Valkyrja\ORM\Persister;
-use Valkyrja\ORM\Query;
-use Valkyrja\ORM\QueryBuilder;
-use Valkyrja\ORM\Retriever;
+use Valkyrja\ORM\PDOAdapter as Contract;
 use Valkyrja\ORM\Statement;
 use Valkyrja\ORM\Statements\PDOStatement;
+use Valkyrja\Support\Type\Cls;
 
 use function is_bool;
 
@@ -31,22 +28,8 @@ use function is_bool;
  *
  * @author Melech Mizrachi
  */
-class PDOAdapter implements Contract
+class PDOAdapter extends Adapter implements Contract
 {
-    /**
-     * Connections.
-     *
-     * @var PDO[]
-     */
-    protected static array $connections = [];
-
-    /**
-     * The container service.
-     *
-     * @var Container
-     */
-    protected Container $container;
-
     /**
      * The pdo service.
      *
@@ -55,66 +38,17 @@ class PDOAdapter implements Contract
     protected PDO $pdo;
 
     /**
-     * The entity persister.
-     *
-     * @var Persister
-     */
-    protected Persister $persister;
-
-    /**
-     * The query service to use.
-     *
-     * @var string
-     */
-    protected string $queryClass = Query::class;
-
-    /**
-     * The query builder service to use.
-     *
-     * @var string
-     */
-    protected string $queryBuilderClass = QueryBuilder::class;
-
-    /**
-     * The persister service to use.
-     *
-     * @var string
-     */
-    protected string $persisterClass = Persister::class;
-
-    /**
-     * The retriever service to use.
-     *
-     * @var string
-     */
-    protected string $retrieverClass = Retriever::class;
-
-    /**
-     * The config.
-     *
-     * @var array
-     */
-    protected array $config;
-
-    /**
      * PDOAdapter constructor.
      *
      * @param Container $container The container
-     * @param PDO       $pdo       The PDO service
+     * @param PDO       $pdo       The PDO
      * @param array     $config    The config
      */
     public function __construct(Container $container, PDO $pdo, array $config)
     {
-        $this->container = $container;
-        $this->pdo       = $pdo;
-        $this->config    = $config;
+        $this->pdo = $pdo;
 
-        $this->queryClass        = $this->config['query'] ?? $this->queryClass;
-        $this->queryBuilderClass = $this->config['queryBuilder'] ?? $this->queryBuilderClass;
-        $this->persisterClass    = $this->config['persister'] ?? $this->persisterClass;
-        $this->retrieverClass    = $this->config['retriever'] ?? $this->retrieverClass;
-
-        $this->persister = $container->get($this->persisterClass, [$this]);
+        parent::__construct($container, $config);
     }
 
     /**
@@ -185,13 +119,18 @@ class PDOAdapter implements Contract
             throw new RuntimeException('Statement preparation has failed.');
         }
 
-        return new PDOStatement($statement);
+        return Cls::getDefaultableService(
+            $this->container,
+            PDOStatement::class,
+            \Valkyrja\ORM\PDOStatement::class,
+            [$statement]
+        );
     }
 
     /**
      * Get the last inserted id.
      *
-     * @param string|null $table   [optional] The table last inserted into
+     * @param string|null $table [optional] The table last inserted into
      * @param string|null $idField [optional] The id field of the table last inserted into
      *
      * @return string
@@ -200,74 +139,10 @@ class PDOAdapter implements Contract
     {
         $name = null;
 
-        if ($this->config['pdoDriver'] === 'pgsql' && $table && $idField) {
+        if ($this->config['config']['driver'] === 'pgsql' && $table && $idField) {
             $name = "{$table}_{$idField}_seq";
         }
 
         return (string) $this->pdo->lastInsertId($name);
-    }
-
-    /**
-     * Create a new query instance.
-     *
-     * @param string|null $query
-     * @param string|null $entity
-     *
-     * @return Query
-     */
-    public function createQuery(string $query = null, string $entity = null): Query
-    {
-        /** @var Query $pdoQuery */
-        $pdoQuery = $this->container->get($this->queryClass, [$this]);
-
-        if (null !== $entity) {
-            $pdoQuery->entity($entity);
-        }
-
-        if (null !== $query) {
-            $pdoQuery->prepare($query);
-        }
-
-        return $pdoQuery;
-    }
-
-    /**
-     * Create a new query builder instance.
-     *
-     * @param string|null $entity
-     * @param string|null $alias
-     *
-     * @return QueryBuilder
-     */
-    public function createQueryBuilder(string $entity = null, string $alias = null): QueryBuilder
-    {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->container->get($this->queryBuilderClass, [$this]);
-
-        if (null !== $entity) {
-            $queryBuilder->entity($entity, $alias);
-        }
-
-        return $queryBuilder;
-    }
-
-    /**
-     * Create a new retriever instance.
-     *
-     * @return Retriever
-     */
-    public function createRetriever(): Retriever
-    {
-        return $this->container->get($this->retrieverClass, [$this]);
-    }
-
-    /**
-     * Get the persister.
-     *
-     * @return Persister
-     */
-    public function getPersister(): Persister
-    {
-        return $this->persister;
     }
 }

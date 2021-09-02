@@ -131,10 +131,15 @@ final class ConfigKey
 
     public const NOTIFICATION_NOTIFICATIONS = 'notification.notifications';
 
-    public const ORM_CONNECTION     = 'orm.connection';
-    public const ORM_ADAPTERS       = 'orm.adapters';
-    public const ORM_CONNECTIONS    = 'orm.connections';
+    public const ORM_DEFAULT        = 'orm.default';
+    public const ORM_ADAPTER        = 'orm.adapter';
+    public const ORM_DRIVER         = 'orm.driver';
+    public const ORM_QUERY          = 'orm.query';
+    public const ORM_QUERY_BUILDER  = 'orm.queryBuilder';
+    public const ORM_PERSISTER      = 'orm.persister';
+    public const ORM_RETRIEVER      = 'orm.retriever';
     public const ORM_REPOSITORY     = 'orm.repository';
+    public const ORM_CONNECTIONS    = 'orm.connections';
     public const ORM_MYSQL_ADAPTER  = 'orm.connections.mysql.adapter';
     public const ORM_MYSQL_DRIVER   = 'orm.connections.mysql.driver';
     public const ORM_MYSQL_HOST     = 'orm.connections.mysql.host';
@@ -143,6 +148,7 @@ final class ConfigKey
     public const ORM_MYSQL_CHARSET  = 'orm.connections.mysql.charset';
     public const ORM_MYSQL_USERNAME = 'orm.connections.mysql.username';
     public const ORM_MYSQL_PASSWORD = 'orm.connections.mysql.password';
+    public const ORM_MIGRATIONS     = 'orm.migrations';
 
     public const PATH_PATTERNS = 'path.patterns';
 

@@ -11,30 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\ORM\Drivers\PDO;
-
-use Valkyrja\Container\Container;
+namespace Valkyrja\ORM\PDOs;
 
 /**
- * Class MySqlDriver.
+ * Class MySqlPDO.
  *
  * @author Melech Mizrachi
  */
-class MySqlDriver extends Driver
+class MySqlPDO extends PDO
 {
     /**
-     * Driver constructor.
+     * MySqlPDO constructor.
      *
-     * @param Container $container The container
-     * @param string    $adapter   The adapter
-     * @param array     $config    The config
+     * @param array $config The config
      */
-    public function __construct(Container $container, string $adapter, array $config)
+    public function __construct(array $config)
     {
         $dsn = $this->getDsnPart($config, 'charset')
             . $this->getDsnPart($config, 'strict')
             . $this->getDsnPart($config, 'engine');
 
-        parent::__construct($container, $adapter, $config, 'mysql', $dsn);
+        parent::__construct($config, 'mysql', $dsn);
     }
 }

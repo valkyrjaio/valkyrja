@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Support\Type;
 
+use Valkyrja\Container\Container;
 use Valkyrja\Support\Type\Exceptions\InvalidClassProvidedException;
 
 use function count;
@@ -80,5 +81,33 @@ class Cls
         $parts = explode('\\', $name);
 
         return $parts[count($parts) - 1];
+    }
+
+    /**
+     * Get a service that can be defaulted whereby the default class exists in the container and has the same
+     *  constructor parameters as the service to return.
+     *
+     * @param Container $container    The container
+     * @param string    $class        The class to get
+     * @param string    $defaultClass The default class to fallback to
+     * @param array     $arguments    [optional] The arguments
+     *
+     * @return object|mixed
+     */
+    public static function getDefaultableService(Container $container, string $class, string $defaultClass, array $arguments = []): object
+    {
+        if ($container->has($class)) {
+            return $container->get(
+                $class,
+                $arguments
+            );
+        }
+
+        array_unshift($arguments, $class);
+
+        return $container->get(
+            $defaultClass,
+            $arguments
+        );
     }
 }

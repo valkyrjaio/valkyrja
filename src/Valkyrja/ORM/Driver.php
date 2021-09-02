@@ -21,6 +21,15 @@ namespace Valkyrja\ORM;
 interface Driver
 {
     /**
+     * Get a repository by entity name.
+     *
+     * @param string $entity
+     *
+     * @return Repository
+     */
+    public function getRepository(string $entity): Repository;
+
+    /**
      * Initiate a transaction.
      *
      * @return bool
@@ -67,7 +76,7 @@ interface Driver
     /**
      * Get the last inserted id.
      *
-     * @param string|null $table [optional] The table last inserted into
+     * @param string|null $table   [optional] The table last inserted into
      * @param string|null $idField [optional] The id field of the table last inserted into
      *
      * @return string
