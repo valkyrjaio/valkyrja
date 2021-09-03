@@ -85,13 +85,12 @@ abstract class Adapter implements Contract
      */
     public function __construct(Container $container, array $config)
     {
-        $this->container = $container;
-        $this->config    = $config;
-
-        $this->queryClass = $this->config['query'];
+        $this->container         = $container;
+        $this->config            = $config;
+        $this->queryClass        = $this->config['query'];
         $this->queryBuilderClass = $this->config['queryBuilder'];
-        $this->persisterClass = $this->config['persister'];
-        $this->retrieverClass = $this->config['retriever'];
+        $this->persisterClass    = $this->config['persister'];
+        $this->retrieverClass    = $this->config['retriever'];
     }
 
     /**
