@@ -29,112 +29,112 @@ class Dispatch extends Model implements Contract
      *
      * @var string|null
      */
-    public ?string $id;
+    public ?string $id = null;
 
     /**
      * The name.
      *
      * @var string|null
      */
-    public ?string $name;
+    public ?string $name = null;
 
     /**
      * The class.
      *
      * @var string|null
      */
-    public ?string $class;
+    public ?string $class = null;
 
     /**
      * Whether this is a class dispatch.
      *
      * @var bool
      */
-    public bool $isClass;
+    public bool $isClass = false;
 
     /**
      * The property.
      *
      * @var string|null
      */
-    public ?string $property;
+    public ?string $property = null;
 
     /**
      * Whether this is a class/property dispatch.
      *
      * @var bool
      */
-    public bool $isProperty;
+    public bool $isProperty = false;
 
     /**
      * The method.
      *
      * @var string|null
      */
-    public ?string $method;
+    public ?string $method = null;
 
     /**
      * Whether this is a class/method dispatch.
      *
      * @var bool
      */
-    public bool $isMethod;
+    public bool $isMethod = false;
 
     /**
      * Whether the property or method is static.
      *
      * @var bool
      */
-    public bool $static;
+    public bool $static = false;
 
     /**
      * The function.
      *
      * @var string|null
      */
-    public ?string $function;
+    public ?string $function = null;
 
     /**
      * Whether this is a function dispatch.
      *
      * @var bool
      */
-    public bool $isFunction;
+    public bool $isFunction = false;
 
     /**
      * The matches.
      *
      * @var array|null
      */
-    public ?array $matches;
+    public ?array $matches = null;
 
     /**
      * The closure.
      *
      * @var Closure|null
      */
-    public ?Closure $closure;
+    public ?Closure $closure = null;
 
     /**
      * Whether this is a closure dispatch.
      *
      * @var bool
      */
-    public bool $isClosure;
+    public bool $isClosure = false;
 
     /**
      * The dependencies.
      *
      * @var string[]|null
      */
-    public ?array $dependencies;
+    public ?array $dependencies = null;
 
     /**
      * The arguments.
      *
      * @var array|null
      */
-    public ?array $arguments;
+    public ?array $arguments = null;
 
     /**
      * Get the id.
@@ -143,7 +143,7 @@ class Dispatch extends Model implements Contract
      */
     public function getId(): ?string
     {
-        return $this->id ?? null;
+        return $this->id;
     }
 
     /**
@@ -167,7 +167,7 @@ class Dispatch extends Model implements Contract
      */
     public function getName(): ?string
     {
-        return $this->name ?? null;
+        return $this->name;
     }
 
     /**
@@ -191,7 +191,7 @@ class Dispatch extends Model implements Contract
      */
     public function getClass(): ?string
     {
-        return $this->class ?? null;
+        return $this->class;
     }
 
     /**
@@ -226,7 +226,7 @@ class Dispatch extends Model implements Contract
      */
     public function getProperty(): ?string
     {
-        return $this->property ?? null;
+        return $this->property;
     }
 
     /**
@@ -261,7 +261,7 @@ class Dispatch extends Model implements Contract
      */
     public function getMethod(): ?string
     {
-        return $this->method ?? null;
+        return $this->method;
     }
 
     /**
@@ -318,7 +318,7 @@ class Dispatch extends Model implements Contract
      */
     public function getFunction(): ?string
     {
-        return $this->function ?? null;
+        return $this->function;
     }
 
     /**
@@ -353,7 +353,7 @@ class Dispatch extends Model implements Contract
      */
     public function getClosure(): ?Closure
     {
-        return $this->closure ?? null;
+        return $this->closure;
     }
 
     /**
@@ -388,7 +388,7 @@ class Dispatch extends Model implements Contract
      */
     public function getMatches(): ?array
     {
-        return $this->matches ?? null;
+        return $this->matches;
     }
 
     /**
@@ -412,7 +412,7 @@ class Dispatch extends Model implements Contract
      */
     public function getArguments(): ?array
     {
-        return $this->arguments ?? null;
+        return $this->arguments;
     }
 
     /**
@@ -436,7 +436,7 @@ class Dispatch extends Model implements Contract
      */
     public function getDependencies(): ?array
     {
-        return $this->dependencies ?? null;
+        return $this->dependencies;
     }
 
     /**
