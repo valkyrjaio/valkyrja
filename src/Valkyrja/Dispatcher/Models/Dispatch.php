@@ -46,11 +46,25 @@ class Dispatch extends Model implements Contract
     public ?string $class;
 
     /**
+     * Whether this is a class dispatch.
+     *
+     * @var bool
+     */
+    public bool $isClass;
+
+    /**
      * The property.
      *
      * @var string|null
      */
     public ?string $property;
+
+    /**
+     * Whether this is a class/property dispatch.
+     *
+     * @var bool
+     */
+    public bool $isProperty;
 
     /**
      * The method.
@@ -60,11 +74,18 @@ class Dispatch extends Model implements Contract
     public ?string $method;
 
     /**
+     * Whether this is a class/method dispatch.
+     *
+     * @var bool
+     */
+    public bool $isMethod;
+
+    /**
      * Whether the property or method is static.
      *
      * @var bool
      */
-    public bool $static = false;
+    public bool $static;
 
     /**
      * The function.
@@ -72,6 +93,13 @@ class Dispatch extends Model implements Contract
      * @var string|null
      */
     public ?string $function;
+
+    /**
+     * Whether this is a function dispatch.
+     *
+     * @var bool
+     */
+    public bool $isFunction;
 
     /**
      * The matches.
@@ -86,6 +114,13 @@ class Dispatch extends Model implements Contract
      * @var Closure|null
      */
     public ?Closure $closure;
+
+    /**
+     * Whether this is a closure dispatch.
+     *
+     * @var bool
+     */
+    public bool $isClosure;
 
     /**
      * The dependencies.
@@ -168,9 +203,20 @@ class Dispatch extends Model implements Contract
      */
     public function setClass(string $class = null): self
     {
-        $this->class = $class;
+        $this->class   = $class;
+        $this->isClass = $class !== null;
 
         return $this;
+    }
+
+    /**
+     * Check whether this is a class dispatch.
+     *
+     * @return bool
+     */
+    public function isClass(): bool
+    {
+        return $this->isClass ?? false;
     }
 
     /**
@@ -192,9 +238,20 @@ class Dispatch extends Model implements Contract
      */
     public function setProperty(string $property = null): self
     {
-        $this->property = $property;
+        $this->property   = $property;
+        $this->isProperty = $property !== null;
 
         return $this;
+    }
+
+    /**
+     * Check whether this is a class/property dispatch.
+     *
+     * @return bool
+     */
+    public function isProperty(): bool
+    {
+        return $this->isProperty ?? false;
     }
 
     /**
@@ -216,9 +273,20 @@ class Dispatch extends Model implements Contract
      */
     public function setMethod(string $method = null): self
     {
-        $this->method = $method;
+        $this->method   = $method;
+        $this->isMethod = $method !== null;
 
         return $this;
+    }
+
+    /**
+     * Check whether this is a class/method dispatch.
+     *
+     * @return bool
+     */
+    public function isMethod(): bool
+    {
+        return $this->isMethod;
     }
 
     /**
@@ -228,7 +296,7 @@ class Dispatch extends Model implements Contract
      */
     public function isStatic(): bool
     {
-        return $this->static;
+        return $this->static ?? false;
     }
 
     /**
@@ -262,9 +330,20 @@ class Dispatch extends Model implements Contract
      */
     public function setFunction(string $function = null): self
     {
-        $this->function = $function;
+        $this->function   = $function;
+        $this->isFunction = $function !== null;
 
         return $this;
+    }
+
+    /**
+     * Check whether this is a function dispatch.
+     *
+     * @return bool
+     */
+    public function isFunction(): bool
+    {
+        return $this->isFunction ?? false;
     }
 
     /**
@@ -286,9 +365,20 @@ class Dispatch extends Model implements Contract
      */
     public function setClosure(Closure $closure = null): self
     {
-        $this->closure = $closure;
+        $this->closure   = $closure;
+        $this->isClosure = $closure !== null;
 
         return $this;
+    }
+
+    /**
+     * Check whether this is a closure dispatch.
+     *
+     * @return bool
+     */
+    public function isClosure(): bool
+    {
+        return $this->isClosure ?? false;
     }
 
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Dispatcher\Dispatchers;
 
+use InvalidArgumentException;
 use Valkyrja\Container\Container;
 use Valkyrja\Dispatcher\Constants\Constant;
 use Valkyrja\Dispatcher\Dispatch;
@@ -22,6 +23,8 @@ use Valkyrja\Dispatcher\Exceptions\InvalidFunctionException;
 use Valkyrja\Dispatcher\Exceptions\InvalidMethodException;
 use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
 
+use function is_callable;
+
 /**
  * Class Dispatcher.
  *
@@ -29,8 +32,12 @@ use Valkyrja\Dispatcher\Exceptions\InvalidPropertyException;
  */
 class Dispatcher implements Contract
 {
-    use CallableDispatcher;
-    use ClassDispatcher;
+    /**
+     * The container.
+     *
+     * @var Container
+     */
+    protected Container $container;
 
     /**
      * Dispatcher constructor.
@@ -89,6 +96,245 @@ class Dispatcher implements Contract
     }
 
     /**
+     * Dispatch a class method.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function dispatchClassMethod(Dispatch $dispatch, array $arguments = null)
+    {
+        // Ensure a class and method exist before continuing
+        if (! $dispatch->isMethod()) {
+            return null;
+        }
+
+        $class     = $this->getClassFromDispatch($dispatch);
+        $method    = $dispatch->getMethod();
+        $arguments = $arguments ?? [];
+        $response  = $dispatch->isStatic() ? $class::$method(...$arguments) : $class->$method(...$arguments);
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a class property.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return mixed
+     */
+    public function dispatchClassProperty(Dispatch $dispatch)
+    {
+        // Ensure a class and property exist before continuing
+        if (! $dispatch->isProperty()) {
+            return null;
+        }
+
+        $class    = $this->getClassFromDispatch($dispatch);
+        $property = $dispatch->getProperty();
+        $response = $dispatch->isStatic() ? $class::$$property : $class->{$property};
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a class.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function dispatchClass(Dispatch $dispatch, array $arguments = null)
+    {
+        // Ensure a class exists before continuing
+        if (! $dispatch->isClass()) {
+            return null;
+        }
+
+        // If the class is the id then this item is not yet set in the
+        // service container so it needs a new instance returned
+        if ($dispatch->getClass() === $dispatch->getId()) {
+            // Get the class from the dispatcher
+            $class     = $dispatch->getClass();
+            $arguments = $arguments ?? [];
+            $class     = new $class(...$arguments);
+        } else {
+            // Get the class through the container
+            $class = $this->container->get($dispatch->getClass(), $arguments ?? []);
+        }
+
+        return $class ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a function.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function dispatchFunction(Dispatch $dispatch, array $arguments = null)
+    {
+        // Ensure a function exists before continuing
+        if (! $dispatch->isFunction()) {
+            return null;
+        }
+
+        $function  = $dispatch->getFunction();
+        $arguments = $arguments ?? [];
+        $response  = $function(...$arguments);
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Dispatch a closure.
+     *
+     * @param Dispatch   $dispatch  The dispatch
+     * @param array|null $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function dispatchClosure(Dispatch $dispatch, array $arguments = null)
+    {
+        // Ensure a closure exists before continuing
+        if (! $dispatch->isClosure()) {
+            return null;
+        }
+
+        $closure   = $dispatch->getClosure();
+        $arguments = $arguments ?? [];
+        $response  = $closure(...$arguments);
+
+        return $response ?? Constant::DISPATCHED;
+    }
+
+    /**
+     * Verify the class and method of a dispatch.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @throws InvalidMethodException
+     *
+     * @return void
+     */
+    public function verifyClassMethod(Dispatch $dispatch): void
+    {
+        if ($this->isInvalidClassMethod($dispatch)) {
+            throw new InvalidMethodException(
+                'Method does not exist in class : '
+                . $dispatch->getName() . ' '
+                . $dispatch->getClass()
+                . '@'
+                . $dispatch->getMethod()
+            );
+        }
+    }
+
+    /**
+     * Verify the class and property of a dispatch.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return void
+     */
+    public function verifyClassProperty(Dispatch $dispatch): void
+    {
+        if ($this->isInvalidClassProperty($dispatch)) {
+            throw new InvalidPropertyException(
+                'Property does not exist in class : '
+                . $dispatch->getName() . ' '
+                . $dispatch->getClass()
+                . '@'
+                . $dispatch->getProperty()
+            );
+        }
+    }
+
+    /**
+     * Verify the function of a dispatch.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @throws InvalidFunctionException
+     *
+     * @return void
+     */
+    public function verifyFunction(Dispatch $dispatch): void
+    {
+        // If a function is set and is not callable
+        if ($this->isInvalidFunction($dispatch)) {
+            // Throw a new invalid function exception
+            throw new InvalidFunctionException(
+                'Function is not callable for : '
+                . $dispatch->getName() . ' '
+                . $dispatch->getFunction()
+            );
+        }
+    }
+
+    /**
+     * Determine if a dispatch's class/method combination is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidClassMethod(Dispatch $dispatch): bool
+    {
+        return $dispatch->isMethod() && ! method_exists($dispatch->getClass(), $dispatch->getMethod());
+    }
+
+    /**
+     * Determine if a dispatch's class/property combination is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidClassProperty(Dispatch $dispatch): bool
+    {
+        return $dispatch->isProperty()
+            && ! property_exists($dispatch->getClass(), $dispatch->getProperty());
+    }
+
+    /**
+     * Get class from dispatch.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return mixed|string|null
+     */
+    protected function getClassFromDispatch(Dispatch $dispatch)
+    {
+        if (! $dispatch->getClass()) {
+            throw new InvalidArgumentException('Invalid class defined in dispatch model.');
+        }
+
+        return $dispatch->isStatic() ? $dispatch->getClass() : $this->container->get($dispatch->getClass());
+    }
+
+    /**
+     * Determine if a dispatch's function is invalid.
+     *
+     * @param Dispatch $dispatch The dispatch
+     *
+     * @return bool
+     */
+    protected function isInvalidFunction(Dispatch $dispatch): bool
+    {
+        return $dispatch->isFunction() && ! is_callable($dispatch->getFunction());
+    }
+
+    /**
      * Verify that a dispatch has something to dispatch.
      *
      * @param Dispatch $dispatch The dispatch
@@ -118,11 +364,11 @@ class Dispatcher implements Contract
      */
     protected function isEmptyDispatch(Dispatch $dispatch): bool
     {
-        return null === $dispatch->getFunction()
-            && null === $dispatch->getClosure()
-            && null === $dispatch->getClass()
-            && null === $dispatch->getMethod()
-            && null === $dispatch->getProperty();
+        return ! $dispatch->getFunction()
+            && ! $dispatch->getClosure()
+            && ! $dispatch->getClass()
+            && ! $dispatch->getMethod()
+            && ! $dispatch->getProperty();
     }
 
     /**

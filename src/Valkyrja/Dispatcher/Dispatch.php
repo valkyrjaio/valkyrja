@@ -72,6 +72,13 @@ interface Dispatch extends Model
     public function setClass(string $class = null): self;
 
     /**
+     * Check whether this is a class dispatch.
+     *
+     * @return bool
+     */
+    public function isClass(): bool;
+
+    /**
      * Get the property.
      *
      * @return string
@@ -88,6 +95,13 @@ interface Dispatch extends Model
     public function setProperty(string $property = null): self;
 
     /**
+     * Check whether this is a class/property dispatch.
+     *
+     * @return bool
+     */
+    public function isProperty(): bool;
+
+    /**
      * Get the method.
      *
      * @return string
@@ -102,6 +116,13 @@ interface Dispatch extends Model
      * @return static
      */
     public function setMethod(string $method = null): self;
+
+    /**
+     * Check whether this is a class/method dispatch.
+     *
+     * @return bool
+     */
+    public function isMethod(): bool;
 
     /**
      * Get whether the member is static.
@@ -134,6 +155,13 @@ interface Dispatch extends Model
     public function setFunction(string $function = null): self;
 
     /**
+     * Check whether this is a function dispatch.
+     *
+     * @return bool
+     */
+    public function isFunction(): bool;
+
+    /**
      * Get the closure.
      *
      * @return Closure
@@ -148,6 +176,13 @@ interface Dispatch extends Model
      * @return static
      */
     public function setClosure(Closure $closure = null): self;
+
+    /**
+     * Check whether this is a closure dispatch.
+     *
+     * @return bool
+     */
+    public function isClosure(): bool;
 
     /**
      * Get the matches.
