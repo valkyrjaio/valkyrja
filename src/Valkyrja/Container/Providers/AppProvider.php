@@ -16,6 +16,7 @@ namespace Valkyrja\Container\Providers;
 use JsonException;
 use Valkyrja\Application\Application;
 use Valkyrja\Application\Support\Provider;
+use Valkyrja\Config\Config;
 use Valkyrja\Container\Container as Contract;
 use Valkyrja\Container\Managers\CacheableContainer;
 use Valkyrja\Support\Type\Arr;
@@ -47,10 +48,11 @@ class AppProvider extends Provider
 
         $app->setContainer($container);
 
+        $container->setup();
         $container->setSingleton(Application::class, $app);
         $container->setSingleton('env', $app->env());
         $container->setSingleton('config', $config);
+        $container->setAlias(Config::class, 'config');
         $container->setSingleton(Contract::class, $container);
-        $container->setup();
     }
 }
