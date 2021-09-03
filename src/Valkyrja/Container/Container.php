@@ -20,7 +20,8 @@ use Valkyrja\Support\Provider\ProvidersAware;
 /**
  * Interface Container.
  *
- * @author Melech Mizrachi
+ * @author   Melech Mizrachi
+ * @template T
  */
 interface Container extends ArrayAccess, ProvidersAware
 {
@@ -149,10 +150,10 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a service from the container.
      *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
+     * @param class-string<T> $serviceId The service id
+     * @param array           $arguments [optional] The arguments
      *
-     * @return mixed
+     * @return mixed|T
      */
     public function get(string $serviceId, array $arguments = []);
 
@@ -169,24 +170,24 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a singleton from the container.
      *
-     * @param string $serviceId The service id
+     * @param class-string<T> $serviceId The service id
      *
-     * @return mixed
+     * @return mixed|T
      */
     public function getSingleton(string $serviceId);
 
     /**
      * Make a service.
      *
-     * @param string $serviceId The service id
-     * @param array  $arguments [optional] The arguments
+     * @param class-string<T> $serviceId The service id
+     * @param array           $arguments [optional] The arguments
      *
-     * @return mixed
+     * @return mixed|T
      */
     public function makeService(string $serviceId, array $arguments = []);
 
     /**
-     * Get the context service id.
+     * Get a service id with optional context.
      *
      * @param string      $serviceId The service id
      * @param string|null $context   [optional] The context class or function name
@@ -194,5 +195,5 @@ interface Container extends ArrayAccess, ProvidersAware
      *
      * @return string
      */
-    public function getContextServiceId(string $serviceId, string $context = null, string $member = null): string;
+    public function getServiceId(string $serviceId, string $context = null, string $member = null): string;
 }

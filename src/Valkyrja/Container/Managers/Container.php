@@ -97,7 +97,7 @@ class Container implements Contract
      *
      * @var string|null
      */
-    protected ?string $contextMethod = null;
+    protected ?string $contextMember = null;
 
     /**
      * Whether to run in debug.
@@ -135,8 +135,8 @@ class Container implements Contract
         $contextContainer = clone $this;
 
         $contextContainer->context       = $context;
-        $contextContainer->contextMethod = $member;
-        $contextContainer->contextId     = '@' . $context . ($member ? '::' . $member : '');
+        $contextContainer->contextMember = $member;
+        $contextContainer->contextId     = $this->getServiceId('', $context, $member);
 
         return $contextContainer;
     }
@@ -151,7 +151,7 @@ class Container implements Contract
         $contextContainer = clone $this;
 
         $contextContainer->context       = null;
-        $contextContainer->contextMethod = null;
+        $contextContainer->contextMember = null;
         $contextContainer->contextId     = null;
 
         return $contextContainer;
@@ -166,7 +166,7 @@ class Container implements Contract
      */
     public function has(string $serviceId): bool
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         return $this->isProvided($serviceId)
             || isset(self::$services[$serviceId])
@@ -187,7 +187,7 @@ class Container implements Contract
     {
         Cls::validateInherits($service, Service::class);
 
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$services[$serviceId] = $service;
 
@@ -204,7 +204,7 @@ class Container implements Contract
      */
     public function bindClosure(string $serviceId, Closure $closure): self
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$closures[$serviceId] = $closure;
 
@@ -221,7 +221,7 @@ class Container implements Contract
      */
     public function bindSingleton(string $serviceId, string $singleton): self
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$singletons[$serviceId] = $singleton;
 
@@ -240,7 +240,7 @@ class Container implements Contract
      */
     public function setAlias(string $alias, string $serviceId): self
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$aliases[$alias]   = $serviceId;
         self::$published[$alias] = true;
@@ -258,7 +258,7 @@ class Container implements Contract
      */
     public function setClosure(string $serviceId, Closure $closure): self
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$closures[$serviceId]  = $closure;
         self::$published[$serviceId] = true;
@@ -276,7 +276,7 @@ class Container implements Contract
      */
     public function setSingleton(string $serviceId, $singleton): self
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
         self::$singletons[$serviceId] = $serviceId;
         self::$instances[$serviceId]  = $singleton;
@@ -294,9 +294,9 @@ class Container implements Contract
      */
     public function isAlias(string $serviceId): bool
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
-        return isset(self::$aliases[$serviceId]);
+        return $this->isAliasInternal($serviceId);
     }
 
     /**
@@ -308,9 +308,9 @@ class Container implements Contract
      */
     public function isClosure(string $serviceId): bool
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
-        return isset(self::$closures[$serviceId]);
+        return $this->isClosureInternal($serviceId);
     }
 
     /**
@@ -322,9 +322,9 @@ class Container implements Contract
      */
     public function isSingleton(string $serviceId): bool
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
-        return isset(self::$singletons[$serviceId]);
+        return $this->isSingletonInternal($serviceId);
     }
 
     /**
@@ -336,9 +336,9 @@ class Container implements Contract
      */
     public function isService(string $serviceId): bool
     {
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdInternal($serviceId);
 
-        return isset(self::$services[$serviceId]);
+        return $this->isServiceInternal($serviceId);
     }
 
     /**
@@ -351,28 +351,24 @@ class Container implements Contract
      */
     public function get(string $serviceId, array $arguments = [])
     {
-        // Get an aliased service id if it exists
-        $serviceId = $this->getAliasedServiceId($serviceId);
-
-        // Ensure the service has been published if it is provided
-        $this->ensureProvidedServiceIsPublished($serviceId);
+        $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
         // If the service is a singleton
-        if ($this->isSingleton($serviceId)) {
+        if ($this->isSingletonInternal($serviceId)) {
             // Return the singleton
-            return $this->getSingleton($serviceId);
+            return $this->getSingletonWithoutChecks($serviceId);
         }
 
         // If the service is a singleton
-        if ($this->isClosure($serviceId)) {
-            // Return the singleton
-            return $this->getClosure($serviceId, $arguments);
+        if ($this->isClosureInternal($serviceId)) {
+            // Return the closure
+            return $this->getClosureWithoutChecks($serviceId, $arguments);
         }
 
         // If the service is in the container
-        if ($this->isService($serviceId)) {
+        if ($this->isServiceInternal($serviceId)) {
             // Return the made service
-            return $this->makeService($serviceId, $arguments);
+            return $this->makeServiceWithoutChecks($serviceId, $arguments);
         }
 
         // Return a new object with the arguments
@@ -389,15 +385,9 @@ class Container implements Contract
      */
     public function getClosure(string $serviceId, array $arguments = [])
     {
-        // Get an aliased service id if it exists
-        $serviceId = $this->getAliasedServiceId($serviceId);
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
-        $this->ensureProvidedServiceIsPublished($serviceId);
-
-        $closure = self::$closures[$serviceId];
-
-        return $closure(...$arguments);
+        return $this->getClosureWithoutChecks($serviceId, $arguments);
     }
 
     /**
@@ -409,13 +399,9 @@ class Container implements Contract
      */
     public function getSingleton(string $serviceId)
     {
-        // Get an aliased service id if it exists
-        $serviceId = $this->getAliasedServiceId($serviceId);
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
-        $this->ensureProvidedServiceIsPublished($serviceId);
-
-        return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
+        return $this->getSingletonWithoutChecks($serviceId);
     }
 
     /**
@@ -428,28 +414,13 @@ class Container implements Contract
      */
     public function makeService(string $serviceId, array $arguments = [])
     {
-        // Get an aliased service id if it exists
-        $serviceId = $this->getAliasedServiceId($serviceId);
-        $serviceId = $this->getContextServiceId($serviceId, $this->context, $this->contextMethod);
+        $serviceId = $this->getServiceIdAndEnsurePublished($serviceId);
 
-        if (! isset(self::$services[$serviceId])) {
-            $this->ensureProvidedServiceIsPublished($serviceId);
-        }
-
-        // Make the object by dispatching the service
-        $made = self::$services[$serviceId]::make($this, $arguments);
-
-        // If the service is a singleton
-        if ($this->isSingleton($serviceId)) {
-            // Set singleton
-            $this->setSingleton($serviceId, $made);
-        }
-
-        return $made;
+        return $this->makeServiceWithoutChecks($serviceId, $arguments);
     }
 
     /**
-     * Get the context service id.
+     * Get a service id with optional context.
      *
      * @param string      $serviceId The service id
      * @param string|null $context   [optional] The context class or function name
@@ -457,7 +428,7 @@ class Container implements Contract
      *
      * @return string
      */
-    public function getContextServiceId(string $serviceId, string $context = null, string $member = null): string
+    public function getServiceId(string $serviceId, string $context = null, string $member = null): string
     {
         if (null === $this->context) {
             return $serviceId;
@@ -465,7 +436,7 @@ class Container implements Contract
 
         // serviceId@context
         // serviceId@context::method
-        return $serviceId . $this->contextId;
+        return $serviceId . '@' . $context . ($member ? '::' . $member : '');
     }
 
     /**
@@ -543,5 +514,139 @@ class Container implements Contract
     protected function getAliasedServiceId(string $serviceId): string
     {
         return self::$aliases[$serviceId] ?? $serviceId;
+    }
+
+    /**
+     * Get a service id and ensure that it is published if it is provided.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return string
+     */
+    protected function getServiceIdAndEnsurePublished(string $serviceId): string
+    {
+        // Get an aliased service id if it exists
+        $serviceId = $this->getServiceIdInternal($serviceId);
+
+        $this->ensureProvidedServiceIsPublished($serviceId);
+
+        return $serviceId;
+    }
+
+    /**
+     * Get the context service id.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return string
+     */
+    protected function getServiceIdInternal(string $serviceId): string
+    {
+        $serviceId = $this->getAliasedServiceId($serviceId);
+
+        if (null === $this->context) {
+            return $serviceId;
+        }
+
+        // serviceId@context
+        // serviceId@context::method
+        return $serviceId . $this->contextId;
+    }
+
+    /**
+     * Check whether a given service is an alias.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isAliasInternal(string $serviceId): bool
+    {
+        return isset(self::$aliases[$serviceId]);
+    }
+
+    /**
+     * Check whether a given service is bound to a closure.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isClosureInternal(string $serviceId): bool
+    {
+        return isset(self::$closures[$serviceId]);
+    }
+
+    /**
+     * Check whether a given service is a singleton.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isSingletonInternal(string $serviceId): bool
+    {
+        return isset(self::$singletons[$serviceId]);
+    }
+
+    /**
+     * Check whether a given service exists.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return bool
+     */
+    public function isServiceInternal(string $serviceId): bool
+    {
+        return isset(self::$services[$serviceId]);
+    }
+
+    /**
+     * Get a service bound to a closure from the container.
+     *
+     * @param string $serviceId The service id
+     * @param array  $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    public function getClosureWithoutChecks(string $serviceId, array $arguments = [])
+    {
+        $closure = self::$closures[$serviceId];
+
+        return $closure(...$arguments);
+    }
+
+    /**
+     * Get a singleton from the container.
+     *
+     * @param string $serviceId The service id
+     *
+     * @return mixed
+     */
+    public function getSingletonWithoutChecks(string $serviceId)
+    {
+        return self::$instances[$serviceId] ?? self::$instances[$serviceId] = $this->makeService($serviceId);
+    }
+
+    /**
+     * Make a service.
+     *
+     * @param string $serviceId The service id
+     * @param array  $arguments [optional] The arguments
+     *
+     * @return mixed
+     */
+    protected function makeServiceWithoutChecks(string $serviceId, array $arguments = [])
+    {
+        // Make the object by dispatching the service
+        $made = self::$services[$serviceId]::make($this, $arguments);
+
+        // If the service is a singleton
+        if ($this->isSingleton($serviceId)) {
+            // Set singleton
+            $this->setSingleton($serviceId, $made);
+        }
+
+        return $made;
     }
 }
