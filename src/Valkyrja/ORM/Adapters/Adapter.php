@@ -92,13 +92,6 @@ abstract class Adapter implements Contract
         $this->queryBuilderClass = $this->config['queryBuilder'];
         $this->persisterClass = $this->config['persister'];
         $this->retrieverClass = $this->config['retriever'];
-
-        $this->persister = Cls::getDefaultableService(
-            $container,
-            $this->persisterClass,
-            Persister::class,
-            [$this]
-        );
     }
 
     /**
@@ -177,6 +170,12 @@ abstract class Adapter implements Contract
      */
     public function getPersister(): Persister
     {
-        return $this->persister;
+        return $this->persister
+            ?? $this->persister = Cls::getDefaultableService(
+                $this->container,
+                $this->persisterClass,
+                Persister::class,
+                [$this]
+            );
     }
 }
