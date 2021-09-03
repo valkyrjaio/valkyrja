@@ -383,10 +383,6 @@ class Valkyrja implements Application
             return self::$container;
         }
 
-        if (self::$container->isSingleton($serviceId)) {
-            return self::$container->getSingleton($serviceId);
-        }
-
         return self::$container->get($serviceId);
     }
 
