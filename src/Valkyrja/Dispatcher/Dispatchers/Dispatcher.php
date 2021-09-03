@@ -170,7 +170,7 @@ class Dispatcher implements Contract
         // If there are dependencies
         if ($dispatch->getDependencies()) {
             $context = $dispatch->getClass() ?? $dispatch->getFunction() ?? '';
-            $member  = $dispatch->getMethod();
+            $member  = $dispatch->getMethod() ?? $dispatch->getProperty();
 
             $container        = $this->container;
             $containerContext = $container->withContext($context, $member);
