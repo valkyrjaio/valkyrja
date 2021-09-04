@@ -31,21 +31,21 @@ class Route extends Dispatch implements RouteContract
      *
      * @var string|null
      */
-    public ?string $path = null;
+    public ?string $path;
 
     /**
      * The redirect path for this route.
      *
      * @var string|null
      */
-    public ?string $to = null;
+    public ?string $to;
 
     /**
      * The redirect status code for this route.
      *
      * @var int|null
      */
-    public ?int $code = null;
+    public ?int $code;
 
     /**
      * The request methods for this route.
@@ -62,35 +62,35 @@ class Route extends Dispatch implements RouteContract
      *
      * @var string|null
      */
-    public ?string $regex = null;
+    public ?string $regex;
 
     /**
      * Any params for dynamic routes.
      *
      * @var array|null
      */
-    public ?array $params = null;
+    public ?array $params;
 
     /**
      * The dynamic parameters
      *
      * @var Parameter[]
      */
-    public array $parameters = [];
+    public array $parameters;
 
     /**
      * Any segments for optional parts of path.
      *
      * @var array|null
      */
-    public ?array $segments = null;
+    public ?array $segments;
 
     /**
      * The middleware for this route.
      *
      * @var array|null
      */
-    public ?array $middleware = null;
+    public ?array $middleware;
 
     /**
      * Whether the route is dynamic.
@@ -127,7 +127,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getPath(): ?string
     {
-        return $this->path;
+        return $this->path ?? null;
     }
 
     /**
@@ -153,7 +153,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getTo(): ?string
     {
-        return $this->to;
+        return $this->to ?? null;
     }
 
     /**
@@ -177,7 +177,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getCode(): ?int
     {
-        return $this->code;
+        return $this->code ?? null;
     }
 
     /**
@@ -231,7 +231,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getRegex(): ?string
     {
-        return $this->regex;
+        return $this->regex ?? null;
     }
 
     /**
@@ -255,7 +255,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getParams(): ?array
     {
-        return $this->params;
+        return $this->params ?? null;
     }
 
     /**
@@ -362,7 +362,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getSegments(): ?array
     {
-        return $this->segments;
+        return $this->segments ?? null;
     }
 
     /**
@@ -386,7 +386,7 @@ class Route extends Dispatch implements RouteContract
      */
     public function getMiddleware(): ?array
     {
-        return $this->middleware;
+        return $this->middleware ?? null;
     }
 
     /**
