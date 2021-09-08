@@ -13,11 +13,10 @@ declare(strict_types=1);
 namespace Valkyrja\Tests\Unit\Support;
 
 use PHPUnit\Framework\TestCase;
-use Valkyrja\Support\Collection;
+use Valkyrja\Support\Classes\Collection;
 
 use function array_keys;
 use function count;
-
 use function json_encode;
 
 use const JSON_THROW_ON_ERROR;

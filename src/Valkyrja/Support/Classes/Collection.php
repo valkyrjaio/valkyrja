@@ -14,15 +14,37 @@ declare(strict_types=1);
 namespace Valkyrja\Support\Classes;
 
 use JsonException;
+use Valkyrja\Support\Type\Arr;
+
+use function array_keys;
+use function count;
+use function in_array;
 
 /**
- * Interface Collection.
+ * Class Collection.
  *
  * @author   Melech Mizrachi
  * @template T
  */
-interface Collection
+class Collection
 {
+    /**
+     * The collection of items.
+     *
+     * @var array<int, T>
+     */
+    protected array $collection = [];
+
+    /**
+     * Collection constructor.
+     *
+     * @param array<int, T> $collection
+     */
+    public function __construct(array $collection = [])
+    {
+        $this->setAll($collection);
+    }
+
     /**
      * Set the collection.
      *
@@ -30,7 +52,12 @@ interface Collection
      *
      * @return self
      */
-    public function setAll(array $collection): self;
+    public function setAll(array $collection): self
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
 
     /**
      * Determine if a value exists in the collection.
@@ -39,35 +66,50 @@ interface Collection
      *
      * @return bool
      */
-    public function exists($value): bool;
+    public function exists($value): bool
+    {
+        return in_array($value, $this->collection, true);
+    }
 
     /**
      * Get all the items in the collection.
      *
      * @return array<int, T>
      */
-    public function all(): array;
+    public function all(): array
+    {
+        return $this->collection;
+    }
 
     /**
      * Get all the keys in the collection.
      *
      * @return array
      */
-    public function keys(): array;
+    public function keys(): array
+    {
+        return array_keys($this->collection);
+    }
 
     /**
      * Get the total count of items in the collection.
      *
      * @return int
      */
-    public function count(): int;
+    public function count(): int
+    {
+        return count($this->collection);
+    }
 
     /**
      * Determine if the collection is empty.
      *
      * @return bool
      */
-    public function isEmpty(): bool;
+    public function isEmpty(): bool
+    {
+        return empty($this->collection);
+    }
 
     /**
      * Get a single item from the collection.
@@ -76,7 +118,10 @@ interface Collection
      *
      * @return mixed
      */
-    public function __get(string $key);
+    public function __get(string $key) // : mixed
+    {
+        return $this->get($key);
+    }
 
     /**
      * Set a new item into the collection.
@@ -86,7 +131,10 @@ interface Collection
      *
      * @return mixed
      */
-    public function __set(string $key, $value);
+    public function __set(string $key, $value)
+    {
+        return $this->set($key, $value);
+    }
 
     /**
      * Get a single item from the collection.
@@ -96,7 +144,10 @@ interface Collection
      *
      * @return mixed
      */
-    public function get(string $key, $default = null);
+    public function get(string $key, $default = null) // : mixed
+    {
+        return $this->has($key) ? $this->collection[$key] : $default;
+    }
 
     /**
      * Determine if an item is in the collection.
@@ -105,7 +156,10 @@ interface Collection
      *
      * @return bool
      */
-    public function has(string $key): bool;
+    public function has(string $key): bool
+    {
+        return isset($this->collection[$key]);
+    }
 
     /**
      * Set a new item into the collection.
@@ -115,7 +169,12 @@ interface Collection
      *
      * @return self
      */
-    public function set(string $key, $value): self;
+    public function set(string $key, $value): self
+    {
+        $this->collection[$key] = $value;
+
+        return $this;
+    }
 
     /**
      * Determine if an item is in the collection.
@@ -124,7 +183,10 @@ interface Collection
      *
      * @return bool
      */
-    public function __isset(string $key): bool;
+    public function __isset(string $key): bool
+    {
+        return $this->has($key);
+    }
 
     /**
      * Remove an item from the collection.
@@ -133,7 +195,10 @@ interface Collection
      *
      * @return void
      */
-    public function __unset(string $key): void;
+    public function __unset(string $key): void
+    {
+        $this->remove($key);
+    }
 
     /**
      * Remove an item from the collection.
@@ -142,7 +207,16 @@ interface Collection
      *
      * @return self
      */
-    public function remove(string $key): self;
+    public function remove(string $key): self
+    {
+        if (! $this->has($key)) {
+            return $this;
+        }
+
+        unset($this->collection[$key]);
+
+        return $this;
+    }
 
     /**
      * Convert the collection to a string.
@@ -151,5 +225,8 @@ interface Collection
      *
      * @return string
      */
-    public function __toString(): string;
+    public function __toString(): string
+    {
+        return Arr::toString($this->collection);
+    }
 }
