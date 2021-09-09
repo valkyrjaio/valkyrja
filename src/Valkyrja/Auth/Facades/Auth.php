@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Facades;
 
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
+use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
 use Valkyrja\Auth\Repository;
@@ -34,6 +35,8 @@ use Valkyrja\Support\Facade\Facade;
  * @method static bool isAuthenticated()
  * @method static Contract setUser(User $user)
  * @method static User getUser()
+ * @method static Contract setUsers(AuthenticatedUsers $users)
+ * @method static AuthenticatedUsers getUsers()
  * @method static Contract authenticate(User $user)
  * @method static Contract authenticateFromSession()
  * @method static Contract authenticateFromRequest(Request $request)

@@ -49,6 +49,22 @@ interface Repository
     public function setUser(User $user): self;
 
     /**
+     * Get the authenticated users.
+     *
+     * @return AuthenticatedUsers
+     */
+    public function getUsers(): AuthenticatedUsers;
+
+    /**
+     * Set the authenticated users.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @return static
+     */
+    public function setUsers(AuthenticatedUsers $users): self;
+
+    /**
      * Authenticate a user with credentials.
      *
      * @param User $user The user

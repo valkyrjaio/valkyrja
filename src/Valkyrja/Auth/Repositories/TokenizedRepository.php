@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Repositories;
 
 use Exception;
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\TokenizableUser;
@@ -138,14 +139,14 @@ class TokenizedRepository extends Repository implements Contract
             return $token;
         }
 
-        // Get the password field
-        $passwordField = $user::getPasswordField();
+        $collection        = $this->users;
+        $collectionAsArray = $collection->asArray();
 
-        $user->expose($passwordField);
+        foreach ($collection->all() as $key => $userFromCollection) {
+            $collectionAsArray['users'][$key] = $userFromCollection->asTokenizableArray();
+        }
 
-        $token = $this->crypt->encryptArray($user->asTokenizableArray());
-
-        $user->unexpose($passwordField);
+        $token = $this->crypt->encryptArray($collectionAsArray);
 
         $user::setTokenized($token);
 
@@ -205,33 +206,35 @@ class TokenizedRepository extends Repository implements Contract
     {
         if (
             ! $this->isTokenValid($token)
-            || null === $user = $this->tryGettingUserFromToken($token)
+            || null === $users = $this->tryGettingUserFromToken($token)
         ) {
             $this->resetAfterLogout();
 
             throw new InvalidAuthenticationException('Invalid user token.');
         }
 
-        return $user;
+        $this->users = $users;
+
+        return $users->getCurrent();
     }
 
     /**
-     * Attempt to get a user from token.
+     * Attempt to get users from token.
      *
      * @param string $token The token
      *
-     * @return User|null
+     * @return AuthenticatedUsers|null
      */
-    protected function tryGettingUserFromToken(string $token): ?User
+    protected function tryGettingUserFromToken(string $token): ?AuthenticatedUsers
     {
         try {
-            $userProperties = $this->crypt->decryptArray($token);
-            /** @var User $userModel */
-            $userModel = $this->userEntityName::fromArray($userProperties);
+            $usersProperties = $this->crypt->decryptArray($token);
+            /** @var AuthenticatedUsers $users */
+            $users = $this->usersModel::fromArray($usersProperties);
         } catch (Exception $exception) {
             return null;
         }
 
-        return $userModel;
+        return $users;
     }
 }

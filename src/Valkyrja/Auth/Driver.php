@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth;
 
+use Exception;
 use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
-use Valkyrja\Crypt\Exceptions\CryptException;
 
 /**
  * Interface Driver.
@@ -23,6 +23,27 @@ use Valkyrja\Crypt\Exceptions\CryptException;
  */
 interface Driver
 {
+    /**
+     * Get a repository by user entity name.
+     *
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Repository
+     */
+    public function getRepository(string $user = null, string $adapter = null): Repository;
+
+    /**
+     * Get a gate by name.
+     *
+     * @param string|null $name    [optional] The name
+     * @param string|null $user    [optional] The user
+     * @param string|null $adapter [optional] The adapter
+     *
+     * @return Gate
+     */
+    public function getGate(string $name = null, string $user = null, string $adapter = null): Gate;
+
     /**
      * Attempt to authenticate a user.
      *
@@ -33,34 +54,23 @@ interface Driver
     public function authenticate(User $user): bool;
 
     /**
-     * Get the user token.
+     * Get a user via login fields.
      *
      * @param User $user
      *
-     * @throws CryptException
-     *
-     * @return string
+     * @return User|null
      */
-    public function getToken(User $user): string;
-
-    /**
-     * Determine if a token is valid.
-     *
-     * @param string $token
-     *
-     * @return bool
-     */
-    public function isValidToken(string $token): bool;
+    public function retrieve(User $user): ?User;
 
     /**
      * Get a user from token.
      *
-     * @param string $user
-     * @param string $token
+     * @param User   $user
+     * @param string $resetToken
      *
      * @return User|null
      */
-    public function getUserFromToken(string $user, string $token): ?User;
+    public function retrieveByResetToken(User $user, string $resetToken): ?User;
 
     /**
      * Refresh a user from the data store.
@@ -69,7 +79,16 @@ interface Driver
      *
      * @return User
      */
-    public function getFreshUser(User $user): User;
+    public function retrieveById(User $user): User;
+
+    /**
+     * Save a user.
+     *
+     * @param User $user
+     *
+     * @return void
+     */
+    public function save(User $user): void;
 
     /**
      * Determine if a password verifies against the user's password.
@@ -79,7 +98,7 @@ interface Driver
      *
      * @return bool
      */
-    public function isPassword(User $user, string $password): bool;
+    public function verifyPassword(User $user, string $password): bool;
 
     /**
      * Update a user's password.
@@ -87,36 +106,22 @@ interface Driver
      * @param User   $user
      * @param string $password
      *
+     * @throws Exception
+     *
      * @return void
      */
     public function updatePassword(User $user, string $password): void;
 
     /**
-     * Reset a user's password.
+     * Generate a reset token for a user.
      *
      * @param User $user
      *
-     * @return void
-     */
-    public function resetPassword(User $user): void;
-
-    /**
-     * Lock a user.
-     *
-     * @param LockableUser $user
+     * @throws Exception
      *
      * @return void
      */
-    public function lock(LockableUser $user): void;
-
-    /**
-     * Unlock a user.
-     *
-     * @param LockableUser $user
-     *
-     * @return void
-     */
-    public function unlock(LockableUser $user): void;
+    public function updateResetToken(User $user): void;
 
     /**
      * Register a new user.
@@ -127,14 +132,5 @@ interface Driver
      *
      * @return bool
      */
-    public function register(User $user): bool;
-
-    /**
-     * Determine if a user is registered.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function isRegistered(User $user): bool;
+    public function create(User $user): bool;
 }

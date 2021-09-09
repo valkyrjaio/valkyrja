@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Managers;
 use Exception;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
+use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\Header;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
@@ -246,6 +247,30 @@ class Auth implements Contract
     public function setUser(User $user): self
     {
         $this->getRepository()->setUser($user);
+
+        return $this;
+    }
+
+    /**
+     * Get the authenticated users.
+     *
+     * @return AuthenticatedUsers
+     */
+    public function getUsers(): AuthenticatedUsers
+    {
+        return $this->getRepository()->getUsers();
+    }
+
+    /**
+     * Set the authenticated users.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @return static
+     */
+    public function setUsers(AuthenticatedUsers $users): self
+    {
+        $this->getRepository()->setUsers($users);
 
         return $this;
     }

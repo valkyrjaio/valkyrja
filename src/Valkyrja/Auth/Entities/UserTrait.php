@@ -46,6 +46,16 @@ trait UserTrait
     }
 
     /**
+     * Get the authenticated users collection class.
+     *
+     * @return string|null
+     */
+    public static function getAuthCollection(): ?string
+    {
+        return null;
+    }
+
+    /**
      * Get the user session id.
      *
      * @return string

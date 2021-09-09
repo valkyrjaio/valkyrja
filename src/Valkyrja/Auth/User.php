@@ -30,6 +30,13 @@ interface User extends Entity
     public static function getAuthRepository(): ?string;
 
     /**
+     * Get the authenticated users collection class.
+     *
+     * @return string|null
+     */
+    public static function getAuthCollection(): ?string;
+
+    /**
      * Get the user session id.
      *
      * @return string

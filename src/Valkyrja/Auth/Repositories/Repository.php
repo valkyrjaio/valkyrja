@@ -15,6 +15,7 @@ namespace Valkyrja\Auth\Repositories;
 
 use Exception;
 use Valkyrja\Auth\Adapter;
+use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\SessionId;
 use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
 use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
@@ -62,11 +63,25 @@ class Repository implements Contract
     protected string $userEntityName;
 
     /**
+     * The authenticated users model.
+     *
+     * @var string|AuthenticatedUsers
+     */
+    protected string $usersModel;
+
+    /**
      * The current authenticated user.
      *
-     * @var User
+     * @var User|null
      */
-    protected User $user;
+    protected ?User $user = null;
+
+    /**
+     * The current authenticated users.
+     *
+     * @var AuthenticatedUsers
+     */
+    protected AuthenticatedUsers $users;
 
     /**
      * Determine if a user is authenticated.
@@ -98,6 +113,9 @@ class Repository implements Contract
         $this->adapter        = $adapter;
         $this->session        = $session;
         $this->userEntityName = $user;
+
+        $this->usersModel = $this->userEntityName::getAuthCollection();
+        $this->users      = new $this->usersModel();
     }
 
     /**
@@ -130,6 +148,33 @@ class Repository implements Contract
     public function setUser(User $user): self
     {
         $this->setAuthenticatedUser($user);
+
+        return $this;
+    }
+
+    /**
+     * Get the authenticated users.
+     *
+     * @return AuthenticatedUsers
+     */
+    public function getUsers(): AuthenticatedUsers
+    {
+        return $this->users;
+    }
+
+    /**
+     * Set the authenticated users.
+     *
+     * @param AuthenticatedUsers $users The users
+     *
+     * @return static
+     */
+    public function setUsers(AuthenticatedUsers $users): self
+    {
+        $this->users = $users;
+        $this->user  = $users->getCurrent();
+
+        $this->isAuthenticated = $users->hasCurrent();
 
         return $this;
     }
@@ -213,9 +258,14 @@ class Repository implements Contract
      */
     public function setSession(): self
     {
-        $user = $this->getUser();
+        $collection        = $this->users;
+        $collectionAsArray = $collection->asArray();
 
-        $this->session->set($this->user::getUserSessionId(), $user->asStorableArray());
+        foreach ($collection->all() as $key => $user) {
+            $collectionAsArray['users'][$key] = $user->asStorableArray();
+        }
+
+        $this->session->set($this->userEntityName::getUserSessionId(), $collectionAsArray);
 
         return $this;
     }
@@ -227,7 +277,7 @@ class Repository implements Contract
      */
     public function unsetSession(): self
     {
-        $this->session->remove($this->user::getUserSessionId());
+        $this->session->remove($this->userEntityName::getUserSessionId());
 
         return $this;
     }
@@ -366,13 +416,15 @@ class Repository implements Contract
             return $this->user;
         }
 
-        $sessionUser = $this->session->get($this->userEntityName::getUserSessionId());
+        $sessionUsers = $this->session->get($this->userEntityName::getUserSessionId());
 
-        if (! $sessionUser) {
-            throw new InvalidAuthenticationException('No logged in user.');
+        if (! $sessionUsers) {
+            throw new InvalidAuthenticationException('No authenticated users.');
         }
 
-        return $this->user = $this->userEntityName::fromArray($sessionUser);
+        $this->users = $this->usersModel::fromArray($sessionUsers);
+
+        return $this->user = $this->users->getCurrent();
     }
 
     /**
@@ -424,6 +476,8 @@ class Repository implements Contract
     {
         $this->user            = $user;
         $this->isAuthenticated = true;
+
+        $this->users->setCurrent($user);
     }
 
     /**
@@ -434,7 +488,19 @@ class Repository implements Contract
     protected function resetAfterLogout(): void
     {
         $this->isAuthenticated = false;
-        $this->session->remove($this->userEntityName::getTokenSessionId());
+
+        if ($this->user) {
+            $this->users->remove($this->user);
+        }
+
+        if ($this->users->hasCurrent()) {
+            $this->user = $this->users->getCurrent();
+        } else {
+            $this->user  = null;
+            $this->users = new $this->usersModel();
+
+            $this->unsetSession();
+        }
     }
 
     /**
