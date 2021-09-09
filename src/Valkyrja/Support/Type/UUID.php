@@ -60,12 +60,12 @@ class UUID
 
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 3
-            (hexdec(substr($hash, 12, 4)) & 0x0fff) | 0x3000,
+            (hexdec(substr($hash, 12, 4)) & 0x0FFF) | 0x3000,
 
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            (hexdec(substr($hash, 16, 4)) & 0x3fff) | 0x8000,
+            (hexdec(substr($hash, 16, 4)) & 0x3FFF) | 0x8000,
 
             // 48 bits for "node"
             substr($hash, 20, 12)
@@ -85,25 +85,25 @@ class UUID
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
 
             // 32 bits for "time_low"
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF),
 
             // 16 bits for "time_mid"
-            random_int(0, 0xffff),
+            random_int(0, 0xFFFF),
 
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 4
-            random_int(0, 0x0fff) | 0x4000,
+            random_int(0, 0x0FFF) | 0x4000,
 
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            random_int(0, 0x3fff) | 0x8000,
+            random_int(0, 0x3FFF) | 0x8000,
 
             // 48 bits for "node"
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0xffff)
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF)
         );
     }
 
@@ -133,12 +133,12 @@ class UUID
 
             // 16 bits for "time_hi_and_version",
             // four most significant bits holds version number 5
-            (hexdec(substr($hash, 12, 4)) & 0x0fff) | 0x5000,
+            (hexdec(substr($hash, 12, 4)) & 0x0FFF) | 0x5000,
 
             // 16 bits, 8 bits for "clk_seq_hi_res",
             // 8 bits for "clk_seq_low",
             // two most significant bits holds zero and one for variant DCE1.1
-            (hexdec(substr($hash, 16, 4)) & 0x3fff) | 0x8000,
+            (hexdec(substr($hash, 16, 4)) & 0x3FFF) | 0x8000,
 
             // 48 bits for "node"
             substr($hash, 20, 12)
