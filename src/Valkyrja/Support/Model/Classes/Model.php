@@ -524,7 +524,7 @@ abstract class Model implements Contract
             return $value;
         }
 
-        if (isset($this->$property)) {
+        if (isset($this->$property) && $this->$property instanceof Contract) {
             $value = array_merge($this->$property->asArray(), $value);
         }
 
