@@ -286,7 +286,7 @@ class Dispatch extends Model implements Contract
      */
     public function isMethod(): bool
     {
-        return $this->isMethod;
+        return $this->isMethod ?? false;
     }
 
     /**
