@@ -218,7 +218,7 @@ class Auth implements Contract
     }
 
     /**
-     * Determine if a user is logged in.
+     * Determine if a user is authenticated.
      *
      * @return bool
      */
@@ -228,7 +228,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get the logged in user.
+     * Get the authenticated user.
      *
      * @return User
      */
@@ -238,7 +238,7 @@ class Auth implements Contract
     }
 
     /**
-     * Set the logged in user.
+     * Set the authenticated user.
      *
      * @param User $user The user
      *
@@ -276,7 +276,7 @@ class Auth implements Contract
     }
 
     /**
-     * Log a user in.
+     * Authenticate a user with credentials.
      *
      * @param User $user The user
      *
@@ -292,7 +292,9 @@ class Auth implements Contract
     }
 
     /**
-     * Log a user in via a user session.
+     * Authenticate a user from an active session.
+     *
+     * @throws InvalidAuthenticationException
      *
      * @return static
      */
@@ -320,19 +322,21 @@ class Auth implements Contract
     }
 
     /**
-     * Log the current user out.
+     * Un-authenticate any active users.
+     *
+     * @param User|null $user [optional] The user to un-authenticate
      *
      * @return static
      */
-    public function unAuthenticate(): self
+    public function unAuthenticate(User $user = null): self
     {
-        $this->getRepository()->unAuthenticate();
+        $this->getRepository()->unAuthenticate($user);
 
         return $this;
     }
 
     /**
-     * Store the user in session.
+     * Set the authenticated user in the session.
      *
      * @return static
      */

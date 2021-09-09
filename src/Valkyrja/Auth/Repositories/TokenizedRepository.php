@@ -208,7 +208,7 @@ class TokenizedRepository extends Repository implements Contract
             ! $this->isTokenValid($token)
             || null === $users = $this->tryGettingUserFromToken($token)
         ) {
-            $this->resetAfterLogout();
+            $this->resetAfterUnAuthentication();
 
             throw new InvalidAuthenticationException('Invalid user token.');
         }

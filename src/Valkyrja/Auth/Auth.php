@@ -86,21 +86,21 @@ interface Auth
     public function requestWithoutAuthToken(Request $request): Request;
 
     /**
-     * Determine if a user is logged in.
+     * Determine if a user is authenticated.
      *
      * @return bool
      */
     public function isAuthenticated(): bool;
 
     /**
-     * Get the logged in user.
+     * Get the authenticated user.
      *
      * @return User
      */
     public function getUser(): User;
 
     /**
-     * Set the logged in user.
+     * Set the authenticated user.
      *
      * @param User $user The user
      *
@@ -125,7 +125,7 @@ interface Auth
     public function setUsers(AuthenticatedUsers $users): self;
 
     /**
-     * Log a user in.
+     * Authenticate a user with credentials.
      *
      * @param User $user The user
      *
@@ -136,7 +136,9 @@ interface Auth
     public function authenticate(User $user): self;
 
     /**
-     * Log a user in via a user session.
+     * Authenticate a user from an active session.
+     *
+     * @throws InvalidAuthenticationException
      *
      * @return static
      */
@@ -154,14 +156,16 @@ interface Auth
     public function authenticateFromRequest(Request $request): self;
 
     /**
-     * Log the current user out.
+     * Un-authenticate any active users.
+     *
+     * @param User|null $user [optional] The user to un-authenticate
      *
      * @return static
      */
-    public function unAuthenticate(): self;
+    public function unAuthenticate(User $user = null): self;
 
     /**
-     * Store the user in session.
+     * Set the authenticated user in the session.
      *
      * @return static
      */

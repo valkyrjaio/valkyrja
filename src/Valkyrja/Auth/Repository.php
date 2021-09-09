@@ -98,9 +98,11 @@ interface Repository
     /**
      * Un-authenticate any active users.
      *
+     * @param User|null $user [optional] The user to un-authenticate
+     *
      * @return static
      */
-    public function unAuthenticate(): self;
+    public function unAuthenticate(User $user = null): self;
 
     /**
      * Set the authenticated user in the session.

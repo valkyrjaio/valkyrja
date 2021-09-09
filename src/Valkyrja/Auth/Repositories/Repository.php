@@ -209,7 +209,7 @@ class Repository implements Contract
     public function authenticateFromSession(): self
     {
         if (! $user = $this->getUserFromSession()) {
-            $this->resetAfterLogout();
+            $this->resetAfterUnAuthentication();
 
             throw new InvalidAuthenticationException('No user session exists.');
         }
@@ -240,12 +240,14 @@ class Repository implements Contract
     /**
      * Un-authenticate any active users.
      *
+     * @param User|null $user [optional] The user to un-authenticate
+     *
      * @return static
      */
-    public function unAuthenticate(): self
+    public function unAuthenticate(User $user = null): self
     {
         if ($this->isAuthenticated) {
-            $this->resetAfterLogout();
+            $this->resetAfterUnAuthentication($user);
         }
 
         return $this;
@@ -481,19 +483,21 @@ class Repository implements Contract
     }
 
     /**
-     * Reset properties and session after logout.
+     * Reset properties and session after un-authentication.
+     *
+     * @param User|null $user [optional] The user to un-authenticate
      *
      * @return void
      */
-    protected function resetAfterLogout(): void
+    protected function resetAfterUnAuthentication(User $user = null): void
     {
         $this->isAuthenticated = false;
 
-        if ($this->user) {
-            $this->users->remove($this->user);
+        if ($user) {
+            $this->users->remove($user);
         }
 
-        if ($this->users->hasCurrent()) {
+        if ($user && $this->users->hasCurrent()) {
             $this->user = $this->users->getCurrent();
         } else {
             $this->user  = null;
@@ -535,7 +539,7 @@ class Repository implements Contract
 
         // If the db password does not match the tokenized user password the token is no longer valid
         if ($dbUser->__get($passwordField) !== $user->__get($passwordField)) {
-            $this->resetAfterLogout();
+            $this->resetAfterUnAuthentication();
 
             throw new InvalidAuthenticationException('User is no longer valid.');
         }
