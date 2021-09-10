@@ -16,6 +16,7 @@ namespace Valkyrja\Auth\Providers;
 use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
+use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
@@ -47,6 +48,7 @@ class ServiceProvider extends Provider
             Adapter::class             => 'publishAdapter',
             ORMAdapter::class          => 'publishOrmAdapter',
             Policy::class              => 'publishPolicy',
+            EntityPolicy::class        => 'publishEntityPolicy',
         ];
     }
 
@@ -63,6 +65,7 @@ class ServiceProvider extends Provider
             Adapter::class,
             ORMAdapter::class,
             Policy::class,
+            EntityPolicy::class,
         ];
     }
 
@@ -167,6 +170,28 @@ class ServiceProvider extends Provider
             static function (string $name, Repository $repository): Policy {
                 return new $name(
                     $repository,
+                );
+            }
+        );
+    }
+
+    /**
+     * Publish an entity policy service.
+     *
+     * @param Container $container The container
+     *
+     * @return void
+     */
+    public static function publishEntityPolicy(Container $container): void
+    {
+        $container->setClosure(
+            EntityPolicy::class,
+            static function (string $name, Repository $repository) use ($container): EntityPolicy {
+                /** @var EntityPolicy|string $name */
+
+                return new $name(
+                    $repository,
+                    $container->getSingleton($name::getEntityClassName() . $name::getEntityParamNumber()),
                 );
             }
         );

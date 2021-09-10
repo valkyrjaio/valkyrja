@@ -18,6 +18,7 @@ use Valkyrja\Event\Events;
 use Valkyrja\Http\Request;
 use Valkyrja\Http\Response;
 use Valkyrja\Http\ResponseFactory;
+use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router;
 
 /**
@@ -61,6 +62,16 @@ abstract class Middleware
      * @var Router
      */
     public static Router $router;
+
+    /**
+     * The matched route.
+     *  NOTE: This will only be instantiated and available to middlewares' before methods that are set to a route, and
+     *  not to global middleware that run on every request. It will be available for all middlewares' after and
+     *  terminate assuming a route was matched
+     *
+     * @var Route|null
+     */
+    public static ?Route $route = null;
 
     /**
      * Middleware handler for before a request is dispatched.

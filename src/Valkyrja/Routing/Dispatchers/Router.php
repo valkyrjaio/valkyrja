@@ -26,7 +26,6 @@ use Valkyrja\Routing\Collection;
 use Valkyrja\Routing\Events\RouteMatched;
 use Valkyrja\Routing\Exceptions\InvalidRouteName;
 use Valkyrja\Routing\Matcher;
-use Valkyrja\Routing\Middleware\RouteMiddleware;
 use Valkyrja\Routing\Route;
 use Valkyrja\Routing\Router as Contract;
 use Valkyrja\Routing\Support\Abort;
@@ -278,8 +277,8 @@ class Router implements Contract
         $this->determineRedirectRoute($route);
         // Determine if the route is secure and should be redirected
         $this->determineIsSecureRoute($request, $route);
-        // Set the route in the route middleware
-        RouteMiddleware::$route = $route;
+        // Set the route in the middleware
+        Middleware::$route = $route;
         // Dispatch the route's before request handled middleware
         $requestAfterMiddleware = $this->requestMiddleware($request, $route->getMiddleware() ?? []);
 

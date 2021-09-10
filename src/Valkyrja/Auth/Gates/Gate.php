@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Gates;
 
+use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\Gate as Contract;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
@@ -130,7 +131,7 @@ class Gate implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Policy::class,
+            Cls::inherits($name, EntityPolicy::class) ? EntityPolicy::class : Policy::class,
             [
                 $this->repository,
             ]
