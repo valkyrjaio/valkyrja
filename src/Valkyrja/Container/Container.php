@@ -20,8 +20,7 @@ use Valkyrja\Support\Provider\ProvidersAware;
 /**
  * Interface Container.
  *
- * @author   Melech Mizrachi
- * @template T
+ * @author Melech Mizrachi
  */
 interface Container extends ArrayAccess, ProvidersAware
 {
@@ -150,6 +149,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a service from the container.
      *
+     * @template T
+     *
      * @param class-string<T> $serviceId The service id
      * @param array           $arguments [optional] The arguments
      *
@@ -170,6 +171,8 @@ interface Container extends ArrayAccess, ProvidersAware
     /**
      * Get a singleton from the container.
      *
+     * @template T
+     *
      * @param class-string<T> $serviceId The service id
      *
      * @return mixed|T
@@ -178,6 +181,8 @@ interface Container extends ArrayAccess, ProvidersAware
 
     /**
      * Make a service.
+     *
+     * @template T
      *
      * @param class-string<T> $serviceId The service id
      * @param array           $arguments [optional] The arguments
