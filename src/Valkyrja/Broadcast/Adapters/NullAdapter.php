@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Adapters;
 
-use InvalidArgumentException;
-use JsonException;
 use Valkyrja\Broadcast\Adapter as Contract;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Support\Type\Arr;
@@ -27,17 +25,7 @@ use Valkyrja\Support\Type\Arr;
 class NullAdapter implements Contract
 {
     /**
-     * Determine if a key/value pair exists and matches in a broadcast message.
-     *  Message is automatically decoded into an array.
-     *
-     * @param string $key     The key to look for in the message
-     * @param mixed  $value   The value to match (string || numeric)
-     * @param string $message The message
-     *
-     * @throws InvalidArgumentException When $value is neither a string or numeric
-     * @throws JsonException If a malformed message is provided
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function determineKeyValueMatch(string $key, $value, string $message): bool
     {
@@ -47,11 +35,7 @@ class NullAdapter implements Contract
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
-     *
-     * @return void
+     * @inheritDoc
      */
     public function send(Message $message): void
     {

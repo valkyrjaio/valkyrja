@@ -44,14 +44,9 @@ class PusherAdapter extends NullAdapter
     }
 
     /**
-     * Send a message.
+     * @inheritDoc
      *
-     * @param Message $message The message to send
-     *
-     * @throws JsonException On json decode failure
-     * @throws PusherException On pusher error
-     *
-     * @return void
+     * @throws JsonException
      */
     public function send(Message $message): void
     {

@@ -75,12 +75,7 @@ class Broadcast implements Contract
     }
 
     /**
-     * Create a new message.
-     *
-     * @param string|null $name [optional] The name of the message
-     * @param array       $data [optional] The data
-     *
-     * @return Message
+     * @inheritDoc
      */
     public function createMessage(string $name = null, array $data = []): Message
     {
@@ -91,11 +86,7 @@ class Broadcast implements Contract
     }
 
     /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name The adapter name
-     *
-     * @return Adapter
+     * @inheritDoc
      */
     public function getAdapter(string $name = null): Adapter
     {

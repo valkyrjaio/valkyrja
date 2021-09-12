@@ -53,13 +53,9 @@ class LogAdapter extends NullAdapter
     }
 
     /**
-     * Send a message.
-     *
-     * @param Message $message The message to send
+     * @inheritDoc
      *
      * @throws JsonException
-     *
-     * @return void
      */
     public function send(Message $message): void
     {

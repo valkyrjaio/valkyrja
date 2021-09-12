@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Valkyrja\Broadcast\Adapters;
 
-use InvalidArgumentException;
-use JsonException;
 use Pusher\Pusher;
 use Valkyrja\Broadcast\Message;
 use Valkyrja\Crypt\Adapter as CryptAdapter;
@@ -58,18 +56,9 @@ class CryptPusherAdapter extends PusherAdapter
     }
 
     /**
-     * Determine if a key/value pair exists and matches in a broadcast message.
-     *  Message is automatically decoded into an array.
-     *
-     * @param string $key     The key to look for in the message
-     * @param mixed  $value   The value to match (string || numeric)
-     * @param string $message The message
+     * @inheritDoc
      *
      * @throws CryptException On a crypt failure
-     * @throws InvalidArgumentException When $value is neither a string or numeric
-     * @throws JsonException On json decode failure
-     *
-     * @return bool
      */
     public function determineKeyValueMatch(string $key, $value, string $message): bool
     {
@@ -79,14 +68,9 @@ class CryptPusherAdapter extends PusherAdapter
     }
 
     /**
-     * Prepare a message that has data.
-     *
-     * @param Message $message The message
+     * @inheritDoc
      *
      * @throws CryptException On a crypt failure
-     * @throws JsonException On json decode failure
-     *
-     * @return void
      */
     protected function prepareMessage(Message $message): void
     {

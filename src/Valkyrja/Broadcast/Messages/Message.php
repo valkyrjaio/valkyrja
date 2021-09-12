@@ -51,9 +51,7 @@ class Message implements Contract
     protected ?array $data = null;
 
     /**
-     * Get the channel to broadcast on.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getChannel(): string
     {
@@ -61,11 +59,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the channel to broadcast on.
-     *
-     * @param string $channel The channel
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setChannel(string $channel): self
     {
@@ -75,9 +69,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the event to broadcast.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getEvent(): string
     {
@@ -85,11 +77,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the event to broadcast.
-     *
-     * @param string $event The event
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setEvent(string $event): self
     {
@@ -99,9 +87,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the data to broadcast.
-     *
-     * @return array|null
+     * @inheritDoc
      */
     public function getData(): ?array
     {
@@ -109,11 +95,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the data to broadcast.
-     *
-     * @param array|null $data [optional] The data
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setData(array $data = null): self
     {
@@ -123,9 +105,7 @@ class Message implements Contract
     }
 
     /**
-     * Get the message to broadcast.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getMessage(): string
     {
@@ -133,11 +113,7 @@ class Message implements Contract
     }
 
     /**
-     * Set the message to broadcast.
-     *
-     * @param string $message The message
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setMessage(string $message): self
     {
