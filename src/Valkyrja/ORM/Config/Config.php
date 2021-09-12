@@ -25,24 +25,6 @@ use Valkyrja\Config\Constants\EnvKey;
 class Config extends Model
 {
     /**
-     * Array of properties in the model.
-     *
-     * @var array
-     */
-    protected static array $modelProperties = [
-        CKP::DEFAULT,
-        CKP::ADAPTER,
-        CKP::DRIVER,
-        CKP::QUERY,
-        CKP::QUERY_BUILDER,
-        CKP::PERSISTER,
-        CKP::RETRIEVER,
-        CKP::REPOSITORY,
-        CKP::CONNECTIONS,
-        CKP::MIGRATIONS,
-    ];
-
-    /**
      * @inheritDoc
      */
     protected static array $envKeys = [

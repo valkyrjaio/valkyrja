@@ -47,17 +47,6 @@ use Valkyrja\View\Config\Config as View;
 class Config extends Model
 {
     /**
-     * Array of properties in the model.
-     *
-     * @var array
-     */
-    protected static array $modelProperties = [
-        CKP::PROVIDERS,
-        CKP::CACHE_FILE_PATH,
-        CKP::USE_CACHE,
-    ];
-
-    /**
      * The model properties env keys.
      *
      * @var array

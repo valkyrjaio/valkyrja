@@ -26,23 +26,6 @@ use Valkyrja\Config\Constants\EnvKey;
 class Config extends Model
 {
     /**
-     * Array of properties in the model.
-     *
-     * @var array
-     */
-    protected static array $modelProperties = [
-        CKP::ENV,
-        CKP::DEBUG,
-        CKP::URL,
-        CKP::TIMEZONE,
-        CKP::VERSION,
-        CKP::KEY,
-        CKP::EXCEPTION_HANDLER,
-        CKP::HTTP_KERNEL,
-        CKP::PROVIDERS,
-    ];
-
-    /**
      * The model properties env keys.
      *
      * @var array

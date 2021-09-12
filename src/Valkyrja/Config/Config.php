@@ -53,7 +53,7 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetExists($offset): bool
     {
@@ -61,7 +61,7 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetGet($offset)
     {
@@ -69,7 +69,7 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetSet($offset, $value): void
     {
@@ -77,7 +77,7 @@ abstract class Config extends Model implements ArrayAccess
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function offsetUnset($offset): void
     {

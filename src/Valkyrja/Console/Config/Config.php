@@ -26,23 +26,6 @@ use Valkyrja\Console\Support\Provider;
 class Config extends Model
 {
     /**
-     * Array of properties in the model.
-     *
-     * @var array
-     */
-    protected static array $modelProperties = [
-        CKP::HANDLERS,
-        CKP::PROVIDERS,
-        CKP::DEV_PROVIDERS,
-        CKP::QUIET,
-        CKP::USE_ANNOTATIONS,
-        CKP::USE_ANNOTATIONS_EXCLUSIVELY,
-        CKP::FILE_PATH,
-        CKP::CACHE_FILE_PATH,
-        CKP::USE_CACHE,
-    ];
-
-    /**
      * The model properties env keys.
      *
      * @var array
