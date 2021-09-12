@@ -23,9 +23,7 @@ use Valkyrja\Auth\Constants\UserField;
 trait VerifiableUserTrait
 {
     /**
-     * Get the verified flag field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getIsVerifiedField(): string
     {

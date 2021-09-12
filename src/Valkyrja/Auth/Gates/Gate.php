@@ -70,9 +70,7 @@ class Gate implements Contract
     }
 
     /**
-     * Before authorization check.
-     *
-     * @return bool|null
+     * @inheritDoc
      */
     public function before(): ?bool
     {
@@ -80,9 +78,7 @@ class Gate implements Contract
     }
 
     /**
-     * After authorization check.
-     *
-     * @return bool|null
+     * @inheritDoc
      */
     public function after(): ?bool
     {
@@ -90,12 +86,7 @@ class Gate implements Contract
     }
 
     /**
-     * Check if the authenticated user is authorized.
-     *
-     * @param string      $action The action to check if authorized for
-     * @param string|null $policy [optional] The policy
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isAuthorized(string $action, string $policy = null): bool
     {
@@ -105,11 +96,7 @@ class Gate implements Contract
     }
 
     /**
-     * Get a policy by name.
-     *
-     * @param string|null $name [optional] The policy name
-     *
-     * @return Policy
+     * @inheritDoc
      */
     public function getPolicy(string $name = null): Policy
     {

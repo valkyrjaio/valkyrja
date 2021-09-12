@@ -35,11 +35,7 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     protected static string $errorMessage = 'Must not be logged in.';
 
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {
@@ -53,9 +49,7 @@ class NotAuthenticatedMiddleware extends AuthMiddleware
     }
 
     /**
-     * Get the failed non-JSON response.
-     *
-     * @return Response
+     * @inheritDoc
      */
     protected static function getFailedRegularResponse(): Response
     {

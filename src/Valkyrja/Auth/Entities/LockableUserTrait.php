@@ -23,9 +23,7 @@ use Valkyrja\Auth\Constants\UserField;
 trait LockableUserTrait
 {
     /**
-     * Get the max number login attempts before locking.
-     *
-     * @return int
+     * @inheritDoc
      */
     public static function getMaxLoginAttempts(): int
     {
@@ -33,9 +31,7 @@ trait LockableUserTrait
     }
 
     /**
-     * Get the login attempts field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getLoginAttemptsField(): string
     {
@@ -43,9 +39,7 @@ trait LockableUserTrait
     }
 
     /**
-     * Get the locked flag field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getIsLockedField(): string
     {

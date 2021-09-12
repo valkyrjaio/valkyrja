@@ -24,9 +24,7 @@ use Valkyrja\Auth\Constants\UserField;
 trait UserTrait
 {
     /**
-     * Get a list of hidden fields we can expose for storage.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public static function getStorableHiddenFields(): array
     {
@@ -36,9 +34,7 @@ trait UserTrait
     }
 
     /**
-     * Get the auth repository.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public static function getAuthRepository(): ?string
     {
@@ -46,9 +42,7 @@ trait UserTrait
     }
 
     /**
-     * Get the authenticated users collection class.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public static function getAuthCollection(): ?string
     {
@@ -56,9 +50,7 @@ trait UserTrait
     }
 
     /**
-     * Get the user session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getUserSessionId(): string
     {
@@ -66,9 +58,7 @@ trait UserTrait
     }
 
     /**
-     * Get the username field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getUsernameField(): string
     {
@@ -76,9 +66,7 @@ trait UserTrait
     }
 
     /**
-     * Get the hashed password field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getPasswordField(): string
     {
@@ -86,9 +74,7 @@ trait UserTrait
     }
 
     /**
-     * Get the reset token field.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getResetTokenField(): string
     {
@@ -96,9 +82,7 @@ trait UserTrait
     }
 
     /**
-     * Get the login fields to use.
-     *
-     * @return string[]
+     * @inheritDoc
      */
     public static function getAuthenticationFields(): array
     {

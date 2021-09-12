@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Valkyrja\Auth\Entities;
 
+use JsonException;
 use Valkyrja\Auth\Constants\SessionId;
 
 /**
@@ -30,9 +31,7 @@ trait TokenizableUserTrait
     protected static ?string $token = null;
 
     /**
-     * Get the session id.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getTokenSessionId(): string
     {
@@ -40,11 +39,7 @@ trait TokenizableUserTrait
     }
 
     /**
-     * Set the tokenized user.
-     *
-     * @param string $token The tokenized user
-     *
-     * @return void
+     * @inheritDoc
      */
     public static function setTokenized(string $token): void
     {
@@ -52,9 +47,7 @@ trait TokenizableUserTrait
     }
 
     /**
-     * Get the user as a token.
-     *
-     * @return string|null
+     * @inheritDoc
      */
     public static function asTokenized(): ?string
     {
@@ -62,9 +55,9 @@ trait TokenizableUserTrait
     }
 
     /**
-     * Get user as an array for storing as a token.
+     * @inheritDoc
      *
-     * @return array
+     * @throws JsonException
      */
     public function asTokenizableArray(): array
     {
@@ -72,9 +65,7 @@ trait TokenizableUserTrait
     }
 
     /**
-     * Get the entity as an array for saving to the data store.
-     *
-     * @return array
+     * @inheritDoc
      */
     abstract public function asStorableArray(): array;
 }

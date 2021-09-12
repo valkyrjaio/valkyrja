@@ -20,8 +20,7 @@ use Valkyrja\Support\Model\Classes\Model;
 /**
  * Class Collection.
  *
- * @author   Melech Mizrachi
- * @template T
+ * @author Melech Mizrachi
  */
 class AuthenticatedUsers extends Model implements Contract
 {
@@ -47,9 +46,7 @@ class AuthenticatedUsers extends Model implements Contract
     protected array $users = [];
 
     /**
-     * Determine whether there is a current user in the collection.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function hasCurrent(): bool
     {
@@ -57,9 +54,7 @@ class AuthenticatedUsers extends Model implements Contract
     }
 
     /**
-     * Get the current user.
-     *
-     * @return User|T|null
+     * @inheritDoc
      */
     public function getCurrent(): ?User
     {
@@ -67,11 +62,7 @@ class AuthenticatedUsers extends Model implements Contract
     }
 
     /**
-     * Set the current user.
-     *
-     * @param User|T $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setCurrent(User $user): self
     {
@@ -81,11 +72,7 @@ class AuthenticatedUsers extends Model implements Contract
     }
 
     /**
-     * Add a user to the collection.
-     *
-     * @param User|T $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function add(User $user): self
     {
@@ -95,11 +82,7 @@ class AuthenticatedUsers extends Model implements Contract
     }
 
     /**
-     * Remove a user from the collection.
-     *
-     * @param User|T $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function remove(User $user): self
     {
@@ -119,9 +102,7 @@ class AuthenticatedUsers extends Model implements Contract
     }
 
     /**
-     * Get all the users in the collection
-     *
-     * @return User[]|array<int|string, T>
+     * @inheritDoc
      */
     public function all(): array
     {

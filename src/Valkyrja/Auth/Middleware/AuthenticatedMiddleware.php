@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Middleware;
 
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 
 /**
  * Class AuthenticatedMiddleware.
@@ -31,11 +30,7 @@ class AuthenticatedMiddleware extends AuthMiddleware
     protected static string $errorMessage = 'Must be logged in.';
 
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {

@@ -18,11 +18,9 @@ use Valkyrja\Auth\Adapter;
 use Valkyrja\Auth\Auth as Contract;
 use Valkyrja\Auth\AuthenticatedUsers;
 use Valkyrja\Auth\Constants\Header;
-use Valkyrja\Auth\Exceptions\InvalidAuthenticationException;
-use Valkyrja\Auth\Exceptions\InvalidPasswordConfirmationException;
-use Valkyrja\Auth\Exceptions\InvalidRegistrationException;
 use Valkyrja\Auth\Gate;
 use Valkyrja\Auth\LockableUser;
+use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\TokenizedRepository;
 use Valkyrja\Auth\User;
@@ -128,9 +126,7 @@ class Auth implements Contract
     }
 
     /**
-     * Set the config.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getConfig(): array
     {
@@ -138,11 +134,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get an adapter by name.
-     *
-     * @param string|null $name [optional] The adapter
-     *
-     * @return Adapter
+     * @inheritDoc
      */
     public function getAdapter(string $name = null): Adapter
     {
@@ -153,12 +145,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get a repository by user entity name.
-     *
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Repository
+     * @inheritDoc
      */
     public function getRepository(string $user = null, string $adapter = null): Repository
     {
@@ -172,13 +159,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get a gate by name.
-     *
-     * @param string|null $name    [optional] The name
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Gate
+     * @inheritDoc
      */
     public function getGate(string $name = null, string $user = null, string $adapter = null): Gate
     {
@@ -189,13 +170,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get a request with auth token header.
-     *
-     * @param Request     $request The request
-     * @param string|null $user    [optional] The user
-     * @param string|null $adapter [optional] The adapter
-     *
-     * @return Request
+     * @inheritDoc
      */
     public function requestWithAuthToken(Request $request, string $user = null, string $adapter = null): Request
     {
@@ -206,11 +181,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get a request without auth token header.
-     *
-     * @param Request $request The request
-     *
-     * @return Request
+     * @inheritDoc
      */
     public function requestWithoutAuthToken(Request $request): Request
     {
@@ -218,9 +189,7 @@ class Auth implements Contract
     }
 
     /**
-     * Determine if a user is authenticated.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isAuthenticated(): bool
     {
@@ -228,9 +197,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get the authenticated user.
-     *
-     * @return User
+     * @inheritDoc
      */
     public function getUser(): User
     {
@@ -238,11 +205,7 @@ class Auth implements Contract
     }
 
     /**
-     * Set the authenticated user.
-     *
-     * @param User $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setUser(User $user): self
     {
@@ -252,9 +215,7 @@ class Auth implements Contract
     }
 
     /**
-     * Get the authenticated users.
-     *
-     * @return AuthenticatedUsers
+     * @inheritDoc
      */
     public function getUsers(): AuthenticatedUsers
     {
@@ -262,11 +223,7 @@ class Auth implements Contract
     }
 
     /**
-     * Set the authenticated users.
-     *
-     * @param AuthenticatedUsers $users The users
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setUsers(AuthenticatedUsers $users): self
     {
@@ -276,13 +233,7 @@ class Auth implements Contract
     }
 
     /**
-     * Authenticate a user with credentials.
-     *
-     * @param User $user The user
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function authenticate(User $user): self
     {
@@ -292,11 +243,7 @@ class Auth implements Contract
     }
 
     /**
-     * Authenticate a user from an active session.
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function authenticateFromSession(): self
     {
@@ -306,13 +253,7 @@ class Auth implements Contract
     }
 
     /**
-     * Authenticate a user from a request.
-     *
-     * @param Request $request The request
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function authenticateFromRequest(Request $request): self
     {
@@ -322,11 +263,7 @@ class Auth implements Contract
     }
 
     /**
-     * Un-authenticate any active users.
-     *
-     * @param User|null $user [optional] The user to un-authenticate
-     *
-     * @return static
+     * @inheritDoc
      */
     public function unAuthenticate(User $user = null): self
     {
@@ -336,9 +273,7 @@ class Auth implements Contract
     }
 
     /**
-     * Set the authenticated user in the session.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setSession(): self
     {
@@ -348,9 +283,7 @@ class Auth implements Contract
     }
 
     /**
-     * Unset the authenticated user from the session.
-     *
-     * @return static
+     * @inheritDoc
      */
     public function unsetSession(): self
     {
@@ -360,13 +293,7 @@ class Auth implements Contract
     }
 
     /**
-     * Register a new user.
-     *
-     * @param User $user The user
-     *
-     * @throws InvalidRegistrationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function register(User $user): self
     {
@@ -376,11 +303,7 @@ class Auth implements Contract
     }
 
     /**
-     * Forgot password.
-     *
-     * @param User $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function forgot(User $user): self
     {
@@ -390,12 +313,7 @@ class Auth implements Contract
     }
 
     /**
-     * Reset a user's password.
-     *
-     * @param string $resetToken The reset token
-     * @param string $password   The password
-     *
-     * @return static
+     * @inheritDoc
      */
     public function reset(string $resetToken, string $password): self
     {
@@ -405,11 +323,7 @@ class Auth implements Contract
     }
 
     /**
-     * Lock a user.
-     *
-     * @param LockableUser $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function lock(LockableUser $user): self
     {
@@ -419,11 +333,7 @@ class Auth implements Contract
     }
 
     /**
-     * Unlock a user.
-     *
-     * @param LockableUser $user The user
-     *
-     * @return static
+     * @inheritDoc
      */
     public function unlock(LockableUser $user): self
     {
@@ -433,13 +343,7 @@ class Auth implements Contract
     }
 
     /**
-     * Confirm the current user's password.
-     *
-     * @param string $password The password
-     *
-     * @throws InvalidPasswordConfirmationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function confirmPassword(string $password): self
     {
@@ -449,9 +353,7 @@ class Auth implements Contract
     }
 
     /**
-     * Determine if a re-authentication needs to occur.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isReAuthenticationRequired(): bool
     {
@@ -493,7 +395,7 @@ class Auth implements Contract
         return Cls::getDefaultableService(
             $this->container,
             $name,
-            Adapter::class,
+            Cls::inherits($name, ORMAdapter::class) ? ORMAdapter::class : Adapter::class,
             [
                 $this->config,
             ]

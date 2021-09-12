@@ -58,9 +58,7 @@ abstract class EntityPolicy extends Policy implements Contract
     }
 
     /**
-     * Get the entity class name that's associated with this policy.
-     *
-     * @return string
+     * @inheritDoc
      */
     public static function getEntityClassName(): string
     {
@@ -68,12 +66,7 @@ abstract class EntityPolicy extends Policy implements Contract
     }
 
     /**
-     * Get the entity param number.
-     *  For example if the route was defined as `get('/path/{entity1}/entity2')` with an action of
-     *  `action(Entity1 $entity1, Entity2 $entity2)` you would set 1 to get the first entity or
-     *  2 for the second, etc.
-     *
-     * @return int
+     * @inheritDoc
      */
     public static function getEntityParamNumber(): int
     {

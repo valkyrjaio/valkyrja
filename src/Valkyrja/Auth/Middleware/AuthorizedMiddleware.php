@@ -16,7 +16,6 @@ namespace Valkyrja\Auth\Middleware;
 use Exception;
 use Valkyrja\Auth\User;
 use Valkyrja\Http\Request;
-use Valkyrja\Http\Response;
 
 /**
  * Abstract Class AuthorizedMiddleware.
@@ -26,11 +25,7 @@ use Valkyrja\Http\Response;
 abstract class AuthorizedMiddleware extends AuthMiddleware
 {
     /**
-     * Middleware handler for before a request is dispatched.
-     *
-     * @param Request $request The request
-     *
-     * @return Request|Response
+     * @inheritDoc
      */
     public static function before(Request $request)
     {

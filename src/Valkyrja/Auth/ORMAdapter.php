@@ -11,22 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Valkyrja\Auth\Entities;
-
-use Valkyrja\Auth\Constants\UserField;
+namespace Valkyrja\Auth;
 
 /**
- * Trait MailableUserTrait.
+ * Interface ORMAdapter.
  *
  * @author Melech Mizrachi
  */
-trait MailableUserTrait
+interface ORMAdapter extends Adapter
 {
-    /**
-     * @inheritDoc
-     */
-    public static function getEmailField(): string
-    {
-        return UserField::EMAIL;
-    }
 }

@@ -57,14 +57,9 @@ class TokenizedRepository extends Repository implements Contract
     }
 
     /**
-     * Authenticate a user with credentials.
+     * @inheritDoc
      *
-     * @param User $user The user
-     *
-     * @throws InvalidAuthenticationException
      * @throws CryptException
-     *
-     * @return static
      */
     public function authenticate(User $user): self
     {
@@ -76,11 +71,7 @@ class TokenizedRepository extends Repository implements Contract
     }
 
     /**
-     * Authenticate a user from an active session.
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function authenticateFromSession(): self
     {
@@ -93,13 +84,7 @@ class TokenizedRepository extends Repository implements Contract
     }
 
     /**
-     * Authenticate a user from a request.
-     *
-     * @param Request $request The request
-     *
-     * @throws InvalidAuthenticationException
-     *
-     * @return static
+     * @inheritDoc
      */
     public function authenticateFromRequest(Request $request): self
     {
@@ -110,11 +95,9 @@ class TokenizedRepository extends Repository implements Contract
     }
 
     /**
-     * Set the authenticated user in the session.
+     * @inheritDoc
      *
      * @throws CryptException
-     *
-     * @return static
      */
     public function setSession(): self
     {

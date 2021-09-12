@@ -50,9 +50,7 @@ abstract class Policy implements Contract
     }
 
     /**
-     * Before authorization check.
-     *
-     * @return bool|null
+     * @inheritDoc
      */
     public function before(): ?bool
     {
@@ -60,9 +58,7 @@ abstract class Policy implements Contract
     }
 
     /**
-     * After authorization check.
-     *
-     * @return bool|null
+     * @inheritDoc
      */
     public function after(): ?bool
     {
@@ -70,11 +66,7 @@ abstract class Policy implements Contract
     }
 
     /**
-     * Check if the authenticated user is authorized.
-     *
-     * @param string $action The action to check if authorized for
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function isAuthorized(string $action): bool
     {

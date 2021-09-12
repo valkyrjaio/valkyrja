@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Valkyrja\Auth\Providers;
 
 use Valkyrja\Auth\Adapter;
-use Valkyrja\Auth\Adapters\ORMAdapter;
 use Valkyrja\Auth\Auth;
 use Valkyrja\Auth\EntityPolicy;
 use Valkyrja\Auth\Gate;
+use Valkyrja\Auth\ORMAdapter;
 use Valkyrja\Auth\Policy;
 use Valkyrja\Auth\Repository;
 use Valkyrja\Auth\TokenizedRepository;
@@ -125,11 +125,14 @@ class ServiceProvider extends Provider
      */
     public static function publishOrmAdapter(Container $container): void
     {
+        $orm = $container->getSingleton(ORM::class);
+
         $container->setClosure(
             ORMAdapter::class,
-            static function (array $config) use ($container): ORMAdapter {
-                return new ORMAdapter(
-                    $container->getSingleton(ORM::class),
+            static function (string $name, array $config) use ($orm): ORMAdapter {
+                return new $name(
+                    $orm,
+                    $config
                 );
             }
         );
